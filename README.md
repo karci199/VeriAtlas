@@ -114,5 +114,7 @@ Ekran düzeni onaylandı, tema değiştirilebilir olacak (renk sabit yazılmaz, 
 
 | Belge | İçerik |
 |---|---|
+| [CLAUDE.md](CLAUDE.md) | asistan için çalışma kuralları (alt ajan yasak, kod dili, test) |
 | [docs/kararlar.md](docs/kararlar.md) | verilen kararlar ve açık işler |
+| [docs/kaynaklar.md](docs/kaynaklar.md) | bağlanabilecek veri kaynakları ve erişim biçimleri |
 | [docs/oturum-2026-08-13.md](docs/oturum-2026-08-13.md) | ön çalışma, bulgular, platformun çözmesi gereken 5 sorun |
