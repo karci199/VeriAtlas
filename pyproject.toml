@@ -1,0 +1,44 @@
+[project]
+name = "veri"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "katan", email = "katan@KARCI-PC" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "duckdb>=1.5.5",
+    "fastexcel>=0.20.2",
+    "httpx>=0.28.1",
+    "numpy>=2.5.2",
+    "openpyxl>=3.1.5",
+    "orjson>=3.11.9",
+    "pandera[polars]>=0.32.1",
+    "pdfplumber>=0.11.10",
+    "playwright>=1.62.0",
+    "polars>=1.43.2",
+    "pyarrow>=25.0.1",
+    "pydantic>=2.13.4",
+    "pydantic-settings>=2.15.0",
+    "python-calamine>=0.8.2",
+    "scipy>=1.18.0",
+    "selectolax>=0.4.11",
+    "tenacity>=9.1.4",
+    "typer>=0.27.1",
+    "typst>=0.15.0",
+    "xlsxwriter>=3.2.9",
+]
+
+[project.scripts]
+veri = "veri:main"
+
+[build-system]
+requires = ["uv_build>=0.12.3,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.16.2",
+]

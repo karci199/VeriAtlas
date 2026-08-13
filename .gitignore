@@ -1,0 +1,21 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Sırlar - ASLA depoya girmez
+.env
+.env.local
+*.key
+
+# Veri - ham arşiv ve üretilen dosyalar depoya girmez
+raw/
+warehouse.duckdb
+warehouse.duckdb.wal
+public/*.parquet
