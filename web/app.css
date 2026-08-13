@@ -414,9 +414,59 @@ button.small:disabled {
     font-weight: 600;
 }
 
-#chart {
+/* Summary on the left, chart on the right: the chart used to float in the middle of a
+   full-width card with dead space either side. */
+.content {
+    display: grid;
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+    gap: 10px;
+    align-items: start;
+}
+
+.tiles {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.tile {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0 8px;
+    padding: 8px 10px;
+    background: var(--bg-control);
+    border-left: 3px solid var(--stroke-control);
+    border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.tile-name {
+    color: var(--text-secondary);
+}
+
+.tile-value {
+    grid-row: span 2;
+    align-self: center;
+    font-size: 22px;
+    font-variant-numeric: tabular-nums;
+}
+
+.tile-delta {
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+}
+
+.tile-delta.down,
+.tile .down {
+    color: var(--value-down);
+}
+
+.tile-delta.up {
+    color: var(--value-up);
+}
+
+.tile .provenance {
+    grid-column: 1 / -1;
+    margin-top: 2px;
 }
 
 .card .unit {

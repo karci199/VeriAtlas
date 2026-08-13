@@ -113,11 +113,19 @@
             </section>
         </div>
 
+        <div class="content" id="content">
+        <section class="card" id="summary-card">
+            <h3>Özet</h3>
+            <p class="unit" id="summary-range"></p>
+            <div class="tiles" id="tiles"></div>
+        </section>
+
         <section class="card" id="chart-card">
             <h3 id="chart-title">Toplam doğurganlık hızı</h3>
             <p class="unit" id="chart-unit"></p>
             <div id="chart"></div>
         </section>
+        </div>
 
         <section class="card" id="table-card">
             <div class="badges" id="badges"></div>
@@ -396,7 +404,7 @@ function render() {
     $("chart").replaceChildren(Plot.plot({
         // Wide enough to use the card, capped so a long series does not flatten into a
         // ribbon: past about 2:1 the yearly movement stops being readable.
-        width: Math.min(940, Math.max(360, $("chart").clientWidth)),
+        width: Math.max(360, $("chart").clientWidth),
         height: 430,
         marginLeft: 48,
         marginRight: 120,
@@ -445,6 +453,37 @@ function render() {
             textContent: `${rows[0].source_id} · sürüm ${rows[0].vintage}`,
         }),
     );
+
+    // The summary reads the same rows the chart draws, derivation included, so a switch
+    // to "endeks" changes both or neither.
+    $("summary-range").textContent =
+        from + "–" + to + " · " + areas.length + " " + LEVEL_NOUN[level()];
+    $("tiles").replaceChildren(...areas.map((area) => {
+        const series = rows.filter((d) => d.area === area);
+        const first = series.at(0), last = series.at(-1);
+        const delta = last.value - first.value;
+        // "En düşük" is useless on a series that only falls — it is always the last
+        // year. The year it crossed the replacement line actually says something.
+        const crossing = series.find((d) => d.value < REPLACEMENT_LEVEL);
+        const note = mode !== "level"
+            ? "ilk yıl " + fmt(first.value)
+            : crossing
+                ? (crossing === series.at(0)
+                    ? "başından beri 2,10 altında"
+                    : "2,10 altına: " + crossing.year)
+                : "hâlâ 2,10 üstünde";
+
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.style.borderLeftColor = colourOf(area);
+        tile.innerHTML =
+            `<span class="tile-name">${area}</span>` +
+            `<span class="tile-value">${fmt(last.value)}</span>` +
+            `<span class="tile-delta ${delta < 0 ? "down" : "up"}">` +
+            `${delta < 0 ? "−" : "+"}${fmt(Math.abs(delta))}</span>` +
+            `<span class="provenance">${note}</span>`;
+        return tile;
+    }));
 
     $("th-area").textContent = LEVEL_NOUN[level()];
     $("th-from").textContent = from;
@@ -508,6 +547,8 @@ function applyTab() {
     $("tab-sources").hidden = name !== "sources";
     $("chart-card").hidden = !exploring || !pressed("show-chart");
     $("table-card").hidden = !exploring || !pressed("show-table");
+    $("summary-card").hidden = $("chart-card").hidden;
+    $("content").hidden = $("chart-card").hidden;
 
     if (exploring) render();
 }
