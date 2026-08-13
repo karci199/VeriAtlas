@@ -8,17 +8,46 @@
 </head>
 <body>
 
-<div class="titlebar">
-    <span class="app">VeriAtlas</span>
-    <span class="subject">Nüfus ve doğurganlık</span>
-    <span class="spacer"></span>
-    <input id="search" type="search" placeholder="Ara …">
-    <button class="control" id="theme-toggle" type="button">Açık tema</button>
+<div class="topbar">
+    <div class="inner">
+        <span class="spacer"></span>
+        <span class="subject">Nüfus ve doğurganlık</span>
+        <button class="control small" id="theme-toggle" type="button">Açık tema</button>
+    </div>
 </div>
+
+<div class="brand">
+    <div class="wordmark">
+        <span class="veri">Veri</span><span class="atlas">Atlas</span>
+        <span class="tagline">çok kaynaklı istatistik</span>
+    </div>
+</div>
+
+<nav class="tabs">
+    <div class="inner">
+        <button type="button" class="tab" data-tab="explore" aria-selected="true">TÜM GÖSTERGELER</button>
+        <button type="button" class="tab" data-tab="featured" aria-selected="false">BAŞLICA GÖSTERGELER</button>
+        <button type="button" class="tab" data-tab="sources" aria-selected="false">KAYNAKLAR</button>
+        <span class="spacer"></span>
+        <input id="search" type="search" placeholder="Ara …">
+    </div>
+</nav>
 
 <div class="shell">
     <main class="main">
-        <div class="panels">
+        <section class="card panel-tab" id="tab-featured" hidden>
+            <h3>Başlıca göstergeler</h3>
+            <p class="unit">Verisi yüklenmiş olanlar. Seçince tarayıcı sekmesine dönülür.</p>
+            <div class="featured" id="featured"></div>
+        </section>
+
+        <section class="card panel-tab" id="tab-sources" hidden>
+            <h3>Kaynaklar</h3>
+            <p class="unit">Ekrandaki sayıların nereden geldiği.</p>
+            <table id="sources"></table>
+        </section>
+
+        <div class="panels" id="tab-explore">
             <section class="panel">
                 <h2>TÜM GÖSTERGELER</h2>
                 <div class="panel-body">
@@ -104,6 +133,14 @@
         </section>
     </main>
 </div>
+
+<footer class="footer">
+    <div class="inner">
+        <span>VeriAtlas · çok kaynaklı istatistik platformu</span>
+        <span class="spacer"></span>
+        <span id="footer-provenance"></span>
+    </div>
+</footer>
 
 <script type="module">
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
@@ -357,9 +394,11 @@ function render() {
         : indicator.unit + " · " + FREQUENCY_TR[indicator.frequency];
 
     $("chart").replaceChildren(Plot.plot({
-        height: 260,
-        marginLeft: 44,
-        marginRight: 76,
+        // Fill the card instead of sitting in the corner of it.
+        width: Math.max(360, $("chart").clientWidth),
+        height: 340,
+        marginLeft: 48,
+        marginRight: 120,
         style: {background: "transparent", color: token("--text-tertiary"), fontSize: "11px"},
         x: {label: null, tickFormat: "d", grid: false},
         y: {label: null, grid: true, nice: true},
@@ -448,13 +487,63 @@ for (const id of ["from", "to", "decimals", "transform"]) {
 
 // Output toggles, the way EVDS offers table / chart / map — except nothing is recomputed
 // on the server, so these just show and hide what is already there.
+const pressed = (id) => $(id).getAttribute("aria-pressed") === "true";
+
 for (const [id, card] of [["show-chart", "chart-card"], ["show-table", "table-card"]]) {
     $(id).addEventListener("click", () => {
-        const on = $(id).getAttribute("aria-pressed") !== "true";
-        $(id).setAttribute("aria-pressed", String(on));
-        $(card).hidden = !on;
+        $(id).setAttribute("aria-pressed", String(!pressed(id)));
+        applyTab();
     });
 }
+
+// Tabs. Only three, and each shows something real: the explorer, the indicators that
+// actually have data, and where the numbers came from.
+function applyTab() {
+    const name = document.querySelector(".tab[aria-selected='true']").dataset.tab;
+    const exploring = name === "explore";
+
+    $("tab-explore").hidden = !exploring;
+    $("tab-featured").hidden = name !== "featured";
+    $("tab-sources").hidden = name !== "sources";
+    $("chart-card").hidden = !exploring || !pressed("show-chart");
+    $("table-card").hidden = !exploring || !pressed("show-table");
+
+    if (exploring) render();
+}
+
+for (const tab of document.querySelectorAll(".tab")) {
+    tab.addEventListener("click", () => {
+        for (const other of document.querySelectorAll(".tab")) {
+            other.setAttribute("aria-selected", String(other === tab));
+        }
+        applyTab();
+    });
+}
+
+$("featured").replaceChildren(...meta.tree.flatMap((group) =>
+    group.indicators.filter((item) => item.available).map((item) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "control";
+        button.textContent = group.topic + " · " + item.label;
+        button.title = item.definition;
+        button.addEventListener("click", () => {
+            document.querySelector(".tab[data-tab='explore']").click();
+        });
+        return button;
+    }),
+));
+
+$("sources").innerHTML =
+    "<thead><tr><th>kapsam</th><th>kaynak</th><th>sürüm</th><th>çekim</th><th>not</th></tr></thead>" +
+    "<tbody>" + meta.sources.map((row) =>
+        `<tr><td>${row.kapsam}</td><td>${row.kaynak}</td><td>${row.surum}</td>` +
+        `<td>${row.cekim}</td><td class="provenance">${row.not}</td></tr>`).join("") +
+    "</tbody>";
+
+$("footer-provenance").textContent =
+    meta.sources[0].kaynak + " · sürüm " + meta.sources[0].surum +
+    " · çekim " + meta.sources[0].cekim;
 
 // The indicator tree is still hardcoded; once the indicator dictionary exists this
 // filters that list instead.
@@ -499,9 +588,18 @@ $("theme-toggle").addEventListener("click", () => {
     render();
 });
 
+// A resized window changes the chart width, so it has to be drawn again.
+addEventListener("resize", () => {
+    if (!$("chart-card").hidden) render();
+});
+
 fillAreas();
 fillBasket();
-render();
+applyTab();
+
+// The first draw can land before layout settles, and a chart measured at zero width
+// falls back to its minimum. Draw once more when the browser has laid the page out.
+requestAnimationFrame(() => render());
 </script>
 
 </body>

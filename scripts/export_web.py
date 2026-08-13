@@ -15,7 +15,7 @@ import polars as pl
 sys.path.insert(0, "src")
 
 from veriatlas.aggregate import to_level
-from veriatlas.areas import load_areas
+from veriatlas.areas import load_areas, load_weights
 from veriatlas.config import PUBLIC
 from veriatlas.indicators import load
 from veriatlas.schema import parse_dims
@@ -49,9 +49,52 @@ def export_dictionary(loaded: set[str]) -> None:
 
     target = PUBLIC / "meta.json"
     target.write_text(
-        json.dumps({"tree": tree}, ensure_ascii=False, indent=2), encoding="utf-8"
+        json.dumps({"tree": tree, "sources": sources()}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
     )
     print("yazildi:", target)
+
+
+def sources() -> list[dict[str, str]]:
+    """Where each part of the screen comes from, for the Kaynaklar tab.
+
+    Assembled from the files themselves rather than typed out, so it cannot drift away
+    from what was actually loaded.
+    """
+    fact = pl.read_parquet(PUBLIC / "fact_tfr.parquet")
+    weights = load_weights()
+
+    return [
+        {
+            "kapsam": "Toplam doğurganlık hızı, 81 il × 2009-2025",
+            "kaynak": fact["source_id"][0],
+            "surum": fact["vintage"][0],
+            "cekim": str(fact["retrieved_at"][0]),
+            "not": "Dosyada yayım tarihi yok; sürüm çekim ayıyla dolduruldu.",
+        },
+        {
+            "kapsam": "İl listesi, nüfuslar, coğrafi bölgeler",
+            "kaynak": weights["source_id"][0],
+            "surum": str(weights["vintage"][0]),
+            "cekim": str(weights["retrieved_at"][0]),
+            "not": "Nüfus, bölge değerlerini ağırlıklandırmak için kullanılıyor.",
+        },
+        {
+            "kapsam": "İBBS-1 / İBBS-2 eşleşmesi",
+            "kaynak": "elle tutulan kayıt",
+            "surum": "—",
+            "cekim": str(weights["retrieved_at"][0]),
+            "not": "Kaynak: Wikipedia İBBS tablosu; 81 ilin tamamı doğrulandı.",
+        },
+        {
+            "kapsam": "Bölge ve İBBS değerleri",
+            "kaynak": "hesaplandı",
+            "surum": "—",
+            "cekim": "—",
+            "not": "Nüfusla ağırlıklı ortalama. Doğru ağırlık doğurgan çağdaki kadın "
+            "nüfusu olduğu için satırlar 'tahmin' işaretli.",
+        },
+    ]
 
 
 def main() -> None:
