@@ -55,12 +55,52 @@ tanımlar. Grafik renkleri de aynı kümeden okunur — Plot çağrılarına hex
 Sonuç: değişken kümesi tek dosyada toplanır ve palet değiştirmek o dosyayı
 değiştirmek demektir; bileşenlere dokunulmaz.
 
+## K6 — Kanonik olgu tablosu (2026-08-13)
+
+Bir ölçüm = bir satır. Çeşitlilik sütuna değil satıra gider: yeni bir coğrafi düzey ya
+da yeni bir gösterge, yeni bir **değerdir**, yeni bir sütun değil. Bütün göstergeler
+tek tabloda. Kod: `src/veriatlas/schema.py`.
+
+| Sütun | Ne tutar |
+|---|---|
+| `indicator_id` | hangi gösterge (`tfr`) |
+| `area_id` | hangi alan (`TR-16`) |
+| `area_level` | alanın düzeyi (`province`) |
+| `period_start` | dönemin başladığı gün |
+| `frequency` | dönemin uzunluğu (`annual` … `daily`) |
+| `dims` | esnek kırılım (`age=0-14;place=rural`, yoksa boş) |
+| `value` | ölçülen sayı |
+| `unit` | birim — koda gömülmez, satırda durur |
+| `quality_flag` | `measured` / `estimated` / `interpolated` |
+| `vintage` | kaynağın kendi sürümü (`2026-03`) |
+| `source_id` | nereden geldi |
+| `retrieved_at` | ne zaman çekildi |
+
+**Tekillik anahtarı:** `indicator_id` + `area_id` + `period_start` + `frequency` +
+`dims` + `vintage`. Aynı anahtar ikinci kez yüklenirse hata verir — bir içe aktarmayı
+yeniden çalıştırmak sayıyı sessizce ikiye katlayamaz.
+
+`frequency` anahtarda, çünkü yıllık 2009 ile 2009-Ç1 aynı `period_start`'a sahip.
+`vintage` anahtarda, çünkü revizyonu üstüne yazmıyoruz — iki sürüm yan yana durur ve
+verinin hangi tarihe ait olduğu satırdan okunur (ön çalışmadaki 1. sorun).
+
+Kırılımlar için üç yol değerlendirildi: tek esnek alan · her kırılıma ayrı sütun · her
+göstergeye ayrı tablo. **Tek esnek alan seçildi** — hangi kırılımların geleceğini
+bilmiyoruz (uyruk, sektör, yapı türü…), arayüz tek ve genel olduğu için filtre
+kutularını çalışma anında üretmesi gerekiyor, ayrı tablo ise platformun "tek kanonik
+model" amacını bozardı. Serbestlik değil esneklik: bir göstergenin hangi kırılım
+anahtarlarını kullanabileceği gösterge sözlüğünde tanımlanacak, tanımsız anahtar
+yüklemede hata verir.
+
+`dims` kanonik metin olarak tutulur (`age=0-14;place=rural`, anahtarlar sıralı) —
+tekillik karşılaştırması metin üzerinden yapıldığı için aynı kırılım her zaman aynı
+biçimde yazılmak zorunda.
+
 ## Açık işler
 
 Sıra, birbirine bağımlılığa göre:
 
-1. **Kanonik olgu tablosu şeması** — SDMX'ten sadeleştirilmiş. Vintage (veri sürümü)
-   ve kalite bayrağı ilk sınıf alan olacak; ön çalışmadaki 1. ve 5. sorunun cevabı bu.
+1. ~~Kanonik olgu tablosu şeması~~ — bitti, bkz. K6.
 2. **Gösterge sözlüğü** — konu ağacı, birim, frekans, `label_tr` / `label_en`.
    Tanım kaymasını (bina ≠ daire) burada yakalıyoruz.
 3. **Zamana bağlı coğrafya kaydı** — 6360 sayılı yasa, 2013 kırılması, sonradan

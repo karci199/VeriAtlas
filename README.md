@@ -38,7 +38,8 @@ uv run python scripts/check_env.py
 ## Klasörler
 
 ```
-src/veriatlas/    paket kodu (config.py: yollar ve ayarlar)
+src/veriatlas/    paket kodu (config.py: yollar ve ayarlar, schema.py: olgu tablosu)
+tests/            gizli-dogruluk testleri
 scripts/          tek seferlik betikler ve doğrulama araçları
 docs/             oturum notları, tasarım belgeleri
 raw/              ham indirilen dosyalar (git'e girmez)
@@ -87,8 +88,7 @@ Not: her adım sunucu turu gerektiriyor, adımları tek seferde zincirlemek çal
 
 Yazılacak parçalar, bağımlılık sırasıyla:
 
-1. Kanonik olgu tablosu şeması (SDMX'ten sadeleştirilmiş; vintage ve kalite bayrağı
-   ilk sınıf alan)
+1. ~~Kanonik olgu tablosu şeması~~ — bitti (`src/veriatlas/schema.py`)
 2. Gösterge sözlüğü (konu ağacı, birim, frekans, `label_tr` / `label_en`)
 3. Zamana bağlı coğrafya kaydı (6360 sayılı yasa, 2013 kırılması)
 4. Adaptör sözleşmesi (fetch / parse / metadata + manifest) — ilk ikisi EVDS3 ve MEDAS
