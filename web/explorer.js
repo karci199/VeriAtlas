@@ -227,6 +227,8 @@ const state = {
     scaleSpan: "year",
     //: Country map showing all 973 districts instead of the 81 provinces.
     districtView: false,
+    //: The map's viewBox — what the reader has panned and zoomed to.
+    mapView: {x: 0, y: 0, w: 1000, h: 420},
     //: Province the map is opened into, or null for the whole country.
     focus: null,
 };
@@ -296,7 +298,10 @@ function slice(level = state.level) {
 
     const totals = new Map();
     for (const row of rows) {
-        const key = row.area + "|" + row.year;
+        // Keyed by id, not name. Two districts are called Pınarbaşı and forty-odd are
+        // called Merkez; keying by name made one of each pair swallow the other, and the
+        // loser drew as "veri yok" on the map.
+        const key = row.area_id + "|" + row.year;
         const seen = totals.get(key);
         if (seen) {
             seen.value += row.value;
@@ -570,6 +575,63 @@ function tipRow(colour, name, value) {
            "<span class='tip-value'>" + value + "</span></div>";
 }
 
+/** Wheel to zoom about the cursor, drag to pan. Redrawn by writing the viewBox back. */
+function bindMapNavigation() {
+    const svg = document.getElementById("map-svg");
+    if (!svg) {
+        return;
+    }
+    const view = state.mapView;
+
+    const apply = () => svg.setAttribute("viewBox", view.x + " " + view.y + " " + view.w + " " + view.h);
+
+    svg.onwheel = (event) => {
+        event.preventDefault();
+        const box = svg.getBoundingClientRect();
+        // Where the cursor is, in viewBox units — the point that must stay put.
+        const px = view.x + ((event.clientX - box.left) / box.width) * view.w;
+        const py = view.y + ((event.clientY - box.top) / box.height) * view.h;
+
+        const factor = event.deltaY < 0 ? 0.85 : 1 / 0.85;
+        const w = Math.min(PLOT_W * 1.5, Math.max(PLOT_W / 40, view.w * factor));
+        const h = w * (PLOT_H / PLOT_W);
+
+        view.x = px - ((px - view.x) * w) / view.w;
+        view.y = py - ((py - view.y) * h) / view.h;
+        view.w = w;
+        view.h = h;
+        apply();
+    };
+
+    let dragging = null;
+    svg.onpointerdown = (event) => {
+        dragging = {x: event.clientX, y: event.clientY, vx: view.x, vy: view.y};
+        svg.setPointerCapture(event.pointerId);
+        svg.style.cursor = "grabbing";
+    };
+    svg.onpointermove = (event) => {
+        if (!dragging) {
+            return;
+        }
+        const box = svg.getBoundingClientRect();
+        view.x = dragging.vx - ((event.clientX - dragging.x) / box.width) * view.w;
+        view.y = dragging.vy - ((event.clientY - dragging.y) / box.height) * view.h;
+        // A drag that ends on a province must not also open it.
+        if (Math.abs(event.clientX - dragging.x) + Math.abs(event.clientY - dragging.y) > 4) {
+            svg.dataset.dragged = "1";
+        }
+        apply();
+    };
+    svg.onpointerup = () => {
+        dragging = null;
+        svg.style.cursor = "";
+    };
+}
+
+function resetMapView() {
+    state.mapView = {x: 0, y: 0, w: PLOT_W, h: PLOT_H};
+}
+
 function bindHover() {
     const wrap = document.querySelector(".plot-wrap");
     if (!wrap || !hover) {
@@ -839,6 +901,16 @@ function map() {
     const values = thisYear;
     const [low, high] = span.length ? [Math.min(...span), Math.max(...span)] : [0, 0];
 
+    // District rows carry no age or sex. Asking for one and getting a blank country is
+    // confusing; say which control is doing it.
+    const narrowed = (state.indicator.dims || []).filter((d) => state.dims[d] !== TOTAL);
+    if (level === "district" && !values.length && narrowed.length) {
+        return empty(
+            "İlçe düzeyinde " + narrowed.map(dimLabel).join(" / ") + " kırılımı yok.",
+            "Kırılımı 'Tümü (topla)' yapın ya da il düzeyine dönün"
+        );
+    }
+
     // Equirectangular, which needs no projection library, but with the longitude scaled
     // by cos(latitude): without it Turkey comes out about a quarter too wide.
     const points = features.flatMap((f) => rings(f).flat());
@@ -858,6 +930,9 @@ function map() {
         PLOT_H - 36 - (p[1] - y0) * scale,
     ];
 
+    // "No value" is not the bottom of the ramp — on a log scale the darkest colour is a
+    // real, small number, and an absent one drawn the same way is a lie. It gets its own
+    // flat grey and its own legend entry.
     const base = token("--bg-control");
     const ink = token("--accent");
 
@@ -876,8 +951,11 @@ function map() {
         return (v - low) / Math.max(1e-9, high - low);
     };
 
-    let svg = '<svg class="plot ' + (state.focus ? "" : "drillable") + '" viewBox="0 0 ' +
-              PLOT_W + " " + PLOT_H + '" role="img">';
+    // Pan and zoom are a viewBox, not a transform: the strokes then keep their width and
+    // the shapes stay crisp however far in the reader goes.
+    const view = state.mapView;
+    let svg = '<svg id="map-svg" class="plot ' + (state.focus ? "" : "drillable") +
+              '" viewBox="' + view.x + " " + view.y + " " + view.w + " " + view.h + '" role="img">';
     for (const feature of features) {
         const value = byId.get(feature.properties.area_id);
         const t = position(value);
@@ -886,7 +964,7 @@ function map() {
             .join(" ");
         svg += '<path class="area" data-area="' + feature.properties.area_id + '" d="' + d +
                '" fill="' + (t === null ? base : ink) + '" fill-opacity="' +
-               (t === null ? 0.35 : (0.15 + 0.85 * t).toFixed(2)) + '" stroke="' +
+               (t === null ? 1 : (0.15 + 0.85 * t).toFixed(2)) + '" stroke="' +
                token("--bg-card") + '" stroke-width="0.6" data-name="' +
                feature.properties.name_tr + '" data-value="' +
                (value === undefined ? "veri yok" : fmt(value)) + '" data-colour="' + ink + '"/>';
@@ -899,7 +977,8 @@ function map() {
           "<button class='chip" + (state.scale === "log" ? " on" : "") + "' data-scale='log'>Log</button>" +
           "<button class='chip" + (state.scale === "linear" ? " on" : "") + "' data-scale='linear'>Doğrusal</button>" +
           "<button class='chip" + (state.scaleSpan === "fixed" ? " on" : "") + "' data-span='fixed'>Sabit</button>" +
-          "<button class='chip" + (state.scaleSpan !== "fixed" ? " on" : "") + "' data-span='year'>Yıla göre</button>"
+          "<button class='chip" + (state.scaleSpan !== "fixed" ? " on" : "") + "' data-span='year'>Yıla göre</button>" +
+          "<button class='chip' id='map-fit' title='Tekerlek yakınlaştırır, sürükleme kaydırır'>⤢ Sığdır</button>"
         : "";
 
     const head = "<div class='map-head'>" +
@@ -914,7 +993,8 @@ function map() {
               "</span>") +
         scaleToggle + "</div>";
 
-    return head + wrapPlot(svg) + (values.length ? legend(low, high, ink) : "");
+    return head + wrapPlot(svg) +
+           (values.length ? legend(low, high, ink, values.length < features.length) : "");
 }
 
 function rings(feature) {
@@ -922,13 +1002,18 @@ function rings(feature) {
     return g.type === "Polygon" ? g.coordinates : g.coordinates.flat();
 }
 
-function legend(low, high, ink) {
+function legend(low, high, ink, gaps) {
     const stops = [0, 0.25, 0.5, 0.75, 1];
+    const missing = gaps
+        ? "<span style='width:26px;height:12px;background:" + token("--bg-control") +
+          ";margin-left:12px'></span>veri yok"
+        : "";
+
     return "<div style='display:flex;align-items:center;gap:8px;justify-content:flex-end;" +
            "color:var(--text-tertiary);font-size:var(--text-xs)'>" + fmt(low) +
            stops.map((t) => "<span style='width:26px;height:12px;background:" + ink +
                             ";opacity:" + (0.15 + 0.85 * t).toFixed(2) + "'></span>").join("") +
-           fmt(high) + "</div>";
+           fmt(high) + missing + "</div>";
 }
 
 function empty(message, hint) {
@@ -962,6 +1047,7 @@ function render() {
     hover = null;
     $("view").innerHTML = RENDERERS[state.view]();
     bindHover();
+    bindMapNavigation();
 
     // The time control means different things per view: a line already shows every year,
     // the others stand on one. Rather than a control that lies, it hides.
@@ -1089,9 +1175,15 @@ function wire() {
             return;
         }
         const area = li.dataset.area;
-        state.selection = state.selection.includes(area)
-            ? state.selection.filter((a) => a !== area)
-            : [...state.selection, area];
+        if (state.selection.includes(area)) {
+            state.selection = state.selection.filter((a) => a !== area);
+            state.muted = state.muted.filter((a) => a !== area);
+        } else {
+            // Re-selecting an area that was muted brings it back visible: the mute was a
+            // property of the old selection, not a preference to remember.
+            state.selection = [...state.selection, area];
+            state.muted = state.muted.filter((a) => a !== area);
+        }
         render();
     };
 
@@ -1167,6 +1259,13 @@ function wire() {
     $("view").onclick = async (ev) => {
         if (ev.target.id === "map-back") {
             state.focus = null;
+            resetMapView();
+            render();
+            return;
+        }
+
+        if (ev.target.id === "map-fit") {
+            resetMapView();
             render();
             return;
         }
@@ -1202,12 +1301,21 @@ function wire() {
             return;
         }
 
+        const svg = document.getElementById("map-svg");
+        if (svg?.dataset.dragged) {
+            delete svg.dataset.dragged;
+            return;
+        }
+
         const area = ev.target.closest(".area");
         if (!area || state.view !== "map" || state.focus) {
             return;
         }
 
-        const provinceId = area.dataset.area;
+        // In the country-wide district view a click is on a district; its province is the
+        // first two segments of the id.
+        const provinceId = area.dataset.area.split("-").slice(0, 2).join("-");
+        resetMapView();
         if (await districtsOf(provinceId)) {
             state.focus = provinceId;
         }
