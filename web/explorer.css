@@ -5,6 +5,10 @@
    Every colour comes from theme.css and every size from the --font-scale / --density
    axes there, so the settings panel can change the look without touching this file. */
 
+/* OWID's own two faces. The machine may be offline, in which case the stacks in
+   theme.css fall back to Georgia and Segoe UI and the layout is unaffected. */
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:wght@700&display=swap");
+
 * { box-sizing: border-box; }
 
 body {
@@ -14,6 +18,15 @@ body {
     color: var(--text-primary);
     font-family: var(--font);
     font-size: var(--text-md);
+    line-height: 1.5;
+}
+
+/* Chart type is styled here, not in the SVG: a CSS rule outranks the presentation
+   attributes the renderers write, so axis labels follow --font-scale like everything
+   else. */
+.plot text {
+    font-family: var(--font);
+    font-size: var(--text-sm);
 }
 
 .page-head {
@@ -166,7 +179,8 @@ h1 {
 .dim-label {
     color: var(--text-tertiary);
     font-size: var(--text-xs);
-    letter-spacing: .09em;
+    font-weight: 700;
+    letter-spacing: .07em;
     text-transform: uppercase;
     margin-bottom: var(--gap-xs);
 }
@@ -215,6 +229,7 @@ select:focus-visible, button:focus-visible, input:focus-visible {
     font-family: var(--font-display);
     font-size: var(--text-xl);
     font-weight: 700;
+    line-height: 1.2;
     margin: 0 0 2px;
 }
 

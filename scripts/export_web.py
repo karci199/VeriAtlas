@@ -85,6 +85,12 @@ def export_population(fact: pl.DataFrame, areas: pl.DataFrame) -> None:
             "age",
             "sex",
             pl.col("value").cast(pl.Int64),
+            # Provenance travels with the numbers: the screen prints source, vintage and
+            # quality straight off the rows it is drawing, so it cannot claim a source
+            # the data did not come from.
+            "quality_flag",
+            "vintage",
+            "source_id",
         )
         .sort("area", "year", "sex")
     )

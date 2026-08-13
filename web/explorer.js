@@ -10,14 +10,34 @@
 
 // region Look — reader-adjustable theme axes
 
+// OWID's accent hues: their link blue, teal, salmon and purple.
 const ACCENTS = [
-    {id: "mavi", dark: "#60a5fa", light: "#0f6cbd"},
-    {id: "yesil", dark: "#5dcaa5", light: "#0f6e56"},
-    {id: "turuncu", dark: "#e0794f", light: "#b4501f"},
-    {id: "mor", dark: "#c9a3e0", light: "#6b3fa0"},
+    {id: "mavi", dark: "#7fa8d8", light: "#286bbb"},
+    {id: "yesil", dark: "#6fbfae", light: "#00847e"},
+    {id: "turuncu", dark: "#e8735c", light: "#e56e5a"},
+    {id: "mor", dark: "#b98ad6", light: "#6d3e91"},
 ];
 
-const DEFAULT_LOOK = {theme: "dark", font: 100, density: 100, accent: "mavi"};
+// Typeface is a setting, not a constant: OWID's pairing is the default, but a reader on
+// a machine without those faces (or who simply prefers the system UI font) should not be
+// stuck with the fallback. Empty strings mean "use the token from theme.css".
+const FACES = [
+    {id: "owid", label: "OWID", text: "", display: ""},
+    {
+        id: "sistem",
+        label: "Sistem",
+        text: '"Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif',
+        display: '"Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif',
+    },
+    {
+        id: "serif",
+        label: "Serif",
+        text: 'Georgia, "Times New Roman", serif',
+        display: 'Georgia, "Times New Roman", serif',
+    },
+];
+
+const DEFAULT_LOOK = {theme: "dark", font: 100, density: 100, accent: "mavi", face: "owid"};
 const LOOK_KEY = "veriatlas.look";
 
 function loadLook() {
@@ -35,6 +55,10 @@ function applyLook() {
     root.dataset.theme = look.theme;
     root.style.setProperty("--font-scale", look.font / 100);
     root.style.setProperty("--density", look.density / 100);
+
+    const face = FACES.find((f) => f.id === look.face) || FACES[0];
+    root.style.setProperty("--font", face.text); // "" clears the inline override
+    root.style.setProperty("--font-display", face.display);
 
     const accent = ACCENTS.find((a) => a.id === look.accent) || ACCENTS[0];
     root.style.setProperty("--accent", look.theme === "light" ? accent.light : accent.dark);
@@ -56,12 +80,19 @@ function syncSettingsPanel() {
     for (const button of $("set-accent").children) {
         button.classList.toggle("on", button.dataset.value === look.accent);
     }
+    for (const button of $("set-face").children) {
+        button.classList.toggle("on", button.dataset.value === look.face);
+    }
 }
 
 function buildSettingsPanel() {
     $("set-accent").innerHTML = ACCENTS.map(
         (a) => '<button data-value="' + a.id + '" title="' + a.id +
                '" style="background:' + a.dark + '"></button>'
+    ).join("");
+
+    $("set-face").innerHTML = FACES.map(
+        (f) => '<button data-value="' + f.id + '">' + f.label + "</button>"
     ).join("");
 
     $("settings-toggle").onclick = () => {
@@ -72,6 +103,7 @@ function buildSettingsPanel() {
 
     $("set-theme").onclick = (ev) => pick(ev, (v) => { look.theme = v; });
     $("set-accent").onclick = (ev) => pick(ev, (v) => { look.accent = v; });
+    $("set-face").onclick = (ev) => pick(ev, (v) => { look.face = v; });
     $("set-font").oninput = (ev) => { look.font = Number(ev.target.value); applyLook(); };
     $("set-density").oninput = (ev) => { look.density = Number(ev.target.value); applyLook(); render(); };
     $("set-reset").onclick = () => { look = {...DEFAULT_LOOK}; applyLook(); render(); };

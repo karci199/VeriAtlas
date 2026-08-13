@@ -4,27 +4,31 @@
    Dark is canonical: it is defined on :root and light re-declares the same names under
    [data-theme="light"]. Swapping the palette means editing this file only.
 
-   Values follow DesignKit's Fluent / WinUI 3 dark ramp so the web app and our WPF apps
-   read as the same family. */
+   The palette follows Our World in Data (decision K10): their navy/slate neutrals, their
+   categorical series ramp, Playfair Display for display type and Lato for text. The
+   light block holds OWID's own published values; the dark block is our own reading of
+   them — darkening a light page is a design decision, not an inversion, so the greys are
+   re-picked and the series colours lightened until they hold contrast on a dark ground.
+   (Reading their site through a browser's dark mode shows an inverted page, not this.) */
 
 :root {
-    --bg-window: #1c1c1c;
-    --bg-page: #202020;
-    --bg-card: #242424;
-    --bg-control: #2c2c2c;
-    --bg-control-hover: #323232;
-    --bg-selected: #2f5fa8;
+    --bg-window: #1f1f1f;
+    --bg-page: #141414;
+    --bg-card: #1a1a1a;
+    --bg-control: #2a2a2a;
+    --bg-control-hover: #333333;
+    --bg-selected: #4c6a9c;
 
-    --stroke-divider: #3a3a3a;
-    --stroke-control: #3a3a3a;
+    --stroke-divider: #333333;
+    --stroke-control: #3d3d3d;
     --stroke-focus: #ffffff;
-    --accent: #60a5fa;
+    --accent: #7fa8d8;
 
-    /* Panel headings carry the app's one accent, the way EVDS uses its red. */
-    --panel-heading: #60a5fa;
+    /* OWID sets titles in their navy; on a dark ground the same role goes to the tint. */
+    --panel-heading: #9ec9e8;
 
-    --text-primary: #e4e4e4;
-    --text-secondary: #c8c8c8;
+    --text-primary: #e8e8e8;
+    --text-secondary: #b6b6b6;
     --text-tertiary: #8a8a8a;
     --text-on-accent: #ffffff;
 
@@ -38,67 +42,44 @@
     --reference-line: #7a6a3a;
     --reference-text: #b08b3a;
 
-    --series-1: #e0794f;
-    --series-2: #5dcaa5;
-    --series-3: #7f9fe0;
-    --series-4: #c9a3e0;
-    --series-5: #d4b06a;
-    --series-6: #6ec3d4;
-    --series-7: #e08fae;
-    --series-8: #9fc978;
-    --series-9: #b0a6f0;
-    --series-10: #d9955f;
+    /* OWID's categorical ramp, lightened for a dark ground and kept in their order. */
+    --series-1: #8b9fd1;
+    --series-2: #e8735c;
+    --series-3: #6fbfae;
+    --series-4: #b98ad6;
+    --series-5: #d9a05b;
+    --series-6: #6fa8dc;
+    --series-7: #d97fa8;
+    --series-8: #8fbf6e;
+    --series-9: #c98a6a;
+    --series-10: #9c8fd6;
 
-    --radius: 6px;
+    --radius: 4px;
     --radius-pill: 10px;
-    --font: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
-    --font-display: Georgia, "Times New Roman", serif;
-}
 
-/* Reader-adjustable axes (decision K10). These are separate from the palette on
-   purpose: text size, spacing and accent are three independent choices, and the
-   settings panel writes them onto the root element. Every size below is derived from
-   --font-scale and --density, so nothing in the app hardcodes a pixel.
-
-   The defaults here are what the page looks like before anyone touches anything; the
-   panel only ever overrides them inline. */
-:root {
-    --font-scale: 1;
-    --density: 1;
-
-    --text-xs: calc(11px * var(--font-scale));
-    --text-sm: calc(13px * var(--font-scale));
-    --text-md: calc(14px * var(--font-scale));
-    --text-lg: calc(20px * var(--font-scale));
-    --text-xl: calc(26px * var(--font-scale));
-    --text-hero: calc(34px * var(--font-scale));
-
-    --gap-xs: calc(6px * var(--density));
-    --gap-sm: calc(10px * var(--density));
-    --gap-md: calc(16px * var(--density));
-    --gap-lg: calc(24px * var(--density));
-    --row-pad: calc(11px * var(--density));
-
-    --page-max: 1400px;
+    /* OWID's own pairing: Lato for text, Playfair Display for display type. Loaded in
+       explorer.css; these stacks name the local fallbacks for an offline machine. */
+    --font: Lato, "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+    --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
 }
 
 [data-theme="light"] {
-    --bg-window: #f3f3f3;
-    --bg-page: #fafafa;
+    --bg-window: #f7f7f7;
+    --bg-page: #ffffff;
     --bg-card: #ffffff;
     --bg-control: #ffffff;
     --bg-control-hover: #f0f0f0;
-    --bg-selected: #0f6cbd;
+    --bg-selected: #dbe5f1;
 
-    --stroke-divider: #e0e0e0;
-    --stroke-control: #d0d0d0;
-    --stroke-focus: #1a1a1a;
-    --accent: #0f6cbd;
-    --panel-heading: #0f6cbd;
+    --stroke-divider: #dcdcdc;
+    --stroke-control: #c9c9c9;
+    --stroke-focus: #002147;
+    --accent: #286bbb;
+    --panel-heading: #002147;
 
-    --text-primary: #1a1a1a;
+    --text-primary: #1d1d1d;
     --text-secondary: #3a3a3a;
-    --text-tertiary: #6a6a6a;
+    --text-tertiary: #577291;
     --text-on-accent: #ffffff;
 
     --quality-measured-bg: #dff3ea;
@@ -111,14 +92,42 @@
     --reference-line: #c8a95a;
     --reference-text: #7a5c12;
 
-    --series-1: #b4501f;
-    --series-2: #0f6e56;
-    --series-3: #2f5fa8;
-    --series-4: #6b3fa0;
-    --series-5: #8a6a12;
-    --series-6: #106b7c;
-    --series-7: #a3376a;
-    --series-8: #4a7a1f;
-    --series-9: #4b45a8;
-    --series-10: #8c5a1a;
+    /* OWID's published categorical colours, in their order. */
+    --series-1: #4c6a9c;
+    --series-2: #e56e5a;
+    --series-3: #00847e;
+    --series-4: #6d3e91;
+    --series-5: #b13507;
+    --series-6: #286bbb;
+    --series-7: #bf4b8b;
+    --series-8: #578145;
+    --series-9: #9a5129;
+    --series-10: #883039;
+}
+
+/* Reader-adjustable axes (decision K10). These are separate from the palette on
+   purpose: text size, spacing and accent are three independent choices, and the
+   settings panel writes them onto the root element. Every size below is derived from
+   --font-scale and --density, so nothing in the app hardcodes a pixel.
+
+   The step sizes match OWID's explorer: 11px uppercase dimension labels, 13px controls
+   and axes, 14px text, 28px chart title, 32px page title. */
+:root {
+    --font-scale: 1;
+    --density: 1;
+
+    --text-xs: calc(11px * var(--font-scale));
+    --text-sm: calc(13px * var(--font-scale));
+    --text-md: calc(14px * var(--font-scale));
+    --text-lg: calc(21px * var(--font-scale));
+    --text-xl: calc(28px * var(--font-scale));
+    --text-hero: calc(32px * var(--font-scale));
+
+    --gap-xs: calc(6px * var(--density));
+    --gap-sm: calc(10px * var(--density));
+    --gap-md: calc(16px * var(--density));
+    --gap-lg: calc(24px * var(--density));
+    --row-pad: calc(11px * var(--density));
+
+    --page-max: 1400px;
 }
