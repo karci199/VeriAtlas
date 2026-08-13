@@ -40,6 +40,16 @@ def load_areas() -> pl.DataFrame:
     return pl.read_csv(REGISTRY_PATH)
 
 
+#: Districts, kept in their own file: today's 973 with the columns that will carry their
+#: history (`valid_from` / `valid_to`), which the main registry has no use for.
+DISTRICTS_PATH = Path(__file__).parent / "data" / "areas_tr_districts.csv"
+
+
+def load_districts() -> pl.DataFrame:
+    """Read the district registry: `area_id`, `name_tr`, `parent_id`, validity, source."""
+    return pl.read_csv(DISTRICTS_PATH)
+
+
 def load_parents(hierarchy: str | None = None) -> pl.DataFrame:
     """Read membership: `area_id`, `parent_id`, `hierarchy`."""
     parents = pl.read_csv(PARENTS_PATH)

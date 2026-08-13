@@ -174,6 +174,7 @@ async function dataset(indicator) {
 // the area registry the way indicator labels belong in the dictionary — until the
 // registry exports them, this is the one label map left in the page.
 const LEVEL_LABELS = {
+    district: "İlçe",
     province: "İl",
     nuts2: "İBBS-2",
     nuts1: "İBBS-1",

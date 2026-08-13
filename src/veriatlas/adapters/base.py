@@ -67,9 +67,20 @@ class Adapter(Protocol):
 
 
 def checksum(path: Path) -> str:
-    """SHA-256 of the raw bytes, short form — enough to spot a changed payload."""
-    digest = hashlib.sha256(path.read_bytes()).hexdigest()
-    return digest[:16]
+    """SHA-256 of the raw bytes, short form — enough to spot a changed payload.
+
+    A payload may be a directory: the district export arrives as one file per year, and
+    the set of files is the payload. Hashing the names alongside the contents means an
+    added year changes the checksum, which is the question the manifest answers.
+    """
+    digest = hashlib.sha256()
+    if path.is_dir():
+        for child in sorted(p for p in path.rglob("*") if p.is_file()):
+            digest.update(child.name.encode("utf-8"))
+            digest.update(child.read_bytes())
+    else:
+        digest.update(path.read_bytes())
+    return digest.hexdigest()[:16]
 
 
 def ingest(adapter: Adapter) -> tuple[pl.DataFrame, Manifest]:

@@ -15,7 +15,7 @@ import polars as pl
 sys.path.insert(0, "src")
 
 from veriatlas.aggregate import to_level
-from veriatlas.areas import load_areas, load_weights
+from veriatlas.areas import load_areas, load_districts, load_weights
 from veriatlas.config import PUBLIC
 from veriatlas.indicators import load
 from veriatlas.schema import parse_dims
@@ -157,7 +157,14 @@ def sources() -> list[dict[str, str]]:
 
 def main() -> None:
     fact = pl.read_parquet(PUBLIC / "fact.parquet")
-    areas = load_areas().select("area_id", "name_tr")
+    # Districts live in their own registry (they carry validity columns the others do
+    # not), so the name lookup is the two files stacked.
+    areas = pl.concat(
+        [
+            load_areas().select("area_id", "name_tr"),
+            load_districts().select("area_id", "name_tr"),
+        ]
+    )
 
     loaded = set(fact["indicator_id"].unique())
     export_population(fact, areas)

@@ -12,6 +12,7 @@ Run:  uv run python scripts/probe_medas_district.py
 
 import sys
 
+from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import sync_playwright
 
 sys.path.insert(0, "src")
@@ -44,7 +45,10 @@ BUTTONS = "button, .z-button, .z-toolbarbutton, input[type=button], input[type=s
 def buttons(page) -> list[tuple[int, str]]:
     """Every button-ish element with its text, indexed."""
     found = page.locator(BUTTONS)
-    return [(i, found.nth(i).inner_text().strip().replace("\n", " ")) for i in range(found.count())]
+    return [
+        (i, found.nth(i).inner_text().strip().replace("\n", " "))
+        for i in range(found.count())
+    ]
 
 
 def click_button(page, want: str, note: str = "") -> bool:
@@ -67,7 +71,9 @@ def click_button(page, want: str, note: str = "") -> bool:
                 element.click()
                 settle(page, "tiklandi: " + want + " " + note)
                 return True
-        except Exception:
+        except PlaywrightError as error:
+            # A stale handle after a server round trip: try the next match.
+            print("   atlandi:", str(error).splitlines()[0][:60])
             continue
     print("   etkin buton yok:", want)
     return False
@@ -152,7 +158,10 @@ def main() -> None:
         print("\n== DUZEY: Ilce secimi ==")
         for index in range(page.locator("select").count()):
             select = page.locator("select").nth(index)
-            if select.is_visible() and "İlçe Düzeyi" in select.locator("option").all_inner_texts():
+            if (
+                select.is_visible()
+                and "İlçe Düzeyi" in select.locator("option").all_inner_texts()
+            ):
                 select.select_option(label="İlçe Düzeyi")
                 settle(page, "duzey = Ilce")
                 break
@@ -162,7 +171,10 @@ def main() -> None:
         print("\n== DUZEY: il = HEPSI ==")
         for index in range(page.locator("select").count()):
             select = page.locator("select").nth(index)
-            if select.is_visible() and "HEPSİ" in select.locator("option").all_inner_texts():
+            if (
+                select.is_visible()
+                and "HEPSİ" in select.locator("option").all_inner_texts()
+            ):
                 select.select_option(label="HEPSİ")
                 settle(page, "il = HEPSI")
                 break
@@ -173,19 +185,46 @@ def main() -> None:
         for index in range(min(8, ticks.count())):
             print("   ·", ticks.nth(index).inner_text().strip()[:60])
 
+        # The list header row ("Düzey") carries a checkbox that ticks every district at
+        # once — 973 clicks otherwise.
         print("\n== DUZEY: ilceler isaretleniyor ==")
-        header = page.locator(".z-listheader:has-text('İlçe'), .z-listitem:has-text('<Hepsi>')").first
-        if header.count():
-            header.click()
-            settle(page, "hepsi tiklandi")
+        # Every tab keeps its listbox in the DOM, so this class matches several headers —
+        # only one of them is on screen.
+        boxes = page.locator(".z-listheader-checkable")
+        for index in range(boxes.count()):
+            box = boxes.nth(index)
+            if box.is_visible():
+                box.click()
+                settle(page, "hepsi tiklandi")
+                break
+        else:
+            print("   basliktaki kutu bulunamadi:", boxes.count(), "aday")
+
         dump(page, "04c-ilce-secili")
-        print("   secim satiri:", page.inner_text("body")[-260:].replace("\n", " | "))
+        print("   secim satiri:", page.inner_text("body")[-200:].replace("\n", " | "))
+
+        print("\n== RAPOR sekmesi ==")
+        click_button(page, "İleri")
+        settle(page, "rapor sekmesi")
+        dump(page, "05-rapor")
+        print("  ", sorted({t for _, t in buttons(page) if t})[:25])
+        print("   metin:", page.inner_text("body")[:300].replace("\n", " | "))
+
+        click_button(page, "Rapor Oluştur")
+        page.wait_for_timeout(6000)
+        dump(page, "06-tablo")
+        tables = page.locator("table")
+        print("   tablo sayisi:", tables.count())
+        print("   metin:", page.inner_text("body")[:600].replace("\n", " | "))
 
         print("\n== RAPOR ==")
         click_button(page, "İleri")
         dump(page, "05-rapor-sekmesi")
         print("  ", sorted({t for _, t in buttons(page) if t})[:25])
-        print("   sayfa metni (ilk 400):", page.inner_text("body")[:400].replace("\n", " | "))
+        print(
+            "   sayfa metni (ilk 400):",
+            page.inner_text("body")[:400].replace("\n", " | "),
+        )
 
         browser.close()
 
