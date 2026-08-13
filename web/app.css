@@ -414,6 +414,11 @@ button.small:disabled {
     font-weight: 600;
 }
 
+#chart {
+    display: flex;
+    justify-content: center;
+}
+
 .card .unit {
     color: var(--text-tertiary);
     font-size: 11px;

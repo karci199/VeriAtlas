@@ -394,9 +394,10 @@ function render() {
         : indicator.unit + " · " + FREQUENCY_TR[indicator.frequency];
 
     $("chart").replaceChildren(Plot.plot({
-        // Fill the card instead of sitting in the corner of it.
-        width: Math.max(360, $("chart").clientWidth),
-        height: 340,
+        // Wide enough to use the card, capped so a long series does not flatten into a
+        // ribbon: past about 2:1 the yearly movement stops being readable.
+        width: Math.min(940, Math.max(360, $("chart").clientWidth)),
+        height: 430,
         marginLeft: 48,
         marginRight: 120,
         style: {background: "transparent", color: token("--text-tertiary"), fontSize: "11px"},
