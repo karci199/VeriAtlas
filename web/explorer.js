@@ -260,9 +260,9 @@ function years() {
 
 /** Rows matching the current breakdown choice, summed where a dim is set to "all".
  *  Summing is only offered for additive units, so this never adds up rates. */
-function slice() {
+function slice(level = state.level) {
     const rows = state.rows.filter(
-        (r) => r.level === state.level &&
+        (r) => r.level === level &&
                (state.indicator.dims || []).every(
                    (d) => state.dims[d] === TOTAL || String(r[d]) === String(state.dims[d])
                )
@@ -520,8 +520,100 @@ function lineChart() {
                '" fill="' + row.colour + '">' + row.area + "</text>";
     }
 
-    return svg + "</svg>";
+    hover = {kind: "line", rows, years: span, left: L, right: PLOT_W - R, x};
+    return wrapPlot(svg + "</svg>");
 }
+
+// region Cursor readout
+//
+// What the eye cannot do off a chart is read a value. The line chart snaps to the
+// nearest year and lists every drawn series at once — comparing five provinces means
+// five numbers at the same instant, not five separate hovers. Bars and map areas answer
+// for themselves, so those report just the shape under the cursor.
+
+let hover = null;
+
+function wrapPlot(svg) {
+    return "<div class='plot-wrap'>" + svg +
+           "<div class='guide' hidden></div><div class='tip' hidden></div></div>";
+}
+
+function tipRow(colour, name, value) {
+    return "<div class='tip-row'><span class='dot' style='background:" + colour + "'></span>" +
+           "<span class='tip-name'>" + name + "</span>" +
+           "<span class='tip-value'>" + value + "</span></div>";
+}
+
+function bindHover() {
+    const wrap = document.querySelector(".plot-wrap");
+    if (!wrap || !hover) {
+        return;
+    }
+    const svg = wrap.querySelector("svg");
+    const tip = wrap.querySelector(".tip");
+    const guide = wrap.querySelector(".guide");
+
+    const place = (event, html, x) => {
+        tip.innerHTML = html;
+        tip.hidden = false;
+        // Flip to the left of the cursor near the right edge so the box stays inside.
+        const width = tip.offsetWidth;
+        const left = event.offsetX + 16 + width > wrap.clientWidth
+            ? event.offsetX - width - 16
+            : event.offsetX + 16;
+        tip.style.left = Math.max(0, left) + "px";
+        tip.style.top = Math.min(event.offsetY + 12, wrap.clientHeight - tip.offsetHeight) + "px";
+
+        guide.hidden = x === null;
+        if (x !== null) {
+            guide.style.left = x + "px";
+        }
+    };
+
+    svg.onmouseleave = () => {
+        tip.hidden = true;
+        guide.hidden = true;
+    };
+
+    svg.onmousemove = (event) => {
+        const scale = wrap.clientWidth / PLOT_W;
+
+        if (hover.kind === "line") {
+            const units = event.offsetX / scale;
+            if (units < hover.left - 8 || units > hover.right + 8) {
+                tip.hidden = true;
+                guide.hidden = true;
+                return;
+            }
+            const span = hover.years;
+            const ratio = (units - hover.left) / Math.max(1, hover.right - hover.left);
+            const year = span[Math.min(span.length - 1, Math.max(0, Math.round(ratio * (span.length - 1))))];
+
+            const body = hover.rows
+                .map((r) => {
+                    const point = r.pts.find((p) => p.year === year);
+                    return point ? tipRow(r.colour, r.area, fmt(point.value)) : "";
+                })
+                .join("");
+            place(event, "<div class='tip-head'>" + year + " · " + state.indicator.unit + "</div>" + body,
+                  hover.x(year) * scale);
+            return;
+        }
+
+        const shape = event.target.closest("[data-value]");
+        if (!shape) {
+            tip.hidden = true;
+            guide.hidden = true;
+            return;
+        }
+        place(event,
+              "<div class='tip-head'>" + shape.dataset.name + "</div>" +
+              tipRow(shape.dataset.colour || token("--accent"), state.indicator.unit, shape.dataset.value),
+              null);
+    };
+}
+
+// endregion
 
 function axisText(x, y, text, anchor) {
     return '<text x="' + x + '" y="' + y + '" text-anchor="' + anchor + '" fill="' +
@@ -549,11 +641,15 @@ function barChart() {
         const y = T + i * band + band * 0.18;
         const h = band * 0.64;
         const w = (row.value / max) * (PLOT_W - L - R);
-        svg += '<rect x="' + L + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="2" fill="' + row.colour + '"/>' +
+        svg += '<rect x="' + L + '" y="' + y + '" width="' + w + '" height="' + h +
+               '" rx="2" fill="' + row.colour + '" data-value="' + fmt(row.value) +
+               '" data-name="' + row.area + '" data-colour="' + row.colour + '"/>' +
                axisText(L - 12, y + h / 2 + 5, row.area, "end") +
                axisText(L + w + 12, y + h / 2 + 5, fmt(row.value), "start");
     });
-    return svg + "</svg>";
+
+    hover = {kind: "shape"};
+    return wrapPlot(svg + "</svg>");
 }
 
 function table() {
@@ -636,8 +732,8 @@ function pyramid() {
                 const w = (row.value / max) * (arm - 16);
                 svg += '<rect x="' + (si === 0 ? mid - 16 - w : mid + 16) + '" y="' + y +
                        '" width="' + w + '" height="' + h + '" fill="' + colour(si) +
-                       '" rx="1"><title>' + area + " · " + dimValue("sex", s) + " " + label +
-                       ": " + fmt(row.value) + "</title></rect>";
+                       '" rx="1" data-colour="' + colour(si) + '" data-name="' + area + " · " +
+                       dimValue("sex", s) + " " + label + '" data-value="' + fmt(row.value) + '"/>';
             });
             if (ai === 0) {
                 svg += axisText(4, y + h / 2 + 4, label, "start");
@@ -650,7 +746,9 @@ function pyramid() {
                '" text-anchor="' + (si === 0 ? "start" : "end") + '" fill="' + colour(si) +
                '" font-size="13">' + dimValue("sex", s) + "</text>";
     });
-    return svg + "</svg>";
+
+    hover = {kind: "shape"};
+    return wrapPlot(svg + "</svg>");
 }
 
 /** Which area levels the geometry file actually carries shapes for. */
@@ -677,7 +775,9 @@ function map() {
         return empty((LEVEL_LABELS[state.level] || state.level) + " düzeyinde sınır geometrisi yok.");
     }
 
-    const rows = slice().filter((r) => r.year === state.year);
+    // Opened into a province, the map is a district map: it must read district rows and
+    // scale to the largest district, not to İstanbul.
+    const rows = slice(state.focus ? "district" : state.level).filter((r) => r.year === state.year);
     const byId = new Map(rows.map((r) => [r.area_id, r.value]));
     const values = features.map((f) => byId.get(f.properties.area_id)).filter((v) => v !== undefined);
 
@@ -733,11 +833,12 @@ function map() {
         svg += '<path class="area" data-area="' + feature.properties.area_id + '" d="' + d +
                '" fill="' + (t === null ? base : ink) + '" fill-opacity="' +
                (t === null ? 0.35 : (0.15 + 0.85 * t).toFixed(2)) + '" stroke="' +
-               token("--bg-card") + '" stroke-width="0.6"><title>' +
-               feature.properties.name_tr + (value === undefined ? "" : ": " + fmt(value)) +
-               "</title></path>";
+               token("--bg-card") + '" stroke-width="0.6" data-name="' +
+               feature.properties.name_tr + '" data-value="' +
+               (value === undefined ? "veri yok" : fmt(value)) + '" data-colour="' + ink + '"/>';
     }
     svg += "</svg>";
+    hover = {kind: "shape"};
 
     const scaleToggle = values.length
         ? "<span class='spacer'></span><span>Renk ölçeği</span>" +
@@ -753,7 +854,7 @@ function map() {
             : "<span>Bir ile tıklayınca ilçeleri açılır.</span>") +
         scaleToggle + "</div>";
 
-    return head + svg + (values.length ? legend(low, high, ink) : "");
+    return head + wrapPlot(svg) + (values.length ? legend(low, high, ink) : "");
 }
 
 function rings(feature) {
@@ -797,7 +898,10 @@ function render() {
 
     $("chart-title").textContent = state.indicator.label;
     $("chart-definition").textContent = state.indicator.definition || "";
+
+    hover = null;
     $("view").innerHTML = RENDERERS[state.view]();
+    bindHover();
 
     // The time control means different things per view: a line already shows every year,
     // the others stand on one. Rather than a control that lies, it hides.
@@ -934,6 +1038,22 @@ function wire() {
     $("entity-search").oninput = (ev) => {
         state.search = ev.target.value;
         drawRail();
+    };
+
+    // "Select all" follows the search box: with a filter typed, it selects what the
+    // reader is looking at, not all eighty-one.
+    $("select-all").onclick = () => {
+        const needle = state.search.toLocaleLowerCase("tr");
+        const visible = areasAtLevel().filter((a) => a.toLocaleLowerCase("tr").includes(needle));
+        state.selection = [...new Set([...state.selection, ...visible])];
+        render();
+    };
+
+    $("select-none").onclick = () => {
+        const needle = state.search.toLocaleLowerCase("tr");
+        const visible = areasAtLevel().filter((a) => a.toLocaleLowerCase("tr").includes(needle));
+        state.selection = state.selection.filter((a) => !visible.includes(a));
+        render();
     };
 
     $("clear-selection").onclick = () => {
