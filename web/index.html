@@ -23,31 +23,67 @@
     </nav>
 
     <main class="main">
-        <div class="filters">
-            <label class="field">Düzey
-                <select id="level"><option>İl</option></select>
-            </label>
-            <div class="field picker">
-                <span>İller</span>
-                <input id="area-search" type="search" placeholder="il ara…">
-                <div id="area-list" class="option-list" role="listbox" aria-multiselectable="true"></div>
-            </div>
-            <label class="field">Yıl
-                <input id="from" type="number" min="2009" max="2025" value="2009" style="width:74px">
-                —
-                <input id="to" type="number" min="2009" max="2025" value="2025" style="width:74px">
-            </label>
+        <div class="panels">
+            <section class="panel">
+                <h2>ALAN SEÇİNİZ</h2>
+                <div class="panel-body">
+                    <label class="field">Düzey
+                        <select id="level"><option>İl</option></select>
+                    </label>
+                    <input id="area-search" type="search" placeholder="il ara…">
+                    <div id="area-list" class="option-list" role="listbox" aria-multiselectable="true"></div>
+                </div>
+            </section>
+
+            <section class="panel">
+                <h2>SEÇTİKLERİM <span id="basket-count"></span></h2>
+                <div class="panel-body">
+                    <div class="basket" id="basket"></div>
+                    <button class="control small" id="clear-areas" type="button">tümünü temizle</button>
+                </div>
+            </section>
+
+            <section class="panel">
+                <h2>RAPOR SEÇENEKLERİ</h2>
+                <div class="panel-body">
+                    <label class="field stacked">Başlangıç yılı
+                        <input id="from" type="number" min="2009" max="2025" value="2009">
+                    </label>
+                    <label class="field stacked">Bitiş yılı
+                        <input id="to" type="number" min="2009" max="2025" value="2025">
+                    </label>
+                    <label class="field stacked">Ondalık
+                        <select id="decimals">
+                            <option value="">birimden (2)</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </label>
+                    <label class="field stacked">Türetme
+                        <select id="transform">
+                            <option value="level">Düzey</option>
+                            <option value="change">İlk yıla göre fark</option>
+                            <option value="index">Endeks (ilk yıl = 100)</option>
+                        </select>
+                    </label>
+                    <div class="outputs">
+                        <button class="control small" id="show-chart" type="button" aria-pressed="true">Grafik</button>
+                        <button class="control small" id="show-table" type="button" aria-pressed="true">Tablo</button>
+                        <button class="control small" type="button" disabled title="ilçe coğrafyası kurulunca">Harita</button>
+                    </div>
+                </div>
+            </section>
         </div>
 
-        <div class="basket" id="basket"></div>
-
-        <section class="card">
+        <section class="card" id="chart-card">
             <h3 id="chart-title">Toplam doğurganlık hızı</h3>
             <p class="unit" id="chart-unit"></p>
             <div id="chart"></div>
         </section>
 
-        <section class="card">
+        <section class="card" id="table-card">
             <div class="badges" id="badges"></div>
             <table>
                 <colgroup>
@@ -68,11 +104,17 @@ import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm"
 const REPLACEMENT_LEVEL = 2.10;
 const DEFAULT_AREAS = ["Bursa", "İzmir", "Şırnak"];
 
+const PALETTE_SIZE = 10;
+
 const $ = (id) => document.getElementById(id);
-// Precision is a property of the unit, so it is read from the dictionary too: a
-// fertility rate wants two decimals, a dwelling count none.
+
+// Precision comes from the unit — a fertility rate wants two decimals, a dwelling count
+// none — but the report panel can override it, the way EVDS lets you pick.
+const decimals = () =>
+    $("decimals").value === "" ? indicator.decimals : Number($("decimals").value);
+
 const fmt = (v) => v.toLocaleString("tr-TR", {
-    minimumFractionDigits: indicator.decimals, maximumFractionDigits: indicator.decimals,
+    minimumFractionDigits: decimals(), maximumFractionDigits: decimals(),
 });
 
 // Chart colours live in theme.css like everything else; read them back rather than
@@ -170,7 +212,7 @@ function colourOf(area) {
     // The basket chip and the line must agree, so both read the position in the
     // selection rather than the position in whatever list is on screen.
     const index = selection().areas.indexOf(area);
-    return token("--series-" + ((index % 6) + 1));
+    return token("--series-" + ((index % PALETTE_SIZE) + 1));
 }
 
 function fillAreas() {
@@ -232,25 +274,13 @@ function fillBasket() {
         return chip;
     });
 
-    const label = document.createElement("span");
+    const label = document.createElement("p");
     label.className = "provenance";
-    label.textContent = empty
-        ? "seçim yok — varsayılan gösteriliyor:"
-        : selected.size + " il seçili:";
+    label.textContent = empty ? "seçim yok — varsayılan üçlü gösteriliyor" : "";
 
-    const clear = document.createElement("button");
-    clear.type = "button";
-    clear.className = "control small";
-    clear.textContent = "temizle";
-    clear.disabled = empty;
-    clear.addEventListener("click", () => {
-        selected.clear();
-        fillAreas();
-        fillBasket();
-        render();
-    });
-
-    $("basket").replaceChildren(label, ...chips, clear);
+    $("basket-count").textContent = empty ? "" : "(" + selected.size + ")";
+    $("clear-areas").disabled = empty;
+    $("basket").replaceChildren(...(empty ? [label] : []), ...chips);
 }
 
 function toggle(name) {
@@ -261,10 +291,33 @@ function toggle(name) {
     render();
 }
 
+// EVDS lets you ask for a derived series rather than the level. The derivation happens
+// here, not in the stored data: the fact table keeps what the source published.
+const TRANSFORMS = {
+    level: {label: null, apply: (value) => value},
+    change: {label: "ilk yıla göre fark", apply: (value, base) => value - base},
+    index: {label: "endeks · ilk yıl = 100", apply: (value, base) => (value / base) * 100},
+};
+
 function render() {
     const {areas, from, to} = selection();
-    const rows = data.filter((d) => areas.includes(d.area) && d.year >= from && d.year <= to);
+    const mode = $("transform").value;
+    const transform = TRANSFORMS[mode];
     const colours = areas.map(colourOf);
+
+    const inRange = data
+        .filter((d) => areas.includes(d.area) && d.year >= from && d.year <= to)
+        .sort((a, b) => a.year - b.year);
+
+    const base = new Map();
+    for (const row of inRange) if (!base.has(row.area)) base.set(row.area, row.value);
+    const rows = inRange.map((row) => ({
+        ...row, value: transform.apply(row.value, base.get(row.area)),
+    }));
+
+    $("chart-unit").textContent = transform.label
+        ? transform.label
+        : indicator.unit + " · " + FREQUENCY_TR[indicator.frequency];
 
     $("chart").replaceChildren(Plot.plot({
         height: 260,
@@ -275,13 +328,17 @@ function render() {
         y: {label: null, grid: true, nice: true},
         color: {domain: areas, range: colours},
         marks: [
-            Plot.ruleY([REPLACEMENT_LEVEL], {
-                stroke: token("--reference-line"), strokeDasharray: "4 4",
-            }),
-            Plot.text([`yenilenme ${fmt(REPLACEMENT_LEVEL)}`], {
-                frameAnchor: "right", dy: -8, dx: -80, fill: token("--reference-text"),
-                y: REPLACEMENT_LEVEL, fontSize: 10,
-            }),
+            // The replacement line means nothing once the series is a difference or an
+            // index, so it only appears on the level.
+            ...(mode === "level" ? [
+                Plot.ruleY([REPLACEMENT_LEVEL], {
+                    stroke: token("--reference-line"), strokeDasharray: "4 4",
+                }),
+                Plot.text([`yenilenme ${fmt(REPLACEMENT_LEVEL)}`], {
+                    frameAnchor: "right", dy: -8, dx: -80, fill: token("--reference-text"),
+                    y: REPLACEMENT_LEVEL, fontSize: 10,
+                }),
+            ] : []),
             Plot.lineY(rows, {x: "year", y: "value", stroke: "area", strokeWidth: 2}),
             // One dot per published observation, so a reader can tell where the data
             // actually is rather than trusting the line between the points.
@@ -330,7 +387,26 @@ function render() {
 
 $("area-search").addEventListener("input", fillAreas);
 
-for (const id of ["from", "to"]) $(id).addEventListener("input", render);
+$("clear-areas").addEventListener("click", () => {
+    selected.clear();
+    fillAreas();
+    fillBasket();
+    render();
+});
+
+for (const id of ["from", "to", "decimals", "transform"]) {
+    $(id).addEventListener("input", render);
+}
+
+// Output toggles, the way EVDS offers table / chart / map — except nothing is recomputed
+// on the server, so these just show and hide what is already there.
+for (const [id, card] of [["show-chart", "chart-card"], ["show-table", "table-card"]]) {
+    $(id).addEventListener("click", () => {
+        const on = $(id).getAttribute("aria-pressed") !== "true";
+        $(id).setAttribute("aria-pressed", String(on));
+        $(card).hidden = !on;
+    });
+}
 
 // The indicator tree is still hardcoded; once the indicator dictionary exists this
 // filters that list instead.

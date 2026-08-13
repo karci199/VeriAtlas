@@ -41,6 +41,10 @@
     --series-4: #c9a3e0;
     --series-5: #d4b06a;
     --series-6: #6ec3d4;
+    --series-7: #e08fae;
+    --series-8: #9fc978;
+    --series-9: #b0a6f0;
+    --series-10: #d9955f;
 
     --radius: 6px;
     --radius-pill: 10px;
@@ -81,4 +85,8 @@
     --series-4: #6b3fa0;
     --series-5: #8a6a12;
     --series-6: #106b7c;
+    --series-7: #a3376a;
+    --series-8: #4a7a1f;
+    --series-9: #4b45a8;
+    --series-10: #8c5a1a;
 }
