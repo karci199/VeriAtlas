@@ -121,6 +121,26 @@ Bağladıkları:
 Bina ve daire ayrı gösterge olarak tanımlandı — ön çalışmada karışan tam bu ikisiydi
 (2025'te 146.553 bina = 1,19 milyon daire).
 
+## K9 — Arayüz iskeleti: OWID Data Explorer modeli (2026-08-13)
+
+Ekranı gösterge türüne göre bölmüyoruz. Tek çerçeve: solda alan seçimi ve sepet, üstte
+boyut seçicileri, ortada görünüm sekmeleriyle (Tablo · Harita · Çizgi · Sütun) grafik,
+altında zaman denetimi ve kaynak satırı.
+
+Değerlendirilen alternatif: türe göre ayrı ekranlar (zaman serisi / nüfus yapısı /
+harita). Reddedildi — seçimler ekranlar arasında taşınmıyor ve üç ayrı arayüz bakımı
+çıkıyor.
+
+İki ilke:
+
+- **Grafik türü bir sekmedir**, göstergenin dayattığı bir şey değil. Aynı gösterge
+  tabloya, haritaya, çizgiye dönüşebilir; seçim ve boyutlar korunur.
+- **Kırılımlar birinci sınıf denetimdir.** OWID'in SEX/AGE kutuları bizim `dims`
+  alanımızın karşılığı. Gösterge hangi kırılımı ilan ettiyse denetimi çıkar; sözlük
+  neyi ilan ettiyse arayüz onu gösterir.
+
+Ayrıntı ve yapılacaklar sırası: [arayuz.md](arayuz.md).
+
 ## Açık işler
 
 Sıra, birbirine bağımlılığa göre:
@@ -133,7 +153,11 @@ Sıra, birbirine bağımlılığa göre:
 4. **Adaptör sözleşmesi** — kuruldu, bkz. K8. Sıradaki adaptörler: EVDS3 (API var),
    MEDAS (Playwright), Dünya Bankası (SDMX).
 5. **Kalite kuralları** — pandera şemaları, yükleme sırasında çalışır.
-6. **Kod dili geçişi** — mevcut `config.py` ve `scripts/` Türkçe docstring'li;
+6. **Arayüz dönüşümü** — K9'a göre: görünüm sekmeleri, kırılım denetimleri, zamanın
+   görünüme bağlanması, çoklu seçim düzeltmesi.
+7. **MEDAS adaptörü** — akışın ilk yarısı çalışıyor (bkz. medas.md); kalan: Zaman →
+   Düzey → Rapor Oluştur → sayfalı tablo.
+8. **Kod dili geçişi** — mevcut `config.py` ve `scripts/` Türkçe docstring'li;
    K1'e göre İngilizceye çevrilecek.
 
 ## İlk yükleme — TFH (2026-08-13)

@@ -124,5 +124,6 @@ Ekran düzeni onaylandı, tema değiştirilebilir olacak (renk sabit yazılmaz, 
 | [CLAUDE.md](CLAUDE.md) | asistan için çalışma kuralları (alt ajan yasak, kod dili, test) |
 | [docs/kararlar.md](docs/kararlar.md) | verilen kararlar ve açık işler |
 | [docs/kaynaklar.md](docs/kaynaklar.md) | bağlanabilecek veri kaynakları ve erişim biçimleri |
+| [docs/arayuz.md](docs/arayuz.md) | arayüz planı: OWID Data Explorer modeli, yapılacak dönüşüm |
 | [docs/medas.md](docs/medas.md) | MEDAS otomasyonu: tutunma noktaları, tuzaklar, çalışan akış |
 | [docs/oturum-2026-08-13.md](docs/oturum-2026-08-13.md) | ön çalışma, bulgular, platformun çözmesi gereken 5 sorun |
