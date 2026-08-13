@@ -223,6 +223,10 @@ const state = {
     scale: "log",
     //: Pyramid panels: one shared scale, or each panel scaled to itself.
     panelScale: "shared",
+    //: Map ramp ends: "year" recomputes them per year, "fixed" spans every year drawn.
+    scaleSpan: "year",
+    //: Country map showing all 973 districts instead of the 81 provinces.
+    districtView: false,
     //: Province the map is opened into, or null for the whole country.
     focus: null,
 };
@@ -234,6 +238,16 @@ let geometry = undefined; // undefined = not tried yet, null = absent
 // Districts are fetched per province when one is opened: all 973 at once is 14 MB to
 // draw a map the reader looks at one province of at a time.
 const districts = new Map();
+
+//: Flattened features for the country-wide district map, filled on first request.
+let districtFeatures = [];
+
+/** Every province's districts at once, for the country-wide district map. */
+async function allDistricts() {
+    const provinces = [...new Set(state.rows.filter((r) => r.level === "province").map((r) => r.area_id))];
+    const files = await Promise.all(provinces.map(districtsOf));
+    return files.filter(Boolean).flatMap((file) => file.features);
+}
 
 async function districtsOf(provinceId) {
     if (!districts.has(provinceId)) {
@@ -794,22 +808,36 @@ function map() {
     }
 
     const opened = state.focus ? districts.get(state.focus) : null;
+    const wide = !state.focus && state.districtView && districtFeatures.length;
     const features = opened
         ? opened.features
-        : geometry.features.filter((f) => f.properties.area_level === state.level);
+        : wide
+          ? districtFeatures
+          : geometry.features.filter((f) => f.properties.area_level === state.level);
     if (!features.length) {
         return empty((LEVEL_LABELS[state.level] || state.level) + " düzeyinde sınır geometrisi yok.");
     }
 
-    // Opened into a province, the map is a district map: it must read district rows and
-    // scale to the largest district, not to İstanbul.
-    const rows = slice(state.focus ? "district" : state.level).filter((r) => r.year === state.year);
+    // Drawing districts means reading district rows: the scale then belongs to the
+    // largest district on screen, not to İstanbul.
+    const level = state.focus || wide ? "district" : state.level;
+    const here = slice(level);
+    const rows = here.filter((r) => r.year === state.year);
     const byId = new Map(rows.map((r) => [r.area_id, r.value]));
-    const values = features.map((f) => byId.get(f.properties.area_id)).filter((v) => v !== undefined);
+    const drawnIds = new Set(features.map((f) => f.properties.area_id));
 
-    // An opened province usually has no values yet — the fact table stops at province
-    // level. Draw the borders anyway and say so; an empty frame would read as an error.
-    const [low, high] = values.length ? [Math.min(...values), Math.max(...values)] : [0, 0];
+    const thisYear = features.map((f) => byId.get(f.properties.area_id)).filter((v) => v !== undefined);
+
+    // Two ways to set the ends of the ramp, and they answer different questions.
+    // Per-year rescaling shows who is biggest *this* year — which barely moves, so the
+    // map looks frozen as the years play. A scale fixed over the whole span keeps the
+    // ends still and lets the colours actually travel: that is growth.
+    const span = state.scaleSpan === "fixed"
+        ? here.filter((r) => drawnIds.has(r.area_id)).map((r) => r.value)
+        : thisYear;
+
+    const values = thisYear;
+    const [low, high] = span.length ? [Math.min(...span), Math.max(...span)] : [0, 0];
 
     // Equirectangular, which needs no projection library, but with the longitude scaled
     // by cos(latitude): without it Turkey comes out about a quarter too wide.
@@ -867,9 +895,11 @@ function map() {
     hover = {kind: "shape"};
 
     const scaleToggle = values.length
-        ? "<span class='spacer'></span><span>Renk ölçeği</span>" +
+        ? "<span class='spacer'></span><span>Ölçek</span>" +
           "<button class='chip" + (state.scale === "log" ? " on" : "") + "' data-scale='log'>Log</button>" +
-          "<button class='chip" + (state.scale === "linear" ? " on" : "") + "' data-scale='linear'>Doğrusal</button>"
+          "<button class='chip" + (state.scale === "linear" ? " on" : "") + "' data-scale='linear'>Doğrusal</button>" +
+          "<button class='chip" + (state.scaleSpan === "fixed" ? " on" : "") + "' data-span='fixed'>Sabit</button>" +
+          "<button class='chip" + (state.scaleSpan !== "fixed" ? " on" : "") + "' data-span='year'>Yıla göre</button>"
         : "";
 
     const head = "<div class='map-head'>" +
@@ -877,7 +907,11 @@ function map() {
             ? "<button class='link-inline' id='map-back'>← Türkiye</button><span>" +
               opened.name_tr + " · " + features.length + " ilçe" +
               (values.length ? "" : " · ilçe düzeyinde veri yok, sınırlar gösteriliyor") + "</span>"
-            : "<span>Bir ile tıklayınca ilçeleri açılır.</span>") +
+            : "<button class='chip" + (state.districtView ? " on" : "") + "' id='district-view'>" +
+              (state.districtView ? "İlleri göster" : "Tüm ilçeleri göster") +
+              "</button><span>" +
+              (wide ? features.length + " ilçe · ölçek en büyük ilçeye göre" : "Bir ile tıklayınca ilçeleri açılır.") +
+              "</span>") +
         scaleToggle + "</div>";
 
     return head + wrapPlot(svg) + (values.length ? legend(low, high, ink) : "");
@@ -1140,6 +1174,23 @@ function wire() {
         const scale = ev.target.closest("[data-scale]");
         if (scale) {
             state.scale = scale.dataset.scale;
+            render();
+            return;
+        }
+
+        const span = ev.target.closest("[data-span]");
+        if (span) {
+            state.scaleSpan = span.dataset.span;
+            render();
+            return;
+        }
+
+        if (ev.target.id === "district-view") {
+            state.districtView = !state.districtView;
+            if (state.districtView && !districtFeatures.length) {
+                ev.target.textContent = "İlçeler yükleniyor…";
+                districtFeatures = await allDistricts();
+            }
             render();
             return;
         }
