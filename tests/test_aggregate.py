@@ -6,8 +6,12 @@ the kind of error nobody catches by reading the chart. These tests pin the weigh
 
 import polars as pl
 
-from veriatlas.aggregate import to_regions
-from veriatlas.areas import load_areas, load_weights
+from veriatlas.aggregate import to_level
+from veriatlas.areas import load_areas, load_parents, load_weights
+
+
+def to_level_region(frame):
+    return to_level(frame, "region")
 
 
 def province_row(area_id, value, year=2025):
@@ -30,7 +34,7 @@ def two_provinces_of_one_region():
 
 
 def test_weighted_mean_is_not_the_plain_mean():
-    result = to_regions(two_provinces_of_one_region())
+    result = to_level_region(two_provinces_of_one_region())
     assert result.height == 1
 
     weights = dict(zip(load_weights()["area_id"], load_weights()["population"]))
@@ -47,13 +51,13 @@ def test_weighted_mean_is_not_the_plain_mean():
 
 def test_region_rows_are_flagged_estimated():
     """The number was computed, not published — the badge has to say so."""
-    result = to_regions(two_provinces_of_one_region())
+    result = to_level_region(two_provinces_of_one_region())
     assert result["quality_flag"].to_list() == ["estimated"]
     assert result["level"].to_list() == ["region"]
 
 
 def test_region_gets_its_turkish_name():
-    result = to_regions(two_provinces_of_one_region())
+    result = to_level_region(two_provinces_of_one_region())
     assert result["area"][0] == "Marmara"
 
 
@@ -64,16 +68,42 @@ def test_province_without_a_weight_is_dropped_not_counted_as_zero():
             pl.DataFrame([province_row("TR-99", 9.0)]),  # no such province, no weight
         ]
     )
-    result = to_regions(frame)
+    result = to_level_region(frame)
     assert result.height == 1, "an unknown area must not create a region of its own"
 
 
-def test_every_province_has_a_region_and_a_weight():
+def test_every_province_has_a_parent_in_both_hierarchies_and_a_weight():
     """A gap here would silently shrink a region's population base."""
     registry = load_areas()
-    provinces = registry.filter(pl.col("area_level") == "province")
-    regions = set(registry.filter(pl.col("area_level") == "region")["area_id"])
+    provinces = set(registry.filter(pl.col("area_level") == "province")["area_id"])
+    assert len(provinces) == 81
+    assert provinces == set(load_weights()["area_id"])
 
-    assert provinces.height == 81
-    assert set(provinces["parent_id"]) <= regions
-    assert set(provinces["area_id"]) == set(load_weights()["area_id"])
+    for hierarchy in ("geographic", "nuts"):
+        members = load_parents(hierarchy)
+        assert provinces <= set(members["area_id"]), hierarchy
+
+
+def test_nuts_levels_have_the_official_counts():
+    registry = load_areas()
+    counts = dict(registry.group_by("area_level").len().iter_rows())
+    assert counts["nuts1"] == 12, "İBBS-1: 12 bölge"
+    assert counts["nuts2"] == 26, "İBBS-2: 26 alt bölge"
+    assert counts["region"] == 7, "7 coğrafi bölge"
+
+
+def test_nuts1_is_rolled_up_from_provinces_not_from_nuts2():
+    """Averaging averages would reweight; TR4 must equal the weighted mean of its provinces."""
+    weights = dict(zip(load_weights()["area_id"], load_weights()["population"]))
+    rows = [
+        province_row("TR-16", 1.0),
+        province_row("TR-26", 3.0),
+        province_row("TR-11", 5.0),
+    ]
+    frame = pl.DataFrame(rows)
+
+    result = to_level(frame, "nuts1").filter(pl.col("area_id") == "TR4")
+    expected = sum(r["value"] * weights[r["area_id"]] for r in rows) / sum(
+        weights[r["area_id"]] for r in rows
+    )
+    assert abs(result["value"][0] - expected) < 1e-9

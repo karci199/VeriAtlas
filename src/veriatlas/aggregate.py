@@ -14,20 +14,53 @@ from __future__ import annotations
 
 import polars as pl
 
-from .areas import load_areas, load_weights
+from .areas import load_areas, load_parents, load_weights
 
 
-def to_regions(provinces: pl.DataFrame) -> pl.DataFrame:
-    """Population-weighted mean of province values, grouped by their parent region.
+def to_level(provinces: pl.DataFrame, target_level: str) -> pl.DataFrame:
+    """Population-weighted mean of province values, grouped into `target_level`.
+
+    Works for any level a province is a member of: `region` (geographic), `nuts2` (İBBS
+    alt bölge) or `nuts1` (İBBS bölge). For `nuts1` the provinces are rolled up directly
+    rather than through `nuts2` — averaging averages would reweight the result.
 
     `provinces` must carry `area_id`, `year`, `value`, `unit`, `vintage`, `source_id`.
     Provinces without a weight are dropped rather than silently counted as zero.
     """
     registry = load_areas()
-    parent_of = registry.filter(pl.col("area_level") == "province").select(
-        "area_id", pl.col("parent_id").alias("region_id")
-    )
-    region_names = registry.filter(pl.col("area_level") == "region").select(
+    targets = registry.filter(pl.col("area_level") == target_level)
+    parents = load_parents()
+
+    # Walk up the membership until a parent sits at the target level, so nuts1 can be
+    # reached from a province even though its immediate parent is a nuts2.
+    reach = parents.select("area_id", pl.col("parent_id").alias("region_id"))
+    for _ in range(3):
+        resolved = reach.join(
+            targets.select(pl.col("area_id").alias("region_id")),
+            on="region_id",
+            how="semi",
+        )
+        pending = reach.join(resolved, on=["area_id", "region_id"], how="anti")
+        if pending.height == 0:
+            break
+        reach = pl.concat(
+            [
+                resolved,
+                pending.join(
+                    parents.select(
+                        pl.col("area_id").alias("region_id"),
+                        pl.col("parent_id").alias("next_id"),
+                    ),
+                    on="region_id",
+                    how="inner",
+                ).select("area_id", pl.col("next_id").alias("region_id")),
+            ]
+        )
+
+    parent_of = reach.join(
+        targets.select(pl.col("area_id").alias("region_id")), on="region_id", how="semi"
+    ).unique()
+    region_names = targets.select(
         pl.col("area_id").alias("region_id"), pl.col("name_tr").alias("area")
     )
 
@@ -46,7 +79,7 @@ def to_regions(provinces: pl.DataFrame) -> pl.DataFrame:
         .select(
             pl.col("region_id").alias("area_id"),
             "area",
-            pl.lit("region").alias("level"),
+            pl.lit(target_level).alias("level"),
             "year",
             (pl.col("weighted") / pl.col("total")).alias("value"),
             "unit",

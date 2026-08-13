@@ -26,10 +26,26 @@ REGISTRY_PATH = Path(__file__).parent / "data" / "areas_tr.csv"
 #: date on it.
 WEIGHTS_PATH = Path(__file__).parent / "data" / "area_weights_tr.csv"
 
+#: Membership, one row per (area, parent, hierarchy). A province sits in two hierarchies
+#: at once — a geographic region (Marmara) and a statistical one (TR41 Bursa alt bölgesi)
+#: — so a single parent column would force us to drop one of them.
+PARENTS_PATH = Path(__file__).parent / "data" / "area_parents_tr.csv"
+
+#: Hand-maintained İBBS membership: TurkiyeAPI carries geographic regions only.
+NUTS_PATH = Path(__file__).parent / "data" / "nuts_tr.csv"
+
 
 def load_areas() -> pl.DataFrame:
-    """Read the registry: `area_id`, `area_level`, `name_tr`, `parent_id`."""
+    """Read the registry: `area_id`, `area_level`, `name_tr`."""
     return pl.read_csv(REGISTRY_PATH)
+
+
+def load_parents(hierarchy: str | None = None) -> pl.DataFrame:
+    """Read membership: `area_id`, `parent_id`, `hierarchy`."""
+    parents = pl.read_csv(PARENTS_PATH)
+    if hierarchy is not None:
+        parents = parents.filter(pl.col("hierarchy") == hierarchy)
+    return parents
 
 
 def load_weights() -> pl.DataFrame:

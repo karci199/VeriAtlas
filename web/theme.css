@@ -20,6 +20,9 @@
     --stroke-focus: #ffffff;
     --accent: #60a5fa;
 
+    /* Panel headings carry the app's one accent, the way EVDS uses its red. */
+    --panel-heading: #60a5fa;
+
     --text-primary: #e4e4e4;
     --text-secondary: #c8c8c8;
     --text-tertiary: #8a8a8a;
@@ -63,6 +66,7 @@
     --stroke-control: #d0d0d0;
     --stroke-focus: #1a1a1a;
     --accent: #0f6cbd;
+    --panel-heading: #0f6cbd;
 
     --text-primary: #1a1a1a;
     --text-secondary: #3a3a3a;

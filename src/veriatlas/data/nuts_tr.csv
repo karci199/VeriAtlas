@@ -1,0 +1,82 @@
+province_name,nuts2_id,nuts2_name,nuts1_id,nuts1_name
+İstanbul,TR10,İstanbul,TR1,İstanbul
+Tekirdağ,TR21,Tekirdağ,TR2,Batı Marmara
+Edirne,TR21,Tekirdağ,TR2,Batı Marmara
+Kırklareli,TR21,Tekirdağ,TR2,Batı Marmara
+Balıkesir,TR22,Balıkesir,TR2,Batı Marmara
+Çanakkale,TR22,Balıkesir,TR2,Batı Marmara
+İzmir,TR31,İzmir,TR3,Ege
+Aydın,TR32,Aydın,TR3,Ege
+Denizli,TR32,Aydın,TR3,Ege
+Muğla,TR32,Aydın,TR3,Ege
+Manisa,TR33,Manisa,TR3,Ege
+Afyonkarahisar,TR33,Manisa,TR3,Ege
+Kütahya,TR33,Manisa,TR3,Ege
+Uşak,TR33,Manisa,TR3,Ege
+Bursa,TR41,Bursa,TR4,Doğu Marmara
+Eskişehir,TR41,Bursa,TR4,Doğu Marmara
+Bilecik,TR41,Bursa,TR4,Doğu Marmara
+Kocaeli,TR42,Kocaeli,TR4,Doğu Marmara
+Sakarya,TR42,Kocaeli,TR4,Doğu Marmara
+Düzce,TR42,Kocaeli,TR4,Doğu Marmara
+Bolu,TR42,Kocaeli,TR4,Doğu Marmara
+Yalova,TR42,Kocaeli,TR4,Doğu Marmara
+Ankara,TR51,Ankara,TR5,Batı Anadolu
+Konya,TR52,Konya,TR5,Batı Anadolu
+Karaman,TR52,Konya,TR5,Batı Anadolu
+Antalya,TR61,Antalya,TR6,Akdeniz
+Isparta,TR61,Antalya,TR6,Akdeniz
+Burdur,TR61,Antalya,TR6,Akdeniz
+Adana,TR62,Adana,TR6,Akdeniz
+Mersin,TR62,Adana,TR6,Akdeniz
+Hatay,TR63,Hatay,TR6,Akdeniz
+Kahramanmaraş,TR63,Hatay,TR6,Akdeniz
+Osmaniye,TR63,Hatay,TR6,Akdeniz
+Kırıkkale,TR71,Kırıkkale,TR7,Orta Anadolu
+Aksaray,TR71,Kırıkkale,TR7,Orta Anadolu
+Niğde,TR71,Kırıkkale,TR7,Orta Anadolu
+Nevşehir,TR71,Kırıkkale,TR7,Orta Anadolu
+Kırşehir,TR71,Kırıkkale,TR7,Orta Anadolu
+Kayseri,TR72,Kayseri,TR7,Orta Anadolu
+Sivas,TR72,Kayseri,TR7,Orta Anadolu
+Yozgat,TR72,Kayseri,TR7,Orta Anadolu
+Zonguldak,TR81,Zonguldak,TR8,Batı Karadeniz
+Karabük,TR81,Zonguldak,TR8,Batı Karadeniz
+Bartın,TR81,Zonguldak,TR8,Batı Karadeniz
+Kastamonu,TR82,Kastamonu,TR8,Batı Karadeniz
+Çankırı,TR82,Kastamonu,TR8,Batı Karadeniz
+Sinop,TR82,Kastamonu,TR8,Batı Karadeniz
+Samsun,TR83,Samsun,TR8,Batı Karadeniz
+Tokat,TR83,Samsun,TR8,Batı Karadeniz
+Çorum,TR83,Samsun,TR8,Batı Karadeniz
+Amasya,TR83,Samsun,TR8,Batı Karadeniz
+Trabzon,TR90,Trabzon,TR9,Doğu Karadeniz
+Ordu,TR90,Trabzon,TR9,Doğu Karadeniz
+Giresun,TR90,Trabzon,TR9,Doğu Karadeniz
+Rize,TR90,Trabzon,TR9,Doğu Karadeniz
+Artvin,TR90,Trabzon,TR9,Doğu Karadeniz
+Gümüşhane,TR90,Trabzon,TR9,Doğu Karadeniz
+Erzurum,TRA1,Erzurum,TRA,Kuzeydoğu Anadolu
+Erzincan,TRA1,Erzurum,TRA,Kuzeydoğu Anadolu
+Bayburt,TRA1,Erzurum,TRA,Kuzeydoğu Anadolu
+Ağrı,TRA2,Ağrı,TRA,Kuzeydoğu Anadolu
+Kars,TRA2,Ağrı,TRA,Kuzeydoğu Anadolu
+Iğdır,TRA2,Ağrı,TRA,Kuzeydoğu Anadolu
+Ardahan,TRA2,Ağrı,TRA,Kuzeydoğu Anadolu
+Malatya,TRB1,Malatya,TRB,Ortadoğu Anadolu
+Elazığ,TRB1,Malatya,TRB,Ortadoğu Anadolu
+Bingöl,TRB1,Malatya,TRB,Ortadoğu Anadolu
+Tunceli,TRB1,Malatya,TRB,Ortadoğu Anadolu
+Van,TRB2,Van,TRB,Ortadoğu Anadolu
+Muş,TRB2,Van,TRB,Ortadoğu Anadolu
+Bitlis,TRB2,Van,TRB,Ortadoğu Anadolu
+Hakkari,TRB2,Van,TRB,Ortadoğu Anadolu
+Gaziantep,TRC1,Gaziantep,TRC,Güneydoğu Anadolu
+Adıyaman,TRC1,Gaziantep,TRC,Güneydoğu Anadolu
+Kilis,TRC1,Gaziantep,TRC,Güneydoğu Anadolu
+Şanlıurfa,TRC2,Şanlıurfa,TRC,Güneydoğu Anadolu
+Diyarbakır,TRC2,Şanlıurfa,TRC,Güneydoğu Anadolu
+Mardin,TRC3,Mardin,TRC,Güneydoğu Anadolu
+Batman,TRC3,Mardin,TRC,Güneydoğu Anadolu
+Şırnak,TRC3,Mardin,TRC,Güneydoğu Anadolu
+Siirt,TRC3,Mardin,TRC,Güneydoğu Anadolu

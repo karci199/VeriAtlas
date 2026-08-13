@@ -20,10 +20,27 @@ import httpx
 
 sys.path.insert(0, "src")
 
-from veriatlas.areas import REGISTRY_PATH, WEIGHTS_PATH
+from veriatlas.areas import NUTS_PATH, PARENTS_PATH, REGISTRY_PATH, WEIGHTS_PATH
 
 SOURCE = "https://api.turkiyeapi.dev/v2/provinces"
 SOURCE_ID = "turkiyeapi"
+
+
+def read_nuts() -> dict[str, dict[str, str]]:
+    """İBBS membership, keyed by province name.
+
+    Hand-maintained: TurkiyeAPI carries the geographic regions but not the statistical
+    ones, and TÜİK publishes at İBBS level, so we need both.
+    """
+    with NUTS_PATH.open(encoding="utf-8") as handle:
+        return {row["province_name"]: row for row in csv.DictReader(handle)}
+
+
+def write_csv(path, rows) -> None:
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
 
 
 def slug(name: str) -> str:
@@ -45,33 +62,72 @@ def main() -> None:
         raise SystemExit("beklenen 81 il, gelen: " + str(len(provinces)))
 
     regions = {p["region"]["tr"]: "TR-R-" + slug(p["region"]["tr"]) for p in provinces}
+    nuts = read_nuts()
+    id_of = {p["name"]: f"TR-{p['id']:02d}" for p in provinces}
 
-    rows = [
-        {
-            "area_id": "TR",
-            "area_level": "country",
-            "name_tr": "Türkiye",
-            "parent_id": "",
-        }
-    ]
-    rows += [
-        {"area_id": area_id, "area_level": "region", "name_tr": name, "parent_id": "TR"}
+    unmatched = set(nuts) ^ set(id_of)
+    if unmatched:
+        raise SystemExit(
+            "İBBS ve il adları eşleşmiyor: " + ", ".join(sorted(unmatched))
+        )
+
+    areas = [{"area_id": "TR", "area_level": "country", "name_tr": "Türkiye"}]
+    areas += [
+        {"area_id": area_id, "area_level": "region", "name_tr": name}
         for name, area_id in sorted(regions.items(), key=lambda kv: kv[1])
     ]
-    rows += [
+    areas += [
+        {"area_id": code, "area_level": "nuts1", "name_tr": name}
+        for code, name in sorted(
+            {(n["nuts1_id"], n["nuts1_name"]) for n in nuts.values()}
+        )
+    ]
+    areas += [
+        {"area_id": code, "area_level": "nuts2", "name_tr": name}
+        for code, name in sorted(
+            {(n["nuts2_id"], n["nuts2_name"]) for n in nuts.values()}
+        )
+    ]
+    areas += [
         {
             "area_id": f"TR-{p['id']:02d}",
             "area_level": "province",
             "name_tr": p["name"],
-            "parent_id": regions[p["region"]["tr"]],
         }
         for p in sorted(provinces, key=lambda p: p["id"])
     ]
 
-    with REGISTRY_PATH.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
-        writer.writeheader()
-        writer.writerows(rows)
+    # Membership is its own table because a province belongs to two hierarchies at once:
+    # a geographic region (Marmara) and a statistical one (TR41). A single parent column
+    # would force us to pick one and lose the other.
+    parents = [
+        {"area_id": area_id, "parent_id": "TR", "hierarchy": "geographic"}
+        for area_id in regions.values()
+    ]
+    parents += [
+        {
+            "area_id": id_of[name],
+            "parent_id": regions[p["region"]["tr"]],
+            "hierarchy": "geographic",
+        }
+        for p in provinces
+        for name in [p["name"]]
+    ]
+    parents += [
+        {"area_id": code, "parent_id": "TR", "hierarchy": "nuts"}
+        for code in sorted({n["nuts1_id"] for n in nuts.values()})
+    ]
+    parents += [
+        {"area_id": n2, "parent_id": n1, "hierarchy": "nuts"}
+        for n2, n1 in sorted({(n["nuts2_id"], n["nuts1_id"]) for n in nuts.values()})
+    ]
+    parents += [
+        {"area_id": id_of[name], "parent_id": row["nuts2_id"], "hierarchy": "nuts"}
+        for name, row in sorted(nuts.items())
+    ]
+
+    write_csv(REGISTRY_PATH, areas)
+    write_csv(PARENTS_PATH, parents)
 
     # Weights, kept apart from the registry: a name is permanent, a population is an
     # observation with a date on it.
@@ -85,12 +141,11 @@ def main() -> None:
         }
         for p in sorted(provinces, key=lambda p: p["id"])
     ]
-    with WEIGHTS_PATH.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(weights[0]))
-        writer.writeheader()
-        writer.writerows(weights)
+    write_csv(WEIGHTS_PATH, weights)
 
     print("bolge :", len(regions), "->", ", ".join(sorted(regions)))
+    print("ibbs1 :", len({n["nuts1_id"] for n in nuts.values()}))
+    print("ibbs2 :", len({n["nuts2_id"] for n in nuts.values()}))
     print("il    :", len(provinces))
     print("surum :", payload["meta"]["datasetVersion"], "| cekim:", retrieved_at)
 

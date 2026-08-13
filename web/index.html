@@ -12,25 +12,29 @@
     <span class="app">VeriAtlas</span>
     <span class="subject">Nüfus ve doğurganlık</span>
     <span class="spacer"></span>
+    <input id="search" type="search" placeholder="Ara …">
     <button class="control" id="theme-toggle" type="button">Açık tema</button>
 </div>
 
 <div class="shell">
-    <nav class="sidebar">
-        <h2>GÖSTERGELER</h2>
-        <input id="search" type="search" placeholder="Ara…" style="width:100%">
-        <ul class="tree" id="tree"></ul>
-    </nav>
-
     <main class="main">
         <div class="panels">
+            <section class="panel">
+                <h2>TÜM GÖSTERGELER</h2>
+                <div class="panel-body">
+                    <ul class="tree" id="tree"></ul>
+                </div>
+            </section>
+
             <section class="panel">
                 <h2>ALAN SEÇİNİZ</h2>
                 <div class="panel-body">
                     <label class="field">Düzey
                         <select id="level">
-                            <option value="province">İl</option>
-                            <option value="region">Bölge</option>
+                            <option value="province">İl (81)</option>
+                            <option value="nuts2">İBBS-2 alt bölge (26)</option>
+                            <option value="nuts1">İBBS-1 bölge (12)</option>
+                            <option value="region">Coğrafi bölge (7)</option>
                         </select>
                     </label>
                     <input id="area-search" type="search" placeholder="il ara…">
@@ -72,9 +76,9 @@
                         </select>
                     </label>
                     <div class="outputs">
-                        <button class="control small" id="show-chart" type="button" aria-pressed="true">Grafik</button>
-                        <button class="control small" id="show-table" type="button" aria-pressed="true">Tablo</button>
-                        <button class="control small" type="button" disabled title="ilçe coğrafyası kurulunca">Harita</button>
+                        <button class="control" id="show-table" type="button" aria-pressed="true">Tablo Oluştur</button>
+                        <button class="control" id="show-chart" type="button" aria-pressed="true">Grafik Oluştur</button>
+                        <button class="control" type="button" disabled title="sınır geometrisi eklenince">Harita Oluştur</button>
                     </div>
                 </div>
             </section>
@@ -93,7 +97,7 @@
                     <col style="width:40%"><col style="width:20%"><col style="width:20%"><col style="width:20%">
                 </colgroup>
                 <thead>
-                    <tr><th>il</th><th id="th-from"></th><th id="th-to"></th><th>değişim</th></tr>
+                    <tr><th id="th-area">alan</th><th id="th-from"></th><th id="th-to"></th><th>değişim</th></tr>
                 </thead>
                 <tbody id="rows"></tbody>
             </table>
@@ -109,6 +113,8 @@ const REPLACEMENT_LEVEL = 2.10;
 // One default per level, so switching level never lands on an empty chart.
 const DEFAULTS = {
     province: ["Bursa", "İzmir", "Şırnak"],
+    nuts2: ["Bursa", "İzmir", "Mardin"],
+    nuts1: ["Doğu Marmara", "Ege", "Güneydoğu Anadolu"],
     region: ["Marmara", "İç Anadolu", "Güneydoğu Anadolu"],
 };
 
@@ -184,11 +190,25 @@ $("chart-unit").textContent = indicator.unit + " · " + FREQUENCY_TR[indicator.f
 // Unloaded indicators stay in the tree, disabled: the tree is the plan as much as the
 // inventory, and a greyed entry says "not yet" where an absent one would say "never".
 $("tree").replaceChildren(...meta.tree.flatMap((group) => {
+    const open = group.indicators.some((item) => item.available);
+
     const heading = document.createElement("li");
     heading.className = "group";
     heading.textContent = group.topic;
+    heading.tabIndex = 0;
+    heading.setAttribute("aria-expanded", String(open));
+    heading.addEventListener("click", () => {
+        const expanded = heading.getAttribute("aria-expanded") !== "true";
+        heading.setAttribute("aria-expanded", String(expanded));
+        for (const item of heading.parentElement.querySelectorAll("li")) {
+            if (item.dataset.topic === group.topic) item.hidden = !expanded;
+        }
+    });
+
     return [heading, ...group.indicators.map((item) => {
         const li = document.createElement("li");
+        li.dataset.topic = group.topic;
+        li.hidden = !open;
         const button = document.createElement("button");
         button.type = "button";
         button.textContent = item.label;
@@ -226,9 +246,14 @@ function colourOf(area) {
     return token("--series-" + ((index % PALETTE_SIZE) + 1));
 }
 
+const LEVEL_NOUN = {
+    province: "il", nuts2: "alt bölge", nuts1: "bölge", region: "bölge",
+};
+
 function fillAreas() {
     const query = fold($("area-search").value.trim());
     const shown = namesAt(level()).filter((name) => fold(name).includes(query));
+    $("area-search").placeholder = LEVEL_NOUN[level()] + " ara…";
 
     // A plain <select multiple> needs ctrl-click to add a second item, and one stray
     // click wipes the selection. Rows that simply toggle are safer and themeable.
@@ -253,7 +278,7 @@ function fillAreas() {
         const empty = document.createElement("p");
         empty.className = "provenance";
         empty.style.padding = "6px";
-        empty.textContent = "eşleşen il yok";
+        empty.textContent = "eşleşen " + LEVEL_NOUN[level()] + " yok";
         $("area-list").append(empty);
     }
 }
@@ -381,6 +406,7 @@ function render() {
         }),
     );
 
+    $("th-area").textContent = LEVEL_NOUN[level()];
     $("th-from").textContent = from;
     $("th-to").textContent = to;
     $("rows").replaceChildren(...areas.map((area, i) => {
@@ -442,12 +468,15 @@ $("search").addEventListener("input", () => {
     const flush = () => {
         if (!group) return;
         const groupHit = fold(group.textContent).includes(query);
-        let anyHit = groupHit;
-        for (const item of items) {
-            item.hidden = !groupHit && !fold(item.textContent).includes(query);
-            anyHit = anyHit || !item.hidden;
-        }
-        group.hidden = !anyHit;
+        const hits = items.filter((item) => groupHit || fold(item.textContent).includes(query));
+
+        // Searching overrides the accordion: a match must be visible even inside a
+        // collapsed topic. With an empty box the collapsed state takes over again.
+        const expanded = query ? hits.length > 0 : group.getAttribute("aria-expanded") === "true";
+        if (query) group.setAttribute("aria-expanded", String(expanded));
+
+        for (const item of items) item.hidden = !expanded || !hits.includes(item);
+        group.hidden = query ? hits.length === 0 : false;
     };
 
     for (const item of document.querySelectorAll(".tree li")) {

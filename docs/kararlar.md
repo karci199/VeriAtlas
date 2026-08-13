@@ -161,10 +161,17 @@ Yükleme sırasında öğrenilenler:
 
 ## Bölge düzeyi ve ağırlıklı toplama (2026-08-13)
 
-Coğrafya kaydı TurkiyeAPI'den yeniden üretiliyor (`scripts/fetch_areas.py`): ülke,
-**7 coğrafi bölge**, 81 il. Not: bunlar coğrafi bölgeler (Marmara, Ege…), TÜİK'in
-kullandığı **İBBS bölgeleri değil**. İBBS-1 (12) ve İBBS-2 (26) sonra eklenecek;
-TÜİK verisi o düzeylerde de yayımlandığı için er geç gerekecek.
+Coğrafya kaydı `scripts/fetch_areas.py` ile üretiliyor: ülke, 7 coğrafi bölge,
+**12 İBBS-1 bölge**, **26 İBBS-2 alt bölge**, 81 il. İl listesi ve nüfuslar
+TurkiyeAPI'den; İBBS eşleşmesi elle tutulan `data/nuts_tr.csv`'den (TurkiyeAPI İBBS
+taşımıyor, TÜİK ise o düzeylerde yayımlıyor).
+
+**Üyelik ayrı tabloda** (`data/area_parents_tr.csv`): bir il aynı anda iki hiyerarşiye
+bağlı — coğrafi (Marmara) ve istatistiki (TR41). Tek `parent_id` sütunu birini seçip
+diğerini kaybetmeye zorlardı.
+
+İBBS-1 değeri illerden doğrudan toplanıyor, İBBS-2 üzerinden değil: ortalamanın
+ortalaması ağırlığı bozar.
 
 Çalışma anında dış servise bağlanmıyoruz: veri bir kez çekilip kendi kaydımıza yazılıyor,
 kaynak ve çekim tarihi kayıtta duruyor.

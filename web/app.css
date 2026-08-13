@@ -42,33 +42,42 @@ body {
 /* region Shell */
 
 .shell {
-    display: grid;
-    grid-template-columns: 200px 1fr;
     min-height: calc(100vh - 40px);
-}
-
-.sidebar {
-    border-right: 1px solid var(--stroke-divider);
-    padding: 12px;
-}
-
-.sidebar h2 {
-    margin: 4px 0 8px;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    font-weight: 600;
-    color: var(--text-tertiary);
 }
 
 .tree {
     list-style: none;
-    margin: 12px 0 0;
+    margin: 0;
     padding: 0;
+    height: 220px;
+    overflow-y: auto;
 }
 
+/* Collapsible topics, the way EVDS opens its series groups one at a time. */
 .tree .group {
-    margin: 12px 0 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2px 0;
+    padding: 5px 8px;
     color: var(--text-secondary);
+    background: var(--bg-control);
+    border-radius: var(--radius);
+    cursor: pointer;
+    user-select: none;
+}
+
+.tree .group:hover {
+    background: var(--bg-control-hover);
+}
+
+.tree .group::after {
+    content: "+";
+    color: var(--text-tertiary);
+}
+
+.tree .group[aria-expanded="true"]::after {
+    content: "−";
 }
 
 .tree button {
@@ -151,8 +160,9 @@ select[multiple] {
 
 .panels {
     display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 10px;
+    align-items: start;
 }
 
 .panel {
@@ -164,11 +174,11 @@ select[multiple] {
 
 .panel h2 {
     margin: 0;
-    padding: 7px 10px;
-    font-size: 10px;
-    letter-spacing: 0.08em;
+    padding: 8px 10px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
     font-weight: 600;
-    color: var(--text-secondary);
+    color: var(--panel-heading);
     background: var(--bg-window);
     border-bottom: 1px solid var(--stroke-divider);
 }
@@ -192,10 +202,18 @@ select[multiple] {
     font-size: 11px;
 }
 
+/* EVDS stacks its output actions full width; they read as the end of the form. */
 .outputs {
     display: flex;
+    flex-direction: column;
     gap: 6px;
-    margin-top: 2px;
+    margin-top: 6px;
+    padding-top: 8px;
+    border-top: 1px solid var(--stroke-divider);
+}
+
+.outputs button {
+    height: 30px;
 }
 
 .outputs button[aria-pressed="true"] {

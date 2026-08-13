@@ -14,7 +14,7 @@ import polars as pl
 
 sys.path.insert(0, "src")
 
-from veriatlas.aggregate import to_regions
+from veriatlas.aggregate import to_level
 from veriatlas.areas import load_areas
 from veriatlas.config import PUBLIC
 from veriatlas.indicators import load
@@ -74,7 +74,8 @@ def main() -> None:
         "source_id",
     )
 
-    slim = pl.concat([provinces, to_regions(provinces)]).sort("level", "area", "year")
+    rolled = [to_level(provinces, level) for level in ("region", "nuts1", "nuts2")]
+    slim = pl.concat([provinces, *rolled]).sort("level", "area", "year")
 
     target = PUBLIC / "tfr.csv"
     slim.write_csv(target)
