@@ -33,7 +33,7 @@ uv run python scripts/check_env.py
 | Tarayıcı otomasyonu | playwright (MEDAS için) |
 | Çıktı | XlsxWriter, typst (PDF) |
 | Lint/format | ruff (Rust) |
-| Arayüz (planlanan) | Observable Framework + Plot + MapLibre + DuckDB-WASM |
+| Arayüz | Observable Framework + Plot + MapLibre + DuckDB-WASM (karar verildi, yazılmadı) |
 
 ## Klasörler
 

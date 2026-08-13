@@ -23,7 +23,21 @@ yazılırken dönüştürülecek (bkz. açık işler).
 `src/veri/` → `src/veriatlas/`, dağıtım adı `veriatlas`, konsol komutu `veriatlas`.
 Depo klasörü `C:\veri` olarak kaldı (yol her yere gömülü, taşımanın getirisi yok).
 
-## K3 — İlk tema (açık)
+## K3 — Arayüz web olacak (2026-08-13)
+
+Observable Framework + Plot + MapLibre + DuckDB-WASM. Veri hattı Python; yayınlanan
+parquet dilimleri doğrudan tarayıcıya gider, arada sunucu yok.
+
+Değerlendirilen alternatif: WPF masaüstü + `C:\DesignKit` (DesignKit.Wpf.dll, net48).
+Reddedildi — Python veri hattıyla WPF arasına köprü gerekirdi, ayrıca harita ve
+etkileşimli grafik tarafı WPF'te zayıf.
+
+Tema: DesignKit'in Win11 / WinUI 3 koyu paleti taşınacak, ama **sadece renkler**
+(`src/DesignKit.Wpf/Themes/Fluent/Fluent.Colors.Dark.xaml` — `#202020` taban, katman /
+kart / kontrol dolguları, odak halkası) CSS özel değişkeni olarak. Kontrol stilleri
+XAML, taşınmıyor; web tarafında yeniden yazılacak.
+
+## K4 — İlk tema (açık)
 
 Öneri: nüfus ve doğurganlık. Ön çalışmadaki 6 doğrulanmış dosya bu temada, yani ilk
 veri hattı gerçek veriyle test edilebilir. Karar verilmedi.
