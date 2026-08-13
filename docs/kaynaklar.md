@@ -40,11 +40,31 @@ biliniyor ama uç noktası/koşulları teyit edilmedi; adaptör yazmadan önce b
 | **Ulusal Coğrafi Bilgi Portalı** | İdari sınırlar, mekânsal katmanlar | WMS/WFS servisleri | ? |
 | **Borsa İstanbul Veri Mağazası** | Hisse, endeks, tahvil | Ücretli abonelik | ? |
 
+## Coğrafya
+
+| Kaynak | Kapsam | Erişim | D |
+|---|---|---|---|
+| **TurkiyeAPI** (`api.turkiyeapi.dev/v2`) | 81 il · 973 ilçe · 1.377 belediye · 32.254 mahalle · 18.183 köy. Nüfus, yüzölçümü, rakım, koordinat, posta kodu, alan kodu, bölge | REST, anahtarsız, OpenAPI; MIT lisans, kaynak veri TÜİK MEDAS + PTT + HGM + OSM | ✔ |
+| **TÜİK Coğrafi İstatistik Portalı** (`cip.tuik.gov.tr`) | Harita üzerinde il/ilçe/mahalle göstergeleri | Portal | ? |
+| **Ulusal Coğrafi Bilgi Portalı** (`atlas.gov.tr`) | İdari sınırlar, mekânsal katmanlar | WMS/WFS | ? |
+| **TÜCBS Açık Veri** (`tucbskontrol.csb.gov.tr`) | Ulusal coğrafi açık veri | Portal | ? |
+
+TurkiyeAPI bizim için doğrudan işe yarıyor ama **sınırı bilinmeli: bugünkü durumu
+veriyor, tarihini değil.** 6360 öncesi ilçeler, kapanmış köyler, ad değişiklikleri yok;
+"İznik 2009'da neydi" sorusunu cevaplamıyor. Yani ilçe kaydının *listesini* oradan
+alabiliriz, *geçerlilik aralığı ve ardıl eşlemesini* yine kendimiz kurmamız gerekiyor.
+
+Kullanım biçimi: çalışma anında API'ye bağlanmak yerine, veriyi bir kez çekip kendi
+kaydımıza yazmak — kaynak ve çekim tarihi kayıtta dursun. Dış servis çökerse ya da
+numaralandırmasını değiştirirse verimiz etkilenmesin.
+
 ## Türkiye — yerel yönetim ve diğer
 
 | Kaynak | Kapsam | Not |
 |---|---|---|
 | **İBB Açık Veri** | İstanbul: ulaşım, nüfus, çevre, sosyal yardım | En zengin belediye portalı; CKAN tabanlı, API'si var |
+| **Resmi İstatistik Portalı** (`resmiistatistik.gov.tr`) | Resmi istatistik programındaki bütün kurumların yayın takvimi ve dağıtımı | Hangi kurumun neyi yayımladığını bulmak için giriş noktası |
+| **YSK Açık Veri Portalı** (`acikveri.ysk.gov.tr`) | Seçim sonuçları | Portal; sandık düzeyi için üçüncü taraf derlemeler daha kullanışlı |
 | **Ankara / İzmir / Bursa / Kayseri açık veri** | Kent ölçeği | Kapsam ve süreklilik değişken |
 | **ULAKBİM Veri Portalı** | Akademik araştırma veri setleri | TÜBİTAK altyapısı |
 | **Hava kalitesi izleme** (`sim.csb.gov.tr`) | İstasyon bazlı PM10/PM2.5/NO2, saatlik | Uzun geriye dönük seri var |
