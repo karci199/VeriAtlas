@@ -92,9 +92,15 @@ def offered_years(page) -> list[int]:
     return sorted(set(years), reverse=True)
 
 
-def fetch_year(page, year: int) -> bool:
-    """Walk the whole flow for one year and save the CSV. True if a file was written."""
-    target = OUT / ("nufus-ilce-" + str(year) + ".csv")
+def fetch_year(page, year: int, breakdown: bool = False) -> bool:
+    """Walk the whole flow for one year and save the CSV. True if a file was written.
+
+    With `breakdown`, sex and age group are ticked on the indicator tab. That multiplies
+    the cells by 32 (16 bands × 2 sexes): 973 × 32 = 31.136 for one year, still inside
+    MEDAS's own 50.000 limit — but only one year at a time, which is why the year is the
+    chunk either way.
+    """
+    target = OUT / ("nufus-ilce-" + ("kirilim-" if breakdown else "") + str(year) + ".csv")
     if target.exists():
         print("  ", year, "zaten var, atlandi")
         return False
@@ -109,6 +115,20 @@ def fetch_year(page, year: int) -> bool:
             items.nth(index).click()
             settle(page)
             break
+
+    if breakdown:
+        # A ZK "checkbox" is a span inside the row, and only the breakdown list has them —
+        # which keeps this away from the measure list, where "Cinsiyet" also appears as
+        # "Cinsiyet oranı" and clicking it silently changes what is being measured.
+        tickable = page.locator(".z-listitem:has(.z-listitem-checkbox)")
+        for hint in ("Cinsiyet", "Grubu"):
+            for index in range(tickable.count()):
+                item = tickable.nth(index)
+                if hint in item.inner_text():
+                    box = item.locator(".z-listitem-checkbox")
+                    (box if box.count() else item).click()
+                    settle(page, "kirilim: " + hint)
+                    break
 
     click_exact(page, "Tamam")
     click_exact(page, "Göstergeler Ekle") or click_exact(page, "Göstergeleri Ekle")
@@ -175,6 +195,7 @@ def main() -> None:
 
     wanted = [a for a in sys.argv[1:] if a.isdigit()]
     everything = "--all" in sys.argv
+    breakdown = "--kirilim" in sys.argv
 
     with sync_playwright() as play:
         browser = play.chromium.launch(headless=True)
@@ -206,7 +227,7 @@ def main() -> None:
         for year in years:
             print("=", year)
             try:
-                fetch_year(page, year)
+                fetch_year(page, year, breakdown)
             except PlaywrightError as error:
                 print("   HATA:", type(error).__name__, str(error)[:160])
             time.sleep(PAUSE)

@@ -228,6 +228,27 @@ kayboluyor: bir yılın "önceki yıla göre değişimi" o görünümde yalan ol
 Sıradakiler: ara değer (eksik yıl), kişi başı, ve ileriye uzatma — sonuncusu muhtemelen
 türetme değil, ayrı bir "projeksiyon" göstergesi olarak.
 
+## Sıradaki oturum — açık maddeler (2026-08-14)
+
+Ekranda görülen, henüz yapılmamış işler. Sıra kabaca zorluğa göre:
+
+1. **İlçe düzeyinde yaş × cinsiyet kırılımı.** MEDAS'ta mümkün (973 × 32 = 31.136,
+   50.000 sınırının altında) ama `--kirilim` denemesi **tutmadı**: dosya toplamla birebir
+   aynı çıktı, yani kırılım kutuları işaretlenmemiş. Ölçüm seçildikten sonra kırılım
+   listesinin görünür hale gelmesini beklemek gerekiyor olabilir; işaretin tuttuğunu
+   satır sayısından (973 değil ~31.000) doğrulamadan yıllara başlama.
+2. **Oran (%) kipi.** Mutlak sayının yanına "toplamın yüzdesi": Şanlıurfa'nın çocuk
+   nüfusu mutlak sayıda Ankara'dan küçük, oranda büyük. Kırılım normalizasyonu olduğu
+   için K12'deki zaman türetmelerinden ayrı bir denetim olmalı — hem il hem ilçe için,
+   ölçek de ona göre.
+3. **Yıl aralığı seyrek.** Tabloda 2007, 2010, 2013 … diye üçer yıl atlıyor; sütun
+   sayısı kısıtı yüzünden örnekleniyor. Kaydırılabilir tam tablo olmalı.
+4. **"Tümünü seç" sayfayı aşağı kaydırıyor.** Liste yeniden çizilirken odak kayıyor;
+   kaydırma konumu korunmalı.
+5. **Denetim adları.** Ortak/Kendi içinde, Log/Doğrusal, Sabit/Yıla göre — daha açık
+   adlandırılacak (ör. "Ortak eksen" / "Panel bazlı", "Sabit eksen (tüm yıllar)").
+6. **Harita ilçe kipinde kırılım denetimleri** görünmüyor; 1 bitince gelecek.
+
 ## Açık işler
 
 Sıra, birbirine bağımlılığa göre:
