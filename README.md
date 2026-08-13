@@ -94,7 +94,9 @@ Yazılacak parçalar, bağımlılık sırasıyla:
 4. Adaptör sözleşmesi (fetch / parse / metadata + manifest) — ilk ikisi EVDS3 ve MEDAS
 5. Kalite kuralları (pandera)
 
-Açık tek karar: ilk tema hangisi olacak (öneri: nüfus ve doğurganlık).
+İlk tema nüfus ve doğurganlık; ilk ekran toplam doğurganlık hızı, 81 il × 2009-2025.
+Ekran düzeni onaylandı, tema değiştirilebilir olacak (renk sabit yazılmaz, hepsi CSS
+özel değişkeni; koyu tema kanonik). Ayrıntı: [docs/kararlar.md](docs/kararlar.md).
 
 ## Belgeler
 

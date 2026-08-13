@@ -37,10 +37,23 @@ Tema: DesignKit'in Win11 / WinUI 3 koyu paleti taşınacak, ama **sadece renkler
 kart / kontrol dolguları, odak halkası) CSS özel değişkeni olarak. Kontrol stilleri
 XAML, taşınmıyor; web tarafında yeniden yazılacak.
 
-## K4 — İlk tema (açık)
+## K4 — İlk tema: nüfus ve doğurganlık (2026-08-13)
 
-Öneri: nüfus ve doğurganlık. Ön çalışmadaki 6 doğrulanmış dosya bu temada, yani ilk
-veri hattı gerçek veriyle test edilebilir. Karar verilmedi.
+Ön çalışmadaki 6 doğrulanmış dosya bu temada; ilk veri hattı sentetik veriyle değil,
+kaynağı belli gerçek veriyle test edilebiliyor. İlk ekran: toplam doğurganlık hızı,
+81 il × 2009-2025.
+
+## K5 — Ekran düzeni onaylandı, tema değiştirilebilir olacak (2026-08-13)
+
+Onaylanan düzen: solda gösterge ağacı + arama · üstte filtre çubuğu (düzey, alan
+seçimi, yıl aralığı) · ortada grafik · altında kaynak/kalite rozetleri ve tablo.
+
+Renk hiçbir yere sabit yazılmaz. Her renk CSS özel değişkeni üzerinden gelir; koyu
+tema kanonik (DesignKit ile aynı kural), açık tema aynı değişken kümesini yeniden
+tanımlar. Grafik renkleri de aynı kümeden okunur — Plot çağrılarına hex gömülmez.
+
+Sonuç: değişken kümesi tek dosyada toplanır ve palet değiştirmek o dosyayı
+değiştirmek demektir; bileşenlere dokunulmaz.
 
 ## Açık işler
 
