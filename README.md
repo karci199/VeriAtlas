@@ -38,7 +38,8 @@ uv run python scripts/check_env.py
 ## Klasörler
 
 ```
-src/veriatlas/    paket kodu (config.py: yollar ve ayarlar, schema.py: olgu tablosu)
+src/veriatlas/    paket kodu (config.py, schema.py: olgu tablosu, areas.py: il kaydi)
+web/              statik arayuz (theme.css: renk degiskenleri, index.html: ekran)
 tests/            gizli-dogruluk testleri
 scripts/          tek seferlik betikler ve doğrulama araçları
 docs/             oturum notları, tasarım belgeleri
@@ -83,6 +84,17 @@ Periyot + yıllar → İleri → Düzey (İBBS3/İlçe) + iller → Rapor Oluşt
 Raporlar sayfalı gelebiliyor; tek sayfadan okumak eksik veri verir.
 
 Not: her adım sunucu turu gerektiriyor, adımları tek seferde zincirlemek çalışmıyor.
+
+## Ekranı çalıştırma
+
+```bash
+uv run python scripts/load_tfr.py     # olgu tablosunu kur
+uv run python scripts/export_web.py   # tarayici icin dilim uret
+uv run python -m http.server 8123     # sonra: localhost:8123/web/index.html
+```
+
+Sayfa Node gerektirmiyor; Observable Framework'e geçerken tema değişkenleri ve grafik
+kodu olduğu gibi taşınacak.
 
 ## Sırada ne var
 

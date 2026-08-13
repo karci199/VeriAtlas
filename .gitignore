@@ -19,3 +19,4 @@ raw/
 warehouse.duckdb
 warehouse.duckdb.wal
 public/*.parquet
+public/*.csv

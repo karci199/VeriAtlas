@@ -1,0 +1,84 @@
+/* Theme tokens. Every colour in the app comes from here — components never hardcode a
+   value, charts included (decision K5).
+
+   Dark is canonical: it is defined on :root and light re-declares the same names under
+   [data-theme="light"]. Swapping the palette means editing this file only.
+
+   Values follow DesignKit's Fluent / WinUI 3 dark ramp so the web app and our WPF apps
+   read as the same family. */
+
+:root {
+    --bg-window: #1c1c1c;
+    --bg-page: #202020;
+    --bg-card: #242424;
+    --bg-control: #2c2c2c;
+    --bg-control-hover: #323232;
+    --bg-selected: #2f5fa8;
+
+    --stroke-divider: #3a3a3a;
+    --stroke-control: #3a3a3a;
+    --stroke-focus: #ffffff;
+    --accent: #60a5fa;
+
+    --text-primary: #e4e4e4;
+    --text-secondary: #c8c8c8;
+    --text-tertiary: #8a8a8a;
+    --text-on-accent: #ffffff;
+
+    --quality-measured-bg: #123b2e;
+    --quality-measured-fg: #5dcaa5;
+    --quality-estimated-bg: #3a2e12;
+    --quality-estimated-fg: #ef9f27;
+
+    --value-down: #e24b4a;
+    --value-up: #5dcaa5;
+    --reference-line: #7a6a3a;
+    --reference-text: #b08b3a;
+
+    --series-1: #e0794f;
+    --series-2: #5dcaa5;
+    --series-3: #7f9fe0;
+    --series-4: #c9a3e0;
+    --series-5: #d4b06a;
+    --series-6: #6ec3d4;
+
+    --radius: 6px;
+    --radius-pill: 10px;
+    --font: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+}
+
+[data-theme="light"] {
+    --bg-window: #f3f3f3;
+    --bg-page: #fafafa;
+    --bg-card: #ffffff;
+    --bg-control: #ffffff;
+    --bg-control-hover: #f0f0f0;
+    --bg-selected: #0f6cbd;
+
+    --stroke-divider: #e0e0e0;
+    --stroke-control: #d0d0d0;
+    --stroke-focus: #1a1a1a;
+    --accent: #0f6cbd;
+
+    --text-primary: #1a1a1a;
+    --text-secondary: #3a3a3a;
+    --text-tertiary: #6a6a6a;
+    --text-on-accent: #ffffff;
+
+    --quality-measured-bg: #dff3ea;
+    --quality-measured-fg: #0f6e56;
+    --quality-estimated-bg: #fbf0d8;
+    --quality-estimated-fg: #854f0b;
+
+    --value-down: #a32d2d;
+    --value-up: #0f6e56;
+    --reference-line: #c8a95a;
+    --reference-text: #7a5c12;
+
+    --series-1: #b4501f;
+    --series-2: #0f6e56;
+    --series-3: #2f5fa8;
+    --series-4: #6b3fa0;
+    --series-5: #8a6a12;
+    --series-6: #106b7c;
+}

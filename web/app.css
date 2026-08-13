@@ -1,0 +1,242 @@
+/* Layout for the indicator screen. Colours come from theme.css only — no literal
+   values below this line. */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font);
+    font-size: 13px;
+    background: var(--bg-page);
+    color: var(--text-primary);
+}
+
+/* region Chrome */
+
+.titlebar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 40px;
+    padding: 0 14px;
+    background: var(--bg-window);
+    border-bottom: 1px solid var(--stroke-divider);
+}
+
+.titlebar .app {
+    font-weight: 600;
+}
+
+.titlebar .subject {
+    color: var(--text-tertiary);
+}
+
+.titlebar .spacer {
+    flex: 1;
+}
+
+/* endregion */
+
+/* region Shell */
+
+.shell {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    min-height: calc(100vh - 40px);
+}
+
+.sidebar {
+    border-right: 1px solid var(--stroke-divider);
+    padding: 12px;
+}
+
+.sidebar h2 {
+    margin: 4px 0 8px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    color: var(--text-tertiary);
+}
+
+.tree {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+}
+
+.tree .group {
+    margin: 12px 0 4px;
+    color: var(--text-secondary);
+}
+
+.tree button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 5px 8px 5px 20px;
+    margin: 1px 0;
+    border: 0;
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--text-tertiary);
+    font: inherit;
+    cursor: pointer;
+}
+
+.tree button:hover:not(:disabled) {
+    background: var(--bg-control-hover);
+}
+
+.tree button[aria-current="true"] {
+    background: var(--bg-selected);
+    color: var(--text-on-accent);
+    border-left: 3px solid var(--accent);
+    padding-left: 17px;
+}
+
+.tree button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.main {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* endregion */
+
+/* region Controls */
+
+.filters {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+input,
+select,
+button.control {
+    font: inherit;
+    color: var(--text-primary);
+    background: var(--bg-control);
+    border: 1px solid var(--stroke-control);
+    border-radius: var(--radius);
+    padding: 5px 8px;
+    height: 28px;
+}
+
+select[multiple] {
+    height: auto;
+}
+
+:focus-visible {
+    outline: 2px solid var(--stroke-focus);
+    outline-offset: 1px;
+}
+
+.field {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-tertiary);
+}
+
+/* endregion */
+
+/* region Panels */
+
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--stroke-divider);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+}
+
+.card h3 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.card .unit {
+    color: var(--text-tertiary);
+    font-size: 11px;
+    margin: 2px 0 8px;
+}
+
+.badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.badge {
+    border-radius: var(--radius-pill);
+    padding: 2px 10px;
+    font-size: 11px;
+}
+
+.badge.measured {
+    background: var(--quality-measured-bg);
+    color: var(--quality-measured-fg);
+}
+
+.badge.estimated {
+    background: var(--quality-estimated-bg);
+    color: var(--quality-estimated-fg);
+}
+
+.provenance {
+    color: var(--text-tertiary);
+    font-size: 11px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+th {
+    text-align: left;
+    font-weight: 400;
+    color: var(--text-tertiary);
+    border-bottom: 1px solid var(--stroke-divider);
+    padding: 6px 4px;
+}
+
+td {
+    padding: 5px 4px;
+    color: var(--text-secondary);
+}
+
+td.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+td.down {
+    color: var(--value-down);
+}
+
+td.up {
+    color: var(--value-up);
+}
+
+.swatch {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    margin-right: 6px;
+}
+
+/* endregion */

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<title>VeriAtlas</title>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<div class="titlebar">
+    <span class="app">VeriAtlas</span>
+    <span class="subject">Nüfus ve doğurganlık</span>
+    <span class="spacer"></span>
+    <button class="control" id="theme-toggle" type="button">Açık tema</button>
+</div>
+
+<div class="shell">
+    <nav class="sidebar">
+        <h2>GÖSTERGELER</h2>
+        <input id="search" type="search" placeholder="Ara…" style="width:100%">
+        <ul class="tree">
+            <li class="group">Nüfus</li>
+            <li><button type="button" disabled>Yaş yapısı</button></li>
+            <li><button type="button" disabled>Kütük</button></li>
+            <li class="group">Doğurganlık</li>
+            <li><button type="button" aria-current="true">Toplam doğurganlık hızı</button></li>
+            <li><button type="button" disabled>Kaba doğum hızı</button></li>
+            <li class="group">Yapı ruhsatı</li>
+            <li><button type="button" disabled>Bina ve daire</button></li>
+        </ul>
+    </nav>
+
+    <main class="main">
+        <div class="filters">
+            <label class="field">Düzey
+                <select id="level"><option>İl</option></select>
+            </label>
+            <label class="field">İller
+                <select id="areas" multiple size="4" style="min-width:190px"></select>
+            </label>
+            <label class="field">Yıl
+                <input id="from" type="number" min="2009" max="2025" value="2009" style="width:74px">
+                —
+                <input id="to" type="number" min="2009" max="2025" value="2025" style="width:74px">
+            </label>
+        </div>
+
+        <section class="card">
+            <h3 id="chart-title">Toplam doğurganlık hızı</h3>
+            <p class="unit" id="chart-unit"></p>
+            <div id="chart"></div>
+        </section>
+
+        <section class="card">
+            <div class="badges" id="badges"></div>
+            <table>
+                <thead>
+                    <tr><th>il</th><th id="th-from"></th><th id="th-to"></th><th>değişim</th></tr>
+                </thead>
+                <tbody id="rows"></tbody>
+            </table>
+        </section>
+    </main>
+</div>
+
+<script type="module">
+import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
+
+const REPLACEMENT_LEVEL = 2.10;
+const DEFAULT_AREAS = ["Bursa", "İzmir", "Şırnak"];
+
+const $ = (id) => document.getElementById(id);
+const fmt = (v) => v.toLocaleString("tr-TR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+// Chart colours live in theme.css like everything else; read them back rather than
+// repeating the values here (decision K5).
+function token(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function parseCsv(text) {
+    const [header, ...lines] = text.trim().split(/\r?\n/);
+    const cols = header.split(",");
+    return lines.map((line) => {
+        const cells = line.split(",");
+        const row = Object.fromEntries(cols.map((c, i) => [c, cells[i]]));
+        row.year = Number(row.year);
+        row.value = Number(row.value);
+        return row;
+    });
+}
+
+const data = parseCsv(await (await fetch("../public/tfr.csv")).text());
+const areaNames = [...new Set(data.map((d) => d.area))].sort((a, b) => a.localeCompare(b, "tr"));
+
+for (const name of areaNames) {
+    const option = new Option(name, name, false, DEFAULT_AREAS.includes(name));
+    $("areas").add(option);
+}
+$("chart-unit").textContent = data[0].unit + " · yıllık";
+
+function selection() {
+    const picked = [...$("areas").selectedOptions].map((o) => o.value);
+    return {
+        areas: picked.length ? picked : DEFAULT_AREAS,
+        from: Number($("from").value),
+        to: Number($("to").value),
+    };
+}
+
+function render() {
+    const {areas, from, to} = selection();
+    const rows = data.filter((d) => areas.includes(d.area) && d.year >= from && d.year <= to);
+    const colours = [1, 2, 3, 4, 5, 6].map((i) => token("--series-" + i));
+
+    $("chart").replaceChildren(Plot.plot({
+        height: 260,
+        marginLeft: 44,
+        marginRight: 76,
+        style: {background: "transparent", color: token("--text-tertiary"), fontSize: "11px"},
+        x: {label: null, tickFormat: "d", grid: false},
+        y: {label: null, grid: true, nice: true},
+        color: {domain: areas, range: colours},
+        marks: [
+            Plot.ruleY([REPLACEMENT_LEVEL], {
+                stroke: token("--reference-line"), strokeDasharray: "4 4",
+            }),
+            Plot.text([`yenilenme ${fmt(REPLACEMENT_LEVEL)}`], {
+                frameAnchor: "right", dy: -8, dx: -80, fill: token("--reference-text"),
+                y: REPLACEMENT_LEVEL, fontSize: 10,
+            }),
+            Plot.lineY(rows, {x: "year", y: "value", stroke: "area", strokeWidth: 2}),
+            Plot.text(rows, Plot.selectLast({
+                x: "year", y: "value", z: "area", text: "area", fill: "area",
+                textAnchor: "start", dx: 6, fontSize: 10,
+            })),
+        ],
+    }));
+
+    const qualities = [...new Set(rows.map((d) => d.quality_flag))];
+    const labels = {measured: "ölçüm", estimated: "tahmin", interpolated: "ara değer"};
+    $("badges").replaceChildren(
+        ...qualities.map((q) => {
+            const span = document.createElement("span");
+            span.className = "badge " + q;
+            span.textContent = labels[q] ?? q;
+            return span;
+        }),
+        Object.assign(document.createElement("span"), {
+            className: "provenance",
+            textContent: `${rows[0].source_id} · sürüm ${rows[0].vintage}`,
+        }),
+    );
+
+    $("th-from").textContent = from;
+    $("th-to").textContent = to;
+    $("rows").replaceChildren(...areas.map((area, i) => {
+        const series = rows.filter((d) => d.area === area).sort((a, b) => a.year - b.year);
+        const first = series.at(0), last = series.at(-1);
+        const delta = last.value - first.value;
+        const tr = document.createElement("tr");
+        tr.innerHTML =
+            `<td><span class="swatch" style="background:${colours[i % colours.length]}"></span>${area}</td>` +
+            `<td class="num">${fmt(first.value)}</td>` +
+            `<td class="num">${fmt(last.value)}</td>` +
+            `<td class="num ${delta < 0 ? "down" : "up"}">${delta < 0 ? "−" : "+"}${fmt(Math.abs(delta))}</td>`;
+        return tr;
+    }));
+}
+
+for (const id of ["areas", "from", "to"]) $(id).addEventListener("input", render);
+
+$("theme-toggle").addEventListener("click", () => {
+    const light = document.documentElement.dataset.theme === "light";
+    document.documentElement.dataset.theme = light ? "dark" : "light";
+    $("theme-toggle").textContent = light ? "Açık tema" : "Koyu tema";
+    render();
+});
+
+render();
+</script>
+
+</body>
+</html>
