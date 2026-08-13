@@ -88,7 +88,7 @@ Not: her adım sunucu turu gerektiriyor, adımları tek seferde zincirlemek çal
 ## Ekranı çalıştırma
 
 ```bash
-uv run python scripts/load_tfr.py     # olgu tablosunu kur
+uv run python scripts/load.py         # adaptörleri çalıştır, olgu tablosunu kur
 uv run python scripts/export_web.py   # tarayici icin dilim uret
 uv run python -m http.server 8123     # sonra: localhost:8123/web/index.html
 ```
@@ -103,7 +103,7 @@ Yazılacak parçalar, bağımlılık sırasıyla:
 1. ~~Kanonik olgu tablosu şeması~~ — bitti (`src/veriatlas/schema.py`)
 2. ~~Gösterge sözlüğü~~ — bitti (`src/veriatlas/data/indicators.toml`)
 3. Zamana bağlı coğrafya kaydı (6360 sayılı yasa, 2013 kırılması)
-4. Adaptör sözleşmesi (fetch / parse / metadata + manifest) — ilk ikisi EVDS3 ve MEDAS
+4. ~~Adaptör sözleşmesi~~ — bitti (`src/veriatlas/adapters/`); sıradaki adaptörler EVDS3, MEDAS, Dünya Bankası
 5. Kalite kuralları (pandera)
 
 İlk tema nüfus ve doğurganlık; ilk ekran toplam doğurganlık hızı, 81 il × 2009-2025.

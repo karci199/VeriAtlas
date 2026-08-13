@@ -130,8 +130,8 @@ Sıra, birbirine bağımlılığa göre:
 3. **Zamana bağlı coğrafya kaydı** — ülke / 7 bölge / 81 il yapıldı (`src/veriatlas/data/areas_tr.csv`,
    81 il + ülke, ISO 3166-2:TR). Kalan zor yarı ilçe: 6360 sayılı yasa, 2013 kırılması,
    sonradan kurulan ilçeler → geçerlilik aralığı ve ardıl eşlemesi gerekiyor.
-4. **Adaptör sözleşmesi** — fetch / parse / metadata + manifest. İlk iki adaptör:
-   EVDS3 (API var) ve MEDAS (Playwright).
+4. **Adaptör sözleşmesi** — kuruldu, bkz. K8. Sıradaki adaptörler: EVDS3 (API var),
+   MEDAS (Playwright), Dünya Bankası (SDMX).
 5. **Kalite kuralları** — pandera şemaları, yükleme sırasında çalışır.
 6. **Kod dili geçişi** — mevcut `config.py` ve `scripts/` Türkçe docstring'li;
    K1'e göre İngilizceye çevrilecek.
@@ -187,6 +187,31 @@ görünüyor. Kalite bayrağı makinesinin ilk gerçek kullanımı bu oldu.
 
 Ağırlıklar `src/veriatlas/data/area_weights_tr.csv`'de, kayıttan ayrı tutuluyor: ad
 kalıcıdır, nüfus ise tarihi olan bir gözlemdir.
+
+## K8 — Adaptör sözleşmesi (2026-08-13)
+
+`src/veriatlas/adapters/`. Sözleşme kasıtlı olarak küçük, çünkü kaynaklar birbirine hiç
+benzemiyor (EVDS bir REST API, MEDAS bir tarayıcı oturumu, ilkimiz diskteki bir dosya):
+
+- `fetch()` — ham baytları `raw/` altına getirir, dokunmadan saklar
+- `parse()` — o baytları olgu tablosu satırlarına çevirir
+- manifest — çalıştırmanın kaydı, `raw/manifests.jsonl`'a eklenir
+
+Ayrım önemli: **hatayı ayrıştırmada yaparız.** Ham kopya durduğu için ayrıştırma
+hatası düzeltilip yeniden oynatılabilir — kaynağa dönmek gerekmez, ki kaynak o zamana
+kadar veriyi revize etmiş, adını değiştirmiş ya da kaldırmış olabilir.
+
+Manifest ham baytların sağlamasını (SHA-256, kısa) tutuyor: "bu dosya geçen seferkinden
+farklı mı" sorusu diff almadan, "şu grafiği hangi veri sürümü üretti" sorusu kaynak
+değiştikten sonra da cevaplanabiliyor. Dosya ekleme-only, üzerine yazılmıyor.
+
+**Doğrulama adaptörün işi değil.** `ingest()` her kaynağı aynı şemadan ve aynı kırılım
+denetiminden geçiriyor; ayrıca gösterge kimliği ile birimin sözlükle uyuştuğunu
+sınıyor. Yani yeni bir adaptör olgu tablosunun kabul ettiği şeyi sessizce genişletemez.
+
+İlk adaptör (`TuikTfr`) bilerek en garip vaka seçildi: servis değil, elle indirilmiş
+bir dosya. Sözleşme hem onu hem REST API'yi bükülmeden taşıyabiliyorsa doğru şekildedir.
+`scripts/load_tfr.py` kalktı, yerine `scripts/load.py` geldi.
 
 ## Kaynak kısıtları (değişmedi)
 

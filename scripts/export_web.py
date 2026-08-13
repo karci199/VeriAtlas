@@ -117,7 +117,9 @@ def main() -> None:
         "source_id",
     )
 
-    rolled = [to_level(provinces, lvl) for lvl in ("country", "region", "nuts1", "nuts2")]
+    rolled = [
+        to_level(provinces, lvl) for lvl in ("country", "region", "nuts1", "nuts2")
+    ]
     slim = pl.concat([provinces, *rolled]).sort("level", "area", "year")
 
     target = PUBLIC / "tfr.csv"
