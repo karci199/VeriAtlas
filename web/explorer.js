@@ -1,0 +1,872 @@
+// The explorer shell: one skeleton every indicator is drawn through (decision K10).
+//
+// Three rules keep it reusable:
+//   - nothing is spelled out here. Labels, units, precision, which breakdowns exist and
+//     which views are allowed all come from the dictionary through meta.json (K1, K7).
+//   - the shell decides layout, the indicator decides content. Adding an indicator is a
+//     dictionary + export change; this file should not need to know.
+//   - colours and sizes come from theme.css tokens, never from literals, so the settings
+//     panel can restyle the whole page including the charts (K5).
+
+// region Look — reader-adjustable theme axes
+
+const ACCENTS = [
+    {id: "mavi", dark: "#60a5fa", light: "#0f6cbd"},
+    {id: "yesil", dark: "#5dcaa5", light: "#0f6e56"},
+    {id: "turuncu", dark: "#e0794f", light: "#b4501f"},
+    {id: "mor", dark: "#c9a3e0", light: "#6b3fa0"},
+];
+
+const DEFAULT_LOOK = {theme: "dark", font: 100, density: 100, accent: "mavi"};
+const LOOK_KEY = "veriatlas.look";
+
+function loadLook() {
+    try {
+        return {...DEFAULT_LOOK, ...JSON.parse(localStorage.getItem(LOOK_KEY) || "{}")};
+    } catch {
+        return {...DEFAULT_LOOK};
+    }
+}
+
+let look = loadLook();
+
+function applyLook() {
+    const root = document.documentElement;
+    root.dataset.theme = look.theme;
+    root.style.setProperty("--font-scale", look.font / 100);
+    root.style.setProperty("--density", look.density / 100);
+
+    const accent = ACCENTS.find((a) => a.id === look.accent) || ACCENTS[0];
+    root.style.setProperty("--accent", look.theme === "light" ? accent.light : accent.dark);
+    root.style.setProperty("--panel-heading", look.theme === "light" ? accent.light : accent.dark);
+
+    localStorage.setItem(LOOK_KEY, JSON.stringify(look));
+    syncSettingsPanel();
+}
+
+function syncSettingsPanel() {
+    $("set-font").value = look.font;
+    $("set-density").value = look.density;
+    $("set-font-value").textContent = "%" + look.font;
+    $("set-density-value").textContent = "%" + look.density;
+
+    for (const button of $("set-theme").children) {
+        button.classList.toggle("on", button.dataset.value === look.theme);
+    }
+    for (const button of $("set-accent").children) {
+        button.classList.toggle("on", button.dataset.value === look.accent);
+    }
+}
+
+function buildSettingsPanel() {
+    $("set-accent").innerHTML = ACCENTS.map(
+        (a) => '<button data-value="' + a.id + '" title="' + a.id +
+               '" style="background:' + a.dark + '"></button>'
+    ).join("");
+
+    $("settings-toggle").onclick = () => {
+        const body = $("settings-body");
+        body.hidden = !body.hidden;
+        $("settings-toggle").setAttribute("aria-expanded", String(!body.hidden));
+    };
+
+    $("set-theme").onclick = (ev) => pick(ev, (v) => { look.theme = v; });
+    $("set-accent").onclick = (ev) => pick(ev, (v) => { look.accent = v; });
+    $("set-font").oninput = (ev) => { look.font = Number(ev.target.value); applyLook(); };
+    $("set-density").oninput = (ev) => { look.density = Number(ev.target.value); applyLook(); render(); };
+    $("set-reset").onclick = () => { look = {...DEFAULT_LOOK}; applyLook(); render(); };
+
+    function pick(ev, set) {
+        const button = ev.target.closest("button");
+        if (!button) {
+            return;
+        }
+        set(button.dataset.value);
+        applyLook();
+        // Charts read their colours from tokens, so they have to be redrawn.
+        render();
+    }
+}
+
+// endregion
+
+// region Reading data
+
+function $(id) {
+    return document.getElementById(id);
+}
+
+function token(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+async function read(path) {
+    try {
+        const response = await fetch(path);
+        if (!response.ok) {
+            throw new Error(response.status + " " + response.statusText);
+        }
+        return response;
+    } catch (cause) {
+        cause.path = path;
+        throw cause;
+    }
+}
+
+function parseCsv(text) {
+    const [header, ...lines] = text.trim().split(/\r?\n/);
+    const cols = header.split(",");
+    return lines.map((line) => {
+        const cells = line.split(",");
+        const row = Object.fromEntries(cols.map((c, i) => [c, cells[i]]));
+        row.year = Number(row.year);
+        row.value = Number(row.value);
+        return row;
+    });
+}
+
+const datasets = new Map();
+
+async function dataset(indicator) {
+    if (!indicator.dataset) {
+        return null;
+    }
+    if (!datasets.has(indicator.dataset)) {
+        const text = await (await read("../public/" + indicator.dataset)).text();
+        datasets.set(indicator.dataset, parseCsv(text));
+    }
+    return datasets.get(indicator.dataset);
+}
+
+// Area levels are ids in the fact table; these are their Turkish names. They belong in
+// the area registry the way indicator labels belong in the dictionary — until the
+// registry exports them, this is the one label map left in the page.
+const LEVEL_LABELS = {
+    province: "İl",
+    nuts2: "İBBS-2",
+    nuts1: "İBBS-1",
+    region: "Coğrafi bölge",
+    country: "Türkiye",
+};
+
+const DIM_LABELS = {age: "Yaş grubu", sex: "Cinsiyet"};
+const VIEW_LABELS = {
+    table: "▦ Tablo",
+    map: "◍ Harita",
+    line: "📈 Çizgi",
+    bar: "📊 Sütun",
+    pyramid: "⧗ Piramit",
+};
+
+const TOTAL = "__total__";
+
+// endregion
+
+// region State
+
+const state = {
+    indicator: null,
+    rows: [],
+    view: "line",
+    level: "province",
+    selection: [],
+    dims: {},
+    year: null,
+    search: "",
+};
+
+let meta = null;
+let catalogue = [];
+let geometry = undefined; // undefined = not tried yet, null = absent
+
+function levelsInData() {
+    return [...new Set(state.rows.map((r) => r.level))]
+        .sort((a, b) => Object.keys(LEVEL_LABELS).indexOf(a) - Object.keys(LEVEL_LABELS).indexOf(b));
+}
+
+function valuesOf(dim) {
+    return [...new Set(state.rows.map((r) => r[dim]).filter((v) => v !== undefined))]
+        .sort((a, b) => String(a).localeCompare(String(b), "tr", {numeric: true}));
+}
+
+function years() {
+    return [...new Set(state.rows.map((r) => r.year))].sort((a, b) => a - b);
+}
+
+/** Rows matching the current breakdown choice, summed where a dim is set to "all".
+ *  Summing is only offered for additive units, so this never adds up rates. */
+function slice() {
+    const rows = state.rows.filter(
+        (r) => r.level === state.level &&
+               (state.indicator.dims || []).every(
+                   (d) => state.dims[d] === TOTAL || String(r[d]) === String(state.dims[d])
+               )
+    );
+
+    const totals = new Map();
+    for (const row of rows) {
+        const key = row.area + "|" + row.year;
+        const seen = totals.get(key);
+        if (seen) {
+            seen.value += row.value;
+        } else {
+            totals.set(key, {...row});
+        }
+    }
+    return [...totals.values()];
+}
+
+function seriesFor(area) {
+    return slice().filter((r) => r.area === area).sort((a, b) => a.year - b.year);
+}
+
+function areasAtLevel() {
+    return [...new Set(state.rows.filter((r) => r.level === state.level).map((r) => r.area))]
+        .sort((a, b) => a.localeCompare(b, "tr"));
+}
+
+function fmt(value) {
+    if (value === undefined || Number.isNaN(value)) {
+        return "—";
+    }
+    return value.toLocaleString("tr-TR", {
+        minimumFractionDigits: state.indicator.decimals,
+        maximumFractionDigits: state.indicator.decimals,
+    });
+}
+
+// endregion
+
+// region Left rail
+
+function drawRail() {
+    $("level").innerHTML = levelsInData()
+        .map((l) => '<option value="' + l + '"' + (l === state.level ? " selected" : "") +
+                    ">" + (LEVEL_LABELS[l] || l) + "</option>")
+        .join("");
+
+    const needle = state.search.toLocaleLowerCase("tr");
+    const areas = areasAtLevel().filter((a) => a.toLocaleLowerCase("tr").includes(needle));
+
+    $("entities").innerHTML = areas
+        .map((area) => {
+            const on = state.selection.includes(area);
+            return '<li class="' + (on ? "on" : "") + '" data-area="' + area + '">' +
+                   '<input type="checkbox" ' + (on ? "checked" : "") + ' tabindex="-1">' +
+                   '<span class="name">' + area + "</span>" +
+                   '<span class="lvl">' + (LEVEL_LABELS[state.level] || state.level) + "</span></li>";
+        })
+        .join("");
+}
+
+/** Default selection: the largest few at this level, so the page is never blank. */
+function seedSelection() {
+    const latest = Math.max(...years());
+    state.selection = slice()
+        .filter((r) => r.year === latest)
+        .sort((a, b) => b.value - a.value)
+        .slice(0, 5)
+        .map((r) => r.area);
+}
+
+// endregion
+
+// region Breakdown strip
+
+function drawDims() {
+    const groups = [indicatorControl()];
+
+    for (const dim of state.indicator.dims || []) {
+        const options = valuesOf(dim);
+        if (!options.length) {
+            continue;
+        }
+        // "Tümü" means summing across the breakdown, which only means something for a
+        // unit that adds up. A rate gets the raw values and nothing else.
+        const all = state.indicator.additive
+            ? '<option value="' + TOTAL + '"' + (state.dims[dim] === TOTAL ? " selected" : "") +
+              ">Tümü (topla)</option>"
+            : "";
+
+        groups.push(
+            "<div><div class='dim-label'>" + (DIM_LABELS[dim] || dim) + "</div>" +
+            "<select data-dim='" + dim + "'>" + all +
+            options
+                .map((v) => '<option value="' + v + '"' +
+                            (String(state.dims[dim]) === String(v) ? " selected" : "") + ">" + v + "</option>")
+                .join("") +
+            "</select></div>"
+        );
+    }
+
+    $("dims").innerHTML = groups.join("");
+}
+
+function indicatorControl() {
+    const options = meta.tree
+        .map((topic) => {
+            const items = topic.indicators
+                .map((ind) => '<option value="' + ind.id + '"' +
+                              (ind.id === state.indicator.id ? " selected" : "") +
+                              (ind.available ? "" : " disabled") + ">" + ind.label +
+                              (ind.available ? "" : " (veri yok)") + "</option>")
+                .join("");
+            return "<optgroup label='" + topic.topic + "'>" + items + "</optgroup>";
+        })
+        .join("");
+
+    return "<div><div class='dim-label'>Gösterge</div>" +
+           "<select id='indicator'>" + options + "</select></div>";
+}
+
+// endregion
+
+// region Views
+
+/** Which views this indicator offers, and why one may still be unusable right now. */
+function viewState(view) {
+    if (!(state.indicator.views || []).includes(view)) {
+        return {enabled: false, reason: "Bu gösterge için tanımlı değil"};
+    }
+    if (view === "map" && geometry === null) {
+        return {enabled: false, reason: "İl sınır geometrisi henüz çekilmedi"};
+    }
+    return {enabled: true, reason: ""};
+}
+
+function drawTabs() {
+    $("tabs").innerHTML = Object.keys(VIEW_LABELS)
+        .map((view) => {
+            const {enabled, reason} = viewState(view);
+            return "<button data-view='" + view + "'" +
+                   (enabled ? "" : " disabled title='" + reason + "'") +
+                   (view === state.view ? " class='on'" : "") + ">" + VIEW_LABELS[view] + "</button>";
+        })
+        .join("");
+}
+
+const PLOT_W = 1000;
+const PLOT_H = 420;
+
+function colour(index) {
+    return token("--series-" + ((index % 10) + 1));
+}
+
+function niceTicks(max) {
+    const raw = max / 5;
+    const magnitude = Math.pow(10, Math.floor(Math.log10(raw)));
+    const step = [1, 2, 2.5, 5, 10].map((m) => m * magnitude).find((s) => s >= raw) || magnitude * 10;
+    return {step, top: Math.ceil(max / step) * step};
+}
+
+function lineChart() {
+    const rows = state.selection.map((area, i) => ({area, pts: seriesFor(area), colour: colour(i)}))
+        .filter((r) => r.pts.length);
+    if (!rows.length) {
+        return empty("Soldan en az bir alan seçin.");
+    }
+
+    const span = years();
+    const [minYear, maxYear] = [span[0], span[span.length - 1]];
+    const max = Math.max(...rows.flatMap((r) => r.pts.map((p) => p.value)));
+    const {step, top} = niceTicks(max);
+
+    const L = 96, R = 190, T = 16, B = 38;
+    const x = (y) => L + ((y - minYear) / Math.max(1, maxYear - minYear)) * (PLOT_W - L - R);
+    const yv = (v) => T + (1 - v / top) * (PLOT_H - T - B);
+
+    let svg = '<svg class="plot" viewBox="0 0 ' + PLOT_W + " " + PLOT_H + '" role="img">';
+
+    for (let v = 0; v <= top + step / 2; v += step) {
+        svg += '<line x1="' + L + '" x2="' + (PLOT_W - R) + '" y1="' + yv(v) + '" y2="' + yv(v) +
+               '" stroke="' + token("--stroke-divider") + '" stroke-dasharray="4 5"/>' +
+               axisText(L - 12, yv(v) + 4, fmt(v), "end");
+    }
+
+    // The last year always gets a tick; a decade tick too close to it is dropped.
+    const ticks = [];
+    for (let y = Math.ceil(minYear / 10) * 10; y < maxYear - 3; y += 10) {
+        ticks.push(y);
+    }
+    ticks.unshift(minYear);
+    ticks.push(maxYear);
+    for (const y of [...new Set(ticks)]) {
+        svg += axisText(x(y), PLOT_H - 12, y, "middle");
+    }
+
+    // Right-hand labels are pushed apart from the bottom up so close series stay legible.
+    const labels = rows
+        .map((r) => ({r, y: yv(r.pts[r.pts.length - 1].value)}))
+        .sort((a, b) => b.y - a.y);
+    labels.forEach((l, i) => {
+        if (i && labels[i - 1].y - l.y < 16) {
+            l.y = labels[i - 1].y - 16;
+        }
+    });
+
+    for (const row of rows) {
+        const d = row.pts
+            .map((p, i) => (i ? "L" : "M") + x(p.year).toFixed(1) + " " + yv(p.value).toFixed(1))
+            .join(" ");
+        const last = row.pts[row.pts.length - 1];
+        const ly = labels.find((l) => l.r === row).y;
+
+        svg += '<path d="' + d + '" fill="none" stroke="' + row.colour + '" stroke-width="2.5" stroke-linejoin="round"/>' +
+               '<circle cx="' + x(last.year) + '" cy="' + yv(last.value) + '" r="3" fill="' + row.colour + '"/>' +
+               '<path d="M' + (x(last.year) + 4) + " " + yv(last.value) + "L" + (PLOT_W - R + 8) + " " + ly +
+               '" fill="none" stroke="' + row.colour + '" stroke-width="1" opacity=".55"/>' +
+               '<text class="legend-label" x="' + (PLOT_W - R + 14) + '" y="' + (ly + 4) +
+               '" fill="' + row.colour + '">' + row.area + "</text>";
+    }
+
+    return svg + "</svg>";
+}
+
+function axisText(x, y, text, anchor) {
+    return '<text x="' + x + '" y="' + y + '" text-anchor="' + anchor + '" fill="' +
+           token("--text-tertiary") + '" font-size="13">' + text + "</text>";
+}
+
+function barChart() {
+    const rows = state.selection
+        .map((area, i) => {
+            const point = seriesFor(area).find((p) => p.year === state.year);
+            return point ? {area, value: point.value, colour: colour(i)} : null;
+        })
+        .filter(Boolean)
+        .sort((a, b) => b.value - a.value);
+    if (!rows.length) {
+        return empty("Seçili alanların bu yıl için değeri yok.");
+    }
+
+    const L = 150, R = 130, T = 16;
+    const max = Math.max(...rows.map((r) => r.value));
+    const band = (PLOT_H - T - 16) / rows.length;
+
+    let svg = '<svg class="plot" viewBox="0 0 ' + PLOT_W + " " + PLOT_H + '" role="img">';
+    rows.forEach((row, i) => {
+        const y = T + i * band + band * 0.18;
+        const h = band * 0.64;
+        const w = (row.value / max) * (PLOT_W - L - R);
+        svg += '<rect x="' + L + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="2" fill="' + row.colour + '"/>' +
+               axisText(L - 12, y + h / 2 + 5, row.area, "end") +
+               axisText(L + w + 12, y + h / 2 + 5, fmt(row.value), "start");
+    });
+    return svg + "</svg>";
+}
+
+function table() {
+    const span = years();
+    const columns = span.length > 8
+        ? span.filter((_, i) => i % Math.ceil(span.length / 8) === 0).concat(span[span.length - 1])
+        : span;
+    const shown = [...new Set(columns)];
+
+    if (!state.selection.length) {
+        return empty("Soldan en az bir alan seçin.");
+    }
+
+    let html = "<div style='max-height:" + PLOT_H + "px;overflow:auto'><table class='grid'><thead><tr><th>" +
+               (LEVEL_LABELS[state.level] || state.level) + "</th>" +
+               shown.map((y) => "<th>" + y + "</th>").join("") + "</tr></thead><tbody>";
+
+    for (const area of state.selection) {
+        const points = seriesFor(area);
+        html += "<tr><td>" + area + "</td>" +
+                shown.map((y) => "<td>" + fmt(points.find((p) => p.year === y)?.value) + "</td>").join("") +
+                "</tr>";
+    }
+    return html + "</tbody></table></div>";
+}
+
+function pyramid() {
+    const [age, sex] = ["age", "sex"];
+    const rows = state.rows.filter(
+        (r) => r.level === state.level && r.year === state.year && r.area === state.selection[0]
+    );
+    if (!rows.length) {
+        return empty("Piramit tek alan çizer; soldan bir alan seçin.");
+    }
+
+    const bands = [...new Set(rows.map((r) => r[age]))].sort((a, b) =>
+        String(a).localeCompare(String(b), "tr", {numeric: true}));
+    const sexes = [...new Set(rows.map((r) => r[sex]))].sort();
+    const max = Math.max(...rows.map((r) => r.value));
+
+    const mid = PLOT_W / 2, T = 16;
+    const band = (PLOT_H - T - 16) / bands.length;
+
+    let svg = '<svg class="plot" viewBox="0 0 ' + PLOT_W + " " + PLOT_H + '" role="img">';
+    bands.forEach((label, i) => {
+        const y = PLOT_H - 16 - (i + 1) * band + band * 0.15;
+        const h = band * 0.7;
+        sexes.forEach((s, si) => {
+            const row = rows.find((r) => r[age] === label && r[sex] === s);
+            if (!row) {
+                return;
+            }
+            const w = (row.value / max) * (mid - 90);
+            const left = si === 0;
+            svg += '<rect x="' + (left ? mid - 60 - w : mid + 60) + '" y="' + y + '" width="' + w +
+                   '" height="' + h + '" fill="' + colour(si) + '" rx="1"/>';
+        });
+        svg += axisText(mid, y + h / 2 + 4, label, "middle");
+    });
+
+    sexes.forEach((s, si) => {
+        svg += '<text x="' + (si === 0 ? 20 : PLOT_W - 20) + '" y="14" text-anchor="' +
+               (si === 0 ? "start" : "end") + '" fill="' + colour(si) + '" font-size="13">' + s + "</text>";
+    });
+    return svg + "</svg>";
+}
+
+function map() {
+    if (!geometry) {
+        return empty(
+            "Harita için il sınırları gerekiyor; henüz çekilmedi.",
+            "public/areas.geojson bekleniyor — özellik başına area_id"
+        );
+    }
+
+    const rows = slice().filter((r) => r.year === state.year);
+    const byId = new Map(rows.map((r) => [r.area_id, r.value]));
+    const values = [...byId.values()];
+    if (!values.length) {
+        return empty("Bu yıl için değer yok.");
+    }
+
+    const [low, high] = [Math.min(...values), Math.max(...values)];
+    const features = geometry.features;
+
+    // Equirectangular is enough at country scale and needs no projection library.
+    const points = features.flatMap((f) => rings(f).flat());
+    const lon = points.map((p) => p[0]);
+    const lat = points.map((p) => p[1]);
+    const [x0, x1, y0, y1] = [Math.min(...lon), Math.max(...lon), Math.min(...lat), Math.max(...lat)];
+    const scale = Math.min((PLOT_W - 40) / (x1 - x0), (PLOT_H - 40) / (y1 - y0));
+    const px = (p) => [
+        20 + (p[0] - x0) * scale,
+        PLOT_H - 20 - (p[1] - y0) * scale,
+    ];
+
+    const base = token("--bg-control");
+    const ink = token("--accent");
+
+    let svg = '<svg class="plot" viewBox="0 0 ' + PLOT_W + " " + PLOT_H + '" role="img">';
+    for (const feature of features) {
+        const value = byId.get(feature.properties.area_id);
+        const t = value === undefined ? null : (value - low) / Math.max(1e-9, high - low);
+        const d = rings(feature)
+            .map((ring) => "M" + ring.map((p) => px(p).map((n) => n.toFixed(1)).join(" ")).join("L") + "Z")
+            .join(" ");
+        svg += '<path d="' + d + '" fill="' + (t === null ? base : ink) + '" fill-opacity="' +
+               (t === null ? 0.35 : (0.15 + 0.85 * t).toFixed(2)) + '" stroke="' +
+               token("--bg-card") + '" stroke-width="0.6"><title>' +
+               feature.properties.name_tr + ": " + fmt(value) + "</title></path>";
+    }
+
+    return svg + "</svg>" + legend(low, high, ink);
+}
+
+function rings(feature) {
+    const g = feature.geometry;
+    return g.type === "Polygon" ? g.coordinates : g.coordinates.flat();
+}
+
+function legend(low, high, ink) {
+    const stops = [0, 0.25, 0.5, 0.75, 1];
+    return "<div style='display:flex;align-items:center;gap:8px;justify-content:flex-end;" +
+           "color:var(--text-tertiary);font-size:var(--text-xs)'>" + fmt(low) +
+           stops.map((t) => "<span style='width:26px;height:12px;background:" + ink +
+                            ";opacity:" + (0.15 + 0.85 * t).toFixed(2) + "'></span>").join("") +
+           fmt(high) + "</div>";
+}
+
+function empty(message, hint) {
+    return "<div class='placeholder'><div>" + message + "</div>" +
+           (hint ? "<pre>" + hint + "</pre>" : "") + "</div>";
+}
+
+const RENDERERS = {line: lineChart, bar: barChart, table, pyramid, map};
+
+// endregion
+
+// region Render
+
+function render() {
+    if (!state.indicator) {
+        return; // the settings panel is live before the first dataset arrives
+    }
+    drawRail();
+    drawDims();
+    drawTabs();
+
+    $("chart-title").textContent = state.indicator.label;
+    $("chart-definition").textContent = state.indicator.definition || "";
+    $("view").innerHTML = RENDERERS[state.view]();
+
+    // The time control means different things per view: a line already shows every year,
+    // the others stand on one. Rather than a control that lies, it hides.
+    const perYear = state.view !== "line" && state.view !== "table";
+    $("time").style.visibility = perYear ? "visible" : "hidden";
+
+    const span = years();
+    $("year").min = span[0];
+    $("year").max = span[span.length - 1];
+    $("year").value = state.year;
+    $("year-from").textContent = span[0];
+    $("year-to").textContent = state.year;
+
+    $("chart-subtitle").textContent =
+        state.indicator.unit + " · " + (LEVEL_LABELS[state.level] || state.level) +
+        " · " + (perYear ? state.year : span[0] + "–" + span[span.length - 1]);
+
+    drawSource();
+    writeHash();
+}
+
+function drawSource() {
+    const rows = slice();
+    const flags = [...new Set(rows.map((r) => r.quality_flag).filter(Boolean))];
+    const vintage = rows[0]?.vintage;
+    const source = rows[0]?.source_id;
+
+    $("source").innerHTML =
+        "<b>Kaynak:</b> " + (source || "—") +
+        flags.map((f) => "<span class='badge " + (f === "measured" ? "measured" : "estimated") + "'>" +
+                         (f === "measured" ? "ölçüm" : "tahmin") + "</span>").join("") +
+        "<br><span class='provenance'>veriatlas / " + state.indicator.id +
+        (vintage ? " · sürüm " + vintage : "") + " · CC BY</span>";
+}
+
+// endregion
+
+// region Sharing the current screen
+
+function writeHash() {
+    const params = new URLSearchParams({
+        i: state.indicator.id,
+        v: state.view,
+        l: state.level,
+        y: state.year,
+        a: state.selection.join("~"),
+        ...Object.fromEntries(Object.entries(state.dims).map(([k, v]) => ["d." + k, v])),
+    });
+    history.replaceState(null, "", "#" + params);
+}
+
+function readHash() {
+    return new URLSearchParams(location.hash.slice(1));
+}
+
+function downloadShown() {
+    const rows = slice().filter((r) => state.selection.includes(r.area));
+    const header = "area,year,value,unit,indicator\n";
+    const body = rows
+        .map((r) => [r.area, r.year, r.value, state.indicator.unit, state.indicator.id].join(","))
+        .join("\n");
+
+    const url = URL.createObjectURL(new Blob([header + body], {type: "text/csv;charset=utf-8"}));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "veriatlas-" + state.indicator.id + ".csv";
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// endregion
+
+// region Switching indicator
+
+async function useIndicator(id) {
+    const indicator = catalogue.find((i) => i.id === id);
+    state.indicator = indicator;
+
+    const rows = await dataset(indicator);
+    state.rows = rows || [];
+
+    if (!state.rows.length) {
+        // Still draw the strip: without it there is no way back to an indicator that
+        // does have data.
+        state.dims = {};
+        drawDims();
+        drawTabs();
+        $("view").innerHTML = empty(
+            indicator.label + " için henüz veri yüklenmedi.",
+            "uv run python scripts/load.py"
+        );
+        return false;
+    }
+
+    const levels = levelsInData();
+    state.level = levels.includes(state.level) ? state.level : levels[0];
+
+    state.dims = {};
+    for (const dim of indicator.dims || []) {
+        const values = valuesOf(dim);
+        // Default to the whole population where summing is meaningful, else the first
+        // value: a chart of one arbitrary age band would be a lie by omission.
+        state.dims[dim] = indicator.additive ? TOTAL : values[0];
+    }
+
+    const span = years();
+    state.year = span[span.length - 1];
+    if (!(indicator.views || []).includes(state.view)) {
+        state.view = indicator.views[0];
+    }
+
+    seedSelection();
+    return true;
+}
+
+// endregion
+
+// region Wiring
+
+function wire() {
+    $("entities").onclick = (ev) => {
+        const li = ev.target.closest("li");
+        if (!li) {
+            return;
+        }
+        const area = li.dataset.area;
+        state.selection = state.selection.includes(area)
+            ? state.selection.filter((a) => a !== area)
+            : [...state.selection, area];
+        render();
+    };
+
+    $("entity-search").oninput = (ev) => {
+        state.search = ev.target.value;
+        drawRail();
+    };
+
+    $("clear-selection").onclick = () => {
+        state.selection = [];
+        render();
+    };
+
+    $("level").onchange = (ev) => {
+        state.level = ev.target.value;
+        seedSelection();
+        render();
+    };
+
+    $("dims").onchange = async (ev) => {
+        if (ev.target.id === "indicator") {
+            if (await useIndicator(ev.target.value)) {
+                render();
+            }
+            return;
+        }
+        state.dims[ev.target.dataset.dim] = ev.target.value;
+        render();
+    };
+
+    $("tabs").onclick = (ev) => {
+        const button = ev.target.closest("button");
+        if (!button || button.disabled) {
+            return;
+        }
+        state.view = button.dataset.view;
+        render();
+    };
+
+    $("year").oninput = (ev) => {
+        state.year = Number(ev.target.value);
+        render();
+    };
+
+    $("play").onclick = playYears;
+    $("download").onclick = downloadShown;
+    $("share").onclick = async () => {
+        await navigator.clipboard.writeText(location.href);
+        $("share").textContent = "✓ Kopyalandı";
+        setTimeout(() => { $("share").textContent = "↗ Bağlantı"; }, 1500);
+    };
+
+    document.addEventListener("click", (ev) => {
+        if (!ev.target.closest(".settings")) {
+            $("settings-body").hidden = true;
+        }
+    });
+}
+
+let playing = null;
+
+function playYears() {
+    if (playing) {
+        clearInterval(playing);
+        playing = null;
+        $("play").textContent = "▶";
+        return;
+    }
+    const span = years();
+    $("play").textContent = "⏸";
+    playing = setInterval(() => {
+        const next = span[(span.indexOf(state.year) + 1) % span.length];
+        state.year = next;
+        render();
+    }, 450);
+}
+
+// endregion
+
+// region Start
+
+async function start() {
+    buildSettingsPanel();
+    applyLook();
+    wire();
+
+    meta = await (await read("../public/meta.json")).json();
+    catalogue = meta.tree.flatMap((t) => t.indicators);
+
+    try {
+        geometry = await (await read("../public/areas.geojson")).json();
+    } catch {
+        geometry = null; // absent, not broken: the map tab explains itself
+    }
+
+    const hash = readHash();
+    const wanted = catalogue.find((i) => i.id === hash.get("i") && i.available);
+    const first = wanted || catalogue.find((i) => i.available);
+    if (!first) {
+        $("view").innerHTML = empty("Sözlükte veri yüklenmiş gösterge yok.");
+        return;
+    }
+
+    state.view = hash.get("v") || state.view;
+    state.level = hash.get("l") || state.level;
+    if (!(await useIndicator(first.id))) {
+        return;
+    }
+
+    if (hash.get("a")) {
+        state.selection = hash.get("a").split("~").filter(Boolean);
+    }
+    if (hash.get("y")) {
+        state.year = Number(hash.get("y"));
+    }
+    for (const dim of state.indicator.dims || []) {
+        if (hash.get("d." + dim)) {
+            state.dims[dim] = hash.get("d." + dim);
+        }
+    }
+
+    $("rail-title").textContent = "VeriAtlas Veri Gezgini";
+    $("rail-note").textContent =
+        "Kaynak dosyalar public/ altından okunuyor; etiketler ve birimler sözlükten geliyor.";
+    render();
+}
+
+start().catch((error) => {
+    document.querySelector(".explorer").innerHTML =
+        "<section class='panel'><h3>Veri okunamadı</h3>" +
+        "<p>Sayfa dosyadan açıldığında tarayıcı yerel veriyi okumuyor. Bir sunucu üzerinden aç:</p>" +
+        "<pre>cd C:\\veri\nuv run python -m http.server 8123</pre>" +
+        "<p>Sonra: <a href='http://127.0.0.1:8123/web/explorer.html'>127.0.0.1:8123/web/explorer.html</a></p>" +
+        "<p class='provenance'>Okunamayan yol: " + (error.path || "—") + " — " + error.message + "</p></section>";
+});
+
+// endregion

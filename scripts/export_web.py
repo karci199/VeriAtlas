@@ -20,6 +20,10 @@ from veriatlas.config import PUBLIC
 from veriatlas.indicators import load
 from veriatlas.schema import parse_dims
 
+#: Which exported file carries which indicator. The page looks the file up here rather
+#: than knowing it, so adding an indicator is an export change, not a page change.
+DATASETS = {"tfr": "tfr.csv", "population": "population.csv"}
+
 
 def export_dictionary(loaded: set[str]) -> None:
     """Emit the tree and labels the page renders, so nothing is spelled out in HTML.
@@ -37,8 +41,12 @@ def export_dictionary(loaded: set[str]) -> None:
                     "label": ind.label_tr,
                     "unit": ind.unit.label_tr,
                     "decimals": ind.unit.decimals,
+                    "additive": ind.unit.additive,
                     "frequency": ind.frequency,
                     "definition": ind.definition_tr,
+                    "dims": list(ind.dims),
+                    "views": list(ind.views),
+                    "dataset": DATASETS.get(ind.indicator_id),
                     "available": ind.indicator_id in loaded,
                 }
                 for ind in indicators
@@ -70,7 +78,9 @@ def export_population(fact: pl.DataFrame, areas: pl.DataFrame) -> None:
         .select(
             "area_id",
             pl.col("name_tr").alias("area"),
-            "area_level",
+            # Same column name as the fertility slice: the explorer reads both through
+            # one loader and should not have to learn a per-file spelling.
+            pl.col("area_level").alias("level"),
             pl.col("period_start").dt.year().alias("year"),
             "age",
             "sex",

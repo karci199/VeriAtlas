@@ -21,6 +21,11 @@ from pathlib import Path
 
 DICTIONARY_PATH = Path(__file__).parent / "data" / "indicators.toml"
 
+#: The ways the explorer knows how to draw a series. An indicator may only offer these;
+#: a name outside the set is a typo that would otherwise show up as a tab that draws
+#: nothing (decision K10).
+VIEWS = ("table", "map", "line", "bar", "pyramid")
+
 
 @dataclass(frozen=True)
 class Topic:
@@ -40,6 +45,9 @@ class Unit:
     label_tr: str
     label_en: str
     decimals: int
+    #: Whether values in this unit may be summed across a breakdown. Persons add up;
+    #: a rate does not. The screen only offers "Tümü (topla)" where this is true.
+    additive: bool
 
 
 @dataclass(frozen=True)
@@ -53,6 +61,7 @@ class Indicator:
     unit: Unit
     frequency: str
     dims: tuple[str, ...]
+    views: tuple[str, ...]
     definition_tr: str
 
 
@@ -89,7 +98,13 @@ def load() -> Dictionary:
         for key, body in raw.get("topic", {}).items()
     }
     units = {
-        key: Unit(key, body["label_tr"], body["label_en"], body["decimals"])
+        key: Unit(
+            key,
+            body["label_tr"],
+            body["label_en"],
+            body["decimals"],
+            body.get("additive", False),
+        )
         for key, body in raw.get("unit", {}).items()
     }
 
@@ -104,6 +119,19 @@ def load() -> Dictionary:
                 "indicator '" + key + "' names unknown unit: " + body["unit"]
             )
 
+        views = tuple(body.get("views", ("table", "line")))
+        unknown = [v for v in views if v not in VIEWS]
+        if unknown:
+            raise KeyError(
+                "indicator '"
+                + key
+                + "' names unknown view(s): "
+                + ", ".join(unknown)
+                + " (known: "
+                + ", ".join(VIEWS)
+                + ")"
+            )
+
         indicators[key] = Indicator(
             indicator_id=key,
             label_tr=body["label_tr"],
@@ -112,6 +140,7 @@ def load() -> Dictionary:
             unit=units[body["unit"]],
             frequency=body["frequency"],
             dims=tuple(body.get("dims", ())),
+            views=views,
             definition_tr=body.get("definition_tr", "").strip(),
         )
 

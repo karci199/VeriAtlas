@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<!-- Interface mock (K9). Static, self-contained, fake numbers: this file is a design
+     target, not part of the app. It mirrors the OWID Data Explorer layout so we can
+     agree on the shell before touching index.html. -->
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>VeriAtlas — arayüz maketi</title>
+<style>
+/* ---- tokens ------------------------------------------------------------- */
+:root {
+    --bg-page: #131313;
+    --bg-panel: #1e1e1e;
+    --bg-card: #1a1a1a;
+    --bg-control: #2a2a2a;
+    --bg-control-hover: #333333;
+    --bg-tab-active: #333333;
+
+    --stroke-divider: #333333;
+    --stroke-control: #3d3d3d;
+
+    --text-primary: #e8e8e8;
+    --text-secondary: #b6b6b6;
+    --text-tertiary: #8a8a8a;
+    --link: #7fa8d8;
+    --heading: #9ec9e8;
+
+    --grid: #3a3a3a;
+    --axis-text: #9a9a9a;
+
+    --series-1: #7f9fe0;
+    --series-2: #e0794f;
+    --series-3: #c9a3e0;
+    --series-4: #d4b06a;
+    --series-5: #5dcaa5;
+    --series-6: #e08fae;
+
+    --quality-estimated-bg: #3a2e12;
+    --quality-estimated-fg: #ef9f27;
+
+    --serif: Georgia, "Playfair Display", "Times New Roman", serif;
+    --sans: "Segoe UI", system-ui, "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 28px 32px 48px;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: var(--sans);
+    font-size: 14px;
+}
+
+h1 {
+    font-family: var(--serif);
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--heading);
+    margin: 0 0 22px;
+}
+
+/* ---- layout ------------------------------------------------------------- */
+/* OWID caps its explorer width; past ~1400px the chart gets wide without getting more
+   readable, and the left rail drifts away from the plot. */
+h1, .explorer { max-width: 1400px; margin-left: auto; margin-right: auto; }
+
+.explorer {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 14px;
+    align-items: start;
+}
+
+.rail  { grid-row: 1 / span 2; }
+.dims  { grid-column: 2; }
+.chart { grid-column: 2; }
+
+/* ---- left rail ---------------------------------------------------------- */
+.rail {
+    background: var(--bg-panel);
+    border: 1px solid var(--stroke-divider);
+    border-radius: 4px;
+    padding: 16px;
+}
+
+.rail-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    line-height: 1.25;
+    margin: 0 0 10px;
+}
+
+.rail-note {
+    color: var(--text-tertiary);
+    font-size: 12.5px;
+    line-height: 1.45;
+    margin: 0 0 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--stroke-divider);
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--stroke-control);
+    padding: 6px 2px 8px;
+    margin-bottom: 14px;
+}
+
+.search input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-family: var(--serif);
+    font-size: 16px;
+}
+
+.search input::placeholder { color: var(--text-tertiary); }
+
+.sort {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.sort label { color: var(--text-secondary); }
+
+select, .fake-select {
+    background: var(--bg-control);
+    color: var(--text-primary);
+    border: 1px solid var(--stroke-control);
+    border-radius: 3px;
+    padding: 7px 10px;
+    font-family: inherit;
+    font-size: 13.5px;
+    outline: none;
+}
+
+.entities {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 430px;
+    overflow-y: auto;
+    border-top: 1px solid var(--stroke-divider);
+}
+
+.entities li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 4px;
+    border-bottom: 1px solid var(--stroke-divider);
+    cursor: pointer;
+}
+
+.entities li:hover { background: #232323; }
+.entities .name { color: var(--text-secondary); }
+.entities li.on .name { color: var(--link); font-weight: 600; }
+
+.entities .lvl {
+    margin-left: auto;
+    color: var(--text-tertiary);
+    font-size: 11px;
+    letter-spacing: .02em;
+}
+
+.clear {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    padding-top: 12px;
+    border: none;
+    border-top: 1px solid var(--stroke-divider);
+    background: none;
+    color: var(--link);
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* ---- dimension strip ---------------------------------------------------- */
+.dims {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 34px;
+    background: var(--bg-panel);
+    border: 1px solid var(--stroke-divider);
+    border-radius: 4px;
+    padding: 16px 20px 18px;
+}
+
+.dim-label {
+    color: var(--text-tertiary);
+    font-size: 11px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    margin-bottom: 9px;
+}
+
+.radios { display: flex; flex-direction: column; gap: 7px; }
+
+.radios label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+input[type="radio"], input[type="checkbox"] { accent-color: var(--link); }
+
+/* ---- chart card --------------------------------------------------------- */
+.chart {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--stroke-divider);
+    border-radius: 4px;
+    padding: 18px 22px 16px;
+}
+
+.chart h2 {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 4px;
+}
+
+.chart .subtitle {
+    color: var(--text-tertiary);
+    font-size: 13px;
+    margin: 0 0 14px;
+}
+
+.brand {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    border: 1px solid var(--stroke-control);
+    border-radius: 3px;
+    padding: 6px 9px;
+    font-family: var(--serif);
+    font-size: 11px;
+    line-height: 1.15;
+    color: var(--text-secondary);
+    text-align: center;
+    border-bottom: 2px solid #c0392b;
+}
+
+.tabs {
+    display: inline-flex;
+    border: 1px solid var(--stroke-control);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.tabs button {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: none;
+    border: none;
+    border-right: 1px solid var(--stroke-control);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: 13.5px;
+    padding: 9px 16px;
+    cursor: pointer;
+}
+
+.tabs button:last-child { border-right: none; }
+.tabs button:hover:not(:disabled) { background: var(--bg-control-hover); }
+
+.tabs button.on {
+    background: var(--bg-tab-active);
+    color: var(--link);
+    font-weight: 600;
+}
+
+.tabs button:disabled {
+    color: #565656;
+    cursor: not-allowed;
+}
+
+/* height comes from the viewBox ratio, so the drawing never stretches */
+.plot { width: 100%; height: auto; display: block; }
+
+.legend-label { font-size: 12.5px; }
+
+/* time control */
+.time {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 10px 2px 14px;
+}
+
+.play {
+    width: 34px;
+    height: 30px;
+    background: var(--bg-control);
+    border: 1px solid var(--stroke-control);
+    border-radius: 3px;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.time .yr { color: var(--text-secondary); font-size: 13px; min-width: 38px; }
+
+.time input[type="range"] {
+    flex: 1;
+    accent-color: var(--link);
+}
+
+/* footer */
+.foot {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    border-top: 1px solid var(--stroke-divider);
+    padding-top: 12px;
+}
+
+.source { font-size: 12.5px; line-height: 1.6; color: var(--text-secondary); }
+.source b { color: var(--text-primary); font-weight: 600; }
+.source a { color: var(--link); }
+.source .lic { color: var(--text-tertiary); }
+
+.badge {
+    display: inline-block;
+    background: var(--quality-estimated-bg);
+    color: var(--quality-estimated-fg);
+    border-radius: 9px;
+    padding: 1px 9px;
+    font-size: 11px;
+    margin-left: 6px;
+}
+
+.actions { display: flex; gap: 10px; flex: none; }
+
+.actions button {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--bg-control);
+    border: 1px solid var(--stroke-control);
+    border-radius: 3px;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 13px;
+    padding: 9px 14px;
+    cursor: pointer;
+}
+
+.actions button:hover { background: var(--bg-control-hover); }
+
+/* table view */
+.grid { width: 100%; border-collapse: collapse; font-size: 13px; }
+.grid th, .grid td { padding: 8px 10px; border-bottom: 1px solid var(--stroke-divider); text-align: right; }
+.grid th:first-child, .grid td:first-child { text-align: left; color: var(--text-secondary); }
+.grid thead th { color: var(--text-tertiary); font-weight: 600; }
+
+.placeholder {
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-tertiary);
+    border: 1px dashed var(--stroke-control);
+    border-radius: 4px;
+}
+</style>
+</head>
+<body>
+
+<h1>Nüfus verisini keşfet</h1>
+
+<div class="explorer">
+
+    <!-- ---------------- left rail: entity selection ---------------- -->
+    <aside class="rail">
+        <p class="rail-title">Nüfus ve Demografi<br>Veri Gezgini</p>
+        <p class="rail-note">TÜİK Adrese Dayalı Nüfus Kayıt Sistemi ve nüfus projeksiyonlarından üretilmiştir.</p>
+
+        <div class="search">
+            <span>⌕</span>
+            <input placeholder="İl ya da bölge ekle">
+        </div>
+
+        <div class="sort">
+            <label>Sırala</label>
+            <select>
+                <option>İlgi düzeyi</option>
+                <option>Ada göre</option>
+                <option>Son değere göre</option>
+            </select>
+            <span style="color:var(--text-tertiary)">⇅</span>
+        </div>
+
+        <ul class="entities" id="entities"></ul>
+        <button class="clear">✕ Seçimi temizle</button>
+    </aside>
+
+    <!-- ---------------- dimension strip ---------------- -->
+    <section class="dims">
+        <div>
+            <div class="dim-label">Gösterge</div>
+            <select id="indicator">
+                <option value="nufus">Nüfus</option>
+                <option value="tfh">Toplam doğurganlık hızı</option>
+            </select>
+        </div>
+
+        <div>
+            <div class="dim-label">Cinsiyet</div>
+            <div class="radios">
+                <label><input type="radio" name="sex" checked> Toplam</label>
+                <label><input type="radio" name="sex"> Kadın</label>
+                <label><input type="radio" name="sex"> Erkek</label>
+            </div>
+        </div>
+
+        <div>
+            <div class="dim-label">Yaş grubu</div>
+            <select>
+                <option>Tümü</option>
+                <option>0–14</option>
+                <option>15–64</option>
+                <option>65+</option>
+            </select>
+        </div>
+
+        <div>
+            <div class="dim-label">Coğrafi düzey</div>
+            <div class="radios">
+                <label><input type="radio" name="lvl" checked> İl</label>
+                <label><input type="radio" name="lvl"> İBBS-2</label>
+                <label><input type="radio" name="lvl"> İBBS-1</label>
+            </div>
+        </div>
+    </section>
+
+    <!-- ---------------- chart card ---------------- -->
+    <section class="chart">
+        <div class="brand">Veri<br>Atlas</div>
+
+        <h2 id="chart-title">Nüfus</h2>
+        <p class="subtitle" id="chart-sub">Yıl ortası tahmini nüfus, seçili iller</p>
+
+        <div class="tabs" id="tabs">
+            <button data-view="table">▦ Tablo</button>
+            <button data-view="map" disabled title="Sınır geometrisi henüz yok">◍ Harita</button>
+            <button data-view="line" class="on">📈 Çizgi</button>
+            <button data-view="bar">📊 Sütun</button>
+        </div>
+
+        <div id="view"></div>
+
+        <div class="time">
+            <button class="play">▶</button>
+            <span class="yr" id="yr-min">1950</span>
+            <input type="range" id="range" min="1950" max="2023" value="2023">
+            <span class="yr" id="yr-max" style="text-align:right">2023</span>
+        </div>
+
+        <div class="foot">
+            <div class="source">
+                <b>Kaynak:</b> TÜİK, ADNKS (2024 yayımı) — <a href="#">bu veri hakkında</a>
+                <span class="badge">tahmin</span><br>
+                <span class="lic">veriatlas / nufus · sürüm 2024-02 · CC BY</span>
+            </div>
+            <div class="actions">
+                <button>⭳ İndir</button>
+                <button>↗ Paylaş</button>
+                <button>⛶ Tam ekran</button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+"use strict";
+
+/* Fake but plausible numbers — this file is a layout mock, not a data view. */
+const ENTITIES = [
+    { name: "İstanbul", level: "İL", start: 1.17e6, rate: 0.0345, on: true },
+    { name: "Ankara",   level: "İL", start: 0.82e6, rate: 0.0270, on: true },
+    { name: "İzmir",    level: "İL", start: 0.90e6, rate: 0.0215, on: true },
+    { name: "Bursa",    level: "İL", start: 0.50e6, rate: 0.0265, on: true },
+    { name: "Antalya",  level: "İL", start: 0.30e6, rate: 0.0320, on: true },
+    { name: "Konya",    level: "İL", start: 0.60e6, rate: 0.0170, on: false },
+    { name: "Trabzon",  level: "İL", start: 0.42e6, rate: 0.0060, on: false },
+    { name: "TR1 İstanbul",     level: "İBBS-1", start: 1.17e6, rate: 0.0345, on: false },
+    { name: "TR51 Ankara",      level: "İBBS-2", start: 0.82e6, rate: 0.0270, on: false },
+    { name: "Ege Bölgesi",      level: "BÖLGE",  start: 4.20e6, rate: 0.0165, on: false },
+    { name: "Türkiye",          level: "ÜLKE",   start: 2.09e7, rate: 0.0195, on: false }
+];
+
+const YEAR_MIN = 1950, YEAR_MAX = 2023;
+const SERIES_COLORS = ["--series-1", "--series-2", "--series-3", "--series-4", "--series-5", "--series-6"];
+
+/* Logistic-ish curve so the mock lines bend the way real population lines do. */
+function seriesFor(e) {
+    const pts = [];
+    for (let y = YEAR_MIN; y <= YEAR_MAX; y++) {
+        const t = y - YEAR_MIN;
+        const damp = 1 / (1 + Math.exp((t - 58) / 16) * 0.55);
+        pts.push({ year: y, value: e.start * Math.exp(e.rate * t * damp) });
+    }
+    return pts;
+}
+
+function selected() {
+    return ENTITIES.filter(e => e.on).slice(0, SERIES_COLORS.length);
+}
+
+function fmt(v) {
+    if (v >= 1e6) { return (v / 1e6).toFixed(v >= 1e7 ? 0 : 1) + " milyon"; }
+    return Math.round(v / 1e3) + " bin";
+}
+
+/* ---- left rail ---- */
+function drawEntities() {
+    const ul = document.getElementById("entities");
+    ul.innerHTML = "";
+    ENTITIES.forEach((e, i) => {
+        const li = document.createElement("li");
+        li.className = e.on ? "on" : "";
+        li.innerHTML = '<input type="checkbox" ' + (e.on ? "checked" : "") + '>' +
+                       '<span class="name">' + e.name + '</span>' +
+                       '<span class="lvl">' + e.level + '</span>';
+        li.onclick = () => { ENTITIES[i].on = !ENTITIES[i].on; drawEntities(); render(); };
+        ul.appendChild(li);
+    });
+}
+
+/* ---- views ---- */
+let view = "line";
+
+function render() {
+    const host = document.getElementById("view");
+    if (view === "line") { host.innerHTML = lineChart(); }
+    else if (view === "bar") { host.innerHTML = barChart(); }
+    else if (view === "table") { host.innerHTML = table(); }
+    else { host.innerHTML = '<div class="placeholder">Harita görünümü için il sınır geometrisi gerekiyor.</div>'; }
+
+    /* Time control is a range for line/bar and a single year for map/table. */
+    const single = (view === "map" || view === "table");
+    document.getElementById("yr-min").style.visibility = single ? "hidden" : "visible";
+    document.getElementById("chart-sub").textContent = single
+        ? "Yıl ortası tahmini nüfus, " + document.getElementById("range").value
+        : "Yıl ortası tahmini nüfus, seçili iller";
+}
+
+function scales(rows) {
+    let max = 0;
+    rows.forEach(r => r.pts.forEach(p => { if (p.value > max) { max = p.value; } }));
+    const step = Math.pow(10, Math.floor(Math.log10(max))) / 2;
+    return { max: Math.ceil(max / step) * step, step: step };
+}
+
+function lineChart() {
+    const rows = selected().map((e, i) => ({ e: e, pts: seriesFor(e), color: "var(" + SERIES_COLORS[i] + ")" }));
+    if (!rows.length) { return '<div class="placeholder">Soldan en az bir il seçin.</div>'; }
+
+    const W = 1000, H = 400, L = 92, R = 200, T = 16, B = 40;
+    const s = scales(rows);
+    const x = y => L + (y - YEAR_MIN) / (YEAR_MAX - YEAR_MIN) * (W - L - R);
+    const yv = v => T + (1 - v / s.max) * (H - T - B);
+
+    let svg = '<svg class="plot" viewBox="0 0 ' + W + ' ' + H + '">';
+
+    for (let v = 0; v <= s.max + 1; v += s.step) {
+        svg += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + yv(v) + '" y2="' + yv(v) +
+               '" stroke="var(--grid)" stroke-dasharray="4 5"/>' +
+               '<text x="' + (L - 12) + '" y="' + (yv(v) + 4) + '" text-anchor="end" fill="var(--axis-text)" font-size="13">' +
+               (v === 0 ? "0" : fmt(v)) + '</text>';
+    }
+
+    /* The last year always gets a tick; a decade tick too close to it is dropped so the
+       two labels never collide (1950…2020 2023). */
+    const ticks = [];
+    for (let y = 1950; y < YEAR_MAX - 5; y += 10) { ticks.push(y); }
+    ticks.push(YEAR_MAX);
+    ticks.forEach(y => {
+        svg += '<text x="' + x(y) + '" y="' + (H - 14) + '" text-anchor="middle" fill="var(--axis-text)" font-size="13">' + y + '</text>';
+    });
+
+    /* Right-hand labels sit at the series' last value, then get pushed apart from the
+       bottom up so two close series stay readable. */
+    const labels = rows.map(r => ({ r: r, y: yv(r.pts[r.pts.length - 1].value) }))
+                       .sort((a, b) => b.y - a.y);
+    labels.forEach((l, i) => {
+        if (i && labels[i - 1].y - l.y < 16) { l.y = labels[i - 1].y - 16; }
+    });
+
+    rows.forEach(r => {
+        const d = r.pts.map((p, i) => (i ? "L" : "M") + x(p.year).toFixed(1) + " " + yv(p.value).toFixed(1)).join(" ");
+        const last = r.pts[r.pts.length - 1];
+        const ly = labels.find(l => l.r === r).y;
+        svg += '<path d="' + d + '" fill="none" stroke="' + r.color + '" stroke-width="2.5" stroke-linejoin="round"/>' +
+               '<circle cx="' + x(last.year) + '" cy="' + yv(last.value) + '" r="3" fill="' + r.color + '"/>' +
+               '<path d="M' + (x(last.year) + 4) + ' ' + yv(last.value) + ' L' + (W - R + 8) + ' ' + ly + '" fill="none" stroke="' + r.color + '" stroke-width="1" opacity=".55"/>' +
+               '<text class="legend-label" x="' + (W - R + 14) + '" y="' + (ly + 4) + '" fill="' + r.color + '">' + r.e.name + '</text>';
+    });
+
+    return svg + '</svg>';
+}
+
+function barChart() {
+    const year = +document.getElementById("range").value;
+    const rows = selected().map((e, i) => ({
+        e: e,
+        v: seriesFor(e).find(p => p.year === year).value,
+        color: "var(" + SERIES_COLORS[i] + ")"
+    })).sort((a, b) => b.v - a.v);
+    if (!rows.length) { return '<div class="placeholder">Soldan en az bir il seçin.</div>'; }
+
+    const W = 1000, H = 400, L = 140, R = 130, T = 20;
+    const max = Math.max.apply(null, rows.map(r => r.v));
+    const band = (H - T - 20) / rows.length;
+
+    let svg = '<svg class="plot" viewBox="0 0 ' + W + ' ' + H + '">';
+    rows.forEach((r, i) => {
+        const yTop = T + i * band + band * 0.18;
+        const h = band * 0.64;
+        const w = (r.v / max) * (W - L - R);
+        svg += '<rect x="' + L + '" y="' + yTop + '" width="' + w + '" height="' + h + '" fill="' + r.color + '" rx="2"/>' +
+               '<text x="' + (L - 12) + '" y="' + (yTop + h / 2 + 5) + '" text-anchor="end" fill="var(--text-secondary)" font-size="13">' + r.e.name + '</text>' +
+               '<text x="' + (L + w + 12) + '" y="' + (yTop + h / 2 + 5) + '" fill="var(--text-tertiary)" font-size="13">' + fmt(r.v) + '</text>';
+    });
+    return svg + '</svg>';
+}
+
+function table() {
+    const rows = selected();
+    if (!rows.length) { return '<div class="placeholder">Soldan en az bir il seçin.</div>'; }
+    const years = [1950, 1970, 1990, 2000, 2010, 2023];
+
+    let h = '<div style="height:400px;overflow:auto"><table class="grid"><thead><tr><th>İl</th>';
+    years.forEach(y => { h += '<th>' + y + '</th>'; });
+    h += '</tr></thead><tbody>';
+    rows.forEach(e => {
+        const pts = seriesFor(e);
+        h += '<tr><td>' + e.name + '</td>';
+        years.forEach(y => { h += '<td>' + fmt(pts.find(p => p.year === y).value) + '</td>'; });
+        h += '</tr>';
+    });
+    return h + '</tbody></table></div>';
+}
+
+/* ---- wiring ---- */
+document.getElementById("tabs").onclick = ev => {
+    const b = ev.target.closest("button");
+    if (!b || b.disabled) { return; }
+    view = b.dataset.view;
+    [].forEach.call(ev.currentTarget.children, c => c.classList.toggle("on", c === b));
+    render();
+};
+
+document.getElementById("range").oninput = ev => {
+    document.getElementById("yr-max").textContent = ev.target.value;
+    if (view !== "line") { render(); }
+};
+
+document.getElementById("indicator").onchange = ev => {
+    const tfr = ev.target.value === "tfh";
+    document.getElementById("chart-title").textContent = tfr ? "Toplam doğurganlık hızı" : "Nüfus";
+    /* Indicators declare their own dims; TFR has none, so the strip thins out. */
+    [].forEach.call(document.querySelectorAll(".dims > div"), (d, i) => {
+        d.style.display = (tfr && (i === 1 || i === 2)) ? "none" : "";
+    });
+};
+
+drawEntities();
+render();
+</script>
+</body>
+</html>

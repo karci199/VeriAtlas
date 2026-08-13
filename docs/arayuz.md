@@ -61,6 +61,15 @@ Aynısını yapmak amaç değil. Üç yerde bilerek farklılaşıyoruz:
 
 ## Sıra
 
-Yeni oturumda: (1) görünüm sekmeleri + sözlükte `views`, (2) kırılım denetimleri,
-(3) zaman denetiminin görünüme bağlanması, (4) çoklu seçim düzeltmesi. Harita için
-sınır geometrisi gerekiyor, o ayrı bir iş.
+1. ~~Görünüm sekmeleri + sözlükte `views`~~ — bitti (K10).
+2. ~~Kırılım denetimleri~~ — bitti; `dims` denetimi üretiyor, `additive` toplamayı
+   yalnız toplanabilir birimlerde açıyor.
+3. ~~Zaman denetiminin görünüme bağlanması~~ — bitti; çizgi/tablo aralık, harita/sütun/
+   piramit tek yıl.
+4. **Çoklu seçim düzeltmesi** — tıklama ekleyip çıkarıyor; Ctrl/Shift kısayolları kaldı.
+5. **Harita geometrisi** — `public/areas.geojson` (özellik başına `area_id`, `name_tr`).
+   Çizim yazıldı, dosya gelince sekme kendiliğinden açılıyor.
+6. **Eski `index.html`'in kaldırılması** — gezgin onun yerini tamamen alınca.
+
+Maket `web/mock-explorer.html` olarak duruyor: sahte sayılarla düzen tartışmak için,
+uygulamanın parçası değil.

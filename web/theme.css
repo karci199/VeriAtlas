@@ -52,6 +52,34 @@
     --radius: 6px;
     --radius-pill: 10px;
     --font: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+    --font-display: Georgia, "Times New Roman", serif;
+}
+
+/* Reader-adjustable axes (decision K10). These are separate from the palette on
+   purpose: text size, spacing and accent are three independent choices, and the
+   settings panel writes them onto the root element. Every size below is derived from
+   --font-scale and --density, so nothing in the app hardcodes a pixel.
+
+   The defaults here are what the page looks like before anyone touches anything; the
+   panel only ever overrides them inline. */
+:root {
+    --font-scale: 1;
+    --density: 1;
+
+    --text-xs: calc(11px * var(--font-scale));
+    --text-sm: calc(13px * var(--font-scale));
+    --text-md: calc(14px * var(--font-scale));
+    --text-lg: calc(20px * var(--font-scale));
+    --text-xl: calc(26px * var(--font-scale));
+    --text-hero: calc(34px * var(--font-scale));
+
+    --gap-xs: calc(6px * var(--density));
+    --gap-sm: calc(10px * var(--density));
+    --gap-md: calc(16px * var(--density));
+    --gap-lg: calc(24px * var(--density));
+    --row-pad: calc(11px * var(--density));
+
+    --page-max: 1400px;
 }
 
 [data-theme="light"] {

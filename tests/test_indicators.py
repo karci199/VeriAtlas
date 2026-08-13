@@ -7,7 +7,7 @@ series, long after the import that caused it.
 
 import pytest
 
-from veriatlas.indicators import check_dims, get, load
+from veriatlas.indicators import DICTIONARY_PATH, VIEWS, check_dims, get, load
 
 
 def test_every_indicator_resolves_its_topic_and_unit():
@@ -41,6 +41,38 @@ def test_undeclared_dimension_is_refused():
 
 def test_declared_dimensions_pass():
     check_dims("tfr", set())
+
+
+def test_every_declared_view_is_one_the_screen_can_draw():
+    """A view name outside VIEWS would render as a tab that draws nothing."""
+    for indicator in load().indicators.values():
+        assert indicator.views, indicator.indicator_id + " offers no view"
+        assert set(indicator.views) <= set(VIEWS), indicator.indicator_id
+
+
+def test_unknown_view_name_is_refused(tmp_path, monkeypatch):
+    body = DICTIONARY_PATH.read_text(encoding="utf-8").replace(
+        'views = ["table", "map", "line", "bar"]',
+        'views = ["table", "cizgi"]',
+        1,
+    )
+    fake = tmp_path / "indicators.toml"
+    fake.write_text(body, encoding="utf-8")
+
+    monkeypatch.setattr("veriatlas.indicators.DICTIONARY_PATH", fake)
+    load.cache_clear()
+    try:
+        with pytest.raises(KeyError, match="cizgi"):
+            load()
+    finally:
+        load.cache_clear()
+
+
+def test_pyramid_is_only_offered_where_the_breakdown_exists():
+    """The pyramid needs age and sex; offering it without them draws an empty chart."""
+    for indicator in load().indicators.values():
+        if "pyramid" in indicator.views:
+            assert {"age", "sex"} <= set(indicator.dims), indicator.indicator_id
 
 
 def test_tree_is_ordered_and_places_each_indicator_once():

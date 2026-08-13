@@ -8,6 +8,9 @@
 #   - every indicator names a topic and a unit declared below
 #   - `dims` lists the breakdown keys an indicator may carry; anything else fails at
 #     load time, which is what keeps the flexible dims field from becoming a free-for-all
+#   - `views` lists the ways the screen may draw it. The explorer offers exactly these
+#     tabs and greys out the rest, so "which chart fits this number" is a recorded
+#     decision here, not a branch buried in the page (decision K10)
 #   - Turkish is a label, never an id (decision K1)
 
 # region Topics — the left-hand tree, in display order
@@ -35,31 +38,37 @@ order = 30
 label_tr = "çocuk/kadın"
 label_en = "children per woman"
 decimals = 2
+additive = false
 
 [unit.person]
 label_tr = "kişi"
 label_en = "persons"
 decimals = 0
+additive = true
 
 [unit.percent]
 label_tr = "%"
 label_en = "%"
 decimals = 1
+additive = false
 
 [unit.per_mille]
 label_tr = "‰"
 label_en = "‰"
 decimals = 2
+additive = false
 
 [unit.building]
 label_tr = "bina"
 label_en = "buildings"
 decimals = 0
+additive = true
 
 [unit.dwelling]
 label_tr = "daire"
 label_en = "dwellings"
 decimals = 0
+additive = true
 
 # endregion
 
@@ -72,6 +81,7 @@ topic = "dogurganlik"
 unit = "children_per_woman"
 frequency = "annual"
 dims = []
+views = ["table", "map", "line", "bar"]
 definition_tr = """
 Bir kadının doğurgan çağı boyunca, o yılın yaşa özel doğurganlık hızları geçerli \
 kalsaydı doğuracağı ortalama çocuk sayısı. Yenilenme düzeyi 2,10 kabul edilir. \
@@ -84,6 +94,7 @@ topic = "dogurganlik"
 unit = "per_mille"
 frequency = "annual"
 dims = []
+views = ["table", "map", "line", "bar"]
 definition_tr = """
 Bin kişi başına düşen canlı doğum sayısı. Doğurganlıktan çok yaş yapısını yansıtır: \
 genç nüfuslu bir ilde doğurganlık düşse bile kaba hız yüksek kalabilir."""
@@ -95,6 +106,7 @@ topic = "nufus"
 unit = "percent"
 frequency = "annual"
 dims = ["age"]
+views = ["table", "line", "bar"]
 definition_tr = """
 Nüfusun yaş gruplarına dağılımı. 2013 öncesi kent/kır ayrımı da taşınabilir; o \
 satırlar IPF ile üretildiği için kalite bayrağı `estimated` olur."""
@@ -106,6 +118,7 @@ topic = "nufus"
 unit = "person"
 frequency = "annual"
 dims = ["age", "sex"]
+views = ["table", "map", "line", "bar", "pyramid"]
 definition_tr = """
 İkamet edilen yerin nüfusu, beşli yaş grubu ve cinsiyet kırılımıyla. Nüfus piramidi \
 bu göstergeden çizilir. En üst grup 75+ olarak kapalıdır; kaynak dosya tek yaş verirken \
@@ -118,6 +131,7 @@ topic = "nufus"
 unit = "person"
 frequency = "annual"
 dims = []
+views = ["table", "map", "line", "bar"]
 definition_tr = """
 Bir yere nüfusa kayıtlı kişi sayısı — orada yaşayan değil. İkisinin oranı göçün \
 ölçüsüdür: Sivas-İmranlı'da kayıtlı 92.658 kişiye karşılık ilçede 7.412 kişi var."""
@@ -132,6 +146,7 @@ topic = "yapi_ruhsati"
 unit = "building"
 frequency = "quarterly"
 dims = []
+views = ["table", "map", "line", "bar"]
 definition_tr = "Ruhsat verilen bina sayısı. Bir bina birden çok daire içerir."
 
 [indicator.building_permits_dwellings]
@@ -141,6 +156,7 @@ topic = "yapi_ruhsati"
 unit = "dwelling"
 frequency = "quarterly"
 dims = []
+views = ["table", "map", "line", "bar"]
 definition_tr = "Ruhsat verilen daire sayısı. Bina sayısıyla karıştırılmamalı."
 
 # endregion

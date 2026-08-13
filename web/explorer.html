@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!-- The explorer shell (decision K10). Structure only: every label, control and tab
+     below is filled in by explorer.js from the dictionary, so this file never names an
+     indicator, a breakdown or a chart type. -->
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VeriAtlas — veri gezgini</title>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="explorer.css">
+</head>
+<body>
+
+<header class="page-head">
+    <h1 id="page-title">Veri gezgini</h1>
+    <span class="spacer"></span>
+
+    <div class="settings">
+        <button class="icon-button" id="settings-toggle" aria-expanded="false">⚙ Görünüm</button>
+
+        <div class="settings-body" id="settings-body" hidden>
+            <label class="setting">
+                <span>Tema</span>
+                <div class="choices" id="set-theme">
+                    <button data-value="dark">Koyu</button>
+                    <button data-value="light">Açık</button>
+                </div>
+            </label>
+
+            <label class="setting">
+                <span>Yazı boyutu — <b id="set-font-value">%100</b></span>
+                <input type="range" id="set-font" min="85" max="140" step="5">
+            </label>
+
+            <label class="setting">
+                <span>Yoğunluk — <b id="set-density-value">%100</b></span>
+                <input type="range" id="set-density" min="80" max="130" step="5">
+            </label>
+
+            <label class="setting">
+                <span>Vurgu rengi</span>
+                <div class="swatches" id="set-accent"></div>
+            </label>
+
+            <button class="link-button" id="set-reset">Varsayılana dön</button>
+        </div>
+    </div>
+</header>
+
+<div class="explorer">
+
+    <!-- region Left rail: what is being compared -->
+    <aside class="rail panel">
+        <p class="rail-title" id="rail-title">Veri Gezgini</p>
+        <p class="rail-note" id="rail-note"></p>
+
+        <div class="search">
+            <span aria-hidden="true">⌕</span>
+            <input id="entity-search" placeholder="İl ya da bölge ekle">
+        </div>
+
+        <div class="rail-row">
+            <label for="level">Düzey</label>
+            <select id="level"></select>
+        </div>
+
+        <ul class="entities" id="entities"></ul>
+        <button class="link-button" id="clear-selection">✕ Seçimi temizle</button>
+    </aside>
+    <!-- endregion -->
+
+    <!-- region Breakdown strip: dims the indicator declares -->
+    <section class="dims panel" id="dims"></section>
+    <!-- endregion -->
+
+    <!-- region Chart card -->
+    <section class="chart">
+        <h2 id="chart-title"></h2>
+        <p class="subtitle" id="chart-subtitle"></p>
+        <p class="definition" id="chart-definition"></p>
+
+        <div class="tabs" id="tabs"></div>
+        <div id="view"></div>
+
+        <div class="time" id="time">
+            <button class="icon-button" id="play" title="Yılları oynat">▶</button>
+            <span class="yr" id="year-from"></span>
+            <input type="range" id="year">
+            <span class="yr" id="year-to" style="text-align:right"></span>
+        </div>
+
+        <div class="foot">
+            <div class="source" id="source"></div>
+            <div class="actions">
+                <button class="icon-button" id="download">⭳ İndir</button>
+                <button class="icon-button" id="share">↗ Bağlantı</button>
+            </div>
+        </div>
+    </section>
+    <!-- endregion -->
+</div>
+
+<script type="module" src="explorer.js"></script>
+</body>
+</html>

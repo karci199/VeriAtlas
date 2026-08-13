@@ -141,6 +141,31 @@ harita). Reddedildi — seçimler ekranlar arasında taşınmıyor ve üç ayrı
 
 Ayrıntı ve yapılacaklar sırası: [arayuz.md](arayuz.md).
 
+## K10 — Tek iskelet, sözlükten sürülen içerik (2026-08-13)
+
+K9'un iskeleti kuruldu: `web/explorer.html` + `explorer.css` + `explorer.js`. Kural,
+iskeletin sabit, konuya göre değişen her şeyin sözlükten gelmesi:
+
+- **`views` sözlükte.** Gösterge hangi görünümlere izin veriyorsa sekme o kadar. Sayfada
+  "bu gösterge nüfussa piramit çiz" diye bir dallanma yok; `indicators.toml` ne yazdıysa
+  o. Bilinmeyen görünüm adı yükleme anında reddediliyor (`VIEWS`), yoksa hiçbir şey
+  çizmeyen bir sekme olarak ortaya çıkardı.
+- **`dims` denetimi üretiyor.** Üst şeritteki kutular ilan edilen kırılımlardan, değerleri
+  de veriden çıkıyor. TFH kırılım ilan etmiyor, şerit kendiliğinden inceliyor.
+- **`additive` birimin özelliği.** "Tümü (topla)" seçeneği yalnız toplanabilir birimlerde
+  çıkıyor: kişi toplanır, doğurganlık hızı toplanmaz. Bu olmadan arayüz kırılımları
+  toplayıp sessizce yanlış sayı üretebilirdi.
+- **Zaman denetimi görünüme bağlı.** Çizgi ve tablo bütün aralığı gösterdiği için denetim
+  gizleniyor; harita, sütun ve piramit tek yılda duruyor.
+- **Harita gerçek, geometri yok.** Görünüm yazıldı (`public/areas.geojson`, özellik başına
+  `area_id`); dosya yokken sekme sebebini söyleyerek soluk duruyor.
+
+Tema ayarlanabilir (K5'in devamı): koyu/açık, yazı ölçeği, yoğunluk, vurgu rengi.
+`--font-scale` ve `--density` tek kaynak; bütün ölçüler bunlardan türüyor, sayfada
+sabit piksel yok. Seçim `localStorage`'da. Ekranın durumu adres çubuğunda (`#i=…&v=…`),
+"Bağlantı" düğmesi onu kopyalıyor.
+
+Eski `web/index.html` şimdilik duruyor; gezgin olgunlaşınca kaldırılacak.
 ## Açık işler
 
 Sıra, birbirine bağımlılığa göre:
@@ -153,8 +178,8 @@ Sıra, birbirine bağımlılığa göre:
 4. **Adaptör sözleşmesi** — kuruldu, bkz. K8. Sıradaki adaptörler: EVDS3 (API var),
    MEDAS (Playwright), Dünya Bankası (SDMX).
 5. **Kalite kuralları** — pandera şemaları, yükleme sırasında çalışır.
-6. **Arayüz dönüşümü** — K9'a göre: görünüm sekmeleri, kırılım denetimleri, zamanın
-   görünüme bağlanması, çoklu seçim düzeltmesi.
+6. **Arayüz dönüşümü** — iskelet kuruldu, bkz. K10. Kalan: harita geometrisi (il/İBBS
+   sınırları), çoklu seçim kısayolları (Ctrl/Shift), eski `index.html`'in kaldırılması.
 7. **MEDAS adaptörü** — akışın ilk yarısı çalışıyor (bkz. medas.md); kalan: Zaman →
    Düzey → Rapor Oluştur → sayfalı tablo.
 8. **Kod dili geçişi** — mevcut `config.py` ve `scripts/` Türkçe docstring'li;
