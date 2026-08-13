@@ -205,11 +205,29 @@ const state = {
     dims: {},
     year: null,
     search: "",
+    //: Province the map is opened into, or null for the whole country.
+    focus: null,
 };
 
 let meta = null;
 let catalogue = [];
 let geometry = undefined; // undefined = not tried yet, null = absent
+
+// Districts are fetched per province when one is opened: all 973 at once is 14 MB to
+// draw a map the reader looks at one province of at a time.
+const districts = new Map();
+
+async function districtsOf(provinceId) {
+    if (!districts.has(provinceId)) {
+        try {
+            const body = await (await read("../public/geo/districts/" + provinceId + ".geojson")).json();
+            districts.set(provinceId, body);
+        } catch {
+            districts.set(provinceId, null);
+        }
+    }
+    return districts.get(provinceId);
+}
 
 function levelsInData() {
     return [...new Set(state.rows.map((r) => r.level))]
@@ -574,18 +592,21 @@ function map() {
         );
     }
 
-    const rows = slice().filter((r) => r.year === state.year);
-    const byId = new Map(rows.map((r) => [r.area_id, r.value]));
-    const values = [...byId.values()];
-    if (!values.length) {
-        return empty("Bu yıl için değer yok.");
-    }
-
-    const [low, high] = [Math.min(...values), Math.max(...values)];
-    const features = geometry.features.filter((f) => f.properties.area_level === state.level);
+    const opened = state.focus ? districts.get(state.focus) : null;
+    const features = opened
+        ? opened.features
+        : geometry.features.filter((f) => f.properties.area_level === state.level);
     if (!features.length) {
         return empty((LEVEL_LABELS[state.level] || state.level) + " düzeyinde sınır geometrisi yok.");
     }
+
+    const rows = slice().filter((r) => r.year === state.year);
+    const byId = new Map(rows.map((r) => [r.area_id, r.value]));
+    const values = features.map((f) => byId.get(f.properties.area_id)).filter((v) => v !== undefined);
+
+    // An opened province usually has no values yet — the fact table stops at province
+    // level. Draw the borders anyway and say so; an empty frame would read as an error.
+    const [low, high] = values.length ? [Math.min(...values), Math.max(...values)] : [0, 0];
 
     // Equirectangular, which needs no projection library, but with the longitude scaled
     // by cos(latitude): without it Turkey comes out about a quarter too wide.
@@ -609,20 +630,30 @@ function map() {
     const base = token("--bg-control");
     const ink = token("--accent");
 
-    let svg = '<svg class="plot" viewBox="0 0 ' + PLOT_W + " " + PLOT_H + '" role="img">';
+    let svg = '<svg class="plot ' + (state.focus ? "" : "drillable") + '" viewBox="0 0 ' +
+              PLOT_W + " " + PLOT_H + '" role="img">';
     for (const feature of features) {
         const value = byId.get(feature.properties.area_id);
         const t = value === undefined ? null : (value - low) / Math.max(1e-9, high - low);
         const d = rings(feature)
             .map((ring) => "M" + ring.map((p) => px(p).map((n) => n.toFixed(1)).join(" ")).join("L") + "Z")
             .join(" ");
-        svg += '<path d="' + d + '" fill="' + (t === null ? base : ink) + '" fill-opacity="' +
+        svg += '<path class="area" data-area="' + feature.properties.area_id + '" d="' + d +
+               '" fill="' + (t === null ? base : ink) + '" fill-opacity="' +
                (t === null ? 0.35 : (0.15 + 0.85 * t).toFixed(2)) + '" stroke="' +
                token("--bg-card") + '" stroke-width="0.6"><title>' +
-               feature.properties.name_tr + ": " + fmt(value) + "</title></path>";
+               feature.properties.name_tr + (value === undefined ? "" : ": " + fmt(value)) +
+               "</title></path>";
     }
+    svg += "</svg>";
 
-    return svg + "</svg>" + legend(low, high, ink);
+    const head = state.focus
+        ? "<div class='map-head'><button class='link-inline' id='map-back'>← Türkiye</button>" +
+          "<span>" + opened.name_tr + " · " + features.length + " ilçe" +
+          (values.length ? "" : " · ilçe düzeyinde veri yok, sınırlar gösteriliyor") + "</span></div>"
+        : "<div class='map-head'><span>Bir ile tıklayınca ilçeleri açılır.</span></div>";
+
+    return head + svg + (values.length ? legend(low, high, ink) : "");
 }
 
 function rings(feature) {
@@ -712,6 +743,7 @@ function writeHash() {
         v: state.view,
         l: state.level,
         y: state.year,
+        f: state.focus || "",
         a: state.selection.join("~"),
         ...Object.fromEntries(Object.entries(state.dims).map(([k, v]) => ["d." + k, v])),
     });
@@ -811,6 +843,7 @@ function wire() {
 
     $("level").onchange = (ev) => {
         state.level = ev.target.value;
+        state.focus = null;
         seedSelection();
         render();
     };
@@ -823,6 +856,26 @@ function wire() {
             return;
         }
         state.dims[ev.target.dataset.dim] = ev.target.value;
+        render();
+    };
+
+    // Map drill-down: a province opens into its districts, and back out again.
+    $("view").onclick = async (ev) => {
+        if (ev.target.id === "map-back") {
+            state.focus = null;
+            render();
+            return;
+        }
+
+        const area = ev.target.closest(".area");
+        if (!area || state.view !== "map" || state.focus) {
+            return;
+        }
+
+        const provinceId = area.dataset.area;
+        if (await districtsOf(provinceId)) {
+            state.focus = provinceId;
+        }
         render();
     };
 
@@ -910,6 +963,9 @@ async function start() {
     }
     if (hash.get("y")) {
         state.year = Number(hash.get("y"));
+    }
+    if (hash.get("f") && (await districtsOf(hash.get("f")))) {
+        state.focus = hash.get("f");
     }
     for (const dim of state.indicator.dims || []) {
         if (hash.get("d." + dim)) {

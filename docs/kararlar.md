@@ -166,6 +166,46 @@ sabit piksel yok. Seçim `localStorage`'da. Ekranın durumu adres çubuğunda (`
 "Bağlantı" düğmesi onu kopyalıyor.
 
 Eski `web/index.html` şimdilik duruyor; gezgin olgunlaşınca kaldırılacak.
+## K11 — Harita katmanları ve ilçe tarihçesi (2026-08-13)
+
+Sınırlar `public/` altında, çizim anında dışarıya çıkılmıyor:
+
+- **İl** — `public/areas.geojson`, 81 il, kayıttaki `area_id`'ye bağlanmış
+  (`scripts/fetch_geometry.py`). Eşleşmeyen tek il kalırsa betik duruyor.
+- **İlçe** — `public/geo/districts/TR-XX.geojson`, il başına bir dosya, 973 ilçe
+  (`scripts/fetch_districts.py`). Kaynak tek parça 14,7 MB; ile bölünüp ~100 m
+  toleransla sadeleştirilince 2,5 MB'a iniyor ve tarayıcı yalnız açılan ili indiriyor.
+  Kaynak: HDX COD-AB-TUR (OCHA), CC BY-IGO — ttezer/turkiye-harita-verisi anlık kopyası.
+- **İBBS / bölge** — ayrı dosya değil; illerin birleştirilmesiyle üretilecek (`parents`
+  tablosu üyeliği zaten tutuyor). Poligon birleştirme bağımlılığı gerekiyor, o yüzden
+  harita sekmesi şimdilik yalnız il düzeyinde açık, diğer düzeylerde sebebini söyleyerek
+  soluk duruyor.
+
+Etkileşim: ülke haritasında bir ile tıklanınca o ilin ilçeleri açılıyor, çerçeve
+kendiliğinden o ile yakınlaşıyor, "← Türkiye" ile çıkılıyor. Alan adları haritaya
+yazılmıyor — sınır yeter, ad imleç kutusunda.
+
+**Zaman meselesi, dürüst hâliyle:** eldeki bütün sınır kaynakları *bugünün* idari
+haritasının anlık kopyası. 6360 sayılı yasa (2014 yerel seçimlerinden itibaren yürürlük)
+ilçe kurdu, köyleri mahalleye çevirdi, büyükşehir sınırlarını il sınırına genişletti;
+bunların hiçbiri kaynakta yok. Kaynak deponun `districts.crosswalk.json` dosyası boş —
+yani hazır bir ardıllık tablosu ortalıkta yok.
+
+Bu yüzden `areas_tr_districts.csv` içindeki `valid_from` / `valid_to` **boş yazılıyor**.
+Boş, "hep vardı" değil, "henüz doğrulanmadı" demek; uydurulmuş bir tarih, olmayan bir
+veriden daha kötüdür çünkü sorgulanmaz.
+
+Doldurma yolu, tercih sırasına göre:
+
+1. **Gözlemden** — TÜİK ilçe düzeyinde veri yayımladığında her yılın ilçe listesi o yılın
+   idari haritasıdır. İlk görüldüğü yıl `valid_from`, son görüldüğü yıl `valid_to`
+   adayıdır. Bu hukuki değil gözlemsel bir tarihtir ve öyle işaretlenir.
+2. **Elle doğrulanmış mevzuat** — 6360 gibi tek tek Resmî Gazete'ye bakılarak, satır
+   başına kaynak yazılarak.
+
+Ardıllık (hangi ilçe hangisinden çıktı) ayrı bir tablo olacak: bir ilçenin bölünmesi,
+zaman serisini kırar ve toplama kuralı olmadan 2013 ile 2014 karşılaştırılamaz.
+
 ## Açık işler
 
 Sıra, birbirine bağımlılığa göre:
@@ -173,8 +213,10 @@ Sıra, birbirine bağımlılığa göre:
 1. ~~Kanonik olgu tablosu şeması~~ — bitti, bkz. K6.
 2. ~~Gösterge sözlüğü~~ — bitti, bkz. K7.
 3. **Zamana bağlı coğrafya kaydı** — ülke / 7 bölge / 81 il yapıldı (`src/veriatlas/data/areas_tr.csv`,
-   81 il + ülke, ISO 3166-2:TR). Kalan zor yarı ilçe: 6360 sayılı yasa, 2013 kırılması,
-   sonradan kurulan ilçeler → geçerlilik aralığı ve ardıl eşlemesi gerekiyor.
+   81 il + ülke, ISO 3166-2:TR). İlçelerin *bugünkü* listesi ve sınırları da geldi
+   (`areas_tr_districts.csv`, 973 ilçe, bkz. K11). Kalan zor yarı aynen duruyor:
+   geçerlilik aralıkları ve ardıl eşlemesi — kaynağı yok, gözlemden ya da elle
+   doğrulanarak kurulacak.
 4. **Adaptör sözleşmesi** — kuruldu, bkz. K8. Sıradaki adaptörler: EVDS3 (API var),
    MEDAS (Playwright), Dünya Bankası (SDMX).
 5. **Kalite kuralları** — pandera şemaları, yükleme sırasında çalışır.

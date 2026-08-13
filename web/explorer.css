@@ -282,6 +282,28 @@ select:focus-visible, button:focus-visible, input:focus-visible {
 .plot { width: 100%; height: auto; display: block; }
 .legend-label { font-size: var(--text-sm); }
 
+/* Map: areas are clickable at country level, where clicking opens a province. */
+.map-head {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-sm);
+    color: var(--text-tertiary);
+    font-size: var(--text-sm);
+    margin: var(--gap-xs) 0;
+}
+
+.link-inline {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
+}
+
+.plot.drillable .area { cursor: pointer; }
+.plot .area:hover { stroke: var(--text-primary); stroke-width: 1.2; }
+
 .time {
     display: flex;
     align-items: center;
