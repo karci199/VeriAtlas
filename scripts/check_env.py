@@ -7,7 +7,7 @@ import sys
 
 sys.path.insert(0, "src")
 
-from veriatlas.config import ROOT, settings  # noqa: E402
+from veriatlas.config import ROOT, settings
 
 key = settings.evds_api_key
 

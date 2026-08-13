@@ -103,13 +103,37 @@ Sıra, birbirine bağımlılığa göre:
 1. ~~Kanonik olgu tablosu şeması~~ — bitti, bkz. K6.
 2. **Gösterge sözlüğü** — konu ağacı, birim, frekans, `label_tr` / `label_en`.
    Tanım kaymasını (bina ≠ daire) burada yakalıyoruz.
-3. **Zamana bağlı coğrafya kaydı** — 6360 sayılı yasa, 2013 kırılması, sonradan
-   kurulan ilçeler. Kod → geçerlilik aralığı → ardıl eşlemesi.
+3. **Zamana bağlı coğrafya kaydı** — il yarısı yapıldı (`src/veriatlas/data/areas_tr.csv`,
+   81 il + ülke, ISO 3166-2:TR). Kalan zor yarı ilçe: 6360 sayılı yasa, 2013 kırılması,
+   sonradan kurulan ilçeler → geçerlilik aralığı ve ardıl eşlemesi gerekiyor.
 4. **Adaptör sözleşmesi** — fetch / parse / metadata + manifest. İlk iki adaptör:
    EVDS3 (API var) ve MEDAS (Playwright).
 5. **Kalite kuralları** — pandera şemaları, yükleme sırasında çalışır.
 6. **Kod dili geçişi** — mevcut `config.py` ve `scripts/` Türkçe docstring'li;
    K1'e göre İngilizceye çevrilecek.
+
+## İlk yükleme — TFH (2026-08-13)
+
+`scripts/load_tfr.py`, 81 il × 17 yıl = 1.377 satır, `public/fact_tfr.parquet` ve
+`warehouse.duckdb` içindeki `fact` tablosu. Şema gerçek veriyle sınandı ve tuttu.
+
+Yüklenen veri ön çalışmanın bulgularıyla karşılaştırıldı, hepsi tutuyor: 2025'te
+1,30 altı 38 il, 2,10 üstü 5 il, Bursa 1,78 → 1,32, en düşük Bartın 1,09. İki görünür
+sapmanın ikisi de eşik sorunu çıktı — Nevşehir 2009'da tam 2,10 (yani "2,10 üstü 31
+il" aslında "2,10 ve üstü"), ve 2025'te Ankara/Eskişehir/Zonguldak 1,11'de eşit.
+
+Yükleme sırasında öğrenilenler:
+
+- **Hiçbir kaynak dosyada alan kodu yok**, sadece Türkçe il adı. Ad eşleşmesi bu yüzden
+  içe aktarmanın en sessiz hata yolu; `areas.resolve` tanımadığı adı boş kimliğe
+  çevirmek yerine hata veriyor.
+- **Plaka kodları 1989'daki adlara göre alfabetik.** Mersin (İçel), Şanlıurfa (Urfa) ve
+  Kahramanmaraş (Maraş) sonradan adlandığı için bugünkü adla sıralama yanlış kod verir.
+- **Dosyada sürüm bilgisi yok.** TÜİK'in bu sayıları ne zaman yayımladığı yazmıyor;
+  `vintage` şimdilik çekim ayıyla (`2026-08`) dolduruldu. MEDAS adaptörü rapor başlığını
+  okuyunca gerçek yayım tarihiyle değişecek. Bilinen açık.
+- **Birim gösterge sözlüğü gelene kadar betiğe gömülü** (`çocuk/kadın`). Sözlük
+  yazılınca oradan okunacak.
 
 ## Kaynak kısıtları (değişmedi)
 
