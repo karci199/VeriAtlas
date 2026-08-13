@@ -45,7 +45,7 @@ h1 {
     margin: 0;
 }
 
-.page-head .spacer { flex: 1; }
+.spacer { flex: 1; }
 
 /* region Layout ---------------------------------------------------------- */
 
@@ -122,14 +122,57 @@ h1 {
     font-size: var(--text-sm);
 }
 
-.entities {
+.rail-head {
+    color: var(--text-tertiary);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    margin: var(--gap-sm) 0 var(--gap-xs);
+}
+
+.rail-head[hidden] { display: none; }
+
+.chosen, .entities {
     list-style: none;
     margin: 0;
     padding: 0;
-    max-height: calc(420px * var(--density));
-    overflow-y: auto;
     border-top: 1px solid var(--stroke-divider);
 }
+
+.entities {
+    max-height: calc(360px * var(--density));
+    overflow-y: auto;
+}
+
+/* Chosen areas: colour dot, name, mute, remove. */
+.chosen li {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs);
+    padding: calc(var(--row-pad) * 0.6) 4px;
+    border-bottom: 1px solid var(--stroke-divider);
+}
+
+.chosen .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.chosen .name { flex: 1; color: var(--text-primary); }
+.chosen li.muted .name { color: var(--text-tertiary); text-decoration: line-through; }
+.chosen li.muted .dot { opacity: .35; }
+
+.chip {
+    background: var(--bg-control);
+    border: 1px solid var(--stroke-control);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    font: inherit;
+    font-size: var(--text-sm);
+    line-height: 1;
+    padding: 3px 7px;
+    cursor: pointer;
+}
+
+.chip:hover { background: var(--bg-control-hover); color: var(--text-primary); }
+.chip.on { border-color: var(--accent); color: var(--accent); }
 
 .entities li {
     display: flex;
@@ -196,6 +239,46 @@ h1 {
 }
 
 input[type="radio"], input[type="checkbox"], input[type="range"] { accent-color: var(--accent); }
+
+/* The platform checkbox is a small grey square that reads as disabled on a dark ground.
+   Drawn here instead: same box, our own colours, and big enough to aim at. */
+.entities input[type="checkbox"] {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    flex: none;
+    margin: 0;
+    border: 1px solid var(--stroke-control);
+    border-radius: 2px;
+    background: var(--bg-control);
+    cursor: pointer;
+}
+
+.entities li:hover input[type="checkbox"] { border-color: var(--accent); }
+
+.entities input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+    /* Tick drawn as a background image so it needs no extra element. */
+    background-image: linear-gradient(45deg, transparent 42%, var(--bg-page) 42%, var(--bg-page) 52%, transparent 52%),
+                      linear-gradient(-45deg, transparent 58%, var(--bg-page) 58%, var(--bg-page) 68%, transparent 68%);
+    background-size: 100% 60%, 100% 100%;
+    background-position: center 60%, center;
+    background-repeat: no-repeat;
+}
+
+/* Scrollbars: the default light-on-dark bar is a bright slab down the side of the
+   list. This is the same control, toned to the panel it sits in. */
+.entities { scrollbar-width: thin; scrollbar-color: var(--stroke-control) transparent; }
+.entities::-webkit-scrollbar { width: 8px; }
+.entities::-webkit-scrollbar-track { background: transparent; }
+
+.entities::-webkit-scrollbar-thumb {
+    background: var(--stroke-control);
+    border-radius: 4px;
+}
+
+.entities::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
 
 select, .field {
     background: var(--bg-control);
@@ -286,7 +369,8 @@ select:focus-visible, button:focus-visible, input:focus-visible {
 .map-head {
     display: flex;
     align-items: center;
-    gap: var(--gap-sm);
+    flex-wrap: wrap;
+    gap: var(--gap-xs);
     color: var(--text-tertiary);
     font-size: var(--text-sm);
     margin: var(--gap-xs) 0;

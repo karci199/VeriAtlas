@@ -55,9 +55,20 @@ def export_dictionary(loaded: set[str]) -> None:
         for topic, indicators in load().tree()
     ]
 
+    # Dimension labels travel with the tree: the page shows "Kadın", the fact table
+    # stores `female`, and neither spelling is written into the page (K1).
+    dimensions = {
+        dim.dim_id: {"label": dim.label_tr, "values": dim.values_tr}
+        for dim in load().dimensions.values()
+    }
+
     target = PUBLIC / "meta.json"
     target.write_text(
-        json.dumps({"tree": tree, "sources": sources()}, ensure_ascii=False, indent=2),
+        json.dumps(
+            {"tree": tree, "dimensions": dimensions, "sources": sources()},
+            ensure_ascii=False,
+            indent=2,
+        ),
         encoding="utf-8",
     )
     print("yazildi:", target)

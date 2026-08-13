@@ -51,6 +51,20 @@ class Unit:
 
 
 @dataclass(frozen=True)
+class Dimension:
+    """A breakdown key, and the Turkish for the values it stores.
+
+    `values` may be empty: an age band reads the same in every language, a sex code does
+    not.
+    """
+
+    dim_id: str
+    label_tr: str
+    label_en: str
+    values_tr: dict[str, str]
+
+
+@dataclass(frozen=True)
 class Indicator:
     """One measurable quantity."""
 
@@ -71,6 +85,7 @@ class Dictionary:
 
     topics: dict[str, Topic]
     units: dict[str, Unit]
+    dimensions: dict[str, Dimension]
     indicators: dict[str, Indicator]
 
     def tree(self) -> list[tuple[Topic, list[Indicator]]]:
@@ -108,6 +123,16 @@ def load() -> Dictionary:
         for key, body in raw.get("unit", {}).items()
     }
 
+    dimensions = {
+        key: Dimension(
+            key,
+            body["label_tr"],
+            body["label_en"],
+            dict(body.get("values", {})),
+        )
+        for key, body in raw.get("dim", {}).items()
+    }
+
     indicators: dict[str, Indicator] = {}
     for key, body in raw.get("indicator", {}).items():
         if body["topic"] not in topics:
@@ -117,6 +142,15 @@ def load() -> Dictionary:
         if body["unit"] not in units:
             raise KeyError(
                 "indicator '" + key + "' names unknown unit: " + body["unit"]
+            )
+
+        undeclared = [d for d in body.get("dims", ()) if d not in dimensions]
+        if undeclared:
+            raise KeyError(
+                "indicator '"
+                + key
+                + "' names undeclared dimension(s): "
+                + ", ".join(undeclared)
             )
 
         views = tuple(body.get("views", ("table", "line")))
@@ -144,7 +178,9 @@ def load() -> Dictionary:
             definition_tr=body.get("definition_tr", "").strip(),
         )
 
-    return Dictionary(topics=topics, units=units, indicators=indicators)
+    return Dictionary(
+        topics=topics, units=units, dimensions=dimensions, indicators=indicators
+    )
 
 
 def get(indicator_id: str) -> Indicator:

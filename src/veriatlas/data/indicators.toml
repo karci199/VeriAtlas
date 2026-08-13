@@ -32,6 +32,26 @@ order = 30
 
 # endregion
 
+# region Dimensions — the breakdown keys and what their stored values are called
+#
+# Values are ids in the fact table (`sex=female`), so the Turkish the reader sees lives
+# here, next to everything else that is a label (K1). A dimension with no `values` table
+# carries values that are already readable — age bands print as "25-29" in any language.
+
+[dim.sex]
+label_tr = "Cinsiyet"
+label_en = "Sex"
+
+[dim.sex.values]
+female = "Kadın"
+male = "Erkek"
+
+[dim.age]
+label_tr = "Yaş grubu"
+label_en = "Age group"
+
+# endregion
+
 # region Units
 
 [unit.children_per_woman]

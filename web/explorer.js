@@ -181,7 +181,17 @@ const LEVEL_LABELS = {
     country: "Türkiye",
 };
 
-const DIM_LABELS = {age: "Yaş grubu", sex: "Cinsiyet"};
+/** Turkish for a dimension and for the ids it stores; both come from the dictionary. */
+function dimLabel(dim) {
+    return meta.dimensions?.[dim]?.label || dim;
+}
+
+function dimValue(dim, value) {
+    if (value === TOTAL) {
+        return "Tümü (topla)";
+    }
+    return meta.dimensions?.[dim]?.values?.[value] || value;
+}
 const VIEW_LABELS = {
     table: "▦ Tablo",
     map: "◍ Harita",
@@ -205,6 +215,11 @@ const state = {
     dims: {},
     year: null,
     search: "",
+    //: Chosen but hidden from the chart. Kept apart from the selection so muting is
+    //: reversible without losing the area's place — and its colour.
+    muted: [],
+    //: Map colour ramp. Log by default; see the note in map().
+    scale: "log",
     //: Province the map is opened into, or null for the whole country.
     focus: null,
 };
@@ -295,6 +310,23 @@ function drawRail() {
                     ">" + (LEVEL_LABELS[l] || l) + "</option>")
         .join("");
 
+    // Chosen areas get their own block above the list. Searching filters the list, and
+    // a selection that scrolls out of sight — or filters away — is a selection the
+    // reader cannot undo.
+    $("chosen").innerHTML = state.selection
+        .map((area, i) => {
+            const muted = state.muted.includes(area);
+            return "<li class='" + (muted ? "muted" : "") + "' data-area='" + area + "'>" +
+                   "<span class='dot' style='background:" + colour(i) + "'></span>" +
+                   "<span class='name'>" + area + "</span>" +
+                   "<button class='chip' data-act='mute' title='" +
+                   (muted ? "Grafiğe geri koy" : "Grafikten gizle") + "'>" +
+                   (muted ? "◎" : "◉") + "</button>" +
+                   "<button class='chip' data-act='drop' title='Seçimden çıkar'>✕</button></li>";
+        })
+        .join("");
+    $("chosen-head").hidden = !state.selection.length;
+
     const needle = state.search.toLocaleLowerCase("tr");
     const areas = areasAtLevel().filter((a) => a.toLocaleLowerCase("tr").includes(needle));
 
@@ -302,16 +334,22 @@ function drawRail() {
         .map((area) => {
             const on = state.selection.includes(area);
             return '<li class="' + (on ? "on" : "") + '" data-area="' + area + '">' +
-                   '<input type="checkbox" ' + (on ? "checked" : "") + ' tabindex="-1">' +
+                   '<input type="checkbox" tabindex="-1"' + (on ? " checked" : "") + ">" +
                    '<span class="name">' + area + "</span>" +
                    '<span class="lvl">' + (LEVEL_LABELS[state.level] || state.level) + "</span></li>";
         })
         .join("");
 }
 
+/** Areas that are selected and not muted — what the charts actually draw. */
+function drawn() {
+    return state.selection.filter((a) => !state.muted.includes(a));
+}
+
 /** Default selection: the largest few at this level, so the page is never blank. */
 function seedSelection() {
     const latest = Math.max(...years());
+    state.muted = [];
     state.selection = slice()
         .filter((r) => r.year === latest)
         .sort((a, b) => b.value - a.value)
@@ -335,15 +373,16 @@ function drawDims() {
         // unit that adds up. A rate gets the raw values and nothing else.
         const all = state.indicator.additive
             ? '<option value="' + TOTAL + '"' + (state.dims[dim] === TOTAL ? " selected" : "") +
-              ">Tümü (topla)</option>"
+              ">" + dimValue(dim, TOTAL) + "</option>"
             : "";
 
         groups.push(
-            "<div><div class='dim-label'>" + (DIM_LABELS[dim] || dim) + "</div>" +
+            "<div><div class='dim-label'>" + dimLabel(dim) + "</div>" +
             "<select data-dim='" + dim + "'>" + all +
             options
                 .map((v) => '<option value="' + v + '"' +
-                            (String(state.dims[dim]) === String(v) ? " selected" : "") + ">" + v + "</option>")
+                            (String(state.dims[dim]) === String(v) ? " selected" : "") + ">" +
+                            dimValue(dim, v) + "</option>")
                 .join("") +
             "</select></div>"
         );
@@ -404,8 +443,13 @@ function drawTabs() {
 const PLOT_W = 1000;
 const PLOT_H = 420;
 
+/** A series keeps its colour by its place in the selection, muted or not. */
 function colour(index) {
     return token("--series-" + ((index % 10) + 1));
+}
+
+function colourOf(area) {
+    return colour(state.selection.indexOf(area));
 }
 
 function niceTicks(max) {
@@ -416,7 +460,8 @@ function niceTicks(max) {
 }
 
 function lineChart() {
-    const rows = state.selection.map((area, i) => ({area, pts: seriesFor(area), colour: colour(i)}))
+    const rows = drawn()
+        .map((area) => ({area, pts: seriesFor(area), colour: colourOf(area)}))
         .filter((r) => r.pts.length);
     if (!rows.length) {
         return empty("Soldan en az bir alan seçin.");
@@ -484,10 +529,10 @@ function axisText(x, y, text, anchor) {
 }
 
 function barChart() {
-    const rows = state.selection
-        .map((area, i) => {
+    const rows = drawn()
+        .map((area) => {
             const point = seriesFor(area).find((p) => p.year === state.year);
-            return point ? {area, value: point.value, colour: colour(i)} : null;
+            return point ? {area, value: point.value, colour: colourOf(area)} : null;
         })
         .filter(Boolean)
         .sort((a, b) => b.value - a.value);
@@ -518,7 +563,7 @@ function table() {
         : span;
     const shown = [...new Set(columns)];
 
-    if (!state.selection.length) {
+    if (!drawn().length) {
         return empty("Soldan en az bir alan seçin.");
     }
 
@@ -526,7 +571,7 @@ function table() {
                (LEVEL_LABELS[state.level] || state.level) + "</th>" +
                shown.map((y) => "<th>" + y + "</th>").join("") + "</tr></thead><tbody>";
 
-    for (const area of state.selection) {
+    for (const area of drawn()) {
         const points = seriesFor(area);
         html += "<tr><td>" + area + "</td>" +
                 shown.map((y) => "<td>" + fmt(points.find((p) => p.year === y)?.value) + "</td>").join("") +
@@ -535,43 +580,75 @@ function table() {
     return html + "</tbody></table></div>";
 }
 
+/** One pyramid per selected area, side by side, drawn on a shared scale.
+ *
+ *  A shared scale is the point: two pyramids each normalised to their own maximum
+ *  compare shapes but hide that one province is ten times the other. Every pyramid is
+ *  a fixed share of the width, so adding a third narrows all three rather than
+ *  squeezing the last one. */
 function pyramid() {
-    const [age, sex] = ["age", "sex"];
-    const rows = state.rows.filter(
-        (r) => r.level === state.level && r.year === state.year && r.area === state.selection[0]
-    );
-    if (!rows.length) {
-        return empty("Piramit tek alan çizer; soldan bir alan seçin.");
+    const areas = drawn();
+    if (!areas.length) {
+        return empty("Soldan en az bir alan seçin.");
+    }
+    if (areas.length > 4) {
+        return empty("Piramit en çok dört alan çizer; " + areas.length + " seçili.",
+                     "Fazlasını soldaki listeden gizleyin");
     }
 
-    const bands = [...new Set(rows.map((r) => r[age]))].sort((a, b) =>
-        String(a).localeCompare(String(b), "tr", {numeric: true}));
-    const sexes = [...new Set(rows.map((r) => r[sex]))].sort();
-    const max = Math.max(...rows.map((r) => r.value));
+    const rowsOf = (area) =>
+        state.rows.filter(
+            (r) => r.level === state.level && r.year === state.year && r.area === area
+        );
 
-    const mid = PLOT_W / 2, T = 16;
+    const all = areas.flatMap(rowsOf);
+    if (!all.length) {
+        return empty("Bu yıl için kırılımlı değer yok.");
+    }
+
+    const bands = [...new Set(all.map((r) => r.age))].sort((a, b) =>
+        String(a).localeCompare(String(b), "tr", {numeric: true}));
+    const sexes = [...new Set(all.map((r) => r.sex))].sort();
+    const max = Math.max(...all.map((r) => r.value));
+
+    const T = 34;
+    const cell = PLOT_W / areas.length;
     const band = (PLOT_H - T - 16) / bands.length;
 
     let svg = '<svg class="plot" viewBox="0 0 ' + PLOT_W + " " + PLOT_H + '" role="img">';
-    bands.forEach((label, i) => {
-        const y = PLOT_H - 16 - (i + 1) * band + band * 0.15;
-        const h = band * 0.7;
-        sexes.forEach((s, si) => {
-            const row = rows.find((r) => r[age] === label && r[sex] === s);
-            if (!row) {
-                return;
+
+    areas.forEach((area, ai) => {
+        const rows = rowsOf(area);
+        const mid = cell * ai + cell / 2;
+        const arm = cell / 2 - 34;
+
+        svg += '<text x="' + mid + '" y="14" text-anchor="middle" fill="' + colourOf(area) +
+               '" font-size="13">' + area + "</text>";
+
+        bands.forEach((label, i) => {
+            const y = PLOT_H - 16 - (i + 1) * band + band * 0.15;
+            const h = band * 0.7;
+            sexes.forEach((s, si) => {
+                const row = rows.find((r) => r.age === label && r.sex === s);
+                if (!row) {
+                    return;
+                }
+                const w = (row.value / max) * (arm - 16);
+                svg += '<rect x="' + (si === 0 ? mid - 16 - w : mid + 16) + '" y="' + y +
+                       '" width="' + w + '" height="' + h + '" fill="' + colour(si) +
+                       '" rx="1"><title>' + area + " · " + dimValue("sex", s) + " " + label +
+                       ": " + fmt(row.value) + "</title></rect>";
+            });
+            if (ai === 0) {
+                svg += axisText(4, y + h / 2 + 4, label, "start");
             }
-            const w = (row.value / max) * (mid - 90);
-            const left = si === 0;
-            svg += '<rect x="' + (left ? mid - 60 - w : mid + 60) + '" y="' + y + '" width="' + w +
-                   '" height="' + h + '" fill="' + colour(si) + '" rx="1"/>';
         });
-        svg += axisText(mid, y + h / 2 + 4, label, "middle");
     });
 
     sexes.forEach((s, si) => {
-        svg += '<text x="' + (si === 0 ? 20 : PLOT_W - 20) + '" y="14" text-anchor="' +
-               (si === 0 ? "start" : "end") + '" fill="' + colour(si) + '" font-size="13">' + s + "</text>";
+        svg += '<text x="' + (si === 0 ? 20 : PLOT_W - 20) + '" y="' + (T - 6) +
+               '" text-anchor="' + (si === 0 ? "start" : "end") + '" fill="' + colour(si) +
+               '" font-size="13">' + dimValue("sex", s) + "</text>";
     });
     return svg + "</svg>";
 }
@@ -630,11 +707,26 @@ function map() {
     const base = token("--bg-control");
     const ink = token("--accent");
 
+    // Population is spread over three orders of magnitude: on a linear ramp İstanbul is
+    // the only province with any colour in it and the other eighty read as empty. Log is
+    // the default for that reason; linear stays one click away because a ratio the
+    // reader wants to see literally — a rate, a percentage — is better off on it.
+    const logging = state.scale === "log" && low > 0;
+    const position = (v) => {
+        if (v === undefined) {
+            return null;
+        }
+        if (logging) {
+            return (Math.log(v) - Math.log(low)) / Math.max(1e-9, Math.log(high) - Math.log(low));
+        }
+        return (v - low) / Math.max(1e-9, high - low);
+    };
+
     let svg = '<svg class="plot ' + (state.focus ? "" : "drillable") + '" viewBox="0 0 ' +
               PLOT_W + " " + PLOT_H + '" role="img">';
     for (const feature of features) {
         const value = byId.get(feature.properties.area_id);
-        const t = value === undefined ? null : (value - low) / Math.max(1e-9, high - low);
+        const t = position(value);
         const d = rings(feature)
             .map((ring) => "M" + ring.map((p) => px(p).map((n) => n.toFixed(1)).join(" ")).join("L") + "Z")
             .join(" ");
@@ -647,11 +739,19 @@ function map() {
     }
     svg += "</svg>";
 
-    const head = state.focus
-        ? "<div class='map-head'><button class='link-inline' id='map-back'>← Türkiye</button>" +
-          "<span>" + opened.name_tr + " · " + features.length + " ilçe" +
-          (values.length ? "" : " · ilçe düzeyinde veri yok, sınırlar gösteriliyor") + "</span></div>"
-        : "<div class='map-head'><span>Bir ile tıklayınca ilçeleri açılır.</span></div>";
+    const scaleToggle = values.length
+        ? "<span class='spacer'></span><span>Renk ölçeği</span>" +
+          "<button class='chip" + (state.scale === "log" ? " on" : "") + "' data-scale='log'>Log</button>" +
+          "<button class='chip" + (state.scale === "linear" ? " on" : "") + "' data-scale='linear'>Doğrusal</button>"
+        : "";
+
+    const head = "<div class='map-head'>" +
+        (state.focus
+            ? "<button class='link-inline' id='map-back'>← Türkiye</button><span>" +
+              opened.name_tr + " · " + features.length + " ilçe" +
+              (values.length ? "" : " · ilçe düzeyinde veri yok, sınırlar gösteriliyor") + "</span>"
+            : "<span>Bir ile tıklayınca ilçeleri açılır.</span>") +
+        scaleToggle + "</div>";
 
     return head + svg + (values.length ? legend(low, high, ink) : "");
 }
@@ -755,7 +855,7 @@ function readHash() {
 }
 
 function downloadShown() {
-    const rows = slice().filter((r) => state.selection.includes(r.area));
+    const rows = slice().filter((r) => drawn().includes(r.area));
     const header = "area,year,value,unit,indicator\n";
     const body = rows
         .map((r) => [r.area, r.year, r.value, state.indicator.unit, state.indicator.id].join(","))
@@ -838,6 +938,7 @@ function wire() {
 
     $("clear-selection").onclick = () => {
         state.selection = [];
+        state.muted = [];
         render();
     };
 
@@ -859,10 +960,35 @@ function wire() {
         render();
     };
 
+    // The chosen block: hide a series without losing it, or drop it outright.
+    $("chosen").onclick = (ev) => {
+        const button = ev.target.closest("button");
+        const area = ev.target.closest("li")?.dataset.area;
+        if (!button || !area) {
+            return;
+        }
+        if (button.dataset.act === "drop") {
+            state.selection = state.selection.filter((a) => a !== area);
+            state.muted = state.muted.filter((a) => a !== area);
+        } else {
+            state.muted = state.muted.includes(area)
+                ? state.muted.filter((a) => a !== area)
+                : [...state.muted, area];
+        }
+        render();
+    };
+
     // Map drill-down: a province opens into its districts, and back out again.
     $("view").onclick = async (ev) => {
         if (ev.target.id === "map-back") {
             state.focus = null;
+            render();
+            return;
+        }
+
+        const scale = ev.target.closest("[data-scale]");
+        if (scale) {
+            state.scale = scale.dataset.scale;
             render();
             return;
         }
