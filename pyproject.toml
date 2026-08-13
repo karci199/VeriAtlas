@@ -1,7 +1,7 @@
 [project]
-name = "veri"
+name = "veriatlas"
 version = "0.1.0"
-description = "Add your description here"
+description = "Cok kaynakli istatistik platformu (TUIK, EVDS, OWID, Dunya Bankasi)"
 readme = "README.md"
 authors = [
     { name = "katan", email = "katan@KARCI-PC" }
@@ -31,7 +31,7 @@ dependencies = [
 ]
 
 [project.scripts]
-veri = "veri:main"
+veriatlas = "veriatlas:main"
 
 [build-system]
 requires = ["uv_build>=0.12.3,<0.13.0"]

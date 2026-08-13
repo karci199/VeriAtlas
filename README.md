@@ -6,6 +6,9 @@ ve raporlamak için.
 
 **Durum: altyapı kuruldu, veri hattı henüz yazılmadı.**
 
+Kod ve tanımlayıcılar İngilizce, kullanıcının gördüğü etiketler Türkçe
+(bkz. [docs/kararlar.md](docs/kararlar.md)).
+
 ## Kurulum
 
 ```bash
@@ -35,7 +38,7 @@ uv run python scripts/check_env.py
 ## Klasörler
 
 ```
-src/veri/         paket kodu (config.py: yollar ve ayarlar)
+src/veriatlas/    paket kodu (config.py: yollar ve ayarlar)
 scripts/          tek seferlik betikler ve doğrulama araçları
 docs/             oturum notları, tasarım belgeleri
 raw/              ham indirilen dosyalar (git'e girmez)
@@ -80,20 +83,22 @@ Raporlar sayfalı gelebiliyor; tek sayfadan okumak eksik veri verir.
 
 Not: her adım sunucu turu gerektiriyor, adımları tek seferde zincirlemek çalışmıyor.
 
-## Tasarım kararları (yazılacak)
+## Sırada ne var
 
-- Kanonik olgu tablosu şeması (SDMX'ten sadeleştirilmiş)
-- Gösterge sözlüğü (konu ağacı, birim, frekans, çift dilli etiket)
-- Zamana bağlı coğrafya kaydı (6360 sayılı yasa, 2013 kırılması)
-- Adaptör sözleşmesi (fetch / parse / metadata + manifest)
-- Kalite kuralları (pandera)
+Yazılacak parçalar, bağımlılık sırasıyla:
 
-## Açık kararlar
+1. Kanonik olgu tablosu şeması (SDMX'ten sadeleştirilmiş; vintage ve kalite bayrağı
+   ilk sınıf alan)
+2. Gösterge sözlüğü (konu ağacı, birim, frekans, `label_tr` / `label_en`)
+3. Zamana bağlı coğrafya kaydı (6360 sayılı yasa, 2013 kırılması)
+4. Adaptör sözleşmesi (fetch / parse / metadata + manifest) — ilk ikisi EVDS3 ve MEDAS
+5. Kalite kuralları (pandera)
 
-1. Kod dili: İngilizce mi Türkçe mi (öneri: İngilizce kod, Türkçe etiket)
-2. İlk tema hangisi (öneri: nüfus ve doğurganlık)
-3. Paket adı `veri` → `veriatlas` olarak değişsin mi
+Açık tek karar: ilk tema hangisi olacak (öneri: nüfus ve doğurganlık).
 
-## Geçmiş
+## Belgeler
 
-Ön çalışma ve bulgular: [docs/oturum-2026-08-13.md](docs/oturum-2026-08-13.md)
+| Belge | İçerik |
+|---|---|
+| [docs/kararlar.md](docs/kararlar.md) | verilen kararlar ve açık işler |
+| [docs/oturum-2026-08-13.md](docs/oturum-2026-08-13.md) | ön çalışma, bulgular, platformun çözmesi gereken 5 sorun |

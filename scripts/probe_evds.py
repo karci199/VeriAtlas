@@ -15,7 +15,7 @@ import httpx
 
 sys.path.insert(0, "src")
 
-from veri.config import settings  # noqa: E402
+from veriatlas.config import settings  # noqa: E402
 
 BASE = "https://evds3.tcmb.gov.tr/igmevdsms-dis"
 HEADERS = {"key": settings.evds_api_key}
