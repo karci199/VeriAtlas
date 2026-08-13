@@ -253,12 +253,21 @@ function levelsInData() {
 }
 
 function valuesOf(dim) {
-    return [...new Set(state.rows.map((r) => r[dim]).filter((v) => v !== undefined))]
+    // District rows carry no age or sex, so the column is there but empty. An empty
+    // string is not a breakdown value and must not become a blank menu entry.
+    return [...new Set(state.rows.map((r) => r[dim]).filter((v) => v !== undefined && v !== ""))]
         .sort((a, b) => String(a).localeCompare(String(b), "tr", {numeric: true}));
 }
 
+/** Years available *at the current level*.
+ *
+ *  The levels do not cover the same span: district totals run to 2025, the province
+ *  age-and-sex file stops at 2023. A slider offering 2025 at province level lands the
+ *  reader on an empty map that looks like a bug rather than a gap in the data. */
 function years() {
-    return [...new Set(state.rows.map((r) => r.year))].sort((a, b) => a - b);
+    const here = state.rows.filter((r) => r.level === state.level);
+    const span = [...new Set((here.length ? here : state.rows).map((r) => r.year))];
+    return span.sort((a, b) => a - b);
 }
 
 /** Rows matching the current breakdown choice, summed where a dim is set to "all".
@@ -1082,6 +1091,11 @@ function wire() {
     $("level").onchange = (ev) => {
         state.level = ev.target.value;
         state.focus = null;
+        // The new level may not cover the year we were standing on.
+        const span = years();
+        if (!span.includes(state.year)) {
+            state.year = span[span.length - 1];
+        }
         seedSelection();
         render();
     };
