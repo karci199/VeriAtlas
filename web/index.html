@@ -36,9 +36,12 @@
             <label class="field">Düzey
                 <select id="level"><option>İl</option></select>
             </label>
-            <label class="field">İller
-                <select id="areas" multiple size="4" style="min-width:190px"></select>
-            </label>
+            <div class="field picker">
+                <span>İller</span>
+                <input id="area-search" type="search" placeholder="il ara…">
+                <select id="areas" multiple size="8"></select>
+                <span class="hint" id="area-count"></span>
+            </div>
             <label class="field">Yıl
                 <input id="from" type="number" min="2009" max="2025" value="2009" style="width:74px">
                 —
@@ -55,6 +58,9 @@
         <section class="card">
             <div class="badges" id="badges"></div>
             <table>
+                <colgroup>
+                    <col style="width:40%"><col style="width:20%"><col style="width:20%"><col style="width:20%">
+                </colgroup>
                 <thead>
                     <tr><th>il</th><th id="th-from"></th><th id="th-to"></th><th>değişim</th></tr>
                 </thead>
@@ -94,14 +100,28 @@ function parseCsv(text) {
 const data = parseCsv(await (await fetch("../public/tfr.csv")).text());
 const areaNames = [...new Set(data.map((d) => d.area))].sort((a, b) => a.localeCompare(b, "tr"));
 
-for (const name of areaNames) {
-    const option = new Option(name, name, false, DEFAULT_AREAS.includes(name));
-    $("areas").add(option);
-}
 $("chart-unit").textContent = data[0].unit + " · yıllık";
 
+// Search has to survive Turkish typing habits: someone looking for Şanlıurfa types
+// "sanli". Fold both sides rather than demanding the exact letters.
+const FOLD = {ş: "s", ı: "i", İ: "i", ğ: "g", ü: "u", ö: "o", ç: "c", â: "a", î: "i"};
+const fold = (s) => [...s.toLocaleLowerCase("tr")].map((c) => FOLD[c] ?? c).join("");
+
+// The picker only shows what the filter matches, so the selection cannot live in the
+// DOM — a province filtered out of view is still selected.
+const selected = new Set(DEFAULT_AREAS);
+
+function fillAreas() {
+    const query = fold($("area-search").value.trim());
+    const shown = areaNames.filter((name) => fold(name).includes(query));
+    $("areas").replaceChildren(
+        ...shown.map((name) => new Option(name, name, false, selected.has(name))),
+    );
+    $("area-count").textContent = selected.size + " seçili";
+}
+
 function selection() {
-    const picked = [...$("areas").selectedOptions].map((o) => o.value);
+    const picked = areaNames.filter((name) => selected.has(name));
     return {
         areas: picked.length ? picked : DEFAULT_AREAS,
         from: Number($("from").value),
@@ -176,7 +196,50 @@ function render() {
     }));
 }
 
-for (const id of ["areas", "from", "to"]) $(id).addEventListener("input", render);
+$("areas").addEventListener("input", () => {
+    for (const option of $("areas").options) {
+        if (option.selected) selected.add(option.value);
+        else selected.delete(option.value);
+    }
+    $("area-count").textContent = selected.size + " seçili";
+    render();
+});
+
+$("area-search").addEventListener("input", fillAreas);
+
+for (const id of ["from", "to"]) $(id).addEventListener("input", render);
+
+// The indicator tree is still hardcoded; once the indicator dictionary exists this
+// filters that list instead.
+$("search").addEventListener("input", () => {
+    const query = fold($("search").value.trim());
+    let group = null;
+    let items = [];
+
+    // Matching a group keeps its children: a heading with nothing under it reads as a
+    // bug, not as a filter.
+    const flush = () => {
+        if (!group) return;
+        const groupHit = fold(group.textContent).includes(query);
+        let anyHit = groupHit;
+        for (const item of items) {
+            item.hidden = !groupHit && !fold(item.textContent).includes(query);
+            anyHit = anyHit || !item.hidden;
+        }
+        group.hidden = !anyHit;
+    };
+
+    for (const item of document.querySelectorAll(".tree li")) {
+        if (item.classList.contains("group")) {
+            flush();
+            group = item;
+            items = [];
+        } else {
+            items.push(item);
+        }
+    }
+    flush();
+});
 
 $("theme-toggle").addEventListener("click", () => {
     const light = document.documentElement.dataset.theme === "light";
@@ -185,6 +248,7 @@ $("theme-toggle").addEventListener("click", () => {
     render();
 });
 
+fillAreas();
 render();
 </script>
 

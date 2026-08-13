@@ -147,6 +147,32 @@ select[multiple] {
     color: var(--text-tertiary);
 }
 
+/* The province picker is a column: label, filter, list, count. */
+.picker {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    width: 190px;
+}
+
+.picker .hint {
+    font-size: 11px;
+}
+
+/* Long lists stay open rather than forcing a scroll through 81 rows four at a time. */
+.picker select[multiple] {
+    padding: 2px;
+}
+
+.picker select[multiple] option {
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+
+.filters {
+    align-items: flex-start;
+}
+
 /* endregion */
 
 /* region Panels */
@@ -201,8 +227,15 @@ select[multiple] {
 
 table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
     font-size: 12px;
+}
+
+td:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 th {
