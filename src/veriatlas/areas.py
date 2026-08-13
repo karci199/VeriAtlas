@@ -21,10 +21,20 @@ import polars as pl
 
 REGISTRY_PATH = Path(__file__).parent / "data" / "areas_tr.csv"
 
+#: Population per province, used to weight province values into region values. Kept
+#: apart from the registry: a name is permanent, a population is an observation with a
+#: date on it.
+WEIGHTS_PATH = Path(__file__).parent / "data" / "area_weights_tr.csv"
+
 
 def load_areas() -> pl.DataFrame:
     """Read the registry: `area_id`, `area_level`, `name_tr`, `parent_id`."""
     return pl.read_csv(REGISTRY_PATH)
+
+
+def load_weights() -> pl.DataFrame:
+    """Read the aggregation weights: `area_id`, `population`, provenance columns."""
+    return pl.read_csv(WEIGHTS_PATH)
 
 
 def resolve(names: list[str], level: str = "province") -> dict[str, str]:

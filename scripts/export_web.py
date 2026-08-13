@@ -14,6 +14,7 @@ import polars as pl
 
 sys.path.insert(0, "src")
 
+from veriatlas.aggregate import to_regions
 from veriatlas.areas import load_areas
 from veriatlas.config import PUBLIC
 from veriatlas.indicators import load
@@ -61,20 +62,19 @@ def main() -> None:
         "this slice assumes no breakdowns; add dimension columns before exporting"
     )
 
-    slim = (
-        fact.join(areas, on="area_id", how="left")
-        .select(
-            "area_id",
-            pl.col("name_tr").alias("area"),
-            pl.col("period_start").dt.year().alias("year"),
-            "value",
-            "unit",
-            "quality_flag",
-            "vintage",
-            "source_id",
-        )
-        .sort("area", "year")
+    provinces = fact.join(areas, on="area_id", how="left").select(
+        "area_id",
+        pl.col("name_tr").alias("area"),
+        pl.lit("province").alias("level"),
+        pl.col("period_start").dt.year().alias("year"),
+        "value",
+        "unit",
+        "quality_flag",
+        "vintage",
+        "source_id",
     )
+
+    slim = pl.concat([provinces, to_regions(provinces)]).sort("level", "area", "year")
 
     target = PUBLIC / "tfr.csv"
     slim.write_csv(target)

@@ -127,7 +127,7 @@ Sıra, birbirine bağımlılığa göre:
 
 1. ~~Kanonik olgu tablosu şeması~~ — bitti, bkz. K6.
 2. ~~Gösterge sözlüğü~~ — bitti, bkz. K7.
-3. **Zamana bağlı coğrafya kaydı** — il yarısı yapıldı (`src/veriatlas/data/areas_tr.csv`,
+3. **Zamana bağlı coğrafya kaydı** — ülke / 7 bölge / 81 il yapıldı (`src/veriatlas/data/areas_tr.csv`,
    81 il + ülke, ISO 3166-2:TR). Kalan zor yarı ilçe: 6360 sayılı yasa, 2013 kırılması,
    sonradan kurulan ilçeler → geçerlilik aralığı ve ardıl eşlemesi gerekiyor.
 4. **Adaptör sözleşmesi** — fetch / parse / metadata + manifest. İlk iki adaptör:
@@ -158,6 +158,28 @@ Yükleme sırasında öğrenilenler:
   okuyunca gerçek yayım tarihiyle değişecek. Bilinen açık.
 - **Birim gösterge sözlüğü gelene kadar betiğe gömülü** (`çocuk/kadın`). Sözlük
   yazılınca oradan okunacak.
+
+## Bölge düzeyi ve ağırlıklı toplama (2026-08-13)
+
+Coğrafya kaydı TurkiyeAPI'den yeniden üretiliyor (`scripts/fetch_areas.py`): ülke,
+**7 coğrafi bölge**, 81 il. Not: bunlar coğrafi bölgeler (Marmara, Ege…), TÜİK'in
+kullandığı **İBBS bölgeleri değil**. İBBS-1 (12) ve İBBS-2 (26) sonra eklenecek;
+TÜİK verisi o düzeylerde de yayımlandığı için er geç gerekecek.
+
+Çalışma anında dış servise bağlanmıyoruz: veri bir kez çekilip kendi kaydımıza yazılıyor,
+kaynak ve çekim tarihi kayıtta duruyor.
+
+**Bölge değeri ağırlıklı ortalamayla hesaplanıyor** (`src/veriatlas/aggregate.py`).
+Toplamlar toplanır, oranlar toplanmaz: doğurganlık bir orandır, yedi ilin düz ortalaması
+o bölgenin doğurganlığı değildir — 90 bin nüfuslu il İstanbul kadar sayılırdı. Nüfusla
+ağırlıklandırmak bunun en kötü kısmını düzeltiyor.
+
+Yine de yaklaşık: doğru ağırlık doğurgan çağdaki kadın nüfusu, toplam nüfus değil. Bu
+yüzden üretilen her satır `estimated` işaretli — grafikte sarı "tahmin" rozetiyle
+görünüyor. Kalite bayrağı makinesinin ilk gerçek kullanımı bu oldu.
+
+Ağırlıklar `src/veriatlas/data/area_weights_tr.csv`'de, kayıttan ayrı tutuluyor: ad
+kalıcıdır, nüfus ise tarihi olan bir gözlemdir.
 
 ## Kaynak kısıtları (değişmedi)
 

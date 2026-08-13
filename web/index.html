@@ -28,7 +28,10 @@
                 <h2>ALAN SEÇİNİZ</h2>
                 <div class="panel-body">
                     <label class="field">Düzey
-                        <select id="level"><option>İl</option></select>
+                        <select id="level">
+                            <option value="province">İl</option>
+                            <option value="region">Bölge</option>
+                        </select>
                     </label>
                     <input id="area-search" type="search" placeholder="il ara…">
                     <div id="area-list" class="option-list" role="listbox" aria-multiselectable="true"></div>
@@ -102,7 +105,12 @@
 import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
 
 const REPLACEMENT_LEVEL = 2.10;
-const DEFAULT_AREAS = ["Bursa", "İzmir", "Şırnak"];
+
+// One default per level, so switching level never lands on an empty chart.
+const DEFAULTS = {
+    province: ["Bursa", "İzmir", "Şırnak"],
+    region: ["Marmara", "İç Anadolu", "Güneydoğu Anadolu"],
+};
 
 const PALETTE_SIZE = 10;
 
@@ -159,7 +167,10 @@ uv run python -m http.server 8123</pre>
 
 const data = parseCsv(await (await read("../public/tfr.csv")).text());
 const meta = await (await read("../public/meta.json")).json();
-const areaNames = [...new Set(data.map((d) => d.area))].sort((a, b) => a.localeCompare(b, "tr"));
+const level = () => $("level").value;
+const namesAt = (lvl) =>
+    [...new Set(data.filter((d) => d.level === lvl).map((d) => d.area))]
+        .sort((a, b) => a.localeCompare(b, "tr"));
 
 // Nothing about an indicator is spelled out in this page: name, unit and precision all
 // come from the dictionary (decision K7).
@@ -197,12 +208,12 @@ const fold = (s) => [...s.toLocaleLowerCase("tr")].map((c) => FOLD[c] ?? c).join
 // The picker only shows what the filter matches, so the selection cannot live in the
 // list — a province filtered out of view is still selected. The basket is what makes
 // that safe to rely on: it shows the whole selection whatever the filter is doing.
-const selected = new Set(DEFAULT_AREAS);
+const selected = new Set(DEFAULTS.province);
 
 function selection() {
-    const picked = areaNames.filter((name) => selected.has(name));
+    const picked = namesAt(level()).filter((name) => selected.has(name));
     return {
-        areas: picked.length ? picked : DEFAULT_AREAS,
+        areas: picked.length ? picked : DEFAULTS[level()],
         from: Number($("from").value),
         to: Number($("to").value),
     };
@@ -217,7 +228,7 @@ function colourOf(area) {
 
 function fillAreas() {
     const query = fold($("area-search").value.trim());
-    const shown = areaNames.filter((name) => fold(name).includes(query));
+    const shown = namesAt(level()).filter((name) => fold(name).includes(query));
 
     // A plain <select multiple> needs ctrl-click to add a second item, and one stray
     // click wipes the selection. Rows that simply toggle are safer and themeable.
@@ -306,7 +317,8 @@ function render() {
     const colours = areas.map(colourOf);
 
     const inRange = data
-        .filter((d) => areas.includes(d.area) && d.year >= from && d.year <= to)
+        .filter((d) => d.level === level() && areas.includes(d.area))
+        .filter((d) => d.year >= from && d.year <= to)
         .sort((a, b) => a.year - b.year);
 
     const base = new Map();
@@ -386,6 +398,16 @@ function render() {
 }
 
 $("area-search").addEventListener("input", fillAreas);
+
+// A province is not a region, so a selection cannot survive the switch. Clearing is the
+// honest move; the defaults for the new level take over.
+$("level").addEventListener("change", () => {
+    selected.clear();
+    $("area-search").value = "";
+    fillAreas();
+    fillBasket();
+    render();
+});
 
 $("clear-areas").addEventListener("click", () => {
     selected.clear();
