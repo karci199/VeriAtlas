@@ -360,8 +360,14 @@ function viewState(view) {
     if (!(state.indicator.views || []).includes(view)) {
         return {enabled: false, reason: "Bu gösterge için tanımlı değil"};
     }
-    if (view === "map" && geometry === null) {
-        return {enabled: false, reason: "İl sınır geometrisi henüz çekilmedi"};
+    if (view === "map" && !geometry) {
+        return {enabled: false, reason: "Sınır geometrisi henüz çekilmedi"};
+    }
+    if (view === "map" && !levelsWithGeometry().includes(state.level)) {
+        return {
+            enabled: false,
+            reason: (LEVEL_LABELS[state.level] || state.level) + " düzeyinde sınır yok",
+        };
     }
     return {enabled: true, reason: ""};
 }
@@ -552,11 +558,19 @@ function pyramid() {
     return svg + "</svg>";
 }
 
+/** Which area levels the geometry file actually carries shapes for. */
+function levelsWithGeometry() {
+    if (!geometry) {
+        return [];
+    }
+    return [...new Set(geometry.features.map((f) => f.properties.area_level))];
+}
+
 function map() {
     if (!geometry) {
         return empty(
-            "Harita için il sınırları gerekiyor; henüz çekilmedi.",
-            "public/areas.geojson bekleniyor — özellik başına area_id"
+            "Harita için sınır geometrisi gerekiyor; henüz çekilmedi.",
+            "uv run python scripts/fetch_geometry.py"
         );
     }
 
@@ -568,17 +582,28 @@ function map() {
     }
 
     const [low, high] = [Math.min(...values), Math.max(...values)];
-    const features = geometry.features;
+    const features = geometry.features.filter((f) => f.properties.area_level === state.level);
+    if (!features.length) {
+        return empty((LEVEL_LABELS[state.level] || state.level) + " düzeyinde sınır geometrisi yok.");
+    }
 
-    // Equirectangular is enough at country scale and needs no projection library.
+    // Equirectangular, which needs no projection library, but with the longitude scaled
+    // by cos(latitude): without it Turkey comes out about a quarter too wide.
     const points = features.flatMap((f) => rings(f).flat());
     const lon = points.map((p) => p[0]);
     const lat = points.map((p) => p[1]);
     const [x0, x1, y0, y1] = [Math.min(...lon), Math.max(...lon), Math.min(...lat), Math.max(...lat)];
-    const scale = Math.min((PLOT_W - 40) / (x1 - x0), (PLOT_H - 40) / (y1 - y0));
+    const squeeze = Math.cos((((y0 + y1) / 2) * Math.PI) / 180);
+
+    const scale = Math.min(
+        (PLOT_W - 40) / ((x1 - x0) * squeeze),
+        (PLOT_H - 56) / (y1 - y0)
+    );
+    const width = (x1 - x0) * squeeze * scale;
+    const left = (PLOT_W - width) / 2;
     const px = (p) => [
-        20 + (p[0] - x0) * scale,
-        PLOT_H - 20 - (p[1] - y0) * scale,
+        left + (p[0] - x0) * squeeze * scale,
+        PLOT_H - 36 - (p[1] - y0) * scale,
     ];
 
     const base = token("--bg-control");
@@ -629,6 +654,12 @@ function render() {
     if (!state.indicator) {
         return; // the settings panel is live before the first dataset arrives
     }
+    // A view can stop being available under you — switching to a level with no
+    // boundaries, say. Fall back rather than draw an empty frame.
+    if (!viewState(state.view).enabled) {
+        state.view = (state.indicator.views || ["table"]).find((v) => viewState(v).enabled) || "table";
+    }
+
     drawRail();
     drawDims();
     drawTabs();
