@@ -8,6 +8,7 @@ series, long after the import that caused it.
 import pytest
 
 from veriatlas.indicators import DICTIONARY_PATH, VIEWS, check_dims, get, load
+from veriatlas.schema import QUALITY_FLAGS
 
 
 def test_every_indicator_resolves_its_topic_and_unit():
@@ -73,6 +74,14 @@ def test_pyramid_is_only_offered_where_the_breakdown_exists():
     for indicator in load().indicators.values():
         if "pyramid" in indicator.views:
             assert {"age", "sex"} <= set(indicator.dims), indicator.indicator_id
+
+
+def test_derivations_declare_a_known_unit_and_quality():
+    """A derived number that claims `measured` when it is modelled would mislabel the
+    badge the reader trusts."""
+    for derived in load().derivations.values():
+        assert derived.unit.unit_id in load().units
+        assert derived.quality in QUALITY_FLAGS, derived.derivation_id
 
 
 def test_tree_is_ordered_and_places_each_indicator_once():

@@ -206,6 +206,28 @@ Doldurma yolu, tercih sırasına göre:
 Ardıllık (hangi ilçe hangisinden çıktı) ayrı bir tablo olacak: bir ilçenin bölünmesi,
 zaman serisini kırar ve toplama kuralı olmadan 2013 ile 2014 karşılaştırılamaz.
 
+## K12 — Türetilmiş seriler: sözlükte tanımlı, depolanmaz (2026-08-14)
+
+Endeks, yıllık değişim, ileride kişi başı ve ara değer — bunlar arayüz numarası değil,
+ölçümün üstünde ayrı bir katman. Üç kural:
+
+1. **Sözlükte tanımlı** (`[derivation.*]`): ürettiği birim, kalite bayrağı, tek yılda
+   anlamı olup olmadığı (`needs_span`). Sayfa nasıl böleceğini bilir, sonuca ne diyeceğini
+   bilmez — o sözlükten gelir (K1, K7).
+2. **Depolanmaz, hesaplanır.** Olgu tablosuna yazılsa hangi sürümden türediği kaybolur;
+   yeniden hesaplamak bedava. Künyede kaynak yine ölçümün künyesidir.
+3. **Kalite bayrağı zorunlu.** Endeks ve yıllık değişim ölçümden birebir çıktığı için
+   `measured`; ara değer `interpolated`, ileriye uzatma ise ayrı bir bayrak (`projected`)
+   isteyecek ve ölçümle aynı çizgide gösterilmeyecek.
+
+İlk ikisi kuruldu: **endeks (ilk yıl = 100)** ve **yıllık değişim (%)**. İkisi de
+büyüklüğü değil hareketi çizdiği için İstanbul'un her grafiği bastırması sorununu da
+çözüyor. Tek yıl gösteren görünümlerde (harita, sütun, piramit) denetim kendiliğinden
+kayboluyor: bir yılın "önceki yıla göre değişimi" o görünümde yalan olurdu.
+
+Sıradakiler: ara değer (eksik yıl), kişi başı, ve ileriye uzatma — sonuncusu muhtemelen
+türetme değil, ayrı bir "projeksiyon" göstergesi olarak.
+
 ## Açık işler
 
 Sıra, birbirine bağımlılığa göre:

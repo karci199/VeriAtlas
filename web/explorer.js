@@ -229,6 +229,8 @@ const state = {
     districtView: false,
     //: The map's viewBox — what the reader has panned and zoomed to.
     mapView: {x: 0, y: 0, w: 1000, h: 420},
+    //: Active derivation id, or "" for the measurement itself.
+    derivation: "",
     //: Province the map is opened into, or null for the whole country.
     focus: null,
 };
@@ -312,8 +314,55 @@ function slice(level = state.level) {
     return [...totals.values()];
 }
 
+// region Derivations
+//
+// A derived series is computed here and never stored: the fact table keeps measurements,
+// and recomputing costs nothing while storing would lose which vintage the number came
+// from (K12). What each one produces — its unit, its precision — is declared in the
+// dictionary, so this function knows how to divide, not what to call the result.
+
+const DERIVATIONS = {
+    /** Each series against its own first year. Shows movement, not size. */
+    index(points) {
+        const base = points.find((p) => Number.isFinite(p.value))?.value;
+        if (!base) {
+            return [];
+        }
+        return points.map((p) => ({...p, value: (p.value / base) * 100}));
+    },
+
+    /** Change on the previous year. The first year has no predecessor and is dropped —
+     *  an absent value, not a zero. */
+    yoy(points) {
+        return points
+            .map((p, i) => {
+                const previous = points[i - 1];
+                if (!previous || !previous.value) {
+                    return null;
+                }
+                return {...p, value: ((p.value - previous.value) / previous.value) * 100};
+            })
+            .filter(Boolean);
+    },
+};
+
+/** The dictionary entry for the active derivation, or null when showing measurements. */
+function derivation() {
+    return state.derivation ? meta.derivations?.[state.derivation] : null;
+}
+
+function derive(points) {
+    const active = state.derivation;
+    if (!active || !DERIVATIONS[active]) {
+        return points;
+    }
+    return DERIVATIONS[active](points.slice().sort((a, b) => a.year - b.year));
+}
+
+// endregion
+
 function seriesFor(area) {
-    return slice().filter((r) => r.area === area).sort((a, b) => a.year - b.year);
+    return derive(slice().filter((r) => r.area_id === area || r.area === area).sort((a, b) => a.year - b.year));
 }
 
 function areasAtLevel() {
@@ -321,13 +370,22 @@ function areasAtLevel() {
         .sort((a, b) => a.localeCompare(b, "tr"));
 }
 
+/** Precision follows whatever is being shown: the indicator's unit, or the derivation's. */
+function decimals() {
+    return derivation()?.decimals ?? state.indicator.decimals;
+}
+
+function unitLabel() {
+    return derivation()?.unit ?? state.indicator.unit;
+}
+
 function fmt(value) {
     if (value === undefined || Number.isNaN(value)) {
         return "—";
     }
     return value.toLocaleString("tr-TR", {
-        minimumFractionDigits: state.indicator.decimals,
-        maximumFractionDigits: state.indicator.decimals,
+        minimumFractionDigits: decimals(),
+        maximumFractionDigits: decimals(),
     });
 }
 
@@ -392,8 +450,26 @@ function seedSelection() {
 
 // region Breakdown strip
 
+/** The derivation picker. Entries that need a span are hidden on single-year views —
+ *  a year-on-year change has nothing to say about one year. */
+function derivationControl() {
+    const span = state.view !== "map" && state.view !== "bar" && state.view !== "pyramid";
+    const options = Object.entries(meta.derivations || {})
+        .filter(([, body]) => span || !body.needs_span)
+        .map(([id, body]) => '<option value="' + id + '"' +
+                             (state.derivation === id ? " selected" : "") + ">" + body.label + "</option>")
+        .join("");
+
+    if (!options) {
+        return "";
+    }
+    return "<div><div class='dim-label'>Türetme</div><select id='derivation'>" +
+           '<option value=""' + (state.derivation ? "" : " selected") + ">Ölçüm (ham)</option>" +
+           options + "</select></div>";
+}
+
 function drawDims() {
-    const groups = [indicatorControl()];
+    const groups = [indicatorControl(), derivationControl()];
 
     for (const dim of state.indicator.dims || []) {
         const options = valuesOf(dim);
@@ -683,7 +759,7 @@ function bindHover() {
                     return point ? tipRow(r.colour, r.area, fmt(point.value)) : "";
                 })
                 .join("");
-            place(event, "<div class='tip-head'>" + year + " · " + state.indicator.unit + "</div>" + body,
+            place(event, "<div class='tip-head'>" + year + " · " + unitLabel() + "</div>" + body,
                   hover.x(year) * scale);
             return;
         }
@@ -696,7 +772,7 @@ function bindHover() {
         }
         place(event,
               "<div class='tip-head'>" + shape.dataset.name + "</div>" +
-              tipRow(shape.dataset.colour || token("--accent"), state.indicator.unit, shape.dataset.value),
+              tipRow(shape.dataset.colour || token("--accent"), unitLabel(), shape.dataset.value),
               null);
     };
 }
@@ -1037,6 +1113,13 @@ function render() {
         state.view = (state.indicator.views || ["table"]).find((v) => viewState(v).enabled) || "table";
     }
 
+    // A derivation that needs a span cannot be shown standing on a single year, so
+    // switching to the map drops it rather than drawing something meaningless.
+    const spanView = state.view === "line" || state.view === "table";
+    if (derivation()?.needs_span && !spanView) {
+        state.derivation = "";
+    }
+
     drawRail();
     drawDims();
     drawTabs();
@@ -1062,7 +1145,7 @@ function render() {
     $("year-to").textContent = state.year;
 
     $("chart-subtitle").textContent =
-        state.indicator.unit + " · " + (LEVEL_LABELS[state.level] || state.level) +
+        unitLabel() + " · " + (LEVEL_LABELS[state.level] || state.level) +
         " · " + (perYear ? state.year : span[0] + "–" + span[span.length - 1]);
 
     drawSource();
@@ -1108,7 +1191,7 @@ function downloadShown() {
     const rows = slice().filter((r) => drawn().includes(r.area));
     const header = "area,year,value,unit,indicator\n";
     const body = rows
-        .map((r) => [r.area, r.year, r.value, state.indicator.unit, state.indicator.id].join(","))
+        .map((r) => [r.area, r.year, r.value, unitLabel(), state.indicator.id].join(","))
         .join("\n");
 
     const url = URL.createObjectURL(new Blob([header + body], {type: "text/csv;charset=utf-8"}));
@@ -1231,6 +1314,11 @@ function wire() {
             if (await useIndicator(ev.target.value)) {
                 render();
             }
+            return;
+        }
+        if (ev.target.id === "derivation") {
+            state.derivation = ev.target.value;
+            render();
             return;
         }
         state.dims[ev.target.dataset.dim] = ev.target.value;

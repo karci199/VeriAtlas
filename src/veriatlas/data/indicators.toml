@@ -78,6 +78,12 @@ label_en = "‰"
 decimals = 2
 additive = false
 
+[unit.index]
+label_tr = "endeks"
+label_en = "index"
+decimals = 1
+additive = false
+
 [unit.building]
 label_tr = "bina"
 label_en = "buildings"
@@ -89,6 +95,37 @@ label_tr = "daire"
 label_en = "dwellings"
 decimals = 0
 additive = true
+
+# endregion
+
+# region Derivations — series computed from a measurement, never stored
+#
+# A derived number is not a measurement and must not look like one, so each one declares
+# what it produces (`unit`) and how honest it is (`quality`). The screen computes them on
+# the fly: writing them to the fact table would lose which vintage they came from, and
+# recomputing is cheap.
+#
+# `needs_span` marks a derivation that has no meaning at a single point in time — a
+# yearly change needs two years — so views standing on one year hide it.
+
+[derivation.index]
+label_tr = "Endeks (ilk yıl = 100)"
+label_en = "Index (first year = 100)"
+unit = "index"
+quality = "measured"
+needs_span = true
+note_tr = """
+Her seri kendi ilk yılına bölünüp 100 ile çarpılır. Büyüklüğü değil hareketi gösterir: \
+İstanbul ile Bartın aynı eksende karşılaştırılabilir hale gelir."""
+
+[derivation.yoy]
+label_tr = "Yıllık değişim (%)"
+label_en = "Year-on-year change (%)"
+unit = "percent"
+quality = "measured"
+needs_span = true
+note_tr = """
+Bir önceki yıla göre yüzde değişim. İlk yıl boş kalır — öncesi yoktur, sıfır değildir."""
 
 # endregion
 

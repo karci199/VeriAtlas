@@ -62,10 +62,27 @@ def export_dictionary(loaded: set[str]) -> None:
         for dim in load().dimensions.values()
     }
 
+    derivations = {
+        d.derivation_id: {
+            "label": d.label_tr,
+            "unit": d.unit.label_tr,
+            "decimals": d.unit.decimals,
+            "quality": d.quality,
+            "needs_span": d.needs_span,
+            "note": d.note_tr,
+        }
+        for d in load().derivations.values()
+    }
+
     target = PUBLIC / "meta.json"
     target.write_text(
         json.dumps(
-            {"tree": tree, "dimensions": dimensions, "sources": sources()},
+            {
+                "tree": tree,
+                "dimensions": dimensions,
+                "derivations": derivations,
+                "sources": sources(),
+            },
             ensure_ascii=False,
             indent=2,
         ),

@@ -65,6 +65,24 @@ class Dimension:
 
 
 @dataclass(frozen=True)
+class Derivation:
+    """A series computed from a measurement: an index, a rate of change.
+
+    It is not stored — the screen computes it — but it is declared here for the same
+    reason indicators are: the unit it produces and the honesty of the result are
+    decisions, not implementation details (decision K12).
+    """
+
+    derivation_id: str
+    label_tr: str
+    label_en: str
+    unit: Unit
+    quality: str
+    needs_span: bool
+    note_tr: str
+
+
+@dataclass(frozen=True)
 class Indicator:
     """One measurable quantity."""
 
@@ -86,6 +104,7 @@ class Dictionary:
     topics: dict[str, Topic]
     units: dict[str, Unit]
     dimensions: dict[str, Dimension]
+    derivations: dict[str, Derivation]
     indicators: dict[str, Indicator]
 
     def tree(self) -> list[tuple[Topic, list[Indicator]]]:
@@ -133,6 +152,22 @@ def load() -> Dictionary:
         for key, body in raw.get("dim", {}).items()
     }
 
+    derivations: dict[str, Derivation] = {}
+    for key, body in raw.get("derivation", {}).items():
+        if body["unit"] not in units:
+            raise KeyError(
+                "derivation '" + key + "' names unknown unit: " + body["unit"]
+            )
+        derivations[key] = Derivation(
+            derivation_id=key,
+            label_tr=body["label_tr"],
+            label_en=body["label_en"],
+            unit=units[body["unit"]],
+            quality=body.get("quality", "estimated"),
+            needs_span=bool(body.get("needs_span", False)),
+            note_tr=body.get("note_tr", "").strip(),
+        )
+
     indicators: dict[str, Indicator] = {}
     for key, body in raw.get("indicator", {}).items():
         if body["topic"] not in topics:
@@ -179,7 +214,11 @@ def load() -> Dictionary:
         )
 
     return Dictionary(
-        topics=topics, units=units, dimensions=dimensions, indicators=indicators
+        topics=topics,
+        units=units,
+        dimensions=dimensions,
+        derivations=derivations,
+        indicators=indicators,
     )
 
 
