@@ -249,6 +249,10 @@ select[multiple] {
    panel above the chart, so the chart — the reason the page exists — started below the
    fold. Rails keep the same panels but give the middle column the full height. */
 
+.workspace[hidden] {
+    display: none;
+}
+
 .workspace {
     display: grid;
     grid-template-columns: 290px minmax(0, 1fr) 290px;

@@ -422,16 +422,19 @@ function render() {
         ? transform.label
         : indicator.unit + " · " + FREQUENCY_TR[indicator.frequency];
 
+    const width = Math.max(360, $("chart").clientWidth);
+
     $("chart").replaceChildren(Plot.plot({
-        // Wide enough to use the card, capped so a long series does not flatten into a
-        // ribbon: past about 2:1 the yearly movement stops being readable.
-        width: Math.max(360, $("chart").clientWidth),
-        height: 430,
-        marginLeft: 48,
-        marginRight: 120,
+        // A 16:10 frame instead of a ribbon. Past about 2:1 a yearly series flattens
+        // and the movement stops being readable, which was the whole point of drawing it.
+        width: width,
+        height: Math.round(width / 1.6),
+        marginLeft: 52,
+        marginRight: 132,
+        marginBottom: 34,
         style: {background: "transparent", color: token("--text-tertiary"), fontSize: "11px"},
-        x: {label: null, tickFormat: "d", grid: false},
-        y: {label: null, grid: true, nice: true},
+        x: {label: null, tickFormat: "d", grid: false, ticks: 6, inset: 6},
+        y: {label: null, grid: true, nice: true, ticks: 6},
         color: {domain: areas, range: colours},
         marks: [
             // The replacement line means nothing once the series is a difference or an
@@ -466,9 +469,24 @@ function render() {
                 stroke: token("--bg-card"), strokeWidth: 1,
                 title: (d) => `${d.area} · ${d.year} · ${fmt(d.value)}`,
             }),
+            // A single series has nothing to compare against, so give it a soft fill:
+            // the shape reads faster than a bare line.
+            ...(areas.length === 1 ? [
+                Plot.areaY(rows, {x: "year", y: "value", fill: colours[0], fillOpacity: 0.10}),
+            ] : []),
             Plot.text(rows, Plot.selectLast({
                 x: "year", y: "value", z: "area", text: "area", fill: "area",
-                textAnchor: "start", dx: 6, fontSize: 10,
+                textAnchor: "start", dx: 8, dy: -8, fontSize: 10,
+            })),
+            // The number at the end of the line, so the latest value needs no table.
+            Plot.text(rows, Plot.selectLast({
+                x: "year", y: "value", z: "area", fill: "area",
+                text: (d) => fmt(d.value), textAnchor: "start", dx: 8, dy: 6,
+                fontSize: 11, fontWeight: 600,
+            })),
+            Plot.tip(rows, Plot.pointer({
+                x: "year", y: "value",
+                title: (d) => [d.area, d.year + " · " + fmt(d.value)].join("\n"),
             })),
         ],
     }));
@@ -579,9 +597,8 @@ function applyTab() {
     $("tab-explore").hidden = !exploring;
     $("tab-featured").hidden = name !== "featured";
     $("tab-sources").hidden = name !== "sources";
-    $("chart-card").hidden = !exploring || !pressed("show-chart");
-    $("table-card").hidden = !exploring || !pressed("show-table");
-    $("summary-card").hidden = !exploring;
+    $("chart-card").hidden = !pressed("show-chart");
+    $("table-card").hidden = !pressed("show-table");
 
     if (exploring) render();
 }
