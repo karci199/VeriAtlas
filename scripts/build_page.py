@@ -12,7 +12,6 @@ Run:  uv run python scripts/build_page.py
 
 import json
 import sys
-from pathlib import Path
 
 sys.path.insert(0, "src")
 
@@ -22,7 +21,11 @@ WEB = ROOT / "web"
 TARGET = ROOT / "VeriAtlas.html"
 
 #: Paths the page asks for, exactly as they appear in the source.
-DATA = {"../public/tfr.csv": PUBLIC / "tfr.csv", "../public/meta.json": PUBLIC / "meta.json"}
+DATA = {
+    "../public/tfr.csv": PUBLIC / "tfr.csv",
+    "../public/population.csv": PUBLIC / "population.csv",
+    "../public/meta.json": PUBLIC / "meta.json",
+}
 
 
 def main() -> None:
@@ -38,20 +41,23 @@ def main() -> None:
     missing = [str(path) for path in DATA.values() if not path.exists()]
     if missing:
         raise SystemExit(
-            "önce veriyi üret (uv run python scripts/export_web.py): " + ", ".join(missing)
+            "önce veriyi üret (uv run python scripts/export_web.py): "
+            + ", ".join(missing)
         )
 
     embedded = {key: path.read_text(encoding="utf-8") for key, path in DATA.items()}
     payload = (
         "<script>globalThis.EMBEDDED = "
         + json.dumps(embedded, ensure_ascii=False)
-        + ";</script>\n<script type=\"module\">"
+        + ';</script>\n<script type="module">'
     )
     html = html.replace('<script type="module">', payload, 1)
 
     TARGET.write_text(html, encoding="utf-8")
     print("yazildi:", TARGET, round(TARGET.stat().st_size / 1024), "KB")
-    print("cift tiklayarak acilir; sunucu gerekmez (grafik kutuphanesi icin internet lazim)")
+    print(
+        "cift tiklayarak acilir; sunucu gerekmez (grafik kutuphanesi icin internet lazim)"
+    )
 
 
 if __name__ == "__main__":

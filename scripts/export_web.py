@@ -55,13 +55,44 @@ def export_dictionary(loaded: set[str]) -> None:
     print("yazildi:", target)
 
 
+def export_population(fact: pl.DataFrame, areas: pl.DataFrame) -> None:
+    """Age-and-sex slice for the pyramid: one row per area, year, band and sex."""
+    rows = fact.filter(pl.col("indicator_id") == "population")
+    if rows.height == 0:
+        return
+
+    slim = (
+        rows.join(areas, on="area_id", how="left")
+        .with_columns(
+            pl.col("dims").str.extract(r"age=([^;]+)").alias("age"),
+            pl.col("dims").str.extract(r"sex=([^;]+)").alias("sex"),
+        )
+        .select(
+            "area_id",
+            pl.col("name_tr").alias("area"),
+            "area_level",
+            pl.col("period_start").dt.year().alias("year"),
+            "age",
+            "sex",
+            pl.col("value").cast(pl.Int64),
+        )
+        .sort("area", "year", "sex")
+    )
+
+    target = PUBLIC / "population.csv"
+    slim.write_csv(target)
+    print("yazildi:", target, slim.height, "satir")
+
+
 def sources() -> list[dict[str, str]]:
     """Where each part of the screen comes from, for the Kaynaklar tab.
 
     Assembled from the files themselves rather than typed out, so it cannot drift away
     from what was actually loaded.
     """
-    fact = pl.read_parquet(PUBLIC / "fact_tfr.parquet")
+    fact = pl.read_parquet(PUBLIC / "fact.parquet").filter(
+        pl.col("indicator_id") == "tfr"
+    )
     weights = load_weights()
 
     return [
@@ -98,13 +129,18 @@ def sources() -> list[dict[str, str]]:
 
 
 def main() -> None:
-    fact = pl.read_parquet(PUBLIC / "fact_tfr.parquet")
+    fact = pl.read_parquet(PUBLIC / "fact.parquet")
     areas = load_areas().select("area_id", "name_tr")
 
-    assert all(parse_dims(d) == {} for d in fact["dims"].unique()), (
-        "this slice assumes no breakdowns; add dimension columns before exporting"
-    )
+    loaded = set(fact["indicator_id"].unique())
+    export_population(fact, areas)
 
+    # The line-chart slice below is fertility only; population carries breakdowns and
+    # goes out through export_population instead.
+    fact = fact.filter(pl.col("indicator_id") == "tfr")
+    assert all(parse_dims(d) == {} for d in fact["dims"].unique()), (
+        "this slice assumes no breakdowns"
+    )
     provinces = fact.join(areas, on="area_id", how="left").select(
         "area_id",
         pl.col("name_tr").alias("area"),
@@ -126,7 +162,7 @@ def main() -> None:
     slim.write_csv(target)
     print("yazildi:", target, slim.height, "satir")
 
-    export_dictionary(set(fact["indicator_id"].unique()))
+    export_dictionary(loaded)
 
 
 if __name__ == "__main__":

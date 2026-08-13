@@ -99,6 +99,18 @@ definition_tr = """
 Nüfusun yaş gruplarına dağılımı. 2013 öncesi kent/kır ayrımı da taşınabilir; o \
 satırlar IPF ile üretildiği için kalite bayrağı `estimated` olur."""
 
+[indicator.population]
+label_tr = "Nüfus"
+label_en = "Population"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+dims = ["age", "sex"]
+definition_tr = """
+İkamet edilen yerin nüfusu, beşli yaş grubu ve cinsiyet kırılımıyla. Nüfus piramidi \
+bu göstergeden çizilir. En üst grup 75+ olarak kapalıdır; kaynak dosya tek yaş verirken \
+75'ten sonrasını toplulaştırıyor."""
+
 [indicator.registry_population]
 label_tr = "Kütük nüfusu"
 label_en = "Registered population"

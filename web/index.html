@@ -85,7 +85,7 @@
                         <col style="width:40%"><col style="width:20%"><col style="width:20%"><col style="width:20%">
                     </colgroup>
                     <thead>
-                        <tr><th id="th-area">alan</th><th id="th-from"></th><th id="th-to"></th><th>değişim</th></tr>
+                        <tr><th id="th-area">alan</th><th id="th-from"></th><th id="th-to"></th><th id="th-last">değişim</th></tr>
                     </thead>
                     <tbody id="rows"></tbody>
                 </table>
@@ -229,6 +229,7 @@ uv run python -m http.server 8123</pre>
 }
 
 const data = parseCsv(await (await read("../public/tfr.csv")).text());
+const population = parseCsv(await (await read("../public/population.csv")).text());
 const meta = await (await read("../public/meta.json")).json();
 const level = () => $("level").value;
 const namesAt = (lvl) =>
@@ -238,11 +239,34 @@ const namesAt = (lvl) =>
 // Nothing about an indicator is spelled out in this page: name, unit and precision all
 // come from the dictionary (decision K7).
 const FREQUENCY_TR = {annual: "yıllık", quarterly: "çeyreklik", monthly: "aylık"};
-const indicator = meta.tree.flatMap((t) => t.indicators).find((i) => i.id === "tfr");
+const catalogue = meta.tree.flatMap((t) => t.indicators);
+let indicator = catalogue.find((i) => i.id === "tfr");
 
-$("chart-title").textContent = indicator.label;
-$("chart-title").title = indicator.definition;
-$("chart-unit").textContent = indicator.unit + " · " + FREQUENCY_TR[indicator.frequency];
+// Two shapes of question need two shapes of chart: a rate over time is a line, an age
+// structure at one moment is a pyramid. The indicator decides, not a toggle.
+const isPyramid = () => indicator.id === "population";
+
+function selectIndicator(id) {
+    indicator = catalogue.find((item) => item.id === id);
+
+    // Each indicator covers its own years; clamp the boxes so the chart cannot be asked
+    // for a year the source never published.
+    const years = (id === "population" ? population : data).map((d) => Number(d.year));
+    const first = Math.min(...years), last = Math.max(...years);
+    for (const box of [$("from"), $("to")]) {
+        box.min = first;
+        box.max = last;
+        box.value = Math.min(Math.max(Number(box.value), first), last);
+    }
+    $("from").value = first;
+    $("to").value = last;
+    for (const button of $("tree").querySelectorAll("button")) {
+        button.toggleAttribute("aria-current", button.textContent === indicator.label);
+    }
+    $("chart-title").textContent = indicator.label;
+    $("chart-title").title = indicator.definition;
+    render();
+}
 
 // Unloaded indicators stay in the tree, disabled: the tree is the plan as much as the
 // inventory, and a greyed entry says "not yet" where an absent one would say "never".
@@ -272,6 +296,7 @@ $("tree").replaceChildren(...meta.tree.flatMap((group) => {
         button.disabled = !item.available;
         button.title = item.definition;
         if (item.id === indicator.id) button.setAttribute("aria-current", "true");
+        if (item.available) button.addEventListener("click", () => selectIndicator(item.id));
         li.append(button);
         return li;
     })];
@@ -393,6 +418,112 @@ const TRANSFORMS = {
 };
 
 function render() {
+    if (isPyramid()) return renderPyramid();
+    return renderSeries();
+}
+
+// Male to the left, female to the right, bands stacked from young to old. The shape is
+// the point: a wide base is a young population, a bulge that has moved up is a cohort
+// ageing, a notch is a birth collapse you can date.
+function renderPyramid() {
+    const {areas, to} = selection();
+    const area = areas[0];
+    const year = to;
+    const rows = population.filter((d) => d.area === area && Number(d.year) === year);
+
+    $("chart-unit").textContent = indicator.unit + " · " + year + " · beşli yaş grubu";
+
+    if (!rows.length) {
+        $("chart").replaceChildren(Object.assign(document.createElement("p"), {
+            className: "provenance",
+            textContent: area + " için " + year + " yılında nüfus verisi yok (2007-2023).",
+        }));
+        $("tiles").replaceChildren();
+        $("rows").replaceChildren();
+        return;
+    }
+
+    const bands = [...new Set(rows.map((d) => d.age))]
+        .sort((a, b) => parseInt(a) - parseInt(b));
+    const width = Math.max(360, $("chart").clientWidth);
+    const male = token("--series-3"), female = token("--series-7");
+    const signed = rows.map((d) => ({
+        ...d, value: Number(d.value), signed: (d.sex === "male" ? -1 : 1) * Number(d.value),
+    }));
+
+    $("chart").replaceChildren(Plot.plot({
+        width: width,
+        height: Math.max(420, bands.length * 26),
+        marginLeft: 56,
+        marginRight: 20,
+        style: {background: "transparent", color: token("--text-tertiary"), fontSize: "11px"},
+        x: {label: null, tickFormat: (v) => count(Math.abs(v)), grid: true},
+        y: {domain: [...bands].reverse(), label: null},
+        color: {domain: ["male", "female"], range: [male, female]},
+        marks: [
+            Plot.barX(signed, {
+                x: "signed", y: "age", fill: "sex", insetTop: 1, insetBottom: 1,
+                title: (d) => [d.area + " · " + d.age,
+                    (d.sex === "male" ? "erkek " : "kadın ") + count(d.value)].join("\n"),
+            }),
+            Plot.ruleX([0], {stroke: token("--stroke-divider")}),
+            Plot.text([["erkek", -1], ["kadın", 1]], {
+                text: (d) => d[0], frameAnchor: "top",
+                x: (d) => d[1] * Math.max(...signed.map((s) => Math.abs(s.signed))) * 0.6,
+                fill: (d) => (d[0] === "erkek" ? male : female), fontSize: 11, dy: -6,
+            }),
+        ],
+    }));
+
+    fillPyramidSummary(area, year, signed, bands);
+}
+
+const count = (v) => Math.round(v).toLocaleString("tr-TR");
+const ratio = (v) => v.toLocaleString("tr-TR", {minimumFractionDigits: 1, maximumFractionDigits: 1});
+const share = (v) => "%" + ratio(100 * v);
+
+function fillPyramidSummary(area, year, rows, bands) {
+    const sum = (test) => rows.filter(test).reduce((total, d) => total + d.value, 0);
+    const male = sum((d) => d.sex === "male");
+    const female = sum((d) => d.sex === "female");
+    const young = sum((d) => parseInt(d.age) < 15);
+    const old = sum((d) => parseInt(d.age) >= 65);
+    const total = male + female;
+
+    $("summary-range").textContent = area + " · " + year;
+    $("tiles").replaceChildren(...[
+        ["Toplam nüfus", count(total), bands.length + " yaş bandı"],
+        ["0-14 payı", share(young / total), count(young) + " kişi"],
+        ["65+ payı", share(old / total), count(old) + " kişi"],
+        ["Cinsiyet oranı", ratio(100 * male / female), "100 kadına düşen erkek"],
+    ].map(([label, value, note]) => {
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.style.borderLeftColor = token("--series-3");
+        tile.innerHTML = `<span class="tile-name">${label}</span>` +
+            `<span class="tile-value">${value}</span>` +
+            `<span class="provenance">${note}</span>`;
+        return tile;
+    }));
+
+    $("th-area").textContent = "yaş";
+    $("th-from").textContent = "erkek";
+    $("th-to").textContent = "kadın";
+    $("th-last").textContent = "toplam";
+    $("rows").replaceChildren(...[...bands].reverse().map((band) => {
+        const m = rows.find((d) => d.age === band && d.sex === "male")?.value ?? 0;
+        const f = rows.find((d) => d.age === band && d.sex === "female")?.value ?? 0;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${band}</td><td class="num">${count(m)}</td>` +
+            `<td class="num">${count(f)}</td><td class="num">${count(m + f)}</td>`;
+        return tr;
+    }));
+    $("badges").replaceChildren(Object.assign(document.createElement("span"), {
+        className: "provenance", textContent: "ölçüm · tuik_medas · 2007-2023",
+    }));
+}
+
+function renderSeries() {
     const {areas, from, to} = selection();
     const mode = $("transform").value;
     const transform = TRANSFORMS[mode];
@@ -538,6 +669,7 @@ function render() {
     }));
 
     $("th-area").textContent = LEVEL_NOUN[level()];
+    $("th-last").textContent = "değişim";
     $("th-from").textContent = from;
     $("th-to").textContent = to;
     $("rows").replaceChildren(...areas.map((area, i) => {

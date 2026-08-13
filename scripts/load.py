@@ -37,7 +37,7 @@ def main() -> None:
         )
 
     fact = pl.concat(frames)
-    target = PUBLIC / "fact_tfr.parquet"
+    target = PUBLIC / "fact.parquet"
     fact.write_parquet(target)
 
     con = duckdb.connect(WAREHOUSE)
