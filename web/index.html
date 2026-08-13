@@ -92,8 +92,30 @@ function parseCsv(text) {
     });
 }
 
-const data = parseCsv(await (await fetch("../public/tfr.csv")).text());
-const meta = await (await fetch("../public/meta.json")).json();
+// Opened as file:// the fetches below fail on origin rules and the page goes blank with
+// no clue why. Say what to do instead.
+async function read(path) {
+    try {
+        const response = await fetch(path);
+        if (!response.ok) throw new Error(response.status + " " + response.statusText);
+        return response;
+    } catch (cause) {
+        document.querySelector(".main").innerHTML =
+            `<section class="card notice">
+                <h3>Veri okunamadı</h3>
+                <p>Sayfa dosyadan açıldığında tarayıcı yerel veriyi okumaya izin vermiyor.
+                Bir sunucu üzerinden açman gerekiyor:</p>
+                <pre>cd C:\\veri
+uv run python -m http.server 8123</pre>
+                <p>Sonra: <a href="http://127.0.0.1:8123/web/index.html">127.0.0.1:8123/web/index.html</a></p>
+                <p class="provenance">Okunamayan yol: ${path} — ${cause.message}</p>
+            </section>`;
+        throw cause;
+    }
+}
+
+const data = parseCsv(await (await read("../public/tfr.csv")).text());
+const meta = await (await read("../public/meta.json")).json();
 const areaNames = [...new Set(data.map((d) => d.area))].sort((a, b) => a.localeCompare(b, "tr"));
 
 // Nothing about an indicator is spelled out in this page: name, unit and precision all

@@ -20,6 +20,7 @@ biliniyor ama uç noktası/koşulları teyit edilmedi; adaptör yazmadan önce b
 | **WHO GHO** | Sağlık göstergeleri, ülke × yıl | OData | yok | ✔ |
 | **OWID** | Derlenmiş uluslararası seriler (nüfus, enerji, sağlık, iklim) | Charts / Tables / Indicators / Search API; `owid-catalog` Python kütüphanesi | yok | ✔ |
 | **CIA World Factbook** | Ülke profilleri, kaba demografik ve ekonomik göstergeler | `factbook.json` deposu, haftalık güncellenen JSON; kamu malı | yok | ✔ |
+| **DBnomics** | 93 sağlayıcıyı tek arayüzde toplayan toplayıcı; TCMB dahil (TÜİK yok). Kodlar ve sağlayıcı yapısı korunuyor | REST, `api.db.nomics.world/v22`, OpenAPI belgesi var; Python/R/Stata istemcileri | yok | ✔ |
 | **OECD** | Ulusal hesaplar, işgücü, eğitim; Türkiye üye | SDMX REST | yok | ? |
 | **ILOSTAT** | İşgücü istatistikleri | SDMX + toplu dosya | yok | ? |
 | **UN Comtrade** | İkili dış ticaret, ürün kırılımlı | REST | ücretsiz kotalı, anahtar ister | ? |
@@ -82,3 +83,7 @@ Adaptör sözleşmesi yazılırken ilk üç aday: **EVDS3** (anahtar var, REST, 
 **Dünya Bankası** (anahtarsız, uluslararası karşılaştırma açar), **MEDAS** (en zor ama
 projenin asıl kaynağı). Üçü birbirinden yeterince farklı ki sözleşmenin doğru soyutlama
 olup olmadığı hemen anlaşılır.
+
+DBnomics'i tek başına bir kestirme gibi görmemek lazım: TÜİK'i taşımıyor, yani asıl
+ihtiyacımız olan il/ilçe kırılımlı veri orada yok. Ama uluslararası tarafta tek adaptörle
+onlarca sağlayıcı açtığı için Dünya Bankası'na alternatif olarak değerlendirilebilir.

@@ -196,6 +196,23 @@ select[multiple] {
     margin: 2px 0 8px;
 }
 
+.notice {
+    max-width: 560px;
+}
+
+.notice pre {
+    background: var(--bg-control);
+    border: 1px solid var(--stroke-control);
+    border-radius: var(--radius);
+    padding: 8px 10px;
+    color: var(--text-secondary);
+    overflow-x: auto;
+}
+
+.notice a {
+    color: var(--accent);
+}
+
 .badges {
     display: flex;
     align-items: center;
