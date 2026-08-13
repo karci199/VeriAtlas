@@ -104,6 +104,10 @@
                             <option value="index">Endeks (ilk yıl = 100)</option>
                         </select>
                     </label>
+                    <label class="field check">
+                        <input type="checkbox" id="show-country"> Türkiye ortalaması
+                    </label>
+
                     <div class="outputs">
                         <button class="control" id="show-table" type="button" aria-pressed="true">Tablo Oluştur</button>
                         <button class="control" id="show-chart" type="button" aria-pressed="true">Grafik Oluştur</button>
@@ -397,6 +401,15 @@ function render() {
         ...row, value: transform.apply(row.value, base.get(row.area)),
     }));
 
+    const country = $("show-country").checked
+        ? data
+            .filter((d) => d.level === "country" && d.year >= from && d.year <= to)
+            .sort((a, b) => a.year - b.year)
+            .map((row, _, all) => ({
+                ...row, value: transform.apply(row.value, all[0].value),
+            }))
+        : [];
+
     $("chart-unit").textContent = transform.label
         ? transform.label
         : indicator.unit + " · " + FREQUENCY_TR[indicator.frequency];
@@ -423,6 +436,19 @@ function render() {
                     frameAnchor: "right", dy: -8, dx: -80, fill: token("--reference-text"),
                     y: REPLACEMENT_LEVEL, fontSize: 10,
                 }),
+            ] : []),
+            // Türkiye as a dashed backdrop: without it a province is a number with
+            // nothing to be high or low against. Dashed and grey so it reads as context,
+            // not as one more series — and it is an estimate like every rolled-up value.
+            ...(country.length ? [
+                Plot.lineY(country, {
+                    x: "year", y: "value", stroke: token("--text-tertiary"),
+                    strokeWidth: 1.5, strokeDasharray: "5 4",
+                }),
+                Plot.text(country, Plot.selectLast({
+                    x: "year", y: "value", text: () => "Türkiye (tahmin)",
+                    fill: token("--text-tertiary"), textAnchor: "start", dx: 6, fontSize: 10,
+                })),
             ] : []),
             Plot.lineY(rows, {x: "year", y: "value", stroke: "area", strokeWidth: 2}),
             // One dot per published observation, so a reader can tell where the data
@@ -521,7 +547,7 @@ $("clear-areas").addEventListener("click", () => {
     render();
 });
 
-for (const id of ["from", "to", "decimals", "transform"]) {
+for (const id of ["from", "to", "decimals", "transform", "show-country"]) {
     $(id).addEventListener("input", render);
 }
 
