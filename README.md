@@ -93,6 +93,13 @@ uv run python scripts/export_web.py   # tarayici icin dilim uret
 uv run python -m http.server 8123     # sonra: localhost:8123/web/index.html
 ```
 
+Sunucu istemiyorsan tek dosyalık sürümü üret; `VeriAtlas.html` çift tıklamayla açılır
+(veri içine gömülür, yalnız grafik kütüphanesi için internet gerekir):
+
+```bash
+uv run python scripts/build_page.py
+```
+
 Sayfa Node gerektirmiyor; Observable Framework'e geçerken tema değişkenleri ve grafik
 kodu olduğu gibi taşınacak.
 

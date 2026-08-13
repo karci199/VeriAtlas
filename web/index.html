@@ -47,102 +47,103 @@
             <table id="sources"></table>
         </section>
 
-        <div class="panels" id="tab-explore">
-            <section class="panel">
-                <h2>TÜM GÖSTERGELER</h2>
-                <div class="panel-body">
-                    <ul class="tree" id="tree"></ul>
-                </div>
-            </section>
-
-            <section class="panel">
-                <h2>ALAN SEÇİNİZ</h2>
-                <div class="panel-body">
-                    <label class="field">Düzey
-                        <select id="level">
-                            <option value="province">İl (81)</option>
-                            <option value="nuts2">İBBS-2 alt bölge (26)</option>
-                            <option value="nuts1">İBBS-1 bölge (12)</option>
-                            <option value="region">Coğrafi bölge (7)</option>
-                        </select>
-                    </label>
-                    <input id="area-search" type="search" placeholder="il ara…">
-                    <div id="area-list" class="option-list" role="listbox" aria-multiselectable="true"></div>
-                </div>
-            </section>
-
-            <section class="panel">
-                <h2>SEÇTİKLERİM <span id="basket-count"></span></h2>
-                <div class="panel-body">
-                    <div class="basket" id="basket"></div>
-                    <button class="control small" id="clear-areas" type="button">tümünü temizle</button>
-                </div>
-            </section>
-
-            <section class="panel">
-                <h2>RAPOR SEÇENEKLERİ</h2>
-                <div class="panel-body">
-                    <label class="field stacked">Başlangıç yılı
-                        <input id="from" type="number" min="2009" max="2025" value="2009">
-                    </label>
-                    <label class="field stacked">Bitiş yılı
-                        <input id="to" type="number" min="2009" max="2025" value="2025">
-                    </label>
-                    <label class="field stacked">Ondalık
-                        <select id="decimals">
-                            <option value="">birimden (2)</option>
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
-                    </label>
-                    <label class="field stacked">Türetme
-                        <select id="transform">
-                            <option value="level">Düzey</option>
-                            <option value="change">İlk yıla göre fark</option>
-                            <option value="index">Endeks (ilk yıl = 100)</option>
-                        </select>
-                    </label>
-                    <label class="field check">
-                        <input type="checkbox" id="show-country"> Türkiye ortalaması
-                    </label>
-
-                    <div class="outputs">
-                        <button class="control" id="show-table" type="button" aria-pressed="true">Tablo Oluştur</button>
-                        <button class="control" id="show-chart" type="button" aria-pressed="true">Grafik Oluştur</button>
-                        <button class="control" type="button" disabled title="sınır geometrisi eklenince">Harita Oluştur</button>
+        <div class="workspace" id="tab-explore">
+            <div class="rail">
+                <section class="panel">
+                    <h2>TÜM GÖSTERGELER</h2>
+                    <div class="panel-body">
+                        <ul class="tree" id="tree"></ul>
                     </div>
-                </div>
+                </section>
+                <section class="panel">
+                    <h2>ALAN SEÇİNİZ</h2>
+                    <div class="panel-body">
+                        <label class="field">Düzey
+                            <select id="level">
+                                <option value="province">İl (81)</option>
+                                <option value="nuts2">İBBS-2 alt bölge (26)</option>
+                                <option value="nuts1">İBBS-1 bölge (12)</option>
+                                <option value="region">Coğrafi bölge (7)</option>
+                            </select>
+                        </label>
+                        <input id="area-search" type="search" placeholder="il ara…">
+                        <div id="area-list" class="option-list" role="listbox" aria-multiselectable="true"></div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="stage">
+            <section class="card" id="chart-card">
+                <h3 id="chart-title">Toplam doğurganlık hızı</h3>
+                <p class="unit" id="chart-unit"></p>
+                <div id="chart"></div>
             </section>
+            <section class="card" id="table-card">
+                <div class="badges" id="badges"></div>
+                <table>
+                    <colgroup>
+                        <col style="width:40%"><col style="width:20%"><col style="width:20%"><col style="width:20%">
+                    </colgroup>
+                    <thead>
+                        <tr><th id="th-area">alan</th><th id="th-from"></th><th id="th-to"></th><th>değişim</th></tr>
+                    </thead>
+                    <tbody id="rows"></tbody>
+                </table>
+            </section>
+            </div>
+
+            <div class="rail">
+                <section class="panel">
+                    <h2>SEÇTİKLERİM <span id="basket-count"></span></h2>
+                    <div class="panel-body">
+                        <div class="basket" id="basket"></div>
+                        <button class="control small" id="clear-areas" type="button">tümünü temizle</button>
+                    </div>
+                </section>
+                <section class="panel">
+                    <h2>RAPOR SEÇENEKLERİ</h2>
+                    <div class="panel-body">
+                        <label class="field stacked">Başlangıç yılı
+                            <input id="from" type="number" min="2009" max="2025" value="2009">
+                        </label>
+                        <label class="field stacked">Bitiş yılı
+                            <input id="to" type="number" min="2009" max="2025" value="2025">
+                        </label>
+                        <label class="field stacked">Ondalık
+                            <select id="decimals">
+                                <option value="">birimden (2)</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </label>
+                        <label class="field stacked">Türetme
+                            <select id="transform">
+                                <option value="level">Düzey</option>
+                                <option value="change">İlk yıla göre fark</option>
+                                <option value="index">Endeks (ilk yıl = 100)</option>
+                            </select>
+                        </label>
+                        <label class="field check">
+                            <input type="checkbox" id="show-country"> Türkiye ortalaması
+                        </label>
+
+                        <div class="outputs">
+                            <button class="control" id="show-table" type="button" aria-pressed="true">Tablo Oluştur</button>
+                            <button class="control" id="show-chart" type="button" aria-pressed="true">Grafik Oluştur</button>
+                            <button class="control" type="button" disabled title="sınır geometrisi eklenince">Harita Oluştur</button>
+                        </div>
+                    </div>
+                </section>
+            <section class="card" id="summary-card">
+                <h3>Özet</h3>
+                <p class="unit" id="summary-range"></p>
+                <div class="tiles" id="tiles"></div>
+            </section>
+            </div>
         </div>
 
-        <div class="content" id="content">
-        <section class="card" id="summary-card">
-            <h3>Özet</h3>
-            <p class="unit" id="summary-range"></p>
-            <div class="tiles" id="tiles"></div>
-        </section>
-
-        <section class="card" id="chart-card">
-            <h3 id="chart-title">Toplam doğurganlık hızı</h3>
-            <p class="unit" id="chart-unit"></p>
-            <div id="chart"></div>
-        </section>
-        </div>
-
-        <section class="card" id="table-card">
-            <div class="badges" id="badges"></div>
-            <table>
-                <colgroup>
-                    <col style="width:40%"><col style="width:20%"><col style="width:20%"><col style="width:20%">
-                </colgroup>
-                <thead>
-                    <tr><th id="th-area">alan</th><th id="th-from"></th><th id="th-to"></th><th>değişim</th></tr>
-                </thead>
-                <tbody id="rows"></tbody>
-            </table>
-        </section>
     </main>
 </div>
 
@@ -201,6 +202,13 @@ function parseCsv(text) {
 // Opened as file:// the fetches below fail on origin rules and the page goes blank with
 // no clue why. Say what to do instead.
 async function read(path) {
+    // The single-file build inlines the data, so there is nothing to fetch and the page
+    // works from a double-click. Served normally, this is empty and fetch runs.
+    if (globalThis.EMBEDDED?.[path] !== undefined) {
+        const body = globalThis.EMBEDDED[path];
+        return {text: async () => body, json: async () => JSON.parse(body)};
+    }
+
     try {
         const response = await fetch(path);
         if (!response.ok) throw new Error(response.status + " " + response.statusText);
@@ -573,8 +581,7 @@ function applyTab() {
     $("tab-sources").hidden = name !== "sources";
     $("chart-card").hidden = !exploring || !pressed("show-chart");
     $("table-card").hidden = !exploring || !pressed("show-table");
-    $("summary-card").hidden = $("chart-card").hidden;
-    $("content").hidden = $("chart-card").hidden;
+    $("summary-card").hidden = !exploring;
 
     if (exploring) render();
 }

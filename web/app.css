@@ -136,7 +136,7 @@ body {
     list-style: none;
     margin: 0;
     padding: 0;
-    height: 150px;
+    height: 190px;
     overflow-y: auto;
 }
 
@@ -243,13 +243,25 @@ select[multiple] {
     color: var(--text-tertiary);
 }
 
-/* region Panels — the EVDS arrangement: pick, basket, report options, side by side */
+/* region Panels
 
-.panels {
+   Controls left and right, data in the middle. The four-across arrangement put every
+   panel above the chart, so the chart — the reason the page exists — started below the
+   fold. Rails keep the same panels but give the middle column the full height. */
+
+.workspace {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: 290px minmax(0, 1fr) 290px;
     gap: 10px;
     align-items: start;
+}
+
+.rail,
+.stage {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
 }
 
 .panel {
@@ -301,10 +313,10 @@ select[multiple] {
     font-size: 11px;
 }
 
-/* EVDS stacks these full width; three across keeps the panel from towering over the
-   other three and pushing the chart below the fold. */
+/* Back to a stack: in a 290px rail three buttons across would be unreadable. */
 .outputs {
     display: flex;
+    flex-direction: column;
     gap: 6px;
     margin-top: 6px;
     padding-top: 8px;
@@ -327,7 +339,7 @@ select[multiple] {
 
 /* A toggling list instead of <select multiple>: no ctrl-click, no accidental wipe. */
 .option-list {
-    height: 150px;
+    height: 210px;
     overflow-y: auto;
     padding: 2px;
     background: var(--bg-control);
@@ -360,7 +372,7 @@ select[multiple] {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    max-height: 150px;
+    max-height: 220px;
     overflow-y: auto;
 }
 
@@ -426,15 +438,6 @@ button.small:disabled {
     margin: 0;
     font-size: 13px;
     font-weight: 600;
-}
-
-/* Summary on the left, chart on the right: the chart used to float in the middle of a
-   full-width card with dead space either side. */
-.content {
-    display: grid;
-    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
-    gap: 10px;
-    align-items: start;
 }
 
 .tiles {
@@ -539,7 +542,6 @@ button.small:disabled {
    that reading a row becomes a journey. */
 table {
     width: 100%;
-    max-width: 760px;
     table-layout: fixed;
     border-collapse: collapse;
     font-size: 12px;
