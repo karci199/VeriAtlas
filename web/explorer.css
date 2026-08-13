@@ -231,6 +231,11 @@ h1 {
     margin-bottom: var(--gap-xs);
 }
 
+/* There is room in the strip, and a cramped select truncates the one thing it has to
+   say. Indicator names are the longest, so that one gets the most. */
+.dims select { min-width: 190px; }
+.dims > div:first-child select { min-width: 300px; }
+
 .radios { display: flex; flex-direction: column; gap: var(--gap-xs); }
 
 .radios label {

@@ -220,6 +220,8 @@ const state = {
     muted: [],
     //: Map colour ramp. Log by default; see the note in map().
     scale: "log",
+    //: Pyramid panels: one shared scale, or each panel scaled to itself.
+    panelScale: "shared",
     //: Province the map is opened into, or null for the whole country.
     focus: null,
 };
@@ -705,7 +707,12 @@ function pyramid() {
     const bands = [...new Set(all.map((r) => r.age))].sort((a, b) =>
         String(a).localeCompare(String(b), "tr", {numeric: true}));
     const sexes = [...new Set(all.map((r) => r.sex))].sort();
-    const max = Math.max(...all.map((r) => r.value));
+
+    // Two questions, two scales. "How many people" wants one shared scale — İstanbul
+    // towering over Afyonkarahisar is the answer. "What shape is this population" wants
+    // each panel scaled to itself, or the smaller one is a sliver you cannot read.
+    const shared = Math.max(...all.map((r) => r.value));
+    const maxOf = (rows) => (state.panelScale === "own" ? Math.max(...rows.map((r) => r.value)) : shared);
 
     const T = 34;
     const cell = PLOT_W / areas.length;
@@ -715,11 +722,13 @@ function pyramid() {
 
     areas.forEach((area, ai) => {
         const rows = rowsOf(area);
+        const max = maxOf(rows);
         const mid = cell * ai + cell / 2;
         const arm = cell / 2 - 34;
 
         svg += '<text x="' + mid + '" y="14" text-anchor="middle" fill="' + colourOf(area) +
-               '" font-size="13">' + area + "</text>";
+               '" font-size="13">' + area +
+               (state.panelScale === "own" ? " · " + fmt(max) + " ölçek" : "") + "</text>";
 
         bands.forEach((label, i) => {
             const y = PLOT_H - 16 - (i + 1) * band + band * 0.15;
@@ -741,14 +750,21 @@ function pyramid() {
         });
     });
 
-    sexes.forEach((s, si) => {
-        svg += '<text x="' + (si === 0 ? 20 : PLOT_W - 20) + '" y="' + (T - 6) +
-               '" text-anchor="' + (si === 0 ? "start" : "end") + '" fill="' + colour(si) +
-               '" font-size="13">' + dimValue("sex", s) + "</text>";
-    });
-
     hover = {kind: "shape"};
-    return wrapPlot(svg + "</svg>");
+
+    // Legend and scale switch live in HTML above the drawing: inside the SVG they sat at
+    // the far edges and collided with the panel titles.
+    const head = "<div class='map-head'>" +
+        sexes
+            .map((s, si) => "<span class='tip-row'><span class='dot' style='background:" +
+                            colour(si) + "'></span>" + dimValue("sex", s) + "</span>")
+            .join("") +
+        "<span class='spacer'></span><span>Ölçek</span>" +
+        "<button class='chip" + (state.panelScale !== "own" ? " on" : "") + "' data-panel='shared'>Ortak</button>" +
+        "<button class='chip" + (state.panelScale === "own" ? " on" : "") + "' data-panel='own'>Kendi içinde</button>" +
+        "</div>";
+
+    return head + wrapPlot(svg + "</svg>");
 }
 
 /** Which area levels the geometry file actually carries shapes for. */
@@ -1109,6 +1125,13 @@ function wire() {
         const scale = ev.target.closest("[data-scale]");
         if (scale) {
             state.scale = scale.dataset.scale;
+            render();
+            return;
+        }
+
+        const panel = ev.target.closest("[data-panel]");
+        if (panel) {
+            state.panelScale = panel.dataset.panel;
             render();
             return;
         }
