@@ -30,8 +30,7 @@
             <div class="field picker">
                 <span>İller</span>
                 <input id="area-search" type="search" placeholder="il ara…">
-                <select id="areas" multiple size="8"></select>
-                <span class="hint" id="area-count"></span>
+                <div id="area-list" class="option-list" role="listbox" aria-multiselectable="true"></div>
             </div>
             <label class="field">Yıl
                 <input id="from" type="number" min="2009" max="2025" value="2009" style="width:74px">
@@ -39,6 +38,8 @@
                 <input id="to" type="number" min="2009" max="2025" value="2025" style="width:74px">
             </label>
         </div>
+
+        <div class="basket" id="basket"></div>
 
         <section class="card">
             <h3 id="chart-title">Toplam doğurganlık hızı</h3>
@@ -152,17 +153,9 @@ const FOLD = {ş: "s", ı: "i", İ: "i", ğ: "g", ü: "u", ö: "o", ç: "c", â:
 const fold = (s) => [...s.toLocaleLowerCase("tr")].map((c) => FOLD[c] ?? c).join("");
 
 // The picker only shows what the filter matches, so the selection cannot live in the
-// DOM — a province filtered out of view is still selected.
+// list — a province filtered out of view is still selected. The basket is what makes
+// that safe to rely on: it shows the whole selection whatever the filter is doing.
 const selected = new Set(DEFAULT_AREAS);
-
-function fillAreas() {
-    const query = fold($("area-search").value.trim());
-    const shown = areaNames.filter((name) => fold(name).includes(query));
-    $("areas").replaceChildren(
-        ...shown.map((name) => new Option(name, name, false, selected.has(name))),
-    );
-    $("area-count").textContent = selected.size + " seçili";
-}
 
 function selection() {
     const picked = areaNames.filter((name) => selected.has(name));
@@ -173,10 +166,105 @@ function selection() {
     };
 }
 
+function colourOf(area) {
+    // The basket chip and the line must agree, so both read the position in the
+    // selection rather than the position in whatever list is on screen.
+    const index = selection().areas.indexOf(area);
+    return token("--series-" + ((index % 6) + 1));
+}
+
+function fillAreas() {
+    const query = fold($("area-search").value.trim());
+    const shown = areaNames.filter((name) => fold(name).includes(query));
+
+    // A plain <select multiple> needs ctrl-click to add a second item, and one stray
+    // click wipes the selection. Rows that simply toggle are safer and themeable.
+    $("area-list").replaceChildren(...shown.map((name) => {
+        const row = document.createElement("div");
+        row.className = "option";
+        row.role = "option";
+        row.tabIndex = 0;
+        row.textContent = name;
+        row.ariaSelected = String(selected.has(name));
+        row.addEventListener("click", () => toggle(name));
+        row.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                toggle(name);
+            }
+        });
+        return row;
+    }));
+
+    if (!shown.length) {
+        const empty = document.createElement("p");
+        empty.className = "provenance";
+        empty.style.padding = "6px";
+        empty.textContent = "eşleşen il yok";
+        $("area-list").append(empty);
+    }
+}
+
+function fillBasket() {
+    const {areas} = selection();
+    const empty = selected.size === 0;
+
+    const chips = areas.map((area) => {
+        const chip = document.createElement("span");
+        chip.className = "chip";
+        chip.style.borderLeftColor = colourOf(area);
+
+        chip.append(document.createTextNode(area));
+
+        // With nothing selected the chart falls back to a default trio. Those chips are
+        // a label, not a selection — a remove button on them would silently *add* the
+        // province instead of dropping it.
+        if (!empty) {
+            const remove = document.createElement("button");
+            remove.type = "button";
+            remove.textContent = "×";
+            remove.title = area + " kaldır";
+            remove.ariaLabel = area + " kaldır";
+            remove.addEventListener("click", () => toggle(area));
+            chip.append(remove);
+        }
+
+        return chip;
+    });
+
+    const label = document.createElement("span");
+    label.className = "provenance";
+    label.textContent = empty
+        ? "seçim yok — varsayılan gösteriliyor:"
+        : selected.size + " il seçili:";
+
+    const clear = document.createElement("button");
+    clear.type = "button";
+    clear.className = "control small";
+    clear.textContent = "temizle";
+    clear.disabled = empty;
+    clear.addEventListener("click", () => {
+        selected.clear();
+        fillAreas();
+        fillBasket();
+        render();
+    });
+
+    $("basket").replaceChildren(label, ...chips, clear);
+}
+
+function toggle(name) {
+    if (selected.has(name)) selected.delete(name);
+    else selected.add(name);
+    fillAreas();
+    fillBasket();
+    render();
+}
+
 function render() {
     const {areas, from, to} = selection();
     const rows = data.filter((d) => areas.includes(d.area) && d.year >= from && d.year <= to);
-    const colours = [1, 2, 3, 4, 5, 6].map((i) => token("--series-" + i));
+    const colours = areas.map(colourOf);
 
     $("chart").replaceChildren(Plot.plot({
         height: 260,
@@ -240,15 +328,6 @@ function render() {
     }));
 }
 
-$("areas").addEventListener("input", () => {
-    for (const option of $("areas").options) {
-        if (option.selected) selected.add(option.value);
-        else selected.delete(option.value);
-    }
-    $("area-count").textContent = selected.size + " seçili";
-    render();
-});
-
 $("area-search").addEventListener("input", fillAreas);
 
 for (const id of ["from", "to"]) $(id).addEventListener("input", render);
@@ -289,10 +368,12 @@ $("theme-toggle").addEventListener("click", () => {
     const light = document.documentElement.dataset.theme === "light";
     document.documentElement.dataset.theme = light ? "dark" : "light";
     $("theme-toggle").textContent = light ? "Açık tema" : "Koyu tema";
+    fillBasket();
     render();
 });
 
 fillAreas();
+fillBasket();
 render();
 </script>
 
