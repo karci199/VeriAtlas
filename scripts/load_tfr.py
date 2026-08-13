@@ -16,6 +16,7 @@ sys.path.insert(0, "src")
 
 from veriatlas.areas import resolve
 from veriatlas.config import PUBLIC, WAREHOUSE, ensure_dirs
+from veriatlas.indicators import check_dims, get
 from veriatlas.schema import DIMS_NONE, validate
 
 SRC = (
@@ -24,7 +25,6 @@ SRC = (
 )
 
 INDICATOR_ID = "tfr"
-UNIT = "çocuk/kadın"
 SOURCE_ID = "tuik_medas"
 
 # The file does not record when TUIK released these numbers, only when we pulled them.
@@ -35,6 +35,9 @@ RETRIEVED_AT = dt.date(2026, 8, 13)
 
 
 def build() -> pl.DataFrame:
+    indicator = get(INDICATOR_ID)
+    check_dims(INDICATOR_ID, set())  # this file carries no breakdowns
+
     wide = pl.read_csv(SRC, separator=";")
     years = [c for c in wide.columns if c != "il"]
 
@@ -46,10 +49,10 @@ def build() -> pl.DataFrame:
         pl.col("il").replace_strict(area_of).alias("area_id"),
         pl.lit("province").alias("area_level"),
         pl.date(pl.col("year").cast(pl.Int32), 1, 1).alias("period_start"),
-        pl.lit("annual").alias("frequency"),
+        pl.lit(indicator.frequency).alias("frequency"),
         pl.lit(DIMS_NONE).alias("dims"),
         pl.lit(INDICATOR_ID).alias("indicator_id"),
-        pl.lit(UNIT).alias("unit"),
+        pl.lit(indicator.unit.unit_id).alias("unit"),
         pl.lit("measured").alias("quality_flag"),
         pl.lit(VINTAGE).alias("vintage"),
         pl.lit(SOURCE_ID).alias("source_id"),

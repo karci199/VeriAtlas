@@ -23,7 +23,7 @@ def row(area="TR-16", year=2009, value=1.78, **overrides):
         "frequency": "annual",
         "dims": "",
         "value": value,
-        "unit": "cocuk/kadin",
+        "unit": "children_per_woman",
         "quality_flag": "measured",
         "vintage": "2026-03",
         "source_id": "tuik_medas",

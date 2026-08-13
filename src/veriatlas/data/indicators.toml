@@ -1,0 +1,134 @@
+# Indicator dictionary — what every id in the fact table means.
+#
+# This file is a record of decisions, not data. TUIK does not tell us that "bina" and
+# "daire" are different things; we do. So it lives in git, next to the code, with the
+# reasoning attached.
+#
+# Rules:
+#   - every indicator names a topic and a unit declared below
+#   - `dims` lists the breakdown keys an indicator may carry; anything else fails at
+#     load time, which is what keeps the flexible dims field from becoming a free-for-all
+#   - Turkish is a label, never an id (decision K1)
+
+# region Topics — the left-hand tree, in display order
+
+[topic.nufus]
+label_tr = "Nüfus"
+label_en = "Population"
+order = 10
+
+[topic.dogurganlik]
+label_tr = "Doğurganlık"
+label_en = "Fertility"
+order = 20
+
+[topic.yapi_ruhsati]
+label_tr = "Yapı ruhsatı"
+label_en = "Building permits"
+order = 30
+
+# endregion
+
+# region Units
+
+[unit.children_per_woman]
+label_tr = "çocuk/kadın"
+label_en = "children per woman"
+decimals = 2
+
+[unit.person]
+label_tr = "kişi"
+label_en = "persons"
+decimals = 0
+
+[unit.percent]
+label_tr = "%"
+label_en = "%"
+decimals = 1
+
+[unit.per_mille]
+label_tr = "‰"
+label_en = "‰"
+decimals = 2
+
+[unit.building]
+label_tr = "bina"
+label_en = "buildings"
+decimals = 0
+
+[unit.dwelling]
+label_tr = "daire"
+label_en = "dwellings"
+decimals = 0
+
+# endregion
+
+# region Indicators
+
+[indicator.tfr]
+label_tr = "Toplam doğurganlık hızı"
+label_en = "Total fertility rate"
+topic = "dogurganlik"
+unit = "children_per_woman"
+frequency = "annual"
+dims = []
+definition_tr = """
+Bir kadının doğurgan çağı boyunca, o yılın yaşa özel doğurganlık hızları geçerli \
+kalsaydı doğuracağı ortalama çocuk sayısı. Yenilenme düzeyi 2,10 kabul edilir. \
+TÜİK yalnızca il düzeyinde yayımlıyor, ilçe kırılımı yok."""
+
+[indicator.cbr]
+label_tr = "Kaba doğum hızı"
+label_en = "Crude birth rate"
+topic = "dogurganlik"
+unit = "per_mille"
+frequency = "annual"
+dims = []
+definition_tr = """
+Bin kişi başına düşen canlı doğum sayısı. Doğurganlıktan çok yaş yapısını yansıtır: \
+genç nüfuslu bir ilde doğurganlık düşse bile kaba hız yüksek kalabilir."""
+
+[indicator.pop_age_structure]
+label_tr = "Yaş yapısı"
+label_en = "Age structure"
+topic = "nufus"
+unit = "percent"
+frequency = "annual"
+dims = ["age"]
+definition_tr = """
+Nüfusun yaş gruplarına dağılımı. 2013 öncesi kent/kır ayrımı da taşınabilir; o \
+satırlar IPF ile üretildiği için kalite bayrağı `estimated` olur."""
+
+[indicator.registry_population]
+label_tr = "Kütük nüfusu"
+label_en = "Registered population"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+dims = []
+definition_tr = """
+Bir yere nüfusa kayıtlı kişi sayısı — orada yaşayan değil. İkisinin oranı göçün \
+ölçüsüdür: Sivas-İmranlı'da kayıtlı 92.658 kişiye karşılık ilçede 7.412 kişi var."""
+
+# Bina ve daire ayrı göstergeler, çünkü aynı şey değiller: 2025'te 146.553 bina
+# 1,19 milyon daire demek. Ön çalışmada bu ikisi karışmıştı; sözlüğün varlık
+# sebeplerinden biri tam olarak bu.
+[indicator.building_permits_buildings]
+label_tr = "Yapı ruhsatı — bina sayısı"
+label_en = "Building permits — buildings"
+topic = "yapi_ruhsati"
+unit = "building"
+frequency = "quarterly"
+dims = []
+definition_tr = "Ruhsat verilen bina sayısı. Bir bina birden çok daire içerir."
+
+[indicator.building_permits_dwellings]
+label_tr = "Yapı ruhsatı — daire sayısı"
+label_en = "Building permits — dwellings"
+topic = "yapi_ruhsati"
+unit = "dwelling"
+frequency = "quarterly"
+dims = []
+definition_tr = "Ruhsat verilen daire sayısı. Bina sayısıyla karıştırılmamalı."
+
+# endregion

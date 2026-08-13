@@ -96,13 +96,37 @@ yüklemede hata verir.
 tekillik karşılaştırması metin üzerinden yapıldığı için aynı kırılım her zaman aynı
 biçimde yazılmak zorunda.
 
+## K7 — Gösterge sözlüğü depoda dosya (2026-08-13)
+
+`src/veriatlas/data/indicators.toml`, TOML. Gerekçe: gösterge tanımı veri değil,
+karardır — "bina" ile "daire"nin farklı şeyler olduğunu TÜİK söylemiyor, biz
+söylüyoruz. Kararlar git'te durmalı, değişiklik geçmişi görünsün. TOML seçildi çünkü
+yorum satırı kabul ediyor (JSON etmiyor) ve Python 3.13 okuyucusu gömülü geliyor.
+
+Üç bölüm: `[topic.*]` (sol ağaç, sırasıyla), `[unit.*]` (etiket + ondalık basamak),
+`[indicator.*]` (etiket, konu, birim, sıklık, izin verilen `dims` anahtarları, tanım).
+
+Bağladıkları:
+
+- **Olgu tablosundaki `unit` artık kimlik** (`children_per_woman`), Türkçe metin değil.
+  K1'in gereği: Türkçe yalnızca etikettir, veriye gömülmez.
+- **`dims` bekçisi burada.** Gösterge hangi kırılım anahtarlarını taşıyabileceğini
+  ilan eder; `check_dims` gerisini reddeder. `age` yerine `yas` yazmak sessizce ikinci
+  bir paralel seri yaratamaz.
+- **Sol ağaç sözlükten üretiliyor**, HTML'e yazılmıyor. Verisi olmayan gösterge ağaçta
+  soluk duruyor: ağaç envanter kadar plandır, soluk madde "henüz değil" der, olmayan
+  madde "hiç" derdi.
+- **Ondalık basamak birimin özelliği.** Doğurganlık iki basamak, daire sayısı sıfır.
+
+Bina ve daire ayrı gösterge olarak tanımlandı — ön çalışmada karışan tam bu ikisiydi
+(2025'te 146.553 bina = 1,19 milyon daire).
+
 ## Açık işler
 
 Sıra, birbirine bağımlılığa göre:
 
 1. ~~Kanonik olgu tablosu şeması~~ — bitti, bkz. K6.
-2. **Gösterge sözlüğü** — konu ağacı, birim, frekans, `label_tr` / `label_en`.
-   Tanım kaymasını (bina ≠ daire) burada yakalıyoruz.
+2. ~~Gösterge sözlüğü~~ — bitti, bkz. K7.
 3. **Zamana bağlı coğrafya kaydı** — il yarısı yapıldı (`src/veriatlas/data/areas_tr.csv`,
    81 il + ülke, ISO 3166-2:TR). Kalan zor yarı ilçe: 6360 sayılı yasa, 2013 kırılması,
    sonradan kurulan ilçeler → geçerlilik aralığı ve ardıl eşlemesi gerekiyor.

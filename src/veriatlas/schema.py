@@ -7,8 +7,8 @@ a new column.
 A row is identified by KEY_COLUMNS. Loading the same key twice is a collision and must
 fail, so that re-running an import cannot silently double a number.
 
-Turkish labels are not stored here. This table holds identifiers; the indicator
-dictionary maps them to `label_tr` / `label_en` (decision K1).
+Turkish labels are not stored here. This table holds identifiers — `unit` included —
+and the indicator dictionary maps them to `label_tr` / `label_en` (decision K1).
 """
 
 from __future__ import annotations
@@ -115,7 +115,7 @@ FACT_SCHEMA = pa.DataFrameSchema(
         "frequency": pa.Column(pl.String, pa.Check.isin(FREQUENCIES)),
         "dims": pa.Column(pl.String, nullable=False),
         "value": pa.Column(pl.Float64),
-        "unit": pa.Column(pl.String, pa.Check.str_length(min_value=1)),
+        "unit": pa.Column(pl.String, pa.Check.str_matches(_ID)),
         "quality_flag": pa.Column(pl.String, pa.Check.isin(QUALITY_FLAGS)),
         "vintage": pa.Column(pl.String, pa.Check.str_matches(_VINTAGE)),
         "source_id": pa.Column(pl.String, pa.Check.str_matches(_ID)),

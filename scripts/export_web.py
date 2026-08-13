@@ -7,6 +7,7 @@ labels (decision K1).
 Run:  uv run python scripts/export_web.py
 """
 
+import json
 import sys
 
 import polars as pl
@@ -15,7 +16,41 @@ sys.path.insert(0, "src")
 
 from veriatlas.areas import load_areas
 from veriatlas.config import PUBLIC
+from veriatlas.indicators import load
 from veriatlas.schema import parse_dims
+
+
+def export_dictionary(loaded: set[str]) -> None:
+    """Emit the tree and labels the page renders, so nothing is spelled out in HTML.
+
+    Indicators without data yet still appear, marked unavailable: the tree is the plan
+    as much as the inventory, and a greyed-out entry says "not yet" where an absent one
+    would say "never".
+    """
+    tree = [
+        {
+            "topic": topic.label_tr,
+            "indicators": [
+                {
+                    "id": ind.indicator_id,
+                    "label": ind.label_tr,
+                    "unit": ind.unit.label_tr,
+                    "decimals": ind.unit.decimals,
+                    "frequency": ind.frequency,
+                    "definition": ind.definition_tr,
+                    "available": ind.indicator_id in loaded,
+                }
+                for ind in indicators
+            ],
+        }
+        for topic, indicators in load().tree()
+    ]
+
+    target = PUBLIC / "meta.json"
+    target.write_text(
+        json.dumps({"tree": tree}, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    print("yazildi:", target)
 
 
 def main() -> None:
@@ -44,6 +79,8 @@ def main() -> None:
     target = PUBLIC / "tfr.csv"
     slim.write_csv(target)
     print("yazildi:", target, slim.height, "satir")
+
+    export_dictionary(set(fact["indicator_id"].unique()))
 
 
 if __name__ == "__main__":

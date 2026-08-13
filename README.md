@@ -101,7 +101,7 @@ kodu olduğu gibi taşınacak.
 Yazılacak parçalar, bağımlılık sırasıyla:
 
 1. ~~Kanonik olgu tablosu şeması~~ — bitti (`src/veriatlas/schema.py`)
-2. Gösterge sözlüğü (konu ağacı, birim, frekans, `label_tr` / `label_en`)
+2. ~~Gösterge sözlüğü~~ — bitti (`src/veriatlas/data/indicators.toml`)
 3. Zamana bağlı coğrafya kaydı (6360 sayılı yasa, 2013 kırılması)
 4. Adaptör sözleşmesi (fetch / parse / metadata + manifest) — ilk ikisi EVDS3 ve MEDAS
 5. Kalite kuralları (pandera)

@@ -19,16 +19,7 @@
     <nav class="sidebar">
         <h2>GÖSTERGELER</h2>
         <input id="search" type="search" placeholder="Ara…" style="width:100%">
-        <ul class="tree">
-            <li class="group">Nüfus</li>
-            <li><button type="button" disabled>Yaş yapısı</button></li>
-            <li><button type="button" disabled>Kütük</button></li>
-            <li class="group">Doğurganlık</li>
-            <li><button type="button" aria-current="true">Toplam doğurganlık hızı</button></li>
-            <li><button type="button" disabled>Kaba doğum hızı</button></li>
-            <li class="group">Yapı ruhsatı</li>
-            <li><button type="button" disabled>Bina ve daire</button></li>
-        </ul>
+        <ul class="tree" id="tree"></ul>
     </nav>
 
     <main class="main">
@@ -77,7 +68,11 @@ const REPLACEMENT_LEVEL = 2.10;
 const DEFAULT_AREAS = ["Bursa", "İzmir", "Şırnak"];
 
 const $ = (id) => document.getElementById(id);
-const fmt = (v) => v.toLocaleString("tr-TR", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+// Precision is a property of the unit, so it is read from the dictionary too: a
+// fertility rate wants two decimals, a dwelling count none.
+const fmt = (v) => v.toLocaleString("tr-TR", {
+    minimumFractionDigits: indicator.decimals, maximumFractionDigits: indicator.decimals,
+});
 
 // Chart colours live in theme.css like everything else; read them back rather than
 // repeating the values here (decision K5).
@@ -98,9 +93,36 @@ function parseCsv(text) {
 }
 
 const data = parseCsv(await (await fetch("../public/tfr.csv")).text());
+const meta = await (await fetch("../public/meta.json")).json();
 const areaNames = [...new Set(data.map((d) => d.area))].sort((a, b) => a.localeCompare(b, "tr"));
 
-$("chart-unit").textContent = data[0].unit + " · yıllık";
+// Nothing about an indicator is spelled out in this page: name, unit and precision all
+// come from the dictionary (decision K7).
+const FREQUENCY_TR = {annual: "yıllık", quarterly: "çeyreklik", monthly: "aylık"};
+const indicator = meta.tree.flatMap((t) => t.indicators).find((i) => i.id === "tfr");
+
+$("chart-title").textContent = indicator.label;
+$("chart-title").title = indicator.definition;
+$("chart-unit").textContent = indicator.unit + " · " + FREQUENCY_TR[indicator.frequency];
+
+// Unloaded indicators stay in the tree, disabled: the tree is the plan as much as the
+// inventory, and a greyed entry says "not yet" where an absent one would say "never".
+$("tree").replaceChildren(...meta.tree.flatMap((group) => {
+    const heading = document.createElement("li");
+    heading.className = "group";
+    heading.textContent = group.topic;
+    return [heading, ...group.indicators.map((item) => {
+        const li = document.createElement("li");
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = item.label;
+        button.disabled = !item.available;
+        button.title = item.definition;
+        if (item.id === indicator.id) button.setAttribute("aria-current", "true");
+        li.append(button);
+        return li;
+    })];
+}));
 
 // Search has to survive Turkish typing habits: someone looking for Şanlıurfa types
 // "sanli". Fold both sides rather than demanding the exact letters.
