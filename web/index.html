@@ -131,6 +131,13 @@ function render() {
                 y: REPLACEMENT_LEVEL, fontSize: 10,
             }),
             Plot.lineY(rows, {x: "year", y: "value", stroke: "area", strokeWidth: 2}),
+            // One dot per published observation, so a reader can tell where the data
+            // actually is rather than trusting the line between the points.
+            Plot.dot(rows, {
+                x: "year", y: "value", fill: "area", r: 2.6,
+                stroke: token("--bg-card"), strokeWidth: 1,
+                title: (d) => `${d.area} · ${d.year} · ${fmt(d.value)}`,
+            }),
             Plot.text(rows, Plot.selectLast({
                 x: "year", y: "value", z: "area", text: "area", fill: "area",
                 textAnchor: "start", dx: 6, fontSize: 10,
