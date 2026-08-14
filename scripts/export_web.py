@@ -122,6 +122,17 @@ def export_dictionary(loaded: set[str], levels: dict[str, list[str]]) -> None:
         for dim in load().dimensions.values()
     }
 
+    # Coarser readings of a breakdown, for the page to offer next to the raw values.
+    groupings = {
+        g.grouping_id: {
+            "label": g.label_tr,
+            "dim": g.dim,
+            "covers": {name: list(values) for name, values in g.covers.items()},
+            "note": g.note_tr,
+        }
+        for g in load().groupings.values()
+    }
+
     derivations = {
         d.derivation_id: {
             "label": d.label_tr,
@@ -166,6 +177,7 @@ def export_dictionary(loaded: set[str], levels: dict[str, list[str]]) -> None:
             {
                 "tree": tree,
                 "dimensions": dimensions,
+                "groupings": groupings,
                 "derivations": derivations,
                 "belongs": ancestors,
                 "sources": sources(),
@@ -194,6 +206,45 @@ def export_dictionary(loaded: set[str], levels: dict[str, list[str]]) -> None:
 #: this will have to split again, per province, the way the district *boundaries* already
 #: do — one file per level stops being small enough somewhere around the second province.
 LAZY_LEVELS = ("district", "neighbourhood")
+
+
+def to_five_year_bands(frame: pl.DataFrame) -> pl.DataFrame:
+    """Fold single years of age into five-year bands for the browser.
+
+    The fact table keeps single years because that is what TÜİK publishes and coarser
+    groupings are exact sums of it. The page does not need that much: seventy-six bands
+    per area-year is 236.816 rows and 1,6 MB against 0,3 MB, on the file every visitor
+    downloads before anything is drawn.
+
+    So the export is the boundary between the two. Bands that are not plain numbers pass
+    through untouched — the district export already arrives banded, the neighbourhood one
+    is split at 18 — and only the single years are folded. When a grouping the screen
+    wants does not fall on a five-year boundary, the single years are still in the
+    warehouse to build it from.
+    """
+    if "age" not in frame.columns:
+        return frame
+
+    single = pl.col("age").str.contains(r"^\d+$")
+    banded = (
+        pl.when(single)
+        .then(
+            ((pl.col("age").cast(pl.Int32, strict=False) // 5) * 5).cast(pl.String)
+            + "-"
+            + ((pl.col("age").cast(pl.Int32, strict=False) // 5) * 5 + 4).cast(
+                pl.String
+            )
+        )
+        .otherwise(pl.col("age"))
+    )
+
+    keys = [c for c in frame.columns if c not in ("age", "value")]
+    return (
+        frame.with_columns(banded.alias("age"))
+        .group_by([*keys, "age"])
+        .agg(pl.col("value").sum())
+        .select(frame.columns)
+    )
 
 
 def export_broken_down(
@@ -232,6 +283,10 @@ def export_broken_down(
             "vintage",
             "source_id",
         )
+        # After the slim select, so the fold groups on what the page will actually read.
+        # Done any earlier, the untouched `dims` column still carries the single year and
+        # every row stays distinct — the aggregation runs and changes nothing.
+        .pipe(to_five_year_bands)
         .sort("area", "year", "sex")
     )
 

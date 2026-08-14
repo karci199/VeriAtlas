@@ -90,6 +90,18 @@ def test_derivations_declare_a_known_unit_and_quality():
         assert derived.quality in QUALITY_FLAGS, derived.derivation_id
 
 
+def test_groupings_partition_a_declared_dimension():
+    """A grouping that put one band in two groups would double the people in it the
+    moment anything summed across the grouping, and the total would stop being the
+    total. The loader refuses that; this pins the rule down."""
+    for grouping in load().groupings.values():
+        assert grouping.dim in load().dimensions, grouping.grouping_id
+
+        covered = [v for values in grouping.covers.values() for v in values]
+        assert len(covered) == len(set(covered)), grouping.grouping_id
+        assert grouping.covers, grouping.grouping_id
+
+
 def test_tree_is_ordered_and_places_each_indicator_once():
     tree = load().tree()
     orders = [topic.order for topic, _ in tree]

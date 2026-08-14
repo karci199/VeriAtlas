@@ -65,6 +65,24 @@ class Dimension:
 
 
 @dataclass(frozen=True)
+class Grouping:
+    """A coarser reading of one breakdown: which values are summed into which group.
+
+    Declared rather than computed so that "0-14 / 15-64 / 65+" is a recorded decision in
+    one line instead of an indicator of its own or a branch in the page (K12's argument,
+    applied across a breakdown instead of across time).
+    """
+
+    grouping_id: str
+    label_tr: str
+    label_en: str
+    dim: str
+    #: Group name -> the dimension values that add up into it.
+    covers: dict[str, tuple[str, ...]]
+    note_tr: str
+
+
+@dataclass(frozen=True)
 class Derivation:
     """A series computed from a measurement: an index, a rate of change.
 
@@ -106,6 +124,7 @@ class Dictionary:
     topics: dict[str, Topic]
     units: dict[str, Unit]
     dimensions: dict[str, Dimension]
+    groupings: dict[str, Grouping]
     derivations: dict[str, Derivation]
     indicators: dict[str, Indicator]
 
@@ -153,6 +172,25 @@ def load() -> Dictionary:
         )
         for key, body in raw.get("dim", {}).items()
     }
+
+    groupings: dict[str, Grouping] = {}
+    for key, body in raw.get("grouping", {}).items():
+        if body["dim"] not in dimensions:
+            raise KeyError("grouping '" + key + "' names unknown dim: " + body["dim"])
+        covers = {name: tuple(values) for name, values in body["covers"].items()}
+        # A value in two groups would be counted twice the moment anything sums across
+        # the grouping, and the total would quietly stop being the total.
+        flat = [value for values in covers.values() for value in values]
+        if len(flat) != len(set(flat)):
+            raise ValueError("grouping '" + key + "' puts a value in two groups")
+        groupings[key] = Grouping(
+            grouping_id=key,
+            label_tr=body["label_tr"],
+            label_en=body["label_en"],
+            dim=body["dim"],
+            covers=covers,
+            note_tr=body.get("note_tr", "").strip(),
+        )
 
     derivations: dict[str, Derivation] = {}
     for key, body in raw.get("derivation", {}).items():
@@ -222,6 +260,7 @@ def load() -> Dictionary:
         topics=topics,
         units=units,
         dimensions=dimensions,
+        groupings=groupings,
         derivations=derivations,
         indicators=indicators,
     )

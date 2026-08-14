@@ -289,6 +289,9 @@ const state = {
     dims: {},
     year: null,
     search: "",
+    //: Which coarse reading of each breakdown is on, by dim: {age: "age_broad"}.
+    //: Empty means the raw values.
+    grouping: {},
     //: Narrow the list by what an area sits inside, one entry per level above this one:
     //: {province: "Bursa", district: ""}. Empty means all of them.
     filters: {},
@@ -459,13 +462,70 @@ function choices() {
 
 // endregion
 
-function valuesOf(dim, level = effectiveLevel()) {
-    return remember("values|" + dim + "|" + level, () => {
+// region Groupings
+//
+// A grouping reads a breakdown coarsely: "0-14 / 15-64 / 65+" instead of sixteen bands.
+// Nothing is stored — the dictionary says which bands add up into which group and the
+// page sums them (see the [grouping.*] note in indicators.toml). Every level keeps its
+// own band set, so a grouping is only offered where the bands it needs are present:
+// the district export has 19 bands, the neighbourhood one has two, and asking for
+// "15-64" over 0-17/18+ would silently drop people.
+
+function groupingsFor(dim, level = effectiveLevel()) {
+    return remember("groupings|" + dim + "|" + level, () => {
+        const bands = rawValuesOf(dim, level);
+        return Object.entries(meta.groupings || {})
+            .filter(([, g]) => g.dim === dim)
+            // Offered when every band *here* lands in a group. Asking the other way round
+            // — is every listed value present — rejected the district level, where the
+            // tail is 75-79…90+ rather than the province file's single 75+. What matters
+            // is that nobody is dropped, not that the list matches exactly.
+            .filter(([, g]) => {
+                const covered = new Set(Object.values(g.covers).flat());
+                return bands.length > 1 && bands.every((b) => covered.has(b));
+            });
+    });
+}
+
+/** The active grouping for a dim, or null when the raw values are being shown. */
+function grouping(dim) {
+    const id = state.grouping[dim];
+    const found = groupingsFor(dim).find(([key]) => key === id);
+    return found ? found[1] : null;
+}
+
+/** Which group a raw value falls in, or the value itself when nothing is grouped. */
+function groupValue(dim, value) {
+    const active = grouping(dim);
+    if (!active) {
+        return value;
+    }
+    for (const [name, values] of Object.entries(active.covers)) {
+        if (values.includes(value)) {
+            return name;
+        }
+    }
+    return "";
+}
+
+// endregion
+
+function rawValuesOf(dim, level) {
+    return remember("raw|" + dim + "|" + level, () => {
         const here = rowsAt(level);
         return [...new Set((here.length ? here : state.rows).map((r) => r[dim]))]
             .filter((v) => v !== undefined && v !== "")
             .sort((a, b) => String(a).localeCompare(String(b), "tr", {numeric: true}));
     });
+}
+
+function valuesOf(dim, level = effectiveLevel()) {
+    const active = grouping(dim);
+    if (active) {
+        // In the dictionary's order, which is the order a reader expects to see ages.
+        return Object.keys(active.covers);
+    }
+    return rawValuesOf(dim, level);
 }
 
 /** Keep every breakdown choice on a value this level offers, preserving what it can.
@@ -502,8 +562,10 @@ function slice(level = state.level) {
         const totals = new Map();
 
         for (const row of rowsAt(level)) {
+            // Matched through the grouping: with "Geniş yaş grupları" on, a row banded
+            // 20-24 answers to 15-64, and the rows in a group add up on the way past.
             if (!dims.every((d) => state.dims[d] === TOTAL ||
-                                   String(row[d]) === String(state.dims[d]))) {
+                                   String(groupValue(d, row[d])) === String(state.dims[d]))) {
                 continue;
             }
             // Keyed by id, not name. Two districts are called Pınarbaşı and forty-odd
@@ -1009,6 +1071,24 @@ function drawDims() {
             ? '<option value="' + TOTAL + '"' + (state.dims[dim] === TOTAL ? " selected" : "") +
               ">" + dimValue(dim, TOTAL) + "</option>"
             : "";
+
+        // The grouping box sits next to the values it regroups rather than off in its own
+        // corner: "hangi yaş" and "hangi yaş bölmesi" are one question asked twice.
+        const ways = groupingsFor(dim);
+        if (ways.length) {
+            groups.push(
+                "<div><div class='dim-label'>" + dimLabel(dim) + " bölmesi</div>" +
+                "<select data-grouping='" + dim + "'>" +
+                "<option value=''" + (state.grouping[dim] ? "" : " selected") +
+                ">Yayımlandığı gibi</option>" +
+                ways
+                    .map(([id, g]) => "<option value='" + id + "'" +
+                                      (state.grouping[dim] === id ? " selected" : "") +
+                                      ">" + g.label + "</option>")
+                    .join("") +
+                "</select></div>"
+            );
+        }
 
         groups.push(
             "<div><div class='dim-label'>" + dimLabel(dim) + "</div>" +
@@ -2291,6 +2371,14 @@ function wire() {
         }
         if (ev.target.id === "derivation") {
             state.derivation = ev.target.value;
+            render();
+            return;
+        }
+        if (ev.target.dataset.grouping) {
+            const dim = ev.target.dataset.grouping;
+            state.grouping = {...state.grouping, [dim]: ev.target.value};
+            // The old choice named a band that may not be a group any more.
+            state.dims[dim] = state.indicator.additive ? TOTAL : valuesOf(dim)[0];
             render();
             return;
         }

@@ -52,6 +52,60 @@ label_en = "Age group"
 
 # endregion
 
+# region Groupings — coarser readings of a breakdown, computed not stored
+#
+# A grouping says "these values of this dimension are read together, and the result is
+# called this". It is the same idea as a derivation (K12) but across a breakdown instead
+# of across time: nothing new is stored, the screen sums what the fact table already has.
+#
+# This is where "0-14 / 15-64 / 65+" lives rather than becoming its own indicator. Three
+# reasons. Writing those sums into the fact table would store the same people twice and
+# invite a query that counts them twice. Adding an indicator per grouping would multiply
+# the tree by every way anyone might want to slice an age. And a grouping declared here
+# is one line, checked at load time against the bands that actually exist — so adding a
+# new way to read the data cannot break the old ones.
+#
+# `covers` lists the dimension values that add up into each group. They must be a
+# partition: no value in two groups, or the total stops being the total.
+
+[grouping.age_broad]
+label_tr = "Geniş yaş grupları"
+label_en = "Broad age groups"
+dim = "age"
+note_tr = """
+Demografinin standart üçlüsü: çocuk, çalışma çağı, yaşlı. Bağımlılık oranları bu \
+bölmeden hesaplanır."""
+
+# The tail is listed in both encodings on purpose: the province file closes at 75+, the
+# district export runs on to 90+, and they are the same people either way. A grouping is
+# offered at a level only when every band *present there* falls into a group, so the list
+# has to cover both or the coarse reading silently drops the oldest.
+[grouping.age_broad.covers]
+"0-14" = ["0-4", "5-9", "10-14"]
+"15-64" = [
+    "15-19", "20-24", "25-29", "30-34", "35-39",
+    "40-44", "45-49", "50-54", "55-59", "60-64",
+]
+"65+" = ["65-69", "70-74", "75+", "75-79", "80-84", "85-89", "90+"]
+
+[grouping.age_fertile]
+label_tr = "Doğurgan çağ"
+label_en = "Childbearing age"
+dim = "age"
+note_tr = """
+15-49, TÜİK'in doğurganlık hesaplarında kullandığı aralık. Doğurganlık hızlarının \
+paydası bu gruptaki kadın nüfusudur."""
+
+[grouping.age_fertile.covers]
+"0-14" = ["0-4", "5-9", "10-14"]
+"15-49" = ["15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49"]
+"50+" = [
+    "50-54", "55-59", "60-64", "65-69", "70-74",
+    "75+", "75-79", "80-84", "85-89", "90+",
+]
+
+# endregion
+
 # region Units
 
 [unit.children_per_woman]

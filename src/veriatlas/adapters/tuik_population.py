@@ -1,16 +1,23 @@
-"""Population by five-year age band and sex, provinces and Türkiye, 2007-2023.
+"""Population by single year of age and sex, provinces and Türkiye, 2007-2025.
 
-Source is a MEDAS export someone downloaded by hand: single years of age across the
-columns, year / province / sex down the rows, each label filled in only when it changes.
-The MEDAS adapter will replace this once it can walk the report wizard; until then this
-gets real age-and-sex data into the fact table so the population pyramid can be built.
+A TÜİK export downloaded by hand: single years of age across the columns, year /
+province / sex down the rows, each label filled in only when it changes.
 
-Two decisions worth stating:
+**Single years are stored as they come.** Folding them into five-year bands on the way in
+was the earlier behaviour and it threw away the only thing this file has that MEDAS's
+district export does not. Going from single years to any coarser grouping is exact
+addition; going back is impossible. So the fact table keeps the finest grain published,
+and the groupings the screen offers — five-year bands, 0-14/15-64/65+, 18+ — are computed
+from it. The top band is already closed at 75+ in the source and stays there; inventing
+80+ would be fabrication.
 
-* Only male and female rows are kept. The file also carries a "Toplam" row per province,
-  which is their sum — storing it too would let a careless query double the population.
-* Single years are folded into five-year bands. The file's top band is already closed at
-  75+, so that is where ours ends too; inventing 80+ or 85+ would be fabrication.
+Only male and female rows are kept. The file also carries a "Toplam" row per province and
+a "Toplam-Total" province, both sums of the rest — storing them as well would let a
+careless query count the population twice.
+
+The file was checked against a completely independent extraction before being trusted:
+its province totals match the sum of MEDAS's district export exactly, for all 1.539
+province-years the two share.
 """
 
 from __future__ import annotations
@@ -27,22 +34,14 @@ from ..indicators import get
 from ..schema import format_dims
 
 SOURCE_FILE = Path(
-    r"C:\Users\katan\OneDrive\Desktop\demografi\demografi2"
-    r"\il tek yas ve cinsiyete gore nufus.xls"
+    r"C:\Users\katan\OneDrive\Desktop\İl, tek yaş ve cinsiyete göre nüfus.xls"
 )
 
-SHEET = "TOPLAM"
+#: One sheet, named after TÜİK's own table number.
+SHEET = "2820"
 COUNTRY_LABEL = "Toplam-Total"
 SEXES = {"Erkek-Male": "male", "Kadın-Female": "female"}
 TOP_BAND = "75+"
-
-
-def band_of(age: str) -> str:
-    """Single year to its five-year band; the file's own top band passes through."""
-    if age == TOP_BAND:
-        return TOP_BAND
-    start = (int(age) // 5) * 5
-    return f"{start}-{start + 4}"
 
 
 class TuikPopulationAgeSex:
@@ -100,16 +99,13 @@ class TuikPopulationAgeSex:
             )
             .with_columns(
                 pl.col("column")
-                .replace_strict(
-                    {f"column_{index + 1}": band_of(age) for index, age in ages.items()}
-                )
+                .replace_strict({f"column_{i + 1}": age for i, age in ages.items()})
                 .alias("age"),
                 pl.col("sex").replace_strict(SEXES).alias("sex_id"),
                 pl.col("value").cast(pl.Float64),
             )
-            # Single years become bands, so the rows within a band are summed.
-            .group_by("year", "area", "sex_id", "age")
-            .agg(pl.col("value").sum())
+            # One row per single year of age, exactly as published — no grouping here.
+            .select("year", "area", "sex_id", "age", "value")
         )
 
         bands = {
