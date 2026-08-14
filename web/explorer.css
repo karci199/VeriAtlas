@@ -122,6 +122,15 @@ h1 {
     font-size: var(--text-sm);
 }
 
+/* Below province there is a box per level above: İl and İlçe for a neighbourhood list.
+   They wrap rather than squeeze, and each takes what the rail has left. */
+/* `display: flex` beats the browser's own `[hidden] { display: none }`, so the row has to
+   say it again or it stays on screen with nothing in it. */
+.rail-row[hidden] { display: none; }
+
+#group-row { flex-wrap: wrap; }
+#group-row select { flex: 1 1 96px; min-width: 0; }
+
 .rail-head {
     display: flex;
     align-items: center;
@@ -448,6 +457,22 @@ select:focus-visible, button:focus-visible, input:focus-visible {
 .tip-row .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
 .tip-name { flex: 1; }
 .tip-value { color: var(--text-primary); font-weight: 700; }
+
+/* The colour classes, each labelled with where it starts. Wraps rather than shrinking:
+   six ranges of six-figure numbers do not fit one line on a narrow screen. */
+.map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--gap-xs) var(--gap-md);
+    padding-top: var(--gap-xs);
+    color: var(--text-tertiary);
+    font-size: var(--text-xs);
+}
+
+.map-legend .key { display: flex; align-items: center; gap: 6px; }
+.map-legend .chip-colour { width: 22px; height: 12px; border-radius: 2px; flex: none; }
+.map-legend .key-range { white-space: nowrap; }
 
 .plot.drillable .area { cursor: pointer; }
 

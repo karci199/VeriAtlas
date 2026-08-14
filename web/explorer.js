@@ -209,6 +209,7 @@ async function ensureLevel(level) {
     note.textContent = (LEVEL_LABELS[level] || level) + " verisi indiriliyor…";
     try {
         state.rows = state.rows.concat(await part(file));
+        invalidate();
     } finally {
         note.textContent = said;
     }
@@ -261,11 +262,15 @@ const state = {
     dims: {},
     year: null,
     search: "",
+    //: Narrow the list by what an area sits inside, one entry per level above this one:
+    //: {province: "Bursa", district: ""}. Empty means all of them.
+    filters: {},
     //: Chosen but hidden from the chart. Kept apart from the selection so muting is
     //: reversible without losing the area's place — and its colour.
     muted: [],
-    //: Map colour ramp. Log by default; see the note in map().
-    scale: "log",
+    //: How the colour classes are cut: "quantile" (about as many areas in each) or
+    //: "equal" (equal-width slices of the range). See the note above binEdges().
+    scale: "quantile",
     //: Pyramid panels: one shared scale, or each panel scaled to itself.
     panelScale: "shared",
     //: Map ramp ends: "year" recomputes them per year, "fixed" spans every year drawn.
@@ -298,7 +303,7 @@ let districtFeatures = [];
 
 /** Every province's districts at once, for the country-wide district map. */
 async function allDistricts() {
-    const provinces = [...new Set(state.rows.filter((r) => r.level === "province").map((r) => r.area_id))];
+    const provinces = [...new Set(rowsAt("province").map((r) => r.area_id))];
     const files = await Promise.all(provinces.map(districtsOf));
     return files.filter(Boolean).flatMap((file) => file.features);
 }
@@ -337,17 +342,86 @@ function levelsInData() {
  *  breakdown strip has to follow it, or the reader is offered province age bands over a
  *  district map. */
 function effectiveLevel() {
+    // Guarded on the indicator actually having districts. The district map is a mode the
+    // reader turns on, and it used to survive a change of indicator: turning it on for
+    // population and then picking median age left the map drawing districts for an
+    // indicator published only per province, which came out as "İlçe düzeyinde kırılım
+    // yok" while the level box still said İl.
     const districtMap =
         state.view === "map" &&
+        (state.indicator.levels || []).includes("district") &&
         (state.focus || (state.districtView && districtFeatures.length));
     return districtMap ? "district" : state.level;
 }
 
+// region Working set
+//
+// The district slice is 697.000 rows, and almost everything the page draws starts by
+// asking "the rows at this level". Done with a filter each time, one redraw walked the
+// whole array a dozen times over — once per selected series in the line chart alone —
+// and dragging the year slider became a slideshow. So the rows are bucketed by level
+// once, and each derived answer is remembered until the rows or the choices change.
+
+let working = {version: 0, byLevel: null, memo: new Map()};
+
+/** Throw away everything derived from the rows. Called when the rows themselves change. */
+function invalidate() {
+    working = {version: working.version + 1, byLevel: null, memo: new Map()};
+}
+
+function rowsAt(level) {
+    if (!working.byLevel) {
+        working.byLevel = new Map();
+        for (const row of state.rows) {
+            const bucket = working.byLevel.get(row.level);
+            if (bucket) {
+                bucket.push(row);
+            } else {
+                working.byLevel.set(row.level, [row]);
+            }
+        }
+    }
+    return working.byLevel.get(level) || [];
+}
+
+/** Remember `build()` under a key that spells out everything it depends on.
+ *
+ *  Every key names its own dependencies, so nothing here has to be cleared as the reader
+ *  works — only when the rows themselves change. Sliced answers do not name the year,
+ *  which is what makes playing the years cheap. The cap is there because each breakdown
+ *  the reader tries leaves a slice behind and a district slice is eighteen thousand
+ *  objects; the row buckets and the small lookups are worth keeping, the slices are not. */
+function remember(key, build) {
+    if (!working.memo.has(key)) {
+        if (working.memo.size > 24) {
+            for (const old of [...working.memo.keys()]) {
+                if (old.startsWith("slice|") || old.startsWith("byArea|")) {
+                    working.memo.delete(old);
+                }
+            }
+        }
+        working.memo.set(key, build());
+    }
+    return working.memo.get(key);
+}
+
+/** The part of the state a sliced answer depends on, as a string. */
+function choices() {
+    return (
+        state.indicator.id + "|" + state.share + "|" +
+        (state.indicator.dims || []).map((d) => d + "=" + state.dims[d]).join(";")
+    );
+}
+
+// endregion
+
 function valuesOf(dim, level = effectiveLevel()) {
-    const here = state.rows.filter((r) => r.level === level);
-    return [...new Set((here.length ? here : state.rows).map((r) => r[dim]))]
-        .filter((v) => v !== undefined && v !== "")
-        .sort((a, b) => String(a).localeCompare(String(b), "tr", {numeric: true}));
+    return remember("values|" + dim + "|" + level, () => {
+        const here = rowsAt(level);
+        return [...new Set((here.length ? here : state.rows).map((r) => r[dim]))]
+            .filter((v) => v !== undefined && v !== "")
+            .sort((a, b) => String(a).localeCompare(String(b), "tr", {numeric: true}));
+    });
 }
 
 /** Keep every breakdown choice on a value this level offers, preserving what it can.
@@ -369,42 +443,67 @@ function clampDims() {
  *  age-and-sex file stops at 2023. A slider offering 2025 at province level lands the
  *  reader on an empty map that looks like a bug rather than a gap in the data. */
 function years() {
-    const here = state.rows.filter((r) => r.level === state.level);
-    const span = [...new Set((here.length ? here : state.rows).map((r) => r.year))];
-    return span.sort((a, b) => a - b);
+    return remember("years|" + state.level, () => {
+        const here = rowsAt(state.level);
+        const span = [...new Set((here.length ? here : state.rows).map((r) => r.year))];
+        return span.sort((a, b) => a - b);
+    });
 }
 
 /** Rows matching the current breakdown choice, summed where a dim is set to "all".
  *  Summing is only offered for additive units, so this never adds up rates. */
 function slice(level = state.level) {
-    const rows = state.rows.filter(
-        (r) => r.level === level &&
-               (state.indicator.dims || []).every(
-                   (d) => state.dims[d] === TOTAL || String(r[d]) === String(state.dims[d])
-               )
-    );
+    return remember("slice|" + level + "|" + choices(), () => {
+        const dims = state.indicator.dims || [];
+        const totals = new Map();
 
-    const totals = new Map();
-    for (const row of rows) {
-        // Keyed by id, not name. Two districts are called Pınarbaşı and forty-odd are
-        // called Merkez; keying by name made one of each pair swallow the other, and the
-        // loser drew as "veri yok" on the map.
-        const key = row.area_id + "|" + row.year;
-        const seen = totals.get(key);
-        if (seen) {
-            seen.value += row.value;
-        } else {
-            totals.set(key, {...row});
+        for (const row of rowsAt(level)) {
+            if (!dims.every((d) => state.dims[d] === TOTAL ||
+                                   String(row[d]) === String(state.dims[d]))) {
+                continue;
+            }
+            // Keyed by id, not name. Two districts are called Pınarbaşı and forty-odd
+            // are called Merkez; keying by name made one of each pair swallow the other,
+            // and the loser drew as "veri yok" on the map.
+            const key = row.area_id + "|" + row.year;
+            const seen = totals.get(key);
+            if (seen) {
+                seen.value += row.value;
+            } else {
+                totals.set(key, {...row});
+            }
         }
-    }
 
-    if (!state.share) {
-        return [...totals.values()];
-    }
-    const whole = wholeOf(level);
-    return [...totals.values()].map((row) => {
-        const base = whole.get(row.area_id + "|" + row.year);
-        return {...row, value: base ? (row.value / base) * 100 : NaN};
+        if (!state.share) {
+            return [...totals.values()];
+        }
+        const whole = wholeOf(level);
+        return [...totals.values()].map((row) => {
+            const base = whole.get(row.area_id + "|" + row.year);
+            return {...row, value: base ? (row.value / base) * 100 : NaN};
+        });
+    });
+}
+
+/** The current slice indexed by area, so a chart of five series does not walk the whole
+ *  slice five times. */
+function byArea(level = state.level) {
+    return remember("byArea|" + level + "|" + choices(), () => {
+        const index = new Map();
+        for (const row of slice(level)) {
+            for (const key of [row.area_id, row.area]) {
+                const bucket = index.get(key);
+                if (bucket) {
+                    bucket.push(row);
+                } else {
+                    index.set(key, [row]);
+                }
+            }
+        }
+        for (const points of index.values()) {
+            points.sort((a, b) => a.year - b.year);
+        }
+        return index;
     });
 }
 
@@ -415,12 +514,13 @@ function slice(level = state.level) {
  *  why sharing is only offered on additive units — a share of a sum of rates is not a
  *  number that means anything. */
 function wholeOf(level) {
+    return remember("whole|" + level + "|" + state.indicator.id, () => buildWhole(level));
+}
+
+function buildWhole(level) {
     const whole = new Map();
     const counted = new Map();
-    for (const row of state.rows) {
-        if (row.level !== level) {
-            continue;
-        }
+    for (const row of rowsAt(level)) {
         const key = row.area_id + "|" + row.year;
         whole.set(key, (whole.get(key) || 0) + row.value);
         counted.set(key, (counted.get(key) || 0) + 1);
@@ -490,13 +590,114 @@ function derive(points) {
 // endregion
 
 function seriesFor(area) {
-    return derive(slice().filter((r) => r.area_id === area || r.area === area).sort((a, b) => a.year - b.year));
+    return derive(byArea().get(area) || []);
 }
 
+// region Narrowing the list
+//
+// 973 districts, or fifty thousand neighbourhoods once the other provinces arrive, is not
+// a list anyone finds anything in. Each level below province gets a box per level above
+// it, and the boxes chain: pick Bursa and the district box offers Bursa's districts.
+//
+// Both keys come out of what the rows already carry — the province is the first two
+// segments of any id below it (`TR-16-001-183537` is in `TR-16`), and a neighbourhood's
+// district is the prefix the exporter put in its name (`Büyükorhan / Akçasaz Mah.`). No
+// extra lookup table is shipped to the page for this.
+
+const FILTERS = {
+    district: ["province"],
+    neighbourhood: ["province", "district"],
+};
+
+function filterLabel(key) {
+    return LEVEL_LABELS[key] || key;
+}
+
+function filterValue(row, key) {
+    if (key === "province") {
+        return provinceNames().get(row.area_id.split("-").slice(0, 2).join("-")) || "";
+    }
+    return row.area.includes(" / ") ? row.area.split(" / ")[0] : "";
+}
+
+function filtersFor(level = state.level) {
+    return FILTERS[level] || [];
+}
+
+function provinceNames() {
+    return remember("provinceNames", () => {
+        const names = new Map();
+        for (const row of rowsAt("province")) {
+            names.set(row.area_id, row.area);
+        }
+        return names;
+    });
+}
+
+/** Every area at this level, once, with the values of each filter key — ordered by those
+ *  first. An alphabetical run of 973 districts puts Adana's next to Ağrı's; grouped, the
+ *  list reads the way the country is arranged. */
 function areasAtLevel() {
-    return [...new Set(state.rows.filter((r) => r.level === state.level).map((r) => r.area))]
+    return remember("areas|" + state.level, () => {
+        const keys = filtersFor();
+        const seen = new Map();
+        for (const row of rowsAt(state.level)) {
+            // Keyed by id. Keying by name lost twenty-one districts outright — forty-odd
+            // are called Merkez and two are called Pınarbaşı, and each set collapsed to
+            // one row that the reader could not tell apart or select separately.
+            if (!seen.has(row.area_id)) {
+                seen.set(row.area_id, {
+                    id: row.area_id,
+                    name: row.area,
+                    in: Object.fromEntries(keys.map((k) => [k, filterValue(row, k)])),
+                });
+            }
+        }
+        return [...seen.values()].sort((a, b) => {
+            for (const key of keys) {
+                const order = a.in[key].localeCompare(b.in[key], "tr");
+                if (order) {
+                    return order;
+                }
+            }
+            return a.name.localeCompare(b.name, "tr");
+        });
+    });
+}
+
+/** The Turkish name of an area id, for anything the reader reads. */
+function nameOf(id) {
+    return remember("names|" + state.level, () =>
+        new Map(areasAtLevel().map((a) => [a.id, a.name]))
+    ).get(id) || id;
+}
+
+/** What one filter box may offer, given the boxes above it. Picking Bursa leaves the
+ *  district box holding Bursa's districts rather than all 973. */
+function optionsFor(key) {
+    const above = filtersFor().slice(0, filtersFor().indexOf(key));
+    return [
+        ...new Set(
+            areasAtLevel()
+                .filter((a) => above.every((k) => !state.filters[k] || a.in[k] === state.filters[k]))
+                .map((a) => a.in[key])
+
+        ),
+    ]
+        .filter(Boolean)
         .sort((a, b) => a.localeCompare(b, "tr"));
 }
+
+/** The ids the rail is currently offering: what the filter boxes and the search leave. */
+function areasShown() {
+    const needle = state.search.toLocaleLowerCase("tr");
+    return areasAtLevel()
+        .filter((a) => filtersFor().every((k) => !state.filters[k] || a.in[k] === state.filters[k]))
+        .filter((a) => a.name.toLocaleLowerCase("tr").includes(needle))
+        .map((a) => a.id);
+}
+
+// endregion
 
 /** Precision follows whatever is being shown: the indicator's unit, the share, or the
  *  derivation's. A derivation is computed on top of the share, so it names the result. */
@@ -544,11 +745,11 @@ function drawRail() {
     // a selection that scrolls out of sight — or filters away — is a selection the
     // reader cannot undo.
     $("chosen").innerHTML = state.selection
-        .map((area, i) => {
-            const muted = state.muted.includes(area);
-            return "<li class='" + (muted ? "muted" : "") + "' data-area='" + area + "'>" +
+        .map((id, i) => {
+            const muted = state.muted.includes(id);
+            return "<li class='" + (muted ? "muted" : "") + "' data-area='" + id + "'>" +
                    "<span class='dot' style='background:" + colour(i) + "'></span>" +
-                   "<span class='name'>" + area + "</span>" +
+                   "<span class='name'>" + nameOf(id) + "</span>" +
                    "<button class='chip' data-act='mute' title='" +
                    (muted ? "Grafiğe geri koy" : "Grafikten gizle") + "'>" +
                    (muted ? "◎" : "◉") + "</button>" +
@@ -557,8 +758,13 @@ function drawRail() {
         .join("");
     $("chosen-head").hidden = !state.selection.length;
 
-    const needle = state.search.toLocaleLowerCase("tr");
-    const areas = areasAtLevel().filter((a) => a.toLocaleLowerCase("tr").includes(needle));
+    drawFilterBoxes();
+
+    // The right-hand tag is the level everywhere else, which says the same thing 973
+    // times over. Where the area sits inside something, that is the useful tag — the
+    // innermost one, since the name already carries the rest.
+    const keys = filtersFor();
+    const tags = new Map(areasAtLevel().map((a) => [a.id, a.in[keys[0]] || ""]));
 
     // Rewriting the list resets its scroll to the top, which reads as the page jumping
     // out from under you the moment you press "Tümünü seç". The list is the same list —
@@ -566,17 +772,42 @@ function drawRail() {
     const list = $("entities");
     const wasAt = list.scrollTop;
 
-    list.innerHTML = areas
-        .map((area) => {
-            const on = state.selection.includes(area);
-            return '<li class="' + (on ? "on" : "") + '" data-area="' + area + '">' +
+    list.innerHTML = areasShown()
+        .map((id) => {
+            const on = state.selection.includes(id);
+            return '<li class="' + (on ? "on" : "") + '" data-area="' + id + '">' +
                    '<input type="checkbox" tabindex="-1"' + (on ? " checked" : "") + ">" +
-                   '<span class="name">' + area + "</span>" +
-                   '<span class="lvl">' + (LEVEL_LABELS[state.level] || state.level) + "</span></li>";
+                   '<span class="name">' + nameOf(id) + "</span>" +
+                   '<span class="lvl">' +
+                   (keys.length ? tags.get(id) : LEVEL_LABELS[state.level] || state.level) +
+                   "</span></li>";
         })
         .join("");
 
     list.scrollTop = wasAt;
+}
+
+function drawFilterBoxes() {
+    const keys = filtersFor();
+    $("group-row").hidden = !keys.length;
+    if (!keys.length) {
+        state.filters = {};
+        return;
+    }
+
+    $("group-row").innerHTML = keys
+        .map((key) => {
+            const options = optionsFor(key);
+            const chosen = state.filters[key] || "";
+            return "<label for='f-" + key + "'>" + filterLabel(key) + "</label>" +
+                   "<select id='f-" + key + "' data-filter='" + key + "'>" +
+                   "<option value=''>Hepsi</option>" +
+                   options
+                       .map((o) => "<option" + (chosen === o ? " selected" : "") + ">" + o + "</option>")
+                       .join("") +
+                   "</select>";
+        })
+        .join("");
 }
 
 /** Areas that are selected and not muted — what the charts actually draw. */
@@ -592,7 +823,7 @@ function seedSelection() {
         .filter((r) => r.year === latest)
         .sort((a, b) => b.value - a.value)
         .slice(0, 5)
-        .map((r) => r.area);
+        .map((r) => r.area_id);
 }
 
 // endregion
@@ -730,7 +961,7 @@ function niceTicks(max) {
 
 function lineChart() {
     const rows = drawn()
-        .map((area) => ({area, pts: seriesFor(area), colour: colourOf(area)}))
+        .map((id) => ({id, area: nameOf(id), pts: seriesFor(id), colour: colourOf(id)}))
         .filter((r) => r.pts.length);
     if (!rows.length) {
         return empty("Soldan en az bir alan seçin.");
@@ -948,9 +1179,9 @@ function axisText(x, y, text, anchor) {
 
 function barChart() {
     const rows = drawn()
-        .map((area) => {
-            const point = seriesFor(area).find((p) => p.year === state.year);
-            return point ? {area, value: point.value, colour: colourOf(area)} : null;
+        .map((id) => {
+            const point = seriesFor(id).find((p) => p.year === state.year);
+            return point ? {area: nameOf(id), value: point.value, colour: colourOf(id)} : null;
         })
         .filter(Boolean)
         .sort((a, b) => b.value - a.value);
@@ -994,9 +1225,9 @@ function table() {
                (LEVEL_LABELS[state.level] || state.level) + "</th>" +
                shown.map((y) => "<th>" + y + "</th>").join("") + "</tr></thead><tbody>";
 
-    for (const area of drawn()) {
-        const points = seriesFor(area);
-        html += "<tr><td class='sticky-col'>" + area + "</td>" +
+    for (const id of drawn()) {
+        const points = seriesFor(id);
+        html += "<tr><td class='sticky-col'>" + nameOf(id) + "</td>" +
                 shown.map((y) => "<td>" + fmt(points.find((p) => p.year === y)?.value) + "</td>").join("") +
                 "</tr>";
     }
@@ -1010,21 +1241,33 @@ function table() {
  *  a fixed share of the width, so adding a third narrows all three rather than
  *  squeezing the last one. */
 function pyramid() {
-    const areas = drawn();
-    if (!areas.length) {
+    // Four is what fits side by side and stays readable. Refusing to draw at all past
+    // that was wrong: the page seeds five areas, so the pyramid opened blocked every
+    // single time and the reader had to go and hide one before seeing anything. Draw the
+    // first four and say plainly that the rest are not in the picture.
+    const chosen = drawn();
+    if (!chosen.length) {
         return empty("Soldan en az bir alan seçin.");
     }
-    if (areas.length > 4) {
-        return empty("Piramit en çok dört alan çizer; " + areas.length + " seçili.",
-                     "Fazlasını soldaki listeden gizleyin");
-    }
+    const areas = chosen.slice(0, 4);
+    const dropped = chosen.length - areas.length;
 
     // In share mode every band is a percentage of that area's own population, which is
     // what makes two pyramids of very different sizes comparable without a scale switch.
     const whole = state.share ? wholeOf(state.level) : null;
+
+    // Every breakdown control applies here too — pick Kadın and you get the female side
+    // alone, on a scale that fits it. Age is the exception: it is this chart's own
+    // vertical axis, so narrowing it would leave a pyramid of one band. The head says so
+    // rather than letting the control look broken.
+    const others = (state.indicator.dims || []).filter((d) => d !== "age");
+    const ignoringAge = state.dims.age && state.dims.age !== TOTAL;
+
     const rowsOf = (area) => {
-        const rows = state.rows.filter(
-            (r) => r.level === state.level && r.year === state.year && r.area === area
+        const rows = rowsAt(state.level).filter(
+            (r) => r.year === state.year && r.area_id === area &&
+                   others.every((d) => state.dims[d] === TOTAL ||
+                                       String(r[d]) === String(state.dims[d]))
         );
         if (!whole) {
             return rows;
@@ -1063,7 +1306,7 @@ function pyramid() {
         const arm = cell / 2 - 34;
 
         svg += '<text x="' + mid + '" y="14" text-anchor="middle" fill="' + colourOf(area) +
-               '" font-size="13">' + area +
+               '" font-size="13">' + nameOf(area) +
                (state.panelScale === "own" ? " · " + fmt(max) + " ölçek" : "") + "</text>";
 
         bands.forEach((label, i) => {
@@ -1077,7 +1320,7 @@ function pyramid() {
                 const w = (row.value / max) * (arm - 16);
                 svg += '<rect x="' + (si === 0 ? mid - 16 - w : mid + 16) + '" y="' + y +
                        '" width="' + w + '" height="' + h + '" fill="' + colour(si) +
-                       '" rx="1" data-colour="' + colour(si) + '" data-name="' + area + " · " +
+                       '" rx="1" data-colour="' + colour(si) + '" data-name="' + nameOf(area) + " · " +
                        dimValue("sex", s) + " " + label + '" data-value="' + fmt(row.value) + '"/>';
             });
             if (ai === 0) {
@@ -1095,6 +1338,12 @@ function pyramid() {
             .map((s, si) => "<span class='tip-row'><span class='dot' style='background:" +
                             colour(si) + "'></span>" + dimValue("sex", s) + "</span>")
             .join("") +
+        (dropped
+            ? "<span>· ilk 4 çiziliyor, " + dropped + " alan daha seçili</span>"
+            : "") +
+        (ignoringAge
+            ? "<span>· yaş grubu piramidin kendi ekseni, seçim burada geçmiyor</span>"
+            : "") +
         "<span class='spacer'></span><span>Eksen</span>" +
         "<button class='chip" + (state.panelScale !== "own" ? " on" : "") +
         "' data-panel='shared' title='Bütün panellerde aynı eksen: büyüklükler karşılaştırılabilir'>Ortak eksen</button>" +
@@ -1194,28 +1443,13 @@ function map() {
         PLOT_H - 36 - (p[1] - y0) * scale,
     ];
 
-    // "No value" is not the bottom of the ramp — on a log scale the darkest colour is a
-    // real, small number, and an absent one drawn the same way is a lie. It gets its own
-    // flat grey and its own legend entry.
+    // "No value" is not the bottom of the scale — the darkest class is a real, small
+    // number, and an absent one drawn the same way is a lie. It gets its own flat grey
+    // and its own legend entry.
     const base = token("--bg-control");
-    const ink = token("--accent");
-
-    // Population is spread over three orders of magnitude: on a linear ramp İstanbul is
-    // the only province with any colour in it and the other eighty read as empty. Log is
-    // the default for that reason; linear stays one click away because a ratio the
-    // reader wants to see literally — a rate, a percentage — is better off on it.
-    // A share is already bounded and already comparable — the log ramp exists for counts
-    // spread over three orders of magnitude, so it is not offered here.
-    const logging = state.scale === "log" && low > 0 && !state.share;
-    const position = (v) => {
-        if (v === undefined) {
-            return null;
-        }
-        if (logging) {
-            return (Math.log(v) - Math.log(low)) / Math.max(1e-9, Math.log(high) - Math.log(low));
-        }
-        return (v - low) / Math.max(1e-9, high - low);
-    };
+    const edges = binEdges(span);
+    const colours = rampColours(edges.length + 1);
+    const colourFor = (v) => (v === undefined ? base : colours[binOf(v, edges)]);
 
     // Pan and zoom are a viewBox, not a transform: the strokes then keep their width and
     // the shapes stay crisp however far in the reader goes.
@@ -1224,29 +1458,27 @@ function map() {
               '" viewBox="' + view.x + " " + view.y + " " + view.w + " " + view.h + '" role="img">';
     for (const feature of features) {
         const value = byId.get(feature.properties.area_id);
-        const t = position(value);
+        const fill = colourFor(value);
         const d = rings(feature)
             .map((ring) => "M" + ring.map((p) => px(p).map((n) => n.toFixed(1)).join(" ")).join("L") + "Z")
             .join(" ");
         svg += '<path class="area" data-area="' + feature.properties.area_id + '" d="' + d +
-               '" fill="' + (t === null ? base : ink) + '" fill-opacity="' +
-               (t === null ? 1 : rampOpacity(t)) + '" stroke="' +
+               '" fill="' + fill + '" stroke="' +
                token("--bg-card") + '" stroke-width="0.6" data-name="' +
                feature.properties.name_tr + '" data-value="' +
-               (value === undefined ? "veri yok" : fmt(value)) + '" data-colour="' + ink + '"/>';
+               (value === undefined ? "veri yok" : fmt(value)) + '" data-colour="' + fill + '"/>';
     }
     svg += "</svg>";
     hover = {kind: "shape"};
 
     // Two separate questions, so two labelled pairs rather than four bare chips: how the
     // colour is spread across the range, and what range the ends of the ramp stand for.
-    const ramp = state.share
-        ? ""
-        : "<span>Renk</span>" +
-          "<button class='chip" + (state.scale === "log" ? " on" : "") +
-          "' data-scale='log' title='Katlarla artan renk: az sayıda çok büyük alan varken okunur'>Log</button>" +
-          "<button class='chip" + (state.scale === "linear" ? " on" : "") +
-          "' data-scale='linear' title='Eşit aralıklı renk'>Doğrusal</button>";
+    const ramp =
+        "<span>Renk</span>" +
+        "<button class='chip" + (state.scale !== "equal" ? " on" : "") +
+        "' data-scale='quantile' title='Her renk kabaca eşit sayıda alan: İstanbul kadar aykırı bir değer varken tek okunur bölme budur'>Eşit sayı</button>" +
+        "<button class='chip" + (state.scale === "equal" ? " on" : "") +
+        "' data-scale='equal' title='Aralık eşit genişlikte bölünür: sayının kendisi okunur, ama aykırı değer varken çoğu alan tek renge yığılır'>Eşit aralık</button>";
 
     const scaleToggle = values.length
         ? "<span class='spacer'></span>" + ramp + "<span>Uçlar</span>" +
@@ -1270,37 +1502,117 @@ function map() {
         scaleToggle + "</div>";
 
     return head + wrapPlot(svg) +
-           (values.length ? legend(low, high, ink, values.length < features.length) : "");
+           (values.length
+               ? legend(low, high, edges, colours, values.length < features.length)
+               : "");
 }
 
-/** Where on the colour ramp a value at position `t` (0..1) sits.
- *
- *  The floor is not zero. The ramp is one hue at varying strength over the card, so a
- *  low value drawn at 0.15 was barely tinted — indistinguishable from the flat grey that
- *  means "no data", and a map of a narrow range came out uniformly dark. Starting at a
- *  visible tint spends the range on telling values apart, which is the ramp's whole job.
- *  Shared with the legend so the two cannot drift. */
-function rampOpacity(t) {
-    return (0.28 + 0.72 * t).toFixed(2);
+// region Colour axis
+//
+// The map used to paint one hue at varying transparency across a continuous range. Two
+// things were wrong with that and both showed up as "everything is dark". A continuous
+// ramp asks the eye to judge how much brown a brown is, which it cannot do; and a
+// *linear* range spends nearly all of its length on the gap between İstanbul and
+// everyone else, so eighty provinces shared the bottom of the scale.
+//
+// So: discrete classes, and by default classes holding about the same number of areas.
+// Then every class is visible on the map by construction, and the reader compares
+// against a legend that names its own edges instead of guessing at a gradient.
+
+const BINS = 6;
+
+/** Bin edges. `quantile` puts about as many areas in each class — the right default for
+ *  anything as skewed as population. `equal` cuts the range into equal widths, which is
+ *  the literal reading and what a bounded quantity like a percentage usually wants. */
+function binEdges(values) {
+    const sorted = [...values].sort((a, b) => a - b);
+    if (sorted.length < 2) {
+        return [];
+    }
+    const edges = [];
+    for (let i = 1; i < BINS; i++) {
+        edges.push(
+            state.scale === "equal"
+                ? sorted[0] + ((sorted[sorted.length - 1] - sorted[0]) * i) / BINS
+                : sorted[Math.floor((i / BINS) * sorted.length)]
+        );
+    }
+    // Ties collapse: with forty areas sharing a value, two edges land on it and the class
+    // between them would be empty and unreachable.
+    return [...new Set(edges)].filter((e) => e > sorted[0]);
 }
+
+function binOf(value, edges) {
+    let index = 0;
+    while (index < edges.length && value >= edges[index]) {
+        index += 1;
+    }
+    return index;
+}
+
+function hexToHsl(hex) {
+    const int = parseInt(hex.replace("#", ""), 16);
+    const [r, g, b] = [(int >> 16) & 255, (int >> 8) & 255, int & 255].map((c) => c / 255);
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const l = (max + min) / 2;
+    const d = max - min;
+    if (!d) {
+        return {h: 0, s: 0, l: l * 100};
+    }
+    const s = d / (1 - Math.abs(2 * l - 1));
+    const h = max === r
+        ? ((g - b) / d + (g < b ? 6 : 0))
+        : max === g
+          ? (b - r) / d + 2
+          : (r - g) / d + 4;
+    return {h: h * 60, s: s * 100, l: l * 100};
+}
+
+/** `count` colours of the reader's accent hue, darkest to brightest on a dark page and
+ *  palest to deepest on a light one. Built from the accent rather than a fixed palette so
+ *  the map still belongs to the theme the reader picked (K5). */
+function rampColours(count) {
+    const {h, s} = hexToHsl(token("--accent") || "#7fa8d8");
+    const dark = look.theme !== "light";
+    const [l0, l1] = dark ? [24, 76] : [93, 28];
+    const [s0, s1] = dark ? [Math.min(s, 40), Math.min(95, s + 12)] : [Math.min(s, 35), s];
+
+    return Array.from({length: Math.max(1, count)}, (_, i) => {
+        const t = count < 2 ? 1 : i / (count - 1);
+        return "hsl(" + h.toFixed(0) + " " + (s0 + (s1 - s0) * t).toFixed(0) + "% " +
+               (l0 + (l1 - l0) * t).toFixed(0) + "%)";
+    });
+}
+
+// endregion
 
 function rings(feature) {
     const g = feature.geometry;
     return g.type === "Polygon" ? g.coordinates : g.coordinates.flat();
 }
 
-function legend(low, high, ink, gaps) {
-    const stops = [0, 0.25, 0.5, 0.75, 1];
+/** The colour classes with the numbers that separate them.
+ *
+ *  A gradient bar with only its two ends labelled asks the reader to interpolate a colour
+ *  by eye. Discrete classes can say exactly where each one starts, so they do. */
+function legend(low, high, edges, colours, gaps) {
+    const bounds = [low, ...edges, high];
+    const swatches = colours
+        .map((colour, i) =>
+            "<span class='key'>" +
+            "<span class='chip-colour' style='background:" + colour + "'></span>" +
+            "<span class='key-range'>" + fmt(bounds[i]) +
+            (i === colours.length - 1 ? "+" : "–" + fmt(bounds[i + 1])) +
+            "</span></span>")
+        .join("");
+
     const missing = gaps
-        ? "<span style='width:26px;height:12px;background:" + token("--bg-control") +
-          ";margin-left:12px'></span>veri yok"
+        ? "<span class='key'><span class='chip-colour' style='background:" +
+          token("--bg-control") + "'></span><span class='key-range'>veri yok</span></span>"
         : "";
 
-    return "<div style='display:flex;align-items:center;gap:8px;justify-content:flex-end;" +
-           "color:var(--text-tertiary);font-size:var(--text-xs)'>" + fmt(low) +
-           stops.map((t) => "<span style='width:26px;height:12px;background:" + ink +
-                            ";opacity:" + rampOpacity(t) + "'></span>").join("") +
-           fmt(high) + missing + "</div>";
+    return "<div class='map-legend'>" + swatches + missing + "</div>";
 }
 
 function empty(message, hint) {
@@ -1404,10 +1716,13 @@ function readHash() {
 }
 
 function downloadShown() {
-    const rows = slice().filter((r) => drawn().includes(r.area));
-    const header = "area,year,value,unit,indicator\n";
+    const shown = new Set(drawn());
+    const rows = slice().filter((r) => shown.has(r.area_id));
+    // The id goes out with the name: two districts called Pınarbaşı are two rows, and a
+    // file that names them both "Pınarbaşı" cannot be joined back to anything.
+    const header = "area_id,area,year,value,unit,indicator\n";
     const body = rows
-        .map((r) => [r.area, r.year, r.value, unitLabel(), state.indicator.id].join(","))
+        .map((r) => [r.area_id, r.area, r.year, r.value, unitLabel(), state.indicator.id].join(","))
         .join("\n");
 
     const url = URL.createObjectURL(new Blob([header + body], {type: "text/csv;charset=utf-8"}));
@@ -1428,6 +1743,8 @@ async function useIndicator(id) {
 
     const rows = await dataset(indicator);
     state.rows = rows || [];
+    state.filters = {};
+    invalidate();
 
     if (!state.rows.length) {
         // Still draw the strip: without it there is no way back to an indicator that
@@ -1441,6 +1758,11 @@ async function useIndicator(id) {
         );
         return false;
     }
+
+    // A map mode belongs to the indicator it was turned on for, not to the session.
+    state.focus = null;
+    state.districtView = false;
+    resetMapView();
 
     const levels = levelsInData();
     state.level = levels.includes(state.level) ? state.level : levels[0];
@@ -1496,19 +1818,29 @@ function wire() {
         drawRail();
     };
 
-    // "Select all" follows the search box: with a filter typed, it selects what the
-    // reader is looking at, not all eighty-one.
+    $("group-row").onchange = (ev) => {
+        const key = ev.target.dataset.filter;
+        if (!key) {
+            return;
+        }
+        state.filters = {...state.filters, [key]: ev.target.value};
+        // A box below this one may now be offering something outside the new choice.
+        for (const below of filtersFor().slice(filtersFor().indexOf(key) + 1)) {
+            state.filters[below] = "";
+        }
+        drawRail();
+    };
+
+    // "Select all" follows whatever narrows the list — the search box and the group box.
+    // With Bursa picked it selects Bursa's districts, not all 973.
     $("select-all").onclick = () => {
-        const needle = state.search.toLocaleLowerCase("tr");
-        const visible = areasAtLevel().filter((a) => a.toLocaleLowerCase("tr").includes(needle));
-        state.selection = [...new Set([...state.selection, ...visible])];
+        state.selection = [...new Set([...state.selection, ...areasShown()])];
         render();
     };
 
     $("select-none").onclick = () => {
-        const needle = state.search.toLocaleLowerCase("tr");
-        const visible = areasAtLevel().filter((a) => a.toLocaleLowerCase("tr").includes(needle));
-        state.selection = state.selection.filter((a) => !visible.includes(a));
+        const visible = new Set(areasShown());
+        state.selection = state.selection.filter((a) => !visible.has(a));
         render();
     };
 
@@ -1521,6 +1853,9 @@ function wire() {
     $("level").onchange = async (ev) => {
         state.level = ev.target.value;
         state.focus = null;
+        // The old filters belonged to the old level: "Bursa" means nothing in a list of
+        // provinces, and would filter everything away.
+        state.filters = {};
         await ensureLevel(state.level);
         // The new level may not cover the year we were standing on.
         const span = years();
