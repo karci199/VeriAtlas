@@ -214,6 +214,61 @@ additive = true
 
 # endregion
 
+# region Ratios — one set of breakdown values over another
+#
+# A comparison puts two *values* against each other. A ratio puts two *sets* of them, and
+# that is what the dependency ratios need: (0-14 + 65+) ÷ 15-64 is three groups, not two,
+# so it does not fit a comparison however it is bent.
+#
+# TÜİK publishes all three of these as measures of their own. They are computed here
+# instead, from the age bands already loaded, for the reason K12 gives: a number that is
+# an exact function of data we hold is a derivation, not a second download that can drift
+# out of step with the first. The published ones are fetched anyway, once, as a check.
+#
+# Named through a grouping rather than through raw bands: the province file closes at 75+
+# and the district export runs to 90+, so "65+" is a different list of bands at each
+# level. The grouping already knows that, and it is only offered where it covers every
+# band — so a ratio built on it cannot quietly drop anyone.
+
+[ratio.child_dependency]
+label_tr = "Çocuk bağımlılık oranı (%)"
+label_en = "Child dependency ratio (%)"
+dim = "age"
+grouping = "age_broad"
+over = ["0-14"]
+under = ["15-64"]
+unit = "percent"
+note_tr = """
+Çalışma çağındaki (15-64) her yüz kişiye düşen çocuk sayısı. Yüksek değer genç bir \
+nüfus demektir — okul, kreş ve doğurganlık ile birlikte okunur."""
+
+[ratio.old_age_dependency]
+label_tr = "Yaşlı bağımlılık oranı (%)"
+label_en = "Old-age dependency ratio (%)"
+dim = "age"
+grouping = "age_broad"
+over = ["65+"]
+under = ["15-64"]
+unit = "percent"
+note_tr = """
+Çalışma çağındaki her yüz kişiye düşen 65 yaş üstü sayısı. Türkiye'de hızla yükseliyor; \
+emeklilik ve sağlık harcamalarının en doğrudan göstergesi."""
+
+[ratio.total_dependency]
+label_tr = "Toplam yaş bağımlılık oranı (%)"
+label_en = "Total age dependency ratio (%)"
+dim = "age"
+grouping = "age_broad"
+over = ["0-14", "65+"]
+under = ["15-64"]
+unit = "percent"
+note_tr = """
+Çalışma çağı dışındaki her iki uç birlikte, çalışma çağındaki yüz kişiye oranla. \
+Çocuk ve yaşlı oranı ters yönde hareket ettiği için toplam, ikisinin anlattığını \
+gizleyebilir: aynı 50 değeri çok çocuklu bir ili de çok yaşlı bir ili de anlatır."""
+
+# endregion
+
 # region Derivations — series computed from a measurement, never stored
 #
 # A derived number is not a measurement and must not look like one, so each one declares

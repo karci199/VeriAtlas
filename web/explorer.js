@@ -639,12 +639,13 @@ function valuesOf(dim, level = effectiveLevel()) {
 function clampDims() {
     for (const dim of state.indicator.dims || []) {
         const values = valuesOf(dim);
-        // A comparison is a legitimate choice for a dim even though it is not one of its
-        // values; without this the box reset itself to "Tümü" on the very next redraw and
-        // the comparison never survived long enough to be computed.
+        // A comparison and a ratio are both legitimate choices for a dim even though
+        // neither is one of its values; without this the box reset itself to "Tümü" on
+        // the very next redraw and the choice never survived long enough to be computed.
         if (state.dims[dim] === TOTAL ||
             values.includes(state.dims[dim]) ||
-            comparison(dim)) {
+            comparison(dim) ||
+            ratioOn(dim)) {
             continue;
         }
         state.dims[dim] = state.indicator.additive ? TOTAL : values[0];
@@ -696,6 +697,50 @@ function activeComparison() {
     return null;
 }
 
+// region Ratios
+//
+// A comparison reads two values of a breakdown against each other; a ratio reads two
+// *sets* of them. The dependency ratios need that — (0-14 + 65+) over 15-64 is three
+// groups — and they are computed here rather than downloaded because they are an exact
+// function of the bands already in hand (K12). TÜİK's own published versions are fetched
+// separately, once, to check these against.
+
+/** The ratio the reader picked on a dim, or null. Stored in `state.dims` like a
+ *  comparison, because it answers the same question the value box asks. */
+function ratioOn(dim) {
+    const body = meta.ratios?.[state.dims[dim]];
+    return body && body.dim === dim ? [state.dims[dim], body] : null;
+}
+
+function activeRatio() {
+    for (const dim of state.indicator.dims || []) {
+        const found = ratioOn(dim);
+        if (found) {
+            return found;
+        }
+    }
+    return null;
+}
+
+/** Which ratios can be offered on this dim here: the ones whose grouping covers every
+ *  band at this level. Reusing the grouping's own rule means a ratio can never be built
+ *  on a level where it would silently drop people. */
+function ratiosFor(dim, level = effectiveLevel()) {
+    const usable = new Set(groupingsFor(dim, level).map(([id]) => id));
+    return Object.entries(meta.ratios || {}).filter(
+        ([, body]) => body.dim === dim && usable.has(body.grouping)
+    );
+}
+
+/** The raw band values a ratio's side covers, at this level. */
+function bandsOf(body, side, level) {
+    const covers = meta.groupings?.[body.grouping]?.covers || {};
+    const here = new Set(rawValuesOf(body.dim, level));
+    return body[side]
+        .flatMap((group) => covers[group] || [])
+        .filter((band) => here.has(band));
+}
+
 function combine(how, plus, minus) {
     if (how === "ratio") {
         return minus ? (plus / minus) * 100 : NaN;
@@ -725,6 +770,44 @@ function slice(level = state.level) {
             }));
         });
     }
+
+    const ratio = activeRatio();
+    if (ratio) {
+        const [, body] = ratio;
+        return remember("ratio|" + level + "|" + choices(), () => {
+            // Both sides summed straight off the rows rather than through two slices:
+            // a side is several bands, and `sliceRaw` answers for one value at a time.
+            const over = new Set(bandsOf(body, "over", level));
+            const under = new Set(bandsOf(body, "under", level));
+            const sums = new Map();
+            for (const row of rowsAt(level)) {
+                const side = over.has(row[body.dim])
+                    ? "over"
+                    : under.has(row[body.dim])
+                      ? "under"
+                      : null;
+                if (!side) {
+                    continue;
+                }
+                // The other breakdowns still apply: the reader can ask for the male
+                // dependency ratio, and the age dim is the only one this consumes.
+                const others = (state.indicator.dims || []).filter((d) => d !== body.dim);
+                if (!others.every((d) => state.dims[d] === TOTAL ||
+                                         String(groupValue(d, row[d])) === String(state.dims[d]))) {
+                    continue;
+                }
+                const key = row.area_id + "|" + row.year;
+                const bucket = sums.get(key) || {row, over: 0, under: 0};
+                bucket[side] += row.value;
+                sums.set(key, bucket);
+            }
+            return [...sums.values()].map(({row, over: top, under: bottom}) => ({
+                ...row,
+                value: bottom ? (top / bottom) * 100 : NaN,
+            }));
+        });
+    }
+
     return sliceRaw(level);
 }
 
@@ -1291,7 +1374,7 @@ function areasShown() {
 function decimals() {
     // A derivation with no unit of its own — a difference, a moving average — keeps the
     // precision of whatever it was computed from, share included.
-    const from = derivation() || activeComparison()?.[1];
+    const from = derivation() || activeComparison()?.[1] || activeRatio()?.[1];
     if (from && from.decimals !== null && from.decimals !== undefined) {
         return from.decimals;
     }
@@ -1299,7 +1382,7 @@ function decimals() {
 }
 
 function unitLabel() {
-    const from = derivation() || activeComparison()?.[1];
+    const from = derivation() || activeComparison()?.[1] || activeRatio()?.[1];
     if (from && from.unit) {
         return from.unit;
     }
@@ -1540,18 +1623,31 @@ function drawDims() {
         // corner: "hangi yaş" and "hangi yaş bölmesi" are one question asked twice.
         const ways = groupingsFor(dim);
         const finest = fineOffered(dim);
+        // A ratio names its own grouping — that is how "65+" resolves to bands — so the
+        // box would be a control the reader can move while nothing changes. Disabled and
+        // labelled with the grouping the ratio is using, rather than left looking live.
+        const byRatio = ratioOn(dim);
         if (ways.length || finest) {
             groups.push(
-                "<div><div class='dim-label'>" + dimLabel(dim) + " bölmesi</div>" +
-                "<select data-grouping='" + dim + "'>" +
-                (finest
-                    ? "<option value='" + FINE + "'" +
-                      (state.grouping[dim] === FINE ? " selected" : "") +
-                      ">Tek yaş</option>"
+                "<div><div class='dim-label'>" + dimLabel(dim) + " bölmesi" +
+                (byRatio ? " <span class='muted'>· oran belirliyor</span>" : "") +
+                "</div>" +
+                "<select data-grouping='" + dim + "'" + (byRatio ? " disabled" : "") + ">" +
+                (byRatio
+                    ? "<option selected>" +
+                      (meta.groupings?.[byRatio[1].grouping]?.label || byRatio[1].grouping) +
+                      "</option>"
                     : "") +
-                "<option value=''" + (state.grouping[dim] ? "" : " selected") +
-                ">Yayımlandığı gibi</option>" +
-                ways
+                (byRatio || !finest
+                    ? ""
+                    : "<option value='" + FINE + "'" +
+                      (state.grouping[dim] === FINE ? " selected" : "") +
+                      ">Tek yaş</option>") +
+                (byRatio
+                    ? ""
+                    : "<option value=''" + (state.grouping[dim] ? "" : " selected") +
+                      ">Yayımlandığı gibi</option>") +
+                (byRatio ? [] : ways)
                     .map(([id, g]) => "<option value='" + id + "'" +
                                       (state.grouping[dim] === id ? " selected" : "") +
                                       ">" + g.label + "</option>")
@@ -1568,6 +1664,16 @@ function drawDims() {
                               c.label + "</option>")
             .join("");
 
+        // Ratios sit in the same box for the same reason comparisons do: "which value",
+        // "which two values" and "which two sets of values" are one question asked three
+        // ways, and picking a ratio *is* the answer to it. Nothing has to be disabled —
+        // the ratio replaces the value rather than sitting beside it.
+        const over = ratiosFor(dim)
+            .map(([id, r]) => "<option value='" + id + "'" +
+                              (state.dims[dim] === id ? " selected" : "") + ">" +
+                              r.label + "</option>")
+            .join("");
+
         groups.push(
             "<div><div class='dim-label'>" + dimLabel(dim) + "</div>" +
             "<select data-dim='" + dim + "'>" + all +
@@ -1577,6 +1683,7 @@ function drawDims() {
                             dimValue(dim, v) + "</option>")
                 .join("") +
             (against ? "<optgroup label='Karşılaştırma'>" + against + "</optgroup>" : "") +
+            (over ? "<optgroup label='Oran'>" + over + "</optgroup>" : "") +
             "</select></div>"
         );
     }

@@ -101,6 +101,27 @@ class Comparison:
 
 
 @dataclass(frozen=True)
+class Ratio:
+    """One set of a breakdown's values over another, as a percentage.
+
+    Where a comparison takes two values, this takes two *sets* — which is what the total
+    dependency ratio needs, being (0-14 + 65+) over 15-64. Named through a grouping, so
+    the bands each group covers are resolved per level rather than written out once and
+    being wrong at the level whose tail runs further.
+    """
+
+    ratio_id: str
+    label_tr: str
+    label_en: str
+    dim: str
+    grouping: str
+    over: tuple[str, ...]
+    under: tuple[str, ...]
+    unit: Unit
+    note_tr: str
+
+
+@dataclass(frozen=True)
 class Derivation:
     """A series computed from a measurement: an index, a rate of change.
 
@@ -144,6 +165,7 @@ class Dictionary:
     dimensions: dict[str, Dimension]
     groupings: dict[str, Grouping]
     comparisons: dict[str, Comparison]
+    ratios: dict[str, Ratio]
     derivations: dict[str, Derivation]
     indicators: dict[str, Indicator]
 
@@ -233,6 +255,45 @@ def load() -> Dictionary:
             note_tr=body.get("note_tr", "").strip(),
         )
 
+    ratios: dict[str, Ratio] = {}
+    for key, body in raw.get("ratio", {}).items():
+        if body["dim"] not in dimensions:
+            raise KeyError("ratio '" + key + "' names unknown dim: " + body["dim"])
+        if body["grouping"] not in groupings:
+            raise KeyError(
+                "ratio '" + key + "' names unknown grouping: " + body["grouping"]
+            )
+        grouping = groupings[body["grouping"]]
+        if grouping.dim != body["dim"]:
+            raise ValueError(
+                "ratio '" + key + "' uses a grouping of another dim: " + grouping.dim
+            )
+        # A group name that is not in the grouping would contribute nothing and the ratio
+        # would come out of a smaller numerator than it claims — silent, and wrong in a
+        # plausible direction.
+        named = set(body["over"]) | set(body["under"])
+        missing = named - set(grouping.covers)
+        if missing:
+            raise KeyError(
+                "ratio '" + key + "' names groups the grouping does not have: "
+                + ", ".join(sorted(missing))
+            )
+        if set(body["over"]) & set(body["under"]):
+            raise ValueError("ratio '" + key + "' has a group on both sides")
+        if body["unit"] not in units:
+            raise KeyError("ratio '" + key + "' names unknown unit: " + body["unit"])
+        ratios[key] = Ratio(
+            ratio_id=key,
+            label_tr=body["label_tr"],
+            label_en=body["label_en"],
+            dim=body["dim"],
+            grouping=body["grouping"],
+            over=tuple(body["over"]),
+            under=tuple(body["under"]),
+            unit=units[body["unit"]],
+            note_tr=body.get("note_tr", "").strip(),
+        )
+
     derivations: dict[str, Derivation] = {}
     for key, body in raw.get("derivation", {}).items():
         # An empty unit means "whatever the indicator is in". A difference of two counts
@@ -303,6 +364,7 @@ def load() -> Dictionary:
         dimensions=dimensions,
         groupings=groupings,
         comparisons=comparisons,
+        ratios=ratios,
         derivations=derivations,
         indicators=indicators,
     )

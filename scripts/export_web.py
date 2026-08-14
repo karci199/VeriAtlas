@@ -165,6 +165,22 @@ def export_dictionary(
         for c in load().comparisons.values()
     }
 
+    # One set of a breakdown's values over another. The page resolves the group names to
+    # bands through the grouping, so the level's own band list decides what "65+" covers.
+    ratios = {
+        r.ratio_id: {
+            "label": r.label_tr,
+            "dim": r.dim,
+            "grouping": r.grouping,
+            "over": list(r.over),
+            "under": list(r.under),
+            "unit": r.unit.label_tr,
+            "decimals": r.unit.decimals,
+            "note": r.note_tr,
+        }
+        for r in load().ratios.values()
+    }
+
     derivations = {
         d.derivation_id: {
             "label": d.label_tr,
@@ -227,6 +243,7 @@ def export_dictionary(
                 "dimensions": dimensions,
                 "groupings": groupings,
                 "comparisons": comparisons,
+                "ratios": ratios,
                 "derivations": derivations,
                 "belongs": ancestors,
                 "area_labels": labels,
