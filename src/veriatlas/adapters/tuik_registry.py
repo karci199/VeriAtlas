@@ -33,7 +33,12 @@ import polars as pl
 from ..areas import load_areas
 from ..config import RAW
 from ..indicators import get
+from ..schema import format_dims
 from .tuik_simple import header_of, read_text
+
+#: The two halves of a register: living in the province, and living anywhere else.
+OWN = "own"
+ELSEWHERE = "elsewhere"
 
 DOWNLOADS = RAW / "medas" / "basit"
 
@@ -57,16 +62,19 @@ def by_name() -> dict[str, tuple[str, str]]:
     }
 
 
-def read_square(
-    path: Path, names: dict[str, tuple[str, str]], diagonal: bool = False
-) -> list[dict]:
-    """One year's square, summed down its columns — or read along its diagonal.
+def read_square(path: Path, names: dict[str, tuple[str, str]]) -> list[dict]:
+    """One year's square, read down its columns and split at the diagonal.
 
-    The diagonal cell is where the row and the column are the same province: people
-    living in the place they are registered to. It costs nothing extra, since the square
-    is already downloaded and read, and it is the third number in the set — the register
-    total says how many belong to a province, the resident population how many live
-    there, and this how many are both.
+    Two rows per province: `residence=own` is the diagonal cell — people living where
+    they are registered — and `residence=elsewhere` is the rest of the column. They sum
+    to the register, so the page's own machinery gives the whole of it back: "Tümü
+    (topla)" is the total, "içinde %" is how much of a register is still at home, and a
+    derivation over either part is that part's growth rate.
+
+    Written as two indicators first — the total and the diagonal — and that was worse in
+    a way worth recording: two tables that cannot be added, two entries in the tree, and
+    the ratio between them impossible to ask for at all. A breakdown is the shape of this
+    fact, not a pair of measurements that happen to be related.
     """
     lines = read_text(path).splitlines()
 
@@ -91,7 +99,8 @@ def read_square(
             + path.name
         )
 
-    totals: dict[tuple[str, str, int], float] = {}
+    #: (area_id, level, year, where) → running total, where `where` is own or elsewhere.
+    totals: dict[tuple[str, str, int, str], float] = {}
     year = None
     for line in lines:
         cells = [cell.strip() for cell in line.split("|")]
@@ -99,28 +108,25 @@ def read_square(
             continue
         if cells[0].isdigit() and len(cells[0]) == 4:
             year = int(cells[0])
-        if year is None or not ROW.match(cells[1]):
+        label = ROW.match(cells[1]) if len(cells) > 1 else None
+        if year is None or not label:
             continue
 
-        # Which province this row is about — needed only for the diagonal, where the
-        # cell wanted is the one whose column matches it.
-        living = None
-        if diagonal:
-            label = ROW.match(cells[1])
-            living = names.get(label.group("name").strip()) if label else None
-            if not living:
-                continue
+        # The province this row is about: where these people live. A row we cannot place
+        # would land its whole line in the wrong half of the split, so it is refused.
+        living = names.get(label.group("name").strip())
+        if not living:
+            raise KeyError("registry_population: taninmayan il satiri: " + cells[1])
 
         for index, (area_id, level) in columns.items():
             if index >= len(cells) or not cells[index]:
-                continue
-            if diagonal and area_id != living[0]:
                 continue
             try:
                 value = float(cells[index])
             except ValueError:
                 continue
-            key = (area_id, level, year)
+            where = OWN if area_id == living[0] else ELSEWHERE
+            key = (area_id, level, year, where)
             totals[key] = totals.get(key, 0.0) + value
 
     return [
@@ -128,10 +134,10 @@ def read_square(
             "area_id": area_id,
             "area_level": level,
             "year": year,
-            "dims": "",
+            "dims": format_dims({"residence": where}),
             "value": value,
         }
-        for (area_id, level, year), value in totals.items()
+        for (area_id, level, year, where), value in totals.items()
     ]
 
 
@@ -142,10 +148,6 @@ class TuikRegistryPopulation:
     vintage = "2026-08"
     retrieved_at = dt.date(2026, 8, 14)
     indicator_id = "registry_population"
-
-    #: False reads the column totals, True the diagonal. One class, one indicator each —
-    #: the adapter contract is per indicator and `ingest` enforces it.
-    diagonal = False
 
     def fetch(self) -> Path:
         return DOWNLOADS
@@ -163,7 +165,7 @@ class TuikRegistryPopulation:
         )
         records: list[dict] = []
         for path in pieces:
-            records.extend(read_square(path, names, self.diagonal))
+            records.extend(read_square(path, names))
         if not records:
             raise ValueError("kutuk nufusu dosyasi yok: " + STEM + "-<yil>.csv")
 
@@ -205,10 +207,3 @@ class TuikRegistryPopulation:
             "source_id",
             "retrieved_at",
         )
-
-
-class TuikOwnRegistryPopulation(TuikRegistryPopulation):
-    """The diagonal: people living in the province they are registered to."""
-
-    indicator_id = "own_registry_population"
-    diagonal = True

@@ -618,9 +618,24 @@ function groupValue(dim, value) {
 function rawValuesOf(dim, level) {
     return remember("raw|" + dim + "|" + level, () => {
         const here = rowsAt(level);
-        return [...new Set((here.length ? here : state.rows).map((r) => r[dim]))]
-            .filter((v) => v !== undefined && v !== "")
-            .sort((a, b) => String(a).localeCompare(String(b), "tr", {numeric: true}));
+        const found = [...new Set((here.length ? here : state.rows).map((r) => r[dim]))]
+            .filter((v) => v !== undefined && v !== "");
+
+        // The dictionary's order where it names the values, alphabetical where it does
+        // not. Sorting always looked right for as long as every listed dimension was
+        // alphabetical anyway — sexes, marital statuses, age bands. It stopped being
+        // right at "İlinde / İl dışında", where the ids sort to elsewhere-then-own and
+        // the reader is offered the remainder before the thing it is a remainder of.
+        const declared = Object.keys(meta.dimensions?.[dim]?.values || {});
+        if (declared.length) {
+            const rank = new Map(declared.map((value, index) => [value, index]));
+            return found.sort(
+                (a, b) => (rank.get(a) ?? declared.length) - (rank.get(b) ?? declared.length)
+            );
+        }
+        return found.sort((a, b) =>
+            String(a).localeCompare(String(b), "tr", {numeric: true})
+        );
     });
 }
 

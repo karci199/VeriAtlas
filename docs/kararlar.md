@@ -463,11 +463,26 @@ tamam.** Düzey kutusu bu ölçüde hiçbir şey yapmıyor — Türkiye ve İl b
 indiriyor, ikisi de 82 alan — o yüzden yalnız il kopyası saklanıyor; ikisini birden
 yüklemek her alanı iki kez toplardı.
 
-Kareden **iki** gösterge okunuyor: sütun toplamı (kütük nüfusu) ve **köşegen** — ilinde
-yaşayan kendi kütüklüleri, yani İstanbul'da yaşayan İstanbullular. Köşegen bedava geliyor,
-dosya zaten indirilmiş ve okunuyor. Üçlü birlikte okunuyor: kütük "kaç kişi buraya ait",
-nüfus "kaç kişi burada yaşıyor", köşegen "kaç kişi ikisi birden". Yerlilik oranı
-(köşegen ÷ nüfus) 2025'te Şanlıurfa'da %93,5, İstanbul'da %13,5.
+## K24 — Kütük nüfusu tek gösterge, iki kırılım (2026-08-14)
+
+Önce iki ayrı gösterge yazıldı: kütük nüfusu (sütun toplamı) ve ilinde yaşayan kendi
+kütüklüleri (köşegen). Yanlış şekildi. Doğrusu **tek gösterge, `residence` kırılımı**:
+`İlinde` köşegen, `İl dışında` sütunun geri kalanı, ikisi toplanınca kütüğün tamamı.
+
+Fark, sayfanın hazır makinesinin çalışıp çalışmaması: kırılım olunca "Tümü (topla)"
+toplamı, "Nerede yaşıyor içinde %" kütüğün yüzde kaçının hâlâ ilde olduğunu, herhangi bir
+türetme de o parçanın kendi artış hızını veriyor — ildeki ve dışarıdaki için ayrı ayrı.
+İki gösterge olarak ise toplanamayan iki tablo, ağaçta iki satır ve aralarındaki oranı
+sormanın hiçbir yolu yoktu.
+
+Rakamlar: İstanbul kütüğü 2007'de 2,44 milyon → 2025'te 2,60 milyon, ama ildeki kısmı
+2,16'dan 2,12 milyona *düşerken* dışarıdaki 282 binden 481 bine çıkmış. Kütüğü en dağınık
+il Ardahan (%13,7'si ilde), en toplu il Antalya (%88).
+
+Yan etki: kırılım değerleri artık **sözlükteki sırayla** sunuluyor, alfabetik değil. Her
+listeli boyut şimdiye kadar zaten alfabetikti, o yüzden fark etmiyordu; "İlinde / İl
+dışında"da fark etti — kalan, kalanı olduğu şeyden önce geliyordu. Medeni durum da bu
+sayede mantıklı sırasına oturdu (hiç evlenmedi → evli → boşandı → eşi öldü).
 
 **Asıl tuzak eksendeydi.** Ölçünün adı satırların kütük olduğunu düşündürüyor; değil.
 Satır ikamet edilen il, sütun nüfusa kayıtlı olunan il. Satır toplamı zaten elimizde olan

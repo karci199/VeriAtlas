@@ -69,6 +69,7 @@ DATASETS = {
     "household_by_type": "household-type.csv",
     "foreign_population": "foreign.csv",
     "deaths": "deaths.csv",
+    "registry_population": "registry-population.csv",
     "mean_marriage_age": "marriage-age.csv",
     "mean_first_marriage_age": "first-marriage-age.csv",
     **{
@@ -85,8 +86,6 @@ DATASETS = {
             "migration_to_abroad",
             "marriages",
             "divorces",
-            "registry_population",
-            "own_registry_population",
             "births",
             "natural_increase",
             "infant_mortality",
@@ -108,6 +107,7 @@ BROKEN_DOWN = (
     "deaths",
     "mean_marriage_age",
     "mean_first_marriage_age",
+    "registry_population",
 )
 
 #: Indicators with no breakdown at all: one value per area and year.
@@ -583,6 +583,7 @@ def main() -> None:
         "mean_first_marriage_age": export_broken_down(
             fact, areas, "mean_first_marriage_age", whole=False
         ),
+        "registry_population": export_broken_down(fact, areas, "registry_population"),
     }
 
     for indicator_id in PLAIN:
