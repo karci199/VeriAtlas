@@ -320,6 +320,36 @@ Yanına ikinci bir emniyet konuldu: adaptör 81 ilin tamamını bulamazsa yükle
 çalışıyor, kimsenin istemediği bir düzey bakılacak bir şey değil bakımı yapılacak bir
 şeydir. İhtiyaç olursa eklenir.
 
+## Düzey adları: İBBS üçte biter, altı LAU'dur (2026-08-14)
+
+Sık yapılan bir hata, kendi kayıt yapımızı da bozabilirdi: **İBBS'nin dördüncü ve
+beşinci düzeyi yok.** Türkiye'de İBBS üç düzeydir — Düzey 1 (12 bölge), Düzey 2 (26 alt
+bölge), Düzey 3 (81 il) — ve 2002/4720 sayılı Bakanlar Kurulu kararıyla böyle
+tanımlanmıştır. AB sisteminde bir zamanlar NUTS-4 ve NUTS-5 vardı; 1059/2003 sayılı
+tüzük bunları kaldırıp **LAU-1 / LAU-2** (yerel idari birimler) adını verdi, Eurostat
+2017'den beri tek bir **LAU** düzeyi kullanıyor. Yani ilçe ve mahalle İBBS değil LAU'dur.
+
+Bunun veri modeline üç sonucu var:
+
+1. **İl iki şey birden:** hem idari il hem İBBS-3. Kayıt bunu zaten iki ayrı hiyerarşi
+   olarak tutuyor (`area_parents_tr.csv`, `hierarchy` sütunu: `nuts` ve `geographic`) —
+   tek bir üst-alan sütunu olsaydı birini atmak zorunda kalırdık (K6).
+2. **Tek il içeren bölgeler var ve tam üç tane:** Düzey-2'de TR10 (İstanbul), TR51
+   (Ankara), TR31 (İzmir). Düzey-1'de yalnızca **TR1 = İstanbul** tek illidir; kalan on
+   bir bölge 3-10 il içerir. İstanbul her iki düzeyde de tek olduğu için TR1 = TR10 =
+   TR-34 aynı insan kümesinin üç kodudur — MEDAS'ın ortanca yaş dosyasında bu üç ili
+   yalnız bölge satırı olarak vermesinin sebebi bu (K15).
+3. **Beldeler LAU'dur, ilçenin altındadır** — köylerle aynı basamakta. 6360 sayılı kanun
+   (2012, Mart 2014 seçimleriyle yürürlükte) 30 büyükşehir ilinde belde belediyelerini ve
+   köyleri kaldırıp mahalleye çevirdi; 16.000'den fazla köy, 1.000'den fazla belde
+   etkilendi. Yani belde bugün yalnızca **büyükşehir olmayan 51 ilde** var.
+
+Elimizdeki Bursa dosyası (büyükşehir) bunu doğruluyor ama tamamlamıyor: etiketin orta
+parçası hem 2013'te hem 2025'te 17 çeşit, ilçe başına bir tane, hepsi `<İlçe> Bel.`.
+Yani bu dosyada belde ayrı bir basamak olarak hiç görünmüyor. Büyükşehir olmayan bir ilin
+dosyasında o parçanın belde adı taşıyıp taşımadığı **açık soru** — ikinci il çekilirken
+bakılacak ilk şey bu.
+
 ## Sıradaki oturum — açık maddeler (2026-08-14, akşam)
 
 1. **Bursa dışındaki iller için mahalle verisi.** Tek dosya ikinci ilde şişer; K14'ün
