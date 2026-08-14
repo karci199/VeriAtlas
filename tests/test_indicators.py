@@ -78,9 +78,15 @@ def test_pyramid_is_only_offered_where_the_breakdown_exists():
 
 def test_derivations_declare_a_known_unit_and_quality():
     """A derived number that claims `measured` when it is modelled would mislabel the
-    badge the reader trusts."""
+    badge the reader trusts.
+
+    A derivation may also decline to name a unit, which means "whatever the indicator is
+    in": a difference of two counts is a count, an average of a rate is a rate. That is
+    `None` here, and it is the one case where a missing unit is not a mistake.
+    """
     for derived in load().derivations.values():
-        assert derived.unit.unit_id in load().units
+        if derived.unit is not None:
+            assert derived.unit.unit_id in load().units, derived.derivation_id
         assert derived.quality in QUALITY_FLAGS, derived.derivation_id
 
 
