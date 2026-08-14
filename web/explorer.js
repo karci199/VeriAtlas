@@ -272,6 +272,7 @@ const VIEW_LABELS = {
     line: "📈 Çizgi",
     bar: "📊 Sütun",
     pyramid: "⧗ Piramit",
+    scatter: "⁘ Dağılım",
 };
 
 const TOTAL = "__total__";
@@ -324,6 +325,9 @@ const state = {
     share: "",
     //: Province the map is opened into, or null for the whole country.
     focus: null,
+    //: The indicator on the scatter's x axis. The chosen indicator is always the y axis,
+    //: so this is the only extra choice the view needs. Empty until the reader picks one.
+    versus: "",
 };
 
 let meta = null;
@@ -897,6 +901,94 @@ function seriesFor(area) {
     return derive(byArea(levelOfArea(area)).get(area) || []);
 }
 
+// region The second indicator
+//
+// Every other view answers a question about one indicator. The scatter asks how two of
+// them move together — is a province's fertility lower where its population is older —
+// and that is a different shape of question: it needs a second dataset in hand at the
+// same time, joined to the first on area and year.
+//
+// The chosen indicator stays the y axis, with every breakdown, share and derivation
+// control still applying to it. The second one is read as a **whole**: summed across its
+// breakdowns where they add up, and otherwise taken at whichever value stands for
+// everybody. Giving the x axis its own copy of the breakdown strip would double a
+// control panel that is already the busiest thing on the page, and the question people
+// actually bring here is about the two measures, not about a cross-tabulation.
+
+//: Rows of the x-axis indicator, by its id. Kept apart from `state.rows` — they are a
+//: different indicator entirely, and merging them would put two units in one bucket.
+const versusRows = new Map();
+
+function versusIndicator() {
+    return state.versus ? catalogue.find((i) => i.id === state.versus) : null;
+}
+
+/** Indicators that can sit opposite this one: published at the level on screen, and not
+ *  the one already being drawn.
+ *
+ *  Ordered so that the ones with a whole-population value come first, because the first
+ *  is what the view opens on. An indicator published only by sex has no total to put on
+ *  an axis, and opening the scatter onto one of those makes a working view look broken. */
+function versusOffered() {
+    const whole = (i) => !(i.dims || []).length || i.additive;
+    return catalogue
+        .filter((i) => i.available && i.id !== state.indicator.id &&
+                       (i.levels || []).includes(state.level))
+        .sort((a, b) => Number(whole(b)) - Number(whole(a)));
+}
+
+/** Fetch the x-axis indicator, and the part that carries the level on screen. */
+async function ensureVersus() {
+    const indicator = versusIndicator();
+    if (!indicator) {
+        return;
+    }
+    const files = [indicator.dataset, indicator.parts?.[state.level]].filter(Boolean);
+    const missing = files.filter((file) => !datasets.has(file));
+    if (!missing.length && versusRows.has(indicator.id)) {
+        return;
+    }
+
+    const note = $("rail-note");
+    const said = note.textContent;
+    note.textContent = indicator.label + " indiriliyor…";
+    try {
+        const parts = await Promise.all(files.map(part));
+        versusRows.set(indicator.id, parts.flat());
+    } finally {
+        note.textContent = said;
+    }
+}
+
+/** The x-axis indicator's value per area at one year: `Map(area_id -> value)`.
+ *
+ *  Summed across breakdowns where the unit adds up. Where it does not — a median, a rate
+ *  — summing would be nonsense, so the value that stands for the whole population is
+ *  taken instead: `sex=total` where it exists, and otherwise nothing at all rather than
+ *  an arbitrary one of the parts quietly standing in for everybody. */
+function versusAt(level, year) {
+    const indicator = versusIndicator();
+    const rows = versusRows.get(state.versus) || [];
+    const here = rows.filter((r) => r.level === level && r.year === year);
+    const dims = indicator?.dims || [];
+    const values = new Map();
+
+    if (!dims.length || indicator?.additive) {
+        for (const row of here) {
+            values.set(row.area_id, (values.get(row.area_id) || 0) + row.value);
+        }
+        return values;
+    }
+
+    const whole = here.filter((row) => dims.every((dim) => String(row[dim]) === "total"));
+    for (const row of whole) {
+        values.set(row.area_id, row.value);
+    }
+    return values;
+}
+
+// endregion
+
 // region Narrowing the list
 //
 // 973 districts, or fifty thousand neighbourhoods once the other provinces arrive, is not
@@ -1323,6 +1415,19 @@ function indicatorControl() {
 
 /** Which views this indicator offers, and why one may still be unusable right now. */
 function viewState(view) {
+    // The scatter is the one view that is not a property of an indicator: it is a
+    // property of there being *two*. So it is not declared per indicator in the
+    // dictionary — every indicator would have to list it, and the list would still be
+    // wrong at a level where nothing else is published.
+    if (view === "scatter") {
+        return versusOffered().length
+            ? {enabled: true, reason: ""}
+            : {
+                  enabled: false,
+                  reason: (LEVEL_LABELS[state.level] || state.level) +
+                          " düzeyinde karşılaştırılacak ikinci gösterge yok",
+              };
+    }
     if (!(state.indicator.views || []).includes(view)) {
         return {enabled: false, reason: "Bu gösterge için tanımlı değil"};
     }
@@ -2387,7 +2492,115 @@ function empty(message, hint) {
            (hint ? "<pre>" + hint + "</pre>" : "") + "</div>";
 }
 
-const RENDERERS = {line: lineChart, bar: barChart, table, pyramid, map};
+/** Two indicators against each other, one point per area, at the year on the slider. */
+function scatter() {
+    const other = versusIndicator();
+    if (!other) {
+        return empty(
+            "Yatay eksene bir gösterge seçin.",
+            "Üstteki “Karşılaştırılan” kutusundan"
+        );
+    }
+
+    // The picker is part of every answer this view gives, the empty ones included: it is
+    // the only way back to a pairing that works, and returning it only on success left
+    // the reader stranded on a blank frame with no control on it.
+    const head = (note) =>
+        "<div class='map-head'><span>" + note +
+        "</span><span class='spacer'></span><span>Karşılaştırılan</span>" +
+        "<select id='versus'>" + versusOffered()
+            .map((i) => "<option value='" + i.id + "'" +
+                        (i.id === state.versus ? " selected" : "") + ">" + i.label + "</option>")
+            .join("") +
+        "</select></div>";
+
+    const year = state.year;
+    const xs = versusAt(state.level, year);
+    if (!xs.size) {
+        // Distinguish the two ways this comes up empty. A breakdown with no whole is not
+        // a gap in the data — it is a measure that was never published for everybody, and
+        // saying "değer yok" about it sends the reader looking for a missing file.
+        const dims = other.dims || [];
+        return head("değer yok") + (dims.length && !other.additive
+            ? empty(
+                  other.label + " yalnızca " + dims.map(dimLabel).join(" ve ") +
+                      " kırılımıyla yayımlanıyor; toplamı olmadan yatay eksene konamaz.",
+                  "Toplamı olan bir gösterge seçin"
+              )
+            : empty(other.label + " için " + year + " yılında bu düzeyde değer yok."));
+    }
+
+    // The y axis is the chosen indicator, read exactly as every other view reads it — the
+    // breakdown, the share and the derivation all still apply.
+    const points = [];
+    for (const row of slice(state.level)) {
+        if (row.year !== year) {
+            continue;
+        }
+        const x = xs.get(row.area_id);
+        if (!Number.isFinite(x) || !Number.isFinite(row.value)) {
+            continue;
+        }
+        points.push({id: row.area_id, name: nameOf(row.area_id), x, y: row.value});
+    }
+    if (!points.length) {
+        return head("ortak alan yok") + empty("İki göstergenin ortak alanı yok.");
+    }
+
+    // The x value belongs to the other indicator, so it is printed with *its* precision.
+    // Borrowing the chosen indicator's rounded a fertility rate of 1,6 to "2".
+    const fmtX = formatter(other.decimals ?? 2).format;
+
+    const L = 88, R = 24, T = 18, B = 46;
+    const xTicks = niceTicks(Math.min(...points.map((p) => p.x)), Math.max(...points.map((p) => p.x)), false);
+    const yTicks = niceTicks(Math.min(...points.map((p) => p.y)), Math.max(...points.map((p) => p.y)), state.axis === "zero");
+    const px = (v) => L + ((v - xTicks.bottom) / Math.max(1e-9, xTicks.top - xTicks.bottom)) * (PLOT_W - L - R);
+    const py = (v) => T + ((yTicks.top - v) / Math.max(1e-9, yTicks.top - yTicks.bottom)) * (PLOT_H - T - B);
+
+    let svg = '<svg class="plot" viewBox="0 0 ' + PLOT_W + " " + PLOT_H + '" role="img">';
+
+    for (let v = yTicks.bottom; v <= yTicks.top + yTicks.step / 2; v += yTicks.step) {
+        svg += '<line x1="' + L + '" x2="' + (PLOT_W - R) + '" y1="' + py(v) + '" y2="' + py(v) +
+               '" stroke="' + token("--stroke-divider") + '" stroke-dasharray="4 5"/>' +
+               axisText(L - 12, py(v) + 4, fmt(v), "end");
+    }
+    for (let v = xTicks.bottom; v <= xTicks.top + xTicks.step / 2; v += xTicks.step) {
+        svg += '<line y1="' + T + '" y2="' + (PLOT_H - B) + '" x1="' + px(v) + '" x2="' + px(v) +
+               '" stroke="' + token("--stroke-divider") + '" stroke-dasharray="4 5"/>' +
+               axisText(px(v), PLOT_H - B + 18, fmtX(v), "middle");
+    }
+
+    // The chosen areas are the ones the reader is following, so they keep their colour and
+    // their name; the rest of the country stays as context rather than being thrown away.
+    // A scatter of five points cannot show a relationship — the cloud is the point.
+    const chosen = new Set(drawn());
+    const named = points.filter((p) => chosen.has(p.id));
+
+    for (const point of points) {
+        const on = chosen.has(point.id);
+        svg += '<circle cx="' + px(point.x).toFixed(1) + '" cy="' + py(point.y).toFixed(1) +
+               '" r="' + (on ? 5 : 3) + '" fill="' + (on ? colourOf(point.id) : token("--text-tertiary")) +
+               '" opacity="' + (on ? 1 : 0.35) + '" data-colour="' +
+               (on ? colourOf(point.id) : token("--text-tertiary")) + '" data-name="' + point.name +
+               '" data-value="' + fmtX(point.x) + " / " + fmt(point.y) + '"/>';
+    }
+    if (named.length <= LABEL_LIMIT) {
+        for (const point of named) {
+            svg += '<text class="legend-label" x="' + (px(point.x) + 8) + '" y="' + (py(point.y) + 4) +
+                   '" fill="' + colourOf(point.id) + '">' + point.name + "</text>";
+        }
+    }
+
+    svg += axisText(PLOT_W - R, PLOT_H - 8, other.label + " →", "end") +
+           '<text class="legend-label" x="14" y="' + (T + 4) +
+           '" fill="' + token("--text-tertiary") + '">↑ ' + state.indicator.label + "</text>";
+
+    hover = {kind: "shape"};
+
+    return head(points.length + " alan · " + year) + wrapPlot(svg + "</svg>");
+}
+
+const RENDERERS = {line: lineChart, bar: barChart, table, pyramid, map, scatter};
 
 // endregion
 
@@ -2432,6 +2645,20 @@ function render() {
             render();
         });
         return;
+    }
+
+    // The second indicator is a second file. Same treatment as the district boundaries:
+    // fetched on the first draw that needs it, with the frame saying so meanwhile.
+    if (state.view === "scatter") {
+        const offered = versusOffered();
+        if (!offered.some((i) => i.id === state.versus)) {
+            state.versus = offered[0]?.id || "";
+        }
+        if (state.versus && !versusRows.has(state.versus)) {
+            $("view").innerHTML = empty(versusIndicator().label + " yükleniyor…");
+            ensureVersus().then(render);
+            return;
+        }
     }
 
     $("view").innerHTML = RENDERERS[state.view]();
@@ -2716,6 +2943,18 @@ function wire() {
     };
 
     // Map drill-down: a province opens into its districts, and back out again.
+    // The scatter's x-axis picker lives in the chart's own head rather than the breakdown
+    // strip: it belongs to that one view, and the strip is already the busiest control on
+    // the page. So the change handler has to sit on the frame the view is drawn into.
+    $("view").onchange = async (ev) => {
+        if (ev.target.id !== "versus") {
+            return;
+        }
+        state.versus = ev.target.value;
+        await ensureVersus();
+        render();
+    };
+
     $("view").onclick = async (ev) => {
         if (ev.target.id === "map-back") {
             state.focus = null;
