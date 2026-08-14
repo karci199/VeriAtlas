@@ -390,6 +390,25 @@ birimi göstergenin kendi birimi (kişi, yaş), oranınki ayrı.
 İkisi de kırılım kutusunun içinde duruyor — "hangi yaş", "hangi yaş bölmesi" ve "hangi
 iki değer" aynı sorunun üç hâli, üç ayrı köşeye dağıtılmamalı.
 
+## K18 — Düzey kutusu listeyi seçer, seçimi değil (2026-08-14)
+
+Türkiye'nin 0-4 oranını Bursa'nınkiyle, onu da bir ilçesininkiyle karşılaştırmak
+sorulmaya değer bir soru; oysa sayfa bunu **soramıyordu**. Düzeyi değiştirmek seçimi
+siliyor ve yeni düzeyin en büyük beşini yerine koyuyordu, yani karşılaştırmayı kurmanın
+her adımı bir öncekini çöpe atıyordu.
+
+Kutu artık **hangi listenin sunulduğunu** söylüyor, ne çizileceğini değil. Seçim düzey
+değişince yerinde kalıyor, ve seçilenler bloğu her alanı nereden geldiğiyle etiketliyor
+("Aladağ · İlçe") — çünkü "Merkez" tek başına ilçe mi mahalle mi olduğunu söylemez.
+Tohumlama yazıldığı hâl için duruyor: hiçbir şey seçili değilse boş sayfa açılmasın.
+
+Sonuç olarak her grafik alanı **kendi düzeyine** göre çözüyor (`levelOfArea`, satırlardan
+okunuyor — kimliğin biçimi dışa aktarıcının işi). Ad araması da düzey kapsamından çıktı,
+yoksa Türkiye'nin çizgisi "TR" diye etiketleniyordu.
+
+Harita ve tablo tek düzeylidir, öyle kalıyor: bir haritada mahalleyle ili yan yana
+boyamak alan yarışması olur, karşılaştırma değil.
+
 ## Sıradaki oturum — açık maddeler (2026-08-14, akşam)
 
 1. **Bursa dışındaki iller için mahalle verisi.** Tek dosya ikinci ilde şişer; K14'ün

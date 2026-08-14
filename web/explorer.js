@@ -435,6 +435,28 @@ function rowsAt(level) {
     return working.byLevel.get(level) || [];
 }
 
+/** Which level an area belongs to.
+ *
+ *  The selection is allowed to hold areas from more than one level at once — Türkiye and
+ *  Bursa and one of Bursa's districts on the same line chart is a comparison people
+ *  actually want, and the rail's level box only says which list is on offer, not what may
+ *  be drawn. So every chart resolves each area against *its own* level rather than the
+ *  one in the box. Read off the rows rather than parsed out of the id: an id's shape is
+ *  the exporter's business, and a level whose file has not been fetched has no areas to
+ *  ask about anyway. */
+function levelOfArea(id) {
+    const at = remember("levelOf", () => {
+        const found = new Map();
+        for (const row of state.rows) {
+            if (!found.has(row.area_id)) {
+                found.set(row.area_id, row.level);
+            }
+        }
+        return found;
+    });
+    return at.get(id) || state.level;
+}
+
 /** Remember `build()` under a key that spells out everything it depends on.
  *
  *  Every key names its own dependencies, so nothing here has to be cleared as the reader
@@ -872,7 +894,7 @@ function derive(points) {
 // endregion
 
 function seriesFor(area) {
-    return derive(byArea().get(area) || []);
+    return derive(byArea(levelOfArea(area)).get(area) || []);
 }
 
 // region Narrowing the list
@@ -947,11 +969,19 @@ function areasAtLevel() {
     });
 }
 
-/** The Turkish name of an area id, for anything the reader reads. */
+/** The Turkish name of an area id, for anything the reader reads.
+ *
+ *  Across every level in hand, not just the one in the rail's box: a chosen area keeps its
+ *  place when the reader moves the box, and a chart that draws it has to be able to name
+ *  it. Level-scoped, this printed a bare `TR` next to Türkiye's line. */
 function nameOf(id) {
-    return remember("names|" + state.level, () =>
-        new Map(areasAtLevel().map((a) => [a.id, a.name]))
-    ).get(id) || id;
+    return remember("names", () => {
+        const names = new Map();
+        for (const row of state.rows) {
+            names.set(row.area_id, row.area);
+        }
+        return names;
+    }).get(id) || id;
 }
 
 /** What one filter box may offer, given the boxes above it. Picking Bursa leaves the
@@ -1071,9 +1101,20 @@ function drawRail() {
     $("chosen").innerHTML = listed
         .map((id, i) => {
             const muted = state.muted.includes(id);
+            // An area chosen at another level stays chosen, so this block can hold a mix.
+            // Which one is which matters — "Merkez" alone does not say whether it is a
+            // district or a neighbourhood — so anything not from the level on offer says
+            // where it came from.
+            const from = levelOfArea(id);
+            const name = nameOf(id);
+            // The country's tag is its own name — "Türkiye Türkiye" — so a tag that only
+            // repeats the name is left off.
+            const tag = from === state.level || (LEVEL_LABELS[from] || from) === name
+                ? ""
+                : " <span class='lvl'>" + (LEVEL_LABELS[from] || from) + "</span>";
             return "<li class='" + (muted ? "muted" : "") + "' data-area='" + id + "'>" +
                    "<span class='dot' style='background:" + colour(i) + "'></span>" +
-                   "<span class='name'>" + nameOf(id) + "</span>" +
+                   "<span class='name'>" + name + tag + "</span>" +
                    "<button class='chip' data-act='mute' title='" +
                    (muted ? "Grafiğe geri koy" : "Grafikten gizle") + "'>" +
                    (muted ? "◎" : "◉") + "</button>" +
@@ -1811,7 +1852,7 @@ function pyramid() {
 
     // In share mode every band is a percentage of that area's own population, which is
     // what makes two pyramids of very different sizes comparable without a scale switch.
-    const whole = state.share === "own" ? wholeOf(state.level) : null;
+    const wholeFor = (area) => (state.share === "own" ? wholeOf(levelOfArea(area)) : null);
 
     // Every breakdown control applies here too — pick Kadın and you get the female side
     // alone, on a scale that fits it. Age is the exception: it is this chart's own
@@ -1821,11 +1862,12 @@ function pyramid() {
     const ignoringAge = state.dims.age && state.dims.age !== TOTAL;
 
     const rowsOf = (area) => {
-        const rows = rowsAt(state.level).filter(
+        const rows = rowsAt(levelOfArea(area)).filter(
             (r) => r.year === state.year && r.area_id === area &&
                    others.every((d) => state.dims[d] === TOTAL ||
                                        String(r[d]) === String(state.dims[d]))
         );
+        const whole = wholeFor(area);
         if (!whole) {
             return rows;
         }
@@ -2534,7 +2576,15 @@ function wire() {
             state.year = span[span.length - 1];
         }
         clampDims();
-        seedSelection();
+        // The selection survives the move. Changing the box used to wipe it and seed the
+        // new level's five largest, which made "Türkiye against Bursa against one of
+        // Bursa's districts" impossible to even ask for: every step of building it threw
+        // away the step before. Now the box says which list is on offer and the chosen
+        // block keeps what is chosen, tagged with where each one came from. Seeding is
+        // still there for the case it was written for — nothing chosen, blank page.
+        if (!state.selection.length) {
+            seedSelection();
+        }
         render();
     };
 
