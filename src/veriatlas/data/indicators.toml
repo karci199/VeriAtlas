@@ -55,6 +55,20 @@ total = "Toplam"
 label_tr = "Yaş grubu"
 label_en = "Age group"
 
+[dim.marital]
+label_tr = "Medeni durum"
+label_en = "Marital status"
+
+[dim.marital.values]
+never_married = "Hiç evlenmedi"
+married = "Evli"
+divorced = "Boşandı"
+widowed = "Eşi öldü"
+# Kept rather than folded into another status: these are people, and putting them
+# somewhere would be inventing an answer TÜİK did not give. Disappears from the recent
+# years — the column is simply absent, not zero.
+unknown = "Bilinmeyen"
+
 # endregion
 
 # region Groupings — coarser readings of a breakdown, computed not stored
@@ -357,6 +371,24 @@ ortancanın ortalaması değil, tek yaş nüfus dağılımının tam ortasıdır
 yayımlanan erkek/kadın değerlerine karşı sınandı: 3.116 karşılaştırmada ortalama \
 mutlak fark 0,05 yıl, yani TÜİK'in kendi yuvarlaması kadar. İl ve Türkiye düzeyinde \
 var, ilçe kırılımı yok."""
+
+[indicator.marital_status]
+label_tr = "Medeni durum"
+label_en = "Marital status"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["marital", "sex", "age"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+15 yaşını doldurmuş nüfusun medeni durumu — hiç evlenmedi, evli, boşandı, eşi öldü — \
+cinsiyet ve beşli yaş grubu kırılımıyla. Üç kırılım aynı anda yayımlandığı için "40-44 \
+yaş kadınlarda boşanmışların sayısı" doğrudan sorulabiliyor. \
+**Yaş 15'ten başlar**: medeni durum daha küçükler için yayımlanmaz, yani 0-14 eksik \
+değil yoktur — bu göstergenin toplamı ilin nüfusu değildir. Bilinmeyen kategorisi son \
+yıllarda kayboluyor; o yıllarda sütun sıfır değil, hiç yok. Türkiye, İBBS ve il \
+düzeyinde var, ilçe kırılımı çekilmedi."""
 
 [indicator.registry_population]
 label_tr = "Kütük nüfusu"

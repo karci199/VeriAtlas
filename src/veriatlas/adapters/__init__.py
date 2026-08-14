@@ -2,6 +2,7 @@
 
 from .base import Adapter, Manifest, history, ingest
 from .tuik_district_population import TuikDistrictPopulation
+from .tuik_marital import TuikMarital
 from .tuik_median_age import TuikMedianAge
 from .tuik_neighbourhoods import TuikNeighbourhoodPopulation
 from .tuik_population import TuikPopulationAgeSex
@@ -14,6 +15,7 @@ ADAPTERS = {
     "tuik_district_population": TuikDistrictPopulation,
     "tuik_median_age": TuikMedianAge,
     "tuik_neighbourhoods": TuikNeighbourhoodPopulation,
+    "tuik_marital": TuikMarital,
 }
 
 __all__ = [
@@ -21,6 +23,7 @@ __all__ = [
     "Adapter",
     "Manifest",
     "TuikDistrictPopulation",
+    "TuikMarital",
     "TuikMedianAge",
     "TuikNeighbourhoodPopulation",
     "TuikPopulationAgeSex",

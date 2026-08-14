@@ -24,7 +24,7 @@ from veriatlas.areas import (
     load_weights,
 )
 from veriatlas.config import PUBLIC
-from veriatlas.indicators import load
+from veriatlas.indicators import get, load
 from veriatlas.schema import parse_dims
 
 
@@ -65,7 +65,14 @@ DATASETS = {
     "tfr": "tfr.csv",
     "population": "population.csv",
     "median_age": "median_age.csv",
+    "marital_status": "marital.csv",
 }
+
+#: Indicators that carry breakdowns and so go out through `export_broken_down` rather
+#: than the plain line-chart slice. Named once: the same list drives the level map and the
+#: files, and having it written out twice is how marital status came to be loaded into the
+#: warehouse and then quietly not exported to the page.
+BROKEN_DOWN = ("population", "median_age", "marital_status")
 
 
 def export_dictionary(
@@ -303,11 +310,17 @@ def export_broken_down(
     if rows.height == 0:
         return
 
+    # Which breakdowns to unpack comes from the dictionary, not from a pair written out
+    # here. Hard-coded to age and sex, this dropped marital status on the floor — and not
+    # loudly: without the column the rows folded together, so 184.827 rows left as 47.232
+    # with the married, the divorced and the widowed silently added into one number. The
+    # file looked fine and said something false.
+    dims = list(get(indicator_id).dims or [])
+
     slim = (
         rows.join(areas, on="area_id", how="left")
         .with_columns(
-            pl.col("dims").str.extract(r"age=([^;]+)").alias("age"),
-            pl.col("dims").str.extract(r"sex=([^;]+)").alias("sex"),
+            *[pl.col("dims").str.extract(dim + r"=([^;]+)").alias(dim) for dim in dims]
         )
         .select(
             "area_id",
@@ -316,8 +329,7 @@ def export_broken_down(
             # one loader and should not have to learn a per-file spelling.
             pl.col("area_level").alias("level"),
             pl.col("period_start").dt.year().alias("year"),
-            "age",
-            "sex",
+            *dims,
             pl.col("value").cast(pl.Int64 if whole else pl.Float64),
             # Provenance travels with the numbers: the screen prints source, vintage and
             # quality straight off the rows it is drawing, so it cannot claim a source
@@ -326,7 +338,9 @@ def export_broken_down(
             "vintage",
             "source_id",
         )
-        .sort("area", "year", "sex")
+        # Sorted on whatever breakdowns this indicator has, for the same reason the fold
+        # is sorted: gzip lives on neighbouring rows looking alike.
+        .sort("area", "year", *dims)
     )
 
     # Single years, where the fact table has them, go out in a file of their own for the
@@ -338,14 +352,23 @@ def export_broken_down(
     # the age itself dropped the closing band — the file's tail is "75+", which is not a
     # number — and the resolution came up 496.393 people short of itself at İstanbul.
     # A resolution has to carry the whole distribution or it is not one.
-    fine_levels = (
-        slim.filter(pl.col("age").str.contains(r"^\d+$"))["level"].unique().to_list()
-    )
-    fine = slim.filter(pl.col("level").is_in(fine_levels))
+    #
+    # Only asked of an indicator that has an age breakdown at all. The extraction used to
+    # be hard-coded, so every indicator carried an `age` column even when it meant
+    # nothing; driven by the dictionary, the median age has no such column and asking
+    # about single years there is asking about a column that does not exist.
     stem = DATASETS[indicator_id].removesuffix(".csv")
     declared: dict[str, dict] = {}
+    fine_levels = (
+        slim.filter(pl.col("age").str.contains(r"^\d+$"))["level"].unique().to_list()
+        if "age" in dims
+        else []
+    )
     if fine_levels:
-        report(PUBLIC / (stem + "-age1.csv"), fine)
+        report(
+            PUBLIC / (stem + "-age1.csv"),
+            slim.filter(pl.col("level").is_in(fine_levels)),
+        )
         declared["age"] = {
             "file": served(stem + "-age1.csv"),
             "levels": sorted(fine_levels),
@@ -358,7 +381,7 @@ def export_broken_down(
     # Sorted *again* afterwards: group_by returns rows in whatever order it finished in,
     # and gzip lives on neighbouring rows looking alike. Folding after the sort and
     # writing the result straight out took the district file from 3,9 MB to 8,9.
-    slim = to_five_year_bands(slim).sort("area", "year", "sex", "age")
+    slim = to_five_year_bands(slim).sort("area", "year", *dims)
 
     base = slim.filter(~pl.col("level").is_in(LAZY_LEVELS))
     report(PUBLIC / (stem + ".csv"), base)
@@ -451,12 +474,15 @@ def main() -> None:
         indicator_id: sorted(
             fact.filter(pl.col("indicator_id") == indicator_id)["area_level"].unique()
         )
-        for indicator_id in ("population", "median_age")
+        for indicator_id in BROKEN_DOWN
     }
 
+    # `whole=False` where the unit does not add up: a median has no total to be a share
+    # of. Marital status is a count, so it does.
     fine = {
         "population": export_broken_down(fact, areas, "population"),
         "median_age": export_broken_down(fact, areas, "median_age", whole=False),
+        "marital_status": export_broken_down(fact, areas, "marital_status"),
     }
 
     # The line-chart slice below is fertility only; population carries breakdowns and
