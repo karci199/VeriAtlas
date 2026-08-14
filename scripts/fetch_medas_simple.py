@@ -44,7 +44,9 @@ from veriatlas.config import RAW, ensure_dirs
 
 OUT = RAW / "medas" / "basit"
 
-TOPIC = "Adrese Dayalı Nüfus Kayıt Sistemi Sonuçları"
+ADNKS = "Adrese Dayalı Nüfus Kayıt Sistemi Sonuçları"
+BIRTHS = "Doğum İstatistikleri"
+DEATHS = "Ölüm İstatistikleri"
 
 CELL_LIMIT = 50000
 
@@ -53,27 +55,40 @@ PAUSE = 4.0
 INDICATORS = re.compile(r"g[oö]sterge adedi:\s*(\d+)", re.IGNORECASE)
 PICKED = re.compile(r"d[uü]zey adedi:\s*(\d+)", re.IGNORECASE)
 
-#: What to fetch: a short name for the file, an ascii-safe fragment of the measure's label
-#: (MEDAS serves ISO-8859-9 under a lying header, so Turkish letters cannot be matched),
-#: and whether the measure's breakdowns should be opened. The indicator counts in the
-#: comments are measured, not guessed — see raw/medas/kesif/.
+#: What to fetch: a short name for the file, the topic it lives under, an ascii-safe
+#: fragment of the measure's label (MEDAS serves ISO-8859-9 under a lying header, so
+#: Turkish letters cannot be matched), and whether the measure's breakdowns should be
+#: opened. The indicator counts in the comments are measured, not guessed — see
+#: raw/medas/kesif/.
+#:
+#: Births and deaths are taken **by place of residence**, not by place of occurrence.
+#: MEDAS publishes both and they are different questions: a province with a large
+#: maternity hospital records births belonging to the provinces around it, and a province
+#: with a large hospital records their deaths. Residence is the one that belongs next to a
+#: population count. It also runs seventeen years against the other's eight.
 MEASURES = [
-    ("yogunluk", "Nüfus yoğunluğu", False),  # 1
-    ("cinsiyet-orani", "Cinsiyet oranı", False),  # 1
-    ("artis-hizi", "Yıllık nüfus artış hızı", False),  # 1
-    ("bagimlilik-cocuk", "Çocuk bağımlılık", False),  # 1
-    ("bagimlilik-yasli", "Yaşlı bağımlılık", False),  # 1
-    ("bagimlilik-toplam", "Toplam yaş bağımlılık", False),  # 1
-    ("hane-buyuklugu", "Ortalama hanehalkı büyüklüğü", False),  # 1
-    ("hane-sayisi", "Toplam hanehalkı sayısı", False),  # 1
-    ("hane-tipleri", "Hanehalkı tiplerine göre", True),  # 9
-    ("goc-net", "Bölgelerin net göç bilgileri", False),  # 1
-    ("goc-net-hizi", "Bölgelerin net göç hızı", False),  # 1
-    ("goc-aldigi", "Bölgelerin aldığı göç", True),  # 28
-    ("goc-verdigi", "Bölgelerin verdiği göç", True),  # 28
-    ("yabanci-uyruklu", "Yabancı uyruklu nüfus", True),  # 2
-    ("goc-disaridan", "Yurt dışından Türkiye'ye gelen göç", False),  # 1
-    ("goc-disariya", "Türkiye'den yurt dışına giden göç", False),  # 1
+    ("yogunluk", ADNKS, "Nüfus yoğunluğu", False),  # 1
+    ("cinsiyet-orani", ADNKS, "Cinsiyet oranı", False),  # 1
+    ("artis-hizi", ADNKS, "Yıllık nüfus artış hızı", False),  # 1
+    ("bagimlilik-cocuk", ADNKS, "Çocuk bağımlılık", False),  # 1
+    ("bagimlilik-yasli", ADNKS, "Yaşlı bağımlılık", False),  # 1
+    ("bagimlilik-toplam", ADNKS, "Toplam yaş bağımlılık", False),  # 1
+    ("hane-buyuklugu", ADNKS, "Ortalama hanehalkı büyüklüğü", False),  # 1
+    ("hane-sayisi", ADNKS, "Toplam hanehalkı sayısı", False),  # 1
+    ("hane-tipleri", ADNKS, "Hanehalkı tiplerine göre", True),  # 9
+    ("goc-net", ADNKS, "Bölgelerin net göç bilgileri", False),  # 1
+    ("goc-net-hizi", ADNKS, "Bölgelerin net göç hızı", False),  # 1
+    ("goc-aldigi", ADNKS, "Bölgelerin aldığı göç", True),  # 28
+    ("goc-verdigi", ADNKS, "Bölgelerin verdiği göç", True),  # 28
+    ("yabanci-uyruklu", ADNKS, "Yabancı uyruklu nüfus", True),  # 2
+    ("goc-disaridan", ADNKS, "Yurt dışından Türkiye'ye gelen göç", False),  # 1
+    ("goc-disariya", ADNKS, "Türkiye'den yurt dışına giden göç", False),  # 1
+    ("dogum", BIRTHS, "İkametgah yerine göre doğum", True),  # 12
+    ("kaba-dogum-hizi", BIRTHS, "Kaba doğum hızı", False),  # 1
+    ("olum", DEATHS, "İkametgah yerine göre ölüm", True),  # 24
+    ("kaba-olum-hizi", DEATHS, "Kaba ölüm hızı", False),  # 1
+    ("bebek-olum-hizi", DEATHS, "Bebek ölüm hızı", False),  # 1
+    ("bes-yas-alti-olum-hizi", DEATHS, "Beş yaş altı ölüm", False),  # 1
 ]
 
 #: The Düzey box labels for the levels kept here.
@@ -89,10 +104,10 @@ def target_path(name: str, level: str):
     return OUT / ("nufus-" + name + "-" + level + ".csv")
 
 
-def build_query(page, hint: str, breakdowns: bool) -> int:
+def build_query(page, topic: str, hint: str, breakdowns: bool) -> int:
     """Topic and measure, with its breakdowns opened or not. Returns the indicator count."""
     page.goto(URL, wait_until="networkidle")
-    page.locator("select").first.select_option(label=TOPIC)
+    page.locator("select").first.select_option(label=topic)
     settle(page)
 
     items = page.locator(".z-listitem")
@@ -127,11 +142,11 @@ def build_query(page, hint: str, breakdowns: bool) -> int:
     return counted(page, INDICATORS)
 
 
-def fetch(page, name: str, hint: str, breakdowns: bool, level: str) -> bool:
+def fetch(page, name: str, topic: str, hint: str, breakdowns: bool, level: str) -> bool:
     """One measure at one level, every year the page offers."""
     target = target_path(name, level)
 
-    count = build_query(page, hint, breakdowns)
+    count = build_query(page, topic, hint, breakdowns)
     if not count:
         return False
 
@@ -234,7 +249,7 @@ def main() -> None:
         )
         page.set_default_timeout(60000)
 
-        for name, hint, breakdowns in wanted:
+        for name, topic, hint, breakdowns in wanted:
             for level in LEVELS:
                 if target_path(name, level).exists():
                     print("=", name, level, "zaten var, atlandi")
@@ -242,7 +257,7 @@ def main() -> None:
                 print("=", name, level)
                 for attempt in (1, 2):
                     try:
-                        if fetch(page, name, hint, breakdowns, level):
+                        if fetch(page, name, topic, hint, breakdowns, level):
                             break
                     except PlaywrightError as error:
                         print("   HATA:", type(error).__name__, str(error)[:120])
