@@ -263,6 +263,19 @@ Serinin ilk yılından bugüne toplam fark, göstergenin kendi biriminde. Yüzde
 cevap olmadığı yerde budur: ortanca yaş 34'ten 36'ya çıktıysa anlamlı olan "+2 yaş", \
 "%5,9 arttı" değil."""
 
+[derivation.cagr]
+label_tr = "Ortalama yıllık büyüme (%)"
+label_en = "Average annual growth (%)"
+unit = "percent"
+quality = "estimated"
+needs_span = true
+note_tr = """
+Serinin ilk yılından o yıla kadar, yılda ortalama yüzde kaç büyüdüğü — bileşik olarak, \
+yani her yılın büyümesi bir öncekinin üstüne binerek. "Yıllık değişim"den farkı: o tek \
+bir yılı anlatır ve iyi/kötü bir yıl bütün resmi değiştirir; bu, bütün dönemi tek bir \
+hıza indirger. Nüfusu 18 yılda 1,20 katına çıkan bir il yılda ortalama %1,0 büyümüştür, \
+%20/18 = %1,1 değil."""
+
 [derivation.ma3]
 label_tr = "Hareketli ortalama (3 yıl)"
 label_en = "Moving average (3 years)"

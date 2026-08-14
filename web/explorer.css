@@ -504,6 +504,22 @@ select:focus-visible, button:focus-visible, input:focus-visible {
     font-size: var(--text-xs);
 }
 
+/* The summary of what is on screen. Same weight as the legend — it is a caption on the
+   chart, not a second chart — but ranged left, because it is read as a sentence. */
+.summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-xs) var(--gap-md);
+    margin-top: var(--gap-sm);
+    padding-top: var(--gap-sm);
+    border-top: 1px solid var(--stroke-divider);
+    color: var(--text-secondary);
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
+}
+
+.summary .muted { color: var(--text-tertiary); }
+
 .map-legend .key { display: flex; align-items: center; gap: 6px; }
 .map-legend .chip-colour { width: 22px; height: 12px; border-radius: 2px; flex: none; }
 .map-legend .key-range { white-space: nowrap; }

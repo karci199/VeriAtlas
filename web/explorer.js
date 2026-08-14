@@ -328,6 +328,8 @@ const state = {
     //: honest; "data" fits the axis to the values, which is the only way to read a set of
     //: shares that all sit between 70 and 95.
     axis: "zero",
+    //: How the value axis is spaced: "linear" or "log". See axisScale.
+    scaleType: "linear",
     //: Map ramp ends: "year" recomputes them per year, "fixed" spans every year drawn.
     scaleSpan: "year",
     //: The map's viewBox — what the reader has panned and zoomed to.
@@ -915,6 +917,33 @@ const DERIVATIONS = {
             return [];
         }
         return points.map((p) => ({...p, value: p.value - base}));
+    },
+
+    /** Compound growth from the first year to each year, per year.
+     *
+     *  The one people reach for when they say "how fast is it growing". "Yıllık değişim"
+     *  answers it for a single year, so a good year or a bad one changes the whole
+     *  picture; this spreads the whole run into one rate. Compounding matters at these
+     *  spans: 20% over 18 years is 1,0% a year, not 20/18 = 1,1%.
+     *
+     *  The first year is its own base, so it has no rate and is dropped rather than
+     *  printed as a zero that would read as "no growth". */
+    cagr(points) {
+        const first = points.find((p) => Number.isFinite(p.value));
+        if (!first || first.value <= 0) {
+            // A compound rate off a base of zero or less has no meaning — the ratio is
+            // undefined or the root is of a negative number.
+            return [];
+        }
+        return points
+            .map((p) => {
+                const years = p.year - first.year;
+                if (years <= 0 || !Number.isFinite(p.value) || p.value <= 0) {
+                    return null;
+                }
+                return {...p, value: (Math.pow(p.value / first.value, 1 / years) - 1) * 100};
+            })
+            .filter(Boolean);
     },
 
     /** Three-year centred mean. Small areas jump about year to year and the jumping is
@@ -1564,6 +1593,130 @@ function niceTicks(min, max, fromZero = true) {
     };
 }
 
+/** An axis: where its ticks go, and where a value sits along it as a fraction from 0 to 1.
+ *
+ *  Two rules for the same job, so the charts do not each grow their own copy. The
+ *  logarithmic one exists because populations run from Bayburt's 85 thousand to
+ *  İstanbul's 15,7 million: on a linear axis eighty of the eighty-one provinces are
+ *  pressed into the bottom eighth of the chart and only İstanbul is legible. A log axis
+ *  gives equal room to each factor of ten, so "doubled" is the same distance everywhere.
+ *
+ *  Zero and negatives have no place on it — there is no power of ten that reaches them —
+ *  so they are dropped and counted rather than clamped to the floor, where they would
+ *  look like very small values instead of missing ones. */
+function axisScale(values, {log, fromZero}) {
+    const usable = values.filter(Number.isFinite);
+    if (!usable.length) {
+        return null;
+    }
+
+    if (log) {
+        const positive = usable.filter((v) => v > 0);
+        if (!positive.length) {
+            return null;
+        }
+        const low = Math.min(...positive);
+        const high = Math.max(...positive);
+
+        // Every 1-2-5 step across the range, then the axis is cut to the two that just
+        // enclose the data. Rounding out to whole powers of ten instead put provinces
+        // running to 15,7 million on an axis that ran to a hundred million, and half the
+        // chart was empty.
+        const candidates = [];
+        for (let e = Math.floor(Math.log10(low)) - 1; e <= Math.ceil(Math.log10(high)) + 1; e += 1) {
+            for (const m of [1, 2, 5]) {
+                candidates.push(m * Math.pow(10, e));
+            }
+        }
+        const bottom = [...candidates].reverse().find((v) => v <= low) ?? low;
+        const top = candidates.find((v) => v >= high) ?? high;
+
+        // Over a wide span the 2 and 5 steps become a thicket, so only the powers of ten
+        // are drawn there.
+        const decades = Math.log10(top) - Math.log10(bottom);
+        const ticks = candidates.filter(
+            (v) => v >= bottom && v <= top &&
+                   (decades <= 3 || Math.abs(Math.log10(v) - Math.round(Math.log10(v))) < 1e-9)
+        );
+        const span = Math.log10(top) - Math.log10(bottom) || 1;
+        return {
+            ticks,
+            bottom,
+            top,
+            log: true,
+            at: (v) => (Math.log10(v) - Math.log10(bottom)) / span,
+            plots: (v) => Number.isFinite(v) && v > 0,
+            dropped: usable.length - positive.length,
+        };
+    }
+
+    const {step, top, bottom} = niceTicks(Math.min(...usable), Math.max(...usable), fromZero);
+    const ticks = [];
+    for (let v = bottom; v <= top + step / 2; v += step) {
+        ticks.push(v);
+    }
+    return {
+        ticks,
+        bottom,
+        top,
+        log: false,
+        at: (v) => (v - bottom) / Math.max(1e-9, top - bottom),
+        plots: Number.isFinite,
+        dropped: 0,
+    };
+}
+
+/** The axis rule the reader picked. Kept out of the chart bodies so the chip, the state
+ *  and the two charts cannot drift apart. */
+function logScale() {
+    return state.scaleType === "log";
+}
+
+/** The linear/log chips, drawn the same way wherever the axis is offered.
+ *
+ *  Named for what they do to the picture rather than for the mathematics: "her katta eşit
+ *  aralık" is the property the reader is choosing, and it is the reason to click it. */
+/** A one-line summary of what a cross-section view is showing.
+ *
+ *  The charts show shape and the cursor shows one value; between the two there was nothing
+ *  that answered "what is normal here" — the reader had to eyeball a middle off a colour
+ *  ramp. Mean and median are both given because they part company exactly where it
+ *  matters: İstanbul pulls the mean population to 1,1 million while the median province
+ *  sits near 560 thousand, and the gap between the two numbers *is* the skew.
+ *
+ *  Given the values the caller already has, so it costs one pass and no second slice. */
+function summaryLine(pairs) {
+    const usable = pairs.filter((p) => Number.isFinite(p.value));
+    if (usable.length < 2) {
+        return "";
+    }
+    const sorted = [...usable].sort((a, b) => a.value - b.value);
+    const middle = sorted.length % 2
+        ? sorted[(sorted.length - 1) / 2].value
+        : (sorted[sorted.length / 2 - 1].value + sorted[sorted.length / 2].value) / 2;
+    const mean = usable.reduce((sum, p) => sum + p.value, 0) / usable.length;
+    const low = sorted[0];
+    const high = sorted[sorted.length - 1];
+
+    const cell = (label, body) =>
+        "<span><span class='muted'>" + label + "</span> " + body + "</span>";
+    return "<div class='summary'>" +
+        cell("ortalama", fmt(mean)) +
+        cell("ortanca", fmt(middle)) +
+        cell("en düşük", fmt(low.value) + " · " + low.name) +
+        cell("en yüksek", fmt(high.value) + " · " + high.name) +
+        cell("alan", usable.length) +
+        "</div>";
+}
+
+function scaleTypeToggle() {
+    return "<span>Ölçek</span>" +
+        "<button class='chip" + (logScale() ? "" : " on") +
+        "' data-scaletype='linear' title='Eşit farklar eşit aralık: 100 bin ile 200 bin arası, 1 milyon ile 1,1 milyon arası kadar'>Doğrusal</button>" +
+        "<button class='chip" + (logScale() ? " on" : "") +
+        "' data-scaletype='log' title='Eşit katlar eşit aralık: iki katına çıkmak her yerde aynı mesafe. Bayburt ile İstanbul aynı grafikte okunabilir olur'>Logaritmik</button>";
+}
+
 function lineChart() {
     const rows = drawn()
         .map((id) => ({id, area: nameOf(id), pts: seriesFor(id), colour: colourOf(id)}))
@@ -1575,21 +1728,23 @@ function lineChart() {
     const span = years();
     const [minYear, maxYear] = [span[0], span[span.length - 1]];
     const all = rows.flatMap((r) => r.pts.map((p) => p.value)).filter(Number.isFinite);
-    const {step, top, bottom} =
-        niceTicks(Math.min(...all), Math.max(...all), state.axis === "zero");
+    const scale = axisScale(all, {log: logScale(), fromZero: state.axis === "zero"});
+    if (!scale) {
+        return empty("Logaritmik eksende çizilecek pozitif değer yok.");
+    }
 
     // Room on the right for the labels, unless there are too many to label at all.
     const labelled = rows.length <= LABEL_LIMIT;
     const L = 96, R = labelled ? 190 : 24, T = 16, B = 38;
     const x = (y) => L + ((y - minYear) / Math.max(1, maxYear - minYear)) * (PLOT_W - L - R);
-    const yv = (v) => T + ((top - v) / Math.max(1e-9, top - bottom)) * (PLOT_H - T - B);
+    const yv = (v) => T + (1 - scale.at(v)) * (PLOT_H - T - B);
 
     let svg = '<svg class="plot" viewBox="0 0 ' + PLOT_W + " " + PLOT_H + '" role="img">';
 
-    for (let v = bottom; v <= top + step / 2; v += step) {
+    for (const v of scale.ticks) {
         // Zero is a real boundary once the data crosses it — above the line is growth,
         // below it is loss — so it is drawn solid while the rest stay dashed.
-        const isZero = Math.abs(v) < step / 1000 && bottom < 0;
+        const isZero = !scale.log && v === 0 && scale.bottom < 0;
         svg += '<line x1="' + L + '" x2="' + (PLOT_W - R) + '" y1="' + yv(v) + '" y2="' + yv(v) +
                '" stroke="' + token(isZero ? "--text-tertiary" : "--stroke-divider") + '"' +
                (isZero ? "" : ' stroke-dasharray="4 5"') + "/>" +
@@ -1611,7 +1766,7 @@ function lineChart() {
     // Past a couple of dozen series there is no arrangement that works — the names run
     // off the frame and cover the chart — so they are dropped and the cursor does the
     // naming instead.
-    const lastOf = (r) => [...r.pts].reverse().find((p) => Number.isFinite(p.value));
+    const lastOf = (r) => [...r.pts].reverse().find((p) => scale.plots(p.value));
     const labels = labelled
         ? rows
               .filter(lastOf)
@@ -1632,7 +1787,9 @@ function lineChart() {
         let broken = true;
         const d = row.pts
             .map((p) => {
-                if (!Number.isFinite(p.value)) {
+                // On a log axis a zero or a negative is not a low point, it is a point the
+                // axis cannot reach — so it breaks the line exactly like a missing year.
+                if (!scale.plots(p.value)) {
                     broken = true;
                     return "";
                 }
@@ -1643,7 +1800,7 @@ function lineChart() {
             .filter(Boolean)
             .join(" ");
 
-        const last = [...row.pts].reverse().find((p) => Number.isFinite(p.value));
+        const last = [...row.pts].reverse().find((p) => scale.plots(p.value));
         if (!last) {
             continue;
         }
@@ -1664,11 +1821,21 @@ function lineChart() {
         (labelled
             ? "<span></span>"
             : "<span>" + rows.length + " seri · adlar için imleci grafiğin üstünde gezdirin</span>") +
-        "<span class='spacer'></span><span>Eksen</span>" +
-        "<button class='chip" + (state.axis === "zero" ? " on" : "") +
-        "' data-axis='zero' title='Eksen sıfırı içerir: oranlar dürüst okunur'>Sıfırdan</button>" +
-        "<button class='chip" + (state.axis === "data" ? " on" : "") +
-        "' data-axis='data' title='Eksen verinin aralığına oturur: hepsi 70-95 arasındayken farkı ancak böyle görürsünüz'>Veriye göre</button>" +
+        (scale.dropped
+            ? "<span>· " + scale.dropped +
+              " değer sıfır ya da eksi, logaritmik eksende çizilemiyor</span>"
+            : "") +
+        "<span class='spacer'></span>" + scaleTypeToggle() +
+        // Zero is not a place a logarithmic axis can go, so the choice between "from zero"
+        // and "fitted" simply does not arise there — the chips are dropped rather than
+        // shown doing nothing.
+        (logScale()
+            ? ""
+            : "<span>Eksen</span>" +
+              "<button class='chip" + (state.axis === "zero" ? " on" : "") +
+              "' data-axis='zero' title='Eksen sıfırı içerir: oranlar dürüst okunur'>Sıfırdan</button>" +
+              "<button class='chip" + (state.axis === "data" ? " on" : "") +
+              "' data-axis='data' title='Eksen verinin aralığına oturur: hepsi 70-95 arasındayken farkı ancak böyle görürsünüz'>Veriye göre</button>") +
         "</div>";
 
     hover = {kind: "line", rows, years: span, left: L, right: PLOT_W - R, x, yv};
@@ -2422,7 +2589,13 @@ function map() {
            // provinces are not seventy-four missing values.
            (values.length
                ? legend(low, high, edges, colours, values.length < drawnIds.size)
-               : "");
+               : "") +
+           // Off the ids actually drawn, so a region map summarises seven regions rather
+           // than the eighty-one province shapes they were painted from.
+           summaryLine([...drawnIds].map((id) => ({
+               name: nameFor.get(id) || nameOf(id),
+               value: byId.get(id),
+           })));
 }
 
 // region Colour axis
@@ -2567,7 +2740,8 @@ function scatter() {
     // the reader stranded on a blank frame with no control on it.
     const head = (note) =>
         "<div class='map-head'><span>" + note +
-        "</span><span class='spacer'></span><span>Karşılaştırılan</span>" +
+        "</span><span class='spacer'></span>" + scaleTypeToggle() +
+        "<span>Karşılaştırılan</span>" +
         "<select id='versus'>" + versusOffered()
             .map((i) => "<option value='" + i.id + "'" +
                         (i.id === state.versus ? " selected" : "") + ">" + i.label + "</option>")
@@ -2612,19 +2786,31 @@ function scatter() {
     const fmtX = formatter(other.decimals ?? 2).format;
 
     const L = 88, R = 24, T = 18, B = 46;
-    const xTicks = niceTicks(Math.min(...points.map((p) => p.x)), Math.max(...points.map((p) => p.x)), false);
-    const yTicks = niceTicks(Math.min(...points.map((p) => p.y)), Math.max(...points.map((p) => p.y)), state.axis === "zero");
-    const px = (v) => L + ((v - xTicks.bottom) / Math.max(1e-9, xTicks.top - xTicks.bottom)) * (PLOT_W - L - R);
-    const py = (v) => T + ((yTicks.top - v) / Math.max(1e-9, yTicks.top - yTicks.bottom)) * (PLOT_H - T - B);
+    // Both axes follow the same chip. Population on one of them is exactly the case a log
+    // scale is for, and a scatter with one axis logged and the other not is a chart whose
+    // shape means something different in each direction.
+    const xScale = axisScale(points.map((p) => p.x), {log: logScale(), fromZero: false});
+    const yScale = axisScale(points.map((p) => p.y), {log: logScale(), fromZero: state.axis === "zero"});
+    if (!xScale || !yScale) {
+        return head("çizilemedi") +
+               empty("Logaritmik eksende çizilecek pozitif değer yok.");
+    }
+    const plotted = points.filter((p) => xScale.plots(p.x) && yScale.plots(p.y));
+    if (!plotted.length) {
+        return head("çizilemedi") + empty("Bu eksende çizilebilen nokta kalmadı.");
+    }
+
+    const px = (v) => L + xScale.at(v) * (PLOT_W - L - R);
+    const py = (v) => T + (1 - yScale.at(v)) * (PLOT_H - T - B);
 
     let svg = '<svg class="plot" viewBox="0 0 ' + PLOT_W + " " + PLOT_H + '" role="img">';
 
-    for (let v = yTicks.bottom; v <= yTicks.top + yTicks.step / 2; v += yTicks.step) {
+    for (const v of yScale.ticks) {
         svg += '<line x1="' + L + '" x2="' + (PLOT_W - R) + '" y1="' + py(v) + '" y2="' + py(v) +
                '" stroke="' + token("--stroke-divider") + '" stroke-dasharray="4 5"/>' +
                axisText(L - 12, py(v) + 4, fmt(v), "end");
     }
-    for (let v = xTicks.bottom; v <= xTicks.top + xTicks.step / 2; v += xTicks.step) {
+    for (const v of xScale.ticks) {
         svg += '<line y1="' + T + '" y2="' + (PLOT_H - B) + '" x1="' + px(v) + '" x2="' + px(v) +
                '" stroke="' + token("--stroke-divider") + '" stroke-dasharray="4 5"/>' +
                axisText(px(v), PLOT_H - B + 18, fmtX(v), "middle");
@@ -2634,9 +2820,9 @@ function scatter() {
     // their name; the rest of the country stays as context rather than being thrown away.
     // A scatter of five points cannot show a relationship — the cloud is the point.
     const chosen = new Set(drawn());
-    const named = points.filter((p) => chosen.has(p.id));
+    const named = plotted.filter((p) => chosen.has(p.id));
 
-    for (const point of points) {
+    for (const point of plotted) {
         const on = chosen.has(point.id);
         svg += '<circle cx="' + px(point.x).toFixed(1) + '" cy="' + py(point.y).toFixed(1) +
                '" r="' + (on ? 5 : 3) + '" fill="' + (on ? colourOf(point.id) : token("--text-tertiary")) +
@@ -2657,7 +2843,10 @@ function scatter() {
 
     hover = {kind: "shape"};
 
-    return head(points.length + " alan · " + year) + wrapPlot(svg + "</svg>");
+    const missing = points.length - plotted.length;
+    return head(plotted.length + " alan · " + year +
+                (missing ? " · " + missing + " nokta bu ölçekte çizilemedi" : "")) +
+           wrapPlot(svg + "</svg>");
 }
 
 const RENDERERS = {line: lineChart, bar: barChart, table, pyramid, map, scatter};
@@ -3045,6 +3234,13 @@ function wire() {
 
         if (ev.target.closest("[data-reverse]")) {
             state.reverse = !state.reverse;
+            render();
+            return;
+        }
+
+        const scaleType = ev.target.closest("[data-scaletype]");
+        if (scaleType) {
+            state.scaleType = scaleType.dataset.scaletype;
             render();
             return;
         }
