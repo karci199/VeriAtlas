@@ -833,8 +833,14 @@ frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Bir yere nüfusa kayıtlı kişi sayısı — orada yaşayan değil. İkisinin oranı göçün \
-ölçüsüdür: Sivas-İmranlı'da kayıtlı 92.658 kişiye karşılık ilçede 7.412 kişi var."""
+Bir ile nüfusa kayıtlı kişi sayısı — orada yaşayan değil, nerede yaşarsa yaşasın o ilin \
+kütüğünde duran. Nüfusla oranı, kuşaklar boyu göçün tek sayıya inmiş hâlidir: 2019'da \
+Ardahan'ın kütüğünde ilde yaşayanın **5,5 katı** kişi var, İstanbul'un kütüğünde ise \
+ilde yaşayanın ancak **%16'sı**. Yıl içi bir hareketi değil, birikmiş bir durumu \
+anlatır — bu yüzden aldığı/verdiği göçle aynı şey değildir. \
+**Şimdilik iki yıl var: 2009 ve 2019.** Kaynakta ikamet ili kırılımı zorunlu olduğu \
+için ölçü 81 gösterge × 82 alan; bir yıl 6.642 hücre ile sığıyor, on dokuz yıl 126 bin \
+ile sığmıyor. Kalan yıllar yıl yıl eklenecek."""
 
 # Bina ve daire ayrı göstergeler, çünkü aynı şey değiller: 2025'te 146.553 bina
 # 1,19 milyon daire demek. Ön çalışmada bu ikisi karışmıştı; sözlüğün varlık

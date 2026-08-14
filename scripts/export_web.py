@@ -85,6 +85,7 @@ DATASETS = {
             "migration_to_abroad",
             "marriages",
             "divorces",
+            "registry_population",
             "births",
             "natural_increase",
             "infant_mortality",

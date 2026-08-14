@@ -85,11 +85,11 @@ MEASURES = [
     ("yabanci-uyruklu", ADNKS, "Yabancı uyruklu nüfus", True),  # 2
     ("goc-disaridan", ADNKS, "Yurt dışından Türkiye'ye gelen göç", False),  # 1
     ("goc-disariya", ADNKS, "Türkiye'den yurt dışına giden göç", False),  # 1
-    # Kütük nüfusu: rows are the province a person is *registered* to, and the breakdown
-    # is where they actually live. Closed, that breakdown sums to "how many people are on
-    # this province's register", which is the number wanted. The mirror measure — rows by
-    # residence, breakdown by register — closes to the ordinary population instead, so the
-    # two are not interchangeable however alike their names read.
+    # Kütük nüfusu. The measure's name reads as though the rows were the register, and
+    # they are not: rows are where people live, columns are where they are registered, and
+    # the number wanted is a *column* total (see adapters/tuik_registry). The breakdown
+    # cannot be closed, so this one comes a year at a time — `--yil=2019` — at 6.642 cells
+    # a year against 126.000 for the whole span.
     (
         "kutuk-nufusu",
         ADNKS,
@@ -358,6 +358,23 @@ def main() -> None:
     asked = [a for a in sys.argv[1:] if not a.startswith("--")]
     wanted = [m for m in MEASURES if not asked or m[0] in asked]
 
+    # `--yil=2019,2009`: take these years only, one query each, one file each.
+    #
+    # This is the way in for a measure whose breakdown cannot be closed. Kütük nüfusu is
+    # 81 indicators × 82 areas however it is asked for — 6.642 cells for a single year,
+    # comfortably inside the limit, and 126.000 for all nineteen, which is three times
+    # over it. Slicing it automatically failed because MEDAS's own area counter climbs
+    # while the list fills (33 → 39 → 82), so the batch size was computed off a third of
+    # the truth. Naming the years takes the counter out of the arithmetic entirely.
+    #
+    # The years are asked for in the order given, not sorted: 2019 first and 2009 second
+    # is a comparison, and the first file is the one worth having if the second run never
+    # happens.
+    picked = next(
+        (a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--yil=")), ""
+    )
+    years_wanted = [int(y) for y in picked.replace(" ", "").split(",") if y]
+
     with sync_playwright() as play:
         browser = play.chromium.launch(headless=True)
         page = browser.new_page(
@@ -367,6 +384,40 @@ def main() -> None:
 
         for name, topic, hint, breakdowns in wanted:
             for level in LEVELS:
+                if years_wanted:
+                    # One file per year, numbered by the year itself so the pieces say
+                    # what they hold rather than what order they arrived in.
+                    for year in years_wanted:
+                        if target_path(name, level, year).exists():
+                            print("=", name, level, year, "zaten var")
+                            continue
+                        print("=", name, level, year)
+                        for attempt in (1, 2):
+                            try:
+                                if (
+                                    fetch(
+                                        page,
+                                        name,
+                                        topic,
+                                        hint,
+                                        breakdowns,
+                                        level,
+                                        [year],
+                                        year,
+                                    )
+                                    is True
+                                ):
+                                    break
+                            except PlaywrightError as error:
+                                print(
+                                    "   HATA:", type(error).__name__, str(error)[:120]
+                                )
+                            if attempt == 1:
+                                print("   · tekrar deneniyor")
+                                time.sleep(PAUSE)
+                        time.sleep(PAUSE)
+                    continue
+
                 if target_path(name, level).exists():
                     print("=", name, level, "zaten var, atlandi")
                     continue

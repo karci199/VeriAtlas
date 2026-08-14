@@ -75,6 +75,11 @@ MEASURES = {
     "goc-disaridan": ("migration_from_abroad", None, None),
     "goc-disariya": ("migration_to_abroad", None, None),
     "yabanci-uyruklu": ("foreign_population", "sex", SEXES),
+    # Kütük nüfusu is *not* here, though its file has this shape. Summing its columns the
+    # way this adapter sums migration's would answer the wrong question — the row is where
+    # people live and the column is where they are registered, so a row's total is the
+    # resident population we already hold. It needs the other axis, and that is a
+    # different adapter: `tuik_registry`.
 }
 
 

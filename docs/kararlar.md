@@ -454,10 +454,25 @@ ağırlığı tanım gereği eşittir ve (e+k)/2 tam sonucu verir. İlk evlenmed
 evlilik erkeğin ilki, kadının ikincisi olabilir, ilk kez evlenen erkek ve kadın sayısı
 eşit değildir. Ortanca yaşta olduğu gibi, elde olmayan ağırlık uydurulmuyor.
 
-Kütük nüfusu **çekilemedi**: ikamet ili kırılımı zorunlu, kapanmıyor, ölçü 81 gösterge ×
-82 alan × 19 yıl = 126 bin hücre. Çekiciye yıl-bölmeli indirme eklendi ama MEDAS'ın kendi
-alan sayacı iş sürerken tırmandığı için (33 → 39 → 82) dilim boyu hâlâ yanlış çıkıyor.
-Ağaçta "veri yok" olarak duruyor.
+## K23 — Kütük nüfusu: yılı elle seç, ekseni doğru oku (2026-08-14)
+
+Otomatik dilimleme çalışmadı, çünkü MEDAS'ın alan sayacı iş sürerken tırmanıyor
+(33 → 39 → 82) ve dilim boyu üçte bir eksik hesaplanıyordu. Çözüm sayaçtan kurtulmak:
+`--yil=2019` ile yıl elle seçiliyor, tek yıl 6.642 hücre, sınırın çok altında. 2019 ve
+2009 alındı; kalan yıllar aynı yolla eklenecek. Düzey kutusu bu ölçüde hiçbir şey
+yapmıyor — Türkiye ve İl aynı dosyayı indiriyor, ikisi de 82 alan — o yüzden yalnız il
+kopyası saklanıyor; ikisini birden yüklemek her alanı iki kez toplardı.
+
+**Asıl tuzak eksendeydi.** Ölçünün adı satırların kütük olduğunu düşündürüyor; değil.
+Satır ikamet edilen il, sütun nüfusa kayıtlı olunan il. Satır toplamı zaten elimizde olan
+ikamet nüfusudur; kütük nüfusu **sütun toplamıdır**. Yanlış eksen hata vermiyordu: ülke
+toplamı tutuyordu (iki okuma da aynı ülkeye toplanır) ve her ilin oranı 1,00 çıkıyordu.
+Yakalatan şey, Ardahan ile Sivas'ın da 1,00 çıkmasıydı — kütüğünün yarısı yıllar önce
+göçmüş iller. Doğru eksende 2019'da Ardahan 5,53, İstanbul 0,16.
+
+Denetim: kütük toplamı 2019'da 81,62 milyon, ADNKS nüfusu 83,15 milyon; aradaki 1,53
+milyon yabancı uyruklu nüfusa denk geliyor (kütüğü olmayanlar). 2009'da fark 168 bin,
+o yılın yabancı nüfusu kadar.
 
 ## K21 — Sayfada bulunan üç mantık hatası (2026-08-14)
 
