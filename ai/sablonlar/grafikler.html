@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="tr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<title>VeriAtlas — grafik kalıpları</title>
+<link rel="stylesheet" href="../../web/theme.css">
+</head>
+<body style="background:var(--bg-page);color:var(--text-primary);font-family:var(--font);padding:24px;">
+
+<!-- ============================================================================
+  Chart patterns for the analysis panel. Each <figure> below is a self-contained
+  block: copy it into a panel section, replace the data, keep the token usage.
+
+  Rules (mirror the main page):
+  - every colour comes from theme.css tokens (var(--series-N), var(--text-*), ...)
+  - series colours in dictionary order: series-1, series-2, ...
+  - numbers formatted Turkish style: dot thousands, comma decimals (1.234.567 / 44,5)
+  - no trailing zeros (44,5 not 44,50)
+  - axis labels: 13px (--text-sm equivalent inside SVG: use font-size="13")
+  - reference line (Türkiye average etc.): var(--reference-line) dashed,
+    label var(--reference-text)
+  - source line under every figure: "Kaynak: TÜİK MEDAS · VeriAtlas"
+============================================================================= -->
+
+<!-- PATTERN 1: line chart (time series, one or more series) -->
+<figure>
+    <svg viewBox="0 0 640 320" width="640" height="320" role="img">
+        <!-- plot area: x 60..620, y 20..280 -->
+        <line x1="60" y1="280" x2="620" y2="280" stroke="var(--stroke-divider)"/>
+        <line x1="60" y1="20"  x2="60"  y2="280" stroke="var(--stroke-divider)"/>
+        <!-- gridline + y tick label (repeat per tick) -->
+        <line x1="60" y1="150" x2="620" y2="150" stroke="var(--stroke-divider)" stroke-dasharray="2 4"/>
+        <text x="54" y="154" text-anchor="end" font-size="13" fill="var(--text-tertiary)">50.000</text>
+        <!-- x tick label (repeat per year shown; thin to ~6 labels max) -->
+        <text x="60" y="298" text-anchor="middle" font-size="13" fill="var(--text-tertiary)">2007</text>
+        <text x="620" y="298" text-anchor="middle" font-size="13" fill="var(--text-tertiary)">2025</text>
+        <!-- one series: polyline + end label (label at line end, no legend box) -->
+        <polyline fill="none" stroke="var(--series-1)" stroke-width="2"
+                  points="60,240 200,210 340,190 480,120 620,80"/>
+        <text x="614" y="72" text-anchor="end" font-size="13" fill="var(--series-1)">İstanbul</text>
+    </svg>
+    <figcaption>Kaynak: TÜİK MEDAS · VeriAtlas</figcaption>
+</figure>
+
+<!-- PATTERN 2: horizontal bar (rankings, top-N; one row per area) -->
+<figure>
+    <svg viewBox="0 0 640 120" width="640" height="120" role="img">
+        <!-- row height 28; bar starts x=150; scale widths to max value -->
+        <text x="142" y="30" text-anchor="end" font-size="13" fill="var(--text-primary)">Sivas</text>
+        <rect x="150" y="18" width="420" height="16" fill="var(--series-1)"/>
+        <text x="576" y="30" font-size="13" fill="var(--text-secondary)">743.859</text>
+        <text x="142" y="58" text-anchor="end" font-size="13" fill="var(--text-primary)">Ordu</text>
+        <rect x="150" y="46" width="300" height="16" fill="var(--series-1)"/>
+        <text x="456" y="58" font-size="13" fill="var(--text-secondary)">531.140</text>
+    </svg>
+    <figcaption>Kaynak: TÜİK MEDAS · VeriAtlas</figcaption>
+</figure>
+
+<!-- PATTERN 3: dumbbell (two years, change per area; sorted by change) -->
+<figure>
+    <svg viewBox="0 0 640 90" width="640" height="90" role="img">
+        <text x="142" y="34" text-anchor="end" font-size="13" fill="var(--text-primary)">Ankara</text>
+        <line x1="300" y1="30" x2="480" y2="30" stroke="var(--stroke-control)" stroke-width="2"/>
+        <circle cx="300" cy="30" r="5" fill="var(--text-tertiary)"/>   <!-- earlier year -->
+        <circle cx="480" cy="30" r="5" fill="var(--series-2)"/>        <!-- later year -->
+        <text x="292" y="18" text-anchor="end" font-size="13" fill="var(--text-tertiary)">24,7</text>
+        <text x="488" y="18" font-size="13" fill="var(--series-2)">33,4</text>
+    </svg>
+    <figcaption>Kaynak: TÜİK MEDAS · VeriAtlas</figcaption>
+</figure>
+
+<!-- PATTERN 4: reference line, added inside any line chart -->
+<!--
+    <line x1="60" y1="140" x2="620" y2="140" stroke="var(--reference-line)" stroke-dasharray="6 4"/>
+    <text x="64" y="134" font-size="13" fill="var(--reference-text)">Türkiye</text>
+-->
+
+<!-- PATTERN 5: annotation marker (2020 pandemic, 2023 earthquake breaks) -->
+<!--
+    <line x1="410" y1="20" x2="410" y2="280" stroke="var(--reference-line)" stroke-dasharray="2 3"/>
+    <text x="414" y="32" font-size="11" fill="var(--reference-text)">2023 deprem</text>
+-->
+
+</body>
+</html>
