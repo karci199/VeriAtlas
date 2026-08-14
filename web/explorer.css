@@ -303,18 +303,27 @@ input[type="radio"], input[type="checkbox"], input[type="range"] { accent-color:
     transform: rotate(43deg);
 }
 
-/* Scrollbars: the default light-on-dark bar is a bright slab down the side of the
-   list. This is the same control, toned to the panel it sits in. */
-.entities { scrollbar-width: thin; scrollbar-color: var(--stroke-control) transparent; }
-.entities::-webkit-scrollbar { width: 8px; }
-.entities::-webkit-scrollbar-track { background: transparent; }
+/* Scrollbars: the default light-on-dark bar is a bright slab down the side of whatever
+   it belongs to. This is the same control, toned to the panel it sits in.
 
-.entities::-webkit-scrollbar-thumb {
+   Applied to everything that scrolls, not just the area list. Scoped to that one list it
+   left a white bar down the chosen block, the table, the definition panel and the page
+   itself — the browser default shows through anywhere the rule does not reach, so the
+   rule has to reach everywhere. */
+* { scrollbar-width: thin; scrollbar-color: var(--stroke-control) transparent; }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
+
+*::-webkit-scrollbar-thumb {
     background: var(--stroke-control);
     border-radius: 4px;
 }
 
-.entities::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+*::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+/* The window's own bar is drawn from the root element, which is outside the page's
+   background, so it needs the canvas colour said explicitly or it stays default-light. */
+html { scrollbar-color: var(--stroke-control) var(--bg-page); }
 
 select, .field {
     background: var(--bg-control);

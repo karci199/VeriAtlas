@@ -749,6 +749,34 @@ function sliceRaw(level = state.level) {
     });
 }
 
+/** The slice with the derivation applied, area by area.
+ *
+ *  A derivation turns a series into a series — an index needs its first year, an annual
+ *  change needs the year before — so it cannot be computed from one year's rows. The line
+ *  chart and the table go through `seriesFor`, which derives per area and so has always
+ *  had it; the map read the raw slice directly and quietly showed the measurement while
+ *  the strip said "Yıllık değişim (%)". The two now read the same numbers.
+ *
+ *  The derivation is in the memo key because `choices()` does not name it: sliced answers
+ *  are shared with the views that do not derive. */
+function derivedSlice(level = state.level) {
+    if (!state.derivation) {
+        return slice(level);
+    }
+    return remember("derived|" + level + "|" + choices() + "|" + state.derivation, () => {
+        const byId = new Map();
+        for (const row of slice(level)) {
+            const bucket = byId.get(row.area_id);
+            if (bucket) {
+                bucket.push(row);
+            } else {
+                byId.set(row.area_id, [row]);
+            }
+        }
+        return [...byId.values()].flatMap((points) => derive(points));
+    });
+}
+
 /** The current slice indexed by area, so a chart of five series does not walk the whole
  *  slice five times. */
 function byArea(level = state.level) {
@@ -1289,10 +1317,19 @@ function seedSelection() {
 
 // region Breakdown strip
 
-/** The derivation picker. Entries that need a span are hidden on single-year views —
- *  a year-on-year change has nothing to say about one year. */
+/** The derivation picker.
+ *
+ *  These used to be hidden everywhere but the line chart and the table, on the reasoning
+ *  that a year-on-year change has nothing to say about one year. That was the wrong way
+ *  round: the *view* stands on one year, the data does not. "How much did each province
+ *  grow last year" is a question about 2025 and 2024 together, and a map is the natural
+ *  place to ask it — which is what the reader was reaching for when they found the
+ *  derivation offered in the table and missing on the map.
+ *
+ *  The pyramid is still out: its axis is the age bands, so a derivation would run along
+ *  years the chart does not draw. */
 function derivationControl() {
-    const span = state.view !== "map" && state.view !== "bar" && state.view !== "pyramid";
+    const span = state.view !== "pyramid";
     const options = Object.entries(meta.derivations || {})
         .filter(([, body]) => span || !body.needs_span)
         .map(([id, body]) => '<option value="' + id + '"' +
@@ -2117,8 +2154,6 @@ function pyramid() {
             : "") +
         // Said only where it changes the reading: with every band the same width the
         // division cancels out and the picture is the plain one.
-        // Said only where it changes the reading: with every band the same width the
-        // division cancels out and the picture is the plain one.
         (Math.min(...spans) !== Math.max(...spans)
             ? "<span>· çubuk uzunluğu <b>yaş yılı başına</b>, bantlar eşit genişlikte değil</span>"
             : "") +
@@ -2210,7 +2245,7 @@ function map() {
     // Drawing districts means reading district rows: the scale then belongs to the
     // largest district on screen, not to İstanbul.
     const level = effectiveLevel();
-    const here = slice(level);
+    const here = derivedSlice(level);
     const rows = here.filter((r) => r.year === state.year);
     const byId = new Map(rows.map((r) => [r.area_id, r.value]));
 
@@ -2533,7 +2568,7 @@ function scatter() {
     // The y axis is the chosen indicator, read exactly as every other view reads it — the
     // breakdown, the share and the derivation all still apply.
     const points = [];
-    for (const row of slice(state.level)) {
+    for (const row of derivedSlice(state.level)) {
         if (row.year !== year) {
             continue;
         }
@@ -2616,10 +2651,10 @@ function render() {
         state.view = (state.indicator.views || ["table"]).find((v) => viewState(v).enabled) || "table";
     }
 
-    // A derivation that needs a span cannot be shown standing on a single year, so
-    // switching to the map drops it rather than drawing something meaningless.
-    const spanView = state.view === "line" || state.view === "table";
-    if (derivation()?.needs_span && !spanView) {
+    // Only the pyramid cannot carry a derivation — see derivationControl. Everywhere else
+    // the value drawn is the derived one, so switching views keeps the reader's choice
+    // instead of silently resetting it to the raw measurement.
+    if (derivation()?.needs_span && state.view === "pyramid") {
         state.derivation = "";
     }
 
