@@ -2427,8 +2427,11 @@ function readHash() {
 }
 
 function downloadShown() {
-    const shown = new Set(drawn());
-    const rows = slice().filter((r) => shown.has(r.area_id));
+    // Per area, at that area's own level: the selection may hold more than one (K18), and
+    // taking the slice at the box's level alone would quietly drop the rest from the file.
+    const rows = drawn().flatMap((id) =>
+        slice(levelOfArea(id)).filter((r) => r.area_id === id)
+    );
     // The id goes out with the name: two districts called Pınarbaşı are two rows, and a
     // file that names them both "Pınarbaşı" cannot be joined back to anything.
     const header = "area_id,area,year,value,unit,indicator\n";
