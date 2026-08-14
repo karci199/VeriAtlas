@@ -576,9 +576,14 @@ select:focus-visible, button:focus-visible, input:focus-visible {
     padding-bottom: var(--gap-xs);
 }
 
-.grid th.sortable { cursor: pointer; user-select: none; }
+.grid th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
 .grid th.sortable:hover { color: var(--text-primary); }
 .grid th.sorted { color: var(--accent); }
+
+/* Faint on every column so the affordance is visible, solid on the one in use. */
+.sort-mark { margin-left: 4px; opacity: .3; }
+.grid th.sortable:hover .sort-mark { opacity: .7; }
+.sort-mark.on { opacity: 1; }
 
 .grid { border-collapse: separate; border-spacing: 0; font-size: var(--text-sm); }
 

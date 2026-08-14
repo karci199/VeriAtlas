@@ -76,7 +76,9 @@ class Derivation:
     derivation_id: str
     label_tr: str
     label_en: str
-    unit: Unit
+    #: `None` where the result keeps the indicator's own unit — a difference of persons
+    #: is persons, an average of a rate is a rate.
+    unit: Unit | None
     quality: str
     needs_span: bool
     note_tr: str
@@ -154,7 +156,10 @@ def load() -> Dictionary:
 
     derivations: dict[str, Derivation] = {}
     for key, body in raw.get("derivation", {}).items():
-        if body["unit"] not in units:
+        # An empty unit means "whatever the indicator is in". A difference of two counts
+        # is a count and a moving average of a rate is a rate; naming a unit for those
+        # would be inventing one. The page reads `None` as "keep the indicator's".
+        if body["unit"] and body["unit"] not in units:
             raise KeyError(
                 "derivation '" + key + "' names unknown unit: " + body["unit"]
             )
@@ -162,7 +167,7 @@ def load() -> Dictionary:
             derivation_id=key,
             label_tr=body["label_tr"],
             label_en=body["label_en"],
-            unit=units[body["unit"]],
+            unit=units[body["unit"]] if body["unit"] else None,
             quality=body.get("quality", "estimated"),
             needs_span=bool(body.get("needs_span", False)),
             note_tr=body.get("note_tr", "").strip(),

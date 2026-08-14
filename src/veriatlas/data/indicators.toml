@@ -135,6 +135,51 @@ needs_span = true
 note_tr = """
 Bir önceki yıla göre yüzde değişim. İlk yıl boş kalır — öncesi yoktur, sıfır değildir."""
 
+[derivation.diff]
+label_tr = "Yıllık fark"
+label_en = "Year-on-year difference"
+# The difference between two measurements is in the measurement's own unit, whatever that
+# is, so this one has no unit of its own — the page keeps the indicator's.
+unit = ""
+quality = "measured"
+needs_span = true
+note_tr = """
+Bir önceki yılla arasındaki fark, göstergenin kendi biriminde. Yüzde değişimden farkı, \
+küçük bir tabandaki büyük yüzdeyi büyütmemesidir: 100 kişilik bir yerin %10'u 10 kişidir."""
+
+[derivation.total_change]
+label_tr = "İlk yıla göre değişim (%)"
+label_en = "Change since first year (%)"
+unit = "percent"
+quality = "measured"
+needs_span = true
+note_tr = """
+Serinin ilk yılından bugüne toplam yüzde değişim. Endeksin aynı bilgiyi taşıyan ama \
+doğrudan okunan hâli: endekste 48,6 olan yer burada −51,4 çıkar. "Göreli düşüş en çok \
+nerede" sorusunun cevabı, tabloda bu sütuna göre sıralanınca gelir."""
+
+[derivation.total_diff]
+label_tr = "İlk yıla göre fark"
+label_en = "Difference since first year"
+unit = ""
+quality = "measured"
+needs_span = true
+note_tr = """
+Serinin ilk yılından bugüne toplam fark, göstergenin kendi biriminde. Yüzdenin doğru \
+cevap olmadığı yerde budur: ortanca yaş 34'ten 36'ya çıktıysa anlamlı olan "+2 yaş", \
+"%5,9 arttı" değil."""
+
+[derivation.ma3]
+label_tr = "Hareketli ortalama (3 yıl)"
+label_en = "Moving average (3 years)"
+unit = ""
+quality = "estimated"
+needs_span = true
+note_tr = """
+Her yıl, kendisi ve komşu iki yılın ortalaması. Küçük alanların yıl yıl zıplayan \
+serilerinde eğilimi görünür kılar. Ölçüm değil hesaplanmış bir değerdir — uçlardaki iki \
+yıl, komşusu eksik olduğu için boş kalır."""
+
 # endregion
 
 # region Indicators

@@ -20,6 +20,7 @@ from veriatlas.areas import (
     load_areas,
     load_districts,
     load_neighbourhoods,
+    load_parents,
     load_weights,
 )
 from veriatlas.config import PUBLIC
@@ -124,14 +125,40 @@ def export_dictionary(loaded: set[str], levels: dict[str, list[str]]) -> None:
     derivations = {
         d.derivation_id: {
             "label": d.label_tr,
-            "unit": d.unit.label_tr,
-            "decimals": d.unit.decimals,
+            # Null where the derivation keeps the indicator's own unit and precision.
+            "unit": d.unit.label_tr if d.unit else None,
+            "decimals": d.unit.decimals if d.unit else None,
             "quality": d.quality,
             "needs_span": d.needs_span,
             "note": d.note_tr,
         }
         for d in load().derivations.values()
     }
+
+    # Which bigger area each province belongs to, in both hierarchies. Two hundred-odd
+    # short strings, and they let the map draw levels that have no boundary file of their
+    # own: an İBBS region is exactly a set of provinces, so it can be painted as those
+    # provinces sharing one colour. Without this the map tab is dead at four of the five
+    # levels the fertility rate is published at.
+    # A province sits in two hierarchies at once, so it has a parent in each; walking up
+    # both and keeping every ancestor is what lets the page ask "is this province inside
+    # TR51" without knowing which hierarchy TR51 belongs to.
+    memberships: dict[tuple[str, str], str] = {}
+    for row in load_parents().to_dicts():
+        memberships[(row["hierarchy"], row["area_id"])] = row["parent_id"]
+
+    provinces = set(load_areas().filter(pl.col("area_level") == "province")["area_id"])
+    ancestors: dict[str, list[str]] = {}
+    for province in sorted(provinces):
+        chain: set[str] = set()
+        for hierarchy, area in list(memberships):
+            if area != province:
+                continue
+            node = memberships[(hierarchy, area)]
+            while node and node != "TR":
+                chain.add(node)
+                node = memberships.get((hierarchy, node))
+        ancestors[province] = sorted(chain)
 
     target = PUBLIC / "meta.json"
     target.write_text(
@@ -140,6 +167,7 @@ def export_dictionary(loaded: set[str], levels: dict[str, list[str]]) -> None:
                 "tree": tree,
                 "dimensions": dimensions,
                 "derivations": derivations,
+                "belongs": ancestors,
                 "sources": sources(),
             },
             ensure_ascii=False,
