@@ -145,16 +145,36 @@ async function read(path) {
     }
 }
 
+/** CSV to row objects.
+ *
+ *  Written out longhand because of the size: the district slice is 696.900 rows, and
+ *  building each one with `Object.fromEntries(cols.map(...))` allocates two arrays and a
+ *  closure per row. Assigning fields in a plain loop does the same job in a fraction of
+ *  the time, which is most of the wait when the reader first opens district level.
+ *
+ *  Values are plain — no quoted fields with commas in them — because we write these files
+ *  ourselves from the fact table.
+ */
 function parseCsv(text) {
-    const [header, ...lines] = text.trim().split(/\r?\n/);
-    const cols = header.split(",");
-    return lines.map((line) => {
-        const cells = line.split(",");
-        const row = Object.fromEntries(cols.map((c, i) => [c, cells[i]]));
-        row.year = Number(row.year);
-        row.value = Number(row.value);
-        return row;
-    });
+    const lines = text.trim().split("\n");
+    const cols = lines[0].replace(/\r$/, "").split(",");
+    const width = cols.length;
+    const rows = new Array(lines.length - 1);
+
+    for (let i = 1; i < lines.length; i += 1) {
+        const line = lines[i].replace(/\r$/, "");
+        const row = {};
+        let from = 0;
+        for (let c = 0; c < width; c += 1) {
+            const to = c === width - 1 ? line.length : line.indexOf(",", from);
+            row[cols[c]] = line.slice(from, to < 0 ? line.length : to);
+            from = to + 1;
+        }
+        row.year = +row.year;
+        row.value = +row.value;
+        rows[i - 1] = row;
+    }
+    return rows;
 }
 
 const datasets = new Map();
@@ -290,17 +310,15 @@ const state = {
     axis: "zero",
     //: Map ramp ends: "year" recomputes them per year, "fixed" spans every year drawn.
     scaleSpan: "year",
-    //: Country map showing all 973 districts instead of the 81 provinces.
-    districtView: false,
     //: The map's viewBox — what the reader has panned and zoomed to.
     mapView: {x: 0, y: 0, w: 1000, h: 420},
     //: Active derivation id, or "" for the measurement itself.
     derivation: "",
-    //: Show each value as a share of its area's own total instead of the count itself.
-    //: Absolute and relative answer different questions and the map needs both:
+    //: "" absolute, "country" share of the whole level, "own" share of the area's own
+    //: total. Absolute and relative answer different questions and the map needs both:
     //: Şanlıurfa's child population is smaller than Ankara's in people and much larger
     //: as a proportion.
-    share: false,
+    share: "",
     //: Province the map is opened into, or null for the whole country.
     focus: null,
 };
@@ -372,13 +390,12 @@ function districtMode() {
     if (state.view !== "map" || !(state.indicator.levels || []).includes("district")) {
         return false;
     }
-    // Choosing İlçe in the level box and then being told the map has no boundaries is a
-    // wrong answer: the boundaries exist, they just arrive per province. So that level
-    // turns the country-wide district view on by itself.
-    if (state.level === "district" && districtFeatures.length) {
-        return true;
-    }
-    return Boolean(state.focus || (state.districtView && districtFeatures.length));
+    // The level box is the only control for this now. There used to be a second one on
+    // the map — a "Tüm ilçeleri göster" chip — which meant two widgets could disagree
+    // about what was on screen, and the reader had to learn which one won. Opening a
+    // single province by clicking it is still a map gesture, because there is no box for
+    // "Bursa's districts".
+    return Boolean(state.focus || (state.level === "district" && districtFeatures.length));
 }
 
 // region Working set
@@ -505,18 +522,12 @@ function slice(level = state.level) {
             return [...totals.values()];
         }
 
-        // "Per cent of what" has two honest answers and the choice is not ours to make
-        // arbitrarily — it follows from what the reader narrowed.
-        //
-        // With a breakdown chosen, the question is about composition: what share of *this
-        // place* is aged 0-4. The denominator is the area's own total.
-        //
-        // With everything on "Tümü", that question is empty — every area is 100% of
-        // itself. But the reader asking for a percentage of an unbroken total plainly
-        // means the other question: what share of *the country* lives here. So the
-        // denominator becomes the whole level, which is exactly Türkiye.
-        const narrowed = (state.indicator.dims || []).some((d) => state.dims[d] !== TOTAL);
-        if (narrowed) {
+        // "Per cent of what" has two honest answers and the reader picks which:
+        //   own     — composition: what share of *this place* is aged 0-4.
+        //   country — distribution: what share of *the country* is here.
+        // Note that "own" with no breakdown chosen really is 100% everywhere; that is
+        // arithmetic, not a bug, and the reader who asked for it can see why.
+        if (state.share === "own") {
             const whole = wholeOf(level);
             return [...totals.values()].map((row) => {
                 const base = whole.get(row.area_id + "|" + row.year);
@@ -802,7 +813,7 @@ function decimals() {
     if (from && from.decimals !== null && from.decimals !== undefined) {
         return from.decimals;
     }
-    return state.share ? 1 : state.indicator.decimals;
+    return state.share ? 2 : state.indicator.decimals;
 }
 
 function unitLabel() {
@@ -813,9 +824,9 @@ function unitLabel() {
     if (!state.share) {
         return state.indicator.unit;
     }
-    // Say which total, because it changes with the breakdown and the number means a
-    // completely different thing either way.
-    return (state.indicator.dims || []).some((d) => state.dims[d] !== TOTAL)
+    // Name the denominator, because the two percentages are different numbers about
+    // different things and only the label tells them apart on the page.
+    return state.share === "own"
         ? "alanın kendi toplamının %'si"
         : (LEVEL_LABELS[state.level] === "Türkiye" ? "toplamın" : "Türkiye toplamının") +
           " %'si";
@@ -969,10 +980,19 @@ function shareControl() {
     if (!canShare()) {
         return "";
     }
+    // Two different percentages, named rather than inferred. They used to be one option
+    // whose meaning flipped depending on whether a breakdown happened to be chosen, and
+    // a control that quietly changes what it computes is a control nobody can trust —
+    // "0-4 seçince neden İznik'e oranı oldu" is the question that always follows.
+    const option = (value, label) =>
+        "<option value='" + value + "'" + (state.share === value ? " selected" : "") +
+        ">" + label + "</option>";
+
     return "<div><div class='dim-label'>Değer</div><select id='share'>" +
-           "<option value=''" + (state.share ? "" : " selected") + ">Mutlak sayı</option>" +
-           "<option value='share'" + (state.share ? " selected" : "") +
-           ">Toplamın %'si</option></select></div>";
+           option("", "Mutlak sayı") +
+           option("country", (LEVEL_LABELS[state.level] === "Türkiye" ? "Toplamın" : "Türkiye toplamının") + " %'si") +
+           option("own", "Alanın kendi toplamının %'si") +
+           "</select></div>";
 }
 
 function drawDims() {
@@ -1528,7 +1548,7 @@ function pyramid() {
 
     // In share mode every band is a percentage of that area's own population, which is
     // what makes two pyramids of very different sizes comparable without a scale switch.
-    const whole = state.share ? wholeOf(state.level) : null;
+    const whole = state.share === "own" ? wholeOf(state.level) : null;
 
     // Every breakdown control applies here too — pick Kadın and you get the female side
     // alone, on a scale that fits it. Age is the exception: it is this chart's own
@@ -1720,15 +1740,20 @@ function map() {
     const standsFor = (feature) =>
         rolls ? rolls.get(feature.properties.area_id) : feature.properties.area_id;
 
+    // Non-finite values are excluded from the ramp, not just from the drawing. A share
+    // whose denominator was withheld is NaN, and NaN poisons everything downstream:
+    // Math.min returns NaN, the sort comparator goes incoherent, and the legend came out
+    // with edges running backwards under a bound printed as "—".
+    const usable = (v) => Number.isFinite(v);
     const drawnIds = new Set(features.map(standsFor).filter(Boolean));
-    const thisYear = [...drawnIds].map((id) => byId.get(id)).filter((v) => v !== undefined);
+    const thisYear = [...drawnIds].map((id) => byId.get(id)).filter(usable);
 
     // Two ways to set the ends of the ramp, and they answer different questions.
     // Per-year rescaling shows who is biggest *this* year — which barely moves, so the
     // map looks frozen as the years play. A scale fixed over the whole span keeps the
     // ends still and lets the colours actually travel: that is growth.
     const span = state.scaleSpan === "fixed"
-        ? here.filter((r) => drawnIds.has(r.area_id)).map((r) => r.value)
+        ? here.filter((r) => drawnIds.has(r.area_id)).map((r) => r.value).filter(usable)
         : thisYear;
 
     const values = thisYear;
@@ -1774,7 +1799,7 @@ function map() {
     if (state.reverse) {
         colours.reverse();
     }
-    const colourFor = (v) => (v === undefined ? base : colours[binOf(v, edges)]);
+    const colourFor = (v) => (usable(v) ? colours[binOf(v, edges)] : base);
 
     // Pan and zoom are a viewBox, not a transform: the strokes then keep their width and
     // the shapes stay crisp however far in the reader goes.
@@ -1783,18 +1808,33 @@ function map() {
               '" viewBox="' + view.x + " " + view.y + " " + view.w + " " + view.h + '" role="img">';
     const nameFor = new Map(rows.map((r) => [r.area_id, r.area]));
 
+    // The projected outline of a shape does not change as the reader moves the year on or
+    // recolours the map — only the fill does. Rebuilding 973 path strings (a megabyte of
+    // text) on every redraw was most of the cost of dragging the year slider, so each
+    // feature keeps its own, tagged with the projection it was built under.
+    const projection = [x0, y0, scale, left, features.length].join(",");
+
     for (const feature of features) {
         const id = standsFor(feature);
         const value = byId.get(id);
         const fill = colourFor(value);
-        const d = rings(feature)
-            .map((ring) => "M" + ring.map((p) => px(p).map((n) => n.toFixed(1)).join(" ")).join("L") + "Z")
-            .join(" ");
+
+        if (feature.__projection !== projection) {
+            feature.__d = rings(feature)
+                .map((ring) =>
+                    "M" + ring.map((p) => px(p).map((n) => n.toFixed(1)).join(" ")).join("L") + "Z")
+                .join(" ");
+            feature.__projection = projection;
+        }
+        const d = feature.__d;
         // Provinces standing in for a region are drawn edge to edge in its colour: the
         // border between two provinces of the same region is not a border of anything
         // being shown, so it is painted over rather than left to suggest a division.
+        // The stroke is in screen pixels, not viewBox units. Zooming shrinks the viewBox,
+        // so a plain 0.6 grew with every wheel click until the borders were fat black
+        // bands swallowing the districts between them.
         svg += '<path class="area" data-area="' + (id || "") + '" d="' + d +
-               '" fill="' + fill + '" stroke="' +
+               '" fill="' + fill + '" vector-effect="non-scaling-stroke" stroke="' +
                (rolls ? fill : token("--bg-card")) + '" stroke-width="0.6" data-name="' +
                (rolls ? nameFor.get(id) || feature.properties.name_tr
                       : feature.properties.name_tr) +
@@ -1827,19 +1867,16 @@ function map() {
     const head = "<div class='map-head'>" +
         // The district controls belong to indicators that have districts. Median age is
         // published per province only, so offering to open one is offering nothing.
-        ((state.indicator.levels || []).includes("district")
-            ? opened
-                ? "<button class='link-inline' id='map-back'>← Türkiye</button><span>" +
-                  opened.name_tr + " · " + features.length + " ilçe" +
-                  (values.length ? "" : " · ilçe düzeyinde veri yok, sınırlar gösteriliyor") + "</span>"
-                : "<button class='chip" + (wide ? " on" : "") + "' id='district-view'>" +
-                  (wide ? "İlleri göster" : "Tüm ilçeleri göster") +
-                  "</button><span>" +
-                  (wide
-                      ? features.length + " ilçe · ölçek en büyük ilçeye göre"
-                      : "Bir ile tıklayınca ilçeleri açılır.") +
-                  "</span>"
-            : "<span>" + (LEVEL_LABELS[state.level] || state.level) + " düzeyinde</span>") +
+        (opened
+            ? "<button class='link-inline' id='map-back'>← Türkiye</button><span>" +
+              opened.name_tr + " · " + features.length + " ilçe" +
+              (values.length ? "" : " · ilçe düzeyinde veri yok, sınırlar gösteriliyor") + "</span>"
+            : "<span>" + (LEVEL_LABELS[state.level] || state.level) + " düzeyinde · " +
+              drawnIds.size + " alan" +
+              ((state.indicator.levels || []).includes("district") && state.level !== "district"
+                  ? " · bir alana tıklayınca ilçeleri açılır"
+                  : "") +
+              "</span>") +
         scaleToggle + "</div>";
 
     return head + wrapPlot(svg) +
@@ -1941,12 +1978,30 @@ function rings(feature) {
  *  by eye. Discrete classes can say exactly where each one starts, so they do. */
 function legend(low, high, edges, colours, gaps) {
     const bounds = [low, ...edges, high];
+
+    // Enough decimals to tell the classes apart. At the indicator's own precision a map
+    // of district shares of the country printed six classes all reading "0,0–0,0": the
+    // numbers really are that small, so the legend follows the data rather than the
+    // indicator's usual rounding.
+    let places = decimals();
+    while (
+        places < 6 &&
+        bounds.some((v, i) => i && v.toFixed(places) === bounds[i - 1].toFixed(places))
+    ) {
+        places += 1;
+    }
+    const show = (v) =>
+        v.toLocaleString("tr-TR", {
+            minimumFractionDigits: places,
+            maximumFractionDigits: places,
+        });
+
     const swatches = colours
         .map((colour, i) =>
             "<span class='key'>" +
             "<span class='chip-colour' style='background:" + colour + "'></span>" +
-            "<span class='key-range'>" + fmt(bounds[i]) +
-            (i === colours.length - 1 ? "+" : "–" + fmt(bounds[i + 1])) +
+            "<span class='key-range'>" + show(bounds[i]) +
+            (i === colours.length - 1 ? "+" : "–" + show(bounds[i + 1])) +
             "</span></span>")
         .join("");
 
@@ -2059,7 +2114,7 @@ function writeHash() {
         l: state.level,
         y: state.year,
         f: state.focus || "",
-        s: state.share ? "1" : "",
+        s: state.share || "",
         a: state.selection.join("~"),
         ...Object.fromEntries(Object.entries(state.dims).map(([k, v]) => ["d." + k, v])),
     });
@@ -2117,7 +2172,6 @@ async function useIndicator(id) {
 
     // A map mode belongs to the indicator it was turned on for, not to the session.
     state.focus = null;
-    state.districtView = false;
     resetMapView();
 
     const levels = levelsInData();
@@ -2126,7 +2180,7 @@ async function useIndicator(id) {
 
     // Sharing carries over between indicators where it still means something, and is
     // dropped where it does not — a share of a fertility rate is not a number.
-    state.share = state.share && canShare();
+    state.share = canShare() ? state.share : "";
 
     state.dims = {};
     for (const dim of indicator.dims || []) {
@@ -2231,7 +2285,7 @@ function wire() {
             return;
         }
         if (ev.target.id === "share") {
-            state.share = ev.target.value === "share";
+            state.share = ev.target.value;
             render();
             return;
         }
@@ -2287,19 +2341,6 @@ function wire() {
         const span = ev.target.closest("[data-span]");
         if (span) {
             state.scaleSpan = span.dataset.span;
-            render();
-            return;
-        }
-
-        if (ev.target.id === "district-view") {
-            state.districtView = !state.districtView;
-            if (state.districtView) {
-                ev.target.textContent = "İlçeler yükleniyor…";
-                await ensureLevel("district");
-                if (!districtFeatures.length) {
-                    districtFeatures = await allDistricts();
-                }
-            }
             render();
             return;
         }
@@ -2444,7 +2485,7 @@ async function start() {
     if (hash.get("y")) {
         state.year = Number(hash.get("y"));
     }
-    state.share = hash.get("s") === "1" && canShare();
+    state.share = canShare() ? hash.get("s") || "" : "";
     if (hash.get("f") && (await districtsOf(hash.get("f")))) {
         await ensureLevel("district");
         state.focus = hash.get("f");

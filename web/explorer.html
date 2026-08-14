@@ -62,7 +62,10 @@
 
         <div class="search">
             <span aria-hidden="true">⌕</span>
-            <input id="entity-search" placeholder="İl ya da bölge ekle">
+            <!-- The browser's own form history offered "kaleci" and "kadıköy" over a
+                 list of provinces; this box searches the data, not the reader's past. -->
+            <input id="entity-search" placeholder="İl ya da bölge ekle"
+                   autocomplete="off" spellcheck="false">
         </div>
 
         <div class="rail-row">
