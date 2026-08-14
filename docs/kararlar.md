@@ -458,10 +458,16 @@ eşit değildir. Ortanca yaşta olduğu gibi, elde olmayan ağırlık uydurulmuy
 
 Otomatik dilimleme çalışmadı, çünkü MEDAS'ın alan sayacı iş sürerken tırmanıyor
 (33 → 39 → 82) ve dilim boyu üçte bir eksik hesaplanıyordu. Çözüm sayaçtan kurtulmak:
-`--yil=2019` ile yıl elle seçiliyor, tek yıl 6.642 hücre, sınırın çok altında. 2019 ve
-2009 alındı; kalan yıllar aynı yolla eklenecek. Düzey kutusu bu ölçüde hiçbir şey
-yapmıyor — Türkiye ve İl aynı dosyayı indiriyor, ikisi de 82 alan — o yüzden yalnız il
-kopyası saklanıyor; ikisini birden yüklemek her alanı iki kez toplardı.
+`--yil=2019` ile yıl elle seçiliyor, tek yıl 6.642 hücre, sınırın çok altında. **2007-2025
+tamam.** Düzey kutusu bu ölçüde hiçbir şey yapmıyor — Türkiye ve İl bayt bayt aynı dosyayı
+indiriyor, ikisi de 82 alan — o yüzden yalnız il kopyası saklanıyor; ikisini birden
+yüklemek her alanı iki kez toplardı.
+
+Kareden **iki** gösterge okunuyor: sütun toplamı (kütük nüfusu) ve **köşegen** — ilinde
+yaşayan kendi kütüklüleri, yani İstanbul'da yaşayan İstanbullular. Köşegen bedava geliyor,
+dosya zaten indirilmiş ve okunuyor. Üçlü birlikte okunuyor: kütük "kaç kişi buraya ait",
+nüfus "kaç kişi burada yaşıyor", köşegen "kaç kişi ikisi birden". Yerlilik oranı
+(köşegen ÷ nüfus) 2025'te Şanlıurfa'da %93,5, İstanbul'da %13,5.
 
 **Asıl tuzak eksendeydi.** Ölçünün adı satırların kütük olduğunu düşündürüyor; değil.
 Satır ikamet edilen il, sütun nüfusa kayıtlı olunan il. Satır toplamı zaten elimizde olan
@@ -505,6 +511,15 @@ gerektiren kutular (karşılaştırma, oran) buton olmuyor: aralarında ayrım o
 düğme dizisi, son ikisinin bambaşka bir şey yaptığını gizlerdi.
 
 ## Sıradaki oturum — açık maddeler (2026-08-14, akşam)
+
+0. **Kütük karesinin tamamı: kim nerede yaşıyor.** İndirdiğimiz dosya 81×81'lik bir kare
+   ve şu an ondan yalnız iki sayı okuyoruz — sütun toplamı (kütük nüfusu) ve köşegen
+   (ilinde yaşayan kendi kütüklüleri). Kare olduğu gibi saklanırsa iki soru daha
+   açılıyor: "İstanbul kütüklüleri hangi illerde yaşıyor" (sütunun dağılımı) ve "bu ilde
+   yaşayanlar hangi ilin kütüğünde" (satırın dağılımı — İstanbul'da en çok hangi
+   memleketten insan var). Veri zaten elimizde, maliyeti yalnız 81 değerli bir kırılım
+   saklamak: 81 il × 81 kütük × 19 yıl = 124.659 satır, bugünkü ilçe dosyasının beşte
+   biri. Pahalı değil ama şimdilik gerekmiyor; not olarak duruyor.
 
 1. **Bursa dışındaki iller için mahalle verisi.** Tek dosya ikinci ilde şişer; K14'ün
    düzey-başına bölmesi mahallede il-başına bölmeye dönüşecek (ilçe sınırlarının zaten

@@ -824,6 +824,26 @@ definition_tr = """
 İlde ikamet eden yabancı uyruklu kişi sayısı, cinsiyet kırılımıyla. İkamet edilen yere \
 göre sayılır, uyruk kırılımı bu çekimde yok."""
 
+[indicator.own_registry_population]
+label_tr = "İlinde yaşayan kendi kütüklüleri"
+label_en = "Residents registered to their own province"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Bir ilde yaşayan ve **aynı ilin** kütüğüne kayıtlı kişi sayısı: İstanbul'da yaşayan \
+İstanbullular, Ankara'da yaşayan Ankaralılar. Kütük nüfusu ile ikamet nüfusunun \
+kesişimidir — ikisinin de içindedir, ikisine de eklenmez. \
+Kütük nüfusuna oranı "kütüğündekilerin ne kadarı hâlâ burada", ilin nüfusuna oranı \
+"burada yaşayanların ne kadarı buralı" sorusunu yanıtlar; ikisi çok farklı sayılardır. \
+2019'da İstanbul'un kütüğünde 2,56 milyon kişi var, bunun 2,15 milyonu İstanbul'da \
+yaşıyor — ama İstanbul'da yaşayan 14,92 milyon kişinin yalnız %14'ü ediyor. \
+Yabancı uyruklu nüfus buna dahil değildir; kütüğü olmayan kişi hiçbir ilin kütüğünde \
+sayılmaz."""
+
 [indicator.registry_population]
 label_tr = "Kütük nüfusu"
 label_en = "Registered population"
@@ -838,9 +858,9 @@ kütüğünde duran. Nüfusla oranı, kuşaklar boyu göçün tek sayıya inmiş
 Ardahan'ın kütüğünde ilde yaşayanın **5,5 katı** kişi var, İstanbul'un kütüğünde ise \
 ilde yaşayanın ancak **%16'sı**. Yıl içi bir hareketi değil, birikmiş bir durumu \
 anlatır — bu yüzden aldığı/verdiği göçle aynı şey değildir. \
-**Şimdilik iki yıl var: 2009 ve 2019.** Kaynakta ikamet ili kırılımı zorunlu olduğu \
-için ölçü 81 gösterge × 82 alan; bir yıl 6.642 hücre ile sığıyor, on dokuz yıl 126 bin \
-ile sığmıyor. Kalan yıllar yıl yıl eklenecek."""
+2007-2025'in tamamı var. Kaynakta ikamet ili kırılımı zorunlu olduğu için ölçü 81 \
+gösterge × 82 alan; on dokuz yıl birlikte 126 bin hücreyle sınırı aşıyor, o yüzden yıl \
+yıl indirildi (`fetch_medas_simple kutuk-nufusu --yil=2019`)."""
 
 # Bina ve daire ayrı göstergeler, çünkü aynı şey değiller: 2025'te 146.553 bina
 # 1,19 milyon daire demek. Ön çalışmada bu ikisi karışmıştı; sözlüğün varlık

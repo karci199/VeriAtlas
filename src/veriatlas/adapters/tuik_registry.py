@@ -44,8 +44,8 @@ STEM = "nufus-kutuk-nufusu-province"
 #: register by name.
 COLUMN = re.compile(r"^N[üu]fusa Kay[ıi]tl[ıi] Olunan [İI]l\s*:\s*(?P<name>.+)$")
 
-#: `Adana-1` in the row label, which is only used to tell a data row from a heading here.
-ROW = re.compile(r"^.+-[A-Z0-9]+$")
+#: `Adana-1` in the row label: the province of *residence*.
+ROW = re.compile(r"^(?P<name>.+)-[A-Z0-9]+$")
 
 
 def by_name() -> dict[str, tuple[str, str]]:
@@ -57,8 +57,17 @@ def by_name() -> dict[str, tuple[str, str]]:
     }
 
 
-def read_square(path: Path, names: dict[str, tuple[str, str]]) -> list[dict]:
-    """One year's square, summed down its columns."""
+def read_square(
+    path: Path, names: dict[str, tuple[str, str]], diagonal: bool = False
+) -> list[dict]:
+    """One year's square, summed down its columns — or read along its diagonal.
+
+    The diagonal cell is where the row and the column are the same province: people
+    living in the place they are registered to. It costs nothing extra, since the square
+    is already downloaded and read, and it is the third number in the set — the register
+    total says how many belong to a province, the resident population how many live
+    there, and this how many are both.
+    """
     lines = read_text(path).splitlines()
 
     columns: dict[int, tuple[str, str]] = {}
@@ -92,8 +101,20 @@ def read_square(path: Path, names: dict[str, tuple[str, str]]) -> list[dict]:
             year = int(cells[0])
         if year is None or not ROW.match(cells[1]):
             continue
+
+        # Which province this row is about — needed only for the diagonal, where the
+        # cell wanted is the one whose column matches it.
+        living = None
+        if diagonal:
+            label = ROW.match(cells[1])
+            living = names.get(label.group("name").strip()) if label else None
+            if not living:
+                continue
+
         for index, (area_id, level) in columns.items():
             if index >= len(cells) or not cells[index]:
+                continue
+            if diagonal and area_id != living[0]:
                 continue
             try:
                 value = float(cells[index])
@@ -122,6 +143,10 @@ class TuikRegistryPopulation:
     retrieved_at = dt.date(2026, 8, 14)
     indicator_id = "registry_population"
 
+    #: False reads the column totals, True the diagonal. One class, one indicator each —
+    #: the adapter contract is per indicator and `ingest` enforces it.
+    diagonal = False
+
     def fetch(self) -> Path:
         return DOWNLOADS
 
@@ -138,7 +163,7 @@ class TuikRegistryPopulation:
         )
         records: list[dict] = []
         for path in pieces:
-            records.extend(read_square(path, names))
+            records.extend(read_square(path, names, self.diagonal))
         if not records:
             raise ValueError("kutuk nufusu dosyasi yok: " + STEM + "-<yil>.csv")
 
@@ -180,3 +205,10 @@ class TuikRegistryPopulation:
             "source_id",
             "retrieved_at",
         )
+
+
+class TuikOwnRegistryPopulation(TuikRegistryPopulation):
+    """The diagonal: people living in the province they are registered to."""
+
+    indicator_id = "own_registry_population"
+    diagonal = True

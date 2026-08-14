@@ -1036,11 +1036,25 @@ function canShareAgainstPopulation() {
 
 // endregion
 
+/** Is there more than one area at this level to be a share *of*?
+ *
+ *  At Türkiye level there is not: the mode divides the country by the country and gets
+ *  100 every year, which `slice` refuses to state as a finding and returns as blank. The
+ *  refusal is right and the control offering it anyway was not — the reader picked
+ *  "Toplamın %'si" on doğal nüfus artışı and got a table of seventeen dashes with nothing
+ *  saying why. So the offer is withdrawn where the answer would be empty. */
+function shareOfWholeMeans() {
+    return new Set(slice().map((row) => row.area_id)).size > 1;
+}
+
 /** The share mode this indicator can still answer, or "" — one rule, so switching
  *  indicator and following a shared link cannot disagree about what survives. */
 function shareStillMeans(share) {
     if (share === "population") {
         return canShareAgainstPopulation() ? share : "";
+    }
+    if (share === "country") {
+        return shareOfWholeMeans() ? share : "";
     }
     if (!canShare()) {
         return "";
@@ -1896,7 +1910,7 @@ function shareControl() {
     // exactly the question worth asking of it, so the box appears for either reason.
     const inside = canShare();
     const against = canShareAgainstPopulation();
-    if (!inside && !against) {
+    if (!inside && !against && !shareOfWholeMeans()) {
         return "";
     }
     // Two different percentages, named rather than inferred. They used to be one option
@@ -1927,10 +1941,9 @@ function shareControl() {
     // of; without one it is 100 everywhere, which is arithmetic rather than an answer.
     const options = [
         option("", "Mutlak sayı"),
-        option(
-            "country",
-            (LEVEL_LABELS[state.level] === "Türkiye" ? "Toplamın" : "Türkiye toplamının") + " %'si"
-        ),
+        ...(shareOfWholeMeans()
+            ? [option("country", "Türkiye toplamının %'si")]
+            : []),
         ...(inside ? [option("own", "Alanın kendi toplamının %'si"), ...within] : []),
         ...(against
             ? [option("population", (LEVEL_LABELS[state.level] || "Alan") + " nüfusunun %'si")]

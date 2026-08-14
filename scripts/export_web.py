@@ -86,6 +86,7 @@ DATASETS = {
             "marriages",
             "divorces",
             "registry_population",
+            "own_registry_population",
             "births",
             "natural_increase",
             "infant_mortality",
