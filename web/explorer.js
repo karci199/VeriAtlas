@@ -262,6 +262,8 @@ async function ensureLevel(level) {
 const OFFERED_LEVELS = ["country", "region", "nuts1", "nuts2", "province"];
 
 const LEVEL_LABELS = {
+    // "Coğrafi bölge" rather than "Bölge": the two hierarchies are both regions, and the
+    // filter boxes sit next to each other, so the names have to say which is which.
     neighbourhood: "Mahalle",
     district: "İlçe",
     province: "İl",
@@ -1081,6 +1083,11 @@ function versusAt(level, year) {
 // extra lookup table is shipped to the page for this.
 
 const FILTERS = {
+    // Eighty-one provinces in one alphabetical run is a list you scroll rather than read.
+    // A province belongs to two hierarchies at once — the seven geographic regions and
+    // the İBBS statistical ones — and they answer different questions, so both are
+    // offered rather than one being picked on the reader's behalf.
+    province: ["region", "nuts1"],
     district: ["province"],
     neighbourhood: ["province", "district"],
 };
@@ -1089,7 +1096,24 @@ function filterLabel(key) {
     return LEVEL_LABELS[key] || key;
 }
 
+/** Which parent of an area, at a given level, the list is narrowed by.
+ *
+ *  For the levels below a province it comes out of what the rows already carry — the
+ *  province is the first two segments of the id, and a neighbourhood's district is the
+ *  prefix the exporter put in its name. Above a province there is nothing in the row to
+ *  read, so it comes from `belongs` in the dictionary: the province's ancestors in both
+ *  hierarchies, matched by the shape of the id (`TR1`/`TR62` are İBBS, `TR-R-*` are the
+ *  geographic regions). */
 function filterValue(row, key) {
+    if (key === "region" || key === "nuts1" || key === "nuts2") {
+        const chain = meta.belongs?.[row.area_id] || [];
+        const wanted = chain.find((id) =>
+            key === "region"
+                ? id.startsWith("TR-R-")
+                : !id.startsWith("TR-R-") && id.length === (key === "nuts1" ? 3 : 4)
+        );
+        return wanted ? meta.area_labels?.[wanted] || wanted : "";
+    }
     if (key === "province") {
         return provinceNames().get(row.area_id.split("-").slice(0, 2).join("-")) || "";
     }
@@ -2067,7 +2091,8 @@ function barChart() {
     }
 
     hover = {kind: "shape"};
-    return "<div class='plot-scroll'>" + wrapPlot(svg + "</svg>") + "</div>";
+    return "<div class='plot-scroll'>" + wrapPlot(svg + "</svg>") + "</div>" +
+           summaryLine(rows.map((r) => ({name: r.area, value: r.value})));
 }
 
 /** Rows for the table, in whatever order the reader clicked a header into.
@@ -2081,9 +2106,21 @@ function tableRows(years) {
     // than given a column of its own: a column would repeat the same word down hundreds
     // of rows and sort into a useless order, while the reader needs it exactly where the
     // name is.
+    // Only where the name really is ambiguous. Province names are unique, so once the
+    // rail gained region boxes every row started printing "Antalya · Akdeniz" — the same
+    // word repeated down a column to disambiguate something that was never ambiguous.
     const keys = filtersFor();
-    const inside = keys.length
-        ? new Map(areasAtLevel().map((a) => [a.id, a.in[keys[0]] || ""]))
+    const here = areasAtLevel();
+    const repeats = new Set();
+    const seenNames = new Set();
+    for (const area of here) {
+        if (seenNames.has(area.name)) {
+            repeats.add(area.name);
+        }
+        seenNames.add(area.name);
+    }
+    const inside = keys.length && repeats.size
+        ? new Map(here.map((a) => [a.id, a.in[keys[0]] || ""]))
         : null;
 
     const rows = drawn().map((id) => {
@@ -2161,7 +2198,14 @@ function table() {
                 shown.map((y) => "<td>" + fmt(row.by.get(y)) + "</td>").join("") +
                 "</tr>";
     }
-    return html + "</tbody></table></div>";
+    // Of the year on the slider, not of the whole table: the columns are nineteen
+    // different cross-sections and there is no one average across all of them. Says which
+    // year, so the number cannot be read as a summary of everything on screen.
+    return html + "</tbody></table></div>" +
+           summaryLine(rows.map((r) => ({name: r.name, value: r.by.get(state.year)})))
+               .replace("<div class='summary'>",
+                        "<div class='summary'><span><span class='muted'>yıl</span> " +
+                        state.year + "</span>");
 }
 
 /** One pyramid per selected area, side by side, drawn on a shared scale.

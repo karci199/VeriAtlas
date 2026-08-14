@@ -196,6 +196,22 @@ def export_dictionary(
                 node = memberships.get((hierarchy, node))
         ancestors[province] = sorted(chain)
 
+    # The names of those ancestors. `belongs` alone carries ids, and an id is not a thing
+    # to put in front of a reader: a box offering "TR-R-akdeniz" and "TR62" is a box
+    # nobody can use. Only the areas actually named in `belongs`, so this stays a few
+    # dozen strings rather than the whole registry.
+    named = {area for chain in ancestors.values() for area in chain}
+    labels = {
+        row["area_id"]: row["name_tr"]
+        for row in load_areas().to_dicts()
+        if row["area_id"] in named
+    }
+    missing = named - set(labels)
+    if missing:
+        # A parent with no name would print as its own id and the reader would meet a
+        # code. Louder than letting it through, because it is the registry that is wrong.
+        raise KeyError("kayitta adi olmayan ust alan: " + ", ".join(sorted(missing)))
+
     target = PUBLIC / "meta.json"
     target.write_text(
         json.dumps(
@@ -206,6 +222,7 @@ def export_dictionary(
                 "comparisons": comparisons,
                 "derivations": derivations,
                 "belongs": ancestors,
+                "area_labels": labels,
                 "sources": sources(),
             },
             ensure_ascii=False,
