@@ -283,19 +283,41 @@ kurtardı ama ilçeye geçen okuyucu 53 MB indiriyor. Satırların üçte biri h
 tekrarlanan künye (`quality_flag,vintage,source_id`); sıkıştırma ya da yıl başına dosya
 sıradaki iş.
 
+## K15 — MEDAS etiketleri adla değil koduyla eşleşir (2026-08-14)
+
+MEDAS her etikete kodunu iliştiriyor: il için plaka (`Adana-1`), İBBS için `TR62`,
+ülke için `TR`, ilçe için MEDAS kodu (`-1757`). Plaka zaten kayıttaki il kimliğinin
+kendisi (`TR-01`, ISO 3166-2:TR), yani eşleşme için katlama, ad değişikliği takibi,
+`Şanlıurfa`/`Urfa` tahmini gerekmiyor.
+
+Bunu ortanca yaş adaptöründe kurduk çünkü orada ad eşleşmesi sessizce yanlış cevap
+veriyordu: dosyada 81 değil **78 il** var. Ankara ve İzmir yalnız tek-il İBBS-2
+satırı olarak (`Ankara-TR51`, `İzmir-TR31`), İstanbul ise İBBS-**1** satırı olarak
+(`İstanbul-TR1`) geçiyor — MEDAS aynı insan kümesini gösteren düzeyleri tek satıra
+indirmiş. Adla okunsa bu üç il haritanın tam ortasında "veri yok" olurdu.
+
+Kural: **tek il içeren İBBS bölgesi o ildir.** Hangi bölgelerin böyle olduğu kayıttaki
+üyelik tablosundan, ataların tamamı yürünerek çıkarılıyor (`single_province_regions`) —
+elle yazılmış bir liste değil, çünkü İstanbul'un İBBS-1'e kadar çıkması "hangi düzeye
+bakayım" sorusunu kuralla çözülmesi gereken bir şey yapıyor. TÜİK birini bölerse kural
+kendiliğinden doğru kalır.
+
+Yanına ikinci bir emniyet konuldu: adaptör 81 ilin tamamını bulamazsa yükleme
+**durur**. Eksik il, haritada gerçek bir boşluktan ayırt edilemez (K6).
+
+İBBS-1 ve çok illi İBBS-2 satırları alınmıyor: ekran ülke / il / ilçe düzeyinde
+çalışıyor, kimsenin istemediği bir düzey bakılacak bir şey değil bakımı yapılacak bir
+şeydir. İhtiyaç olursa eklenir.
+
 ## Sıradaki oturum — açık maddeler (2026-08-14, akşam)
 
-1. **Ortanca yaş göstergesi.** Elde MEDAS çıktısı var (`OrtancaYas.csv`, 2007-2025,
-   cinsiyete göre, ülke + İBBS-1 + İBBS-2 + il). Toplanamaz bir birim, yani oran kipi
-   (K13) kendiliğinden kapanacak — sözlüğe girip adaptörü yazılacak.
-
-   **Tuzak:** dosyada 81 değil 78 il var. Ankara, İstanbul ve İzmir yalnız tek-il İBBS-2
-   satırı olarak geçiyor (`Ankara-TR51`), MEDAS ikisini tek satırda birleştirmiş. Ad
-   eşleşmesiyle içe aktarılırsa bu üç il il düzeyinde sessizce eksik kalır ve haritada
-   "veri yok" gibi görünür — K6'daki tanınmayan-ad kuralının tam da önlemek istediği şey.
-2. **Etiket kodları kaynak olarak.** MEDAS etiketleri kodu içinde taşıyor: il için plaka
-   (`Adana-1`), İBBS için `TR62`, ilçe için MEDAS kodu (`-1757`). Ad yerine bunlarla
-   eşleşmek yukarıdaki tuzağı da, ad değişikliklerini de kökten çözer.
+1. **`population-district.csv` 53 MB.** Baytların üçte biri her satırda tekrarlanan
+   künye. Sıkıştırma, künyenin dosya başına bir kez yazılması, ya da yıl başına dosya.
+2. **Haritada varsayılan ölçek.** Ortanca yaş 35-45 aralığında; log ramp orada bir işe
+   yaramıyor. Varsayılan, göstergenin birimine göre seçilebilir (sayım → log,
+   sınırlı/oransal → doğrusal) — şimdilik okuyucu tek tıkla değiştiriyor.
+3. **Ortanca yaşta toplam yok.** Kaynak dosya yalnız erkek/kadın veriyor. Toplam
+   isteniyorsa MEDAS'tan ayrı çekilmeli — iki medyanın ortalaması medyan değildir.
 
 ## Açık işler
 

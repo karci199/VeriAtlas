@@ -22,7 +22,11 @@ from veriatlas.schema import parse_dims
 
 #: Which exported file carries which indicator. The page looks the file up here rather
 #: than knowing it, so adding an indicator is an export change, not a page change.
-DATASETS = {"tfr": "tfr.csv", "population": "population.csv"}
+DATASETS = {
+    "tfr": "tfr.csv",
+    "population": "population.csv",
+    "median_age": "median_age.csv",
+}
 
 
 def export_dictionary(loaded: set[str], levels: dict[str, list[str]]) -> None:
@@ -117,9 +121,16 @@ def export_dictionary(loaded: set[str], levels: dict[str, list[str]]) -> None:
 LAZY_LEVELS = ("district",)
 
 
-def export_population(fact: pl.DataFrame, areas: pl.DataFrame) -> None:
-    """Age-and-sex slice for the pyramid: one row per area, year, band and sex."""
-    rows = fact.filter(pl.col("indicator_id") == "population")
+def export_broken_down(
+    fact: pl.DataFrame, areas: pl.DataFrame, indicator_id: str, whole: bool = True
+) -> None:
+    """One row per area, year and breakdown value, for an indicator that has dims.
+
+    `whole` says the values are whole numbers — population is counted people, a median
+    age is not. Rounding the median to an integer would quietly throw away the only
+    interesting digit it has.
+    """
+    rows = fact.filter(pl.col("indicator_id") == indicator_id)
     if rows.height == 0:
         return
 
@@ -138,7 +149,7 @@ def export_population(fact: pl.DataFrame, areas: pl.DataFrame) -> None:
             pl.col("period_start").dt.year().alias("year"),
             "age",
             "sex",
-            pl.col("value").cast(pl.Int64),
+            pl.col("value").cast(pl.Int64 if whole else pl.Float64),
             # Provenance travels with the numbers: the screen prints source, vintage and
             # quality straight off the rows it is drawing, so it cannot claim a source
             # the data did not come from.
@@ -149,8 +160,9 @@ def export_population(fact: pl.DataFrame, areas: pl.DataFrame) -> None:
         .sort("area", "year", "sex")
     )
 
+    stem = DATASETS[indicator_id].removesuffix(".csv")
     base = slim.filter(~pl.col("level").is_in(LAZY_LEVELS))
-    target = PUBLIC / "population.csv"
+    target = PUBLIC / (stem + ".csv")
     base.write_csv(target)
     print("yazildi:", target, base.height, "satir")
 
@@ -158,7 +170,7 @@ def export_population(fact: pl.DataFrame, areas: pl.DataFrame) -> None:
         part = slim.filter(pl.col("level") == level)
         if part.height == 0:
             continue
-        target = PUBLIC / ("population-" + level + ".csv")
+        target = PUBLIC / (stem + "-" + level + ".csv")
         part.write_csv(target)
         print("yazildi:", target, part.height, "satir")
 
@@ -223,12 +235,14 @@ def main() -> None:
     # What the page is allowed to offer, taken from what was actually exported — the
     # fertility slice gains levels here through the roll-up, and population loses none.
     levels: dict[str, list[str]] = {
-        "population": sorted(
-            fact.filter(pl.col("indicator_id") == "population")["area_level"].unique()
+        indicator_id: sorted(
+            fact.filter(pl.col("indicator_id") == indicator_id)["area_level"].unique()
         )
+        for indicator_id in ("population", "median_age")
     }
 
-    export_population(fact, areas)
+    export_broken_down(fact, areas, "population")
+    export_broken_down(fact, areas, "median_age", whole=False)
 
     # The line-chart slice below is fertility only; population carries breakdowns and
     # goes out through export_population instead.

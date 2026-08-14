@@ -78,6 +78,14 @@ label_en = "‰"
 decimals = 2
 additive = false
 
+[unit.year_of_age]
+label_tr = "yaş"
+label_en = "years of age"
+decimals = 1
+# An age is a position on a scale, not a quantity: adding two provinces' median ages
+# gives nothing, and averaging them unweighted is the classic way to get it wrong.
+additive = false
+
 [unit.index]
 label_tr = "endeks"
 label_en = "index"
@@ -180,6 +188,20 @@ definition_tr = """
 İkamet edilen yerin nüfusu, beşli yaş grubu ve cinsiyet kırılımıyla. Nüfus piramidi \
 bu göstergeden çizilir. En üst grup 75+ olarak kapalıdır; kaynak dosya tek yaş verirken \
 75'ten sonrasını toplulaştırıyor."""
+
+[indicator.median_age]
+label_tr = "Ortanca yaş"
+label_en = "Median age"
+topic = "nufus"
+unit = "year_of_age"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Nüfusu tam ortadan ikiye bölen yaş: yarısı bundan genç, yarısı yaşlıdır. Ortalama \
+yaştan farkı, uçlardaki birkaç çok yaşlıdan etkilenmemesidir. Kaynak dosyada toplam \
+yok, yalnızca erkek ve kadın ayrı ayrı yayımlanıyor. İl ve Türkiye düzeyinde var, \
+ilçe kırılımı yok."""
 
 [indicator.registry_population]
 label_tr = "Kütük nüfusu"
