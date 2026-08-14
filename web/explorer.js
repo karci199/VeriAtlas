@@ -956,6 +956,10 @@ function drawTabs() {
 const PLOT_W = 1000;
 const PLOT_H = 420;
 
+//: Past this many series the right-hand names stop fitting and the cursor box stops
+//: being a box. Both fall back to something that still works at any count.
+const LABEL_LIMIT = 12;
+
 /** A series keeps its colour by its place in the selection, muted or not. */
 function colour(index) {
     return token("--series-" + ((index % 10) + 1));
@@ -965,11 +969,22 @@ function colourOf(area) {
     return colour(state.selection.indexOf(area));
 }
 
-function niceTicks(max) {
-    const raw = max / 5;
+/** Round gridline step and the ends of the axis, for a range that may go below zero.
+ *
+ *  The old version took a maximum and assumed the floor was zero. Year-on-year change is
+ *  the derivation that breaks that: a district that shrank draws at −1%, which landed
+ *  below the bottom of the frame and simply left the picture. Anything that can be
+ *  negative needs an axis that admits it, and a zero line to read it against. */
+function niceTicks(min, max) {
+    const bottom = Math.min(0, min);
+    const raw = Math.max(1e-9, (max - bottom) / 5);
     const magnitude = Math.pow(10, Math.floor(Math.log10(raw)));
     const step = [1, 2, 2.5, 5, 10].map((m) => m * magnitude).find((s) => s >= raw) || magnitude * 10;
-    return {step, top: Math.ceil(max / step) * step};
+    return {
+        step,
+        top: Math.ceil(max / step) * step || step,
+        bottom: Math.floor(bottom / step) * step,
+    };
 }
 
 function lineChart() {
@@ -982,18 +997,24 @@ function lineChart() {
 
     const span = years();
     const [minYear, maxYear] = [span[0], span[span.length - 1]];
-    const max = Math.max(...rows.flatMap((r) => r.pts.map((p) => p.value)));
-    const {step, top} = niceTicks(max);
+    const all = rows.flatMap((r) => r.pts.map((p) => p.value)).filter(Number.isFinite);
+    const {step, top, bottom} = niceTicks(Math.min(...all), Math.max(...all));
 
-    const L = 96, R = 190, T = 16, B = 38;
+    // Room on the right for the labels, unless there are too many to label at all.
+    const labelled = rows.length <= LABEL_LIMIT;
+    const L = 96, R = labelled ? 190 : 24, T = 16, B = 38;
     const x = (y) => L + ((y - minYear) / Math.max(1, maxYear - minYear)) * (PLOT_W - L - R);
-    const yv = (v) => T + (1 - v / top) * (PLOT_H - T - B);
+    const yv = (v) => T + ((top - v) / Math.max(1e-9, top - bottom)) * (PLOT_H - T - B);
 
     let svg = '<svg class="plot" viewBox="0 0 ' + PLOT_W + " " + PLOT_H + '" role="img">';
 
-    for (let v = 0; v <= top + step / 2; v += step) {
+    for (let v = bottom; v <= top + step / 2; v += step) {
+        // Zero is a real boundary once the data crosses it — above the line is growth,
+        // below it is loss — so it is drawn solid while the rest stay dashed.
+        const isZero = Math.abs(v) < step / 1000 && bottom < 0;
         svg += '<line x1="' + L + '" x2="' + (PLOT_W - R) + '" y1="' + yv(v) + '" y2="' + yv(v) +
-               '" stroke="' + token("--stroke-divider") + '" stroke-dasharray="4 5"/>' +
+               '" stroke="' + token(isZero ? "--text-tertiary" : "--stroke-divider") + '"' +
+               (isZero ? "" : ' stroke-dasharray="4 5"') + "/>" +
                axisText(L - 12, yv(v) + 4, fmt(v), "end");
     }
 
@@ -1009,9 +1030,12 @@ function lineChart() {
     }
 
     // Right-hand labels are pushed apart from the bottom up so close series stay legible.
-    const labels = rows
-        .map((r) => ({r, y: yv(r.pts[r.pts.length - 1].value)}))
-        .sort((a, b) => b.y - a.y);
+    // Past a couple of dozen series there is no arrangement that works — the names run
+    // off the frame and cover the chart — so they are dropped and the cursor does the
+    // naming instead.
+    const labels = labelled
+        ? rows.map((r) => ({r, y: yv(r.pts[r.pts.length - 1].value)})).sort((a, b) => b.y - a.y)
+        : [];
     labels.forEach((l, i) => {
         if (i && labels[i - 1].y - l.y < 16) {
             l.y = labels[i - 1].y - 16;
@@ -1023,18 +1047,26 @@ function lineChart() {
             .map((p, i) => (i ? "L" : "M") + x(p.year).toFixed(1) + " " + yv(p.value).toFixed(1))
             .join(" ");
         const last = row.pts[row.pts.length - 1];
-        const ly = labels.find((l) => l.r === row).y;
+        const label = labels.find((l) => l.r === row);
 
-        svg += '<path d="' + d + '" fill="none" stroke="' + row.colour + '" stroke-width="2.5" stroke-linejoin="round"/>' +
-               '<circle cx="' + x(last.year) + '" cy="' + yv(last.value) + '" r="3" fill="' + row.colour + '"/>' +
-               '<path d="M' + (x(last.year) + 4) + " " + yv(last.value) + "L" + (PLOT_W - R + 8) + " " + ly +
-               '" fill="none" stroke="' + row.colour + '" stroke-width="1" opacity=".55"/>' +
-               '<text class="legend-label" x="' + (PLOT_W - R + 14) + '" y="' + (ly + 4) +
-               '" fill="' + row.colour + '">' + row.area + "</text>";
+        svg += '<path d="' + d + '" fill="none" stroke="' + row.colour +
+               '" stroke-width="' + (labelled ? 2.5 : 1.4) + '" stroke-linejoin="round"/>';
+        if (label) {
+            svg += '<circle cx="' + x(last.year) + '" cy="' + yv(last.value) + '" r="3" fill="' + row.colour + '"/>' +
+                   '<path d="M' + (x(last.year) + 4) + " " + yv(last.value) + "L" + (PLOT_W - R + 8) + " " + label.y +
+                   '" fill="none" stroke="' + row.colour + '" stroke-width="1" opacity=".55"/>' +
+                   '<text class="legend-label" x="' + (PLOT_W - R + 14) + '" y="' + (label.y + 4) +
+                   '" fill="' + row.colour + '">' + row.area + "</text>";
+        }
     }
 
-    hover = {kind: "line", rows, years: span, left: L, right: PLOT_W - R, x};
-    return wrapPlot(svg + "</svg>");
+    const note = labelled
+        ? ""
+        : "<div class='map-head'><span>" + rows.length +
+          " seri · adlar için imleci grafiğin üstünde gezdirin</span></div>";
+
+    hover = {kind: "line", rows, years: span, left: L, right: PLOT_W - R, x, yv};
+    return note + wrapPlot(svg + "</svg>");
 }
 
 // region Cursor readout
@@ -1159,13 +1191,32 @@ function bindHover() {
             const ratio = (units - hover.left) / Math.max(1, hover.right - hover.left);
             const year = span[Math.min(span.length - 1, Math.max(0, Math.round(ratio * (span.length - 1))))];
 
-            const body = hover.rows
-                .map((r) => {
-                    const point = r.pts.find((p) => p.year === year);
-                    return point ? tipRow(r.colour, r.area, fmt(point.value)) : "";
-                })
+            // Listing every series at once is the point of the crosshair — until there
+            // are fifty-seven of them and the box is taller than the screen. Past that,
+            // it lists the ones nearest the pointer, which is what the pointer is asking
+            // about, and says how many it left out.
+            const here = hover.rows
+                .map((r) => ({r, point: r.pts.find((p) => p.year === year)}))
+                .filter((row) => row.point);
+
+            const atCursor = event.offsetY / scale;
+            const shown = here.length <= LABEL_LIMIT
+                ? here
+                : [...here]
+                      .sort((a, b) => Math.abs(hover.yv(a.point.value) - atCursor) -
+                                      Math.abs(hover.yv(b.point.value) - atCursor))
+                      .slice(0, LABEL_LIMIT)
+                      .sort((a, b) => b.point.value - a.point.value);
+
+            const body = shown
+                .map((row) => tipRow(row.r.colour, row.r.area, fmt(row.point.value)))
                 .join("");
-            place(event, "<div class='tip-head'>" + year + " · " + unitLabel() + "</div>" + body,
+            const rest = here.length - shown.length;
+
+            place(event,
+                  "<div class='tip-head'>" + year + " · " + unitLabel() + "</div>" + body +
+                  (rest ? "<div class='tip-more'>imlece en yakın " + shown.length +
+                          " seri · " + rest + " tane daha</div>" : ""),
                   hover.x(year) * scale);
             return;
         }

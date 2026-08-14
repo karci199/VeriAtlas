@@ -458,6 +458,13 @@ select:focus-visible, button:focus-visible, input:focus-visible {
 .tip-name { flex: 1; }
 .tip-value { color: var(--text-primary); font-weight: 700; }
 
+.tip-more {
+    margin-top: var(--gap-xs);
+    padding-top: var(--gap-xs);
+    border-top: 1px solid var(--stroke-divider);
+    color: var(--text-tertiary);
+}
+
 /* The colour classes, each labelled with where it starts. Wraps rather than shrinking:
    six ranges of six-figure numbers do not fit one line on a narrow screen. */
 .map-legend {
