@@ -199,9 +199,15 @@ async function dataset(indicator) {
  *  every reader who came for a province line chart would be absurd, so the dictionary
  *  names a separate file per lazily-held level and the page collects it the first time
  *  the reader actually asks for that level (see LAZY_LEVELS in export_web.py). */
+//: Levels already merged into `state.rows`. Not the same question as "has this file been
+//: fetched": switching indicator rebuilds `state.rows` from the base file, so a level
+//: visited before has to be merged in again even though its parse is still cached. Asking
+//: the wrong one left the district list empty on every visit after the first.
+const attached = new Set();
+
 async function ensureLevel(level) {
     const file = state.indicator?.parts?.[level];
-    if (!file || datasets.has(file)) {
+    if (!file || attached.has(level)) {
         return;
     }
     const note = $("rail-note");
@@ -209,6 +215,7 @@ async function ensureLevel(level) {
     note.textContent = (LEVEL_LABELS[level] || level) + " verisi indiriliyor…";
     try {
         state.rows = state.rows.concat(await part(file));
+        attached.add(level);
         invalidate();
     } finally {
         note.textContent = said;
@@ -342,16 +349,22 @@ function levelsInData() {
  *  breakdown strip has to follow it, or the reader is offered province age bands over a
  *  district map. */
 function effectiveLevel() {
-    // Guarded on the indicator actually having districts. The district map is a mode the
-    // reader turns on, and it used to survive a change of indicator: turning it on for
-    // population and then picking median age left the map drawing districts for an
-    // indicator published only per province, which came out as "İlçe düzeyinde kırılım
-    // yok" while the level box still said İl.
-    const districtMap =
-        state.view === "map" &&
-        (state.indicator.levels || []).includes("district") &&
-        (state.focus || (state.districtView && districtFeatures.length));
-    return districtMap ? "district" : state.level;
+    return districtMode() ? "district" : state.level;
+}
+
+/** Is the map drawing districts right now?
+ *
+ *  One answer, asked in one place. It used to be worked out twice — once to pick the
+ *  level to read and once to pick the shapes to draw — and the two could disagree: with
+ *  the mode left on from population, median age drew 973 district outlines and coloured
+ *  them from province rows, so the whole country came out "veri yok". Guarded on the
+ *  indicator having districts at all, so the mode cannot outlive the indicator it was
+ *  turned on for. */
+function districtMode() {
+    if (state.view !== "map" || !(state.indicator.levels || []).includes("district")) {
+        return false;
+    }
+    return Boolean(state.focus || (state.districtView && districtFeatures.length));
 }
 
 // region Working set
@@ -1370,8 +1383,8 @@ function map() {
         );
     }
 
-    const opened = state.focus ? districts.get(state.focus) : null;
-    const wide = !state.focus && state.districtView && districtFeatures.length;
+    const opened = districtMode() && state.focus ? districts.get(state.focus) : null;
+    const wide = districtMode() && !state.focus;
     const features = opened
         ? opened.features
         : wide
@@ -1490,15 +1503,21 @@ function map() {
         : "";
 
     const head = "<div class='map-head'>" +
-        (state.focus
-            ? "<button class='link-inline' id='map-back'>← Türkiye</button><span>" +
-              opened.name_tr + " · " + features.length + " ilçe" +
-              (values.length ? "" : " · ilçe düzeyinde veri yok, sınırlar gösteriliyor") + "</span>"
-            : "<button class='chip" + (state.districtView ? " on" : "") + "' id='district-view'>" +
-              (state.districtView ? "İlleri göster" : "Tüm ilçeleri göster") +
-              "</button><span>" +
-              (wide ? features.length + " ilçe · ölçek en büyük ilçeye göre" : "Bir ile tıklayınca ilçeleri açılır.") +
-              "</span>") +
+        // The district controls belong to indicators that have districts. Median age is
+        // published per province only, so offering to open one is offering nothing.
+        ((state.indicator.levels || []).includes("district")
+            ? opened
+                ? "<button class='link-inline' id='map-back'>← Türkiye</button><span>" +
+                  opened.name_tr + " · " + features.length + " ilçe" +
+                  (values.length ? "" : " · ilçe düzeyinde veri yok, sınırlar gösteriliyor") + "</span>"
+                : "<button class='chip" + (wide ? " on" : "") + "' id='district-view'>" +
+                  (wide ? "İlleri göster" : "Tüm ilçeleri göster") +
+                  "</button><span>" +
+                  (wide
+                      ? features.length + " ilçe · ölçek en büyük ilçeye göre"
+                      : "Bir ile tıklayınca ilçeleri açılır.") +
+                  "</span>"
+            : "<span>" + (LEVEL_LABELS[state.level] || state.level) + " düzeyinde</span>") +
         scaleToggle + "</div>";
 
     return head + wrapPlot(svg) +
@@ -1744,6 +1763,7 @@ async function useIndicator(id) {
     const rows = await dataset(indicator);
     state.rows = rows || [];
     state.filters = {};
+    attached.clear();
     invalidate();
 
     if (!state.rows.length) {
