@@ -283,14 +283,25 @@ def main() -> None:
                 continue
             print("=", province)
 
+            # Two goes at each province. The failure that actually happens is a timing
+            # one: the value list's <Hepsi> ticks are a server round trip each, and when
+            # one does not land before "Göstergeleri Ekle" the count comes back 0 and the
+            # province is skipped. It succeeds on a second walk. Guarded by the
+            # already-downloaded check above, so a retry cannot download twice.
             chunks = [years]
             while chunks:
                 chunk = chunks.pop(0)
-                try:
-                    areas = fetch_province(page, province, chunk)
-                except PlaywrightError as error:
-                    print("   HATA:", type(error).__name__, str(error)[:160])
-                    break
+                areas = 0
+                for attempt in (1, 2):
+                    try:
+                        areas = fetch_province(page, province, chunk)
+                    except PlaywrightError as error:
+                        print("   HATA:", type(error).__name__, str(error)[:160])
+                    if target_path(province).exists() or areas:
+                        break
+                    if attempt == 1:
+                        print("   · tekrar deneniyor")
+                        time.sleep(PAUSE)
                 if not areas:
                     break
                 # Too large: split the years and take the halves. The file name has no

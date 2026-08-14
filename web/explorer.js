@@ -245,6 +245,22 @@ async function ensureLevel(level) {
 // Area levels are ids in the fact table; these are their Turkish names. They belong in
 // the area registry the way indicator labels belong in the dictionary — until the
 // registry exports them, this is the one label map left in the page.
+/** The levels the page offers, in the order the menu lists them.
+ *
+ *  Deliberately short of what the data holds. District and neighbourhood rows are loaded,
+ *  exported and kept — nothing has been thrown away — but they are not offered while the
+ *  province level is being settled, because a gap at those levels cannot be told apart
+ *  from a gap in the page: districts have no single years, neighbourhoods have only the
+ *  18 split, and outside the thirty metropolitan provinces they are missing their
+ *  villages entirely. Testing a control against data that is itself incomplete tells you
+ *  nothing about the control.
+ *
+ *  Putting `"district"` back in this list is the whole of the change needed to bring them
+ *  back: the files are already exported, the lazy fetch already knows how to get them,
+ *  and everything downstream reads the level off the rows rather than off a hard-coded
+ *  list. Nothing else in the page names a level it is allowed to draw. */
+const OFFERED_LEVELS = ["country", "region", "nuts1", "nuts2", "province"];
+
 const LEVEL_LABELS = {
     neighbourhood: "Mahalle",
     district: "İlçe",
@@ -368,6 +384,7 @@ function levelsInData() {
         ? state.indicator.levels
         : [...new Set(state.rows.map((r) => r.level))];
     return [...new Set(declared)]
+        .filter((level) => OFFERED_LEVELS.includes(level))
         .sort((a, b) => Object.keys(LEVEL_LABELS).indexOf(a) - Object.keys(LEVEL_LABELS).indexOf(b));
 }
 
@@ -394,6 +411,12 @@ function effectiveLevel() {
  *  indicator having districts at all, so the mode cannot outlive the indicator it was
  *  turned on for. */
 function districtMode() {
+    // Off entirely while districts are not offered (OFFERED_LEVELS). The drill-down is a
+    // second door into the same level, and leaving it open would put on screen exactly the
+    // level the menu says is not there.
+    if (!OFFERED_LEVELS.includes("district")) {
+        return false;
+    }
     if (state.view !== "map" || !(state.indicator.levels || []).includes("district")) {
         return false;
     }
@@ -2317,7 +2340,8 @@ function map() {
     // Pan and zoom are a viewBox, not a transform: the strokes then keep their width and
     // the shapes stay crisp however far in the reader goes.
     const view = state.mapView;
-    let svg = '<svg id="map-svg" class="plot ' + (state.focus ? "" : "drillable") +
+    const drillable = !state.focus && OFFERED_LEVELS.includes("district");
+    let svg = '<svg id="map-svg" class="plot ' + (drillable ? "drillable" : "") +
               '" viewBox="' + view.x + " " + view.y + " " + view.w + " " + view.h + '" role="img">';
     const nameFor = new Map(rows.map((r) => [r.area_id, r.area]));
 
@@ -2386,7 +2410,8 @@ function map() {
               (values.length ? "" : " · ilçe düzeyinde veri yok, sınırlar gösteriliyor") + "</span>"
             : "<span>" + (LEVEL_LABELS[state.level] || state.level) + " düzeyinde · " +
               drawnIds.size + " alan" +
-              ((state.indicator.levels || []).includes("district") && state.level !== "district"
+              (OFFERED_LEVELS.includes("district") &&
+               (state.indicator.levels || []).includes("district") && state.level !== "district"
                   ? " · bir alana tıklayınca ilçeleri açılır"
                   : "") +
               "</span>") +
@@ -3058,7 +3083,8 @@ function wire() {
         }
 
         const area = ev.target.closest(".area");
-        if (!area || state.view !== "map" || state.focus) {
+        if (!area || state.view !== "map" || state.focus ||
+            !OFFERED_LEVELS.includes("district")) {
             return;
         }
 
