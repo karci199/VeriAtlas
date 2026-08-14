@@ -1690,6 +1690,21 @@ function axisScale(values, {log, fromZero}) {
     };
 }
 
+/** An axis tick, printed with enough precision to tell it from its neighbours.
+ *
+ *  The indicator's own precision is right for values but wrong for a logarithmic axis,
+ *  where the ticks get closer together the further down they go. Yıllık değişim prints to
+ *  one decimal, so the ticks 0,1 · 0,05 · 0,02 · 0,01 all came out as "0,1", "0,1", "0,0",
+ *  "0,0" — a scale reading zero at a place a log axis can never reach. Small ticks get the
+ *  digits they need; everything else keeps the indicator's own rounding. */
+function tickText(value, places) {
+    if (value === 0 || Math.abs(value) >= 1) {
+        return formatter(places).format(value);
+    }
+    const needed = Math.min(6, Math.ceil(-Math.log10(Math.abs(value))) + 1);
+    return formatter(Math.max(places, needed)).format(value);
+}
+
 /** The axis rule the reader picked. Kept out of the chart bodies so the chip, the state
  *  and the two charts cannot drift apart. */
 function logScale() {
@@ -1772,7 +1787,8 @@ function lineChart() {
         svg += '<line x1="' + L + '" x2="' + (PLOT_W - R) + '" y1="' + yv(v) + '" y2="' + yv(v) +
                '" stroke="' + token(isZero ? "--text-tertiary" : "--stroke-divider") + '"' +
                (isZero ? "" : ' stroke-dasharray="4 5"') + "/>" +
-               axisText(L - 12, yv(v) + 4, fmt(v), "end");
+               axisText(L - 12, yv(v) + 4,
+                        scale.log ? tickText(v, decimals()) : fmt(v), "end");
     }
 
     // The last year always gets a tick; a decade tick too close to it is dropped.
@@ -2855,12 +2871,14 @@ function scatter() {
     for (const v of yScale.ticks) {
         svg += '<line x1="' + L + '" x2="' + (PLOT_W - R) + '" y1="' + py(v) + '" y2="' + py(v) +
                '" stroke="' + token("--stroke-divider") + '" stroke-dasharray="4 5"/>' +
-               axisText(L - 12, py(v) + 4, fmt(v), "end");
+               axisText(L - 12, py(v) + 4,
+                        yScale.log ? tickText(v, decimals()) : fmt(v), "end");
     }
     for (const v of xScale.ticks) {
         svg += '<line y1="' + T + '" y2="' + (PLOT_H - B) + '" x1="' + px(v) + '" x2="' + px(v) +
                '" stroke="' + token("--stroke-divider") + '" stroke-dasharray="4 5"/>' +
-               axisText(px(v), PLOT_H - B + 18, fmtX(v), "middle");
+               axisText(px(v), PLOT_H - B + 18,
+                        xScale.log ? tickText(v, other.decimals ?? 2) : fmtX(v), "middle");
     }
 
     // The chosen areas are the ones the reader is following, so they keep their colour and
