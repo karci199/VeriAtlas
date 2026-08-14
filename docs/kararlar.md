@@ -438,6 +438,57 @@ kırılım etiketinin bloğun yalnız ilk satırında yazılması: harfiyen okun
 yıl yerine tek yıl olarak yüklendi ve hata vermedi. Etiket blok boyunca taşınıyor,
 `tests/test_vital.py` bunu tutuyor.
 
+## K20 — Evlenme ve boşanma; toplamın ne zaman hesaplanabildiği (2026-08-14)
+
+Evlenme sayısı, boşanma sayısı (2001-2025) ve dört yaş ölçüsü yüklendi. Kaba evlenme ve
+kaba boşanma hızı yine yüklenmedi — K19'un kuralı. Yayımlanmışlarıyla denetlendi:
+1.558 il-yılda ortalama mutlak fark evlenmede 0,05‰, boşanmada 0,01‰.
+
+**Kırılımlar kapalı çekildi.** İkisinin de altında on kadar kırılım var (eşlerin yaş
+grubu, eğitim durumu, evliliğin süresi, velayet). Açıkken ölçü 121 göstergeye çıkıyor ve
+indirme iki yılda bir sorguya iniyor; kapalıyken 25 yıl tek sorgu. Ham dosya duruyor.
+
+**Ortalama evlenme yaşında "Toplam" hesaplanıyor, ilk evlenme yaşında hesaplanmıyor.**
+Ayrım ağırlıklarda: her nikâhta bir damat ve bir gelin vardır, yani iki ortalamanın
+ağırlığı tanım gereği eşittir ve (e+k)/2 tam sonucu verir. İlk evlenmede öyle değil — bir
+evlilik erkeğin ilki, kadının ikincisi olabilir, ilk kez evlenen erkek ve kadın sayısı
+eşit değildir. Ortanca yaşta olduğu gibi, elde olmayan ağırlık uydurulmuyor.
+
+Kütük nüfusu **çekilemedi**: ikamet ili kırılımı zorunlu, kapanmıyor, ölçü 81 gösterge ×
+82 alan × 19 yıl = 126 bin hücre. Çekiciye yıl-bölmeli indirme eklendi ama MEDAS'ın kendi
+alan sayacı iş sürerken tırmandığı için (33 → 39 → 82) dilim boyu hâlâ yanlış çıkıyor.
+Ağaçta "veri yok" olarak duruyor.
+
+## K21 — Sayfada bulunan üç mantık hatası (2026-08-14)
+
+Üçü de sessizdi: yanlış sayı üretmiyor, doğru seçeneği ortadan kaldırıyor ya da anlamsız
+olanı sunuyorlardı.
+
+1. **Nüfusa oranlama birimin Türkçe etiketine bakıyordu** (`unit === "kişi"`). Sayılan şey
+   insan olduğu sürece çalıştı; doğum "doğum", ölüm "ölüm", evlenme "evlenme" birimiyle
+   gelince kip sessizce kayboldu — yani kaba doğum/ölüm/evlenme hızı, o sayıların en
+   standart okuması, hiç sunulmadı. Ölçüt artık **toplanabilirlik**: sözlüğün birim
+   hakkında söylediği bir olgu, bir dildeki kelime değil (K1).
+2. **Yüzde türetmeleri eksi tabanda ters işaret veriyordu.** Doğal artışı −1.000'den
+   −500'e çıkan bir il "yüzde 50 düştü" diye yazılıyordu; tersi doğru. Eksi tabanlı
+   yüzde artık üretilmiyor, ve şeridin kendisi bu türetmeleri o göstergede soluk
+   gösteriyor. Net göçte bu hata en baştan beri vardı. Sıfır ayrı iş: tek bir noktayı
+   tanımsız yapar, o nokta düşer — bütün seri kapanmaz (yabancı uyruklu nüfus 2.952
+   satırda beş sıfır yüzünden kapanıyordu).
+3. **Oran tipi karşılaştırma her birimde sunuluyordu.** İki değerin *farkı* her birimde
+   anlamlıdır (erkekler üç yıl geç evleniyor); *oranı* yalnız sayımlarda. Ortalama evlenme
+   yaşının "cinsiyet oranı" 28,5 ÷ 26,0 = 110 diye bir sayı veriyordu. Ortanca yaş bu boş
+   seçeneği uzun süredir taşıyordu.
+
+## K22 — Az seçenek buton, çok seçenek açılır kutu (2026-08-14)
+
+Eşik OWID'in kendi gezgininden ölçüldü: orada cinsiyet (3) ve senaryo (4) buton, gösterge
+(10) ve yaş (25) açılır kutu. Bizde sınır beş. Tek bir `chooser()` iki biçimi de üretiyor;
+butonlar gerçek radio olduğu için klavyeyle geziliyor ve `<select>` ile aynı `change`
+olayını yolluyor — şeridin tek yakalayıcısı hangi biçimi aldığını bilmiyor. `<optgroup>`
+gerektiren kutular (karşılaştırma, oran) buton olmuyor: aralarında ayrım olmayan bir
+düğme dizisi, son ikisinin bambaşka bir şey yaptığını gizlerdi.
+
 ## Sıradaki oturum — açık maddeler (2026-08-14, akşam)
 
 1. **Bursa dışındaki iller için mahalle verisi.** Tek dosya ikinci ilde şişer; K14'ün

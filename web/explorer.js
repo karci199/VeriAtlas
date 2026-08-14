@@ -677,7 +677,18 @@ function years() {
 function comparisonsFor(dim, level = effectiveLevel()) {
     const values = new Set(rawValuesOf(dim, level));
     return Object.entries(meta.comparisons || {}).filter(
-        ([, c]) => c.dim === dim && values.has(c.plus) && values.has(c.minus)
+        ([, c]) =>
+            c.dim === dim &&
+            values.has(c.plus) &&
+            values.has(c.minus) &&
+            // A *difference* between two values means something in any unit: men marry
+            // three years later than women, and that three is a number of years. A
+            // *ratio* of them only means something where the values are counts. The sex
+            // ratio of a population is a hundred men per hundred women; the sex ratio of
+            // an average age at marriage is 28,5 ÷ 26,0 = 110, a number with no name and
+            // no use, offered next to one that has both. Median age carried the same
+            // empty option long before marriage age was loaded.
+            (c.how !== "ratio" || state.indicator.additive)
     );
 }
 
@@ -1002,13 +1013,23 @@ function populationTotals(level) {
     });
 }
 
-/** Can this indicator be read against the population? Counts of people can; the
- *  population itself cannot (it would be 100 everywhere) and neither can a rate. */
+/** Can this indicator be read against the population? A count can; the population itself
+ *  cannot (it would be 100 everywhere) and neither can a rate.
+ *
+ *  "A count" used to be spelled `unit === "kişi"` — a match on the Turkish label. It held
+ *  for exactly as long as everything counted was people. Births are counted in doğum,
+ *  deaths in ölüm, marriages in evlenme, and every one of them lost the mode without a
+ *  word: "ilin nüfusuna göre kaç evlenme" is the kaba evlenme hızı, the single most
+ *  standard reading of that number, and the control for it simply was not drawn.
+ *
+ *  Additivity is the property that was meant all along, and it is a fact the dictionary
+ *  states about the unit rather than a word in one language (K1). What adds up is a
+ *  count; what does not is a rate, an age or an index, and none of those go over a
+ *  population. */
 function canShareAgainstPopulation() {
     return (
         state.indicator.id !== AGAINST &&
         state.indicator.additive &&
-        state.indicator.unit === "kişi" &&
         catalogue.some((i) => i.id === AGAINST && i.available)
     );
 }
@@ -1105,11 +1126,54 @@ function buildWhole(level) {
 // from (K12). What each one produces — its unit, its precision — is declared in the
 // dictionary, so this function knows how to divide, not what to call the result.
 
+/** Percentage change needs a base that is above zero, and every series here used to have
+ *  one. Natural increase does not: a province can be at −2.535 and the country's figure
+ *  is on its way to crossing over.
+ *
+ *  Divided by a negative base the sign flips and the sentence inverts. A province going
+ *  from −1.000 to −500 has halved its deficit; ((−500 − −1.000) / −1.000) × 100 prints
+ *  **−50%**, which reads as "fell by half" — the opposite of what happened, stated
+ *  confidently, in a form nobody double-checks. Crossing zero is worse: the number is
+ *  arbitrarily large and its sign says nothing at all.
+ *
+ *  So a non-positive base yields no point. Undefined is the honest answer, and the strip
+ *  greys these derivations out where they would apply (see derivationControl), so the
+ *  reader is told rather than left with an empty chart. */
+function positiveBase(value) {
+    return Number.isFinite(value) && value > 0;
+}
+
+//: The derivations that divide by the series' own values, and so need it above zero.
+//: `diff`, `total_diff` and `ma3` subtract and average instead, which a negative number
+//: survives, so they stay offered everywhere.
+const NEEDS_POSITIVE = ["index", "yoy", "total_change", "cagr"];
+
+/** Does the reading now on screen ever go below zero?
+ *
+ *  Negative, not "zero or below", and the difference decides how blunt this is. A zero
+ *  base makes one point undefined and `positiveBase` drops that point — ordinary, local,
+ *  and the rest of the series is untouched. A *negative* base flips the sign of the
+ *  answer, so every percentage in that series says the opposite of what happened, and
+ *  there is no reading of it that is safe to leave on offer.
+ *
+ *  Written as "zero or below" first, it turned the percentage derivations off for foreign
+ *  nationals over five zero rows in 2.952 — an indicator that is fine to index, blocked
+ *  because a province once had no foreign women.
+ *
+ *  Asked of the whole slice rather than of the drawn series: the offer in the strip has
+ *  to hold for whatever the reader selects next, and a control that appears and vanishes
+ *  as areas are ticked is worse than one that is honestly greyed out. */
+function everNegative() {
+    return remember("negative|" + state.level + "|" + choices(), () =>
+        slice().some((r) => Number.isFinite(r.value) && r.value < 0)
+    );
+}
+
 const DERIVATIONS = {
     /** Each series against its own first year. Shows movement, not size. */
     index(points) {
         const base = points.find((p) => Number.isFinite(p.value))?.value;
-        if (!base) {
+        if (!positiveBase(base)) {
             return [];
         }
         return points.map((p) => ({...p, value: (p.value / base) * 100}));
@@ -1121,7 +1185,7 @@ const DERIVATIONS = {
         return points
             .map((p, i) => {
                 const previous = points[i - 1];
-                if (!previous || !previous.value) {
+                if (!previous || !positiveBase(previous.value)) {
                     return null;
                 }
                 return {...p, value: ((p.value - previous.value) / previous.value) * 100};
@@ -1142,7 +1206,7 @@ const DERIVATIONS = {
      *  most". */
     total_change(points) {
         const base = points.find((p) => Number.isFinite(p.value))?.value;
-        if (!base) {
+        if (!positiveBase(base)) {
             return [];
         }
         return points.map((p) => ({...p, value: ((p.value - base) / base) * 100}));
@@ -1719,6 +1783,70 @@ function seedSelection() {
 
 // region Breakdown strip
 
+//: How many options a control may have before its buttons fold into a dropdown.
+//:
+//: Taken from OWID's own explorer rather than invented: there, sex (3 options) and
+//: projection scenario (4) are laid out as buttons you can see all of, while indicator
+//: (10) and age (25) are dropdowns. The line falls between four and ten; five is where
+//: our own controls divide cleanly — sex, the level, a grouping and the value modes fit
+//: under it, the indicator tree and the derivations do not.
+const PILL_MAX = 5;
+
+/** A one-of-many control: buttons while there are few, a dropdown once there are many.
+ *
+ *  A dropdown hides every option but the chosen one, which costs a click to answer "what
+ *  else is there" — fine for twenty-four indicators, wasteful for "Kadın / Erkek /
+ *  Toplam", where the whole question fits on one line.
+ *
+ *  The buttons are real radios with a label around them, not `<button>`s: a radio group
+ *  arrows left and right from the keyboard, reads as one control to a screen reader, and
+ *  — the reason it matters here — fires the same bubbling `change` event a `<select>`
+ *  does, so the strip's one handler serves both shapes and neither form knows which it
+ *  got. What identifies the control moves onto each input as `data-role`, because an
+ *  `id` cannot be repeated across the options of a group.
+ *
+ *  `options` are `{value, label, selected, disabled}`. `html` is emitted as-is after
+ *  them, and forces the dropdown — it is how the callers that need `<optgroup>` (the
+ *  comparisons and ratios) opt out of buttons entirely. */
+function chooser(what, options, {html = "", force = false, title = ""} = {}) {
+    const key = what.dim
+        ? "data-dim='" + what.dim + "'"
+        : what.grouping
+          ? "data-grouping='" + what.grouping + "'"
+          : "";
+    const name = what.dim || what.grouping || what.role;
+    const tip = title ? " title=\"" + title + '"' : "";
+
+    if (force || html || options.length > PILL_MAX) {
+        return (
+            "<select " + (what.role ? "id='" + what.role + "' " : "") + key + tip +
+            (what.disabled ? " disabled" : "") + ">" +
+            options
+                .map((o) => "<option value=\"" + o.value + '"' +
+                            (o.selected ? " selected" : "") +
+                            (o.disabled ? " disabled" : "") + ">" + o.label + "</option>")
+                .join("") +
+            html + "</select>"
+        );
+    }
+
+    return (
+        "<div class='pills'" + tip + ">" +
+        options
+            .map((o) =>
+                "<label class='pill" + (o.selected ? " on" : "") +
+                (o.disabled ? " off" : "") + "'>" +
+                "<input type='radio' name='p-" + name + "' " + key +
+                (what.role ? " data-role='" + what.role + "'" : "") +
+                " value=\"" + o.value + '"' +
+                (o.selected ? " checked" : "") +
+                (o.disabled || what.disabled ? " disabled" : "") + ">" +
+                "<span>" + o.label + "</span></label>")
+            .join("") +
+        "</div>"
+    );
+}
+
 /** The derivation picker.
  *
  *  These used to be hidden everywhere but the line chart and the table, on the reasoning
@@ -1732,18 +1860,31 @@ function seedSelection() {
  *  years the chart does not draw. */
 function derivationControl() {
     const span = state.view !== "pyramid";
+    // A percentage of a number that reaches zero is either undefined or sign-flipped
+    // (see positiveBase), so those are offered but not selectable here. Greyed rather
+    // than removed: "doğal artışta yıllık değişim neden yok" is a question the control
+    // should answer where it is asked.
+    const blocked = everNegative();
     const options = Object.entries(meta.derivations || {})
         .filter(([, body]) => span || !body.needs_span)
-        .map(([id, body]) => '<option value="' + id + '"' +
-                             (state.derivation === id ? " selected" : "") + ">" + body.label + "</option>")
-        .join("");
+        .map(([id, body]) => ({
+            value: id,
+            label: body.label,
+            selected: state.derivation === id,
+            disabled: blocked && NEEDS_POSITIVE.includes(id),
+        }));
 
-    if (!options) {
+    if (!options.length) {
         return "";
     }
-    return "<div><div class='dim-label'>Türetme</div><select id='derivation'>" +
-           '<option value=""' + (state.derivation ? "" : " selected") + ">Ölçüm (ham)</option>" +
-           options + "</select></div>";
+    return (
+        "<div><div class='dim-label'>Türetme</div>" +
+        chooser({role: "derivation"}, [
+            {value: "", label: "Ölçüm (ham)", selected: !state.derivation},
+            ...options,
+        ]) +
+        "</div>"
+    );
 }
 
 /** Absolute or relative. Its own control rather than an entry in the derivation list:
@@ -1762,9 +1903,11 @@ function shareControl() {
     // whose meaning flipped depending on whether a breakdown happened to be chosen, and
     // a control that quietly changes what it computes is a control nobody can trust —
     // "0-4 seçince neden İznik'e oranı oldu" is the question that always follows.
-    const option = (value, label) =>
-        "<option value='" + value + "'" + (state.share === value ? " selected" : "") +
-        ">" + label + "</option>";
+    const option = (value, label) => ({
+        value,
+        label,
+        selected: state.share === value,
+    });
 
     // A third kind of percentage, one per breakdown: the share *within* that breakdown,
     // holding every other choice where the reader put it.
@@ -1778,19 +1921,27 @@ function shareControl() {
     // choice with more than one right answer, so it is offered rather than guessed.
     const within = (state.indicator.dims || [])
         .filter((dim) => valuesOf(dim).length > 1)
-        .map((dim) => option("own:" + dim, dimLabel(dim) + " içinde %"))
-        .join("");
+        .map((dim) => option("own:" + dim, dimLabel(dim) + " içinde %"));
 
     // "Alanın kendi toplamı" is only a question where there is a breakdown to be a share
     // of; without one it is 100 everywhere, which is arithmetic rather than an answer.
-    return "<div><div class='dim-label'>Değer</div><select id='share'>" +
-           option("", "Mutlak sayı") +
-           option("country", (LEVEL_LABELS[state.level] === "Türkiye" ? "Toplamın" : "Türkiye toplamının") + " %'si") +
-           (inside ? option("own", "Alanın kendi toplamının %'si") + within : "") +
-           (against
-               ? option("population", (LEVEL_LABELS[state.level] || "Alan") + " nüfusunun %'si")
-               : "") +
-           "</select></div>";
+    const options = [
+        option("", "Mutlak sayı"),
+        option(
+            "country",
+            (LEVEL_LABELS[state.level] === "Türkiye" ? "Toplamın" : "Türkiye toplamının") + " %'si"
+        ),
+        ...(inside ? [option("own", "Alanın kendi toplamının %'si"), ...within] : []),
+        ...(against
+            ? [option("population", (LEVEL_LABELS[state.level] || "Alan") + " nüfusunun %'si")]
+            : []),
+    ];
+
+    return (
+        "<div><div class='dim-label'>Değer</div>" +
+        chooser({role: "share"}, options) +
+        "</div>"
+    );
 }
 
 function drawDims() {
@@ -1804,9 +1955,14 @@ function drawDims() {
         // "Tümü" means summing across the breakdown, which only means something for a
         // unit that adds up. A rate gets the raw values and nothing else.
         const all = state.indicator.additive
-            ? '<option value="' + TOTAL + '"' + (state.dims[dim] === TOTAL ? " selected" : "") +
-              ">" + dimValue(dim, TOTAL) + "</option>"
-            : "";
+            ? [
+                  {
+                      value: TOTAL,
+                      label: dimValue(dim, TOTAL),
+                      selected: state.dims[dim] === TOTAL,
+                  },
+              ]
+            : [];
 
         // The grouping box sits next to the values it regroups rather than off in its own
         // corner: "hangi yaş" and "hangi yaş bölmesi" are one question asked twice.
@@ -1817,31 +1973,44 @@ function drawDims() {
         // labelled with the grouping the ratio is using, rather than left looking live.
         const byRatio = ratioOn(dim);
         if (ways.length || finest) {
+            const options = byRatio
+                ? [
+                      {
+                          value: "",
+                          label:
+                              meta.groupings?.[byRatio[1].grouping]?.label ||
+                              byRatio[1].grouping,
+                          selected: true,
+                      },
+                  ]
+                : [
+                      ...(finest
+                          ? [
+                                {
+                                    value: FINE,
+                                    label: "Tek yaş",
+                                    selected: state.grouping[dim] === FINE,
+                                },
+                            ]
+                          : []),
+                      {
+                          value: "",
+                          label: "Yayımlandığı gibi",
+                          selected: !state.grouping[dim],
+                      },
+                      ...ways.map(([id, g]) => ({
+                          value: id,
+                          label: g.label,
+                          selected: state.grouping[dim] === id,
+                      })),
+                  ];
+
             groups.push(
                 "<div><div class='dim-label'>" + dimLabel(dim) + " bölmesi" +
                 (byRatio ? " <span class='muted'>· oran belirliyor</span>" : "") +
                 "</div>" +
-                "<select data-grouping='" + dim + "'" + (byRatio ? " disabled" : "") + ">" +
-                (byRatio
-                    ? "<option selected>" +
-                      (meta.groupings?.[byRatio[1].grouping]?.label || byRatio[1].grouping) +
-                      "</option>"
-                    : "") +
-                (byRatio || !finest
-                    ? ""
-                    : "<option value='" + FINE + "'" +
-                      (state.grouping[dim] === FINE ? " selected" : "") +
-                      ">Tek yaş</option>") +
-                (byRatio
-                    ? ""
-                    : "<option value=''" + (state.grouping[dim] ? "" : " selected") +
-                      ">Yayımlandığı gibi</option>") +
-                (byRatio ? [] : ways)
-                    .map(([id, g]) => "<option value='" + id + "'" +
-                                      (state.grouping[dim] === id ? " selected" : "") +
-                                      ">" + g.label + "</option>")
-                    .join("") +
-                "</select></div>"
+                chooser({grouping: dim, disabled: byRatio}, options) +
+                "</div>"
             );
         }
 
@@ -1863,17 +2032,29 @@ function drawDims() {
                               r.label + "</option>")
             .join("");
 
+        // The comparisons and ratios are `<optgroup>`s, which buttons have no equivalent
+        // of — a group of pills with two unlabelled kinds in it would read as one flat
+        // list where the last two entries do something else entirely. So their presence
+        // is what decides the shape here, not only the count.
         groups.push(
             "<div><div class='dim-label'>" + dimLabel(dim) + "</div>" +
-            "<select data-dim='" + dim + "'>" + all +
-            options
-                .map((v) => '<option value="' + v + '"' +
-                            (String(state.dims[dim]) === String(v) ? " selected" : "") + ">" +
-                            dimValue(dim, v) + "</option>")
-                .join("") +
-            (against ? "<optgroup label='Karşılaştırma'>" + against + "</optgroup>" : "") +
-            (over ? "<optgroup label='Oran'>" + over + "</optgroup>" : "") +
-            "</select></div>"
+            chooser(
+                {dim},
+                [
+                    ...all,
+                    ...options.map((v) => ({
+                        value: v,
+                        label: dimValue(dim, v),
+                        selected: String(state.dims[dim]) === String(v),
+                    })),
+                ],
+                {
+                    html:
+                        (against ? "<optgroup label='Karşılaştırma'>" + against + "</optgroup>" : "") +
+                        (over ? "<optgroup label='Oran'>" + over + "</optgroup>" : ""),
+                }
+            ) +
+            "</div>"
         );
     }
 
@@ -1892,16 +2073,26 @@ function splitControl() {
     if (!dims.length) {
         return "";
     }
-    return "<div><div class='dim-label'>Serilere ayır</div>" +
-           "<select id='split' title='Seçili her alan için bu kırılımın bütün değerleri " +
-           "ayrı çizgi olur: Bursa 0-14, Bursa 15-64, Bursa 65+'>" +
-           '<option value=""' + (state.split ? "" : " selected") + ">Ayırma</option>" +
-           dims
-               .map((dim) => "<option value='" + dim + "'" +
-                             (state.split === dim ? " selected" : "") + ">" +
-                             dimLabel(dim) + "</option>")
-               .join("") +
-           "</select></div>";
+    return (
+        "<div><div class='dim-label'>Serilere ayır</div>" +
+        chooser(
+            {role: "split"},
+            [
+                {value: "", label: "Ayırma", selected: !state.split},
+                ...dims.map((dim) => ({
+                    value: dim,
+                    label: dimLabel(dim),
+                    selected: state.split === dim,
+                })),
+            ],
+            {
+                title:
+                    "Seçili her alan için bu kırılımın bütün değerleri ayrı çizgi olur: " +
+                    "Bursa 0-14, Bursa 15-64, Bursa 65+",
+            }
+        ) +
+        "</div>"
+    );
 }
 
 //: Where a split can be drawn at all. See splitControl.
@@ -3530,15 +3721,26 @@ async function useIndicator(id) {
     state.dims = {};
     for (const dim of indicator.dims || []) {
         const values = valuesOf(dim);
-        // Default to the whole population where summing is meaningful, else the first
-        // value: a chart of one arbitrary age band would be a lie by omission.
-        state.dims[dim] = indicator.additive ? TOTAL : values[0];
+        // Default to the whole where there is one — summed for a count, and now also
+        // where a total is *stored* rather than summed: the average age at marriage has
+        // a real "Toplam" row (see marriage_age_total) and opening on "Kadın" made the
+        // page look like it was about women. Otherwise the first value, and a chart of
+        // one arbitrary age band is a lie by omission either way.
+        state.dims[dim] =
+            indicator.additive || values.includes(TOTAL) ? TOTAL : values[0];
     }
 
     const span = years();
     state.year = span[span.length - 1];
     if (!(indicator.views || []).includes(state.view)) {
         state.view = indicator.views[0];
+    }
+
+    // Same rule as sharing, for the same reason: a derivation that divides by the series
+    // is dropped when the new indicator's series goes to zero or below, rather than
+    // carried over into an empty chart.
+    if (NEEDS_POSITIVE.includes(state.derivation) && everNegative()) {
+        state.derivation = "";
     }
 
     seedSelection();
@@ -3631,23 +3833,28 @@ function wire() {
     };
 
     $("dims").onchange = async (ev) => {
-        if (ev.target.id === "indicator") {
+        // A dropdown identifies itself by id; a group of buttons cannot, since an id may
+        // not repeat across its options, so those carry `data-role` instead. Read as one
+        // thing here, and neither the handler nor the state below knows which shape the
+        // reader was given.
+        const role = ev.target.id || ev.target.dataset.role || "";
+        if (role === "indicator") {
             if (await useIndicator(ev.target.value)) {
                 render();
             }
             return;
         }
-        if (ev.target.id === "share") {
+        if (role === "share") {
             state.share = ev.target.value;
             render();
             return;
         }
-        if (ev.target.id === "split") {
+        if (role === "split") {
             state.split = ev.target.value;
             render();
             return;
         }
-        if (ev.target.id === "derivation") {
+        if (role === "derivation") {
             state.derivation = ev.target.value;
             render();
             return;

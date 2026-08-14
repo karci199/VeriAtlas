@@ -15,8 +15,9 @@ import polars as pl
 sys.path.insert(0, "src")
 
 from veriatlas.adapters import ADAPTERS, ingest
+from veriatlas.adapters.tuik_vital import PAIRED
 from veriatlas.config import PUBLIC, WAREHOUSE, ensure_dirs
-from veriatlas.derived import median_age_total, natural_increase
+from veriatlas.derived import marriage_age_total, median_age_total, natural_increase
 
 
 def main() -> None:
@@ -55,6 +56,25 @@ def main() -> None:
         if not balance.is_empty():
             fact = pl.concat([fact, balance])
             print(f"{'turetme':12} {len(balance):6} satır  doğal nüfus artışı")
+
+    # An indicator fed by two adapters is only whole when both ran. Loading one alone is a
+    # legitimate thing to do while working, so this warns rather than refuses — but it
+    # says so, because the result looks like a finished indicator with half its breakdown.
+    for indicator_id, names in PAIRED.items():
+        ran = [name for name in names if name in wanted]
+        if ran and len(ran) < len(names):
+            print(
+                "UYARI:",
+                indicator_id,
+                "yarim yuklendi, eksik:",
+                ", ".join(name for name in names if name not in ran),
+            )
+
+    if "mean_marriage_age" in set(fact["indicator_id"].unique()):
+        both = marriage_age_total(fact)
+        if not both.is_empty():
+            fact = pl.concat([fact, both])
+            print(f"{'turetme':12} {len(both):6} satır  ortalama evlenme yaşı, toplam")
 
     target = PUBLIC / "fact.parquet"
     fact.write_parquet(target)

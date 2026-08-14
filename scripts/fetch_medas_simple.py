@@ -47,6 +47,8 @@ OUT = RAW / "medas" / "basit"
 ADNKS = "Adrese Dayalı Nüfus Kayıt Sistemi Sonuçları"
 BIRTHS = "Doğum İstatistikleri"
 DEATHS = "Ölüm İstatistikleri"
+MARRIAGES = "Evlenme İstatistikleri"
+DIVORCES = "Boşanma İstatistikleri"
 
 CELL_LIMIT = 50000
 
@@ -83,12 +85,37 @@ MEASURES = [
     ("yabanci-uyruklu", ADNKS, "Yabancı uyruklu nüfus", True),  # 2
     ("goc-disaridan", ADNKS, "Yurt dışından Türkiye'ye gelen göç", False),  # 1
     ("goc-disariya", ADNKS, "Türkiye'den yurt dışına giden göç", False),  # 1
+    # Kütük nüfusu: rows are the province a person is *registered* to, and the breakdown
+    # is where they actually live. Closed, that breakdown sums to "how many people are on
+    # this province's register", which is the number wanted. The mirror measure — rows by
+    # residence, breakdown by register — closes to the ordinary population instead, so the
+    # two are not interchangeable however alike their names read.
+    (
+        "kutuk-nufusu",
+        ADNKS,
+        "Nüfusa kayıtlı olunan ile göre ikamet edilen il",
+        False,
+    ),  # 1
     ("dogum", BIRTHS, "İkametgah yerine göre doğum", True),  # 12
     ("kaba-dogum-hizi", BIRTHS, "Kaba doğum hızı", False),  # 1
     ("olum", DEATHS, "İkametgah yerine göre ölüm", True),  # 24
     ("kaba-olum-hizi", DEATHS, "Kaba ölüm hızı", False),  # 1
     ("bebek-olum-hizi", DEATHS, "Bebek ölüm hızı", False),  # 1
     ("bes-yas-alti-olum-hizi", DEATHS, "Beş yaş altı ölüm", False),  # 1
+    # Marriage and divorce. Both counts carry ten or more breakdowns — the woman's age
+    # group, the education of each spouse, the length of the marriage, who the children
+    # were left with — and every one of them is left closed here. With them open the
+    # measure is 121 indicators and the download is a query per two years; closed it is
+    # one indicator and twenty-five years in one go. The breakdowns are a session of their
+    # own, not a checkbox on the way past.
+    ("evlenme", MARRIAGES, "Evlenme sayısı", False),  # 1
+    ("kaba-evlenme-hizi", MARRIAGES, "Kaba evlenme", False),  # 1
+    ("evlenme-yasi-erkek", MARRIAGES, "Erkeğin ortalama evlenme", False),  # 1
+    ("evlenme-yasi-kadin", MARRIAGES, "Kadının ortalama evlenme", False),  # 1
+    ("ilk-evlenme-yasi-erkek", MARRIAGES, "Erkeğin ortalama ilk evlenme", False),  # 1
+    ("ilk-evlenme-yasi-kadin", MARRIAGES, "Kadının ortalama ilk evlenme", False),  # 1
+    ("bosanma", DIVORCES, "Boşanma sayısı", False),  # 1
+    ("kaba-bosanma-hizi", DIVORCES, "Kaba boşanma", False),  # 1
 ]
 
 #: The Düzey box labels for the levels kept here.
@@ -100,8 +127,11 @@ def counted(page, pattern) -> int:
     return int(found.group(1)) if found else 0
 
 
-def target_path(name: str, level: str):
-    return OUT / ("nufus-" + name + "-" + level + ".csv")
+def target_path(name: str, level: str, part: int = 0):
+    #: Part 0 keeps the plain name every existing file already has; a sliced measure
+    #: numbers its pieces from one.
+    piece = "-" + str(part) if part else ""
+    return OUT / ("nufus-" + name + "-" + level + piece + ".csv")
 
 
 def build_query(page, topic: str, hint: str, breakdowns: bool) -> int:
@@ -142,9 +172,25 @@ def build_query(page, topic: str, hint: str, breakdowns: bool) -> int:
     return counted(page, INDICATORS)
 
 
-def fetch(page, name: str, topic: str, hint: str, breakdowns: bool, level: str) -> bool:
-    """One measure at one level, every year the page offers."""
-    target = target_path(name, level)
+def fetch(
+    page,
+    name: str,
+    topic: str,
+    hint: str,
+    breakdowns: bool,
+    level: str,
+    only: list | None = None,
+    part: int = 0,
+) -> bool:
+    """One measure at one level, every year the page offers — or the years in `only`.
+
+    `only` is how a measure too wide for one query is taken in slices. Kütük nüfusu is
+    the case: its breakdown is the province of residence and MEDAS will not let it be
+    closed, so the measure is 81 indicators however it is asked for, and 81 × 82 areas ×
+    19 years is 126.000 cells against a limit of 50.000. Seven years at a time fits.
+    Each slice lands in its own numbered file and the adapter reads them together.
+    """
+    target = target_path(name, level, part)
 
     count = build_query(page, topic, hint, breakdowns)
     if not count:
@@ -155,13 +201,62 @@ def fetch(page, name: str, topic: str, hint: str, breakdowns: bool, level: str) 
     if not years:
         print("   yil listesi bos")
         return False
+    if only is not None:
+        years = [y for y in years if y in only]
+        if not years:
+            print("   istenen yillar bu olcumde yok")
+            return False
+    # A year at a time, scrolled to before it is clicked. The list is long enough at
+    # twenty-five years that the last ones sit below the fold, and a click on a row that
+    # is off-screen waits the full minute and then takes the whole measure down with it —
+    # which is how the average marriage age came back with two files out of eight while
+    # the counts, four years shorter, went through untouched.
+    #
+    # A year that still will not take is dropped and *named*. Silently, the file would
+    # come back short and look complete.
+    missed = []
     for year in years:
-        row = page.locator(".z-listitem", has_text=str(year)).first
+        row = page.locator(
+            ".z-listitem", has_text=re.compile(r"^\s*" + str(year) + r"\s*$")
+        ).first
         if not row.count():
             continue
         box = row.locator(".z-listitem-checkbox")
-        (box if box.count() else row).click()
+        target_row = box if box.count() else row
+        try:
+            target_row.scroll_into_view_if_needed(timeout=5000)
+            target_row.click(timeout=10000)
+        except PlaywrightError:
+            missed.append(year)
+            continue
         settle(page)
+
+    # One year out of twenty-five failed on every long measure, and never the same one:
+    # 2004, then 2002, then 2006. That is not a bad row, it is a race — ticking a year
+    # re-renders the list under the handle we are holding. A second pass over just the
+    # ones that slipped, with the row found again from scratch, has taken every one of
+    # them so far.
+    for year in list(missed):
+        row = page.locator(
+            ".z-listitem", has_text=re.compile(r"^\s*" + str(year) + r"\s*$")
+        ).first
+        if not row.count():
+            continue
+        box = row.locator(".z-listitem-checkbox")
+        target_row = box if box.count() else row
+        try:
+            target_row.scroll_into_view_if_needed(timeout=5000)
+            target_row.click(timeout=10000)
+        except PlaywrightError:
+            continue
+        settle(page)
+        missed.remove(year)
+
+    if missed:
+        print("   · secilemeyen yil:", ", ".join(str(y) for y in missed))
+    if len(missed) == len(years):
+        print("   hicbir yil secilemedi")
+        return False
 
     click_exact(page, "İleri")
     label = LEVELS[level]
@@ -182,15 +277,37 @@ def fetch(page, name: str, topic: str, hint: str, breakdowns: bool, level: str) 
             settle(page)
             break
 
+    # Two things go wrong here and they pull in opposite directions.
+    #
+    # The header tick does not always take on the first click, so it is worth clicking
+    # again — the count is still zero, meaning the box is still off, so a second click
+    # turns it on rather than clearing anything.
+    #
+    # And once it does take, the counter *climbs* while the list works through: read
+    # straight away it says 33 where the answer is 82, and every cell estimate built on
+    # it comes out a third of the truth. That is how kütük nüfusu was cut into "slices"
+    # each of which was still over the limit — the arithmetic was right and its input was
+    # half-finished. So after each click, read until the number stops moving.
     areas = 0
-    for _ in range(2):
+    for _ in range(3):
         if not check_visible(page, ".z-listheader-checkable"):
             print("   alan listesi isaretlenemedi")
             return False
-        areas = counted(page, PICKED)
-        if areas:
+        # Three readings the same, not two. The counter does not climb smoothly — it
+        # rests: 33 for two reads running, then 39, then 82. Two agreeing reads called
+        # 33 the answer and sliced the download into pieces a third too big, twice over.
+        seen = 0
+        same = 0
+        for _ in range(20):
+            now = counted(page, PICKED)
+            same = same + 1 if now == seen else 0
+            seen = max(seen, now)
+            if seen and same >= 2:
+                break
+            settle(page)
+        if seen:
+            areas = seen
             break
-        settle(page)
     if not areas:
         print("   alan secilemedi")
         return False
@@ -207,11 +324,10 @@ def fetch(page, name: str, topic: str, hint: str, breakdowns: bool, level: str) 
         cells,
     )
     if cells > CELL_LIMIT:
-        # Not expected for this batch — every one of them was measured as narrow. Said
-        # plainly rather than silently truncated, because a measure that outgrew this
-        # script belongs in one of the chunking ones.
-        print("   · limit asildi, bu olcum bu betige sigmiyor")
-        return False
+        # Said plainly rather than silently truncated. The caller reads the numbers back
+        # out of this to work out how many years fit, and comes round again in slices.
+        print("   · limit asildi:", cells, "hucre")
+        return (count, areas, years)
 
     if not click_exact(page, "Rapor Oluştur"):
         print("   rapor olusturulamadi")
@@ -255,9 +371,11 @@ def main() -> None:
                     print("=", name, level, "zaten var, atlandi")
                     continue
                 print("=", name, level)
+                outcome = None
                 for attempt in (1, 2):
                     try:
-                        if fetch(page, name, topic, hint, breakdowns, level):
+                        outcome = fetch(page, name, topic, hint, breakdowns, level)
+                        if outcome:
                             break
                     except PlaywrightError as error:
                         print("   HATA:", type(error).__name__, str(error)[:120])
@@ -265,6 +383,57 @@ def main() -> None:
                         print("   · tekrar deneniyor")
                         time.sleep(PAUSE)
                 time.sleep(PAUSE)
+
+                # Too wide for one query: come back in year-sized slices. How many years
+                # fit is arithmetic off what the page just reported, not a guess — and one
+                # year that does not fit on its own is a measure for a different script,
+                # said out loud rather than half-downloaded.
+                if not isinstance(outcome, tuple):
+                    continue
+                count, areas, years = outcome
+                # Nine tenths of the limit, not all of it: the indicator count MEDAS
+                # reports for the whole span is not always the count it applies to a
+                # slice of it, and a batch sized to the millimetre came back over the
+                # line by 2%. The slack costs one extra query and never a wasted one.
+                per_query = int(CELL_LIMIT * 0.9) // max(1, count * areas)
+                if per_query < 1:
+                    print("   · tek yil bile sigmiyor, bu betik yetmez")
+                    continue
+                slices = [
+                    years[i : i + per_query] for i in range(0, len(years), per_query)
+                ]
+                print("   ·", len(slices), "parcaya bolunuyor,", per_query, "yil")
+                for part, batch in enumerate(slices, start=1):
+                    if target_path(name, level, part).exists():
+                        print("  ", part, "zaten var")
+                        continue
+                    for attempt in (1, 2):
+                        try:
+                            # `is True` on purpose: over the limit, fetch returns the
+                            # counts, and a tuple is truthy. Read as a plain boolean it
+                            # counted a refused slice as a downloaded one and moved on,
+                            # which is how the first run came back holding one year of
+                            # nineteen and calling it done.
+                            if (
+                                fetch(
+                                    page,
+                                    name,
+                                    topic,
+                                    hint,
+                                    breakdowns,
+                                    level,
+                                    batch,
+                                    part,
+                                )
+                                is True
+                            ):
+                                break
+                        except PlaywrightError as error:
+                            print("   HATA:", type(error).__name__, str(error)[:120])
+                        if attempt == 1:
+                            print("   · tekrar deneniyor")
+                            time.sleep(PAUSE)
+                    time.sleep(PAUSE)
 
         browser.close()
 

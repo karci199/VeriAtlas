@@ -13,7 +13,10 @@ What is loaded and what is deliberately not:
   the raw file keeps it, so asking it later needs no new download, only a dim.
 * **Ölüm sayısı** — published by sex × month, stored by sex, months summed the same way.
 * **Bebek ölüm hızı**, **beş yaş altı ölüm hızı** — no breakdown, one value per year.
-* **Kaba doğum hızı** and **kaba ölüm hızı** are *not* loaded. Both are an exact function
+* **Evlenme** and **boşanma sayısı** — one value per year, twenty-five of them, with
+  every breakdown left closed (see the indicator's note). Counted by the place the event
+  happened rather than where the couple lives, which is how TÜİK publishes them.
+* **Kaba doğum hızı**, **kaba ölüm hızı**, **kaba evlenme/boşanma hızı** are *not* loaded. Both are an exact function
   of rows we already hold — the event count over the population — and K12 says such a
   number is a derivation, not a second download that can drift out of step with the first.
   The page's "Alan nüfusunun %'si" mode already draws them. The published files stay in
@@ -50,12 +53,46 @@ SEX_IN_LABEL = re.compile(r"cinsiyeti\s*:\s*(?P<sex>Erkek|Kadın)")
 
 SEXES = {"Erkek": "male", "Kadın": "female"}
 
-#: file stem → (indicator id, the dim kept, or None to sum every row of the year).
+#: file stem → (adapter name, indicator id, the dim read from the row label or None to sum
+#: every row of the year, and the dims the file carries as a whole).
+#:
+#: That last field is for the measures MEDAS splits into separate *files* rather than
+#: separate rows: the average age at marriage is published as "erkeğin" and "kadının",
+#: four files that are two indicators by sex. The breakdown is a fact about which file
+#: this is, so it is stated here rather than looked for in a row label that does not
+#: carry it. Two files feeding one indicator is also why the adapter name is written out
+#: instead of derived from the indicator id — they would collide.
 MEASURES = {
-    "dogum": ("births", None),
-    "olum": ("deaths", "sex"),
-    "bebek-olum-hizi": ("infant_mortality", None),
-    "bes-yas-alti-olum-hizi": ("under5_mortality", None),
+    "dogum": ("births", "births", None, {}),
+    "olum": ("deaths", "deaths", "sex", {}),
+    "bebek-olum-hizi": ("infant_mortality", "infant_mortality", None, {}),
+    "bes-yas-alti-olum-hizi": ("under5_mortality", "under5_mortality", None, {}),
+    "evlenme": ("marriages", "marriages", None, {}),
+    "bosanma": ("divorces", "divorces", None, {}),
+    "evlenme-yasi-erkek": (
+        "mean_marriage_age_male",
+        "mean_marriage_age",
+        None,
+        {"sex": "male"},
+    ),
+    "evlenme-yasi-kadin": (
+        "mean_marriage_age_female",
+        "mean_marriage_age",
+        None,
+        {"sex": "female"},
+    ),
+    "ilk-evlenme-yasi-erkek": (
+        "mean_first_marriage_age_male",
+        "mean_first_marriage_age",
+        None,
+        {"sex": "male"},
+    ),
+    "ilk-evlenme-yasi-kadin": (
+        "mean_first_marriage_age_female",
+        "mean_first_marriage_age",
+        None,
+        {"sex": "female"},
+    ),
 }
 
 
@@ -83,8 +120,17 @@ def header_of(lines: list[str], single: dict[str, str]) -> dict[int, tuple[str, 
 
 
 def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
-    """One transposed export, summed to one row per area-year-dims."""
-    indicator_id, dim = spec
+    """One transposed export, summed to one row per area-year-dims.
+
+    Summed — which is only right for a count. The rates in this file (infant mortality,
+    the average age at marriage) arrive one row per area-year, so the sum is a sum of one
+    and the same code reads both. If that ever stops being true — MEDAS adds a breakdown,
+    or a measure is fetched with one open by mistake — a mortality rate of 9 and one of 11
+    would quietly become 20. So the unit decides: what does not add up is not allowed to
+    arrive twice.
+    """
+    indicator_id, dim, fixed = spec[1], spec[2], spec[3]
+    additive = get(indicator_id).unit.additive
     lines = read_text(path).splitlines()
     header = header_of(lines, single)
     if not header:
@@ -117,9 +163,9 @@ def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
                 # A row whose breakdown we cannot place must not be folded into a total
                 # silently.
                 continue
-            dims = format_dims({dim: SEXES[sex.group("sex")]})
+            dims = format_dims({**fixed, dim: SEXES[sex.group("sex")]})
         else:
-            dims = ""
+            dims = format_dims(fixed) if fixed else ""
 
         for index, (area_id, level) in header.items():
             if index >= len(cells):
@@ -133,6 +179,16 @@ def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
             except ValueError:
                 continue
             key = (area_id, level, year, dims)
+            if key in totals and not additive:
+                raise ValueError(
+                    indicator_id
+                    + ": toplanamayan birim ayni alan-yil icin iki deger aldi ("
+                    + area_id
+                    + " "
+                    + str(year)
+                    + "), dosya: "
+                    + path.name
+                )
             totals[key] = totals.get(key, 0.0) + value
 
     return [
@@ -160,7 +216,7 @@ class VitalMeasure:
 
     @property
     def indicator_id(self) -> str:
-        return self.spec[0]
+        return self.spec[1]
 
     def fetch(self) -> Path:
         return DOWNLOADS
@@ -227,4 +283,19 @@ VITAL_ADAPTERS = {
         {"stem": stem, "spec": spec, "__doc__": "MEDAS vital measure: " + spec[0]},
     )
     for stem, spec in MEASURES.items()
+}
+
+#: Adapters that write into the same indicator from different files, and so must run
+#: together or not at all. Loading `mean_marriage_age_male` alone would publish an
+#: indicator whose sex breakdown has one value in it, which is not a smaller version of
+#: the truth — it is a chart with the women missing.
+PAIRED = {
+    "mean_marriage_age": (
+        "tuik_mean_marriage_age_male",
+        "tuik_mean_marriage_age_female",
+    ),
+    "mean_first_marriage_age": (
+        "tuik_mean_first_marriage_age_male",
+        "tuik_mean_first_marriage_age_female",
+    ),
 }

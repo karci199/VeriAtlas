@@ -24,6 +24,50 @@ SINGLE_AGE = re.compile(r"^\d+$")
 TOTAL = "total"
 
 
+def marriage_age_total(fact: pl.DataFrame) -> pl.DataFrame:
+    """The average age at marriage of everyone marrying, from the two published averages.
+
+    Normally averaging two averages is the mistake this module exists to avoid — it is
+    why the median age total is computed from the distribution and not from the published
+    medians. Here it is exact, and for a reason that belongs to this measure only: every
+    marriage TÜİK records has one groom and one bride, so the two averages carry the
+    **same weight** by construction. (N·m + N·f) / 2N is (m + f) / 2 with nothing assumed.
+
+    `mean_first_marriage_age` is deliberately not given the same treatment. A marriage can
+    be his first and her second, so the number of first-time grooms and first-time brides
+    are different numbers, and their average would need weights we do not hold.
+    """
+    ages = fact.filter(pl.col("indicator_id") == "mean_marriage_age").with_columns(
+        pl.col("dims").str.extract(r"sex=([^;]*)").alias("sex")
+    )
+    if ages.is_empty():
+        return fact.head(0)
+
+    keys = ["area_id", "area_level", "period_start", "frequency", "vintage"]
+    pairs = (
+        ages.filter(pl.col("sex").is_in(["male", "female"]))
+        .group_by(keys)
+        .agg(
+            pl.col("value").mean().alias("value"),
+            pl.col("sex").n_unique().alias("sides"),
+            pl.col("source_id").first(),
+            pl.col("retrieved_at").max(),
+        )
+        # Both sides or nothing: one sex alone averaged with itself is that sex's figure
+        # wearing the label "Toplam".
+        .filter(pl.col("sides") == 2)
+    )
+    if pairs.is_empty():
+        return fact.head(0)
+
+    return pairs.with_columns(
+        pl.lit("mean_marriage_age").alias("indicator_id"),
+        pl.lit(format_dims({"sex": TOTAL})).alias("dims"),
+        pl.lit("year_of_age").alias("unit"),
+        pl.lit("estimated").alias("quality_flag"),
+    ).select(fact.columns)
+
+
 def natural_increase(fact: pl.DataFrame) -> pl.DataFrame:
     """Births minus deaths: the population change a place makes on its own.
 

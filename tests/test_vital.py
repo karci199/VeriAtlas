@@ -13,7 +13,7 @@ import polars as pl
 import pytest
 
 from veriatlas.adapters.tuik_vital import read_export
-from veriatlas.derived import natural_increase
+from veriatlas.derived import marriage_age_total, natural_increase
 
 #: Two provinces across the header, two sexes down the rows, two months in each block,
 #: two years in each month — small enough to add up by hand, shaped exactly like MEDAS's.
@@ -45,7 +45,7 @@ def test_a_breakdown_written_once_carries_down_its_block(deaths):
     Read literally it cost sixteen of seventeen years: every continuation row failed the
     sex match and was dropped, and deaths loaded as a single period without complaining.
     """
-    rows = read_export(deaths, ("deaths", "sex"), {})
+    rows = read_export(deaths, ("deaths", "deaths", "sex", {}), {})
     years = {(row["year"], row["dims"]) for row in rows}
     assert years == {
         (2009, "sex=male"),
@@ -57,7 +57,7 @@ def test_a_breakdown_written_once_carries_down_its_block(deaths):
 
 def test_months_are_summed_into_the_year(deaths):
     """Two month rows of one province-year are one row worth their total."""
-    rows = read_export(deaths, ("deaths", "sex"), {})
+    rows = read_export(deaths, ("deaths", "deaths", "sex", {}), {})
     adana = {
         (row["year"], row["dims"]): row["value"]
         for row in rows
@@ -70,7 +70,7 @@ def test_months_are_summed_into_the_year(deaths):
 
 def test_dropping_the_dim_sums_every_row_of_the_year(deaths):
     """Births are read this way: no breakdown kept, the whole block summed."""
-    rows = read_export(deaths, ("births", None), {})
+    rows = read_export(deaths, ("births", "births", None, {}), {})
     adana = {row["year"]: row["value"] for row in rows if row["area_id"] == "TR-01"}
     assert adana == {2009: 158.0, 2010: 272.0}
 
@@ -102,3 +102,40 @@ def test_natural_increase_needs_both_sides():
     result = natural_increase(frame)
     assert len(result) == 1, "2025'in ölümü yok, satırı da olmamalı"
     assert result["value"][0] == 60.0
+
+
+def marriage_ages(rows):
+    """A frame of `mean_marriage_age` rows: (year, sex, value)."""
+    return pl.DataFrame(
+        {
+            "indicator_id": ["mean_marriage_age"] * len(rows),
+            "area_id": ["TR-01"] * len(rows),
+            "area_level": ["province"] * len(rows),
+            "period_start": [dt.date(year, 1, 1) for year, _, _ in rows],
+            "frequency": ["annual"] * len(rows),
+            "dims": ["sex=" + sex for _, sex, _ in rows],
+            "value": [value for _, _, value in rows],
+            "unit": ["year_of_age"] * len(rows),
+            "quality_flag": ["measured"] * len(rows),
+            "vintage": ["2026-08"] * len(rows),
+            "source_id": ["tuik_medas"] * len(rows),
+            "retrieved_at": [dt.date(2026, 8, 14)] * len(rows),
+        }
+    )
+
+
+def test_marriage_age_total_is_the_midpoint():
+    """Exact here, because every marriage has one groom and one bride — the two averages
+    carry equal weight by construction, which is not true of the median age."""
+    result = marriage_age_total(
+        marriage_ages([(2024, "male", 31.2), (2024, "female", 28.4)])
+    )
+    assert len(result) == 1
+    assert result["value"][0] == pytest.approx(29.8)
+    assert result["dims"][0] == "sex=total"
+    assert result["quality_flag"][0] == "estimated", "bizim hesabımız, rozeti taşımalı"
+
+
+def test_marriage_age_total_needs_both_sexes():
+    """One sex averaged with itself is that sex's figure wearing the label "Toplam"."""
+    assert marriage_age_total(marriage_ages([(2024, "male", 31.2)])).is_empty()

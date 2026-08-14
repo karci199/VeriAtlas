@@ -34,6 +34,11 @@ label_tr = "Ölüm"
 label_en = "Mortality"
 order = 25
 
+[topic.evlenme_bosanma]
+label_tr = "Evlenme ve boşanma"
+label_en = "Marriage and divorce"
+order = 22
+
 [topic.yapi_ruhsati]
 label_tr = "Yapı ruhsatı"
 label_en = "Building permits"
@@ -262,6 +267,18 @@ additive = true
 # rates are per thousand *people*, these are per thousand *live births*, and a screen that
 # treats them as the same unit invites putting them on one axis, where a bebek ölüm hızı
 # of 9 and a kaba ölüm hızı of 5 look comparable and are not.
+[unit.marriage]
+label_tr = "evlenme"
+label_en = "marriages"
+decimals = 0
+additive = true
+
+[unit.divorce]
+label_tr = "boşanma"
+label_en = "divorces"
+decimals = 0
+additive = true
+
 [unit.per_thousand_live_births]
 label_tr = "‰ (canlı doğumda)"
 label_en = "per 1.000 live births"
@@ -486,6 +503,77 @@ Ham sayı nüfusla birlikte okunmalı: İstanbul'un ölümü Tunceli'ninkinden �
 için değil, kalabalık olduğu için yüksektir. Kaba ölüm hızı ayrı bir gösterge \
 değildir — "Alan nüfusunun %'si" kipi bu sayıyı nüfusa bölerek onu zaten verir. \
 2009'dan itibaren."""
+
+# Evlenme ve boşanma sayısı, kırılımları kapalı. MEDAS ikisinin altında da on kadar
+# kırılım veriyor — eşlerin yaş grubu, eğitim durumu, evliliğin süresi, çocukların
+# velayeti — ve hepsi açıkken ölçü 121 göstergeye çıkıp indirme iki yılda bir sorguya
+# iniyor. Kapalıyken tek gösterge ve yirmi beş yıl tek seferde geliyor. Kırılımlar ayrı
+# bir oturumun işi; ham dosyalar da o gün için duruyor.
+[indicator.marriages]
+label_tr = "Evlenme sayısı"
+label_en = "Marriages"
+topic = "evlenme_bosanma"
+unit = "marriage"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Yıl içinde kıyılan resmî nikâh sayısı. **Olayın yerine göre**, yani nikâhın kıyıldığı \
+ile göre sayılır — doğum ve ölümdeki gibi ikametgaha göre değil, çünkü TÜİK evlenmeyi \
+bu biçimde yayımlıyor. Küçük ilçelerinde çok nikâh kıyılan turistik illerde bu ikisi \
+ayrışır. Kaba evlenme hızı ayrı bir gösterge değildir: "Alan nüfusunun %'si" kipi bu \
+sayıyı nüfusa bölerek onu verir. 2001'den itibaren."""
+
+[indicator.divorces]
+label_tr = "Boşanma sayısı"
+label_en = "Divorces"
+topic = "evlenme_bosanma"
+unit = "divorce"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Yıl içinde kesinleşen boşanma kararı sayısı. Evlenme sayısıyla **aynı yılın oranı \
+değildir**: bu yıl boşananlar başka yıllarda evlenmiş çiftlerdir, o yüzden ikisinin \
+bölümü "evliliklerin yüzde kaçı bitiyor" sorusunu yanıtlamaz — evlenmenin düştüğü bir \
+yılda bu oran, hiçbir şey değişmeden yükselir. 2001'den itibaren."""
+
+[indicator.mean_first_marriage_age]
+label_tr = "Ortalama ilk evlenme yaşı"
+label_en = "Mean age at first marriage"
+topic = "evlenme_bosanma"
+unit = "year_of_age"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Hayatında ilk kez evlenenlerin ortalama yaşı, cinsiyete göre. "İnsanlar kaç yaşında \
+evleniyor" sorusunun karşılığı budur ve doğurganlıkla birlikte okunur: ilk evlenme \
+yaşının yükseldiği yerde ilk doğum da geç oluyor. Türkiye'de erkek ile kadın arasında \
+uzun süredir üç yaş dolayında bir fark var. **Toplam yok** — ve burası ortalama evlenme \
+yaşından ayrılır: bir evlilik erkeğin ilki, kadının ikincisi olabilir, yani ilk kez \
+evlenen erkek ve kadın sayısı eşit değildir. İkisini tek sayıda birleştirmek elimizde \
+olmayan ağırlıkları gerektirir, o yüzden uydurulmuyor. 2001'den itibaren."""
+
+[indicator.mean_marriage_age]
+label_tr = "Ortalama evlenme yaşı"
+label_en = "Mean age at marriage"
+topic = "evlenme_bosanma"
+unit = "year_of_age"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+O yıl evlenen herkesin ortalama yaşı, cinsiyete göre — ikinci ve sonraki evlilikler \
+dahil. Bu yüzden ilk evlenme yaşından yüksektir ve aradaki fark, boşanma sonrası \
+yeniden evlenmenin ne kadar yaygın olduğuyla birlikte hareket eder. İkisi ayrı \
+göstergedir çünkü ayrı soruları yanıtlar. **Toplam** bizim hesabımızdır (rozet: \
+türetilmiş) ve burada iki ortalamanın ortalaması **tam olarak doğrudur**: her nikâhta \
+bir damat ve bir gelin vardır, yani iki ortalamanın ağırlığı tanım gereği eşittir. \
+Ortanca yaşta yasak olan işlem burada serbest, çünkü orada ağırlıklar eşit değildi. \
+2001'den itibaren."""
 
 [indicator.natural_increase]
 label_tr = "Doğal nüfus artışı"

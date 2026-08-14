@@ -254,6 +254,55 @@ h1 {
 .dims select { min-width: 190px; }
 .dims > div:first-child select { min-width: 300px; }
 
+/* A control with few options, laid out so all of them are readable at once (see chooser
+   in explorer.js). The radio itself is hidden — the button *is* the radio, so the box
+   would be a second thing saying the same thing — but only visually: it keeps its size
+   and its place in the tab order, so the group still arrows left and right and still
+   announces itself as a radio group. */
+.pills { display: flex; flex-wrap: wrap; gap: 2px; }
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    background: var(--bg-control);
+    border: 1px solid var(--stroke-control);
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    line-height: 1;
+    padding: var(--gap-xs) var(--gap-sm);
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Joined into one strip: the group reads as a single control with a chosen part, the way
+   the view tabs already do, rather than as several buttons that happen to sit together. */
+.pill:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+.pill:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+.pill:not(:last-child) { border-right: none; }
+.pill:only-child { border-radius: var(--radius); }
+
+.pill input { position: absolute; opacity: 0; pointer-events: none; }
+.pill:hover { background: var(--bg-control-hover); color: var(--text-primary); }
+
+.pill.on {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--text-on-accent);
+}
+
+.pill.on:hover { background: var(--accent); color: var(--text-on-accent); }
+
+.pill.off, .pill:has(input:disabled) {
+    color: var(--text-tertiary);
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.pill:has(input:focus-visible) {
+    outline: 2px solid var(--stroke-focus);
+    outline-offset: 1px;
+}
+
 .radios { display: flex; flex-direction: column; gap: var(--gap-xs); }
 
 .radios label {
