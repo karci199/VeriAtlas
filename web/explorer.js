@@ -1134,6 +1134,18 @@ function map() {
     const values = thisYear;
     const [low, high] = span.length ? [Math.min(...span), Math.max(...span)] : [0, 0];
 
+    // A share of everything is 100% everywhere, and a ramp whose two ends are both 100
+    // paints the whole country one flat colour. That is arithmetic, not a finding, so it
+    // says so instead of drawing it.
+    if (state.share && !(state.indicator.dims || []).some((d) => state.dims[d] !== TOTAL)) {
+        return empty(
+            "Toplamın %'si için bir kırılım seçmek gerekiyor.",
+            "Her kırılım 'Tümü' iken her alan kendi toplamının %100'ü — " +
+            "üstteki " + (state.indicator.dims || []).map(dimLabel).join(" ya da ") +
+            " kutusundan bir değer seçin"
+        );
+    }
+
     // District rows carry no age or sex. Asking for one and getting a blank country is
     // confusing; say which control is doing it.
     const narrowed = (state.indicator.dims || []).filter((d) => state.dims[d] !== TOTAL);
@@ -1199,7 +1211,7 @@ function map() {
             .join(" ");
         svg += '<path class="area" data-area="' + feature.properties.area_id + '" d="' + d +
                '" fill="' + (t === null ? base : ink) + '" fill-opacity="' +
-               (t === null ? 1 : (0.15 + 0.85 * t).toFixed(2)) + '" stroke="' +
+               (t === null ? 1 : rampOpacity(t)) + '" stroke="' +
                token("--bg-card") + '" stroke-width="0.6" data-name="' +
                feature.properties.name_tr + '" data-value="' +
                (value === undefined ? "veri yok" : fmt(value)) + '" data-colour="' + ink + '"/>';
@@ -1242,6 +1254,17 @@ function map() {
            (values.length ? legend(low, high, ink, values.length < features.length) : "");
 }
 
+/** Where on the colour ramp a value at position `t` (0..1) sits.
+ *
+ *  The floor is not zero. The ramp is one hue at varying strength over the card, so a
+ *  low value drawn at 0.15 was barely tinted — indistinguishable from the flat grey that
+ *  means "no data", and a map of a narrow range came out uniformly dark. Starting at a
+ *  visible tint spends the range on telling values apart, which is the ramp's whole job.
+ *  Shared with the legend so the two cannot drift. */
+function rampOpacity(t) {
+    return (0.28 + 0.72 * t).toFixed(2);
+}
+
 function rings(feature) {
     const g = feature.geometry;
     return g.type === "Polygon" ? g.coordinates : g.coordinates.flat();
@@ -1257,7 +1280,7 @@ function legend(low, high, ink, gaps) {
     return "<div style='display:flex;align-items:center;gap:8px;justify-content:flex-end;" +
            "color:var(--text-tertiary);font-size:var(--text-xs)'>" + fmt(low) +
            stops.map((t) => "<span style='width:26px;height:12px;background:" + ink +
-                            ";opacity:" + (0.15 + 0.85 * t).toFixed(2) + "'></span>").join("") +
+                            ";opacity:" + rampOpacity(t) + "'></span>").join("") +
            fmt(high) + missing + "</div>";
 }
 
