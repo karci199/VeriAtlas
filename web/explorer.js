@@ -844,6 +844,17 @@ function sliceRaw(level = state.level) {
         //   country — distribution: what share of *the country* is here.
         // Note that "own" with no breakdown chosen really is 100% everywhere; that is
         // arithmetic, not a bug, and the reader who asked for it can see why.
+        // "own:<dim>" — the share within one breakdown, every other choice held. See
+        // shareControl for why this is a separate mode rather than what "own" means.
+        const within = shareWithin();
+        if (within) {
+            const base = withinTotals(level, within);
+            return [...totals.values()].map((row) => {
+                const found = base.get(row.area_id + "|" + row.year);
+                return {...row, value: found ? (row.value / found) * 100 : NaN};
+            });
+        }
+
         if (state.share === "own") {
             const whole = wholeOf(level);
             return [...totals.values()].map((row) => {
@@ -921,6 +932,32 @@ function byArea(level = state.level) {
  *  number that means anything. */
 function wholeOf(level) {
     return remember("whole|" + level + "|" + state.indicator.id, () => buildWhole(level));
+}
+
+/** The breakdown the reader is taking a share within, or null. */
+function shareWithin() {
+    const dim = state.share.startsWith("own:") ? state.share.slice(4) : null;
+    return dim && (state.indicator.dims || []).includes(dim) ? dim : null;
+}
+
+/** Per area-year, the total across one breakdown with every other choice held fixed.
+ *
+ *  The denominator of "Medeni durum içinde %": for 65+ women it sums the widowed, the
+ *  married, the never-married and the divorced 65+ women, and nobody else. */
+function withinTotals(level, dim) {
+    return remember("within|" + level + "|" + dim + "|" + choices(), () => {
+        const others = (state.indicator.dims || []).filter((d) => d !== dim);
+        const base = new Map();
+        for (const row of rowsAt(level)) {
+            if (!others.every((d) => state.dims[d] === TOTAL ||
+                                     String(groupValue(d, row[d])) === String(state.dims[d]))) {
+                continue;
+            }
+            const key = row.area_id + "|" + row.year;
+            base.set(key, (base.get(key) || 0) + row.value);
+        }
+        return base;
+    });
 }
 
 function buildWhole(level) {
@@ -1406,8 +1443,13 @@ function unitLabel() {
     if (!state.share) {
         return state.indicator.unit;
     }
-    // Name the denominator, because the two percentages are different numbers about
-    // different things and only the label tells them apart on the page.
+    // Name the denominator, because these percentages are different numbers about
+    // different things and only the label tells them apart on the page. "65+ kadınlarda
+    // dul" and "nüfusta 65+ dul kadın" are both percentages and they are not close.
+    const within = shareWithin();
+    if (within) {
+        return dimLabel(within).toLocaleLowerCase("tr") + " içinde %";
+    }
     return state.share === "own"
         ? "alanın kendi toplamının %'si"
         : (LEVEL_LABELS[state.level] === "Türkiye" ? "toplamın" : "Türkiye toplamının") +
@@ -1623,10 +1665,26 @@ function shareControl() {
         "<option value='" + value + "'" + (state.share === value ? " selected" : "") +
         ">" + label + "</option>";
 
+    // A third kind of percentage, one per breakdown: the share *within* that breakdown,
+    // holding every other choice where the reader put it.
+    //
+    // With one breakdown "alanın kendi toplamı" was unambiguous. With three it is not,
+    // and it was quietly answering the wrong question: asking for 65+ women who are
+    // widowed gave 7,59 — their share of the whole population aged 15 and over, which is
+    // true and is not what anybody means by it. The question is "of women aged 65 and
+    // over, how many are widowed", and that needs a denominator that keeps sex and age
+    // fixed while summing across marital status. Which dimension to sum across is a real
+    // choice with more than one right answer, so it is offered rather than guessed.
+    const within = (state.indicator.dims || [])
+        .filter((dim) => valuesOf(dim).length > 1)
+        .map((dim) => option("own:" + dim, dimLabel(dim) + " içinde %"))
+        .join("");
+
     return "<div><div class='dim-label'>Değer</div><select id='share'>" +
            option("", "Mutlak sayı") +
            option("country", (LEVEL_LABELS[state.level] === "Türkiye" ? "Toplamın" : "Türkiye toplamının") + " %'si") +
            option("own", "Alanın kendi toplamının %'si") +
+           within +
            "</select></div>";
 }
 
