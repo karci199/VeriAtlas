@@ -517,6 +517,13 @@ function remember(key, build) {
 function choices() {
     return (
         state.indicator.id + "|" + state.share + "|" +
+        // How much population is in hand, but only where the answer depends on it. The
+        // population arrives after the first draw, and a slice computed against nothing
+        // is a column of NaN — cached under a key that does not mention the population,
+        // it stayed NaN for the rest of the session even once the file had landed. The
+        // marker changes when the rows arrive, so that slice is recomputed and every
+        // other slice keeps the key it always had.
+        (state.share === "population" ? (versusRows.get(AGAINST)?.length || 0) + "|" : "") +
         (state.indicator.dims || [])
             .map((d) => d + "=" + state.dims[d] + "/" + (state.grouping[d] || ""))
             .join(";")
@@ -1013,9 +1020,17 @@ async function ensurePopulation() {
     }
 }
 
-/** Total population per area-year at a level: `Map("TR-16|2025" -> 3263011)`. */
+/** Total population per area-year at a level: `Map("TR-16|2025" -> 3263011)`.
+ *
+ *  The row count is in the memo key, which looks redundant and is not: the population is
+ *  fetched lazily, and anything computed from it before it lands would otherwise be
+ *  remembered as an empty map for the rest of the session. That is what "İl nüfusunun
+ *  %'si" did on kütük nüfusu — a full column of dashes, on an indicator whose data was
+ *  sitting right there. It worked wherever the population happened to have been fetched
+ *  first, which is the worst kind of bug: the one that comes and goes with what you
+ *  clicked before. */
 function populationTotals(level) {
-    return remember("pop|" + level, () => {
+    return remember("pop|" + level + "|" + (versusRows.get(AGAINST)?.length || 0), () => {
         const totals = new Map();
         for (const row of versusRows.get(AGAINST) || []) {
             if (row.level !== level) {
@@ -1639,10 +1654,19 @@ function unitLabel() {
     if (within) {
         return dimLabel(within).toLocaleLowerCase("tr") + " içinde %";
     }
-    return state.share === "own"
-        ? "alanın kendi toplamının %'si"
-        : (LEVEL_LABELS[state.level] === "Türkiye" ? "toplamın" : "Türkiye toplamının") +
-          " %'si";
+    if (state.share === "own") {
+        return "alanın kendi toplamının %'si";
+    }
+    // Named rather than left to the fallthrough: reading against the population is the
+    // one share whose denominator is a different indicator, and it was printing as
+    // "Türkiye toplamının %'si" — the chart said one thing, the control said another,
+    // and the number was neither.
+    if (state.share === "population") {
+        return (LEVEL_LABELS[state.level] || "alan").toLocaleLowerCase("tr") +
+               " nüfusunun %'si";
+    }
+    return (LEVEL_LABELS[state.level] === "Türkiye" ? "toplamın" : "Türkiye toplamının") +
+           " %'si";
 }
 
 /** Sharing divides by a total, so it needs a unit that adds up and a breakdown to be a
@@ -1948,9 +1972,16 @@ function shareControl() {
     // over, how many are widowed", and that needs a denominator that keeps sex and age
     // fixed while summing across marital status. Which dimension to sum across is a real
     // choice with more than one right answer, so it is offered rather than guessed.
-    const within = (state.indicator.dims || [])
-        .filter((dim) => valuesOf(dim).length > 1)
-        .map((dim) => option("own:" + dim, dimLabel(dim) + " içinde %"));
+    // One per breakdown — but only where there is more than one breakdown to tell apart.
+    // With a single dim, "kırılım içinde %" and "alanın kendi toplamının %'si" divide by
+    // the very same total: kütük nüfusu offered both, side by side, drawing identical
+    // maps. Two names for one number is worse than either name alone, because a reader
+    // who sees two controls assumes they answer two questions.
+    const dims = (state.indicator.dims || []).filter((dim) => valuesOf(dim).length > 1);
+    const within =
+        dims.length > 1
+            ? dims.map((dim) => option("own:" + dim, dimLabel(dim) + " içinde %"))
+            : [];
 
     // "Alanın kendi toplamı" is only a question where there is a breakdown to be a share
     // of; without one it is 100 everywhere, which is arithmetic rather than an answer.
