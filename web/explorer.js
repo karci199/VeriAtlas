@@ -844,6 +844,15 @@ function sliceRaw(level = state.level) {
         //   country — distribution: what share of *the country* is here.
         // Note that "own" with no breakdown chosen really is 100% everywhere; that is
         // arithmetic, not a bug, and the reader who asked for it can see why.
+        // Against another indicator entirely: the area's population.
+        if (state.share === "population") {
+            const people = populationTotals(level);
+            return [...totals.values()].map((row) => {
+                const base = people.get(row.area_id + "|" + row.year);
+                return {...row, value: base ? (row.value / base) * 100 : NaN};
+            });
+        }
+
         // "own:<dim>" — the share within one breakdown, every other choice held. See
         // shareControl for why this is a separate mode rather than what "own" means.
         const within = shareWithin();
@@ -861,6 +870,19 @@ function sliceRaw(level = state.level) {
                 const base = whole.get(row.area_id + "|" + row.year);
                 return {...row, value: base ? (row.value / base) * 100 : NaN};
             });
+        }
+
+        // A value that is true by construction is not an observation.
+        //
+        // At country level this mode divides Türkiye by Türkiye and gets 100, every year,
+        // for every indicator. It is arithmetic, not a finding, and drawn beside the
+        // provinces it flattens the colour ramp and the axis onto a number that means
+        // nothing. The same rule covers the other cases of the same shape — an area's
+        // share of itself, a share with no breakdown to be a share of — so they are
+        // excluded here rather than each being noticed separately later.
+        const areas = new Set([...totals.values()].map((row) => row.area_id));
+        if (areas.size < 2) {
+            return [...totals.values()].map((row) => ({...row, value: NaN}));
         }
 
         const nationwide = new Map();
@@ -932,6 +954,80 @@ function byArea(level = state.level) {
  *  number that means anything. */
 function wholeOf(level) {
     return remember("whole|" + level + "|" + state.indicator.id, () => buildWhole(level));
+}
+
+// region Against the population
+//
+// Every share mode so far divides an indicator by part of itself. "Kaç yabancı yaşıyor"
+// against "ilin nüfusunun yüzde kaçı yabancı" is a different move: the denominator is
+// another indicator entirely, and without it Şanlıurfa's 130 thousand foreign residents
+// and Muğla's 90 thousand cannot be compared — the provinces are different sizes.
+//
+// Read through the same lazily-fetched second dataset the scatter uses, so a page that
+// never asks for it never downloads it.
+
+//: The indicator every count is offered against. Population is the one denominator that
+//: means something for all of them; anything else belongs on the scatter, where the
+//: reader names both axes.
+const AGAINST = "population";
+
+async function ensurePopulation() {
+    const indicator = catalogue.find((i) => i.id === AGAINST);
+    if (!indicator || versusRows.has(AGAINST)) {
+        return;
+    }
+    const files = [indicator.dataset, indicator.parts?.[state.level]].filter(Boolean);
+    const note = $("rail-note");
+    const said = note.textContent;
+    note.textContent = "Nüfus indiriliyor…";
+    try {
+        versusRows.set(AGAINST, (await Promise.all(files.map(part))).flat());
+    } finally {
+        note.textContent = said;
+    }
+}
+
+/** Total population per area-year at a level: `Map("TR-16|2025" -> 3263011)`. */
+function populationTotals(level) {
+    return remember("pop|" + level, () => {
+        const totals = new Map();
+        for (const row of versusRows.get(AGAINST) || []) {
+            if (row.level !== level) {
+                continue;
+            }
+            const key = row.area_id + "|" + row.year;
+            totals.set(key, (totals.get(key) || 0) + row.value);
+        }
+        return totals;
+    });
+}
+
+/** Can this indicator be read against the population? Counts of people can; the
+ *  population itself cannot (it would be 100 everywhere) and neither can a rate. */
+function canShareAgainstPopulation() {
+    return (
+        state.indicator.id !== AGAINST &&
+        state.indicator.additive &&
+        state.indicator.unit === "kişi" &&
+        catalogue.some((i) => i.id === AGAINST && i.available)
+    );
+}
+
+// endregion
+
+/** The share mode this indicator can still answer, or "" — one rule, so switching
+ *  indicator and following a shared link cannot disagree about what survives. */
+function shareStillMeans(share) {
+    if (share === "population") {
+        return canShareAgainstPopulation() ? share : "";
+    }
+    if (!canShare()) {
+        return "";
+    }
+    if (share.startsWith("own:")) {
+        return (state.indicator.dims || []).includes(share.slice(4)) ? share : "";
+    }
+    return share;
 }
 
 /** The breakdown the reader is taking a share within, or null. */
@@ -1654,7 +1750,12 @@ function derivationControl() {
  *  a share is a different *reading* of the same year, while the derivations there are
  *  all about movement over time, and the two combine — you can index a share. */
 function shareControl() {
-    if (!canShare()) {
+    // Sharing within the indicator needs a breakdown; sharing against the population does
+    // not. Net migration has no breakdown at all and "ilin nüfusunun yüzde kaçı" is
+    // exactly the question worth asking of it, so the box appears for either reason.
+    const inside = canShare();
+    const against = canShareAgainstPopulation();
+    if (!inside && !against) {
         return "";
     }
     // Two different percentages, named rather than inferred. They used to be one option
@@ -1680,11 +1781,15 @@ function shareControl() {
         .map((dim) => option("own:" + dim, dimLabel(dim) + " içinde %"))
         .join("");
 
+    // "Alanın kendi toplamı" is only a question where there is a breakdown to be a share
+    // of; without one it is 100 everywhere, which is arithmetic rather than an answer.
     return "<div><div class='dim-label'>Değer</div><select id='share'>" +
            option("", "Mutlak sayı") +
            option("country", (LEVEL_LABELS[state.level] === "Türkiye" ? "Toplamın" : "Türkiye toplamının") + " %'si") +
-           option("own", "Alanın kendi toplamının %'si") +
-           within +
+           (inside ? option("own", "Alanın kendi toplamının %'si") + within : "") +
+           (against
+               ? option("population", (LEVEL_LABELS[state.level] || "Alan") + " nüfusunun %'si")
+               : "") +
            "</select></div>";
 }
 
@@ -3276,6 +3381,14 @@ function render() {
         return;
     }
 
+    // Reading against the population means a second dataset, fetched the first time it is
+    // actually asked for rather than on every visit.
+    if (state.share === "population" && !versusRows.has(AGAINST)) {
+        $("view").innerHTML = empty("Nüfus yükleniyor…");
+        ensurePopulation().then(render);
+        return;
+    }
+
     // The second indicator is a second file. Same treatment as the district boundaries:
     // fetched on the first draw that needs it, with the frame saying so meanwhile.
     if (state.view === "scatter") {
@@ -3409,8 +3522,10 @@ async function useIndicator(id) {
     await ensureLevel(state.level);
 
     // Sharing carries over between indicators where it still means something, and is
-    // dropped where it does not — a share of a fertility rate is not a number.
-    state.share = canShare() ? state.share : "";
+    // dropped where it does not — a share of a fertility rate is not a number. Against
+    // the population is its own question and survives on its own terms: an indicator with
+    // no breakdown can still be read as a share of the people who live there.
+    state.share = shareStillMeans(state.share);
 
     state.dims = {};
     for (const dim of indicator.dims || []) {
@@ -3765,7 +3880,7 @@ async function start() {
     if (hash.get("y")) {
         state.year = Number(hash.get("y"));
     }
-    state.share = canShare() ? hash.get("s") || "" : "";
+    state.share = shareStillMeans(hash.get("s") || "");
     if (hash.get("f") && (await districtsOf(hash.get("f")))) {
         await ensureLevel("district");
         state.focus = hash.get("f");
