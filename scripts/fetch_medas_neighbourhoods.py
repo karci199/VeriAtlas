@@ -194,12 +194,24 @@ def fetch_province(page, province: str, years: list[int]) -> int:
     if not click_exact(page, "Rapor Oluştur"):
         print("   rapor olusturulamadi")
         return 0
-    page.wait_for_timeout(6000)
 
-    with page.expect_download(timeout=180000) as download:
-        page.locator(
-            "img[src*='csv'], a[title*='CSV'], .z-toolbarbutton[title*='CSV']"
-        ).first.click()
+    # The CSV button only appears once MEDAS has finished building the report, and how
+    # long that takes goes with the size of it: the small provinces came back in seconds
+    # while İstanbul, Ankara, İzmir and Konya all failed on the default sixty — thirteen
+    # provinces lost to a wait, not to anything about the data. Waited for explicitly,
+    # with a ceiling that scales with the number of areas asked for.
+    csv_button = page.locator(
+        "img[src*='csv'], a[title*='CSV'], .z-toolbarbutton[title*='CSV']"
+    ).first
+    patience = min(600000, 120000 + areas * 300)
+    try:
+        csv_button.wait_for(state="visible", timeout=patience)
+    except PlaywrightError:
+        print("   rapor", round(patience / 1000), "sn'de hazir olmadi")
+        return 0
+
+    with page.expect_download(timeout=patience) as download:
+        csv_button.click()
     download.value.save_as(str(target))
 
     print("  ", province, "->", target.name, target.stat().st_size, "bayt")

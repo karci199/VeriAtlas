@@ -43,6 +43,25 @@ olanı seçmek gerekiyor.
 **Sunucu turu.** Her tıklamadan sonra `networkidle` + ~1 sn beklemek gerekiyor; adımları
 zincirlemek çalışmıyor.
 
+**Onay kutusu indeksi.** İki ayrı numaralandırma var ve karıştırılıyor: `visible_rows`
+*kutusu olan* satırları sayıyor (`.z-listitem:has(.z-listitem-checkbox)`), oysa
+`.z-listitem-checkbox` doğrudan kutuları sayıyor. İkisi ayrışır ayrışmaz yanlış satıra
+tıklanıyor. Tek doğru yol `tick(page, index)`, çünkü o `visible_rows` ile aynı listeyi
+indeksliyor. Medeni durum ölçümünde bu yüzden üç boyuttan ikisi seçiliyordu.
+
+**Zorunlu kırılım zaten işaretli gelir.** MEDAS kırmızı yazdığı kırılımı (medeni durumda
+`Medeni Durum`) ölçüm seçilir seçilmez işaretliyor. İşaret bir *anahtar*, tıklamak onu
+**kapatıyor**. Kapanınca ölçüm eksik boyutla ekleniyor, hiçbir hata çıkmıyor, yalnız
+`gösterge adedi` 0 dönüyor. Kural: tıklamadan önce `is_ticked` sor.
+
+**CSV düğmesi rapor bitince belirir.** Sabit süre beklemek yanlış: küçük il saniyeler
+sürerken İstanbul/Ankara/İzmir/Konya 60 sn'yi aşıyor. Mahalle çekiminde 13 il tam olarak
+bu yüzden düştü — veri yok diye değil, beklemek yetmediği için. Düğmeyi `wait_for` ile
+bekle, süreyi istenen hücre sayısıyla ölçekle.
+
+**Kodlama ölçüme göre değişiyor.** İlçe ve mahalle indirmeleri ISO-8859-9; medeni durum
+indirmesi **BOM'lu UTF-8**. Varsayma, tespit et.
+
 ## Çalışan akış (Göstergeler sekmesi)
 
 1. Konu = `Adrese Dayalı Nüfus Kayıt Sistemi Sonuçları`
@@ -60,6 +79,32 @@ zincirlemek çalışmıyor.
 
 Kırılımlı ilçe sorgusu 38 × 973 × 1 yıl = 36.974 — 50.000 sınırının altında, ama ancak
 yılda bir sorgu sığıyor.
+
+## Mahalle akışı (2026-08-14)
+
+Ölçüm `Belediye, köy ve mahalle nüfusları` — MEDAS'ın listesinde **küçük harfle**, dosya
+başlığındaki Başlık Biçimi'yle değil. Tek kırılımı `18 yaş ve üzeri`, yani 2 gösterge; o
+yüzden burada dar olan ölçüm, geniş olan düzey listesi. Çekim parçası **il**, ve iki
+göstergeyle 13 yılın tamamı çoğu ile tek sorguda sığıyor.
+
+Düzey sekmesindeki kutular zincirleme doluyor: Mahalle → il → `TÜM İLÇELER` → liste
+başlığından tümünü seç. Biri atlanırsa sonraki hiç belirmiyor.
+
+**Kırılım işaretliyken düzey kutusunda yalnız `Mahalle` kalıyor**; `Köy` ve `Belediye`
+düşüyor. Yani 18 yaş bölmesi köyler için yayımlanmıyor. Sonucu: 6360 sayılı yasayla
+köyleri mahalleye dönüşen 30 büyükşehirde kapsam tam (Bursa %99,3-99,8), kalan 51 ilde
+ilin dörtte biri eksik (Yozgat %75-78). Bu bir çekim hatası değil, kaynağın kapsamı.
+
+## Medeni durum akışı (2026-08-14)
+
+Ölçüm `Medeni Duruma Göre Nüfus Bilgileri (15 Yaş üstü)`, üç kırılım birlikte: medeni
+durum (5) × cinsiyet (2) × yaş grubu (17) = **151 gösterge**. Yıllar 2008-2025. Düzey
+kutusu beş seçenek veriyor: Türkiye, İBBS1, İBBS2 (26 Bölge), İBBS3 (İl Düzeyi), İlçe.
+
+Yaş 15'ten başlıyor — medeni durum yalnız 15 yaş üstü için yayımlanıyor, 0-14 eksik değil
+yok.
+
+Sütun başlığı üç boyutu tek hücreye paketliyor: `Erkek ve 15-19 ve Bilinmeyen`.
 
 ## Kapsam kararı
 

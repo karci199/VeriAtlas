@@ -220,12 +220,22 @@ def fetch_years(page, level: str, years: list[int]) -> bool:
     if not click_exact(page, "Rapor Oluştur"):
         print("   rapor olusturulamadi")
         return False
-    page.wait_for_timeout(6000)
 
-    with page.expect_download(timeout=180000) as download:
-        page.locator(
-            "img[src*='csv'], a[title*='CSV'], .z-toolbarbutton[title*='CSV']"
-        ).first.click()
+    # Waited for rather than slept past: the CSV button appears when MEDAS has finished
+    # building, and how long that takes goes with the size of the report. A fixed sixty
+    # seconds is what cost the neighbourhood run its thirteen largest provinces.
+    csv_button = page.locator(
+        "img[src*='csv'], a[title*='CSV'], .z-toolbarbutton[title*='CSV']"
+    ).first
+    patience = min(600000, 120000 + count * areas * len(years) // 4)
+    try:
+        csv_button.wait_for(state="visible", timeout=patience)
+    except PlaywrightError:
+        print("   rapor", round(patience / 1000), "sn'de hazir olmadi")
+        return False
+
+    with page.expect_download(timeout=patience) as download:
+        csv_button.click()
     download.value.save_as(str(target))
 
     print("  ", target.name, target.stat().st_size, "bayt")
