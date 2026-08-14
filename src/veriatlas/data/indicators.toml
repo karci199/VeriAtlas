@@ -177,7 +177,11 @@ additive = true
 [unit.percent]
 label_tr = "%"
 label_en = "%"
-decimals = 1
+# Two, not one. TÜİK publishes the dependency ratios to two decimals (41,97 · 8,48) and
+# rounding them to 41,9 throws away a digit the source actually has. It matters more the
+# smaller the number: annual population change runs between −2,7 and 2,0, where one
+# decimal makes a fifth of the provinces look identical to their neighbours.
+decimals = 2
 additive = false
 
 [unit.per_mille]
