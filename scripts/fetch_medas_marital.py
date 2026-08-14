@@ -207,11 +207,24 @@ def fetch_years(page, level: str, years: list[int]) -> bool:
     click_exact(page, "İleri")
     pick_level(page, level)
 
-    if not check_visible(page, ".z-listheader-checkable"):
-        print("   alan listesi isaretlenemedi")
-        return False
+    # Ticked, then *checked* — the click landing is not the same as the selection taking,
+    # and İBBS2 came back with a ticked header and zero areas selected. One more go before
+    # giving up, because the failure is a missed server round trip rather than a wrong
+    # request.
+    areas = 0
+    for _ in range(2):
+        if not check_visible(page, ".z-listheader-checkable"):
+            print("   alan listesi isaretlenemedi")
+            return False
+        areas = counted(page, PICKED)
+        if areas:
+            break
+        print("   · secim tutmadi, tekrar isaretleniyor")
+        settle(page)
 
-    areas = counted(page, PICKED)
+    if not areas:
+        print("   alan secilemedi")
+        return False
     print("   · duzey adedi:", areas, "· hucre:", count * areas * len(years))
     if count * areas * len(years) > CELL_LIMIT:
         print("   · limit asildi")
@@ -261,9 +274,19 @@ def chunk_size(page, level: str):
     settle(page)
     click_exact(page, "İleri")
     pick_level(page, level)
+
+    # Answering the level box fills the area list but selects nothing; "Seçilen düzey
+    # adedi" only moves once the list header's tick-all is clicked. Read before that, it
+    # is always 0 — which divided out to "331 years per query" and would have sent the
+    # province level in at eighteen years, four times over MEDAS's own limit.
+    check_visible(page, ".z-listheader-checkable")
     areas = counted(page, PICKED)
+    if not areas:
+        print(level, "· alan sayisi okunamadi")
+        return 0, []
+
     print(level, "· gosterge:", count, "· duzey:", areas)
-    return max(1, CELL_LIMIT // max(1, count * max(1, areas))), years
+    return max(1, CELL_LIMIT // (count * areas)), years
 
 
 def main() -> None:
