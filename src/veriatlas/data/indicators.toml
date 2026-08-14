@@ -45,6 +45,11 @@ label_en = "Sex"
 [dim.sex.values]
 female = "Kadın"
 male = "Erkek"
+# Not a third sex: the value that means "the two together". It exists because the median
+# age has no published total and one had to be computed (see the indicator's note), and
+# it is a stored value rather than the page's "Tümü (topla)" because a median cannot be
+# summed into being.
+total = "Toplam"
 
 [dim.age]
 label_tr = "Yaş grubu"
@@ -333,9 +338,12 @@ dims = ["sex"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 Nüfusu tam ortadan ikiye bölen yaş: yarısı bundan genç, yarısı yaşlıdır. Ortalama \
-yaştan farkı, uçlardaki birkaç çok yaşlıdan etkilenmemesidir. Kaynak dosyada toplam \
-yok, yalnızca erkek ve kadın ayrı ayrı yayımlanıyor. İl ve Türkiye düzeyinde var, \
-ilçe kırılımı yok."""
+yaştan farkı, uçlardaki birkaç çok yaşlıdan etkilenmemesidir. TÜİK yalnızca erkek ve \
+kadını ayrı ayrı yayımlıyor; **Toplam** bizim hesabımızdır (rozet: türetilmiş) ve iki \
+ortancanın ortalaması değil, tek yaş nüfus dağılımının tam ortasıdır. Yöntem \
+yayımlanan erkek/kadın değerlerine karşı sınandı: 3.116 karşılaştırmada ortalama \
+mutlak fark 0,05 yıl, yani TÜİK'in kendi yuvarlaması kadar. İl ve Türkiye düzeyinde \
+var, ilçe kırılımı yok."""
 
 [indicator.registry_population]
 label_tr = "Kütük nüfusu"

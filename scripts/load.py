@@ -16,6 +16,7 @@ sys.path.insert(0, "src")
 
 from veriatlas.adapters import ADAPTERS, ingest
 from veriatlas.config import PUBLIC, WAREHOUSE, ensure_dirs
+from veriatlas.derived import median_age_total
 
 
 def main() -> None:
@@ -37,6 +38,17 @@ def main() -> None:
         )
 
     fact = pl.concat(frames)
+
+    # After every adapter, because it reads across them: the median age of everyone is
+    # computed from the population distribution, which TÜİK publishes, rather than from
+    # the two published medians, which cannot be averaged. Only when the run holds both
+    # indicators — loading one adapter alone must not write a half-derived answer.
+    if {"population", "median_age"} <= set(fact["indicator_id"].unique()):
+        totals = median_age_total(fact)
+        if not totals.is_empty():
+            fact = pl.concat([fact, totals])
+            print(f"{'turetme':12} {len(totals):6} satır  ortanca yaş, toplam")
+
     target = PUBLIC / "fact.parquet"
     fact.write_parquet(target)
 
