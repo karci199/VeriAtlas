@@ -507,16 +507,34 @@ select:focus-visible, button:focus-visible, input:focus-visible {
 
 /* region Table and empty states ------------------------------------------ */
 
-.grid { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+/* The table shows every year, so it scrolls in both directions inside its own box
+   rather than widening the page. */
+.grid-wrap { overflow: auto; }
+
+.grid { border-collapse: separate; border-spacing: 0; font-size: var(--text-sm); }
 
 .grid th, .grid td {
     padding: var(--gap-xs) var(--gap-sm);
     border-bottom: 1px solid var(--stroke-divider);
     text-align: right;
+    white-space: nowrap;
 }
 
 .grid th:first-child, .grid td:first-child { text-align: left; color: var(--text-secondary); }
-.grid thead th { color: var(--text-tertiary); font-weight: 600; }
+
+.grid thead th {
+    color: var(--text-tertiary);
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--bg-card);
+}
+
+/* Pinned so a row stays identifiable at the far right of a nineteen-year span. The
+   header's own cell has to outrank both, or the two sticky axes overlap at the corner. */
+.grid .sticky-col { position: sticky; left: 0; background: var(--bg-card); }
+.grid thead .sticky-col { z-index: 2; }
 
 .placeholder {
     min-height: calc(320px * var(--density));

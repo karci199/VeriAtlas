@@ -18,6 +18,20 @@ crosswalk rather than being thrown away after the join.
 Names are matched folded (`Şarköy` ≡ `sarkoy`), and an unmatched district stops the
 load. A district silently dropped here would show up as a hole in the map that looks
 exactly like "no data".
+
+Two shapes of export exist per year, and only one of them is loaded:
+
+``nufus-ilce-2023.csv``
+    the district total, one value column.
+
+``nufus-ilce-kirilim-2023.csv``
+    the same districts broken down by sex and age band, 38 value columns headed
+    ``Erkek ve 0-4``.
+
+Where a year has both, the breakdown wins and the total file is ignored. Loading both
+would put a district's total *and* its 38 parts in the fact table at the same level, and
+anything that sums across the breakdown — the explorer's "Tümü (topla)", the share
+mode's denominator — would then count that district twice.
 """
 
 from __future__ import annotations
@@ -31,12 +45,20 @@ import polars as pl
 from ..areas import load_areas, load_districts
 from ..config import RAW
 from ..indicators import get
-from ..schema import DIMS_NONE
+from ..schema import format_dims
 
 DOWNLOADS = RAW / "medas" / "ilce"
 
 #: `Adana(Aladağ)-1757` — province, district, MEDAS code.
 LABEL = re.compile(r"^(?P<province>[^(]+)\((?P<district>[^)]*)\)-(?P<code>\d+)$")
+
+#: `nufus-ilce-2023.csv` / `nufus-ilce-kirilim-2023.csv`.
+FILENAME = re.compile(r"^nufus-ilce-(?P<breakdown>kirilim-)?(?P<year>\d{4})\.csv$")
+
+#: `Erkek ve 0-4` — a column of the breakdown export.
+COLUMN = re.compile(r"^(?P<sex>\S+)\s+ve\s+(?P<age>\S+)$")
+
+SEXES = {"Erkek": "male", "Kadın": "female"}
 
 
 def fold(name: str) -> str:
@@ -56,38 +78,85 @@ def fold(name: str) -> str:
     return "".join(ch for ch in lowered if ch.isalnum())
 
 
-def read_export(path: Path) -> list[tuple[int, str, str, str, float]]:
-    """One MEDAS CSV to (year, province, district, code, value) rows."""
-    rows: list[tuple[int, str, str, str, float]] = []
+#: (year, province, district, medas code, sex, age band, value). Sex and age are empty
+#: strings on the total export, which is what `format_dims` turns into `DIMS_NONE`.
+Record = tuple[int, str, str, str, str, str, float]
+
+
+def read_export(path: Path, breakdown: bool = False) -> list[Record]:
+    """One MEDAS CSV to fact rows.
+
+    The two exports share a layout — preamble, then one line per district with the year
+    filled in only on the first — and differ only in how many value columns follow. So
+    the breakdown reads the column headings once and then walks the same rows.
+    """
+    rows: list[Record] = []
     year = None
+    columns: list[tuple[str, str]] = []
 
     for line in path.read_text(encoding="utf-8-sig").splitlines():
         cells = [cell.strip() for cell in line.split("|")]
         if len(cells) < 3:
             continue
+
+        # The heading line carries no area, so it can only be read before the rows and
+        # cannot be confused with one. Column order is MEDAS's, and it is alphabetical
+        # rather than numeric (5-9 lands after 55-59) — another reason to read the
+        # headings instead of assuming a layout.
+        if breakdown and not columns and any(COLUMN.match(c) for c in cells[2:]):
+            for cell in cells[2:]:
+                match = COLUMN.match(cell)
+                columns.append(
+                    (SEXES.get(match["sex"], match["sex"]), match["age"])
+                    if match
+                    else ("", "")
+                )
+            continue
+
         if cells[0].isdigit() and len(cells[0]) == 4:
             year = int(cells[0])
 
         match = LABEL.match(cells[1])
         if match is None or year is None:
             continue
-        try:
-            value = float(cells[2])
-        except ValueError:
-            # Suppressed cells are footnote markers, not numbers. Skipping them leaves a
-            # gap, which is the truth; a zero would be a claim.
-            continue
 
-        rows.append(
-            (
-                year,
-                match["province"],
-                match["district"],
-                match["code"],
-                value,
+        wanted = columns if breakdown else [("", "")]
+        for index, (sex, age) in enumerate(wanted):
+            if index + 2 >= len(cells):
+                break
+            try:
+                value = float(cells[index + 2])
+            except ValueError:
+                # Suppressed cells are footnote markers, not numbers. Skipping them
+                # leaves a gap, which is the truth; a zero would be a claim.
+                continue
+
+            rows.append(
+                (
+                    year,
+                    match["province"],
+                    match["district"],
+                    match["code"],
+                    sex,
+                    age,
+                    value,
+                )
             )
-        )
     return rows
+
+
+def exports(directory: Path) -> list[tuple[Path, bool]]:
+    """The files to load, one per year: the breakdown where it exists, else the total."""
+    found: dict[int, tuple[Path, bool]] = {}
+    for path in sorted(directory.glob("nufus-ilce-*.csv")):
+        match = FILENAME.match(path.name)
+        if match is None:
+            continue
+        year = int(match["year"])
+        is_breakdown = bool(match["breakdown"])
+        if is_breakdown or year not in found:
+            found[year] = (path, is_breakdown)
+    return [found[year] for year in sorted(found)]
 
 
 class TuikDistrictPopulation:
@@ -112,15 +181,23 @@ class TuikDistrictPopulation:
     def parse(self, raw: Path) -> pl.DataFrame:
         indicator = get(self.indicator_id)
 
-        records: list[tuple[int, str, str, str, float]] = []
-        for path in sorted(raw.glob("nufus-ilce-*.csv")):
-            records.extend(read_export(path))
+        records: list[Record] = []
+        for path, breakdown in exports(raw):
+            records.extend(read_export(path, breakdown))
         if not records:
             raise ValueError("indirilen dosyalarda satir yok")
 
         frame = pl.DataFrame(
             records,
-            schema=["year", "province", "district", "medas_code", "value"],
+            schema=[
+                "year",
+                "province",
+                "district",
+                "medas_code",
+                "sex",
+                "age",
+                "value",
+            ],
             orient="row",
         )
 
@@ -167,6 +244,17 @@ class TuikDistrictPopulation:
                 + (" …" if len(missing) > 20 else "")
             )
 
+        # One string per distinct pair, built once: the year-by-year breakdown is close
+        # to seven hundred thousand rows and formatting each one separately is the
+        # slowest thing in the load.
+        combinations = frame.select("sex", "age").unique().to_dicts()
+        dims = {
+            (c["sex"], c["age"]): format_dims(
+                {"sex": c["sex"], "age": c["age"]} if c["sex"] else None
+            )
+            for c in combinations
+        }
+
         return frame.with_columns(
             pl.struct("province", "district")
             .map_elements(
@@ -176,13 +264,13 @@ class TuikDistrictPopulation:
             pl.lit("district").alias("area_level"),
             pl.date(pl.col("year").cast(pl.Int32), 1, 1).alias("period_start"),
             pl.lit(indicator.frequency).alias("frequency"),
-            # No breakdown: this export is the district total. Age and sex at district
-            # level are a second query, and a second decision about the 50000 limit.
-            pl.lit(DIMS_NONE).alias("dims"),
+            pl.struct("sex", "age")
+            .map_elements(lambda s: dims[(s["sex"], s["age"])], return_dtype=pl.String)
+            .alias("dims"),
             pl.lit(self.indicator_id).alias("indicator_id"),
             pl.lit(indicator.unit.unit_id).alias("unit"),
             pl.lit("measured").alias("quality_flag"),
             pl.lit(self.vintage).alias("vintage"),
             pl.lit(self.source_id).alias("source_id"),
             pl.lit(self.retrieved_at).alias("retrieved_at"),
-        ).drop("year", "province", "district", "medas_code")
+        ).drop("year", "province", "district", "medas_code", "sex", "age")

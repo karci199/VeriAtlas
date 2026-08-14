@@ -16,6 +16,7 @@ Run:  uv run python scripts/fetch_medas_districts.py 2023 2022
       uv run python scripts/fetch_medas_districts.py --all
 """
 
+import re
 import sys
 import time
 
@@ -81,6 +82,49 @@ def check_visible(page, selector: str) -> bool:
     return False
 
 
+def tickable(page):
+    """Rows that carry a tick box. The indicator tab uses them for two different things:
+    the dimension names first, then the value lists those dimensions open up."""
+    return page.locator(".z-listitem:has(.z-listitem-checkbox)")
+
+
+def visible_rows(page) -> list[tuple[int, str]]:
+    rows = tickable(page)
+    return [
+        (index, " ".join(rows.nth(index).inner_text().split()))
+        for index in range(rows.count())
+        if rows.nth(index).is_visible()
+    ]
+
+
+def is_ticked(page, index: int) -> bool:
+    """The listbox runs in checkmark mode, where the tick *is* the selection — the
+    `<i class="z-icon-check">` is in the markup either way and CSS reveals it. So no
+    class on the box ever changes and the state has to come from ZK's own widget."""
+    return bool(
+        tickable(page)
+        .nth(index)
+        .evaluate("el => !!(zk.Widget.$(el) || {}).isSelected?.()")
+    )
+
+
+def tick(page, index: int, note: str) -> None:
+    tickable(page).nth(index).locator(".z-listitem-checkbox").first.click()
+    settle(page, note)
+
+
+def indicator_count(page) -> int:
+    """The footer's "Seçilen gösterge adedi: N". Zero means nothing was really added."""
+    match = re.search(r"adedi:\s*(\d+)", page.inner_text("body")[-320:])
+    return int(match.group(1)) if match else -1
+
+
+def target_path(year: int, breakdown: bool):
+    return OUT / (
+        "nufus-ilce-" + ("kirilim-" if breakdown else "") + str(year) + ".csv"
+    )
+
+
 def offered_years(page) -> list[int]:
     """Years the Zaman tab lists, newest first."""
     years = []
@@ -96,14 +140,11 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
     """Walk the whole flow for one year and save the CSV. True if a file was written.
 
     With `breakdown`, sex and age group are ticked on the indicator tab. That multiplies
-    the cells by 32 (16 bands × 2 sexes): 973 × 32 = 31.136 for one year, still inside
-    MEDAS's own 50.000 limit — but only one year at a time, which is why the year is the
-    chunk either way.
+    the indicators by 38 (19 bands × 2 sexes): 973 × 38 = 36.974 for one year, still
+    inside MEDAS's own 50.000 limit — but only one year at a time, which is why the year
+    is the chunk either way.
     """
-    target = OUT / ("nufus-ilce-" + ("kirilim-" if breakdown else "") + str(year) + ".csv")
-    if target.exists():
-        print("  ", year, "zaten var, atlandi")
-        return False
+    target = target_path(year, breakdown)
 
     page.goto(URL, wait_until="networkidle")
     page.locator("select").first.select_option(label=TOPIC)
@@ -117,27 +158,51 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
             break
 
     if breakdown:
-        # A ZK "checkbox" is a span inside the row, and only the breakdown list has them —
-        # which keeps this away from the measure list, where "Cinsiyet" also appears as
-        # "Cinsiyet oranı" and clicking it silently changes what is being measured.
-        tickable = page.locator(".z-listitem:has(.z-listitem-checkbox)")
+        # Only the breakdown list has tick boxes, which keeps this away from the measure
+        # list, where "Cinsiyet" also appears as "Cinsiyet oranı" and clicking it
+        # silently changes what is being measured.
         for hint in ("Cinsiyet", "Grubu"):
-            for index in range(tickable.count()):
-                item = tickable.nth(index)
-                if hint in item.inner_text():
-                    box = item.locator(".z-listitem-checkbox")
-                    (box if box.count() else item).click()
-                    settle(page, "kirilim: " + hint)
-                    break
+            index = next((i for i, t in visible_rows(page) if hint in t), None)
+            if index is None:
+                print("  ", year, "kirilim satiri yok:", hint)
+                return False
+            tick(page, index, "kirilim: " + hint)
 
     click_exact(page, "Tamam")
+
+    if breakdown:
+        # Ticking the dimension names is only half of it: Tamam opens a value list per
+        # dimension and the page then asks "Lütfen alt kırılım seçiniz!". Skipping this
+        # is why the first breakdown run came back byte-identical to the plain total —
+        # MEDAS just added the unbroken measure. One `<Hepsi>` heads each value list, and
+        # ticking those beats looping over 19 age bands that scroll off screen.
+        while True:
+            pending = [
+                index
+                for index, text in visible_rows(page)
+                if "Hepsi" in text and not is_ticked(page, index)
+            ]
+            if not pending:
+                break
+            # Each tick is a server round trip that renumbers the rows, so re-read the
+            # list rather than walking a stale index set.
+            tick(page, pending[0], "alt kirilim: <Hepsi>")
+
     click_exact(page, "Göstergeler Ekle") or click_exact(page, "Göstergeleri Ekle")
+
+    count = indicator_count(page)
+    print("   · gosterge adedi:", count)
+    if breakdown and count < 2:
+        # 19 age bands × 2 sexes = 38. Anything less means the tick did not take, and
+        # the download would look like a success while carrying plain totals.
+        print("  ", year, "kirilim tutmadi, atlandi")
+        return False
 
     # Zaman
     click_exact(page, "İleri")
     year_row = page.locator(".z-listitem", has_text=str(year)).first
     if not year_row.count():
-        print("  ", year, "listede yok")
+        print("  ", year, "listede yok; sunulan:", offered_years(page)[:25])
         return False
     box = year_row.locator(".z-listitem-checkbox")
     (box if box.count() else year_row).click()
@@ -225,11 +290,22 @@ def main() -> None:
             years = [int(y) for y in wanted] or [2023]
 
         for year in years:
+            if target_path(year, breakdown).exists():
+                print("=", year, "zaten var, atlandi")
+                continue
             print("=", year)
-            try:
-                fetch_year(page, year, breakdown)
-            except PlaywrightError as error:
-                print("   HATA:", type(error).__name__, str(error)[:160])
+            # A tab now and then comes back half-built and the year list reads as empty.
+            # It is the same request either way, so one retry is enough; the existing-file
+            # check keeps a retry from downloading twice.
+            for attempt in (1, 2):
+                try:
+                    if fetch_year(page, year, breakdown):
+                        break
+                except PlaywrightError as error:
+                    print("   HATA:", type(error).__name__, str(error)[:160])
+                if attempt == 1:
+                    print("   · tekrar deneniyor")
+                    time.sleep(PAUSE)
             time.sleep(PAUSE)
 
         browser.close()

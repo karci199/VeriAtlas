@@ -228,26 +228,74 @@ kayboluyor: bir yılın "önceki yıla göre değişimi" o görünümde yalan ol
 Sıradakiler: ara değer (eksik yıl), kişi başı, ve ileriye uzatma — sonuncusu muhtemelen
 türetme değil, ayrı bir "projeksiyon" göstergesi olarak.
 
-## Sıradaki oturum — açık maddeler (2026-08-14)
+## K13 — Oran kipi: mutlak sayının yanına payı (2026-08-14)
 
-Ekranda görülen, henüz yapılmamış işler. Sıra kabaca zorluğa göre:
+Mutlak ve göreli aynı soruyu sormuyor. Şanlıurfa'nın çocuk nüfusu kişi sayısında
+Ankara'dan küçük, oranda çok daha büyük — ve haritada asıl anlatan ikincisi.
 
-1. **İlçe düzeyinde yaş × cinsiyet kırılımı.** MEDAS'ta mümkün (973 × 32 = 31.136,
-   50.000 sınırının altında) ama `--kirilim` denemesi **tutmadı**: dosya toplamla birebir
-   aynı çıktı, yani kırılım kutuları işaretlenmemiş. Ölçüm seçildikten sonra kırılım
-   listesinin görünür hale gelmesini beklemek gerekiyor olabilir; işaretin tuttuğunu
-   satır sayısından (973 değil ~31.000) doğrulamadan yıllara başlama.
-2. **Oran (%) kipi.** Mutlak sayının yanına "toplamın yüzdesi": Şanlıurfa'nın çocuk
-   nüfusu mutlak sayıda Ankara'dan küçük, oranda büyük. Kırılım normalizasyonu olduğu
-   için K12'deki zaman türetmelerinden ayrı bir denetim olmalı — hem il hem ilçe için,
-   ölçek de ona göre.
-3. **Yıl aralığı seyrek.** Tabloda 2007, 2010, 2013 … diye üçer yıl atlıyor; sütun
-   sayısı kısıtı yüzünden örnekleniyor. Kaydırılabilir tam tablo olmalı.
-4. **"Tümünü seç" sayfayı aşağı kaydırıyor.** Liste yeniden çizilirken odak kayıyor;
-   kaydırma konumu korunmalı.
-5. **Denetim adları.** Ortak/Kendi içinde, Log/Doğrusal, Sabit/Yıla göre — daha açık
-   adlandırılacak (ör. "Ortak eksen" / "Panel bazlı", "Sabit eksen (tüm yıllar)").
-6. **Harita ilçe kipinde kırılım denetimleri** görünmüyor; 1 bitince gelecek.
+Kırılım denetimlerinin yanında **Değer: Mutlak sayı / Toplamın %'si** var. Payda, o
+alan-yılın kırılım seçiminden bağımsız toplamı: seçili dilimi kendine bölmek her yerde
+%100 verirdi. Bu yüzden yalnızca toplanabilir birimlerde ve kırılımı olan göstergelerde
+açılıyor (`canShare`) — oranların toplamının payı diye bir sayı yok.
+
+Türetmeden (K12) ayrı bir denetim: türetmeler zaman içindeki hareketle ilgili, oran aynı
+yılın başka bir okuması, ve ikisi birleşiyor — bir payın endeksi alınabiliyor. Haritada
+oran kipinde log ramp sunulmuyor: log, üç büyüklük mertebesine yayılan sayımlar için
+vardı, sınırlı bir oran için değil.
+
+## K14 — Ağır düzeyler ayrı dosyada, istendiğinde iniyor (2026-08-14)
+
+İlçe nüfusunun yaş × cinsiyet kırılımı 973 × 38 × 19 yıl — yaklaşık 700.000 satır,
+50 MB. Ana dosyaya konsaydı il çizgi grafiği için gelen herkes bunu indirirdi.
+
+Kural: **bir düzeyin satırları tamamen tek dosyada durur.** İlçe toplamı bir dosyada,
+ilçe kırılımı ötekinde olsaydı kırılım üstünden toplayan her şey — "Tümü (topla)",
+oran kipinin paydası — o ilçeleri iki kez sayardı. Bu yüzden ilçe düzeyinin tamamı
+`public/population-district.csv` içinde ve sayfa onu ancak okuyucu ilçe düzeyini
+gerçekten istediğinde çekiyor.
+
+Düzey menüsü artık elde duran satırlardan değil sözlükten kuruluyor (`levels`,
+`parts`): yoksa dosyayı indirmesi gereken menüde o düzey hiç görünmezdi. Sayfa ilçe
+*sınırlarını* zaten il il, istendiğinde çekiyordu (K11) — bu onun veri tarafındaki eşi.
+
+## 2026-08-14 oturumu — kapanan altı madde
+
+Önceki oturumun listesi bitti:
+
+1. ~~**İlçe yaş × cinsiyet kırılımı.**~~ Kutular aslında işaretleniyormuş; eksik olan
+   `Tamam`'dan sonra açılan değer listelerindeki `<Hepsi>` idi (bkz. `medas.md`).
+   19 yılın tamamı çekildi ve her yıl ilçe ilçe toplam dosyasıyla birebir tutuyor
+   (ülke toplamları da ADNKS'nin yayımladığı sayılar). 696.900 satır olgu tablosunda.
+2. ~~**Oran (%) kipi.**~~ K13.
+3. ~~**Yıl aralığı seyrek.**~~ Örnekleme kalktı; tablo bütün yılları gösteriyor, kendi
+   kutusunda iki yönde kayıyor, alan sütunu ve başlık satırı sabit.
+4. ~~**"Tümünü seç" kaydırıyor.**~~ Liste yeniden çizilirken `scrollTop` korunuyor.
+5. ~~**Denetim adları.**~~ `Ortak eksen / Panel bazlı`; harita ikilisi iki etiketli gruba
+   ayrıldı: `Renk: Log / Doğrusal`, `Uçlar: Tüm yıllar / Bu yıl`.
+6. ~~**Harita ilçe kipinde kırılım denetimleri.**~~ Üç parçası vardı: veri (1), şeridin
+   ekrandaki *gerçek* düzeyi izlemesi (`effectiveLevel` — harita bir il açıkken ilçe
+   çiziyor ama şerit ilin bantlarını sunuyordu), ve yaş bantlarının düzeye göre farklı
+   olması (il 75+, ilçe 90+). Menü artık düzeye göre süzülüyor, düzey değişince seçim
+   geçerli bir değere çekiliyor.
+
+Kalan pürüz: `population-district.csv` 53 MB. Düzey başına ayrı dosya (K14) ana sayfayı
+kurtardı ama ilçeye geçen okuyucu 53 MB indiriyor. Satırların üçte biri her satırda
+tekrarlanan künye (`quality_flag,vintage,source_id`); sıkıştırma ya da yıl başına dosya
+sıradaki iş.
+
+## Sıradaki oturum — açık maddeler (2026-08-14, akşam)
+
+1. **Ortanca yaş göstergesi.** Elde MEDAS çıktısı var (`OrtancaYas.csv`, 2007-2025,
+   cinsiyete göre, ülke + İBBS-1 + İBBS-2 + il). Toplanamaz bir birim, yani oran kipi
+   (K13) kendiliğinden kapanacak — sözlüğe girip adaptörü yazılacak.
+
+   **Tuzak:** dosyada 81 değil 78 il var. Ankara, İstanbul ve İzmir yalnız tek-il İBBS-2
+   satırı olarak geçiyor (`Ankara-TR51`), MEDAS ikisini tek satırda birleştirmiş. Ad
+   eşleşmesiyle içe aktarılırsa bu üç il il düzeyinde sessizce eksik kalır ve haritada
+   "veri yok" gibi görünür — K6'daki tanınmayan-ad kuralının tam da önlemek istediği şey.
+2. **Etiket kodları kaynak olarak.** MEDAS etiketleri kodu içinde taşıyor: il için plaka
+   (`Adana-1`), İBBS için `TR62`, ilçe için MEDAS kodu (`-1757`). Ad yerine bunlarla
+   eşleşmek yukarıdaki tuzağı da, ad değişikliklerini de kökten çözer.
 
 ## Açık işler
 

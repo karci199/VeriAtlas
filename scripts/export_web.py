@@ -25,7 +25,7 @@ from veriatlas.schema import parse_dims
 DATASETS = {"tfr": "tfr.csv", "population": "population.csv"}
 
 
-def export_dictionary(loaded: set[str]) -> None:
+def export_dictionary(loaded: set[str], levels: dict[str, list[str]]) -> None:
     """Emit the tree and labels the page renders, so nothing is spelled out in HTML.
 
     Indicators without data yet still appear, marked unavailable: the tree is the plan
@@ -47,6 +47,18 @@ def export_dictionary(loaded: set[str]) -> None:
                     "dims": list(ind.dims),
                     "views": list(ind.views),
                     "dataset": DATASETS.get(ind.indicator_id),
+                    # Which levels exist, and which of them the page has to go and fetch
+                    # before it can draw them. The level menu is built from this rather
+                    # than from the rows in hand, or a lazily-held level would be missing
+                    # from the menu that is supposed to load it.
+                    "levels": levels.get(ind.indicator_id, []),
+                    "parts": {
+                        level: DATASETS[ind.indicator_id].replace(
+                            ".csv", "-" + level + ".csv"
+                        )
+                        for level in levels.get(ind.indicator_id, [])
+                        if level in LAZY_LEVELS and ind.indicator_id in DATASETS
+                    },
                     "available": ind.indicator_id in loaded,
                 }
                 for ind in indicators
@@ -91,6 +103,20 @@ def export_dictionary(loaded: set[str]) -> None:
     print("yazildi:", target)
 
 
+#: Levels whose rows go out in a file of their own, fetched by the page only when the
+#: reader asks for that level.
+#:
+#: District population broken down by sex and age is 973 × 38 × 19 years — around 700.000
+#: rows and 50 MB. Shipping that inside the main file would make every visitor download
+#: it to look at a province line chart. The page already fetches district *boundaries*
+#: per province on demand for the same reason, so this follows the pattern it has.
+#:
+#: The split has to be by level and complete: a level's rows all live in one file or the
+#: other. District totals in one file and district breakdowns in the other would let
+#: anything that sums across the breakdown count those districts twice.
+LAZY_LEVELS = ("district",)
+
+
 def export_population(fact: pl.DataFrame, areas: pl.DataFrame) -> None:
     """Age-and-sex slice for the pyramid: one row per area, year, band and sex."""
     rows = fact.filter(pl.col("indicator_id") == "population")
@@ -123,9 +149,18 @@ def export_population(fact: pl.DataFrame, areas: pl.DataFrame) -> None:
         .sort("area", "year", "sex")
     )
 
+    base = slim.filter(~pl.col("level").is_in(LAZY_LEVELS))
     target = PUBLIC / "population.csv"
-    slim.write_csv(target)
-    print("yazildi:", target, slim.height, "satir")
+    base.write_csv(target)
+    print("yazildi:", target, base.height, "satir")
+
+    for level in LAZY_LEVELS:
+        part = slim.filter(pl.col("level") == level)
+        if part.height == 0:
+            continue
+        target = PUBLIC / ("population-" + level + ".csv")
+        part.write_csv(target)
+        print("yazildi:", target, part.height, "satir")
 
 
 def sources() -> list[dict[str, str]]:
@@ -184,6 +219,15 @@ def main() -> None:
     )
 
     loaded = set(fact["indicator_id"].unique())
+
+    # What the page is allowed to offer, taken from what was actually exported — the
+    # fertility slice gains levels here through the roll-up, and population loses none.
+    levels: dict[str, list[str]] = {
+        "population": sorted(
+            fact.filter(pl.col("indicator_id") == "population")["area_level"].unique()
+        )
+    }
+
     export_population(fact, areas)
 
     # The line-chart slice below is fertility only; population carries breakdowns and
@@ -213,7 +257,8 @@ def main() -> None:
     slim.write_csv(target)
     print("yazildi:", target, slim.height, "satir")
 
-    export_dictionary(loaded)
+    levels["tfr"] = sorted(slim["level"].unique())
+    export_dictionary(loaded, levels)
 
 
 if __name__ == "__main__":

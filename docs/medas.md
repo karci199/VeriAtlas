@@ -25,6 +25,18 @@ etiketlerin ascii'ye güvenli parçasıyla eşleştirmek gerekiyor (`BBS-D`, `Gr
 değiştiriyorsun ve kırılım paneli sessizce boşalıyor — hata vermiyor, sadece sonraki
 adımda "Tamam" düğmesi pasif kalıyor. Aramayı onay kutusu olan satırlarla sınırla.
 
+**Kırılım iki adım.** Kırılım listesinde `Cinsiyet` / `Yaş Grubu` satırını işaretlemek
+yalnızca yarısı. `Tamam`'a basınca her boyut için bir **değer listesi** açılıyor
+(`<Hepsi>`, Erkek, Kadın, 0-4, 5-9 …) ve asıl işaretlenmesi gereken oradaki `<Hepsi>`.
+Atlanırsa MEDAS hata vermiyor, kırılımsız ölçümü ekliyor — indirilen dosya toplamla
+birebir aynı çıkıyor. Sayfa bunu altta "Lütfen alt kırılım seçiniz!" diye söylüyor;
+işaretlendiğinde `Seçilen gösterge adedi` 0 → 38 oluyor (19 yaş bandı × 2 cinsiyet).
+Tek doğrulama bu sayaç: dosya boyutuna bakmak yetmez.
+
+**Onay kutusu = seçim.** Listbox checkmark kipinde çalışıyor: `<i class="z-icon-check">`
+her zaman markup'ta duruyor, CSS satır seçiliyken gösteriyor. Yani hiçbir sınıf
+değişmiyor, durum ZK'nın kendi nesnesinden okunuyor: `zk.Widget.$(el).isSelected()`.
+
 **Pasif düğme.** Birden çok "Tamam" var; `.last` pasif olana denk gelebiliyor. Etkin
 olanı seçmek gerekiyor.
 
@@ -39,12 +51,15 @@ zincirlemek çalışmıyor.
 4. `Tamam`
 5. `Göstergeleri Ekle` → "Seçili göstergelerle devam etmek için ileri butonuna basınız"
 
-## Sırada
-
+4b. `Tamam`'dan sonra açılan değer listelerinde her boyutun `<Hepsi>`'sini işaretle
+5. `Göstergeleri Ekle` → "Seçili göstergelerle devam etmek için ileri butonuna basınız"
 6. `İleri` → **Zaman** sekmesi: periyot ve yıllar
-7. `İleri` → **Düzey** sekmesi: İl + Türkiye (ilçe kapsam dışı)
-8. **Rapor Oluştur** → tablo. Rapor sayfalı gelebiliyor; tek sayfadan okumak eksik veri
-   verir (ön çalışmada yaşandı).
+7. `İleri` → **Düzey** sekmesi: İlçe Düzeyi + il HEPSİ + başlıktaki kutuyla tümünü seç
+8. **Rapor Oluştur** → CSV düğmesi. Tablo sayfalı geliyor; tek sayfadan okumak eksik veri
+   verir (ön çalışmada yaşandı), bu yüzden tablo değil CSV indiriliyor.
+
+Kırılımlı ilçe sorgusu 38 × 973 × 1 yıl = 36.974 — 50.000 sınırının altında, ama ancak
+yılda bir sorgu sığıyor.
 
 ## Kapsam kararı
 

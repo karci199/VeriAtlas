@@ -159,15 +159,40 @@ function parseCsv(text) {
 
 const datasets = new Map();
 
+async function part(file) {
+    if (!datasets.has(file)) {
+        const text = await (await read("../public/" + file)).text();
+        datasets.set(file, parseCsv(text));
+    }
+    return datasets.get(file);
+}
+
 async function dataset(indicator) {
     if (!indicator.dataset) {
         return null;
     }
-    if (!datasets.has(indicator.dataset)) {
-        const text = await (await read("../public/" + indicator.dataset)).text();
-        datasets.set(indicator.dataset, parseCsv(text));
+    return part(indicator.dataset);
+}
+
+/** Fetch the rows for a level that ships in its own file, if it has not arrived yet.
+ *
+ *  District population broken down by sex and age is fifty megabytes; sending it to
+ *  every reader who came for a province line chart would be absurd, so the dictionary
+ *  names a separate file per lazily-held level and the page collects it the first time
+ *  the reader actually asks for that level (see LAZY_LEVELS in export_web.py). */
+async function ensureLevel(level) {
+    const file = state.indicator?.parts?.[level];
+    if (!file || datasets.has(file)) {
+        return;
     }
-    return datasets.get(indicator.dataset);
+    const note = $("rail-note");
+    const said = note.textContent;
+    note.textContent = (LEVEL_LABELS[level] || level) + " verisi indiriliyor…";
+    try {
+        state.rows = state.rows.concat(await part(file));
+    } finally {
+        note.textContent = said;
+    }
 }
 
 // Area levels are ids in the fact table; these are their Turkish names. They belong in
@@ -231,6 +256,11 @@ const state = {
     mapView: {x: 0, y: 0, w: 1000, h: 420},
     //: Active derivation id, or "" for the measurement itself.
     derivation: "",
+    //: Show each value as a share of its area's own total instead of the count itself.
+    //: Absolute and relative answer different questions and the map needs both:
+    //: Şanlıurfa's child population is smaller than Ankara's in people and much larger
+    //: as a proportion.
+    share: false,
     //: Province the map is opened into, or null for the whole country.
     focus: null,
 };
@@ -265,16 +295,52 @@ async function districtsOf(provinceId) {
     return districts.get(provinceId);
 }
 
+/** Levels the menu offers. From the dictionary, not from the rows in hand: a level whose
+ *  file has not been fetched yet would otherwise be missing from the very menu that is
+ *  supposed to trigger the fetch. */
 function levelsInData() {
-    return [...new Set(state.rows.map((r) => r.level))]
+    const declared = state.indicator?.levels?.length
+        ? state.indicator.levels
+        : [...new Set(state.rows.map((r) => r.level))];
+    return [...new Set(declared)]
         .sort((a, b) => Object.keys(LEVEL_LABELS).indexOf(a) - Object.keys(LEVEL_LABELS).indexOf(b));
 }
 
-function valuesOf(dim) {
-    // District rows carry no age or sex, so the column is there but empty. An empty
-    // string is not a breakdown value and must not become a blank menu entry.
-    return [...new Set(state.rows.map((r) => r[dim]).filter((v) => v !== undefined && v !== ""))]
+/** The values a breakdown actually takes *at this level*.
+ *
+ *  The levels do not share a band set: the province file closes at 75+, the district
+ *  export runs on to 90+. Listing every value found anywhere would offer 85-89 on a
+ *  province map and draw nothing. A row whose dim is an empty string carries no
+ *  breakdown at all and must not become a blank menu entry. */
+/** The level actually on screen. The map draws districts whenever a province is opened
+ *  or the country-wide district view is on, whatever the rail's level says — and the
+ *  breakdown strip has to follow it, or the reader is offered province age bands over a
+ *  district map. */
+function effectiveLevel() {
+    const districtMap =
+        state.view === "map" &&
+        (state.focus || (state.districtView && districtFeatures.length));
+    return districtMap ? "district" : state.level;
+}
+
+function valuesOf(dim, level = effectiveLevel()) {
+    const here = state.rows.filter((r) => r.level === level);
+    return [...new Set((here.length ? here : state.rows).map((r) => r[dim]))]
+        .filter((v) => v !== undefined && v !== "")
         .sort((a, b) => String(a).localeCompare(String(b), "tr", {numeric: true}));
+}
+
+/** Keep every breakdown choice on a value this level offers, preserving what it can.
+ *  Moving province → district with age 75+ selected would otherwise draw an empty map
+ *  that looks like missing data rather than a band that stops there. */
+function clampDims() {
+    for (const dim of state.indicator.dims || []) {
+        const values = valuesOf(dim);
+        if (state.dims[dim] === TOTAL || values.includes(state.dims[dim])) {
+            continue;
+        }
+        state.dims[dim] = state.indicator.additive ? TOTAL : values[0];
+    }
 }
 
 /** Years available *at the current level*.
@@ -311,7 +377,33 @@ function slice(level = state.level) {
             totals.set(key, {...row});
         }
     }
-    return [...totals.values()];
+
+    if (!state.share) {
+        return [...totals.values()];
+    }
+    const whole = wholeOf(level);
+    return [...totals.values()].map((row) => {
+        const base = whole.get(row.area_id + "|" + row.year);
+        return {...row, value: base ? (row.value / base) * 100 : NaN};
+    });
+}
+
+/** Each area-year's grand total at this level, ignoring the breakdown choice entirely.
+ *
+ *  This is the denominator of the share mode, and it has to be built from the unfiltered
+ *  rows: dividing the selected slice by itself would give 100% everywhere. It is also
+ *  why sharing is only offered on additive units — a share of a sum of rates is not a
+ *  number that means anything. */
+function wholeOf(level) {
+    const whole = new Map();
+    for (const row of state.rows) {
+        if (row.level !== level) {
+            continue;
+        }
+        const key = row.area_id + "|" + row.year;
+        whole.set(key, (whole.get(key) || 0) + row.value);
+    }
+    return whole;
 }
 
 // region Derivations
@@ -370,13 +462,26 @@ function areasAtLevel() {
         .sort((a, b) => a.localeCompare(b, "tr"));
 }
 
-/** Precision follows whatever is being shown: the indicator's unit, or the derivation's. */
+/** Precision follows whatever is being shown: the indicator's unit, the share, or the
+ *  derivation's. A derivation is computed on top of the share, so it names the result. */
 function decimals() {
-    return derivation()?.decimals ?? state.indicator.decimals;
+    if (derivation()) {
+        return derivation().decimals;
+    }
+    return state.share ? 1 : state.indicator.decimals;
 }
 
 function unitLabel() {
-    return derivation()?.unit ?? state.indicator.unit;
+    if (derivation()) {
+        return derivation().unit;
+    }
+    return state.share ? "toplamın %'si" : state.indicator.unit;
+}
+
+/** Sharing divides by a total, so it needs a unit that adds up and a breakdown to be a
+ *  share *of*. Without both, the control would only ever draw 100%. */
+function canShare() {
+    return Boolean(state.indicator.additive && (state.indicator.dims || []).length);
 }
 
 function fmt(value) {
@@ -419,7 +524,13 @@ function drawRail() {
     const needle = state.search.toLocaleLowerCase("tr");
     const areas = areasAtLevel().filter((a) => a.toLocaleLowerCase("tr").includes(needle));
 
-    $("entities").innerHTML = areas
+    // Rewriting the list resets its scroll to the top, which reads as the page jumping
+    // out from under you the moment you press "Tümünü seç". The list is the same list —
+    // only the ticks changed — so it should stay where the reader left it.
+    const list = $("entities");
+    const wasAt = list.scrollTop;
+
+    list.innerHTML = areas
         .map((area) => {
             const on = state.selection.includes(area);
             return '<li class="' + (on ? "on" : "") + '" data-area="' + area + '">' +
@@ -428,6 +539,8 @@ function drawRail() {
                    '<span class="lvl">' + (LEVEL_LABELS[state.level] || state.level) + "</span></li>";
         })
         .join("");
+
+    list.scrollTop = wasAt;
 }
 
 /** Areas that are selected and not muted — what the charts actually draw. */
@@ -468,8 +581,21 @@ function derivationControl() {
            options + "</select></div>";
 }
 
+/** Absolute or relative. Its own control rather than an entry in the derivation list:
+ *  a share is a different *reading* of the same year, while the derivations there are
+ *  all about movement over time, and the two combine — you can index a share. */
+function shareControl() {
+    if (!canShare()) {
+        return "";
+    }
+    return "<div><div class='dim-label'>Değer</div><select id='share'>" +
+           "<option value=''" + (state.share ? "" : " selected") + ">Mutlak sayı</option>" +
+           "<option value='share'" + (state.share ? " selected" : "") +
+           ">Toplamın %'si</option></select></div>";
+}
+
 function drawDims() {
-    const groups = [indicatorControl(), derivationControl()];
+    const groups = [indicatorControl(), shareControl(), derivationControl()];
 
     for (const dim of state.indicator.dims || []) {
         const options = valuesOf(dim);
@@ -817,23 +943,24 @@ function barChart() {
 }
 
 function table() {
-    const span = years();
-    const columns = span.length > 8
-        ? span.filter((_, i) => i % Math.ceil(span.length / 8) === 0).concat(span[span.length - 1])
-        : span;
-    const shown = [...new Set(columns)];
-
     if (!drawn().length) {
         return empty("Soldan en az bir alan seçin.");
     }
 
-    let html = "<div style='max-height:" + PLOT_H + "px;overflow:auto'><table class='grid'><thead><tr><th>" +
+    // Every year, not a sample. Fitting nineteen columns into the panel width used to
+    // mean showing 2007, 2010, 2013 … and the reader had no way to ask for 2011 — a
+    // table that silently drops the year you came for is worse than one you scroll. The
+    // area column is pinned so the row stays identifiable however far right you go.
+    const shown = years();
+
+    let html = "<div class='grid-wrap' style='max-height:" + PLOT_H +
+               "px'><table class='grid'><thead><tr><th class='sticky-col'>" +
                (LEVEL_LABELS[state.level] || state.level) + "</th>" +
                shown.map((y) => "<th>" + y + "</th>").join("") + "</tr></thead><tbody>";
 
     for (const area of drawn()) {
         const points = seriesFor(area);
-        html += "<tr><td>" + area + "</td>" +
+        html += "<tr><td class='sticky-col'>" + area + "</td>" +
                 shown.map((y) => "<td>" + fmt(points.find((p) => p.year === y)?.value) + "</td>").join("") +
                 "</tr>";
     }
@@ -856,10 +983,21 @@ function pyramid() {
                      "Fazlasını soldaki listeden gizleyin");
     }
 
-    const rowsOf = (area) =>
-        state.rows.filter(
+    // In share mode every band is a percentage of that area's own population, which is
+    // what makes two pyramids of very different sizes comparable without a scale switch.
+    const whole = state.share ? wholeOf(state.level) : null;
+    const rowsOf = (area) => {
+        const rows = state.rows.filter(
             (r) => r.level === state.level && r.year === state.year && r.area === area
         );
+        if (!whole) {
+            return rows;
+        }
+        return rows.map((r) => {
+            const base = whole.get(r.area_id + "|" + r.year);
+            return {...r, value: base ? (r.value / base) * 100 : NaN};
+        });
+    };
 
     const all = areas.flatMap(rowsOf);
     if (!all.length) {
@@ -921,9 +1059,11 @@ function pyramid() {
             .map((s, si) => "<span class='tip-row'><span class='dot' style='background:" +
                             colour(si) + "'></span>" + dimValue("sex", s) + "</span>")
             .join("") +
-        "<span class='spacer'></span><span>Ölçek</span>" +
-        "<button class='chip" + (state.panelScale !== "own" ? " on" : "") + "' data-panel='shared'>Ortak</button>" +
-        "<button class='chip" + (state.panelScale === "own" ? " on" : "") + "' data-panel='own'>Kendi içinde</button>" +
+        "<span class='spacer'></span><span>Eksen</span>" +
+        "<button class='chip" + (state.panelScale !== "own" ? " on" : "") +
+        "' data-panel='shared' title='Bütün panellerde aynı eksen: büyüklükler karşılaştırılabilir'>Ortak eksen</button>" +
+        "<button class='chip" + (state.panelScale === "own" ? " on" : "") +
+        "' data-panel='own' title='Her panel kendi en büyüğüne göre: şekiller karşılaştırılabilir'>Panel bazlı</button>" +
         "</div>";
 
     return head + wrapPlot(svg + "</svg>");
@@ -958,7 +1098,7 @@ function map() {
 
     // Drawing districts means reading district rows: the scale then belongs to the
     // largest district on screen, not to İstanbul.
-    const level = state.focus || wide ? "district" : state.level;
+    const level = effectiveLevel();
     const here = slice(level);
     const rows = here.filter((r) => r.year === state.year);
     const byId = new Map(rows.map((r) => [r.area_id, r.value]));
@@ -1016,7 +1156,9 @@ function map() {
     // the only province with any colour in it and the other eighty read as empty. Log is
     // the default for that reason; linear stays one click away because a ratio the
     // reader wants to see literally — a rate, a percentage — is better off on it.
-    const logging = state.scale === "log" && low > 0;
+    // A share is already bounded and already comparable — the log ramp exists for counts
+    // spread over three orders of magnitude, so it is not offered here.
+    const logging = state.scale === "log" && low > 0 && !state.share;
     const position = (v) => {
         if (v === undefined) {
             return null;
@@ -1048,12 +1190,22 @@ function map() {
     svg += "</svg>";
     hover = {kind: "shape"};
 
+    // Two separate questions, so two labelled pairs rather than four bare chips: how the
+    // colour is spread across the range, and what range the ends of the ramp stand for.
+    const ramp = state.share
+        ? ""
+        : "<span>Renk</span>" +
+          "<button class='chip" + (state.scale === "log" ? " on" : "") +
+          "' data-scale='log' title='Katlarla artan renk: az sayıda çok büyük alan varken okunur'>Log</button>" +
+          "<button class='chip" + (state.scale === "linear" ? " on" : "") +
+          "' data-scale='linear' title='Eşit aralıklı renk'>Doğrusal</button>";
+
     const scaleToggle = values.length
-        ? "<span class='spacer'></span><span>Ölçek</span>" +
-          "<button class='chip" + (state.scale === "log" ? " on" : "") + "' data-scale='log'>Log</button>" +
-          "<button class='chip" + (state.scale === "linear" ? " on" : "") + "' data-scale='linear'>Doğrusal</button>" +
-          "<button class='chip" + (state.scaleSpan === "fixed" ? " on" : "") + "' data-span='fixed'>Sabit</button>" +
-          "<button class='chip" + (state.scaleSpan !== "fixed" ? " on" : "") + "' data-span='year'>Yıla göre</button>" +
+        ? "<span class='spacer'></span>" + ramp + "<span>Uçlar</span>" +
+          "<button class='chip" + (state.scaleSpan === "fixed" ? " on" : "") +
+          "' data-span='fixed' title='Ramp uçları bütün yıllara göre sabit: yıllar oynatılınca renk gerçekten değişir'>Tüm yıllar</button>" +
+          "<button class='chip" + (state.scaleSpan !== "fixed" ? " on" : "") +
+          "' data-span='year' title='Ramp uçları her yıl yeniden hesaplanır: o yılın sıralaması'>Bu yıl</button>" +
           "<button class='chip' id='map-fit' title='Tekerlek yakınlaştırır, sürükleme kaydırır'>⤢ Sığdır</button>"
         : "";
 
@@ -1120,6 +1272,10 @@ function render() {
         state.derivation = "";
     }
 
+    // The level on screen can change without the rail moving — opening a province on the
+    // map switches to district bands — so the breakdown choice is checked every draw.
+    clampDims();
+
     drawRail();
     drawDims();
     drawTabs();
@@ -1177,6 +1333,7 @@ function writeHash() {
         l: state.level,
         y: state.year,
         f: state.focus || "",
+        s: state.share ? "1" : "",
         a: state.selection.join("~"),
         ...Object.fromEntries(Object.entries(state.dims).map(([k, v]) => ["d." + k, v])),
     });
@@ -1228,6 +1385,11 @@ async function useIndicator(id) {
 
     const levels = levelsInData();
     state.level = levels.includes(state.level) ? state.level : levels[0];
+    await ensureLevel(state.level);
+
+    // Sharing carries over between indicators where it still means something, and is
+    // dropped where it does not — a share of a fertility rate is not a number.
+    state.share = state.share && canShare();
 
     state.dims = {};
     for (const dim of indicator.dims || []) {
@@ -1297,14 +1459,16 @@ function wire() {
         render();
     };
 
-    $("level").onchange = (ev) => {
+    $("level").onchange = async (ev) => {
         state.level = ev.target.value;
         state.focus = null;
+        await ensureLevel(state.level);
         // The new level may not cover the year we were standing on.
         const span = years();
         if (!span.includes(state.year)) {
             state.year = span[span.length - 1];
         }
+        clampDims();
         seedSelection();
         render();
     };
@@ -1314,6 +1478,11 @@ function wire() {
             if (await useIndicator(ev.target.value)) {
                 render();
             }
+            return;
+        }
+        if (ev.target.id === "share") {
+            state.share = ev.target.value === "share";
+            render();
             return;
         }
         if (ev.target.id === "derivation") {
@@ -1374,9 +1543,12 @@ function wire() {
 
         if (ev.target.id === "district-view") {
             state.districtView = !state.districtView;
-            if (state.districtView && !districtFeatures.length) {
+            if (state.districtView) {
                 ev.target.textContent = "İlçeler yükleniyor…";
-                districtFeatures = await allDistricts();
+                await ensureLevel("district");
+                if (!districtFeatures.length) {
+                    districtFeatures = await allDistricts();
+                }
             }
             render();
             return;
@@ -1404,6 +1576,7 @@ function wire() {
         // first two segments of the id.
         const provinceId = area.dataset.area.split("-").slice(0, 2).join("-");
         resetMapView();
+        await ensureLevel("district");
         if (await districtsOf(provinceId)) {
             state.focus = provinceId;
         }
@@ -1495,7 +1668,9 @@ async function start() {
     if (hash.get("y")) {
         state.year = Number(hash.get("y"));
     }
+    state.share = hash.get("s") === "1" && canShare();
     if (hash.get("f") && (await districtsOf(hash.get("f")))) {
+        await ensureLevel("district");
         state.focus = hash.get("f");
     }
     for (const dim of state.indicator.dims || []) {
