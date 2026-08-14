@@ -157,6 +157,15 @@ h1 {
     overflow-y: auto;
 }
 
+/* The chosen block has to be bounded too. "Tümünü seç" over a district put forty-six
+   rows here, the rail grew past three thousand pixels, and the chart it is describing
+   ended up below the fold — which is the page scrolling away from you by another route
+   than the one already fixed. */
+.chosen {
+    max-height: calc(240px * var(--density));
+    overflow-y: auto;
+}
+
 /* Chosen areas: colour dot, name, mute, remove. */
 .chosen li {
     display: flex;
@@ -465,6 +474,15 @@ select:focus-visible, button:focus-visible, input:focus-visible {
     color: var(--text-tertiary);
 }
 
+/* A chart that grows with its data — the bar chart — scrolls in its own frame rather
+   than pushing everything below it off the screen. */
+.plot-scroll {
+    max-height: calc(420px * var(--density));
+    overflow-y: auto;
+}
+
+.plot-scroll .plot { height: auto; }
+
 /* The colour classes, each labelled with where it starts. Wraps rather than shrinking:
    six ranges of six-figure numbers do not fit one line on a narrow screen. */
 .map-legend {
@@ -551,6 +569,16 @@ select:focus-visible, button:focus-visible, input:focus-visible {
 /* The table shows every year, so it scrolls in both directions inside its own box
    rather than widening the page. */
 .grid-wrap { overflow: auto; }
+
+.grid-head {
+    color: var(--text-tertiary);
+    font-size: var(--text-xs);
+    padding-bottom: var(--gap-xs);
+}
+
+.grid th.sortable { cursor: pointer; user-select: none; }
+.grid th.sortable:hover { color: var(--text-primary); }
+.grid th.sorted { color: var(--accent); }
 
 .grid { border-collapse: separate; border-spacing: 0; font-size: var(--text-sm); }
 

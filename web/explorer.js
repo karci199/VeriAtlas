@@ -280,6 +280,12 @@ const state = {
     scale: "quantile",
     //: Pyramid panels: one shared scale, or each panel scaled to itself.
     panelScale: "shared",
+    //: Table order: which column, and which way round.
+    sort: {column: "name", descending: false},
+    //: Line-chart value axis. "zero" always includes zero, which keeps proportions
+    //: honest; "data" fits the axis to the values, which is the only way to read a set of
+    //: shares that all sit between 70 and 95.
+    axis: "zero",
     //: Map ramp ends: "year" recomputes them per year, "fixed" spans every year drawn.
     scaleSpan: "year",
     //: Country map showing all 973 districts instead of the 81 provinces.
@@ -975,8 +981,16 @@ function colourOf(area) {
  *  the derivation that breaks that: a district that shrank draws at −1%, which landed
  *  below the bottom of the frame and simply left the picture. Anything that can be
  *  negative needs an axis that admits it, and a zero line to read it against. */
-function niceTicks(min, max) {
-    const bottom = Math.min(0, min);
+function niceTicks(min, max, fromZero = true) {
+    // Fitting the axis to the data exaggerates every wiggle, which is why zero is the
+    // default. But a chart of shares that all sit between 70 and 95 spends three quarters
+    // of its height on empty space and every series lands in the same flat band — there
+    // the honest reading is the one you can actually see, so it is one click away.
+    // Fitted does not mean "below zero": with values from 29 to 7620 the padding rounded
+    // the axis down to −2.000, inventing a region the data never visits. It only crosses
+    // zero when the data does.
+    const padded = min - (max - min) * 0.08;
+    const bottom = fromZero ? Math.min(0, min) : min < 0 ? padded : Math.max(0, padded);
     const raw = Math.max(1e-9, (max - bottom) / 5);
     const magnitude = Math.pow(10, Math.floor(Math.log10(raw)));
     const step = [1, 2, 2.5, 5, 10].map((m) => m * magnitude).find((s) => s >= raw) || magnitude * 10;
@@ -990,7 +1004,7 @@ function niceTicks(min, max) {
 function lineChart() {
     const rows = drawn()
         .map((id) => ({id, area: nameOf(id), pts: seriesFor(id), colour: colourOf(id)}))
-        .filter((r) => r.pts.length);
+        .filter((r) => r.pts.some((p) => Number.isFinite(p.value)));
     if (!rows.length) {
         return empty("Soldan en az bir alan seçin.");
     }
@@ -998,7 +1012,8 @@ function lineChart() {
     const span = years();
     const [minYear, maxYear] = [span[0], span[span.length - 1]];
     const all = rows.flatMap((r) => r.pts.map((p) => p.value)).filter(Number.isFinite);
-    const {step, top, bottom} = niceTicks(Math.min(...all), Math.max(...all));
+    const {step, top, bottom} =
+        niceTicks(Math.min(...all), Math.max(...all), state.axis === "zero");
 
     // Room on the right for the labels, unless there are too many to label at all.
     const labelled = rows.length <= LABEL_LIMIT;
@@ -1033,8 +1048,12 @@ function lineChart() {
     // Past a couple of dozen series there is no arrangement that works — the names run
     // off the frame and cover the chart — so they are dropped and the cursor does the
     // naming instead.
+    const lastOf = (r) => [...r.pts].reverse().find((p) => Number.isFinite(p.value));
     const labels = labelled
-        ? rows.map((r) => ({r, y: yv(r.pts[r.pts.length - 1].value)})).sort((a, b) => b.y - a.y)
+        ? rows
+              .filter(lastOf)
+              .map((r) => ({r, y: yv(lastOf(r).value)}))
+              .sort((a, b) => b.y - a.y)
         : [];
     labels.forEach((l, i) => {
         if (i && labels[i - 1].y - l.y < 16) {
@@ -1043,10 +1062,28 @@ function lineChart() {
     });
 
     for (const row of rows) {
+        // A missing year breaks the line rather than being drawn through. The share of a
+        // neighbourhood whose under-18 count TÜİK withheld has no value at all, and
+        // joining across it would draw a straight line the data does not support — it
+        // also put a literal NaN in the path and the browser refused the whole shape.
+        let broken = true;
         const d = row.pts
-            .map((p, i) => (i ? "L" : "M") + x(p.year).toFixed(1) + " " + yv(p.value).toFixed(1))
+            .map((p) => {
+                if (!Number.isFinite(p.value)) {
+                    broken = true;
+                    return "";
+                }
+                const move = broken ? "M" : "L";
+                broken = false;
+                return move + x(p.year).toFixed(1) + " " + yv(p.value).toFixed(1);
+            })
+            .filter(Boolean)
             .join(" ");
-        const last = row.pts[row.pts.length - 1];
+
+        const last = [...row.pts].reverse().find((p) => Number.isFinite(p.value));
+        if (!last) {
+            continue;
+        }
         const label = labels.find((l) => l.r === row);
 
         svg += '<path d="' + d + '" fill="none" stroke="' + row.colour +
@@ -1060,10 +1097,16 @@ function lineChart() {
         }
     }
 
-    const note = labelled
-        ? ""
-        : "<div class='map-head'><span>" + rows.length +
-          " seri · adlar için imleci grafiğin üstünde gezdirin</span></div>";
+    const note = "<div class='map-head'>" +
+        (labelled
+            ? "<span></span>"
+            : "<span>" + rows.length + " seri · adlar için imleci grafiğin üstünde gezdirin</span>") +
+        "<span class='spacer'></span><span>Eksen</span>" +
+        "<button class='chip" + (state.axis === "zero" ? " on" : "") +
+        "' data-axis='zero' title='Eksen sıfırı içerir: oranlar dürüst okunur'>Sıfırdan</button>" +
+        "<button class='chip" + (state.axis === "data" ? " on" : "") +
+        "' data-axis='data' title='Eksen verinin aralığına oturur: hepsi 70-95 arasındayken farkı ancak böyle görürsünüz'>Veriye göre</button>" +
+        "</div>";
 
     hover = {kind: "line", rows, years: span, left: L, right: PLOT_W - R, x, yv};
     return note + wrapPlot(svg + "</svg>");
@@ -1241,11 +1284,16 @@ function axisText(x, y, text, anchor) {
            token("--text-tertiary") + '" font-size="13">' + text + "</text>";
 }
 
+//: A bar and its label need about this much height to stay legible.
+const BAND = 22;
+
 function barChart() {
     const rows = drawn()
         .map((id) => {
             const point = seriesFor(id).find((p) => p.year === state.year);
-            return point ? {area: nameOf(id), value: point.value, colour: colourOf(id)} : null;
+            return point && Number.isFinite(point.value)
+                ? {area: nameOf(id), value: point.value, colour: colourOf(id)}
+                : null;
         })
         .filter(Boolean)
         .sort((a, b) => b.value - a.value);
@@ -1253,24 +1301,76 @@ function barChart() {
         return empty("Seçili alanların bu yıl için değeri yok.");
     }
 
-    const L = 150, R = 130, T = 16;
-    const max = Math.max(...rows.map((r) => r.value));
-    const band = (PLOT_H - T - 16) / rows.length;
+    // The chart used to divide a fixed height by however many bars there were, so
+    // forty-six of them got eight pixels each and their thirteen-pixel names printed on
+    // top of one another — a wall of text with no bars visible at all. Instead the chart
+    // grows with the data and scrolls inside its own frame.
+    const T = 16;
+    const height = Math.max(PLOT_H, T + 16 + rows.length * BAND);
+    const band = (height - T - 16) / rows.length;
+    const L = 150, R = 130;
 
-    let svg = '<svg class="plot" viewBox="0 0 ' + PLOT_W + " " + PLOT_H + '" role="img">';
+    // Bars are read against zero: a bar chart that starts anywhere else is a lie about
+    // proportion, so this axis does not follow the "veriye göre" setting.
+    const max = Math.max(...rows.map((r) => r.value), 0);
+    const min = Math.min(...rows.map((r) => r.value), 0);
+    const zero = L + (min < 0 ? (-min / (max - min)) * (PLOT_W - L - R) : 0);
+    const unit = (PLOT_W - L - R) / Math.max(1e-9, max - min);
+
+    let svg = '<svg class="plot" viewBox="0 0 ' + PLOT_W + " " + height + '" role="img"' +
+              ' style="min-height:' + height + 'px">';
     rows.forEach((row, i) => {
         const y = T + i * band + band * 0.18;
         const h = band * 0.64;
-        const w = (row.value / max) * (PLOT_W - L - R);
-        svg += '<rect x="' + L + '" y="' + y + '" width="' + w + '" height="' + h +
+        const w = Math.abs(row.value) * unit;
+        const x = row.value < 0 ? zero - w : zero;
+        svg += '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h +
                '" rx="2" fill="' + row.colour + '" data-value="' + fmt(row.value) +
                '" data-name="' + row.area + '" data-colour="' + row.colour + '"/>' +
                axisText(L - 12, y + h / 2 + 5, row.area, "end") +
-               axisText(L + w + 12, y + h / 2 + 5, fmt(row.value), "start");
+               axisText(x + (row.value < 0 ? -12 : w + 12), y + h / 2 + 5, fmt(row.value),
+                        row.value < 0 ? "end" : "start");
     });
+    if (min < 0) {
+        svg += '<line x1="' + zero + '" x2="' + zero + '" y1="' + T + '" y2="' + (height - 16) +
+               '" stroke="' + token("--text-tertiary") + '"/>';
+    }
 
     hover = {kind: "shape"};
-    return wrapPlot(svg + "</svg>");
+    return "<div class='plot-scroll'>" + wrapPlot(svg + "</svg>") + "</div>";
+}
+
+/** Rows for the table, in whatever order the reader clicked a header into.
+ *
+ *  Sorting by a year is the question "who was biggest in 2013", which the table could not
+ *  answer before: it came out in whatever order the rail happened to be in, and with a
+ *  hundred neighbourhoods that is no order at all. */
+function tableRows(years) {
+    const rows = drawn().map((id) => {
+        const points = seriesFor(id);
+        return {
+            id,
+            name: nameOf(id),
+            by: new Map(points.map((p) => [p.year, p.value])),
+        };
+    });
+
+    const {descending} = state.sort;
+    // The header carries the column as text; the year keys are numbers.
+    const column = state.sort.column === "name" ? "name" : Number(state.sort.column);
+    rows.sort((a, b) => {
+        if (column === "name" || !years.includes(column)) {
+            return a.name.localeCompare(b.name, "tr") * (descending ? -1 : 1);
+        }
+        // A missing year sorts last whichever way round the column is: it is not a small
+        // value, it is an absent one.
+        const [x, y] = [a.by.get(column), b.by.get(column)];
+        if (!Number.isFinite(x) || !Number.isFinite(y)) {
+            return Number.isFinite(x) ? -1 : Number.isFinite(y) ? 1 : 0;
+        }
+        return (descending ? y - x : x - y) || a.name.localeCompare(b.name, "tr");
+    });
+    return rows;
 }
 
 function table() {
@@ -1283,16 +1383,26 @@ function table() {
     // table that silently drops the year you came for is worse than one you scroll. The
     // area column is pinned so the row stays identifiable however far right you go.
     const shown = years();
+    const rows = tableRows(shown);
 
-    let html = "<div class='grid-wrap' style='max-height:" + PLOT_H +
-               "px'><table class='grid'><thead><tr><th class='sticky-col'>" +
-               (LEVEL_LABELS[state.level] || state.level) + "</th>" +
-               shown.map((y) => "<th>" + y + "</th>").join("") + "</tr></thead><tbody>";
+    const arrow = (column) =>
+        state.sort.column !== column ? "" : state.sort.descending ? " ↓" : " ↑";
+    const head = (column, label) =>
+        "<th class='sortable" + (column === "name" ? " sticky-col" : "") +
+        (state.sort.column === column ? " sorted" : "") +
+        "' data-sort='" + column + "' title='Bu sütuna göre sırala'>" +
+        label + arrow(column) + "</th>";
 
-    for (const id of drawn()) {
-        const points = seriesFor(id);
-        html += "<tr><td class='sticky-col'>" + nameOf(id) + "</td>" +
-                shown.map((y) => "<td>" + fmt(points.find((p) => p.year === y)?.value) + "</td>").join("") +
+    let html = "<div class='grid-head'>" + rows.length + " satır · başlığa tıklayınca " +
+               "o sütuna göre sıralanır</div>" +
+               "<div class='grid-wrap' style='max-height:" + PLOT_H +
+               "px'><table class='grid'><thead><tr>" +
+               head("name", LEVEL_LABELS[state.level] || state.level) +
+               shown.map((y) => head(String(y), y)).join("") + "</tr></thead><tbody>";
+
+    for (const row of rows) {
+        html += "<tr><td class='sticky-col'>" + row.name + "</td>" +
+                shown.map((y) => "<td>" + fmt(row.by.get(y)) + "</td>").join("") +
                 "</tr>";
     }
     return html + "</tbody></table></div>";
@@ -2015,6 +2125,26 @@ function wire() {
                     districtFeatures = await allDistricts();
                 }
             }
+            render();
+            return;
+        }
+
+        const axis = ev.target.closest("[data-axis]");
+        if (axis) {
+            state.axis = axis.dataset.axis;
+            render();
+            return;
+        }
+
+        // Clicking the column you are already sorted by turns it around.
+        const sorted = ev.target.closest("[data-sort]");
+        if (sorted) {
+            const column = sorted.dataset.sort;
+            state.sort = {
+                column,
+                descending: state.sort.column === column ? !state.sort.descending
+                                                         : column !== "name",
+            };
             render();
             return;
         }
