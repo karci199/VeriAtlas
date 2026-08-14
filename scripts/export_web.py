@@ -7,6 +7,7 @@ labels (decision K1).
 Run:  uv run python scripts/export_web.py
 """
 
+import gzip
 import json
 import sys
 
@@ -24,6 +25,38 @@ from veriatlas.areas import (
 from veriatlas.config import PUBLIC
 from veriatlas.indicators import load
 from veriatlas.schema import parse_dims
+
+
+def served(name: str | None) -> str | None:
+    """The name the page asks for — every dataset goes out gzipped."""
+    return name + ".gz" if name else name
+
+
+def report(path, frame: pl.DataFrame) -> None:
+    size = write_dataset(frame, path)
+    print(
+        "yazildi:", path.name + ".gz", frame.height, "satir", round(size / 1e6, 2), "MB"
+    )
+
+
+def write_dataset(frame: pl.DataFrame, path) -> int:
+    """Write a dataset the page will fetch, gzipped.
+
+    The district slice is 53 MB of CSV and 3.9 MB gzipped — the same numbers, a
+    fourteenth of the wire. Compression happens here rather than being left to the
+    server because the page has to work off `python -m http.server`, which negotiates
+    nothing; the page unpacks it itself with `DecompressionStream`.
+
+    Dropping the four columns that are constant within a file (level, quality flag,
+    vintage, source) saves half the *plain* bytes and almost nothing after gzip — 3.6 MB
+    against 3.9 — so they stay. Provenance keeps travelling with the rows it describes,
+    which is the point of having it there at all.
+    """
+    target = path.with_suffix(path.suffix + ".gz")
+    with gzip.open(target, "wb", compresslevel=6) as handle:
+        frame.write_csv(handle)
+    return target.stat().st_size
+
 
 #: Which exported file carries which indicator. The page looks the file up here rather
 #: than knowing it, so adding an indicator is an export change, not a page change.
@@ -55,15 +88,20 @@ def export_dictionary(loaded: set[str], levels: dict[str, list[str]]) -> None:
                     "definition": ind.definition_tr,
                     "dims": list(ind.dims),
                     "views": list(ind.views),
-                    "dataset": DATASETS.get(ind.indicator_id),
+                    # The page fetches exactly what is named here, extension included,
+                    # so the gzip is a fact about the file rather than a rule the page
+                    # has to know.
+                    "dataset": served(DATASETS.get(ind.indicator_id)),
                     # Which levels exist, and which of them the page has to go and fetch
                     # before it can draw them. The level menu is built from this rather
                     # than from the rows in hand, or a lazily-held level would be missing
                     # from the menu that is supposed to load it.
                     "levels": levels.get(ind.indicator_id, []),
                     "parts": {
-                        level: DATASETS[ind.indicator_id].replace(
-                            ".csv", "-" + level + ".csv"
+                        level: served(
+                            DATASETS[ind.indicator_id].replace(
+                                ".csv", "-" + level + ".csv"
+                            )
                         )
                         for level in levels.get(ind.indicator_id, [])
                         if level in LAZY_LEVELS and ind.indicator_id in DATASETS
@@ -171,17 +209,12 @@ def export_broken_down(
 
     stem = DATASETS[indicator_id].removesuffix(".csv")
     base = slim.filter(~pl.col("level").is_in(LAZY_LEVELS))
-    target = PUBLIC / (stem + ".csv")
-    base.write_csv(target)
-    print("yazildi:", target, base.height, "satir")
+    report(PUBLIC / (stem + ".csv"), base)
 
     for level in LAZY_LEVELS:
         part = slim.filter(pl.col("level") == level)
-        if part.height == 0:
-            continue
-        target = PUBLIC / (stem + "-" + level + ".csv")
-        part.write_csv(target)
-        print("yazildi:", target, part.height, "satir")
+        if part.height:
+            report(PUBLIC / (stem + "-" + level + ".csv"), part)
 
 
 def sources() -> list[dict[str, str]]:
@@ -293,9 +326,7 @@ def main() -> None:
     ]
     slim = pl.concat([provinces, *rolled]).sort("level", "area", "year")
 
-    target = PUBLIC / "tfr.csv"
-    slim.write_csv(target)
-    print("yazildi:", target, slim.height, "satir")
+    report(PUBLIC / "tfr.csv", slim)
 
     levels["tfr"] = sorted(slim["level"].unique())
     export_dictionary(loaded, levels)

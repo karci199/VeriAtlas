@@ -159,10 +159,29 @@ function parseCsv(text) {
 
 const datasets = new Map();
 
+/** Read a dataset, unpacking it if it arrived gzipped.
+ *
+ *  The district slice is 53 MB of CSV and 3.9 MB packed. The page unpacks it rather than
+ *  leaving it to the server because it has to work off `python -m http.server`, which
+ *  serves what it is given and negotiates nothing — an encoding the page arranges itself
+ *  cannot be undone by where it is hosted. */
+async function textOf(file) {
+    const response = await read("../public/" + file);
+    if (!file.endsWith(".gz")) {
+        return response.text();
+    }
+    if (!window.DecompressionStream) {
+        const error = new Error("Bu tarayıcı gzip açamıyor (DecompressionStream yok)");
+        error.path = file;
+        throw error;
+    }
+    const stream = response.body.pipeThrough(new DecompressionStream("gzip"));
+    return new Response(stream).text();
+}
+
 async function part(file) {
     if (!datasets.has(file)) {
-        const text = await (await read("../public/" + file)).text();
-        datasets.set(file, parseCsv(text));
+        datasets.set(file, parseCsv(await textOf(file)));
     }
     return datasets.get(file);
 }

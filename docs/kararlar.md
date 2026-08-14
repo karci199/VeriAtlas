@@ -258,6 +258,17 @@ Düzey menüsü artık elde duran satırlardan değil sözlükten kuruluyor (`le
 `parts`): yoksa dosyayı indirmesi gereken menüde o düzey hiç görünmezdi. Sayfa ilçe
 *sınırlarını* zaten il il, istendiğinde çekiyordu (K11) — bu onun veri tarafındaki eşi.
 
+**Ek (2026-08-14 akşam): veri dosyaları gzip'li çıkıyor.** 53,6 MB → **3,9 MB**.
+Sıkıştırma sunucuya bırakılmıyor, dışa aktarımda yapılıyor ve sayfa `DecompressionStream`
+ile kendisi açıyor: ekran `python -m http.server` üstünde çalışmak zorunda ve o hiçbir
+şey pazarlık etmiyor — sayfanın kendi ayarladığı kodlama, nerede barındığına bağlı
+değil.
+
+Dosya içinde sabit olan dört sütun (düzey, kalite bayrağı, sürüm, kaynak) atılsaydı
+*düz* baytların yarısı giderdi ama gzip'ten sonra kazanç 3,9 → 3,6 MB. O yüzden
+duruyorlar: künye, tarif ettiği satırlarla birlikte yolculuk etmeye devam ediyor —
+zaten orada olmasının sebebi bu.
+
 ## 2026-08-14 oturumu — kapanan altı madde
 
 Önceki oturumun listesi bitti:
@@ -311,13 +322,17 @@ Yanına ikinci bir emniyet konuldu: adaptör 81 ilin tamamını bulamazsa yükle
 
 ## Sıradaki oturum — açık maddeler (2026-08-14, akşam)
 
-1. **`population-district.csv` 53 MB.** Baytların üçte biri her satırda tekrarlanan
-   künye. Sıkıştırma, künyenin dosya başına bir kez yazılması, ya da yıl başına dosya.
+1. **Bursa dışındaki iller için mahalle verisi.** Tek dosya ikinci ilde şişer; K14'ün
+   düzey-başına bölmesi mahallede il-başına bölmeye dönüşecek (ilçe sınırlarının zaten
+   yaptığı gibi). Mahalle sınır geometrisi yok, o yüzden mahallede harita açılmıyor —
+   ve bulunmazsa açılmayacak.
 2. **Haritada varsayılan ölçek.** Ortanca yaş 35-45 aralığında; log ramp orada bir işe
    yaramıyor. Varsayılan, göstergenin birimine göre seçilebilir (sayım → log,
    sınırlı/oransal → doğrusal) — şimdilik okuyucu tek tıkla değiştiriyor.
 3. **Ortanca yaşta toplam yok.** Kaynak dosya yalnız erkek/kadın veriyor. Toplam
    isteniyorsa MEDAS'tan ayrı çekilmeli — iki medyanın ortalaması medyan değildir.
+4. **Mahallede cinsiyet kırılımı.** MEDAS bu düzeyde yaş *ya da* cinsiyet veriyor,
+   ikisini birlikte değil. Cinsiyet kesiti ayrı bir çekim.
 
 ## Açık işler
 
