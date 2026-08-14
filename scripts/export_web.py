@@ -15,7 +15,12 @@ import polars as pl
 sys.path.insert(0, "src")
 
 from veriatlas.aggregate import to_level
-from veriatlas.areas import load_areas, load_districts, load_weights
+from veriatlas.areas import (
+    load_areas,
+    load_districts,
+    load_neighbourhoods,
+    load_weights,
+)
 from veriatlas.config import PUBLIC
 from veriatlas.indicators import load
 from veriatlas.schema import parse_dims
@@ -118,7 +123,11 @@ def export_dictionary(loaded: set[str], levels: dict[str, list[str]]) -> None:
 #: The split has to be by level and complete: a level's rows all live in one file or the
 #: other. District totals in one file and district breakdowns in the other would let
 #: anything that sums across the breakdown count those districts twice.
-LAZY_LEVELS = ("district",)
+#: Neighbourhoods are here for the same reason and more so: Bursa alone is 1061 of them,
+#: and the whole country would be around fifty thousand. When the other provinces arrive
+#: this will have to split again, per province, the way the district *boundaries* already
+#: do — one file per level stops being small enough somewhere around the second province.
+LAZY_LEVELS = ("district", "neighbourhood")
 
 
 def export_broken_down(
@@ -227,6 +236,23 @@ def main() -> None:
         [
             load_areas().select("area_id", "name_tr"),
             load_districts().select("area_id", "name_tr"),
+            # A neighbourhood's own name is not enough to identify it: a hundred of them
+            # repeat inside Bursa alone, seven of them called "Yeni Mah.". The district
+            # is part of the label the reader needs, so it is joined on here rather than
+            # left to the page.
+            load_neighbourhoods()
+            .join(
+                load_districts().select(
+                    pl.col("area_id").alias("parent_id"),
+                    pl.col("name_tr").alias("district"),
+                ),
+                on="parent_id",
+                how="left",
+            )
+            .select(
+                "area_id",
+                (pl.col("district") + " / " + pl.col("name_tr")).alias("name_tr"),
+            ),
         ]
     )
 

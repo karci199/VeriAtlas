@@ -11,6 +11,10 @@ ROOT = Path(__file__).resolve().parents[2]
 
 RAW = ROOT / "raw"
 PUBLIC = ROOT / "public"
+DOCS = ROOT / "docs"
+#: Registries and the indicator dictionary — files that are decisions, not observations,
+#: so they ship inside the package rather than sitting in `raw/`.
+DATA = Path(__file__).resolve().parent / "data"
 WAREHOUSE = ROOT / "warehouse.duckdb"
 
 

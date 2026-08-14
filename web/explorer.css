@@ -450,7 +450,16 @@ select:focus-visible, button:focus-visible, input:focus-visible {
 .tip-value { color: var(--text-primary); font-weight: 700; }
 
 .plot.drillable .area { cursor: pointer; }
-.plot .area:hover { stroke: var(--text-primary); stroke-width: 1.2; }
+
+/* The hover outline says "this one", and that is all it has to say. Drawn in the text
+   colour it came out near-white on the ramp — a hard bright ring that pulled the eye off
+   the colour it sits on, which is the thing being read. Half-transparent ink is enough
+   to separate the shape from its neighbours without competing with them. */
+.plot .area:hover {
+    stroke: var(--text-primary);
+    stroke-opacity: 0.45;
+    stroke-width: 1.4;
+}
 
 .time {
     display: flex;

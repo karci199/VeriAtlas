@@ -50,6 +50,18 @@ def load_districts() -> pl.DataFrame:
     return pl.read_csv(DISTRICTS_PATH)
 
 
+#: Neighbourhoods, derived from the MEDAS exports rather than published as a list — see
+#: `scripts/build_neighbourhood_registry.py`. Kept apart from the districts for the same
+#: reason they are kept apart from the provinces: different columns, different provenance,
+#: and there are two orders of magnitude more of them.
+NEIGHBOURHOODS_PATH = Path(__file__).parent / "data" / "areas_tr_neighbourhoods.csv"
+
+
+def load_neighbourhoods() -> pl.DataFrame:
+    """Read the neighbourhood registry: ids, current name, district, MEDAS code."""
+    return pl.read_csv(NEIGHBOURHOODS_PATH)
+
+
 def load_parents(hierarchy: str | None = None) -> pl.DataFrame:
     """Read membership: `area_id`, `parent_id`, `hierarchy`."""
     parents = pl.read_csv(PARENTS_PATH)

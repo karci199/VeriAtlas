@@ -199,6 +199,7 @@ async function ensureLevel(level) {
 // the area registry the way indicator labels belong in the dictionary — until the
 // registry exports them, this is the one label map left in the page.
 const LEVEL_LABELS = {
+    neighbourhood: "Mahalle",
     district: "İlçe",
     province: "İl",
     nuts2: "İBBS-2",
@@ -396,12 +397,28 @@ function slice(level = state.level) {
  *  number that means anything. */
 function wholeOf(level) {
     const whole = new Map();
+    const counted = new Map();
     for (const row of state.rows) {
         if (row.level !== level) {
             continue;
         }
         const key = row.area_id + "|" + row.year;
         whole.set(key, (whole.get(key) || 0) + row.value);
+        counted.set(key, (counted.get(key) || 0) + 1);
+    }
+
+    // An incomplete breakdown is not a denominator. TÜİK withholds the under-18 count in
+    // 282 of Bursa's neighbourhoods — small populations — and those areas arrive with
+    // only their 18+ row. Summing what happened to be published would report them as
+    // "100% adult", which is a statement about our data pretending to be one about the
+    // place. They lose their share and print as "—", which is what we actually know.
+    const expected = (state.indicator.dims || [])
+        .map((dim) => valuesOf(dim, level).length || 1)
+        .reduce((a, b) => a * b, 1);
+    for (const [key, rows] of counted) {
+        if (rows < expected) {
+            whole.delete(key);
+        }
     }
     return whole;
 }
