@@ -937,12 +937,29 @@ function buildWhole(level) {
     // only their 18+ row. Summing what happened to be published would report them as
     // "100% adult", which is a statement about our data pretending to be one about the
     // place. They lose their share and print as "—", which is what we actually know.
-    const expected = (state.indicator.dims || [])
+    //
+    // The rule only fires where the data shows a complete cross-product is possible.
+    //
+    // Multiplying the dimensions out and demanding that many rows was wrong twice over.
+    // Marital status has 5 × 2 × 17 = 170 combinations on paper and TÜİK publishes 151 —
+    // so every province failed and the share mode drew an empty country. But taking the
+    // fullest province as the standard instead was wrong the other way: a small province
+    // has no divorced ninety-year-old men and the cell is simply absent, which is a zero,
+    // not a suppression, and nearly every province lost its share.
+    //
+    // What separates the two cases is whether the full product is ever actually seen. In
+    // Bursa's neighbourhoods it is — the 18 split has two bands and most areas have both,
+    // so the 282 carrying one are genuinely missing a published number. Where no area
+    // reaches the product, the product is not what the source publishes, and the absent
+    // cells are absent for everybody.
+    const product = (state.indicator.dims || [])
         .map((dim) => valuesOf(dim, level).length || 1)
         .reduce((a, b) => a * b, 1);
-    for (const [key, rows] of counted) {
-        if (rows < expected) {
-            whole.delete(key);
+    if (counted.size && Math.max(...counted.values()) === product) {
+        for (const [key, rows] of counted) {
+            if (rows < product) {
+                whole.delete(key);
+            }
         }
     }
     return whole;
