@@ -348,6 +348,10 @@ const state = {
     //: The indicator on the scatter's x axis. The chosen indicator is always the y axis,
     //: so this is the only extra choice the view needs. Empty until the reader picks one.
     versus: "",
+    //: A breakdown to draw as several series per area instead of picking one value of:
+    //: "age" gives every chosen province its 0-14, 15-64 and 65+ lines. Empty means the
+    //: value box decides, as before. See splitSeries.
+    split: "",
 };
 
 let meta = null;
@@ -983,6 +987,81 @@ function seriesFor(area) {
     return derive(byArea(levelOfArea(area)).get(area) || []);
 }
 
+// region Splitting a breakdown into series
+//
+// Every other control answers "which value of this breakdown", and the answer is one
+// value across all the areas: 0-14 everywhere, or 65+ everywhere. The question that could
+// not be asked was the other one — *this* province's 0-14 against its own 15-64 and 65+.
+//
+// The alternative was to let the value box take several values at once, so any area could
+// be paired with any band. It is more flexible and it is worse: it lets you draw
+// İstanbul's 0-14 beside Ankara's 65+, a chart whose shape means nothing and which the
+// reader has no way to tell apart from a real comparison. Splitting a whole dimension
+// keeps the picture symmetric by construction — every chosen area gets every band, and an
+// asymmetric one cannot be built by accident.
+//
+// Colour carries the area and the dash carries the value, so the eye groups by place
+// first and separates the bands inside each group.
+
+/** Which dimensions can be split here: the ones this indicator breaks down by, that have
+ *  more than one value at this level. */
+function splittable() {
+    return (state.indicator.dims || []).filter((dim) => valuesOf(dim).length > 1);
+}
+
+/** The values the split draws, in the dictionary's order. */
+function splitValues() {
+    return state.split ? valuesOf(state.split) : [];
+}
+
+/** The series for one area: one when nothing is split, one per value when something is.
+ *
+ *  Each is a whole series with its own points, so everything downstream — the derivation,
+ *  the axis, the cursor readout — works on it exactly as it works on an unsplit area. */
+function splitSeries(area) {
+    const level = levelOfArea(area);
+    if (!state.split) {
+        return [{key: area, area, label: nameOf(area), value: null, points: seriesFor(area)}];
+    }
+
+    const dim = state.split;
+    const kept = state.dims[dim];
+    const out = splitValues().map((value) => {
+        // The slice is keyed on the whole choice set, so swapping one dim in and out
+        // reads a cached answer rather than rebuilding — the same move the comparison
+        // does. Restored immediately, because everything else reads `state.dims` too.
+        state.dims = {...state.dims, [dim]: value};
+        const points = derive(byArea(level).get(area) || []);
+        return {
+            key: area + "|" + value,
+            area,
+            value,
+            label: nameOf(area) + " · " + dimValue(dim, value),
+            points,
+        };
+    });
+    state.dims = {...state.dims, [dim]: kept};
+    return out.filter((s) => s.points.length);
+}
+
+/** Every drawn series, across every drawn area. */
+function allSeries() {
+    return drawn().flatMap(splitSeries);
+}
+
+//: Dash patterns for the split values, in the order the values come. The first is solid,
+//: so an unsplit chart and the first band of a split one look the same.
+const DASHES = ["", "6 4", "2 3", "10 3 2 3", "1 4"];
+
+function dashFor(series) {
+    if (!state.split || series.value === null) {
+        return "";
+    }
+    return DASHES[splitValues().indexOf(series.value) % DASHES.length];
+}
+
+// endregion
+
 // region The second indicator
 //
 // Every other view answers a question about one indicator. The scatter asks how two of
@@ -1502,8 +1581,35 @@ function drawDims() {
         );
     }
 
-    $("dims").innerHTML = groups.join("");
+    groups.push(splitControl());
+    $("dims").innerHTML = groups.filter(Boolean).join("");
 }
+
+/** The "draw this breakdown as several series" picker.
+ *
+ *  Only where it can be drawn. On a map an area has one colour, on a pyramid the age
+ *  bands are already the vertical axis, and on a scatter both axes are spoken for — in
+ *  all three the control would be a switch that does nothing, which is worse than a
+ *  control that is not there. */
+function splitControl() {
+    const dims = SPLIT_VIEWS.includes(state.view) ? splittable() : [];
+    if (!dims.length) {
+        return "";
+    }
+    return "<div><div class='dim-label'>Serilere ayır</div>" +
+           "<select id='split' title='Seçili her alan için bu kırılımın bütün değerleri " +
+           "ayrı çizgi olur: Bursa 0-14, Bursa 15-64, Bursa 65+'>" +
+           '<option value=""' + (state.split ? "" : " selected") + ">Ayırma</option>" +
+           dims
+               .map((dim) => "<option value='" + dim + "'" +
+                             (state.split === dim ? " selected" : "") + ">" +
+                             dimLabel(dim) + "</option>")
+               .join("") +
+           "</select></div>";
+}
+
+//: Where a split can be drawn at all. See splitControl.
+const SPLIT_VIEWS = ["line", "bar", "table"];
 
 function indicatorControl() {
     const options = meta.tree
@@ -1757,8 +1863,17 @@ function scaleTypeToggle() {
 }
 
 function lineChart() {
-    const rows = drawn()
-        .map((id) => ({id, area: nameOf(id), pts: seriesFor(id), colour: colourOf(id)}))
+    // One row per series, not per area: with a breakdown split, an area contributes one
+    // line per value (splitSeries). Colour still comes from the area, so the bands of a
+    // province stay visibly one family.
+    const rows = allSeries()
+        .map((s) => ({
+            id: s.key,
+            area: s.label,
+            pts: s.points,
+            colour: colourOf(s.area),
+            dash: dashFor(s),
+        }))
         .filter((r) => r.pts.some((p) => Number.isFinite(p.value)));
     if (!rows.length) {
         return empty("Soldan en az bir alan seçin.");
@@ -1847,7 +1962,8 @@ function lineChart() {
         const label = labels.find((l) => l.r === row);
 
         svg += '<path d="' + d + '" fill="none" stroke="' + row.colour +
-               '" stroke-width="' + (labelled ? 2.5 : 1.4) + '" stroke-linejoin="round"/>';
+               '" stroke-width="' + (labelled ? 2.5 : 1.4) + '" stroke-linejoin="round"' +
+               (row.dash ? ' stroke-dasharray="' + row.dash + '"' : "") + "/>";
         if (label) {
             svg += '<circle cx="' + x(last.year) + '" cy="' + yv(last.value) + '" r="3" fill="' + row.colour + '"/>' +
                    '<path d="M' + (x(last.year) + 4) + " " + yv(last.value) + "L" + (PLOT_W - R + 8) + " " + label.y +
@@ -2058,11 +2174,11 @@ function axisText(x, y, text, anchor) {
 const BAND = 22;
 
 function barChart() {
-    const rows = drawn()
-        .map((id) => {
-            const point = seriesFor(id).find((p) => p.year === state.year);
+    const rows = allSeries()
+        .map((s) => {
+            const point = s.points.find((p) => p.year === state.year);
             return point && Number.isFinite(point.value)
-                ? {area: nameOf(id), value: point.value, colour: colourOf(id)}
+                ? {area: s.label, value: point.value, colour: colourOf(s.area)}
                 : null;
         })
         .filter(Boolean)
@@ -2139,13 +2255,13 @@ function tableRows(years) {
         ? new Map(here.map((a) => [a.id, a.in[keys[0]] || ""]))
         : null;
 
-    const rows = drawn().map((id) => {
-        const points = seriesFor(id);
-        const where = inside?.get(id);
+    // One row per series: with a breakdown split, an area becomes one row per value.
+    const rows = allSeries().map((s) => {
+        const where = inside?.get(s.area);
         return {
-            id,
-            name: nameOf(id) + (where ? " · " + where : ""),
-            by: new Map(points.map((p) => [p.year, p.value])),
+            id: s.key,
+            name: s.label + (where ? " · " + where : ""),
+            by: new Map(s.points.map((p) => [p.year, p.value])),
         };
     });
 
@@ -2931,6 +3047,13 @@ function render() {
         state.view = (state.indicator.views || ["table"]).find((v) => viewState(v).enabled) || "table";
     }
 
+    // A split belongs to the views that draw series. Dropped rather than carried silently
+    // into a map, where it would change nothing and then reappear on the way back looking
+    // like the page had remembered something the reader did not ask for.
+    if (state.split && !SPLIT_VIEWS.includes(state.view)) {
+        state.split = "";
+    }
+
     // Only the pyramid cannot carry a derivation — see derivationControl. Everywhere else
     // the value drawn is the derived one, so switching views keeps the reader's choice
     // instead of silently resetting it to the raw measurement.
@@ -3210,6 +3333,11 @@ function wire() {
         }
         if (ev.target.id === "share") {
             state.share = ev.target.value;
+            render();
+            return;
+        }
+        if (ev.target.id === "split") {
+            state.split = ev.target.value;
             render();
             return;
         }
