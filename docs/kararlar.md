@@ -350,6 +350,46 @@ Yani bu dosyada belde ayrı bir basamak olarak hiç görünmüyor. Büyükşehir
 dosyasında o parçanın belde adı taşıyıp taşımadığı **açık soru** — ikinci il çekilirken
 bakılacak ilk şey bu.
 
+## K16 — En ince taneyi depola, kabasını türet (2026-08-14)
+
+Nüfus hem tek yaş hem beşli bant olarak yayımlanıyor. Kural: **olgu tablosu yayımlananın
+en incesini tutar, kabası hesaplanır.** Tek yaştan beşliğe toplamak tam ve kayıpsız;
+tersi imkânsız. Aynı gerekçe K12'nin (türetme depolanmaz) kırılım eksenindeki karşılığı.
+
+Sınır dışa aktarımdadır: depo 236.816 satır tek yaş tutuyor, sayfanın her ziyaretçinin
+indirdiği temel dosyası beşli bant (49.856 satır, 0,33 MB). Tek yaş isteyen okuyucu için
+ayrı bir dosya var (`population-age1.csv.gz`, 1,4 MB) ve o **yerine geçer, eklenmez** —
+ikisi birden elde tutulsa kırılım üstünden toplamak herkesi iki kez sayardı, K14'ün
+düzeyler için koyduğu kuralın bir eksen ötesi.
+
+İki tuzak yaşandı ve ikisi de kurala dönüştü:
+
+- Tek yaş dosyası `^\d+$` ile süzülünce kapanış bandı ("75+", sayı değil) düştü ve
+  çözünürlük İstanbul'da kendi toplamından 496.393 kişi eksik kaldı. **Bir çözünürlük
+  dağılımın tamamını taşımak zorundadır**; seçim satırın yaşına değil düzeyine göre.
+- Gruplama `group_by` sıralamayı bozduğu için gzip kötüleşti, ilçe dosyası 3,9 → 8,9 MB
+  oldu. Toplama işleminden **sonra** yeniden sıralanıyor.
+
+Dosya güvenilmeden önce bağımsız kaynakla sınandı: il toplamları MEDAS ilçe ihracatının
+toplamıyla, ortak 1.539 il-yılın hepsinde birebir aynı.
+
+## K17 — Gruplama ve karşılaştırma sözlükte (2026-08-14)
+
+"0-14 / 15-64 / 65+" ne ayrı bir gösterge ne de sayfada bir dal. Sözlükte iki yeni bölüm:
+
+**`[grouping.*]`** — bir kırılımın kaba okuması: hangi değerler hangi grubu oluşturur.
+Bir değer iki gruba giremez (yükleyici reddediyor), ve bir gruplama ancak o düzeydeki
+**her bandı** kapsıyorsa sunulur. İkinci kural ilçede 90+'a kadar giden kuyruğu ve
+mahalledeki 0-17/18+ bölmesini birlikte doğru yönetiyor: mahallede "15-64" sormak insan
+düşürürdü, orada hiç sunulmuyor.
+
+**`[comparison.*]`** — bir kırılımın iki değerini karşı karşıya koyar: `Erkek − Kadın
+(fark)` ve `Cinsiyet oranı (E/K × 100)`. Dilim iki kez alınıp birleştiriliyor. Farkın
+birimi göstergenin kendi birimi (kişi, yaş), oranınki ayrı.
+
+İkisi de kırılım kutusunun içinde duruyor — "hangi yaş", "hangi yaş bölmesi" ve "hangi
+iki değer" aynı sorunun üç hâli, üç ayrı köşeye dağıtılmamalı.
+
 ## Sıradaki oturum — açık maddeler (2026-08-14, akşam)
 
 1. **Bursa dışındaki iller için mahalle verisi.** Tek dosya ikinci ilde şişer; K14'ün

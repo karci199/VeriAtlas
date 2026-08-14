@@ -9,11 +9,15 @@ Son güncelleme: 2026-08-14.
 
 | Gösterge | Düzey | Yıl | Kırılım |
 |---|---|---|---|
-| Nüfus | Türkiye, il | 2007-2023 | 5'lik yaş × cinsiyet |
+| Nüfus | Türkiye, il | 2007-2025 | **tek yaş** × cinsiyet (sayfada 5'lik, istenirse tek yaş) |
 | Nüfus | ilçe (973) | 2007-2025 | 5'lik yaş × cinsiyet |
 | Nüfus | mahalle (Bursa, 1061) | 2013, 2025 | 18 altı / 18 üstü |
 | Ortanca yaş | Türkiye, il | 2007-2025 | cinsiyet |
 | Toplam doğurganlık hızı | Türkiye, coğrafi bölge, İBBS-1/2, il | 2009-2025 | yok |
+
+Kırılımın üstünde iki katman var (K17): **gruplamalar** (geniş yaş grupları, doğurgan
+çağ) ve **karşılaştırmalar** (erkek−kadın farkı, cinsiyet oranı). İkisi de sözlükte
+tanımlı, depolanmıyor.
 
 Sözlükte tanımlı ama verisi olmayanlar ekranda gri duruyor: kütük nüfusu, yaş yapısı,
 kaba doğum hızı, yapı ruhsatı (bina ve daire).

@@ -106,6 +106,41 @@ paydası bu gruptaki kadın nüfusudur."""
 
 # endregion
 
+# region Comparisons — one breakdown value against another
+#
+# A grouping reads a breakdown coarsely; a comparison reads two of its values against
+# each other. "İllere göre erkek-kadın farkı" is that, and it is neither an indicator nor
+# a time derivation, so it gets its own line here rather than a branch in the page.
+#
+# Nothing is stored. The screen takes the slice at `plus`, the slice at `minus`, and
+# combines them by `how`.
+
+[comparison.sex_gap]
+label_tr = "Erkek − Kadın (fark)"
+label_en = "Male − female (difference)"
+dim = "sex"
+plus = "male"
+minus = "female"
+how = "difference"
+unit = ""
+note_tr = """
+İki cinsiyetin farkı, göstergenin kendi biriminde. Nüfusta kaç kişi, ortanca yaşta kaç \
+yıl. Eksi değer kadınların önde olduğu yer demektir."""
+
+[comparison.sex_ratio]
+label_tr = "Cinsiyet oranı (E/K × 100)"
+label_en = "Sex ratio (M/F × 100)"
+dim = "sex"
+plus = "male"
+minus = "female"
+how = "ratio"
+unit = "index"
+note_tr = """
+Yüz kadın başına düşen erkek. Doğumda ~105 beklenir; yaş ilerledikçe erkek ölümlülüğü \
+yüksek olduğu için düşer. Yüzün çok üstündeki il değerleri genelde göç işaretidir."""
+
+# endregion
+
 # region Units
 
 [unit.children_per_woman]

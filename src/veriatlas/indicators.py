@@ -83,6 +83,24 @@ class Grouping:
 
 
 @dataclass(frozen=True)
+class Comparison:
+    """Two values of one breakdown read against each other: a gap, or a ratio."""
+
+    comparison_id: str
+    label_tr: str
+    label_en: str
+    dim: str
+    plus: str
+    minus: str
+    #: "difference" or "ratio".
+    how: str
+    #: `None` where the result keeps the indicator's unit — a difference of persons is
+    #: persons. A ratio has a unit of its own.
+    unit: Unit | None
+    note_tr: str
+
+
+@dataclass(frozen=True)
 class Derivation:
     """A series computed from a measurement: an index, a rate of change.
 
@@ -125,6 +143,7 @@ class Dictionary:
     units: dict[str, Unit]
     dimensions: dict[str, Dimension]
     groupings: dict[str, Grouping]
+    comparisons: dict[str, Comparison]
     derivations: dict[str, Derivation]
     indicators: dict[str, Indicator]
 
@@ -189,6 +208,28 @@ def load() -> Dictionary:
             label_en=body["label_en"],
             dim=body["dim"],
             covers=covers,
+            note_tr=body.get("note_tr", "").strip(),
+        )
+
+    comparisons: dict[str, Comparison] = {}
+    for key, body in raw.get("comparison", {}).items():
+        if body["dim"] not in dimensions:
+            raise KeyError("comparison '" + key + "' names unknown dim: " + body["dim"])
+        if body["how"] not in ("difference", "ratio"):
+            raise ValueError("comparison '" + key + "' has unknown how: " + body["how"])
+        if body["unit"] and body["unit"] not in units:
+            raise KeyError(
+                "comparison '" + key + "' names unknown unit: " + body["unit"]
+            )
+        comparisons[key] = Comparison(
+            comparison_id=key,
+            label_tr=body["label_tr"],
+            label_en=body["label_en"],
+            dim=body["dim"],
+            plus=body["plus"],
+            minus=body["minus"],
+            how=body["how"],
+            unit=units[body["unit"]] if body["unit"] else None,
             note_tr=body.get("note_tr", "").strip(),
         )
 
@@ -261,6 +302,7 @@ def load() -> Dictionary:
         units=units,
         dimensions=dimensions,
         groupings=groupings,
+        comparisons=comparisons,
         derivations=derivations,
         indicators=indicators,
     )

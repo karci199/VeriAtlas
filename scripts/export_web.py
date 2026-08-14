@@ -68,7 +68,11 @@ DATASETS = {
 }
 
 
-def export_dictionary(loaded: set[str], levels: dict[str, list[str]]) -> None:
+def export_dictionary(
+    loaded: set[str],
+    levels: dict[str, list[str]],
+    fine: dict[str, dict[str, dict]],
+) -> None:
     """Emit the tree and labels the page renders, so nothing is spelled out in HTML.
 
     Indicators without data yet still appear, marked unavailable: the tree is the plan
@@ -107,6 +111,12 @@ def export_dictionary(loaded: set[str], levels: dict[str, list[str]]) -> None:
                         for level in levels.get(ind.indicator_id, [])
                         if level in LAZY_LEVELS and ind.indicator_id in DATASETS
                     },
+                    # The finest published resolution of a breakdown: the file, and the
+                    # levels it covers. The levels matter — single years exist for
+                    # provinces and the country but not for districts or neighbourhoods,
+                    # and offering the choice where it does not apply is offering a
+                    # setting that silently does nothing.
+                    "fine": fine.get(ind.indicator_id, {}),
                     "available": ind.indicator_id in loaded,
                 }
                 for ind in indicators
@@ -131,6 +141,21 @@ def export_dictionary(loaded: set[str], levels: dict[str, list[str]]) -> None:
             "note": g.note_tr,
         }
         for g in load().groupings.values()
+    }
+
+    # One breakdown value against another: a gap, a ratio.
+    comparisons = {
+        c.comparison_id: {
+            "label": c.label_tr,
+            "dim": c.dim,
+            "plus": c.plus,
+            "minus": c.minus,
+            "how": c.how,
+            "unit": c.unit.label_tr if c.unit else None,
+            "decimals": c.unit.decimals if c.unit else None,
+            "note": c.note_tr,
+        }
+        for c in load().comparisons.values()
     }
 
     derivations = {
@@ -178,6 +203,7 @@ def export_dictionary(loaded: set[str], levels: dict[str, list[str]]) -> None:
                 "tree": tree,
                 "dimensions": dimensions,
                 "groupings": groupings,
+                "comparisons": comparisons,
                 "derivations": derivations,
                 "belongs": ancestors,
                 "sources": sources(),
@@ -249,7 +275,7 @@ def to_five_year_bands(frame: pl.DataFrame) -> pl.DataFrame:
 
 def export_broken_down(
     fact: pl.DataFrame, areas: pl.DataFrame, indicator_id: str, whole: bool = True
-) -> None:
+) -> dict[str, dict]:
     """One row per area, year and breakdown value, for an indicator that has dims.
 
     `whole` says the values are whole numbers — population is counted people, a median
@@ -283,14 +309,40 @@ def export_broken_down(
             "vintage",
             "source_id",
         )
-        # After the slim select, so the fold groups on what the page will actually read.
-        # Done any earlier, the untouched `dims` column still carries the single year and
-        # every row stays distinct — the aggregation runs and changes nothing.
-        .pipe(to_five_year_bands)
         .sort("area", "year", "sex")
     )
 
+    # Single years, where the fact table has them, go out in a file of their own for the
+    # reader who asks for that resolution. It is a *replacement* for the banded rows at
+    # those levels, never an addition: holding both would mean summing across `age`
+    # counted everyone twice, the same trap K14 sets out for levels.
+    #
+    # Selected by *level*, not by whether a row's own age is a single year. Filtering on
+    # the age itself dropped the closing band — the file's tail is "75+", which is not a
+    # number — and the resolution came up 496.393 people short of itself at İstanbul.
+    # A resolution has to carry the whole distribution or it is not one.
+    fine_levels = (
+        slim.filter(pl.col("age").str.contains(r"^\d+$"))["level"].unique().to_list()
+    )
+    fine = slim.filter(pl.col("level").is_in(fine_levels))
     stem = DATASETS[indicator_id].removesuffix(".csv")
+    declared: dict[str, dict] = {}
+    if fine_levels:
+        report(PUBLIC / (stem + "-age1.csv"), fine)
+        declared["age"] = {
+            "file": served(stem + "-age1.csv"),
+            "levels": sorted(fine_levels),
+        }
+
+    # After the slim select, so the fold groups on what the page will actually read.
+    # Done any earlier, the untouched `dims` column still carries the single year and
+    # every row stays distinct — the aggregation runs and changes nothing.
+    #
+    # Sorted *again* afterwards: group_by returns rows in whatever order it finished in,
+    # and gzip lives on neighbouring rows looking alike. Folding after the sort and
+    # writing the result straight out took the district file from 3,9 MB to 8,9.
+    slim = to_five_year_bands(slim).sort("area", "year", "sex", "age")
+
     base = slim.filter(~pl.col("level").is_in(LAZY_LEVELS))
     report(PUBLIC / (stem + ".csv"), base)
 
@@ -298,6 +350,8 @@ def export_broken_down(
         part = slim.filter(pl.col("level") == level)
         if part.height:
             report(PUBLIC / (stem + "-" + level + ".csv"), part)
+
+    return declared
 
 
 def sources() -> list[dict[str, str]]:
@@ -383,8 +437,10 @@ def main() -> None:
         for indicator_id in ("population", "median_age")
     }
 
-    export_broken_down(fact, areas, "population")
-    export_broken_down(fact, areas, "median_age", whole=False)
+    fine = {
+        "population": export_broken_down(fact, areas, "population"),
+        "median_age": export_broken_down(fact, areas, "median_age", whole=False),
+    }
 
     # The line-chart slice below is fertility only; population carries breakdowns and
     # goes out through export_population instead.
@@ -412,7 +468,7 @@ def main() -> None:
     report(PUBLIC / "tfr.csv", slim)
 
     levels["tfr"] = sorted(slim["level"].unique())
-    export_dictionary(loaded, levels)
+    export_dictionary(loaded, levels, fine)
 
 
 if __name__ == "__main__":

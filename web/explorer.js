@@ -417,6 +417,10 @@ function invalidate() {
 }
 
 function rowsAt(level) {
+    // Single years *replace* the banded rows where they exist, never join them.
+    if (fineAt(level)) {
+        return remember("fine|" + level, () => fineRows.filter((r) => r.level === level));
+    }
     if (!working.byLevel) {
         working.byLevel = new Map();
         for (const row of state.rows) {
@@ -456,7 +460,9 @@ function remember(key, build) {
 function choices() {
     return (
         state.indicator.id + "|" + state.share + "|" +
-        (state.indicator.dims || []).map((d) => d + "=" + state.dims[d]).join(";")
+        (state.indicator.dims || [])
+            .map((d) => d + "=" + state.dims[d] + "/" + (state.grouping[d] || ""))
+            .join(";")
     );
 }
 
@@ -470,6 +476,48 @@ function choices() {
 // own band set, so a grouping is only offered where the bands it needs are present:
 // the district export has 19 bands, the neighbourhood one has two, and asking for
 // "15-64" over 0-17/18+ would silently drop people.
+
+//: Rows at the finest published resolution of a breakdown, once fetched. Kept apart from
+//: `state.rows` rather than merged into them: they are the *same people* counted more
+//: finely, so holding both and summing across `age` would count everyone twice — the
+//: trap K14 sets out for levels, one axis over.
+let fineRows = [];
+
+/** Fetch the single-year rows, if this indicator has them and they are not in yet. */
+async function ensureFine(dim) {
+    const file = state.indicator?.fine?.[dim]?.file;
+    if (!file || fineRows.length) {
+        return;
+    }
+    const note = $("rail-note");
+    const said = note.textContent;
+    note.textContent = "Tek yaş verisi indiriliyor…";
+    try {
+        fineRows = await part(file);
+        invalidate();
+    } finally {
+        note.textContent = said;
+    }
+}
+
+/** Is the finest resolution worth offering here? Only where it actually covers the level
+ *  on screen — single years exist for provinces and the country, not for districts, and
+ *  a setting that silently does nothing is worse than no setting. */
+function fineOffered(dim, level = effectiveLevel()) {
+    const declared = state.indicator?.fine?.[dim];
+    return declared && declared.levels.includes(level) ? declared : null;
+}
+
+/** Is the fine resolution both asked for and available at this level? */
+function fineAt(level) {
+    return (
+        state.grouping.age === FINE &&
+        fineRows.length > 0 &&
+        fineRows.some((r) => r.level === level)
+    );
+}
+
+const FINE = "__fine__";
 
 function groupingsFor(dim, level = effectiveLevel()) {
     return remember("groupings|" + dim + "|" + level, () => {
@@ -534,7 +582,12 @@ function valuesOf(dim, level = effectiveLevel()) {
 function clampDims() {
     for (const dim of state.indicator.dims || []) {
         const values = valuesOf(dim);
-        if (state.dims[dim] === TOTAL || values.includes(state.dims[dim])) {
+        // A comparison is a legitimate choice for a dim even though it is not one of its
+        // values; without this the box reset itself to "Tümü" on the very next redraw and
+        // the comparison never survived long enough to be computed.
+        if (state.dims[dim] === TOTAL ||
+            values.includes(state.dims[dim]) ||
+            comparison(dim)) {
             continue;
         }
         state.dims[dim] = state.indicator.additive ? TOTAL : values[0];
@@ -556,7 +609,69 @@ function years() {
 
 /** Rows matching the current breakdown choice, summed where a dim is set to "all".
  *  Summing is only offered for additive units, so this never adds up rates. */
+// region Comparisons
+//
+// A comparison sets one breakdown value against another — "Erkek − Kadın", "E/K × 100".
+// It is not a value of the dim, so it cannot be filtered for; the slice is taken twice
+// and the two are combined. Declared in the dictionary next to the groupings, for the
+// same reason: which two values, and how, is a decision rather than a branch.
+
+function comparisonsFor(dim, level = effectiveLevel()) {
+    const values = new Set(rawValuesOf(dim, level));
+    return Object.entries(meta.comparisons || {}).filter(
+        ([, c]) => c.dim === dim && values.has(c.plus) && values.has(c.minus)
+    );
+}
+
+/** The comparison a dim is currently set to, or null. */
+function comparison(dim) {
+    const found = comparisonsFor(dim).find(([key]) => key === state.dims[dim]);
+    return found ? found[1] : null;
+}
+
+function activeComparison() {
+    for (const dim of state.indicator.dims || []) {
+        const found = comparison(dim);
+        if (found) {
+            return [dim, found];
+        }
+    }
+    return null;
+}
+
+function combine(how, plus, minus) {
+    if (how === "ratio") {
+        return minus ? (plus / minus) * 100 : NaN;
+    }
+    return plus - minus;
+}
+
+// endregion
+
 function slice(level = state.level) {
+    const compare = activeComparison();
+    if (compare) {
+        const [dim, spec] = compare;
+        return remember("compare|" + level + "|" + choices(), () => {
+            const at = (value) => {
+                const kept = state.dims[dim];
+                state.dims = {...state.dims, [dim]: value};
+                const rows = sliceRaw(level);
+                state.dims = {...state.dims, [dim]: kept};
+                return new Map(rows.map((r) => [r.area_id + "|" + r.year, r]));
+            };
+            const plus = at(spec.plus);
+            const minus = at(spec.minus);
+            return [...plus.entries()].map(([key, row]) => ({
+                ...row,
+                value: combine(spec.how, row.value, minus.get(key)?.value),
+            }));
+        });
+    }
+    return sliceRaw(level);
+}
+
+function sliceRaw(level = state.level) {
     return remember("slice|" + level + "|" + choices(), () => {
         const dims = state.indicator.dims || [];
         const totals = new Map();
@@ -871,7 +986,7 @@ function areasShown() {
 function decimals() {
     // A derivation with no unit of its own — a difference, a moving average — keeps the
     // precision of whatever it was computed from, share included.
-    const from = derivation();
+    const from = derivation() || activeComparison()?.[1];
     if (from && from.decimals !== null && from.decimals !== undefined) {
         return from.decimals;
     }
@@ -879,7 +994,7 @@ function decimals() {
 }
 
 function unitLabel() {
-    const from = derivation();
+    const from = derivation() || activeComparison()?.[1];
     if (from && from.unit) {
         return from.unit;
     }
@@ -900,14 +1015,29 @@ function canShare() {
     return Boolean(state.indicator.additive && (state.indicator.dims || []).length);
 }
 
+//: Number formatters, kept by precision. `toLocaleString` builds a new Intl.NumberFormat
+//: on every call, and a district table is twenty thousand cells: that one line was most
+//: of the second it took to sort a thousand rows.
+const formatters = new Map();
+
+function formatter(places) {
+    if (!formatters.has(places)) {
+        formatters.set(
+            places,
+            new Intl.NumberFormat("tr-TR", {
+                minimumFractionDigits: places,
+                maximumFractionDigits: places,
+            })
+        );
+    }
+    return formatters.get(places);
+}
+
 function fmt(value) {
-    if (value === undefined || Number.isNaN(value)) {
+    if (value === undefined || !Number.isFinite(value)) {
         return "—";
     }
-    return value.toLocaleString("tr-TR", {
-        minimumFractionDigits: decimals(),
-        maximumFractionDigits: decimals(),
-    });
+    return formatter(decimals()).format(value);
 }
 
 // endregion
@@ -931,7 +1061,14 @@ function drawRail() {
     // Chosen areas get their own block above the list. Searching filters the list, and
     // a selection that scrolls out of sight — or filters away — is a selection the
     // reader cannot undo.
-    $("chosen").innerHTML = state.selection
+    // Capped. "Tümünü seç" over the districts put a thousand rows here, each with two
+    // buttons, and rebuilding three thousand elements was half the cost of every redraw
+    // — for a list nobody scrolls to the bottom of. The ones past the cap are still
+    // selected and still drawn; they just do not each get a row of their own.
+    const listed = state.selection.slice(0, CHOSEN_LIMIT);
+    const hidden = state.selection.length - listed.length;
+
+    $("chosen").innerHTML = listed
         .map((id, i) => {
             const muted = state.muted.includes(id);
             return "<li class='" + (muted ? "muted" : "") + "' data-area='" + id + "'>" +
@@ -942,7 +1079,9 @@ function drawRail() {
                    (muted ? "◎" : "◉") + "</button>" +
                    "<button class='chip' data-act='drop' title='Seçimden çıkar'>✕</button></li>";
         })
-        .join("");
+        .join("") +
+        (hidden ? "<li class='muted'><span class='name'>… ve " + hidden +
+                  " alan daha seçili</span></li>" : "");
     $("chosen-head").hidden = !state.selection.length;
 
     drawFilterBoxes();
@@ -1075,10 +1214,16 @@ function drawDims() {
         // The grouping box sits next to the values it regroups rather than off in its own
         // corner: "hangi yaş" and "hangi yaş bölmesi" are one question asked twice.
         const ways = groupingsFor(dim);
-        if (ways.length) {
+        const finest = fineOffered(dim);
+        if (ways.length || finest) {
             groups.push(
                 "<div><div class='dim-label'>" + dimLabel(dim) + " bölmesi</div>" +
                 "<select data-grouping='" + dim + "'>" +
+                (finest
+                    ? "<option value='" + FINE + "'" +
+                      (state.grouping[dim] === FINE ? " selected" : "") +
+                      ">Tek yaş</option>"
+                    : "") +
                 "<option value=''" + (state.grouping[dim] ? "" : " selected") +
                 ">Yayımlandığı gibi</option>" +
                 ways
@@ -1090,6 +1235,14 @@ function drawDims() {
             );
         }
 
+        // Comparisons sit at the bottom of the same box, under a rule: they are answers
+        // to "which value" too, just ones that need two.
+        const against = comparisonsFor(dim)
+            .map(([id, c]) => "<option value='" + id + "'" +
+                              (state.dims[dim] === id ? " selected" : "") + ">" +
+                              c.label + "</option>")
+            .join("");
+
         groups.push(
             "<div><div class='dim-label'>" + dimLabel(dim) + "</div>" +
             "<select data-dim='" + dim + "'>" + all +
@@ -1098,6 +1251,7 @@ function drawDims() {
                             (String(state.dims[dim]) === String(v) ? " selected" : "") + ">" +
                             dimValue(dim, v) + "</option>")
                 .join("") +
+            (against ? "<optgroup label='Karşılaştırma'>" + against + "</optgroup>" : "") +
             "</select></div>"
         );
     }
@@ -1160,6 +1314,14 @@ const PLOT_H = 420;
 //: Past this many series the right-hand names stop fitting and the cursor box stops
 //: being a box. Both fall back to something that still works at any count.
 const LABEL_LIMIT = 12;
+
+//: How many chosen areas get a row of their own in the rail. Past this the rest are
+//: counted rather than listed — they are still selected and still drawn.
+const CHOSEN_LIMIT = 150;
+
+//: How many table rows are built. The frame shows about fifteen at a time; sorting runs
+//: over every row regardless, so the ones that matter are always at the top.
+const TABLE_LIMIT = 200;
 
 /** A series keeps its colour by its place in the selection, muted or not. */
 function colour(index) {
@@ -1541,11 +1703,22 @@ function barChart() {
  *  answer before: it came out in whatever order the rail happened to be in, and with a
  *  hundred neighbourhoods that is no order at all. */
 function tableRows(years) {
+    // Below province the name alone does not identify a row — forty-odd districts are
+    // called Merkez — so what it sits inside comes with it. Appended to the name rather
+    // than given a column of its own: a column would repeat the same word down hundreds
+    // of rows and sort into a useless order, while the reader needs it exactly where the
+    // name is.
+    const keys = filtersFor();
+    const inside = keys.length
+        ? new Map(areasAtLevel().map((a) => [a.id, a.in[keys[0]] || ""]))
+        : null;
+
     const rows = drawn().map((id) => {
         const points = seriesFor(id);
+        const where = inside?.get(id);
         return {
             id,
-            name: nameOf(id),
+            name: nameOf(id) + (where ? " · " + where : ""),
             by: new Map(points.map((p) => [p.year, p.value])),
         };
     });
@@ -1592,15 +1765,25 @@ function table() {
         "' data-sort='" + column + "' title='" + label + " sütununa göre sırala'>" +
         label + mark(column) + "</th>";
 
-    let html = "<div class='grid-head'>" + rows.length + " satır · " +
-               "<b>bir yıl başlığına tıklayın</b>, o yıla göre sıralanır — " +
+    // Capped. Nine hundred rows across twenty years is twenty thousand cells, and
+    // building them was four hundred milliseconds of every redraw — measured against the
+    // same selection drawn as a line chart, which cost a hundred and sixty. The box shows
+    // fifteen rows at a time, so the rest were paid for and never looked at. Sorting
+    // still runs over everything, which is what makes the top of the list the answer.
+    const shownRows = rows.slice(0, TABLE_LIMIT);
+    const over = rows.length - shownRows.length;
+
+    let html = "<div class='grid-head'>" + rows.length + " satır" +
+               (over ? " · ilk " + TABLE_LIMIT + "'ü gösteriliyor, sıralama hepsine " +
+                       "uygulanır (tamamı için ↓ İndir)" : "") +
+               " · <b>bir yıl başlığına tıklayın</b>, o yıla göre sıralanır — " +
                "ikinci tıklama tersine çevirir</div>" +
                "<div class='grid-wrap' style='max-height:" + PLOT_H +
                "px'><table class='grid'><thead><tr>" +
                head("name", LEVEL_LABELS[state.level] || state.level) +
                shown.map((y) => head(String(y), y)).join("") + "</tr></thead><tbody>";
 
-    for (const row of rows) {
+    for (const row of shownRows) {
         html += "<tr><td class='sticky-col'>" + row.name + "</td>" +
                 shown.map((y) => "<td>" + fmt(row.by.get(y)) + "</td>").join("") +
                 "</tr>";
@@ -2070,11 +2253,7 @@ function legend(low, high, edges, colours, gaps) {
     ) {
         places += 1;
     }
-    const show = (v) =>
-        v.toLocaleString("tr-TR", {
-            minimumFractionDigits: places,
-            maximumFractionDigits: places,
-        });
+    const show = (v) => formatter(places).format(v);
 
     const swatches = colours
         .map((colour, i) =>
@@ -2234,7 +2413,9 @@ async function useIndicator(id) {
     const rows = await dataset(indicator);
     state.rows = rows || [];
     state.filters = {};
+    state.grouping = {};
     attached.clear();
+    fineRows = [];
     invalidate();
 
     if (!state.rows.length) {
@@ -2376,7 +2557,16 @@ function wire() {
         }
         if (ev.target.dataset.grouping) {
             const dim = ev.target.dataset.grouping;
+            const was = state.grouping[dim];
             state.grouping = {...state.grouping, [dim]: ev.target.value};
+            // Only a change of *resolution* invalidates: it swaps the rows themselves, so
+            // the level buckets and everything counted off them go stale. An ordinary
+            // grouping changes nothing but the slice, and the slice keys already name it
+            // — throwing the whole working set away for that cost a redraw twice over.
+            if (ev.target.value === FINE || was === FINE) {
+                await ensureFine(dim);
+                invalidate();
+            }
             // The old choice named a band that may not be a group any more.
             state.dims[dim] = state.indicator.additive ? TOTAL : valuesOf(dim)[0];
             render();
