@@ -81,7 +81,7 @@ def test_undeclared_dimension_is_refused(payload):
 
 def test_rows_for_another_indicator_are_refused(payload):
     with pytest.raises(ValueError, match="another indicator"):
-        ingest(FakeAdapter(payload, indicator_id="cbr"))
+        ingest(FakeAdapter(payload, indicator_id="median_age"))
 
 
 def test_checksum_follows_the_bytes(tmp_path):

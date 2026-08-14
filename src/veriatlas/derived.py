@@ -24,6 +24,57 @@ SINGLE_AGE = re.compile(r"^\d+$")
 TOTAL = "total"
 
 
+def natural_increase(fact: pl.DataFrame) -> pl.DataFrame:
+    """Births minus deaths: the population change a place makes on its own.
+
+    Read next to the population's actual change, the gap between the two is migration.
+    That is the reason it earns a row of its own rather than being left to the reader:
+    Türkiye's natural increase has fallen from 897 thousand in 2009 to 404 thousand in
+    2025 while several provinces have already crossed into negative, and neither fact is
+    visible from births or deaths alone.
+
+    Stored rather than left to the page because it reads across two indicators, which the
+    page's derivations cannot do (K12). Exact arithmetic on two published counts — no
+    model, no assumption — but it is still our subtraction and not TÜİK's publication, so
+    it carries `estimated` like everything else computed here.
+
+    Only where both sides exist for the same area-year. A province with births and no
+    deaths would otherwise come out as a natural increase equal to its births, which is
+    the most confident possible way to be wrong.
+    """
+    keys = ["area_id", "area_level", "period_start", "frequency", "vintage"]
+
+    def side(indicator_id: str, name: str) -> pl.DataFrame:
+        return (
+            fact.filter(pl.col("indicator_id") == indicator_id)
+            # Deaths arrive split by sex, births whole. Summing across the breakdown is
+            # right for both: an additive count's total is the sum of its parts.
+            .group_by(keys)
+            .agg(
+                pl.col("value").sum().alias(name),
+                pl.col("source_id").first(),
+                pl.col("retrieved_at").max(),
+            )
+        )
+
+    births = side("births", "births")
+    deaths = side("deaths", "deaths").drop("source_id", "retrieved_at")
+    if births.is_empty() or deaths.is_empty():
+        return fact.head(0)
+
+    return (
+        births.join(deaths, on=keys, how="inner")
+        .with_columns(
+            (pl.col("births") - pl.col("deaths")).cast(pl.Float64).alias("value"),
+            pl.lit("natural_increase").alias("indicator_id"),
+            pl.lit("").alias("dims"),
+            pl.lit("person").alias("unit"),
+            pl.lit("estimated").alias("quality_flag"),
+        )
+        .select(fact.columns)
+    )
+
+
 def median_age_total(fact: pl.DataFrame) -> pl.DataFrame:
     """The median age of everyone, from the single-year population distribution.
 

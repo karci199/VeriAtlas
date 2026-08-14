@@ -409,6 +409,35 @@ yoksa Türkiye'nin çizgisi "TR" diye etiketleniyordu.
 Harita ve tablo tek düzeylidir, öyle kalıyor: bir haritada mahalleyle ili yan yana
 boyamak alan yarışması olur, karşılaştırma değil.
 
+## K19 — Doğum ve ölüm: sayı depolanır, hız türetilir (2026-08-14)
+
+MEDAS'ın altı hayati ölçüsünden **dördü** yüklendi: doğum sayısı, ölüm sayısı (cinsiyet
+kırılımıyla), bebek ölüm hızı, beş yaş altı ölüm hızı. Kaba doğum hızı ve kaba ölüm hızı
+**yüklenmedi** — ikisi de elimizdeki iki sayının bölümüdür (olay ÷ nüfus) ve K12'ye göre
+böyle bir sayı türetmedir, ikinci bir indirme değil. Sayfadaki "Alan nüfusunun %'si" kipi
+onları zaten çiziyor. Yayımlanmışları `raw/`'da denetim olarak duruyor ve denetim geçti:
+1.394 il-yılda ortalama mutlak fark doğumda 0,10‰, ölümde 0,05‰ — kalan fark TÜİK'in yıl
+ortası nüfus kullanmasından, bizim yıl sonu ADNKS'sinden.
+
+**Ay kırılımı saklanmadı.** Kaynak doğumu aya, ölümü cinsiyet × aya bölüyor; ikisi de yıla
+toplanarak duruyor. Mevsimlilik gerçek bir soru ama bu ekranın sorusu değil; ham dosya
+kırılımı koruduğu için sorulduğunda yeni indirme değil, yeni bir dim gerekiyor.
+
+**Doğal nüfus artışı** (doğum − ölüm) `derived.py`'de, ortanca yaş toplamı gibi: iki
+göstergeyi birlikte okuduğu için sayfanın türetmeleri bunu yapamaz. İki tarafın da
+bulunduğu alan-yıllarda üretiliyor — yalnız doğumu olan bir yıl, doğumu kadar artış
+göstermesin diye. Türkiye 2009'da 897.048, 2025'te 403.690; 2017'den beri 85 il-yıl eksi,
+2025'te 19 il (Balıkesir −2.535 en düşük).
+
+Doğrulama: 2009-2024'ün on altı yılının doğum, ölüm ve doğal artış sayıları Wikipedia'nın
+"Demographics of Turkey" tablosuyla (kaynağı TÜİK) **birebir** tutuyor.
+
+Dosya biçimi tuzağı: bu çekimde MEDAS tabloyu **devirmiş** — alanlar sütunlarda, yıllar
+satırlarda. `tuik_simple` okuyamaz, o yüzden `tuik_vital` ayrı bir okuyucu. İkinci tuzak,
+kırılım etiketinin bloğun yalnız ilk satırında yazılması: harfiyen okununca ölüm on yedi
+yıl yerine tek yıl olarak yüklendi ve hata vermedi. Etiket blok boyunca taşınıyor,
+`tests/test_vital.py` bunu tutuyor.
+
 ## Sıradaki oturum — açık maddeler (2026-08-14, akşam)
 
 1. **Bursa dışındaki iller için mahalle verisi.** Tek dosya ikinci ilde şişer; K14'ün

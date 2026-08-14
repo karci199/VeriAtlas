@@ -16,7 +16,7 @@ sys.path.insert(0, "src")
 
 from veriatlas.adapters import ADAPTERS, ingest
 from veriatlas.config import PUBLIC, WAREHOUSE, ensure_dirs
-from veriatlas.derived import median_age_total
+from veriatlas.derived import median_age_total, natural_increase
 
 
 def main() -> None:
@@ -48,6 +48,13 @@ def main() -> None:
         if not totals.is_empty():
             fact = pl.concat([fact, totals])
             print(f"{'turetme':12} {len(totals):6} satır  ortanca yaş, toplam")
+
+    # Same rule, the other cross-indicator row: only when the run holds both sides.
+    if {"births", "deaths"} <= set(fact["indicator_id"].unique()):
+        balance = natural_increase(fact)
+        if not balance.is_empty():
+            fact = pl.concat([fact, balance])
+            print(f"{'turetme':12} {len(balance):6} satır  doğal nüfus artışı")
 
     target = PUBLIC / "fact.parquet"
     fact.write_parquet(target)

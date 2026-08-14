@@ -25,6 +25,15 @@ label_tr = "Doğurganlık"
 label_en = "Fertility"
 order = 20
 
+# Death is not fertility, so it does not fit under "Doğurganlık", and it is not a stock
+# like the population count, so it does not fit under "Nüfus" either. Births stay with
+# fertility — a birth count is read next to the rates computed from it — and deaths get
+# their own place.
+[topic.olum]
+label_tr = "Ölüm"
+label_en = "Mortality"
+order = 25
+
 [topic.yapi_ruhsati]
 label_tr = "Yapı ruhsatı"
 label_en = "Building permits"
@@ -237,6 +246,28 @@ label_en = "index"
 decimals = 1
 additive = false
 
+[unit.birth]
+label_tr = "doğum"
+label_en = "births"
+decimals = 0
+additive = true
+
+[unit.death]
+label_tr = "ölüm"
+label_en = "deaths"
+decimals = 0
+additive = true
+
+# Kept apart from `per_mille` although both print as ‰: the base is different. The crude
+# rates are per thousand *people*, these are per thousand *live births*, and a screen that
+# treats them as the same unit invites putting them on one axis, where a bebek ölüm hızı
+# of 9 and a kaba ölüm hızı of 5 look comparable and are not.
+[unit.per_thousand_live_births]
+label_tr = "‰ (canlı doğumda)"
+label_en = "per 1.000 live births"
+decimals = 1
+additive = false
+
 [unit.building]
 label_tr = "bina"
 label_en = "buildings"
@@ -410,17 +441,96 @@ Bir kadının doğurgan çağı boyunca, o yılın yaşa özel doğurganlık hı
 kalsaydı doğuracağı ortalama çocuk sayısı. Yenilenme düzeyi 2,10 kabul edilir. \
 TÜİK yalnızca il düzeyinde yayımlıyor, ilçe kırılımı yok."""
 
-[indicator.cbr]
-label_tr = "Kaba doğum hızı"
-label_en = "Crude birth rate"
+# Kaba doğum ve kaba ölüm hızı burada yok, çünkü ikisi de tuttuğumuz iki sayının bölümü:
+# doğum ÷ nüfus, ölüm ÷ nüfus. K12'nin kuralı — elimizdeki veriden tam olarak çıkan bir
+# sayı türetmedir, ikinci bir indirme değil; ayrı yüklenirse ilk veriyle adım kaybeder.
+# Ekranda "Alan nüfusunun %'si" kipi onları zaten veriyor (binde yerine yüzde olarak;
+# aynı bilgi, farklı ölçek). MEDAS'ın yayımladıkları raw/medas/basit/ altında duruyor,
+# bağımlılık oranlarında olduğu gibi denetim için.
+
+# Births and deaths are taken **by place of residence** of the mother / the deceased, not
+# by the place the event occurred. MEDAS publishes both. A province with a large maternity
+# hospital records the births of the provinces around it, and one with a large hospital
+# records their deaths; residence is the reading that belongs next to a population count.
+# It also runs seventeen years against the other's eight.
+[indicator.births]
+label_tr = "Doğum sayısı"
+label_en = "Live births"
 topic = "dogurganlik"
-unit = "per_mille"
+unit = "birth"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Yıl içindeki canlı doğum sayısı, annenin ikamet ettiği ile göre. Kaynak dosya ayları \
+ayrı veriyor; burada yıla toplanmış olarak duruyor — mevsimlilik ayrı bir sorudur ve \
+sorulduğunda ham dosyadan ay kırılımıyla yeniden yüklenir. **Cinsiyet kırılımı yok**: \
+bu çekimde MEDAS doğumu yalnız aya bölüyor. İl ve Türkiye düzeyinde var, 2009'dan \
+itibaren."""
+
+[indicator.deaths]
+label_tr = "Ölüm sayısı"
+label_en = "Deaths"
+topic = "olum"
+unit = "death"
+frequency = "annual"
+additive = true
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Yıl içindeki ölüm sayısı, ölen kişinin ikamet ettiği ile göre, cinsiyet kırılımıyla. \
+Kaynak dosya ayrıca ayı da veriyor; yıla toplanmış olarak duruyor. **Yaş kırılımı \
+yok** — bu yüzden piramit çizilmez ve yaşa göre ölümlülük bu göstergeden okunamaz. \
+Ham sayı nüfusla birlikte okunmalı: İstanbul'un ölümü Tunceli'ninkinden çok olduğu \
+için değil, kalabalık olduğu için yüksektir. Kaba ölüm hızı ayrı bir gösterge \
+değildir — "Alan nüfusunun %'si" kipi bu sayıyı nüfusa bölerek onu zaten verir. \
+2009'dan itibaren."""
+
+[indicator.natural_increase]
+label_tr = "Doğal nüfus artışı"
+label_en = "Natural increase"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Doğum sayısı eksi ölüm sayısı: bir yerin kendi kendine kazandığı ya da kaybettiği \
+nüfus. Nüfusun gerçek değişimiyle arasındaki fark göçtür — ikisi birlikte okunduğunda \
+bir ilin büyümesinin ne kadarının doğumdan, ne kadarının gelenden geldiği görünür. \
+Eksi değer, ölümün doğumu geçtiği yer demektir. Türkiye 2009'da 897 binken 2025'te \
+404 bine indi. Bizim çıkarmamızdır (rozet: türetilmiş), iki yayımlanmış sayının tam \
+farkı. Her iki tarafın da yayımlandığı yıllarda var: 2009-2025."""
+
+[indicator.infant_mortality]
+label_tr = "Bebek ölüm hızı"
+label_en = "Infant mortality rate"
+topic = "olum"
+unit = "per_thousand_live_births"
 frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Bin kişi başına düşen canlı doğum sayısı. Doğurganlıktan çok yaş yapısını yansıtır: \
-genç nüfuslu bir ilde doğurganlık düşse bile kaba hız yüksek kalabilir."""
+Bin canlı doğum başına, bir yaşını doldurmadan ölen bebek sayısı. Paydası nüfus değil \
+canlı doğumdur. Yaş yapısından etkilenmediği için iller arası karşılaştırmaya kaba \
+hızlardan daha uygundur ve klasik olarak sağlık hizmetine erişimin göstergesi \
+sayılır. Küçük illerde payı birkaç yüz doğum olduğu için yıl yıl zıplar — eğilim \
+için hareketli ortalama işe yarar."""
+
+[indicator.under5_mortality]
+label_tr = "Beş yaş altı ölüm hızı"
+label_en = "Under-five mortality rate"
+topic = "olum"
+unit = "per_thousand_live_births"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Bin canlı doğum başına, beşinci yaş gününü görmeden ölen çocuk sayısı. Bebek ölüm \
+hızını **içerir**, onun yanına eklenmez: aradaki fark bir ile beş yaş arasındaki \
+ölümlerdir. Türkiye'de bu fark küçüktür, yani iki seri birbirine yakın seyreder."""
 
 [indicator.pop_age_structure]
 label_tr = "Yaş yapısı"

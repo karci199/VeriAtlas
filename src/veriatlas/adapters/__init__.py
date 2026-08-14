@@ -8,6 +8,7 @@ from .tuik_neighbourhoods import TuikNeighbourhoodPopulation
 from .tuik_population import TuikPopulationAgeSex
 from .tuik_simple import NARROW_ADAPTERS
 from .tuik_tfr import TuikTfr
+from .tuik_vital import VITAL_ADAPTERS
 
 #: Everything that can be ingested, by name. `scripts/load.py` runs these.
 ADAPTERS = {
@@ -20,11 +21,14 @@ ADAPTERS = {
     # One class per narrow measure, generated from a table: the contract is one
     # adapter per indicator, and eleven measures share the same parser.
     **NARROW_ADAPTERS,
+    # Births and deaths: same download, transposed file, so a parser of their own.
+    **VITAL_ADAPTERS,
 }
 
 __all__ = [
     "ADAPTERS",
     "NARROW_ADAPTERS",
+    "VITAL_ADAPTERS",
     "Adapter",
     "Manifest",
     "TuikDistrictPopulation",

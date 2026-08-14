@@ -275,7 +275,9 @@ def load() -> Dictionary:
         missing = named - set(grouping.covers)
         if missing:
             raise KeyError(
-                "ratio '" + key + "' names groups the grouping does not have: "
+                "ratio '"
+                + key
+                + "' names groups the grouping does not have: "
                 + ", ".join(sorted(missing))
             )
         if set(body["over"]) & set(body["under"]):

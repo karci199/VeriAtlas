@@ -68,6 +68,7 @@ DATASETS = {
     "marital_status": "marital.csv",
     "household_by_type": "household-type.csv",
     "foreign_population": "foreign.csv",
+    "deaths": "deaths.csv",
     **{
         name: name.replace("_", "-") + ".csv"
         for name in (
@@ -80,6 +81,10 @@ DATASETS = {
             "migration_net_rate",
             "migration_from_abroad",
             "migration_to_abroad",
+            "births",
+            "natural_increase",
+            "infant_mortality",
+            "under5_mortality",
         )
     },
 }
@@ -94,6 +99,7 @@ BROKEN_DOWN = (
     "marital_status",
     "household_by_type",
     "foreign_population",
+    "deaths",
 )
 
 #: Indicators with no breakdown at all: one value per area and year.
@@ -560,6 +566,7 @@ def main() -> None:
         "marital_status": export_broken_down(fact, areas, "marital_status"),
         "household_by_type": export_broken_down(fact, areas, "household_by_type"),
         "foreign_population": export_broken_down(fact, areas, "foreign_population"),
+        "deaths": export_broken_down(fact, areas, "deaths"),
     }
 
     for indicator_id in PLAIN:
