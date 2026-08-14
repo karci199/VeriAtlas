@@ -619,7 +619,9 @@ unit = "person"
 frequency = "annual"
 additive = true
 dims = ["sex"]
-views = ["table", "map", "line", "bar", "pyramid"]
+# No pyramid: it needs age as well as sex, and this measure carries only sex. The
+# dictionary test says so, and it said so before this reached the screen.
+views = ["table", "map", "line", "bar"]
 definition_tr = """
 İlde ikamet eden yabancı uyruklu kişi sayısı, cinsiyet kırılımıyla. İkamet edilen yere \
 göre sayılır, uyruk kırılımı bu çekimde yok."""
