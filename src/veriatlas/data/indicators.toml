@@ -55,6 +55,21 @@ total = "Toplam"
 label_tr = "Yaş grubu"
 label_en = "Age group"
 
+[dim.household_type]
+label_tr = "Hanehalkı tipi"
+label_en = "Household type"
+
+# Only the four that partition the whole. TÜİK publishes nine, but five of them are
+# sub-types: "tek çekirdek aile" contains three others and one of those contains two
+# more. Stored as siblings they would sum to 78% more households than exist — Adana 2014
+# comes to 977.631 against a published 548.384. These four reproduce the published total
+# in 972 of 972 province-years.
+[dim.household_type.values]
+single_person = "Tek kişilik"
+one_nuclear_family = "Tek çekirdek aileli"
+nuclear_and_others = "Çekirdek aile ve diğerleri"
+no_nuclear_family = "Çekirdek ailesiz, çok kişili"
+
 [dim.marital]
 label_tr = "Medeni durum"
 label_en = "Marital status"
@@ -171,6 +186,24 @@ additive = false
 [unit.person]
 label_tr = "kişi"
 label_en = "persons"
+decimals = 0
+additive = true
+
+[unit.person_per_km2]
+label_tr = "kişi/km²"
+label_en = "persons per km²"
+decimals = 0
+additive = false
+
+[unit.person_per_household]
+label_tr = "kişi/hane"
+label_en = "persons per household"
+decimals = 2
+additive = false
+
+[unit.household]
+label_tr = "hane"
+label_en = "household"
 decimals = 0
 additive = true
 
@@ -448,6 +481,148 @@ yaş kadınlarda boşanmışların sayısı" doğrudan sorulabiliyor. \
 değil yoktur — bu göstergenin toplamı ilin nüfusu değildir. Bilinmeyen kategorisi son \
 yıllarda kayboluyor; o yıllarda sütun sıfır değil, hiç yok. Türkiye, İBBS ve il \
 düzeyinde var, ilçe kırılımı çekilmedi."""
+
+[indicator.population_density]
+label_tr = "Nüfus yoğunluğu"
+label_en = "Population density"
+topic = "nufus"
+unit = "person_per_km2"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Kilometrekareye düşen kişi sayısı. İstanbul 2.943, Tunceli 11 — nüfusun kendisinden \
+farklı bir soruyu yanıtlar: kaç kişi değil, ne kadar sıkışık. Yüzölçümü sabit olduğu \
+için yıllar arası değişimi nüfusun değişimiyle aynı biçimde hareket eder."""
+
+[indicator.household_size]
+label_tr = "Ortalama hanehalkı büyüklüğü"
+label_en = "Average household size"
+topic = "nufus"
+unit = "person_per_household"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Hane başına düşen kişi. Şırnak 4,84, Tunceli 2,49 — doğurganlık, birlikte yaşama \
+biçimleri ve göçün birlikte okunduğu tek sayı. Türkiye genelinde uzun süredir \
+düşüyor."""
+
+[indicator.household_count]
+label_tr = "Hanehalkı sayısı"
+label_en = "Number of households"
+topic = "nufus"
+unit = "household"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Toplam hane sayısı. Nüfustan ayrı bir büyüklük: nüfus artmadan da hane sayısı artabilir \
+— aynı insanlar daha küçük hanelerde yaşamaya başladığında. 2012'den itibaren var."""
+
+[indicator.household_by_type]
+label_tr = "Hanehalkı tipine göre hane sayısı"
+label_en = "Households by type"
+topic = "nufus"
+unit = "household"
+frequency = "annual"
+additive = true
+dims = ["household_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Hanelerin yapısına göre dağılımı: tek kişilik, tek çekirdek aileli, çekirdek aile ve \
+diğer kişiler, çekirdek ailesiz çok kişili. Dördü birbirini dışlar ve toplamı hanehalkı \
+sayısını verir. TÜİK bunların altında beş alt tip daha yayımlıyor (anne ve çocuklar, \
+sadece eşler gibi); onlar burada saklanmıyor, çünkü kardeş sanılıp toplanırlarsa hane \
+sayısı %78 fazla çıkar. 2014'ten itibaren var."""
+
+[indicator.migration_in]
+label_tr = "Aldığı göç"
+label_en = "In-migration"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Yıl içinde ile başka bir ilden taşınan kişi sayısı. Kaynak dosyada cinsiyet ve yaş \
+kırılımı da var; burada toplam olarak saklanıyor. Yurt dışından gelen göç buna dahil \
+değil, ayrı göstergedir."""
+
+[indicator.migration_out]
+label_tr = "Verdiği göç"
+label_en = "Out-migration"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Yıl içinde ilden başka bir ile taşınan kişi sayısı. Türkiye genelinde aldığı göç \
+toplamı ile verdiği göç toplamı tanım gereği eşittir — her taşınma bir il için giriş, \
+başka bir il için çıkıştır — ve veri bunu tutuyor (2025'te ikisi de 2.475.019)."""
+
+[indicator.migration_net]
+label_tr = "Net göç"
+label_en = "Net migration"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Aldığı göç eksi verdiği göç. Eksi değer il nüfusunun göçle azaldığını söyler. 2025'te \
+Ankara +31.172, İstanbul −41.346. Ülke toplamı sıfırdır, o yüzden Türkiye düzeyinde \
+yayımlanmaz."""
+
+[indicator.migration_net_rate]
+label_tr = "Net göç hızı"
+label_en = "Net migration rate"
+topic = "nufus"
+unit = "per_mille"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Net göçün bin kişiye oranı. Net göçün mutlak sayısı büyük illeri öne çıkarır; hız, \
+küçük bir ilin nüfusunun yüzde ikisini kaybetmesini görünür kılar. 2025'te Yalova \
++20,5, Ağrı −27,0."""
+
+[indicator.migration_from_abroad]
+label_tr = "Yurt dışından gelen göç"
+label_en = "Immigration from abroad"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Yıl içinde yurt dışından ile taşınan kişi sayısı. İç göçten ayrı tutulur: ülke \
+toplamında iç göç sıfırlanırken bu sıfırlanmaz, nüfusa net katkıdır."""
+
+[indicator.migration_to_abroad]
+label_tr = "Yurt dışına giden göç"
+label_en = "Emigration abroad"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Yıl içinde ilden yurt dışına taşınan kişi sayısı."""
+
+[indicator.foreign_population]
+label_tr = "Yabancı uyruklu nüfus"
+label_en = "Foreign national population"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["sex"]
+views = ["table", "map", "line", "bar", "pyramid"]
+definition_tr = """
+İlde ikamet eden yabancı uyruklu kişi sayısı, cinsiyet kırılımıyla. İkamet edilen yere \
+göre sayılır, uyruk kırılımı bu çekimde yok."""
 
 [indicator.registry_population]
 label_tr = "Kütük nüfusu"

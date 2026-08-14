@@ -66,13 +66,43 @@ DATASETS = {
     "population": "population.csv",
     "median_age": "median_age.csv",
     "marital_status": "marital.csv",
+    "household_by_type": "household-type.csv",
+    "foreign_population": "foreign.csv",
+    **{
+        name: name.replace("_", "-") + ".csv"
+        for name in (
+            "population_density",
+            "household_size",
+            "household_count",
+            "migration_in",
+            "migration_out",
+            "migration_net",
+            "migration_net_rate",
+            "migration_from_abroad",
+            "migration_to_abroad",
+        )
+    },
 }
 
 #: Indicators that carry breakdowns and so go out through `export_broken_down` rather
 #: than the plain line-chart slice. Named once: the same list drives the level map and the
 #: files, and having it written out twice is how marital status came to be loaded into the
 #: warehouse and then quietly not exported to the page.
-BROKEN_DOWN = ("population", "median_age", "marital_status")
+BROKEN_DOWN = (
+    "population",
+    "median_age",
+    "marital_status",
+    "household_by_type",
+    "foreign_population",
+)
+
+#: Indicators with no breakdown at all: one value per area and year.
+#:
+#: Exported at exactly the levels the source published, with no roll-up. Half of these
+#: are rates — density, household size, the net migration rate — and a rate does not add
+#: up, so rolling one to İBBS means choosing a weighting. That is a decision with a right
+#: answer per indicator, not a default, and it is not made here on the way past.
+PLAIN = tuple(name for name in DATASETS if name not in BROKEN_DOWN and name != "tfr")
 
 
 def export_dictionary(
@@ -314,6 +344,34 @@ def to_five_year_bands(frame: pl.DataFrame) -> pl.DataFrame:
     )
 
 
+def export_plain(
+    fact: pl.DataFrame, areas: pl.DataFrame, indicator_id: str
+) -> list[str]:
+    """An indicator with no breakdown: one row per area and year. Returns its levels."""
+    rows = fact.filter(pl.col("indicator_id") == indicator_id)
+    if rows.height == 0:
+        return []
+
+    slim = (
+        rows.join(areas, on="area_id", how="left")
+        .select(
+            "area_id",
+            pl.col("name_tr").alias("area"),
+            pl.col("area_level").alias("level"),
+            pl.col("period_start").dt.year().alias("year"),
+            pl.col("value").cast(
+                pl.Int64 if get(indicator_id).unit.decimals == 0 else pl.Float64
+            ),
+            "quality_flag",
+            "vintage",
+            "source_id",
+        )
+        .sort("level", "area", "year")
+    )
+    report(PUBLIC / DATASETS[indicator_id], slim)
+    return sorted(slim["level"].unique())
+
+
 def export_broken_down(
     fact: pl.DataFrame, areas: pl.DataFrame, indicator_id: str, whole: bool = True
 ) -> dict[str, dict]:
@@ -500,7 +558,12 @@ def main() -> None:
         "population": export_broken_down(fact, areas, "population"),
         "median_age": export_broken_down(fact, areas, "median_age", whole=False),
         "marital_status": export_broken_down(fact, areas, "marital_status"),
+        "household_by_type": export_broken_down(fact, areas, "household_by_type"),
+        "foreign_population": export_broken_down(fact, areas, "foreign_population"),
     }
+
+    for indicator_id in PLAIN:
+        levels[indicator_id] = export_plain(fact, areas, indicator_id)
 
     # The line-chart slice below is fertility only; population carries breakdowns and
     # goes out through export_population instead.
