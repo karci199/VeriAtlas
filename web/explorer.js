@@ -2785,7 +2785,10 @@ function scatter() {
     // Borrowing the chosen indicator's rounded a fertility rate of 1,6 to "2".
     const fmtX = formatter(other.decimals ?? 2).format;
 
-    const L = 88, R = 24, T = 18, B = 46;
+    // Room at the top for the y axis name. Written above the plot rather than beside it:
+    // at the old height it sat on the same line as the topmost tick and the two printed
+    // over each other ("↑ Nüfus200,0").
+    const L = 88, R = 24, T = 40, B = 46;
     // Both axes follow the same chip. Population on one of them is exactly the case a log
     // scale is for, and a scatter with one axis logged and the other not is a chart whose
     // shape means something different in each direction.
@@ -2838,8 +2841,9 @@ function scatter() {
     }
 
     svg += axisText(PLOT_W - R, PLOT_H - 8, other.label + " →", "end") +
-           '<text class="legend-label" x="14" y="' + (T + 4) +
-           '" fill="' + token("--text-tertiary") + '">↑ ' + state.indicator.label + "</text>";
+           '<text class="legend-label" x="8" y="16" fill="' + token("--text-tertiary") +
+           '">↑ ' + state.indicator.label + (unitLabel() ? " (" + unitLabel() + ")" : "") +
+           "</text>";
 
     hover = {kind: "shape"};
 
