@@ -1838,6 +1838,33 @@ function table() {
  *  compare shapes but hide that one province is ten times the other. Every pyramid is
  *  a fixed share of the width, so adding a third narrows all three rather than
  *  squeezing the last one. */
+/** Where an open-ended top band is taken to end.
+ *
+ *  A closing band has no published upper edge, and a density needs one. Running it to a
+ *  hundred is the ordinary demographic convention and it is close enough to true that the
+ *  bar stops lying: `75+` becomes twenty-five years wide instead of the one year the
+ *  bands around it cover, which is the difference between a plausible tail and a bar
+ *  running the width of the panel. Stated on the chart, not hidden in here. */
+const OPEN_BAND_END = 100;
+
+/** How many years of life an age band covers: `30` is one, `0-4` is five, `75+` is open
+ *  and gets the assumption above. Returns the width and whether it was assumed. */
+function bandWidth(label) {
+    const text = String(label);
+    if (/^\d+$/.test(text)) {
+        return {years: 1, open: false};
+    }
+    const span = text.match(/^(\d+)\s*-\s*(\d+)$/);
+    if (span) {
+        return {years: Number(span[2]) - Number(span[1]) + 1, open: false};
+    }
+    const open = text.match(/^(\d+)\s*\+$/);
+    if (open) {
+        return {years: Math.max(1, OPEN_BAND_END - Number(open[1])), open: true};
+    }
+    return {years: 1, open: false};
+}
+
 function pyramid() {
     // Four is what fits side by side and stays readable. Refusing to draw at all past
     // that was wrong: the page seeds five areas, so the pyramid opened blocked every
@@ -1886,11 +1913,31 @@ function pyramid() {
         String(a).localeCompare(String(b), "tr", {numeric: true}));
     const sexes = [...new Set(all.map((r) => r.sex))].sort();
 
+    // A bar's length is people *per year of age*, not people.
+    //
+    // Bands do not all cover the same stretch of life. In single-year mode the page holds
+    // seventy-five one-year bands and then `75+`, which is a quarter of a century in one
+    // lump: drawn at the same length rule it came out as a bar running the full width of
+    // the panel, and it reads as a spike in the population when it is only a spike in how
+    // the source chose to group. Dividing by the width makes the eye compare areas, which
+    // is what a histogram is for, and leaves the five-year pyramid looking exactly as it
+    // did — every band there is five wide, so the whole picture is scaled by one number.
+    //
+    // The closing band has no published upper edge, so its width is assumed rather than
+    // read (OPEN_BAND_END). It is drawn faded and the head says so.
+    const widths = new Map(bands.map((label) => [label, bandWidth(label)]));
+    const perYear = (row) => row.value / widths.get(row.age).years;
+    const openBand = bands.find((label) => widths.get(label).open);
+    // Every band's span, the assumed one included: what decides whether dividing by the
+    // width changes the picture at all. Counting only the closed bands missed the
+    // five-year pyramid, where they are all five wide and the closing band is not.
+    const spans = bands.map((label) => widths.get(label).years);
+
     // Two questions, two scales. "How many people" wants one shared scale — İstanbul
     // towering over Afyonkarahisar is the answer. "What shape is this population" wants
     // each panel scaled to itself, or the smaller one is a sliver you cannot read.
-    const shared = Math.max(...all.map((r) => r.value));
-    const maxOf = (rows) => (state.panelScale === "own" ? Math.max(...rows.map((r) => r.value)) : shared);
+    const shared = Math.max(...all.map(perYear));
+    const maxOf = (rows) => (state.panelScale === "own" ? Math.max(...rows.map(perYear)) : shared);
 
     // The age labels are printed down the left of the whole drawing, so the first panel
     // has to start clear of them or its bars run under the text.
@@ -1915,7 +1962,10 @@ function pyramid() {
 
         svg += '<text x="' + (left + cell / 2) + '" y="14" text-anchor="middle" fill="' +
                colourOf(area) + '" font-size="13">' + nameOf(area) +
-               (state.panelScale === "own" ? " · " + fmt(max) + " ölçek" : "") + "</text>";
+               (state.panelScale === "own"
+                   ? " · " + fmt(max) + " ölçek" +
+                     (Math.min(...spans) !== Math.max(...spans) ? "/yaş" : "")
+                   : "") + "</text>";
 
         bands.forEach((label, i) => {
             const y = PLOT_H - 16 - (i + 1) * band + band * 0.15;
@@ -1925,14 +1975,21 @@ function pyramid() {
                 if (!row) {
                     return;
                 }
-                const w = Math.max(0, (row.value / max) * arm);
+                const w = Math.max(0, (perYear(row) / max) * arm);
+                const open = label === openBand;
                 svg += '<rect x="' + (oneSided ? mid : si === 0 ? mid - 8 - w : mid + 8) +
                        '" y="' + y +
                        '" width="' + w + '" height="' + h + '" fill="' + colour(si) +
+                       (open ? '" opacity=".45' : "") +
                        '" rx="1" data-colour="' + colour(si) + '" data-name="' + nameOf(area) + " · " +
-                       dimValue("sex", s) + " " + label + '" data-value="' + fmt(row.value) + '"/>';
+                       dimValue("sex", s) + " " + label + (open ? " (açık uçlu)" : "") +
+                       '" data-value="' + fmt(row.value) + '"/>';
             });
-            if (ai === 0) {
+            // Seventy-six labels down a 400-pixel axis is a grey smear. Every fifth band
+            // is enough to read the scale by, and the open band always gets its name
+            // because it is the one the reader most needs to identify.
+            const dense = bands.length > 20;
+            if (ai === 0 && (!dense || i % 5 === 0 || label === openBand)) {
                 svg += axisText(4, y + h / 2 + 4, label, "start");
             }
         });
@@ -1952,6 +2009,17 @@ function pyramid() {
             : "") +
         (ignoringAge
             ? "<span>· yaş grubu piramidin kendi ekseni, seçim burada geçmiyor</span>"
+            : "") +
+        // Said only where it changes the reading: with every band the same width the
+        // division cancels out and the picture is the plain one.
+        // Said only where it changes the reading: with every band the same width the
+        // division cancels out and the picture is the plain one.
+        (Math.min(...spans) !== Math.max(...spans)
+            ? "<span>· çubuk uzunluğu <b>yaş yılı başına</b>, bantlar eşit genişlikte değil</span>"
+            : "") +
+        (openBand
+            ? "<span>· <b>" + openBand + "</b> açık uçlu, " + OPEN_BAND_END +
+              " yaşa kadar sayıldı</span>"
             : "") +
         "<span class='spacer'></span><span>Eksen</span>" +
         "<button class='chip" + (state.panelScale !== "own" ? " on" : "") +
