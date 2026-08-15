@@ -572,13 +572,20 @@ function fineOffered(dim, level = effectiveLevel()) {
     return declared && declared.levels.includes(level) ? declared : null;
 }
 
-/** Is the fine resolution both asked for and available at this level? */
+/** Is the fine resolution both asked for and available at this level?
+ *
+ *  Asked for either directly — the reader picked "Tek yaş" — or by a grouping that cannot
+ *  be built without it. "18+" is the second case at province level: the published bands
+ *  are fives and eighteen falls inside 15-19, so the group is summed off the single years
+ *  underneath instead of splitting a band by assumption. */
 function fineAt(level) {
-    return (
-        state.grouping.age === FINE &&
-        fineRows.length > 0 &&
-        fineRows.some((r) => r.level === level)
-    );
+    // Read out of the dictionary rather than through `grouping()`, which resolves against
+    // the rows on screen — and the rows on screen are chosen by this function. Asking it
+    // here closed a loop: fineAt → grouping → groupingsFor → rawValuesOf → rowsAt →
+    // fineAt, and the page died on load with the "veri okunamadı" fallback showing.
+    const chosen = state.grouping.age;
+    const wanted = chosen === FINE || Boolean(meta.groupings?.[chosen]?.needs_fine);
+    return wanted && fineRows.length > 0 && fineRows.some((r) => r.level === level);
 }
 
 const FINE = "__fine__";
@@ -594,6 +601,12 @@ function groupingsFor(dim, level = effectiveLevel()) {
             // is that nobody is dropped, not that the list matches exactly.
             .filter(([, g]) => {
                 const covered = new Set(Object.values(g.covers).flat());
+                // A grouping that needs the fine rows is offered wherever those exist,
+                // rather than judged against the coarse bands now on screen — those are
+                // exactly the bands it cannot be built from.
+                if (g.needs_fine) {
+                    return Boolean(fineOffered(dim, level)) || bands.every((b) => covered.has(b));
+                }
                 return bands.length > 1 && bands.every((b) => covered.has(b));
             });
     });
@@ -3926,7 +3939,12 @@ function wire() {
             // the level buckets and everything counted off them go stale. An ordinary
             // grouping changes nothing but the slice, and the slice keys already name it
             // — throwing the whole working set away for that cost a redraw twice over.
-            if (ev.target.value === FINE || was === FINE) {
+            // A grouping built off the single years needs them fetched too, and needs the
+            // buckets thrown away on the way out again — the rows underneath the answer
+            // change in both directions.
+            const fineNow = meta.groupings?.[ev.target.value]?.needs_fine;
+            const fineWas = meta.groupings?.[was]?.needs_fine;
+            if (ev.target.value === FINE || was === FINE || fineNow || fineWas) {
                 await ensureFine(dim);
                 invalidate();
             }

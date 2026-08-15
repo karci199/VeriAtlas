@@ -79,6 +79,11 @@ class Grouping:
     dim: str
     #: Group name -> the dimension values that add up into it.
     covers: dict[str, tuple[str, ...]]
+    #: True when the grouping's boundary falls inside the bands a level publishes, so it
+    #: can only be built from the finer rows underneath them. "18+" at province level is
+    #: the case: the export is banded by fives and eighteen sits inside 15-19, but the
+    #: warehouse keeps single years and the sum off those is exact.
+    needs_fine: bool
     note_tr: str
 
 
@@ -230,6 +235,7 @@ def load() -> Dictionary:
             label_en=body["label_en"],
             dim=body["dim"],
             covers=covers,
+            needs_fine=bool(body.get("needs_fine", False)),
             note_tr=body.get("note_tr", "").strip(),
         )
 

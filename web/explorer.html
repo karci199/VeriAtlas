@@ -142,6 +142,10 @@
     <!-- endregion -->
 </div>
 
-<script type="module" src="explorer.js"></script>
+<!-- The query is a cache buster, bumped by hand when a stale script would otherwise be
+     served. `scripts/serve.py` sends no-store so this should never be needed again; it is
+     here because a copy cached before that existed can outlive the fix, and an afternoon
+     was spent on a bug that had already been fixed twice. -->
+<script type="module" src="explorer.js?v=2"></script>
 </body>
 </html>

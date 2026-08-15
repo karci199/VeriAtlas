@@ -189,6 +189,7 @@ def export_dictionary(
             "label": g.label_tr,
             "dim": g.dim,
             "covers": {name: list(values) for name, values in g.covers.items()},
+            "needs_fine": g.needs_fine,
             "note": g.note_tr,
         }
         for g in load().groupings.values()
