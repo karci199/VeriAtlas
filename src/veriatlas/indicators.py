@@ -65,6 +65,24 @@ class Dimension:
 
 
 @dataclass(frozen=True)
+class AreaSplit:
+    """A way of cutting the *areas* under a place, not the measurement inside it.
+
+    A breakdown divides one number — the same neighbourhood has a male count and a
+    female count. This divides the places: a neighbourhood is rural or it is urban and
+    never partly each, so a province's split cannot be read off the province's own row.
+    It is built by summing the settlements underneath, which is why the classes ship in
+    their own file beside the registry instead of living in `dims`.
+    """
+
+    split_id: str
+    label_tr: str
+    label_en: str
+    values_tr: dict[str, str]
+    note_tr: str
+
+
+@dataclass(frozen=True)
 class Grouping:
     """A coarser reading of one breakdown: which values are summed into which group.
 
@@ -168,6 +186,7 @@ class Dictionary:
     topics: dict[str, Topic]
     units: dict[str, Unit]
     dimensions: dict[str, Dimension]
+    area_splits: dict[str, AreaSplit]
     groupings: dict[str, Grouping]
     comparisons: dict[str, Comparison]
     ratios: dict[str, Ratio]
@@ -217,6 +236,17 @@ def load() -> Dictionary:
             dict(body.get("values", {})),
         )
         for key, body in raw.get("dim", {}).items()
+    }
+
+    area_splits = {
+        key: AreaSplit(
+            key,
+            body["label_tr"],
+            body["label_en"],
+            dict(body.get("values", {})),
+            body.get("note_tr", "").strip(),
+        )
+        for key, body in raw.get("area_split", {}).items()
     }
 
     groupings: dict[str, Grouping] = {}
@@ -370,6 +400,7 @@ def load() -> Dictionary:
         topics=topics,
         units=units,
         dimensions=dimensions,
+        area_splits=area_splits,
         groupings=groupings,
         comparisons=comparisons,
         ratios=ratios,

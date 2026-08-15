@@ -777,3 +777,29 @@ select:focus-visible, button:focus-visible, input:focus-visible {
 .setting input[type="range"] { width: 100%; }
 
 /* endregion */
+
+/* region Yerleşim türü
+ *
+ * The coverage column is the reason this view has a stylesheet entry of its own. A split
+ * built on a fraction of the population it claims to describe has to look different from
+ * one built on all of it — the number alone was not enough to stop the author drawing
+ * exactly the wrong conclusion from Ağrı's 6%. */
+table.settlement td.cover {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+}
+table.settlement td.cover.ok {
+    color: var(--ok, #2e7d32);
+}
+table.settlement td.cover.warn {
+    color: var(--warn, #b26a00);
+}
+table.settlement td.cover.bad {
+    color: var(--bad, #c62828);
+    background: color-mix(in srgb, currentColor 8%, transparent);
+}
+p.warn-note {
+    border-left: 3px solid var(--warn, #b26a00);
+    padding-left: 0.7em;
+}
+/* endregion */

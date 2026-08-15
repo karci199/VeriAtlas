@@ -294,10 +294,24 @@ const VIEW_LABELS = {
     line: "📈 Çizgi",
     bar: "📊 Sütun",
     pyramid: "⧗ Piramit",
+    settlement: "⬓ Yerleşim",
     scatter: "⁘ Dağılım",
 };
 
 const TOTAL = "__total__";
+
+//: area_id -> {urban_rural, koken}. One file, fetched the first time the Yerleşim view
+//: is drawn and never again. Fifty thousand settlements, 0,17 MB on the wire.
+let classes = null;
+
+/** Which class each settlement belongs to. Null until asked for. */
+async function ensureClasses() {
+    if (classes || !meta.settlement_classes) {
+        return;
+    }
+    const rows = await part(meta.settlement_classes.file);
+    classes = new Map(rows.map((r) => [r.area_id, r]));
+}
 
 // endregion
 
@@ -352,6 +366,9 @@ const state = {
     //: The indicator on the scatter's x axis. The chosen indicator is always the y axis,
     //: so this is the only extra choice the view needs. Empty until the reader picks one.
     versus: "",
+    //: Which cut of the settlements underneath an area is on screen: "urban_rural" or
+    //: "koken". Only the Yerleşim view reads it. Empty means the first one declared.
+    areaSplit: "",
     //: A breakdown to draw as several series per area instead of picking one value of:
     //: "age" gives every chosen province its 0-14, 15-64 and 65+ lines. Empty means the
     //: value box decides, as before. See splitSeries.
@@ -2136,7 +2153,33 @@ function drawDims() {
     }
 
     groups.push(splitControl());
+    groups.push(areaSplitControl());
     $("dims").innerHTML = groups.filter(Boolean).join("");
+}
+
+/** Which cut of the settlements the Yerleşim view is showing.
+ *
+ *  Only on that view. Everywhere else it would be a control with nothing to change: the
+ *  other views read the row of the area on screen, and an area's own row knows nothing
+ *  about the settlements underneath it. */
+function areaSplitControl() {
+    const splits = Object.entries(meta.area_splits || {});
+    if (state.view !== "settlement" || splits.length < 2) {
+        return "";
+    }
+    const [current] = activeSplit();
+    return (
+        "<div><div class='dim-label'>Yerleşim sınıflaması</div>" +
+        chooser(
+            {role: "areasplit"},
+            splits.map(([key, split]) => ({
+                value: key,
+                label: split.label,
+                selected: key === current,
+            }))
+        ) +
+        "</div>"
+    );
 }
 
 /** The "draw this breakdown as several series" picker.
@@ -2210,6 +2253,25 @@ function viewState(view) {
                   reason: (LEVEL_LABELS[state.level] || state.level) +
                           " düzeyinde karşılaştırılacak ikinci gösterge yok",
               };
+    }
+    // The settlement view is a property of the data reaching down to settlements, not of
+    // the indicator's declared views: it sums the neighbourhoods and villages under an
+    // area, so it needs them published and it needs the unit to be one that can be added.
+    if (view === "settlement") {
+        if (!meta.settlement_classes) {
+            return {enabled: false, reason: "Yerleşim sınıfları çekilmedi"};
+        }
+        if (!state.indicator.additive) {
+            return {enabled: false, reason: "Bu birim toplanamaz — yerleşimler toplanarak bölünemez"};
+        }
+        const parts = state.indicator.parts || {};
+        if (!parts.neighbourhood && !parts.village) {
+            return {enabled: false, reason: "Bu gösterge yerleşim düzeyinde yayımlanmıyor"};
+        }
+        if (!["country", "region", "nuts1", "nuts2", "province", "district"].includes(state.level)) {
+            return {enabled: false, reason: "Yerleşim düzeyinin kendisinde bölünecek bir şey yok"};
+        }
+        return {enabled: true, reason: ""};
     }
     if (!(state.indicator.views || []).includes(view)) {
         return {enabled: false, reason: "Bu gösterge için tanımlı değil"};
@@ -3595,11 +3657,158 @@ function scatter() {
            wrapPlot(svg + "</svg>");
 }
 
-const RENDERERS = {line: lineChart, bar: barChart, table, pyramid, map, scatter};
+const RENDERERS = {
+    line: lineChart,
+    bar: barChart,
+    table,
+    pyramid,
+    map,
+    scatter,
+    settlement: settlementView,
+};
 
 // endregion
 
 // region Render
+
+
+// region Yerleşim türü
+//
+// The one view that does not read the rows of the areas on screen. A province is not
+// partly rural, so its split cannot come from its own row; it comes from summing the
+// neighbourhoods and villages underneath and sorting them by the class each one carries.
+//
+// Which is also why the coverage column exists and is not optional. Age is published for
+// neighbourhoods and not for villages, so in the 51 provinces that still have villages a
+// split of the 18+ figure sees a fraction of the countryside — 6% of it in Ağrı. A number
+// built on 6% of the thing it claims to describe has to say so on the same line, or the
+// reader draws exactly the wrong conclusion. It was drawn here first, by the author.
+
+/** The split on screen, falling back to the first one the dictionary declares. */
+function activeSplit() {
+    const splits = meta.area_splits || {};
+    const key = state.areaSplit && splits[state.areaSplit]
+        ? state.areaSplit
+        : Object.keys(splits)[0];
+    return key ? [key, splits[key]] : null;
+}
+
+/** Settlement rows of one level for the year on the slider, keyed by area id. */
+function settlementTotals(level, year) {
+    const out = new Map();
+    for (const row of state.rows) {
+        if (row.level === level && row.year === year) {
+            out.set(row.area_id, (out.get(row.area_id) || 0) + Number(row.value || 0));
+        }
+    }
+    return out;
+}
+
+/** Every area on screen, split by class, with what the split failed to reach. */
+function settlementSplit() {
+    const [key, split] = activeSplit();
+    const year = state.year;
+    const totals = new Map([
+        ...settlementTotals("neighbourhood", year),
+        ...settlementTotals("village", year),
+    ]);
+    // Summed, not read off one row. An indicator with breakdowns holds several rows per
+    // area-year — population has one per age band and sex — and taking the last of them
+    // made İstanbul's coverage read 8.270%: a single band against the whole settlement
+    // total. The published figure is the sum of its parts here, as it is everywhere else.
+    const own = settlementTotals(state.level, year);
+
+    return areasShown().map((id) => {
+        const buckets = {};
+        let reached = 0;
+        let unmatched = 0;
+        for (const [child, value] of totals) {
+            // The id scheme nests: a province is "TR-34", its neighbourhoods
+            // "TR-34-012-40869". Prefix with the separator, so TR-3 never claims TR-34.
+            if (!child.startsWith(id + "-")) {
+                continue;
+            }
+            const cls = classes.get(child)?.[key];
+            if (cls) {
+                buckets[cls] = (buckets[cls] || 0) + value;
+                reached += value;
+            } else {
+                unmatched += value;
+            }
+        }
+        const published = own.get(id) || 0;
+        return {
+            id,
+            name: nameOf(id),
+            buckets,
+            reached,
+            unmatched,
+            published,
+            // Against the published figure, not against the settlements found: the
+            // settlements themselves can be missing, and that is the same hole.
+            coverage: published ? (100 * reached) / published : null,
+            values: Object.keys(split.values),
+            labels: split.values,
+        };
+    });
+}
+
+/** How sure the reader should be, in one word and one colour. */
+function coverageNote(pct) {
+    if (pct === null) {
+        return ["", "—"];
+    }
+    if (pct >= 95) {
+        return ["ok", fmt(pct) + "%"];
+    }
+    if (pct >= 60) {
+        return ["warn", fmt(pct) + "%"];
+    }
+    return ["bad", fmt(pct) + "%"];
+}
+
+function settlementView() {
+    const [, split] = activeSplit();
+    const rows = settlementSplit().filter((r) => r.reached || r.published);
+    if (!rows.length) {
+        return empty("Bu seçimde yerleşim verisi yok",
+                     "Mahalle ve köy nüfusu 2013-2025 arası yayımlanıyor.");
+    }
+    const keys = rows[0].values;
+    const head = "<tr><th>Alan</th>" +
+        keys.map((k) => "<th>" + split.values[k] + "</th>").join("") +
+        keys.map((k) => "<th>" + split.values[k] + " %</th>").join("") +
+        "<th>Sınıfsız</th><th title='Bölmenin, yayımlanan nüfusun yüzde kaçını kapsadığı'>Kapsam</th></tr>";
+
+    const body = rows
+        .sort((a, b) => b.reached - a.reached)
+        .map((r) => {
+            const [tone, text] = coverageNote(r.coverage);
+            return "<tr><td class='name'>" + r.name + "</td>" +
+                keys.map((k) => "<td>" + fmt(r.buckets[k] || 0) + "</td>").join("") +
+                keys
+                    .map((k) => "<td>" +
+                        (r.reached ? fmt((100 * (r.buckets[k] || 0)) / r.reached) : "—") +
+                        "</td>")
+                    .join("") +
+                "<td>" + fmt(r.unmatched) + "</td>" +
+                "<td class='cover " + tone + "'>" + text + "</td></tr>";
+        })
+        .join("");
+
+    const thin = rows.filter((r) => r.coverage !== null && r.coverage < 95).length;
+    const warning = thin
+        ? "<p class='note warn-note'>" + thin + " alanda bölme, yayımlanan nüfusun " +
+          "%95'inden azını kapsıyor. Köylerde yaş kırılımı yayımlanmadığı için, yaş " +
+          "seçiliyken 51 ilde kırın büyük kısmı bu tabloya girmez.</p>"
+        : "";
+
+    return "<div class='table-wrap'><table class='grid settlement'>" +
+           "<thead>" + head + "</thead><tbody>" + body + "</tbody></table></div>" +
+           "<p class='note'>" + split.note + "</p>" + warning;
+}
+
+// endregion
 
 function render() {
     if (!state.indicator) {
@@ -3647,6 +3856,54 @@ function render() {
             render();
         });
         return;
+    }
+
+    // The settlement view reads two things the rest of the page never needs: the class of
+    // every settlement, and the settlement rows themselves. Both are fetched on the first
+    // draw that wants them, the way the district boundaries are.
+    if (state.view === "settlement") {
+        const parts = state.indicator.parts || {};
+        const need = ["neighbourhood", "village"].filter((l) => parts[l] && !attached.has(l));
+        if (!classes || need.length) {
+            $("view").innerHTML = empty("Yerleşim verisi yükleniyor…");
+            // One level at a time. `ensureLevel` grows `state.rows` by reading it and
+            // writing it back, so two of them in flight together both start from the old
+            // array and the second one's write throws the first one's rows away. That is
+            // what emptied the villages here: coverage read 79% in the provinces that
+            // still have them, with nothing marked unclassified to explain the gap.
+            (async () => {
+                await ensureClasses();
+                for (const level of need) {
+                    await ensureLevel(level);
+                }
+                render();
+            })();
+            return;
+        }
+    }
+
+    // The settlement view reads two things the rest of the page never needs: the class of
+    // every settlement, and the settlement rows themselves. Both are fetched on the first
+    // draw that wants them, the way the district boundaries are.
+    if (state.view === "settlement") {
+        const parts = state.indicator.parts || {};
+        const need = ["neighbourhood", "village"].filter((l) => parts[l] && !attached.has(l));
+        if (!classes || need.length) {
+            $("view").innerHTML = empty("Yerleşim verisi yükleniyor…");
+            // One level at a time. `ensureLevel` grows `state.rows` by reading it and
+            // writing it back, so two of them in flight together both start from the old
+            // array and the second one's write throws the first one's rows away. That is
+            // what emptied the villages here: coverage read 79% in the provinces that
+            // still have them, with nothing marked unclassified to explain the gap.
+            (async () => {
+                await ensureClasses();
+                for (const level of need) {
+                    await ensureLevel(level);
+                }
+                render();
+            })();
+            return;
+        }
     }
 
     // Reading against the population means a second dataset, fetched the first time it is
@@ -3928,6 +4185,11 @@ function wire() {
         }
         if (role === "split") {
             state.split = ev.target.value;
+            render();
+            return;
+        }
+        if (role === "areasplit") {
+            state.areaSplit = ev.target.value;
             render();
             return;
         }

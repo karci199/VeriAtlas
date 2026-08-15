@@ -184,6 +184,14 @@ def export_dictionary(
         for dim in load().dimensions.values()
     }
 
+    # Ways of cutting the areas rather than the measurement. Shipped next to the
+    # breakdowns because the page offers them in the same strip, kept apart in the
+    # dictionary because they are built by summing settlements, not by filtering rows.
+    area_splits = {
+        s.split_id: {"label": s.label_tr, "values": s.values_tr, "note": s.note_tr}
+        for s in load().area_splits.values()
+    }
+
     # Coarser readings of a breakdown, for the page to offer next to the raw values.
     groupings = {
         g.grouping_id: {
@@ -287,6 +295,7 @@ def export_dictionary(
             {
                 "tree": tree,
                 "dimensions": dimensions,
+                "area_splits": area_splits,
                 "groupings": groupings,
                 "comparisons": comparisons,
                 "ratios": ratios,

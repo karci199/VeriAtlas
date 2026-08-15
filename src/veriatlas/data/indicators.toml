@@ -919,3 +919,38 @@ views = ["table", "map", "line", "bar"]
 definition_tr = "Ruhsat verilen daire sayısı. Bina sayısıyla karıştırılmamalı."
 
 # endregion
+
+# region Yerleşim sınıfları
+#
+# An area split is not a breakdown. A breakdown divides a measurement — the same
+# neighbourhood has both a male and a female count — while these divide the *areas*: a
+# neighbourhood is rural or it is urban, never partly each. So a province's split is not
+# read off its own row, it is built by summing the settlements underneath it, and the
+# classes live in `settlement-classes.csv.gz` beside the registry rather than in `dims`.
+#
+# Two of them, because they answer two questions with different tenses. `urban_rural` is
+# TÜİK's DEGURBA reading of 2025 and says what a place is now; `koken` is the pre-6360
+# administrative status from the 2015 election tables and says what it was. Bahçeşehir is
+# "belde" in one and "yoğun kent" in the other, and neither is wrong.
+
+[area_split.urban_rural]
+label_tr = "Kent-kır (TÜİK 2025)"
+label_en = "Urban-rural (TurkStat 2025)"
+note_tr = "Yoğunluğa göre sınıflama (DEGURBA). 31 Aralık 2025 kesiti."
+
+[area_split.urban_rural.values]
+yogun_kent = "Yoğun kent"
+orta_kent = "Orta yoğun kent"
+kir = "Kır"
+
+[area_split.koken]
+label_tr = "Köken (7H 2015)"
+label_en = "Origin (2015)"
+note_tr = "6360 öncesi idari statü, 2015 seçim tablolarından. Ad üzerinden eşleştirildi."
+
+[area_split.koken.values]
+kent = "Kent"
+belde = "Belde"
+koy = "Köy"
+
+# endregion
