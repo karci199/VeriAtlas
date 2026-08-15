@@ -588,6 +588,28 @@ sayısıyla birebir; ölümde cinsiyet ayrı ayrı da (2.754 il-yıl-cinsiyet) b
 sayısı yıla göre değişiyor (ölümde 2009'da 957, 2025'te 973) — bu K11'in "gözlemden gelen
 idari harita"sının bir başka kaydı.
 
+**Excel: `scripts/build_vital_excel.py`, iki dosya.** `cikti/ilce-dogum-olum.xlsx` her iki
+sayının bütün yıllarını (Özet · İlçeler 2025 · İller 2025 · Doğum · Ölüm · Ölüm (cinsiyet) ·
+Doğal artış · Nüfus · Notlar), `cikti/ilce-dogal-artis-2014-2025.xlsx` iki ucu yan yana.
+Sayfa ilçe düzeyini henüz sunmuyor (`OFFERED_LEVELS`), üstelik "973 ilçeyi doğal artışa göre
+sırala" zaten tablo sorusudur.
+
+İkisinde de ‰ sütunları **bizim bölmemiz**: olay ÷ yıl **sonu** nüfusu × 1000. TÜİK kendi
+kaba hızlarında yıl ortası nüfusu kullanıyor, il düzeyinde ölçülen fark 0,05-0,10 binde
+(K19) — dosyalar bunu yazıyor, resmi sayı gibi sunmuyor.
+
+Doğal artışta **yüzde sütunu yok**, bilerek: tabanı eksi olan yüzde işareti ters çevirir
+(K21/2). Yerine kişi farkı ve ‰ farkı var, ikisi de her tabanda doğru.
+
+Karşılaştırma dosyasında ad değişikliği **katlanıyor**: Kazan/Kahramankazan ve
+Eyüp/Eyüpsultan tek satır, bugünkü adıyla. Depoda ayrı durmaları doğru — sayı o yılın adıyla
+eşleşmek zorunda — ama tabloda iki yarım satır kendisiyle karşılaştırılamaz. 2014'ten sonra
+kurulan üç ilçe listede duruyor, 2014 sütunları boş ve `durum` "karşılaştırılamaz" diyor.
+
+Sayılar: 2014'te 959.997 kişi (12,36‰), 2025'te 403.690 (4,69‰). 311 ilçe artıdan eksiye
+döndü, 160'ı iki yılda da eksi, 3'ü eksiden artıya. Hızı en çok düşen ilçe Ağrı/Hamur
+(32,12 → 12,56‰).
+
 **Yan etki: dışa aktarımda bulunan bir hata.** Ağır düzeyleri ayrı dosyaya bölen kod yalnız
 kırılımlı göstergeler için yazılmıştı, oysa sözlük *her* göstergeye lazy düzey başına bir
 parça dosyası vaat ediyor. Doğum ve doğal artış ilçe kazanır kazanmaz `meta.json`
