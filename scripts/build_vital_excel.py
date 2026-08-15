@@ -331,7 +331,7 @@ def styles(book, columns: set[str]) -> tuple[dict, dict]:
         {"num_format": "0.00;[Red]-0.00", "align": "center", "valign": "vcenter"}
     )
     yuzde = book.add_format(
-        {"num_format": "0.0%;[Red]-0.0%", "align": "center", "valign": "vcenter"}
+        {"num_format": "0.00%;[Red]-0.00%", "align": "center", "valign": "vcenter"}
     )
 
     formats: dict = {

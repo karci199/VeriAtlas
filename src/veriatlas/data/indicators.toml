@@ -248,7 +248,7 @@ additive = true
 [unit.person_per_km2]
 label_tr = "kişi/km²"
 label_en = "persons per km²"
-decimals = 0
+decimals = 2
 additive = false
 
 [unit.person_per_household]
@@ -282,7 +282,7 @@ additive = false
 [unit.year_of_age]
 label_tr = "yaş"
 label_en = "years of age"
-decimals = 1
+decimals = 2
 # An age is a position on a scale, not a quantity: adding two provinces' median ages
 # gives nothing, and averaging them unweighted is the classic way to get it wrong.
 additive = false
@@ -290,7 +290,7 @@ additive = false
 [unit.index]
 label_tr = "endeks"
 label_en = "index"
-decimals = 1
+decimals = 2
 additive = false
 
 [unit.birth]
@@ -324,7 +324,7 @@ additive = true
 [unit.per_thousand_live_births]
 label_tr = "‰ (canlı doğumda)"
 label_en = "per 1.000 live births"
-decimals = 1
+decimals = 2
 additive = false
 
 [unit.building]

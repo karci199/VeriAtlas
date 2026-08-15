@@ -616,6 +616,28 @@ parça dosyası vaat ediyor. Doğum ve doğal artış ilçe kazanır kazanmaz `m
 `births-district.csv.gz` diyordu, onu kimse yazmıyordu, ilçe satırları da herkesin indirdiği
 temel dosyanın içindeydi (K14'ün tam tersi). Okuyucu İlçe'yi seçtiğinde sayfa 404 alacaktı.
 
+## K27 — Excel biçim kodu Excel'in yazımıyla; ekranda iki ondalık (2026-08-15)
+
+**Bir sayı biçimi kodu okuyucunun diliyle değil, Excel'in kendi yazımıyla yazılır:** kodun
+içinde nokta ondalık ayracı, virgül binlik ayracıdır — makine sonra ne gösterirse
+göstersin. `0,00` yazınca kod "bir hane, binde bir ölçekli" demek oluyor ve %19,63 hücrede
+`0019` olarak çiziliyordu. Doğrusu `0.00`, `0.00%`, `#,##0`; ekranda görünen ayracı zaten
+okuyucunun yereli veriyor. `build_settlement_excel.py` ve `build_vital_excel.py`, ikisinde
+de düzeltildi.
+
+Bu hatanın sinsiliği, Türkçe bir dosya için Türkçe görünen bir kodun *daha doğru* durması.
+
+**Ekranda ondalık: iki, mümkün olan her yerde.** İki değişiklik:
+
+- Sözlükte ondalığı ikinin altında olan **oran birimleri** ikiye çıktı: `person_per_km2`
+  (0), `year_of_age` (1), `index` (1), `per_thousand_live_births` (1). Sayım birimleri
+  (kişi, hane, doğum, ölüm, evlenme, boşanma, bina, daire) sıfırda kaldı —
+  "86.092.168,00 kişi" iki basamak kesinlik değil, iki basamak gürültüdür.
+- Biçimlendirici artık **dolduruyor**. Önce "en fazla" idi (44,5), gerekçesi de yazılıydı:
+  sondaki sıfır, değerin taşımadığı bir basamağı iddia eder. İstek üzerine ters çevrildi —
+  sütun aşağı doğru da okunuyor ve 44,5 ile 28,07'nin virgülleri hizalanmıyordu.
+  Yuvarlama iki durumda da aynı; değişen yalnız dolgu.
+
 ## Oturum notu — 2026-08-14/15
 
 Bir oturumda yapılanlar, sıradaki oturum buradan devam etsin diye.

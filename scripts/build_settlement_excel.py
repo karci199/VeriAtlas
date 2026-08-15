@@ -503,8 +503,14 @@ def main() -> None:
     )
     # Two decimals, as asked: a growth of 4,7% and one of 4,74% are different answers when
     # the sheet is being sorted by that column.
+    #
+    # And the code is written in Excel's notation, not the reader's: inside a format string
+    # the dot is the decimal point and the comma is the thousands separator, whatever the
+    # machine goes on to display. Written `0,00%` the code says "one digit, scaled down by
+    # a thousand", so 19,63% came out of the cell as 0019. The separators the reader sees
+    # come from their own locale and need no help from here.
     yuzde = book.add_format(
-        {"num_format": "0,00%", "align": "center", "valign": "vcenter"}
+        {"num_format": "0.00%", "align": "center", "valign": "vcenter"}
     )
 
     numeric = {}
@@ -575,9 +581,7 @@ def main() -> None:
         "",
         "Kaynak: TÜİK MEDAS, adrese dayalı nüfus kayıt sistemi. Çekim: 2026-08.",
         f"Mahalleler: {first}-{last}, {len(mahalleler)} mahalle, 81 il.",
-        "Köyler: {0}-{1}, {2} köy, {3} il.".format(
-            koy_first, koy_last, len(koyler), koy["il"].n_unique()
-        ),
+        f"Köyler: {koy_first}-{koy_last}, {len(koyler)} köy, {koy['il'].n_unique()} il.",
         "",
         "MAHALLE / KÖY AYRIMI",
         "· 6360 sayılı yasa 2014'te 30 büyükşehir ilindeki bütün köyleri mahalleye",
