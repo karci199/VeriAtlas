@@ -22,6 +22,7 @@ from __future__ import annotations
 import datetime as dt
 import hashlib
 import json
+import shutil
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Protocol
@@ -81,6 +82,32 @@ def checksum(path: Path) -> str:
     else:
         digest.update(path.read_bytes())
     return digest.hexdigest()[:16]
+
+
+def cached_copy(source: Path, target: Path) -> Path:
+    """The copy under `raw/`, refreshed from `source` when that is newer.
+
+    Three datasets come from files on the user's desktop rather than from a download —
+    the population sheet, the median age export, the fertility file. They are hand-made
+    and they move: OneDrive relocates a folder, a file is renamed, a laptop changes.
+
+    The copy is the one that matters. It is what every load actually reads, it is what
+    the manifest's checksum describes, and it is still there when the original is not.
+    So a missing source is not an error while the copy stands.
+
+    Asking for the source's timestamp before checking that it exists *was* an error, and
+    an expensive one: `load.py` runs the adapters in one pass, so a desktop file that had
+    moved took down the whole run — twenty-four indicators that have nothing to do with
+    it included, after several minutes of work.
+    """
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if not source.exists():
+        if target.exists():
+            return target
+        raise FileNotFoundError("dosya ne kaynakta ne kopyada: " + str(source))
+    if not target.exists() or target.stat().st_mtime < source.stat().st_mtime:
+        shutil.copy2(source, target)
+    return target
 
 
 def ingest(adapter: Adapter) -> tuple[pl.DataFrame, Manifest]:

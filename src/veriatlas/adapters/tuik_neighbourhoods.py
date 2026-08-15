@@ -147,6 +147,32 @@ class TuikNeighbourhoodPopulation:
             orient="row",
         )
 
+        # The same year can arrive twice. A province whose download failed part way was
+        # repaired by fetching the missing year on its own, and that repair file sits in
+        # the folder next to the range file that later covered the same year — 23 of the
+        # 81 provinces have one. Read literally, every neighbourhood in those provinces
+        # got two rows for 2015 and the schema's uniqueness check stopped the load.
+        #
+        # Identical rows are one observation written twice, so one of them is dropped.
+        # Rows that *disagree* are not: that would mean two different answers to the same
+        # question, and choosing one silently is how a number nobody can reproduce gets
+        # into the warehouse.
+        keys = ["year", "area_id", "age"]
+        clash = (
+            frame.group_by(keys)
+            .agg(pl.col("value").n_unique().alias("kinds"))
+            .filter(pl.col("kinds") > 1)
+        )
+        if not clash.is_empty():
+            first = clash.head(3).to_dicts()
+            raise ValueError(
+                "ayni mahalle-yil icin farkli degerler ("
+                + str(len(clash))
+                + "): "
+                + str(first)
+            )
+        frame = frame.unique(subset=keys, keep="first")
+
         dims = {band: format_dims({"age": band}) for band in BANDS}
 
         return frame.with_columns(

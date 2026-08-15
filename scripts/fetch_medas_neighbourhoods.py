@@ -185,7 +185,18 @@ def fetch_province(page, province: str, years: list[int]) -> int:
         print("   mahalle listesi isaretlenemedi")
         return 0
 
+    # Ticking the list header is a server round trip, and the footer's count is
+    # what it updates. On a long list — İstanbul offers thousands of
+    # neighbourhoods — settle()'s fixed wait ends first and the count reads 0.
+    # Sampling it once was silently costly: a zero skips the cell-limit check
+    # below, so the whole thirteen-year request goes out unsplit and the report
+    # never finishes building. Waited for instead.
     areas = picked_levels(page)
+    for _ in range(10):
+        if areas:
+            break
+        page.wait_for_timeout(2000)
+        areas = picked_levels(page)
     print("   · mahalle adedi:", areas)
     if areas and 2 * areas * len(years) > CELL_LIMIT:
         print("   · limit asildi, yillar bolunecek")

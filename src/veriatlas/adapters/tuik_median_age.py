@@ -33,7 +33,6 @@ from __future__ import annotations
 
 import datetime as dt
 import re
-import shutil
 from pathlib import Path
 
 import polars as pl
@@ -42,8 +41,9 @@ from ..areas import load_areas, load_parents
 from ..config import RAW
 from ..indicators import get
 from ..schema import format_dims
+from .base import cached_copy
 
-SOURCE_FILE = Path(r"C:\Users\katan\OneDrive\Desktop\OrtancaYas.csv")
+SOURCE_FILE = Path(r"C:\Users\katan\OneDrive\Desktop\demografi\OrtancaYas.csv")
 
 #: `Adana-1`, `Ankara-TR51`, `Türkiye-TR` — everything before the last dash is the name.
 LABEL = re.compile(r"^(?P<name>.+)-(?P<code>TR[0-9A-C]*|\d{1,2})$")
@@ -136,11 +136,7 @@ class TuikMedianAge:
     retrieved_at = dt.date(2026, 8, 14)
 
     def fetch(self) -> Path:
-        target = RAW / "medas" / SOURCE_FILE.name
-        target.parent.mkdir(parents=True, exist_ok=True)
-        if not target.exists() or target.stat().st_mtime < SOURCE_FILE.stat().st_mtime:
-            shutil.copy2(SOURCE_FILE, target)
-        return target
+        return cached_copy(SOURCE_FILE, RAW / "medas" / SOURCE_FILE.name)
 
     def parse(self, raw: Path) -> pl.DataFrame:
         indicator = get(self.indicator_id)

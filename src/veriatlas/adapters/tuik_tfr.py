@@ -11,7 +11,6 @@ raw copy is that it stays put even when the original is moved, edited or overwri
 from __future__ import annotations
 
 import datetime as dt
-import shutil
 from pathlib import Path
 
 import polars as pl
@@ -20,6 +19,7 @@ from ..areas import resolve
 from ..config import RAW
 from ..indicators import get
 from ..schema import DIMS_NONE
+from .base import cached_copy
 
 SOURCE_FILE = Path(
     r"C:\Users\katan\OneDrive\Desktop\demografi\cikti"
@@ -40,11 +40,7 @@ class TuikTfr:
     retrieved_at = dt.date(2026, 8, 13)
 
     def fetch(self) -> Path:
-        target = RAW / "tuik_medas" / SOURCE_FILE.name
-        target.parent.mkdir(parents=True, exist_ok=True)
-        if not target.exists() or target.stat().st_mtime < SOURCE_FILE.stat().st_mtime:
-            shutil.copy2(SOURCE_FILE, target)
-        return target
+        return cached_copy(SOURCE_FILE, RAW / "tuik_medas" / SOURCE_FILE.name)
 
     def parse(self, raw: Path) -> pl.DataFrame:
         indicator = get(self.indicator_id)

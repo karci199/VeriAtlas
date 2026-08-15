@@ -23,7 +23,6 @@ province-years the two share.
 from __future__ import annotations
 
 import datetime as dt
-import shutil
 from pathlib import Path
 
 import polars as pl
@@ -32,9 +31,10 @@ from ..areas import resolve
 from ..config import RAW
 from ..indicators import get
 from ..schema import format_dims
+from .base import cached_copy
 
 SOURCE_FILE = Path(
-    r"C:\Users\katan\OneDrive\Desktop\İl, tek yaş ve cinsiyete göre nüfus.xls"
+    r"C:\Users\katan\OneDrive\Desktop\demografi\İl, tek yaş ve cinsiyete göre nüfus.xls"
 )
 
 #: One sheet, named after TÜİK's own table number.
@@ -56,11 +56,7 @@ class TuikPopulationAgeSex:
     retrieved_at = dt.date(2026, 8, 13)
 
     def fetch(self) -> Path:
-        target = RAW / "tuik_medas" / SOURCE_FILE.name
-        target.parent.mkdir(parents=True, exist_ok=True)
-        if not target.exists() or target.stat().st_mtime < SOURCE_FILE.stat().st_mtime:
-            shutil.copy2(SOURCE_FILE, target)
-        return target
+        return cached_copy(SOURCE_FILE, RAW / "tuik_medas" / SOURCE_FILE.name)
 
     def parse(self, raw: Path) -> pl.DataFrame:
         indicator = get(self.indicator_id)
