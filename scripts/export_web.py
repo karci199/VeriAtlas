@@ -21,6 +21,7 @@ from veriatlas.areas import (
     load_districts,
     load_neighbourhoods,
     load_parents,
+    load_villages,
     load_weights,
 )
 from veriatlas.config import PUBLIC
@@ -292,6 +293,7 @@ def export_dictionary(
                 "derivations": derivations,
                 "belongs": ancestors,
                 "area_labels": labels,
+                "settlement_classes": export_settlement_classes(),
                 "sources": sources(),
             },
             ensure_ascii=False,
@@ -482,6 +484,40 @@ def export_broken_down(
             report(PUBLIC / (stem + "-" + level + ".csv"), part)
 
     return declared
+
+
+def export_settlement_classes() -> dict[str, str] | None:
+    """Which class each settlement belongs to, in a file of its own.
+
+    Two classifications, both attributes of a *place* rather than of a measurement:
+    `urban_rural` is TÜİK's density reading of 2025 (yoğun kent / orta yoğun kent / kır)
+    and `koken` is what the settlement was before law 6360, read off the 2015 election
+    tables (kent / belde / köy).
+
+    Written apart from the population files on purpose. A neighbourhood is not partly
+    rural the way it is partly female — it simply is one or the other, so the class can
+    never be a `dims` value without writing the same people down twice. It is a property
+    of the area, and the page uses it the other way round: to split a province's number
+    by summing the settlements underneath it.
+
+    Its own file also means nothing that works today can break, and the reader who never
+    asks for the breakdown never downloads it. Two short codes over fifty thousand rows
+    compress to almost nothing.
+    """
+    both = pl.concat(
+        [
+            frame.select("area_id", "urban_rural", "koken", "koken_kaynak")
+            for frame in (load_neighbourhoods(), load_villages())
+            if "urban_rural" in frame.columns
+        ]
+    )
+    labelled = both.filter(
+        pl.col("urban_rural").is_not_null() | pl.col("koken").is_not_null()
+    ).sort("area_id")
+    if labelled.is_empty():
+        return None
+    report(PUBLIC / "settlement-classes.csv", labelled)
+    return {"file": served("settlement-classes.csv")}
 
 
 def sources() -> list[dict[str, str]]:
