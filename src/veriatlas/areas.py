@@ -62,6 +62,17 @@ def load_neighbourhoods() -> pl.DataFrame:
     return pl.read_csv(NEIGHBOURHOODS_PATH)
 
 
+#: `scripts/build_village_registry.py`. Separate from the neighbourhoods because they are
+#: a different kind of place with a different provenance — and because they only exist in
+#: the 51 provinces law 6360 left them in.
+VILLAGES_PATH = Path(__file__).parent / "data" / "areas_tr_villages.csv"
+
+
+def load_villages() -> pl.DataFrame:
+    """Read the village registry: ids, current name, district, bucak, MEDAS code."""
+    return pl.read_csv(VILLAGES_PATH)
+
+
 def load_parents(hierarchy: str | None = None) -> pl.DataFrame:
     """Read membership: `area_id`, `parent_id`, `hierarchy`."""
     parents = pl.read_csv(PARENTS_PATH)

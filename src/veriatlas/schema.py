@@ -31,7 +31,19 @@ QUALITY_FLAGS = (
 
 #: Geographic granularity. ``area_id`` carries the code, this says what kind of code
 #: it is. Adding a level (electoral district, basin) means adding a value here.
-AREA_LEVELS = ("country", "region", "province", "district", "neighbourhood")
+AREA_LEVELS = (
+    "country",
+    "region",
+    "province",
+    "district",
+    "neighbourhood",
+    # A village is not a small neighbourhood: it is the other kind of settlement, and the
+    # two together are the district. Kept apart because they are counted differently —
+    # TÜİK publishes an age split for neighbourhoods and only a total for villages — and
+    # because their sum is what "kent / kır" means in the 51 provinces that still have
+    # both.
+    "village",
+)
 
 # endregion
 

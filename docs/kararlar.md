@@ -525,6 +525,48 @@ olayını yolluyor — şeridin tek yakalayıcısı hangi biçimi aldığını b
 gerektiren kutular (karşılaştırma, oran) buton olmuyor: aralarında ayrım olmayan bir
 düğme dizisi, son ikisinin bambaşka bir şey yaptığını gizlerdi.
 
+## Oturum notu — 2026-08-14/15
+
+Bir oturumda yapılanlar, sıradaki oturum buradan devam etsin diye.
+
+**Yüklenen veri.** Doğum, ölüm (cinsiyet), bebek ve beş yaş altı ölüm hızı (2009-2025) ·
+doğal nüfus artışı (türetme) · evlenme, boşanma (2001-2025) · ortalama evlenme yaşı ve
+ilk evlenme yaşı (cinsiyet; evlenme yaşında toplam türetiliyor) · kütük nüfusu
+(2007-2025, İlinde / İl dışında kırılımıyla) · mahalle nüfusu 81 ilin tamamı (12.750
+mahalleden 32.681'e). Depo 1,97 milyon satır, 25 gösterge. Kararlar K19-K24.
+
+**Doğrulama.** Doğum, ölüm ve doğal artış Wikipedia'nın TÜİK tablosuyla on altı yılda
+birebir. Evlenme/boşanma ve doğum/ölüm sayıları, yüklemediğimiz kaba hızlara karşı
+sınandı: 1.394-1.558 il-yılda ortalama mutlak fark 0,01‰ ile 0,10‰ arasında. Kütük
+toplamı ile ADNKS nüfusu arasındaki fark, o yılın yabancı uyruklu nüfusu kadar.
+
+**Bulunan on bir mantık hatası.** Hepsi sessizdi — yanlış sayı üretiyor ya da doğru
+seçeneği ortadan kaldırıyorlardı, hiçbiri hata vermiyordu. K21 üçünü, K23 eksen hatasını,
+K19 ölüm yükleme hatasını anlatıyor. Kalanlar: masaüstü kaynağı taşınınca bütün yükleme
+çöküyordu (artık `raw/` kopyası kullanılıyor) · aynı yıl iki dosyada gelince çift anahtar
+· köy etiketi 2017'den itibaren bucağı yazmayı bırakıyor ve üç parça bekleyen ayrıştırıcı
+dokuz yılı düşürüyordu · nüfusa oran, nüfus dosyası gelmeden hesaplanıp boş sonucu
+belleğe yazıyordu · tek kırılımlı göstergede iki ayrı ada sahip aynı yüzde · nüfusa oran
+kipinde alt başlık başka bir kipin adını yazıyordu. Çekicide üç hata daha: yıl listesinin
+altı ekrandan taşıyor, `has_text` gevşek eşleşiyor, MEDAS'ın alan sayacı iş sürerken
+tırmanıyor (33 → 39 → 82) ve dilim boyu ona göre yanlış hesaplanıyordu.
+
+**Arayüz.** OWID'in eşiği ölçüldü ve uygulandı (K22). Kırılım değerleri artık sözlükteki
+sırayla. 18+ gruplaması eklendi: mahallede yerli, il ve Türkiye'de tek yaş tablosundan
+(`needs_fine`), ilçede sunulmuyor çünkü 15-19 bandı onsekizin iki yanına düşüyor.
+
+**Geliştirme sunucusu.** `scripts/serve.py`, `no-store` gönderiyor. Tarayıcı bir gün
+boyunca eski `explorer.js`'i çalıştırdı ve düzeltilmiş üç hatayı düzelmemiş gösterdi;
+`python -m http.server` bu iş için yeterli değil.
+
+**Excel.** `scripts/build_settlement_excel.py` → `cikti/mahalle-nufus.xlsx`. Sayfalar:
+Özet, Mahalleler, Köyler, İlçeler, İller, Yıllar, Notlar. Kapsam sütunu kritik: mahalle
+verisi belediye mahalleleridir, Türkiye'nin %95'i ama Ardahan'ın %47'si. Kent/kır ayrımı
+yalnız 51 ilde hesaplanabiliyor — 6360 sayılı yasa büyükşehirlerde köy bırakmadı.
+
+**Sıradaki iş:** köy verisi ham dosyada duruyor (`raw/medas/yerlesim/`, 51 il, 18.181
+köy, 2013-2025) ve yalnız Excel üreticisi okuyor; adaptörle depoya alınacak.
+
 ## Sıradaki oturum — açık maddeler (2026-08-14, akşam)
 
 0. **Kütük karesinin tamamı: kim nerede yaşıyor.** İndirdiğimiz dosya 81×81'lik bir kare

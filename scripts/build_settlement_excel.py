@@ -33,7 +33,6 @@ Run:  uv run python scripts/build_settlement_excel.py
 
 from __future__ import annotations
 
-import re
 import sys
 
 import polars as pl
@@ -41,94 +40,55 @@ import xlsxwriter
 
 sys.path.insert(0, "src")
 
-from veriatlas.config import PUBLIC, RAW
+from veriatlas.config import PUBLIC
 
 TARGET = PUBLIC.parent / "cikti" / "mahalle-nufus.xlsx"
-VILLAGES = RAW / "medas" / "yerlesim"
 DATA = PUBLIC.parent / "src" / "veriatlas" / "data"
 
 CHILD = "0-17"
 ADULT = "18+"
 
-#: `Sivas(Akıncılar/Merkez Bucağı/Abdurrahman Köy.)-28662`, and from 2017 on the same
-#: village as `Sivas(Akıncılar/Abdurrahman Köy.)-28662` — the bucak stops being written
-#: halfway through the series. Same place, same code, one path segment shorter.
-#:
-#: Insisting on three segments cost nine years of data and did it silently: the file held
-#: 2013-2025, the parser produced 2013-2016, and nothing complained because a row that
-#: does not match is just a row that is skipped. So the middle segment is optional, and
-#: the identity is the code, as everywhere else in this project (K15).
-VILLAGE = re.compile(
-    r"^(?P<il>[^(]+)\("
-    r"(?P<ilce>[^/)]+)"
-    r"(?:/(?P<bucak>[^/)]+))?"
-    r"/(?P<koy>[^)]+)\)-(?P<kod>\d+)$"
-)
-
-
-def read_text(path) -> str:
-    raw = path.read_bytes()
-    for encoding in ("utf-8-sig", "iso-8859-9"):
-        try:
-            return raw.decode(encoding)
-        except UnicodeDecodeError:
-            continue
-    raise ValueError("kodlama cozulemedi: " + str(path))
-
 
 def villages() -> pl.DataFrame:
-    """Every village-year from the settlement exports.
+    """Every village-year, from the warehouse and the village registry.
 
-    The year is written once, on the first line of its block, and left blank on the rows
-    beneath — the same shape the death files use, and the same trap: read literally, every
-    village lands in the first year of the file.
+    Read here rather than parsed here. The exports have their own trap — the bucak stops
+    being written in 2017, so a village's label loses a path segment mid-series — and that
+    belongs in the adapter with the rest of the reading, not in a second copy that can
+    drift from it. Since `tuik_villages` loads them, this script does what everything else
+    does: asks the fact table.
     """
-    rows: list[dict] = []
-    for path in sorted(VILLAGES.glob("nufus-koy-*.csv")):
-        year = None
-        for line in read_text(path).splitlines():
-            cells = [cell.strip() for cell in line.split("|")]
-            if len(cells) < 3:
-                continue
-            if cells[0].isdigit() and len(cells[0]) == 4:
-                year = int(cells[0])
-            found = VILLAGE.match(cells[1])
-            if not found or year is None or not cells[2]:
-                continue
-            try:
-                value = float(cells[2])
-            except ValueError:
-                continue
-            bucak = found.group("bucak")
-            rows.append(
-                {
-                    "kod": int(found.group("kod")),
-                    "il": found.group("il").strip(),
-                    "ilce": found.group("ilce").strip(),
-                    "bucak": bucak.strip() if bucak else None,
-                    "koy": found.group("koy").strip(),
-                    "yil": year,
-                    "nufus": value,
-                }
-            )
-    if not rows:
-        raise ValueError("koy dosyasi bulunamadi: " + str(VILLAGES))
-
-    frame = pl.DataFrame(rows)
-    # Newest name wins, as in the neighbourhood registry — except the bucak, which is
-    # taken from wherever it was last written. It stops being published in 2017 and the
-    # village did not stop being in it.
-    newest = (
-        frame.sort("yil")
-        .group_by("kod")
-        .agg(
-            pl.col("koy").last(),
-            pl.col("bucak").drop_nulls().last(),
-            pl.col("ilce").last(),
-            pl.col("il").last(),
+    fact = pl.read_parquet(PUBLIC / "fact.parquet")
+    rows = (
+        fact.filter(
+            (pl.col("indicator_id") == "population")
+            & (pl.col("area_level") == "village")
         )
+        .with_columns(pl.col("period_start").dt.year().alias("yil"))
+        .select("area_id", "yil", pl.col("value").alias("nufus"))
     )
-    return frame.drop("koy", "bucak", "ilce", "il").join(newest, on="kod")
+    if rows.is_empty():
+        raise ValueError("depoda koy satiri yok — once load.py tuik_villages")
+
+    registry = pl.read_csv(DATA / "areas_tr_villages.csv").select(
+        "area_id",
+        pl.col("name_tr").alias("koy"),
+        pl.col("bucak"),
+        pl.col("parent_id"),
+        pl.col("medas_code").alias("kod"),
+    )
+    districts = pl.read_csv(DATA / "areas_tr_districts.csv").select(
+        "area_id", pl.col("name_tr").alias("ilce")
+    )
+    provinces = pl.read_csv(DATA / "areas_tr.csv").select(
+        "area_id", pl.col("name_tr").alias("il")
+    )
+    return (
+        rows.join(registry, on="area_id")
+        .join(districts, left_on="parent_id", right_on="area_id", how="left")
+        .with_columns(pl.col("area_id").str.slice(0, 5).alias("il_id"))
+        .join(provinces, left_on="il_id", right_on="area_id", how="left")
+    )
 
 
 def neighbourhoods() -> pl.DataFrame:

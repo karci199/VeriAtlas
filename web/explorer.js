@@ -265,6 +265,10 @@ const LEVEL_LABELS = {
     // "Coğrafi bölge" rather than "Bölge": the two hierarchies are both regions, and the
     // filter boxes sit next to each other, so the names have to say which is which.
     neighbourhood: "Mahalle",
+    // Only in the 51 provinces law 6360 left them in; in the other 30 every village
+    // became a neighbourhood in 2014, so the level is genuinely empty there rather than
+    // missing.
+    village: "Köy",
     district: "İlçe",
     province: "İl",
     nuts2: "İBBS-2",
@@ -1523,6 +1527,7 @@ const FILTERS = {
     province: ["region", "nuts1"],
     district: ["province"],
     neighbourhood: ["province", "district"],
+    village: ["province", "district"],
 };
 
 function filterLabel(key) {

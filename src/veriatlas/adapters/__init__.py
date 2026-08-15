@@ -9,6 +9,7 @@ from .tuik_population import TuikPopulationAgeSex
 from .tuik_registry import TuikRegistryPopulation
 from .tuik_simple import NARROW_ADAPTERS
 from .tuik_tfr import TuikTfr
+from .tuik_villages import TuikVillagePopulation
 from .tuik_vital import VITAL_ADAPTERS
 
 #: Everything that can be ingested, by name. `scripts/load.py` runs these.
@@ -18,6 +19,7 @@ ADAPTERS = {
     "tuik_district_population": TuikDistrictPopulation,
     "tuik_median_age": TuikMedianAge,
     "tuik_neighbourhoods": TuikNeighbourhoodPopulation,
+    "tuik_villages": TuikVillagePopulation,
     "tuik_marital": TuikMarital,
     "tuik_registry_population": TuikRegistryPopulation,
     # One class per narrow measure, generated from a table: the contract is one
@@ -40,6 +42,7 @@ __all__ = [
     "TuikPopulationAgeSex",
     "TuikRegistryPopulation",
     "TuikTfr",
+    "TuikVillagePopulation",
     "history",
     "ingest",
 ]

@@ -317,7 +317,7 @@ def export_dictionary(
 #: and the whole country would be around fifty thousand. When the other provinces arrive
 #: this will have to split again, per province, the way the district *boundaries* already
 #: do — one file per level stops being small enough somewhere around the second province.
-LAZY_LEVELS = ("district", "neighbourhood")
+LAZY_LEVELS = ("district", "neighbourhood", "village")
 
 
 def to_five_year_bands(frame: pl.DataFrame) -> pl.DataFrame:
