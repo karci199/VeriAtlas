@@ -115,7 +115,6 @@ def villages() -> pl.DataFrame:
         raise ValueError("koy dosyasi bulunamadi: " + str(VILLAGES))
 
     frame = pl.DataFrame(rows)
-    # The newest name wins, as in the neighbourhood registry: names change, codes do not.
     # Newest name wins, as in the neighbourhood registry — except the bucak, which is
     # taken from wherever it was last written. It stops being published in 2017 and the
     # village did not stop being in it.
