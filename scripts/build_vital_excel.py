@@ -220,44 +220,45 @@ def change(now: str, before: str, name: str) -> pl.Expr:
     )
 
 
+#: Every header says its unit. Three different things are counted in these files — people,
+#: events per thousand people, and a change as a proportion — and they sit in neighbouring
+#: columns. "Doğal artış 12,36" is unreadable without knowing which of the three it is.
 HEADERS = {
     "il": "İl",
     "ilce": "İlçe",
     "kimlik": "Kimlik",
     "yil": "Yıl",
-    "erkek": "Erkek",
-    "kadin": "Kadın",
+    "erkek": "Erkek ölüm (kişi)",
+    "kadin": "Kadın ölüm (kişi)",
     "cinsiyet_orani": "Cinsiyet oranı (E/K×100)",
     "ilce_sayisi": "İlçe sayısı",
     "sira": "Sıra",
     "olcut": "Ölçüt",
     "deger": "Değer",
     "durum": "Durum",
-    "dogum": "Doğum",
-    "olum": "Ölüm",
-    "artis": "Doğal artış",
-    "nufus": "Nüfus",
-    "dogum_hiz": "Doğum ‰",
-    "olum_hiz": "Ölüm ‰",
-    "artis_hiz": "Doğal artış ‰",
+    "dogum": "Doğum (kişi)",
+    "olum": "Ölüm (kişi)",
+    "artis": "Doğal artış (kişi)",
+    "nufus": "Nüfus (kişi)",
+    "dogum_hiz": "Doğum hızı (‰)",
+    "olum_hiz": "Ölüm hızı (‰)",
+    "artis_hiz": "Doğal artış hızı (‰)",
     "artis_fark": "Doğal artış farkı (kişi)",
-    "artis_hiz_fark": "Doğal artış ‰ farkı",
-    "dogum_degisim": "Doğum değişimi",
-    "olum_degisim": "Ölüm değişimi",
-    "nufus_degisim": "Nüfus değişimi",
+    "artis_hiz_fark": "Doğal artış hızı farkı (‰)",
+    "dogum_degisim": "Doğum değişimi (%)",
+    "olum_degisim": "Ölüm değişimi (%)",
+    "nufus_degisim": "Nüfus değişimi (%)",
 }
 
-#: Word plus year, for the columns that carry one: `dogum_2014` → "Doğum 2014".
+#: Word plus year, for the columns that carry one: `dogum_2014` → "Doğum 2014 (kişi)".
 STEMS = {
-    "dogum_hiz": "Doğum ‰",
-    "olum_hiz": "Ölüm ‰",
-    "artis_hiz": "Doğal artış ‰",
-    "dogum": "Doğum",
-    "olum": "Ölüm",
-    "artis": "Doğal artış",
-    "nufus": "Nüfus",
-    "erkek": "Erkek ölüm",
-    "kadin": "Kadın ölüm",
+    "dogum_hiz": "Doğum hızı {} (‰)",
+    "olum_hiz": "Ölüm hızı {} (‰)",
+    "artis_hiz": "Doğal artış hızı {} (‰)",
+    "dogum": "Doğum {} (kişi)",
+    "olum": "Ölüm {} (kişi)",
+    "artis": "Doğal artış {} (kişi)",
+    "nufus": "Nüfus {} (kişi)",
 }
 
 
@@ -269,7 +270,7 @@ def header_of(column: str) -> str:
     # Longest stem first, or `dogum` would claim `dogum_hiz_2014`.
     for stem in sorted(STEMS, key=len, reverse=True):
         if column.startswith(stem + "_") and column[len(stem) + 1 :].isdigit():
-            return STEMS[stem] + " " + column[len(stem) + 1 :]
+            return STEMS[stem].format(column[len(stem) + 1 :])
     return column[:1].upper() + column[1:].replace("_", " ")
 
 
@@ -311,6 +312,12 @@ def styles(book, columns: set[str]) -> tuple[dict, dict]:
     )
     text = book.add_format({"align": "left", "valign": "vcenter"})
     middle = book.add_format({"align": "center", "valign": "vcenter"})
+    # A number format code is written in Excel's own notation, not in the reader's: the
+    # dot is the decimal point and the comma is the thousands separator *inside the code*,
+    # whatever the machine then displays. Written `0,00` the code says "one digit, scaled
+    # down by a thousand", so 19,63 came out as 0019 — which is what a Turkish-looking
+    # format string does when Excel reads it as an English one. The displayed separators
+    # come from the reader's locale and need no help from here.
     sayi = book.add_format(
         {"num_format": "#,##0", "align": "center", "valign": "vcenter"}
     )
@@ -321,13 +328,37 @@ def styles(book, columns: set[str]) -> tuple[dict, dict]:
         {"num_format": "#,##0;[Red]-#,##0", "align": "center", "valign": "vcenter"}
     )
     ondalik = book.add_format(
-        {"num_format": "0,00;[Red]-0,00", "align": "center", "valign": "vcenter"}
+        {"num_format": "0.00;[Red]-0.00", "align": "center", "valign": "vcenter"}
     )
     yuzde = book.add_format(
-        {"num_format": "0,00%;[Red]-0,00%", "align": "center", "valign": "vcenter"}
+        {"num_format": "0.0%;[Red]-0.0%", "align": "center", "valign": "vcenter"}
     )
 
-    formats: dict = {"head": head, "text": middle}
+    formats: dict = {
+        "head": head,
+        "text": middle,
+        # Named alongside the per-column entries, for the summary sheet — it lays its own
+        # blocks out and picks a format per cell rather than per column.
+        "left": text,
+        "middle": middle,
+        "sayi": sayi,
+        "eksili": eksili,
+        "ondalik": ondalik,
+        "yuzde": yuzde,
+        "title": book.add_format({"bold": True, "font_size": 15, "valign": "vcenter"}),
+        "block": book.add_format(
+            {
+                "bold": True,
+                "font_size": 11,
+                "valign": "vcenter",
+                "bg_color": "#D9E2F3",
+                "border": 1,
+            }
+        ),
+        "note": book.add_format(
+            {"italic": True, "font_color": "#555555", "valign": "vcenter"}
+        ),
+    }
     for column in columns:
         stem = (
             column.rsplit("_", 1)[0] if column.rsplit("_", 1)[-1].isdigit() else column
@@ -358,11 +389,82 @@ def styles(book, columns: set[str]) -> tuple[dict, dict]:
     return formats, widths
 
 
-def write(target, sheets: list[tuple[str, pl.DataFrame]], notes: list[str]) -> None:
+#: A summary block: a heading, an optional line of explanation, the column headers, and
+#: the rows. Each column carries the name of the format its cells take, because a summary
+#: puts people and per-mille in neighbouring columns and the format cannot be inferred
+#: from the column's position.
+WIDE = 6
+
+
+def summary(book, page, formats, heading: str, blocks: list[dict]) -> None:
+    """The Özet sheet: stacked blocks, each a small titled table.
+
+    Not one long frame with an "ölçüt" column repeated ten times per question. That shape
+    is what a filter is for, and the summary is the sheet you read *without* filtering —
+    so the questions are laid out as separate little tables with their own headers, and
+    each says what it is measuring in its own units.
+    """
+    page.set_column(0, 0, 6)
+    page.set_column(1, 1, 16)
+    page.set_column(2, 2, 22)
+    page.set_column(3, 8, 18)
+
+    page.set_row(0, 26)
+    page.write(0, 0, heading, formats["title"])
+    row = 2
+
+    for block in blocks:
+        page.merge_range(row, 0, row, WIDE, block["title"], formats["block"])
+        row += 1
+        if block.get("note"):
+            page.merge_range(row, 0, row, WIDE, block["note"], formats["note"])
+            row += 1
+        for index, (header, _) in enumerate(block["columns"]):
+            page.write(row, index, header, formats["head"])
+        page.set_row(row, 30)
+        row += 1
+        for values in block["rows"]:
+            for index, ((_, style), value) in enumerate(zip(block["columns"], values)):
+                if value is None:
+                    continue
+                page.write(row, index, value, formats[style])
+            row += 1
+        row += 1
+
+
+def ranked(frame: pl.DataFrame, column: str, columns, rising=True, take=10) -> dict:
+    """The ten highest or lowest on one column, as summary rows.
+
+    `columns` names what to show alongside the ranking — the ranking column on its own
+    would answer "which" without ever saying "compared with what".
+    """
+    ordered = frame.drop_nulls(column).sort(column, descending=rising).head(take)
+    keys = [key for key, _, _ in columns]
+    return {
+        "columns": [("Sıra", "middle")]
+        + [(header, style) for _, header, style in columns],
+        "rows": [
+            [rank] + [row[key] for key in keys]
+            for rank, row in enumerate(ordered.to_dicts(), start=1)
+        ],
+    }
+
+
+def write(
+    target,
+    heading: str,
+    blocks: list[dict],
+    sheets: list[tuple[str, pl.DataFrame]],
+    notes: list[str],
+) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
     book = xlsxwriter.Workbook(str(target))
     columns = {column for _, frame in sheets for column in frame.columns}
     formats, widths = styles(book, columns)
+
+    # First, so it is the sheet the file opens on: it answers a question without being
+    # asked one.
+    summary(book, book.add_worksheet("Özet"), formats, heading, blocks)
 
     for title, frame in sheets:
         sheet(book, frame, title, formats, widths)
@@ -477,31 +579,155 @@ def build_all_years(rows: pl.DataFrame, area: pl.DataFrame, mapping: dict) -> No
         .sort("il", "ilce", "yil")
     )
 
-    ozet = pl.concat(
-        [
-            top(son, "dogum", f"{LAST} · en çok doğum"),
-            top(son, "olum", f"{LAST} · en çok ölüm"),
-            top(son, "artis", f"{LAST} · doğal artışı en yüksek ilçe"),
-            top(son, "artis", f"{LAST} · doğal artışı en düşük ilçe", False),
-            top(son, "dogum_hiz", f"{LAST} · doğum hızı en yüksek (‰)"),
-            top(son, "olum_hiz", f"{LAST} · ölüm hızı en yüksek (‰)"),
-            top(son, "artis_hiz", f"{LAST} · doğal artış hızı en yüksek (‰)"),
-            top(son, "artis_hiz", f"{LAST} · doğal artış hızı en düşük (‰)", False),
-        ]
+    # Türkiye, year by year: the one table that says what the whole file is about before
+    # any of it is filtered.
+    country = (
+        table.group_by("yil")
+        .agg(
+            pl.col("dogum").sum(),
+            pl.col("olum").sum(),
+            pl.col("artis").sum(),
+            pl.col("nufus").sum(),
+        )
+        .sort("yil")
+        .with_columns(
+            *[
+                (pl.col(name) / pl.col("nufus") * 1000).alias(name + "_hiz")
+                for name in ("dogum", "olum", "artis")
+            ]
+        )
     )
+
+    # A year outside a measure's span is written as a gap, not a zero. `sum` over a column
+    # of nulls returns 0, and the population reaches back to 2007 while deaths start in
+    # 2009 and births in 2014 — so read literally the table opened with two years in which
+    # nobody had died.
+    def only(row: dict, key: str, years: list[int]):
+        return row[key] if row["yil"] in years else None
+
+    country_rows = [
+        [
+            row["yil"],
+            row["nufus"],
+            only(row, "dogum", dogum_years),
+            only(row, "olum", olum_years),
+            only(row, "artis", dogum_years),
+            only(row, "dogum_hiz", dogum_years),
+            only(row, "olum_hiz", olum_years),
+            only(row, "artis_hiz", dogum_years),
+        ]
+        for row in country.to_dicts()
+    ]
+
+    place = [("il", "İl", "left"), ("ilce", "İlçe", "left")]
+    counts = place + [("nufus", "Nüfus (kişi)", "sayi")]
+
+    ozet = [
+        {
+            "title": "Türkiye — ilçelerin toplamı, yıl yıl",
+            "note": "Doğum ilçe düzeyinde 2014'te başlıyor; öncesi boş, sıfır değil.",
+            "columns": [
+                ("Yıl", "middle"),
+                ("Nüfus (kişi)", "sayi"),
+                ("Doğum (kişi)", "sayi"),
+                ("Ölüm (kişi)", "sayi"),
+                ("Doğal artış (kişi)", "eksili"),
+                ("Doğum hızı (‰)", "ondalik"),
+                ("Ölüm hızı (‰)", "ondalik"),
+                ("Doğal artış hızı (‰)", "ondalik"),
+            ],
+            "rows": country_rows,
+        },
+        {
+            "title": f"{LAST} · en çok doğum olan 10 ilçe",
+            **ranked(
+                son,
+                "dogum",
+                counts
+                + [
+                    ("dogum", "Doğum (kişi)", "sayi"),
+                    ("dogum_hiz", "Doğum hızı (‰)", "ondalik"),
+                ],
+            ),
+        },
+        {
+            "title": f"{LAST} · en çok ölüm olan 10 ilçe",
+            **ranked(
+                son,
+                "olum",
+                counts
+                + [
+                    ("olum", "Ölüm (kişi)", "sayi"),
+                    ("olum_hiz", "Ölüm hızı (‰)", "ondalik"),
+                ],
+            ),
+        },
+        {
+            "title": f"{LAST} · doğal artış hızı en yüksek 10 ilçe",
+            "note": "Hız, nüfusa bölünmüş hâli: kalabalık ilçeyi öne çıkarmaz.",
+            **ranked(
+                son,
+                "artis_hiz",
+                counts
+                + [
+                    ("artis", "Doğal artış (kişi)", "eksili"),
+                    ("artis_hiz", "Doğal artış hızı (‰)", "ondalik"),
+                ],
+            ),
+        },
+        {
+            "title": f"{LAST} · doğal artış hızı en düşük 10 ilçe",
+            **ranked(
+                son,
+                "artis_hiz",
+                counts
+                + [
+                    ("artis", "Doğal artış (kişi)", "eksili"),
+                    ("artis_hiz", "Doğal artış hızı (‰)", "ondalik"),
+                ],
+                rising=False,
+            ),
+        },
+        {
+            "title": f"{LAST} · doğal artışı kişi olarak en yüksek 10 ilçe",
+            **ranked(
+                son,
+                "artis",
+                counts
+                + [
+                    ("artis", "Doğal artış (kişi)", "eksili"),
+                    ("artis_hiz", "Doğal artış hızı (‰)", "ondalik"),
+                ],
+            ),
+        },
+        {
+            "title": f"{LAST} · doğal artışı kişi olarak en düşük 10 ilçe",
+            **ranked(
+                son,
+                "artis",
+                counts
+                + [
+                    ("artis", "Doğal artış (kişi)", "eksili"),
+                    ("artis_hiz", "Doğal artış hızı (‰)", "ondalik"),
+                ],
+                rising=False,
+            ),
+        },
+    ]
 
     negatives = son.filter(pl.col("artis") < 0).height
     write(
         ALL_YEARS,
+        f"VeriAtlas — ilçelere göre doğum ve ölüm · {olum_years[0]}-{olum_years[-1]}",
+        ozet,
         [
-            ("Özet", ozet),
             (f"İlçeler {LAST}", son),
             (f"İller {LAST}", iller),
-            ("Doğum", spread("dogum", dogum_years)),
-            ("Ölüm", spread("olum", olum_years)),
-            ("Ölüm (cinsiyet)", sex),
-            ("Doğal artış", spread("artis", dogum_years)),
-            ("Nüfus", spread("nufus", olum_years)),
+            ("Doğum (kişi)", spread("dogum", dogum_years)),
+            ("Ölüm (kişi)", spread("olum", olum_years)),
+            ("Ölüm cinsiyete göre (kişi)", sex),
+            ("Doğal artış (kişi)", spread("artis", dogum_years)),
+            ("Nüfus (kişi)", spread("nufus", olum_years)),
         ],
         [
             "VeriAtlas — ilçelere göre doğum ve ölüm sayısı",
@@ -675,43 +901,127 @@ def build_comparison(rows: pl.DataFrame, area: pl.DataFrame) -> None:
         .sort("artis_hiz_fark", nulls_last=True)
     )
 
-    ozet = pl.concat(
-        [
-            top(ilceler, "artis_hiz_fark", "Doğal artış hızı en çok düşen ilçe", False),
-            top(ilceler, "artis_hiz_fark", "Doğal artış hızı en çok artan ilçe"),
-            top(
-                ilceler,
-                "artis_fark",
-                "Doğal artışı kişi olarak en çok düşen ilçe",
-                False,
+    # Türkiye, both years: the summary opens with it and the notes close with it, so it
+    # is computed once. Summed from the districts, which is what makes it a check as well
+    # as a headline — it comes out equal to the published province and country figures.
+    whole = {
+        year: table.filter(pl.col("yil") == year)
+        .select(
+            pl.col("nufus").sum(),
+            pl.col("dogum").sum(),
+            pl.col("olum").sum(),
+            pl.col("artis").sum(),
+        )
+        .to_dicts()[0]
+        for year in (FIRST, LAST)
+    }
+
+    place = [("il", "İl", "left"), ("ilce", "İlçe", "left")]
+    #: The pair of columns the whole file is about, shown next to every ranking: a place
+    #: is nowhere near described by the number it was ranked on.
+    both = [
+        (f"artis_hiz_{FIRST}", f"Doğal artış hızı {FIRST} (‰)", "ondalik"),
+        (f"artis_hiz_{LAST}", f"Doğal artış hızı {LAST} (‰)", "ondalik"),
+        ("artis_hiz_fark", "Fark (‰)", "ondalik"),
+    ]
+
+    ozet = [
+        {
+            "title": "Türkiye — ilçelerin toplamı",
+            "columns": [
+                ("", "left"),
+                ("Nüfus (kişi)", "sayi"),
+                ("Doğum (kişi)", "sayi"),
+                ("Ölüm (kişi)", "sayi"),
+                ("Doğal artış (kişi)", "eksili"),
+                ("Doğal artış hızı (‰)", "ondalik"),
+            ],
+            "rows": [
+                [
+                    str(year),
+                    whole[year]["nufus"],
+                    whole[year]["dogum"],
+                    whole[year]["olum"],
+                    whole[year]["artis"],
+                    whole[year]["artis"] / whole[year]["nufus"] * 1000,
+                ]
+                for year in (FIRST, LAST)
+            ],
+        },
+        {
+            "title": "İlçelerin durumu",
+            "note": f"{FIRST} ve {LAST} karşılaştırıldığında, doğal artışın işareti.",
+            "columns": [
+                ("Durum", "left"),
+                ("İlçe sayısı", "sayi"),
+                ("Pay (%)", "yuzde"),
+            ],
+            "rows": [
+                [row["durum"], row["len"], row["len"] / ilceler.height]
+                for row in ilceler.group_by("durum")
+                .len()
+                .sort("len", descending=True)
+                .to_dicts()
+            ],
+        },
+        {
+            "title": f"{FIRST} · doğal artış hızı en yüksek 10 ilçe",
+            **ranked(ilceler, f"artis_hiz_{FIRST}", place + both),
+        },
+        {
+            "title": f"{LAST} · doğal artış hızı en yüksek 10 ilçe",
+            **ranked(ilceler, f"artis_hiz_{LAST}", place + both),
+        },
+        {
+            "title": f"{LAST} · doğal artış hızı en düşük 10 ilçe",
+            **ranked(ilceler, f"artis_hiz_{LAST}", place + both, rising=False),
+        },
+        {
+            "title": "Doğal artış hızı en çok düşen 10 il",
+            "note": "İl düzeyinde; ilçelerin toplamından hesaplandı.",
+            **ranked(
+                iller,
+                "artis_hiz_fark",
+                [("il", "İl", "left")] + both,
+                rising=False,
             ),
-            top(ilceler, f"artis_hiz_{LAST}", f"{LAST} · doğal artış hızı en yüksek"),
-            top(
+        },
+        {
+            "title": "Doğal artış hızı en az düşen (ya da artan) 10 il",
+            **ranked(iller, "artis_hiz_fark", [("il", "İl", "left")] + both),
+        },
+        {
+            "title": "Doğal artış hızı en çok düşen 10 ilçe",
+            **ranked(ilceler, "artis_hiz_fark", place + both, rising=False),
+        },
+        {
+            "title": "Doğal artış hızı en çok artan 10 ilçe",
+            **ranked(ilceler, "artis_hiz_fark", place + both),
+        },
+        {
+            "title": "Doğumu oran olarak en çok düşen 10 ilçe",
+            **ranked(
                 ilceler,
-                f"artis_hiz_{LAST}",
-                f"{LAST} · doğal artış hızı en düşük",
-                False,
+                "dogum_degisim",
+                place
+                + [
+                    (f"dogum_{FIRST}", f"Doğum {FIRST} (kişi)", "sayi"),
+                    (f"dogum_{LAST}", f"Doğum {LAST} (kişi)", "sayi"),
+                    ("dogum_degisim", "Değişim (%)", "yuzde"),
+                ],
+                rising=False,
             ),
-            top(ilceler, f"artis_hiz_{FIRST}", f"{FIRST} · doğal artış hızı en yüksek"),
-            top(ilceler, "dogum_degisim", "Doğumu en çok düşen ilçe", False),
-        ]
-    )
+        },
+    ]
 
     turned = ilceler.filter(pl.col("durum") == "eksiye döndü").height
     stayed = ilceler.filter(pl.col("durum") == "ekside kaldı").height
     back = ilceler.filter(pl.col("durum") == "artıya döndü").height
-    country = {
-        year: (
-            table.filter(pl.col("yil") == year)
-            .select(pl.col("artis").sum(), pl.col("nufus").sum())
-            .row(0)
-        )
-        for year in (FIRST, LAST)
-    }
-
     write(
         COMPARISON,
-        [("Özet", ozet), ("İlçeler", ilceler), ("İller", iller)],
+        f"VeriAtlas — ilçelere göre doğal nüfus artışı · {FIRST} ↔ {LAST}",
+        ozet,
+        [("İlçeler", ilceler), ("İller", iller)],
         [
             f"VeriAtlas — ilçelere göre doğal nüfus artışı, {FIRST} ve {LAST}",
             "",
@@ -742,12 +1052,12 @@ def build_comparison(rows: pl.DataFrame, area: pl.DataFrame) -> None:
             "",
             "TOPLAM",
             (
-                f"· {FIRST}: {turkish(country[FIRST][0])} kişi doğal artış, "
-                f"{turkish(country[FIRST][0] / country[FIRST][1] * 1000, 2)}‰."
+                f"· {FIRST}: {turkish(whole[FIRST]['artis'])} kişi doğal artış, "
+                f"{turkish(whole[FIRST]['artis'] / whole[FIRST]['nufus'] * 1000, 2)}‰."
             ),
             (
-                f"· {LAST}: {turkish(country[LAST][0])} kişi, "
-                f"{turkish(country[LAST][0] / country[LAST][1] * 1000, 2)}‰."
+                f"· {LAST}: {turkish(whole[LAST]['artis'])} kişi, "
+                f"{turkish(whole[LAST]['artis'] / whole[LAST]['nufus'] * 1000, 2)}‰."
             ),
             "  (İlçelerin toplamı; il ve Türkiye sayılarıyla birebir tutuyor.)",
             "",
