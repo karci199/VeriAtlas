@@ -3684,6 +3684,23 @@ const RENDERERS = {
 // built on 6% of the thing it claims to describe has to say so on the same line, or the
 // reader draws exactly the wrong conclusion. It was drawn here first, by the author.
 
+//: Shares here are padded to exactly two decimals, which is the opposite of what `fmt`
+//: does everywhere else. The reason is that these columns are read *down* rather than
+//: across: the reader is comparing Ardahan's 65,80 against Sivas's 29,41, and a column
+//: where some cells say 66 and others 29,41 has to be re-read to be compared. The unit is
+//: fixed and known, so there is no precision being claimed that the number does not have.
+const SHARE_DECIMALS = 2;
+
+function pct(value) {
+    if (value === null || value === undefined || !Number.isFinite(value)) {
+        return "—";
+    }
+    return new Intl.NumberFormat("tr-TR", {
+        minimumFractionDigits: SHARE_DECIMALS,
+        maximumFractionDigits: SHARE_DECIMALS,
+    }).format(value);
+}
+
 /** The split on screen, falling back to the first one the dictionary declares. */
 function activeSplit() {
     const splits = meta.area_splits || {};
@@ -3754,17 +3771,17 @@ function settlementSplit() {
 }
 
 /** How sure the reader should be, in one word and one colour. */
-function coverageNote(pct) {
-    if (pct === null) {
+function coverageNote(share) {
+    if (share === null) {
         return ["", "—"];
     }
-    if (pct >= 95) {
-        return ["ok", fmt(pct) + "%"];
+    if (share >= 95) {
+        return ["ok", pct(share) + "%"];
     }
-    if (pct >= 60) {
-        return ["warn", fmt(pct) + "%"];
+    if (share >= 60) {
+        return ["warn", pct(share) + "%"];
     }
-    return ["bad", fmt(pct) + "%"];
+    return ["bad", pct(share) + "%"];
 }
 
 function settlementView() {
@@ -3788,7 +3805,7 @@ function settlementView() {
                 keys.map((k) => "<td>" + fmt(r.buckets[k] || 0) + "</td>").join("") +
                 keys
                     .map((k) => "<td>" +
-                        (r.reached ? fmt((100 * (r.buckets[k] || 0)) / r.reached) : "—") +
+                        (r.reached ? pct((100 * (r.buckets[k] || 0)) / r.reached) : "—") +
                         "</td>")
                     .join("") +
                 "<td>" + fmt(r.unmatched) + "</td>" +

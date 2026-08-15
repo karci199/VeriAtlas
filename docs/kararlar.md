@@ -728,3 +728,28 @@ bir dosya. Sözleşme hem onu hem REST API'yi bükülmeden taşıyabiliyorsa do�
 - Yabancı uyruklu nüfus: henüz çekilmedi
 
 Ayrıntı: [oturum-2026-08-13.md](oturum-2026-08-13.md)
+
+## K26 — Kent-kır iki sütun, tek cevap değil (2026-08-15)
+
+`urban_rural` bugünü söyler (TÜİK DEGURBA 2025, yoğunluk), `koken` geçmişi (7H 2015,
+6360 öncesi idari statü). Birleştirilmiyorlar, çünkü aynı soruyu sormuyorlar: Bahçeşehir
+birinde "yoğun kent", ötekinde "belde" ve ikisi de doğru.
+
+Tek bir "doğru" sütun aranıp bulunamadı. Denenen dört ölçünün her biri farklı bir yerde
+çöküyor: idari statü 6360'ta çöktü (kır payı 2012'de %22,7, 2013'te %8,7 — kimse taşınmadı,
+kanun değişti); yoğunluk kasaba erirken çöküyor (Kalecik'in tamamı kır, ilçe merkezi
+dahil); kayıt numarası birleşmelerde çöküyor (Fatih'in 20 tarihî mahallesi "eski köy"
+çıkıyor, sebep Eminönü'nün 2009'da katılması); yerleşim türü büyükşehirde tümden çöküyor.
+
+Nüfus eşiği de kurtarmıyor: Altınoluk 7.148 kişi ve kent, İçeriçumra 6.387 kişi ve kır.
+
+Sınıf `dims` değeri değil, alanın niteliği — bir mahalle kısmen kırsal değildir. Bu yüzden
+kayıtta duruyor, `settlement-classes.csv.gz` ile dışa veriliyor, ve bir ilin bölünmesi
+kendi satırından değil altındaki yerleşimler toplanarak kuruluyor (`area_split`).
+
+**Kapsam sütunu bu kararın parçası.** Yaş kırılımı köyde yayımlanmadığı için 51 ilde kır
+tarafı eksik görünüyor — Ağrı'da kırın %6'sı. Bölmenin yayımlanan nüfusun yüzde kaçını
+kapsadığı aynı satırda yazıyor. Bu oturumda tam olarak o hata yapıldı: Amasya'nın
+kırsalının %20'si üzerinden "yetişkin payı %88,7" raporlandı.
+
+Ayrıntı: [oturum-2026-08-15.md](oturum-2026-08-15.md)
