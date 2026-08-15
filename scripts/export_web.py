@@ -383,7 +383,21 @@ def export_plain(
         )
         .sort("level", "area", "year")
     )
-    report(PUBLIC / DATASETS[indicator_id], slim)
+
+    # Split by level exactly as the broken-down export does, and for the same two
+    # reasons: a heavy level must not ride along in the file every visitor downloads
+    # (K14), and the dictionary *promises* a part file for every lazy level an indicator
+    # has. Written only for indicators with dims, that promise came out false the moment
+    # births and natural increase gained districts — meta.json named
+    # `births-district.csv.gz`, nothing wrote it, and the page would have fetched a 404
+    # the first time a reader picked İlçe.
+    stem = DATASETS[indicator_id].removesuffix(".csv")
+    report(PUBLIC / (stem + ".csv"), slim.filter(~pl.col("level").is_in(LAZY_LEVELS)))
+    for level in LAZY_LEVELS:
+        part = slim.filter(pl.col("level") == level)
+        if part.height:
+            report(PUBLIC / (stem + "-" + level + ".csv"), part)
+
     return sorted(slim["level"].unique())
 
 

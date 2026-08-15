@@ -2,6 +2,7 @@
 
 from .base import Adapter, Manifest, history, ingest
 from .tuik_district_population import TuikDistrictPopulation
+from .tuik_district_vital import DISTRICT_VITAL_ADAPTERS
 from .tuik_marital import TuikMarital
 from .tuik_median_age import TuikMedianAge
 from .tuik_neighbourhoods import TuikNeighbourhoodPopulation
@@ -27,10 +28,14 @@ ADAPTERS = {
     **NARROW_ADAPTERS,
     # Births and deaths: same download, transposed file, so a parser of their own.
     **VITAL_ADAPTERS,
+    # The same two counts per district. A separate MEDAS measure with a separate span,
+    # not the province one asked for at a finer level.
+    **DISTRICT_VITAL_ADAPTERS,
 }
 
 __all__ = [
     "ADAPTERS",
+    "DISTRICT_VITAL_ADAPTERS",
     "NARROW_ADAPTERS",
     "VITAL_ADAPTERS",
     "Adapter",

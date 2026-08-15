@@ -544,6 +544,56 @@ yani o tarihten sonra ad tek başına hiçbir şeyi tanımlamıyor — bir ilçe
 `Yeni Köy.` var. Üç parça bekleyen ilk ayrıştırıcı dokuz yılı sessizce düşürmüştü.
 1.058 ad değişikliği `docs/koy-adlari.md` dosyasında.
 
+## K26 — İlçe doğum ve ölümü ayrı ölçüdür; doğumda cinsiyet toplanır (2026-08-15)
+
+İlçe düzeyi, il ölçüsünün ince hâli değil. MEDAS dördünü ayrı ölçü olarak yayımlıyor ve
+düzey listeleri hiç kesişmiyor:
+
+| Ölçü | Düzey | Yıllar | Gösterge |
+|---|---|---|---|
+| İkametgah yerine göre doğum sayısı | Türkiye · İBBS1 · İBBS2 · İl | 2009-2025 | 12 (ay) |
+| **İlçelere göre doğum sayısı** | **yalnız İlçe** | **2014-2025** | 2 (cinsiyet) |
+| İkametgah yerine göre ölüm sayısı | Türkiye · İBBS1 · İBBS2 · İl | 2009-2025 | 24 (cinsiyet × ay) |
+| **İlçelere göre ölüm sayısı (İkametgah yeri)** | **yalnız İlçe** | **2009-2025** | 2 (cinsiyet) |
+
+Yani ilçe verisi ikinci bir indirme (`scripts/fetch_medas_vital_districts.py`) ve ikinci
+bir okuyucu (`adapters/tuik_district_vital.py`); il akışına bir kutu daha işaretlemek
+değil. İkisi de ikametgah yerine göre — doğumun olay yeri serisi zaten yalnız il düzeyinde
+ve 2008'de bitiyor. **Doğum ilçede 2014'ten önce yayımlanmıyor**, eksik değil yok.
+
+Boy tutuyor: 2 × ~975 ilçe × 17 yıl = 33.150 hücre, 50.000 sınırının altında, her ölçü tek
+sorguda geliyor.
+
+**Cinsiyet ikisinde de zorunlu ama ikisi farklı davranıyor** — ve ikisi de sessiz. Ölümde
+tick hazır geliyor (tıklamak *kapatır*), doğumda kapalı geliyor ve işaretlenmeden `Tamam`
+çalışmıyor. İlk çekimde doğum bu yüzden 1 göstergeyle döndü, hiçbir yerde hata yok. Kural
+yine K15'in kuralı: tıklamadan önce `is_ticked` sor.
+
+Depoda ne durduğu ölçüye göre ayrılıyor:
+
+* **Ölüm cinsiyet kırılımını tutuyor** — il serisi zaten `sex` taşıyor (K19), aynı şekil.
+* **Doğum yıla toplanıyor.** İl ölçüsünün cinsiyet kırılımı yok. Kırılımı yalnız ilçede
+  saklamak, göstergeye bir düzeyde olup ötekinde olmayan bir kırılım verirdi: okuyucu
+  "Erkek" seçtiği anda 81 il ekrandan silinirdi. K16 en inceyi saklamayı söylüyor, ama
+  "en ince" bir düzeyde tanımlı olamaz — ham dosya bölmeyi koruyor, il tarafı cinsiyet
+  kazanırsa bu yeniden indirme değil yeniden ayrıştırma olur (K8).
+
+**Eşleşme MEDAS kodu *ve yıl* üzerinden.** Dönem içinde iki ilçe adını değiştirdi (Kazan →
+Kahramankazan 2017, Eyüp → Eyüpsultan 2018) ve kayıt ikisini de ayrı alan olarak, aynı
+kodla ve geçerlilik aralığıyla tutuyor. Yalnız kodla eşleştirmek serinin tamamını ikisinden
+birine yazar, öteki haritada boş ilçe olarak durur.
+
+Doğrulama: ilçeler ile toplanınca **972 il-yılın ve 1.377 il-yılın hepsinde** yayımlanan il
+sayısıyla birebir; ölümde cinsiyet ayrı ayrı da (2.754 il-yıl-cinsiyet) birebir. İlçe
+sayısı yıla göre değişiyor (ölümde 2009'da 957, 2025'te 973) — bu K11'in "gözlemden gelen
+idari harita"sının bir başka kaydı.
+
+**Yan etki: dışa aktarımda bulunan bir hata.** Ağır düzeyleri ayrı dosyaya bölen kod yalnız
+kırılımlı göstergeler için yazılmıştı, oysa sözlük *her* göstergeye lazy düzey başına bir
+parça dosyası vaat ediyor. Doğum ve doğal artış ilçe kazanır kazanmaz `meta.json`
+`births-district.csv.gz` diyordu, onu kimse yazmıyordu, ilçe satırları da herkesin indirdiği
+temel dosyanın içindeydi (K14'ün tam tersi). Okuyucu İlçe'yi seçtiğinde sayfa 404 alacaktı.
+
 ## Oturum notu — 2026-08-14/15
 
 Bir oturumda yapılanlar, sıradaki oturum buradan devam etsin diye.

@@ -95,6 +95,21 @@ düşüyor. Yani 18 yaş bölmesi köyler için yayımlanmıyor. Sonucu: 6360 sa
 köyleri mahalleye dönüşen 30 büyükşehirde kapsam tam (Bursa %99,3-99,8), kalan 51 ilde
 ilin dörtte biri eksik (Yozgat %75-78). Bu bir çekim hatası değil, kaynağın kapsamı.
 
+## İlçe doğum / ölüm akışı (2026-08-15)
+
+Ölçüler `İlçelere göre doğum sayısı` ve `İlçelere göre ölüm sayısı (İkametgah yeri)`, ayrı
+konularda (Doğum / Ölüm İstatistikleri). İkisinin de düzey kutusunda **yalnız İlçe Düzeyi**
+var — Türkiye ve İl, aynı konudaki *öteki* ölçünün işidir. Yani düzey kutusuna bakıp "ilçe
+yok" demek yanlış sonuç verir; ölçü listesine bakmak gerekiyor.
+
+Kırılım tek: cinsiyet, 2 gösterge. **Ölümde işaretli gelir, doğumda gelmez.** Doğumda
+işaretlenmeden `Tamam` etkin olmuyor ve akış sessizce 1 göstergeyle ilerliyor.
+
+Düzey sekmesi ilçe nüfusundakiyle aynı: İlçe Düzeyi → il `HEPSİ` → liste başlığından
+tümünü seç. Sayaç yine iş sürerken tırmanıyor, üç okuma aynı olana kadar bekleniyor.
+
+Boy: 2 × 990 × 17 = 33.660, sınırın altında; her ölçü tek sorgu, tek dosya.
+
 ## Medeni durum akışı (2026-08-14)
 
 Ölçüm `Medeni Duruma Göre Nüfus Bilgileri (15 Yaş üstü)`, üç kırılım birlikte: medeni

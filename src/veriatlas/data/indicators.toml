@@ -522,11 +522,13 @@ additive = true
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Yıl içindeki canlı doğum sayısı, annenin ikamet ettiği ile göre. Kaynak dosya ayları \
+Yıl içindeki canlı doğum sayısı, annenin ikamet ettiği yere göre. Kaynak dosya ayları \
 ayrı veriyor; burada yıla toplanmış olarak duruyor — mevsimlilik ayrı bir sorudur ve \
 sorulduğunda ham dosyadan ay kırılımıyla yeniden yüklenir. **Cinsiyet kırılımı yok**: \
-bu çekimde MEDAS doğumu yalnız aya bölüyor. İl ve Türkiye düzeyinde var, 2009'dan \
-itibaren."""
+il ölçüsünde MEDAS doğumu yalnız aya bölüyor, ilçe ölçüsü bebeğin cinsiyetini veriyor \
+ama o da yıla toplanıyor — bir düzeyde olup ötekinde olmayan kırılım, seçildiği anda \
+illeri ekrandan siler. Türkiye ve il düzeyinde 2009'dan, **ilçe düzeyinde 2014'ten** \
+itibaren; ilçe için daha eskisi yayımlanmıyor."""
 
 [indicator.deaths]
 label_tr = "Ölüm sayısı"
@@ -544,7 +546,7 @@ yok** — bu yüzden piramit çizilmez ve yaşa göre ölümlülük bu gösterge
 Ham sayı nüfusla birlikte okunmalı: İstanbul'un ölümü Tunceli'ninkinden çok olduğu \
 için değil, kalabalık olduğu için yüksektir. Kaba ölüm hızı ayrı bir gösterge \
 değildir — "Alan nüfusunun %'si" kipi bu sayıyı nüfusa bölerek onu zaten verir. \
-2009'dan itibaren."""
+Türkiye, il ve ilçe düzeyinde, 2009'dan itibaren."""
 
 # Evlenme ve boşanma sayısı, kırılımları kapalı. MEDAS ikisinin altında da on kadar
 # kırılım veriyor — eşlerin yaş grubu, eğitim durumu, evliliğin süresi, çocukların
