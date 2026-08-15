@@ -21,9 +21,23 @@ ROOT = Path(__file__).resolve().parent.parent
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8123
 
 
+#: What `/` means. The root of the repo is not a page — served as one it is a directory
+#: listing of `docs`, `src` and `scripts`, which looks exactly like a server that failed
+#: to serve anything.
+HOME = "/web/explorer.html"
+
+
 class NoCache(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(ROOT), **kwargs)
+
+    def do_GET(self):
+        if self.path in ("/", "/index.html"):
+            self.send_response(302)
+            self.send_header("Location", HOME)
+            self.end_headers()
+            return
+        super().do_GET()
 
     def end_headers(self):
         self.send_header("Cache-Control", "no-store, must-revalidate")

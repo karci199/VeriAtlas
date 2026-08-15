@@ -638,6 +638,27 @@ Bu hatanın sinsiliği, Türkçe bir dosya için Türkçe görünen bir kodun *d
   sütun aşağı doğru da okunuyor ve 44,5 ile 28,07'nin virgülleri hizalanmıyordu.
   Yuvarlama iki durumda da aynı; değişen yalnız dolgu.
 
+## K28 — İlçe düzeyi ekranda açıldı; kök adres gezgine gidiyor (2026-08-15)
+
+`OFFERED_LEVELS` ilçeyi tutuyordu. Gerekçe "il düzeyi otururken, test edilmemiş bir
+düzeydeki boşluk sayfadaki boşluktan ayırt edilemez" idi; ilçe için bu gerekçe tükendi:
+nüfus, doğum, ölüm ve doğal artış ilçe taşıyor, boyut menüleri zaten her düzeyin kendi
+satırlarından süzülüyor (`effectiveLevel`, `valuesAtLevel`), harita ilçe sınırlarını K11'den
+beri çiziyor. Düzey kutusunda **İlçe** var, seçim yerinde kalıyor (K18), haritada bir ile
+tıklayınca ilçeleri açılıyor.
+
+**Mahalle ve köy hâlâ kapalı**, ama başka bir sebeple: mahalle yalnız 0-17/18+ taşıyor ve
+ülkenin %95'ini kapsıyor (Ardahan'ın %47'si), köy 51 ilde var 30 ilde yok. İkisi de boş
+alanın olağan olduğu düzeyler ve sayfanın "burada kapsam yok" diyecek bir dili henüz yok —
+"veri yok" ile aynı görünürler.
+
+İlçe satırı olmayan gösterge zaten düzeyi sunmuyor: `levelsInData` göstergenin ilan ettiğini
+okuyor, yani TFH (yalnız il) bu listeden etkilenmiyor.
+
+**Ayrıca `scripts/serve.py` kökü gezgine yönlendiriyor.** Depo kökü bir sayfa değil; sayfa
+diye sunulunca `docs`, `src`, `scripts` listesi çıkıyor ve bu, hiçbir şey sunamamış bir
+sunucuya birebir benziyor. `/` artık `/web/explorer.html`.
+
 ## Oturum notu — 2026-08-14/15
 
 Bir oturumda yapılanlar, sıradaki oturum buradan devam etsin diye.

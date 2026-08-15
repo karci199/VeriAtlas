@@ -247,19 +247,30 @@ async function ensureLevel(level) {
 // registry exports them, this is the one label map left in the page.
 /** The levels the page offers, in the order the menu lists them.
  *
- *  Deliberately short of what the data holds. District and neighbourhood rows are loaded,
- *  exported and kept — nothing has been thrown away — but they are not offered while the
- *  province level is being settled, because a gap at those levels cannot be told apart
- *  from a gap in the page: districts have no single years, neighbourhoods have only the
- *  18 split, and outside the thirty metropolitan provinces they are missing their
- *  villages entirely. Testing a control against data that is itself incomplete tells you
- *  nothing about the control.
+ *  Shorter than what the data holds, and district was on the wrong side of the line. It
+ *  was held back while the province level settled, on the argument that a gap in a level
+ *  we had not tested could not be told apart from a gap in the page. That argument is
+ *  spent for districts: population, births, deaths and natural increase all carry them,
+ *  each level's own rows decide the dimension menus (`effectiveLevel`, `valuesAtLevel`),
+ *  and the map has drawn district shapes since K11.
  *
- *  Putting `"district"` back in this list is the whole of the change needed to bring them
- *  back: the files are already exported, the lazy fetch already knows how to get them,
- *  and everything downstream reads the level off the rows rather than off a hard-coded
- *  list. Nothing else in the page names a level it is allowed to draw. */
-const OFFERED_LEVELS = ["country", "region", "nuts1", "nuts2", "province"];
+ *  Neighbourhood and village stay out for now, and for a reason of their own rather than
+ *  caution: neighbourhoods carry only the 0-17 / 18+ split and cover 95% of the country
+ *  (47% of Ardahan), villages exist in 51 provinces and not in the other 30. Both are
+ *  levels where an empty area is the ordinary case, and the page has no way yet to say
+ *  "not covered here" apart from "no data".
+ *
+ *  An indicator that has no district rows never offers the level anyway: `levelsInData`
+ *  reads what each indicator declares, so the fertility rate — which TÜİK publishes per
+ *  province only — is unaffected by this list. */
+const OFFERED_LEVELS = [
+    "country",
+    "region",
+    "nuts1",
+    "nuts2",
+    "province",
+    "district",
+];
 
 const LEVEL_LABELS = {
     // "Coğrafi bölge" rather than "Bölge": the two hierarchies are both regions, and the
