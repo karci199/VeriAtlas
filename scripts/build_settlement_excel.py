@@ -62,11 +62,39 @@ ADULT = "18+"
 
 #: Columns holding a proportion. They are multiplied by 100 on the way out and their
 #: header gains "(%)" — the unit lives in the header, never in the cell.
-SHARE = {"yetiskin_payi", "kapsam", "kir_payi", "degisim", "deger_yuzde"}
+SHARE = {
+    "yetiskin_payi",
+    "kapsam",
+    "kir_payi",
+    "degisim",
+    "deger_yuzde",
+    "urban_rural_kir_payi",
+    "koken_kir_payi",
+}
 
 
 def is_share(column: str) -> bool:
     return column in SHARE or column.endswith("_artis")
+
+
+#: TÜİK's three urban/rural classes, stored as codes and shown in Turkish. Kept as three
+#: because the middle one is 15,8% of the country: folding it into either side would be
+#: our judgement quietly standing in for the source's.
+KENTKIR = {"yogun_kent": "Yoğun kent", "orta_kent": "Orta yoğun kent", "kir": "Kır"}
+
+
+def kentkir() -> pl.Expr:
+    return pl.col("urban_rural").replace_strict(KENTKIR, default=None).alias("kentkir")
+
+
+#: What the settlement was before law 6360, from the 2015 election tables. A separate
+#: question from the one above, and deliberately a separate column: Bahçeşehir is "belde"
+#: here and "yoğun kent" there, and neither is wrong.
+KOKEN = {"kent": "Kent", "belde": "Belde", "koy": "Köy"}
+
+
+def koken() -> pl.Expr:
+    return pl.col("koken").replace_strict(KOKEN, default=None).alias("koken_tr")
 
 
 def villages() -> pl.DataFrame:
@@ -96,6 +124,8 @@ def villages() -> pl.DataFrame:
         pl.col("bucak"),
         pl.col("parent_id"),
         pl.col("medas_code").alias("kod"),
+        pl.col("urban_rural"),
+        pl.col("koken"),
     )
     districts = pl.read_csv(DATA / "areas_tr_districts.csv").select(
         "area_id", pl.col("name_tr").alias("ilce")
@@ -152,6 +182,8 @@ def named(wide: pl.DataFrame) -> pl.DataFrame:
                 "area_id",
                 pl.col("name_tr").alias("mahalle"),
                 pl.col("municipality").alias("belediye"),
+                "urban_rural",
+                "koken",
                 "parent_id",
                 "first_seen",
                 "last_seen",
@@ -235,6 +267,17 @@ HEADERS = {
     "koy_en_buyuk": "En büyük köy",
     "yetiskin_payi": "Yetişkin payı",
     "gizli_mahalle": "Yaşı gizli mahalle",
+    "kentkir": "Kent-kır (TÜİK 2025)",
+    "koken_tr": "Köken (7H 2015)",
+    "tuik_yogun": "Yoğun kent (TÜİK)",
+    "tuik_orta": "Orta yoğun kent (TÜİK)",
+    "tuik_kir": "Kır (TÜİK)",
+    "urban_rural_kir_payi": "Kır payı (TÜİK)",
+    "h7_kent": "Kent (7H)",
+    "h7_belde": "Belde (7H)",
+    "h7_koy": "Köy (7H)",
+    "koken_kir_payi": "Köy payı (7H)",
+    "koken_eslesmeyen": "Kökeni eşleşmeyen",
     "kapsam": "Kapsam",
     "ilk_gorulen": "İlk görülen",
     "son_gorulen": "Son görülen",
@@ -373,6 +416,8 @@ def main() -> None:
         y_last,
         "yetiskin_artis",
         "yetiskin_payi",
+        kentkir(),
+        koken(),
         "ilk_gorulen",
         "son_gorulen",
         pl.col("area_id").alias("kimlik"),
@@ -396,11 +441,24 @@ def main() -> None:
                 pl.col("ilce").last(),
                 pl.col("bucak").last(),
                 pl.col("koy").last(),
+                pl.col("urban_rural").last(),
+                pl.col("koken").last(),
             ),
             on="kod",
         )
         .with_columns(growth(k_last, k_first, "nufus_artis"))
-        .select("il", "ilce", "bucak", "koy", k_first, k_last, "nufus_artis", "kod")
+        .select(
+            "il",
+            "ilce",
+            "bucak",
+            "koy",
+            k_first,
+            k_last,
+            "nufus_artis",
+            kentkir(),
+            koken(),
+            "kod",
+        )
         .sort(k_last, descending=True)
     )
 
@@ -431,6 +489,56 @@ def main() -> None:
                 how="left",
             )
             .with_columns(growth(kir_last, kir_first, "kir_artis"))
+        )
+
+    def class_split(key: str, column: str, codes: dict[str, str]) -> pl.DataFrame:
+        """Population by one classification's values, neighbourhoods and villages together.
+
+        Both halves go into one frame because neither classification respects the
+        settlement-type boundary. TÜİK calls 21.695 municipality neighbourhoods rural and
+        185 villages urban; 7H calls Bahçeşehir — 64.000 people in a dense city — a belde.
+        Counting only villages as rural, which is what the `kir_*` columns do, is a third
+        question, and all three are kept side by side rather than reconciled.
+
+        Unclassified settlements are summed into their own column instead of being
+        dropped. A district whose classified population is half its real population should
+        say so on the sheet, not quietly report shares of a number nobody can see.
+        """
+        hoods = base.select(
+            pl.col("ilce_id"),
+            pl.col("il_id"),
+            pl.col(t_last).alias("n"),
+            pl.col(column),
+        )
+        vills = koy.filter(pl.col("yil") == koy_last).select(
+            pl.col("parent_id").alias("ilce_id"),
+            pl.col("il_id"),
+            pl.col("nufus").alias("n"),
+            pl.col(column),
+        )
+        both = pl.concat([hoods, vills]).with_columns(
+            pl.col(column).fill_null("_eslesmeyen")
+        )
+        wide = (
+            both.group_by(key, column)
+            .agg(pl.col("n").sum().alias("n"))
+            .pivot(values="n", index=key, on=column)
+        )
+        wanted = [*codes, "_eslesmeyen"]
+        for code in wanted:
+            if code not in wide.columns:
+                wide = wide.with_columns(pl.lit(0.0).alias(code))
+        wide = wide.with_columns(pl.col(c).fill_null(0) for c in wanted)
+        total = pl.sum_horizontal([pl.col(c) for c in codes])
+        rural = "kir" if column == "urban_rural" else "koy"
+        return wide.select(
+            pl.col(key),
+            *[pl.col(code).alias(name) for code, name in codes.items()],
+            pl.col("_eslesmeyen").alias(column + "_eslesmeyen"),
+            pl.when(total > 0)
+            .then(pl.col(rural) / total)
+            .otherwise(None)
+            .alias(column + "_kir_payi"),
         )
 
     def rolled(keys: list[str], area: str) -> pl.DataFrame:
@@ -473,10 +581,27 @@ def main() -> None:
             whole, left_on="kimlik", right_on="area_id", how="left"
         ).with_columns((pl.col(t_last) / pl.col("nufus")).alias("kapsam"))
 
-    def with_villages(frame: pl.DataFrame, key: str) -> pl.DataFrame:
-        """Attach the village side and the counts that need both halves."""
+    tuik_codes = {
+        "yogun_kent": "tuik_yogun",
+        "orta_kent": "tuik_orta",
+        "kir": "tuik_kir",
+    }
+    koken_codes = {"kent": "h7_kent", "belde": "h7_belde", "koy": "h7_koy"}
+
+    def with_villages(frame: pl.DataFrame, key: str, own: str) -> pl.DataFrame:
+        """Attach the village side, both classifications, and the counts needing both."""
         return (
             frame.join(koy_stats(key).rename({key: "kimlik"}), on="kimlik", how="left")
+            .join(
+                class_split(own, "urban_rural", tuik_codes).rename({own: "kimlik"}),
+                on="kimlik",
+                how="left",
+            )
+            .join(
+                class_split(own, "koken", koken_codes).rename({own: "kimlik"}),
+                on="kimlik",
+                how="left",
+            )
             .with_columns(
                 pl.col("koy_sayisi").fill_null(0),
                 (pl.col("mahalle_sayisi") + pl.col("koy_sayisi").fill_null(0)).alias(
@@ -520,14 +645,31 @@ def main() -> None:
         "gizli_mahalle",
     ]
     rural = [kir_first, kir_last, "kir_artis", "kir_payi"]
+    # Two classifications, six columns, side by side. The left three say what a place is
+    # now (density, 2025); the right three say what it was (administrative status, 2015).
+    # Büyükçekmece appears with 150.000 people under "Belde" and the same 150.000 under
+    # "Yoğun kent": one set of people, two questions, and the gap between them is the
+    # urbanisation of the last decade.
+    classes = [
+        "tuik_yogun",
+        "tuik_orta",
+        "tuik_kir",
+        "urban_rural_kir_payi",
+        "h7_kent",
+        "h7_belde",
+        "h7_koy",
+        "koken_kir_payi",
+        "koken_eslesmeyen",
+    ]
 
     ilceler = (
-        with_villages(rolled(["il", "ilce"], "ilce"), "parent_id")
+        with_villages(rolled(["il", "ilce"], "ilce"), "parent_id", "ilce_id")
         .rename({"nufus": "gercek_" + str(last)})
         .select(
             ["il", "ilce"]
             + settlement
             + population
+            + classes
             + rural
             + ["gercek_" + str(last), "kapsam", "kimlik"]
         )
@@ -535,12 +677,13 @@ def main() -> None:
     )
 
     iller = (
-        with_villages(rolled(["il"], "il"), "il_id")
+        with_villages(rolled(["il"], "il"), "il_id", "il_id")
         .rename({"nufus": "gercek_" + str(last)})
         .select(
             ["il"]
             + settlement
             + population
+            + classes
             + rural
             + ["kent_artis", "gercek_" + str(last), "kapsam"]
         )
@@ -803,6 +946,8 @@ def main() -> None:
         ["kod", "ilk_gorulen", "son_gorulen", "sira", "deger_kisi", "gizli_mahalle"]
         + ["baslangic", "bitis", "gercek_" + str(last)]
         + settlement
+        + ["tuik_yogun", "tuik_orta", "tuik_kir"]
+        + ["h7_kent", "h7_belde", "h7_koy", "koken_eslesmeyen"]
         + [t_first, t_last, c_first, c_last, y_first, y_last]
         + [k_first, k_last, kir_first, kir_last, "kent_" + str(last)]
         + [str(y) for y in years]
@@ -820,6 +965,8 @@ def main() -> None:
         "kent_artis",
         "degisim",
         "deger_yuzde",
+        "urban_rural_kir_payi",
+        "koken_kir_payi",
     ):
         numeric[column] = ondalik
 
@@ -835,6 +982,8 @@ def main() -> None:
         "koy": text,
         "yer": text,
         "olcut": text,
+        "kentkir": middle,
+        "koken_tr": middle,
         "kimlik": middle,
     }
     widths = {
@@ -849,6 +998,8 @@ def main() -> None:
         "olcut": 40,
         "yetiskin_payi": 14,
         "kapsam": 12,
+        "kentkir": 15,
+        "koken_tr": 13,
         "mahalle_ortalama": 13,
         "mahalle_ortanca": 13,
         "koy_ortalama": 13,
@@ -898,6 +1049,29 @@ def main() -> None:
         "  kırılımı işaretlenince Köy düzeyi seçeneklerden kayboluyor.",
         "· Bu yüzden köyler yalnız toplam nüfusla karşılaştırılıyor. Köy sayfasında çocuk",
         "  ve yetişkin sütunu yoktur — boş bırakılmamıştır, sorulamaz.",
+        "",
+        "KENT-KIR: İKİ SORU, İKİ SÜTUN GRUBU",
+        "· 'Kent-kır (TÜİK 2025)' bugünü söyler. TÜİK'in DEGURBA sınıflaması, yoğunluğa",
+        "  bakar: 1 km²'lik karelerde kaç kişi yaşıyor. İdari statüye hiç bakmaz.",
+        "  Üç değer: Yoğun kent / Orta yoğun kent / Kır.",
+        "· 'Köken (7H 2015)' geçmişi söyler. 2015 seçim tablolarındaki idari ayrım, yani",
+        "  6360 öncesi statü: Kent / Belde / Köy. YSK bu ayrımı 2014'ten sonra da",
+        "  kullanmayı sürdürdü — Ankara 866, İstanbul 164 köyle geçiyor.",
+        "· İkisi çelişmez, farklı şey ölçer. Büyükçekmece'de 180.591 kişi 'Belde'",
+        "  sütununda ve aynı kişiler 'Yoğun kent' sütununda: belde'ydi, kentleşti.",
+        "  Kalecik'te tersi — 5.939 kişi 'Kent' kökenli ama bugün tamamı kır sayılıyor;",
+        "  kasaba kır olmadı, kasabanın kendisi eridi.",
+        "· Bu yüzden tek bir 'doğru' kent-kır sütunu yok ve olmayacak. Hangi soruyu",
+        "  sorduğunuza göre sütun seçilir.",
+        "",
+        "KÖKEN SÜTUNUNUN EŞLEŞMESİ",
+        "· 7H'de kayıt numarası yok, yalnız il/ilçe/mahalle adı var. Eşleştirme ilçe",
+        "  içinde ada göre yapıldı ve iki tarafta da tek olan adlar kabul edildi; bir ad",
+        "  iki kez geçiyorsa hiçbiri eşleştirilmedi (tahmin, cevap gibi görünürdü).",
+        "· 50.431 yerleşimin 40.001'i eşleşti. Eşleşmeyenlerin kökeni BOŞTUR — 'köy'",
+        "  değil. 'Kökeni eşleşmeyen' sütunu o nüfusun kaç kişi olduğunu söyler; kır",
+        "  payını okurken o sayıya bakın, büyükse oran güvenilmezdir.",
+        "· Yozgat 7H dosyasında hiç yok, o ilin tamamı boştur.",
         "",
         "GİZLENEN HÜCRELER",
         "· TÜİK küçük hücreleri gizliyor: bir mahallenin çocuk sayısı yayımlanmamış",

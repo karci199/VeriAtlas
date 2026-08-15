@@ -54,9 +54,9 @@ def blocks(frame: pl.DataFrame) -> pl.DataFrame:
     """Label each neighbourhood by which side of its district's largest jump it sits on."""
     ordered = frame.sort("parent_id", "medas_code")
     gapped = ordered.with_columns(
-        (
-            pl.col("medas_code") - pl.col("medas_code").shift(1).over("parent_id")
-        ).alias("fark")
+        (pl.col("medas_code") - pl.col("medas_code").shift(1).over("parent_id")).alias(
+            "fark"
+        )
     )
     biggest = (
         gapped.group_by("parent_id")
@@ -133,7 +133,10 @@ def main() -> None:
             pl.len().alias("mahalle"),
             (pl.col("urban_rural") == "kir").sum().alias("kir"),
             pl.col("nufus").sum().alias("kisi"),
-            pl.col("nufus").filter(pl.col("urban_rural") == "kir").sum().alias("kir_kisi"),
+            pl.col("nufus")
+            .filter(pl.col("urban_rural") == "kir")
+            .sum()
+            .alias("kir_kisi"),
         )
         .with_columns(
             (100 * pl.col("kir") / pl.col("mahalle")).round(1).alias("kir_%_sayi"),
@@ -159,7 +162,10 @@ def main() -> None:
         .agg(
             pl.col("nufus").sum().alias("toplam"),
             pl.col("nufus").filter(pl.col("blok") == "donusen").sum().alias("blok_kir"),
-            pl.col("nufus").filter(pl.col("urban_rural") == "kir").sum().alias("tuik_kir"),
+            pl.col("nufus")
+            .filter(pl.col("urban_rural") == "kir")
+            .sum()
+            .alias("tuik_kir"),
         )
         .with_columns(
             (100 * pl.col("blok_kir") / pl.col("toplam")).round(1).alias("blok_%"),

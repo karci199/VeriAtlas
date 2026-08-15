@@ -97,7 +97,9 @@ def attach(registry: Path, classes: pl.DataFrame, level: str) -> tuple[int, int]
     two places, so the pairing is checked for uniqueness before it is trusted rather
     than after someone notices a strange map.
     """
-    wanted = classes.filter(pl.col("level") == level).select("medas_code", "urban_rural")
+    wanted = classes.filter(pl.col("level") == level).select(
+        "medas_code", "urban_rural"
+    )
     clashing = (
         wanted.group_by("medas_code")
         .agg(pl.col("urban_rural").n_unique().alias("n"))
