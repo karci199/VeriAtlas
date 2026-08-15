@@ -525,6 +525,25 @@ olayını yolluyor — şeridin tek yakalayıcısı hangi biçimi aldığını b
 gerektiren kutular (karşılaştırma, oran) buton olmuyor: aralarında ayrım olmayan bir
 düğme dizisi, son ikisinin bambaşka bir şey yaptığını gizlerdi.
 
+## K25 — Köy ayrı bir düzeydir (2026-08-15)
+
+`village`, şemadaki altıncı alan düzeyi. Köy, mahallenin küçüğü değil: öteki yerleşim
+türü, ve ikisinin toplamı ilçeyi verir. Ayrı tutulmasının iki sebebi var — TÜİK mahallede
+yaş ayrımı yayımlıyor, köyde yayımlamıyor (MEDAS'ta yaş işaretlenince Köy düzeyi
+seçeneklerden kayboluyor); ve ikisinin toplamı, hâlâ ikisi birden olan 51 ilde "kent/kır"
+denen şeyin ta kendisi.
+
+18.402 köy, 2013-2025, 51 il. 6360 sayılı yasa 2014'te büyükşehirlerdeki bütün köyleri
+mahalleye çevirdi, o illerde köy **yok** — eksik değil. Denetim: köy + mahalle, her ilin
+yayımlanan nüfusunun %99,8-100'ünü veriyor.
+
+Kayıt yine gözlemden kuruldu (K11) ve kimlik yine MEDAS kodu (K15). Buna en çok burada
+ihtiyaç var: etiket 2017'den itibaren bucağı yazmayı bırakıyor
+(`Sivas(Akıncılar/Merkez Bucağı/Abdurrahman Köy.)` → `Sivas(Akıncılar/Abdurrahman Köy.)`),
+yani o tarihten sonra ad tek başına hiçbir şeyi tanımlamıyor — bir ilçede birkaç tane
+`Yeni Köy.` var. Üç parça bekleyen ilk ayrıştırıcı dokuz yılı sessizce düşürmüştü.
+1.058 ad değişikliği `docs/koy-adlari.md` dosyasında.
+
 ## Oturum notu — 2026-08-14/15
 
 Bir oturumda yapılanlar, sıradaki oturum buradan devam etsin diye.
@@ -564,8 +583,21 @@ boyunca eski `explorer.js`'i çalıştırdı ve düzeltilmiş üç hatayı düze
 verisi belediye mahalleleridir, Türkiye'nin %95'i ama Ardahan'ın %47'si. Kent/kır ayrımı
 yalnız 51 ilde hesaplanabiliyor — 6360 sayılı yasa büyükşehirlerde köy bırakmadı.
 
-**Sıradaki iş:** köy verisi ham dosyada duruyor (`raw/medas/yerlesim/`, 51 il, 18.181
-köy, 2013-2025) ve yalnız Excel üreticisi okuyor; adaptörle depoya alınacak.
+**Köy verisi depoya alındı** (K25): kayıt, adaptör, yeni `village` düzeyi, sayfaya tembel
+yüklenen `population-village.csv.gz`.
+
+**Kent/kır için iki kaynak notu, sıradaki oturuma.** Şu an ayrım yalnız yerleşim türünden
+çıkıyor (belediye mahallesi = kent, köy = kır) ve yalnız 51 ilde işliyor. İki kaynak daha
+var:
+
+* **Wikipedia'nın ilçe sayfaları** mahalleleri "Merkez" ve "Kırsal" diye ayırıyor
+  (Akhisar'ın mahalleleri kutusu böyle; Kalecik'te Gölköyü "kırsal mahalle" olarak
+  geçiyor). Büyük oranda doğru ve büyükşehirleri de kapsıyor — bizim kaynağımızın
+  yapamadığı tam olarak orası. Eşleştirme ad üzerinden olacağı için dikkat ister.
+* **TÜİK'in yeni sınıflaması üçe ayırıyor** (ikiye değil). Hangi tanımı esas alacağımız
+  bir karar: iki kaynağa göre iki ayrı sütun tutmak, hangisinin ne dediğini görünür
+  bıraktığı için tek bir "doğru" ayrımdan iyi olabilir.
+* Seçim verisindeki (7H) kent-kır etiketi üçüncü kaynak; mahalle düzeyinde ve 2015 için.
 
 ## Sıradaki oturum — açık maddeler (2026-08-14, akşam)
 
