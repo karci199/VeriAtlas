@@ -51,7 +51,7 @@ class Threaded(socketserver.ThreadingTCPServer):
 
 def main() -> None:
     with Threaded(("", PORT), NoCache) as server:
-        print("sunucu:", "http://localhost:%d/web/explorer.html" % PORT)
+        print("sunucu:", "http://localhost:{0}/web/explorer.html".format(PORT))
         print("kok   :", ROOT)
         server.serve_forever()
 
