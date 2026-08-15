@@ -628,7 +628,7 @@ TR-03-009-1183,village,Dağılgan Köy.,TR-03-009,Merkez Bucağı,1183,2013,2025
 TR-03-009-1184,village,Dereköy Köy.,TR-03-009,Merkez Bucağı,1184,2013,2025,tuik_medas,kir,koy,7h
 TR-03-009-1185,village,Elhan Köy.,TR-03-009,Merkez Bucağı,1185,2013,2025,tuik_medas,kir,koy,7h
 TR-03-009-1186,village,Emirinköyü Köy.,TR-03-009,Merkez Bucağı,1186,2013,2025,tuik_medas,kir,,
-TR-03-009-1188,village,Gömü Köy.,TR-03-009,Merkez Bucağı,1188,2013,2013,tuik_medas,,,
+TR-03-009-1188,village,Gömü Köy.,TR-03-009,Merkez Bucağı,1188,2013,2013,tuik_medas,,belde,7h
 TR-03-009-1189,village,Güneyköy Köy.,TR-03-009,Merkez Bucağı,1189,2013,2025,tuik_medas,kir,,
 TR-03-009-1190,village,Güneysaray Köy.,TR-03-009,Merkez Bucağı,1190,2013,2025,tuik_medas,kir,koy,7h
 TR-03-009-1191,village,Hamzahacılı Köy.,TR-03-009,Merkez Bucağı,1191,2013,2025,tuik_medas,kir,koy,7h
@@ -15559,7 +15559,7 @@ TR-67-004-34683,village,Hasankahyalar Köy.,TR-67-004,Merkez Bucağı,34683,2013
 TR-67-004-34684,village,Karakavuz Köy.,TR-67-004,Merkez Bucağı,34684,2013,2025,tuik_medas,kir,koy,7h
 TR-67-004-34685,village,Kaymaklar Köy.,TR-67-004,Merkez Bucağı,34685,2013,2025,tuik_medas,kir,koy,7h
 TR-67-004-34686,village,Kızılcapınar Köy.,TR-67-004,Merkez Bucağı,34686,2013,2025,tuik_medas,kir,koy,7h
-TR-67-004-34687,village,Ormanlı Köy.,TR-67-004,Merkez Bucağı,34687,2013,2025,tuik_medas,kir,,
+TR-67-004-34687,village,Ormanlı Köy.,TR-67-004,Merkez Bucağı,34687,2013,2025,tuik_medas,kir,belde,7h
 TR-67-004-34688,village,Ovaköy Köy.,TR-67-004,Merkez Bucağı,34688,2013,2025,tuik_medas,kir,,
 TR-67-004-34689,village,Sarıkaya Köy.,TR-67-004,Merkez Bucağı,34689,2013,2025,tuik_medas,kir,,
 TR-67-004-34690,village,Serintepe Köy.,TR-67-004,Merkez Bucağı,34690,2013,2025,tuik_medas,kir,koy,7h

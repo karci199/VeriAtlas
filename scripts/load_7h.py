@@ -54,12 +54,15 @@ RURAL_SHEET = "BELDE - KÖY"
 #: The dot is required, so a settlement genuinely ending in "-bel" is left alone.
 SUFFIX = re.compile(r"\s*(MAH\.|MAHALLESI|MAH|KOY\.|KOYU|BEL\.|BELEDIYESI)\s*$")
 
-#: 7H writes a belde as "Haydarlı (B)" when the same district also holds a village of that
-#: name — the marker is the disambiguator, so it is *not* stripped in the general key.
-#: Dropping it there would fold the belde and the village into one name and the
-#: unique-to-unique join would then discard both. It is stripped only when a belde is
-#: being matched against a belediye, where the village cannot be confused with it.
-BELDE_MARK = re.compile(r"B$")
+#: TÜİK's qualifiers, written in brackets after a settlement's name: (B) belediyesi var,
+#: (Bm) bucak merkezi, (Ptt) PTT'si var. They describe the place, they are not part of
+#: what it is called, so they come off before matching — "Haydarlı (B)" is Haydarlı.
+#:
+#: Brackets holding anything else are the opposite: a real disambiguator. Two villages in
+#: Bergama are both called Kaplan and are told apart only by "(Yukarıbey Bucağı)" and
+#: "(Göçbeyli Bucağı)". Those stay in the key, and if that leaves a name ambiguous the
+#: unique-to-unique join drops it rather than pairing the wrong pair.
+QUALIFIER = re.compile(r"\s*\((B|BM|PTT)\)\s*$")
 FOLD = str.maketrans("İIŞĞÜÖÇ", "IISGUOC")
 
 
@@ -72,7 +75,7 @@ ALIAS = {"AFYON": "AFYONKARAHISAR"}
 
 def key(text: object) -> str:
     """A name reduced to what two sources can agree on: letters and digits, folded."""
-    folded = str(text or "").upper().translate(FOLD)
+    folded = QUALIFIER.sub("", str(text or "").upper().translate(FOLD))
     cleaned = re.sub(r"[^A-Z0-9]", "", SUFFIX.sub("", folded))
     return ALIAS.get(cleaned, cleaned)
 
@@ -164,10 +167,8 @@ def by_municipality(theirs: pl.DataFrame, mine: pl.DataFrame) -> pl.DataFrame:
     neighbourhood under that belediye inherits the origin, because that is what the
     source is saying about them collectively.
     """
-    beldes = (
-        theirs.filter(pl.col("koken") == "belde")
-        .with_columns(pl.col("ad").str.replace(BELDE_MARK.pattern, "").alias("ad"))
-        .unique(subset=["il", "ilce", "ad"], keep="none")
+    beldes = theirs.filter(pl.col("koken") == "belde").unique(
+        subset=["il", "ilce", "ad"], keep="none"
     )
     towns = (
         mine.filter(pl.col("bel").is_not_null())
