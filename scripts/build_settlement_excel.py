@@ -8,19 +8,31 @@ menu would be worse than the question.
 
 The sheets:
 
-* **Mahalleler** — a row per neighbourhood, first year and last year side by side, with
-  the growth of the total, the children and the adults separately. A neighbourhood whose
-  population grew 40% while its children fell is a different place from one where both
-  grew; one column cannot say that, three can.
+* **Mahalleler** — a row per neighbourhood. Columns are grouped by *measure*, not by
+  year: first year, last year and the growth stand next to each other, three times over
+  (total, children, adults). Reading across a row then answers one question at a time. A
+  neighbourhood whose population grew 40% while its children fell is a different place
+  from one where both grew; one column cannot say that, three can.
 * **Köyler** — a row per village, total only. TÜİK publishes the 18+ split for
   municipality neighbourhoods and not for villages: tick the age breakdown in MEDAS and
   `Köy` disappears from the level box. So the village sheet compares populations, never
   ages, and says so.
-* **İlçeler**, **İller** — the same numbers rolled up, plus the urban/rural split.
-* **Özet** — the ten highest and lowest of what people actually ask for.
+* **İlçeler**, **İller** — the same numbers rolled up, plus how many settlements of each
+  kind sit inside and how big the typical one is. A province of 300 small villages and a
+  province of 30 large ones can share a rural population; the counts separate them.
+* **Özet** — the ten highest and lowest of what people actually ask for, each carrying
+  the numbers it was ranked on. A rank with no quantity next to it is a claim without
+  evidence.
 * **Yıllar** — every settlement's total, year by year, wide.
 * **Notlar** — what the numbers do and do not cover, in Turkish, inside the file. A
   spreadsheet travels away from whoever made it; the caveats have to travel with it.
+
+Percentages are written as plain numbers with the unit in the header — `65,4` under
+"Yetişkin payı (%)", not `65,4%` in the cell. Excel number formats are written in US
+convention and rendered in the reader's locale, and a format of `0,00%` therefore does
+not mean two decimals: the comma is a thousands separator, which is where `065,4%` and
+`-002%` came from. Keeping the unit in the header sidesteps the whole class of bug and
+leaves the cell a number that sorts, averages and charts.
 
 The urban/rural split only exists for **51 provinces**. Law 6360 turned every village in
 the 30 metropolitan provinces into a neighbourhood in 2014, so there they are all "kent"
@@ -47,6 +59,14 @@ DATA = PUBLIC.parent / "src" / "veriatlas" / "data"
 
 CHILD = "0-17"
 ADULT = "18+"
+
+#: Columns holding a proportion. They are multiplied by 100 on the way out and their
+#: header gains "(%)" — the unit lives in the header, never in the cell.
+SHARE = {"yetiskin_payi", "kapsam", "kir_payi", "degisim", "deger_yuzde"}
+
+
+def is_share(column: str) -> bool:
+    return column in SHARE or column.endswith("_artis")
 
 
 def villages() -> pl.DataFrame:
@@ -107,7 +127,12 @@ def neighbourhoods() -> pl.DataFrame:
         .agg(pl.col("value").sum().alias("kisi"))
     )
     wide = rows.pivot(values="kisi", index=["area_id", "yil"], on="yas").with_columns(
-        (pl.col(CHILD).fill_null(0) + pl.col(ADULT).fill_null(0)).alias("toplam")
+        (pl.col(CHILD).fill_null(0) + pl.col(ADULT).fill_null(0)).alias("toplam"),
+        # TÜİK suppresses small cells. Summing what was published gives a total that is
+        # short by the hidden half, and the adult share then reads 100% — a settlement
+        # with no children, which is not what the source said. The flag records whether
+        # both halves arrived, so the share can refuse to answer where they did not.
+        (pl.col(CHILD).is_not_null() & pl.col(ADULT).is_not_null()).alias("tam"),
     )
     return wide.rename({CHILD: "cocuk", ADULT: "yetiskin"})
 
@@ -172,6 +197,19 @@ def growth(now: str, before: str, name: str) -> pl.Expr:
     )
 
 
+def to_percent(frame: pl.DataFrame) -> pl.DataFrame:
+    """Proportions to percentage points, once, at the edge.
+
+    Everything upstream works in proportions because that is what divides and compares.
+    The multiplication happens here and only here, so no intermediate frame carries a
+    number whose unit depends on where it came from.
+    """
+    shares = [c for c in frame.columns if is_share(c)]
+    if not shares:
+        return frame
+    return frame.with_columns([(pl.col(c) * 100).round(2).alias(c) for c in shares])
+
+
 #: Column name to the words shown in the header. Capitalised, spaced, and said in Turkish
 #: — the sheet is read by people, and `yetiskin_payi` is not a phrase in any language.
 HEADERS = {
@@ -181,11 +219,22 @@ HEADERS = {
     "belediye": "Belediye",
     "mahalle": "Mahalle",
     "koy": "Köy",
+    "yer": "Yerleşim",
     "kimlik": "Kimlik",
     "kod": "MEDAS kodu",
     "mahalle_sayisi": "Mahalle sayısı",
     "koy_sayisi": "Köy sayısı",
+    "belediye_sayisi": "Belediye sayısı",
+    "yerlesim_sayisi": "Yerleşim sayısı",
+    "mahalle_ortalama": "Ortalama mahalle nüfusu",
+    "mahalle_ortanca": "Ortanca mahalle nüfusu",
+    "mahalle_en_buyuk": "En büyük mahalle",
+    "mahalle_en_kucuk": "En küçük mahalle",
+    "koy_ortalama": "Ortalama köy nüfusu",
+    "koy_ortanca": "Ortanca köy nüfusu",
+    "koy_en_buyuk": "En büyük köy",
     "yetiskin_payi": "Yetişkin payı",
+    "gizli_mahalle": "Yaşı gizli mahalle",
     "kapsam": "Kapsam",
     "ilk_gorulen": "İlk görülen",
     "son_gorulen": "Son görülen",
@@ -196,30 +245,39 @@ HEADERS = {
     "kir_artis": "Kır artışı",
     "sira": "Sıra",
     "olcut": "Ölçüt",
-    "deger": "Değer",
+    "baslangic": "Başlangıç",
+    "bitis": "Bitiş",
+    "degisim": "Değişim",
+    "deger_yuzde": "Değer",
+    "deger_kisi": "Değer (kişi)",
 }
 
 
 def header_of(column: str, first: int, last: int) -> str:
+    """The words for a column, with "(%)" appended when the column is a share."""
     if column in HEADERS:
-        return HEADERS[column]
-    words = {
-        "toplam": "Toplam",
-        "cocuk": "Çocuk (0-17)",
-        "yetiskin": "Yetişkin (18+)",
-        "nufus": "Nüfus",
-        "gercek": "Gerçek nüfus",
-        "kir": "Kır (köy)",
-        "kent": "Kent (belediye)",
-    }
-    for key, word in words.items():
-        if column.startswith(key + "_"):
-            tail = column[len(key) + 1 :]
-            if tail.isdigit():
-                return word + " " + tail
-            if tail == "artis":
-                return word + " artışı"
-    return column[:1].upper() + column[1:].replace("_", " ")
+        text = HEADERS[column]
+    else:
+        words = {
+            "toplam": "Toplam",
+            "cocuk": "Çocuk (0-17)",
+            "yetiskin": "Yetişkin (18+)",
+            "nufus": "Nüfus",
+            "gercek": "Gerçek nüfus",
+            "kir": "Kır (köy)",
+            "kent": "Kent (belediye)",
+        }
+        text = column[:1].upper() + column[1:].replace("_", " ")
+        for key, word in words.items():
+            if column.startswith(key + "_"):
+                tail = column[len(key) + 1 :]
+                if tail.isdigit():
+                    text = word + " " + tail
+                    break
+                if tail == "artis":
+                    text = word + " artışı"
+                    break
+    return text + " (%)" if is_share(column) else text
 
 
 def sheet(book, frame, title, formats, first, last, widths=None) -> None:
@@ -256,6 +314,12 @@ def main() -> None:
     koy_years = sorted(koy["yil"].unique().to_list())
     koy_first, koy_last = koy_years[0], koy_years[-1]
 
+    t_first, t_last = "toplam_" + str(first), "toplam_" + str(last)
+    c_first, c_last = "cocuk_" + str(first), "cocuk_" + str(last)
+    y_first, y_last = "yetiskin_" + str(first), "yetiskin_" + str(last)
+    k_first, k_last = "nufus_" + str(koy_first), "nufus_" + str(koy_last)
+    kir_first, kir_last = "kir_" + str(koy_first), "kir_" + str(koy_last)
+
     # region Neighbourhoods
 
     def at(year: int) -> pl.DataFrame:
@@ -269,42 +333,50 @@ def main() -> None:
     base = (
         wide.filter(pl.col("yil") == last)
         .join(at(first), on="area_id", how="left")
-        .with_columns((pl.col("yetiskin") / pl.col("toplam")).alias("yetiskin_payi"))
+        .with_columns(
+            pl.when(pl.col("tam"))
+            .then(pl.col("yetiskin") / pl.col("toplam"))
+            .otherwise(None)
+            .alias("yetiskin_payi")
+        )
         .rename(
             {
-                "toplam": "toplam_" + str(last),
-                "cocuk": "cocuk_" + str(last),
-                "yetiskin": "yetiskin_" + str(last),
+                "toplam": t_last,
+                "cocuk": c_last,
+                "yetiskin": y_last,
                 "first_seen": "ilk_gorulen",
                 "last_seen": "son_gorulen",
             }
         )
         .with_columns(
-            growth("toplam_" + str(last), "toplam_" + str(first), "toplam_artis"),
-            growth("cocuk_" + str(last), "cocuk_" + str(first), "cocuk_artis"),
-            growth("yetiskin_" + str(last), "yetiskin_" + str(first), "yetiskin_artis"),
+            growth(t_last, t_first, "toplam_artis"),
+            growth(c_last, c_first, "cocuk_artis"),
+            growth(y_last, y_first, "yetiskin_artis"),
         )
     )
 
+    # Grouped by measure, not by year: total then children then adults, each as
+    # before / after / growth. The question "did this place grow?" is answered by three
+    # adjacent cells instead of three cells six columns apart.
     mahalleler = base.select(
         "il",
         "ilce",
         "belediye",
         "mahalle",
-        "toplam_" + str(last),
-        "cocuk_" + str(last),
-        "yetiskin_" + str(last),
-        "yetiskin_payi",
-        "toplam_" + str(first),
-        "cocuk_" + str(first),
-        "yetiskin_" + str(first),
+        t_first,
+        t_last,
         "toplam_artis",
+        c_first,
+        c_last,
         "cocuk_artis",
+        y_first,
+        y_last,
         "yetiskin_artis",
+        "yetiskin_payi",
         "ilk_gorulen",
         "son_gorulen",
         pl.col("area_id").alias("kimlik"),
-    ).sort("yetiskin_" + str(last), descending=True)
+    ).sort(t_last, descending=True)
 
     # endregion
 
@@ -327,143 +399,362 @@ def main() -> None:
             ),
             on="kod",
         )
-        .with_columns(
-            growth("nufus_" + str(koy_last), "nufus_" + str(koy_first), "nufus_artis")
-        )
-        .select(
-            "il",
-            "ilce",
-            "bucak",
-            "koy",
-            "nufus_" + str(koy_last),
-            "nufus_" + str(koy_first),
-            "nufus_artis",
-            "kod",
-        )
-        .sort("nufus_" + str(koy_last), descending=True)
+        .with_columns(growth(k_last, k_first, "nufus_artis"))
+        .select("il", "ilce", "bucak", "koy", k_first, k_last, "nufus_artis", "kod")
+        .sort(k_last, descending=True)
     )
 
     # endregion
 
     # region Roll-ups
 
+    def koy_stats(key: str) -> pl.DataFrame:
+        """Village counts and typical sizes per district (`parent_id`) or province.
+
+        Keyed by identity, never by name: forty-odd districts are called "Merkez" and a
+        name join would pour one province's villages into another's.
+        """
+        now = koy.filter(pl.col("yil") == koy_last)
+        then = koy.filter(pl.col("yil") == koy_first)
+        return (
+            now.group_by(key)
+            .agg(
+                pl.col("kod").n_unique().alias("koy_sayisi"),
+                pl.col("nufus").sum().alias(kir_last),
+                pl.col("nufus").mean().round(0).alias("koy_ortalama"),
+                pl.col("nufus").median().round(0).alias("koy_ortanca"),
+                pl.col("nufus").max().alias("koy_en_buyuk"),
+            )
+            .join(
+                then.group_by(key).agg(pl.col("nufus").sum().alias(kir_first)),
+                on=key,
+                how="left",
+            )
+            .with_columns(growth(kir_last, kir_first, "kir_artis"))
+        )
+
     def rolled(keys: list[str], area: str) -> pl.DataFrame:
+        """Neighbourhood rows summed to a level, with how many and how big they are."""
         whole = area_totals(area, last)
         summed = (
             base.group_by(keys)
             .agg(
                 pl.len().alias("mahalle_sayisi"),
-                pl.col("toplam_" + str(last)).sum(),
-                pl.col("cocuk_" + str(last)).sum(),
-                pl.col("yetiskin_" + str(last)).sum(),
-                pl.col("toplam_" + str(first)).sum(),
-                pl.col("cocuk_" + str(first)).sum(),
-                pl.col("yetiskin_" + str(first)).sum(),
+                pl.col("belediye").n_unique().alias("belediye_sayisi"),
+                pl.col(t_last).sum().alias(t_last),
+                pl.col(c_last).sum().alias(c_last),
+                pl.col(y_last).sum().alias(y_last),
+                pl.col(t_first).sum().alias(t_first),
+                pl.col(c_first).sum().alias(c_first),
+                pl.col(y_first).sum().alias(y_first),
+                pl.col(t_last).mean().round(0).alias("mahalle_ortalama"),
+                pl.col(t_last).median().round(0).alias("mahalle_ortanca"),
+                pl.col(t_last).max().alias("mahalle_en_buyuk"),
+                pl.col(t_last).min().alias("mahalle_en_kucuk"),
                 pl.col(area + "_id").first().alias("kimlik"),
+                # The share is taken over the neighbourhoods whose breakdown is whole,
+                # not over the sum of everything: a district's total is right even when a
+                # few of its cells are suppressed, but its ratio would not be.
+                pl.col(y_last).filter(pl.col("tam")).sum().alias("yetiskin_tam"),
+                pl.col(t_last).filter(pl.col("tam")).sum().alias("toplam_tam"),
+                (~pl.col("tam")).sum().alias("gizli_mahalle"),
             )
             .with_columns(
-                (pl.col("yetiskin_" + str(last)) / pl.col("toplam_" + str(last))).alias(
-                    "yetiskin_payi"
-                ),
-                growth("toplam_" + str(last), "toplam_" + str(first), "toplam_artis"),
-                growth("cocuk_" + str(last), "cocuk_" + str(first), "cocuk_artis"),
-                growth(
-                    "yetiskin_" + str(last), "yetiskin_" + str(first), "yetiskin_artis"
-                ),
+                pl.when(pl.col("toplam_tam") > 0)
+                .then(pl.col("yetiskin_tam") / pl.col("toplam_tam"))
+                .otherwise(None)
+                .alias("yetiskin_payi"),
+                growth(t_last, t_first, "toplam_artis"),
+                growth(c_last, c_first, "cocuk_artis"),
+                growth(y_last, y_first, "yetiskin_artis"),
             )
         )
         return summed.join(
             whole, left_on="kimlik", right_on="area_id", how="left"
-        ).with_columns(
-            (pl.col("toplam_" + str(last)) / pl.col("nufus")).alias("kapsam")
+        ).with_columns((pl.col(t_last) / pl.col("nufus")).alias("kapsam"))
+
+    def with_villages(frame: pl.DataFrame, key: str) -> pl.DataFrame:
+        """Attach the village side and the counts that need both halves."""
+        return (
+            frame.join(koy_stats(key).rename({key: "kimlik"}), on="kimlik", how="left")
+            .with_columns(
+                pl.col("koy_sayisi").fill_null(0),
+                (pl.col("mahalle_sayisi") + pl.col("koy_sayisi").fill_null(0)).alias(
+                    "yerlesim_sayisi"
+                ),
+                pl.col(t_last).alias("kent_" + str(last)),
+                growth(t_last, t_first, "kent_artis"),
+            )
+            .with_columns(
+                pl.when(pl.col(kir_last).is_not_null())
+                .then(pl.col(kir_last) / (pl.col(kir_last) + pl.col(t_last)))
+                .otherwise(None)
+                .alias("kir_payi")
+            )
         )
+
+    settlement = [
+        "yerlesim_sayisi",
+        "mahalle_sayisi",
+        "koy_sayisi",
+        "belediye_sayisi",
+        "mahalle_ortalama",
+        "mahalle_ortanca",
+        "mahalle_en_buyuk",
+        "mahalle_en_kucuk",
+        "koy_ortalama",
+        "koy_ortanca",
+        "koy_en_buyuk",
+    ]
+    population = [
+        t_first,
+        t_last,
+        "toplam_artis",
+        c_first,
+        c_last,
+        "cocuk_artis",
+        y_first,
+        y_last,
+        "yetiskin_artis",
+        "yetiskin_payi",
+        "gizli_mahalle",
+    ]
+    rural = [kir_first, kir_last, "kir_artis", "kir_payi"]
 
     ilceler = (
-        rolled(["il", "ilce"], "ilce")
+        with_villages(rolled(["il", "ilce"], "ilce"), "parent_id")
         .rename({"nufus": "gercek_" + str(last)})
-        .sort("toplam_" + str(last), descending=True)
-    )
-
-    # The urban/rural split, per province, for the 51 that still have villages.
-    kir = koy.group_by("il", "yil").agg(pl.col("nufus").sum().alias("kir"))
-    kir_wide = (
-        kir.filter(pl.col("yil") == koy_last)
-        .select("il", pl.col("kir").alias("kir_" + str(koy_last)))
-        .join(
-            kir.filter(pl.col("yil") == koy_first).select(
-                "il", pl.col("kir").alias("kir_" + str(koy_first))
-            ),
-            on="il",
-            how="left",
+        .select(
+            ["il", "ilce"]
+            + settlement
+            + population
+            + rural
+            + ["gercek_" + str(last), "kapsam", "kimlik"]
         )
-        .with_columns(
-            growth("kir_" + str(koy_last), "kir_" + str(koy_first), "kir_artis")
-        )
+        .sort(t_last, descending=True)
     )
 
     iller = (
-        rolled(["il"], "il")
+        with_villages(rolled(["il"], "il"), "il_id")
         .rename({"nufus": "gercek_" + str(last)})
-        .join(kir_wide, on="il", how="left")
-        .with_columns(
-            pl.col("toplam_" + str(last)).alias("kent_" + str(last)),
-            growth("toplam_" + str(last), "toplam_" + str(first), "kent_artis"),
-        )
-        .with_columns(
-            pl.when(pl.col("kir_" + str(koy_last)).is_not_null())
-            .then(
-                pl.col("kir_" + str(koy_last))
-                / (pl.col("kir_" + str(koy_last)) + pl.col("kent_" + str(last)))
-            )
-            .otherwise(None)
-            .alias("kir_payi")
-        )
         .select(
-            "il",
-            "mahalle_sayisi",
-            "toplam_" + str(last),
-            "cocuk_" + str(last),
-            "yetiskin_" + str(last),
-            "yetiskin_payi",
-            "toplam_artis",
-            "cocuk_artis",
-            "yetiskin_artis",
-            "gercek_" + str(last),
-            "kapsam",
-            "kir_" + str(koy_last),
-            "kir_payi",
-            "kir_artis",
-            "kent_artis",
+            ["il"]
+            + settlement
+            + population
+            + rural
+            + ["kent_artis", "gercek_" + str(last), "kapsam"]
         )
-        .sort("toplam_" + str(last), descending=True)
+        .sort(t_last, descending=True)
     )
 
     # endregion
 
     # region Summary
 
-    def top(frame: pl.DataFrame, column: str, label: str, rising=True, take=10):
-        ordered = frame.drop_nulls(column).sort(column, descending=rising).head(take)
+    def rank(
+        frame: pl.DataFrame,
+        column: str,
+        label: str,
+        *,
+        rising: bool = True,
+        take: int = 10,
+        yer: str | None = None,
+        start: str | None = None,
+        end: str | None = None,
+        floor: int = 0,
+    ) -> pl.DataFrame:
+        """The top or bottom `take` rows on one column, carrying their own evidence.
+
+        A rank on its own is unreadable — "Ardahan, 1" says nothing about whether that is
+        a hundred people or a hundred thousand. So every row also shows what it started
+        at, what it ended at, and the change between; the ranked value repeats in the
+        column that matches its unit, so a single format can never misprint it.
+
+        `floor` guards the growth ranks. Without it the biggest riser is always a
+        settlement that went from 3 people to 300 — arithmetically 9.900% and about
+        nothing.
+        """
+        ordered = frame.drop_nulls(column)
+        if floor and start:
+            ordered = ordered.filter(pl.col(start) >= floor)
+        ordered = ordered.sort(column, descending=rising).head(take)
+        size = len(ordered)
+        share = is_share(column)
+        began = ordered[start].cast(pl.Float64).to_list() if start else [None] * size
+        ended = ordered[end].cast(pl.Float64).to_list() if end else [None] * size
+        # Recomputed from the two columns actually shown rather than read from a growth
+        # column: the pair varies by rank (children here, villages there) and a change
+        # that does not divide the numbers beside it is worse than no change at all.
+        moved = [
+            None if not a or b is None else b / a - 1 for a, b in zip(began, ended)
+        ]
         return pl.DataFrame(
             {
-                "olcut": [label] * len(ordered),
-                "sira": list(range(1, len(ordered) + 1)),
+                "olcut": [label] * size,
+                "sira": list(range(1, size + 1)),
                 "il": ordered["il"].to_list(),
-                "deger": ordered[column].to_list(),
-            }
+                "yer": ordered[yer].to_list() if yer else [None] * size,
+                "baslangic": began,
+                "bitis": ended,
+                "degisim": moved,
+                "deger_yuzde": (ordered[column].to_list() if share else [None] * size),
+                "deger_kisi": (
+                    [None] * size
+                    if share
+                    else ordered[column].cast(pl.Float64).to_list()
+                ),
+            },
+            schema={
+                "olcut": pl.Utf8,
+                "sira": pl.Int64,
+                "il": pl.Utf8,
+                "yer": pl.Utf8,
+                "baslangic": pl.Float64,
+                "bitis": pl.Float64,
+                "degisim": pl.Float64,
+                "deger_yuzde": pl.Float64,
+                "deger_kisi": pl.Float64,
+            },
         )
 
     ozet = pl.concat(
         [
-            top(iller, "toplam_artis", "En çok büyüyen il (belediye nüfusu)"),
-            top(iller, "toplam_artis", "En çok küçülen il (belediye nüfusu)", False),
-            top(iller, "cocuk_artis", "Çocuk nüfusu en çok düşen il", False),
-            top(iller, "cocuk_artis", "Çocuk nüfusu en çok artan il"),
-            top(iller, "yetiskin_artis", "Yetişkin nüfusu en çok artan il"),
-            top(iller, "yetiskin_payi", "Yetişkin payı en yüksek il"),
-            top(iller, "yetiskin_payi", "Yetişkin payı en düşük il", False),
-            top(iller, "kir_payi", "Kır payı en yüksek il (51 il içinde)"),
-            top(iller, "kir_artis", "Kır nüfusu en çok düşen il", False),
+            rank(
+                iller,
+                "toplam_artis",
+                "En çok büyüyen il (belediye nüfusu)",
+                start=t_first,
+                end=t_last,
+            ),
+            rank(
+                iller,
+                "toplam_artis",
+                "En çok küçülen il (belediye nüfusu)",
+                rising=False,
+                start=t_first,
+                end=t_last,
+            ),
+            rank(
+                iller,
+                "cocuk_artis",
+                "Çocuk nüfusu en çok düşen il",
+                rising=False,
+                start=c_first,
+                end=c_last,
+            ),
+            rank(
+                iller,
+                "cocuk_artis",
+                "Çocuk nüfusu en çok artan il",
+                start=c_first,
+                end=c_last,
+            ),
+            rank(
+                iller,
+                "yetiskin_artis",
+                "Yetişkin nüfusu en çok artan il",
+                start=y_first,
+                end=y_last,
+            ),
+            rank(
+                iller,
+                "yetiskin_payi",
+                "Yetişkin payı en yüksek il",
+                start=y_first,
+                end=y_last,
+            ),
+            rank(
+                iller,
+                "yetiskin_payi",
+                "Yetişkin payı en düşük il",
+                rising=False,
+                start=y_first,
+                end=y_last,
+            ),
+            rank(
+                iller,
+                "kir_payi",
+                "Kır payı en yüksek il (51 il içinde)",
+                start=kir_first,
+                end=kir_last,
+            ),
+            rank(
+                iller,
+                "kir_payi",
+                "Kır payı en düşük il (51 il içinde)",
+                rising=False,
+                start=kir_first,
+                end=kir_last,
+            ),
+            rank(
+                iller,
+                "kir_artis",
+                "Kır nüfusu en çok düşen il",
+                rising=False,
+                start=kir_first,
+                end=kir_last,
+            ),
+            rank(
+                iller,
+                "koy_sayisi",
+                "Köyü en çok olan il",
+                start=kir_first,
+                end=kir_last,
+            ),
+            rank(
+                ilceler,
+                t_last,
+                "En kalabalık ilçe (belediye nüfusu)",
+                yer="ilce",
+                start=t_first,
+                end=t_last,
+            ),
+            rank(
+                ilceler,
+                "toplam_artis",
+                "En çok büyüyen ilçe (en az 5.000 kişiden)",
+                yer="ilce",
+                start=t_first,
+                end=t_last,
+                floor=5000,
+            ),
+            rank(
+                mahalleler,
+                t_last,
+                "En kalabalık mahalle",
+                yer="mahalle",
+                start=t_first,
+                end=t_last,
+            ),
+            rank(
+                mahalleler,
+                "toplam_artis",
+                "En çok büyüyen mahalle (en az 1.000 kişiden)",
+                yer="mahalle",
+                start=t_first,
+                end=t_last,
+                floor=1000,
+            ),
+            rank(
+                mahalleler,
+                "yetiskin_payi",
+                "Yetişkin payı en yüksek mahalle",
+                yer="mahalle",
+                start=y_first,
+                end=y_last,
+            ),
+            rank(
+                koyler, k_last, "En kalabalık köy", yer="koy", start=k_first, end=k_last
+            ),
+            rank(
+                koyler,
+                "nufus_artis",
+                "En çok büyüyen köy (en az 500 kişiden)",
+                yer="koy",
+                start=k_first,
+                end=k_last,
+                floor=500,
+            ),
         ]
     )
 
@@ -498,25 +789,22 @@ def main() -> None:
     )
     text = book.add_format({"align": "left", "valign": "vcenter"})
     middle = book.add_format({"align": "center", "valign": "vcenter"})
+    # Formats are written in US convention whatever the reader's locale: "." is the
+    # decimal point here and Excel renders it as a comma for a Turkish reader.
     sayi = book.add_format(
         {"num_format": "#,##0", "align": "center", "valign": "vcenter"}
     )
-    # Two decimals, as asked: a growth of 4,7% and one of 4,74% are different answers when
-    # the sheet is being sorted by that column.
-    yuzde = book.add_format(
-        {"num_format": "0,00%", "align": "center", "valign": "vcenter"}
+    ondalik = book.add_format(
+        {"num_format": "#,##0.0", "align": "center", "valign": "vcenter"}
     )
 
     numeric = {}
     for column in (
-        ["mahalle_sayisi", "koy_sayisi", "kod", "ilk_gorulen", "son_gorulen", "sira"]
-        + ["gercek_" + str(last), "deger"]
-        + ["toplam_" + str(y) for y in (first, last)]
-        + ["cocuk_" + str(y) for y in (first, last)]
-        + ["yetiskin_" + str(y) for y in (first, last)]
-        + ["nufus_" + str(y) for y in (koy_first, koy_last)]
-        + ["kir_" + str(y) for y in (koy_first, koy_last)]
-        + ["kent_" + str(last)]
+        ["kod", "ilk_gorulen", "son_gorulen", "sira", "deger_kisi", "gizli_mahalle"]
+        + ["baslangic", "bitis", "gercek_" + str(last)]
+        + settlement
+        + [t_first, t_last, c_first, c_last, y_first, y_last]
+        + [k_first, k_last, kir_first, kir_last, "kent_" + str(last)]
         + [str(y) for y in years]
     ):
         numeric[column] = sayi
@@ -530,8 +818,10 @@ def main() -> None:
         "nufus_artis",
         "kir_artis",
         "kent_artis",
+        "degisim",
+        "deger_yuzde",
     ):
-        numeric[column] = yuzde
+        numeric[column] = ondalik
 
     formats = {
         **numeric,
@@ -543,6 +833,7 @@ def main() -> None:
         "belediye": text,
         "mahalle": text,
         "koy": text,
+        "yer": text,
         "olcut": text,
         "kimlik": middle,
     }
@@ -553,44 +844,78 @@ def main() -> None:
         "belediye": 24,
         "mahalle": 28,
         "koy": 24,
+        "yer": 26,
         "kimlik": 20,
-        "olcut": 38,
+        "olcut": 40,
         "yetiskin_payi": 14,
         "kapsam": 12,
+        "mahalle_ortalama": 13,
+        "mahalle_ortanca": 13,
+        "koy_ortalama": 13,
+        "koy_ortanca": 13,
     }
 
     # The summary first: it is the sheet that answers a question without being asked one.
-    sheet(book, ozet, "Özet", formats, first, last, widths)
-    sheet(book, mahalleler, "Mahalleler", formats, first, last, widths)
-    sheet(book, koyler, "Köyler", formats, first, last, widths)
-    sheet(book, ilceler, "İlçeler", formats, first, last, widths)
-    sheet(book, iller, "İller", formats, first, last, widths)
-    sheet(book, seri, "Yıllar", formats, first, last, widths)
+    for frame, title in (
+        (ozet, "Özet"),
+        (mahalleler, "Mahalleler"),
+        (koyler, "Köyler"),
+        (ilceler, "İlçeler"),
+        (iller, "İller"),
+        (seri, "Yıllar"),
+    ):
+        sheet(book, to_percent(frame), title, formats, first, last, widths)
 
     notes = book.add_worksheet("Notlar")
     notes.set_column(0, 0, 112, book.add_format({"text_wrap": True, "valign": "top"}))
     kayip = len(seri) - len(mahalleler)
+    koy_il = koy["il"].n_unique()
     lines = [
         "VeriAtlas — yerleşim nüfusu (mahalle ve köy)",
         "",
         "Kaynak: TÜİK MEDAS, adrese dayalı nüfus kayıt sistemi. Çekim: 2026-08.",
         f"Mahalleler: {first}-{last}, {len(mahalleler)} mahalle, 81 il.",
-        "Köyler: {0}-{1}, {2} köy, {3} il.".format(
-            koy_first, koy_last, len(koyler), koy["il"].n_unique()
-        ),
+        f"Köyler: {koy_first}-{koy_last}, {len(koyler)} köy, {koy_il} il.",
+        "",
+        "YÜZDELER",
+        "· Yüzde sütunları hücrede düz sayıdır, birim başlıkta durur: '65,4' değeri",
+        "  'Yetişkin payı (%)' başlığı altında yüzde 65,4 demektir. Hücrede % işareti",
+        "  yoktur; sayı olduğu gibi sıralanır, ortalaması alınır, grafiğe girer.",
+        "· Artış oranları son yıl / ilk yıl − 1 biçimindedir. '233,0' yüzde 233 artış,",
+        "  '-11,4' yüzde 11,4 azalış demektir.",
         "",
         "MAHALLE / KÖY AYRIMI",
         "· 6360 sayılı yasa 2014'te 30 büyükşehir ilindeki bütün köyleri mahalleye",
         "  çevirdi. O illerde köy yok — eksik değil, gerçekten yok.",
         "· Kalan 51 ilde ikisi bir arada: belediye mahalleleri (kent) ve köyler (kır).",
-        "  'İller' sayfasındaki kır payı, kır artışı ve kent artışı yalnız bu 51 il için",
-        "  doludur. Büyükşehirlerde bu hücreler boştur; sıfır değildir, hesaplanamaz.",
+        "  'İller' ve 'İlçeler' sayfasındaki kır sütunları yalnız bu 51 il için doludur.",
+        "  Büyükşehirlerde bu hücreler boştur; sıfır değildir, hesaplanamaz.",
+        "· 'Belediye sayısı' o alandaki ayrı belediye adedidir. Belde belediyesi ile",
+        "  büyükşehir ilçe belediyesi kaynakta aynı alanda geçiyor, ayrılamıyor.",
         "",
         "YAŞ AYRIMI YALNIZ MAHALLEDE",
         "· TÜİK 18+ kırılımını yalnız belediye mahalleleri için yayımlıyor: MEDAS'ta yaş",
         "  kırılımı işaretlenince Köy düzeyi seçeneklerden kayboluyor.",
         "· Bu yüzden köyler yalnız toplam nüfusla karşılaştırılıyor. Köy sayfasında çocuk",
         "  ve yetişkin sütunu yoktur — boş bırakılmamıştır, sorulamaz.",
+        "",
+        "GİZLENEN HÜCRELER",
+        "· TÜİK küçük hücreleri gizliyor: bir mahallenin çocuk sayısı yayımlanmamış",
+        "  olabiliyor. Yayımlananı toplamak o mahalleyi '%100 yetişkin' gösterirdi.",
+        "· Bu yüzden yetişkin payı, yalnız iki yaş grubu da yayımlanmış mahallelerde",
+        "  hesaplanıyor; ötekilerde hücre boştur. İl ve ilçe payı da yalnız bu",
+        "  mahalleler üzerinden alınıyor. 'Yaşı gizli mahalle' sütunu kaçının böyle",
+        "  olduğunu söylüyor.",
+        "· Toplam nüfus sütunları bundan etkilenmez; gizlenen yalnız yaş ayrımıdır.",
+        "",
+        "ÖZET SAYFASI",
+        "· Her sıra, sıralandığı sayıyı yanında taşır: başlangıç yılı, bitiş yılı ve",
+        "  aradaki değişim. Sıra tek başına okunmaz.",
+        "· Değer iki sütuna ayrılmıştır — 'Değer (%)' ve 'Değer (kişi)' — çünkü tek",
+        "  sütunda yüzde ile kişi aynı biçimle yazılırdı ve biri yanlış görünürdü.",
+        "· Artış sıralamalarında bir taban vardır (mahallede 1.000, ilçede 5.000, köyde",
+        "  500 kişi). Tabansız sıralamada birinci hep 3 kişiden 300'e çıkan yerdir:",
+        "  yüzde 9.900 artış, ve hiçbir şey anlatmaz.",
         "",
         "KAPSAM",
         "· 'Kapsam' sütunu: mahallelerin toplamı, yayımlanan gerçek nüfusun yüzde kaçı.",
@@ -611,7 +936,6 @@ def main() -> None:
         "  da kapanış tarihi değildir.",
         "",
         "ORANLAR",
-        "· Artış oranları son yıl / ilk yıl − 1 biçimindedir, iki ondalıkla.",
         "· Yetişkin payı = 18+ / toplam. Kır payı = köy / (köy + belediye).",
         "· Bir yerleşim aradaki yıllarda bölündüyse ya da birleştiyse, oran o idari",
         "  değişimi de içerir; nüfusun kendi hareketi değildir.",
