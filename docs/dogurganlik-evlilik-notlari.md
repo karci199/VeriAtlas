@@ -837,3 +837,101 @@ sebebi açıklanmadı**; Bulgu 5'te de aynı aykırılık not edilmişti. Karab�
 
 Tam 81 il tablosu üretimi: `scratchpad` betiği, kaynak
 `İl ve annenin yasal medeni durumuna göre doğumlar.xls` (2012-2025, 81 il).
+
+## Bulgu 14 — DÜZELTME: iki mekanizma ayrıştırılmamıştı, geç ilk annelik yanlış değişkenle elenmişti
+
+Bulgu 8-9-12'nin çerçevesi ("asıl mekanizma aralık, evlenme/doğum ertelemesi
+ilgisiz") fazla keskindi. Üç kusur bulundu.
+
+### Kusur 1 — eş doğrusallık test edilmemişti
+
+**r(doğum aralığı, ilk doğum yaşı) = +0,713.** Doğuda ikisi de düşük, batıda ikisi
+de yüksek. İki mekanizma aynı coğrafi eksende hareket ediyor; ham korelasyonları
+karşılaştırmak ayrıştırma sayılmaz.
+
+Kısmi korelasyon (2025 kesiti) yine de aralığı destekliyor:
+
+| İlişki | Ham | Diğeri sabitken |
+|---|---|---|
+| GDH ~ aralık | −0,956 | **−0,908** |
+| GDH ~ ilk doğum yaşı | −0,738 | **−0,272** |
+
+Yani kesitte aralığın üstünlüğü gerçek.
+
+### Kusur 2 — r=−0,96 bölge içinde geçerli değil
+
+| Grup (GDH'ye göre üçe bölünmüş) | r(GDH, aralık) | r(GDH, ilk doğum) |
+|---|---|---|
+| En doğurgan 27 il | **−0,943** | −0,528 |
+| Orta 27 | **−0,323** | −0,008 |
+| En az doğurgan 27 | **−0,397** | −0,074 |
+
+−0,96'nın neredeyse tamamı **doğu-batı ekseninden** geliyor. Benzer iller kendi
+aralarında karşılaştırılınca ilişki −0,32'ye düşüyor. Bulgu 9'daki "aralığı bilen
+GDH'yi bilir" ifadesi iller arası genel eğilim için doğru, **bir ilin kendi
+içindeki mekanizmayı kanıtlamıyor.**
+
+### Kusur 3 (en ciddi) — geç ilk annelik YANLIŞ DEĞİŞKENLE elendi
+
+Bulgu 3/9'da "evlenme yaşı ~ GDH düşüşü r=+0,06" bulunup mekanizma elenmişti.
+Ama **ortalama evlenme yaşı ile ilk doğum yaşı ayrı değişkenler** ve ilk doğum
+yaşı değişim tarafında hiç hesaplanmamıştı. Aynı 7 yıllık pencerede:
+
+| İlişki (2019-2025, 81 il) | r | Diğeri sabitken |
+|---|---|---|
+| GDH düşüşü ~ **ilk doğum yaşı artışı** | **+0,504** | **+0,353** |
+| GDH düşüşü ~ aralık açılması | +0,640 | +0,555 |
+| GDH düşüşü ~ evlenme yaşı artışı | +0,06 | — |
+
+İlk doğum yaşı 0,06 değil **0,50**, ve kısmi korelasyonda da ayakta (+0,35).
+12 yıllık uzun pencerede (2014-2025) r=+0,42 — daha uzun veride de duruyor.
+
+**İkisi de doğurganlığı düşürüyor.** Doğru ifade "asıl mekanizma aralık, öteki
+ilgisiz" değil, **"ikisi de katkı veriyor, aralık biraz daha fazla"**.
+
+### Kusur 4 — pencereler eşit değildi
+
+Aralık serisi yalnız **2019-2025 (7 yıl)**; ilk doğum yaşı 12, GDH 17 yıl.
+Karşılaştırmalar eşitlenmemişti. Eşitlenince aralığın üstünlüğü 0,640 vs 0,504'e
+daralıyor. Bütün aralık sonuçları kısa bir panele dayanıyor — bu sınır her
+kullanımda anılmalı.
+
+### Özet tablosunda düzeltilecekler
+
+- "İlk doğumun ertelenmesi ⚠️ kısmi" → **bağımsız katkısı var** (değişimde
+  r=+0,50, kısmi +0,35).
+- "Doğum aralığı ✅ asıl mekanizma" → **kesitte baskın, ama bölge içinde zayıf
+  (−0,32…−0,40); üstünlüğü doğu-batı ekseninden geliyor.**
+- "Evlenmenin ertelenmesi ❌ ilgisiz" → bu satır doğru, değişmiyor.
+
+## Bulgu 15 — ilk anne olma yaşına göre ham kesit: ilişki doğrusal değil, DOYUYOR
+
+Korelasyon yerine ham gruplama: 81 il 2025 ilk doğum yaşına göre sıralanıp dörde
+bölündü. Hiçbir normalizasyon, TR'ye göre sapma yok — çıplak ortalamalar.
+
+| Grup | İlk doğum yaşı | GDH ‰ | Doğum aralığı |
+|---|---|---|---|
+| En erken 20 il | 25,7 | **58,1** | 4,34 |
+| 2. çeyrek 20 | 26,9 | **38,5** | 5,08 |
+| 3. çeyrek 21 | 27,6 | **37,0** | 5,18 |
+| En geç 20 il | 28,4 | **34,3** | 5,22 |
+
+**Bütün fark ilk basamakta.** 25,7 → 26,9 arasında GDH 19,6 puan çöküyor
+(58,1→38,5). Sonraki 1,5 yıllık gecikme yalnız 4,2 puan getiriyor (38,5→34,3).
+İlişki **doyuyor**: ilk doğum yaşı ~27'yi geçtikten sonra doğurganlığı neredeyse
+hiç etkilemiyor. Aralık sütunu aynı deseni gösteriyor (4,34 → 5,08 → 5,18 → 5,22).
+
+Uç iller bunu doğruluyor: Tunceli 28,9 yaşta GDH 38,1; İzmir 28,7 yaşta 30,7;
+Trabzon 28,7 yaşta 35,9. Geç uçta **aynı yaşta GDH 30'dan 38'e kadar dağılıyor** —
+ilk doğum yaşı orada hiçbir şey belirlemiyor. Erken uçta ise sıkı: Şanlıurfa
+24,4 → 96,6.
+
+### Bu, Bulgu 14'ün 2. kusurunu açıklıyor
+
+Bulgu 14'te bölge içi korelasyonların çöktüğü bulunmuştu (orta 27 il: r=−0,32).
+Sebebi gürültü değil, **doyma**: orta ve düşük doğurganlıklı illerin hepsi zaten
+düz bölgede. Değişken orada gerçekten bilgi taşımıyor.
+
+**Yöntem dersi:** bu veri kümesinde tek bir korelasyon katsayısı yanıltıyor.
+Doğrusal r hem erken uçtaki sıkı ilişkiyi hem geç uçtaki yokluğu tek sayıya
+eziyor. Bundan sonraki her ilişki iddiası ham gruplamayla da gösterilmeli.
