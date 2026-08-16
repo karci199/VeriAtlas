@@ -497,8 +497,7 @@ dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 Bir kadının doğurgan çağı boyunca, o yılın yaşa özel doğurganlık hızları geçerli \
-kalsaydı doğuracağı ortalama çocuk sayısı. Yenilenme düzeyi 2,10 kabul edilir. \
-TÜİK yalnızca il düzeyinde yayımlıyor, ilçe kırılımı yok."""
+kalsaydı doğuracağı ortalama çocuk sayısı. Yenilenme düzeyi 2,10 kabul edilir."""
 
 # Kaba doğum ve kaba ölüm hızı burada yok, çünkü ikisi de tuttuğumuz iki sayının bölümü:
 # doğum ÷ nüfus, ölüm ÷ nüfus. K12'nin kuralı — elimizdeki veriden tam olarak çıkan bir
@@ -522,11 +521,7 @@ additive = true
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Yıl içindeki canlı doğum sayısı, annenin ikamet ettiği ile göre. Kaynak dosya ayları \
-ayrı veriyor; burada yıla toplanmış olarak duruyor — mevsimlilik ayrı bir sorudur ve \
-sorulduğunda ham dosyadan ay kırılımıyla yeniden yüklenir. **Cinsiyet kırılımı yok**: \
-bu çekimde MEDAS doğumu yalnız aya bölüyor. İl ve Türkiye düzeyinde var, 2009'dan \
-itibaren."""
+Yıl içindeki canlı doğum sayısı, annenin ikamet ettiği ile göre."""
 
 [indicator.deaths]
 label_tr = "Ölüm sayısı"
@@ -538,13 +533,7 @@ additive = true
 dims = ["sex"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Yıl içindeki ölüm sayısı, ölen kişinin ikamet ettiği ile göre, cinsiyet kırılımıyla. \
-Kaynak dosya ayrıca ayı da veriyor; yıla toplanmış olarak duruyor. **Yaş kırılımı \
-yok** — bu yüzden piramit çizilmez ve yaşa göre ölümlülük bu göstergeden okunamaz. \
-Ham sayı nüfusla birlikte okunmalı: İstanbul'un ölümü Tunceli'ninkinden çok olduğu \
-için değil, kalabalık olduğu için yüksektir. Kaba ölüm hızı ayrı bir gösterge \
-değildir — "Alan nüfusunun %'si" kipi bu sayıyı nüfusa bölerek onu zaten verir. \
-2009'dan itibaren."""
+Yıl içindeki ölüm sayısı, ölen kişinin ikamet ettiği ile göre, cinsiyet kırılımıyla."""
 
 # Evlenme ve boşanma sayısı, kırılımları kapalı. MEDAS ikisinin altında da on kadar
 # kırılım veriyor — eşlerin yaş grubu, eğitim durumu, evliliğin süresi, çocukların
@@ -561,11 +550,7 @@ additive = true
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Yıl içinde kıyılan resmî nikâh sayısı. **Olayın yerine göre**, yani nikâhın kıyıldığı \
-ile göre sayılır — doğum ve ölümdeki gibi ikametgaha göre değil, çünkü TÜİK evlenmeyi \
-bu biçimde yayımlıyor. Küçük ilçelerinde çok nikâh kıyılan turistik illerde bu ikisi \
-ayrışır. Kaba evlenme hızı ayrı bir gösterge değildir: "Alan nüfusunun %'si" kipi bu \
-sayıyı nüfusa bölerek onu verir. 2001'den itibaren."""
+Yıl içinde kıyılan resmî nikâh sayısı, nikâhın kıyıldığı ile göre."""
 
 [indicator.divorces]
 label_tr = "Boşanma sayısı"
@@ -577,10 +562,8 @@ additive = true
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Yıl içinde kesinleşen boşanma kararı sayısı. Evlenme sayısıyla **aynı yılın oranı \
-değildir**: bu yıl boşananlar başka yıllarda evlenmiş çiftlerdir, o yüzden ikisinin \
-bölümü "evliliklerin yüzde kaçı bitiyor" sorusunu yanıtlamaz — evlenmenin düştüğü bir \
-yılda bu oran, hiçbir şey değişmeden yükselir. 2001'den itibaren."""
+Yıl içinde kesinleşen boşanma kararı sayısı. Evlenme sayısıyla aynı yılın oranı \
+değildir: bu yıl boşananlar başka yıllarda evlenmiş çiftlerdir."""
 
 [indicator.mean_first_marriage_age]
 label_tr = "Ortalama ilk evlenme yaşı"
@@ -591,13 +574,8 @@ frequency = "annual"
 dims = ["sex"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Hayatında ilk kez evlenenlerin ortalama yaşı, cinsiyete göre. "İnsanlar kaç yaşında \
-evleniyor" sorusunun karşılığı budur ve doğurganlıkla birlikte okunur: ilk evlenme \
-yaşının yükseldiği yerde ilk doğum da geç oluyor. Türkiye'de erkek ile kadın arasında \
-uzun süredir üç yaş dolayında bir fark var. **Toplam yok** — ve burası ortalama evlenme \
-yaşından ayrılır: bir evlilik erkeğin ilki, kadının ikincisi olabilir, yani ilk kez \
-evlenen erkek ve kadın sayısı eşit değildir. İkisini tek sayıda birleştirmek elimizde \
-olmayan ağırlıkları gerektirir, o yüzden uydurulmuyor. 2001'den itibaren."""
+Hayatında ilk kez evlenenlerin ortalama yaşı, cinsiyete göre. Toplam yok: bir evlilik \
+erkeğin ilki, kadının ikincisi olabilir."""
 
 [indicator.mean_marriage_age]
 label_tr = "Ortalama evlenme yaşı"
@@ -609,13 +587,7 @@ dims = ["sex"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 O yıl evlenen herkesin ortalama yaşı, cinsiyete göre — ikinci ve sonraki evlilikler \
-dahil. Bu yüzden ilk evlenme yaşından yüksektir ve aradaki fark, boşanma sonrası \
-yeniden evlenmenin ne kadar yaygın olduğuyla birlikte hareket eder. İkisi ayrı \
-göstergedir çünkü ayrı soruları yanıtlar. **Toplam** bizim hesabımızdır (rozet: \
-türetilmiş) ve burada iki ortalamanın ortalaması **tam olarak doğrudur**: her nikâhta \
-bir damat ve bir gelin vardır, yani iki ortalamanın ağırlığı tanım gereği eşittir. \
-Ortanca yaşta yasak olan işlem burada serbest, çünkü orada ağırlıklar eşit değildi. \
-2001'den itibaren."""
+dahil. Bu yüzden ilk evlenme yaşından yüksektir."""
 
 [indicator.natural_increase]
 label_tr = "Doğal nüfus artışı"
@@ -627,12 +599,8 @@ additive = true
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Doğum sayısı eksi ölüm sayısı: bir yerin kendi kendine kazandığı ya da kaybettiği \
-nüfus. Nüfusun gerçek değişimiyle arasındaki fark göçtür — ikisi birlikte okunduğunda \
-bir ilin büyümesinin ne kadarının doğumdan, ne kadarının gelenden geldiği görünür. \
-Eksi değer, ölümün doğumu geçtiği yer demektir. Türkiye 2009'da 897 binken 2025'te \
-404 bine indi. Bizim çıkarmamızdır (rozet: türetilmiş), iki yayımlanmış sayının tam \
-farkı. Her iki tarafın da yayımlandığı yıllarda var: 2009-2025."""
+Doğum sayısı eksi ölüm sayısı: bir yerin göç olmadan, kendi kendine kazandığı ya da \
+kaybettiği nüfus. Eksi değer ölümün doğumu geçtiği yer demektir."""
 
 [indicator.infant_mortality]
 label_tr = "Bebek ölüm hızı"
@@ -643,11 +611,8 @@ frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Bin canlı doğum başına, bir yaşını doldurmadan ölen bebek sayısı. Paydası nüfus değil \
-canlı doğumdur. Yaş yapısından etkilenmediği için iller arası karşılaştırmaya kaba \
-hızlardan daha uygundur ve klasik olarak sağlık hizmetine erişimin göstergesi \
-sayılır. Küçük illerde payı birkaç yüz doğum olduğu için yıl yıl zıplar — eğilim \
-için hareketli ortalama işe yarar."""
+Bin canlı doğum başına, bir yaşını doldurmadan ölen bebek sayısı. Paydası nüfus değil, \
+canlı doğumdur."""
 
 [indicator.under5_mortality]
 label_tr = "Beş yaş altı ölüm hızı"
@@ -659,8 +624,7 @@ dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 Bin canlı doğum başına, beşinci yaş gününü görmeden ölen çocuk sayısı. Bebek ölüm \
-hızını **içerir**, onun yanına eklenmez: aradaki fark bir ile beş yaş arasındaki \
-ölümlerdir. Türkiye'de bu fark küçüktür, yani iki seri birbirine yakın seyreder."""
+hızını içerir, onun yanına eklenmez."""
 
 [indicator.pop_age_structure]
 label_tr = "Yaş yapısı"
@@ -671,8 +635,7 @@ frequency = "annual"
 dims = ["age"]
 views = ["table", "line", "bar"]
 definition_tr = """
-Nüfusun yaş gruplarına dağılımı. 2013 öncesi kent/kır ayrımı da taşınabilir; o \
-satırlar IPF ile üretildiği için kalite bayrağı `estimated` olur."""
+Nüfusun yaş gruplarına dağılımı."""
 
 [indicator.population]
 label_tr = "Nüfus"
@@ -683,9 +646,8 @@ frequency = "annual"
 dims = ["age", "sex"]
 views = ["table", "map", "line", "bar", "pyramid"]
 definition_tr = """
-İkamet edilen yerin nüfusu, beşli yaş grubu ve cinsiyet kırılımıyla. Nüfus piramidi \
-bu göstergeden çizilir. En üst grup 75+ olarak kapalıdır; kaynak dosya tek yaş verirken \
-75'ten sonrasını toplulaştırıyor."""
+İkamet edilen yerin nüfusu, beşli yaş grubu ve cinsiyet kırılımıyla. En üst grup 75+ \
+olarak kapalıdır."""
 
 [indicator.median_age]
 label_tr = "Ortanca yaş"
@@ -697,12 +659,7 @@ dims = ["sex"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 Nüfusu tam ortadan ikiye bölen yaş: yarısı bundan genç, yarısı yaşlıdır. Ortalama \
-yaştan farkı, uçlardaki birkaç çok yaşlıdan etkilenmemesidir. TÜİK yalnızca erkek ve \
-kadını ayrı ayrı yayımlıyor; **Toplam** bizim hesabımızdır (rozet: türetilmiş) ve iki \
-ortancanın ortalaması değil, tek yaş nüfus dağılımının tam ortasıdır. Yöntem \
-yayımlanan erkek/kadın değerlerine karşı sınandı: 3.116 karşılaştırmada ortalama \
-mutlak fark 0,05 yıl, yani TÜİK'in kendi yuvarlaması kadar. İl ve Türkiye düzeyinde \
-var, ilçe kırılımı yok."""
+yaştan farkı, uçlardaki birkaç çok yaşlıdan etkilenmemesidir."""
 
 [indicator.marital_status]
 label_tr = "Medeni durum"
@@ -715,12 +672,8 @@ dims = ["marital", "sex", "age"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 15 yaşını doldurmuş nüfusun medeni durumu — hiç evlenmedi, evli, boşandı, eşi öldü — \
-cinsiyet ve beşli yaş grubu kırılımıyla. Üç kırılım aynı anda yayımlandığı için "40-44 \
-yaş kadınlarda boşanmışların sayısı" doğrudan sorulabiliyor. \
-**Yaş 15'ten başlar**: medeni durum daha küçükler için yayımlanmaz, yani 0-14 eksik \
-değil yoktur — bu göstergenin toplamı ilin nüfusu değildir. Bilinmeyen kategorisi son \
-yıllarda kayboluyor; o yıllarda sütun sıfır değil, hiç yok. Türkiye, İBBS ve il \
-düzeyinde var, ilçe kırılımı çekilmedi."""
+cinsiyet ve beşli yaş grubu kırılımıyla. Yaş 15'ten başladığı için toplamı ilin nüfusu \
+değildir."""
 
 [indicator.population_density]
 label_tr = "Nüfus yoğunluğu"
@@ -731,9 +684,7 @@ frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Kilometrekareye düşen kişi sayısı. İstanbul 2.943, Tunceli 11 — nüfusun kendisinden \
-farklı bir soruyu yanıtlar: kaç kişi değil, ne kadar sıkışık. Yüzölçümü sabit olduğu \
-için yıllar arası değişimi nüfusun değişimiyle aynı biçimde hareket eder."""
+Kilometrekareye düşen kişi sayısı: kaç kişi değil, ne kadar sıkışık."""
 
 [indicator.household_size]
 label_tr = "Ortalama hanehalkı büyüklüğü"
@@ -744,9 +695,7 @@ frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Hane başına düşen kişi. Şırnak 4,84, Tunceli 2,49 — doğurganlık, birlikte yaşama \
-biçimleri ve göçün birlikte okunduğu tek sayı. Türkiye genelinde uzun süredir \
-düşüyor."""
+Hane başına düşen kişi sayısı."""
 
 [indicator.household_count]
 label_tr = "Hanehalkı sayısı"
@@ -757,8 +706,8 @@ frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Toplam hane sayısı. Nüfustan ayrı bir büyüklük: nüfus artmadan da hane sayısı artabilir \
-— aynı insanlar daha küçük hanelerde yaşamaya başladığında. 2012'den itibaren var."""
+Toplam hane sayısı. Nüfustan ayrı bir büyüklüktür: nüfus artmadan da, aynı insanlar \
+daha küçük hanelere bölündüğünde hane sayısı artar."""
 
 [indicator.household_by_type]
 label_tr = "Hanehalkı tipine göre hane sayısı"
@@ -771,10 +720,8 @@ dims = ["household_type"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 Hanelerin yapısına göre dağılımı: tek kişilik, tek çekirdek aileli, çekirdek aile ve \
-diğer kişiler, çekirdek ailesiz çok kişili. Dördü birbirini dışlar ve toplamı hanehalkı \
-sayısını verir. TÜİK bunların altında beş alt tip daha yayımlıyor (anne ve çocuklar, \
-sadece eşler gibi); onlar burada saklanmıyor, çünkü kardeş sanılıp toplanırlarsa hane \
-sayısı %78 fazla çıkar. 2014'ten itibaren var."""
+diğer kişiler, çekirdek ailesiz çok kişili. Dördü birbirini dışlar ve toplamı hane \
+sayısını verir."""
 
 [indicator.migration_in]
 label_tr = "Aldığı göç"
@@ -785,9 +732,8 @@ frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Yıl içinde ile başka bir ilden taşınan kişi sayısı. Kaynak dosyada cinsiyet ve yaş \
-kırılımı da var; burada toplam olarak saklanıyor. Yurt dışından gelen göç buna dahil \
-değil, ayrı göstergedir."""
+Yıl içinde ile başka bir ilden taşınan kişi sayısı. Yurt dışından gelen göç buna dahil \
+değildir."""
 
 [indicator.migration_out]
 label_tr = "Verdiği göç"
@@ -798,9 +744,7 @@ frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Yıl içinde ilden başka bir ile taşınan kişi sayısı. Türkiye genelinde aldığı göç \
-toplamı ile verdiği göç toplamı tanım gereği eşittir — her taşınma bir il için giriş, \
-başka bir il için çıkıştır — ve veri bunu tutuyor (2025'te ikisi de 2.475.019)."""
+Yıl içinde ilden başka bir ile taşınan kişi sayısı."""
 
 [indicator.migration_net]
 label_tr = "Net göç"
@@ -811,9 +755,7 @@ frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Aldığı göç eksi verdiği göç. Eksi değer il nüfusunun göçle azaldığını söyler. 2025'te \
-Ankara +31.172, İstanbul −41.346. Ülke toplamı sıfırdır, o yüzden Türkiye düzeyinde \
-yayımlanmaz."""
+Aldığı göç eksi verdiği göç. Eksi değer, il nüfusunun göçle azaldığını söyler."""
 
 [indicator.migration_net_rate]
 label_tr = "Net göç hızı"
@@ -824,9 +766,8 @@ frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Net göçün bin kişiye oranı. Net göçün mutlak sayısı büyük illeri öne çıkarır; hız, \
-küçük bir ilin nüfusunun yüzde ikisini kaybetmesini görünür kılar. 2025'te Yalova \
-+20,5, Ağrı −27,0."""
+Net göçün bin kişiye oranı. Mutlak sayı büyük illeri öne çıkarır; hız, küçük bir ilin \
+nüfusunun yüzde ikisini kaybetmesini görünür kılar."""
 
 [indicator.migration_from_abroad]
 label_tr = "Yurt dışından gelen göç"
@@ -837,8 +778,7 @@ frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Yıl içinde yurt dışından ile taşınan kişi sayısı. İç göçten ayrı tutulur: ülke \
-toplamında iç göç sıfırlanırken bu sıfırlanmaz, nüfusa net katkıdır."""
+Yıl içinde yurt dışından ile taşınan kişi sayısı."""
 
 [indicator.migration_to_abroad]
 label_tr = "Yurt dışına giden göç"
@@ -863,8 +803,7 @@ dims = ["sex"]
 # dictionary test says so, and it said so before this reached the screen.
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-İlde ikamet eden yabancı uyruklu kişi sayısı, cinsiyet kırılımıyla. İkamet edilen yere \
-göre sayılır, uyruk kırılımı bu çekimde yok."""
+İlde ikamet eden yabancı uyruklu kişi sayısı, cinsiyet kırılımıyla."""
 
 [indicator.registry_population]
 label_tr = "Kütük nüfusu"
@@ -876,24 +815,8 @@ additive = true
 dims = ["residence"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Bir ile nüfusa kayıtlı kişi sayısı — orada yaşayan değil, nerede yaşarsa yaşasın o ilin \
-kütüğünde duran. Nüfusla oranı, kuşaklar boyu göçün tek sayıya inmiş hâlidir: 2019'da \
-Ardahan'ın kütüğünde ilde yaşayanın **5,5 katı** kişi var, İstanbul'un kütüğünde ise \
-ilde yaşayanın ancak **%16'sı**. Yıl içi bir hareketi değil, birikmiş bir durumu \
-anlatır — bu yüzden aldığı/verdiği göçle aynı şey değildir.
-
-**Kırılım nerede yaşadıklarını söyler.** "Tümü (topla)" kütüğün tamamı; "İlinde" o ilde \
-yaşayan kendi kütüklüleri (İstanbul'da yaşayan İstanbullular); "İl dışında" kütükte olup \
-başka yerde yaşayanlar. "Nerede yaşıyor içinde %" kipi de kütüğün yüzde kaçının hâlâ \
-ilde olduğunu verir — 2025'te Şanlıurfa'da yüksek, İstanbul'da düşük. Üçünün de yıllık \
-değişimi türetmeden okunur, yani kütüğün ildeki ve dışarıdaki kısmı ayrı ayrı ne hızla \
-büyüyor sorusu doğrudan sorulabilir.
-
-Yabancı uyruklu nüfus buna dahil değildir: kütüğü olmayan kişi hiçbir ilin kütüğünde \
-sayılmaz. Türkiye toplamıyla ADNKS nüfusu arasındaki fark da bu kadardır (2019'da 1,53 \
-milyon). 2007-2025'in tamamı var; kaynakta ikamet ili kırılımı zorunlu olduğu için ölçü \
-81 gösterge × 82 alan ve on dokuz yıl birlikte 126 bin hücreyle sınırı aştığından yıl yıl \
-indirildi (`fetch_medas_simple kutuk-nufusu --yil=2019`)."""
+Bir ile nüfusa kayıtlı kişi sayısı — orada yaşayan değil, nerede yaşarsa yaşasın o \
+ilin kütüğünde duran. Kırılım nerede yaşadıklarını söyler: ilinde ya da il dışında."""
 
 # Bina ve daire ayrı göstergeler, çünkü aynı şey değiller: 2025'te 146.553 bina
 # 1,19 milyon daire demek. Ön çalışmada bu ikisi karışmıştı; sözlüğün varlık

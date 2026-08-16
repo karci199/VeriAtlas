@@ -3599,6 +3599,470 @@ const RENDERERS = {line: lineChart, bar: barChart, table, pyramid, map, scatter}
 
 // endregion
 
+// region Reading the screen
+//
+// What the number on screen actually is, in words, under the view that drew it.
+//
+// The definitions used to carry this: every trap, every denominator, every caveat, in one
+// paragraph above the chart. It was unreadable for two reasons. It sat *before* the thing
+// it explained, and it described every setting at once — including the eleven the reader
+// had not chosen. The paragraph for kütük nüfusu explained "il dışında" to a reader
+// looking at "tümü".
+//
+// So the definition above the chart is one or two sentences about the measure, and this
+// block, below the view, is assembled from the settings that are actually on: one entry
+// per choice, each with a worked example off the rows now in hand. Every combination is
+// covered because the combination is never written down — the clauses are, and they
+// compose. Nothing here is a fixed string with a number in it; if the arithmetic below
+// disagrees with the chart, the chart is what changed.
+
+/** Run `fn` with parts of the state temporarily replaced, then put it back.
+ *
+ *  This is how the examples reach the numbers *behind* the current reading: the raw
+ *  measurement under a percentage, the undifferenced series under a year-on-year change.
+ *  Safe because every memo key names the state it depends on (see `choices`), so the
+ *  borrowed reading is cached under its own key and neither answer overwrites the other. */
+function asIf(patch, fn) {
+    const saved = {};
+    for (const key of Object.keys(patch)) {
+        saved[key] = state[key];
+        state[key] = patch[key];
+    }
+    try {
+        return fn();
+    } finally {
+        Object.assign(state, saved);
+    }
+}
+
+function esc(text) {
+    return String(text).replace(/[&<>]/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;"})[c]);
+}
+
+/** A number in the reader's own format, at the precision the screen is using. */
+function say(value, places) {
+    if (!Number.isFinite(value)) {
+        return "—";
+    }
+    return formatter(places === undefined ? decimals() : places).format(value);
+}
+
+/** The area the examples are worked on: the first one actually drawn.
+ *
+ *  One area, named, all the way through the block. Worked on whichever area happened to
+ *  be largest per clause, the examples would each be arithmetically right and together
+ *  read as one calculation that does not add up. */
+function exampleArea() {
+    const drawnNow = drawn();
+    if (drawnNow.length) {
+        return drawnNow[0];
+    }
+    return state.selection[0] || null;
+}
+
+/** The year the examples stand on. The views that draw one year use that year; the line
+ *  and the table draw all of them, and there the last year is the one a reader looks at
+ *  first. */
+function exampleYear() {
+    const span = years();
+    const perYear = state.view !== "line" && state.view !== "table";
+    return perYear ? state.year : span[span.length - 1];
+}
+
+/** The value now on screen for the example area and year, derivation and share included.
+ *  Read from the same slice the view drew, not recomputed. */
+function exampleValue() {
+    const area = exampleArea();
+    if (!area) {
+        return undefined;
+    }
+    return seriesFor(area).find((p) => p.year === exampleYear())?.value;
+}
+
+/** The raw measurement under the example: no share, no derivation. */
+function exampleRaw(patch = {}) {
+    const area = exampleArea();
+    if (!area) {
+        return undefined;
+    }
+    return asIf({share: "", derivation: "", ...patch}, () => {
+        const rows = byArea(levelOfArea(area)).get(area) || [];
+        return rows.find((r) => r.year === exampleYear())?.value;
+    });
+}
+
+/** The raw unit's precision — the share's two decimals belong to the percentage, not to
+ *  the count underneath it. */
+function rawPlaces() {
+    return state.indicator.decimals ?? 0;
+}
+
+function entry(term, body, example) {
+    return (
+        "<div class='reading-item'><dt>" + esc(term) + "</dt><dd>" + body +
+        (example ? "<span class='reading-eg'>Örnek: " + example + "</span>" : "") +
+        "</dd></div>"
+    );
+}
+
+/** What one number on screen is: which area, which year, which unit. */
+function readingMeasure() {
+    const area = exampleArea();
+    const value = exampleValue();
+    // "bir türkiye ve bir yıl" — the country is one area, not one of a kind, and the
+    // lower-cased label reads as a typo. Named separately rather than left to the
+    // sentence that works for the other five levels.
+    const level = effectiveLevel();
+    const where =
+        level === "country"
+            ? "Ekrandaki her sayı Türkiye'nin bir yılı içindir"
+            : "Ekrandaki her sayı bir " +
+              esc((LEVEL_LABELS[level] || "alan").toLocaleLowerCase("tr")) +
+              " ve bir yıl içindir";
+    const body =
+        where + "; birimi <b>" + esc(unitLabel()) + "</b>. " +
+        (state.indicator.additive
+            ? "Sayılabilir bir büyüklük, yani alanlar ve kırılım değerleri toplanabilir."
+            : "Toplanamaz bir büyüklük — bir oran ya da bir konum — o yüzden iki alanın " +
+              "değeri toplanmaz, ancak karşılaştırılır.");
+    const example =
+        area && Number.isFinite(value)
+            ? "<b>" + esc(nameOf(area)) + "</b>, " + exampleYear() + ": <b>" +
+              esc(say(value)) + "</b> " + esc(unitLabel())
+            : null;
+    return entry("Ölçü — " + state.indicator.label, body, example);
+}
+
+/** Which areas the screen holds, and whether the source published them or we added them
+ *  up. A summed level is not a published one and the reader is told which they are on. */
+function readingLevel() {
+    const level = effectiveLevel();
+    const count = new Set(slice(level).map((r) => r.area_id)).size;
+    const flags = new Set(slice(level).map((r) => r.quality_flag));
+    const body =
+        "Satırlar <b>" + esc(LEVEL_LABELS[level] || level) + "</b> düzeyinde: " +
+        count + " alan" +
+        (state.focus ? ", " + esc(nameOf(state.focus)) + " içine girilmiş hâlde" : "") +
+        ". " +
+        (flags.has("estimated")
+            ? "Bir kısmı <b>tahmin</b> işaretli — kaynakta yayımlanmadı, hesaplandı; " +
+              "künyedeki sarı rozet bunu söylüyor."
+            : "Hepsi kaynağın yayımladığı ölçüm.");
+    return entry("Düzey", body, null);
+}
+
+/** The example area's raw value at each value of one breakdown, every other choice held.
+ *
+ *  The same filter `sliceRaw` applies, for one area and one year: the numbers printed
+ *  here are the ones the chart added together, not a second reading of the file. */
+function examplePartsOf(dim, values) {
+    const area = exampleArea();
+    const year = exampleYear();
+    const others = (state.indicator.dims || []).filter((d) => d !== dim);
+    const sums = new Map();
+    for (const row of rowsAt(levelOfArea(area))) {
+        // Id or name: the selection is keyed by id, but `byArea` indexes both and a
+        // shared link can carry either, so this matches the way that lookup does.
+        if ((row.area_id !== area && row.area !== area) || row.year !== year) {
+            continue;
+        }
+        if (
+            !others.every(
+                (d) =>
+                    state.dims[d] === TOTAL ||
+                    String(groupValue(d, row[d])) === String(state.dims[d])
+            )
+        ) {
+            continue;
+        }
+        const key = String(groupValue(dim, row[dim]));
+        sums.set(key, (sums.get(key) || 0) + row.value);
+    }
+    return values
+        .map((value) => ({label: dimValue(dim, value), value: sums.get(String(value))}))
+        .filter((p) => Number.isFinite(p.value));
+}
+
+/** One entry per breakdown the indicator carries: what was kept, what was summed away,
+ *  and the arithmetic of the sum where a sum happened. */
+function readingDims() {
+    const area = exampleArea();
+    const out = [];
+    for (const dim of state.indicator.dims || []) {
+        const values = valuesOf(dim);
+        if (values.length < 2) {
+            continue;
+        }
+        const chosen = state.dims[dim];
+        const group = grouping(dim);
+        const notes = [];
+
+        if (chosen === TOTAL) {
+            notes.push(
+                "<b>Tümü (topla)</b> seçili: " + values.length + " değerin (" +
+                esc(values.map((v) => dimValue(dim, v)).join(", ")) +
+                ") satırları tek sayıya toplanıyor."
+            );
+        } else {
+            notes.push(
+                "Yalnızca <b>" + esc(dimValue(dim, chosen)) + "</b> satırları sayılıyor; " +
+                "geri kalan " + (values.length - 1) +
+                " değer ekranda hiç yok — eksik değil, sorulmamış."
+            );
+        }
+        if (group) {
+            notes.push(
+                "Değerler <b>" + esc(group.label) + "</b> okumasıyla gruplanmış: " +
+                "ham değerler önce gruplara toplanıyor, sonra seçim onlara uygulanıyor."
+            );
+        }
+        if (state.split === dim) {
+            notes.push(
+                "Bu kırılım <b>serilere ayrılmış</b>: her alan için tek çizgi yerine " +
+                values.length + " çizgi çiziliyor, seçim kutusu devre dışı."
+            );
+        }
+
+        // The arithmetic of the choice, on the example area: the parts and the total, so
+        // "toplanıyor" is a claim the reader can check rather than a word.
+        //
+        // One pass over the area's own rows rather than one slice per value. Marital
+        // status has sixteen age bands and a slice of it is 184.000 rows; asking for a
+        // slice per value put sixteen of them through the memo on every draw, which is
+        // the whole table rebuilt to print four numbers.
+        let example = null;
+        if (area) {
+            const parts = examplePartsOf(dim, values);
+            if (parts.length) {
+                const total = parts.reduce((sum, p) => sum + p.value, 0);
+                const shown = parts.slice(0, 4);
+                example =
+                    esc(nameOf(area)) + " " + exampleYear() + " — " +
+                    shown
+                        .map(
+                            (p) =>
+                                esc(p.label) + ": " +
+                                esc(say(p.value, rawPlaces()))
+                        )
+                        .join(" · ") +
+                    (parts.length > shown.length ? " · …" : "") +
+                    (chosen === TOTAL && state.indicator.additive
+                        ? " → toplam <b>" + esc(say(total, rawPlaces())) + "</b>"
+                        : "");
+            }
+        }
+        out.push(entry("Kırılım — " + dimLabel(dim), notes.join(" "), example));
+    }
+    return out.join("");
+}
+
+//: What each derivation does, and how to read its sign. The formula is written the way
+//: the code computes it, so the two can be checked against each other.
+const DERIVATION_READING = {
+    index: {
+        what: "Her seri kendi ilk yılına bölünüp 100 ile çarpılıyor.",
+        formula: "(değer ÷ ilk yılın değeri) × 100",
+        reads: "100 ilk yıl demek; 120 ilk yıla göre beşte bir artmış demek. " +
+               "Büyüklükleri değil, hareketleri karşılaştırır — İstanbul ile Tunceli " +
+               "aynı çizgiden başlar.",
+        drops: "",
+    },
+    yoy: {
+        what: "Bir önceki yıla göre yüzde değişim.",
+        formula: "((bu yıl − geçen yıl) ÷ geçen yıl) × 100",
+        reads: "Tek yılın hareketi. İyi ya da kötü bir yıl bütün resmi değiştirir; " +
+               "uzun dönem için bileşik büyüme daha sağlam.",
+        drops: "İlk yılın öncesi yok, o yüzden çizilmiyor — sıfır değil, yok.",
+    },
+    diff: {
+        what: "Bir önceki yıla göre fark, ölçünün kendi biriminde.",
+        formula: "bu yıl − geçen yıl",
+        reads: "Yüzde küçük bir tabanda büyük görünür; bu, kaç kişi olduğunu söyler.",
+        drops: "İlk yıl çizilmiyor.",
+    },
+    total_change: {
+        what: "İlk yıldan bu yana toplam yüzde değişim.",
+        formula: "((değer − ilk yıl) ÷ ilk yıl) × 100",
+        reads: "Endeksin sıfır merkezli hâli: 100 yerine 0 başlangıç, −51,4 yarıdan " +
+               "fazla düşmüş demek. 'En çok nerede düştü' sorusunun sıralanacağı sütun.",
+        drops: "",
+    },
+    total_diff: {
+        what: "İlk yıldan bu yana toplam fark, ölçünün kendi biriminde.",
+        formula: "değer − ilk yılın değeri",
+        reads: "Ortanca yaşın 34'ten 36'ya çıkması '+2 yaş'tır; buna '%5,9' demek " +
+               "kimsenin sormadığı bir aritmetiktir.",
+        drops: "",
+    },
+    cagr: {
+        what: "İlk yıldan o yıla kadar, yılda ortalama bileşik büyüme.",
+        formula: "((değer ÷ ilk yıl)^(1 ÷ geçen yıl sayısı) − 1) × 100",
+        reads: "'Ne hızla büyüyor' sorusunun tek yıla takılmayan cevabı. Bileşik: " +
+               "18 yılda %20, yılda %1,0'dır — 20 ÷ 18 = 1,1 değil.",
+        drops: "İlk yılın kendi tabanı olduğu için oranı yok, çizilmiyor.",
+    },
+    ma3: {
+        what: "Üç yıllık ortalanmış hareketli ortalama.",
+        formula: "(önceki yıl + bu yıl + sonraki yıl) ÷ 3",
+        reads: "Küçük alanlar yıldan yıla zıplar ve zıplamanın çoğu gürültüdür; bu " +
+               "onu yatıştırır, eğilimi bırakır.",
+        drops: "İlk ve son yılın bir komşusu eksik, o yüzden çizilmiyor.",
+    },
+};
+
+/** The derivation in words, with its own arithmetic done on the example area. */
+function readingDerivation() {
+    const id = state.derivation;
+    if (!id) {
+        return entry(
+            "Türetme — Ölçüm (ham)",
+            "Türetme kapalı: ekrandaki sayı ölçünün kendisi, zamana göre bir " +
+            "dönüştürmeden geçmiyor.",
+            null
+        );
+    }
+    const reading = DERIVATION_READING[id];
+    const label = meta.derivations?.[id]?.label || id;
+    if (!reading) {
+        return entry("Türetme — " + label, "Seri zamana göre türetiliyor.", null);
+    }
+
+    // The example is the code's own arithmetic, run on the undivided series: the numbers
+    // that go into the formula, and the number that comes out — which is the number on
+    // screen, not a second one computed here.
+    let example = null;
+    const area = exampleArea();
+    if (area) {
+        const points = asIf({derivation: ""}, () => seriesFor(area)).filter((p) =>
+            Number.isFinite(p.value)
+        );
+        const year = exampleYear();
+        const here = points.find((p) => p.year === year);
+        const first = points[0];
+        const previous = points[points.findIndex((p) => p.year === year) - 1];
+        const out = seriesFor(area).find((p) => p.year === year)?.value;
+        const places = state.share ? 2 : rawPlaces();
+        const parts =
+            id === "yoy" || id === "diff"
+                ? previous && here && [previous, here]
+                : id === "ma3"
+                  ? here && points.slice(Math.max(0, points.indexOf(here) - 1), points.indexOf(here) + 2)
+                  : first && here && [first, here];
+        if (parts && parts.length && Number.isFinite(out)) {
+            example =
+                esc(nameOf(area)) + " — " +
+                parts.map((p) => p.year + ": " + esc(say(p.value, places))).join(", ") +
+                " → <b>" + esc(say(out)) + "</b> " + esc(unitLabel());
+        }
+    }
+
+    return entry(
+        "Türetme — " + label,
+        reading.what + " <span class='reading-formula'>" + esc(reading.formula) +
+            "</span> " + reading.reads + (reading.drops ? " " + reading.drops : ""),
+        example
+    );
+}
+
+/** The share mode: which total the number was divided by, said in full, with the
+ *  division actually carried out on the example area. */
+function readingShare() {
+    const area = exampleArea();
+    const year = exampleYear();
+    const level = effectiveLevel();
+    const within = shareWithin();
+    const top = exampleRaw();
+    let body;
+    let bottom;
+
+    if (!state.share) {
+        body =
+            "Bölme yok: ekrandaki sayı mutlak büyüklüğün kendisi. Büyük alanlar büyük " +
+            "sayılar verir, o yüzden 'nerede yoğun' sorusu için bir yüzde kipine geçmek " +
+            "gerekir.";
+    } else if (state.share === "population") {
+        body =
+            "Payda <b>başka bir gösterge</b>: aynı alanın ve yılın nüfusu. Diğer " +
+            "kiplerden farkı bu — ölçüyü kendi bir parçasına değil, o yerde yaşayan " +
+            "insan sayısına oranlıyor.";
+        bottom = area && populationTotals(level).get(area + "|" + year);
+    } else if (within) {
+        body =
+            "Payda, <b>" + esc(dimLabel(within)) + "</b> kırılımının bu alandaki " +
+            "toplamı: diğer bütün seçimler yerinde tutulup yalnızca bu kırılımın " +
+            "değerleri toplanıyor. '65+ kadınlarda dul olanların oranı' bu kiptir; " +
+            "alanın kendi toplamına bölmek onu 'nüfusun içinde 65+ dul kadın' " +
+            "sorusuna çevirirdi, ki başka bir sayıdır.";
+        bottom = area && withinTotals(level, within).get(area + "|" + year);
+    } else if (state.share === "own") {
+        body =
+            "Payda, <b>alanın kendi toplamı</b>: kırılımın bütün değerleri toplanmış " +
+            "hâli. Bileşimi verir — bu yerin yüzde kaçı seçili değer. Alanlar arası " +
+            "büyüklük farkını temizler.";
+        bottom = area && wholeOf(level).get(area + "|" + year);
+    } else {
+        body =
+            "Payda, <b>o yılın ülke toplamı</b>: ekrandaki bütün alanların aynı yıldaki " +
+            "değerlerinin toplamı. Dağılımı verir — bu büyüklüğün yüzde kaçı burada. " +
+            "Sütunlar 100'e tamamlanır.";
+        const rows = asIf({share: ""}, () => slice(level));
+        bottom = rows
+            .filter((r) => r.year === year)
+            .reduce((sum, r) => sum + (Number.isFinite(r.value) ? r.value : 0), 0);
+    }
+
+    let example = null;
+    if (state.share && area && Number.isFinite(top) && Number.isFinite(bottom) && bottom) {
+        example =
+            esc(nameOf(area)) + " " + year + ": " + esc(say(top, rawPlaces())) + " ÷ " +
+            esc(say(bottom, rawPlaces())) + " × 100 = <b>" +
+            esc(say((top / bottom) * 100, 2)) + "</b>%";
+    }
+
+    const label = state.share ? unitLabel() : "Mutlak sayı";
+    return entry("Kip — " + label, body, example);
+}
+
+//: What each view is for. Short: the reader is looking at it, so this says what it is
+//: good at, not what it looks like.
+const VIEW_READING = {
+    table: "Her alan bir satır. Sıralanabilir olduğu için 'en yüksek/en düşük' " +
+           "sorularının cevabı burada, haritada değil.",
+    map: "Renk, seçili yılın değeri. Renk sınıfları ölçek kutusundan geliyor: " +
+         "'nicelik' her sınıfa yakın sayıda alan koyar, 'eşit aralık' değer " +
+         "aralığını eşit böler — aynı veri, iki farklı harita.",
+    line: "Yıllar yatay eksende, seçili her alan bir çizgi. Zaman içinde ne olduğu " +
+          "buradan okunur; tek bir yılın karşılaştırması için sütun daha nettir.",
+    bar: "Seçili yılın değerleri, alan alan. Sıra büyüklüğe göre, o yüzden " +
+         "karşılaştırma doğrudan.",
+    pyramid: "Yaş grupları dikey, cinsiyet iki yana. Türetme burada kapalı: eksen " +
+             "yaş bantları, yıllar değil.",
+    scatter: "İki gösterge, aynı alanlar. Yatay eksendeki gösterge ayrıca seçiliyor; " +
+             "nokta bir alanın o yıldaki iki değeri.",
+};
+
+function readingView() {
+    return entry(
+        "Görünüm — " + (VIEW_LABELS[state.view] || state.view).replace(/^\S+\s/, ""),
+        VIEW_READING[state.view] || "",
+        null
+    );
+}
+
+function drawReading() {
+    const blocks =
+        readingMeasure() +
+        readingDims() +
+        readingDerivation() +
+        readingShare() +
+        readingLevel() +
+        readingView();
+    $("reading").innerHTML =
+        "<h3>Bu ekranda ne var</h3><dl class='reading-list'>" + blocks + "</dl>";
+}
+
+// endregion
+
 // region Render
 
 function render() {
@@ -3691,6 +4155,7 @@ function render() {
         unitLabel() + " · " + (LEVEL_LABELS[state.level] || state.level) +
         " · " + (perYear ? state.year : span[0] + "–" + span[span.length - 1]);
 
+    drawReading();
     drawSource();
     writeHash();
 }

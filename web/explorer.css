@@ -608,6 +608,74 @@ select:focus-visible, button:focus-visible, input:focus-visible {
 
 .icon-button:hover { background: var(--bg-control-hover); }
 
+/* The reading block: one row per active setting, term on the left where the eye can skip
+   down it, meaning on the right. Two columns only where there is room for the term not to
+   wrap — below that it stacks, because a two-word column of six lines is worse than a
+   heading above its paragraph. */
+.reading {
+    border-top: 1px solid var(--stroke-divider);
+    margin: var(--gap-md) 0 var(--gap-sm);
+    padding-top: var(--gap-sm);
+    max-width: 90ch;
+}
+
+.reading h3 {
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+    font-weight: 600;
+    margin: 0 0 var(--gap-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.reading-list { margin: 0; }
+
+.reading-item {
+    display: grid;
+    grid-template-columns: 15rem 1fr;
+    gap: var(--gap-sm) var(--gap-md);
+    padding: var(--gap-xs) 0;
+    border-top: 1px solid var(--stroke-divider);
+}
+
+.reading-item:first-child { border-top: 0; }
+
+@media (max-width: 900px) {
+    .reading-item { grid-template-columns: 1fr; gap: 2px; }
+}
+
+.reading-item dt {
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    font-weight: 600;
+}
+
+.reading-item dd {
+    margin: 0;
+    color: var(--text-tertiary);
+    font-size: var(--text-sm);
+    line-height: 1.55;
+}
+
+.reading-item dd b { color: var(--text-secondary); font-weight: 600; }
+
+.reading-formula {
+    display: inline-block;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: var(--text-xs);
+    background: var(--bg-control);
+    border-radius: var(--radius);
+    padding: 0 var(--gap-xs);
+}
+
+/* The worked example on its own line: it is the part a doubting reader checks, and it
+   should be findable without reading the sentence above it again. */
+.reading-eg {
+    display: block;
+    margin-top: 4px;
+    color: var(--text-secondary);
+}
+
 .foot {
     display: flex;
     align-items: flex-end;
