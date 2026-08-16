@@ -1312,3 +1312,90 @@ yalnız "Sivas'tan gitmiş olanların sayısı" çıkar.
 yapı ruhsatı göstergesi görünmedi; `cikti\TUIK_yapi_ruhsati_*.csv` masaüstünde
 duruyor. Konut arzı ↔ hane kurulumu ↔ evlenme zinciri kurulabilir mi, önce
 verinin nerede olduğu netleşmeli.
+
+## Bulgu 20 — pandeminin il haritası: güneydoğu en ağır, kaba hız etkiyi abartıyor
+
+Bulgu 17'nin altyapısıyla. Taban çizgisi **2015-19 ortalaması**; pandemi ölçüsü
+2020 ve 2021'in bu tabana göre fazlası. Hem kaba hem yaşa göre standardize hız,
+yanına doğum ve doğal artış. 69 il hesaplanabildi (yaş bandı bastırması).
+
+### Türkiye
+
+| Yıl | Kaba ölüm ‰ | Std. ölüm ‰ | Kaba doğum ‰ | Doğal artış ‰ |
+|---|---|---|---|---|
+| 2019 | 5,25 | 6,17 | 14,33 | 9,08 |
+| 2020 | 6,09 | 7,01 | 13,40 | 7,31 |
+| **2021** | **6,69** | **7,65** | **12,83** | **6,13** |
+| 2022 | 5,93 | 6,65 | 12,22 | 6,29 |
+| 2025 | 5,71 | 5,71 | 10,40 | 4,69 |
+
+2015-19 tabanı: std 6,37 · kaba 5,24 · doğum 15,84 · doğal artış 10,61.
+
+| | Std. fazla | Kaba fazla |
+|---|---|---|
+| 2020 | **+%10,2** | +%16,3 |
+| 2021 | **+%20,1** | +%27,8 |
+
+**Kaba hız pandemiyi abartıyor.** Aradaki fark (27,8 vs 20,1) pandemi değil,
+nüfusun yaşlanması. Dürüst rakam 2021 için **+%20**, +%28 değil. Bulgu 17'de kaba
+hızın haritayı yanlış çizdiği bulunmuştu; burada **zaman serisinde de** yanlış
+çizdiği görülüyor.
+
+Doğum da düştü (14,33 → 12,83), yani doğal artış iki uçtan birden sıkıştı:
+9,08 → 6,13.
+
+### En ağır etkilenen iller (2020-21 ortalaması, standardize)
+
+| İl | Std. fazla % | Kaba fazla % | Yalnız 2021 |
+|---|---|---|---|
+| Batman | **+35,0** | +30,6 | +35,6 |
+| Diyarbakır | **+33,9** | +31,1 | +35,2 |
+| Mardin | +27,7 | +25,1 | +25,9 |
+| Ağrı | +26,2 | +26,7 | +31,9 |
+| Siirt | +25,9 | +25,8 | +26,3 |
+| Konya | +25,0 | +31,8 | +27,8 |
+| Gaziantep | +24,4 | +25,4 | +22,9 |
+| Hatay | +24,3 | +28,0 | +25,8 |
+| Elazığ | +23,7 | +31,2 | +26,6 |
+| Bitlis | +23,6 | +25,3 | +21,1 |
+
+**En az etkilenen:** Kars +1,3 · Iğdır +4,3 · Balıkesir +7,5 · Niğde +8,8 ·
+Çanakkale +8,9 · Yalova +9,0 · İzmir +9,2 · Kastamonu +9,7.
+
+Batman ve Diyarbakır'da ölümlülük **üçte biri kadar** arttı; İzmir'de onda biri.
+Güneydoğu listenin başında — Bulgu 17'de en **düşük** ölümlülüğe sahip görünen
+bölge, şoka en kırılgan çıkmış.
+
+⚠️ **Şüpheli:** Kars +1,3 ve Iğdır +4,3, hemen yanı başındaki Ağrı +26,2 iken.
+Komşu illerde bu kadar farklı bir salgın seyri olası değil; ölüm kaydı gecikmesi
+ya da eksikliği araştırılmalı. Bu iki ilin rakamı kullanılmadan önce doğrulanmalı.
+
+### Doğal nüfus artışı: en çok düşen 12
+
+| İl | Taban ‰ | 2021 ‰ | 2025 ‰ | Değişim |
+|---|---|---|---|---|
+| Ağrı | 23,94 | 17,60 | 13,08 | **−10,85** |
+| Muş | 23,12 | 18,42 | 12,37 | −10,76 |
+| Iğdır | 17,73 | 12,68 | 8,04 | −9,68 |
+| Van | 22,42 | 16,15 | 12,75 | −9,68 |
+| Bitlis | 21,76 | 17,56 | 12,95 | −8,81 |
+| Bingöl | 16,02 | 11,62 | 7,84 | −8,19 |
+| Diyarbakır | 21,72 | 16,53 | 13,62 | −8,09 |
+| Şanlıurfa | 28,70 | 25,27 | 20,64 | −8,06 |
+| Mardin | 22,23 | 18,51 | 14,41 | −7,82 |
+| Adıyaman | 16,61 | 12,06 | 8,81 | −7,80 |
+| Siirt | 21,90 | 17,65 | 14,10 | −7,80 |
+| Batman | 21,15 | 17,24 | 13,36 | −7,79 |
+
+Yine güneydoğu — ama burada en yüksekten başlayan grup oldukları için beklenen
+sonuç. TR 10,61 → 4,69: doğal artış **yarıdan fazla** erimiş.
+
+### 2025'te doğal artışı NEGATİF olan 14 il
+
+Giresun −2,76 · Kastamonu −2,60 · Edirne −2,21 · Balıkesir −1,97 ·
+Çanakkale −1,93 · Kırklareli −1,42 · Zonguldak −1,36 · Çorum −1,19 ·
+Kütahya −0,87 · Ordu −0,50 · Amasya −0,48 · Burdur −0,39 (+2 il).
+
+Bu illerde ölüm doğumu geçti; nüfusları artık yalnız göçle ayakta. 2021'de 12 il
+negatifti — pandemi geçici olarak değil **kalıcı** olarak bu eşiğe taşımış
+görünüyor, çünkü 2025'te sayı azalmadı arttı.
