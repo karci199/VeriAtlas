@@ -77,6 +77,10 @@ MEASURES = {
     "goc-disaridan": ("migration_from_abroad", None, None),
     "goc-disariya": ("migration_to_abroad", None, None),
     "yabanci-uyruklu": ("foreign_population", "sex", SEXES),
+    # Same shape as the one above — a sex breakdown down the rows — but a much shorter
+    # series: the provincial life tables exist for five years only, with gaps. That is the
+    # source's shape and the parser has nothing to do about it; the dictionary says so.
+    "yasam-suresi": ("life_expectancy", "sex", SEXES),
     # Kütük nüfusu is *not* here, though its file has this shape. Summing its columns the
     # way this adapter sums migration's would answer the wrong question — the row is where
     # people live and the column is where they are registered, so a row's total is the

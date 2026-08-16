@@ -642,6 +642,29 @@ definition_tr = """
 Bin canlı doğum başına, beşinci yaş gününü görmeden ölen çocuk sayısı. Bebek ölüm \
 hızını içerir, onun yanına eklenmez."""
 
+# The series is short and has holes on purpose: TÜİK builds provincial life tables from
+# pooled three-year windows and publishes them irregularly, so the source offers 2013,
+# 2014, 2017, 2020 and 2023 and nothing between. Every year MEDAS offers is taken; the
+# gaps are the source's, not a partial download. A derivation over this reads across
+# uneven steps — "yıllık değişim" between 2014 and 2017 is three years of change wearing
+# a one-year label — which is why the definition says the years out loud.
+#
+# No total. Two life expectancies cannot be averaged into one without the birth cohorts
+# as weights, and those are not in this file; the same rule that keeps ortalama ilk
+# evlenme yaşı from having one.
+[indicator.life_expectancy]
+label_tr = "Doğuşta beklenen yaşam süresi"
+label_en = "Life expectancy at birth"
+topic = "olum"
+unit = "year_of_age"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+O yıl doğan bir bebeğin, dönemin yaşa özel ölüm hızları ömrü boyunca geçerli kalsaydı \
+yaşayacağı ortalama yıl sayısı. İl düzeyinde yalnız 2013, 2014, 2017, 2020 ve 2023 için \
+yayımlanıyor."""
+
 [indicator.pop_age_structure]
 label_tr = "Yaş yapısı"
 label_en = "Age structure"
