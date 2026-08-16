@@ -1001,6 +1001,26 @@
       "note": "Çalışma çağı dışındaki her iki uç birlikte, çalışma çağındaki yüz kişiye oranla. Çocuk ve yaşlı oranı ters yönde hareket ettiği için toplam, ikisinin anlattığını gizleyebilir: aynı 50 değeri çok çocuklu bir ili de çok yaşlı bir ili de anlatır."
     }
   },
+  "bases": {
+    "women_15_49": {
+      "label": "Doğurgan çağdaki kadın başına (‰)",
+      "indicator": "population",
+      "dims": {
+        "sex": "female"
+      },
+      "grouping": "age_fertile",
+      "values": [
+        "15-49"
+      ],
+      "factor": 1000,
+      "unit": "‰ (15-49 kadında)",
+      "decimals": 2,
+      "applies_to": [
+        "births"
+      ],
+      "note": "Genel doğurganlık hızı: doğurgan çağdaki (15-49) bin kadın başına doğum. Toplam doğurganlık hızından farkı, yaş yapısından arındırılmamış olmasıdır — bu yüzden ikisi birlikte okunur: TFH sabitken GDH düşüyorsa düşen şey doğurganlık değil, doğuracak kuşağın payıdır."
+    }
+  },
   "derivations": {
     "index": {
       "label": "Endeks (ilk yıl = 100)",

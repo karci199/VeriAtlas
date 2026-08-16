@@ -226,6 +226,25 @@ def export_dictionary(
         for r in load().ratios.values()
     }
 
+    # Denominators taken from a slice of another indicator. `applies_to` travels with it
+    # because the page must not offer a base to an indicator it means nothing for — the
+    # rule is per pair, not per unit, and it is a decision rather than arithmetic.
+    bases = {
+        b.base_id: {
+            "label": b.label_tr,
+            "indicator": b.indicator,
+            "dims": dict(b.dims),
+            "grouping": b.grouping,
+            "values": list(b.values),
+            "factor": b.factor,
+            "unit": b.unit.label_tr,
+            "decimals": b.unit.decimals,
+            "applies_to": list(b.applies_to),
+            "note": b.note_tr,
+        }
+        for b in load().bases.values()
+    }
+
     derivations = {
         d.derivation_id: {
             "label": d.label_tr,
@@ -289,6 +308,7 @@ def export_dictionary(
                 "groupings": groupings,
                 "comparisons": comparisons,
                 "ratios": ratios,
+                "bases": bases,
                 "derivations": derivations,
                 "belongs": ancestors,
                 "area_labels": labels,

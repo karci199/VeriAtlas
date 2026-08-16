@@ -530,6 +530,8 @@ function choices() {
         // marker changes when the rows arrive, so that slice is recomputed and every
         // other slice keeps the key it always had.
         (state.share === "population" ? (versusRows.get(AGAINST)?.length || 0) + "|" : "") +
+        // Same reason, for a base: its denominator is a second file too.
+        (activeBase() ? (versusRows.get(activeBase().indicator)?.length || 0) + "|" : "") +
         (state.indicator.dims || [])
             .map((d) => d + "=" + state.dims[d] + "/" + (state.grouping[d] || ""))
             .join(";")
@@ -905,6 +907,19 @@ function sliceRaw(level = state.level) {
             });
         }
 
+        // Against a named slice of another indicator: the general fertility rate is
+        // births over women 15-49, per thousand. The factor comes from the dictionary
+        // with the unit, so "per mille" is one decision in one place rather than a 1000
+        // here and a ‰ in the label.
+        const named = activeBase();
+        if (named) {
+            const denominator = baseTotals(level, named);
+            return [...totals.values()].map((row) => {
+                const base = denominator.get(row.area_id + "|" + row.year);
+                return {...row, value: base ? (row.value / base) * named.factor : NaN};
+            });
+        }
+
         // "own:<dim>" — the share within one breakdown, every other choice held. See
         // shareControl for why this is a separate mode rather than what "own" means.
         const within = shareWithin();
@@ -1039,6 +1054,26 @@ async function ensurePopulation() {
     }
 }
 
+/** Fetch the rows a base divides by: the whole indicator, at this level too.
+ *
+ *  Written against the dictionary's indicator id rather than the population's, so a base
+ *  over something else needs no new code here. */
+async function ensureBase(base) {
+    const indicator = catalogue.find((i) => i.id === base.indicator);
+    if (!indicator || versusRows.has(base.indicator)) {
+        return;
+    }
+    const files = [indicator.dataset, indicator.parts?.[state.level]].filter(Boolean);
+    const note = $("rail-note");
+    const said = note.textContent;
+    note.textContent = "Payda indiriliyor…";
+    try {
+        versusRows.set(base.indicator, (await Promise.all(files.map(part))).flat());
+    } finally {
+        note.textContent = said;
+    }
+}
+
 /** Total population per area-year at a level: `Map("TR-16|2025" -> 3263011)`.
  *
  *  The row count is in the memo key, which looks redundant and is not: the population is
@@ -1075,6 +1110,63 @@ function populationTotals(level) {
  *  states about the unit rather than a word in one language (K1). What adds up is a
  *  count; what does not is a rate, an age or an index, and none of those go over a
  *  population. */
+/** The bases this indicator may be read against, as `[id, base]` pairs.
+ *
+ *  Gated on the dictionary's own list rather than on the unit, and on the denominator
+ *  actually being loadable: a base over an indicator the page does not have is an option
+ *  that would draw dashes. */
+function basesFor() {
+    return Object.entries(meta.bases || {}).filter(
+        ([, base]) =>
+            (base.applies_to || []).includes(state.indicator.id) &&
+            catalogue.some((i) => i.id === base.indicator && i.available)
+    );
+}
+
+function activeBase() {
+    if (!state.share?.startsWith("base:")) {
+        return null;
+    }
+    const id = state.share.slice(5);
+    return basesFor().find(([key]) => key === id)?.[1] || null;
+}
+
+/** The denominator a base names, per area-year: `Map("TR-16|2025" -> 574125)`.
+ *
+ *  Summed off the same rows the population mode uses, with the base's slice applied —
+ *  sex from the dims, age through the grouping so that the province file's single years
+ *  and the district file's five-year bands both resolve to the same 15-49. Written out
+ *  as bands here would be right at one level and wrong at the other. */
+function baseTotals(level, base) {
+    const rows = versusRows.get(base.indicator) || [];
+    const key = "base|" + base.indicator + "|" + level + "|" + rows.length +
+                "|" + JSON.stringify(base.dims) + "|" + (base.grouping || "");
+    return remember(key, () => {
+        const wanted = new Set(base.values || []);
+        const covers = meta.groupings?.[base.grouping]?.covers || {};
+        const totals = new Map();
+        for (const row of rows) {
+            if (row.level !== level) {
+                continue;
+            }
+            if (Object.entries(base.dims || {}).some(([dim, value]) => row[dim] !== value)) {
+                continue;
+            }
+            if (base.grouping) {
+                const group = Object.keys(covers).find((name) =>
+                    covers[name].includes(row[meta.groupings[base.grouping].dim])
+                );
+                if (!wanted.has(group)) {
+                    continue;
+                }
+            }
+            const at = row.area_id + "|" + row.year;
+            totals.set(at, (totals.get(at) || 0) + row.value);
+        }
+        return totals;
+    });
+}
+
 function canShareAgainstPopulation() {
     return (
         state.indicator.id !== AGAINST &&
@@ -1101,6 +1193,13 @@ function shareOfWholeMeans() {
 function shareStillMeans(share) {
     if (share === "population") {
         return canShareAgainstPopulation() ? share : "";
+    }
+    // A base belongs to the indicators the dictionary lists it for and to no others, so
+    // it is dropped on the way to one that does not have it rather than carried over as
+    // a mode that would divide deaths by women of childbearing age.
+    if (share.startsWith("base:")) {
+        const id = share.slice(5);
+        return basesFor().some(([key]) => key === id) ? share : "";
     }
     if (share === "country") {
         return shareOfWholeMeans() ? share : "";
@@ -1652,7 +1751,7 @@ function areasShown() {
 function decimals() {
     // A derivation with no unit of its own — a difference, a moving average — keeps the
     // precision of whatever it was computed from, share included.
-    const from = derivation() || activeComparison()?.[1] || activeRatio()?.[1];
+    const from = derivation() || activeComparison()?.[1] || activeRatio()?.[1] || activeBase();
     if (from && from.decimals !== null && from.decimals !== undefined) {
         return from.decimals;
     }
@@ -1660,7 +1759,7 @@ function decimals() {
 }
 
 function unitLabel() {
-    const from = derivation() || activeComparison()?.[1] || activeRatio()?.[1];
+    const from = derivation() || activeComparison()?.[1] || activeRatio()?.[1] || activeBase();
     if (from && from.unit) {
         return from.unit;
     }
@@ -2014,6 +2113,11 @@ function shareControl() {
         ...(against
             ? [option("population", (LEVEL_LABELS[state.level] || "Alan") + " nüfusunun %'si")]
             : []),
+        // A denominator that is a *slice* of another indicator rather than all of it.
+        // The dictionary says which indicator, which slice, and — crucially — which
+        // indicators the question makes sense for: births over women 15-49 is the general
+        // fertility rate, deaths over the same women is not a statistic.
+        ...basesFor().map(([id, base]) => option("base:" + id, base.label)),
     ];
 
     return (
@@ -3656,6 +3760,16 @@ function render() {
     if (state.share === "population" && !versusRows.has(AGAINST)) {
         $("view").innerHTML = empty("Nüfus yükleniyor…");
         ensurePopulation().then(render);
+        return;
+    }
+
+    // A base names its own denominator indicator, fetched the same way and for the same
+    // reason. Today every base is over the population, so this is usually the same file —
+    // but the mode asks the dictionary rather than assuming that.
+    const wantsBase = activeBase();
+    if (wantsBase && !versusRows.has(wantsBase.indicator)) {
+        $("view").innerHTML = empty("Payda yükleniyor…");
+        ensureBase(wantsBase).then(render);
         return;
     }
 
