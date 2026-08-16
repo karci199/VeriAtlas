@@ -77,8 +77,11 @@ Aynısını yapmak amaç değil. Üç yerde bilerek farklılaşıyoruz:
    tıklamadığı bir yere düşürürdü.
 
    Haritaya konmadı: harita alanlarının bir sırası yok, "aradakiler" diye bir şey yok.
-5. **Harita geometrisi** — `public/areas.geojson` (özellik başına `area_id`, `name_tr`).
-   Çizim yazıldı, dosya gelince sekme kendiliğinden açılıyor.
+5. ~~Harita geometrisi~~ — bitti (2026-08-16). İl sınırları `public/areas.geojson`'da (81
+   özellik), ilçe sınırları `public/geo/districts/TR-NN.geojson`'da (81 dosya, 2,6 MB,
+   gerektikçe indiriliyor). Bölge/İBBS illerden birleştirilerek çiziliyor. İlçeye inme
+   `OFFERED_LEVELS`'a takılıydı: dosyalar duruyor, hiçbir tıklama açamıyordu (bkz. K26).
+   Mahalle ve köyde sınır yok, kaynağı da yok — o düzeyler haritaya hiç girmiyor.
 6. ~~Eski `index.html`'in kaldırılması~~ — bitti (2026-08-16). Yanında `app.css` ve
    `scripts/build_page.py` de kalktı: ikisi de yalnız o sayfaya hizmet ediyordu.
    Tek dosyalık `VeriAtlas.html` sürümü de onunla gitti — gezgin veri dilimlerini

@@ -247,19 +247,21 @@ async function ensureLevel(level) {
 // registry exports them, this is the one label map left in the page.
 /** The levels the page offers, in the order the menu lists them.
  *
- *  Deliberately short of what the data holds. District and neighbourhood rows are loaded,
- *  exported and kept — nothing has been thrown away — but they are not offered while the
- *  province level is being settled, because a gap at those levels cannot be told apart
- *  from a gap in the page: districts have no single years, neighbourhoods have only the
- *  18 split, and outside the thirty metropolitan provinces they are missing their
- *  villages entirely. Testing a control against data that is itself incomplete tells you
- *  nothing about the control.
+ *  District was held out of this list while the province level was being settled: a gap
+ *  at that level could not be told apart from a gap in the page. That hold is over. The
+ *  shapes are exported (81 per-province files, 2,6 MB), the rows are exported, the lazy
+ *  fetch knows how to get both — and while district was off this list the drill-down into
+ *  a province was unreachable, because the map's click handler asks this list for
+ *  permission. Geometry that nothing can open is not geometry the page has.
  *
- *  Putting `"district"` back in this list is the whole of the change needed to bring them
- *  back: the files are already exported, the lazy fetch already knows how to get them,
- *  and everything downstream reads the level off the rows rather than off a hard-coded
- *  list. Nothing else in the page names a level it is allowed to draw. */
-const OFFERED_LEVELS = ["country", "region", "nuts1", "nuts2", "province"];
+ *  What is still true is that the district data is coarser than the province data: five-
+ *  year age bands rather than single years, and no vital events yet. That is a property
+ *  of the source and it is said where it shows, not hidden by refusing to draw.
+ *
+ *  Neighbourhood and village stay off, and not out of caution: there are no boundary
+ *  shapes for them anywhere, so the map would be the one view that silently does nothing.
+ *  They are read in the spreadsheet instead. */
+const OFFERED_LEVELS = ["country", "region", "nuts1", "nuts2", "province", "district"];
 
 const LEVEL_LABELS = {
     // "Coğrafi bölge" rather than "Bölge": the two hierarchies are both regions, and the

@@ -544,6 +544,26 @@ yani o tarihten sonra ad tek başına hiçbir şeyi tanımlamıyor — bir ilçe
 `Yeni Köy.` var. Üç parça bekleyen ilk ayrıştırıcı dokuz yılı sessizce düşürmüştü.
 1.058 ad değişikliği `docs/koy-adlari.md` dosyasında.
 
+## K26 — İlçe düzeyi açıldı; harita geometrisinin sınırı (2026-08-16)
+
+İlçe, sayfanın sunduğu düzeyler listesinden (`OFFERED_LEVELS`) bilerek çıkarılmıştı: il
+düzeyi otururken ilçedeki bir boşluğun veriden mi sayfadan mı geldiği ayırt edilemiyordu.
+O gerekçe bitti. Liste açıldı ve **998 ilçe, 973 sınır** ekrana geldi.
+
+Asıl bulgu şu: haritanın ilçeye inme davranışı da aynı listeye soruyordu. Yani sınır
+dosyaları (81 il dosyası, 2,6 MB) aylardır depoda duruyordu ve **hiçbir tıklamayla
+açılamıyordu**. Açılamayan geometri, sayfanın sahip olduğu geometri değildir.
+
+Geometrinin gerçek sınırı burada: il ve ilçe şekilleri var; bölge, İBBS-1 ve İBBS-2 kendi
+şekillerine sahip olmadıkları için illerden birleştirilerek çiziliyor (bir bölge tam
+olarak bir il kümesi olduğu için bu yaklaşıklık değil, tanımın kendisi). **Mahalle ve köy
+düzeyinde sınır yok ve kaynağı da yok** — o yüzden ikisi de listeye alınmadı: haritayı
+sessizce hiçbir şey çizmeyen tek görünüm yapardı. O iki düzey Excel'de okunuyor.
+
+İlçe verisinin il verisinden kaba olduğu doğru (tek yaş değil beşer yaş bandı, hayati
+olaylar henüz yok). Bu kaynağın özelliği; göründüğü yerde söyleniyor, çizmeyi reddederek
+saklanmıyor.
+
 ## Oturum notu — 2026-08-14/15
 
 Bir oturumda yapılanlar, sıradaki oturum buradan devam etsin diye.
@@ -636,8 +656,9 @@ Sıra, birbirine bağımlılığa göre:
 4. **Adaptör sözleşmesi** — kuruldu, bkz. K8. Sıradaki adaptörler: EVDS3 (API var),
    MEDAS (Playwright), Dünya Bankası (SDMX).
 5. **Kalite kuralları** — pandera şemaları, yükleme sırasında çalışır.
-6. **Arayüz dönüşümü** — iskelet kuruldu, bkz. K10. Kalan: harita geometrisi (il/İBBS
-   sınırları). Çoklu seçim kısayolları eklendi, eski `index.html` kaldırıldı.
+6. ~~Arayüz dönüşümü~~ — bitti, bkz. K10 ve K26. Harita geometrisi (il, ilçe, İBBS),
+   çoklu seçim kısayolları, eski `index.html`'in kaldırılması: hepsi tamam. Mahalle ve
+   köyde sınır yok, kaynağı da yok; o iki düzey Excel'de okunuyor.
 7. **MEDAS adaptörü** — akışın ilk yarısı çalışıyor (bkz. medas.md); kalan: Zaman →
    Düzey → Rapor Oluştur → sayfalı tablo.
 8. **Kod dili geçişi** — mevcut `config.py` ve `scripts/` Türkçe docstring'li;
