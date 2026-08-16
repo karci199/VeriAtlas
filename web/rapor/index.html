@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VeriAtlas — Demografi Raporu</title>
+  <link rel="stylesheet" href="rapor.css">
+</head>
+<body>
+  <nav class="ust">
+    <div class="ust-ic">
+      <span class="marka">VeriAtlas</span>
+      <select id="alan-secim" aria-label="Alan seç"></select>
+      <div class="icindekiler" id="icindekiler"></div>
+    </div>
+  </nav>
+  <main class="sayfa" id="govde"></main>
+  <script src="rapor.js"></script>
+  <script>
+    // The area menu is built from the payloads that exist, asked for once. A menu of
+    // every area in the registry would offer a thousand pages that have not been written.
+    fetch("../../public/rapor/dizin.json")
+      .then(cevap => cevap.json())
+      .then(dizin => {
+        const secim = document.getElementById("alan-secim");
+        for (const {area_id, ad, duzey} of dizin) {
+          const secenek = document.createElement("option");
+          secenek.value = area_id;
+          secenek.textContent = duzey === "country" ? ad : `${ad} · ${duzey === "province"
+            ? "il" : duzey === "region" ? "bölge" : duzey === "nuts1" ? "İBBS-1" : duzey}`;
+          secim.append(secenek);
+        }
+        const simdiki = /a=([A-Z0-9-]+)/.exec(location.hash);
+        secim.value = simdiki ? simdiki[1] : "TR";
+        secim.addEventListener("change", () => {
+          location.hash = "a=" + secim.value;
+        });
+        window.addEventListener("hashchange", () => {
+          const eslesme = /a=([A-Z0-9-]+)/.exec(location.hash);
+          if (eslesme) secim.value = eslesme[1];
+        });
+      })
+      .catch(() => {
+        document.getElementById("alan-secim").hidden = true;
+      });
+  </script>
+</body>
+</html>
