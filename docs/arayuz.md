@@ -75,5 +75,7 @@ Aynısını yapmak amaç değil. Üç yerde bilerek farklılaşıyoruz:
    gerektikçe indiriyor, hepsini tek dosyaya gömmek ayrı bir tasarımdır ve istenirse
    yeniden yazılır.
 
-Maket `web/mock-explorer.html` olarak duruyor: sahte sayılarla düzen tartışmak için,
-uygulamanın parçası değil.
+Maket (`web/mock-explorer.html`) 2026-08-16'da kaldırıldı. İşini yapmıştı: düzen gerçek
+veriye dokunmadan tartışılsın diye vardı, gezgin yazıldıktan sonra tartışılacak bir şey
+kalmadı. Sahte sayılarla duran bir sayfanın depoda beklemesi, bir gün birinin ona
+bakmasıyla biter.
