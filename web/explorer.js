@@ -1194,10 +1194,19 @@ function withinTotals(level, dim) {
 function buildWhole(level) {
     const whole = new Map();
     const counted = new Map();
+    const dims = state.indicator.dims || [];
     for (const row of rowsAt(level)) {
         const key = row.area_id + "|" + row.year;
         whole.set(key, (whole.get(key) || 0) + row.value);
-        counted.set(key, (counted.get(key) || 0) + 1);
+        // A residual category does not count towards completeness. "Bilinmeyen" is a
+        // real row where it exists and a plain zero where it does not — nobody withholds
+        // the number of people whose literacy is unknown — so a province that happens to
+        // have one in every age and sex would otherwise set the standard, and the eighty
+        // that do not would lose their share. That is what emptied seventeen provinces
+        // off the literacy map while the rows were sitting in the file.
+        if (!dims.some((dim) => row[dim] === "unknown")) {
+            counted.set(key, (counted.get(key) || 0) + 1);
+        }
     }
 
     // An incomplete breakdown is not a denominator. TÜİK withholds the under-18 count in
@@ -1220,8 +1229,13 @@ function buildWhole(level) {
     // so the 282 carrying one are genuinely missing a published number. Where no area
     // reaches the product, the product is not what the source publishes, and the absent
     // cells are absent for everybody.
-    const product = (state.indicator.dims || [])
-        .map((dim) => valuesOf(dim, level).length || 1)
+    // Counted the same way: the product is over the values that are not residual, so
+    // the two sides of the comparison mean the same thing.
+    const product = dims
+        .map(
+            (dim) =>
+                valuesOf(dim, level).filter((value) => value !== "unknown").length || 1
+        )
         .reduce((a, b) => a * b, 1);
     if (counted.size && Math.max(...counted.values()) === product) {
         for (const [key, rows] of counted) {
