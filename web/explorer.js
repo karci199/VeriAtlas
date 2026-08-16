@@ -3740,8 +3740,18 @@ function downloadShown() {
     // The id goes out with the name: two districts called Pınarbaşı are two rows, and a
     // file that names them both "Pınarbaşı" cannot be joined back to anything.
     const header = "area_id,area,year,value,unit,indicator\n";
+    // Quoted, because a name is not ours to promise anything about. No area is called
+    // anything with a comma in it today; the file that assumes that keeps working right
+    // up until the day a source spells one differently, and then it shifts a column
+    // without saying so. Numbers stay unquoted and machine-readable — the decimal is a
+    // dot here whatever the page shows the reader.
+    const cell = (v) => (/[",\n]/.test(String(v)) ? '"' + String(v).replaceAll('"', '""') + '"' : v);
     const body = rows
-        .map((r) => [r.area_id, r.area, r.year, r.value, unitLabel(), state.indicator.id].join(","))
+        .map((r) =>
+            [r.area_id, r.area, r.year, r.value, unitLabel(), state.indicator.id]
+                .map(cell)
+                .join(",")
+        )
         .join("\n");
 
     const url = URL.createObjectURL(new Blob([header + body], {type: "text/csv;charset=utf-8"}));
