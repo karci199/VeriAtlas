@@ -789,3 +789,51 @@ dönüyor: boşanmış kadın doğurganlığı en yüksek yer güneydoğu.
 Payda `marital_status` stoğu olmalı. Bulgu 5'in "hiç evlenmedi" payı da aynı
 düzeltmeyi bekliyor (normalize hız TR: 4,29 → 2,50 ‰, yani o da düşüyor —
 ham pay %2,09 → %2,27 ile *artıyor* görünürken).
+
+## Bulgu 13 — evli olmayan anneden doğum oranı, 81 il (2012 vs 2025)
+
+Betimleyici soru: doğum yapan kadınların yüzde kaçı **yasal olarak evli değil**?
+Pay = hiç evlenmedi + boşandı + eşi öldü. Payda = toplam doğum **eksi bilinmeyen**
+(TR 2025'te bilinmeyen payı %0,48).
+
+Not: bu bir *pay*, Bulgu 12'deki gibi normalize hız değil — soru zaten "doğumların
+yüzde kaçı" olduğu için doğru ölçü budur. Bulgu 12'nin uyarısı yalnız "hangi grup
+daha çok doğuruyor" sorusuna geçilirse geçerli.
+
+**TR: %2,83 (2012) → %3,21 (2025).** Bileşimi: hiç evlenmemiş %2,28, boşanmış
+%0,85, dul %0,08.
+
+### Sıralamanın başı iki farklı yoldan doluyor
+
+| İl | Evli değil % | Hiç evl. | Boşanmış |
+|---|---|---|---|
+| Şanlıurfa | **8,74** | **7,74** | 0,84 |
+| Adana | 6,35 | 4,75 | 1,46 |
+| Osmaniye | 5,57 | 4,05 | 1,34 |
+| Karabük | 4,63 | 3,25 | 1,27 |
+| Diyarbakır | 4,47 | 3,77 | 0,61 |
+| Edirne | 4,34 | 2,67 | **1,65** |
+| Uşak | 3,64 | 1,43 | **2,01** |
+
+Üst sırada iki ayrı olgu var: Şanlıurfa/Diyarbakır'da neredeyse tamamı "hiç
+evlenmemiş" (kayıt dışı fiili evlilik — Bulgu 5 uyarısı), Uşak/Edirne'de ağırlık
+"boşanmış"ta. Aynı orana iki farklı yoldan varılıyor; sütunlara bakmadan sıralama
+yorumlanamaz.
+
+En düşük: Ardahan %0,68, Bayburt %0,81, Artvin %0,85, Rize %0,99, Trabzon %1,03
+— Karadeniz neredeyse sıfır.
+
+### Değişim: güneydoğuda düşüyor, batıda artıyor
+
+En çok **artan**: Şanlıurfa +3,98, Karabük +2,81, Osmaniye +1,74, Uşak +1,27,
+Sinop +1,21 puan.
+En çok **azalan**: Hakkari −2,59, Şırnak −2,49, Aksaray −2,20, Yozgat −1,94,
+Bingöl −1,61 puan.
+
+Şanlıurfa dışındaki güneydoğu illeri hızla düşüyor — resmî nikâh kaydı
+yaygınlaşıyor gibi görünüyor. **Şanlıurfa bu bölgesel eğilimin tek istisnası ve
+sebebi açıklanmadı**; Bulgu 5'te de aynı aykırılık not edilmişti. Karabük'ün
++2,81'i de açıklanmamış bir aykırılık (Karadeniz'de, komşuları çok düşük).
+
+Tam 81 il tablosu üretimi: `scratchpad` betiği, kaynak
+`İl ve annenin yasal medeni durumuna göre doğumlar.xls` (2012-2025, 81 il).
