@@ -1038,9 +1038,33 @@ function wholeOf(level) {
 //: reader names both axes.
 const AGAINST = "population";
 
+//: Which files of a second indicator are already in, by indicator id. The rows alone
+//: cannot answer it: a level that is genuinely empty and a level never fetched both look
+//: like no rows, and only one of them is worth a download.
+const versusFiles = new Map();
+
+/** Has everything this level needs of `id` arrived?
+ *
+ *  Asked per level, not per indicator. Held as "have we fetched it at all", the district
+ *  population was never fetched once the province file had landed — so "İlçe nüfusunun
+ *  %'si" divided 973 districts by a population table that had none of them in it and drew
+ *  a column of "—". The page had the file listed the whole time and never asked for it. */
+function versusReady(id) {
+    const indicator = catalogue.find((i) => i.id === id);
+    if (!indicator) {
+        return true;
+    }
+    const have = versusFiles.get(id);
+    return Boolean(
+        have &&
+            have.has(indicator.dataset) &&
+            (!indicator.parts?.[state.level] || have.has(indicator.parts[state.level]))
+    );
+}
+
 async function ensurePopulation() {
     const indicator = catalogue.find((i) => i.id === AGAINST);
-    if (!indicator || versusRows.has(AGAINST)) {
+    if (!indicator || versusReady(AGAINST)) {
         return;
     }
     const files = [indicator.dataset, indicator.parts?.[state.level]].filter(Boolean);
@@ -1048,7 +1072,7 @@ async function ensurePopulation() {
     const said = note.textContent;
     note.textContent = "Nüfus indiriliyor…";
     try {
-        versusRows.set(AGAINST, (await Promise.all(files.map(part))).flat());
+        await loadVersus(AGAINST, files);
     } finally {
         note.textContent = said;
     }
@@ -1060,7 +1084,7 @@ async function ensurePopulation() {
  *  over something else needs no new code here. */
 async function ensureBase(base) {
     const indicator = catalogue.find((i) => i.id === base.indicator);
-    if (!indicator || versusRows.has(base.indicator)) {
+    if (!indicator || versusReady(base.indicator)) {
         return;
     }
     const files = [indicator.dataset, indicator.parts?.[state.level]].filter(Boolean);
@@ -1068,10 +1092,24 @@ async function ensureBase(base) {
     const said = note.textContent;
     note.textContent = "Payda indiriliyor…";
     try {
-        versusRows.set(base.indicator, (await Promise.all(files.map(part))).flat());
+        await loadVersus(base.indicator, files);
     } finally {
         note.textContent = said;
     }
+}
+
+/** Fetch whichever of `files` is not in yet and add its rows to what `id` already holds.
+ *
+ *  Added, not replaced. Switching from provinces to districts and back would otherwise
+ *  throw away the table it had just finished downloading, and the trip back would fetch
+ *  five megabytes again. */
+async function loadVersus(id, files) {
+    const have = versusFiles.get(id) || new Set();
+    const missing = files.filter((file) => !have.has(file));
+    const arrived = (await Promise.all(missing.map(part))).flat();
+    versusRows.set(id, [...(versusRows.get(id) || []), ...arrived]);
+    missing.forEach((file) => have.add(file));
+    versusFiles.set(id, have);
 }
 
 /** Total population per area-year at a level: `Map("TR-16|2025" -> 3263011)`.
@@ -1220,7 +1258,24 @@ function shareStillMeans(share) {
     if (share.startsWith("own:")) {
         return (state.indicator.dims || []).includes(share.slice(4)) ? share : "";
     }
+    // The share of an area's own total, with nothing narrowed, is the total over itself.
+    // Dropped here as well as greyed in the control, because the control is not the only
+    // way in: a shared link can carry `s=own`, and setting the breakdown back to "Tümü"
+    // leaves it selected from before. Both routes ended on a map of 100s.
+    if (share === "own" && wholeIsSelfEverywhere()) {
+        return "";
+    }
     return share;
+}
+
+/** Is every breakdown at "Tümü (topla)"? Then the area's own total is the value itself.
+ *
+ *  Breakdowns with a single value do not count — a dim that offers one thing has nothing
+ *  to narrow, and demanding a choice there would refuse the mode on an indicator where it
+ *  is perfectly well defined. */
+function wholeIsSelfEverywhere() {
+    const dims = (state.indicator.dims || []).filter((dim) => valuesOf(dim).length > 1);
+    return dims.length > 0 && dims.every((dim) => state.dims[dim] === TOTAL);
 }
 
 /** The breakdown the reader is taking a share within, or null. */
@@ -2085,11 +2140,26 @@ function shareControl() {
     // whose meaning flipped depending on whether a breakdown happened to be chosen, and
     // a control that quietly changes what it computes is a control nobody can trust —
     // "0-4 seçince neden İznik'e oranı oldu" is the question that always follows.
-    const option = (value, label) => ({
+    const option = (value, label, disabled = false) => ({
         value,
         label,
         selected: state.share === value,
+        disabled,
     });
+
+    // "Alanın kendi toplamının %'si" divides by the sum across the breakdown. With every
+    // breakdown left at "Tümü (topla)" the numerator *is* that sum, so the answer is 100
+    // for every area in every year — a map painted one colour, a legend reading
+    // "100,000000+", and a reader looking for the mistake. It is arithmetic rather than a
+    // bug, which is exactly why it has to be said out loud: nothing on the screen
+    // distinguishes a true 100 from a broken one.
+    //
+    // Greyed rather than removed. The reader who clicked it is asking a real question and
+    // deserves to be told which control answers it, not to watch the option vanish.
+    const wholeIsSelf = wholeIsSelfEverywhere()
+        ? "Kırılımda bir değer seçilmeden bu oran her alanda 100 çıkar — pay ile payda " +
+          "aynı sayı olur. Önce bir kırılım değeri seçin."
+        : "";
 
     // A third kind of percentage, one per breakdown: the share *within* that breakdown,
     // holding every other choice where the reader put it.
@@ -2119,7 +2189,16 @@ function shareControl() {
         ...(shareOfWholeMeans()
             ? [option("country", "Türkiye toplamının %'si")]
             : []),
-        ...(inside ? [option("own", "Alanın kendi toplamının %'si"), ...within] : []),
+        ...(inside
+            ? [
+                  option(
+                      "own",
+                      "Alanın kendi toplamının %'si",
+                      Boolean(wholeIsSelf)
+                  ),
+                  ...within,
+              ]
+            : []),
         ...(against
             ? [option("population", (LEVEL_LABELS[state.level] || "Alan") + " nüfusunun %'si")]
             : []),
@@ -2132,7 +2211,7 @@ function shareControl() {
 
     return (
         "<div><div class='dim-label'>Değer</div>" +
-        chooser({role: "share"}, options) +
+        chooser({role: "share"}, options, {title: wholeIsSelf}) +
         "</div>"
     );
 }
@@ -4253,6 +4332,11 @@ function render() {
     // map switches to district bands — so the breakdown choice is checked every draw.
     clampDims();
 
+    // After clampDims, because it can change what the share means: setting a breakdown
+    // back to "Tümü" turns "alanın kendi toplamının %'si" into a column of 100s, and the
+    // check for that reads the breakdowns clampDims has just settled.
+    state.share = shareStillMeans(state.share);
+
     drawRail();
     drawDims();
     drawTabs();
@@ -4275,7 +4359,7 @@ function render() {
 
     // Reading against the population means a second dataset, fetched the first time it is
     // actually asked for rather than on every visit.
-    if (state.share === "population" && !versusRows.has(AGAINST)) {
+    if (state.share === "population" && !versusReady(AGAINST)) {
         $("view").innerHTML = empty("Nüfus yükleniyor…");
         ensurePopulation().then(render);
         return;
@@ -4285,7 +4369,7 @@ function render() {
     // reason. Today every base is over the population, so this is usually the same file —
     // but the mode asks the dictionary rather than assuming that.
     const wantsBase = activeBase();
-    if (wantsBase && !versusRows.has(wantsBase.indicator)) {
+    if (wantsBase && !versusReady(wantsBase.indicator)) {
         $("view").innerHTML = empty("Payda yükleniyor…");
         ensureBase(wantsBase).then(render);
         return;
