@@ -65,6 +65,11 @@ DATA = PUBLIC.parent / "src" / "veriatlas" / "data"
 #: their boundaries. That is the whole reason this question can be asked at this level.
 FERTILE = ["15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49"]
 
+#: The other end of the same table. A crude death rate is mostly a statement about how old
+#: a place is — Sındırgı's 15,8‰ against Silopi's 2,1‰ is not a difference in mortality —
+#: so the share of people over 65 travels beside it and the reader can see which it is.
+ELDERLY = ["65-69", "70-74", "75+", "75-79", "80-84", "85-89", "90+"]
+
 #: Small districts are kept in the sheet and out of the rankings: twenty births against
 #: nineteen is a 5% "fall" that is really one family.
 RANK_FLOOR = 300
@@ -140,10 +145,11 @@ def deaths() -> pl.DataFrame:
     )
 
 
-def women() -> tuple[dict, dict]:
-    """Women 15-49 and total population, per district-year, from the published export."""
+def women() -> tuple[dict, dict, dict]:
+    """Women 15-49, people over 65, and everyone, per district-year."""
     fertile = collections.defaultdict(float)
     whole = collections.defaultdict(float)
+    elderly = collections.defaultdict(float)
     with gzip.open(
         PUBLIC / "population-district.csv.gz", "rt", encoding="utf-8"
     ) as handle:
@@ -152,7 +158,9 @@ def women() -> tuple[dict, dict]:
             whole[key] += float(row["value"])
             if row["sex"] == "female" and row["age"] in FERTILE:
                 fertile[key] += float(row["value"])
-    return fertile, whole
+            if row["age"] in ELDERLY:
+                elderly[key] += float(row["value"])
+    return fertile, whole, elderly
 
 
 def resolved(frame: pl.DataFrame, fertile: dict) -> pl.DataFrame:
@@ -187,7 +195,7 @@ def resolved(frame: pl.DataFrame, fertile: dict) -> pl.DataFrame:
 
 
 def main() -> None:
-    fertile, whole = women()
+    fertile, whole, elderly = women()
     # Deaths run from 2009 and births from 2014; natural increase is only where both are,
     # so the join is an inner one and the span it leaves is the span of the whole book.
     frame = resolved(births().join(deaths(), on=["yil", "kod"], how="inner"), fertile)
@@ -209,6 +217,14 @@ def main() -> None:
             [whole.get((r["area_id"], r["yil"])) for r in frame.iter_rows(named=True)],
             dtype=pl.Float64,
         ),
+        pl.Series(
+            "yasli",
+            [
+                elderly.get((r["area_id"], r["yil"]))
+                for r in frame.iter_rows(named=True)
+            ],
+            dtype=pl.Float64,
+        ),
     ).with_columns(
         (1000 * pl.col("dogum") / pl.col("kadin")).alias("gdh"),
         # The crude birth rate beside it, on purpose. KDH = GDH × (the fertile women's
@@ -223,6 +239,7 @@ def main() -> None:
         (1000 * (pl.col("dogum") - pl.col("olum")) / pl.col("nufus")).alias(
             "dogal_hizi"
         ),
+        (pl.col("yasli") / pl.col("nufus")).alias("yasli_payi"),
     )
 
     missing = frame.filter(pl.col("kadin").is_null()).height
@@ -238,6 +255,8 @@ def main() -> None:
             pl.col("olum").alias("olum" + tag),
             pl.col("dogal").alias("dogal" + tag),
             pl.col("dogal_hizi").alias("dogal_hizi" + tag),
+            pl.col("olum_hizi").alias("olum_hizi" + tag),
+            pl.col("yasli_payi").alias("yasli_payi" + tag),
             pl.col("kadin").alias("kadin" + tag),
             pl.col("gdh").alias("gdh" + tag),
             pl.col("kdh").alias("kdh" + tag),
@@ -254,6 +273,7 @@ def main() -> None:
             (pl.col("gdh_son") / pl.col("gdh_ilk") - 1).alias("gdh_oran"),
             (pl.col("gdh_son") - pl.col("gdh_ilk")).alias("gdh_puan"),
             (pl.col("kdh_son") / pl.col("kdh_ilk") - 1).alias("kdh_oran"),
+            (pl.col("olum_hizi_son") - pl.col("olum_hizi_ilk")).alias("olum_hizi_fark"),
         )
         .with_columns(
             pl.when(pl.col("dogum_ilk") >= RANK_FLOOR)
@@ -299,6 +319,11 @@ def main() -> None:
             "dogal_son",
             "dogal_hizi_ilk",
             "dogal_hizi_son",
+            "olum_hizi_ilk",
+            "olum_hizi_son",
+            "olum_hizi_fark",
+            "yasli_payi_ilk",
+            "yasli_payi_son",
             "not",
         ),
         "dogal_hizi_son",
@@ -312,12 +337,15 @@ def main() -> None:
             pl.col("dogal").sum(),
             pl.col("kadin").sum(),
             pl.col("nufus").sum(),
+            pl.col("yasli").sum(),
         )
         .with_columns(
             (1000 * pl.col("dogum") / pl.col("kadin")).alias("gdh"),
             (1000 * pl.col("dogum") / pl.col("nufus")).alias("kdh"),
             (pl.col("kadin") / pl.col("nufus")).alias("kadin_payi"),
             (1000 * pl.col("dogal") / pl.col("nufus")).alias("dogal_hizi"),
+            (1000 * pl.col("olum") / pl.col("nufus")).alias("olum_hizi"),
+            (pl.col("yasli") / pl.col("nufus")).alias("yasli_payi"),
         )
     )
 
@@ -328,6 +356,8 @@ def main() -> None:
             pl.col("olum").alias("olum" + tag),
             pl.col("dogal").alias("dogal" + tag),
             pl.col("dogal_hizi").alias("dogal_hizi" + tag),
+            pl.col("olum_hizi").alias("olum_hizi" + tag),
+            pl.col("yasli_payi").alias("yasli_payi" + tag),
             pl.col("kadin").alias("kadin" + tag),
             pl.col("gdh").alias("gdh" + tag),
             pl.col("kdh").alias("kdh" + tag),
@@ -343,6 +373,7 @@ def main() -> None:
             (pl.col("gdh_son") / pl.col("gdh_ilk") - 1).alias("gdh_oran"),
             (pl.col("gdh_son") - pl.col("gdh_ilk")).alias("gdh_puan"),
             (pl.col("kdh_son") / pl.col("kdh_ilk") - 1).alias("kdh_oran"),
+            (pl.col("olum_hizi_son") - pl.col("olum_hizi_ilk")).alias("olum_hizi_fark"),
         )
         .select(
             "il",
@@ -366,6 +397,11 @@ def main() -> None:
             "dogal_son",
             "dogal_hizi_ilk",
             "dogal_hizi_son",
+            "olum_hizi_ilk",
+            "olum_hizi_son",
+            "olum_hizi_fark",
+            "yasli_payi_ilk",
+            "yasli_payi_son",
         ),
         "gdh_oran",
     )
@@ -380,6 +416,7 @@ def main() -> None:
             pl.col("dogal").sum(),
             pl.col("kadin").sum(),
             pl.col("nufus").sum(),
+            pl.col("yasli").sum(),
             pl.len().alias("ilce_sayisi"),
             (pl.col("dogal") < 0).sum().alias("eksi_ilce"),
         )
@@ -389,6 +426,7 @@ def main() -> None:
             (pl.col("kadin") / pl.col("nufus")).alias("kadin_payi"),
             (1000 * pl.col("olum") / pl.col("nufus")).alias("olum_hizi"),
             (1000 * pl.col("dogal") / pl.col("nufus")).alias("dogal_hizi"),
+            (pl.col("yasli") / pl.col("nufus")).alias("yasli_payi"),
         )
         .drop("nufus")
         .sort("yil")
@@ -425,6 +463,9 @@ def main() -> None:
         "kadin_payi",
         "kadin_payi_ilk",
         "kadin_payi_son",
+        "yasli_payi",
+        "yasli_payi_ilk",
+        "yasli_payi_son",
     )
     rates = (
         "gdh_ilk",
@@ -434,6 +475,9 @@ def main() -> None:
         "kdh_ilk",
         "kdh_son",
         "olum_hizi",
+        "olum_hizi_ilk",
+        "olum_hizi_son",
+        "olum_hizi_fark",
         "dogal_hizi",
         "dogal_hizi_ilk",
         "dogal_hizi_son",
@@ -475,6 +519,13 @@ def main() -> None:
         "olum_k": "Ölüm — kadın",
         "olum_son": f"Ölüm {last}",
         "olum_hizi": "Kaba ölüm hızı ‰",
+        "olum_hizi_ilk": f"Kaba ölüm hızı ‰ · {first}",
+        "olum_hizi_son": f"Kaba ölüm hızı ‰ · {last}",
+        "olum_hizi_fark": "Ölüm hızı farkı (puan)",
+        "yasli_payi": "65+ payı",
+        "yasli": "65+ nüfus",
+        "yasli_payi_ilk": f"65+ payı {first}",
+        "yasli_payi_son": f"65+ payı {last}",
         "dogal": "Doğal artış",
         "dogal_ilk": f"Doğal artış {first}",
         "dogal_son": f"Doğal artış {last}",
@@ -508,6 +559,12 @@ def main() -> None:
             "",
             "Doğal artış = doğum − ölüm. Göç bu sayının içinde yoktur: bir ilçe doğal artışı",
             "artıda olduğu hâlde küçülebilir, çünkü doğanlar kalmıyor olabilir.",
+            "",
+            "KABA ÖLÜM HIZI, ölümün nüfusa oranıdır ve büyük ölçüde yaş yapısını ölçer:",
+            "Sındırgı'nın 15,79'u ile Silopi'nin 2,14'ü ölüm riski farkı değil, yaş farkıdır.",
+            "O yüzden '65+ payı' hemen yanında durur — hangisi olduğu ancak ikisi birlikte",
+            "okununca anlaşılır. Ölüm hızı 578 ilçenin 517'sinde arttı; düştüğü yerler genç",
+            "nüfusun taşındığı yerlerdir (Yomra −2,97 puan).",
             "",
             "GDH = genel doğurganlık hızı: bin kadın (15-49) başına doğum. Doğum sayısı iki",
             "şeyin çarpımıdır — kaç kadın var, ve kadın başına kaç çocuk — ve bu sayfa",
