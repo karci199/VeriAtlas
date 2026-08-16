@@ -1163,3 +1163,71 @@ sınanabilir — henüz kullanılmadı.
   güvenilmez; büyük illerde seriler düzgün.
 - `mean_first_marriage_age`in toplamı yok (bir evlilik erkeğin ilki, kadının
   ikincisi olabilir) — bu yüzden cinsiyetler ayrı verildi, birleştirilmedi.
+
+## Bulgu 19 — eş yaş farkı: 12 yıl hiç kıpırdamadı, 2013'te daralmaya başladı; doğu donmuş
+
+İlk evlenme yaşının cinsiyet farkı = erkek − kadın. `mean_first_marriage_age`
+cinsiyet kırılımlı, 2001-2025, 81 il. Yıllık veri az olduğu için pencere değil
+**her yıl** verildi; il uçları yine üçer yıllık ortalama.
+
+### Türkiye — kırılma 2013'te, 2016'da değil
+
+| Yıl | Erkek | Kadın | Fark |
+|---|---|---|---|
+| 2001 | 26,0 | 22,7 | **3,3** |
+| 2005 | 26,5 | 23,2 | **3,3** |
+| 2009 | 26,8 | 23,5 | **3,3** |
+| 2012 | 27,2 | 23,9 | **3,3** |
+| 2013 | 27,3 | 24,1 | 3,2 |
+| 2015 | 27,5 | 24,4 | 3,1 |
+| 2018 | 27,8 | 24,8 | 3,0 |
+| 2021 | 28,1 | 25,4 | 2,7 |
+| 2025 | 28,5 | 26,0 | **2,5** |
+
+**2001-2012 arası fark tam 3,3'te sabit** — on iki yıl boyunca erkek de kadın da
+aynı hızda gecikmiş, makas hiç değişmemiş. 2013'ten itibaren kadınların evlenme
+yaşı erkeklerinkinden hızlı artmaya başlıyor ve fark 3,3 → 2,5'e iniyor.
+
+Not: bu tarih dosyadaki **2016 kırılmasından farklı**. Evlenmeme, evli doğurganlık
+ve boşanma 2016'da dönerken eş yaş farkı 2013'te dönmüş — ayrı bir süreç.
+
+### İl: 79'unda daraldı, ama en yüksek dördü donmuş
+
+**En yüksek 10 (2023-25):**
+
+| İl | 2001-03 | 2023-25 | Değişim |
+|---|---|---|---|
+| Muş | 3,93 | **3,97** | **+0,03** |
+| Ardahan | 4,20 | 3,87 | −0,33 |
+| Ağrı | 3,90 | **3,83** | **−0,07** |
+| Kars | 4,57 | 3,80 | −0,77 |
+| Bitlis | 3,70 | **3,57** | **−0,13** |
+| Iğdır | 3,90 | 3,40 | −0,50 |
+| Hatay | 4,13 | 3,20 | −0,93 |
+| Tunceli | 3,53 | 3,13 | −0,40 |
+| Kilis | 3,17 | 3,03 | −0,13 |
+| Kırklareli | 3,37 | 3,00 | −0,37 |
+
+**En düşük 10:** Ankara 2,03 · Elazığ 2,03 · Bolu 2,13 · Karabük 2,13 ·
+Kastamonu 2,13 · Malatya 2,17 · İstanbul 2,20 · Samsun 2,20 · Konya 2,23 ·
+Eskişehir 2,23.
+
+En çok daralan: Rize 4,27→2,50 (−1,77), Malatya −1,17, Elazığ −1,13,
+Ankara/İstanbul/Eskişehir −1,03.
+Genişleyen yalnız iki il: Muş +0,03, Aksaray +0,17.
+
+### ⚠️ Burada yakınsama deseni KIRILIYOR
+
+r(2001-03 düzeyi ~ değişim) = **−0,474** — Bulgu 16'daki (−0,74) ve 17'deki güçlü
+yakınsamadan belirgin biçimde zayıf. Ve asıl mesele ortalamada değil uçta:
+**listenin en tepesindeki Muş, Ağrı, Bitlis, Siirt 25 yılda neredeyse hiç
+kıpırdamamış** (+0,03 … −0,13). En çok daralanlar Karadeniz ve İç Anadolu.
+
+Doğurganlıkta, boşanmada ve ölümlülükte güneydoğu **en hızlı değişen** taraftı
+(Bulgu 3, 9, 16, 17). Burada tam tersi: **en durağan** taraf. Yani "geriden
+başlayan hızlı kapatıyor" kuralı evrensel değil — demografik davranış (doğum
+aralığı, boşanma) hızla değişirken, evlilikteki cinsiyet hiyerarşisini gösteren
+bu ölçü aynı illerde donmuş durumda.
+
+Bu, dosyanın tekrar eden yakınsama bulgusuna gerçek bir karşı örnek ve
+"modernleşme tek pakettir" okumasını zayıflatıyor.
