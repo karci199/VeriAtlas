@@ -69,6 +69,12 @@ total = "Toplam"
 label_tr = "Yaş grubu"
 label_en = "Age group"
 
+# Only the one value that needs spelling: a band names itself ("65-69" reads as "65-69"),
+# and the page prints an unlisted value as it stands. `unknown` is the exception — it is
+# an id, not a band, and it was reaching the screen in English.
+[dim.age.values]
+unknown = "Bilinmeyen"
+
 [dim.household_type]
 label_tr = "Hanehalkı tipi"
 label_en = "Household type"
@@ -142,13 +148,20 @@ bölmeden hesaplanır."""
 # district export runs on to 90+, and they are the same people either way. A grouping is
 # offered at a level only when every band *present there* falls into a group, so the list
 # has to cover both or the coarse reading silently drops the oldest.
+# `0` and `1-4` sit next to `0-4` for the same reason the tail is written twice: the death
+# export splits the first five years and the population export does not, and a grouping is
+# offered only where every band present falls into a group. "Bilinmeyen" is a group of its
+# own rather than a member of one — the deaths file has a band for it and putting those
+# people in an age would be inventing the answer. It is dropped from the box wherever no
+# band of it exists, which is every indicator but deaths and every death year after 2013.
 [grouping.age_broad.covers]
-"0-14" = ["0-4", "5-9", "10-14"]
+"0-14" = ["0-4", "0", "1-4", "5-9", "10-14"]
 "15-64" = [
     "15-19", "20-24", "25-29", "30-34", "35-39",
     "40-44", "45-49", "50-54", "55-59", "60-64",
 ]
 "65+" = ["65-69", "70-74", "75+", "75-79", "80-84", "85-89", "90+"]
+"Bilinmeyen" = ["unknown"]
 
 [grouping.age_adult]
 label_tr = "Çocuk / yetişkin (18)"
@@ -187,12 +200,13 @@ note_tr = """
 paydası bu gruptaki kadın nüfusudur."""
 
 [grouping.age_fertile.covers]
-"0-14" = ["0-4", "5-9", "10-14"]
+"0-14" = ["0-4", "0", "1-4", "5-9", "10-14"]
 "15-49" = ["15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49"]
 "50+" = [
     "50-54", "55-59", "60-64", "65-69", "70-74",
     "75+", "75-79", "80-84", "85-89", "90+",
 ]
+"Bilinmeyen" = ["unknown"]
 
 # endregion
 
@@ -362,6 +376,9 @@ label_tr = "Çocuk bağımlılık oranı (%)"
 label_en = "Child dependency ratio (%)"
 dim = "age"
 grouping = "age_broad"
+# People only. The same division over death counts is arithmetic without a subject, and
+# it was on offer under a name that claims to be about population.
+units = ["person"]
 over = ["0-14"]
 under = ["15-64"]
 unit = "percent"
@@ -374,6 +391,7 @@ label_tr = "Yaşlı bağımlılık oranı (%)"
 label_en = "Old-age dependency ratio (%)"
 dim = "age"
 grouping = "age_broad"
+units = ["person"]
 over = ["65+"]
 under = ["15-64"]
 unit = "percent"
@@ -386,6 +404,7 @@ label_tr = "Toplam yaş bağımlılık oranı (%)"
 label_en = "Total age dependency ratio (%)"
 dim = "age"
 grouping = "age_broad"
+units = ["person"]
 over = ["0-14", "65+"]
 under = ["15-64"]
 unit = "percent"
@@ -539,12 +558,83 @@ dims = ["sex"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 Yıl içindeki ölüm sayısı, ölen kişinin ikamet ettiği ile göre, cinsiyet kırılımıyla. \
-Kaynak dosya ayrıca ayı da veriyor; yıla toplanmış olarak duruyor. **Yaş kırılımı \
-yok** — bu yüzden piramit çizilmez ve yaşa göre ölümlülük bu göstergeden okunamaz. \
+Kaynak dosya ayrıca ayı da veriyor; yıla toplanmış olarak duruyor. Yaş kırılımı bu \
+göstergede yok; onun için **"Ölüm sayısı (yaş grubuna göre)"** ayrı durur ve iki \
+gösterge birbirine eklenmez — aynı ölümlerdir. \
 Ham sayı nüfusla birlikte okunmalı: İstanbul'un ölümü Tunceli'ninkinden çok olduğu \
 için değil, kalabalık olduğu için yüksektir. Kaba ölüm hızı ayrı bir gösterge \
 değildir — "Alan nüfusunun %'si" kipi bu sayıyı nüfusa bölerek onu zaten verir. \
 2009'dan itibaren."""
+
+# The same deaths, with the age band opened as well. A second indicator rather than a
+# second breakdown of `deaths`: MEDAS exports the two-dim version as its own file (in two
+# pieces, because the query is too wide for one), and both loaded into one indicator would
+# make "Tümü (topla)" count every death twice. Read side by side they are a check on each
+# other — the age groups of a province-year sum to its death count exactly, which is what
+# `tests/test_vital.py` asserts.
+[indicator.deaths_by_age]
+label_tr = "Ölüm sayısı (yaş grubuna göre)"
+label_en = "Deaths by age group"
+topic = "olum"
+unit = "death"
+frequency = "annual"
+additive = true
+dims = ["sex", "age"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Ölüm sayısı, ölenin yaş grubu ve cinsiyetiyle. Yaşlı ölümlülüğü (65+) ve çocuk \
+ölümlülüğü (0-14) buradan okunur; "Geniş yaş grupları" bölmesi üçlüyü tek tıkla verir. \
+İki ayrıntı, nüfusun yaş bantlarından farklı ve ikisi de kaynağın: ilk beş yıl **0** ve \
+**1-4** diye ayrı geliyor, ve yaşı **bilinmeyen** bir bant var — 2009'da 963 ölüm, \
+2013'ten sonra sıfır. Bilinmeyen atılmadı; atılsaydı yaş grupları toplamı ölüm sayısının \
+altında kalır, sayfa da bunu söylemezdi. Üst bant **75+**'ta kapanıyor, tek yaş yok. \
+Ham sayı yaşlı nüfusun kalabalık olduğu yerde yüksektir: yaşa göre ölüm *hızı* için \
+"Alan nüfusunun %'si" değil, aynı yaş grubunun nüfusu payda olmalıdır. İl ve Türkiye \
+düzeyinde, **2009'dan** itibaren."""
+
+# Computed here rather than downloaded: MEDAS publishes the crude death rate but not the
+# age-specific one, and the age-specific one is the question. Both sides are published
+# counts and the arithmetic is exact, but it is our division, so the rows carry
+# `estimated` like everything else `derived.py` writes.
+[indicator.death_rate_by_age]
+label_tr = "Yaşa özgü ölüm hızı"
+label_en = "Age-specific death rate"
+topic = "olum"
+unit = "per_mille"
+frequency = "annual"
+additive = false
+dims = ["sex", "age"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Bir yaş grubunda ölen kişi sayısının, **aynı yaş ve cinsiyetteki bin kişiye** oranı. \
+Ölüm sayısının kendisi yaşlı nüfusun kalabalık olduğu yeri gösterir; bu gösterge onu \
+paydadan çıkarır, geriye ölümlülüğün kendisi kalır. Kaba ölüm hızıyla karıştırılmamalı: \
+kaba hız herkesi paydaya koyar, o yüzden yaşlı bir ilde ölümlülük artmadan yükselir. \
+Payda **yıl sonu** nüfusu (ADNKS 31 Aralık) — TÜİK'in kaba hızlarında kullandığı payda. \
+**Yaşı bilinmeyen ölümler burada yok**: karşılığı bir nüfus yok. Bu yüzden ölüm \
+sayısıyla arasındaki fark tam olarak o kadardır. İki ölçünün bölümü olduğu için \
+`tahmin` rozetiyle durur. İl ve Türkiye düzeyinde, 2009-2025."""
+
+# The same rate over the three broad groups. Its own indicator because the page cannot
+# make it from the one above: grouping adds bands together, and adding rates is wrong —
+# 65-69 + 70-74 + 75+ is 136‰ added and 43‰ weighted. So the weighting is done where the
+# counts still exist, and the screen is left with a number it can draw as it stands.
+[indicator.death_rate_broad]
+label_tr = "Yaşa özgü ölüm hızı (geniş gruplar)"
+label_en = "Age-specific death rate (broad groups)"
+topic = "olum"
+unit = "per_mille"
+frequency = "annual"
+additive = false
+dims = ["sex", "age"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Ölüm hızı üç geniş yaş grubunda: **0-14**, **15-64**, **65+**. Yukarıdaki yaşa özgü \
+hızın aynısı, ama grupların içindeki bantlar **nüfuslarıyla ağırlıklı** birleştirilmiş: \
+önce ölümler ve nüfuslar ayrı ayrı toplanır, bölme en sonda yapılır. Bantların hızlarını \
+toplamak bunu vermez — 65+ için toplama 136‰, doğrusu 43‰ dolayındadır. Sayfadaki \
+"Geniş yaş grupları" bölmesi bu göstergede kapalıdır, tam da bu yüzden. Payda yıl sonu \
+nüfusu; yaşı bilinmeyen ölümler dışarıda. İl ve Türkiye düzeyinde, 2009-2025."""
 
 # Evlenme ve boşanma sayısı, kırılımları kapalı. MEDAS ikisinin altında da on kadar
 # kırılım veriyor — eşlerin yaş grubu, eğitim durumu, evliliğin süresi, çocukların

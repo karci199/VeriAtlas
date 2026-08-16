@@ -12,6 +12,10 @@ What is loaded and what is deliberately not:
   province-year summed into one. Seasonality is a real question and this throws it away;
   the raw file keeps it, so asking it later needs no new download, only a dim.
 * **Ölüm sayısı** — published by sex × month, stored by sex, months summed the same way.
+* **Ölüm sayısı, yaş grubuna göre** — the same measure with the age band opened as well,
+  which MEDAS could only export in two pieces (2011-2025 and 2009-2010). Kept as its own
+  indicator rather than as a second breakdown of `deaths`, because two files feeding one
+  indicator with a dim the other lacks would let "Tümü (topla)" count every death twice.
 * **Bebek ölüm hızı**, **beş yaş altı ölüm hızı** — no breakdown, one value per year.
 * **Evlenme** and **boşanma sayısı** — one value per year, twenty-five of them, with
   every breakdown left closed (see the indicator's note). Counted by the place the event
@@ -53,6 +57,40 @@ SEX_IN_LABEL = re.compile(r"cinsiyeti\s*:\s*(?P<sex>Erkek|Kadın)")
 
 SEXES = {"Erkek": "male", "Kadın": "female"}
 
+#: The age band in the row label of the death-by-age export, written as
+#: `Ölenin yaş grubu:918. (75+)`. The number before the dot is MEDAS's internal code and
+#: is not in ascending order of age (`202` is 10-14 and `252` is 1-4), so the band is read
+#: from the parenthesis and the code ignored.
+AGE_IN_LABEL = re.compile(r"yaş\s*grubu\s*:\s*[^(]*\((?P<age>[^)]+)\)")
+
+#: The published bands to the ids the fact table stores. Two things differ from the
+#: population's bands and both are the source's doing, not ours: the first five years
+#: arrive split as `0` and `1-4` rather than as one `0-4` — infant deaths are the reason
+#: anyone asks — and there is an explicit unknown. The unknown is kept as a band instead
+#: of dropped: 963 deaths in 2009 fall in it, and dropping them would make the age groups
+#: sum to less than the death count published next to them without saying so. It empties
+#: out after 2013.
+AGES = {
+    "0": "0",
+    "1-4": "1-4",
+    "5-9": "5-9",
+    "10-14": "10-14",
+    "15-19": "15-19",
+    "20-24": "20-24",
+    "25-29": "25-29",
+    "30-34": "30-34",
+    "35-39": "35-39",
+    "40-44": "40-44",
+    "45-49": "45-49",
+    "50-54": "50-54",
+    "55-59": "55-59",
+    "60-64": "60-64",
+    "65-69": "65-69",
+    "70-74": "70-74",
+    "75+": "75+",
+    "Bilinmeyen": "unknown",
+}
+
 #: file stem → (adapter name, indicator id, the dim read from the row label or None to sum
 #: every row of the year, and the dims the file carries as a whole).
 #:
@@ -65,6 +103,7 @@ SEXES = {"Erkek": "male", "Kadın": "female"}
 MEASURES = {
     "dogum": ("births", "births", None, {}),
     "olum": ("deaths", "deaths", "sex", {}),
+    "olum-yas": ("deaths_by_age", "deaths_by_age", "sex_age", {}),
     "bebek-olum-hizi": ("infant_mortality", "infant_mortality", None, {}),
     "bes-yas-alti-olum-hizi": ("under5_mortality", "under5_mortality", None, {}),
     "evlenme": ("marriages", "marriages", None, {}),
@@ -157,13 +196,21 @@ def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
         if cells[1].strip():
             label = cells[1].strip()
 
-        if dim == "sex":
+        if dim in ("sex", "sex_age"):
             sex = SEX_IN_LABEL.search(label)
             if not sex:
                 # A row whose breakdown we cannot place must not be folded into a total
                 # silently.
                 continue
-            dims = format_dims({**fixed, dim: SEXES[sex.group("sex")]})
+            found = {"sex": SEXES[sex.group("sex")]}
+            if dim == "sex_age":
+                age = AGE_IN_LABEL.search(label)
+                if not age or age.group("age") not in AGES:
+                    # Same rule, and here it is load-bearing: an unread band would go into
+                    # the sex total and make one age group's rows disagree with it.
+                    raise KeyError(indicator_id + ": tanınmayan yaş bandı: " + label)
+                found["age"] = AGES[age.group("age")]
+            dims = format_dims({**fixed, **found})
         else:
             dims = format_dims(fixed) if fixed else ""
 
@@ -226,9 +273,16 @@ class VitalMeasure:
 
         records: list[dict] = []
         for level in ("country", "province"):
-            path = raw / ("nufus-" + self.stem + "-" + level + ".csv")
-            if path.exists():
-                records.extend(read_export(path, self.spec, single))
+            # One file per level, except where the query was too wide for MEDAS to export
+            # in one go: deaths by age and sex came down as `-province-1` (2011-2025) and
+            # `-province-2` (2009-2010). The parts are disjoint in years and are read as
+            # one file would be. Globbed rather than listed so a third part needs no code
+            # change — and sorted, so the run is reproducible.
+            paths = [raw / ("nufus-" + self.stem + "-" + level + ".csv")]
+            paths += sorted(raw.glob("nufus-" + self.stem + "-" + level + "-*.csv"))
+            for path in paths:
+                if path.exists():
+                    records.extend(read_export(path, self.spec, single))
         if not records:
             raise ValueError("dosya bulunamadi ya da bos: " + self.stem)
 

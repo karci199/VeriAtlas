@@ -3,9 +3,10 @@
   "configurations": [
     {
       "name": "veriatlas-web",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8123"],
-      "port": 8123
+      "runtimeExecutable": "C:/veri/.venv/Scripts/python.exe",
+      "runtimeArgs": ["scripts/serve.py", "8123"],
+      "port": 8123,
+      "url": "http://localhost:8123"
     }
   ]
 }

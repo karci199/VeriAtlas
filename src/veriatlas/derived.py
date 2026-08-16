@@ -119,6 +119,137 @@ def natural_increase(fact: pl.DataFrame) -> pl.DataFrame:
     )
 
 
+#: The bands the death export uses, and the rule that folds a single year of population
+#: into one of them: infancy on its own, then 1-4, then fives, closing at 75+.
+def _death_band(age: pl.Expr) -> pl.Expr:
+    year = age.cast(pl.Int32, strict=False)
+    five = (year // 5) * 5
+    return (
+        pl.when(year == 0)
+        .then(pl.lit("0"))
+        .when(year < 5)
+        .then(pl.lit("1-4"))
+        .when(year >= 75)
+        .then(pl.lit("75+"))
+        .otherwise(five.cast(pl.String) + "-" + (five + 4).cast(pl.String))
+    )
+
+
+def age_specific_death_rate(fact: pl.DataFrame) -> pl.DataFrame:
+    """Deaths per thousand people **of the same age and sex**.
+
+    The one number the page cannot build for itself and the one most often wanted from
+    the death counts. "Alan nüfusunun %'si" divides by everybody, which answers a
+    different question: a province full of pensioners has many deaths at 65+ because it
+    has many people at 65+, and dividing by its whole population keeps that in the answer
+    instead of taking it out. Here the denominator is the band's own population, so what
+    is left is mortality — 65+ in Türkiye is around forty per thousand and the provinces
+    spread across it for reasons that are not their age structure.
+
+    The two files do not band alike: population is published by single year and deaths by
+    band, with infancy split off. The single years are folded to the death file's bands
+    rather than the other way round — that direction is an exact sum, the other would be
+    a guess at how a band divides.
+
+    Left out on purpose:
+
+    * **Yaşı bilinmeyen** — the band has no population to be a rate of. Kept in the count
+      indicator, absent here, and the two are meant to disagree by exactly that.
+    * **Any area-year missing either side.** An inner join, so a band with deaths and no
+      published population produces no row rather than a rate over an assumed base.
+
+    The denominator is the year-end register, which is what TÜİK's own crude rates use;
+    a mid-year average would be defensible too and would move the numbers slightly. The
+    rate is stored, so it says which one was chosen instead of leaving it to be guessed.
+    """
+    keys = ["area_id", "area_level", "period_start", "frequency", "vintage"]
+
+    deaths = (
+        fact.filter(pl.col("indicator_id") == "deaths_by_age")
+        .with_columns(
+            pl.col("dims").str.extract(r"age=([^;]+)").alias("age"),
+            pl.col("dims").str.extract(r"sex=([^;]+)").alias("sex"),
+        )
+        .filter(pl.col("age") != "unknown")
+        .group_by([*keys, "age", "sex"])
+        .agg(
+            pl.col("value").sum().alias("deaths"),
+            pl.col("source_id").first(),
+            pl.col("retrieved_at").max(),
+        )
+    )
+    people = (
+        fact.filter(pl.col("indicator_id") == "population")
+        .with_columns(
+            pl.col("dims").str.extract(r"age=([^;]+)").alias("age"),
+            pl.col("dims").str.extract(r"sex=([^;]+)").alias("sex"),
+        )
+        # Single years and the closing band only: the same rows the median age is built
+        # from. A level that publishes population already banded (district, mahalle) has
+        # no death counts to pair with anyway, and folding a `10-14` into a `10-14` twice
+        # is the double count K14 warns about.
+        .filter(
+            pl.col("sex").is_in(["male", "female"])
+            & (
+                pl.col("age").str.contains(SINGLE_AGE.pattern)
+                | (pl.col("age") == "75+")
+            )
+        )
+        .with_columns(
+            pl.when(pl.col("age") == "75+")
+            .then(pl.lit("75+"))
+            .otherwise(_death_band(pl.col("age")))
+            .alias("age")
+        )
+        .group_by([*keys, "age", "sex"])
+        .agg(pl.col("value").sum().alias("people"))
+    )
+    if deaths.is_empty() or people.is_empty():
+        return fact.head(0)
+
+    paired = deaths.join(people, on=[*keys, "age", "sex"], how="inner").filter(
+        pl.col("people") > 0
+    )
+
+    def rate(frame: pl.DataFrame, indicator_id: str) -> pl.DataFrame:
+        return frame.with_columns(
+            (pl.col("deaths") / pl.col("people") * 1000).alias("value"),
+            pl.lit(indicator_id).alias("indicator_id"),
+            (pl.lit("age=") + pl.col("age") + pl.lit(";sex=") + pl.col("sex")).alias(
+                "dims"
+            ),
+            pl.lit("per_mille").alias("unit"),
+            pl.lit("estimated").alias("quality_flag"),
+        ).select(fact.columns)
+
+    # The three broad groups, computed here rather than left to the screen. The screen
+    # would have to add the bands' rates together, and a rate is not the sum of its parts:
+    # 65-69, 70-74 and 75+ come to 136‰ added and 43‰ done properly. Properly is both
+    # counts summed first and divided once, which is a weighting — by the population of
+    # each band — and weights are not something a grouping box can carry.
+    broad = (
+        paired.with_columns(
+            pl.when(pl.col("age").is_in(["0", "1-4", "5-9", "10-14"]))
+            .then(pl.lit("0-14"))
+            .when(pl.col("age").is_in(["65-69", "70-74", "75+"]))
+            .then(pl.lit("65+"))
+            .otherwise(pl.lit("15-64"))
+            .alias("age")
+        )
+        .group_by([*keys, "age", "sex"])
+        .agg(
+            pl.col("deaths").sum(),
+            pl.col("people").sum(),
+            pl.col("source_id").first(),
+            pl.col("retrieved_at").max(),
+        )
+    )
+
+    return pl.concat(
+        [rate(paired, "death_rate_by_age"), rate(broad, "death_rate_broad")]
+    )
+
+
 def median_age_total(fact: pl.DataFrame) -> pl.DataFrame:
     """The median age of everyone, from the single-year population distribution.
 

@@ -75,6 +75,58 @@ def test_dropping_the_dim_sums_every_row_of_the_year(deaths):
     assert adana == {2009: 158.0, 2010: 272.0}
 
 
+#: The age file, shaped as MEDAS ships it: the band is written inside a parenthesis after
+#: an internal code that does not sort by age, the sex and the band share one label, and
+#: the label is again written once per block. Two provinces, two bands, two sexes.
+DEATHS_BY_AGE = """|||Sütunlar|
+Satırlar|||Adana-1|Adıyaman-2|
+||||
+İkametgah Yerine Göre Ölüm Sayısı|Ölenin cinsiyeti:Erkek ve Ölenin yaş grubu:252. (1-4)|2009|10.0|1.0|
+||2010|20.0|2.0|
+|Ölenin cinsiyeti:Erkek ve Ölenin yaş grubu:918. (75+)|2009|30.0|3.0|
+||2010|40.0|4.0|
+|Ölenin cinsiyeti:Kadın ve Ölenin yaş grubu:252. (1-4)|2009|5.0|6.0|
+||2010|7.0|8.0|
+|Ölenin cinsiyeti:Kadın ve Ölenin yaş grubu:999. (Bilinmeyen)|2009|9.0|1.0|
+||2010|0.0|2.0|
+"""
+
+BY_AGE = ("deaths_by_age", "deaths_by_age", "sex_age", {})
+
+
+def test_the_age_band_is_read_from_the_parenthesis(tmp_path):
+    """Both halves of the label, and the unknown band kept as a band.
+
+    The code before the dot is MEDAS's own and is not in age order — `252` is 1-4 and
+    `202` is 10-14 — so reading it as the band would shuffle the age axis into nonsense
+    while every total stayed right.
+    """
+    path = tmp_path / "nufus-olum-yas-province.csv"
+    path.write_text(DEATHS_BY_AGE, encoding="utf-8")
+    rows = read_export(path, BY_AGE, {})
+    adana = {
+        (row["year"], row["dims"]): row["value"]
+        for row in rows
+        if row["area_id"] == "TR-01"
+    }
+    assert adana[(2009, "age=1-4;sex=male")] == 10.0
+    assert adana[(2010, "age=75+;sex=male")] == 40.0
+    assert adana[(2009, "age=unknown;sex=female")] == 9.0, "yaşı bilinmeyen atılmamalı"
+    assert len(rows) == 16, "iki il × iki yıl × dört kırılım"
+
+
+def test_an_unreadable_age_band_stops_the_load(tmp_path):
+    """A band we cannot name must not fall into the sex total silently — that is the
+    shape of a load that looks complete and whose age groups do not add up."""
+    path = tmp_path / "nufus-olum-yas-province.csv"
+    path.write_text(
+        DEATHS_BY_AGE.replace("(75+)", "(75-79)"),
+        encoding="utf-8",
+    )
+    with pytest.raises(KeyError, match="yaş bandı"):
+        read_export(path, BY_AGE, {})
+
+
 def test_natural_increase_needs_both_sides():
     """A year with births and no deaths is not a year of natural increase equal to its
     births. Half an answer here would be a confident wrong number on the map."""

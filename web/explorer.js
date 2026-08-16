@@ -595,7 +595,17 @@ function fineAt(level) {
 const FINE = "__fine__";
 
 function groupingsFor(dim, level = effectiveLevel()) {
-    return remember("groupings|" + dim + "|" + level, () => {
+    // The indicator is in the key, not just the dim and the level: whether a grouping can
+    // be offered at all depends on its unit.
+    return remember("groupings|" + dim + "|" + level + "|" + state.indicator.id, () => {
+        // A group is the sum of its bands, and a rate does not add up. Three age-specific
+        // death rates added together — 65-69 plus 70-74 plus 75+ — is 136‰, a number with
+        // no meaning sitting exactly where "the 65+ death rate" belongs, and it would draw
+        // a map. The same rule the "Tümü (topla)" option follows, for the same reason; the
+        // properly weighted version of that number is its own indicator.
+        if (!state.indicator.additive) {
+            return [];
+        }
         const bands = rawValuesOf(dim, level);
         return Object.entries(meta.groupings || {})
             .filter(([, g]) => g.dim === dim)
@@ -651,14 +661,22 @@ function rawValuesOf(dim, level) {
         // right at "İlinde / İl dışında", where the ids sort to elsewhere-then-own and
         // the reader is offered the remainder before the thing it is a remainder of.
         const declared = Object.keys(meta.dimensions?.[dim]?.values || {});
-        if (declared.length) {
-            const rank = new Map(declared.map((value, index) => [value, index]));
-            return found.sort(
-                (a, b) => (rank.get(a) ?? declared.length) - (rank.get(b) ?? declared.length)
-            );
-        }
-        return found.sort((a, b) =>
-            String(a).localeCompare(String(b), "tr", {numeric: true})
+        const rank = new Map(declared.map((value, index) => [value, index]));
+        // Undeclared values first, sorted the way they read; the named ones after, in the
+        // dictionary's order. Every dimension that names its values names all of them —
+        // sexes, marital statuses — so for those this is the dictionary's order and
+        // nothing else, which is what "İlinde before İl dışında" needs. The one mixed
+        // case is age, where the dictionary names exactly one value (`unknown`), and
+        // there the residual belongs after the bands rather than in front of them.
+        //
+        // The fallback used to be "leave them where they were", which was invisible while
+        // every dimension was all-or-nothing — and then age named one value and the
+        // eighteen bands beneath it came out in file order: 1-4, 10-14, … 45-49, 5-9.
+        const order = (value) => (rank.has(value) ? rank.get(value) + 1 : 0);
+        return found.sort(
+            (a, b) =>
+                order(a) - order(b) ||
+                String(a).localeCompare(String(b), "tr", {numeric: true})
         );
     });
 }
@@ -666,8 +684,17 @@ function rawValuesOf(dim, level) {
 function valuesOf(dim, level = effectiveLevel()) {
     const active = grouping(dim);
     if (active) {
-        // In the dictionary's order, which is the order a reader expects to see ages.
-        return Object.keys(active.covers);
+        // In the dictionary's order, which is the order a reader expects to see ages —
+        // minus the groups nothing here falls into. "Bilinmeyen" exists because the death
+        // export has a band for it; listed unconditionally it would hang an always-empty
+        // column off every age table in the page, and off the death years after 2013
+        // where the band is gone. Falling back to the full list keeps the fine-grained
+        // groupings working: theirs are single years, which are not the bands on screen.
+        const bands = new Set(rawValuesOf(dim, level));
+        const present = Object.keys(active.covers).filter((name) =>
+            active.covers[name].some((band) => bands.has(band))
+        );
+        return present.length ? present : Object.keys(active.covers);
     }
     return rawValuesOf(dim, level);
 }
@@ -778,7 +805,14 @@ function activeRatio() {
 function ratiosFor(dim, level = effectiveLevel()) {
     const usable = new Set(groupingsFor(dim, level).map(([id]) => id));
     return Object.entries(meta.ratios || {}).filter(
-        ([, body]) => body.dim === dim && usable.has(body.grouping)
+        ([, body]) =>
+            body.dim === dim &&
+            usable.has(body.grouping) &&
+            // And on a unit the ratio says it belongs to. The dependency ratios are
+            // statements about people; the same division over death counts is arithmetic
+            // with no subject, and it was being offered under a name — "yaşlı bağımlılık
+            // oranı" — that says out loud it is about population.
+            (!body.units?.length || body.units.includes(state.indicator.unit_id))
     );
 }
 
@@ -1091,6 +1125,13 @@ function canShareAgainstPopulation() {
  *  "Toplamın %'si" on doğal nüfus artışı and got a table of seventeen dashes with nothing
  *  saying why. So the offer is withdrawn where the answer would be empty. */
 function shareOfWholeMeans() {
+    // And is the indicator one that has a whole? A share divides by the sum of every
+    // area, which only exists where the unit adds up. Eighty-one provincial death rates
+    // summed is not Türkiye's death rate, so "İstanbul is 1,3% of it" is a percentage of
+    // nothing — offered, until now, next to two modes that mean something.
+    if (!state.indicator.additive) {
+        return false;
+    }
     return new Set(slice().map((row) => row.area_id)).size > 1;
 }
 
@@ -1689,6 +1730,30 @@ function unitLabel() {
 
 /** Sharing divides by a total, so it needs a unit that adds up and a breakdown to be a
  *  share *of*. Without both, the control would only ever draw 100%. */
+/** An indicator's definition, with `**bold**` shown as bold.
+ *
+ *  The dictionary has been writing emphasis in that notation from the beginning — it is
+ *  where a definition says which breakdown is *absent*, which is the sentence a reader
+ *  most needs to catch — and the page has been printing the asterisks. Only this one
+ *  marker is understood, and it is built out of text nodes rather than assigned as HTML:
+ *  the definitions are ours, but nothing that comes out of a data file should be able to
+ *  become markup by being written a certain way. */
+function writeDefinition(node, text) {
+    node.textContent = "";
+    text.split("**").forEach((part, index) => {
+        if (!part) {
+            return;
+        }
+        if (index % 2) {
+            const strong = document.createElement("strong");
+            strong.textContent = part;
+            node.append(strong);
+        } else {
+            node.append(document.createTextNode(part));
+        }
+    });
+}
+
 function canShare() {
     return Boolean(state.indicator.additive && (state.indicator.dims || []).length);
 }
@@ -3634,7 +3699,7 @@ function render() {
     drawTabs();
 
     $("chart-title").textContent = state.indicator.label;
-    $("chart-definition").textContent = state.indicator.definition || "";
+    writeDefinition($("chart-definition"), state.indicator.definition || "");
 
     hover = null;
     // The district map needs eighty-one boundary files. They are fetched once, on the

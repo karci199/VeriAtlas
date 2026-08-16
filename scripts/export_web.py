@@ -69,6 +69,9 @@ DATASETS = {
     "household_by_type": "household-type.csv",
     "foreign_population": "foreign.csv",
     "deaths": "deaths.csv",
+    "deaths_by_age": "deaths-by-age.csv",
+    "death_rate_by_age": "death-rate-by-age.csv",
+    "death_rate_broad": "death-rate-broad.csv",
     "registry_population": "registry-population.csv",
     "mean_marriage_age": "marriage-age.csv",
     "mean_first_marriage_age": "first-marriage-age.csv",
@@ -105,6 +108,9 @@ BROKEN_DOWN = (
     "household_by_type",
     "foreign_population",
     "deaths",
+    "deaths_by_age",
+    "death_rate_by_age",
+    "death_rate_broad",
     "mean_marriage_age",
     "mean_first_marriage_age",
     "registry_population",
@@ -138,6 +144,10 @@ def export_dictionary(
                     "id": ind.indicator_id,
                     "label": ind.label_tr,
                     "unit": ind.unit.label_tr,
+                    # The id as well as the label: a ratio declares which units it
+                    # applies to, and matching on a Turkish label would be matching on
+                    # something written to be read.
+                    "unit_id": ind.unit.unit_id,
                     "decimals": ind.unit.decimals,
                     "additive": ind.unit.additive,
                     "frequency": ind.frequency,
@@ -221,6 +231,7 @@ def export_dictionary(
             "under": list(r.under),
             "unit": r.unit.label_tr,
             "decimals": r.unit.decimals,
+            "units": list(r.units),
             "note": r.note_tr,
         }
         for r in load().ratios.values()
@@ -320,6 +331,36 @@ def export_dictionary(
 LAZY_LEVELS = ("district", "neighbourhood", "village")
 
 
+#: A plain number: an age given as a single year rather than as a band.
+SINGLE_YEAR = r"^\d+$"
+
+
+def single_year_levels(frame: pl.DataFrame) -> list[str]:
+    """The levels whose age column is a single-year distribution.
+
+    Asked per level because one export holds several: population arrives as single years
+    for provinces and as five-year bands for districts, in one frame.
+
+    "Has a plain number in it" is not the test, and getting that wrong is how the death
+    counts first went out mislabelled. That file's bands are `0`, `1-4`, `5-9`, … — TÜİK
+    splits infancy off and bands the rest — so a rule that looked at `0` alone called the
+    level single-year, folded that one value into a band it named `0-4`, and printed it
+    next to the real `1-4`. Nothing was double counted and every total stayed right; the
+    axis simply said something false. So the test is the whole column: single years, plus
+    at most the closing `N+` band that every TÜİK age table ends on.
+    """
+    if "age" not in frame.columns:
+        return []
+    ages = frame.select("level", "age").unique()
+    banded = ages.filter(
+        ~pl.col("age").str.contains(SINGLE_YEAR) & ~pl.col("age").str.ends_with("+")
+    )["level"].unique()
+    return sorted(
+        set(ages.filter(pl.col("age").str.contains(SINGLE_YEAR))["level"].unique())
+        - set(banded)
+    )
+
+
 def to_five_year_bands(frame: pl.DataFrame) -> pl.DataFrame:
     """Fold single years of age into five-year bands for the browser.
 
@@ -328,16 +369,20 @@ def to_five_year_bands(frame: pl.DataFrame) -> pl.DataFrame:
     per area-year is 236.816 rows and 1,6 MB against 0,3 MB, on the file every visitor
     downloads before anything is drawn.
 
-    So the export is the boundary between the two. Bands that are not plain numbers pass
-    through untouched — the district export already arrives banded, the neighbourhood one
-    is split at 18 — and only the single years are folded. When a grouping the screen
-    wants does not fall on a five-year boundary, the single years are still in the
-    warehouse to build it from.
+    So the export is the boundary between the two. Only the levels that arrive as single
+    years are folded — the district export is already banded, the neighbourhood one is
+    split at 18, the death counts are banded with infancy split off — and everything else
+    passes through untouched. When a grouping the screen wants does not fall on a
+    five-year boundary, the single years are still in the warehouse to build it from.
     """
     if "age" not in frame.columns:
         return frame
 
-    single = pl.col("age").str.contains(r"^\d+$")
+    fine = single_year_levels(frame)
+    if not fine:
+        return frame
+
+    single = pl.col("age").str.contains(SINGLE_YEAR) & pl.col("level").is_in(fine)
     banded = (
         pl.when(single)
         .then(
@@ -449,11 +494,7 @@ def export_broken_down(
     # about single years there is asking about a column that does not exist.
     stem = DATASETS[indicator_id].removesuffix(".csv")
     declared: dict[str, dict] = {}
-    fine_levels = (
-        slim.filter(pl.col("age").str.contains(r"^\d+$"))["level"].unique().to_list()
-        if "age" in dims
-        else []
-    )
+    fine_levels = single_year_levels(slim) if "age" in dims else []
     if fine_levels:
         report(
             PUBLIC / (stem + "-age1.csv"),
@@ -576,6 +617,15 @@ def main() -> None:
         "household_by_type": export_broken_down(fact, areas, "household_by_type"),
         "foreign_population": export_broken_down(fact, areas, "foreign_population"),
         "deaths": export_broken_down(fact, areas, "deaths"),
+        "deaths_by_age": export_broken_down(fact, areas, "deaths_by_age"),
+        # `whole=False`: a rate has no total to be a share of, and rounding a ‰ of 4,3
+        # to 4 would throw away the digit the whole indicator is about.
+        "death_rate_by_age": export_broken_down(
+            fact, areas, "death_rate_by_age", whole=False
+        ),
+        "death_rate_broad": export_broken_down(
+            fact, areas, "death_rate_broad", whole=False
+        ),
         # `whole=False` for the same reason the median age has it: an age is a position,
         # not a quantity, so "men plus women" is not a total anyone can use.
         "mean_marriage_age": export_broken_down(

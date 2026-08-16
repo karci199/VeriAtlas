@@ -17,7 +17,12 @@ sys.path.insert(0, "src")
 from veriatlas.adapters import ADAPTERS, ingest
 from veriatlas.adapters.tuik_vital import PAIRED
 from veriatlas.config import PUBLIC, WAREHOUSE, ensure_dirs
-from veriatlas.derived import marriage_age_total, median_age_total, natural_increase
+from veriatlas.derived import (
+    age_specific_death_rate,
+    marriage_age_total,
+    median_age_total,
+    natural_increase,
+)
 
 
 def main() -> None:
@@ -56,6 +61,15 @@ def main() -> None:
         if not balance.is_empty():
             fact = pl.concat([fact, balance])
             print(f"{'turetme':12} {len(balance):6} satır  doğal nüfus artışı")
+
+    # Deaths over the population of the same age and sex. Same rule as above and the
+    # same reason: half of it — deaths with no denominator — is not a smaller answer, it
+    # is no answer.
+    if {"population", "deaths_by_age"} <= set(fact["indicator_id"].unique()):
+        rates = age_specific_death_rate(fact)
+        if not rates.is_empty():
+            fact = pl.concat([fact, rates])
+            print(f"{'turetme':12} {len(rates):6} satır  yaşa özgü ölüm hızı")
 
     # An indicator fed by two adapters is only whole when both ran. Loading one alone is a
     # legitimate thing to do while working, so this warns rather than refuses — but it

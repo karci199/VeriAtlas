@@ -124,6 +124,12 @@ class Ratio:
     under: tuple[str, ...]
     unit: Unit
     note_tr: str
+    #: The units the ratio is offered on, empty meaning every unit. A dependency ratio is
+    #: a statement about people: the same arithmetic on death counts computes and means
+    #: nothing, and it was being offered under a name — "yaşlı bağımlılık oranı" — that
+    #: says it is about population. So the dictionary names where it applies rather than
+    #: leaving the screen to offer it wherever the age breakdown happens to exist.
+    units: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -300,6 +306,7 @@ def load() -> Dictionary:
             under=tuple(body["under"]),
             unit=units[body["unit"]],
             note_tr=body.get("note_tr", "").strip(),
+            units=tuple(body.get("units", ())),
         )
 
     derivations: dict[str, Derivation] = {}
