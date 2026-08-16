@@ -498,3 +498,83 @@ tükeniyor.
 hatta güçleniyor: batı/Karadeniz illeri (5,2-5,6) tavanın *üstünde ya da üzerinde*,
 kaldıraçları bitmiş; güneydoğu 3,3-4,2'de, tavana 1-1,9 yıl var. Türkiye
 doğurganlığındaki düşüşün aralık kaynaklı kısmı ağırlıkla oradan gelecek.
+
+## Masaüstü dizininin ikinci taraması — envantere girmemiş dosyalar
+
+Yukarıdaki 15'lik envanter dizinin tamamı değilmiş. `Desktop\demografi\` yeniden
+tarandı; aşağıdakiler eksikti. İkisi bu projeyi doğrudan ilgilendiriyor.
+
+### 1. Akraba evliliği oranı, il düzeyi, 2010-2025 — **en değerli yeni kaynak**
+
+`İllere Göre Evlenme Sayısı ile Akraba Evliliği Sayısı ve Oranı
+(TR,DF_EVLENME_AKRABA_EVLILIK,1.0).xlsx` — 81 il, 16 yıl, evlenme sayısı +
+akraba evliliği sayısı + oranı (%).
+
+TR: **%5,93 (2010) → %3,01 (2025)**, neredeyse yarıya inmiş.
+
+2025 en yüksek: Şanlıurfa %16,9, Mardin %11,0, Siirt %10,8, Muş %9,8,
+Şırnak %9,2, Bitlis %9,0, Diyarbakır %8,8, Ağrı %8,1.
+En düşük: Kütahya %0,4, Edirne %0,4, Çanakkale %0,5, Karabük %0,6, Bolu %0,6.
+**Kırk kat fark** ve sıralama Bulgu 9'un A tablosuyla (en yüksek GDH) neredeyse
+birebir örtüşüyor.
+
+Neden önemli: "Doğu illerinde evlenme yaşının az artmama nedeni araştırıldı, veri
+yetersiz" başlığındaki üç hipotez de zayıf çıkmıştı (taban etkisi r=−0,22, net göç
+r=+0,12, yoğunluk r=−0,11) ve "kırsal/muhafazakâr norm depoda yok" denmişti.
+Akraba evliliği oranı tam da o eksik değişkenin ölçülebilir bir vekili —
+üstelik 16 yıllık il paneli. **Sıradaki iş:** GDH, doğum aralığı ve ilk evlenme
+yaşıyla korelasyonu; ve akraba evliliğindeki *düşüşün* aralık açılmasını
+Bulgu 8'in artıklarını açıklayıp açıklamadığı.
+
+### 2. Yaş grubu × doğum sırası × aralık (2019-2025, TR) — Bulgu 10'u sarsıyor
+
+`Annenin Yaş Grubu ve Doğum Sırasına Göre Son İki Doğumu Arasındaki Ortalama
+Süre.xls`. Bulgu 10'un 1. çekincesini (bileşim etkisi) test etmek için lazım olan
+dosya buymuş. TR 2025, yaş grubuna göre aralık:
+
+| Anne yaşı | Toplam | 2.-1. arası | 3.-2. arası |
+|---|---|---|---|
+| <25 | 2,44 | 2,46 | 2,48 |
+| 25-29 | 3,72 | 3,69 | 4,07 |
+| 30-34 | 5,10 | 4,97 | 5,76 |
+| 35-39 | **6,72** | 6,63 | 7,59 |
+| 40-44 | **8,31** | 8,35 | 9,69 |
+| 45+ | 10,34 | 10,58 | 12,78 |
+| *Toplam* | *4,76* | *4,34* | *5,50* |
+
+**Bulgu 10 için sonuç:** aralık, yaş grubu içinde 5,2'yi rahatça aşıyor —
+35-39'da 6,72, 40-44'te 8,31. Yani **~5,2 bireysel davranışta bir sınır değil.**
+İl toplamındaki tavan, ilin yaş bileşiminin sınırı: bir ilin annelerinin tamamı
+40'lı yaşlara kayamayacağı için toplam ortalama ~5,2'de takılıyor. Bulgu 10'daki
+1. çekince (tavan davranışsal değil, tanımsal/bileşimsel) böylece **desteklendi**.
+
+Bulgu 10'un ampirik kısmı (yakınsama r=−0,83, üst ucun 7 yıl kımıldamaması)
+geçerliliğini koruyor — il düzeyinde tavan gerçek. Değişen şey yorumu:
+"iller kaldıraçlarını tüketti" değil, **"il toplamı yaş bileşiminin izin verdiği
+sınıra dayandı"**. Güneydoğu için çıkarım aynı kalıyor (tavana 1-1,9 yıl var),
+ama nedeni farklı: oradaki anneler hâlâ genç yaş gruplarında yoğun.
+
+### 3. Doğum aralığının dağılımı (yalnız ortalama değil)
+
+`Annenin Doğum Sırasına Göre Son İki Doğumu Arasındaki Aylık Doğum Aralığı.xls` —
+TR, doğum sırasına göre, aralığın **ay bantlarına dağılımı** (6-17 ay, … sayı ve %).
+2025: 500.165 doğum, %7,3'ü 6-17 ay aralıkla. Ortalamanın gizlediği şekli
+gösterir; tavanın ortalama artefaktı mı yoksa dağılımın gerçekten kayması mı
+olduğunu ayırt etmek için kullanılabilir. Eşi: `Annenin Yaş Grubu ve Doğum
+Sırasına Göre ... Aylık Doğum Aralığı.xls`.
+
+### 4. İkincil / büyük olasılıkla zaten depoda olanlar
+
+| Dosya | İçerik | Durum |
+|---|---|---|
+| `Annenin Yaş Grubuna Göre Doğum Yüzdesi.xls` | TR, 2001-, yaş bandı payları (%) | `annedogumyas` bandının yüzde hali |
+| `İl, tek yaş ve cinsiyete göre nüfus.xls` | 81 il × tek yaş × cinsiyet | ambardaki `population` ile aynı olmalı |
+| `FavoriRaporlar.xlsx` | 31.12.2025 ADNKS: il/ilçe/büyükşehir/belediye/mahalle/köy/kent-kır | depodaki nüfus dosyalarıyla örtüşüyor olmalı |
+| `Annenin Doğum Sırasına Göre ... Ortalama Süre.xls` | il kırılımsız (TR) sürüm | ilçeli sürümü zaten kullanıldı |
+
+### 5. Bu projeyle ilgisiz — İznik özel çalışması
+
+`pivot.xls`, `yaslar2013sonrasi.xls`, `kentkiryaslar.xls`, `iznik_kent_kir.xlsx`,
+`Bursa_Mahalleler_18.csv`, `OrtancaYas.csv` ve `cikti\`, `demografi1\`,
+`demografi2\` klasörleri — Bursa/İznik kent-kır yaş yapısı çalışması, seçmen
+verisi, fotoğraflar. Doğurganlık işine girmiyor, taranmasına gerek yok.
