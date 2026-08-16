@@ -7,15 +7,25 @@ geldi, ikisi de depoya alınmadı — burada iz olarak duruyor, sonra yüklenece
 
 Ana soru: Türkiye'de doğurganlık düşüyor, **mekanizması ne?**
 
-| Aday mekanizma | Kanıt | Karar |
+| Aday mekanizma | Kanıt (aynı pencere, 2019-2025) | Karar |
 |---|---|---|
-| Doğum aralığının açılması | kesitte r=−0,96, değişimde r=+0,64 | ✅ **asıl mekanizma** |
-| İlk doğumun ertelenmesi | r=−0,74, ama aralıkla birlikte hareket ediyor | ⚠️ kısmi |
+| Doğum aralığının açılması | değişimde r=+0,64, kısmi +0,56 | ✅ en güçlü katkı |
+| İlk doğumun ertelenmesi | değişimde r=+0,50, kısmi +0,35 | ✅ **bağımsız katkı var** |
 | Evlenmenin ertelenmesi | r=+0,06 | ❌ ilgisiz |
-| Hiç evlenmeme | kesitte r=+0,11; aralıkla birlikte açıklama gücü düşüyor | ❌ reddedildi (Bulgu 11) |
+| Hiç evlenmeme | kesitte r=+0,11; birlikte açıklama gücü düşüyor | ❌ reddedildi (Bulgu 11) |
 
-Doğurganlık, insanlar geç evlendiği için düşmüyor. **Başladıktan sonra çocuklar
-arasının açılmasından** düşüyor — mekanizma evlilik içi aile planlaması.
+Doğurganlık, insanlar geç **evlendiği** için düşmüyor — evlenme yaşıyla bağ yok.
+**İkisi birden** düşürüyor: ilk doğumun ertelenmesi ve sonraki çocukların arasının
+açılması. Aralık biraz daha güçlü, ama "tek mekanizma" değil (Bulgu 14 düzeltmesi).
+
+⚠️ **İki büyük çekince** (Bulgu 14-15):
+- Kesitteki r=−0,96 **bölge içinde geçerli değil** (orta 27 il: −0,32). Üstünlük
+  büyük ölçüde doğu-batı ekseninden geliyor.
+- İlişki **doğrusal değil, doyuyor**: ilk doğum yaşı 25,7→26,9 iken GDH 58,1→38,5
+  (−19,6), ama 26,9→28,4 iken yalnız 38,5→34,3 (−4,2). ~27 yaştan sonra ilk doğum
+  yaşı doğurganlığı belirlemiyor. Türkiye'nin çoğu ili bu eşiği geçmiş, yani
+  **ileriye dönük olarak ilk doğum yaşı bir kaldıraç değil.**
+- Aralık serisi yalnız 7 yıl (2019-2025); bütün aralık sonuçları kısa panele dayanıyor.
 
 **İki farklı yol, aynı sonuç** (Bulgu 9): güneydoğu erken evlenip araları açıyor;
 batı/Trakya geç başlıyor, aralığı zaten geniş, doğurganlığı doğrudan çocuk
