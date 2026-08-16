@@ -183,3 +183,31 @@ neredeyse sıfır.
 En çok artan: Şanlıurfa +3,41 puan, Karabük +2,19, Eskişehir +1,05. En çok
 azalan: Hakkari −2,52, Şırnak −2,38, Aksaray −1,99, Bingöl −1,88 — **aynı
 bölgede Şanlıurfa yükselirken komşuları düşüyor, bölge homojen değil.**
+
+## Bulgu 6 — doğum aralığı güneydoğuda daralmıyor, açılıyor
+
+"İllere ve Annenin Doğum Sırasına Göre Son İki Doğumu Arasındaki Ortalama
+Süre" (2019-2025, il düzeyi). TR: 4,62 → 4,76 yıl (açılıyor).
+
+2025 en kısa aralık: Şanlıurfa 3,32 yıl, Şırnak 3,54, Mardin 3,88 — hâlâ en
+sık doğuran iller. Ama **en çok açılan** da aynı bölge: Ağrı +0,65 yıl,
+Van +0,63, Bingöl +0,61, Bitlis +0,60, Muş +0,60, Iğdır +0,54, Siirt +0,52,
+Hakkari +0,49 (2019-2025). GDH'nin en hızlı düştüğü illerle bire bir aynı
+liste (bkz. Bulgu 3).
+
+## Bulgu 7 — evlenir evlenmez ilk çocuk hâlâ güneydoğuda, ama hızla azalıyor
+
+"İl ve annenin evlilik süresine göre doğumlar" (2015-2025, il düzeyi).
+Evlilikten <1 yıl içinde doğum oranı, TR: %11,55 → %10,03.
+
+2025 en yüksek: Hakkari %14,77, Şırnak %14,72, Diyarbakır %14,71, Ağrı
+%14,34, Van %13,85 — hep güneydoğu. En düşük: Tunceli %5,22, Bayburt %6,97,
+Erzincan %7,11 — Karadeniz + Tunceli.
+
+En çok azalan: Bingöl −6,04 puan, Tunceli −4,61, Kars −4,00 — bu davranış
+da hızla değişiyor, ama Bulgu 6'daki aralık açılmasından daha yavaş.
+
+**Üç bulgu (5,6,7) birlikte:** güneydoğu illeri hâlâ evlenir evlenmez ilk
+çocuğu yapıyor (evlenme davranışı değişmedi) ama **ilk çocuktan sonraki
+aralığı hızla açıyor** (doğurganlık düşüşünün mekanizması burada) —
+evlenmeyi erteleme değil, aile planlamasının evlilik içinde değişmesi.
