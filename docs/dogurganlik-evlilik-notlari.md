@@ -945,3 +945,81 @@ düz bölgede. Değişken orada gerçekten bilgi taşımıyor.
 **Yöntem dersi:** bu veri kümesinde tek bir korelasyon katsayısı yanıltıyor.
 Doğrusal r hem erken uçtaki sıkı ilişkiyi hem geç uçtaki yokluğu tek sayıya
 eziyor. Bundan sonraki her ilişki iddiası ham gruplamayla da gösterilmeli.
+
+## Bulgu 16 — boşanma hızı, doğru paydayla: 81 ilin 80'inde artıyor, doğuda katlanarak
+
+`meta.json` uyarıyordu: boşanmayı aynı yılın evlenmesine bölmek yanlış, bu yıl
+boşananlar başka yıllarda evlenmiş çiftler. Doğru payda **risk altındaki nüfus**,
+yani evli stok. `marital_status`'tan alındı (2008-2025, 81 il).
+
+**Gösterge: evli 1.000 kadın başına boşanma.** Kadın alındı — bir boşanma bir evli
+kadın + bir evli erkek demek, ikisi toplanırsa çift sayılır. Yaş 15+ (15-49 değil;
+boşanma her yaşta oluyor, dar bant yaşlı nüfuslu illeri yanlış gösterir).
+
+### Türkiye
+
+| Yıl | Boşanma | Evli kadın | Hız ‰ | Naif (boş/evlenme) % |
+|---|---|---|---|---|
+| 2010 | 118.568 | 17.534.635 | **6,76** | 20,3 |
+| 2016 | 126.164 | 19.084.665 | **6,61** | 21,2 |
+| 2019 | 156.587 | 19.654.736 | **7,97** | 28,9 |
+| 2025 | 193.793 | 20.592.954 | **9,41** | 35,1 |
+
+Gerçek artış **%39** (6,76→9,41). Naif oran aynı dönemde **%73** artmış gösteriyor —
+neredeyse iki katı abartı. Sebep: naif oranın paydası (evlenme sayısı) küçülüyor,
+evli stok ise büyüyor. **Naif oran boşanmadaki artışın yarısını evlenmedeki
+düşüşten devşiriyor.**
+
+Yükseliş 2016'da başlıyor — Bulgu 11 (evlenmeme kırılması) ve Bulgu 12 (evli
+doğurganlığın tepesi) ile **aynı yıl**. Üçüncü gösterge de aynı tarihi işaret
+ediyor; ortak neden aranmalı.
+
+### Sıralama: naif oran bu kez o kadar da yanlış değil, ama uçlarda çuvallıyor
+
+r(doğru hız ~ naif oran) = **+0,926**. Bulgu 12'deki felaketten (r=−0,13) farklı;
+genel sıralama tutuyor. Ama tek tek iller kayıyor:
+
+| İl | Doğru hız (sıra) | Naif oran (sıra) |
+|---|---|---|
+| Tunceli | 9,89‰ (22.) | %53,5 (**1.**) |
+| Edirne | 9,16‰ (34.) | %43,3 (13.) |
+| Hatay | 9,74‰ (**24.**) | %31,1 (51.) |
+| Gaziantep | 9,17‰ (33.) | %26,3 (59.) |
+
+Tunceli naif oranda Türkiye birincisi, doğru hızda 22. — çünkü orada çok az
+evlenme oluyor, payda küçük. Hatay/Gaziantep tam tersi.
+
+### 2025 düzeyi: beş kat batı-doğu farkı
+
+En yüksek: İzmir 13,33‰, Antalya 13,20, Muğla 12,31, Denizli 12,16, Mersin 11,90,
+Karaman 11,71, Eskişehir 11,67, Uşak 11,50, Aydın 11,48, Ankara 11,02.
+En düşük: Hakkari 2,71, Şırnak 3,02, Bitlis 3,04, Muş 3,44, Van 3,49, Siirt 3,75,
+Bingöl 3,82, Bayburt 3,83, Gümüşhane 3,92, Batman 4,25.
+
+### Ama değişimde yakınsama — doğu katlanarak artıyor
+
+**81 ilin 80'inde arttı** (tek istisna Aksaray 11,17→10,42).
+
+| 2008 grubu | 2008 | 2025 | Kat |
+|---|---|---|---|
+| En düşük 27 | 2,38‰ | 5,02‰ | **2,4×** |
+| Orta 27 | 4,77‰ | 8,81‰ | 1,9× |
+| En yüksek 27 | 7,01‰ | 10,53‰ | 1,5× |
+
+r(2008 düzeyi ~ kaç kat arttığı) = **−0,740**. Klasik yakınsama.
+En çok katlananlar hep güneydoğu: Bitlis 0,67→3,04 (4,5×), Siirt 0,89→3,75 (4,2×),
+Van 0,94→3,49 (3,7×), Ağrı 1,27→4,57 (3,6×), Hakkari 0,80→2,71 (3,4×).
+
+**Doğurganlıktaki desenin aynısı** (Bulgu 3, 9): mutlak düzeyde en geride olan
+bölge, oransal değişimde en hızlısı. Doğu-batı farkı duruyor ama kapanıyor.
+
+### ⚠️ Sınırlar
+
+- `divorces` yaş kırılımı taşımıyor → **yaşa göre standardize edilemedi**, bu kaba
+  bir hız. Evli nüfusun yaş yapısı farklı olan iller haksız karşılaştırılıyor
+  olabilir; yaşlı evli nüfus boşanma riskini düşürür.
+- Pay da payda da **resmî kayıt**. Dinî nikâhlı birliktelikler ikisinde de yok;
+  güneydoğu için "resmî evliliklerin boşanma hızı" okunmalı. Gerçek birliktelik
+  çözülmesi bundan yüksek olabilir.
+- Evlilik süresi kırılımı yok → boşanma riskinin evlilik yaşına göre dağılımı
+  (hazard) hesaplanamıyor. Bunun için ayrı bir MEDAS dökümü gerekir.
