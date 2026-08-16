@@ -3931,6 +3931,7 @@ function readingDerivation() {
     // that go into the formula, and the number that comes out — which is the number on
     // screen, not a second one computed here.
     let example = null;
+    let nested = "";
     const area = exampleArea();
     if (area) {
         const points = asIf({derivation: ""}, () => seriesFor(area)).filter((p) =>
@@ -3949,17 +3950,50 @@ function readingDerivation() {
                   ? here && points.slice(Math.max(0, points.indexOf(here) - 1), points.indexOf(here) + 2)
                   : first && here && [first, here];
         if (parts && parts.length && Number.isFinite(out)) {
+            // Written as a sentence with the *input* unit named. The inputs and the
+            // output are two different units the moment a share is on — 55,60 and 34,56
+            // are percentages, 62,2 is an index of them — and the arrow alone let a
+            // reader carry the percent sign across it.
+            const from = parts[0];
+            const to = parts[parts.length - 1];
+            const of = asIf({derivation: ""}, () => unitLabel());
             example =
-                esc(nameOf(area)) + " — " +
-                parts.map((p) => p.year + ": " + esc(say(p.value, places))).join(", ") +
-                " → <b>" + esc(say(out)) + "</b> " + esc(unitLabel());
+                "<b>" + esc(nameOf(area)) + "</b> — " + from.year + ": " +
+                esc(say(from.value, places)) +
+                (parts.length > 2 ? " … " : " → ") + to.year + ": " +
+                esc(say(to.value, places)) + " (" + esc(of) + "). " +
+                esc(label) + " karşılığı: <b>" + esc(say(out)) + "</b>.";
+        }
+
+        // A ratio of a ratio is where this stops being readable, and it is exactly the
+        // combination people reach for: the share of a register still at home, indexed.
+        // 62,2 is not "fell to 62,2 per cent" — it is "fell to 62,2 per cent *of its own
+        // 2007 share*", and the two readings are twenty points apart.
+        //
+        // The point difference says the same movement in one unit instead of two, and it
+        // has a property the index does not: it is symmetric across the breakdown.
+        // Whatever "İlinde" loses in points, "İl dışında" gains, so the ranking holds
+        // whichever value is being looked at. The indices do not — a small share moving
+        // a little is a large percentage, which is why "en çok düşen" and "en çok yükselen"
+        // name different provinces on the two halves of the same fact.
+        if (state.share && NEEDS_POSITIVE.includes(id) && Number.isFinite(out)) {
+            const gap = here && first ? here.value - first.value : null;
+            nested =
+                " <b>Bu bir yüzdenin yüzdesi.</b> " + esc(say(out)) +
+                ", ölçünün kendisi değil, oranın <i>ilk yılki oranına</i> göre hâlidir. " +
+                "Aynı hareketi tek birimde okumak için <b>Toplam fark</b> türetmesi puan " +
+                "farkını verir" +
+                (Number.isFinite(gap) ? " — burada " + esc(say(gap, 2)) + " puan" : "") +
+                "; o sayı kırılım boyunca simetriktir, bir değerin kaybettiği puanı " +
+                "öteki kazanır, endeks ise değildir.";
         }
     }
 
     return entry(
         "Türetme — " + label,
         reading.what + " <span class='reading-formula'>" + esc(reading.formula) +
-            "</span> " + reading.reads + (reading.drops ? " " + reading.drops : ""),
+            "</span> " + reading.reads + (reading.drops ? " " + reading.drops : "") +
+            nested,
         example
     );
 }
@@ -4019,7 +4053,10 @@ function readingShare() {
             esc(say((top / bottom) * 100, 2)) + "</b>%";
     }
 
-    const label = state.share ? unitLabel() : "Mutlak sayı";
+    // The share's own name, not the derivation's. With an index on, `unitLabel` answers
+    // "endeks" — true of the screen and wrong of this row, which is about the division
+    // that happened underneath it.
+    const label = state.share ? asIf({derivation: ""}, () => unitLabel()) : "Mutlak sayı";
     return entry("Kip — " + label, body, example);
 }
 
