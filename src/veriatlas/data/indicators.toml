@@ -90,6 +90,29 @@ one_nuclear_family = "Tek çekirdek aileli"
 nuclear_and_others = "Çekirdek aile ve diğerleri"
 no_nuclear_family = "Çekirdek ailesiz, çok kişili"
 
+[dim.education]
+label_tr = "Eğitim durumu"
+label_en = "Educational attainment"
+
+# `İlkokul` (beş yıllık eski okul) ve `İlköğretim` (1997'nin sekiz yıllık zorunlu
+# eğitimi) ayrı düzenlerdir ve ayrı durur.
+#
+# `İlköğretim` ile `Ortaokul` arasında ise seride bir **yeniden sınıflandırma** var ve
+# ayrı tutulmalarının asıl sebebi bu: ilk evlenen kadınlarda ilköğretim 2014'te 187.769
+# iken 2020'de 6.012'ye iniyor, ortaokul aynı sürede 1.908'den 95.225'e çıkıyor. Kimse
+# okuldan vazgeçmedi — TÜİK 2015-2019 arasında etiketi değiştirdi. İkisi ayrı satır
+# olduğu için bu görülebiliyor; tek satıra toplansalardı fark hiç fark edilmezdi, ama
+# ayrı okundukları anda da her biri tek başına yanıltıcı. Doğru okuma ikisinin toplamı.
+[dim.education.values]
+illiterate = "Okuma yazma bilmeyen"
+literate_no_school = "Okuma yazma bilen, okul bitirmeyen"
+primary_5 = "İlkokul (5 yıl)"
+basic_8 = "İlköğretim (8 yıl)"
+lower_secondary = "Ortaokul"
+upper_secondary = "Lise ve dengi"
+higher = "Yüksek öğretim"
+unknown = "Bilinmeyen"
+
 [dim.marital]
 label_tr = "Medeni durum"
 label_en = "Marital status"
@@ -723,6 +746,28 @@ dims = ["sex", "age"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 Hayatında ilk kez evlenen **kadın** sayısı, yaş grubuna göre. Ortalama ilk evlenme yaşından farkı: o bir ortalama, bu bir dağılım — evlenme yaşının yükselmesinin hangi banttan hangi banda kayma olduğunu ancak bu gösterir. **16-19 bandı** çocuk yaşta evlilik tartışmasının doğrudan ölçüsüdür. Payda olarak aynı yaştaki hiç evlenmemiş kadın alınırsa yaşa özgü ilk evlenme hızı çıkar; medeni durum tablosu il düzeyinde olduğu için bu hesap ilde yapılabiliyor. Erkeğin yaş grubu ayrı bir kırılımdır ve bu çekimde yok. 2001'den itibaren."""
+
+# Eğitim ilk kez burada bir kırılım oluyor. Yalnız Türkiye düzeyinde: MEDAS bu ölçüyü
+# ilde vermiyor, ve verse 11 × 8 × 81 × 17 hücre olurdu — kendi sınırının üç katı.
+[indicator.first_marriages_by_education]
+label_tr = "İlk defa evlenen (kadının yaşı ve eğitimi)"
+label_en = "First marriages by bride's age and education"
+topic = "evlenme_bosanma"
+unit = "marriage"
+frequency = "annual"
+additive = true
+dims = ["sex", "age", "education"]
+views = ["table", "line", "bar"]
+definition_tr = """
+Hayatında ilk kez evlenen **kadın** sayısı, yaş grubu **ve eğitim durumuyla**. Evlenme \
+yaşının neden yükseldiğini bu gösterge açıklamaya en yakın duran veridir: okulda geçen \
+yıl, evlenilmeyen yıldır. \
+**Bir oran değil, bir sayıdır** — "yüksek öğretimli gelinlerin payı arttı" cümlesi hem \
+kadınların daha çok okumasından hem de evlenmenin geç yaşa kaymasından gelir; ikisini \
+ayırmak için payda olarak aynı yaş ve eğitimdeki hiç evlenmemiş kadın gerekir ve o \
+kırılım (eğitim × medeni durum) elimizde yok. \
+**İlkokul ve ilköğretim ayrı satırlardır**: biri beş yıllık eski okul, öteki 1997'nin \
+sekiz yıllık zorunlu eğitimi. Yalnız Türkiye düzeyinde, 2009-2025."""
 
 # Evlenme ve boşanma sayısı, kırılımları kapalı. MEDAS ikisinin altında da on kadar
 # kırılım veriyor — eşlerin yaş grubu, eğitim durumu, evliliğin süresi, çocukların

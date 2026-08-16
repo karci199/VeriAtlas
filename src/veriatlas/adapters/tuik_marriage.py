@@ -46,9 +46,31 @@ from .tuik_vital import read_export
 DOWNLOADS = RAW / "medas" / "evlenme"
 
 #: `Kadının yaş grubu:16-19` — the side and the band in one label.
-BRIDE_AGE = re.compile(r"(?P<taraf>Kadının|Erkeğin)\s+yaş\s+grubu\s*:\s*(?P<age>.+)$")
+BRIDE_AGE = re.compile(
+    r"(?P<taraf>Kadının|Erkeğin)\s+yaş\s+grubu\s*:\s*(?P<age>[^ ]+(?:\+)?)"
+)
 
 SIDES = {"Kadının": "female", "Erkeğin": "male"}
+
+#: `Kadının eğitim durumu:Lise Ve Dengi Meslek Okulu` — the second half of the education
+#: file's label. Read from its own pattern rather than by splitting on " ve ", because the
+#: school names contain that word ("Lise Ve Dengi…") and splitting would cut one in half.
+BRIDE_EDUCATION = re.compile(r"eğitim\s+durumu\s*:\s*(?P<egitim>.+?)\s*$")
+
+#: TÜİK's school names to ids. `İlkokul` and `İlköğretim` both appear and are **not** the
+#: same thing: the first is the five-year school of the old system and the second the
+#: eight-year one that replaced it in 1997. Someone who finished one did not finish the
+#: other, and folding them together would erase the reform from the series.
+EDUCATION = {
+    "Okuma Yazma Bilmeyen": "illiterate",
+    "Okuma Yazma Bilen Fakat Bir Okul Bitirmeyen": "literate_no_school",
+    "İlkokul": "primary_5",
+    "İlköğretim": "basic_8",
+    "Ortaokul Veya Dengi Meslek Ortaokul": "lower_secondary",
+    "Lise Ve Dengi Meslek Okulu": "upper_secondary",
+    "Yüksek Öğretim": "higher",
+    "Bilinmeyen": "unknown",
+}
 
 
 @cache
@@ -90,6 +112,12 @@ MEASURES = {
         "bride_age",
         {},
     ),
+    "ilk-evlenme-egitim": (
+        "first_marriages_by_education",
+        "first_marriages_by_education",
+        "bride_age_education",
+        {},
+    ),
 }
 
 
@@ -105,9 +133,19 @@ def read_label(label: str, dim: str | None, fixed: dict) -> str | None:
     found = BRIDE_AGE.search(label)
     if not found:
         return None
+    values = {}
+    if dim == "bride_age_education":
+        school = BRIDE_EDUCATION.search(label)
+        if not school or school.group("egitim") not in EDUCATION:
+            # An unread school is a refusal for the same reason an unread age band is: it
+            # would fall into whatever total the caller sums next, and the distribution
+            # would come up short by an amount nothing reports.
+            return None
+        values["education"] = EDUCATION[school.group("egitim")]
     return format_dims(
         {
             **fixed,
+            **values,
             "sex": SIDES[found.group("taraf")],
             # `Bilinmeyen` is kept as a band for the reason the death file's is: dropping it
             # makes the age groups sum to less than the published total and says nothing.

@@ -379,3 +379,59 @@ göre, ilçe için yalnız kaba hız yayımlamak bilerek yanıltıcı bir tablo 
 
 İlçe düzeyinde evlenme-boşanma sayısının kendisi de bu depoda henüz yok; MEDAS'ta olup
 olmadığı bir sonraki çekimin sorusu.
+
+# Saptamalar — eğitim
+
+## 22. İlk kez evlenen kadınların yarısından fazlası üniversiteli
+
+Türkiye, ilk kez evlenen kadınların eğitim durumu (%):
+
+| | 2009 | 2015 | 2020 | 2025 |
+|---|---|---|---|---|
+| **Yüksek öğretim** | **8,4** | 33,9 | 43,7 | **53,8** |
+| Lise ve dengi | 28,8 | 21,5 | 25,8 | 27,3 |
+| İlkokul (5 yıl) | 11,7 | 3,0 | 1,6 | 2,4 |
+| Okuma yazma bilen, okul bitirmeyen | 10,2 | 8,5 | 2,0 | 0,6 |
+| **Okuma yazma bilmeyen** | **5,0** | 1,4 | 0,4 | **0,2** |
+| Bilinmeyen | 9,6 | 1,5 | 1,1 | 0,9 |
+
+On altı yılda yüksek öğretimli gelin payı **altı katına** çıktı: on iki gelinden biriyken
+şimdi ikide birden fazlası. Okuma yazma bilmeyen gelin oranı yirmi beşte bire indi.
+
+**Ama bu bir oran, hız değil.** Payı büyüten iki ayrı şey var ve bu veri onları ayırmıyor:
+kadınlar daha çok okuyor, *ve* evlenme geç yaşa kayıyor — üniversiteli olmak için önce
+üniversite yaşını geçmek gerekiyor. Ayırmak için payda olarak "aynı yaş ve eğitimdeki hiç
+evlenmemiş kadın" gerekir; medeni durum × eğitim kırılımı elimizde yok, o yüzden burada
+söylenen yalnız payın kendisi.
+
+## 23. On altı-on dokuz yaşta ilk evlilik %71 düştü
+
+| Yıl | 16-19 yaşta ilk kez evlenen kadın |
+|---|---|
+| 2009 | 142.719 |
+| 2015 | 107.665 |
+| 2020 | 58.413 |
+| 2025 | **40.813** |
+
+Aynı dönemde bütün ilk evlilikler %16 düştü. Yani genç evliliğin düşüşü, evlenmenin genel
+düşüşünden **dört kat sert**. Bu, kaba sayının içinde kaybolan bir eğilim: toplam evlenme
+grafiğine bakan biri yavaş bir azalma görür, yaşa bakan biri bir kırılma görür.
+
+## 24. Bir sınıflandırma değişikliği, tam ortasında
+
+Aynı tabloda okunması gereken bir şey daha var, ve o veri değil kayıt:
+
+| Yıl | İlköğretim (8 yıl) | Ortaokul |
+|---|---|---|
+| 2014 | **187.769** | 1.908 |
+| 2017 | 97.404 | 24.539 |
+| 2020 | 6.012 | **95.225** |
+| 2025 | 1.849 | 63.057 |
+
+Kimse okuldan vazgeçmedi. TÜİK 2015-2019 arasında etiketi değiştirdi ve aynı insanlar bir
+satırdan ötekine geçti. İki satır ayrı tutulduğu için bu görülebiliyor; tek satıra
+toplansalardı hiç fark edilmezdi — ama ayrı okundukları anda da her biri **tek başına
+yanıltıcı**. Doğru okuma ikisinin toplamı: %26,3 (2009) → %14,8 (2025).
+
+**Neden görünmüyor:** bir seride ani düşüş her zaman olguya benzer. Yanındaki satırın aynı
+anda aynı miktarda yükseldiğini fark etmek gerekiyor.
