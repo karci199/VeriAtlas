@@ -180,3 +180,122 @@ Yukarıdakiler "hangi bölüm neden var" sorusunun cevabı:
 
 Her rapor sayfasında bir ilin bu dokuz eksende **nerede durduğu** olacak: kendi serisi,
 Türkiye ortalaması, ve İBBS-1 / bölge / ülke içindeki sırası.
+
+# Saptamalar — il düzeyi
+
+Aynı hesaplar seksen bir ile uygulandığında, Türkiye toplamında görünmeyenler.
+
+## 10. Ölüm sıralaması, yaş düzeltilince baştan aşağı değişiyor
+
+2025'in kaba ölüm hızı ile yaşa göre standartlaştırılmış hızı yan yana konunca sıralama
+yer değiştiriyor — bazı illerde altmış küsur basamak:
+
+| İl | Kaba (‰) | Standart (‰) | Kaba sıra | Standart sıra |
+|---|---|---|---|---|
+| **Tunceli** | 8,87 | **3,07** | 12. | **81.** |
+| Artvin | 9,90 | 3,83 | 3. | 63. |
+| Bayburt | 8,40 | 3,62 | 19. | 75. |
+| **Şanlıurfa** | 3,16 | **4,37** | 77. | **8.** |
+| Gaziantep | 3,95 | 4,36 | 70. | 10. |
+| Kilis | 6,23 | 4,70 | 47. | **1.** |
+
+**Tunceli, Türkiye'nin en düşük ölümlülüğüne sahip ili** — ham sayıya bakan biri onu
+en yüksek üçte birde görür. Sebebi ölmek değil yaşlanmak: nüfusu Türkiye'nin en yaşlısı.
+
+**Kilis'te ise gerçek ölümlülük Türkiye'nin en yükseği** ve kaba hız bunu tamamen
+gizliyor, çünkü nüfusu genç. Şanlıurfa ve Gaziantep aynı durumda.
+
+**Neden görünmüyor:** yayımlanan tek ölüm hızı kaba hız. Yaş yapısı çok farklı seksen bir
+ili aynı sütunda sıralamak, sıralamanın kendisini yaş sıralamasına çeviriyor.
+
+## 11. Gencini en çok kaybeden iller, üniversite illeri
+
+20-29 yaşta yıllık net göç, o yaştaki bin kişiye oranla (2019-2025 ortalaması):
+
+| En çok kaybeden | ‰ | En çok kazanan | ‰ |
+|---|---|---|---|
+| Gümüşhane | **−86,9** | Tekirdağ | +34,9 |
+| Karabük | −60,3 | Kocaeli | +23,6 |
+| Isparta | −54,6 | Yalova | +20,3 |
+| Kırıkkale | −51,9 | Muğla | +20,1 |
+| Bayburt | −51,1 | Antalya | +19,3 |
+
+**Uyarı, ve saptamanın yarısı bu:** ilk dörtten üçü (Gümüşhane, Karabük, Isparta,
+Kırıkkale) üniversite illeridir ve ADNKS öğrenciyi kayıtlı adresinde sayar. Brüt akışlara
+bakınca durum görünüyor — Gümüşhane 2019-2025 arasında bu yaşta 29.070 kişi almış,
+44.933 kişi vermiş. Yani "genç kaçıyor" değil, **gelen öğrenciden çok mezun gidiyor**:
+üniversite kontenjanları daralırken il, gelen akışını kaybediyor.
+
+Tekirdağ'ın kazancı ise brüt olarak da net: 116.943 gelmiş, 75.860 gitmiş.
+
+## 12. Gidenin cinsiyeti doğuda erkek, batıda kadın
+
+2019-2025 arasında ilden gidenlerde yüz kadına düşen erkek:
+
+| En erkek | | En kadın | |
+|---|---|---|---|
+| Hakkari | 121 | Nevşehir | 74 |
+| Şırnak | 118 | Uşak | 77 |
+| Siirt | 108 | Denizli | 80 |
+
+Doğuda göç eden erkek, batıda kadın. Batıdaki iller için akla gelen ilk açıklama
+evlilik göçüdür — kadın evlenip başka ile taşınır — ama bunu doğrulamak evlenme kaydını
+göçle eşleştirmeyi gerektirir ve elimizde o yok. Burada söylenen yalnız farkın kendisi.
+
+## 13. Pandemi doğuyu ve İç Anadolu'yu vurdu, Ege'yi az
+
+2019'un yaş-cinsiyet ölümlülüğüne göre 2020-2021 fazla ölümü:
+
+| En ağır | % | En hafif | % |
+|---|---|---|---|
+| Bayburt | **+35,1** | Kars | **+3,9** |
+| Ağrı | +31,9 | Iğdır | +6,6 |
+| Diyarbakır | +29,8 | Bartın | +10,6 |
+| Mardin | +28,2 | Balıkesir | +10,7 |
+| Konya | +28,2 | İzmir | +11,2 |
+
+Aradaki fark **dokuz kat**. İzmir'in %11,2'si 6.464 kişi, Konya'nın %28,2'si 6.917 —
+neredeyse aynı sayıda insan, tamamen farklı bir yük.
+
+## 14. Yaşam süresinde 5,4 yıllık il farkı
+
+2023, doğuşta beklenen yaşam süresi:
+
+- **Kadın**: Tunceli 83,6 · Gaziantep 78,7 → **4,9 yıl** fark
+- **Erkek**: Tunceli 78,1 · Kilis 73,2 → **4,9 yıl** fark
+
+Kadın-erkek makası her ilde kadın lehine ama genişliği değişiyor: Rize ve Şırnak'ta
+**7,4 yıl**, Gaziantep'te 5,1.
+
+Tunceli'nin hem en uzun ömür hem en düşük standartlaştırılmış ölümlülük **hem de** en
+küçük hanehalkı (2,49) olması tek bir olguya bakıyor olabilir — ama bu veriden çıkmaz,
+o yüzden burada yalnız yan yana duruyorlar.
+
+## 15. Çocuk nüfusu yirmi ilde beşte bir eridi, dört ilde arttı
+
+0-14 nüfusu 2007 → 2025:
+
+| En çok düşen | % | Artan | % |
+|---|---|---|---|
+| Kars | −37,3 | Tekirdağ | **+47,9** |
+| Zonguldak | −35,9 | Yalova | +42,8 |
+| Çorum | −35,8 | Şanlıurfa | +28,9 |
+| Gümüşhane | −35,7 | Kocaeli | +24,9 |
+
+Şanlıurfa'nın çocuk nüfusu %29 artmış — doğurganlık hızı %31 düşerken. İkisi çelişmiyor:
+doğuran kadın sayısı %43 arttı. Bu, saptama 3'ün il düzeyindeki en net örneği.
+
+## 16. Boşanma haritası altı kat açılıyor
+
+2025 kaba boşanma hızı: İzmir 3,28‰, Hakkari 0,51‰ — **altı kat**. Ege ve Akdeniz'in batı
+ucu üstte, güneydoğu altta. Aynı harita ilk evlenme yaşında ters duruyor: kadınlar
+Kilis'te 23,7, Şanlıurfa'da 23,8 yaşında ilk evliliğini yapıyor.
+
+Eşler arası yaş farkı en büyük Kars ve Muş'ta (3,8 yıl). Bu sayı yalnız bir gelenek
+ölçüsü değil: saptama 7'deki dulluk farkının hesabına doğrudan giriyor — kadın hem daha
+uzun yaşıyor hem kendinden büyükle evleniyor.
+
+## 17. Hanehalkı büyüklüğü ikiye katlanıyor
+
+Şırnak 4,84 kişi, Tunceli 2,49 — aynı ülkede **iki katı**. Türkiye ortalaması 3,08 ve
+düşüyor, ama bu ortalama iki ayrı ülkenin ortalaması gibi duruyor.
