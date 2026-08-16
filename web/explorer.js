@@ -1167,10 +1167,20 @@ function baseTotals(level, base) {
     });
 }
 
+/** Dividing by the population is only a reading where the numerator is people, or events
+ *  people have. The dictionary says which units those are (`per_capita`), because the
+ *  answer is a property of the unit and not of the screen.
+ *
+ *  Asked of `additive` alone this was on for hanehalkı tipleri, and the number it drew was
+ *  right for one value of the breakdown and meaningless for the other three: a one-person
+ *  household holds exactly one person, so its count over the population really is the
+ *  share of people living alone — while "tek çekirdek aileli hane ÷ nüfus" is a ratio
+ *  between households and people that is not the share of anything. */
 function canShareAgainstPopulation() {
     return (
         state.indicator.id !== AGAINST &&
         state.indicator.additive &&
+        state.indicator.per_capita &&
         catalogue.some((i) => i.id === AGAINST && i.available)
     );
 }

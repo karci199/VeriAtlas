@@ -239,11 +239,17 @@ label_en = "children per woman"
 decimals = 2
 additive = false
 
+# `per_capita` says the population is an honest denominator for this unit. People and the
+# events people have — a birth, a death, a marriage, a divorce — give a crude rate. A
+# household, a building or a dwelling does not: those are counted in units that are not
+# persons, and "hane ÷ kişi" is a ratio between two different things. Additivity is a
+# different question and does not answer this one; see the note on Unit.per_capita.
 [unit.person]
 label_tr = "kişi"
 label_en = "persons"
 decimals = 0
 additive = true
+per_capita = true
 
 [unit.person_per_km2]
 label_tr = "kişi/km²"
@@ -304,12 +310,14 @@ label_tr = "doğum"
 label_en = "births"
 decimals = 0
 additive = true
+per_capita = true
 
 [unit.death]
 label_tr = "ölüm"
 label_en = "deaths"
 decimals = 0
 additive = true
+per_capita = true
 
 # Kept apart from `per_mille` although both print as ‰: the base is different. The crude
 # rates are per thousand *people*, these are per thousand *live births*, and a screen that
@@ -320,12 +328,14 @@ label_tr = "evlenme"
 label_en = "marriages"
 decimals = 0
 additive = true
+per_capita = true
 
 [unit.divorce]
 label_tr = "boşanma"
 label_en = "divorces"
 decimals = 0
 additive = true
+per_capita = true
 
 [unit.per_thousand_live_births]
 label_tr = "‰ (canlı doğumda)"

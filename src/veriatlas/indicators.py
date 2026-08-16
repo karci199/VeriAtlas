@@ -48,6 +48,17 @@ class Unit:
     #: Whether values in this unit may be summed across a breakdown. Persons add up;
     #: a rate does not. The screen only offers "Tümü (topla)" where this is true.
     additive: bool
+    #: Whether dividing by the area's population says anything. People and the events
+    #: people have — a birth, a death, a marriage — give a crude rate that demographers
+    #: read every day. Households, buildings and dwellings do not: they are counted in
+    #: units that are not persons, so "hane ÷ kişi" is a ratio of two different things.
+    #:
+    #: Additivity does not answer this. A household count adds up perfectly and is still
+    #: the wrong numerator, which is how the screen came to offer "İl nüfusunun %'si" for
+    #: hanehalkı tipleri — a reading that happens to be true for one of the four values
+    #: (a one-person household holds exactly one person) and meaningless for the other
+    #: three. One right answer beside three wrong ones is worse than no answer.
+    per_capita: bool
 
 
 @dataclass(frozen=True)
@@ -236,6 +247,7 @@ def load() -> Dictionary:
             body["label_en"],
             body["decimals"],
             body.get("additive", False),
+            body.get("per_capita", False),
         )
         for key, body in raw.get("unit", {}).items()
     }

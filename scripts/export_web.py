@@ -148,6 +148,10 @@ def export_dictionary(
                     "unit": ind.unit.label_tr,
                     "decimals": ind.unit.decimals,
                     "additive": ind.unit.additive,
+                    # Whether "İl nüfusunun %'si" is an honest reading here. Kept
+                    # apart from `additive`: a household count adds up and is still
+                    # the wrong thing to divide by people.
+                    "per_capita": ind.unit.per_capita,
                     "frequency": ind.frequency,
                     "definition": ind.definition_tr,
                     "dims": list(ind.dims),

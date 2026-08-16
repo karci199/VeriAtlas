@@ -119,3 +119,30 @@ def test_buildings_and_dwellings_are_separate_indicators():
     buildings = get("building_permits_buildings")
     dwellings = get("building_permits_dwellings")
     assert buildings.unit.unit_id != dwellings.unit.unit_id
+
+
+#: Units whose values are people, or events that happen to people. Dividing one of these
+#: by the area's population is a crude rate, which is a reading demographers use. Written
+#: out here rather than derived from the dictionary, so that changing the dictionary has
+#: to change this list too — the point of the test is that the decision is deliberate.
+PER_CAPITA_UNITS = {"person", "birth", "death", "marriage", "divorce"}
+
+
+def test_only_people_and_their_events_may_be_divided_by_the_population():
+    """`per_capita` decides whether the screen offers "İl nüfusunun %'si".
+
+    Read off `additive` instead, the mode was offered for hanehalkı tipleri: a household
+    count adds up perfectly and is still the wrong numerator. The number it drew was true
+    for one value of the breakdown — a one-person household holds one person — and
+    meaningless for the other three, which is the worst shape a wrong answer can take.
+
+    Nothing on screen shows this. A unit gaining the flag by accident would put a
+    plausible percentage in front of the reader with no way to tell it apart from the
+    ones that are real, so the list of units that may carry it is pinned here.
+    """
+    for unit in load().units.values():
+        assert unit.per_capita == (unit.unit_id in PER_CAPITA_UNITS), unit.unit_id
+        if unit.per_capita:
+            # A unit that cannot be summed cannot be a numerator over an area's people
+            # either: the ratio would be an average divided by a count.
+            assert unit.additive, unit.unit_id
