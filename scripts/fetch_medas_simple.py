@@ -122,6 +122,10 @@ MEASURES = [
     ("yasam-suresi", LIFE, "Do", True),  # 2, Türkiye + il, yalnız 5 yıl
     ("dogum-ilce", BIRTHS, "lçelere göre doğum", False),  # 2
     ("olum-ilce", DEATHS, "lçelere göre ölüm", False),  # 2
+    # Deaths by the age of the deceased, which is what turns "did mortality change or did
+    # the population age" from an argument into a subtraction. Only the age breakdown is
+    # opened: with the month beside it the same question costs twelve times the cells.
+    ("olum-yas", DEATHS, "İkametgah yerine göre ölüm", "yaş grubu"),
     ("evlenme", MARRIAGES, "Evlenme sayısı", False),  # 1
     ("kaba-evlenme-hizi", MARRIAGES, "Kaba evlenme", False),  # 1
     ("evlenme-yasi-erkek", MARRIAGES, "Erkeğin ortalama evlenme", False),  # 1
@@ -172,8 +176,15 @@ def target_path(name: str, level: str, part: int = 0):
     return OUT / ("nufus-" + name + "-" + level + piece + ".csv")
 
 
-def build_query(page, topic: str, hint: str, breakdowns: bool) -> int:
-    """Topic and measure, with its breakdowns opened or not. Returns the indicator count."""
+def build_query(page, topic: str, hint: str, breakdowns) -> int:
+    """Topic and measure, with its breakdowns opened or not. Returns the indicator count.
+
+    `breakdowns` is False for none, True for all, or a string to open exactly one of them.
+    That last case is what deaths by age needs: the measure carries seven breakdowns and
+    opening them all multiplies out to a query no limit will take, while opening the month
+    alongside the age would ask for twelve times more cells to answer a question about age.
+    One is the whole point — the others are still there for a later session.
+    """
     page.goto(URL, wait_until="networkidle")
     page.locator("select").first.select_option(label=topic)
     settle(page)
@@ -189,9 +200,14 @@ def build_query(page, topic: str, hint: str, breakdowns: bool) -> int:
     settle(page)
 
     if breakdowns:
-        # A tick is a toggle and the mandatory ones arrive already on (docs/medas.md).
-        for row, _ in visible_rows(page):
-            if not is_ticked(page, row):
+        wanted = breakdowns if isinstance(breakdowns, str) else None
+        for row, text in visible_rows(page):
+            keep = wanted is None or wanted.lower() in text.lower()
+            # Only ever turned on, never off. A tick is a toggle and the mandatory ones
+            # arrive already on (docs/medas.md) — deaths always carry the sex of the
+            # deceased — so unticking what we did not ask for empties the query instead of
+            # narrowing it, and MEDAS then refuses the whole measure without saying why.
+            if keep and not is_ticked(page, row):
                 tick(page, row, "")
 
     click_exact(page, "Tamam")
