@@ -202,6 +202,10 @@ h1 {
     padding: var(--row-pad) 4px;
     border-bottom: 1px solid var(--stroke-divider);
     cursor: pointer;
+    /* Shift-click is a range here, and shift-click is also how a browser highlights text.
+       Without this the reader reaches across ten provinces and gets ten highlighted names
+       for their trouble. */
+    user-select: none;
 }
 
 .entities li:hover { background: var(--bg-control-hover); }

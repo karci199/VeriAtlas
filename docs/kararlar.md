@@ -637,7 +637,7 @@ Sıra, birbirine bağımlılığa göre:
    MEDAS (Playwright), Dünya Bankası (SDMX).
 5. **Kalite kuralları** — pandera şemaları, yükleme sırasında çalışır.
 6. **Arayüz dönüşümü** — iskelet kuruldu, bkz. K10. Kalan: harita geometrisi (il/İBBS
-   sınırları), çoklu seçim kısayolları (Ctrl/Shift). Eski `index.html` kaldırıldı.
+   sınırları). Çoklu seçim kısayolları eklendi, eski `index.html` kaldırıldı.
 7. **MEDAS adaptörü** — akışın ilk yarısı çalışıyor (bkz. medas.md); kalan: Zaman →
    Düzey → Rapor Oluştur → sayfalı tablo.
 8. **Kod dili geçişi** — mevcut `config.py` ve `scripts/` Türkçe docstring'li;

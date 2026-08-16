@@ -3838,6 +3838,12 @@ async function useIndicator(id) {
 
 // region Wiring
 
+//: The last area clicked in the list, so shift has something to reach from. Deliberately
+//: not in `state`: it is not part of what the address bar describes, and a shared link
+//: that restored someone else's anchor would make the first shift-click land somewhere
+//: the reader never clicked.
+let anchor = null;
+
 function wire() {
     $("entities").onclick = (ev) => {
         const li = ev.target.closest("li");
@@ -3845,6 +3851,35 @@ function wire() {
             return;
         }
         const area = li.dataset.area;
+
+        // Shift takes the run between the last area clicked here and this one. The run is
+        // read off the list as it is being shown — filtered, searched, in whatever order
+        // is on screen — because that is the run the reader drew with their eyes. Taking
+        // it off the full area list instead would select things that are not visible.
+        //
+        // Ctrl needs no branch: a plain click already adds rather than replaces, so
+        // ctrl-click does what it does everywhere else. It is documented, not implemented.
+        const shown = areasShown();
+        if (ev.shiftKey && anchor && anchor !== area && shown.includes(anchor)) {
+            const from = shown.indexOf(anchor);
+            const to = shown.indexOf(area);
+            const run = shown.slice(Math.min(from, to), Math.max(from, to) + 1);
+            // Symmetric: over a run that is already entirely chosen, shift takes it away
+            // again. Otherwise the only way to undo a fifty-row reach is fifty clicks.
+            const chosen = new Set(state.selection);
+            if (run.every((id) => chosen.has(id))) {
+                state.selection = state.selection.filter((id) => !run.includes(id));
+                state.muted = state.muted.filter((id) => !run.includes(id));
+            } else {
+                state.selection = [...new Set([...state.selection, ...run])];
+                state.muted = state.muted.filter((id) => !run.includes(id));
+            }
+            anchor = area;
+            render();
+            return;
+        }
+        anchor = area;
+
         if (state.selection.includes(area)) {
             state.selection = state.selection.filter((a) => a !== area);
             state.muted = state.muted.filter((a) => a !== area);
