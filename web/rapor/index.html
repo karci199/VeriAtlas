@@ -55,10 +55,10 @@
     // The area menu is built from the payloads that exist, not from the registry: a menu
     // naming a thousand areas would offer nine hundred pages nobody has written.
     const ETIKET = {country: "", province: "il", region: "bölge", nuts1: "İBBS-1"};
-    fetch("../../public/rapor/dizin.json")
-      .then(cevap => cevap.json())
-      .then(dizin => {
+    window.addEventListener("veriatlas-dizin", (olay) => {
+        const dizin = olay.detail || [];
         const secim = document.getElementById("alan-secim");
+        if (!dizin.length) { secim.hidden = true; return; }
         for (const {area_id, ad, duzey} of dizin) {
           const etiket = ETIKET[duzey] ?? duzey;
           secim.append(new Option(etiket ? `${ad} · ${etiket}` : ad, area_id));
@@ -70,8 +70,7 @@
           const simdiki = /a=([A-Z0-9-]+)/.exec(location.hash);
           if (simdiki) secim.value = simdiki[1];
         });
-      })
-      .catch(() => { document.getElementById("alan-secim").hidden = true; });
+    });
   </script>
 </body>
 </html>

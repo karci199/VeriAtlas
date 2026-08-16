@@ -247,19 +247,20 @@ async function ensureLevel(level) {
 // registry exports them, this is the one label map left in the page.
 /** The levels the page offers, in the order the menu lists them.
  *
- *  Deliberately short of what the data holds. District and neighbourhood rows are loaded,
- *  exported and kept — nothing has been thrown away — but they are not offered while the
- *  province level is being settled, because a gap at those levels cannot be told apart
- *  from a gap in the page: districts have no single years, neighbourhoods have only the
- *  18 split, and outside the thirty metropolitan provinces they are missing their
- *  villages entirely. Testing a control against data that is itself incomplete tells you
- *  nothing about the control.
+ *  District is back: it was withdrawn while the province controls were being settled, on
+ *  the grounds that a gap at that level could not be told apart from a gap in the page.
+ *  The province level is settled now, and the district export is complete on its own
+ *  terms — 973 areas, banded ages, the years the source published.
  *
- *  Putting `"district"` back in this list is the whole of the change needed to bring them
- *  back: the files are already exported, the lazy fetch already knows how to get them,
- *  and everything downstream reads the level off the rows rather than off a hard-coded
- *  list. Nothing else in the page names a level it is allowed to draw. */
-const OFFERED_LEVELS = ["country", "region", "nuts1", "nuts2", "province"];
+ *  What the district level does *not* have is stated by the controls themselves rather
+ *  than by leaving it out: no single years, so the fine-resolution choice does not
+ *  appear; no 18 split, so that grouping is not offered. Every one of those is decided
+ *  from the rows at the level, so nothing here has to remember them.
+ *
+ *  Neighbourhood and village stay out for now, and for a reason that is theirs alone:
+ *  outside the thirty metropolitan provinces the village rows are missing entirely, so a
+ *  map of them would draw a hole where law 6360 is, not where the people are not. */
+const OFFERED_LEVELS = ["country", "region", "nuts1", "nuts2", "province", "district"];
 
 const LEVEL_LABELS = {
     // "Coğrafi bölge" rather than "Bölge": the two hierarchies are both regions, and the

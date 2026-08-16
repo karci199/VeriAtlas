@@ -201,8 +201,11 @@ h2 { font-family: var(--baslik-yazi); font-size: var(--olcek-4); line-height: 1.
 .isaret.kutu { width: 10px; height: 10px; border-radius: 2px; }
 .bosluk { flex: 1 1 auto; }
 
-.kipler { display: flex; gap: .1rem; padding: .5rem 1rem; border-bottom: 1px solid var(--cizgi);
-          background: var(--yuzey-alt); flex-wrap: wrap; }
+.kipler { display: flex; gap: 1rem; padding: .5rem 1rem; border-bottom: 1px solid var(--cizgi);
+          background: var(--yuzey-alt); flex-wrap: wrap; align-items: center; }
+.kip-grup { display: flex; gap: .1rem; align-items: center; }
+.kip-etiket { font-size: var(--olcek-0); color: var(--metin-sonuk); margin-right: .3rem;
+              letter-spacing: .05em; text-transform: uppercase; }
 .kip {
   background: none; border: 1px solid transparent; border-radius: var(--yuvarlak);
   padding: .25rem .6rem; font: inherit; font-size: var(--olcek-0); cursor: pointer;

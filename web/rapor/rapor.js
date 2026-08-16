@@ -123,6 +123,11 @@ function cizgiGrafik(ana, {ad, seriler, bantlar = [], birim = "", birimSag = "",
     const ic = {g: W - sol - sag, y: H - ust - alt};
 
     let kip = "mutlak";
+    // Axis from zero or fitted to the data, and linear or logarithmic. Both are the
+    // reader's call rather than ours: a count read as "how big" wants zero on the frame,
+    // and the same count read as "how did it move" wants the movement to fill the box.
+    let sifirdan = seriler.some(s2 => s2.sifirdan);
+    let logaritmik = false;
     const acik = new Map([...seriler, ...(sutun ? [sutun] : [])]
         .map(s => [s.ad, s.acik !== false]));
 
@@ -151,18 +156,53 @@ function cizgiGrafik(ana, {ad, seriler, bantlar = [], birim = "", birimSag = "",
         // A mode that can go negative needs zero on the frame — a change of −3% and one of
         // +3% are opposite findings and a cropped axis hides which side of the line the
         // series is on.
-        if (kip !== "mutlak" || taraf === "sag" || seriler.some(s => s.sifirdan && acik.get(s.ad))) {
+        // A log axis cannot start at zero — log 0 is undefined — so "Sıfırdan" is
+        // ignored while it is on. Left in, the floor became 1e-9 and every gridline
+        // printed as "0".
+        if (logaritmik && logOlur()) {
+            return {en: en / 1.4, ust: tavan * 1.15};
+        }
+        if (kip !== "mutlak" || sifirdan) {
             return {en: Math.min(0, en - pay * 0.4), ust: Math.max(0, tavan + pay)};
         }
         return {en: en - pay, ust: tavan + pay};
     }
 
+    /** A log scale needs a positive floor, and a series that touches zero or goes
+     *  negative has no log at all — so the switch does nothing there rather than drawing
+     *  a line that silently drops its lowest points. */
+    function logOlur() {
+        return kip === "mutlak" && seriler
+            .filter(s2 => acik.get(s2.ad))
+            .every(s2 => noktalar(gecerli(s2)).every(([, v]) => v > 0));
+    }
+
     const yOf = (deger, taraf) => {
         const o = olcek(taraf) || {en: 0, ust: 1};
+        if (logaritmik && logOlur()) {
+            const taban = Math.max(o.en, 1e-9);
+            const tavan = Math.max(o.ust, taban * 1.0001);
+            const t = (Math.log(Math.max(deger, taban)) - Math.log(taban)) /
+                      (Math.log(tavan) - Math.log(taban));
+            return ust + ic.y - t * ic.y;
+        }
         return ust + ic.y - ((deger - o.en) / (o.ust - o.en)) * ic.y;
     };
 
     function adimlar({en, ust: tavan}) {
+        if (logaritmik && logOlur()) {
+            const cikti = [];
+            for (let v = 10 ** Math.floor(Math.log10(Math.max(en, 1e-9))); v <= tavan; v *= 10) {
+                if (v >= en) cikti.push(v);
+                if (v * 3 <= tavan && v * 3 >= en) cikti.push(v * 3);
+            }
+            // Powers of ten are the right ticks for a series that spans decades and no
+            // ticks at all for one that does not: a province's population moves between
+            // 585 and 616 thousand, and the decade marks fall outside that entirely. So
+            // a narrow range keeps the linear ticks — they are still placed on the log
+            // axis by `yOf`, which is what makes the curve a log curve.
+            if (cikti.length >= 3) return cikti;
+        }
         const ham = (tavan - en) / 4;
         const buyukluk = 10 ** Math.floor(Math.log10(Math.abs(ham) || 1));
         const adim = [1, 2, 2.5, 5, 10].map(k => k * buyukluk).find(k => k >= ham) || ham;
@@ -295,6 +335,14 @@ function cizgiGrafik(ana, {ad, seriler, bantlar = [], birim = "", birimSag = "",
             balon.append(satir);
         }
         balon.classList.toggle("gorunur", bulundu);
+        okuma.textContent = "";
+        okuma.append(el("b", {}, String(yil)));
+        for (const [seri] of noktaDugum) {
+            const deger = gecerli(seri)[yil];
+            if (deger === undefined || !acik.get(seri.ad)) continue;
+            okuma.append(document.createTextNode(" · " + seri.ad + " "));
+            okuma.append(el("b", {}, bicimle(seri, deger)));
+        }
         if (olay) {
             const kutuOlcu = svg.getBoundingClientRect();
             const x = olay.clientX - kutuOlcu.left;
@@ -307,6 +355,7 @@ function cizgiGrafik(ana, {ad, seriler, bantlar = [], birim = "", birimSag = "",
     // Üst satır: ad ve seri anahtarları
     const ustSatir = el("div", {class: "grafik-ust"});
     if (ad) ustSatir.append(el("span", {class: "grafik-ad"}, ad));
+    const okuma = el("span", {class: "okuma"});
     for (const seri of [...seriler, ...(sutun ? [sutun] : [])]) {
         const dugme = el("button", {class: "anahtar", type: "button"});
         dugme.setAttribute("aria-pressed", String(acik.get(seri.ad)));
@@ -320,28 +369,50 @@ function cizgiGrafik(ana, {ad, seriler, bantlar = [], birim = "", birimSag = "",
         });
         ustSatir.append(dugme);
     }
+    // The readout stays in the corner as well as following the cursor: the corner one is
+    // there before the pointer is, so a chart says what its last year was without being
+    // touched, and it stays put while the balloon moves under the reader's hand.
+    ustSatir.append(el("span", {class: "bosluk"}), okuma);
     kutu.append(ustSatir);
 
-    if (kipler) {
-        const satir = el("div", {class: "kipler"});
-        for (const {ad: kipAdi, etiket} of KIPLER) {
-            const dugme = el("button", {class: "kip", type: "button"}, etiket);
-            dugme.setAttribute("aria-pressed", String(kipAdi === kip));
+    /** One group of mutually exclusive buttons. Three of them sit on the control row and
+     *  they behaved identically, so they are made rather than written out three times. */
+    function grupYap(etiket, secenekler, secili, uygula) {
+        const grup = el("div", {class: "kip-grup"});
+        if (etiket) grup.append(el("span", {class: "kip-etiket"}, etiket));
+        for (const [yazi, deger] of secenekler) {
+            const dugme = el("button", {class: "kip", type: "button"}, yazi);
+            dugme.setAttribute("aria-pressed", String(deger === secili));
             dugme.addEventListener("click", () => {
-                kip = kipAdi;
-                for (const kardes of satir.children) {
+                uygula(deger);
+                for (const kardes of grup.querySelectorAll(".kip")) {
                     kardes.setAttribute("aria-pressed", String(kardes === dugme));
                 }
                 ciz();
+                if (yillar.length) oku(yillar.at(-1));
             });
-            satir.append(dugme);
+            grup.append(dugme);
         }
-        kutu.append(satir);
+        return grup;
     }
+
+    const kipSatiri = el("div", {class: "kipler"});
+    if (kipler) {
+        kipSatiri.append(grupYap("", KIPLER.map(k => [k.etiket, k.ad]), kip,
+            (deger) => { kip = deger; }));
+    }
+    kipSatiri.append(
+        grupYap("Eksen", [["Veriye göre", false], ["Sıfırdan", true]], sifirdan,
+            (deger) => { sifirdan = deger; }),
+        grupYap("Ölçek", [["Doğrusal", false], ["Logaritmik", true]], logaritmik,
+            (deger) => { logaritmik = deger; }),
+    );
+    kutu.append(kipSatiri);
 
     kutu.append(svg, balon);
     if (not) kutu.append(el("div", {class: "kaydirici"}, not));
     ciz();
+    if (yillar.length) oku(yillar.at(-1));
 
     svg.addEventListener("pointermove", (olay) => {
         const kutuOlcu = svg.getBoundingClientRect();
@@ -352,8 +423,7 @@ function cizgiGrafik(ana, {ad, seriler, bantlar = [], birim = "", birimSag = "",
     });
     svg.addEventListener("pointerleave", () => {
         balon.classList.remove("gorunur");
-        imlec?.setAttribute("opacity", 0);
-        for (const [, nokta] of noktaDugum) nokta.setAttribute("opacity", 0);
+        if (yillar.length) oku(yillar.at(-1));
     });
 
     ana.append(kutu);
@@ -1318,6 +1388,9 @@ async function hazirlik() {
     geometri = geo;
     siralamaVerisi = sira;
     dizinVerisi = dizin;
+    // The menu in the shell needs the same list; handing it over here is one fetch
+    // instead of two for a file both of them want before anything can be drawn.
+    window.dispatchEvent(new CustomEvent("veriatlas-dizin", {detail: dizin}));
 }
 
 async function yukle(areaId) {
