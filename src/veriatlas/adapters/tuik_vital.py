@@ -53,6 +53,25 @@ SEX_IN_LABEL = re.compile(r"cinsiyeti\s*:\s*(?P<sex>Erkek|Kadın)")
 
 SEXES = {"Erkek": "male", "Kadın": "female"}
 
+
+def sex_of(label: str) -> str | None:
+    """The sex a row's label names, or None.
+
+    Two spellings, because MEDAS uses two. The death export writes a compound label —
+    `Ölenin cinsiyeti:Erkek ve Ölümün meydana geldiği ay :01. (Ocak)` — and the life
+    table export writes the word alone.
+
+    The bare form is matched on the *whole* label rather than searched for inside it. A
+    search would find "Erkek" in a label meaning something else entirely, and the row it
+    mislabelled would be added to the wrong sex rather than refused: exactly the failure
+    the caller's `continue` is there to prevent.
+    """
+    found = SEX_IN_LABEL.search(label)
+    if found:
+        return SEXES[found.group("sex")]
+    return SEXES.get(label.strip())
+
+
 #: file stem → (adapter name, indicator id, the dim read from the row label or None to sum
 #: every row of the year, and the dims the file carries as a whole).
 #:
@@ -69,6 +88,11 @@ MEASURES = {
     "bes-yas-alti-olum-hizi": ("under5_mortality", "under5_mortality", None, {}),
     "evlenme": ("marriages", "marriages", None, {}),
     "bosanma": ("divorces", "divorces", None, {}),
+    # Doğuşta beklenen yaşam süresi. Same transposed shape, sex on the row label, and
+    # a series with holes in it: TÜİK builds the provincial life tables from pooled
+    # three-year windows and publishes them irregularly, so 2015 and 2016 are absent
+    # from the source rather than from the download.
+    "yasam-suresi": ("life_expectancy", "life_expectancy", "sex", {}),
     "evlenme-yasi-erkek": (
         "mean_marriage_age_male",
         "mean_marriage_age",
@@ -158,12 +182,12 @@ def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
             label = cells[1].strip()
 
         if dim == "sex":
-            sex = SEX_IN_LABEL.search(label)
+            sex = sex_of(label)
             if not sex:
                 # A row whose breakdown we cannot place must not be folded into a total
                 # silently.
                 continue
-            dims = format_dims({**fixed, dim: SEXES[sex.group("sex")]})
+            dims = format_dims({**fixed, dim: sex})
         else:
             dims = format_dims(fixed) if fixed else ""
 
