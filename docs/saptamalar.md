@@ -299,3 +299,83 @@ uzun yaşıyor hem kendinden büyükle evleniyor.
 
 Şırnak 4,84 kişi, Tunceli 2,49 — aynı ülkede **iki katı**. Türkiye ortalaması 3,08 ve
 düşüyor, ama bu ortalama iki ayrı ülkenin ortalaması gibi duruyor.
+
+## 18. Evlenme, doğru paydayla bakılınca üçte bir düşmüş
+
+Kaba evlenme hızı bütün nüfusu paydaya koyar. Ama evlenme riski yalnız **hiç evlenmemiş**
+insanlardadır — çocuklar, evliler ve dullar o paydada işi olmayan kalabalıktır. Payda
+düzeltilince Türkiye'nin son on yedi yılı başka görünüyor:
+
+| | 2009 | 2025 | Değişim |
+|---|---|---|---|
+| Evlenme sayısı | 591.742 | 552.237 | −%6,7 |
+| 15+ hiç evlenmemiş kadın | 6.305.001 | 8.639.548 | **+%37** |
+| Kaba evlenme hızı (‰) | 8,16 | 6,41 | −%21 |
+| **Rafine evlenme hızı (‰)** | **93,85** | **63,92** | **−%32** |
+
+Evlenecek durumda olan kadın sayısı 2,3 milyon **arttığı hâlde** evlenme sayısı düştü.
+Kaba hızın gösterdiği %21'lik düşüş, gerçek düşüşün üçte ikisi kadar.
+
+Boşanmada payda evliler:
+
+| | 2009 | 2025 | Değişim |
+|---|---|---|---|
+| Boşanma sayısı | 114.162 | 193.793 | +%70 |
+| **Rafine boşanma hızı (‰)** | **6,63** | **9,41** | **+%42** |
+| 100 evlenmeye düşen boşanma | 19,3 | **35,1** | — |
+
+Son satır "evliliklerin üçte biri bitiyor" **değildir** — bu yılın boşanmaları başka
+yılların evliliklerinden gelir, ve evlenme düşerken bu oran hiçbir şey değişmeden
+yükselir. Ama iki akışın birlikte nereye gittiğini gösterir.
+
+## 19. Paydayı düzeltince sıralama kırk basamak oynuyor
+
+2025, kaba sıradaki yer ile rafine sıradaki yerin farkı:
+
+| Kaba hız yanıltıyor (yukarı) | | Kaba hız yanıltıyor (aşağı) | |
+|---|---|---|---|
+| Kırklareli | +40 sıra | Batman | **−54 sıra** |
+| Ordu | +40 | Mardin | −44 |
+| Tekirdağ | +38 | Diyarbakır | −42 |
+| **Balıkesir** | +35 (36. → **1.**) | Şırnak | −41 |
+
+**Balıkesir, Türkiye'nin en çok evlenilen ili** — kaba hızda 36. sırada duruyor. Nüfusu
+yaşlı, yani paydasının çoğu zaten evlenmiş; evlenmemiş olanlar ise yüksek oranda
+evleniyor.
+
+**Batman kaba hızda üst sıralarda, rafine hızda 54 basamak aşağıda.** Sebep aynı olgunun
+tersi: nüfusu genç, hiç evlenmemiş kadın sayısı çok, o yüzden her evlenme kaba hızda
+büyük görünür.
+
+**Neden görünmüyor:** yayımlanan tek hız kaba hız, ve o hız büyük ölçüde ilin medeni
+durum yapısını ölçüyor — evlenme davranışını değil.
+
+## 20. Boşanma artışı en hızlı, boşanmanın en az olduğu yerde
+
+Rafine boşanma hızının 2008-2025 artışı:
+
+| İl | Artış |
+|---|---|
+| Bitlis | **+%352** |
+| Siirt | +%320 |
+| Van | +%271 |
+| Ağrı | +%260 |
+| Hakkari | +%240 |
+
+Bu iller aynı zamanda **bugün hâlâ en düşük boşanma hızına sahip** olanlar (Hakkari
+2,71‰, Şırnak 3,02‰ — İzmir 13,33‰). Yani düşük tabandan hızlı artış: makas kapanmıyor
+ama yön belli.
+
+Evlenmede tersi: en çok düşen iller Bayburt (−%64), Gümüşhane (−%62), Nevşehir (−%61) —
+yani genci giden iller. Rafine evlenme hızı en düşük il de Gümüşhane (37,48‰), en yüksek
+Balıkesir'in (85,63‰) yarısından az.
+
+## 21. İlçede yapılamayan hesap
+
+Kaba hız ilçede hesaplanabilir, **rafine hız hesaplanamaz**: TÜİK medeni durumu il
+düzeyinden aşağıda yayımlamıyor, yani "hiç evlenmemiş kadın" ve "evli kadın" sayıları
+ilçe için yok. Saptama 19 tam olarak kaba hızın ne kadar yanıltabildiğini gösterdiğine
+göre, ilçe için yalnız kaba hız yayımlamak bilerek yanıltıcı bir tablo yayımlamak olurdu.
+
+İlçe düzeyinde evlenme-boşanma sayısının kendisi de bu depoda henüz yok; MEDAS'ta olup
+olmadığı bir sonraki çekimin sorusu.
