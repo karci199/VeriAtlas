@@ -73,6 +73,9 @@ DATASETS = {
     "death_rate_by_age": "death-rate-by-age.csv",
     "death_rate_broad": "death-rate-broad.csv",
     "life_expectancy": "life-expectancy.csv",
+    "district_marriages": "district-marriages.csv",
+    "district_divorces": "district-divorces.csv",
+    "first_marriages_by_age": "first-marriages-by-age.csv",
     "migration_in_by_age": "migration-in-by-age.csv",
     "migration_out_by_age": "migration-out-by-age.csv",
     "registry_population": "registry-population.csv",
@@ -115,6 +118,7 @@ BROKEN_DOWN = (
     "death_rate_by_age",
     "death_rate_broad",
     "life_expectancy",
+    "first_marriages_by_age",
     "migration_in_by_age",
     "migration_out_by_age",
     "mean_marriage_age",
@@ -636,6 +640,9 @@ def main() -> None:
         # separates one province from the next.
         "life_expectancy": export_broken_down(
             fact, areas, "life_expectancy", whole=False
+        ),
+        "first_marriages_by_age": export_broken_down(
+            fact, areas, "first_marriages_by_age"
         ),
         "migration_in_by_age": export_broken_down(fact, areas, "migration_in_by_age"),
         "migration_out_by_age": export_broken_down(fact, areas, "migration_out_by_age"),

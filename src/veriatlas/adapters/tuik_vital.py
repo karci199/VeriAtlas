@@ -111,7 +111,13 @@ MEASURES = {
     # Two files, one indicator, and they do not overlap: the province file is life
     # expectancy at birth only, the life table is every age but Türkiye only. Each is
     # restricted to the level it belongs to, or the country would get age 0 twice.
-    "yasam-suresi": ("life_expectancy", "life_expectancy", "plain_sex", {}, ("province",)),
+    "yasam-suresi": (
+        "life_expectancy",
+        "life_expectancy",
+        "plain_sex",
+        {},
+        ("province",),
+    ),
     "hayat-tablosu": (
         "life_table",
         "life_expectancy",
@@ -150,7 +156,9 @@ MEASURES = {
 }
 
 
-def header_of(lines: list[str], single: dict[str, str]) -> dict[int, tuple[str, str]]:
+def header_of(
+    lines: list[str], single: dict[str, str], resolve=None
+) -> dict[int, tuple[str, str]]:
     """Column index to `(area_id, level)`.
 
     Found by looking for area labels rather than by counting cells: the country file has
@@ -165,7 +173,7 @@ def header_of(lines: list[str], single: dict[str, str]) -> dict[int, tuple[str, 
             label = LABEL.match(cell.strip())
             if not label:
                 continue
-            area = area_of(label.group("code"), single)
+            area = (resolve or area_of)(label.group("code"), single)
             if area:
                 found[index] = area
         if len(found) > len(best):
@@ -173,7 +181,13 @@ def header_of(lines: list[str], single: dict[str, str]) -> dict[int, tuple[str, 
     return best
 
 
-def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
+def read_export(
+    path: Path,
+    spec: tuple,
+    single: dict[str, str],
+    resolve=None,
+    label=None,
+) -> list[dict]:
     """One transposed export, summed to one row per area-year-dims.
 
     Summed — which is only right for a count. The rates in this file (infant mortality,
@@ -186,7 +200,12 @@ def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
     indicator_id, dim, fixed = spec[1], spec[2], spec[3]
     additive = get(indicator_id).unit.additive
     lines = read_text(path).splitlines()
-    header = header_of(lines, single)
+    # Both hooks default to this module's own reading, so the measures here are unchanged
+    # by their existence. They are here because the marriage exports share this file shape
+    # and differ in exactly two places: a district header carries a MEDAS code rather than
+    # a plate number, and its breakdown is written in a different phrase. Copying sixty
+    # lines to change two of them is how two readers of one format drift apart.
+    header = header_of(lines, single, resolve=resolve)
     if not header:
         raise KeyError(indicator_id + ": dosyada alan sutunu bulunamadi: " + path.name)
 
@@ -194,7 +213,7 @@ def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
     #: sum of its months, so the file is accumulated rather than mapped row by row.
     totals: dict[tuple[str, str, int, str], float] = {}
     year = None
-    label = ""
+    label_text = ""
     for line in lines:
         cells = line.split("|")
         if len(cells) < 4:
@@ -209,12 +228,17 @@ def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
         # but 2009 and left deaths with one period out of seventeen — so the label carries
         # down until the file names a new one.
         if cells[1].strip():
-            label = cells[1].strip()
+            label_text = cells[1].strip()
 
-        if dim in ("plain_sex", "plain_sex_age"):
-            found = PLAIN_SEX_AGE.match(label)
+        if label is not None:
+            dims = label(label_text, dim, fixed)
+            if dims is None:
+                # A row whose breakdown cannot be read is refused, not summed.
+                continue
+        elif dim in ("plain_sex", "plain_sex_age"):
+            found = PLAIN_SEX_AGE.match(label_text)
             if not found:
-                raise KeyError(indicator_id + ": okunamayan kirilim: " + label)
+                raise KeyError(indicator_id + ": okunamayan kirilim: " + label_text)
             values = {"sex": SEXES[found.group("sex")]}
             # The age is the age the expectancy is measured *from*, so the file that has
             # no age is measuring from birth and says so as `0` rather than leaving the
@@ -222,18 +246,20 @@ def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
             values["age"] = found.group("age") or "0"
             dims = format_dims({**fixed, **values})
         elif dim in ("sex", "sex_age"):
-            sex = SEX_IN_LABEL.search(label)
+            sex = SEX_IN_LABEL.search(label_text)
             if not sex:
                 # A row whose breakdown we cannot place must not be folded into a total
                 # silently.
                 continue
             found = {"sex": SEXES[sex.group("sex")]}
             if dim == "sex_age":
-                age = AGE_IN_LABEL.search(label)
+                age = AGE_IN_LABEL.search(label_text)
                 if not age or age.group("age") not in AGES:
                     # Same rule, and here it is load-bearing: an unread band would go into
                     # the sex total and make one age group's rows disagree with it.
-                    raise KeyError(indicator_id + ": tanınmayan yaş bandı: " + label)
+                    raise KeyError(
+                        indicator_id + ": tanınmayan yaş bandı: " + label_text
+                    )
                 found["age"] = AGES[age.group("age")]
             dims = format_dims({**fixed, **found})
         else:

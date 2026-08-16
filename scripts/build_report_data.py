@@ -585,8 +585,11 @@ def siralama_dosyasi(paketler: dict[str, dict]) -> dict:
                 degerler[area_id] = round(deger, basamak)
         if degerler:
             olcutler[anahtar] = {
-                "ad": ad, "birim": birim, "yon": yon,
-                "basamak": basamak, "deger": degerler,
+                "ad": ad,
+                "birim": birim,
+                "yon": yon,
+                "basamak": basamak,
+                "deger": degerler,
             }
     return olcutler
 
@@ -703,7 +706,11 @@ def main() -> None:
     # the three that happened to be rebuilt, so the file is only rewritten when the run
     # covered them all.
     iller = [row for row in dizin if row["duzey"] == "province"]
-    if len(iller) == len([p for p in paketler.values() if p["alan"]["duzey"] == "province"])             and len(iller) >= 81:
+    if (
+        len(iller)
+        == len([p for p in paketler.values() if p["alan"]["duzey"] == "province"])
+        and len(iller) >= 81
+    ):
         olcutler = siralama_dosyasi(paketler)
         (TARGET / "siralama.json").write_text(
             json.dumps(olcutler, ensure_ascii=False), encoding="utf-8"

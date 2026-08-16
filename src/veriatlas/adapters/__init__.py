@@ -3,6 +3,7 @@
 from .base import Adapter, Manifest, history, ingest
 from .tuik_district_population import TuikDistrictPopulation
 from .tuik_marital import TuikMarital
+from .tuik_marriage import MARRIAGE_ADAPTERS
 from .tuik_median_age import TuikMedianAge
 from .tuik_neighbourhoods import TuikNeighbourhoodPopulation
 from .tuik_population import TuikPopulationAgeSex
@@ -27,10 +28,12 @@ ADAPTERS = {
     **NARROW_ADAPTERS,
     # Births and deaths: same download, transposed file, so a parser of their own.
     **VITAL_ADAPTERS,
+    **MARRIAGE_ADAPTERS,
 }
 
 __all__ = [
     "ADAPTERS",
+    "MARRIAGE_ADAPTERS",
     "NARROW_ADAPTERS",
     "VITAL_ADAPTERS",
     "Adapter",

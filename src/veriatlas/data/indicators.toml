@@ -680,6 +680,50 @@ views = ["table", "map", "line", "bar"]
 definition_tr = """
 O yaştaki bir kişinin, dönemin ölüm hızları hiç değişmezse yaşaması beklenen yıl sayısı. **Bir tahmin değil, bir özet**: bugünün ölümlülüğünü tek sayıya indirger, geleceği öngörmez. Yaş **0** doğuşta beklenen yaşam süresidir; 65 yaşındaki biri için beklenen süre doğuştakinden farklıdır ve genellikle daha uzundur — bebek ölümlerini artık geride bırakmıştır. Türkiye düzeyinde **her yaş için** var (hayat tablosu, 2013-2025); il düzeyinde yalnız **doğuşta**, ve TÜİK'in yayımladığı sınırlı yıllarda. Kadın-erkek farkı her yaşta kadın lehinedir."""
 
+# The district pair, and a check that changed what the definitions say. Both series sum
+# to the province totals exactly, in all twelve years and to the person — so they are not
+# two different counts of two different things, they are the *same* events allocated to
+# districts by two different rules: a marriage to where the wedding was, a divorce to
+# where the man lives. Nationally they agree; inside one district they answer differently
+# shaped questions, which is why the ratio of one to the other is the thing to avoid.
+[indicator.district_marriages]
+label_tr = "Evlenme sayısı (ilçe)"
+label_en = "Marriages (district)"
+topic = "evlenme_bosanma"
+unit = "marriage"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+İlçede kıyılan nikâh sayısı — **olayın yerine göre**, ilçe düzeyinde TÜİK'in yayımladığı tek evlenme serisi. İkametgaha göre değildir: turistik ilçelerde ve nikâh dairesi çevre ilçelere hizmet veren merkezlerde sayı, orada yaşayanların evlenmesinden fazladır. **İlçe boşanma sayısıyla oranlanmamalıdır** — o seri erkeğin ikametgahına göre dağıtılır. Türkiye toplamında ikisi de yayımlanan sayıya birebir eşit; ayrıldıkları yer ilçeye dağıtım kuralı. Rafine hız ilçede hesaplanamaz: medeni durum il düzeyinden aşağıda yayımlanmıyor, yani payda yok. 2014-2025."""
+
+[indicator.district_divorces]
+label_tr = "Boşanma sayısı (ilçe)"
+label_en = "Divorces (district)"
+topic = "evlenme_bosanma"
+unit = "divorce"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+İlçede boşanan çift sayısı, **erkeğin ikametgahına göre**. TÜİK ilçe düzeyinde boşanmayı yalnız bu tanımla yayımlıyor; kadının ikametgahına ya da mahkemenin yerine göre bir seri yok. Toplamı, il düzeyinde yayımlanan boşanma sayısına birebir eşit — yani aynı olaylar, yalnız ilçeye başka bir kurala göre dağıtılmış. Bu yüzden ilçe evlenme sayısıyla oranlanmamalı: biri olayın yeri, öteki bir kişinin adresi. 2014-2025."""
+
+# Kadının yaş grubuna göre ilk evlenmeler. Erkeğin yaş grubu ayrı bir kırılım ve bu
+# çekimde gelmedi — MEDAS on bir gösterge verdi, yüz yirmi bir değil.
+[indicator.first_marriages_by_age]
+label_tr = "İlk defa evlenen (kadının yaşına göre)"
+label_en = "First marriages by bride's age group"
+topic = "evlenme_bosanma"
+unit = "marriage"
+frequency = "annual"
+additive = true
+dims = ["sex", "age"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Hayatında ilk kez evlenen **kadın** sayısı, yaş grubuna göre. Ortalama ilk evlenme yaşından farkı: o bir ortalama, bu bir dağılım — evlenme yaşının yükselmesinin hangi banttan hangi banda kayma olduğunu ancak bu gösterir. **16-19 bandı** çocuk yaşta evlilik tartışmasının doğrudan ölçüsüdür. Payda olarak aynı yaştaki hiç evlenmemiş kadın alınırsa yaşa özgü ilk evlenme hızı çıkar; medeni durum tablosu il düzeyinde olduğu için bu hesap ilde yapılabiliyor. Erkeğin yaş grubu ayrı bir kırılımdır ve bu çekimde yok. 2001'den itibaren."""
+
 # Evlenme ve boşanma sayısı, kırılımları kapalı. MEDAS ikisinin altında da on kadar
 # kırılım veriyor — eşlerin yaş grubu, eğitim durumu, evliliğin süresi, çocukların
 # velayeti — ve hepsi açıkken ölçü 121 göstergeye çıkıp indirme iki yılda bir sorguya
