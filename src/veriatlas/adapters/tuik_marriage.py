@@ -61,6 +61,19 @@ BRIDE_EDUCATION = re.compile(r"eğitim\s+durumu\s*:\s*(?P<egitim>.+?)\s*$")
 #: same thing: the first is the five-year school of the old system and the second the
 #: eight-year one that replaced it in 1997. Someone who finished one did not finish the
 #: other, and folding them together would erase the reform from the series.
+#: `Erkek ve 14-17 ve Okuma Yazma Bilen` — three things in one label, separated by a word
+#: that also appears inside school names elsewhere in this module. Here it is safe: the
+#: literacy file's three parts never contain " ve " themselves.
+LITERACY_LABEL = re.compile(
+    r"^(?P<taraf>Erkek|Kadın)\s+ve\s+(?P<age>[^ ]+)\s+ve\s+(?P<durum>.+?)\s*$"
+)
+
+LITERACY = {
+    "Okuma Yazma Bilen": "literate",
+    "Okuma Yazma Bilmeyen": "illiterate",
+    "Bilinmeyen": "unknown",
+}
+
 EDUCATION = {
     "Okuma Yazma Bilmeyen": "illiterate",
     "Okuma Yazma Bilen Fakat Bir Okul Bitirmeyen": "literate_no_school",
@@ -118,6 +131,11 @@ MEASURES = {
         "bride_age_education",
         {},
     ),
+    # Literacy came down in three year-chunks because 78 indicators × 82 areas × 18 years
+    # is over MEDAS's limit. The stem is a prefix here and the adapter reads every file
+    # that starts with it.
+    "okuma-yazma": ("literacy", "literacy", "literacy", {}),
+    "egitim-suresi": ("years_of_schooling", "years_of_schooling", None, {}),
 }
 
 
@@ -130,6 +148,21 @@ def read_label(label: str, dim: str | None, fixed: dict) -> str | None:
     """
     if dim is None:
         return format_dims(fixed) if fixed else ""
+    if dim == "literacy":
+        found = LITERACY_LABEL.match(label)
+        if not found or found.group("durum") not in LITERACY:
+            return None
+        return format_dims(
+            {
+                **fixed,
+                "sex": SIDES[found.group("taraf") + "ın"]
+                if found.group("taraf") + "ın" in SIDES
+                else ("male" if found.group("taraf") == "Erkek" else "female"),
+                "age": found.group("age"),
+                "literacy": LITERACY[found.group("durum")],
+            }
+        )
+
     found = BRIDE_AGE.search(label)
     if not found:
         return None
@@ -174,19 +207,26 @@ class MarriageMeasure:
         return DOWNLOADS
 
     def parse(self, raw: Path) -> pl.DataFrame:
-        path = raw / ("nufus-" + self.stem + ".csv")
-        if not path.exists():
-            raise FileNotFoundError("indirilmemis: " + str(path))
+        # One file, or several when the measure was too wide for MEDAS to export in one
+        # go. Globbed and sorted rather than listed, so another chunk needs no code
+        # change, and the years are disjoint so the pieces simply stack.
+        paths = sorted(raw.glob("nufus-" + self.stem + "*.csv"))
+        if not paths:
+            raise FileNotFoundError("indirilmemis: " + self.stem)
 
-        records = read_export(
-            path,
-            self.spec,
-            single_province_regions(),
-            resolve=resolve,
-            label=read_label,
-        )
+        records = []
+        for path in paths:
+            records.extend(
+                read_export(
+                    path,
+                    self.spec,
+                    single_province_regions(),
+                    resolve=resolve,
+                    label=read_label,
+                )
+            )
         if not records:
-            raise ValueError("dosya bos: " + path.name)
+            raise ValueError("dosya bos: " + self.stem)
 
         indicator = get(self.indicator_id)
         frame = pl.DataFrame(records).with_columns(

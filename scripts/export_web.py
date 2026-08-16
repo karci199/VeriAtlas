@@ -77,6 +77,8 @@ DATASETS = {
     "district_divorces": "district-divorces.csv",
     "first_marriages_by_age": "first-marriages-by-age.csv",
     "first_marriages_by_education": "first-marriages-by-education.csv",
+    "literacy": "literacy.csv",
+    "years_of_schooling": "years-of-schooling.csv",
     "migration_in_by_age": "migration-in-by-age.csv",
     "migration_out_by_age": "migration-out-by-age.csv",
     "registry_population": "registry-population.csv",
@@ -121,6 +123,7 @@ BROKEN_DOWN = (
     "life_expectancy",
     "first_marriages_by_age",
     "first_marriages_by_education",
+    "literacy",
     "migration_in_by_age",
     "migration_out_by_age",
     "mean_marriage_age",
@@ -662,6 +665,7 @@ def main() -> None:
         "first_marriages_by_education": export_broken_down(
             fact, areas, "first_marriages_by_education"
         ),
+        "literacy": export_broken_down(fact, areas, "literacy"),
         "migration_in_by_age": export_broken_down(fact, areas, "migration_in_by_age"),
         "migration_out_by_age": export_broken_down(fact, areas, "migration_out_by_age"),
         # `whole=False` for the same reason the median age has it: an age is a position,

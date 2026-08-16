@@ -382,56 +382,67 @@ olmadığı bir sonraki çekimin sorusu.
 
 # Saptamalar — eğitim
 
-## 22. İlk kez evlenen kadınların yarısından fazlası üniversiteli
+## 22. Eğitim serisinde 2015'te bir yöntem kırığı var
 
-Türkiye, ilk kez evlenen kadınların eğitim durumu (%):
+İlk kez evlenen kadınların eğitimi, **sayı olarak**:
 
-| | 2009 | 2015 | 2020 | 2025 |
-|---|---|---|---|---|
-| **Yüksek öğretim** | **8,4** | 33,9 | 43,7 | **53,8** |
-| Lise ve dengi | 28,8 | 21,5 | 25,8 | 27,3 |
-| İlkokul (5 yıl) | 11,7 | 3,0 | 1,6 | 2,4 |
-| Okuma yazma bilen, okul bitirmeyen | 10,2 | 8,5 | 2,0 | 0,6 |
-| **Okuma yazma bilmeyen** | **5,0** | 1,4 | 0,4 | **0,2** |
-| Bilinmeyen | 9,6 | 1,5 | 1,1 | 0,9 |
+| Yıl | Yüksek öğretim | Lise ve dengi | Okuma yazma bilen, okul bitirmeyen | Bilinmeyen | Toplam |
+|---|---|---|---|---|---|
+| 2013 | 57.370 | 157.852 | 58.449 | 20.321 | 516.635 |
+| **2014** | **45.653** | 160.892 | 71.717 | 17.325 | 513.238 |
+| **2015** | **173.571** | 110.068 | 43.567 | 7.629 | 512.234 |
+| 2016 | 182.793 | 107.770 | 35.480 | 5.636 | 497.722 |
 
-On altı yılda yüksek öğretimli gelin payı **altı katına** çıktı: on iki gelinden biriyken
-şimdi ikide birden fazlası. Okuma yazma bilmeyen gelin oranı yirmi beşte bire indi.
+**Bir yılda üniversiteli gelin sayısı 3,8 katına çıkmış, toplam evlenme ise sabit.** Bu
+demografik olarak imkânsız: 2015'te evlenen kadınlar 2014'te evlenenlerle aynı kuşak ve
+bir yılda 128 bin kişi üniversite bitiremez. Kaybeden satırlar da kazanılanı neredeyse
+tam karşılıyor — lise −50.824, ilköğretim −45.175, okuma yazma bilen −28.150, bilinmeyen
+−9.696.
 
-**Ama bu bir oran, hız değil.** Payı büyüten iki ayrı şey var ve bu veri onları ayırmıyor:
-kadınlar daha çok okuyor, *ve* evlenme geç yaşa kayıyor — üniversiteli olmak için önce
-üniversite yaşını geçmek gerekiyor. Ayırmak için payda olarak "aynı yaş ve eğitimdeki hiç
-evlenmemiş kadın" gerekir; medeni durum × eğitim kırılımı elimizde yok, o yüzden burada
-söylenen yalnız payın kendisi.
+Yani 2015'te değişen şey gelinler değil, **eğitim bilgisinin nereden alındığı**. Kayıt
+yöntemi değişmiş; bilinmeyenin yarıya inmesi de aynı şeyi söylüyor.
+
+**Sonucu:** 2009 ile 2025'i bu seride karşılaştırmak geçersizdir. Kırığın kendisi bir
+bulgudur, üstünden atlayan bir yüzde değil. Kırıktan sonrası kendi içinde tutarlı:
+yüksek öğretim payı **%33,9 (2015) → %53,8 (2025)**, ve bu rakam savunulabilir.
+
+**Neden görünmüyor:** bir serideki ani sıçrama her zaman olguya benzer. Yanındaki
+satırların aynı anda aynı miktarda düştüğünü ve toplamın kıpırdamadığını fark etmek
+gerekiyor. Bu dosyanın ilk hâlinde ben de "%8,4'ten %53,8'e, altı kat" diye yazmıştım;
+sayıyı satır satır açınca kırık ortaya çıktı.
+
+## 22b. Aynı tabloda ikinci bir kırık: ilköğretim / ortaokul
+
+| Yıl | İlköğretim (8 yıl) | Ortaokul |
+|---|---|---|
+| 2014 | **187.769** | 1.908 |
+| 2020 | 6.012 | **95.225** |
+
+İlköğretim zaten ilkokul + ortaokuldur; TÜİK 2015-2019 arasında etiketi değiştirmiş ve
+aynı insanlar bir satırdan ötekine geçmiş. Doğru okuma ikisinin toplamıdır: %26,3 (2009)
+→ %14,8 (2025).
 
 ## 23. On altı-on dokuz yaşta ilk evlilik %71 düştü
 
 | Yıl | 16-19 yaşta ilk kez evlenen kadın |
 |---|---|
+| 2001 | 165.706 |
 | 2009 | 142.719 |
 | 2015 | 107.665 |
 | 2020 | 58.413 |
 | 2025 | **40.813** |
 
-Aynı dönemde bütün ilk evlilikler %16 düştü. Yani genç evliliğin düşüşü, evlenmenin genel
+2001'den beri **%75**, 2009'dan beri %71 düşüş. Aynı dönemde bütün ilk evlilikler %16
+düştü. Yani genç evliliğin düşüşü, evlenmenin genel
 düşüşünden **dört kat sert**. Bu, kaba sayının içinde kaybolan bir eğilim: toplam evlenme
 grafiğine bakan biri yavaş bir azalma görür, yaşa bakan biri bir kırılma görür.
 
-## 24. Bir sınıflandırma değişikliği, tam ortasında
+## 24. Yaş serisi sağlam, eğitim serisi değil
 
-Aynı tabloda okunması gereken bir şey daha var, ve o veri değil kayıt:
+Eğitimde iki kırık bulununca aynı verinin yaş tarafı da denetlendi: 16-19 bandının sayısı
+iki ayrı dosyada — il düzeyindeki yaş dosyasında ve Türkiye düzeyindeki eğitim dosyasında
+— **on yedi yılın hepsinde birebir aynı**, ve seri hiçbir yerde sıçramıyor: 165.706'dan
+40.813'e düzgün bir iniş.
 
-| Yıl | İlköğretim (8 yıl) | Ortaokul |
-|---|---|---|
-| 2014 | **187.769** | 1.908 |
-| 2017 | 97.404 | 24.539 |
-| 2020 | 6.012 | **95.225** |
-| 2025 | 1.849 | 63.057 |
-
-Kimse okuldan vazgeçmedi. TÜİK 2015-2019 arasında etiketi değiştirdi ve aynı insanlar bir
-satırdan ötekine geçti. İki satır ayrı tutulduğu için bu görülebiliyor; tek satıra
-toplansalardı hiç fark edilmezdi — ama ayrı okundukları anda da her biri **tek başına
-yanıltıcı**. Doğru okuma ikisinin toplamı: %26,3 (2009) → %14,8 (2025).
-
-**Neden görünmüyor:** bir seride ani düşüş her zaman olguya benzer. Yanındaki satırın aynı
-anda aynı miktarda yükseldiğini fark etmek gerekiyor.
+Yani bu veride yaş güvenilir, eğitim değil. İkisi aynı dosyadan gelmesine rağmen: yaş
+nikâh kaydından okunuyor ve tanımı hiç değişmemiş, eğitim ise başka bir kaynağa bağlanmış.

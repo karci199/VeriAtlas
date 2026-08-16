@@ -113,6 +113,17 @@ upper_secondary = "Lise ve dengi"
 higher = "Yüksek öğretim"
 unknown = "Bilinmeyen"
 
+[dim.literacy]
+label_tr = "Okuma yazma"
+label_en = "Literacy"
+
+[dim.literacy.values]
+literate = "Okuma yazma biliyor"
+illiterate = "Okuma yazma bilmiyor"
+# Kept rather than dropped: it is a real category in the source and folding it into
+# either side would move people across the line this indicator is about.
+unknown = "Bilinmeyen"
+
 [dim.marital]
 label_tr = "Medeni durum"
 label_en = "Marital status"
@@ -762,12 +773,55 @@ definition_tr = """
 Hayatında ilk kez evlenen **kadın** sayısı, yaş grubu **ve eğitim durumuyla**. Evlenme \
 yaşının neden yükseldiğini bu gösterge açıklamaya en yakın duran veridir: okulda geçen \
 yıl, evlenilmeyen yıldır. \
+**2015'te bir yöntem kırığı var ve seri o yılın üstünden okunamaz**: yüksek öğretimli \
+gelin sayısı 2014'te 45.653 iken 2015'te 173.571 — toplam evlenme sabitken 3,8 katı. \
+Kaybeden satırlar kazanılanı tam karşılıyor ve "bilinmeyen" yarıya iniyor; değişen \
+gelinler değil, eğitim bilgisinin alındığı kaynak. 2015 öncesiyle sonrası ayrı ayrı \
+okunur. \
 **Bir oran değil, bir sayıdır** — "yüksek öğretimli gelinlerin payı arttı" cümlesi hem \
 kadınların daha çok okumasından hem de evlenmenin geç yaşa kaymasından gelir; ikisini \
 ayırmak için payda olarak aynı yaş ve eğitimdeki hiç evlenmemiş kadın gerekir ve o \
 kırılım (eğitim × medeni durum) elimizde yok. \
 **İlkokul ve ilköğretim ayrı satırlardır**: biri beş yıllık eski okul, öteki 1997'nin \
 sekiz yıllık zorunlu eğitimi. Yalnız Türkiye düzeyinde, 2009-2025."""
+
+[topic.egitim]
+label_tr = "Eğitim"
+label_en = "Education"
+order = 28
+
+[indicator.literacy]
+label_tr = "Okuma yazma durumu"
+label_en = "Literacy"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["sex", "age", "literacy"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Okuma yazma bilen ve bilmeyen nüfus, yaş grubu ve cinsiyetle. **Taban 6 yaş**: bantlar \
+6-13'ten başlıyor, yani oran "altı yaş ve üstünde okuma yazma bilenlerin payı"dır. \
+Uluslararası karşılaştırmalarda kullanılan **15+ tabanı bu bantlardan tam olarak \
+kurulamaz** — 14-17 bandı sınırın iki yanına düşüyor ve o bandı bölmek bilmediğimiz bir \
+dağılımı varsaymak olurdu. 6+ tabanı okuma yazmayı henüz öğrenmekte olan çocukları da \
+paydaya kattığı için oranı bir miktar düşük gösterir. **İlçe düzeyinde yok**: TÜİK bu \
+ölçüyü il düzeyinden aşağıda yayımlamıyor. 2008-2025."""
+
+[indicator.years_of_schooling]
+label_tr = "Ortalama eğitim süresi"
+label_en = "Mean years of schooling"
+topic = "egitim"
+unit = "year_of_age"
+frequency = "annual"
+additive = false
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Nüfusun okulda geçirdiği ortalama yıl sayısı. Okuma yazma oranı bir eşiktir — bilir ya \
+da bilmez — bu ise bir uzunluk, ve ikisi ayrı yönlerde hareket edebilir: okuma yazma \
+oranı tavana yaklaşmışken ortalama süre yükselmeye devam eder. İl ve Türkiye düzeyinde, \
+2011-2025."""
 
 # Evlenme ve boşanma sayısı, kırılımları kapalı. MEDAS ikisinin altında da on kadar
 # kırılım veriyor — eşlerin yaş grubu, eğitim durumu, evliliğin süresi, çocukların
