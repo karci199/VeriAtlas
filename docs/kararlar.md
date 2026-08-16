@@ -564,6 +564,48 @@ sessizce hiçbir şey çizmeyen tek görünüm yapardı. O iki düzey Excel'de o
 olaylar henüz yok). Bu kaynağın özelliği; göründüğü yerde söyleniyor, çizmeyi reddederek
 saklanmıyor.
 
+## K27 — Payda: bir sayımı başka bir göstergenin dilimine bölmek (2026-08-16)
+
+Sayfa bir sayımı alanın **bütün** nüfusuna bölebiliyordu; kaba doğum ve ölüm hızları
+böyle çiziliyor, indirilmiyor (K12). Ama demografide oranların çoğunun paydası herkes
+değil: doğurganlık hızının paydası çocuğu doğurabilecek kadınlardır. Bütün nüfusa
+bölmek, yaş yapısı her kımıldadığında kımıldayan başka bir sayı verir — oysa oranın
+işi tam da onu sabit tutmaktır.
+
+Bu yüzden sözlükte yeni bir kavram var: **payda** (`[base.*]`). Hangi göstergeden,
+o göstergenin hangi diliminden, hangi çarpanla ve hangi göstergeler için:
+
+```toml
+[base.women_15_49]
+indicator  = "population"
+sex        = "female"
+grouping   = "age_fertile"
+values     = ["15-49"]
+factor     = 1000
+applies_to = ["births"]
+```
+
+Üç karar burada duruyor:
+
+**Yaş, bant listesiyle değil gruplamayla adlandırılıyor.** İl dosyası tek yaş taşıyor,
+ilçe dosyası beşer yaş; ikisi de aynı `15-49`'a çözülüyor. Bantlar elle yazılsaydı biri
+doğru öteki yanlış olurdu — `age_fertile` gruplaması tam bunun için zaten vardı.
+
+**`applies_to` bir kural değil, liste.** Doğum ÷ 15-49 kadın genel doğurganlık hızıdır;
+ölüm ÷ aynı kadınlar hiçbir şey değildir. İkisi de sayım diye ikisini birden sunmak,
+kimsenin sormadığı bir soruya cevap sunmak olurdu. Birimden çıkarılabilecek bir kural
+yok, çünkü kural anlamda.
+
+**Çarpan sözlükte.** 1000 ile "‰" aynı yerde duruyor; sayfada bir yerde çarpan, başka
+yerde etiket olsaydı ikisi ayrı ayrı değişebilirdi.
+
+Bu, indirilmemiş bir göstergeyi ekranda var eder: genel doğurganlık hızı depoda yok,
+doğum ile nüfustan çıkıyor. K12'nin devamı — hesaplanabilen şey ikinci kez indirilmez —
+ama artık türetme tek bir seriyle sınırlı değil, iki gösterge arasında da geçerli.
+
+Doğrulama: İzmir 2009 47,41 ve Şanlıurfa 2025 96,60; ilçede Harran 160,75, Beşiktaş
+16,57. Hepsi Excel'de elle hesaplananla aynı.
+
 ## Oturum notu — 2026-08-14/15
 
 Bir oturumda yapılanlar, sıradaki oturum buradan devam etsin diye.

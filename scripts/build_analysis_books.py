@@ -390,7 +390,41 @@ def components(fact: pl.DataFrame, last: int):
     registry = ranked(
         frame.select("il", "degisim", "kutuk_fark", "makas"), "makas", descending=False
     )
-    return main, outside, registry
+
+    # The registry against natural increase — two numbers that ought to be close and are
+    # not, for a reason worth a column of its own. A birth is registered where the father
+    # is registered, not where it happens: a baby born in İstanbul to a Çorum-registered
+    # family grows İstanbul's natural increase and Çorum's register. So the ratio is a
+    # measure of where a province's people have gone to have their children.
+    born = ranked(
+        frame.with_columns(
+            (pl.col("kutuk_fark") - pl.col("dogal")).alias("kutuk_dogal_fark"),
+            pl.when(pl.col("dogal") > 0)
+            .then(pl.col("kutuk_fark") / pl.col("dogal"))
+            .otherwise(None)
+            .alias("kutuk_dogal_oran"),
+        )
+        .with_columns(
+            pl.when((pl.col("kutuk_fark") > 0) & (pl.col("dogal") <= 0))
+            .then(pl.lit("kütüğü büyüdü, doğal artışı yok"))
+            .when(pl.col("kutuk_dogal_oran") > 2)
+            .then(pl.lit("çocukları başka ilde doğuyor"))
+            .when(pl.col("kutuk_dogal_oran") < 0.5)
+            .then(pl.lit("başka ilin çocukları burada doğuyor"))
+            .otherwise(pl.lit(""))
+            .alias("not")
+        )
+        .select(
+            "il",
+            "kutuk_fark",
+            "dogal",
+            "kutuk_dogal_fark",
+            "kutuk_dogal_oran",
+            "not",
+        ),
+        "kutuk_dogal_oran",
+    )
+    return main, outside, registry, born
 
 
 def cohorts(fact: pl.DataFrame, last: int):
@@ -708,7 +742,7 @@ def main() -> None:
     )
 
     # region 1 — components
-    main_frame, outside, registry = components(fact, last)
+    main_frame, outside, registry, born = components(fact, last)
     workbook, style = book("analiz-1-bilesenler.xlsx")
     formats = {
         **style,
@@ -779,6 +813,24 @@ def main() -> None:
     )
     sheet(
         workbook,
+        born,
+        "Kütük ve doğal artış",
+        {
+            "kutuk_fark": "Kütük değişimi",
+            "dogal": "Doğal artış (toplam)",
+            "kutuk_dogal_fark": "Kütük − doğal",
+            "kutuk_dogal_oran": "Kütük / doğal",
+        },
+        {
+            **formats,
+            "kutuk_dogal_fark": style["count"],
+            "kutuk_dogal_oran": style["fine"],
+        },
+        {**widths, "not": 34},
+        {"kutuk_dogal_oran": "up"},
+    )
+    sheet(
+        workbook,
         registry,
         "Kütük makası",
         {
@@ -814,6 +866,18 @@ def main() -> None:
             "",
             "KÜTÜK MAKASI = kütük değişimi − ikamet değişimi. Eksi olması ilin dışarıdan",
             "insan çektiğini, artı olması kütüğünün büyüyüp kendisinin büyümediğini gösterir.",
+            "",
+            "KÜTÜK VE DOĞAL ARTIŞ, aynı yıllar için yan yana. İkisi birbirini tutmuyor ve",
+            "tutmaması gerekiyor: bir doğum, doğduğu yere değil babasının kütüklü olduğu yere",
+            "yazılır. İstanbul'da doğan Çorum kütüklü bebek, İstanbul'un doğal artışını ve",
+            "Çorum'un kütüğünü birlikte büyütür.",
+            "· Oran 1'in çok üstündeyse ilin insanları çocuklarını başka ilde doğuruyor",
+            "  (Giresun 13,8 · Çankırı 10,2 · Çorum 5,7).",
+            "· 1'in çok altındaysa orada doğanların kütüğü başka yerde (İstanbul 0,07).",
+            "· Kastamonu ve Sinop'ta doğal artış eksi ama kütük büyüyor: oran hesaplanamaz,",
+            "  'Not' sütunu bunu yazar.",
+            "· 81 ilin toplamında kütük artışı doğal artışı 363.649 kişi aşıyor — o fark",
+            "  vatandaşlığa geçenlerdir, aynı sayı 'Bileşenler' sayfasında da çıkıyor.",
         ],
     )
     workbook.close()
