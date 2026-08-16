@@ -413,3 +413,88 @@ Rakam süzerek okunmalı.
 
 Tam 81 il tablosu üretilebilir: `ai/ornekler/002-gdh-ilk-dogum-yasi-dogum-araligi-tablosu.md`
 
+
+## Bulgu 10 — "aralık tavanı" iddiası test edildi: tavan var, ama sayı 5,4 değil ~5,2
+
+Bulgu 9'da "aralık kaldıracının ~5,4 yıl tavanı var" denmişti. O sayı test
+edilmemişti: düşük GDH'li 10 ilin *o anki düzeyine* bakıp gözle okunmuştu, ki bu
+yanlış tahmin edici — bir grubun bugünkü düzeyi onun durduğu yeri değil, sadece
+bulunduğu yeri verir. Yedi yıllık panelle (81 il × 2019-2025, 567 gözlem) sınandı.
+
+### Test 1 — yakınsama regresyonu
+
+`değişim(2019→2025) ~ düzey(2019)`: eğim **−0,290**, sabit +1,532, **r = −0,831**.
+Değişimin sıfırlandığı düzey = 1,532 / 0,290 = **5,28 yıl**. Yani dar aralıklı
+iller hızla açılıyor, geniş olanlar duruyor ve sistem 5,3'e doğru yakınsıyor.
+
+Havuzlanmış yıllık farklarla (486 gözlem) aynı hesap: eğim −0,066, r=−0,328,
+denge **5,16 yıl**. İki yöntem 5,2-5,3 aralığında buluşuyor; **5,4 fazla yüksek.**
+
+### Test 2 — başlangıç düzeyine göre dilimler
+
+| 2019'daki grup | Ort. düzey 2019 | Ort. değişim | Aralığı açan il |
+|---|---|---|---|
+| En dar 20 il | 3,82 | **+0,427** | **20/20** |
+| Orta 41 il | 5,01 | +0,100 | 35/41 |
+| En geniş 20 il | 5,45 | **−0,101** | 4/20 |
+
+Tek istisnasız: 3,8'den başlayan yirmi ilin yirmisi de açıldı; 5,45'ten başlayan
+yirmi ilin on altısı daraldı. Tavan tek bir regresyon katsayısına değil, sayıma
+dayanıyor.
+
+### Test 3 — sınır yukarı kayıyor mu? (asıl test)
+
+Tavan gerçekse dağılımın üst ucu yıllar içinde sabit kalmalı; "henüz ulaşılmamış
+sınır" olsaydı yukarı sürüklenirdi.
+
+| Yıl | Max | 95. yüzdelik | 5,4 üstü il |
+|---|---|---|---|
+| 2019 | 5,68 | 5,56 | 12 |
+| 2021 | 5,54 | 5,40 | 5 |
+| 2023 | 5,66 | 5,37 | 3 |
+| 2025 | 5,63 | 5,44 | 7 |
+
+Yedi yılda ülke ortalaması 4,83 → 4,96 çıkarken **üst uç kımıldamadı** — hatta
+95. yüzdelik hafif geriledi. 567 gözlemin tarihsel maksimumu 5,75 ve hiçbir il
+orada kalamadı. Sert bir duvar.
+
+### Test 4 — 2019'da zaten 5,3 üstü olan 20 il
+
+16'sı 2025'te daha düşük bitirdi; 17'sinin zirvesi 2019 ya da 2020'de. Örnekler:
+Edirne 5,56→5,19, Burdur 5,58→5,25, Çanakkale 5,57→5,31, Kütahya 5,65→5,55,
+Kırklareli 5,68→5,63 (zirve 5,74, sonra geri düştü). Tavana çarpıp sekiyorlar.
+
+### Beş ilin yörüngesi
+
+| İl | 2019 | 2021 | 2023 | 2025 | Toplam |
+|---|---|---|---|---|---|
+| Şanlıurfa | 3,02 | 3,12 | 3,15 | 3,32 | +0,30 |
+| Ağrı | 3,41 | 3,51 | 3,79 | 4,06 | +0,65 |
+| Konya | 4,98 | 4,89 | 5,03 | 5,07 | +0,09 |
+| Kırklareli | 5,68 | 5,51 | 5,51 | 5,63 | −0,05 |
+| Edirne | 5,56 | 5,40 | 5,30 | 5,19 | −0,37 |
+| *Türkiye* | *4,62* | *4,57* | *4,68* | *4,76* | *+0,14* |
+
+Ağrı düz tırmanıyor, Şanlıurfa yavaş ama tek yönlü, Konya duraklamış, Kırklareli
+5,5-5,7 arasında salınıyor, Edirne geri çekiliyor. Düzey arttıkça hareket
+tükeniyor.
+
+### ⚠️ İki ciddi çekince — tavan "davranışsal" olmayabilir
+
+1. **Bileşim etkisi (asıl şüphe).** Bu ölçü yalnız *o yıl en az ikinci çocuğunu
+   doğuran* anneleri kapsıyor. Doğurganlık düştükçe ikinci çocuk yapanlar giderek
+   *seçilmiş* bir grup oluyor — çok çocuk isteyen, dolayısıyla sık doğuran tip.
+   Yani düşük doğurganlıklı ilde payda değiştiği için ortalama mekanik olarak
+   yukarı çıkamıyor olabilir. Tavan gerçek bir davranış sınırı değil, **ölçünün
+   kendi tanımından doğan bir sınır** olabilir. Ayırt etmek için doğum sırasına
+   göre ayrı seriler (2.-1. arası, 3.-2. arası) karşılaştırılmalı — dosyada var,
+   yapılmadı.
+2. **Galton yanlılığı.** Yakınsama regresyonunda başlangıç düzeyindeki ölçüm
+   gürültüsü eğimi olduğundan daha negatif gösterir; 5,28 bir üst sınır tahmini
+   sayılmalı, nokta tahmini değil. Test 3 bu yanlılıktan etkilenmiyor ve tavanı
+   bağımsız olarak destekliyor — asıl dayanak o.
+
+**Bulgu 9'un 3. maddesi düzeltilmeli:** tavan ~5,4 değil **~5,2**. Sonuç değişmiyor,
+hatta güçleniyor: batı/Karadeniz illeri (5,2-5,6) tavanın *üstünde ya da üzerinde*,
+kaldıraçları bitmiş; güneydoğu 3,3-4,2'de, tavana 1-1,9 yıl var. Türkiye
+doğurganlığındaki düşüşün aralık kaynaklı kısmı ağırlıkla oradan gelecek.
