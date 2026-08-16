@@ -1,10 +1,20 @@
-"""District fertility: how many women there are, and how many children they have.
+"""District vital events: births, deaths, and what is left of them.
 
-The general fertility rate — births per thousand women aged 15-49 — asked of 973
-districts rather than 81 provinces. A birth count on its own cannot separate the two
-things that move it: a district whose births fell by half because its young women left is
-not the same place as one whose births fell by half because the women who stayed had
-fewer children. GFR answers the second question and the women's column answers the first.
+Three questions of 973 districts rather than 81 provinces.
+
+**Fertility.** The general fertility rate — births per thousand women aged 15-49. A birth
+count on its own cannot separate the two things that move it: a district whose births fell
+by half because its young women left is not the same place as one whose births fell by
+half because the women who stayed had fewer children. GFR answers the second and the
+women's column answers the first.
+
+**Natural increase.** Births minus deaths, which is the part of population change that
+owes nothing to migration. A district can be in natural surplus and still shrink, because
+the people born there do not stay — and the sheet shows both sides so that can be seen
+rather than assumed.
+
+Deaths arrive split by the sex of the deceased and the split is kept: it is a sum away
+from the total and not recoverable once thrown out.
 
 Reads the MEDAS district files directly (`raw/medas/basit/nufus-dogum-ilce-district-*`)
 rather than the warehouse, because there is no adapter for them yet. That is a temporary
@@ -21,10 +31,12 @@ Two joins that had to be done carefully:
   of both — quietly, since the births are still counted in the total and only the rate
   goes missing. So the year picks the id.
 
-The district birth totals were checked against the national count we already hold for
-every one of the twelve years: exact, to the birth.
+Checked against what we already hold, three ways and all exact: district births against
+the national birth count for twelve years, district deaths against it for seventeen and
+for each sex separately, and births minus deaths against the province natural increase
+for all 972 province-years.
 
-Run:  uv run python scripts/build_district_fertility_excel.py
+Run:  uv run python scripts/build_district_vital_excel.py
 """
 
 from __future__ import annotations
@@ -45,7 +57,7 @@ from build_analysis_books import notes_sheet, ranked, sheet, styles
 
 from veriatlas.config import PUBLIC, RAW
 
-TARGET = PUBLIC.parent / "cikti" / "analiz-6-ilce-dogurganlik.xlsx"
+TARGET = PUBLIC.parent / "cikti" / "analiz-6-ilce-hayati-olaylar.xlsx"
 SOURCE = RAW / "medas" / "basit"
 DATA = PUBLIC.parent / "src" / "veriatlas" / "data"
 
@@ -83,6 +95,49 @@ def births() -> pl.DataFrame:
             "dogum-ilce --yil=2025,2024,…"
         )
     return pl.DataFrame(rows)
+
+
+def deaths() -> pl.DataFrame:
+    """Every district-year of deaths, by sex, out of the downloaded MEDAS exports.
+
+    Two rows per file rather than one: MEDAS publishes district deaths split by the sex
+    of the deceased and will not close that breakdown. Kept as a breakdown here too — the
+    total is a sum away, and the split is not recoverable once it has been thrown out.
+    """
+    rows = []
+    for path in sorted(SOURCE.glob("nufus-olum-ilce-district-*.csv")):
+        year = int(re.search(r"(\d{4})\.csv$", path.name).group(1))
+        table = list(csv.reader(path.open(encoding="utf-8-sig"), delimiter="|"))
+        for line in table[4:6]:
+            if len(line) < 4:
+                continue
+            label = line[1] or ""
+            sex = "erkek" if "Erkek" in label else "kadin" if "Kadın" in label else None
+            if not sex:
+                continue
+            for header, value in zip(table[1][3:], line[3:]):
+                header = header.strip()
+                if not header or not value.strip():
+                    continue
+                rows.append(
+                    {
+                        "yil": year,
+                        "kod": header.rpartition("-")[2],
+                        "cins": sex,
+                        "olum": float(value),
+                    }
+                )
+    if not rows:
+        raise SystemExit(
+            "ilçe ölüm dosyası yok — önce: uv run python scripts/fetch_medas_simple.py "
+            "olum-ilce --yil=2025,2024,…"
+        )
+    return (
+        pl.DataFrame(rows)
+        .pivot(values="olum", index=["yil", "kod"], on="cins", aggregate_function="sum")
+        .rename({"erkek": "olum_e", "kadin": "olum_k"})
+        .with_columns((pl.col("olum_e") + pl.col("olum_k")).alias("olum"))
+    )
 
 
 def women() -> tuple[dict, dict]:
@@ -133,7 +188,9 @@ def resolved(frame: pl.DataFrame, fertile: dict) -> pl.DataFrame:
 
 def main() -> None:
     fertile, whole = women()
-    frame = resolved(births(), fertile)
+    # Deaths run from 2009 and births from 2014; natural increase is only where both are,
+    # so the join is an inner one and the span it leaves is the span of the whole book.
+    frame = resolved(births().join(deaths(), on=["yil", "kod"], how="inner"), fertile)
 
     years = sorted(frame["yil"].unique().to_list())
     first, last = years[0], years[-1]
@@ -152,7 +209,14 @@ def main() -> None:
             [whole.get((r["area_id"], r["yil"])) for r in frame.iter_rows(named=True)],
             dtype=pl.Float64,
         ),
-    ).with_columns((1000 * pl.col("dogum") / pl.col("kadin")).alias("gdh"))
+    ).with_columns(
+        (1000 * pl.col("dogum") / pl.col("kadin")).alias("gdh"),
+        (pl.col("dogum") - pl.col("olum")).alias("dogal"),
+        (1000 * pl.col("olum") / pl.col("nufus")).alias("olum_hizi"),
+        (1000 * (pl.col("dogum") - pl.col("olum")) / pl.col("nufus")).alias(
+            "dogal_hizi"
+        ),
+    )
 
     missing = frame.filter(pl.col("kadin").is_null()).height
     if missing:
@@ -164,6 +228,9 @@ def main() -> None:
             "il",
             "ilce",
             pl.col("dogum").alias("dogum" + tag),
+            pl.col("olum").alias("olum" + tag),
+            pl.col("dogal").alias("dogal" + tag),
+            pl.col("dogal_hizi").alias("dogal_hizi" + tag),
             pl.col("kadin").alias("kadin" + tag),
             pl.col("gdh").alias("gdh" + tag),
             pl.col("nufus").alias("nufus" + tag),
@@ -206,16 +273,44 @@ def main() -> None:
         "gdh_oran",
     )
 
+    natural = ranked(
+        wide.select(
+            "il",
+            "ilce",
+            "nufus_son",
+            "dogum_son",
+            "olum_son",
+            "dogal_ilk",
+            "dogal_son",
+            "dogal_hizi_ilk",
+            "dogal_hizi_son",
+            "not",
+        ),
+        "dogal_hizi_son",
+    )
+
     rolled = (
         frame.group_by("il", "yil")
-        .agg(pl.col("dogum").sum(), pl.col("kadin").sum())
-        .with_columns((1000 * pl.col("dogum") / pl.col("kadin")).alias("gdh"))
+        .agg(
+            pl.col("dogum").sum(),
+            pl.col("olum").sum(),
+            pl.col("dogal").sum(),
+            pl.col("kadin").sum(),
+            pl.col("nufus").sum(),
+        )
+        .with_columns(
+            (1000 * pl.col("dogum") / pl.col("kadin")).alias("gdh"),
+            (1000 * pl.col("dogal") / pl.col("nufus")).alias("dogal_hizi"),
+        )
     )
 
     def province_at(year: int, tag: str) -> pl.DataFrame:
         return rolled.filter(pl.col("yil") == year).select(
             "il",
             pl.col("dogum").alias("dogum" + tag),
+            pl.col("olum").alias("olum" + tag),
+            pl.col("dogal").alias("dogal" + tag),
+            pl.col("dogal_hizi").alias("dogal_hizi" + tag),
             pl.col("kadin").alias("kadin" + tag),
             pl.col("gdh").alias("gdh" + tag),
         )
@@ -241,6 +336,11 @@ def main() -> None:
             "gdh_son",
             "gdh_puan",
             "gdh_oran",
+            "olum_son",
+            "dogal_ilk",
+            "dogal_son",
+            "dogal_hizi_ilk",
+            "dogal_hizi_son",
         ),
         "gdh_oran",
     )
@@ -249,10 +349,21 @@ def main() -> None:
         frame.group_by("yil")
         .agg(
             pl.col("dogum").sum(),
+            pl.col("olum").sum(),
+            pl.col("olum_e").sum(),
+            pl.col("olum_k").sum(),
+            pl.col("dogal").sum(),
             pl.col("kadin").sum(),
+            pl.col("nufus").sum(),
             pl.len().alias("ilce_sayisi"),
+            (pl.col("dogal") < 0).sum().alias("eksi_ilce"),
         )
-        .with_columns((1000 * pl.col("dogum") / pl.col("kadin")).alias("gdh"))
+        .with_columns(
+            (1000 * pl.col("dogum") / pl.col("kadin")).alias("gdh"),
+            (1000 * pl.col("olum") / pl.col("nufus")).alias("olum_hizi"),
+            (1000 * pl.col("dogal") / pl.col("nufus")).alias("dogal_hizi"),
+        )
+        .drop("nufus")
         .sort("yil")
     )
 
@@ -270,9 +381,25 @@ def main() -> None:
         "dogum",
         "kadin",
         "ilce_sayisi",
+        "olum_son",
+        "olum",
+        "olum_e",
+        "olum_k",
+        "dogal",
+        "dogal_ilk",
+        "dogal_son",
+        "eksi_ilce",
     )
     shares = ("dogum_oran", "kadin_oran", "gdh_oran")
-    rates = ("gdh_ilk", "gdh_son", "gdh")
+    rates = (
+        "gdh_ilk",
+        "gdh_son",
+        "gdh",
+        "olum_hizi",
+        "dogal_hizi",
+        "dogal_hizi_ilk",
+        "dogal_hizi_son",
+    )
     formats = {
         **style,
         **{c: style["count"] for c in counts},
@@ -298,6 +425,18 @@ def main() -> None:
         "gdh_son": f"GDH {last}",
         "gdh_puan": "GDH farkı (puan)",
         "gdh_oran": "GDH değişimi",
+        "olum": "Ölüm",
+        "olum_e": "Ölüm — erkek",
+        "olum_k": "Ölüm — kadın",
+        "olum_son": f"Ölüm {last}",
+        "olum_hizi": "Kaba ölüm hızı ‰",
+        "dogal": "Doğal artış",
+        "dogal_ilk": f"Doğal artış {first}",
+        "dogal_son": f"Doğal artış {last}",
+        "dogal_hizi": "Doğal artış hızı ‰",
+        "dogal_hizi_ilk": f"Doğal artış hızı ‰ · {first}",
+        "dogal_hizi_son": f"Doğal artış hızı ‰ · {last}",
+        "eksi_ilce": "Doğal artışı eksi ilçe",
         "dogum": "Doğum",
         "kadin": "Kadın 15-49",
         "gdh": "GDH",
@@ -307,11 +446,23 @@ def main() -> None:
 
     sheet(book, country, "Türkiye", headers, formats, widths, {"gdh": "up"})
     sheet(book, provinces, "İller", headers, formats, widths, scales)
-    sheet(book, districts, "İlçeler", headers, formats, widths, scales)
+    sheet(book, districts, "İlçeler — doğurganlık", headers, formats, widths, scales)
+    sheet(
+        book,
+        natural,
+        "İlçeler — doğal artış",
+        headers,
+        formats,
+        widths,
+        {"dogal_hizi_son": "up", "dogal_hizi_ilk": "up"},
+    )
     notes_sheet(
         book,
         [
-            f"İlçe düzeyinde doğurganlık — {first}-{last}",
+            f"İlçe düzeyinde doğum, ölüm ve doğal artış — {first}-{last}",
+            "",
+            "Doğal artış = doğum − ölüm. Göç bu sayının içinde yoktur: bir ilçe doğal artışı",
+            "artıda olduğu hâlde küçülebilir, çünkü doğanlar kalmıyor olabilir.",
             "",
             "GDH = genel doğurganlık hızı: bin kadın (15-49) başına doğum. Doğum sayısı iki",
             "şeyin çarpımıdır — kaç kadın var, ve kadın başına kaç çocuk — ve bu sayfa",
@@ -323,15 +474,23 @@ def main() -> None:
             "· Doğum: TÜİK MEDAS, 'İlçelere göre doğum sayısı' ölçümü. Bu, il düzeyindeki",
             "  'İkametgah yerine göre doğum sayısı'nın başka bir düzeyde sorulmuş hali",
             f"  değil, ayrı bir ölçümdür ve yalnız {first}'ten başlar.",
+            "· Ölüm: 'İlçelere göre ölüm sayısı (İkametgah yeri)', ölenin cinsiyetine göre",
+            "  ayrı yayımlanıyor ve bu kırılım kapatılamıyor. 2009'da başlıyor, yani ölüm",
+            f"  serisi doğumdan beş yıl uzun; doğal artış ikisinin kesiştiği {first}'ten",
+            "  itibaren hesaplanabiliyor.",
             "· Kadın nüfusu: ADNKS ilçe nüfusu, beşer yaş grubu. 15-49 tam da grup",
             "  sınırlarına denk geldiği için bu soru ilçede sorulabiliyor.",
-            "· Doğum verisi henüz depoya (fact tablosuna) alınmadı; bu dosya indirilen ham",
+            "· Doğum ve ölüm henüz depoya (fact tablosuna) alınmadı; bu dosya indirilen ham",
             "  MEDAS dışa aktarımlarını doğrudan okuyor. Adaptör yazılınca değişecek olan",
             "  yalnız okuma yolu, sayılar değil.",
             "",
             "DENETİM",
             f"· İlçe doğum toplamları, elimizdeki ülke doğum sayısıyla {len(years)} yılın",
             "  hepsinde birebir tutuyor — tek doğum farkı yok.",
+            "· İlçe ölüm toplamları da öyle, 2009-2025'in on yedi yılında ve iki cinsiyette",
+            "  ayrı ayrı.",
+            "· Doğum − ölüm, il düzeyindeki doğal artış göstergemizle 972 il-yılın",
+            "  hepsinde birebir eşit. Yani ilçeden ile yuvarlandığında hiçbir şey kaçmıyor.",
             f"· İlçe sayısı {first}'te 970, {last}'te 973: aradaki fark yeni kurulan",
             "  ilçelerdir, eksik veri değil.",
             "",
