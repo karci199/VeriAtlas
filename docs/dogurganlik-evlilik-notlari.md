@@ -211,3 +211,27 @@ da hızla değişiyor, ama Bulgu 6'daki aralık açılmasından daha yavaş.
 çocuğu yapıyor (evlenme davranışı değişmedi) ama **ilk çocuktan sonraki
 aralığı hızla açıyor** (doğurganlık düşüşünün mekanizması burada) —
 evlenmeyi erteleme değil, aile planlamasının evlilik içinde değişmesi.
+
+## Bulgu 8 — GDH düşüşü, doğum aralığı açılmasını güçlü açıklıyor (r=0,64)
+
+Regresyon artığı yöntemi (Bulgu 3'teki gibi): x = GDH düşüşü % (2019-2025,
+aralık verisiyle aynı pencere), y = doğum aralığı değişimi (yıl). Doğru:
+aralık = -0,675 + 0,0319 × GDH_düşüşü, r=0,64 — evlenme yaşı ~ GDH
+ilişkisindeki r=0,06'dan (Bulgu 3) çok daha güçlü.
+
+**Yorum:** doğurganlık düşüşünün asıl mekanizması evlenmenin ertelenmesi
+değil, doğum aralığının açılması.
+
+Pozitif artık (GDH düşüşünden beklenenden fazla aralık açmış) — hep
+güneydoğu: Gümüşhane +0,40, Şırnak +0,35, Siirt +0,33, Bitlis +0,32,
+Şanlıurfa +0,31, Diyarbakır +0,31, Hakkari +0,29, Mardin +0,28 yıl.
+
+Negatif artık (aralık beklenenden az açılmış — düşüş büyük olasılıkla
+doğrudan çocuk sayısını azaltarak, "1 çocukta durarak" gerçekleşiyor):
+**Tunceli −0,50** (en uç), Kırıkkale −0,32, Çanakkale −0,27, Zonguldak
+−0,27, Erzincan −0,25, Denizli −0,24, Antalya/Çorum −0,23.
+
+**İki mekanizma haritası (Bulgu 3+8 birlikte):** güneydoğuda evlenme erken
+kalıyor, doğurganlık aralık açılarak düşüyor; Trakya/Batı'da (Tunceli,
+Antalya, Denizli, Çanakkale) doğurganlık zaten düşük, aralık sabit kalıyor
+— düşüş muhtemelen doğrudan az-çocuk kararıyla oluyor, aralık değişmeden.
