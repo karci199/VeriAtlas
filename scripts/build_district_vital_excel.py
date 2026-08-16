@@ -211,6 +211,13 @@ def main() -> None:
         ),
     ).with_columns(
         (1000 * pl.col("dogum") / pl.col("kadin")).alias("gdh"),
+        # The crude birth rate beside it, on purpose. KDH = GDH × (the fertile women's
+        # share of the population), so the gap between how the two move is exactly how
+        # much of the story is composition rather than fertility — and it is a big gap
+        # in the places it matters: Şırnak's GDH fell 45% while its KDH fell 34%, because
+        # its fertile-age women grew from a fifth of the province to a quarter.
+        (1000 * pl.col("dogum") / pl.col("nufus")).alias("kdh"),
+        (pl.col("kadin") / pl.col("nufus")).alias("kadin_payi"),
         (pl.col("dogum") - pl.col("olum")).alias("dogal"),
         (1000 * pl.col("olum") / pl.col("nufus")).alias("olum_hizi"),
         (1000 * (pl.col("dogum") - pl.col("olum")) / pl.col("nufus")).alias(
@@ -233,6 +240,8 @@ def main() -> None:
             pl.col("dogal_hizi").alias("dogal_hizi" + tag),
             pl.col("kadin").alias("kadin" + tag),
             pl.col("gdh").alias("gdh" + tag),
+            pl.col("kdh").alias("kdh" + tag),
+            pl.col("kadin_payi").alias("kadin_payi" + tag),
             pl.col("nufus").alias("nufus" + tag),
         )
 
@@ -244,6 +253,7 @@ def main() -> None:
             (pl.col("kadin_son") / pl.col("kadin_ilk") - 1).alias("kadin_oran"),
             (pl.col("gdh_son") / pl.col("gdh_ilk") - 1).alias("gdh_oran"),
             (pl.col("gdh_son") - pl.col("gdh_ilk")).alias("gdh_puan"),
+            (pl.col("kdh_son") / pl.col("kdh_ilk") - 1).alias("kdh_oran"),
         )
         .with_columns(
             pl.when(pl.col("dogum_ilk") >= RANK_FLOOR)
@@ -268,6 +278,11 @@ def main() -> None:
             "gdh_son",
             "gdh_puan",
             "gdh_oran",
+            "kdh_ilk",
+            "kdh_son",
+            "kdh_oran",
+            "kadin_payi_ilk",
+            "kadin_payi_son",
             "not",
         ),
         "gdh_oran",
@@ -300,6 +315,8 @@ def main() -> None:
         )
         .with_columns(
             (1000 * pl.col("dogum") / pl.col("kadin")).alias("gdh"),
+            (1000 * pl.col("dogum") / pl.col("nufus")).alias("kdh"),
+            (pl.col("kadin") / pl.col("nufus")).alias("kadin_payi"),
             (1000 * pl.col("dogal") / pl.col("nufus")).alias("dogal_hizi"),
         )
     )
@@ -313,6 +330,8 @@ def main() -> None:
             pl.col("dogal_hizi").alias("dogal_hizi" + tag),
             pl.col("kadin").alias("kadin" + tag),
             pl.col("gdh").alias("gdh" + tag),
+            pl.col("kdh").alias("kdh" + tag),
+            pl.col("kadin_payi").alias("kadin_payi" + tag),
         )
 
     provinces = ranked(
@@ -323,6 +342,7 @@ def main() -> None:
             (pl.col("kadin_son") / pl.col("kadin_ilk") - 1).alias("kadin_oran"),
             (pl.col("gdh_son") / pl.col("gdh_ilk") - 1).alias("gdh_oran"),
             (pl.col("gdh_son") - pl.col("gdh_ilk")).alias("gdh_puan"),
+            (pl.col("kdh_son") / pl.col("kdh_ilk") - 1).alias("kdh_oran"),
         )
         .select(
             "il",
@@ -336,6 +356,11 @@ def main() -> None:
             "gdh_son",
             "gdh_puan",
             "gdh_oran",
+            "kdh_ilk",
+            "kdh_son",
+            "kdh_oran",
+            "kadin_payi_ilk",
+            "kadin_payi_son",
             "olum_son",
             "dogal_ilk",
             "dogal_son",
@@ -360,6 +385,8 @@ def main() -> None:
         )
         .with_columns(
             (1000 * pl.col("dogum") / pl.col("kadin")).alias("gdh"),
+            (1000 * pl.col("dogum") / pl.col("nufus")).alias("kdh"),
+            (pl.col("kadin") / pl.col("nufus")).alias("kadin_payi"),
             (1000 * pl.col("olum") / pl.col("nufus")).alias("olum_hizi"),
             (1000 * pl.col("dogal") / pl.col("nufus")).alias("dogal_hizi"),
         )
@@ -390,11 +417,22 @@ def main() -> None:
         "dogal_son",
         "eksi_ilce",
     )
-    shares = ("dogum_oran", "kadin_oran", "gdh_oran")
+    shares = (
+        "dogum_oran",
+        "kadin_oran",
+        "gdh_oran",
+        "kdh_oran",
+        "kadin_payi",
+        "kadin_payi_ilk",
+        "kadin_payi_son",
+    )
     rates = (
         "gdh_ilk",
         "gdh_son",
         "gdh",
+        "kdh",
+        "kdh_ilk",
+        "kdh_son",
         "olum_hizi",
         "dogal_hizi",
         "dogal_hizi_ilk",
@@ -425,6 +463,13 @@ def main() -> None:
         "gdh_son": f"GDH {last}",
         "gdh_puan": "GDH farkı (puan)",
         "gdh_oran": "GDH değişimi",
+        "kdh": "KDH ‰",
+        "kdh_ilk": f"KDH ‰ · {first}",
+        "kdh_son": f"KDH ‰ · {last}",
+        "kdh_oran": "KDH değişimi",
+        "kadin_payi": "15-49 kadının payı",
+        "kadin_payi_ilk": f"15-49 kadının payı {first}",
+        "kadin_payi_son": f"15-49 kadının payı {last}",
         "olum": "Ölüm",
         "olum_e": "Ölüm — erkek",
         "olum_k": "Ölüm — kadın",
