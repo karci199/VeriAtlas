@@ -1091,3 +1091,75 @@ Manisa −%10,6, Edirne −%10,8.
 şimdi ölümlülükte: geriden başlayan güneydoğu en hızlı değişen, ileride olan
 batı yavaşlamış. Üç bağımsız demografik alanda **yakınsama** — bu artık tesadüf
 değil, dosyanın en tekrar eden bulgusu ve kendi başına bir başlık hak ediyor.
+
+## Bulgu 18 — yeniden evlenme makası: 81 ilin 81'inde açılıyor, kadınlarda üç katına
+
+`mean_marriage_age` (o yıl evlenen herkes) ile `mean_first_marriage_age` (ilk kez
+evlenenler) arasındaki **fark**. Herkes ilk kez evlenseydi ikisi çakışırdı; makası
+açan şey ikinci ve sonraki evliliklerdir. Yani **yeniden evlenmenin vekil ölçüsü**.
+İkisi de ambarda, 2001-2025, 81 il, cinsiyete göre — birleştirilmemişti.
+
+Zaman gürültüsünü kırmak için uç noktalar **üçer yıllık ortalama**.
+
+### Türkiye
+
+| Pencere | Erkek | Kadın |
+|---|---|---|
+| 2001-03 | 1,60 | 0,80 |
+| 2008-10 | 1,87 | 1,20 |
+| 2015-17 | 2,17 | 1,53 |
+| 2023-25 | **2,87** | **2,50** |
+
+Yıl yıl (erkek) düzgün tırmanıyor, sıçrama yok: 1,60 · 1,60 · 1,60 · 1,60 · 1,50 ·
+1,60 · 1,60 · 1,70 · 2,00 · 1,90 · 2,00 · 2,10 · 2,10 · 2,10 · 2,10 · 2,20 · 2,20 ·
+2,40 · 2,40 · 2,50 · 2,50 · 2,70 · 2,80 · 2,90 · 2,90. Gürültü sorunu yok.
+
+**Kadınlarda makas üç katına çıkmış** (0,80→2,50), erkeklerde %79 artmış. Cinsiyet
+farkı 0,80 yıldan 0,37'ye inmiş: yeniden evlenme **cinsiyet bakımından
+simetrikleşiyor.** Eskiden dul/boşanmış erkek yeniden evlenirdi, kadın evlenmezdi;
+bu kapanıyor.
+
+### İl: dört kat fark, ve bir bölge hiç kıpırdamıyor
+
+**2023-25 en yüksek** (erkek): Muğla 4,40, Sinop 4,33, Aydın 4,30, Antalya 4,27,
+Balıkesir 4,17, Çanakkale 4,17.
+**En düşük**: Ağrı 0,87, Şırnak 0,93, Siirt 0,93, Bitlis 0,97, Batman 1,00, Van 1,00.
+
+Kadınlarda uçlar daha da keskin: Muğla 4,30 · Antalya 4,13 · Aydın 4,13 karşısında
+**Hakkari 0,30 · Batman 0,43 · Şırnak 0,43 · Siirt 0,53 · Van 0,57.**
+
+**81 ilin 81'inde arttı** (her iki cinsiyette). Ama büyüklük uçurum:
+
+| İl (kadın) | 2001-03 | 2008-10 | 2015-17 | 2023-25 | Değişim |
+|---|---|---|---|---|---|
+| Antalya | 1,07 | 1,83 | 2,60 | 4,13 | **+3,07** |
+| Muğla | 1,50 | 2,23 | 2,97 | 4,30 | +2,80 |
+| Tunceli | 0,53 | 0,90 | 1,47 | 3,23 | +2,70 |
+| Diyarbakır | 0,07 | 0,20 | 0,27 | 0,60 | **+0,53** |
+| Şırnak | 0,10 | 0,10 | 0,10 | 0,43 | +0,33 |
+| Hakkari | 0,10 | 0,10 | 0,07 | 0,30 | **+0,20** |
+
+Hakkari'de kadınların makası 25 yılda 0,10'dan 0,30'a çıkmış. Pratikte **sıfır** —
+o illerde boşanmış ya da dul kadın yeniden evlenmiyor.
+
+### Bulgu 16 ile birlikte okunduğunda: birikiyor
+
+Bulgu 16: güneydoğuda boşanma hızı düşük ama **3-4,5 kat artmış** (Bitlis 0,67→3,04).
+Bulgu 18: aynı illerde kadınların yeniden evlenmesi hâlâ sıfıra yakın.
+
+İkisi birlikte şunu söylüyor: **o illerde boşanmış ve yeniden evlenmeyen kadın
+stoğu hızla büyüyor.** Bu, hane yapısı ve yoksulluk açısından takip edilmesi gereken
+bir birikim. `household_by_type` (2014-2025, 81 il, tek kişilik hane payı) ile
+sınanabilir — henüz kullanılmadı.
+
+### ⚠️ Sınırlar
+
+- Makas dolaylı bir ölçü: hem *yeniden evlenme yaygınlaşınca* hem de *yeniden
+  evlenenlerin yaşı ilk evlenenlere göre yükselince* açılır. İkisini ayıramıyoruz;
+  bunun için evlilik sırasına göre evlenme sayısı gerekir (MEDAS'ta olabilir,
+  bakılmadı).
+- Küçük illerde üçer yıllık ortalama bile yetmiyor: Bartın 1,37→3,47→2,80→3,83,
+  Zonguldak 1,47→3,97→3,00→3,63 gibi zikzaklar var. Bu iki il için değişim rakamı
+  güvenilmez; büyük illerde seriler düzgün.
+- `mean_first_marriage_age`in toplamı yok (bir evlilik erkeğin ilki, kadının
+  ikincisi olabilir) — bu yüzden cinsiyetler ayrı verildi, birleştirilmedi.
