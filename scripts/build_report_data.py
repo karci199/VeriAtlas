@@ -539,6 +539,95 @@ def payload(fact: pl.DataFrame, standard: pl.DataFrame, area: dict) -> dict:
     }
 
 
+#: The measures a province is ranked on, and which direction is better where a direction
+#: exists at all. `yon` is None for the ones that have no better: a high share of over-65s
+#: is not a good or a bad thing, it is a fact about a place, and colouring it like a score
+#: would be the page inventing a judgement the data does not carry.
+SIRALAMALAR = [
+    ("nufus", "Nüfus", "kişi", None, 0),
+    ("nufus_degisim", "Nüfus değişimi", "%", None, 1),
+    ("yasli_pay", "65+ payı", "%", None, 2),
+    ("cocuk_pay", "0-14 payı", "%", None, 2),
+    ("ortanca_yas", "Ortanca yaş", "yaş", None, 1),
+    ("gdh", "Genel doğurganlık hızı", "‰", None, 1),
+    ("olum_standart", "Standartlaştırılmış ölüm hızı", "‰", "dusuk", 2),
+    ("olum_65", "65+ ölüm hızı", "‰", "dusuk", 2),
+    ("olum_0_14", "0-14 ölüm hızı", "‰", "dusuk", 2),
+    ("yasam_kadin", "Doğuşta yaşam süresi, kadın", "yıl", "yuksek", 1),
+    ("yasam_erkek", "Doğuşta yaşam süresi, erkek", "yıl", "yuksek", 1),
+    ("evlenme_hizi", "Kaba evlenme hızı", "‰", None, 2),
+    ("bosanma_hizi", "Kaba boşanma hızı", "‰", None, 2),
+    ("hane_buyuklugu", "Ortalama hanehalkı", "kişi", None, 2),
+]
+
+
+def son_deger(nesne) -> float | None:
+    if not nesne:
+        return None
+    return nesne[max(nesne)]
+
+
+def siralama_dosyasi(paketler: dict[str, dict]) -> dict:
+    """One file with every province's last-year value for every ranked measure.
+
+    Shared rather than copied into each payload: a rank is a statement about the set, and
+    the set is the same for all eighty-one pages. The page computes the rank and the top
+    and bottom five from this, so those lists cannot disagree between two pages.
+    """
+    olcutler = {}
+    for anahtar, ad, birim, yon, basamak in SIRALAMALAR:
+        degerler = {}
+        for area_id, paket in paketler.items():
+            if paket["alan"]["duzey"] != "province":
+                continue
+            deger = olcut_degeri(anahtar, paket["bolumler"])
+            if deger is not None:
+                degerler[area_id] = round(deger, basamak)
+        if degerler:
+            olcutler[anahtar] = {
+                "ad": ad, "birim": birim, "yon": yon,
+                "basamak": basamak, "deger": degerler,
+            }
+    return olcutler
+
+
+def olcut_degeri(anahtar: str, b: dict) -> float | None:
+    """One measure's last published value, or None where the area does not have it."""
+    if anahtar == "nufus":
+        return son_deger(b.get("nufus", {}).get("toplam"))
+    if anahtar == "nufus_degisim":
+        toplam = b.get("nufus", {}).get("toplam")
+        if not toplam:
+            return None
+        yillar = sorted(toplam)
+        return (toplam[yillar[-1]] / toplam[yillar[0]] - 1) * 100
+    if anahtar == "yasli_pay":
+        return son_deger(b.get("yas", {}).get("paylar", {}).get("65+"))
+    if anahtar == "cocuk_pay":
+        return son_deger(b.get("yas", {}).get("paylar", {}).get("0-14"))
+    if anahtar == "ortanca_yas":
+        return son_deger(b.get("yas", {}).get("ortanca_yas"))
+    if anahtar == "gdh":
+        return son_deger(b.get("dogurganlik", {}).get("gdh"))
+    if anahtar == "olum_standart":
+        return son_deger(b.get("olum", {}).get("standart"))
+    if anahtar == "olum_65":
+        return son_deger(b.get("olum", {}).get("gruplar", {}).get("65+"))
+    if anahtar == "olum_0_14":
+        return son_deger(b.get("olum", {}).get("gruplar", {}).get("0-14"))
+    if anahtar == "yasam_kadin":
+        return son_deger(b.get("yasam", {}).get("0", {}).get("female"))
+    if anahtar == "yasam_erkek":
+        return son_deger(b.get("yasam", {}).get("0", {}).get("male"))
+    if anahtar == "evlenme_hizi":
+        return son_deger(b.get("evlilik", {}).get("evlenme_hizi"))
+    if anahtar == "bosanma_hizi":
+        return son_deger(b.get("evlilik", {}).get("bosanma_hizi"))
+    if anahtar == "hane_buyuklugu":
+        return son_deger(b.get("hane", {}).get("buyukluk"))
+    return None
+
+
 def main() -> None:
     fact = facts()
     standard = standard_population(fact)
@@ -561,6 +650,7 @@ def main() -> None:
         wanted = ["TR"]
 
     TARGET.mkdir(parents=True, exist_ok=True)
+    paketler: dict[str, dict] = {}
     for area_id in wanted:
         row = lookup.get(area_id)
         if row is None:
@@ -574,6 +664,7 @@ def main() -> None:
                 "duzey": row["area_level"],
             },
         )
+        paketler[area_id] = body
         path = TARGET / (area_id + ".json")
         path.write_text(
             json.dumps(body, ensure_ascii=False, separators=(",", ":")),
@@ -608,6 +699,17 @@ def main() -> None:
             row["ad"],
         ),
     )
+    # Rankings need every province in one run; a partial run would rank a province among
+    # the three that happened to be rebuilt, so the file is only rewritten when the run
+    # covered them all.
+    iller = [row for row in dizin if row["duzey"] == "province"]
+    if len(iller) == len([p for p in paketler.values() if p["alan"]["duzey"] == "province"])             and len(iller) >= 81:
+        olcutler = siralama_dosyasi(paketler)
+        (TARGET / "siralama.json").write_text(
+            json.dumps(olcutler, ensure_ascii=False), encoding="utf-8"
+        )
+        print("siralama:", len(olcutler), "olcut ×", len(iller), "il")
+
     (TARGET / "dizin.json").write_text(
         json.dumps(dizin, ensure_ascii=False), encoding="utf-8"
     )

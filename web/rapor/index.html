@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="tr">
+<html lang="tr" data-tema="win">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,38 +11,67 @@
     <div class="ust-ic">
       <span class="marka">VeriAtlas</span>
       <select id="alan-secim" aria-label="Alan seç"></select>
-      <div class="icindekiler" id="icindekiler"></div>
+      <div class="sag">
+        <button class="dugme" id="tema-dugme" type="button" aria-pressed="false">Kehribar</button>
+        <button class="dugme" id="koyu-dugme" type="button" aria-pressed="false">Koyu</button>
+      </div>
     </div>
   </nav>
-  <main class="sayfa" id="govde"></main>
+
+  <div class="duzen">
+    <nav class="ray" id="ray" aria-label="Bölümler"></nav>
+    <main id="govde"></main>
+  </div>
+
   <script src="rapor.js"></script>
   <script>
-    // The area menu is built from the payloads that exist, asked for once. A menu of
-    // every area in the registry would offer a thousand pages that have not been written.
+    // Theme choice is the reader's and survives a reload; the page never asks the
+    // operating system, because the amber theme is a deliberate look rather than a dark
+    // variant of the Windows one.
+    const kok = document.documentElement;
+    const temaDugme = document.getElementById("tema-dugme");
+    const koyuDugme = document.getElementById("koyu-dugme");
+
+    function temaUygula(tema, koyu) {
+      kok.dataset.tema = tema;
+      if (koyu && tema === "win") kok.dataset.koyu = "1";
+      else delete kok.dataset.koyu;
+      temaDugme.setAttribute("aria-pressed", String(tema === "kehribar"));
+      temaDugme.textContent = tema === "kehribar" ? "Windows" : "Kehribar";
+      koyuDugme.hidden = tema !== "win";
+      koyuDugme.setAttribute("aria-pressed", String(Boolean(koyu)));
+      localStorage.setItem("veriatlas-tema", tema);
+      localStorage.setItem("veriatlas-koyu", koyu ? "1" : "");
+    }
+
+    temaUygula(localStorage.getItem("veriatlas-tema") || "win",
+               localStorage.getItem("veriatlas-koyu") === "1");
+    temaDugme.addEventListener("click", () =>
+      temaUygula(kok.dataset.tema === "win" ? "kehribar" : "win",
+                 localStorage.getItem("veriatlas-koyu") === "1"));
+    koyuDugme.addEventListener("click", () =>
+      temaUygula("win", kok.dataset.koyu !== "1"));
+
+    // The area menu is built from the payloads that exist, not from the registry: a menu
+    // naming a thousand areas would offer nine hundred pages nobody has written.
+    const ETIKET = {country: "", province: "il", region: "bölge", nuts1: "İBBS-1"};
     fetch("../../public/rapor/dizin.json")
       .then(cevap => cevap.json())
       .then(dizin => {
         const secim = document.getElementById("alan-secim");
         for (const {area_id, ad, duzey} of dizin) {
-          const secenek = document.createElement("option");
-          secenek.value = area_id;
-          secenek.textContent = duzey === "country" ? ad : `${ad} · ${duzey === "province"
-            ? "il" : duzey === "region" ? "bölge" : duzey === "nuts1" ? "İBBS-1" : duzey}`;
-          secim.append(secenek);
+          const etiket = ETIKET[duzey] ?? duzey;
+          secim.append(new Option(etiket ? `${ad} · ${etiket}` : ad, area_id));
         }
-        const simdiki = /a=([A-Z0-9-]+)/.exec(location.hash);
-        secim.value = simdiki ? simdiki[1] : "TR";
-        secim.addEventListener("change", () => {
-          location.hash = "a=" + secim.value;
-        });
+        const eslesme = /a=([A-Z0-9-]+)/.exec(location.hash);
+        secim.value = eslesme ? eslesme[1] : "TR";
+        secim.addEventListener("change", () => { location.hash = "a=" + secim.value; });
         window.addEventListener("hashchange", () => {
-          const eslesme = /a=([A-Z0-9-]+)/.exec(location.hash);
-          if (eslesme) secim.value = eslesme[1];
+          const simdiki = /a=([A-Z0-9-]+)/.exec(location.hash);
+          if (simdiki) secim.value = simdiki[1];
         });
       })
-      .catch(() => {
-        document.getElementById("alan-secim").hidden = true;
-      });
+      .catch(() => { document.getElementById("alan-secim").hidden = true; });
   </script>
 </body>
 </html>
