@@ -58,23 +58,36 @@ HOUSEHOLD_TYPES = {
 
 SEXES = {"Erkek": "male", "Kadın": "female"}
 
-#: file stem → (indicator id, dim name or None, column map or None).
+#: The column header of a breakdown MEDAS writes as two things at once: `Erkek ve 20-24`.
+#: Migration is published this way and only this way — there is no sex-only export and no
+#: age-only one — so reading both out of the header is the only way to have either.
+SEX_AGE_COLUMN = re.compile(r"^(?P<sex>Erkek|Kadın)\s+ve\s+(?P<age>.+)$")
+
+#: indicator id → (file stem, dim name or None, column map or None).
 #:
 #: A column map means "keep only these columns, under these ids"; `None` with a dim means
 #: there is no dim and the columns are summed; `None` with no dim means the single value
-#: column is the value.
+#: column is the value. The dim `sex_age` is the third case: no map, because the columns
+#: name themselves, and two dims come out of one header.
+#:
+#: Keyed by indicator rather than by file, because one file can feed two indicators: the
+#: migration export carries sex × age, and it is wanted both as a total (which is what a
+#: map of the country needs) and broken down (which is what "who leaves a province"
+#: needs). Keyed by file, the second of those could not be written down.
 MEASURES = {
-    "yogunluk": ("population_density", None, None),
-    "hane-buyuklugu": ("household_size", None, None),
-    "hane-sayisi": ("household_count", None, None),
-    "hane-tipleri": ("household_by_type", "household_type", HOUSEHOLD_TYPES),
-    "goc-aldigi": ("migration_in", None, None),
-    "goc-verdigi": ("migration_out", None, None),
-    "goc-net": ("migration_net", None, None),
-    "goc-net-hizi": ("migration_net_rate", None, None),
-    "goc-disaridan": ("migration_from_abroad", None, None),
-    "goc-disariya": ("migration_to_abroad", None, None),
-    "yabanci-uyruklu": ("foreign_population", "sex", SEXES),
+    "population_density": ("yogunluk", None, None),
+    "household_size": ("hane-buyuklugu", None, None),
+    "household_count": ("hane-sayisi", None, None),
+    "household_by_type": ("hane-tipleri", "household_type", HOUSEHOLD_TYPES),
+    "migration_in": ("goc-aldigi", None, None),
+    "migration_out": ("goc-verdigi", None, None),
+    "migration_in_by_age": ("goc-aldigi", "sex_age", None),
+    "migration_out_by_age": ("goc-verdigi", "sex_age", None),
+    "migration_net": ("goc-net", None, None),
+    "migration_net_rate": ("goc-net-hizi", None, None),
+    "migration_from_abroad": ("goc-disaridan", None, None),
+    "migration_to_abroad": ("goc-disariya", None, None),
+    "foreign_population": ("yabanci-uyruklu", "sex", SEXES),
     # Kütük nüfusu is *not* here, though its file has this shape. Summing its columns the
     # way this adapter sums migration's would answer the wrong question — the row is where
     # people live and the column is where they are registered, so a row's total is the
@@ -139,9 +152,23 @@ def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
     lines = read_text(path).splitlines()
     header = header_of(lines)
 
-    if columns:
+    if dim == "sex_age":
+        # Both dims out of the column name. Unreadable columns are not skipped: a header
+        # MEDAS renames would drop a whole age band out of the breakdown while every other
+        # band still added up, which is the kind of gap that looks like a real one.
+        wanted = {}
+        for index, name in header.items():
+            found = SEX_AGE_COLUMN.match(name)
+            if not found:
+                raise KeyError(indicator_id + ": okunamayan sutun adi: " + name)
+            wanted[index] = format_dims(
+                {"sex": SEXES[found.group("sex")], "age": found.group("age").strip()}
+            )
+    elif columns:
         wanted = {
-            index: columns[name] for index, name in header.items() if name in columns
+            index: format_dims({dim: columns[name]})
+            for index, name in header.items()
+            if name in columns
         }
         missing = set(columns) - set(header.values())
         if missing:
@@ -176,7 +203,7 @@ def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
                 return None
 
         if wanted:
-            for index, value_id in wanted.items():
+            for index, dims in wanted.items():
                 if index >= len(cells) or not cells[index]:
                     continue
                 value = number(cells[index])
@@ -187,7 +214,7 @@ def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
                         "area_id": area[0],
                         "area_level": area[1],
                         "year": year,
-                        "dims": format_dims({dim: value_id}),
+                        "dims": dims,
                         "value": value,
                     }
                 )
@@ -301,10 +328,14 @@ class NarrowMeasure:
 #: would be eleven copies of the same six lines, and the copy that drifted would be the
 #: one nobody re-read.
 NARROW_ADAPTERS = {
-    "tuik_" + spec[0]: type(
-        "Tuik" + "".join(part.title() for part in spec[0].split("_")),
+    "tuik_" + indicator_id: type(
+        "Tuik" + "".join(part.title() for part in indicator_id.split("_")),
         (NarrowMeasure,),
-        {"stem": stem, "spec": spec, "__doc__": "Narrow MEDAS measure: " + spec[0]},
+        {
+            "stem": spec[0],
+            "spec": (indicator_id, spec[1], spec[2]),
+            "__doc__": "Narrow MEDAS measure: " + indicator_id,
+        },
     )
-    for stem, spec in MEASURES.items()
+    for indicator_id, spec in MEASURES.items()
 }

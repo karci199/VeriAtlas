@@ -115,3 +115,38 @@ def test_manifest_history_is_append_only():
     assert len(after) == before + 1
     assert after[-1]["note"] == "test kaydı"
     assert "ingested_at" in after[-1]
+
+
+MIGRATION = """||Sütunlar|||||
+Satırlar||Bölgelerin Aldığı Göç Bilgileri|||||
+||Erkek ve 20-24|Erkek ve 65+|Kadın ve 20-24|Kadın ve 65+|
+||||||
+2024|Adana-1|100.0|5.0|90.0|7.0|
+|Adıyaman-2|10.0|1.0|9.0|2.0|
+"""
+
+
+def test_migration_columns_carry_two_dims_at_once():
+    """`Erkek ve 20-24` is one column and two breakdowns.
+
+    MEDAS publishes migration only this way — there is no sex-only export and no age-only
+    one — so a parser that reads a single dim out of the header can have neither.
+    """
+    import tempfile
+    from pathlib import Path
+
+    from veriatlas.adapters.tuik_simple import read_export
+
+    with tempfile.TemporaryDirectory() as folder:
+        path = Path(folder) / "nufus-goc-aldigi-province.csv"
+        path.write_text(MIGRATION, encoding="utf-8")
+        rows = read_export(path, ("migration_in_by_age", "sex_age", None), {})
+
+    adana = {row["dims"]: row["value"] for row in rows if row["area_id"] == "TR-01"}
+    assert adana == {
+        "age=20-24;sex=male": 100.0,
+        "age=65+;sex=male": 5.0,
+        "age=20-24;sex=female": 90.0,
+        "age=65+;sex=female": 7.0,
+    }
+    assert len(rows) == 8, "iki il × dört kırılım"

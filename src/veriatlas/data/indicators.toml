@@ -636,6 +636,50 @@ toplamak bunu vermez — 65+ için toplama 136‰, doğrusu 43‰ dolayındadır
 "Geniş yaş grupları" bölmesi bu göstergede kapalıdır, tam da bu yüzden. Payda yıl sonu \
 nüfusu; yaşı bilinmeyen ölümler dışarıda. İl ve Türkiye düzeyinde, 2009-2025."""
 
+# Migration with its published breakdown opened. The total is a separate indicator and
+# both come from the same file: MEDAS publishes migration only as sex × age, so the total
+# is a sum of this and this is not a second download. Two indicators rather than one with
+# an optional breakdown, for the reason `deaths_by_age` is separate from `deaths` — one
+# indicator fed twice would let "Tümü (topla)" count every mover twice.
+[indicator.migration_in_by_age]
+label_tr = "Aldığı göç (yaş ve cinsiyete göre)"
+label_en = "In-migration by age and sex"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["sex", "age"]
+views = ["table", "map", "line", "bar", "pyramid"]
+definition_tr = """
+İle başka bir ilden taşınanlar, taşınanın yaş grubu ve cinsiyetiyle. Göçün **kim** olduğunu bu gösterge söyler: toplam sayı bir ilin kaç kişi aldığını verir, buysa gidenin yaşını. Bantlar beşerli ve **65+**'ta kapanıyor. Yurt dışından gelen göç dahil değil, o ayrı göstergedir. 2008'den itibaren."""
+
+[indicator.migration_out_by_age]
+label_tr = "Verdiği göç (yaş ve cinsiyete göre)"
+label_en = "Out-migration by age and sex"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["sex", "age"]
+views = ["table", "map", "line", "bar", "pyramid"]
+definition_tr = """
+İlden başka bir ile taşınanlar, yaş grubu ve cinsiyetle. Aldığı göçle birlikte okunduğunda bir ilin **hangi yaşı kaybettiği** görünür — nüfusu doğal artışı artı olduğu hâlde düşen illerde aradaki fark burada duruyor. 2008'den itibaren."""
+
+# Doğuşta beklenen yaşam süresi. İki ayrı dosya, tek gösterge: il düzeyi yalnız doğuşta
+# (yaş 0), Türkiye ise her yaş için — hayat tablosu 101 yaşı da veriyor. Düzeyler
+# çakışmadığı için aynı göstergede durabiliyorlar.
+[indicator.life_expectancy]
+label_tr = "Beklenen yaşam süresi"
+label_en = "Life expectancy"
+topic = "olum"
+unit = "year_of_age"
+frequency = "annual"
+additive = false
+dims = ["sex", "age"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+O yaştaki bir kişinin, dönemin ölüm hızları hiç değişmezse yaşaması beklenen yıl sayısı. **Bir tahmin değil, bir özet**: bugünün ölümlülüğünü tek sayıya indirger, geleceği öngörmez. Yaş **0** doğuşta beklenen yaşam süresidir; 65 yaşındaki biri için beklenen süre doğuştakinden farklıdır ve genellikle daha uzundur — bebek ölümlerini artık geride bırakmıştır. Türkiye düzeyinde **her yaş için** var (hayat tablosu, 2013-2025); il düzeyinde yalnız **doğuşta**, ve TÜİK'in yayımladığı sınırlı yıllarda. Kadın-erkek farkı her yaşta kadın lehinedir."""
+
 # Evlenme ve boşanma sayısı, kırılımları kapalı. MEDAS ikisinin altında da on kadar
 # kırılım veriyor — eşlerin yaş grubu, eğitim durumu, evliliğin süresi, çocukların
 # velayeti — ve hepsi açıkken ölçü 121 göstergeye çıkıp indirme iki yılda bir sorguya

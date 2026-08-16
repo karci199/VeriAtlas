@@ -72,6 +72,9 @@ DATASETS = {
     "deaths_by_age": "deaths-by-age.csv",
     "death_rate_by_age": "death-rate-by-age.csv",
     "death_rate_broad": "death-rate-broad.csv",
+    "life_expectancy": "life-expectancy.csv",
+    "migration_in_by_age": "migration-in-by-age.csv",
+    "migration_out_by_age": "migration-out-by-age.csv",
     "registry_population": "registry-population.csv",
     "mean_marriage_age": "marriage-age.csv",
     "mean_first_marriage_age": "first-marriage-age.csv",
@@ -111,6 +114,9 @@ BROKEN_DOWN = (
     "deaths_by_age",
     "death_rate_by_age",
     "death_rate_broad",
+    "life_expectancy",
+    "migration_in_by_age",
+    "migration_out_by_age",
     "mean_marriage_age",
     "mean_first_marriage_age",
     "registry_population",
@@ -626,6 +632,13 @@ def main() -> None:
         "death_rate_broad": export_broken_down(
             fact, areas, "death_rate_broad", whole=False
         ),
+        # `whole=False`: a life expectancy of 78,3 rounded to 78 loses the digit that
+        # separates one province from the next.
+        "life_expectancy": export_broken_down(
+            fact, areas, "life_expectancy", whole=False
+        ),
+        "migration_in_by_age": export_broken_down(fact, areas, "migration_in_by_age"),
+        "migration_out_by_age": export_broken_down(fact, areas, "migration_out_by_age"),
         # `whole=False` for the same reason the median age has it: an age is a position,
         # not a quantity, so "men plus women" is not a total anyone can use.
         "mean_marriage_age": export_broken_down(

@@ -44,7 +44,7 @@ import polars as pl
 from ..areas import load_areas
 from ..config import RAW
 from ..indicators import get
-from ..schema import format_dims
+from ..schema import FACT_COLUMNS, format_dims
 from .tuik_median_age import area_of, single_province_regions
 from .tuik_simple import LABEL, read_text
 
@@ -56,6 +56,10 @@ DOWNLOADS = RAW / "medas" / "basit"
 SEX_IN_LABEL = re.compile(r"cinsiyeti\s*:\s*(?P<sex>Erkek|Kadın)")
 
 SEXES = {"Erkek": "male", "Kadın": "female"}
+
+#: Life expectancy writes its breakdown as the bare word — `Erkek`, or `Erkek ve 65` in
+#: the life table, where the number after it is the age the expectancy is measured from.
+PLAIN_SEX_AGE = re.compile(r"^(?P<sex>Erkek|Kadın)(?:\s+ve\s+(?P<age>\S+))?$")
 
 #: The age band in the row label of the death-by-age export, written as
 #: `Ölenin yaş grubu:918. (75+)`. The number before the dot is MEDAS's internal code and
@@ -104,6 +108,17 @@ MEASURES = {
     "dogum": ("births", "births", None, {}),
     "olum": ("deaths", "deaths", "sex", {}),
     "olum-yas": ("deaths_by_age", "deaths_by_age", "sex_age", {}),
+    # Two files, one indicator, and they do not overlap: the province file is life
+    # expectancy at birth only, the life table is every age but Türkiye only. Each is
+    # restricted to the level it belongs to, or the country would get age 0 twice.
+    "yasam-suresi": ("life_expectancy", "life_expectancy", "plain_sex", {}, ("province",)),
+    "hayat-tablosu": (
+        "life_table",
+        "life_expectancy",
+        "plain_sex_age",
+        {},
+        ("country",),
+    ),
     "bebek-olum-hizi": ("infant_mortality", "infant_mortality", None, {}),
     "bes-yas-alti-olum-hizi": ("under5_mortality", "under5_mortality", None, {}),
     "evlenme": ("marriages", "marriages", None, {}),
@@ -196,7 +211,17 @@ def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
         if cells[1].strip():
             label = cells[1].strip()
 
-        if dim in ("sex", "sex_age"):
+        if dim in ("plain_sex", "plain_sex_age"):
+            found = PLAIN_SEX_AGE.match(label)
+            if not found:
+                raise KeyError(indicator_id + ": okunamayan kirilim: " + label)
+            values = {"sex": SEXES[found.group("sex")]}
+            # The age is the age the expectancy is measured *from*, so the file that has
+            # no age is measuring from birth and says so as `0` rather than leaving the
+            # dim off — one indicator, one shape, whichever file it came from.
+            values["age"] = found.group("age") or "0"
+            dims = format_dims({**fixed, **values})
+        elif dim in ("sex", "sex_age"):
             sex = SEX_IN_LABEL.search(label)
             if not sex:
                 # A row whose breakdown we cannot place must not be folded into a total
@@ -262,6 +287,11 @@ class VitalMeasure:
     spec: tuple = ()
 
     @property
+    def levels(self) -> tuple[str, ...]:
+        """Which levels this measure is published at. Both, unless the table says one."""
+        return self.spec[4] if len(self.spec) > 4 else ("country", "province")
+
+    @property
     def indicator_id(self) -> str:
         return self.spec[1]
 
@@ -272,7 +302,7 @@ class VitalMeasure:
         single = single_province_regions()
 
         records: list[dict] = []
-        for level in ("country", "province"):
+        for level in self.levels:
             # One file per level, except where the query was too wide for MEDAS to export
             # in one go: deaths by age and sex came down as `-province-1` (2011-2025) and
             # `-province-2` (2009-2010). The parts are disjoint in years and are read as
@@ -299,7 +329,12 @@ class VitalMeasure:
         )
 
         # Every province or none: one quietly absent draws as "veri yok" in the middle of
-        # the map, indistinguishable from a real gap.
+        # the map, indistinguishable from a real gap. Asked only of a measure that has a
+        # province file at all — the life table is published for Türkiye only, and there
+        # "no provinces" is the whole truth rather than eighty-one holes.
+        if "province" not in self.levels:
+            return frame.select(FACT_COLUMNS)
+
         expected = set(
             load_areas().filter(pl.col("area_level") == "province")["area_id"]
         )
@@ -313,20 +348,7 @@ class VitalMeasure:
                 + ", ".join(sorted(expected - found))
             )
 
-        return frame.select(
-            "indicator_id",
-            "area_id",
-            "area_level",
-            "period_start",
-            "frequency",
-            "dims",
-            "value",
-            "unit",
-            "quality_flag",
-            "vintage",
-            "source_id",
-            "retrieved_at",
-        )
+        return frame.select(FACT_COLUMNS)
 
 
 #: One adapter class per measure, built from the table above.

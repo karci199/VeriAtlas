@@ -191,3 +191,31 @@ def test_marriage_age_total_is_the_midpoint():
 def test_marriage_age_total_needs_both_sexes():
     """One sex averaged with itself is that sex's figure wearing the label "Toplam"."""
     assert marriage_age_total(marriage_ages([(2024, "male", 31.2)])).is_empty()
+
+
+LIFE_TABLE = """|||Sütunlar|
+Satırlar|||Türkiye-TR|
+||||
+Tek Yaş Hayat Tablosu|Erkek ve 0|2024|75.5|
+||2025|75.9|
+|Erkek ve 65|2024|16.4|
+|Kadın|2024|81.3|
+"""
+
+
+def test_life_expectancy_reads_the_age_it_is_measured_from(tmp_path):
+    """`Erkek ve 65` is the expectancy *at* 65, and a bare `Erkek` is at birth.
+
+    The two files are shaped differently — the province export has no age at all — and
+    read as one dim they would collide on the same key. Written as age 0, they do not,
+    and "76 yıl" stops being ambiguous about which 76.
+    """
+    path = tmp_path / "nufus-hayat-tablosu-country.csv"
+    path.write_text(LIFE_TABLE, encoding="utf-8")
+    rows = read_export(
+        path, ("life_table", "life_expectancy", "plain_sex_age", {}, ("country",)), {}
+    )
+    found = {(row["year"], row["dims"]): row["value"] for row in rows}
+    assert found[(2024, "age=0;sex=male")] == 75.5
+    assert found[(2024, "age=65;sex=male")] == 16.4
+    assert found[(2024, "age=0;sex=female")] == 81.3, "yaşsız satır doğuştadır"
