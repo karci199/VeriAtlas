@@ -48,6 +48,7 @@ ADNKS = "Adrese Dayalı Nüfus Kayıt Sistemi Sonuçları"
 BIRTHS = "Doğum İstatistikleri"
 DEATHS = "Ölüm İstatistikleri"
 MARRIAGES = "Evlenme İstatistikleri"
+LIFE = "Hayat Tabloları"
 DIVORCES = "Boşanma İstatistikleri"
 
 CELL_LIMIT = 50000
@@ -113,6 +114,12 @@ MEASURES = [
     # göre doğum sayısı" and the district level only exists on the first. They are also
     # shorter — districts start in 2014 for births and 2009 for deaths — and they carry
     # no breakdown to open, which is what makes a two-year probe one query of 1.946 cells.
+    # The life table is the only thing here that answers "did mortality change" without
+    # the age structure in the way: it is a death probability per single year of age, so
+    # it holds the composition still by construction. 202 indicators — 101 ages × two
+    # sexes — but one area and thirteen years, which is 2.626 cells and one query.
+    ("hayat-tablosu", LIFE, "Tek yaş hayat tablosu", True),  # 202, yalnız Türkiye
+    ("yasam-suresi", LIFE, "Do", True),  # 2, Türkiye + il, yalnız 5 yıl
     ("dogum-ilce", BIRTHS, "lçelere göre doğum", False),  # 2
     ("olum-ilce", DEATHS, "lçelere göre ölüm", False),  # 2
     ("evlenme", MARRIAGES, "Evlenme sayısı", False),  # 1
@@ -133,15 +140,23 @@ LEVELS = {
 }
 
 
+#: Measures published for the country and nowhere else. The single-year life table is
+#: the case: TÜİK computes it nationally because a province's deaths at age 93 are a
+#: handful of people and the resulting probability would be noise.
+COUNTRY_ONLY = {"hayat-tablosu"}
+
+
 def levels_for(name: str) -> list[str]:
     """Which levels a measure is asked for.
 
-    The `-ilce` suffix carries it rather than a fifth field on all thirty entries: those
+    Carried by the name rather than by a fifth field on all thirty entries: `-ilce`
     measures exist *only* at district level, and asking for Türkiye there would download
-    the same national total a second time under a different measure's name.
+    the same national total a second time under another measure's name.
     """
     if name.endswith("-ilce"):
         return ["district"]
+    if name in COUNTRY_ONLY:
+        return ["country"]
     return ["country", "province"]
 
 
