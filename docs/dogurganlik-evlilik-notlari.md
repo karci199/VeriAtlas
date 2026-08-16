@@ -715,3 +715,77 @@ geçerliliğini koruyor. Ama iki yeni şey çıktı: (a) Türkiye düzeyinde 201
 başlayan çok sert bir evlenmeme kırılması — bu **zaman serisi** olgusu, iller
 arası kesitte görünmüyor; (b) göstergenin üç ayrı olguyu tek sayıda topladığı,
 dolayısıyla tek başına kullanılmasının hatalı olduğu.
+
+## Bulgu 12 — medeni duruma göre doğurganlık hızı; düşüşün %98'i evliliğin içinde
+
+Bulgu 5 ve Bulgu 11 annenin medeni durumunu **ham pay** olarak kullanmıştı
+(o durumdaki anneden doğum / tüm doğumlar). Ham pay iki şeyi karıştırıyor: ilde
+kaç boşanmış kadın olduğu ile onların doğurma eğilimi. Doğru payda `marital_status`
+stoğu — 2008-2025, 81 il, kadın 15-49, medeni duruma göre. İkisi de elimizdeydi,
+birleştirilmemişti.
+
+**Yeni gösterge:** o medeni durumdaki 1.000 kadın başına doğum.
+
+### Türkiye
+
+| Yıl | Evli | Boşanmış | Hiç evlenmemiş | Dul |
+|---|---|---|---|---|
+| 2012 | 97,5 | 11,9 | 4,29 | 4,39 |
+| 2014 | **101,0** | 12,6 | 4,54 | 4,97 |
+| 2017 | 96,2 | 11,8 | 4,38 | 6,18 |
+| 2020 | 84,0 | 9,8 | 3,25 | 5,27 |
+| 2025 | **68,8** | **6,8** | **2,50** | 4,11 |
+
+**Evli kadın doğurganlığı 2014'te tepe yapıp %32 düşmüş** (101,0 → 68,8).
+Dönüm noktası ~2016 — Bulgu 11'deki evlenmeme kırılmasıyla **aynı yıl**. İki ayrı
+göstergede aynı tarihte kırılma; ortak bir neden aranmalı (ekonomik? kuşak?).
+
+Boşanmış kadınların doğurganlığı daha da hızlı düşmüş (11,9 → 6,8, −%43).
+
+### Bu, ana tezin en temiz kanıtı
+
+Evli kadın doğurganlığı bileşim etkisinden arınmış bir ölçü: kimin evlendiği,
+kaç kişinin evlendiği, evlenme yaşı — hepsi paydada nötrleniyor. Geriye yalnız
+*evli çiftlerin davranışı* kalıyor.
+
+| İlişki (81 il) | r |
+|---|---|
+| Evli kadın doğurganlığı 2025 ~ GDH 2025 | **+0,982** |
+| Evli kadın doğurganlığı ~ doğum aralığı | −0,956 |
+| Evli doğurganlık **düşüşü** ~ aralık **açılması** | **+0,817** |
+
+İl GDH'sinin neredeyse tamamı (r=0,982) evli kadınların doğurganlığı. Evlenme
+davranışının iller arası farka katkısı ihmal edilebilir. Ve düşüş-açılma ilişkisi
+ham GDH ile ölçülenden çok daha güçlü (0,817 vs Bulgu 8'in 0,640) — bileşim
+gürültüsü temizlenince mekanizma daha net görünüyor. **Bulgu 8-9'un tezi
+güçlendirildi.**
+
+En çok düşen: Ağrı 210→112 (−%47), Muş 198→107 (−%46), Van 186→102 (−%45),
+Iğdır 153→87 (−%43), Hakkari 174→104 (−%40).
+En az düşen: Burdur 68→63 (−%8), Tunceli 83→74 (−%10), Kırklareli 59→51 (−%14),
+Yalova 76→65 (−%15), Edirne 63→53 (−%16).
+
+### ⚠️ Bulgu 11'in "yan ürün" sonucu YANLIŞTI — düzeltme
+
+Bulgu 11'de boşanmış anneden doğum **ham payına** bakılıp "temiz batı-doğu eğimi,
+boşanma sonrası yeniden aile kurmanın ölçüsü" denmişti. Yanlış. Ham pay ile
+normalize hız arasında **r = −0,133** — ilişki yok, hatta ters.
+
+| İl | Boşanmış kadın doğurganlığı | Ham pay |
+|---|---|---|
+| Şanlıurfa | **41,5 ‰** | %0,84 |
+| Bitlis | 24,8 | %0,52 |
+| Ağrı | 23,1 | %0,55 |
+| Eskişehir | **3,8 ‰** | %0,83 |
+| Giresun | 3,4 | %0,51 |
+| Artvin | **1,6 ‰** | %0,15 |
+
+Şanlıurfa ile Eskişehir'in ham payı neredeyse aynı (%0,84 vs %0,83) ama gerçek
+hızları **on bir kat** farklı. Ham pay ilin boşanmış kadın *sayısını* ölçüyordu;
+batıda çok boşanmış kadın var, doğurmuyorlar. Normalize edilince harita tersine
+dönüyor: boşanmış kadın doğurganlığı en yüksek yer güneydoğu.
+
+**Kural:** bu dosyadaki "…anneden doğum yüzdesi" biçimindeki her sonuç şüpheli.
+Payda `marital_status` stoğu olmalı. Bulgu 5'in "hiç evlenmedi" payı da aynı
+düzeltmeyi bekliyor (normalize hız TR: 4,29 → 2,50 ‰, yani o da düşüyor —
+ham pay %2,09 → %2,27 ile *artıyor* görünürken).
