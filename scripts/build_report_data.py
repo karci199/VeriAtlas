@@ -28,7 +28,7 @@ import polars as pl
 
 sys.path.insert(0, "src")
 
-from veriatlas.areas import load_areas, load_parents
+from veriatlas.areas import load_areas, load_districts, load_parents
 from veriatlas.config import PUBLIC
 
 TARGET = PUBLIC / "rapor"
@@ -476,6 +476,71 @@ def evlilik(frame: pl.DataFrame) -> dict | None:
     }
 
 
+def ilceler(fact: pl.DataFrame, area_id: str, adlar: dict[str, str]) -> dict | None:
+    """A province's districts, with the one rate the district level can carry.
+
+    Marriage and divorce counts exist per district and the population does too, so the
+    *crude* rate can be computed here. The refined one cannot: marital status is not
+    published below province, so there is no "never-married women" to divide by. A page
+    that showed the crude rate without saying that would be showing the number this
+    project spent a whole section proving misleading.
+
+    The marriage rate carries a second warning of its own. A wedding is counted where it
+    happened, so a district with the province's main register office collects the
+    weddings of the districts around it — Osmangazi's 16‰ is Bursa's paperwork, not
+    Osmangazi's romance.
+    """
+    ilce = fact.filter(
+        (pl.col("area_level") == "district")
+        & (pl.col("area_id").str.starts_with(area_id + "-"))
+    )
+    if ilce.is_empty():
+        return None
+
+    def toplam(indicator_id: str, ad: str) -> pl.DataFrame:
+        return (
+            ilce.filter(pl.col("indicator_id") == indicator_id)
+            .group_by("area_id", "y")
+            .agg(pl.col("value").sum().alias(ad))
+        )
+
+    evlenme = toplam("district_marriages", "evlenme")
+    if evlenme.is_empty():
+        return None
+    bosanma = toplam("district_divorces", "bosanma")
+    nufus = (
+        ilce.filter(pl.col("indicator_id") == "population")
+        .group_by("area_id", "y")
+        .agg(pl.col("value").sum().alias("nufus"))
+    )
+    son = int(evlenme["y"].max())
+    birlesik = (
+        evlenme.filter(pl.col("y") == son)
+        .join(bosanma.filter(pl.col("y") == son), on=["area_id", "y"], how="left")
+        .join(nufus.filter(pl.col("y") == son), on=["area_id", "y"], how="left")
+        .filter(pl.col("nufus") > 0)
+        .with_columns(
+            (pl.col("evlenme") / pl.col("nufus") * 1000).round(2).alias("evlenme_hizi"),
+            (pl.col("bosanma") / pl.col("nufus") * 1000).round(2).alias("bosanma_hizi"),
+        )
+        .sort("evlenme_hizi", descending=True)
+    )
+    return {
+        "yil": son,
+        "satirlar": [
+            {
+                "ad": adlar.get(row["area_id"], row["area_id"]),
+                "nufus": int(row["nufus"]),
+                "evlenme": int(row["evlenme"]),
+                "bosanma": int(row["bosanma"] or 0),
+                "evlenme_hizi": row["evlenme_hizi"],
+                "bosanma_hizi": row["bosanma_hizi"],
+            }
+            for row in birlesik.to_dicts()
+        ],
+    }
+
+
 def hane(frame: pl.DataFrame) -> dict | None:
     size = series(frame, "household_size")
     if not size:
@@ -520,7 +585,9 @@ def standard_population(fact: pl.DataFrame) -> pl.DataFrame:
     )
 
 
-def payload(fact: pl.DataFrame, standard: pl.DataFrame, area: dict) -> dict:
+def payload(
+    fact: pl.DataFrame, standard: pl.DataFrame, area: dict, ilce_adlari: dict[str, str]
+) -> dict:
     frame = fact.filter(pl.col("area_id") == area["area_id"])
     sections = {
         "nufus": nufus(frame),
@@ -531,6 +598,9 @@ def payload(fact: pl.DataFrame, standard: pl.DataFrame, area: dict) -> dict:
         "goc": goc(frame),
         "evlilik": evlilik(frame),
         "hane": hane(frame),
+        "ilceler": ilceler(fact, area["area_id"], ilce_adlari)
+        if area["duzey"] == "province"
+        else None,
     }
     return {
         "alan": area,
@@ -636,6 +706,9 @@ def main() -> None:
     standard = standard_population(fact)
 
     areas = load_areas()
+    ilce_adlari = {
+        row["area_id"]: row["name_tr"] for row in load_districts().to_dicts()
+    }
     parents = load_parents()
     lookup = {
         row["area_id"]: row
@@ -666,6 +739,7 @@ def main() -> None:
                 "ad": row["name_tr"],
                 "duzey": row["area_level"],
             },
+            ilce_adlari,
         )
         paketler[area_id] = body
         path = TARGET / (area_id + ".json")

@@ -440,7 +440,20 @@ def export_plain(
         )
         .sort("level", "area", "year")
     )
-    report(PUBLIC / DATASETS[indicator_id], slim)
+    # The base file is everything the page loads up front; a lazily-held level goes out
+    # again in its own file, because the dictionary promises one and the page fetches
+    # exactly what the dictionary names. Without this the district marriage counts wrote
+    # one complete file, the meta pointed at a second that had never been written, and
+    # the page said "veri okunamadı" about a dataset that was sitting right there.
+    base = slim.filter(~pl.col("level").is_in(LAZY_LEVELS))
+    stem = DATASETS[indicator_id].removesuffix(".csv")
+    report(PUBLIC / DATASETS[indicator_id], base if base.height else slim)
+
+    for level in LAZY_LEVELS:
+        part = slim.filter(pl.col("level") == level)
+        if part.height:
+            report(PUBLIC / (stem + "-" + level + ".csv"), part)
+
     return sorted(slim["level"].unique())
 
 

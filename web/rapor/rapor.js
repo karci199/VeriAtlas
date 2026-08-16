@@ -837,7 +837,8 @@ const DUZEY = {country: "Ülke", province: "İl", region: "Coğrafi bölge",
                nuts1: "İBBS-1", nuts2: "İBBS-2", district: "İlçe"};
 const EKSIK = {nufus: "nüfus", yas: "yaş yapısı", olum: "yaşa göre ölüm",
                dogurganlik: "doğurganlık", yasam: "yaşam süresi", goc: "göç",
-               evlilik: "evlilik ve medeni durum", hane: "hanehalkı"};
+               evlilik: "evlilik ve medeni durum", hane: "hanehalkı",
+               ilceler: "ilçe evlenme ve boşanma"};
 
 function altBaslikYaz(b) {
     /* One sentence that says what this place's two decades were, chosen from the data.
@@ -1269,6 +1270,27 @@ function ciz(veri, siralama, dizin) {
     }
     // endregion
 
+    // region İlçeler
+    if (b.ilceler?.satirlar?.length) {
+        const n = sonraki();
+        const i = b.ilceler;
+        const bolum = bolumYap(ana, n, "İLÇELER",
+            "İlçelerde evlenme ve boşanma",
+            `İlçe düzeyinde hesaplanabilen tek hız <strong>kaba hız</strong>: olay sayısı ` +
+            `bölü ilçe nüfusu. Rafine hız burada yok, çünkü medeni durum il düzeyinden ` +
+            `aşağıda yayımlanmıyor — "hiç evlenmemiş kadın" sayısı ilçe için mevcut değil.`);
+        ray.push([n, "İlçeler"]);
+        bolum.append(ilceTablosu(i));
+        cikarim(bolum,
+            `İki uyarı, ikisi de bu tablonun okunmasını değiştirir. <b>Evlenme, nikâhın ` +
+            `kıyıldığı ilçeye</b> yazılır: ilin merkez nikâh dairesi çevre ilçelerin ` +
+            `düğünlerini de toplar, o yüzden bir merkez ilçenin hızı orada çok evlenildiği ` +
+            `için değil, evrak orada düzenlendiği için yüksek olabilir. <b>Boşanma ise ` +
+            `erkeğin ikametgahına</b> yazılır — başka bir kural. İkisi ayrı ayrı okunur, ` +
+            `birbirine bölünmez.`);
+    }
+    // endregion
+
     const sira = siralamaBolumu(ana, veri.alan, siralama, dizin);
     if (sira) ray.push(["★", sira[1]]);
 
@@ -1324,6 +1346,29 @@ function izle() {
         const hedef = document.getElementById(bag.dataset.hedef);
         if (hedef) gozlemci.observe(hedef);
     }
+}
+
+function ilceTablosu(bolum) {
+    const kutu = el("div", {class: "tablo-kutu"});
+    const tablo = el("table");
+    const bas = el("thead"), satir = el("tr");
+    satir.append(
+        el("th", {}, `İlçe · ${bolum.yil}`), el("th", {}, "Nüfus"),
+        el("th", {}, "Evlenme"), el("th", {}, "Evlenme ‰"),
+        el("th", {}, "Boşanma"), el("th", {}, "Boşanma ‰"));
+    bas.append(satir);
+    const govde = el("tbody");
+    for (const r of bolum.satirlar) {
+        const tr = el("tr");
+        tr.append(
+            el("td", {}, r.ad), el("td", {}, sayi.format(r.nufus)),
+            el("td", {}, sayi.format(r.evlenme)), el("td", {}, iki.format(r.evlenme_hizi)),
+            el("td", {}, sayi.format(r.bosanma)), el("td", {}, iki.format(r.bosanma_hizi)));
+        govde.append(tr);
+    }
+    tablo.append(bas, govde);
+    kutu.append(tablo);
+    return kutu;
 }
 
 function medeniTablo(paylar) {
