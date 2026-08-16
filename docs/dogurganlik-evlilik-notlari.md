@@ -1231,3 +1231,84 @@ bu ölçü aynı illerde donmuş durumda.
 
 Bu, dosyanın tekrar eden yakınsama bulgusuna gerçek bir karşı örnek ve
 "modernleşme tek pakettir" okumasını zayıflatıyor.
+
+## Yol haritası — elimizdeki tüm veriyle yapılabilecek analizler
+
+On dokuz bulgu sonrası envanter. Ambar + masaüstü dosyaları taranarak çıkarıldı.
+Sıra kabaca getiriye göre. "Hazır" = ek dosya gerekmez, ambarda var.
+
+### A. Kütük nüfus — hiç dokunulmamış, en büyük boşluk
+
+`registry_population` 2007-2025, 81 il, **`residence=own` / `residence=elsewhere`
+kırılımlı**. Yani "bu ile nüfusu kayıtlı olup burada yaşayanlar / yaşamayanlar".
+
+| # | Analiz | Neden |
+|---|---|---|
+| A1 | Kütük / ikamet oranı | Ömür boyu net göçün doğrudan ölçüsü. Ardahan 6,13 · Kars 3,78 · Bayburt 3,50 karşısında İstanbul 0,17 · Kocaeli 0,32 · Ankara 0,35. Yıllık göç akımlarından çok daha güçlü bir "kök" göstergesi |
+| A2 | `residence=elsewhere` payının 2007-2025 seyri | Boşalma hızlanıyor mu, duruyor mu? İl bazında |
+| A3 | Kütük oranı ~ doğurganlık / boşanma / ölümlülük | Bulgu 17'deki "güneydoğu neden en düşük ölümlülük" şüphesinin testi: payda şişkinliği hipotezi |
+
+⚠️ Köken×varış matrisi **yok** — "İstanbul'daki Sivaslılar" bu veriyle çıkmaz,
+yalnız "Sivas'tan gitmiş olanların sayısı" çıkar.
+
+### B. Hane — tamamı kullanılmamış
+
+| # | Analiz | Veri |
+|---|---|---|
+| B1 | Tek kişilik hane payı, il, 2014-2025 | `household_by_type` · Bulgu 18'in "boşanmış ve yeniden evlenmeyen kadın birikiyor" tahminini sınar |
+| B2 | Hane sayısı artışı vs nüfus artışı | `household_count` + `population` · hane nüfustan hızlı artıyorsa atomlaşma |
+| B3 | Hane büyüklüğü ~ doğurganlık | `household_size` 2008-2025 · GDH ile ilişki |
+| B4 | Çekirdeksiz / çekirdek+diğer hane payı | Geniş ailenin çözülme hızı, il il |
+
+### C. Ölüm — Bulgu 17 sadece kapıyı açtı
+
+| # | Analiz | Neden |
+|---|---|---|
+| C1 | **Fazla ölüm (excess mortality) 2020-21, il** | Bulgu 17'de TR standardize hız 6,17→7,65 çıktı. 2015-19 taban çizgisine göre il il fazla ölüm — pandeminin coğrafyası. En yüksek getirili ölüm analizi |
+| C2 | Bebek ve 5 yaş altı ölümlülük | `infant_mortality`, `under5_mortality` 2009-2025 · zaten normalize, hiç bakılmadı. Güneydoğudaki −%39'luk düşüşün ne kadarı bebek ölümünden? |
+| C3 | Cinsiyete göre standardize ölüm makası | `deaths` cinsiyet kırılımlı · erkek-kadın ölümlülük farkı, il il |
+| C4 | İlçe düzeyinde ölüm | `deaths` ilçe kırılımı taşıyor · il içi eşitsizlik |
+
+### D. Medeni hal — `marital_status` en zengin kullanılmamış kaynak
+
+182.501 il satırı, cinsiyet × beşli yaş × 5 durum, 2008-2025.
+
+| # | Analiz | Neden |
+|---|---|---|
+| D1 | **Evlenme hızı doğru paydayla** | Evlenme / hiç evlenmemiş kadın stoku. Bulgu 11'in bilmecesini çözer: evlenmeme oranı arttı çünkü *hız mı düştü*, yoksa *genç kuşak mı büyük*? Stok ayıramaz, hız ayırır |
+| D2 | Boşanmış kadın stoğunun büyümesi | Bulgu 16+18'in birleşik tahmininin doğrudan testi |
+| D3 | Dulluk oranı, yaşa ve cinsiyete göre | Kadın dulluğu erkeğinkinin kaç katı, nerede |
+
+### E. Doğurganlık — kalan parçalar
+
+| # | Analiz | Veri |
+|---|---|---|
+| E1 | **İl düzeyinde yaşa özel doğurganlık hızı** | TÜİK yayınlamıyor, malzemesi bizde. Bulgu 15'teki doyma eşiğinin hangi yaş grubundan geldiğini söyler |
+| E2 | Akraba evliliği, 81 il, 2010-2025 | Masaüstü · "muhafazakâr norm"un tek ölçülebilir vekili; Bulgu 8 artıklarını açıklıyor mu |
+| E3 | Çocuk evliliğini normalize et | 16-17 yaştaki kız 1.000 başına evlenme. Bulgu 2'nin "coğrafya tersine döndü" sonucu naif paydaya dayanıyor, şüpheli |
+| E4 | Anne eğitimi × yaş | Masaüstü, **yalnız TR** · il yok, en zayıfı |
+
+### F. Yapısal / birleştirici
+
+| # | Analiz | Neden |
+|---|---|---|
+| F1 | **Nüfus değişimi ayrıştırması** | `natural_increase` + `migration_net` · her ilin büyümesinin ne kadarı doğum fazlası, ne kadarı göç? Kolay ve hiç yapılmamış |
+| F2 | 2016 kırılması taraması | Üç göstergede (evlenmeme, evli doğurganlık, boşanma) aynı yıl; eş yaş farkı ise 2013. Tüm göstergeleri tarayıp kırılma yılı haritası çıkarmak |
+| F3 | Yakınsama endeksi | Doğurganlık, boşanma, ölümlülük yakınsıyor (Bulgu 3/9/16/17); eş yaş farkı yakınsamıyor (Bulgu 19). Hangi boyut yakınsıyor hangisi donmuş — tek tabloda |
+| F4 | Yurtdışı göç | `migration_to_abroad` / `from_abroad` 2016-2025 · hiç bakılmadı |
+
+### Öneri sırası
+
+1. **A1 — kütük/ikamet oranı.** Hazır, tek sorgu, tamamen yeni bir eksen açıyor ve
+   Bulgu 17'nin şüphesini test ediyor.
+2. **C1 — il düzeyinde fazla ölüm 2020-21.** Bulgu 17 zaten altyapıyı kurdu.
+3. **D1 — evlenme hızı.** Bulgu 11'in çözülmemiş bilmecesini kapatır.
+4. **E1 — il düzeyinde ASFR.** Bulgu 15'in doyma eşiğini açıklar.
+5. **F1 — nüfus değişimi ayrıştırması.** Ucuz, tanımlayıcı, her şeyi çerçeveler.
+
+### Kontrol edilecek
+
+`meta.json` ağacında "Yapı ruhsatı" konusu var ama ambarın `fact` tablosunda
+yapı ruhsatı göstergesi görünmedi; `cikti\TUIK_yapi_ruhsati_*.csv` masaüstünde
+duruyor. Konut arzı ↔ hane kurulumu ↔ evlenme zinciri kurulabilir mi, önce
+verinin nerede olduğu netleşmeli.
