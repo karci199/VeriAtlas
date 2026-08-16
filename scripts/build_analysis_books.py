@@ -245,17 +245,23 @@ def styles(book) -> dict:
         ),
         # Two decimals everywhere a ratio is shown: %29 and %29,22 are different answers
         # once a column is being sorted, and the second one is the one that was asked.
+        #
+        # The decimal mark in a format code is a DOT, always. A format code is not written
+        # in the reader's language — Excel stores it in one canonical syntax and renders it
+        # with whatever separators the machine uses, so a Turkish reader still sees %54,43.
+        # Writing "0,00%" does not mean two decimals in Turkish; it means group the
+        # thousands and show none, which is how a share of 54,43% came out as "054%".
         "percent": book.add_format(
-            {"num_format": "0,00%", "align": "center", "valign": "vcenter"}
+            {"num_format": "0.00%", "align": "center", "valign": "vcenter"}
         ),
         "points": book.add_format(
-            {"num_format": "+0,00;-0,00;0", "align": "center", "valign": "vcenter"}
+            {"num_format": "+0.00;-0.00;0", "align": "center", "valign": "vcenter"}
         ),
         "rate": book.add_format(
-            {"num_format": "0,00", "align": "center", "valign": "vcenter"}
+            {"num_format": "0.00", "align": "center", "valign": "vcenter"}
         ),
         "fine": book.add_format(
-            {"num_format": "0,00", "align": "center", "valign": "vcenter"}
+            {"num_format": "0.00", "align": "center", "valign": "vcenter"}
         ),
     }
 

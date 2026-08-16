@@ -503,8 +503,13 @@ def main() -> None:
     )
     # Two decimals, as asked: a growth of 4,7% and one of 4,74% are different answers when
     # the sheet is being sorted by that column.
+    #
+    # The decimal mark in a format code is a dot even though the reader sees a comma: the
+    # code is stored in one canonical syntax and rendered with the machine's separators.
+    # "0,00%" is not the Turkish spelling of this, it is thousands grouping with no
+    # decimals at all — which turned 4,74% into "005%" until it was noticed.
     yuzde = book.add_format(
-        {"num_format": "0,00%", "align": "center", "valign": "vcenter"}
+        {"num_format": "0.00%", "align": "center", "valign": "vcenter"}
     )
 
     numeric = {}
@@ -575,7 +580,7 @@ def main() -> None:
         "",
         "Kaynak: TÜİK MEDAS, adrese dayalı nüfus kayıt sistemi. Çekim: 2026-08.",
         f"Mahalleler: {first}-{last}, {len(mahalleler)} mahalle, 81 il.",
-        "Köyler: {0}-{1}, {2} köy, {3} il.".format(
+        "Köyler: {}-{}, {} köy, {} il.".format(
             koy_first, koy_last, len(koyler), koy["il"].n_unique()
         ),
         "",
