@@ -3,6 +3,37 @@
 Bu dosya henüz koda girmemiş bulguları kaydeder. İki yeni kaynak masaüstünden
 geldi, ikisi de depoya alınmadı — burada iz olarak duruyor, sonra yüklenecek.
 
+## Özet — bugüne kadar ne bulundu
+
+Ana soru: Türkiye'de doğurganlık düşüyor, **mekanizması ne?**
+
+| Aday mekanizma | Kanıt | Karar |
+|---|---|---|
+| Doğum aralığının açılması | kesitte r=−0,96, değişimde r=+0,64 | ✅ **asıl mekanizma** |
+| İlk doğumun ertelenmesi | r=−0,74, ama aralıkla birlikte hareket ediyor | ⚠️ kısmi |
+| Evlenmenin ertelenmesi | r=+0,06 | ❌ ilgisiz |
+| Hiç evlenmeme | kesitte r=+0,11; aralıkla birlikte açıklama gücü düşüyor | ❌ reddedildi (Bulgu 11) |
+
+Doğurganlık, insanlar geç evlendiği için düşmüyor. **Başladıktan sonra çocuklar
+arasının açılmasından** düşüyor — mekanizma evlilik içi aile planlaması.
+
+**İki farklı yol, aynı sonuç** (Bulgu 9): güneydoğu erken evlenip araları açıyor;
+batı/Trakya geç başlıyor, aralığı zaten geniş, doğurganlığı doğrudan çocuk
+sayısını keserek düşürüyor. Tek eksenli "doğu geleneksel–batı modern" okuması yanlış.
+
+**Sınır** (Bulgu 10): il toplamında aralık ~5,2 yılda duruyor. Ama yaş grubu
+içinde 5,2 rahatça aşılıyor (35-39: 6,72) — tavan davranışsal değil, ilin **yaş
+bileşiminin** sınırı. Batı tavana dayanmış; güneydoğu 3,3-4,2'de, **1-1,9 yıl
+yolu var**. Düşüşün geri kalanı oradan gelecek.
+
+**Ölçü uyarısı** (Bulgu 11): "hiç evlenmemiş oranı" tek başına yorumlanamaz —
+güneydoğuda kayıt dışı evliliği, metropolde bekârlığı, Karadeniz'de çocuksuzluğu
+ölçüyor. Doğum tarafındaki medeni durum sütunlarıyla birlikte okunmalı.
+
+**Açık uçlar:** akraba evliliği paneli (2010-2025, 81 il) hazır ama kullanılmadı;
+il düzeyinde yaşa özel doğurganlık hızı türetilebilir (TÜİK yayınlamıyor);
+Türkiye'de 2016'da başlayan sert evlenmeme kırılması açıklanmadı.
+
 ## Yeni kaynaklar (henüz `raw/`e taşınmadı, depoya alınmadı)
 
 - `annedogumyas.xls` — İkametgah yerine göre doğum sayısı, **annenin yaş
