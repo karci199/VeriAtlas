@@ -15,7 +15,7 @@ import polars as pl
 
 sys.path.insert(0, "src")
 
-from veriatlas.aggregate import to_level
+from veriatlas.aggregate import sum_to_level, to_level
 from veriatlas.areas import (
     load_areas,
     load_districts,
@@ -117,6 +117,15 @@ BROKEN_DOWN = (
 #: up, so rolling one to İBBS means choosing a weighting. That is a decision with a right
 #: answer per indicator, not a default, and it is not made here on the way past.
 PLAIN = tuple(name for name in DATASETS if name not in BROKEN_DOWN and name != "tfr")
+
+#: Levels an indicator gains by summing its provinces, for a source that published none.
+#:
+#: Named here rather than at the one call site because the level menu is built from this
+#: too: taken from the warehouse alone the menu would offer provinces only, and the rows
+#: for Türkiye would sit in the file with nothing on screen able to ask for them.
+ROLLED_UP: dict[str, tuple[str, ...]] = {
+    "registry_population": ("country", "region", "nuts1", "nuts2"),
+}
 
 
 def export_dictionary(
@@ -388,13 +397,22 @@ def export_plain(
 
 
 def export_broken_down(
-    fact: pl.DataFrame, areas: pl.DataFrame, indicator_id: str, whole: bool = True
+    fact: pl.DataFrame,
+    areas: pl.DataFrame,
+    indicator_id: str,
+    whole: bool = True,
+    roll_up: tuple[str, ...] = (),
 ) -> dict[str, dict]:
     """One row per area, year and breakdown value, for an indicator that has dims.
 
     `whole` says the values are whole numbers — population is counted people, a median
     age is not. Rounding the median to an integer would quietly throw away the only
     interesting digit it has.
+
+    `roll_up` names levels to build by summing the provinces, for a source that publishes
+    provinces only. Sums, not weighted means, so it is exact and only correct for a
+    countable unit; the dictionary's `additive` is checked rather than trusted to the
+    caller.
     """
     rows = fact.filter(pl.col("indicator_id") == indicator_id)
     if rows.height == 0:
@@ -432,6 +450,29 @@ def export_broken_down(
         # is sorted: gzip lives on neighbouring rows looking alike.
         .sort("area", "year", *dims)
     )
+
+    # Levels the source never published, built by summing the provinces. Only where the
+    # unit adds up: summing medians or rates would produce a number with no meaning, and
+    # the caller asking for it would not be told.
+    if roll_up:
+        if not get(indicator_id).unit.additive:
+            raise ValueError(
+                "export_broken_down: "
+                + indicator_id
+                + " toplanabilir degil, roll_up yok"
+            )
+        provinces = slim.filter(pl.col("level") == "province")
+        slim = pl.concat(
+            [
+                slim,
+                *[
+                    sum_to_level(provinces, level, tuple(dims)).cast(
+                        {"value": slim.schema["value"]}
+                    )
+                    for level in roll_up
+                ],
+            ]
+        ).sort("area", "year", *dims)
 
     # Single years, where the fact table has them, go out in a file of their own for the
     # reader who asks for that resolution. It is a *replacement* for the banded rows at
@@ -562,7 +603,8 @@ def main() -> None:
     # fertility slice gains levels here through the roll-up, and population loses none.
     levels: dict[str, list[str]] = {
         indicator_id: sorted(
-            fact.filter(pl.col("indicator_id") == indicator_id)["area_level"].unique()
+            set(fact.filter(pl.col("indicator_id") == indicator_id)["area_level"])
+            | set(ROLLED_UP.get(indicator_id, ()))
         )
         for indicator_id in BROKEN_DOWN
     }
@@ -584,7 +626,13 @@ def main() -> None:
         "mean_first_marriage_age": export_broken_down(
             fact, areas, "mean_first_marriage_age", whole=False
         ),
-        "registry_population": export_broken_down(fact, areas, "registry_population"),
+        # The source is a province-by-province square, so Türkiye and the İBBS levels
+        # exist nowhere in it. They are sums of the 81 provinces: exact, because these
+        # are counted people. "İlinde" summed nationally stays "in their own province",
+        # which is what it means at every level.
+        "registry_population": export_broken_down(
+            fact, areas, "registry_population", roll_up=ROLLED_UP["registry_population"]
+        ),
     }
 
     for indicator_id in PLAIN:
