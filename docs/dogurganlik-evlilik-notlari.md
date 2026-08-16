@@ -91,3 +91,30 @@ doğumlarda hem ilk doğumda tutarlı biçimde en az değişen il (+0,83 yıl,
 2014-2025 — listenin sonuncusu).
 
 Bu üçüncü kaynak da henüz depoya alınmadı.
+
+## Dördüncü kaynak — TÜİK'in resmi tüm-doğumlar ortalama yaşı, bant tahminini test etti
+
+`İllere Göre Annenin Ortalama Yaşı (TR,DF_DOGUM_ANNE_ORTYAS_C,1.0).xlsx` —
+TÜİK'in kendi resmi ortalaması (bant orta noktası tahmini değil), 2009-2025,
+81 il. `openpyxl` ile okundu; `read_only=True` bu dosyada satırları
+göremedi (1 satır döndürdü), normal modda doğru okundu — not edilsin.
+
+TR: 27,43 (2009) → 29,42 (2025). Bulgu 1'deki bant tahminim (26,92 → 28,93)
+sistematik olarak **~0,5 yıl düşük** çıkıyor — yön ve artış hızı doğru
+(+1,99 vs +2,01), seviye hafif iyimser. Bant orta noktaları (`-15`→13,
+`50+`→52 gibi) kabaca seçilmişti; gerçek dağılım bandın üst yarısına
+kaymış olabilir.
+
+## Bulgu 4 — "ortalama anne yaşı eksi ilk doğum yaşı" endeksi, 81 ilin hepsinde daralıyor
+
+Fark = kaçıncı çocuğun ortalamayı ne kadar yukarı çektiğinin dolaylı ölçüsü;
+büyük fark = çok çocuklu il. TR: 2,85 yıl (2014) → 1,96 yıl (2025), endeks
+(fark/ilk doğum yaşı) %13,7 → %7,1.
+
+**81 ilin hiçbirinde fark büyümedi.** En az daralan (zaten küçük, düşük
+doğurganlıklı): Karabük, Bilecik, Tekirdağ, Bursa, İstanbul (2,14→1,46),
+Ankara. En çok daralan (2014'te dev, hızla eriyen): Kars, Hakkari, Şırnak,
+Aksaray, **Siirt (4,86→3,06, −1,80 yıl)** — GDH'si en hızlı düşen illerle
+bire bir örtüşüyor (bkz. Bulgu 3).
+
+Dördüncü kaynak da henüz depoya alınmadı.
