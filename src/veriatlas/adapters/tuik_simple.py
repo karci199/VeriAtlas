@@ -71,7 +71,9 @@ MEASURES = {
     "goc-aldigi": ("migration_in", None, None),
     "goc-verdigi": ("migration_out", None, None),
     "goc-net": ("migration_net", None, None),
-    "goc-net-hizi": ("migration_net_rate", None, None),
+    # `goc-net-hizi` is downloaded and not loaded: it is net migration divided by the
+    # population, and the screen's "İl nüfusunun %'si" already divides by exactly that.
+    # See the note above `[indicator.migration_from_abroad]` in the dictionary.
     "goc-disaridan": ("migration_from_abroad", None, None),
     "goc-disariya": ("migration_to_abroad", None, None),
     "yabanci-uyruklu": ("foreign_population", "sex", SEXES),

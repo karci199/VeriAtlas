@@ -757,18 +757,14 @@ views = ["table", "map", "line", "bar"]
 definition_tr = """
 Aldığı göç eksi verdiği göç. Eksi değer, il nüfusunun göçle azaldığını söyler."""
 
-[indicator.migration_net_rate]
-label_tr = "Net göç hızı"
-label_en = "Net migration rate"
-topic = "nufus"
-unit = "per_mille"
-frequency = "annual"
-dims = []
-views = ["table", "map", "line", "bar"]
-definition_tr = """
-Net göçün bin kişiye oranı. Mutlak sayı büyük illeri öne çıkarır; hız, küçük bir ilin \
-nüfusunun yüzde ikisini kaybetmesini görünür kılar."""
-
+# Net göç hızı burada yok, çünkü tuttuğumuz iki sayının bölümü: net göç ÷ nüfus. Ekranda
+# "İl nüfusunun %'si" kipi onu zaten veriyor — binde yerine yüzde, yani aynı bilgi on kat
+# ölçek farkıyla ve aynı sıralamayla. K12'nin kuralı: elimizdeki veriden tam olarak çıkan
+# bir sayı türetmedir, ikinci bir gösterge değil; ayrı yüklenirse ilk veriyle adım kaybeder
+# ve ağaçta aynı şeyi iki kez sunar. Kaba doğum ve kaba ölüm hızı da aynı gerekçeyle yok.
+# Aldığı ve verdiği göç ise *kalıyor*: ikisi net'ten geri çıkarılamaz — +5.000 net hem
+# "50.000 geldi, 45.000 gitti" hem "5.100 geldi, 100 gitti" olabilir ve bunlar iki ayrı il
+# anlatır. MEDAS'ın yayımladığı hız dosyası raw/medas/basit/ altında duruyor, denetim için.
 [indicator.migration_from_abroad]
 label_tr = "Yurt dışından gelen göç"
 label_en = "Immigration from abroad"

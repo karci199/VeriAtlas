@@ -81,7 +81,6 @@ DATASETS = {
             "migration_in",
             "migration_out",
             "migration_net",
-            "migration_net_rate",
             "migration_from_abroad",
             "migration_to_abroad",
             "marriages",
