@@ -383,7 +383,21 @@ def export_plain(
         )
         .sort("level", "area", "year")
     )
-    report(PUBLIC / DATASETS[indicator_id], slim)
+
+    # Split the same way a broken-down indicator is: the dictionary writes a `parts` entry
+    # for every lazy level an indicator has, and the page fetches exactly what is named
+    # there. Left whole, the district rows would ride along in the file every visitor
+    # downloads *and* the page would ask for a part file that was never written — a 404
+    # for data that is sitting in the other file.
+    base = slim.filter(~pl.col("level").is_in(LAZY_LEVELS))
+    report(PUBLIC / DATASETS[indicator_id], base)
+
+    stem = DATASETS[indicator_id].replace(".csv", "")
+    for level in LAZY_LEVELS:
+        part = slim.filter(pl.col("level") == level)
+        if part.height:
+            report(PUBLIC / (stem + "-" + level + ".csv"), part)
+
     return sorted(slim["level"].unique())
 
 
