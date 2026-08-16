@@ -69,7 +69,11 @@ Aynısını yapmak amaç değil. Üç yerde bilerek farklılaşıyoruz:
 4. **Çoklu seçim düzeltmesi** — tıklama ekleyip çıkarıyor; Ctrl/Shift kısayolları kaldı.
 5. **Harita geometrisi** — `public/areas.geojson` (özellik başına `area_id`, `name_tr`).
    Çizim yazıldı, dosya gelince sekme kendiliğinden açılıyor.
-6. **Eski `index.html`'in kaldırılması** — gezgin onun yerini tamamen alınca.
+6. ~~Eski `index.html`'in kaldırılması~~ — bitti (2026-08-16). Yanında `app.css` ve
+   `scripts/build_page.py` de kalktı: ikisi de yalnız o sayfaya hizmet ediyordu.
+   Tek dosyalık `VeriAtlas.html` sürümü de onunla gitti — gezgin veri dilimlerini
+   gerektikçe indiriyor, hepsini tek dosyaya gömmek ayrı bir tasarımdır ve istenirse
+   yeniden yazılır.
 
 Maket `web/mock-explorer.html` olarak duruyor: sahte sayılarla düzen tartışmak için,
 uygulamanın parçası değil.

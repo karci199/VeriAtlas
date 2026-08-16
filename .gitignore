@@ -22,6 +22,5 @@ public/*.parquet
 public/*.csv
 public/*.json
 
-# Uretilen tek dosya sayfa
-VeriAtlas.html
+# Uretilen dosyalar
 cikti/

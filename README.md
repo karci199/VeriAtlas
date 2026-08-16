@@ -39,7 +39,7 @@ uv run python scripts/check_env.py
 
 ```
 src/veriatlas/    paket kodu (config.py, schema.py: olgu tablosu, areas.py: il kaydi)
-web/              statik arayuz (theme.css: renk degiskenleri, index.html: ekran)
+web/              statik arayuz (theme.css: renk degiskenleri, explorer.html: ekran)
 tests/            gizli-dogruluk testleri
 scripts/          tek seferlik betikler ve doğrulama araçları
 docs/             oturum notları, tasarım belgeleri
@@ -90,15 +90,14 @@ Not: her adım sunucu turu gerektiriyor, adımları tek seferde zincirlemek çal
 ```bash
 uv run python scripts/load.py         # adaptörleri çalıştır, olgu tablosunu kur
 uv run python scripts/export_web.py   # tarayici icin dilim uret
-uv run python -m http.server 8123     # sonra: localhost:8123/web/index.html
+uv run python scripts/serve.py 8123   # sonra: localhost:8123/web/explorer.html
 ```
 
-Sunucu istemiyorsan tek dosyalık sürümü üret; `VeriAtlas.html` çift tıklamayla açılır
-(veri içine gömülür, yalnız grafik kütüphanesi için internet gerekir):
+`python -m http.server` kullanma: yalnız `Last-Modified` gönderiyor, tarayıcı da bunu
+dünkü `explorer.js`'i çalıştırmak için yeterli sayıyor. `serve.py` `no-store` gönderir.
 
-```bash
-uv run python scripts/build_page.py
-```
+Tek dosyalık `VeriAtlas.html` sürümü kalktı: eski ekranı paketliyordu, gezgin ise
+veri dilimlerini gerektikçe indiriyor — hepsini tek dosyaya gömmek ayrı bir tasarım.
 
 Sayfa Node gerektirmiyor; Observable Framework'e geçerken tema değişkenleri ve grafik
 kodu olduğu gibi taşınacak.

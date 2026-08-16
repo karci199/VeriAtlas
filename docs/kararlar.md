@@ -165,7 +165,7 @@ Tema ayarlanabilir (K5'in devamı): koyu/açık, yazı ölçeği, yoğunluk, vur
 sabit piksel yok. Seçim `localStorage`'da. Ekranın durumu adres çubuğunda (`#i=…&v=…`),
 "Bağlantı" düğmesi onu kopyalıyor.
 
-Eski `web/index.html` şimdilik duruyor; gezgin olgunlaşınca kaldırılacak.
+Eski `web/index.html` 2026-08-16'da kaldırıldı; gezgin onun yerini tamamen aldı.
 ## K11 — Harita katmanları ve ilçe tarihçesi (2026-08-13)
 
 Sınırlar `public/` altında, çizim anında dışarıya çıkılmıyor:
@@ -637,7 +637,7 @@ Sıra, birbirine bağımlılığa göre:
    MEDAS (Playwright), Dünya Bankası (SDMX).
 5. **Kalite kuralları** — pandera şemaları, yükleme sırasında çalışır.
 6. **Arayüz dönüşümü** — iskelet kuruldu, bkz. K10. Kalan: harita geometrisi (il/İBBS
-   sınırları), çoklu seçim kısayolları (Ctrl/Shift), eski `index.html`'in kaldırılması.
+   sınırları), çoklu seçim kısayolları (Ctrl/Shift). Eski `index.html` kaldırıldı.
 7. **MEDAS adaptörü** — akışın ilk yarısı çalışıyor (bkz. medas.md); kalan: Zaman →
    Düzey → Rapor Oluştur → sayfalı tablo.
 8. **Kod dili geçişi** — mevcut `config.py` ve `scripts/` Türkçe docstring'li;
