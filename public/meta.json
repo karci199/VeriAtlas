@@ -1,0 +1,1546 @@
+{
+  "tree": [
+    {
+      "topic": "Nüfus",
+      "indicators": [
+        {
+          "id": "migration_in",
+          "label": "Aldığı göç",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "Yıl içinde ile başka bir ilden taşınan kişi sayısı. Kaynak dosyada cinsiyet ve yaş kırılımı da var; burada toplam olarak saklanıyor. Yurt dışından gelen göç buna dahil değil, ayrı göstergedir.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "migration-in.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "natural_increase",
+          "label": "Doğal nüfus artışı",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "Doğum sayısı eksi ölüm sayısı: bir yerin kendi kendine kazandığı ya da kaybettiği nüfus. Nüfusun gerçek değişimiyle arasındaki fark göçtür — ikisi birlikte okunduğunda bir ilin büyümesinin ne kadarının doğumdan, ne kadarının gelenden geldiği görünür. Eksi değer, ölümün doğumu geçtiği yer demektir. Türkiye 2009'da 897 binken 2025'te 404 bine indi. Bizim çıkarmamızdır (rozet: türetilmiş), iki yayımlanmış sayının tam farkı. Her iki tarafın da yayımlandığı yıllarda var: 2009-2025.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "natural-increase.csv.gz",
+          "levels": [
+            "country",
+            "district",
+            "province"
+          ],
+          "parts": {
+            "district": "natural-increase-district.csv.gz"
+          },
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "household_count",
+          "label": "Hanehalkı sayısı",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "Toplam hane sayısı. Nüfustan ayrı bir büyüklük: nüfus artmadan da hane sayısı artabilir — aynı insanlar daha küçük hanelerde yaşamaya başladığında. 2012'den itibaren var.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "household-count.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "household_by_type",
+          "label": "Hanehalkı tipine göre hane sayısı",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "Hanelerin yapısına göre dağılımı: tek kişilik, tek çekirdek aileli, çekirdek aile ve diğer kişiler, çekirdek ailesiz çok kişili. Dördü birbirini dışlar ve toplamı hanehalkı sayısını verir. TÜİK bunların altında beş alt tip daha yayımlıyor (anne ve çocuklar, sadece eşler gibi); onlar burada saklanmıyor, çünkü kardeş sanılıp toplanırlarsa hane sayısı %78 fazla çıkar. 2014'ten itibaren var.",
+          "dims": [
+            "household_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "household-type.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "registry_population",
+          "label": "Kütük nüfusu",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "Bir ile nüfusa kayıtlı kişi sayısı — orada yaşayan değil, nerede yaşarsa yaşasın o ilin kütüğünde duran. Nüfusla oranı, kuşaklar boyu göçün tek sayıya inmiş hâlidir: 2019'da Ardahan'ın kütüğünde ilde yaşayanın **5,5 katı** kişi var, İstanbul'un kütüğünde ise ilde yaşayanın ancak **%16'sı**. Yıl içi bir hareketi değil, birikmiş bir durumu anlatır — bu yüzden aldığı/verdiği göçle aynı şey değildir.\n\n**Kırılım nerede yaşadıklarını söyler.** \"Tümü (topla)\" kütüğün tamamı; \"İlinde\" o ilde yaşayan kendi kütüklüleri (İstanbul'da yaşayan İstanbullular); \"İl dışında\" kütükte olup başka yerde yaşayanlar. \"Nerede yaşıyor içinde %\" kipi de kütüğün yüzde kaçının hâlâ ilde olduğunu verir — 2025'te Şanlıurfa'da yüksek, İstanbul'da düşük. Üçünün de yıllık değişimi türetmeden okunur, yani kütüğün ildeki ve dışarıdaki kısmı ayrı ayrı ne hızla büyüyor sorusu doğrudan sorulabilir.\n\nYabancı uyruklu nüfus buna dahil değildir: kütüğü olmayan kişi hiçbir ilin kütüğünde sayılmaz. Türkiye toplamıyla ADNKS nüfusu arasındaki fark da bu kadardır (2019'da 1,53 milyon). 2007-2025'in tamamı var; kaynakta ikamet ili kırılımı zorunlu olduğu için ölçü 81 gösterge × 82 alan ve on dokuz yıl birlikte 126 bin hücreyle sınırı aştığından yıl yıl indirildi (`fetch_medas_simple kutuk-nufusu --yil=2019`).",
+          "dims": [
+            "residence"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "registry-population.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "marital_status",
+          "label": "Medeni durum",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "15 yaşını doldurmuş nüfusun medeni durumu — hiç evlenmedi, evli, boşandı, eşi öldü — cinsiyet ve beşli yaş grubu kırılımıyla. Üç kırılım aynı anda yayımlandığı için \"40-44 yaş kadınlarda boşanmışların sayısı\" doğrudan sorulabiliyor. **Yaş 15'ten başlar**: medeni durum daha küçükler için yayımlanmaz, yani 0-14 eksik değil yoktur — bu göstergenin toplamı ilin nüfusu değildir. Bilinmeyen kategorisi son yıllarda kayboluyor; o yıllarda sütun sıfır değil, hiç yok. Türkiye, İBBS ve il düzeyinde var, ilçe kırılımı çekilmedi.",
+          "dims": [
+            "marital",
+            "sex",
+            "age"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "marital.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "migration_net",
+          "label": "Net göç",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "Aldığı göç eksi verdiği göç. Eksi değer il nüfusunun göçle azaldığını söyler. 2025'te Ankara +31.172, İstanbul −41.346. Ülke toplamı sıfırdır, o yüzden Türkiye düzeyinde yayımlanmaz.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "migration-net.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "migration_net_rate",
+          "label": "Net göç hızı",
+          "unit": "‰",
+          "decimals": 2,
+          "additive": false,
+          "frequency": "annual",
+          "definition": "Net göçün bin kişiye oranı. Net göçün mutlak sayısı büyük illeri öne çıkarır; hız, küçük bir ilin nüfusunun yüzde ikisini kaybetmesini görünür kılar. 2025'te Yalova +20,5, Ağrı −27,0.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "migration-net-rate.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "population",
+          "label": "Nüfus",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "İkamet edilen yerin nüfusu, beşli yaş grubu ve cinsiyet kırılımıyla. Nüfus piramidi bu göstergeden çizilir. En üst grup 75+ olarak kapalıdır; kaynak dosya tek yaş verirken 75'ten sonrasını toplulaştırıyor.",
+          "dims": [
+            "age",
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar",
+            "pyramid"
+          ],
+          "dataset": "population.csv.gz",
+          "levels": [
+            "country",
+            "district",
+            "neighbourhood",
+            "province",
+            "village"
+          ],
+          "parts": {
+            "district": "population-district.csv.gz",
+            "neighbourhood": "population-neighbourhood.csv.gz",
+            "village": "population-village.csv.gz"
+          },
+          "fine": {
+            "age": {
+              "file": "population-age1.csv.gz",
+              "levels": [
+                "country",
+                "province"
+              ]
+            }
+          },
+          "available": true
+        },
+        {
+          "id": "population_density",
+          "label": "Nüfus yoğunluğu",
+          "unit": "kişi/km²",
+          "decimals": 0,
+          "additive": false,
+          "frequency": "annual",
+          "definition": "Kilometrekareye düşen kişi sayısı. İstanbul 2.943, Tunceli 11 — nüfusun kendisinden farklı bir soruyu yanıtlar: kaç kişi değil, ne kadar sıkışık. Yüzölçümü sabit olduğu için yıllar arası değişimi nüfusun değişimiyle aynı biçimde hareket eder.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "population-density.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "household_size",
+          "label": "Ortalama hanehalkı büyüklüğü",
+          "unit": "kişi/hane",
+          "decimals": 2,
+          "additive": false,
+          "frequency": "annual",
+          "definition": "Hane başına düşen kişi. Şırnak 4,84, Tunceli 2,49 — doğurganlık, birlikte yaşama biçimleri ve göçün birlikte okunduğu tek sayı. Türkiye genelinde uzun süredir düşüyor.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "household-size.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "median_age",
+          "label": "Ortanca yaş",
+          "unit": "yaş",
+          "decimals": 1,
+          "additive": false,
+          "frequency": "annual",
+          "definition": "Nüfusu tam ortadan ikiye bölen yaş: yarısı bundan genç, yarısı yaşlıdır. Ortalama yaştan farkı, uçlardaki birkaç çok yaşlıdan etkilenmemesidir. TÜİK yalnızca erkek ve kadını ayrı ayrı yayımlıyor; **Toplam** bizim hesabımızdır (rozet: türetilmiş) ve iki ortancanın ortalaması değil, tek yaş nüfus dağılımının tam ortasıdır. Yöntem yayımlanan erkek/kadın değerlerine karşı sınandı: 3.116 karşılaştırmada ortalama mutlak fark 0,05 yıl, yani TÜİK'in kendi yuvarlaması kadar. İl ve Türkiye düzeyinde var, ilçe kırılımı yok.",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "median_age.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "migration_out",
+          "label": "Verdiği göç",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "Yıl içinde ilden başka bir ile taşınan kişi sayısı. Türkiye genelinde aldığı göç toplamı ile verdiği göç toplamı tanım gereği eşittir — her taşınma bir il için giriş, başka bir il için çıkıştır — ve veri bunu tutuyor (2025'te ikisi de 2.475.019).",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "migration-out.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "foreign_population",
+          "label": "Yabancı uyruklu nüfus",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "İlde ikamet eden yabancı uyruklu kişi sayısı, cinsiyet kırılımıyla. İkamet edilen yere göre sayılır, uyruk kırılımı bu çekimde yok.",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "foreign.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "pop_age_structure",
+          "label": "Yaş yapısı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "frequency": "annual",
+          "definition": "Nüfusun yaş gruplarına dağılımı. 2013 öncesi kent/kır ayrımı da taşınabilir; o satırlar IPF ile üretildiği için kalite bayrağı `estimated` olur.",
+          "dims": [
+            "age"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "available": false
+        },
+        {
+          "id": "migration_to_abroad",
+          "label": "Yurt dışına giden göç",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "Yıl içinde ilden yurt dışına taşınan kişi sayısı.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "migration-to-abroad.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "migration_from_abroad",
+          "label": "Yurt dışından gelen göç",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "Yıl içinde yurt dışından ile taşınan kişi sayısı. İç göçten ayrı tutulur: ülke toplamında iç göç sıfırlanırken bu sıfırlanmaz, nüfusa net katkıdır.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "migration-from-abroad.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        }
+      ]
+    },
+    {
+      "topic": "Doğurganlık",
+      "indicators": [
+        {
+          "id": "births",
+          "label": "Doğum sayısı",
+          "unit": "doğum",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "Yıl içindeki canlı doğum sayısı, annenin ikamet ettiği ile göre. Kaynak dosya ayları ayrı veriyor; burada yıla toplanmış olarak duruyor — mevsimlilik ayrı bir sorudur ve sorulduğunda ham dosyadan ay kırılımıyla yeniden yüklenir. **Cinsiyet kırılımı yok**: bu çekimde MEDAS doğumu yalnız aya bölüyor. İl ve Türkiye düzeyinde var, 2009'dan itibaren.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "births.csv.gz",
+          "levels": [
+            "country",
+            "district",
+            "province"
+          ],
+          "parts": {
+            "district": "births-district.csv.gz"
+          },
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "tfr",
+          "label": "Toplam doğurganlık hızı",
+          "unit": "çocuk/kadın",
+          "decimals": 2,
+          "additive": false,
+          "frequency": "annual",
+          "definition": "Bir kadının doğurgan çağı boyunca, o yılın yaşa özel doğurganlık hızları geçerli kalsaydı doğuracağı ortalama çocuk sayısı. Yenilenme düzeyi 2,10 kabul edilir. TÜİK yalnızca il düzeyinde yayımlıyor, ilçe kırılımı yok.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "tfr.csv.gz",
+          "levels": [
+            "country",
+            "nuts1",
+            "nuts2",
+            "province",
+            "region"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        }
+      ]
+    },
+    {
+      "topic": "Evlenme ve boşanma",
+      "indicators": [
+        {
+          "id": "divorces",
+          "label": "Boşanma sayısı",
+          "unit": "boşanma",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "Yıl içinde kesinleşen boşanma kararı sayısı. Evlenme sayısıyla **aynı yılın oranı değildir**: bu yıl boşananlar başka yıllarda evlenmiş çiftlerdir, o yüzden ikisinin bölümü \"evliliklerin yüzde kaçı bitiyor\" sorusunu yanıtlamaz — evlenmenin düştüğü bir yılda bu oran, hiçbir şey değişmeden yükselir. 2001'den itibaren.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "divorces.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "marriages",
+          "label": "Evlenme sayısı",
+          "unit": "evlenme",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "Yıl içinde kıyılan resmî nikâh sayısı. **Olayın yerine göre**, yani nikâhın kıyıldığı ile göre sayılır — doğum ve ölümdeki gibi ikametgaha göre değil, çünkü TÜİK evlenmeyi bu biçimde yayımlıyor. Küçük ilçelerinde çok nikâh kıyılan turistik illerde bu ikisi ayrışır. Kaba evlenme hızı ayrı bir gösterge değildir: \"Alan nüfusunun %'si\" kipi bu sayıyı nüfusa bölerek onu verir. 2001'den itibaren.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "marriages.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "mean_marriage_age",
+          "label": "Ortalama evlenme yaşı",
+          "unit": "yaş",
+          "decimals": 1,
+          "additive": false,
+          "frequency": "annual",
+          "definition": "O yıl evlenen herkesin ortalama yaşı, cinsiyete göre — ikinci ve sonraki evlilikler dahil. Bu yüzden ilk evlenme yaşından yüksektir ve aradaki fark, boşanma sonrası yeniden evlenmenin ne kadar yaygın olduğuyla birlikte hareket eder. İkisi ayrı göstergedir çünkü ayrı soruları yanıtlar. **Toplam** bizim hesabımızdır (rozet: türetilmiş) ve burada iki ortalamanın ortalaması **tam olarak doğrudur**: her nikâhta bir damat ve bir gelin vardır, yani iki ortalamanın ağırlığı tanım gereği eşittir. Ortanca yaşta yasak olan işlem burada serbest, çünkü orada ağırlıklar eşit değildi. 2001'den itibaren.",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "marriage-age.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "mean_first_marriage_age",
+          "label": "Ortalama ilk evlenme yaşı",
+          "unit": "yaş",
+          "decimals": 1,
+          "additive": false,
+          "frequency": "annual",
+          "definition": "Hayatında ilk kez evlenenlerin ortalama yaşı, cinsiyete göre. \"İnsanlar kaç yaşında evleniyor\" sorusunun karşılığı budur ve doğurganlıkla birlikte okunur: ilk evlenme yaşının yükseldiği yerde ilk doğum da geç oluyor. Türkiye'de erkek ile kadın arasında uzun süredir üç yaş dolayında bir fark var. **Toplam yok** — ve burası ortalama evlenme yaşından ayrılır: bir evlilik erkeğin ilki, kadının ikincisi olabilir, yani ilk kez evlenen erkek ve kadın sayısı eşit değildir. İkisini tek sayıda birleştirmek elimizde olmayan ağırlıkları gerektirir, o yüzden uydurulmuyor. 2001'den itibaren.",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "first-marriage-age.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        }
+      ]
+    },
+    {
+      "topic": "Ölüm",
+      "indicators": [
+        {
+          "id": "infant_mortality",
+          "label": "Bebek ölüm hızı",
+          "unit": "‰ (canlı doğumda)",
+          "decimals": 1,
+          "additive": false,
+          "frequency": "annual",
+          "definition": "Bin canlı doğum başına, bir yaşını doldurmadan ölen bebek sayısı. Paydası nüfus değil canlı doğumdur. Yaş yapısından etkilenmediği için iller arası karşılaştırmaya kaba hızlardan daha uygundur ve klasik olarak sağlık hizmetine erişimin göstergesi sayılır. Küçük illerde payı birkaç yüz doğum olduğu için yıl yıl zıplar — eğilim için hareketli ortalama işe yarar.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "infant-mortality.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "under5_mortality",
+          "label": "Beş yaş altı ölüm hızı",
+          "unit": "‰ (canlı doğumda)",
+          "decimals": 1,
+          "additive": false,
+          "frequency": "annual",
+          "definition": "Bin canlı doğum başına, beşinci yaş gününü görmeden ölen çocuk sayısı. Bebek ölüm hızını **içerir**, onun yanına eklenmez: aradaki fark bir ile beş yaş arasındaki ölümlerdir. Türkiye'de bu fark küçüktür, yani iki seri birbirine yakın seyreder.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "under5-mortality.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "deaths",
+          "label": "Ölüm sayısı",
+          "unit": "ölüm",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "annual",
+          "definition": "Yıl içindeki ölüm sayısı, ölen kişinin ikamet ettiği ile göre, cinsiyet kırılımıyla. Kaynak dosya ayrıca ayı da veriyor; yıla toplanmış olarak duruyor. **Yaş kırılımı yok** — bu yüzden piramit çizilmez ve yaşa göre ölümlülük bu göstergeden okunamaz. Ham sayı nüfusla birlikte okunmalı: İstanbul'un ölümü Tunceli'ninkinden çok olduğu için değil, kalabalık olduğu için yüksektir. Kaba ölüm hızı ayrı bir gösterge değildir — \"Alan nüfusunun %'si\" kipi bu sayıyı nüfusa bölerek onu zaten verir. 2009'dan itibaren.",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "deaths.csv.gz",
+          "levels": [
+            "country",
+            "district",
+            "province"
+          ],
+          "parts": {
+            "district": "deaths-district.csv.gz"
+          },
+          "fine": {},
+          "available": true
+        }
+      ]
+    },
+    {
+      "topic": "Yapı ruhsatı",
+      "indicators": [
+        {
+          "id": "building_permits_buildings",
+          "label": "Yapı ruhsatı — bina sayısı",
+          "unit": "bina",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "quarterly",
+          "definition": "Ruhsat verilen bina sayısı. Bir bina birden çok daire içerir.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "available": false
+        },
+        {
+          "id": "building_permits_dwellings",
+          "label": "Yapı ruhsatı — daire sayısı",
+          "unit": "daire",
+          "decimals": 0,
+          "additive": true,
+          "frequency": "quarterly",
+          "definition": "Ruhsat verilen daire sayısı. Bina sayısıyla karıştırılmamalı.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "available": false
+        }
+      ]
+    }
+  ],
+  "dimensions": {
+    "sex": {
+      "label": "Cinsiyet",
+      "values": {
+        "female": "Kadın",
+        "male": "Erkek",
+        "total": "Toplam"
+      }
+    },
+    "age": {
+      "label": "Yaş grubu",
+      "values": {}
+    },
+    "household_type": {
+      "label": "Hanehalkı tipi",
+      "values": {
+        "single_person": "Tek kişilik",
+        "one_nuclear_family": "Tek çekirdek aileli",
+        "nuclear_and_others": "Çekirdek aile ve diğerleri",
+        "no_nuclear_family": "Çekirdek ailesiz, çok kişili"
+      }
+    },
+    "marital": {
+      "label": "Medeni durum",
+      "values": {
+        "never_married": "Hiç evlenmedi",
+        "married": "Evli",
+        "divorced": "Boşandı",
+        "widowed": "Eşi öldü",
+        "unknown": "Bilinmeyen"
+      }
+    },
+    "residence": {
+      "label": "Nerede yaşıyor",
+      "values": {
+        "own": "İlinde",
+        "elsewhere": "İl dışında"
+      }
+    }
+  },
+  "groupings": {
+    "age_broad": {
+      "label": "Geniş yaş grupları",
+      "dim": "age",
+      "covers": {
+        "0-14": [
+          "0-4",
+          "5-9",
+          "10-14"
+        ],
+        "15-64": [
+          "15-19",
+          "20-24",
+          "25-29",
+          "30-34",
+          "35-39",
+          "40-44",
+          "45-49",
+          "50-54",
+          "55-59",
+          "60-64"
+        ],
+        "65+": [
+          "65-69",
+          "70-74",
+          "75+",
+          "75-79",
+          "80-84",
+          "85-89",
+          "90+"
+        ]
+      },
+      "needs_fine": false,
+      "note": "Demografinin standart üçlüsü: çocuk, çalışma çağı, yaşlı. Bağımlılık oranları bu bölmeden hesaplanır."
+    },
+    "age_adult": {
+      "label": "Çocuk / yetişkin (18)",
+      "dim": "age",
+      "covers": {
+        "0-17": [
+          "0-17",
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17"
+        ],
+        "18+": [
+          "18+",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30",
+          "31",
+          "32",
+          "33",
+          "34",
+          "35",
+          "36",
+          "37",
+          "38",
+          "39",
+          "40",
+          "41",
+          "42",
+          "43",
+          "44",
+          "45",
+          "46",
+          "47",
+          "48",
+          "49",
+          "50",
+          "51",
+          "52",
+          "53",
+          "54",
+          "55",
+          "56",
+          "57",
+          "58",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66",
+          "67",
+          "68",
+          "69",
+          "70",
+          "71",
+          "72",
+          "73",
+          "74",
+          "75+"
+        ]
+      },
+      "needs_fine": true,
+      "note": "Onsekiz, seçmen yaşı ve reşitlik sınırı. Mahalle verisi zaten yalnız bu iki grupla yayımlanıyor, il ve Türkiye tek yaş taşıdığı için sınır tam yerinden geçiyor. **İlçede sunulmuyor**: ilçe dosyası beşerli banda kapalı ve 15-19 bandı onsekizin iki yanına düşüyor — o bandı bölmek, bilmediğimiz bir dağılımı varsaymak olurdu."
+    },
+    "age_fertile": {
+      "label": "Doğurgan çağ",
+      "dim": "age",
+      "covers": {
+        "0-14": [
+          "0-4",
+          "5-9",
+          "10-14"
+        ],
+        "15-49": [
+          "15-19",
+          "20-24",
+          "25-29",
+          "30-34",
+          "35-39",
+          "40-44",
+          "45-49"
+        ],
+        "50+": [
+          "50-54",
+          "55-59",
+          "60-64",
+          "65-69",
+          "70-74",
+          "75+",
+          "75-79",
+          "80-84",
+          "85-89",
+          "90+"
+        ]
+      },
+      "needs_fine": false,
+      "note": "15-49, TÜİK'in doğurganlık hesaplarında kullandığı aralık. Doğurganlık hızlarının paydası bu gruptaki kadın nüfusudur."
+    }
+  },
+  "comparisons": {
+    "sex_gap": {
+      "label": "Erkek − Kadın (fark)",
+      "dim": "sex",
+      "plus": "male",
+      "minus": "female",
+      "how": "difference",
+      "unit": null,
+      "decimals": null,
+      "note": "İki cinsiyetin farkı, göstergenin kendi biriminde. Nüfusta kaç kişi, ortanca yaşta kaç yıl. Eksi değer kadınların önde olduğu yer demektir."
+    },
+    "sex_ratio": {
+      "label": "Cinsiyet oranı (E/K × 100)",
+      "dim": "sex",
+      "plus": "male",
+      "minus": "female",
+      "how": "ratio",
+      "unit": "endeks",
+      "decimals": 1,
+      "note": "Yüz kadın başına düşen erkek. Doğumda ~105 beklenir; yaş ilerledikçe erkek ölümlülüğü yüksek olduğu için düşer. Yüzün çok üstündeki il değerleri genelde göç işaretidir."
+    }
+  },
+  "ratios": {
+    "child_dependency": {
+      "label": "Çocuk bağımlılık oranı (%)",
+      "dim": "age",
+      "grouping": "age_broad",
+      "over": [
+        "0-14"
+      ],
+      "under": [
+        "15-64"
+      ],
+      "unit": "%",
+      "decimals": 2,
+      "note": "Çalışma çağındaki (15-64) her yüz kişiye düşen çocuk sayısı. Yüksek değer genç bir nüfus demektir — okul, kreş ve doğurganlık ile birlikte okunur."
+    },
+    "old_age_dependency": {
+      "label": "Yaşlı bağımlılık oranı (%)",
+      "dim": "age",
+      "grouping": "age_broad",
+      "over": [
+        "65+"
+      ],
+      "under": [
+        "15-64"
+      ],
+      "unit": "%",
+      "decimals": 2,
+      "note": "Çalışma çağındaki her yüz kişiye düşen 65 yaş üstü sayısı. Türkiye'de hızla yükseliyor; emeklilik ve sağlık harcamalarının en doğrudan göstergesi."
+    },
+    "total_dependency": {
+      "label": "Toplam yaş bağımlılık oranı (%)",
+      "dim": "age",
+      "grouping": "age_broad",
+      "over": [
+        "0-14",
+        "65+"
+      ],
+      "under": [
+        "15-64"
+      ],
+      "unit": "%",
+      "decimals": 2,
+      "note": "Çalışma çağı dışındaki her iki uç birlikte, çalışma çağındaki yüz kişiye oranla. Çocuk ve yaşlı oranı ters yönde hareket ettiği için toplam, ikisinin anlattığını gizleyebilir: aynı 50 değeri çok çocuklu bir ili de çok yaşlı bir ili de anlatır."
+    }
+  },
+  "derivations": {
+    "index": {
+      "label": "Endeks (ilk yıl = 100)",
+      "unit": "endeks",
+      "decimals": 1,
+      "quality": "measured",
+      "needs_span": true,
+      "note": "Her seri kendi ilk yılına bölünüp 100 ile çarpılır. Büyüklüğü değil hareketi gösterir: İstanbul ile Bartın aynı eksende karşılaştırılabilir hale gelir."
+    },
+    "yoy": {
+      "label": "Yıllık değişim (%)",
+      "unit": "%",
+      "decimals": 2,
+      "quality": "measured",
+      "needs_span": true,
+      "note": "Bir önceki yıla göre yüzde değişim. İlk yıl boş kalır — öncesi yoktur, sıfır değildir."
+    },
+    "diff": {
+      "label": "Yıllık fark",
+      "unit": null,
+      "decimals": null,
+      "quality": "measured",
+      "needs_span": true,
+      "note": "Bir önceki yılla arasındaki fark, göstergenin kendi biriminde. Yüzde değişimden farkı, küçük bir tabandaki büyük yüzdeyi büyütmemesidir: 100 kişilik bir yerin %10'u 10 kişidir."
+    },
+    "total_change": {
+      "label": "İlk yıla göre değişim (%)",
+      "unit": "%",
+      "decimals": 2,
+      "quality": "measured",
+      "needs_span": true,
+      "note": "Serinin ilk yılından bugüne toplam yüzde değişim. Endeksin aynı bilgiyi taşıyan ama doğrudan okunan hâli: endekste 48,6 olan yer burada −51,4 çıkar. \"Göreli düşüş en çok nerede\" sorusunun cevabı, tabloda bu sütuna göre sıralanınca gelir."
+    },
+    "total_diff": {
+      "label": "İlk yıla göre fark",
+      "unit": null,
+      "decimals": null,
+      "quality": "measured",
+      "needs_span": true,
+      "note": "Serinin ilk yılından bugüne toplam fark, göstergenin kendi biriminde. Yüzdenin doğru cevap olmadığı yerde budur: ortanca yaş 34'ten 36'ya çıktıysa anlamlı olan \"+2 yaş\", \"%5,9 arttı\" değil."
+    },
+    "cagr": {
+      "label": "Ortalama yıllık büyüme (%)",
+      "unit": "%",
+      "decimals": 2,
+      "quality": "estimated",
+      "needs_span": true,
+      "note": "Serinin ilk yılından o yıla kadar, yılda ortalama yüzde kaç büyüdüğü — bileşik olarak, yani her yılın büyümesi bir öncekinin üstüne binerek. \"Yıllık değişim\"den farkı: o tek bir yılı anlatır ve iyi/kötü bir yıl bütün resmi değiştirir; bu, bütün dönemi tek bir hıza indirger. Nüfusu 18 yılda 1,20 katına çıkan bir il yılda ortalama %1,0 büyümüştür, %20/18 = %1,1 değil."
+    },
+    "ma3": {
+      "label": "Hareketli ortalama (3 yıl)",
+      "unit": null,
+      "decimals": null,
+      "quality": "estimated",
+      "needs_span": true,
+      "note": "Her yıl, kendisi ve komşu iki yılın ortalaması. Küçük alanların yıl yıl zıplayan serilerinde eğilimi görünür kılar. Ölçüm değil hesaplanmış bir değerdir — uçlardaki iki yıl, komşusu eksik olduğu için boş kalır."
+    }
+  },
+  "belongs": {
+    "TR-01": [
+      "TR-R-akdeniz",
+      "TR6",
+      "TR62"
+    ],
+    "TR-02": [
+      "TR-R-guneydogu_anadolu",
+      "TRC",
+      "TRC1"
+    ],
+    "TR-03": [
+      "TR-R-ege",
+      "TR3",
+      "TR33"
+    ],
+    "TR-04": [
+      "TR-R-dogu_anadolu",
+      "TRA",
+      "TRA2"
+    ],
+    "TR-05": [
+      "TR-R-karadeniz",
+      "TR8",
+      "TR83"
+    ],
+    "TR-06": [
+      "TR-R-ic_anadolu",
+      "TR5",
+      "TR51"
+    ],
+    "TR-07": [
+      "TR-R-akdeniz",
+      "TR6",
+      "TR61"
+    ],
+    "TR-08": [
+      "TR-R-karadeniz",
+      "TR9",
+      "TR90"
+    ],
+    "TR-09": [
+      "TR-R-ege",
+      "TR3",
+      "TR32"
+    ],
+    "TR-10": [
+      "TR-R-marmara",
+      "TR2",
+      "TR22"
+    ],
+    "TR-11": [
+      "TR-R-marmara",
+      "TR4",
+      "TR41"
+    ],
+    "TR-12": [
+      "TR-R-dogu_anadolu",
+      "TRB",
+      "TRB1"
+    ],
+    "TR-13": [
+      "TR-R-dogu_anadolu",
+      "TRB",
+      "TRB2"
+    ],
+    "TR-14": [
+      "TR-R-karadeniz",
+      "TR4",
+      "TR42"
+    ],
+    "TR-15": [
+      "TR-R-akdeniz",
+      "TR6",
+      "TR61"
+    ],
+    "TR-16": [
+      "TR-R-marmara",
+      "TR4",
+      "TR41"
+    ],
+    "TR-17": [
+      "TR-R-marmara",
+      "TR2",
+      "TR22"
+    ],
+    "TR-18": [
+      "TR-R-marmara",
+      "TR8",
+      "TR82"
+    ],
+    "TR-19": [
+      "TR-R-karadeniz",
+      "TR8",
+      "TR83"
+    ],
+    "TR-20": [
+      "TR-R-ege",
+      "TR3",
+      "TR32"
+    ],
+    "TR-21": [
+      "TR-R-guneydogu_anadolu",
+      "TRC",
+      "TRC2"
+    ],
+    "TR-22": [
+      "TR-R-marmara",
+      "TR2",
+      "TR21"
+    ],
+    "TR-23": [
+      "TR-R-dogu_anadolu",
+      "TRB",
+      "TRB1"
+    ],
+    "TR-24": [
+      "TR-R-dogu_anadolu",
+      "TRA",
+      "TRA1"
+    ],
+    "TR-25": [
+      "TR-R-dogu_anadolu",
+      "TRA",
+      "TRA1"
+    ],
+    "TR-26": [
+      "TR-R-ic_anadolu",
+      "TR4",
+      "TR41"
+    ],
+    "TR-27": [
+      "TR-R-guneydogu_anadolu",
+      "TRC",
+      "TRC1"
+    ],
+    "TR-28": [
+      "TR-R-karadeniz",
+      "TR9",
+      "TR90"
+    ],
+    "TR-29": [
+      "TR-R-karadeniz",
+      "TR9",
+      "TR90"
+    ],
+    "TR-30": [
+      "TR-R-guneydogu_anadolu",
+      "TRB",
+      "TRB2"
+    ],
+    "TR-31": [
+      "TR-R-akdeniz",
+      "TR6",
+      "TR63"
+    ],
+    "TR-32": [
+      "TR-R-akdeniz",
+      "TR6",
+      "TR61"
+    ],
+    "TR-33": [
+      "TR-R-akdeniz",
+      "TR6",
+      "TR62"
+    ],
+    "TR-34": [
+      "TR-R-marmara",
+      "TR1",
+      "TR10"
+    ],
+    "TR-35": [
+      "TR-R-ege",
+      "TR3",
+      "TR31"
+    ],
+    "TR-36": [
+      "TR-R-dogu_anadolu",
+      "TRA",
+      "TRA2"
+    ],
+    "TR-37": [
+      "TR-R-karadeniz",
+      "TR8",
+      "TR82"
+    ],
+    "TR-38": [
+      "TR-R-ic_anadolu",
+      "TR7",
+      "TR72"
+    ],
+    "TR-39": [
+      "TR-R-marmara",
+      "TR2",
+      "TR21"
+    ],
+    "TR-40": [
+      "TR-R-ic_anadolu",
+      "TR7",
+      "TR71"
+    ],
+    "TR-41": [
+      "TR-R-marmara",
+      "TR4",
+      "TR42"
+    ],
+    "TR-42": [
+      "TR-R-ic_anadolu",
+      "TR5",
+      "TR52"
+    ],
+    "TR-43": [
+      "TR-R-ege",
+      "TR3",
+      "TR33"
+    ],
+    "TR-44": [
+      "TR-R-dogu_anadolu",
+      "TRB",
+      "TRB1"
+    ],
+    "TR-45": [
+      "TR-R-ege",
+      "TR3",
+      "TR33"
+    ],
+    "TR-46": [
+      "TR-R-akdeniz",
+      "TR6",
+      "TR63"
+    ],
+    "TR-47": [
+      "TR-R-guneydogu_anadolu",
+      "TRC",
+      "TRC3"
+    ],
+    "TR-48": [
+      "TR-R-ege",
+      "TR3",
+      "TR32"
+    ],
+    "TR-49": [
+      "TR-R-dogu_anadolu",
+      "TRB",
+      "TRB2"
+    ],
+    "TR-50": [
+      "TR-R-ic_anadolu",
+      "TR7",
+      "TR71"
+    ],
+    "TR-51": [
+      "TR-R-ic_anadolu",
+      "TR7",
+      "TR71"
+    ],
+    "TR-52": [
+      "TR-R-karadeniz",
+      "TR9",
+      "TR90"
+    ],
+    "TR-53": [
+      "TR-R-karadeniz",
+      "TR9",
+      "TR90"
+    ],
+    "TR-54": [
+      "TR-R-marmara",
+      "TR4",
+      "TR42"
+    ],
+    "TR-55": [
+      "TR-R-karadeniz",
+      "TR8",
+      "TR83"
+    ],
+    "TR-56": [
+      "TR-R-guneydogu_anadolu",
+      "TRC",
+      "TRC3"
+    ],
+    "TR-57": [
+      "TR-R-karadeniz",
+      "TR8",
+      "TR82"
+    ],
+    "TR-58": [
+      "TR-R-ic_anadolu",
+      "TR7",
+      "TR72"
+    ],
+    "TR-59": [
+      "TR-R-marmara",
+      "TR2",
+      "TR21"
+    ],
+    "TR-60": [
+      "TR-R-karadeniz",
+      "TR8",
+      "TR83"
+    ],
+    "TR-61": [
+      "TR-R-karadeniz",
+      "TR9",
+      "TR90"
+    ],
+    "TR-62": [
+      "TR-R-dogu_anadolu",
+      "TRB",
+      "TRB1"
+    ],
+    "TR-63": [
+      "TR-R-guneydogu_anadolu",
+      "TRC",
+      "TRC2"
+    ],
+    "TR-64": [
+      "TR-R-ege",
+      "TR3",
+      "TR33"
+    ],
+    "TR-65": [
+      "TR-R-dogu_anadolu",
+      "TRB",
+      "TRB2"
+    ],
+    "TR-66": [
+      "TR-R-ic_anadolu",
+      "TR7",
+      "TR72"
+    ],
+    "TR-67": [
+      "TR-R-karadeniz",
+      "TR8",
+      "TR81"
+    ],
+    "TR-68": [
+      "TR-R-ic_anadolu",
+      "TR7",
+      "TR71"
+    ],
+    "TR-69": [
+      "TR-R-karadeniz",
+      "TRA",
+      "TRA1"
+    ],
+    "TR-70": [
+      "TR-R-ic_anadolu",
+      "TR5",
+      "TR52"
+    ],
+    "TR-71": [
+      "TR-R-ic_anadolu",
+      "TR7",
+      "TR71"
+    ],
+    "TR-72": [
+      "TR-R-guneydogu_anadolu",
+      "TRC",
+      "TRC3"
+    ],
+    "TR-73": [
+      "TR-R-guneydogu_anadolu",
+      "TRC",
+      "TRC3"
+    ],
+    "TR-74": [
+      "TR-R-karadeniz",
+      "TR8",
+      "TR81"
+    ],
+    "TR-75": [
+      "TR-R-dogu_anadolu",
+      "TRA",
+      "TRA2"
+    ],
+    "TR-76": [
+      "TR-R-dogu_anadolu",
+      "TRA",
+      "TRA2"
+    ],
+    "TR-77": [
+      "TR-R-marmara",
+      "TR4",
+      "TR42"
+    ],
+    "TR-78": [
+      "TR-R-karadeniz",
+      "TR8",
+      "TR81"
+    ],
+    "TR-79": [
+      "TR-R-guneydogu_anadolu",
+      "TRC",
+      "TRC1"
+    ],
+    "TR-80": [
+      "TR-R-akdeniz",
+      "TR6",
+      "TR63"
+    ],
+    "TR-81": [
+      "TR-R-karadeniz",
+      "TR4",
+      "TR42"
+    ]
+  },
+  "area_labels": {
+    "TR-R-akdeniz": "Akdeniz",
+    "TR-R-dogu_anadolu": "Doğu Anadolu",
+    "TR-R-ege": "Ege",
+    "TR-R-guneydogu_anadolu": "Güneydoğu Anadolu",
+    "TR-R-ic_anadolu": "İç Anadolu",
+    "TR-R-karadeniz": "Karadeniz",
+    "TR-R-marmara": "Marmara",
+    "TR1": "İstanbul",
+    "TR2": "Batı Marmara",
+    "TR3": "Ege",
+    "TR4": "Doğu Marmara",
+    "TR5": "Batı Anadolu",
+    "TR6": "Akdeniz",
+    "TR7": "Orta Anadolu",
+    "TR8": "Batı Karadeniz",
+    "TR9": "Doğu Karadeniz",
+    "TRA": "Kuzeydoğu Anadolu",
+    "TRB": "Ortadoğu Anadolu",
+    "TRC": "Güneydoğu Anadolu",
+    "TR10": "İstanbul",
+    "TR21": "Tekirdağ",
+    "TR22": "Balıkesir",
+    "TR31": "İzmir",
+    "TR32": "Aydın",
+    "TR33": "Manisa",
+    "TR41": "Bursa",
+    "TR42": "Kocaeli",
+    "TR51": "Ankara",
+    "TR52": "Konya",
+    "TR61": "Antalya",
+    "TR62": "Adana",
+    "TR63": "Hatay",
+    "TR71": "Kırıkkale",
+    "TR72": "Kayseri",
+    "TR81": "Zonguldak",
+    "TR82": "Kastamonu",
+    "TR83": "Samsun",
+    "TR90": "Trabzon",
+    "TRA1": "Erzurum",
+    "TRA2": "Ağrı",
+    "TRB1": "Malatya",
+    "TRB2": "Van",
+    "TRC1": "Gaziantep",
+    "TRC2": "Şanlıurfa",
+    "TRC3": "Mardin"
+  },
+  "sources": [
+    {
+      "kapsam": "Toplam doğurganlık hızı, 81 il × 2009-2025",
+      "kaynak": "tuik_medas",
+      "surum": "2026-08",
+      "cekim": "2026-08-13",
+      "not": "Dosyada yayım tarihi yok; sürüm çekim ayıyla dolduruldu."
+    },
+    {
+      "kapsam": "İl listesi, nüfuslar, coğrafi bölgeler",
+      "kaynak": "turkiyeapi",
+      "surum": "2025",
+      "cekim": "2026-08-13",
+      "not": "Nüfus, bölge değerlerini ağırlıklandırmak için kullanılıyor."
+    },
+    {
+      "kapsam": "İBBS-1 / İBBS-2 eşleşmesi",
+      "kaynak": "elle tutulan kayıt",
+      "surum": "—",
+      "cekim": "2026-08-13",
+      "not": "Kaynak: Wikipedia İBBS tablosu; 81 ilin tamamı doğrulandı."
+    },
+    {
+      "kapsam": "Bölge ve İBBS değerleri",
+      "kaynak": "hesaplandı",
+      "surum": "—",
+      "cekim": "—",
+      "not": "Nüfusla ağırlıklı ortalama. Doğru ağırlık doğurgan çağdaki kadın nüfusu olduğu için satırlar 'tahmin' işaretli."
+    }
+  ]
+}
