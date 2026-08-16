@@ -66,10 +66,29 @@ Aynısını yapmak amaç değil. Üç yerde bilerek farklılaşıyoruz:
    yalnız toplanabilir birimlerde açıyor.
 3. ~~Zaman denetiminin görünüme bağlanması~~ — bitti; çizgi/tablo aralık, harita/sütun/
    piramit tek yıl.
-4. **Çoklu seçim düzeltmesi** — tıklama ekleyip çıkarıyor; Ctrl/Shift kısayolları kaldı.
-5. **Harita geometrisi** — `public/areas.geojson` (özellik başına `area_id`, `name_tr`).
-   Çizim yazıldı, dosya gelince sekme kendiliğinden açılıyor.
-6. **Eski `index.html`'in kaldırılması** — gezgin onun yerini tamamen alınca.
+4. ~~Çoklu seçim düzeltmesi~~ — bitti (2026-08-16). Tıklama ekleyip çıkarıyor,
+   **Shift** iki tıklama arasındaki bütün alanları alıyor. Aralık, listenin o anda
+   *gösterdiği* sıradan okunuyor — arama ve grup kutusu neyi süzdüyse o; tam listeden
+   okunsaydı ekranda görünmeyen alanlar da seçilirdi. Aralık zaten tümüyle seçiliyse
+   Shift onu kaldırıyor, yoksa elli satırlık bir uzanışı geri almanın yolu elli tık
+   olurdu. **Ctrl** ayrı bir dal istemedi: düz tıklama zaten değiştirmiyor, ekliyor.
+   Çapa (son tıklanan alan) `state`'te değil — adres çubuğunun anlattığı şeyin parçası
+   değil, ve paylaşılan bir bağlantıda başkasının çapası ilk Shift'i okuyucunun hiç
+   tıklamadığı bir yere düşürürdü.
 
-Maket `web/mock-explorer.html` olarak duruyor: sahte sayılarla düzen tartışmak için,
-uygulamanın parçası değil.
+   Haritaya konmadı: harita alanlarının bir sırası yok, "aradakiler" diye bir şey yok.
+5. ~~Harita geometrisi~~ — bitti (2026-08-16). İl sınırları `public/areas.geojson`'da (81
+   özellik), ilçe sınırları `public/geo/districts/TR-NN.geojson`'da (81 dosya, 2,6 MB,
+   gerektikçe indiriliyor). Bölge/İBBS illerden birleştirilerek çiziliyor. İlçeye inme
+   `OFFERED_LEVELS`'a takılıydı: dosyalar duruyor, hiçbir tıklama açamıyordu (bkz. K26).
+   Mahalle ve köyde sınır yok, kaynağı da yok — o düzeyler haritaya hiç girmiyor.
+6. ~~Eski `index.html`'in kaldırılması~~ — bitti (2026-08-16). Yanında `app.css` ve
+   `scripts/build_page.py` de kalktı: ikisi de yalnız o sayfaya hizmet ediyordu.
+   Tek dosyalık `VeriAtlas.html` sürümü de onunla gitti — gezgin veri dilimlerini
+   gerektikçe indiriyor, hepsini tek dosyaya gömmek ayrı bir tasarımdır ve istenirse
+   yeniden yazılır.
+
+Maket (`web/mock-explorer.html`) 2026-08-16'da kaldırıldı. İşini yapmıştı: düzen gerçek
+veriye dokunmadan tartışılsın diye vardı, gezgin yazıldıktan sonra tartışılacak bir şey
+kalmadı. Sahte sayılarla duran bir sayfanın depoda beklemesi, bir gün birinin ona
+bakmasıyla biter.

@@ -11,6 +11,7 @@ from .tuik_simple import NARROW_ADAPTERS
 from .tuik_tfr import TuikTfr
 from .tuik_villages import TuikVillagePopulation
 from .tuik_vital import VITAL_ADAPTERS
+from .tuik_vital_district import DISTRICT_VITAL_ADAPTERS
 
 #: Everything that can be ingested, by name. `scripts/load.py` runs these.
 ADAPTERS = {
@@ -27,10 +28,14 @@ ADAPTERS = {
     **NARROW_ADAPTERS,
     # Births and deaths: same download, transposed file, so a parser of their own.
     **VITAL_ADAPTERS,
+    # The same two events at district level are *different measures* in MEDAS, with
+    # different codes in the header and shorter series. Their own parser for that reason.
+    **DISTRICT_VITAL_ADAPTERS,
 }
 
 __all__ = [
     "ADAPTERS",
+    "DISTRICT_VITAL_ADAPTERS",
     "NARROW_ADAPTERS",
     "VITAL_ADAPTERS",
     "Adapter",

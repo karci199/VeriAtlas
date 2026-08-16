@@ -234,6 +234,25 @@ def export_dictionary(
         for r in load().ratios.values()
     }
 
+    # Denominators taken from a slice of another indicator. `applies_to` travels with it
+    # because the page must not offer a base to an indicator it means nothing for — the
+    # rule is per pair, not per unit, and it is a decision rather than arithmetic.
+    bases = {
+        b.base_id: {
+            "label": b.label_tr,
+            "indicator": b.indicator,
+            "dims": dict(b.dims),
+            "grouping": b.grouping,
+            "values": list(b.values),
+            "factor": b.factor,
+            "unit": b.unit.label_tr,
+            "decimals": b.unit.decimals,
+            "applies_to": list(b.applies_to),
+            "note": b.note_tr,
+        }
+        for b in load().bases.values()
+    }
+
     derivations = {
         d.derivation_id: {
             "label": d.label_tr,
@@ -297,6 +316,7 @@ def export_dictionary(
                 "groupings": groupings,
                 "comparisons": comparisons,
                 "ratios": ratios,
+                "bases": bases,
                 "derivations": derivations,
                 "belongs": ancestors,
                 "area_labels": labels,
@@ -391,7 +411,21 @@ def export_plain(
         )
         .sort("level", "area", "year")
     )
-    report(PUBLIC / DATASETS[indicator_id], slim)
+
+    # Split the same way a broken-down indicator is: the dictionary writes a `parts` entry
+    # for every lazy level an indicator has, and the page fetches exactly what is named
+    # there. Left whole, the district rows would ride along in the file every visitor
+    # downloads *and* the page would ask for a part file that was never written — a 404
+    # for data that is sitting in the other file.
+    base = slim.filter(~pl.col("level").is_in(LAZY_LEVELS))
+    report(PUBLIC / DATASETS[indicator_id], base)
+
+    stem = DATASETS[indicator_id].replace(".csv", "")
+    for level in LAZY_LEVELS:
+        part = slim.filter(pl.col("level") == level)
+        if part.height:
+            report(PUBLIC / (stem + "-" + level + ".csv"), part)
+
     return sorted(slim["level"].unique())
 
 

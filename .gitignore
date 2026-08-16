@@ -21,7 +21,11 @@ warehouse.duckdb.wal
 public/*.parquet
 public/*.csv
 public/*.json
+# ...ama sayfanin okudugu dilimler girer: public/*.csv.gz ve geometri zaten depoda,
+# meta.json da onlarla ayni sey. Disarida kalinca yeni bir calisma kopyasinda sayfa hic
+# acilmiyor: explorer.js ilk is olarak meta.json'i okuyor, bulamayinca hicbir sey
+# kurulmuyor ve ekran bos kaliyor. Bir oturumun ilk yarim saati buna gitti.
+!public/meta.json
 
-# Uretilen tek dosya sayfa
-VeriAtlas.html
+# Uretilen dosyalar
 cikti/

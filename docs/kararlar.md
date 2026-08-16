@@ -165,7 +165,7 @@ Tema ayarlanabilir (K5'in devamı): koyu/açık, yazı ölçeği, yoğunluk, vur
 sabit piksel yok. Seçim `localStorage`'da. Ekranın durumu adres çubuğunda (`#i=…&v=…`),
 "Bağlantı" düğmesi onu kopyalıyor.
 
-Eski `web/index.html` şimdilik duruyor; gezgin olgunlaşınca kaldırılacak.
+Eski `web/index.html` 2026-08-16'da kaldırıldı; gezgin onun yerini tamamen aldı.
 ## K11 — Harita katmanları ve ilçe tarihçesi (2026-08-13)
 
 Sınırlar `public/` altında, çizim anında dışarıya çıkılmıyor:
@@ -544,6 +544,68 @@ yani o tarihten sonra ad tek başına hiçbir şeyi tanımlamıyor — bir ilçe
 `Yeni Köy.` var. Üç parça bekleyen ilk ayrıştırıcı dokuz yılı sessizce düşürmüştü.
 1.058 ad değişikliği `docs/koy-adlari.md` dosyasında.
 
+## K26 — İlçe düzeyi açıldı; harita geometrisinin sınırı (2026-08-16)
+
+İlçe, sayfanın sunduğu düzeyler listesinden (`OFFERED_LEVELS`) bilerek çıkarılmıştı: il
+düzeyi otururken ilçedeki bir boşluğun veriden mi sayfadan mı geldiği ayırt edilemiyordu.
+O gerekçe bitti. Liste açıldı ve **998 ilçe, 973 sınır** ekrana geldi.
+
+Asıl bulgu şu: haritanın ilçeye inme davranışı da aynı listeye soruyordu. Yani sınır
+dosyaları (81 il dosyası, 2,6 MB) aylardır depoda duruyordu ve **hiçbir tıklamayla
+açılamıyordu**. Açılamayan geometri, sayfanın sahip olduğu geometri değildir.
+
+Geometrinin gerçek sınırı burada: il ve ilçe şekilleri var; bölge, İBBS-1 ve İBBS-2 kendi
+şekillerine sahip olmadıkları için illerden birleştirilerek çiziliyor (bir bölge tam
+olarak bir il kümesi olduğu için bu yaklaşıklık değil, tanımın kendisi). **Mahalle ve köy
+düzeyinde sınır yok ve kaynağı da yok** — o yüzden ikisi de listeye alınmadı: haritayı
+sessizce hiçbir şey çizmeyen tek görünüm yapardı. O iki düzey Excel'de okunuyor.
+
+İlçe verisinin il verisinden kaba olduğu doğru (tek yaş değil beşer yaş bandı, hayati
+olaylar henüz yok). Bu kaynağın özelliği; göründüğü yerde söyleniyor, çizmeyi reddederek
+saklanmıyor.
+
+## K27 — Payda: bir sayımı başka bir göstergenin dilimine bölmek (2026-08-16)
+
+Sayfa bir sayımı alanın **bütün** nüfusuna bölebiliyordu; kaba doğum ve ölüm hızları
+böyle çiziliyor, indirilmiyor (K12). Ama demografide oranların çoğunun paydası herkes
+değil: doğurganlık hızının paydası çocuğu doğurabilecek kadınlardır. Bütün nüfusa
+bölmek, yaş yapısı her kımıldadığında kımıldayan başka bir sayı verir — oysa oranın
+işi tam da onu sabit tutmaktır.
+
+Bu yüzden sözlükte yeni bir kavram var: **payda** (`[base.*]`). Hangi göstergeden,
+o göstergenin hangi diliminden, hangi çarpanla ve hangi göstergeler için:
+
+```toml
+[base.women_15_49]
+indicator  = "population"
+sex        = "female"
+grouping   = "age_fertile"
+values     = ["15-49"]
+factor     = 1000
+applies_to = ["births"]
+```
+
+Üç karar burada duruyor:
+
+**Yaş, bant listesiyle değil gruplamayla adlandırılıyor.** İl dosyası tek yaş taşıyor,
+ilçe dosyası beşer yaş; ikisi de aynı `15-49`'a çözülüyor. Bantlar elle yazılsaydı biri
+doğru öteki yanlış olurdu — `age_fertile` gruplaması tam bunun için zaten vardı.
+
+**`applies_to` bir kural değil, liste.** Doğum ÷ 15-49 kadın genel doğurganlık hızıdır;
+ölüm ÷ aynı kadınlar hiçbir şey değildir. İkisi de sayım diye ikisini birden sunmak,
+kimsenin sormadığı bir soruya cevap sunmak olurdu. Birimden çıkarılabilecek bir kural
+yok, çünkü kural anlamda.
+
+**Çarpan sözlükte.** 1000 ile "‰" aynı yerde duruyor; sayfada bir yerde çarpan, başka
+yerde etiket olsaydı ikisi ayrı ayrı değişebilirdi.
+
+Bu, indirilmemiş bir göstergeyi ekranda var eder: genel doğurganlık hızı depoda yok,
+doğum ile nüfustan çıkıyor. K12'nin devamı — hesaplanabilen şey ikinci kez indirilmez —
+ama artık türetme tek bir seriyle sınırlı değil, iki gösterge arasında da geçerli.
+
+Doğrulama: İzmir 2009 47,41 ve Şanlıurfa 2025 96,60; ilçede Harran 160,75, Beşiktaş
+16,57. Hepsi Excel'de elle hesaplananla aynı.
+
 ## Oturum notu — 2026-08-14/15
 
 Bir oturumda yapılanlar, sıradaki oturum buradan devam etsin diye.
@@ -636,8 +698,9 @@ Sıra, birbirine bağımlılığa göre:
 4. **Adaptör sözleşmesi** — kuruldu, bkz. K8. Sıradaki adaptörler: EVDS3 (API var),
    MEDAS (Playwright), Dünya Bankası (SDMX).
 5. **Kalite kuralları** — pandera şemaları, yükleme sırasında çalışır.
-6. **Arayüz dönüşümü** — iskelet kuruldu, bkz. K10. Kalan: harita geometrisi (il/İBBS
-   sınırları), çoklu seçim kısayolları (Ctrl/Shift), eski `index.html`'in kaldırılması.
+6. ~~Arayüz dönüşümü~~ — bitti, bkz. K10 ve K26. Harita geometrisi (il, ilçe, İBBS),
+   çoklu seçim kısayolları, eski `index.html`'in kaldırılması: hepsi tamam. Mahalle ve
+   köyde sınır yok, kaynağı da yok; o iki düzey Excel'de okunuyor.
 7. **MEDAS adaptörü** — akışın ilk yarısı çalışıyor (bkz. medas.md); kalan: Zaman →
    Düzey → Rapor Oluştur → sayfalı tablo.
 8. **Kod dili geçişi** — mevcut `config.py` ve `scripts/` Türkçe docstring'li;

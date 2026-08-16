@@ -127,6 +127,36 @@ class Ratio:
 
 
 @dataclass(frozen=True)
+class Base:
+    """A denominator taken from a slice of another indicator.
+
+    The screen can already read a count against the area's whole population, which is how
+    the crude rates are drawn without downloading them (K12). The demographic rates worth
+    having are not over everyone though: a fertility rate is over the women who could have
+    the children. Over the whole population instead, the number moves whenever the age
+    structure moves — which is the thing the rate exists to hold still.
+
+    `applies_to` is a list rather than a rule about units. Births over women 15-49 is the
+    general fertility rate; deaths over those same women is not a statistic, and offering
+    it because both happen to be counts would be offering an answer to no question.
+    """
+
+    base_id: str
+    label_tr: str
+    label_en: str
+    #: The indicator the denominator is summed from, and the slice of it.
+    indicator: str
+    dims: dict[str, str]
+    grouping: str | None
+    values: tuple[str, ...]
+    #: What the ratio is multiplied by: 1000 for a per-mille rate, 100 for a percentage.
+    factor: int
+    unit: Unit
+    applies_to: tuple[str, ...]
+    note_tr: str
+
+
+@dataclass(frozen=True)
 class Derivation:
     """A series computed from a measurement: an index, a rate of change.
 
@@ -171,6 +201,7 @@ class Dictionary:
     groupings: dict[str, Grouping]
     comparisons: dict[str, Comparison]
     ratios: dict[str, Ratio]
+    bases: dict[str, Base]
     derivations: dict[str, Derivation]
     indicators: dict[str, Indicator]
 
@@ -302,6 +333,49 @@ def load() -> Dictionary:
             note_tr=body.get("note_tr", "").strip(),
         )
 
+    bases: dict[str, Base] = {}
+    for key, body in raw.get("base", {}).items():
+        if body["unit"] not in units:
+            raise KeyError("base '" + key + "' names unknown unit: " + body["unit"])
+        grouping = body.get("grouping")
+        if grouping and grouping not in groupings:
+            raise KeyError("base '" + key + "' names unknown grouping: " + grouping)
+        if grouping:
+            missing = set(body.get("values", [])) - set(groupings[grouping].covers)
+            if missing:
+                raise KeyError(
+                    "base '"
+                    + key
+                    + "' names groups the grouping does not have: "
+                    + ", ".join(sorted(missing))
+                )
+        # The dims are every key that is not one of the fields above: `sex = "female"`
+        # says the denominator is women, and a base over everyone names none of them.
+        reserved = {
+            "label_tr",
+            "label_en",
+            "indicator",
+            "factor",
+            "unit",
+            "applies_to",
+            "grouping",
+            "values",
+            "note_tr",
+        }
+        bases[key] = Base(
+            base_id=key,
+            label_tr=body["label_tr"],
+            label_en=body["label_en"],
+            indicator=body["indicator"],
+            dims={k: v for k, v in body.items() if k not in reserved},
+            grouping=grouping,
+            values=tuple(body.get("values", ())),
+            factor=int(body["factor"]),
+            unit=units[body["unit"]],
+            applies_to=tuple(body["applies_to"]),
+            note_tr=body.get("note_tr", "").strip(),
+        )
+
     derivations: dict[str, Derivation] = {}
     for key, body in raw.get("derivation", {}).items():
         # An empty unit means "whatever the indicator is in". A difference of two counts
@@ -373,6 +447,7 @@ def load() -> Dictionary:
         groupings=groupings,
         comparisons=comparisons,
         ratios=ratios,
+        bases=bases,
         derivations=derivations,
         indicators=indicators,
     )

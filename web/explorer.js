@@ -247,19 +247,21 @@ async function ensureLevel(level) {
 // registry exports them, this is the one label map left in the page.
 /** The levels the page offers, in the order the menu lists them.
  *
- *  Deliberately short of what the data holds. District and neighbourhood rows are loaded,
- *  exported and kept — nothing has been thrown away — but they are not offered while the
- *  province level is being settled, because a gap at those levels cannot be told apart
- *  from a gap in the page: districts have no single years, neighbourhoods have only the
- *  18 split, and outside the thirty metropolitan provinces they are missing their
- *  villages entirely. Testing a control against data that is itself incomplete tells you
- *  nothing about the control.
+ *  District was held out of this list while the province level was being settled: a gap
+ *  at that level could not be told apart from a gap in the page. That hold is over. The
+ *  shapes are exported (81 per-province files, 2,6 MB), the rows are exported, the lazy
+ *  fetch knows how to get both — and while district was off this list the drill-down into
+ *  a province was unreachable, because the map's click handler asks this list for
+ *  permission. Geometry that nothing can open is not geometry the page has.
  *
- *  Putting `"district"` back in this list is the whole of the change needed to bring them
- *  back: the files are already exported, the lazy fetch already knows how to get them,
- *  and everything downstream reads the level off the rows rather than off a hard-coded
- *  list. Nothing else in the page names a level it is allowed to draw. */
-const OFFERED_LEVELS = ["country", "region", "nuts1", "nuts2", "province"];
+ *  What is still true is that the district data is coarser than the province data: five-
+ *  year age bands rather than single years, and no vital events yet. That is a property
+ *  of the source and it is said where it shows, not hidden by refusing to draw.
+ *
+ *  Neighbourhood and village stay off, and not out of caution: there are no boundary
+ *  shapes for them anywhere, so the map would be the one view that silently does nothing.
+ *  They are read in the spreadsheet instead. */
+const OFFERED_LEVELS = ["country", "region", "nuts1", "nuts2", "province", "district"];
 
 const LEVEL_LABELS = {
     // "Coğrafi bölge" rather than "Bölge": the two hierarchies are both regions, and the
@@ -528,6 +530,8 @@ function choices() {
         // marker changes when the rows arrive, so that slice is recomputed and every
         // other slice keeps the key it always had.
         (state.share === "population" ? (versusRows.get(AGAINST)?.length || 0) + "|" : "") +
+        // Same reason, for a base: its denominator is a second file too.
+        (activeBase() ? (versusRows.get(activeBase().indicator)?.length || 0) + "|" : "") +
         (state.indicator.dims || [])
             .map((d) => d + "=" + state.dims[d] + "/" + (state.grouping[d] || ""))
             .join(";")
@@ -903,6 +907,19 @@ function sliceRaw(level = state.level) {
             });
         }
 
+        // Against a named slice of another indicator: the general fertility rate is
+        // births over women 15-49, per thousand. The factor comes from the dictionary
+        // with the unit, so "per mille" is one decision in one place rather than a 1000
+        // here and a ‰ in the label.
+        const named = activeBase();
+        if (named) {
+            const denominator = baseTotals(level, named);
+            return [...totals.values()].map((row) => {
+                const base = denominator.get(row.area_id + "|" + row.year);
+                return {...row, value: base ? (row.value / base) * named.factor : NaN};
+            });
+        }
+
         // "own:<dim>" — the share within one breakdown, every other choice held. See
         // shareControl for why this is a separate mode rather than what "own" means.
         const within = shareWithin();
@@ -1037,6 +1054,26 @@ async function ensurePopulation() {
     }
 }
 
+/** Fetch the rows a base divides by: the whole indicator, at this level too.
+ *
+ *  Written against the dictionary's indicator id rather than the population's, so a base
+ *  over something else needs no new code here. */
+async function ensureBase(base) {
+    const indicator = catalogue.find((i) => i.id === base.indicator);
+    if (!indicator || versusRows.has(base.indicator)) {
+        return;
+    }
+    const files = [indicator.dataset, indicator.parts?.[state.level]].filter(Boolean);
+    const note = $("rail-note");
+    const said = note.textContent;
+    note.textContent = "Payda indiriliyor…";
+    try {
+        versusRows.set(base.indicator, (await Promise.all(files.map(part))).flat());
+    } finally {
+        note.textContent = said;
+    }
+}
+
 /** Total population per area-year at a level: `Map("TR-16|2025" -> 3263011)`.
  *
  *  The row count is in the memo key, which looks redundant and is not: the population is
@@ -1073,6 +1110,63 @@ function populationTotals(level) {
  *  states about the unit rather than a word in one language (K1). What adds up is a
  *  count; what does not is a rate, an age or an index, and none of those go over a
  *  population. */
+/** The bases this indicator may be read against, as `[id, base]` pairs.
+ *
+ *  Gated on the dictionary's own list rather than on the unit, and on the denominator
+ *  actually being loadable: a base over an indicator the page does not have is an option
+ *  that would draw dashes. */
+function basesFor() {
+    return Object.entries(meta.bases || {}).filter(
+        ([, base]) =>
+            (base.applies_to || []).includes(state.indicator.id) &&
+            catalogue.some((i) => i.id === base.indicator && i.available)
+    );
+}
+
+function activeBase() {
+    if (!state.share?.startsWith("base:")) {
+        return null;
+    }
+    const id = state.share.slice(5);
+    return basesFor().find(([key]) => key === id)?.[1] || null;
+}
+
+/** The denominator a base names, per area-year: `Map("TR-16|2025" -> 574125)`.
+ *
+ *  Summed off the same rows the population mode uses, with the base's slice applied —
+ *  sex from the dims, age through the grouping so that the province file's single years
+ *  and the district file's five-year bands both resolve to the same 15-49. Written out
+ *  as bands here would be right at one level and wrong at the other. */
+function baseTotals(level, base) {
+    const rows = versusRows.get(base.indicator) || [];
+    const key = "base|" + base.indicator + "|" + level + "|" + rows.length +
+                "|" + JSON.stringify(base.dims) + "|" + (base.grouping || "");
+    return remember(key, () => {
+        const wanted = new Set(base.values || []);
+        const covers = meta.groupings?.[base.grouping]?.covers || {};
+        const totals = new Map();
+        for (const row of rows) {
+            if (row.level !== level) {
+                continue;
+            }
+            if (Object.entries(base.dims || {}).some(([dim, value]) => row[dim] !== value)) {
+                continue;
+            }
+            if (base.grouping) {
+                const group = Object.keys(covers).find((name) =>
+                    covers[name].includes(row[meta.groupings[base.grouping].dim])
+                );
+                if (!wanted.has(group)) {
+                    continue;
+                }
+            }
+            const at = row.area_id + "|" + row.year;
+            totals.set(at, (totals.get(at) || 0) + row.value);
+        }
+        return totals;
+    });
+}
+
 function canShareAgainstPopulation() {
     return (
         state.indicator.id !== AGAINST &&
@@ -1099,6 +1193,13 @@ function shareOfWholeMeans() {
 function shareStillMeans(share) {
     if (share === "population") {
         return canShareAgainstPopulation() ? share : "";
+    }
+    // A base belongs to the indicators the dictionary lists it for and to no others, so
+    // it is dropped on the way to one that does not have it rather than carried over as
+    // a mode that would divide deaths by women of childbearing age.
+    if (share.startsWith("base:")) {
+        const id = share.slice(5);
+        return basesFor().some(([key]) => key === id) ? share : "";
     }
     if (share === "country") {
         return shareOfWholeMeans() ? share : "";
@@ -1650,7 +1751,7 @@ function areasShown() {
 function decimals() {
     // A derivation with no unit of its own — a difference, a moving average — keeps the
     // precision of whatever it was computed from, share included.
-    const from = derivation() || activeComparison()?.[1] || activeRatio()?.[1];
+    const from = derivation() || activeComparison()?.[1] || activeRatio()?.[1] || activeBase();
     if (from && from.decimals !== null && from.decimals !== undefined) {
         return from.decimals;
     }
@@ -1658,7 +1759,7 @@ function decimals() {
 }
 
 function unitLabel() {
-    const from = derivation() || activeComparison()?.[1] || activeRatio()?.[1];
+    const from = derivation() || activeComparison()?.[1] || activeRatio()?.[1] || activeBase();
     if (from && from.unit) {
         return from.unit;
     }
@@ -1698,21 +1799,21 @@ function canShare() {
 //: of the second it took to sort a thousand rows.
 const formatters = new Map();
 
-/** A number formatter for at most `places` decimals.
+/** A number formatter for exactly `places` decimals.
  *
- *  At most, not exactly: a trailing zero is a digit the value does not have, and printing
- *  44,50 where the answer is 44,5 claims a precision the rounding just took away. The
- *  unit's `decimals` is a ceiling on what may be shown, not a width to pad to.
+ *  Exactly, not at most. This used to trim trailing zeros — 44,5 rather than 44,50 — on
+ *  the argument that the zero is a digit the value does not have. That reads well for one
+ *  number and badly for a column of them: 29 above 29,22 looks like two different kinds of
+ *  measurement, and the eye cannot compare them without reading each one. Where the unit
+ *  says two decimals, every value in the column is shown with two.
  *
- *  The cost is that a table column comes out ragged — 44,5 over 28,07 — where fixed
- *  decimals would line the commas up. Legibility of the number won over alignment of the
- *  column, since the column is read one cell at a time. */
+ *  Counts are unaffected: their `decimals` is 0, so nothing is padded onto them. */
 function formatter(places) {
     if (!formatters.has(places)) {
         formatters.set(
             places,
             new Intl.NumberFormat("tr-TR", {
-                minimumFractionDigits: 0,
+                minimumFractionDigits: places,
                 maximumFractionDigits: places,
             })
         );
@@ -2012,6 +2113,11 @@ function shareControl() {
         ...(against
             ? [option("population", (LEVEL_LABELS[state.level] || "Alan") + " nüfusunun %'si")]
             : []),
+        // A denominator that is a *slice* of another indicator rather than all of it.
+        // The dictionary says which indicator, which slice, and — crucially — which
+        // indicators the question makes sense for: births over women 15-49 is the general
+        // fertility rate, deaths over the same women is not a statistic.
+        ...basesFor().map(([id, base]) => option("base:" + id, base.label)),
     ];
 
     return (
@@ -4158,6 +4264,16 @@ function render() {
         return;
     }
 
+    // A base names its own denominator indicator, fetched the same way and for the same
+    // reason. Today every base is over the population, so this is usually the same file —
+    // but the mode asks the dictionary rather than assuming that.
+    const wantsBase = activeBase();
+    if (wantsBase && !versusRows.has(wantsBase.indicator)) {
+        $("view").innerHTML = empty("Payda yükleniyor…");
+        ensureBase(wantsBase).then(render);
+        return;
+    }
+
     // The second indicator is a second file. Same treatment as the district boundaries:
     // fetched on the first draw that needs it, with the frame saying so meanwhile.
     if (state.view === "scatter") {
@@ -4242,8 +4358,18 @@ function downloadShown() {
     // The id goes out with the name: two districts called Pınarbaşı are two rows, and a
     // file that names them both "Pınarbaşı" cannot be joined back to anything.
     const header = "area_id,area,year,value,unit,indicator\n";
+    // Quoted, because a name is not ours to promise anything about. No area is called
+    // anything with a comma in it today; the file that assumes that keeps working right
+    // up until the day a source spells one differently, and then it shifts a column
+    // without saying so. Numbers stay unquoted and machine-readable — the decimal is a
+    // dot here whatever the page shows the reader.
+    const cell = (v) => (/[",\n]/.test(String(v)) ? '"' + String(v).replaceAll('"', '""') + '"' : v);
     const body = rows
-        .map((r) => [r.area_id, r.area, r.year, r.value, unitLabel(), state.indicator.id].join(","))
+        .map((r) =>
+            [r.area_id, r.area, r.year, r.value, unitLabel(), state.indicator.id]
+                .map(cell)
+                .join(",")
+        )
         .join("\n");
 
     const url = URL.createObjectURL(new Blob([header + body], {type: "text/csv;charset=utf-8"}));
@@ -4330,6 +4456,12 @@ async function useIndicator(id) {
 
 // region Wiring
 
+//: The last area clicked in the list, so shift has something to reach from. Deliberately
+//: not in `state`: it is not part of what the address bar describes, and a shared link
+//: that restored someone else's anchor would make the first shift-click land somewhere
+//: the reader never clicked.
+let anchor = null;
+
 function wire() {
     $("entities").onclick = (ev) => {
         const li = ev.target.closest("li");
@@ -4337,6 +4469,35 @@ function wire() {
             return;
         }
         const area = li.dataset.area;
+
+        // Shift takes the run between the last area clicked here and this one. The run is
+        // read off the list as it is being shown — filtered, searched, in whatever order
+        // is on screen — because that is the run the reader drew with their eyes. Taking
+        // it off the full area list instead would select things that are not visible.
+        //
+        // Ctrl needs no branch: a plain click already adds rather than replaces, so
+        // ctrl-click does what it does everywhere else. It is documented, not implemented.
+        const shown = areasShown();
+        if (ev.shiftKey && anchor && anchor !== area && shown.includes(anchor)) {
+            const from = shown.indexOf(anchor);
+            const to = shown.indexOf(area);
+            const run = shown.slice(Math.min(from, to), Math.max(from, to) + 1);
+            // Symmetric: over a run that is already entirely chosen, shift takes it away
+            // again. Otherwise the only way to undo a fifty-row reach is fifty clicks.
+            const chosen = new Set(state.selection);
+            if (run.every((id) => chosen.has(id))) {
+                state.selection = state.selection.filter((id) => !run.includes(id));
+                state.muted = state.muted.filter((id) => !run.includes(id));
+            } else {
+                state.selection = [...new Set([...state.selection, ...run])];
+                state.muted = state.muted.filter((id) => !run.includes(id));
+            }
+            anchor = area;
+            render();
+            return;
+        }
+        anchor = area;
+
         if (state.selection.includes(area)) {
             state.selection = state.selection.filter((a) => a !== area);
             state.muted = state.muted.filter((a) => a !== area);

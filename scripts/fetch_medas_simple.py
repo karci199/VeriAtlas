@@ -48,6 +48,7 @@ ADNKS = "Adrese Dayalı Nüfus Kayıt Sistemi Sonuçları"
 BIRTHS = "Doğum İstatistikleri"
 DEATHS = "Ölüm İstatistikleri"
 MARRIAGES = "Evlenme İstatistikleri"
+LIFE = "Hayat Tabloları"
 DIVORCES = "Boşanma İstatistikleri"
 
 CELL_LIMIT = 50000
@@ -108,6 +109,23 @@ MEASURES = [
     # measure is 121 indicators and the download is a query per two years; closed it is
     # one indicator and twenty-five years in one go. The breakdowns are a session of their
     # own, not a checkbox on the way past.
+    # District-level vital events are their own measures, not the province ones asked for
+    # at another level: MEDAS offers "İlçelere göre doğum sayısı" beside "İkametgah yerine
+    # göre doğum sayısı" and the district level only exists on the first. They are also
+    # shorter — districts start in 2014 for births and 2009 for deaths — and they carry
+    # no breakdown to open, which is what makes a two-year probe one query of 1.946 cells.
+    # The life table is the only thing here that answers "did mortality change" without
+    # the age structure in the way: it is a death probability per single year of age, so
+    # it holds the composition still by construction. 202 indicators — 101 ages × two
+    # sexes — but one area and thirteen years, which is 2.626 cells and one query.
+    ("hayat-tablosu", LIFE, "Tek yaş hayat tablosu", True),  # 202, yalnız Türkiye
+    ("yasam-suresi", LIFE, "Do", True),  # 2, Türkiye + il, yalnız 5 yıl
+    ("dogum-ilce", BIRTHS, "lçelere göre doğum", False),  # 2
+    ("olum-ilce", DEATHS, "lçelere göre ölüm", False),  # 2
+    # Deaths by the age of the deceased, which is what turns "did mortality change or did
+    # the population age" from an argument into a subtraction. Only the age breakdown is
+    # opened: with the month beside it the same question costs twelve times the cells.
+    ("olum-yas", DEATHS, "İkametgah yerine göre ölüm", "yaş grubu"),
     ("evlenme", MARRIAGES, "Evlenme sayısı", False),  # 1
     ("kaba-evlenme-hizi", MARRIAGES, "Kaba evlenme", False),  # 1
     ("evlenme-yasi-erkek", MARRIAGES, "Erkeğin ortalama evlenme", False),  # 1
@@ -119,7 +137,31 @@ MEASURES = [
 ]
 
 #: The Düzey box labels for the levels kept here.
-LEVELS = {"country": "Türkiye", "province": "İBBS3 (İl Düzeyi)"}
+LEVELS = {
+    "country": "Türkiye",
+    "province": "İBBS3 (İl Düzeyi)",
+    "district": "İlçe Düzeyi",
+}
+
+
+#: Measures published for the country and nowhere else. The single-year life table is
+#: the case: TÜİK computes it nationally because a province's deaths at age 93 are a
+#: handful of people and the resulting probability would be noise.
+COUNTRY_ONLY = {"hayat-tablosu"}
+
+
+def levels_for(name: str) -> list[str]:
+    """Which levels a measure is asked for.
+
+    Carried by the name rather than by a fifth field on all thirty entries: `-ilce`
+    measures exist *only* at district level, and asking for Türkiye there would download
+    the same national total a second time under another measure's name.
+    """
+    if name.endswith("-ilce"):
+        return ["district"]
+    if name in COUNTRY_ONLY:
+        return ["country"]
+    return ["country", "province"]
 
 
 def counted(page, pattern) -> int:
@@ -134,8 +176,15 @@ def target_path(name: str, level: str, part: int = 0):
     return OUT / ("nufus-" + name + "-" + level + piece + ".csv")
 
 
-def build_query(page, topic: str, hint: str, breakdowns: bool) -> int:
-    """Topic and measure, with its breakdowns opened or not. Returns the indicator count."""
+def build_query(page, topic: str, hint: str, breakdowns) -> int:
+    """Topic and measure, with its breakdowns opened or not. Returns the indicator count.
+
+    `breakdowns` is False for none, True for all, or a string to open exactly one of them.
+    That last case is what deaths by age needs: the measure carries seven breakdowns and
+    opening them all multiplies out to a query no limit will take, while opening the month
+    alongside the age would ask for twelve times more cells to answer a question about age.
+    One is the whole point — the others are still there for a later session.
+    """
     page.goto(URL, wait_until="networkidle")
     page.locator("select").first.select_option(label=topic)
     settle(page)
@@ -151,9 +200,14 @@ def build_query(page, topic: str, hint: str, breakdowns: bool) -> int:
     settle(page)
 
     if breakdowns:
-        # A tick is a toggle and the mandatory ones arrive already on (docs/medas.md).
-        for row, _ in visible_rows(page):
-            if not is_ticked(page, row):
+        wanted = breakdowns if isinstance(breakdowns, str) else None
+        for row, text in visible_rows(page):
+            keep = wanted is None or wanted.lower() in text.lower()
+            # Only ever turned on, never off. A tick is a toggle and the mandatory ones
+            # arrive already on (docs/medas.md) — deaths always carry the sex of the
+            # deceased — so unticking what we did not ask for empties the query instead of
+            # narrowing it, and MEDAS then refuses the whole measure without saying why.
+            if keep and not is_ticked(page, row):
                 tick(page, row, "")
 
     click_exact(page, "Tamam")
@@ -383,7 +437,7 @@ def main() -> None:
         page.set_default_timeout(60000)
 
         for name, topic, hint, breakdowns in wanted:
-            for level in LEVELS:
+            for level in levels_for(name):
                 if years_wanted:
                     # One file per year, numbered by the year itself so the pieces say
                     # what they hold rather than what order they arrived in.

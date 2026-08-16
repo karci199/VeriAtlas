@@ -279,6 +279,12 @@ label_en = "‰"
 decimals = 2
 additive = false
 
+[unit.per_mille_women]
+label_tr = "‰ (15-49 kadında)"
+label_en = "per thousand women aged 15-49"
+decimals = 2
+additive = false
+
 [unit.year_of_age]
 label_tr = "yaş"
 label_en = "years of age"
@@ -836,5 +842,43 @@ frequency = "quarterly"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "Ruhsat verilen daire sayısı. Bina sayısıyla karıştırılmamalı."
+
+# endregion
+
+# region Bases — a count read against a *slice of another indicator*
+
+# The screen can already divide a count by the area's whole population ("Alan nüfusunun
+# %'si"), which is how the crude rates are drawn without downloading them (K12). But the
+# demographic rates that matter are not over everyone: a fertility rate is over the women
+# who could have the children, and dividing births by the whole population instead answers
+# a different, weaker question — it moves when the age structure moves, which is exactly
+# what the rate is supposed to hold still.
+#
+# So a base names the denominator: which indicator it comes out of, which slice of it, and
+# what the result is called. Declared here rather than in the page for the same reason
+# everything else is (K1, K7): "hangi kadınlar" is a definition, not a rendering detail.
+#
+# `applies_to` is deliberately a list rather than a rule. Births over women 15-49 is the
+# general fertility rate; deaths over the same women is nothing at all, and a screen that
+# offers it because both are counts is offering a number nobody asked a question about.
+
+[base.women_15_49]
+label_tr = "Doğurgan çağdaki kadın başına (‰)"
+label_en = "Per thousand women aged 15-49"
+indicator = "population"
+factor = 1000
+unit = "per_mille_women"
+applies_to = ["births"]
+# The slice, as dimension values. Age is named through the grouping the level actually
+# publishes, so the district export's five-year bands and the province export's single
+# years both resolve — see `age_fertile`, which already existed for exactly this.
+sex = "female"
+grouping = "age_fertile"
+values = ["15-49"]
+note_tr = """
+Genel doğurganlık hızı: doğurgan çağdaki (15-49) bin kadın başına doğum. Toplam \
+doğurganlık hızından farkı, yaş yapısından arındırılmamış olmasıdır — bu yüzden ikisi \
+birlikte okunur: TFH sabitken GDH düşüyorsa düşen şey doğurganlık değil, doğuracak \
+kuşağın payıdır."""
 
 # endregion
