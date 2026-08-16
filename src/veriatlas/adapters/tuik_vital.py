@@ -54,6 +54,25 @@ SEX_IN_LABEL = re.compile(r"cinsiyeti\s*:\s*(?P<sex>Erkek|Kadın)")
 SEXES = {"Erkek": "male", "Kadın": "female"}
 
 
+#: `Ölenin yaş grubu:210. (15-19)` — the code before the dot is MEDAS's own and means
+#: nothing to us; the band in brackets is the value. "Bilinmeyen" comes through here too
+#: and is kept: dropping it would make the age breakdown sum to less than the death count
+#: it is a breakdown of, and the gap would be invisible.
+AGE_IN_LABEL = re.compile(r"yaş grubu\s*:\s*\S+\s*\((?P<band>[^)]+)\)")
+
+#: The one band whose name is Turkish rather than a range. An id, not a label (K1).
+UNKNOWN_AGE = "unknown"
+
+
+def age_of(label: str) -> str | None:
+    """The age band a row's label names, or None."""
+    found = AGE_IN_LABEL.search(label)
+    if not found:
+        return None
+    band = found.group("band").strip()
+    return UNKNOWN_AGE if band == "Bilinmeyen" else band
+
+
 def sex_of(label: str) -> str | None:
     """The sex a row's label names, or None.
 
@@ -81,9 +100,22 @@ def sex_of(label: str) -> str | None:
 #: this is, so it is stated here rather than looked for in a row label that does not
 #: carry it. Two files feeding one indicator is also why the adapter name is written out
 #: instead of derived from the indicator id — they would collide.
+#: How to read each dim out of a row label.
+READERS = {"sex": sex_of, "age": age_of}
+
 MEASURES = {
     "dogum": ("births", "births", None, {}),
-    "olum": ("deaths", "deaths", "sex", {}),
+    # Deaths come from the age export, not the month one. Both are published, both cover
+    # 2009-2025 at province and country, and their totals agree in 1.394 area-years out
+    # of 1.394 — so the age file is the same measurement with one more breakdown on it,
+    # and taking the other would be choosing to know less. The month file stays in `raw/`;
+    # seasonality is still a question it can answer.
+    #
+    # Loading *both* would double every death, which is why this is a replacement and not
+    # an addition. The district export is untouched: it has no age at all, so district
+    # rows carry sex alone — the same shape population already has, where single years
+    # exist for provinces and not below.
+    "olum-yas": ("deaths", "deaths", ("sex", "age"), {}),
     "bebek-olum-hizi": ("infant_mortality", "infant_mortality", None, {}),
     "bes-yas-alti-olum-hizi": ("under5_mortality", "under5_mortality", None, {}),
     "evlenme": ("marriages", "marriages", None, {}),
@@ -92,7 +124,7 @@ MEASURES = {
     # a series with holes in it: TÜİK builds the provincial life tables from pooled
     # three-year windows and publishes them irregularly, so 2015 and 2016 are absent
     # from the source rather than from the download.
-    "yasam-suresi": ("life_expectancy", "life_expectancy", "sex", {}),
+    "yasam-suresi": ("life_expectancy", "life_expectancy", ("sex",), {}),
     "evlenme-yasi-erkek": (
         "mean_marriage_age_male",
         "mean_marriage_age",
@@ -181,13 +213,18 @@ def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
         if cells[1].strip():
             label = cells[1].strip()
 
-        if dim == "sex":
-            sex = sex_of(label)
-            if not sex:
-                # A row whose breakdown we cannot place must not be folded into a total
-                # silently.
+        if dim:
+            # A tuple, always — one dim is `("sex",)` rather than `"sex"`. Written as a
+            # bare string it would iterate its characters and ask READERS for "s", which
+            # is at least loud; a tuple everywhere means the question never comes up.
+            # Every dim the spec asks for must be readable, and a row missing any of them
+            # is skipped rather than folded into a total silently. Both readers work on
+            # the same label — `Ölenin cinsiyeti:Erkek ve Ölenin yaş grubu:210. (15-19)`
+            # carries the two side by side.
+            found = {key: READERS[key](label) for key in dim}
+            if not all(found.values()):
                 continue
-            dims = format_dims({**fixed, dim: sex})
+            dims = format_dims({**fixed, **found})
         else:
             dims = format_dims(fixed) if fixed else ""
 
@@ -248,10 +285,18 @@ class VitalMeasure:
     def parse(self, raw: Path) -> pl.DataFrame:
         single = single_province_regions()
 
+        # A measure is usually one file per level. Ölenin yaş grubu is not: 17 bands x 2
+        # sexes x 82 areas x 17 years is past MEDAS's cell limit, so the province half
+        # came down in two numbered pieces (2011-2025 and 2009-2010). Both are read, and
+        # the numbering is part of the file name rather than of the measure — so the glob
+        # takes `-province.csv` and `-province-1.csv` alike, and a piece added later needs
+        # no code change.
         records: list[dict] = []
         for level in ("country", "province"):
-            path = raw / ("nufus-" + self.stem + "-" + level + ".csv")
-            if path.exists():
+            stem = "nufus-" + self.stem + "-" + level
+            for path in sorted(raw.glob(stem + ".csv")) + sorted(
+                raw.glob(stem + "-[0-9].csv")
+            ):
                 records.extend(read_export(path, self.spec, single))
         if not records:
             raise ValueError("dosya bulunamadi ya da bos: " + self.stem)

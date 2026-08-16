@@ -45,7 +45,7 @@ def test_a_breakdown_written_once_carries_down_its_block(deaths):
     Read literally it cost sixteen of seventeen years: every continuation row failed the
     sex match and was dropped, and deaths loaded as a single period without complaining.
     """
-    rows = read_export(deaths, ("deaths", "deaths", "sex", {}), {})
+    rows = read_export(deaths, ("deaths", "deaths", ("sex",), {}), {})
     years = {(row["year"], row["dims"]) for row in rows}
     assert years == {
         (2009, "sex=male"),
@@ -57,7 +57,7 @@ def test_a_breakdown_written_once_carries_down_its_block(deaths):
 
 def test_months_are_summed_into_the_year(deaths):
     """Two month rows of one province-year are one row worth their total."""
-    rows = read_export(deaths, ("deaths", "deaths", "sex", {}), {})
+    rows = read_export(deaths, ("deaths", "deaths", ("sex",), {}), {})
     adana = {
         (row["year"], row["dims"]): row["value"]
         for row in rows

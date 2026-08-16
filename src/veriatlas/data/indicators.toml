@@ -69,6 +69,15 @@ total = "Toplam"
 label_tr = "Yaş grubu"
 label_en = "Age group"
 
+# Only the bands that are not already readable need a label, and only one is: the deaths
+# export carries an `unknown` band for records whose age was never established. It is kept
+# rather than dropped, because dropping it would make the age breakdown sum to less than
+# the death count it is a breakdown of and the gap would be invisible. Its share is
+# negligible — 0,00% in 2025, at most 1,45% (İstanbul 2009) — but negligible is a finding,
+# not a licence to hide it. The population has no such band.
+[dim.age.values]
+unknown = "Bilinmeyen"
+
 [dim.household_type]
 label_tr = "Hanehalkı tipi"
 label_en = "Household type"
@@ -143,7 +152,11 @@ bölmeden hesaplanır."""
 # offered at a level only when every band *present there* falls into a group, so the list
 # has to cover both or the coarse reading silently drops the oldest.
 [grouping.age_broad.covers]
-"0-14" = ["0-4", "5-9", "10-14"]
+# `0` and `1-4` are the death export's encoding of the same first five years the
+# population closes into `0-4` — listed together for the reason the tail is, so the
+# coarse reading is offered on both indicators instead of silently dropping the
+# youngest band on one of them.
+"0-14" = ["0-4", "5-9", "10-14", "0", "1-4"]
 "15-64" = [
     "15-19", "20-24", "25-29", "30-34", "35-39",
     "40-44", "45-49", "50-54", "55-59", "60-64",
@@ -187,7 +200,7 @@ note_tr = """
 paydası bu gruptaki kadın nüfusudur."""
 
 [grouping.age_fertile.covers]
-"0-14" = ["0-4", "5-9", "10-14"]
+"0-14" = ["0-4", "5-9", "10-14", "0", "1-4"]
 "15-49" = ["15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49"]
 "50+" = [
     "50-54", "55-59", "60-64", "65-69", "70-74",
@@ -546,10 +559,10 @@ topic = "olum"
 unit = "death"
 frequency = "annual"
 additive = true
-dims = ["sex"]
-views = ["table", "map", "line", "bar"]
+dims = ["sex", "age"]
+views = ["table", "map", "line", "bar", "pyramid"]
 definition_tr = """
-Yıl içindeki ölüm sayısı, ölen kişinin ikamet ettiği ile göre, cinsiyet kırılımıyla."""
+Yıl içindeki ölüm sayısı, ölen kişinin ikamet ettiği ile göre, cinsiyet ve yaş kırılımıyla. Yaş kırılımı il ve Türkiye düzeyinde var, ilçede yok."""
 
 # Evlenme ve boşanma sayısı, kırılımları kapalı. MEDAS ikisinin altında da on kadar
 # kırılım veriyor — eşlerin yaş grubu, eğitim durumu, evliliğin süresi, çocukların
