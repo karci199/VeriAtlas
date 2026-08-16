@@ -69,3 +69,25 @@ kırsal/muhafazakâr norm gibi olası nedenler depoda yok.
    il ve Türkiye, bant orta noktalarıyla — `mean_death_age` ile aynı desen.
 3. Regresyon artığı yöntemini (evlenme gecikmesi ~ GDH düşüşü) koda geçir,
    Şanlıurfa gibi küçük paydalı illerin oranı patlatmasını önlemek için.
+
+## Yeni kaynak — TÜİK'in kendi ilk doğum yaşı tablosu, bant tahminini doğruluyor
+
+`İllere Göre İlk Doğumdaki Ortalama Anne Yaşı.xls` — TÜİK'in doğrudan
+hesapladığı, yalnız ilk çocuk, il düzeyinde, **2014-2025**. Bant orta
+noktasıyla tahmin değil, gerçek TÜİK ortalaması.
+
+TR: 25,51 (2014) → 27,46 (2025), +1,94 yıl. Bulgu 1'deki tüm-doğumlar
+tahminiyle (+2,01 yıl, 2009-2025) artış hızı neredeyse örtüşüyor — bant
+orta noktası yöntemi doğrulandı. Seviye farkı beklenen yönde: tüm doğumlar
+2025'te 28,93, ilk doğum 27,46 — ikinci/üçüncü çocuklar ortalamayı yukarı
+çekiyor.
+
+**Çelişkili bulgu:** Van, Kars, Hakkari, Bayburt, Siirt, Erzurum — Bulgu 1'de
+"en az değişen" gruptaydı, burada **ilk doğumu en çok geciktiren** 10 il
+içindeler. Yorum: bu illerde ilk çocuk gecikiyor ama doğum aralıkları hâlâ
+sıkı, toplam doğurganlığın ortalaması bu yüzden az değişmiş görünüyor —
+geç başlayıp hızlı devam ediyorlar. Şanlıurfa tek istisna: hem tüm
+doğumlarda hem ilk doğumda tutarlı biçimde en az değişen il (+0,83 yıl,
+2014-2025 — listenin sonuncusu).
+
+Bu üçüncü kaynak da henüz depoya alınmadı.
