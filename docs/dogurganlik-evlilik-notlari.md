@@ -118,3 +118,27 @@ Aksaray, **Siirt (4,86→3,06, −1,80 yıl)** — GDH'si en hızlı düşen ill
 bire bir örtüşüyor (bkz. Bulgu 3).
 
 Dördüncü kaynak da henüz depoya alınmadı.
+
+## Beşinci kaynak — anne yaşı × doğum sırası kesişimi, yalnız Türkiye 2025
+
+`Annenin Yaş Grubu ve Doğum Sırasına Göre Doğumlar (...DF_DOGUM_ANNE_YAS_DOGUM_SIRA_C,1.0).xlsx`
+— il yok, tek yıl (2025), ama anne yaş grubu (10 bant: <15…50+) ile doğum
+sırasının (1, 2, 3, 4+) tam kesişimi var. TR 2025 toplam 895.374 doğumun
+383.482'si ilk çocuk, 273.052'si ikinci, 138.465'i üçüncü.
+
+Bu tek yıl-tek coğrafya olduğu için zaman/il karşılaştırması yapılamıyor;
+ama önceki bulguların (ortalama-ilk doğum farkı, Bulgu 4) arkasındaki ham
+dağılımı doğrulamak için kullanılabilir — doğum sırasına göre yaş
+dağılımının şekli burada görünür.
+
+## TÜİK Veri Portalı — kullanıcının bulduğu bağlantılar, henüz taranmadı
+
+Not olarak bırakılıyor, WebFetch sayfayı boş döndürdü (JavaScript ile
+render ediliyor, tarayıcıyla açmak gerekiyor):
+
+- `veriportali.tuik.gov.tr/tr/bulk-download` — toplu indirme sayfası
+- `veriportali.tuik.gov.tr/tr/popular-comparisons` — popüler karşılaştırmalar
+- `veriportali.tuik.gov.tr/tr/infographics` — infografikler
+- `.../databrowser/.../DF_EVLENME_ORT_ILK_EVL_YAS,1.0` — ort. ilk evlenme yaşı tablosu
+- `.../search?q=anne&type=2,5` — "anne" araması, sayfa 2
+- `.../databrowser/.../DF_DOGUM_ORTYAS_ILKDOG_C,1.0` — ilk doğumda ort. anne yaşı (muhtemelen elimdeki `.xls` ile aynı seri, tazelenmiş sürümü)
