@@ -4126,10 +4126,17 @@ function readingShare() {
     let bottom;
 
     if (!state.share) {
-        body =
-            "Bölme yok: ekrandaki sayı mutlak büyüklüğün kendisi. Büyük alanlar büyük " +
-            "sayılar verir, o yüzden 'nerede yoğun' sorusu için bir yüzde kipine geçmek " +
-            "gerekir.";
+        // "Büyük alanlar büyük sayılar verir" is true of a count and false of everything
+        // else. A life expectancy of 83,6 is not large because Tunceli is; an age is a
+        // position on a scale and İstanbul's is not bigger for having more people in it.
+        // Printed under yaşam süresi, that sentence sent the reader looking for a per-cent
+        // mode to fix a distortion that is not there.
+        body = state.indicator.additive
+            ? "Bölme yok: ekrandaki sayı sayılan büyüklüğün kendisi. Kalabalık alanlar " +
+              "büyük sayılar verir, o yüzden 'nerede yoğun' sorusu bir yüzde kipini " +
+              "gerektirir."
+            : "Bölme yok, zaten bölünmüş bir büyüklük: bu bir oran ya da bir konum, " +
+              "alanın büyüklüğünden bağımsız. İki il doğrudan karşılaştırılabilir.";
     } else if (state.share === "population") {
         body =
             "Payda <b>başka bir gösterge</b>: aynı alanın ve yılın nüfusu. Diğer " +

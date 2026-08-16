@@ -46,9 +46,12 @@
           "dataset": "natural-increase.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "natural-increase-district.csv.gz"
+          },
           "fine": {},
           "available": true
         },
@@ -456,9 +459,12 @@
           "dataset": "births.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "births-district.csv.gz"
+          },
           "fine": {},
           "available": true
         },
@@ -655,6 +661,33 @@
           "available": true
         },
         {
+          "id": "life_expectancy",
+          "label": "Doğuşta beklenen yaşam süresi",
+          "unit": "yaş",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "O yıl doğan bir bebeğin, dönemin yaşa özel ölüm hızları ömrü boyunca geçerli kalsaydı yaşayacağı ortalama yıl sayısı. İl düzeyinde yalnız 2013, 2014, 2017, 2020 ve 2023 için yayımlanıyor.",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "life-expectancy.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
           "id": "deaths",
           "label": "Ölüm sayısı",
           "unit": "ölüm",
@@ -675,9 +708,12 @@
           "dataset": "deaths.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "deaths-district.csv.gz"
+          },
           "fine": {},
           "available": true
         }

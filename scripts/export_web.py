@@ -72,6 +72,7 @@ DATASETS = {
     "registry_population": "registry-population.csv",
     "mean_marriage_age": "marriage-age.csv",
     "mean_first_marriage_age": "first-marriage-age.csv",
+    "life_expectancy": "life-expectancy.csv",
     **{
         name: name.replace("_", "-") + ".csv"
         for name in (
@@ -107,6 +108,7 @@ BROKEN_DOWN = (
     "mean_marriage_age",
     "mean_first_marriage_age",
     "registry_population",
+    "life_expectancy",
 )
 
 #: Indicators with no breakdown at all: one value per area and year.
@@ -662,6 +664,11 @@ def main() -> None:
         ),
         "mean_first_marriage_age": export_broken_down(
             fact, areas, "mean_first_marriage_age", whole=False
+        ),
+        # `whole=False`: a life expectancy is 78,4 years and rounding it to 78 throws away
+        # the only digit that moves between one province and the next.
+        "life_expectancy": export_broken_down(
+            fact, areas, "life_expectancy", whole=False
         ),
         # The source is a province-by-province square, so Türkiye and the İBBS levels
         # exist nowhere in it. They are sums of the 81 provinces: exact, because these
