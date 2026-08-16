@@ -1023,3 +1023,71 @@ bölge, oransal değişimde en hızlısı. Doğu-batı farkı duruyor ama kapan�
   çözülmesi bundan yüksek olabilir.
 - Evlilik süresi kırılımı yok → boşanma riskinin evlilik yaşına göre dağılımı
   (hazard) hesaplanamıyor. Bunun için ayrı bir MEDAS dökümü gerekir.
+
+## Bulgu 17 — yaşa göre standardize ölüm hızı: yaş yapısı haritanın neredeyse tamamını gizliyormuş
+
+Kaba ölüm hızı yaş yapısının esiri: yaşlı nüfuslu il, her yaş grubunda ülke
+ortalaması kadar ölse bile ölümcül görünür. **Doğrudan standardizasyon** yapıldı —
+her ilin yaşa özel ölüm hızları tek bir sabit nüfusa uygulandı.
+
+Yöntem: `deaths` (17 yaş bandı × cinsiyet, 81 il, 2009-2025) ÷ `population` (tek
+yaş, aynı bantlara toplandı). Standart nüfus: **Türkiye 2025**. Cinsiyetler
+birleşik. 65+ kesitinden üstün, çünkü tüm yaş yapısını kullanıyor.
+
+⚠️ 72 il hesaplanabildi. Eksik 9: Bilecik, Bolu, Nevşehir, Tunceli, Uşak, Bayburt,
+Bartın, Ardahan, Karabük — küçük iller, bazı yaş bandında hücre bastırılmış.
+
+### Türkiye — ve COVID'in gerçek büyüklüğü
+
+| Yıl | Kaba ‰ | Standardize ‰ |
+|---|---|---|
+| 2010 | 4,97 | **6,79** |
+| 2016 | 5,30 | **6,56** |
+| 2019 | 5,25 | **6,17** |
+| 2020 | 6,09 | **7,01** |
+| 2021 | 6,69 | **7,65** |
+| 2025 | 5,71 | **5,71** |
+
+TR 2009→2025: **7,05 → 5,71 (−%19).** (2025'te kaba = standardize, çünkü standart
+nüfus 2025.)
+
+**2021'de standardize hız 7,65** — 2009'un (7,05) üstünde. COVID, ölümlülükte on
+iki yıllık ilerlemeyi silip geriye atmış. Kaba hızda bu 6,69 olarak görünüyor ve
+etki küçük sanılıyor; standardize edilince gerçek boyutu çıkıyor.
+
+### Kaba hız haritayı yanlış çiziyor
+
+**r(kaba hız, standardize hız) = +0,355.** Neredeyse ilişkisiz. Yani il ölüm
+haritası bugüne kadar büyük ölçüde **yaş yapısı haritasıydı**, ölümlülük haritası
+değil.
+
+2025 standardize, **en yüksek**: Kilis 6,64, Manisa 6,52, Afyonkarahisar 6,48,
+Edirne 6,41, Adana 6,29, Kırklareli 6,28, Tekirdağ 6,26.
+**En düşük**: Hakkari 4,78, Gümüşhane 4,91, Şırnak 4,93, Muğla 5,09, Trabzon 5,10,
+Mardin 5,13.
+
+Güneydoğu en düşük çıkıyor — sezgiye aykırı, bu yüzden doğrulandı.
+
+### Doğrulama: TÜİK'in kendi yaşam beklentisiyle
+
+**r(standardize ölüm hızı 2025 ~ TÜİK yaşam beklentisi 2023) = −0,826.**
+
+TÜİK'in kendi bağımsız hesabı da aynı yönü gösteriyor: yaşam beklentisi en yüksek
+iller Tunceli 80,8, Şırnak 79,6, Mardin 79,6, Bingöl 79,3; en düşük Gaziantep 76,2,
+Kilis 76,2, Adana 76,8. Yani sonuç yöntem hatası değil.
+
+⚠️ Ama ikisi de **aynı ölüm kayıt verisinden** türüyor. Kayıt eksikliği varsa ikisi
+birden yanılır; doğrulama yöntemi doğruluyor, **veriyi değil**.
+
+### Değişim: yine yakınsama, yine aynı iller
+
+**72 ilin 72'sinde düştü.** En çok düşenler: Hakkari −%39,4 (7,89→4,78),
+Muş −%38,0, Şırnak −%35,5, Van −%34,1, Bingöl −%33,0, Ağrı −%32,9, Kars −%30,2,
+Bitlis −%29,7.
+En az düşenler: Burdur −%7,1, Giresun −%7,7, Adıyaman −%7,9, Isparta −%10,1,
+Manisa −%10,6, Edirne −%10,8.
+
+**Üçüncü kez aynı desen.** Doğurganlıkta (Bulgu 3, 9), boşanmada (Bulgu 16) ve
+şimdi ölümlülükte: geriden başlayan güneydoğu en hızlı değişen, ileride olan
+batı yavaşlamış. Üç bağımsız demografik alanda **yakınsama** — bu artık tesadüf
+değil, dosyanın en tekrar eden bulgusu ve kendi başına bir başlık hak ediyor.
