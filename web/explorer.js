@@ -1698,21 +1698,21 @@ function canShare() {
 //: of the second it took to sort a thousand rows.
 const formatters = new Map();
 
-/** A number formatter for at most `places` decimals.
+/** A number formatter for exactly `places` decimals.
  *
- *  At most, not exactly: a trailing zero is a digit the value does not have, and printing
- *  44,50 where the answer is 44,5 claims a precision the rounding just took away. The
- *  unit's `decimals` is a ceiling on what may be shown, not a width to pad to.
+ *  Exactly, not at most. This used to trim trailing zeros — 44,5 rather than 44,50 — on
+ *  the argument that the zero is a digit the value does not have. That reads well for one
+ *  number and badly for a column of them: 29 above 29,22 looks like two different kinds of
+ *  measurement, and the eye cannot compare them without reading each one. Where the unit
+ *  says two decimals, every value in the column is shown with two.
  *
- *  The cost is that a table column comes out ragged — 44,5 over 28,07 — where fixed
- *  decimals would line the commas up. Legibility of the number won over alignment of the
- *  column, since the column is read one cell at a time. */
+ *  Counts are unaffected: their `decimals` is 0, so nothing is padded onto them. */
 function formatter(places) {
     if (!formatters.has(places)) {
         formatters.set(
             places,
             new Intl.NumberFormat("tr-TR", {
-                minimumFractionDigits: 0,
+                minimumFractionDigits: places,
                 maximumFractionDigits: places,
             })
         );
