@@ -235,3 +235,123 @@ doğrudan çocuk sayısını azaltarak, "1 çocukta durarak" gerçekleşiyor):
 kalıyor, doğurganlık aralık açılarak düşüyor; Trakya/Batı'da (Tunceli,
 Antalya, Denizli, Çanakkale) doğurganlık zaten düşük, aralık sabit kalıyor
 — düşüş muhtemelen doğrudan az-çocuk kararıyla oluyor, aralık değişmeden.
+
+## Bulgu 9 — dört göstergenin il tablosu; kesitte GDH ~ doğum aralığı r=−0,96
+
+Bulgu 8 yalnız *değişim* ilişkisini kaydetmişti (GDH düşüşü ~ aralık açılması,
+r=0,64). Aynı veriyle **seviye** ilişkisine bakıldığında bağ çok daha sıkı:
+2025 kesitinde 81 il için GDH ile doğum aralığı arasında **r = −0,96**. Aralığı
+bilen ilin GDH'sini bilir. Karşılaştırma: GDH ~ ilk doğum yaşı r=−0,74,
+GDH ~ ortalama anne yaşı r=−0,48.
+
+**Doğum aralığı süresi nedir:** bir annenin *son iki doğumu arasında* geçen
+ortalama yıl. O yıl ilk çocuğunu doğuranlar kapsam dışı — yani "ne zaman
+başlıyor" değil, *başladıktan sonra ne kadar ara veriyor* ölçüsü. Doğurganlık
+penceresi kabaca sabit olduğundan aralık açıldıkça pencereye sığan doğum azalır;
+mekanizma budur. Evlenme/ilk doğum yaşı ertelemesi değil, evlilik içi planlama.
+
+GDH burada **genel doğurganlık hızı** = 1.000 kadın (15-49) başına canlı doğum;
+ambardaki `births` ve `population` sayımlarından türetildi (ambarda hazır
+gösterge yok). Diğer üç sütun TÜİK'in kendi hesabı. Pencere 2019-2025 —
+aralık serisi 2019'da başlıyor. İller GDH'ye göre azalan sırada.
+
+⚠️ Kaba/genel hızlar toplanamaz: bu tablonun il satırları birleştirilemez.
+
+| İl | GDH ‰ 2025 | İlk doğum yaşı | Ort. anne yaşı | Aralık (yıl) | Aralık değ. 2019→2025 |
+|---|---|---|---|---|---|
+| **Türkiye** | **40,8** | **27,5** | **29,4** | **4,76** | **+0,14** |
+| Şanlıurfa | 96,6 | 24,4 | 28,2 | 3,32 | +0,3 |
+| Şırnak | 80,2 | 25,9 | 29,1 | 3,54 | +0,41 |
+| Mardin | 68,6 | 26,1 | 29,2 | 3,88 | +0,43 |
+| Ağrı | 66,6 | 24,7 | 27,7 | 4,06 | +0,65 |
+| Siirt | 66,5 | 25,9 | 28,9 | 4,04 | +0,52 |
+| Bitlis | 64,8 | 25,7 | 28,6 | 4,15 | +0,6 |
+| Diyarbakır | 64,6 | 26,2 | 29,2 | 4,17 | +0,44 |
+| Muş | 62,3 | 24,9 | 28,2 | 4,05 | +0,6 |
+| Batman | 61,2 | 26,7 | 29,7 | 4,17 | +0,44 |
+| Gaziantep | 59,2 | 25,3 | 28,1 | 4,32 | +0,26 |
+| Van | 59,2 | 26,2 | 28,9 | 4,42 | +0,63 |
+| Kilis | 57,4 | 25,1 | 27,8 | 4,21 | +0,13 |
+| Adıyaman | 54,5 | 26,7 | 29,8 | 4,57 | +0,38 |
+| Hakkari | 53,7 | 27,7 | 30,2 | 4,46 | +0,49 |
+| Hatay | 50,8 | 25,9 | 28,2 | 4,34 | +0,24 |
+| Iğdır | 50,2 | 26,2 | 28,6 | 4,54 | +0,54 |
+| Kars | 49,5 | 26,1 | 28,3 | 4,5 | +0,4 |
+| Kahramanmaraş | 48,1 | 25,6 | 28,5 | 4,91 | +0,21 |
+| Osmaniye | 47 | 25,9 | 28,6 | 4,5 | +0,04 |
+| Bingöl | 46 | 27,5 | 30,3 | 5,02 | +0,61 |
+| Konya | 44,4 | 26,3 | 28,8 | 5,07 | +0,09 |
+| Erzurum | 44,2 | 27,1 | 29,5 | 4,75 | +0,44 |
+| Aksaray | 43,4 | 26,2 | 28,5 | 5,01 | +0,11 |
+| Adana | 43,1 | 26,7 | 29 | 4,67 | +0,14 |
+| Ardahan | 42,9 | 26,5 | 28,7 | 4,97 | −0,01 |
+| Niğde | 42 | 25,8 | 28,2 | 4,94 | +0,19 |
+| Afyonkarahisar | 40,7 | 26,1 | 28,3 | 4,81 | +0,07 |
+| Sakarya | 40,6 | 27,5 | 29,6 | 5,16 | +0,09 |
+| Kocaeli | 40,2 | 28 | 29,8 | 5,19 | +0,11 |
+| Mersin | 39,6 | 27,2 | 29,4 | 4,84 | +0,15 |
+| Manisa | 39,1 | 27 | 28,9 | 5,08 | +0,03 |
+| Erzincan | 38,9 | 28 | 29,9 | 5,04 | −0,27 |
+| Tekirdağ | 38,8 | 27,6 | 29,2 | 5,21 | −0,06 |
+| Kayseri | 38,8 | 27,1 | 29,3 | 5,17 | +0,11 |
+| Malatya | 38,7 | 27,9 | 30,2 | 5,04 | +0,14 |
+| Yalova | 38,5 | 28,4 | 29,9 | 4,97 | +0,01 |
+| Düzce | 38,4 | 27,4 | 29,5 | 5,26 | −0,06 |
+| Tunceli | 38,1 | 28,9 | 30,2 | 4,72 | −0,2 |
+| Elazığ | 38,1 | 27,9 | 30,2 | 5,11 | +0,19 |
+| Karaman | 37,8 | 27 | 29,4 | 5,26 | +0,08 |
+| Nevşehir | 37,4 | 26,3 | 28,5 | 5,23 | −0,16 |
+| Bursa | 37,4 | 27,8 | 29,7 | 5,12 | +0,02 |
+| Çankırı | 37,1 | 27 | 29 | 5,02 | +0,07 |
+| Rize | 36,8 | 28,7 | 30,7 | 5,23 | +0,09 |
+| Burdur | 36,1 | 26,8 | 29 | 5,25 | −0,32 |
+| Yozgat | 36,1 | 26,6 | 28,9 | 5,26 | +0,19 |
+| Bilecik | 36,1 | 27,6 | 29,5 | 5,44 | +0,09 |
+| Aydın | 36 | 27,1 | 29,1 | 5,05 | +0,07 |
+| Trabzon | 35,9 | 28,7 | 30,9 | 5,13 | +0,15 |
+| Sivas | 35,9 | 27,1 | 29,3 | 5,06 | +0,07 |
+| Artvin | 35,6 | 29 | 30,8 | 5,21 | +0,25 |
+| Bayburt | 35,3 | 27,8 | 29,9 | 5,09 | +0,1 |
+| Ordu | 35,3 | 27,4 | 29,5 | 5,29 | +0,17 |
+| Kastamonu | 35,2 | 27,6 | 29,5 | 5,18 | −0,09 |
+| Amasya | 34,8 | 27,7 | 29,6 | 5,31 | +0,16 |
+| Samsun | 34,7 | 27,6 | 29,6 | 5,26 | +0,28 |
+| Denizli | 34,5 | 27,6 | 29,6 | 5,39 | −0,14 |
+| Kırşehir | 34,4 | 27,4 | 29,3 | 5,31 | +0,18 |
+| Sinop | 34,1 | 27,5 | 29,6 | 5,13 | +0,22 |
+| Balıkesir | 33,9 | 27,4 | 29,1 | 5,25 | −0,18 |
+| Tokat | 33,8 | 26,8 | 29,1 | 5,03 | +0,07 |
+| Çorum | 33,6 | 27,2 | 29,4 | 5,35 | +0,04 |
+| İstanbul | 33,3 | 28,9 | 30,4 | 5,1 | +0,11 |
+| Bolu | 33,3 | 28,2 | 30,1 | 5,42 | −0,04 |
+| Antalya | 33,2 | 28,3 | 29,9 | 5,2 | −0,01 |
+| Isparta | 33,2 | 27,6 | 29,6 | 5,31 | −0,07 |
+| Muğla | 33,1 | 28,6 | 30 | 5,25 | −0,01 |
+| Gümüşhane | 32,7 | 28 | 30,4 | 5,19 | +0,29 |
+| Kırklareli | 32,2 | 28 | 29,4 | 5,63 | −0,05 |
+| Giresun | 32,2 | 28,3 | 30,3 | 5,39 | −0,05 |
+| Uşak | 32,1 | 27 | 28,7 | 5,31 | +0,11 |
+| Kırıkkale | 31,9 | 27 | 29 | 5,29 | −0,12 |
+| Ankara | 31,8 | 28,6 | 30,1 | 5,4 | +0,09 |
+| Çanakkale | 31,7 | 28,1 | 29,6 | 5,31 | −0,25 |
+| Edirne | 31,7 | 27,6 | 28,7 | 5,19 | −0,37 |
+| Eskişehir | 31,3 | 28,6 | 30 | 5,34 | +0,07 |
+| Karabük | 31,1 | 27,7 | 29,8 | 5,47 | −0,02 |
+| İzmir | 30,7 | 28,7 | 30,1 | 5,36 | +0,09 |
+| Kütahya | 30,5 | 27 | 29,3 | 5,55 | −0,09 |
+| Bartın | 29 | 27,2 | 29,2 | 5,52 | +0,14 |
+| Zonguldak | 28,5 | 27,9 | 29,5 | 5,25 | −0,16 |
+
+**Tablonun okunuşu:** yukarıdan aşağı GDH düşerken aralık sütunu düzenli
+biçimde büyüyor (Şanlıurfa 96,6 ‰ / 3,32 yıl → Zonguldak 28,5 ‰ / 5,25 yıl);
+r=−0,96 tam olarak bu. Son sütun kimin hızla değiştiğini verir: Ağrı +0,65,
+Van +0,63, Bingöl +0,61, Bitlis/Muş +0,60 — *hâlâ en sık doğuran* iller aynı
+zamanda aralığı *en hızlı açan* iller, düşüş oradan geliyor. Batıda tablo
+duruyor: Edirne −0,37, Burdur −0,32, Çanakkale −0,25 (aralık zaten genişti,
+düşüş varsa doğrudan az-çocuk kararıyla — Bulgu 8'deki negatif artık grubu).
+
+**Okuma uyarısı (aralık dosyası):** MEDAS'ın yıl sütunu blok başında bir kez
+dolu ve tipi karışık — `2025.0` sayı, `2024(r)` metin. Yalnız sayı tipini
+süzen okuma ara blokları sessizce 2025'e yazar ve TR 2025 değeri 4,76 yerine
+4,60 çıkar. Rakam süzerek okunmalı.
+
