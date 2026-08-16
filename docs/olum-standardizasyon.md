@@ -103,3 +103,40 @@ deprem ili çıkarılınca −0,44'e iniyor. 2020'de işaret ters dönüyor (+0,
 2. Türetilmiş iki gösterge: il için doğrudan standardize hız, ilçe için SMR.
 3. Ortalama ölüm yaşı — ancak yukarıdaki uyarı ekranda yanında dururken.
 4. Ertelenenler: ilçede yıl havuzlama ve güven aralığı; ESP2013 ikinci standart.
+
+## SMR nedir — kısa tanım
+
+**SMR (Standardised Mortality Ratio, standardize ölüm oranı)** epidemiyolojinin küçük
+alan yöntemidir. Ölenin yaşı bilinmediğinde kullanılır: referans nüfusun (burada
+Türkiye) yaşa özel ölüm hızları alanın kendi yaş yapısına uygulanır, **beklenen** ölüm
+sayısı bulunur, gözlenen ona bölünüp 100 ile çarpılır.
+
+- 100 = referans kadar · 120 = %20 fazla ölüm · 80 = %20 az.
+- Adı "oran"dır ama bir hız değil, **iki sayının oranıdır** — o yüzden binde/yüzde
+  cinsinden okunmaz ve iki SMR birbirine bölünmez.
+- Doğrudan standardizasyonun gerektirdiği şeyi (alanın yaşa özel hızları) istemez;
+  bu yüzden ilçede tek yöntem odur.
+- Zayıf yanı küçük sayı: beklenen ölüm 20 iken gözlenenin 25 çıkması SMR'yi 125 yapar
+  ve bu rastlantı olabilir. Standart çözümler: yıl havuzlama, güven aralığı, ya da
+  Bayesçi yumuşatma (BYM modeli — komşu alanlardan ödünç bilgi). Üçü de ertelendi.
+
+## Üç yaş ölçüsü arasındaki ilişki — ölçüldü
+
+| İlişki | Korelasyon (normal yıllarda) | Anlamı |
+|---|---|---|
+| ortalama ölüm yaşı ~ ilin ortanca yaşı | **+0,89 … +0,93** | Aynı şeyi ölçüyorlar: piramidi |
+| ortalama ölüm yaşı ~ yaşam süresi | +0,25 … +0,38 | Zayıf — ömrü ölçmüyor |
+| ilin ortanca yaşı ~ yaşam süresi | **+0,03 … +0,36** | Yok denecek kadar az |
+| yaşam süresi ~ standardize ölüm hızı | **−0,86 … −0,97** | Aynı şey, iki bağımsız yolla |
+
+Sonuç: **"yaşlı il = uzun yaşanan il" değildir.** Ortanca yaşla yaşam süresi arasında
+neredeyse hiç ilişki yok (2023'te +0,03). Yaşlı iller yaşlıdır çünkü gençleri göç etti,
+uzun yaşandığı için değil. Ömrü ölçen tek iki sayı yaşam süresi ve standardize ölüm
+hızıdır ve onlar birbirini −0,97 ile doğruluyor.
+
+## Yapılacaklar — ek
+
+5. Bebek ve beş yaş altı ölüm hızını ekranda "ilk yıla göre değişim" ile sunmak;
+   standardizasyon gerekmiyor, paydası zaten canlı doğum.
+6. SMR için Bayesçi yumuşatma araştırılacak (BYM) — havuzlama ve güven aralığının
+   yanında üçüncü seçenek.
