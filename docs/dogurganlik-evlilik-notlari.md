@@ -578,3 +578,109 @@ Sırasına Göre ... Aylık Doğum Aralığı.xls`.
 `Bursa_Mahalleler_18.csv`, `OrtancaYas.csv` ve `cikti\`, `demografi1\`,
 `demografi2\` klasörleri — Bursa/İznik kent-kır yaş yapısı çalışması, seçmen
 verisi, fotoğraflar. Doğurganlık işine girmiyor, taranmasına gerek yok.
+
+## Bulgu 11 — "hiç evlenmemiş" oranı: üçüncü mekanizma hipotezi çürüdü, gösterge çift anlamlı
+
+Hipotez şuydu: ortalama ilk evlenme yaşı yalnız *evlenenleri* ölçüyor, hiç
+evlenmeyenler o ortalamada görünmüyor. Batıdaki doğurganlık düşüşü (Bulgu 9'un D
+grubu, "doğrudan çocuk sayısını kesme") aslında **hiç evlenmeme** olabilir; öyleyse
+iki mekanizma haritası üçe çıkar.
+
+Kaynak: ambardaki `marital_status` — 2008-2025, 81 il, cinsiyet × beşli yaş ×
+medeni durum, 182.501 il satırı. Bugüne kadar hiç kullanılmamış. Pay
+`never_married`, payda `unknown` hariç toplam. Kadın.
+
+### Türkiye — asıl haber burada: 2016'da yön değişti
+
+| Yıl | 25-29 | 30-34 | 35-39 | 40-44 |
+|---|---|---|---|---|
+| 2008 | 23,3 | 12,3 | 8,6 | 6,8 |
+| 2012 | 24,2 | 12,0 | 8,5 | 6,7 |
+| **2016** | 26,6 | **11,6** | 8,2 | 6,9 |
+| 2020 | 32,5 | 13,1 | 8,2 | 6,9 |
+| 2025 | **40,7** | **17,3** | 9,9 | 7,3 |
+
+30-34 bandı 2008-2016 arasında **düşüyordu** (12,3 → 11,6), sonra sert döndü ve
+dokuz yılda 17,3'e çıktı. 25-29 bandı 23,3'ten 40,7'ye — neredeyse iki katı; her
+beş kadından ikisi 25-29 yaşında hiç evlenmemiş. Bu, deponun herhangi bir
+göstergesindeki en keskin kırılma. Kırılma yılı ~2016-2017.
+
+### Hipotez testi: çürüdü
+
+| İlişki (81 il) | r |
+|---|---|
+| Hiç evlenmemiş (30-34, 2025) ~ GDH 2025 | **+0,109** |
+| Hiç evlenmemiş ~ ilk doğum yaşı | +0,439 |
+| Hiç evlenmemiş ~ doğum aralığı | −0,188 |
+| Hiç evlenmemiş **artışı** ~ GDH düşüşü | **−0,370** |
+| Hiç evlenmemiş **artışı** ~ aralık değişimi | −0,485 |
+
+Kesitte GDH ile ilişki **sıfır** (+0,11). Dahası artış ilişkisi *ters*: hiç
+evlenmeme oranı en çok artan iller, GDH'si en **az** düşen iller. İki değişkeni
+standartlaştırıp toplayınca GDH düşüşünü açıklama gücü artmıyor, **düşüyor**
+(tek başına aralık r=0,640 → ikisi birlikte r=0,267). Üçüncü mekanizma yok.
+
+### Neden sıfır çıktı: gösterge tek şey ölçmüyor
+
+2025'te 30-34 yaş hiç evlenmemiş oranı en yüksek iller **hem en doğurgan hem en
+az doğurgan** illerden oluşuyor — bu yüzden korelasyon sönümleniyor.
+
+| İl | Stok % | Hiç-evlenmedi doğum % | Boşanmış anne doğum % | GDH |
+|---|---|---|---|---|
+| Hakkari | 27,6 | 2,45 | **0,12** | 53,7 |
+| İstanbul | 23,6 | 2,33 | 0,62 | 33,3 |
+| Şırnak | 21,4 | 2,90 | **0,27** | 80,2 |
+| Tunceli | 21,0 | **0,41** | 0,96 | 38,1 |
+| Rize | 20,3 | **0,48** | 0,48 | 36,8 |
+| Diyarbakır | 19,6 | 3,77 | 0,61 | 64,6 |
+| Antalya | 18,8 | 2,13 | **1,27** | 33,2 |
+
+Doğum tarafındaki iki sütun üç ayrı tipi ayırıyor:
+
+1. **Güneydoğu tipi** (Hakkari, Şırnak, Diyarbakır, Mardin, Batman): stok yüksek,
+   hiç-evlenmedi doğum yüksek (%2,5-3,8), boşanmış anne doğumu ~sıfır. Bulgu 5'in
+   uyarısıyla tutarlı — resmî nikâhsız fiili evlilik. Kadın "hiç evlenmedi"
+   sayılıyor ama evli ve doğuruyor.
+2. **Metropol tipi** (İstanbul, İzmir, Ankara, Antalya): stok yüksek, boşanmış
+   anne doğumu **en yüksek** (%0,6-1,3). Gerçek bekârlık + gerçek boşanma.
+3. **Karadeniz/Tunceli tipi** (Tunceli, Rize, Trabzon, Gümüşhane): stok yüksek ama
+   hiç-evlenmedi doğum **en düşük** (%0,4-0,7). Evlenmiyorlar ve doğurmuyorlar —
+   gerçek bekârlık, evlilik dışı doğum yok.
+
+⚠️ **Bu yüzden "hiç evlenmemiş oranı" tek başına yorumlanamaz.** Aynı sayı
+Hakkari'de kayıt dışılığı, İstanbul'da bekârlığı, Rize'de çocuksuzluğu gösteriyor.
+Doğum tarafındaki medeni durum sütunlarıyla birlikte okunmalı.
+
+Not: kayıt-dışılık açıklaması tek başına da yetmiyor — stok ile hiç-evlenmedi
+doğum payı arasında r = **+0,169**. Yani güneydoğunun yüksek stoğu tümüyle
+kayıt sorunu değil.
+
+### Artışı ne açıklıyor: göç
+
+| İlişki | r |
+|---|---|
+| Hiç evlenmemiş **artışı** ~ kümülatif net göç oranı | **+0,421** |
+| Hiç evlenmemiş **stoğu** ~ kümülatif net göç oranı | −0,037 |
+| Hiç evlenmemiş stoğu ~ kadın medyan yaş | −0,153 |
+
+Göç alan iller (İstanbul +9,4, Antalya +9,2, Muğla +9,1 puan) hiç evlenmemiş
+oranını en çok artıranlar; göç veren güneydoğu illerinde oran **düşüyor**
+(Şanlıurfa −4,4, Hatay −3,9, Mardin −3,6, Bingöl −3,3). Yani artışın önemli
+kısmı davranış değil **bileşim**: genç bekârlar batıya gidiyor. Stok düzeyi ise
+göçle açıklanmıyor — o yapısal.
+
+### Yan ürün — boşanmış anneden doğum, hiç bakılmamıştı
+
+TR: **%0,63 (2012) → %0,84 (2025)**. 2025 en yüksek Uşak %2,00, Edirne %1,64,
+Aydın %1,47, Sinop %1,47, Adana %1,46. En düşük Hakkari %0,12, Artvin %0,15,
+Şırnak %0,27, Van %0,33. Temiz bir batı-doğu eğimi; boşanma sonrası yeniden aile
+kurmanın ölçüsü olarak kullanılabilir. Bulgu 5 bu sütuna hiç bakmamıştı.
+
+### Sonuç
+
+Üçüncü mekanizma hipotezi **reddedildi**: hiç evlenmeme, iller arası doğurganlık
+düşüşünü sürükleyen bağımsız bir kanal değil. Bulgu 9'un iki mekanizmalı haritası
+geçerliliğini koruyor. Ama iki yeni şey çıktı: (a) Türkiye düzeyinde 2016'da
+başlayan çok sert bir evlenmeme kırılması — bu **zaman serisi** olgusu, iller
+arası kesitte görünmüyor; (b) göstergenin üç ayrı olguyu tek sayıda topladığı,
+dolayısıyla tek başına kullanılmasının hatalı olduğu.
