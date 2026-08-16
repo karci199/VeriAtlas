@@ -72,3 +72,34 @@ dağıtılacağı bilinmiyor ve dağıtmak veriye olmayan bir bilgi eklemek olur
 | İlçe, SMR | 2009-2025 | ilçe ölüm sayısı 2009'da başlıyor |
 
 İlçe nüfusu 2007'den beri var, yani sınırı koyan ölüm tarafı.
+
+## Ortalama ölüm yaşı — ne ölçtüğü ve ne ölçmediği
+
+Ölenlerin ortalama yaşı, bant orta noktalarıyla hesaplanabiliyor (75+ için 82 varsayımı).
+Sezgisel bir sayı ve **yanıltıcı**: ilin yaş piramidini ölçüyor, ömür uzunluğunu değil.
+
+| İlişki | Normal yıllarda korelasyon |
+|---|---|
+| ortalama ölüm yaşı ~ ilin ortanca yaşı | **+0,89 … +0,93** |
+| ortalama ölüm yaşı ~ yaşam süresi | +0,25 … +0,38 |
+| (ölüm yaşı − ortanca yaş) ~ standardize ölüm hızı | −0,12 … −0,19 |
+
+En açık kanıt Muş: ortalama ölüm yaşı 2009-2025 arası 43,1'den 63,9'a çıktı (+20,8 yıl),
+aynı dönemde yaşam süresi 77,5'ten 77,6'ya (+0,1 yıl). Yirmi yıllık artış ömürden değil,
+çocuk ölümlerinin bitmesinden ve piramidin değişmesinden geliyor. Ülke çapında da aynı
+çelişki var: ortalama ölüm yaşı 2009-2025 arası +6,1 yıl artarken yaşam süresi 2013-2023
+arası düştü (78,0 → 77,3).
+
+**Fark neye yarıyor:** ölümün normal yaş desenini bozan olaylara. 2023'te (ölüm yaşı −
+ortanca yaş) ile standardize hız arasındaki korelasyon −0,86'ya fırlıyor; sebep depremdir
+— Adıyaman'ın ortalama ölüm yaşı 68,5'ten 43,2'ye düşüp ertesi yıl 67,6'ya dönüyor. 11
+deprem ili çıkarılınca −0,44'e iniyor. 2020'de işaret ters dönüyor (+0,39): salgın yaşlıyı
+öldürdüğü için ölüm yaşı yukarı gidiyor. Yani bu fark bir sağlık göstergesi değil, bir
+**anomali dedektörüdür** ve ekranda öyle sunulmalı.
+
+## Yapılacaklar
+
+1. Ölenin yaş grubunu depoya alan adaptör (`nufus-olum-yas-*`, 2009-2025, il + Türkiye).
+2. Türetilmiş iki gösterge: il için doğrudan standardize hız, ilçe için SMR.
+3. Ortalama ölüm yaşı — ancak yukarıdaki uyarı ekranda yanında dururken.
+4. Ertelenenler: ilçede yıl havuzlama ve güven aralığı; ESP2013 ikinci standart.
