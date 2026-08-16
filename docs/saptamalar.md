@@ -1,0 +1,182 @@
+# Saptamalar — Türkiye
+
+Elimizdeki veriden çıkan, **yayımlanan sayıya bakınca görünmeyen** bulgular. Her biri
+depodaki `fact.parquet`'ten hesaplandı; hesabın kendisi yazılı, çünkü bir saptamanın
+değeri kaynağının izlenebilmesinde.
+
+Bu dosya rapor sayfalarının iskeletini belirliyor: bir sayfada bir bölüm varsa, buradaki
+bir saptamayı gösterdiği için var.
+
+## 1. Ölüm artıyor, ölümlülük azalıyor
+
+Türkiye'de yıllık ölüm sayısı 2009'da 368.740, 2025'te 491.684 — **%33 artış**. Aynı
+dönemde ölümlülük *düştü*.
+
+| | 2009 | 2025 | Değişim |
+|---|---|---|---|
+| Ölüm sayısı | 368.740 | 491.684 | **+%33** |
+| Kaba ölüm hızı (‰) | 5,08 | 5,71 | +%12 |
+| **Yaşa göre standartlaştırılmış hız (‰)** | 5,08 | **4,04** | **−%20** |
+
+Standartlaştırma: her yılın yaş-cinsiyet ölüm hızları **2009'un nüfus yapısına**
+uygulandı. Yani "nüfus 2009'daki gibi kalsaydı kaç kişi ölürdü". Cevap: çok daha az.
+
+Aradaki fark tamamen **yaşlanma**. 65+ payı %7,08'den %11,13'e çıktı; ölümlerin çoğu bu
+yaşta olduğu için toplam ölüm, kişi başına risk azalırken bile artıyor.
+
+**Neden görünmüyor:** TÜİK kaba ölüm hızını yayımlıyor, yaşa göre standartlaştırılmışı
+yayımlamıyor. Kaba hıza bakan biri Türkiye'de sağlığın kötüleştiği sonucuna varır. Tam
+tersi doğru.
+
+## 2. Pandeminin ve depremin faturası, fazla ölüm olarak
+
+2019'un yaş-cinsiyet ölümlülüğü sabit tutulup her yılın kendi nüfus yapısına
+uygulandığında beklenen ölüm sayısı çıkıyor. Gerçekleşenle farkı:
+
+| Yıl | Beklenen | Gerçekleşen | Fazla | % |
+|---|---|---|---|---|
+| 2020 | 448.736 | 509.147 | **+60.411** | +13,5 |
+| 2021 | 457.319 | 566.745 | **+109.426** | +23,9 |
+| 2022 | 469.633 | 505.540 | +35.907 | +7,6 |
+| 2023 | 484.867 | 526.534 | +41.667 | +8,6 |
+| 2024 | 506.678 | 489.734 | −16.944 | −3,3 |
+| 2025 | 531.453 | 491.684 | **−39.769** | −7,5 |
+
+İki yılda **170 bin fazla ölüm**. 2023'teki 41.667 fazlanın büyük kısmı depremdir. Ve
+2024-25'te ölümlülük 2019'un *altına* indi: aynı nüfus yapısında 2019 hızlarıyla 531 bin
+ölüm beklenirken 492 bin gerçekleşti.
+
+**Neden görünmüyor:** ham ölüm sayısı 2021'de 566 bin, 2025'te 492 bin. "Düştü" denip
+geçilir. Oysa 2025'in nüfusu daha yaşlı; aynı ölümlülükle 531 bin ölmesi gerekirdi.
+
+## 3. Doğum düşüşü, sayının gösterdiğinden derin
+
+| | 2009 | 2025 | Değişim |
+|---|---|---|---|
+| Doğum sayısı | 1.266.751 | 895.374 | −%29 |
+| 15-49 yaş kadın | 19.493.140 | 21.948.521 | **+%13** |
+| **Genel doğurganlık hızı (‰)** | 65,0 | **40,8** | **−%37** |
+
+Doğuracak yaştaki kadın sayısı 2,5 milyon **arttığı hâlde** doğum 371 bin azaldı. Kadın
+başına düşüş, doğum sayısının düşüşünden yaklaşık sekiz puan daha sert.
+
+**Neden görünmüyor:** doğum sayısı tek başına, paydası büyüyen bir kesirin payıdır.
+
+## 4. Doğurganlıkta doğu-batı makası kapanıyor
+
+Genel doğurganlık hızı (15-49 kadın başına, binde), 2009 → 2025:
+
+| İl | 2009 | 2025 | Değişim |
+|---|---|---|---|
+| Van | 124,2 | 59,2 | **−%52** |
+| Ağrı | 137,8 | 66,6 | −%52 |
+| Muş | 127,5 | 62,3 | −%51 |
+| Siirt | 131,8 | 66,5 | −%50 |
+| Şanlıurfa | 139,6 | 96,6 | −%31 |
+| İzmir | 47,4 | 30,7 | −%35 |
+| Zonguldak | 51,7 | **28,5** | −%45 |
+
+En hızlı düşüş **doğuda**. Şanlıurfa hâlâ zirvede ama makas daralıyor: 2009'da en yüksek
+il en düşüğün 3,0 katıydı, 2025'te 3,4 katı — Şanlıurfa'nın direnci yüzünden makas tam
+kapanmadı, ama Van ve Ağrı gibi iller batı seviyelerine doğru hızla iniyor.
+
+Zonguldak binde 28,5 ile Türkiye'nin en düşüğü — bu, Güney Avrupa'nın en düşük
+düzeyleriyle aynı bölgede.
+
+## 5. En hızlı yaşlanan yer, en çok göç veren yer
+
+65+ payındaki artış (puan), 2007 → 2025:
+
+| İl | 2007 | 2025 | Puan |
+|---|---|---|---|
+| Zonguldak | %8,1 | %16,8 | **+8,7** |
+| Yozgat | %8,2 | %16,0 | +7,8 |
+| Tokat | %9,2 | %16,6 | +7,4 |
+| Edirne | %10,7 | %18,0 | +7,4 |
+| Giresun | %12,7 | %20,0 | +7,3 |
+| Şırnak | %3,4 | %3,8 | +0,4 |
+
+Yaşlanma yalnız uzun yaşamak değil: Zonguldak'ın nüfusu 2009-2025 arasında %5,6 düştü
+**ama doğal artışı artı** (+31.148). Yani doğan ölenden fazla, buna rağmen nüfus azalıyor
+— genci gidiyor. Yaşlanmayı yapan şey göç.
+
+**On bir il aynı durumda** — doğal artışı artı, nüfusu eksi: Yozgat, Ağrı, Kars, Erzurum,
+Zonguldak, Çorum, Ardahan, Muş, Tokat, Sivas, Kütahya. Ağrı'da doğal artış +202.401 iken
+nüfus 8,6% düşmüş; giden 248 bin kişi.
+
+**Tersi yalnız bir il:** Kastamonu. Doğal artışı eksi (−1.513) ama nüfusu %5,6 artmış —
+tamamen göçle.
+
+**Neden görünmüyor:** nüfus artış hızı tek sayıdır ve iki ters kuvvetin toplamıdır.
+
+## 6. İller ölümlülükte birbirine yakınsıyor
+
+65+ ölüm hızının iller arasındaki dağılımı:
+
+| Yıl | Ortalama (‰) | Standart sapma | En yüksek − en düşük |
+|---|---|---|---|
+| 2009 | 46,49 | 3,59 | 18,38 |
+| 2019 | 41,99 | 2,97 | 16,05 |
+| 2021 | 50,58 | 3,83 | 22,40 |
+| **2023** | 40,80 | 4,97 | **37,18** |
+| 2025 | 38,54 | **2,50** | 14,73 |
+
+Hem seviye düşüyor hem de iller birbirine yaklaşıyor: 2025 en düşük sapmanın görüldüğü
+yıl. İki istisna kendini ele veriyor — 2021'de pandemi dağılımı açıyor, 2023'te deprem
+makası 37 punto ile tarihin en yükseğine çıkarıyor.
+
+**Neden görünmüyor:** yakınsama bir ilin serisinde görünmez, ancak illerin *dağılımına*
+bakınca görünür. Hiçbir yayımlanan tablo bu satırı vermiyor.
+
+## 7. Evlilik azaldı, boşanma iki katına çıktı, dulluk kadının
+
+| | 2001/2008 | 2025 |
+|---|---|---|
+| Evlenme sayısı | 641.973 (2008) | 552.237 |
+| Kaba evlenme hızı (‰) | 9,04 (2007) | **6,41** |
+| Boşanma sayısı | 91.994 (2001) | **193.793** |
+| Kaba boşanma hızı (‰) | 1,33 (2007) | 2,25 |
+| Ortalama ilk evlenme yaşı, erkek | 26,0 | 28,5 |
+| Ortalama ilk evlenme yaşı, kadın | 22,7 | 26,0 |
+
+15+ nüfusun medeni durumu, 2008 → 2025: evli %64,4 → %60,2; **boşanmış %2,58 → %5,20**
+(iki katı); hiç evlenmemiş %27,7 → %29,0.
+
+Cinsiyete göre bakınca ayrı bir şey çıkıyor: **eşi ölmüş kadın oranı %9,53, erkek %1,69**
+— altı katı. Sebebi ikili: kadın daha uzun yaşıyor (65+ ölüm hızı 33,8‰'e karşı 43,4‰) ve
+kadın kendinden ortalama 2,5 yaş büyük biriyle evleniyor. İkisi birleşince yaşlılıkta
+yalnızlık büyük ölçüde kadın meselesi oluyor.
+
+**Neden görünmüyor:** medeni durum genelde toplamda yayımlanıyor; cinsiyetle kesilince
+altı kat fark ortaya çıkıyor.
+
+## 8. Hanehalkı küçülürken hane sayısı artıyor
+
+Ortalama hanehalkı büyüklüğü 4,00 (2008) → **3,08** (2025). Nüfus %22 artarken hane
+sayısı çok daha hızlı arttı: aynı nüfus daha çok eve bölünüyor. Konut talebinin nüfus
+artışından bağımsız bir bileşeni var ve bu tabloda duruyor.
+
+## 9. Bebek ölümü yarıya indi
+
+Bebek ölüm hızı 13,9‰ (2009) → **7,8‰** (2025), %44 düşüş. 0 yaş ölüm hızı (bin bebek
+başına, erkek) 2024'te 10,1 — bütün yaş grupları içinde 55-59'a denk bir risk. Hayatın
+ilk yılı hâlâ elli yaşındaki bir insanın riskini taşıyor.
+
+## Rapor sayfaları bu saptamalara göre
+
+Yukarıdakiler "hangi bölüm neden var" sorusunun cevabı:
+
+| Bölüm | Hangi saptamayı gösterir |
+|---|---|
+| Nüfus ve bileşenleri (doğal artış / göç ayrık) | 5 |
+| Yaş yapısı + piramit, 65+ payı | 1, 5 |
+| Kaba **ve** standartlaştırılmış ölüm hızı yan yana | 1 |
+| Beklenen-gerçekleşen ölüm (fazla ölüm) | 2 |
+| Genel doğurganlık hızı, doğum sayısıyla birlikte | 3, 4 |
+| Türkiye ve İBBS içinde sıra | 4, 6 |
+| Evlenme-boşanma hızı, medeni durum cinsiyetle | 7 |
+| Hanehalkı | 8 |
+| Bebek ve çocuk ölümlülüğü | 9 |
+
+Her rapor sayfasında bir ilin bu dokuz eksende **nerede durduğu** olacak: kendi serisi,
+Türkiye ortalaması, ve İBBS-1 / bölge / ülke içindeki sırası.
