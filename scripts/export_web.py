@@ -354,6 +354,27 @@ def export_dictionary(
 LAZY_LEVELS = ("district", "neighbourhood", "village")
 
 
+def has_single_years(frame: pl.DataFrame) -> bool:
+    """Are this frame's ages single years, or bands that happen to look like numbers?
+
+    "A number is a single year" was the rule, and the deaths export broke it. Its youngest
+    band is `0` — age zero on its own, with `1-4` beside it, because infant deaths are
+    counted apart. Folded as a single year, `0` became `0-4`, so the file went out with a
+    band labelled 0-4 that held only the newborns and a `1-4` next to it holding the rest.
+    Both numbers were right and the label was a lie, which is the shape of mistake nothing
+    downstream can catch.
+
+    What tells the two apart: five-year bands can only start on a multiple of five. Single
+    years cannot avoid landing off one — 1, 2, 3, 4, 6 — so a single numeric age that is
+    not a multiple of five proves the column is single years. The population's seventy-six
+    ages say so immediately; the deaths export's lone `0` does not, and is left alone.
+    """
+    if "age" not in frame.columns:
+        return False
+    numeric = frame.filter(pl.col("age").str.contains(r"^\d+$"))["age"]
+    return any(int(age) % 5 for age in numeric.unique())
+
+
 def to_five_year_bands(frame: pl.DataFrame) -> pl.DataFrame:
     """Fold single years of age into five-year bands for the browser.
 
@@ -368,7 +389,7 @@ def to_five_year_bands(frame: pl.DataFrame) -> pl.DataFrame:
     wants does not fall on a five-year boundary, the single years are still in the
     warehouse to build it from.
     """
-    if "age" not in frame.columns:
+    if "age" not in frame.columns or not has_single_years(frame):
         return frame
 
     single = pl.col("age").str.contains(r"^\d+$")
@@ -531,7 +552,7 @@ def export_broken_down(
     declared: dict[str, dict] = {}
     fine_levels = (
         slim.filter(pl.col("age").str.contains(r"^\d+$"))["level"].unique().to_list()
-        if "age" in dims
+        if "age" in dims and has_single_years(slim)
         else []
     )
     if fine_levels:

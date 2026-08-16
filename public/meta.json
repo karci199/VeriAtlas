@@ -695,15 +695,17 @@
           "additive": true,
           "per_capita": true,
           "frequency": "annual",
-          "definition": "Yıl içindeki ölüm sayısı, ölen kişinin ikamet ettiği ile göre, cinsiyet kırılımıyla.",
+          "definition": "Yıl içindeki ölüm sayısı, ölen kişinin ikamet ettiği ile göre, cinsiyet ve yaş kırılımıyla. Yaş kırılımı il ve Türkiye düzeyinde var, ilçede yok.",
           "dims": [
-            "sex"
+            "sex",
+            "age"
           ],
           "views": [
             "table",
             "map",
             "line",
-            "bar"
+            "bar",
+            "pyramid"
           ],
           "dataset": "deaths.csv.gz",
           "levels": [
@@ -780,7 +782,9 @@
     },
     "age": {
       "label": "Yaş grubu",
-      "values": {}
+      "values": {
+        "unknown": "Bilinmeyen"
+      }
     },
     "household_type": {
       "label": "Hanehalkı tipi",
@@ -817,7 +821,9 @@
         "0-14": [
           "0-4",
           "5-9",
-          "10-14"
+          "10-14",
+          "0",
+          "1-4"
         ],
         "15-64": [
           "15-19",
@@ -941,7 +947,9 @@
         "0-14": [
           "0-4",
           "5-9",
-          "10-14"
+          "10-14",
+          "0",
+          "1-4"
         ],
         "15-49": [
           "15-19",
