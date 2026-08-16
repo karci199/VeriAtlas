@@ -1,0 +1,999 @@
+area_id,group_id,group_label,member_count,basis
+TR-01-001,TR-01-001,Aladağ,1,single
+TR-01-002,TR-01-002,Ceyhan,1,single
+TR-01-003,TR-01-003,Seyhan + Çukurova + Sarıçam,3,observed
+TR-01-004,TR-01-004,Feke,1,single
+TR-01-005,TR-01-005,İmamoğlu,1,single
+TR-01-006,TR-01-006,Karaisalı,1,single
+TR-01-007,TR-01-007,Karataş,1,single
+TR-01-008,TR-01-008,Kozan,1,single
+TR-01-009,TR-01-009,Pozantı,1,single
+TR-01-010,TR-01-010,Saimbeyli,1,single
+TR-01-011,TR-01-003,Seyhan + Çukurova + Sarıçam,3,observed
+TR-01-012,TR-01-003,Seyhan + Çukurova + Sarıçam,3,observed
+TR-01-013,TR-01-013,Tufanbeyli,1,single
+TR-01-014,TR-01-014,Yumurtalık,1,single
+TR-01-015,TR-01-015,Yüreğir,1,single
+TR-02-001,TR-02-001,Adıyaman,1,single
+TR-02-002,TR-02-002,Besni,1,single
+TR-02-003,TR-02-003,Çelikhan,1,single
+TR-02-004,TR-02-004,Gerger,1,single
+TR-02-005,TR-02-005,Gölbaşı,1,single
+TR-02-006,TR-02-006,Kâhta,1,single
+TR-02-007,TR-02-007,Samsat,1,single
+TR-02-008,TR-02-008,Sincik,1,single
+TR-02-009,TR-02-009,Tut,1,single
+TR-03-001,TR-03-001,Afyonkarahisar,1,single
+TR-03-002,TR-03-002,Başmakçı,1,single
+TR-03-003,TR-03-003,Bayat,1,single
+TR-03-004,TR-03-004,Bolvadin,1,single
+TR-03-005,TR-03-005,Çay,1,single
+TR-03-006,TR-03-006,Çobanlar,1,single
+TR-03-007,TR-03-007,Dazkırı,1,single
+TR-03-008,TR-03-008,Dinar,1,single
+TR-03-009,TR-03-009,Emirdağ,1,single
+TR-03-010,TR-03-010,Evciler,1,single
+TR-03-011,TR-03-011,Hocalar,1,single
+TR-03-012,TR-03-012,İhsaniye,1,single
+TR-03-013,TR-03-013,İscehisar,1,single
+TR-03-014,TR-03-014,Kızılören,1,single
+TR-03-015,TR-03-015,Sandıklı,1,single
+TR-03-016,TR-03-016,Sinanpaşa,1,single
+TR-03-017,TR-03-017,Sultandağı,1,single
+TR-03-018,TR-03-018,Şuhut,1,single
+TR-04-001,TR-04-001,Ağrı,1,single
+TR-04-002,TR-04-002,Diyadin,1,single
+TR-04-003,TR-04-003,Doğubayazıt,1,single
+TR-04-004,TR-04-004,Eleşkirt,1,single
+TR-04-005,TR-04-005,Hamur,1,single
+TR-04-006,TR-04-006,Patnos,1,single
+TR-04-007,TR-04-007,Taşlıçay,1,single
+TR-04-008,TR-04-008,Tutak,1,single
+TR-05-001,TR-05-001,Amasya,1,single
+TR-05-002,TR-05-002,Göynücek,1,single
+TR-05-003,TR-05-003,Gümüşhacıköy,1,single
+TR-05-004,TR-05-004,Hamamözü,1,single
+TR-05-005,TR-05-005,Merzifon,1,single
+TR-05-006,TR-05-006,Suluova,1,single
+TR-05-007,TR-05-007,Taşova,1,single
+TR-06-001,TR-06-001,Akyurt,1,single
+TR-06-002,TR-06-002,Altındağ,1,single
+TR-06-003,TR-06-003,Ayaş,1,single
+TR-06-004,TR-06-004,Bala,1,single
+TR-06-005,TR-06-005,Beypazarı,1,single
+TR-06-006,TR-06-006,Çamlıdere,1,single
+TR-06-007,TR-06-007,Çankaya,1,single
+TR-06-008,TR-06-008,Çubuk,1,single
+TR-06-009,TR-06-009,Elmadağ,1,single
+TR-06-010,TR-06-010,Etimesgut,1,single
+TR-06-011,TR-06-011,Evren,1,single
+TR-06-012,TR-06-012,Gölbaşı,1,single
+TR-06-013,TR-06-013,Güdül,1,single
+TR-06-014,TR-06-014,Haymana,1,single
+TR-06-015,TR-06-015,Kahramankazan,1,single
+TR-06-016,TR-06-016,Kalecik,1,single
+TR-06-017,TR-06-017,Keçiören,1,single
+TR-06-018,TR-06-018,Kızılcahamam,1,single
+TR-06-019,TR-06-019,Mamak,1,single
+TR-06-020,TR-06-020,Nallıhan,1,single
+TR-06-021,TR-06-021,Polatlı,1,single
+TR-06-022,TR-06-022,Pursaklar,1,single
+TR-06-023,TR-06-023,Sincan,1,single
+TR-06-024,TR-06-024,Şereflikoçhisar,1,single
+TR-06-025,TR-06-025,Yenimahalle,1,single
+TR-06-x1815,TR-06-x1815,Kazan,1,single
+TR-07-001,TR-07-001,Akseki,1,single
+TR-07-002,TR-07-002,Kepez + Muratpaşa + Konyaaltı + Döşemealtı + Aksu + Merkez,6,observed
+TR-07-003,TR-07-003,Alanya,1,single
+TR-07-004,TR-07-004,Demre,1,single
+TR-07-005,TR-07-002,Kepez + Muratpaşa + Konyaaltı + Döşemealtı + Aksu + Merkez,6,observed
+TR-07-006,TR-07-006,Elmalı,1,single
+TR-07-007,TR-07-007,Finike,1,single
+TR-07-008,TR-07-008,Gazipaşa,1,single
+TR-07-009,TR-07-009,Gündoğmuş,1,single
+TR-07-010,TR-07-010,İbradı,1,single
+TR-07-011,TR-07-011,Kaş,1,single
+TR-07-012,TR-07-012,Kemer,1,single
+TR-07-013,TR-07-002,Kepez + Muratpaşa + Konyaaltı + Döşemealtı + Aksu + Merkez,6,observed
+TR-07-014,TR-07-002,Kepez + Muratpaşa + Konyaaltı + Döşemealtı + Aksu + Merkez,6,observed
+TR-07-015,TR-07-015,Korkuteli,1,single
+TR-07-016,TR-07-016,Kumluca,1,single
+TR-07-017,TR-07-017,Manavgat,1,single
+TR-07-018,TR-07-002,Kepez + Muratpaşa + Konyaaltı + Döşemealtı + Aksu + Merkez,6,observed
+TR-07-019,TR-07-019,Serik,1,single
+TR-07-x1138,TR-07-002,Kepez + Muratpaşa + Konyaaltı + Döşemealtı + Aksu + Merkez,6,observed
+TR-08-001,TR-08-001,Ardanuç,1,single
+TR-08-002,TR-08-002,Arhavi,1,single
+TR-08-003,TR-08-003,Artvin,1,single
+TR-08-004,TR-08-004,Borçka,1,single
+TR-08-005,TR-08-005,Hopa,1,single
+TR-08-006,TR-08-006,Kemalpaşa,1,single
+TR-08-007,TR-08-007,Murgul,1,single
+TR-08-008,TR-08-008,Şavşat,1,single
+TR-08-009,TR-08-009,Yusufeli,1,single
+TR-09-001,TR-09-001,Bozdoğan,1,single
+TR-09-002,TR-09-002,Buharkent,1,single
+TR-09-003,TR-09-003,Çine,1,single
+TR-09-004,TR-09-004,Didim,1,single
+TR-09-005,TR-09-005,Efeler,1,single
+TR-09-006,TR-09-006,Germencik,1,single
+TR-09-007,TR-09-007,İncirliova,1,single
+TR-09-008,TR-09-008,Karacasu,1,single
+TR-09-009,TR-09-009,Karpuzlu,1,single
+TR-09-010,TR-09-010,Koçarlı,1,single
+TR-09-011,TR-09-011,Köşk,1,single
+TR-09-012,TR-09-012,Kuşadası,1,single
+TR-09-013,TR-09-013,Kuyucak,1,single
+TR-09-014,TR-09-014,Nazilli,1,single
+TR-09-015,TR-09-015,Söke,1,single
+TR-09-016,TR-09-016,Sultanhisar,1,single
+TR-09-017,TR-09-017,Yenipazar,1,single
+TR-09-x1159,TR-09-x1159,Merkez,1,single
+TR-10-001,TR-10-001,Karesi + Altıeylül + Merkez,3,observed
+TR-10-002,TR-10-002,Ayvalık,1,single
+TR-10-003,TR-10-003,Balya,1,single
+TR-10-004,TR-10-004,Bandırma,1,single
+TR-10-005,TR-10-005,Bigadiç,1,single
+TR-10-006,TR-10-006,Burhaniye,1,single
+TR-10-007,TR-10-007,Dursunbey,1,single
+TR-10-008,TR-10-008,Edremit,1,single
+TR-10-009,TR-10-009,Erdek,1,single
+TR-10-010,TR-10-010,Gömeç,1,single
+TR-10-011,TR-10-011,Gönen,1,single
+TR-10-012,TR-10-012,Havran,1,single
+TR-10-013,TR-10-013,İvrindi,1,single
+TR-10-014,TR-10-001,Karesi + Altıeylül + Merkez,3,observed
+TR-10-015,TR-10-015,Kepsut,1,single
+TR-10-016,TR-10-016,Manyas,1,single
+TR-10-017,TR-10-017,Marmara,1,single
+TR-10-018,TR-10-018,Savaştepe,1,single
+TR-10-019,TR-10-019,Sındırgı,1,single
+TR-10-020,TR-10-020,Susurluk,1,single
+TR-10-x1168,TR-10-001,Karesi + Altıeylül + Merkez,3,observed
+TR-11-001,TR-11-001,Bilecik,1,single
+TR-11-002,TR-11-002,Bozüyük,1,single
+TR-11-003,TR-11-003,Gölpazarı,1,single
+TR-11-004,TR-11-004,İnhisar,1,single
+TR-11-005,TR-11-005,Osmaneli,1,single
+TR-11-006,TR-11-006,Pazaryeri,1,single
+TR-11-007,TR-11-007,Söğüt,1,single
+TR-11-008,TR-11-008,Yenipazar,1,single
+TR-12-001,TR-12-001,Adaklı,1,single
+TR-12-002,TR-12-002,Bingöl,1,single
+TR-12-003,TR-12-003,Genç,1,single
+TR-12-004,TR-12-004,Karlıova,1,single
+TR-12-005,TR-12-005,Kiğı,1,single
+TR-12-006,TR-12-006,Solhan,1,single
+TR-12-007,TR-12-007,Yayladere,1,single
+TR-12-008,TR-12-008,Yedisu,1,single
+TR-13-001,TR-13-001,Adilcevaz,1,single
+TR-13-002,TR-13-002,Ahlat,1,single
+TR-13-003,TR-13-003,Bitlis,1,single
+TR-13-004,TR-13-004,Güroymak,1,single
+TR-13-005,TR-13-005,Hizan,1,single
+TR-13-006,TR-13-006,Mutki,1,single
+TR-13-007,TR-13-007,Tatvan,1,single
+TR-14-001,TR-14-001,Bolu,1,single
+TR-14-002,TR-14-002,Dörtdivan,1,single
+TR-14-003,TR-14-003,Gerede,1,single
+TR-14-004,TR-14-004,Göynük,1,single
+TR-14-005,TR-14-005,Kıbrıscık,1,single
+TR-14-006,TR-14-006,Mengen,1,single
+TR-14-007,TR-14-007,Mudurnu,1,single
+TR-14-008,TR-14-008,Seben,1,single
+TR-14-009,TR-14-009,Yeniçağa,1,single
+TR-15-001,TR-15-001,Ağlasun,1,single
+TR-15-002,TR-15-002,Altınyayla,1,single
+TR-15-003,TR-15-003,Bucak,1,single
+TR-15-004,TR-15-004,Burdur,1,single
+TR-15-005,TR-15-005,Çavdır,1,single
+TR-15-006,TR-15-006,Çeltikçi,1,single
+TR-15-007,TR-15-007,Gölhisar,1,single
+TR-15-008,TR-15-008,Karamanlı,1,single
+TR-15-009,TR-15-009,Kemer,1,single
+TR-15-010,TR-15-010,Tefenni,1,single
+TR-15-011,TR-15-011,Yeşilova,1,single
+TR-16-001,TR-16-001,Büyükorhan,1,single
+TR-16-002,TR-16-002,Gemlik,1,single
+TR-16-003,TR-16-003,Gürsu,1,single
+TR-16-004,TR-16-004,Harmancık,1,single
+TR-16-005,TR-16-005,İnegöl,1,single
+TR-16-006,TR-16-006,İznik,1,single
+TR-16-007,TR-16-007,Karacabey,1,single
+TR-16-008,TR-16-008,Keles,1,single
+TR-16-009,TR-16-009,Kestel,1,single
+TR-16-010,TR-16-010,Mudanya,1,single
+TR-16-011,TR-16-011,Mustafakemalpaşa,1,single
+TR-16-012,TR-16-012,Nilüfer,1,single
+TR-16-013,TR-16-013,Orhaneli,1,single
+TR-16-014,TR-16-014,Orhangazi,1,single
+TR-16-015,TR-16-015,Osmangazi,1,single
+TR-16-016,TR-16-016,Yenişehir,1,single
+TR-16-017,TR-16-017,Yıldırım,1,single
+TR-17-001,TR-17-001,Ayvacık,1,single
+TR-17-002,TR-17-002,Bayramiç,1,single
+TR-17-003,TR-17-003,Biga,1,single
+TR-17-004,TR-17-004,Bozcaada,1,single
+TR-17-005,TR-17-005,Çan,1,single
+TR-17-006,TR-17-006,Çanakkale,1,single
+TR-17-007,TR-17-007,Eceabat,1,single
+TR-17-008,TR-17-008,Ezine,1,single
+TR-17-009,TR-17-009,Gelibolu,1,single
+TR-17-010,TR-17-010,Gökçeada,1,single
+TR-17-011,TR-17-011,Lâpseki,1,single
+TR-17-012,TR-17-012,Yenice,1,single
+TR-18-001,TR-18-001,Atkaracalar,1,single
+TR-18-002,TR-18-002,Bayramören,1,single
+TR-18-003,TR-18-003,Çankırı,1,single
+TR-18-004,TR-18-004,Çerkeş,1,single
+TR-18-005,TR-18-005,Eldivan,1,single
+TR-18-006,TR-18-006,Ilgaz,1,single
+TR-18-007,TR-18-007,Kızılırmak,1,single
+TR-18-008,TR-18-008,Korgun,1,single
+TR-18-009,TR-18-009,Kurşunlu,1,single
+TR-18-010,TR-18-010,Orta,1,single
+TR-18-011,TR-18-011,Şabanözü,1,single
+TR-18-012,TR-18-012,Yapraklı,1,single
+TR-19-001,TR-19-001,Alaca,1,single
+TR-19-002,TR-19-002,Bayat,1,single
+TR-19-003,TR-19-003,Boğazkale,1,single
+TR-19-004,TR-19-004,Çorum,1,single
+TR-19-005,TR-19-005,Dodurga,1,single
+TR-19-006,TR-19-006,İskilip,1,single
+TR-19-007,TR-19-007,Kargı,1,single
+TR-19-008,TR-19-008,Lâçin,1,single
+TR-19-009,TR-19-009,Mecitözü,1,single
+TR-19-010,TR-19-010,Oğuzlar,1,single
+TR-19-011,TR-19-011,Ortaköy,1,single
+TR-19-012,TR-19-012,Osmancık,1,single
+TR-19-013,TR-19-013,Sungurlu,1,single
+TR-19-014,TR-19-014,Uğurludağ,1,single
+TR-20-001,TR-20-001,Acıpayam,1,single
+TR-20-002,TR-20-002,Babadağ,1,single
+TR-20-003,TR-20-003,Baklan,1,single
+TR-20-004,TR-20-004,Bekilli,1,single
+TR-20-005,TR-20-005,Beyağaç,1,single
+TR-20-006,TR-20-006,Bozkurt,1,single
+TR-20-007,TR-20-007,Buldan,1,single
+TR-20-008,TR-20-008,Çal,1,single
+TR-20-009,TR-20-009,Çameli,1,single
+TR-20-010,TR-20-010,Çardak,1,single
+TR-20-011,TR-20-011,Çivril,1,single
+TR-20-012,TR-20-012,Güney,1,single
+TR-20-013,TR-20-013,Honaz,1,single
+TR-20-014,TR-20-014,Kale,1,single
+TR-20-015,TR-20-015,Merkezefendi + Pamukkale + Merkez,3,observed
+TR-20-016,TR-20-015,Merkezefendi + Pamukkale + Merkez,3,observed
+TR-20-017,TR-20-017,Sarayköy,1,single
+TR-20-018,TR-20-018,Serinhisar,1,single
+TR-20-019,TR-20-019,Tavas,1,single
+TR-20-x1271,TR-20-015,Merkezefendi + Pamukkale + Merkez,3,observed
+TR-21-001,TR-21-001,Kayapınar + Bağlar + Yenişehir + Sur + Merkez,5,observed
+TR-21-002,TR-21-002,Bismil,1,single
+TR-21-003,TR-21-003,Çermik,1,single
+TR-21-004,TR-21-004,Çınar,1,single
+TR-21-005,TR-21-005,Çüngüş,1,single
+TR-21-006,TR-21-006,Dicle,1,single
+TR-21-007,TR-21-007,Eğil,1,single
+TR-21-008,TR-21-008,Ergani,1,single
+TR-21-009,TR-21-009,Hani,1,single
+TR-21-010,TR-21-010,Hazro,1,single
+TR-21-011,TR-21-001,Kayapınar + Bağlar + Yenişehir + Sur + Merkez,5,observed
+TR-21-012,TR-21-012,Kocaköy,1,single
+TR-21-013,TR-21-013,Kulp,1,single
+TR-21-014,TR-21-014,Lice,1,single
+TR-21-015,TR-21-015,Silvan,1,single
+TR-21-016,TR-21-001,Kayapınar + Bağlar + Yenişehir + Sur + Merkez,5,observed
+TR-21-017,TR-21-001,Kayapınar + Bağlar + Yenişehir + Sur + Merkez,5,observed
+TR-21-x1284,TR-21-001,Kayapınar + Bağlar + Yenişehir + Sur + Merkez,5,observed
+TR-22-001,TR-22-001,Edirne,1,single
+TR-22-002,TR-22-002,Enez,1,single
+TR-22-003,TR-22-003,Havsa,1,single
+TR-22-004,TR-22-004,İpsala,1,single
+TR-22-005,TR-22-005,Keşan,1,single
+TR-22-006,TR-22-006,Lalapaşa,1,single
+TR-22-007,TR-22-007,Meriç,1,single
+TR-22-008,TR-22-008,Süloğlu,1,single
+TR-22-009,TR-22-009,Uzunköprü,1,single
+TR-23-001,TR-23-001,Ağın,1,single
+TR-23-002,TR-23-002,Alacakaya,1,single
+TR-23-003,TR-23-003,Arıcak,1,single
+TR-23-004,TR-23-004,Baskil,1,single
+TR-23-005,TR-23-005,Elazığ,1,single
+TR-23-006,TR-23-006,Karakoçan,1,single
+TR-23-007,TR-23-007,Keban,1,single
+TR-23-008,TR-23-008,Kovancılar,1,single
+TR-23-009,TR-23-009,Maden,1,single
+TR-23-010,TR-23-010,Palu,1,single
+TR-23-011,TR-23-011,Sivrice,1,single
+TR-24-001,TR-24-001,Çayırlı,1,single
+TR-24-002,TR-24-002,Erzincan,1,single
+TR-24-003,TR-24-003,İliç,1,single
+TR-24-004,TR-24-004,Kemah,1,single
+TR-24-005,TR-24-005,Kemaliye,1,single
+TR-24-006,TR-24-006,Otlukbeli,1,single
+TR-24-007,TR-24-007,Refahiye,1,single
+TR-24-008,TR-24-008,Tercan,1,single
+TR-24-009,TR-24-009,Üzümlü,1,single
+TR-25-001,TR-25-001,Aşkale,1,single
+TR-25-002,TR-25-002,Yakutiye + Palandöken + Aziziye + Merkez,4,observed
+TR-25-003,TR-25-003,Çat,1,single
+TR-25-004,TR-25-004,Hınıs,1,single
+TR-25-005,TR-25-005,Horasan,1,single
+TR-25-006,TR-25-006,İspir,1,single
+TR-25-007,TR-25-007,Karaçoban,1,single
+TR-25-008,TR-25-008,Karayazı,1,single
+TR-25-009,TR-25-009,Köprüköy,1,single
+TR-25-010,TR-25-010,Narman,1,single
+TR-25-011,TR-25-011,Oltu,1,single
+TR-25-012,TR-25-012,Olur,1,single
+TR-25-013,TR-25-002,Yakutiye + Palandöken + Aziziye + Merkez,4,observed
+TR-25-014,TR-25-014,Pasinler,1,single
+TR-25-015,TR-25-015,Pazaryolu,1,single
+TR-25-016,TR-25-016,Şenkaya,1,single
+TR-25-017,TR-25-017,Tekman,1,single
+TR-25-018,TR-25-018,Tortum,1,single
+TR-25-019,TR-25-019,Uzundere,1,single
+TR-25-020,TR-25-002,Yakutiye + Palandöken + Aziziye + Merkez,4,observed
+TR-25-x1319,TR-25-002,Yakutiye + Palandöken + Aziziye + Merkez,4,observed
+TR-26-001,TR-26-001,Alpu,1,single
+TR-26-002,TR-26-002,Beylikova,1,single
+TR-26-003,TR-26-003,Çifteler,1,single
+TR-26-004,TR-26-004,Günyüzü,1,single
+TR-26-005,TR-26-005,Han,1,single
+TR-26-006,TR-26-006,İnönü,1,single
+TR-26-007,TR-26-007,Mahmudiye,1,single
+TR-26-008,TR-26-008,Mihalgazi,1,single
+TR-26-009,TR-26-009,Mihalıççık,1,single
+TR-26-010,TR-26-010,Odunpazarı + Tepebaşı + Merkez,3,observed
+TR-26-011,TR-26-011,Sarıcakaya,1,single
+TR-26-012,TR-26-012,Seyitgazi,1,single
+TR-26-013,TR-26-013,Sivrihisar,1,single
+TR-26-014,TR-26-010,Odunpazarı + Tepebaşı + Merkez,3,observed
+TR-26-x1322,TR-26-010,Odunpazarı + Tepebaşı + Merkez,3,observed
+TR-27-001,TR-27-001,Araban,1,single
+TR-27-002,TR-27-002,İslahiye,1,single
+TR-27-003,TR-27-003,Karkamış,1,single
+TR-27-004,TR-27-004,Nizip,1,single
+TR-27-005,TR-27-005,Nurdağı,1,single
+TR-27-006,TR-27-006,Oğuzeli,1,single
+TR-27-007,TR-27-007,Şahinbey,1,single
+TR-27-008,TR-27-008,Şehitkamil,1,single
+TR-27-009,TR-27-009,Yavuzeli,1,single
+TR-28-001,TR-28-001,Alucra,1,single
+TR-28-002,TR-28-002,Bulancak,1,single
+TR-28-003,TR-28-003,Çamoluk,1,single
+TR-28-004,TR-28-004,Çanakçı,1,single
+TR-28-005,TR-28-005,Dereli,1,single
+TR-28-006,TR-28-006,Doğankent,1,single
+TR-28-007,TR-28-007,Espiye,1,single
+TR-28-008,TR-28-008,Eynesil,1,single
+TR-28-009,TR-28-009,Giresun,1,single
+TR-28-010,TR-28-010,Görele,1,single
+TR-28-011,TR-28-011,Güce,1,single
+TR-28-012,TR-28-012,Keşap,1,single
+TR-28-013,TR-28-013,Piraziz,1,single
+TR-28-014,TR-28-014,Şebinkarahisar,1,single
+TR-28-015,TR-28-015,Tirebolu,1,single
+TR-28-016,TR-28-016,Yağlıdere,1,single
+TR-29-001,TR-29-001,Gümüşhane,1,single
+TR-29-002,TR-29-002,Kelkit,1,single
+TR-29-003,TR-29-003,Köse,1,single
+TR-29-004,TR-29-004,Kürtün,1,single
+TR-29-005,TR-29-005,Şiran,1,single
+TR-29-006,TR-29-006,Torul,1,single
+TR-30-001,TR-30-001,Çukurca,1,single
+TR-30-002,TR-30-002,Hakkari,1,single
+TR-30-003,TR-30-003,Şemdinli + Derecik,2,observed
+TR-30-004,TR-30-004,Yüksekova,1,single
+TR-30-005,TR-30-003,Şemdinli + Derecik,2,observed
+TR-31-001,TR-31-001,Altınözü,1,single
+TR-31-002,TR-31-002,Antakya + İskenderun + Defne + Dörtyol + Samandağ + Arsuz + Payas + Merkez,8,observed
+TR-31-003,TR-31-002,Antakya + İskenderun + Defne + Dörtyol + Samandağ + Arsuz + Payas + Merkez,8,observed
+TR-31-004,TR-31-004,Belen,1,single
+TR-31-005,TR-31-002,Antakya + İskenderun + Defne + Dörtyol + Samandağ + Arsuz + Payas + Merkez,8,observed
+TR-31-006,TR-31-002,Antakya + İskenderun + Defne + Dörtyol + Samandağ + Arsuz + Payas + Merkez,8,observed
+TR-31-007,TR-31-007,Erzin,1,single
+TR-31-008,TR-31-008,Hassa,1,single
+TR-31-009,TR-31-002,Antakya + İskenderun + Defne + Dörtyol + Samandağ + Arsuz + Payas + Merkez,8,observed
+TR-31-010,TR-31-010,Kırıkhan,1,single
+TR-31-011,TR-31-011,Kumlu,1,single
+TR-31-012,TR-31-002,Antakya + İskenderun + Defne + Dörtyol + Samandağ + Arsuz + Payas + Merkez,8,observed
+TR-31-013,TR-31-013,Reyhanlı,1,single
+TR-31-014,TR-31-002,Antakya + İskenderun + Defne + Dörtyol + Samandağ + Arsuz + Payas + Merkez,8,observed
+TR-31-015,TR-31-015,Yayladağı,1,single
+TR-31-x1383,TR-31-002,Antakya + İskenderun + Defne + Dörtyol + Samandağ + Arsuz + Payas + Merkez,8,observed
+TR-32-001,TR-32-001,Aksu,1,single
+TR-32-002,TR-32-002,Atabey,1,single
+TR-32-003,TR-32-003,Eğirdir,1,single
+TR-32-004,TR-32-004,Gelendost,1,single
+TR-32-005,TR-32-005,Gönen,1,single
+TR-32-006,TR-32-006,Isparta,1,single
+TR-32-007,TR-32-007,Keçiborlu,1,single
+TR-32-008,TR-32-008,Senirkent,1,single
+TR-32-009,TR-32-009,Sütçüler,1,single
+TR-32-010,TR-32-010,Şarkikaraağaç,1,single
+TR-32-011,TR-32-011,Uluborlu,1,single
+TR-32-012,TR-32-012,Yalvaç,1,single
+TR-32-013,TR-32-013,Yenişarbademli,1,single
+TR-33-001,TR-33-001,Toroslar + Yenişehir + Akdeniz + Mezitli + Merkez,5,observed
+TR-33-002,TR-33-002,Anamur,1,single
+TR-33-003,TR-33-003,Aydıncık,1,single
+TR-33-004,TR-33-004,Bozyazı,1,single
+TR-33-005,TR-33-005,Çamlıyayla,1,single
+TR-33-006,TR-33-006,Erdemli,1,single
+TR-33-007,TR-33-007,Gülnar,1,single
+TR-33-008,TR-33-001,Toroslar + Yenişehir + Akdeniz + Mezitli + Merkez,5,observed
+TR-33-009,TR-33-009,Mut,1,single
+TR-33-010,TR-33-010,Silifke,1,single
+TR-33-011,TR-33-011,Tarsus,1,single
+TR-33-012,TR-33-001,Toroslar + Yenişehir + Akdeniz + Mezitli + Merkez,5,observed
+TR-33-013,TR-33-001,Toroslar + Yenişehir + Akdeniz + Mezitli + Merkez,5,observed
+TR-33-x1402,TR-33-001,Toroslar + Yenişehir + Akdeniz + Mezitli + Merkez,5,observed
+TR-34-001,TR-34-001,Adalar,1,single
+TR-34-002,TR-34-002,Esenyurt + Ümraniye + Başakşehir + Sultangazi + Sancaktepe + Gazi Osmanpaşa + Kadıköy + Beylikdüzü + Ataşehir + Arnavutköy + Çekmeköy + Büyükçekmece + Çatalca + Eminönü,14,observed
+TR-34-003,TR-34-002,Esenyurt + Ümraniye + Başakşehir + Sultangazi + Sancaktepe + Gazi Osmanpaşa + Kadıköy + Beylikdüzü + Ataşehir + Arnavutköy + Çekmeköy + Büyükçekmece + Çatalca + Eminönü,14,observed
+TR-34-004,TR-34-004,Avcılar,1,single
+TR-34-005,TR-34-005,Bağcılar,1,single
+TR-34-006,TR-34-006,Bahçelievler,1,single
+TR-34-007,TR-34-007,Bakırköy,1,single
+TR-34-008,TR-34-002,Esenyurt + Ümraniye + Başakşehir + Sultangazi + Sancaktepe + Gazi Osmanpaşa + Kadıköy + Beylikdüzü + Ataşehir + Arnavutköy + Çekmeköy + Büyükçekmece + Çatalca + Eminönü,14,observed
+TR-34-009,TR-34-009,Bayrampaşa,1,single
+TR-34-010,TR-34-010,Beşiktaş,1,single
+TR-34-011,TR-34-011,Beykoz,1,single
+TR-34-012,TR-34-002,Esenyurt + Ümraniye + Başakşehir + Sultangazi + Sancaktepe + Gazi Osmanpaşa + Kadıköy + Beylikdüzü + Ataşehir + Arnavutköy + Çekmeköy + Büyükçekmece + Çatalca + Eminönü,14,observed
+TR-34-013,TR-34-013,Beyoğlu,1,single
+TR-34-014,TR-34-002,Esenyurt + Ümraniye + Başakşehir + Sultangazi + Sancaktepe + Gazi Osmanpaşa + Kadıköy + Beylikdüzü + Ataşehir + Arnavutköy + Çekmeköy + Büyükçekmece + Çatalca + Eminönü,14,observed
+TR-34-015,TR-34-002,Esenyurt + Ümraniye + Başakşehir + Sultangazi + Sancaktepe + Gazi Osmanpaşa + Kadıköy + Beylikdüzü + Ataşehir + Arnavutköy + Çekmeköy + Büyükçekmece + Çatalca + Eminönü,14,observed
+TR-34-016,TR-34-002,Esenyurt + Ümraniye + Başakşehir + Sultangazi + Sancaktepe + Gazi Osmanpaşa + Kadıköy + Beylikdüzü + Ataşehir + Arnavutköy + Çekmeköy + Büyükçekmece + Çatalca + Eminönü,14,observed
+TR-34-017,TR-34-017,Esenler,1,single
+TR-34-018,TR-34-002,Esenyurt + Ümraniye + Başakşehir + Sultangazi + Sancaktepe + Gazi Osmanpaşa + Kadıköy + Beylikdüzü + Ataşehir + Arnavutköy + Çekmeköy + Büyükçekmece + Çatalca + Eminönü,14,observed
+TR-34-019,TR-34-019,Eyüpsultan,1,single
+TR-34-020,TR-34-020,Fatih,1,single
+TR-34-021,TR-34-002,Esenyurt + Ümraniye + Başakşehir + Sultangazi + Sancaktepe + Gazi Osmanpaşa + Kadıköy + Beylikdüzü + Ataşehir + Arnavutköy + Çekmeköy + Büyükçekmece + Çatalca + Eminönü,14,observed
+TR-34-022,TR-34-022,Güngören,1,single
+TR-34-023,TR-34-002,Esenyurt + Ümraniye + Başakşehir + Sultangazi + Sancaktepe + Gazi Osmanpaşa + Kadıköy + Beylikdüzü + Ataşehir + Arnavutköy + Çekmeköy + Büyükçekmece + Çatalca + Eminönü,14,observed
+TR-34-024,TR-34-024,Kağıthane,1,single
+TR-34-025,TR-34-025,Kartal,1,single
+TR-34-026,TR-34-026,Küçükçekmece,1,single
+TR-34-027,TR-34-027,Maltepe,1,single
+TR-34-028,TR-34-028,Pendik,1,single
+TR-34-029,TR-34-002,Esenyurt + Ümraniye + Başakşehir + Sultangazi + Sancaktepe + Gazi Osmanpaşa + Kadıköy + Beylikdüzü + Ataşehir + Arnavutköy + Çekmeköy + Büyükçekmece + Çatalca + Eminönü,14,observed
+TR-34-030,TR-34-030,Sarıyer,1,single
+TR-34-031,TR-34-031,Silivri,1,single
+TR-34-032,TR-34-032,Sultanbeyli,1,single
+TR-34-033,TR-34-002,Esenyurt + Ümraniye + Başakşehir + Sultangazi + Sancaktepe + Gazi Osmanpaşa + Kadıköy + Beylikdüzü + Ataşehir + Arnavutköy + Çekmeköy + Büyükçekmece + Çatalca + Eminönü,14,observed
+TR-34-034,TR-34-034,Şile,1,single
+TR-34-035,TR-34-035,Şişli,1,single
+TR-34-036,TR-34-036,Tuzla,1,single
+TR-34-037,TR-34-002,Esenyurt + Ümraniye + Başakşehir + Sultangazi + Sancaktepe + Gazi Osmanpaşa + Kadıköy + Beylikdüzü + Ataşehir + Arnavutköy + Çekmeköy + Büyükçekmece + Çatalca + Eminönü,14,observed
+TR-34-038,TR-34-038,Üsküdar,1,single
+TR-34-039,TR-34-039,Zeytinburnu,1,single
+TR-34-x1305,TR-34-002,Esenyurt + Ümraniye + Başakşehir + Sultangazi + Sancaktepe + Gazi Osmanpaşa + Kadıköy + Beylikdüzü + Ataşehir + Arnavutköy + Çekmeköy + Büyükçekmece + Çatalca + Eminönü,14,observed
+TR-34-x1325,TR-34-x1325,Eyüp,1,single
+TR-35-001,TR-35-001,Aliağa,1,single
+TR-35-002,TR-35-002,Balçova,1,single
+TR-35-003,TR-35-003,Bayındır,1,single
+TR-35-004,TR-35-004,Karabağlar + Karşıyaka + Konak + Bayraklı,4,observed
+TR-35-005,TR-35-005,Bergama,1,single
+TR-35-006,TR-35-006,Beydağ,1,single
+TR-35-007,TR-35-007,Bornova,1,single
+TR-35-008,TR-35-008,Buca,1,single
+TR-35-009,TR-35-009,Çeşme,1,single
+TR-35-010,TR-35-010,Çiğli,1,single
+TR-35-011,TR-35-011,Dikili,1,single
+TR-35-012,TR-35-012,Foça,1,single
+TR-35-013,TR-35-013,Gaziemir,1,single
+TR-35-014,TR-35-014,Güzelbahçe,1,single
+TR-35-015,TR-35-004,Karabağlar + Karşıyaka + Konak + Bayraklı,4,observed
+TR-35-016,TR-35-016,Karaburun,1,single
+TR-35-017,TR-35-004,Karabağlar + Karşıyaka + Konak + Bayraklı,4,observed
+TR-35-018,TR-35-018,Kemalpaşa,1,single
+TR-35-019,TR-35-019,Kınık,1,single
+TR-35-020,TR-35-020,Kiraz,1,single
+TR-35-021,TR-35-004,Karabağlar + Karşıyaka + Konak + Bayraklı,4,observed
+TR-35-022,TR-35-022,Menderes,1,single
+TR-35-023,TR-35-023,Menemen,1,single
+TR-35-024,TR-35-024,Narlıdere,1,single
+TR-35-025,TR-35-025,Ödemiş,1,single
+TR-35-026,TR-35-026,Seferihisar,1,single
+TR-35-027,TR-35-027,Selçuk,1,single
+TR-35-028,TR-35-028,Tire,1,single
+TR-35-029,TR-35-029,Torbalı,1,single
+TR-35-030,TR-35-030,Urla,1,single
+TR-36-001,TR-36-001,Akyaka,1,single
+TR-36-002,TR-36-002,Arpaçay,1,single
+TR-36-003,TR-36-003,Digor,1,single
+TR-36-004,TR-36-004,Kağızman,1,single
+TR-36-005,TR-36-005,Kars,1,single
+TR-36-006,TR-36-006,Sarıkamış,1,single
+TR-36-007,TR-36-007,Selim,1,single
+TR-36-008,TR-36-008,Susuz,1,single
+TR-37-001,TR-37-001,Abana,1,single
+TR-37-002,TR-37-002,Ağlı,1,single
+TR-37-003,TR-37-003,Araç,1,single
+TR-37-004,TR-37-004,Azdavay,1,single
+TR-37-005,TR-37-005,Bozkurt,1,single
+TR-37-006,TR-37-006,Cide,1,single
+TR-37-007,TR-37-007,Çatalzeytin,1,single
+TR-37-008,TR-37-008,Daday,1,single
+TR-37-009,TR-37-009,Devrekâni,1,single
+TR-37-010,TR-37-010,Doğanyurt,1,single
+TR-37-011,TR-37-011,Hanönü,1,single
+TR-37-012,TR-37-012,İhsangazi,1,single
+TR-37-013,TR-37-013,İnebolu,1,single
+TR-37-014,TR-37-014,Kastamonu,1,single
+TR-37-015,TR-37-015,Küre,1,single
+TR-37-016,TR-37-016,Pınarbaşı,1,single
+TR-37-017,TR-37-017,Seydiler,1,single
+TR-37-018,TR-37-018,Şenpazar,1,single
+TR-37-019,TR-37-019,Taşköprü,1,single
+TR-37-020,TR-37-020,Tosya,1,single
+TR-38-001,TR-38-001,Akkışla,1,single
+TR-38-002,TR-38-002,Bünyan,1,single
+TR-38-003,TR-38-003,Develi,1,single
+TR-38-004,TR-38-004,Felahiye,1,single
+TR-38-005,TR-38-005,Hacılar,1,single
+TR-38-006,TR-38-006,İncesu,1,single
+TR-38-007,TR-38-007,Kocasinan,1,single
+TR-38-008,TR-38-008,Melikgazi,1,single
+TR-38-009,TR-38-009,Özvatan,1,single
+TR-38-010,TR-38-010,Pınarbaşı,1,single
+TR-38-011,TR-38-011,Sarıoğlan,1,single
+TR-38-012,TR-38-012,Sarız,1,single
+TR-38-013,TR-38-013,Talas,1,single
+TR-38-014,TR-38-014,Tomarza,1,single
+TR-38-015,TR-38-015,Yahyalı,1,single
+TR-38-016,TR-38-016,Yeşilhisar,1,single
+TR-39-001,TR-39-001,Babaeski,1,single
+TR-39-002,TR-39-002,Demirköy,1,single
+TR-39-003,TR-39-003,Kırklareli,1,single
+TR-39-004,TR-39-004,Kofçaz,1,single
+TR-39-005,TR-39-005,Lüleburgaz,1,single
+TR-39-006,TR-39-006,Pehlivanköy,1,single
+TR-39-007,TR-39-007,Pınarhisar,1,single
+TR-39-008,TR-39-008,Vize,1,single
+TR-40-001,TR-40-001,Akçakent,1,single
+TR-40-002,TR-40-002,Akpınar,1,single
+TR-40-003,TR-40-003,Boztepe,1,single
+TR-40-004,TR-40-004,Çiçekdağı,1,single
+TR-40-005,TR-40-005,Kaman,1,single
+TR-40-006,TR-40-006,Kırşehir,1,single
+TR-40-007,TR-40-007,Mucur,1,single
+TR-41-001,TR-41-001,Gebze + İzmit + Darıca + Çayırova + Kartepe + Başiskele + Dilovası + Merkez,8,observed
+TR-41-002,TR-41-001,Gebze + İzmit + Darıca + Çayırova + Kartepe + Başiskele + Dilovası + Merkez,8,observed
+TR-41-003,TR-41-001,Gebze + İzmit + Darıca + Çayırova + Kartepe + Başiskele + Dilovası + Merkez,8,observed
+TR-41-004,TR-41-004,Derince,1,single
+TR-41-005,TR-41-001,Gebze + İzmit + Darıca + Çayırova + Kartepe + Başiskele + Dilovası + Merkez,8,observed
+TR-41-006,TR-41-001,Gebze + İzmit + Darıca + Çayırova + Kartepe + Başiskele + Dilovası + Merkez,8,observed
+TR-41-007,TR-41-007,Gölcük,1,single
+TR-41-008,TR-41-001,Gebze + İzmit + Darıca + Çayırova + Kartepe + Başiskele + Dilovası + Merkez,8,observed
+TR-41-009,TR-41-009,Kandıra,1,single
+TR-41-010,TR-41-010,Karamürsel,1,single
+TR-41-011,TR-41-001,Gebze + İzmit + Darıca + Çayırova + Kartepe + Başiskele + Dilovası + Merkez,8,observed
+TR-41-012,TR-41-012,Körfez,1,single
+TR-41-x1478,TR-41-001,Gebze + İzmit + Darıca + Çayırova + Kartepe + Başiskele + Dilovası + Merkez,8,observed
+TR-42-001,TR-42-001,Ahırlı,1,single
+TR-42-002,TR-42-002,Akören,1,single
+TR-42-003,TR-42-003,Akşehir,1,single
+TR-42-004,TR-42-004,Altınekin,1,single
+TR-42-005,TR-42-005,Beyşehir,1,single
+TR-42-006,TR-42-006,Bozkır,1,single
+TR-42-007,TR-42-007,Cihanbeyli,1,single
+TR-42-008,TR-42-008,Çeltik,1,single
+TR-42-009,TR-42-009,Çumra,1,single
+TR-42-010,TR-42-010,Derbent,1,single
+TR-42-011,TR-42-011,Derebucak,1,single
+TR-42-012,TR-42-012,Doğanhisar,1,single
+TR-42-013,TR-42-013,Emirgazi,1,single
+TR-42-014,TR-42-014,Ereğli,1,single
+TR-42-015,TR-42-015,Güneysınır,1,single
+TR-42-016,TR-42-016,Hadim,1,single
+TR-42-017,TR-42-017,Halkapınar,1,single
+TR-42-018,TR-42-018,Hüyük,1,single
+TR-42-019,TR-42-019,Ilgın,1,single
+TR-42-020,TR-42-020,Kadınhanı,1,single
+TR-42-021,TR-42-021,Karapınar,1,single
+TR-42-022,TR-42-022,Karatay,1,single
+TR-42-023,TR-42-023,Kulu,1,single
+TR-42-024,TR-42-024,Meram,1,single
+TR-42-025,TR-42-025,Sarayönü,1,single
+TR-42-026,TR-42-026,Selçuklu,1,single
+TR-42-027,TR-42-027,Seydişehir,1,single
+TR-42-028,TR-42-028,Taşkent,1,single
+TR-42-029,TR-42-029,Tuzlukçu,1,single
+TR-42-030,TR-42-030,Yalıhüyük,1,single
+TR-42-031,TR-42-031,Yunak,1,single
+TR-43-001,TR-43-001,Altıntaş,1,single
+TR-43-002,TR-43-002,Aslanapa,1,single
+TR-43-003,TR-43-003,Çavdarhisar,1,single
+TR-43-004,TR-43-004,Domaniç,1,single
+TR-43-005,TR-43-005,Dumlupınar,1,single
+TR-43-006,TR-43-006,Emet,1,single
+TR-43-007,TR-43-007,Gediz,1,single
+TR-43-008,TR-43-008,Hisarcık,1,single
+TR-43-009,TR-43-009,Kütahya,1,single
+TR-43-010,TR-43-010,Pazarlar,1,single
+TR-43-011,TR-43-011,Simav,1,single
+TR-43-012,TR-43-012,Şaphane,1,single
+TR-43-013,TR-43-013,Tavşanlı,1,single
+TR-44-001,TR-44-001,Akçadağ,1,single
+TR-44-002,TR-44-002,Arapgir,1,single
+TR-44-003,TR-44-003,Arguvan,1,single
+TR-44-004,TR-44-004,Yeşilyurt + Battalgazi + Merkez,3,observed
+TR-44-005,TR-44-005,Darende,1,single
+TR-44-006,TR-44-006,Doğanşehir,1,single
+TR-44-007,TR-44-007,Doğanyol,1,single
+TR-44-008,TR-44-008,Hekimhan,1,single
+TR-44-009,TR-44-009,Kale,1,single
+TR-44-010,TR-44-010,Kuluncak,1,single
+TR-44-011,TR-44-011,Pütürge,1,single
+TR-44-012,TR-44-012,Yazıhan,1,single
+TR-44-013,TR-44-004,Yeşilyurt + Battalgazi + Merkez,3,observed
+TR-44-x1509,TR-44-004,Yeşilyurt + Battalgazi + Merkez,3,observed
+TR-45-001,TR-45-001,Ahmetli,1,single
+TR-45-002,TR-45-002,Akhisar,1,single
+TR-45-003,TR-45-003,Alaşehir,1,single
+TR-45-004,TR-45-004,Demirci,1,single
+TR-45-005,TR-45-005,Gölmarmara,1,single
+TR-45-006,TR-45-006,Gördes,1,single
+TR-45-007,TR-45-007,Kırkağaç,1,single
+TR-45-008,TR-45-008,Köprübaşı,1,single
+TR-45-009,TR-45-009,Kula,1,single
+TR-45-010,TR-45-010,Salihli,1,single
+TR-45-011,TR-45-011,Sarıgöl,1,single
+TR-45-012,TR-45-012,Saruhanlı,1,single
+TR-45-013,TR-45-013,Selendi,1,single
+TR-45-014,TR-45-014,Soma,1,single
+TR-45-015,TR-45-015,Yunusemre + Şehzadeler + Merkez,3,observed
+TR-45-016,TR-45-016,Turgutlu,1,single
+TR-45-017,TR-45-015,Yunusemre + Şehzadeler + Merkez,3,observed
+TR-45-x1513,TR-45-015,Yunusemre + Şehzadeler + Merkez,3,observed
+TR-46-001,TR-46-001,Afşin,1,single
+TR-46-002,TR-46-002,Andırın,1,single
+TR-46-003,TR-46-003,Çağlayancerit,1,single
+TR-46-004,TR-46-004,Oniki Şubat + Dulkadiroğlu + Merkez,3,observed
+TR-46-005,TR-46-005,Ekinözü,1,single
+TR-46-006,TR-46-006,Elbistan,1,single
+TR-46-007,TR-46-007,Göksun,1,single
+TR-46-008,TR-46-008,Nurhak,1,single
+TR-46-009,TR-46-004,Oniki Şubat + Dulkadiroğlu + Merkez,3,observed
+TR-46-010,TR-46-010,Pazarcık,1,single
+TR-46-011,TR-46-011,Türkoğlu,1,single
+TR-46-x1515,TR-46-004,Oniki Şubat + Dulkadiroğlu + Merkez,3,observed
+TR-47-001,TR-47-001,Artuklu,1,single
+TR-47-002,TR-47-002,Dargeçit,1,single
+TR-47-003,TR-47-003,Derik,1,single
+TR-47-004,TR-47-004,Kızıltepe,1,single
+TR-47-005,TR-47-005,Mazıdağı,1,single
+TR-47-006,TR-47-006,Midyat,1,single
+TR-47-007,TR-47-007,Nusaybin,1,single
+TR-47-008,TR-47-008,Ömerli,1,single
+TR-47-009,TR-47-009,Savur,1,single
+TR-47-010,TR-47-010,Yeşilli,1,single
+TR-47-x1516,TR-47-x1516,Merkez,1,single
+TR-48-001,TR-48-001,Bodrum,1,single
+TR-48-002,TR-48-002,Dalaman,1,single
+TR-48-003,TR-48-003,Datça,1,single
+TR-48-004,TR-48-004,Fethiye + Menteşe + Seydikemer + Merkez,4,observed
+TR-48-005,TR-48-005,Kavaklıdere,1,single
+TR-48-006,TR-48-006,Köyceğiz,1,single
+TR-48-007,TR-48-007,Marmaris,1,single
+TR-48-008,TR-48-004,Fethiye + Menteşe + Seydikemer + Merkez,4,observed
+TR-48-009,TR-48-009,Milas,1,single
+TR-48-010,TR-48-010,Ortaca,1,single
+TR-48-011,TR-48-004,Fethiye + Menteşe + Seydikemer + Merkez,4,observed
+TR-48-012,TR-48-012,Ula,1,single
+TR-48-013,TR-48-013,Yatağan,1,single
+TR-48-x1532,TR-48-004,Fethiye + Menteşe + Seydikemer + Merkez,4,observed
+TR-49-001,TR-49-001,Bulanık,1,single
+TR-49-002,TR-49-002,Hasköy,1,single
+TR-49-003,TR-49-003,Korkut,1,single
+TR-49-004,TR-49-004,Malazgirt,1,single
+TR-49-005,TR-49-005,Muş,1,single
+TR-49-006,TR-49-006,Varto,1,single
+TR-50-001,TR-50-001,Acıgöl,1,single
+TR-50-002,TR-50-002,Avanos,1,single
+TR-50-003,TR-50-003,Derinkuyu,1,single
+TR-50-004,TR-50-004,Gülşehir,1,single
+TR-50-005,TR-50-005,Hacıbektaş,1,single
+TR-50-006,TR-50-006,Kozaklı,1,single
+TR-50-007,TR-50-007,Nevşehir,1,single
+TR-50-008,TR-50-008,Ürgüp,1,single
+TR-51-001,TR-51-001,Altunhisar,1,single
+TR-51-002,TR-51-002,Bor,1,single
+TR-51-003,TR-51-003,Çamardı,1,single
+TR-51-004,TR-51-004,Çiftlik,1,single
+TR-51-005,TR-51-005,Niğde,1,single
+TR-51-006,TR-51-006,Ulukışla,1,single
+TR-52-001,TR-52-001,Akkuş,1,single
+TR-52-002,TR-52-002,Altınordu,1,single
+TR-52-003,TR-52-003,Aybastı,1,single
+TR-52-004,TR-52-004,Çamaş,1,single
+TR-52-005,TR-52-005,Çatalpınar,1,single
+TR-52-006,TR-52-006,Çaybaşı,1,single
+TR-52-007,TR-52-007,Fatsa,1,single
+TR-52-008,TR-52-008,Gölköy,1,single
+TR-52-009,TR-52-009,Gülyalı,1,single
+TR-52-010,TR-52-010,Gürgentepe,1,single
+TR-52-011,TR-52-011,İkizce,1,single
+TR-52-012,TR-52-012,Kabadüz,1,single
+TR-52-013,TR-52-013,Kabataş,1,single
+TR-52-014,TR-52-014,Korgan,1,single
+TR-52-015,TR-52-015,Kumru,1,single
+TR-52-016,TR-52-016,Mesudiye,1,single
+TR-52-017,TR-52-017,Perşembe,1,single
+TR-52-018,TR-52-018,Ulubey,1,single
+TR-52-019,TR-52-019,Ünye,1,single
+TR-52-x1552,TR-52-x1552,Merkez,1,single
+TR-53-001,TR-53-001,Ardeşen,1,single
+TR-53-002,TR-53-002,Çamlıhemşin,1,single
+TR-53-003,TR-53-003,Çayeli,1,single
+TR-53-004,TR-53-004,Derepazarı,1,single
+TR-53-005,TR-53-005,Fındıklı,1,single
+TR-53-006,TR-53-006,Güneysu,1,single
+TR-53-007,TR-53-007,Hemşin,1,single
+TR-53-008,TR-53-008,İkizdere,1,single
+TR-53-009,TR-53-009,İyidere,1,single
+TR-53-010,TR-53-010,Kalkandere,1,single
+TR-53-011,TR-53-011,Pazar,1,single
+TR-53-012,TR-53-012,Rize,1,single
+TR-54-001,TR-54-001,Adapazarı + Serdivan + Erenler + Arifiye + Merkez,5,observed
+TR-54-002,TR-54-002,Akyazı,1,single
+TR-54-003,TR-54-001,Adapazarı + Serdivan + Erenler + Arifiye + Merkez,5,observed
+TR-54-004,TR-54-001,Adapazarı + Serdivan + Erenler + Arifiye + Merkez,5,observed
+TR-54-005,TR-54-005,Ferizli,1,single
+TR-54-006,TR-54-006,Geyve,1,single
+TR-54-007,TR-54-007,Hendek,1,single
+TR-54-008,TR-54-008,Karapürçek,1,single
+TR-54-009,TR-54-009,Karasu,1,single
+TR-54-010,TR-54-010,Kaynarca,1,single
+TR-54-011,TR-54-011,Kocaali,1,single
+TR-54-012,TR-54-012,Pamukova,1,single
+TR-54-013,TR-54-013,Sapanca,1,single
+TR-54-014,TR-54-001,Adapazarı + Serdivan + Erenler + Arifiye + Merkez,5,observed
+TR-54-015,TR-54-015,Söğütlü,1,single
+TR-54-016,TR-54-016,Taraklı,1,single
+TR-54-x1589,TR-54-001,Adapazarı + Serdivan + Erenler + Arifiye + Merkez,5,observed
+TR-55-001,TR-55-001,19 Mayıs,1,single
+TR-55-002,TR-55-002,Alaçam,1,single
+TR-55-003,TR-55-003,Asarcık,1,single
+TR-55-004,TR-55-004,İlkadım + Atakum + Canik + Merkez,4,observed
+TR-55-005,TR-55-005,Ayvacık,1,single
+TR-55-006,TR-55-006,Bafra,1,single
+TR-55-007,TR-55-004,İlkadım + Atakum + Canik + Merkez,4,observed
+TR-55-008,TR-55-008,Çarşamba,1,single
+TR-55-009,TR-55-009,Havza,1,single
+TR-55-010,TR-55-004,İlkadım + Atakum + Canik + Merkez,4,observed
+TR-55-011,TR-55-011,Kavak,1,single
+TR-55-012,TR-55-012,Ladik,1,single
+TR-55-013,TR-55-013,Salıpazarı,1,single
+TR-55-014,TR-55-014,Tekkeköy,1,single
+TR-55-015,TR-55-015,Terme,1,single
+TR-55-016,TR-55-016,Vezirköprü,1,single
+TR-55-017,TR-55-017,Yakakent,1,single
+TR-55-x1593,TR-55-004,İlkadım + Atakum + Canik + Merkez,4,observed
+TR-56-001,TR-56-001,Baykan,1,single
+TR-56-002,TR-56-002,Eruh,1,single
+TR-56-003,TR-56-003,Kurtalan,1,single
+TR-56-004,TR-56-004,Pervari,1,single
+TR-56-005,TR-56-005,Siirt,1,single
+TR-56-006,TR-56-006,Şirvan,1,single
+TR-56-007,TR-56-007,Tillo,1,single
+TR-57-001,TR-57-001,Ayancık,1,single
+TR-57-002,TR-57-002,Boyabat,1,single
+TR-57-003,TR-57-003,Dikmen,1,single
+TR-57-004,TR-57-004,Durağan,1,single
+TR-57-005,TR-57-005,Erfelek,1,single
+TR-57-006,TR-57-006,Gerze,1,single
+TR-57-007,TR-57-007,Saraydüzü,1,single
+TR-57-008,TR-57-008,Sinop,1,single
+TR-57-009,TR-57-009,Türkeli,1,single
+TR-58-001,TR-58-001,Akıncılar,1,single
+TR-58-002,TR-58-002,Altınyayla,1,single
+TR-58-003,TR-58-003,Divriği,1,single
+TR-58-004,TR-58-004,Doğanşar,1,single
+TR-58-005,TR-58-005,Gemerek,1,single
+TR-58-006,TR-58-006,Gölova,1,single
+TR-58-007,TR-58-007,Gürün,1,single
+TR-58-008,TR-58-008,Hafik,1,single
+TR-58-009,TR-58-009,İmranlı,1,single
+TR-58-010,TR-58-010,Kangal,1,single
+TR-58-011,TR-58-011,Koyulhisar,1,single
+TR-58-012,TR-58-012,Sivas,1,single
+TR-58-013,TR-58-013,Suşehri,1,single
+TR-58-014,TR-58-014,Şarkışla,1,single
+TR-58-015,TR-58-015,Ulaş,1,single
+TR-58-016,TR-58-016,Yıldızeli,1,single
+TR-58-017,TR-58-017,Zara,1,single
+TR-59-001,TR-59-001,Süleymanpaşa + Çerkezköy + Kapaklı + Ergene + Merkez,5,observed
+TR-59-002,TR-59-002,Çorlu,1,single
+TR-59-003,TR-59-001,Süleymanpaşa + Çerkezköy + Kapaklı + Ergene + Merkez,5,observed
+TR-59-004,TR-59-004,Hayrabolu,1,single
+TR-59-005,TR-59-001,Süleymanpaşa + Çerkezköy + Kapaklı + Ergene + Merkez,5,observed
+TR-59-006,TR-59-006,Malkara,1,single
+TR-59-007,TR-59-007,Marmara Ereğlisi,1,single
+TR-59-008,TR-59-008,Muratlı,1,single
+TR-59-009,TR-59-009,Saray,1,single
+TR-59-010,TR-59-001,Süleymanpaşa + Çerkezköy + Kapaklı + Ergene + Merkez,5,observed
+TR-59-011,TR-59-011,Şarköy,1,single
+TR-59-x1673,TR-59-001,Süleymanpaşa + Çerkezköy + Kapaklı + Ergene + Merkez,5,observed
+TR-60-001,TR-60-001,Almus,1,single
+TR-60-002,TR-60-002,Artova,1,single
+TR-60-003,TR-60-003,Başçiftlik,1,single
+TR-60-004,TR-60-004,Erbaa,1,single
+TR-60-005,TR-60-005,Niksar,1,single
+TR-60-006,TR-60-006,Pazar,1,single
+TR-60-007,TR-60-007,Reşadiye,1,single
+TR-60-008,TR-60-008,Sulusaray,1,single
+TR-60-009,TR-60-009,Tokat,1,single
+TR-60-010,TR-60-010,Turhal,1,single
+TR-60-011,TR-60-011,Yeşilyurt,1,single
+TR-60-012,TR-60-012,Zile,1,single
+TR-61-001,TR-61-001,Akçaabat,1,single
+TR-61-002,TR-61-002,Araklı,1,single
+TR-61-003,TR-61-003,Arsin,1,single
+TR-61-004,TR-61-004,Beşikdüzü,1,single
+TR-61-005,TR-61-005,Çarşıbaşı,1,single
+TR-61-006,TR-61-006,Çaykara,1,single
+TR-61-007,TR-61-007,Dernekpazarı,1,single
+TR-61-008,TR-61-008,Düzköy,1,single
+TR-61-009,TR-61-009,Hayrat,1,single
+TR-61-010,TR-61-010,Köprübaşı,1,single
+TR-61-011,TR-61-011,Maçka,1,single
+TR-61-012,TR-61-012,Of,1,single
+TR-61-013,TR-61-013,Ortahisar,1,single
+TR-61-014,TR-61-014,Sürmene,1,single
+TR-61-015,TR-61-015,Şalpazarı,1,single
+TR-61-016,TR-61-016,Tonya,1,single
+TR-61-017,TR-61-017,Vakfıkebir,1,single
+TR-61-018,TR-61-018,Yomra,1,single
+TR-61-x1686,TR-61-x1686,Merkez,1,single
+TR-62-001,TR-62-001,Çemişgezek,1,single
+TR-62-002,TR-62-002,Hozat,1,single
+TR-62-003,TR-62-003,Mazgirt,1,single
+TR-62-004,TR-62-004,Nazımiye,1,single
+TR-62-005,TR-62-005,Ovacık,1,single
+TR-62-006,TR-62-006,Pertek,1,single
+TR-62-007,TR-62-007,Pülümür,1,single
+TR-62-008,TR-62-008,Tunceli,1,single
+TR-63-001,TR-63-001,Akçakale,1,single
+TR-63-002,TR-63-002,Birecik,1,single
+TR-63-003,TR-63-003,Bozova,1,single
+TR-63-004,TR-63-004,Ceylanpınar,1,single
+TR-63-005,TR-63-005,Eyyübiye + Haliliye + Karaköprü + Merkez,4,observed
+TR-63-006,TR-63-006,Halfeti,1,single
+TR-63-007,TR-63-005,Eyyübiye + Haliliye + Karaköprü + Merkez,4,observed
+TR-63-008,TR-63-008,Harran,1,single
+TR-63-009,TR-63-009,Hilvan,1,single
+TR-63-010,TR-63-005,Eyyübiye + Haliliye + Karaköprü + Merkez,4,observed
+TR-63-011,TR-63-011,Siverek,1,single
+TR-63-012,TR-63-012,Suruç,1,single
+TR-63-013,TR-63-013,Viranşehir,1,single
+TR-63-x1702,TR-63-005,Eyyübiye + Haliliye + Karaköprü + Merkez,4,observed
+TR-64-001,TR-64-001,Banaz,1,single
+TR-64-002,TR-64-002,Eşme,1,single
+TR-64-003,TR-64-003,Karahallı,1,single
+TR-64-004,TR-64-004,Sivaslı,1,single
+TR-64-005,TR-64-005,Ulubey,1,single
+TR-64-006,TR-64-006,Uşak,1,single
+TR-65-001,TR-65-001,Bahçesaray,1,single
+TR-65-002,TR-65-002,Başkale,1,single
+TR-65-003,TR-65-003,Çaldıran,1,single
+TR-65-004,TR-65-004,Çatak,1,single
+TR-65-005,TR-65-005,İpekyolu + Tuşba + Edremit + Merkez,4,observed
+TR-65-006,TR-65-006,Erciş,1,single
+TR-65-007,TR-65-007,Gevaş,1,single
+TR-65-008,TR-65-008,Gürpınar,1,single
+TR-65-009,TR-65-005,İpekyolu + Tuşba + Edremit + Merkez,4,observed
+TR-65-010,TR-65-010,Muradiye,1,single
+TR-65-011,TR-65-011,Özalp,1,single
+TR-65-012,TR-65-012,Saray,1,single
+TR-65-013,TR-65-005,İpekyolu + Tuşba + Edremit + Merkez,4,observed
+TR-65-x1710,TR-65-005,İpekyolu + Tuşba + Edremit + Merkez,4,observed
+TR-66-001,TR-66-001,Akdağmadeni,1,single
+TR-66-002,TR-66-002,Aydıncık,1,single
+TR-66-003,TR-66-003,Boğazlıyan,1,single
+TR-66-004,TR-66-004,Çandır,1,single
+TR-66-005,TR-66-005,Çayıralan,1,single
+TR-66-006,TR-66-006,Çekerek,1,single
+TR-66-007,TR-66-007,Kadışehri,1,single
+TR-66-008,TR-66-008,Saraykent,1,single
+TR-66-009,TR-66-009,Sarıkaya,1,single
+TR-66-010,TR-66-010,Sorgun,1,single
+TR-66-011,TR-66-011,Şefaatli,1,single
+TR-66-012,TR-66-012,Yenifakılı,1,single
+TR-66-013,TR-66-013,Yerköy,1,single
+TR-66-014,TR-66-014,Yozgat,1,single
+TR-67-001,TR-67-001,Alaplı,1,single
+TR-67-002,TR-67-002,Çaycuma,1,single
+TR-67-003,TR-67-003,Devrek,1,single
+TR-67-004,TR-67-004,Ereğli,1,single
+TR-67-005,TR-67-005,Gökçebey,1,single
+TR-67-006,TR-67-006,Zonguldak + Kozlu + Kilimli,3,observed
+TR-67-007,TR-67-006,Zonguldak + Kozlu + Kilimli,3,observed
+TR-67-008,TR-67-006,Zonguldak + Kozlu + Kilimli,3,observed
+TR-68-001,TR-68-001,Ağaçören,1,single
+TR-68-002,TR-68-002,Aksaray,1,single
+TR-68-003,TR-68-003,Eskil,1,single
+TR-68-004,TR-68-004,Gülağaç,1,single
+TR-68-005,TR-68-005,Güzelyurt,1,single
+TR-68-006,TR-68-006,Ortaköy,1,single
+TR-68-007,TR-68-007,Sarıyahşi,1,single
+TR-68-008,TR-68-008,Sultanhanı,1,single
+TR-69-001,TR-69-001,Aydıntepe,1,single
+TR-69-002,TR-69-002,Bayburt,1,single
+TR-69-003,TR-69-003,Demirözü,1,single
+TR-70-001,TR-70-001,Ayrancı,1,single
+TR-70-002,TR-70-002,Başyayla,1,single
+TR-70-003,TR-70-003,Ermenek,1,single
+TR-70-004,TR-70-004,Karaman,1,single
+TR-70-005,TR-70-005,Kazımkarabekir,1,single
+TR-70-006,TR-70-006,Sarıveliler,1,single
+TR-71-001,TR-71-001,Bahşili,1,single
+TR-71-002,TR-71-002,Balışeyh,1,single
+TR-71-003,TR-71-003,Çelebi,1,single
+TR-71-004,TR-71-004,Delice,1,single
+TR-71-005,TR-71-005,Karakeçili,1,single
+TR-71-006,TR-71-006,Keskin,1,single
+TR-71-007,TR-71-007,Kırıkkale,1,single
+TR-71-008,TR-71-008,Sulakyurt,1,single
+TR-71-009,TR-71-009,Yahşihan,1,single
+TR-72-001,TR-72-001,Batman,1,single
+TR-72-002,TR-72-002,Beşiri,1,single
+TR-72-003,TR-72-003,Gercüş,1,single
+TR-72-004,TR-72-004,Hasankeyf,1,single
+TR-72-005,TR-72-005,Kozluk,1,single
+TR-72-006,TR-72-006,Sason,1,single
+TR-73-001,TR-73-001,Beytüşşebap,1,single
+TR-73-002,TR-73-002,Cizre,1,single
+TR-73-003,TR-73-003,Güçlükonak,1,single
+TR-73-004,TR-73-004,İdil,1,single
+TR-73-005,TR-73-005,Silopi,1,single
+TR-73-006,TR-73-006,Şırnak,1,single
+TR-73-007,TR-73-007,Uludere,1,single
+TR-74-001,TR-74-001,Amasra,1,single
+TR-74-002,TR-74-002,Bartın,1,single
+TR-74-003,TR-74-003,Kurucaşile,1,single
+TR-74-004,TR-74-004,Ulus,1,single
+TR-75-001,TR-75-001,Ardahan,1,single
+TR-75-002,TR-75-002,Çıldır,1,single
+TR-75-003,TR-75-003,Damal,1,single
+TR-75-004,TR-75-004,Göle,1,single
+TR-75-005,TR-75-005,Hanak,1,single
+TR-75-006,TR-75-006,Posof,1,single
+TR-76-001,TR-76-001,Aralık,1,single
+TR-76-002,TR-76-002,Iğdır,1,single
+TR-76-003,TR-76-003,Karakoyunlu,1,single
+TR-76-004,TR-76-004,Tuzluca,1,single
+TR-77-001,TR-77-001,Altınova,1,single
+TR-77-002,TR-77-002,Armutlu,1,single
+TR-77-003,TR-77-003,Çiftlikköy,1,single
+TR-77-004,TR-77-004,Çınarcık,1,single
+TR-77-005,TR-77-005,Termal,1,single
+TR-77-006,TR-77-006,Yalova,1,single
+TR-78-001,TR-78-001,Eflani,1,single
+TR-78-002,TR-78-002,Eskipazar,1,single
+TR-78-003,TR-78-003,Karabük,1,single
+TR-78-004,TR-78-004,Ovacık,1,single
+TR-78-005,TR-78-005,Safranbolu,1,single
+TR-78-006,TR-78-006,Yenice,1,single
+TR-79-001,TR-79-001,Elbeyli,1,single
+TR-79-002,TR-79-002,Kilis,1,single
+TR-79-003,TR-79-003,Musabeyli,1,single
+TR-79-004,TR-79-004,Polateli,1,single
+TR-80-001,TR-80-001,Bahçe,1,single
+TR-80-002,TR-80-002,Düziçi,1,single
+TR-80-003,TR-80-003,Hasanbeyli,1,single
+TR-80-004,TR-80-004,Kadirli,1,single
+TR-80-005,TR-80-005,Osmaniye,1,single
+TR-80-006,TR-80-006,Sumbas,1,single
+TR-80-007,TR-80-007,Toprakkale,1,single
+TR-81-001,TR-81-001,Akçakoca,1,single
+TR-81-002,TR-81-002,Cumayeri,1,single
+TR-81-003,TR-81-003,Çilimli,1,single
+TR-81-004,TR-81-004,Düzce,1,single
+TR-81-005,TR-81-005,Gölyaka,1,single
+TR-81-006,TR-81-006,Gümüşova,1,single
+TR-81-007,TR-81-007,Kaynaşlı,1,single
+TR-81-008,TR-81-008,Yığılca,1,single
