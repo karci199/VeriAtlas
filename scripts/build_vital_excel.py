@@ -42,9 +42,9 @@ import xlsxwriter
 sys.path.insert(0, "src")
 
 from veriatlas.areas import load_areas
-from veriatlas.config import PUBLIC
+from veriatlas.config import OUTPUT, PUBLIC
 
-TARGET = PUBLIC.parent / "cikti" / "olum-evlenme-yas.xlsx"
+TARGET = OUTPUT / "olum" / "olum-evlenme-yas.xlsx"
 
 #: The broad groups, in the order a reader expects to see them.
 BROAD = ("0-14", "15-64", "65+")
@@ -318,14 +318,23 @@ def main() -> None:
 
     # region Summary
 
-    def top(frame, column, label, rising=True, take=10, key="il"):
+    def top(frame, column, label, rising=True, take=10, key="il", scale=1):
+        """Ten provinces, ranked, as one block of the summary sheet.
+
+        `scale` is there because this sheet puts measures of different kinds in a single
+        column: a rate is already per thousand, a share is a fraction of one. Left alone,
+        "65+ payı en yüksek il" printed 0,20 next to a death rate of 45,07 — the same
+        column saying twenty percent and forty-five per thousand in two notations, one of
+        which reads as nothing at all. The share is scaled to points here and the label
+        says so; the alternative, a second column, would be empty in most rows.
+        """
         ordered = frame.drop_nulls(column).sort(column, descending=rising).head(take)
         return pl.DataFrame(
             {
                 "olcut": [label] * len(ordered),
                 "sira": list(range(1, len(ordered) + 1)),
                 "il": ordered[key].to_list(),
-                "deger": ordered[column].to_list(),
+                "deger": [value * scale for value in ordered[column].to_list()],
             }
         )
 
@@ -340,18 +349,35 @@ def main() -> None:
             top(old, last_death, f"65+ ölüm hızı en yüksek il ({last_death}, ‰)"),
             top(old, last_death, f"65+ ölüm hızı en düşük il ({last_death}, ‰)", False),
             top(old, "fark", "65+ ölüm hızı en çok düşen il (‰ fark)", False),
-            top(old, "fark", "65+ ölüm hızı en çok artan il (‰ fark)"),
+            # "En az düşen", not "en çok artan": no province rose. A ranking labelled
+            # "artan" whose every value is negative reads as a rise to anyone
+            # skimming the column.
+            top(old, "fark", "65+ ölüm hızı en az düşen il (‰ fark)"),
             top(child, last_death, f"0-14 ölüm hızı en yüksek il ({last_death}, ‰)"),
-            top(child, "degisim", "0-14 ölüm hızı en çok düşen il (%)", False),
+            top(
+                child, "degisim", "0-14 ölüm hızı en çok düşen il (%)", False, scale=100
+            ),
             top(work, last_death, f"15-64 ölüm hızı en yüksek il ({last_death}, ‰)"),
-            top(old_share, f"pay_{last}", f"65+ payı en yüksek il ({last})"),
-            top(old_share, f"pay_{last}", f"65+ payı en düşük il ({last})", False),
-            top(old_share, "pay_fark", "65+ payı en çok artan il (puan)"),
+            top(
+                old_share,
+                f"pay_{last}",
+                f"65+ payı en yüksek il ({last}, %)",
+                scale=100,
+            ),
+            top(
+                old_share,
+                f"pay_{last}",
+                f"65+ payı en düşük il ({last}, %)",
+                False,
+                scale=100,
+            ),
+            top(old_share, "pay_fark", "65+ payı en çok artan il (puan)", scale=100),
             top(
                 structure.filter(pl.col("grup") == "0-14"),
                 "pay_fark",
                 "0-14 payı en çok düşen il (puan)",
                 False,
+                scale=100,
             ),
         ]
     )
@@ -380,10 +406,10 @@ def main() -> None:
         {"num_format": "#,##0", "align": "center", "valign": "vcenter"}
     )
     rate_fmt = book.add_format(
-        {"num_format": "0,00", "align": "center", "valign": "vcenter"}
+        {"num_format": "0.00", "align": "center", "valign": "vcenter"}
     )
     percent = book.add_format(
-        {"num_format": "0,0%", "align": "center", "valign": "vcenter"}
+        {"num_format": "0.0%", "align": "center", "valign": "vcenter"}
     )
 
     def write(frame: pl.DataFrame, title: str, kinds: dict) -> None:

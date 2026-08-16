@@ -40,9 +40,9 @@ import xlsxwriter
 
 sys.path.insert(0, "src")
 
-from veriatlas.config import PUBLIC
+from veriatlas.config import OUTPUT, PUBLIC
 
-TARGET = PUBLIC.parent / "cikti" / "mahalle-nufus.xlsx"
+TARGET = OUTPUT / "yerlesim" / "mahalle-nufus.xlsx"
 DATA = PUBLIC.parent / "src" / "veriatlas" / "data"
 
 CHILD = "0-17"
@@ -504,7 +504,7 @@ def main() -> None:
     # Two decimals, as asked: a growth of 4,7% and one of 4,74% are different answers when
     # the sheet is being sorted by that column.
     yuzde = book.add_format(
-        {"num_format": "0,00%", "align": "center", "valign": "vcenter"}
+        {"num_format": "0.00%", "align": "center", "valign": "vcenter"}
     )
 
     numeric = {}
@@ -575,8 +575,9 @@ def main() -> None:
         "",
         "Kaynak: TÜİK MEDAS, adrese dayalı nüfus kayıt sistemi. Çekim: 2026-08.",
         f"Mahalleler: {first}-{last}, {len(mahalleler)} mahalle, 81 il.",
-        "Köyler: {0}-{1}, {2} köy, {3} il.".format(
-            koy_first, koy_last, len(koyler), koy["il"].n_unique()
+        (
+            f"Köyler: {koy_first}-{koy_last}, {len(koyler)} köy, "
+            f"{koy['il'].n_unique()} il."
         ),
         "",
         "MAHALLE / KÖY AYRIMI",
