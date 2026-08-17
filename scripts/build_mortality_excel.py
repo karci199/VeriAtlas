@@ -154,7 +154,9 @@ def population() -> tuple[dict, dict]:
         .with_columns(
             pl.when(pl.col("age") == "75+")
             .then(pl.lit(75))
-            .otherwise(pl.col("age").str.replace(r"\+", "").cast(pl.Int32, strict=False))
+            .otherwise(
+                pl.col("age").str.replace(r"\+", "").cast(pl.Int32, strict=False)
+            )
             .alias("yas")
         )
     )
@@ -293,7 +295,12 @@ def main() -> None:
     TARGET.parent.mkdir(parents=True, exist_ok=True)
     book = xlsxwriter.Workbook(str(TARGET))
     style = styles(book)
-    formats = {**style, "il": style["left"], "bant": style["left"], "yas": style["text"]}
+    formats = {
+        **style,
+        "il": style["left"],
+        "bant": style["left"],
+        "yas": style["text"],
+    }
     for frame in (country, province_ages, life, country_life):
         for column in frame.columns:
             if column.startswith(("olum6", "olum0", "nufus6")) or column.endswith(
@@ -335,7 +342,15 @@ def main() -> None:
     }
     widths = {"il": 15, "bant": 12, "sira": 6, "yas": 6}
 
-    sheet(book, country, "Türkiye — yaşa göre", headers, formats, widths, {"hiz_oran": "down"})
+    sheet(
+        book,
+        country,
+        "Türkiye — yaşa göre",
+        headers,
+        formats,
+        widths,
+        {"hiz_oran": "down"},
+    )
     sheet(
         book,
         province_ages,
@@ -384,10 +399,14 @@ def main() -> None:
 
     print("yazildi:", TARGET)
     print(
-        "  Türkiye bandı:", len(country),
-        "| İller:", len(province_ages),
-        "| Yaşam süresi:", len(life),
-        "| Hayat tablosu yaşı:", len(country_life),
+        "  Türkiye bandı:",
+        len(country),
+        "| İller:",
+        len(province_ages),
+        "| Yaşam süresi:",
+        len(life),
+        "| Hayat tablosu yaşı:",
+        len(country_life),
     )
 
 

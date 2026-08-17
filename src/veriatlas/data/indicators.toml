@@ -44,6 +44,16 @@ label_tr = "Yapı ruhsatı"
 label_en = "Building permits"
 order = 30
 
+[topic.ulasim]
+label_tr = "Ulaşım"
+label_en = "Transport"
+order = 35
+
+[topic.egitim]
+label_tr = "Eğitim"
+label_en = "Education"
+order = 40
+
 # endregion
 
 # region Dimensions — the breakdown keys and what their stored values are called
@@ -105,6 +115,33 @@ widowed = "Eşi öldü"
 # Kept rather than folded into another status: these are people, and putting them
 # somewhere would be inventing an answer TÜİK did not give. Disappears from the recent
 # years — the column is simply absent, not zero.
+unknown = "Bilinmeyen"
+# Not a fine value TÜİK publishes — it is `grouping.marital_broad`'s own group name.
+# A grouped reading looks its group name up in this same table (`dimValue`), so the
+# label lives here rather than in a second table the grouping would need of its own.
+not_married = "Evli değil"
+
+[dim.vehicle_type]
+label_tr = "Taşıt türü"
+label_en = "Vehicle type"
+
+[dim.vehicle_type.values]
+car = "Otomobil"
+minibus = "Minibüs"
+bus = "Otobüs"
+light_truck = "Kamyonet"
+truck = "Kamyon"
+motorcycle = "Motosiklet"
+special_purpose = "Özel amaçlı"
+tractor = "Traktör"
+
+[dim.literacy_status]
+label_tr = "Okuma yazma durumu"
+label_en = "Literacy status"
+
+[dim.literacy_status.values]
+literate = "Okuma yazma bilen"
+illiterate = "Okuma yazma bilmeyen"
 unknown = "Bilinmeyen"
 
 # endregion
@@ -206,6 +243,21 @@ paydası bu gruptaki kadın nüfusudur."""
     "50-54", "55-59", "60-64", "65-69", "70-74",
     "75+", "75-79", "80-84", "85-89", "90+",
 ]
+
+[grouping.marital_broad]
+label_tr = "Evli / evli değil"
+label_en = "Married / not married"
+dim = "marital"
+note_tr = """
+"Evli değil" hiç evlenmedi, boşandı ve eşi öldüyü birlikte topluyor — resmî nikahsız \
+doğuran her anneyi tek sayıda görmek için. `Bilinmeyen` üçüncü, ayrı bir grup: ne \
+evliye ne evli-değile eklenmedi, küçük ama gerçek bir pay olduğu için düşürülemezdi — \
+bir gruplama yayımlanan her bandı kapsamak zorunda, yoksa ekranda hiç sunulmuyor."""
+
+[grouping.marital_broad.covers]
+married = ["married"]
+not_married = ["never_married", "widowed", "divorced"]
+unknown = ["unknown"]
 
 # endregion
 
@@ -367,6 +419,29 @@ label_tr = "daire"
 label_en = "dwellings"
 decimals = 0
 additive = true
+
+[unit.vehicle]
+label_tr = "taşıt"
+label_en = "vehicle"
+decimals = 0
+additive = true
+# per_capita = false kasıtlı: bir taşıt insan değil, K'daki kural yalnız insan ve
+# insanların başına gelen olayları (doğum, ölüm, evlenme, boşanma) "İl nüfusunun %'si"
+# kipine (per_capita) sokuyor (tests/test_indicators.py). Kişi başına ve hane başına
+# taşıt oranları burada değil, aşağıdaki `base` mekanizmasıyla veriliyor — o da bir
+# saymanın bir başka göstergenin dilimine bölünmesi, sadece adı "%'si" değil "başına".
+
+[unit.vehicle_per_1000_people]
+label_tr = "bin kişi başına"
+label_en = "per 1.000 people"
+decimals = 1
+additive = false
+
+[unit.vehicle_per_household]
+label_tr = "hane başına"
+label_en = "per household"
+decimals = 2
+additive = false
 
 # endregion
 
@@ -540,6 +615,34 @@ kalsaydı doğuracağı ortalama çocuk sayısı. Yenilenme düzeyi 2,10 kabul e
 # hospital records the births of the provinces around it, and one with a large hospital
 # records their deaths; residence is the reading that belongs next to a population count.
 # It also runs seventeen years against the other's eight.
+[indicator.births_by_age]
+label_tr = "Doğum sayısı (annenin yaş grubu)"
+label_en = "Births by mother's age group"
+topic = "dogurganlik"
+unit = "birth"
+frequency = "annual"
+additive = true
+dims = ["age"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Yıl içindeki canlı doğum sayısı, annenin yaş grubuna göre (<15'ten 50+'a), il ve \
+Türkiye düzeyinde, 2009-2025. Toplam doğurganlık hızının bileşenleri — hangi yaş \
+grubunun doğurganlığı değiştiğini gösterir, TFH tek başına göstermez."""
+
+[indicator.births_by_marital]
+label_tr = "Doğum sayısı (annenin medeni durumu)"
+label_en = "Births by mother's marital status"
+topic = "dogurganlik"
+unit = "birth"
+frequency = "annual"
+additive = true
+dims = ["marital"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Yıl içindeki canlı doğum sayısı, annenin yasal medeni durumuna göre, il ve Türkiye \
+düzeyinde, 2012-2025. "Yasal" resmî nikahı ölçüyor — dini nikahlı fiili evlilikler \
+"hiç evlenmedi" içinde kalıyor, bu bir okuma sınırı."""
+
 [indicator.births]
 label_tr = "Doğum sayısı"
 label_en = "Live births"
@@ -569,6 +672,19 @@ Yıl içindeki ölüm sayısı, ölen kişinin ikamet ettiği ile göre, cinsiye
 # velayeti — ve hepsi açıkken ölçü 121 göstergeye çıkıp indirme iki yılda bir sorguya
 # iniyor. Kapalıyken tek gösterge ve yirmi beş yıl tek seferde geliyor. Kırılımlar ayrı
 # bir oturumun işi; ham dosyalar da o gün için duruyor.
+[indicator.consanguineous_marriage]
+label_tr = "Akraba evliliği oranı"
+label_en = "Consanguineous marriage rate"
+topic = "evlenme_bosanma"
+unit = "percent"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+O yıl kıyılan evliliklerin yüzde kaçının akraba evliliği olduğu, il ve Türkiye \
+düzeyinde, 2010-2025. TR genelinde yarıya iniyor (%5,9 → %3,0); 81 ilin 80'i düşerken \
+Şanlıurfa tek artan il (%14,5 → %16,9)."""
+
 [indicator.marriages]
 label_tr = "Evlenme sayısı"
 label_en = "Marriages"
@@ -889,6 +1005,72 @@ dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "Ruhsat verilen daire sayısı. Bina sayısıyla karıştırılmamalı."
 
+# Tek bir kesit: TÜİK'in Temmuz 2026 yayımı, il × taşıt türü. Zaman serisi değil —
+# yalnızca bugünün fotoğrafı. Sekiz tür birbirini dışlar ve toplamları yayımlanan il
+# toplamıyla birebir tutuyor.
+[indicator.vehicles]
+label_tr = "Kayıtlı motorlu kara taşıtı"
+label_en = "Registered road motor vehicles"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+additive = true
+dims = ["vehicle_type"]
+views = ["table", "map", "bar"]
+definition_tr = """
+Trafiğe kayıtlı motorlu kara taşıtı sayısı, türüne göre: otomobil, minibüs, otobüs, \
+kamyonet, kamyon, motosiklet, özel amaçlı, traktör. Tek kesit (Temmuz 2026) — zaman \
+serisi yok."""
+
+# İlçe düzeyi, il/Türkiye'ye toplanmadı (bkz. adaptörün not düşen kısmı — 2008/2025
+# ilçe haritası tam örtüşmüyor). Yalnız 15+ nüfus: MEDAS 6+ Yaş için de yayımlıyor ama
+# bu çekim yalnızca 15+ istedi.
+[indicator.literacy_district]
+label_tr = "Okuma yazma durumu (15+, ilçe)"
+label_en = "Literacy status (15+, district)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["sex", "literacy_status"]
+views = ["table", "map", "bar"]
+definition_tr = """
+15 yaş ve üzeri nüfusun okuma yazma durumu, cinsiyete göre, ilçe düzeyinde. 2008 ve \
+2025 — aradaki yıllar yayımlanmadı, bu iki kesit karşılaştırma için seçildi. Yalnız \
+15+ nüfus; MEDAS 6+ yaş için ayrı bir rakam daha yayımlıyor, o burada yok."""
+
+# İlçe kesitinin il/Türkiye karşılığı, ama zaman serisi tam: 2008-2025.
+[indicator.literacy]
+label_tr = "Okuma yazma durumu (15+)"
+label_en = "Literacy status (15+)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["sex", "literacy_status"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+15 yaş ve üzeri nüfusun okuma yazma durumu, cinsiyete göre, il ve Türkiye düzeyinde, \
+2008-2025. Yaş kırılımı için bkz. "Okuma yazma durumu (yaş grubu)" — orası 6+ yaş \
+kapsıyor ve yalnız 2008/2025."""
+
+# Diğer ikisinden farklı popülasyon (6+, 15+ değil) ve farklı kırılım (yaş bandı var).
+# Karıştırılmadı: "15+" tek bandını "6-13" gibi ince bandlarla aynı yaş kırılımına \
+# koymak toplanabilirliği bozardı.
+[indicator.literacy_by_age]
+label_tr = "Okuma yazma durumu (yaş grubu)"
+label_en = "Literacy status (by age band)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["sex", "age", "literacy_status"]
+views = ["table", "map", "bar"]
+definition_tr = """
+6 yaş ve üzeri nüfusun okuma yazma durumu, cinsiyet ve yaş bandına göre (6-13'ten \
+65+'a 13 bant), il ve Türkiye düzeyinde. Yalnız 2008 ve 2025 — aradaki yıllar \
+yayımlanmadı."""
+
 # endregion
 
 # region Bases — a count read against a *slice of another indicator*
@@ -926,5 +1108,35 @@ Genel doğurganlık hızı: doğurgan çağdaki (15-49) bin kadın başına doğ
 doğurganlık hızından farkı, yaş yapısından arındırılmamış olmasıdır — bu yüzden ikisi \
 birlikte okunur: TFH sabitken GDH düşüyorsa düşen şey doğurganlık değil, doğuracak \
 kuşağın payıdır."""
+
+# Taşıt insan değil, o yüzden "İl nüfusunun %'si" (per_capita) ona kapalı — ama "bin
+# kişi başına taşıt" gerçek bir soru, sadece cevabı bir yüzde değil bir oran. Dilim yok
+# (`dims` boş): payda ilin bütün nüfusu, doğurgan kadın gibi bir alt küme değil.
+[base.population_total]
+label_tr = "Bin kişi başına"
+label_en = "Per 1.000 people"
+indicator = "population"
+factor = 1000
+unit = "vehicle_per_1000_people"
+applies_to = ["vehicles"]
+note_tr = """
+Toplam taşıt / il nüfusu × 1.000. Turizm ve sera tarımı yoğun illerde (Muğla, Burdur, \
+Antalya) bu oran mantıksız yüksek çıkıyor — mevsimlik/ikinci konut sahiplerinin aracı \
+o ile kayıtlı ama nüfusa dahil değil, ve tarım işletmelerinin filosu kişi başına değil \
+işletme başına."""
+
+# Aile büyüklüğü doğu-batı arasında farklı; hane başına oran bu farkı devre dışı
+# bırakıyor, nüfus başına oranın söylemediği bir şeyi söylüyor.
+[base.household_count]
+label_tr = "Hane başına"
+label_en = "Per household"
+indicator = "household_count"
+factor = 1
+unit = "vehicle_per_household"
+applies_to = ["vehicles"]
+note_tr = """
+Toplam taşıt / hane sayısı. İkinci konutlar MEDAS'ta ayrı hane sayılmadığı için turizm \
+çarpıtmasını tam düzeltmiyor, ama aile büyüklüğü farkını (doğuda daha büyük hane) \
+devre dışı bırakıyor — nüfus başına oranla birlikte okunmalı."""
 
 # endregion

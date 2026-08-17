@@ -469,6 +469,60 @@
           "available": true
         },
         {
+          "id": "births_by_marital",
+          "label": "Doğum sayısı (annenin medeni durumu)",
+          "unit": "doğum",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Yıl içindeki canlı doğum sayısı, annenin yasal medeni durumuna göre, il ve Türkiye düzeyinde, 2012-2025. \"Yasal\" resmî nikahı ölçüyor — dini nikahlı fiili evlilikler \"hiç evlenmedi\" içinde kalıyor, bu bir okuma sınırı.",
+          "dims": [
+            "marital"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "births-anne-medeni.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "births_by_age",
+          "label": "Doğum sayısı (annenin yaş grubu)",
+          "unit": "doğum",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Yıl içindeki canlı doğum sayısı, annenin yaş grubuna göre (<15'ten 50+'a), il ve Türkiye düzeyinde, 2009-2025. Toplam doğurganlık hızının bileşenleri — hangi yaş grubunun doğurganlığı değiştiğini gösterir, TFH tek başına göstermez.",
+          "dims": [
+            "age"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "births-anne-yas.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
           "id": "tfr",
           "label": "Toplam doğurganlık hızı",
           "unit": "çocuk/kadın",
@@ -501,6 +555,31 @@
     {
       "topic": "Evlenme ve boşanma",
       "indicators": [
+        {
+          "id": "consanguineous_marriage",
+          "label": "Akraba evliliği oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "O yıl kıyılan evliliklerin yüzde kaçının akraba evliliği olduğu, il ve Türkiye düzeyinde, 2010-2025. TR genelinde yarıya iniyor (%5,9 → %3,0); 81 ilin 80'i düşerken Şanlıurfa tek artan il (%14,5 → %16,9).",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "akraba-evlilik.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
         {
           "id": "divorces",
           "label": "Boşanma sayısı",
@@ -769,6 +848,125 @@
           "available": false
         }
       ]
+    },
+    {
+      "topic": "Ulaşım",
+      "indicators": [
+        {
+          "id": "vehicles",
+          "label": "Kayıtlı motorlu kara taşıtı",
+          "unit": "taşıt",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Trafiğe kayıtlı motorlu kara taşıtı sayısı, türüne göre: otomobil, minibüs, otobüs, kamyonet, kamyon, motosiklet, özel amaçlı, traktör. Tek kesit (Temmuz 2026) — zaman serisi yok.",
+          "dims": [
+            "vehicle_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": "vehicles.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        }
+      ]
+    },
+    {
+      "topic": "Eğitim",
+      "indicators": [
+        {
+          "id": "literacy",
+          "label": "Okuma yazma durumu (15+)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "15 yaş ve üzeri nüfusun okuma yazma durumu, cinsiyete göre, il ve Türkiye düzeyinde, 2008-2025. Yaş kırılımı için bkz. \"Okuma yazma durumu (yaş grubu)\" — orası 6+ yaş kapsıyor ve yalnız 2008/2025.",
+          "dims": [
+            "sex",
+            "literacy_status"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "literacy.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "literacy_district",
+          "label": "Okuma yazma durumu (15+, ilçe)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "15 yaş ve üzeri nüfusun okuma yazma durumu, cinsiyete göre, ilçe düzeyinde. 2008 ve 2025 — aradaki yıllar yayımlanmadı, bu iki kesit karşılaştırma için seçildi. Yalnız 15+ nüfus; MEDAS 6+ yaş için ayrı bir rakam daha yayımlıyor, o burada yok.",
+          "dims": [
+            "sex",
+            "literacy_status"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": "literacy-15.csv.gz",
+          "levels": [
+            "district"
+          ],
+          "parts": {
+            "district": "literacy-15-district.csv.gz"
+          },
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "literacy_by_age",
+          "label": "Okuma yazma durumu (yaş grubu)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "6 yaş ve üzeri nüfusun okuma yazma durumu, cinsiyet ve yaş bandına göre (6-13'ten 65+'a 13 bant), il ve Türkiye düzeyinde. Yalnız 2008 ve 2025 — aradaki yıllar yayımlanmadı.",
+          "dims": [
+            "sex",
+            "age",
+            "literacy_status"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": "literacy-yas.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        }
+      ]
     }
   ],
   "dimensions": {
@@ -802,6 +1000,28 @@
         "married": "Evli",
         "divorced": "Boşandı",
         "widowed": "Eşi öldü",
+        "unknown": "Bilinmeyen",
+        "not_married": "Evli değil"
+      }
+    },
+    "vehicle_type": {
+      "label": "Taşıt türü",
+      "values": {
+        "car": "Otomobil",
+        "minibus": "Minibüs",
+        "bus": "Otobüs",
+        "light_truck": "Kamyonet",
+        "truck": "Kamyon",
+        "motorcycle": "Motosiklet",
+        "special_purpose": "Özel amaçlı",
+        "tractor": "Traktör"
+      }
+    },
+    "literacy_status": {
+      "label": "Okuma yazma durumu",
+      "values": {
+        "literate": "Okuma yazma bilen",
+        "illiterate": "Okuma yazma bilmeyen",
         "unknown": "Bilinmeyen"
       }
     },
@@ -975,6 +1195,25 @@
       },
       "needs_fine": false,
       "note": "15-49, TÜİK'in doğurganlık hesaplarında kullandığı aralık. Doğurganlık hızlarının paydası bu gruptaki kadın nüfusudur."
+    },
+    "marital_broad": {
+      "label": "Evli / evli değil",
+      "dim": "marital",
+      "covers": {
+        "married": [
+          "married"
+        ],
+        "not_married": [
+          "never_married",
+          "widowed",
+          "divorced"
+        ],
+        "unknown": [
+          "unknown"
+        ]
+      },
+      "needs_fine": false,
+      "note": "\"Evli değil\" hiç evlenmedi, boşandı ve eşi öldüyü birlikte topluyor — resmî nikahsız doğuran her anneyi tek sayıda görmek için. `Bilinmeyen` üçüncü, ayrı bir grup: ne evliye ne evli-değile eklenmedi, küçük ama gerçek bir pay olduğu için düşürülemezdi — bir gruplama yayımlanan her bandı kapsamak zorunda, yoksa ekranda hiç sunulmuyor."
     }
   },
   "comparisons": {
@@ -1062,6 +1301,34 @@
         "births"
       ],
       "note": "Genel doğurganlık hızı: doğurgan çağdaki (15-49) bin kadın başına doğum. Toplam doğurganlık hızından farkı, yaş yapısından arındırılmamış olmasıdır — bu yüzden ikisi birlikte okunur: TFH sabitken GDH düşüyorsa düşen şey doğurganlık değil, doğuracak kuşağın payıdır."
+    },
+    "population_total": {
+      "label": "Bin kişi başına",
+      "indicator": "population",
+      "dims": {},
+      "grouping": null,
+      "values": [],
+      "factor": 1000,
+      "unit": "bin kişi başına",
+      "decimals": 1,
+      "applies_to": [
+        "vehicles"
+      ],
+      "note": "Toplam taşıt / il nüfusu × 1.000. Turizm ve sera tarımı yoğun illerde (Muğla, Burdur, Antalya) bu oran mantıksız yüksek çıkıyor — mevsimlik/ikinci konut sahiplerinin aracı o ile kayıtlı ama nüfusa dahil değil, ve tarım işletmelerinin filosu kişi başına değil işletme başına."
+    },
+    "household_count": {
+      "label": "Hane başına",
+      "indicator": "household_count",
+      "dims": {},
+      "grouping": null,
+      "values": [],
+      "factor": 1,
+      "unit": "hane başına",
+      "decimals": 2,
+      "applies_to": [
+        "vehicles"
+      ],
+      "note": "Toplam taşıt / hane sayısı. İkinci konutlar MEDAS'ta ayrı hane sayılmadığı için turizm çarpıtmasını tam düzeltmiyor, ama aile büyüklüğü farkını (doğuda daha büyük hane) devre dışı bırakıyor — nüfus başına oranla birlikte okunmalı."
     }
   },
   "derivations": {

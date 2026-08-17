@@ -73,6 +73,13 @@ DATASETS = {
     "mean_marriage_age": "marriage-age.csv",
     "mean_first_marriage_age": "first-marriage-age.csv",
     "life_expectancy": "life-expectancy.csv",
+    "vehicles": "vehicles.csv",
+    "literacy_district": "literacy-15.csv",
+    "literacy": "literacy.csv",
+    "literacy_by_age": "literacy-yas.csv",
+    "births_by_age": "births-anne-yas.csv",
+    "births_by_marital": "births-anne-medeni.csv",
+    "consanguineous_marriage": "akraba-evlilik.csv",
     **{
         name: name.replace("_", "-") + ".csv"
         for name in (
@@ -109,6 +116,12 @@ BROKEN_DOWN = (
     "mean_first_marriage_age",
     "registry_population",
     "life_expectancy",
+    "vehicles",
+    "literacy_district",
+    "literacy",
+    "literacy_by_age",
+    "births_by_age",
+    "births_by_marital",
 )
 
 #: Indicators with no breakdown at all: one value per area and year.
@@ -698,6 +711,17 @@ def main() -> None:
         "registry_population": export_broken_down(
             fact, areas, "registry_population", roll_up=ROLLED_UP["registry_population"]
         ),
+        # A single snapshot (Temmuz 2026), no country/İBBS levels published — the eight
+        # types are additive and sum to the province total, same as population.
+        "vehicles": export_broken_down(fact, areas, "vehicles"),
+        # District only, no province or country counterpart — two years (2008, 2025),
+        # not a series. Unlike population/births/deaths at district level, this measure
+        # has nothing to roll up from and nothing to check against.
+        "literacy_district": export_broken_down(fact, areas, "literacy_district"),
+        "literacy": export_broken_down(fact, areas, "literacy"),
+        "literacy_by_age": export_broken_down(fact, areas, "literacy_by_age"),
+        "births_by_age": export_broken_down(fact, areas, "births_by_age"),
+        "births_by_marital": export_broken_down(fact, areas, "births_by_marital"),
     }
 
     for indicator_id in PLAIN:

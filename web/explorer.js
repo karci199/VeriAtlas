@@ -915,7 +915,15 @@ function sliceRaw(level = state.level) {
         if (named) {
             const denominator = baseTotals(level, named);
             return [...totals.values()].map((row) => {
-                const base = denominator.get(row.area_id + "|" + row.year);
+                // The exact year first — right whenever the numerator and the
+                // denominator are both a real time series. Falls back to the nearest
+                // year on the denominator only when that year is simply missing there:
+                // vehicles is a single July-2026 snapshot and population stops at
+                // 2025, so an exact match never exists and the reading would be
+                // withheld forever rather than approximated once.
+                const base =
+                    denominator.get(row.area_id + "|" + row.year) ??
+                    nearestDenominator(denominator, row.area_id, row.year);
                 return {...row, value: base ? (row.value / base) * named.factor : NaN};
             });
         }
@@ -1205,6 +1213,27 @@ function baseTotals(level, base) {
     });
 }
 
+/** The closest year a `baseTotals` map holds for one area, when the exact year asked
+ *  for is not in it. Scans the map's own keys rather than a second index, because a
+ *  base's denominator is at most a few thousand rows and this only runs on the path
+ *  that already needed the fallback. */
+function nearestDenominator(totals, areaId, year) {
+    let best = null;
+    let bestDiff = Infinity;
+    for (const [key, value] of totals) {
+        const [area, y] = key.split("|");
+        if (area !== areaId) {
+            continue;
+        }
+        const diff = Math.abs(Number(y) - year);
+        if (diff < bestDiff) {
+            bestDiff = diff;
+            best = value;
+        }
+    }
+    return best;
+}
+
 /** Dividing by the population is only a reading where the numerator is people, or events
  *  people have. The dictionary says which units those are (`per_capita`), because the
  *  answer is a property of the unit and not of the screen.
@@ -1400,7 +1429,14 @@ const DERIVATIONS = {
     /** Each series against its own first year. Shows movement, not size. */
     index(points) {
         const base = points.find((p) => Number.isFinite(p.value))?.value;
-        if (!positiveBase(base)) {
+        // A series with exactly one real point indexes against itself and reports
+        // "100,0 — nothing changed" for an area that has no second year to compare.
+        // A boundary-year district (literacy_district's 2008/2025 pair, with one side
+        // missing where the district did not exist under its current identity) hit
+        // this: one dash and one invented 100,0, read as a flat line that was never
+        // measured. Two or more finite points are required, the same floor `yoy` and
+        // `cagr` already hold.
+        if (!positiveBase(base) || points.filter((p) => Number.isFinite(p.value)).length < 2) {
             return [];
         }
         return points.map((p) => ({...p, value: (p.value / base) * 100}));
@@ -1433,7 +1469,10 @@ const DERIVATIONS = {
      *  most". */
     total_change(points) {
         const base = points.find((p) => Number.isFinite(p.value))?.value;
-        if (!positiveBase(base)) {
+        // Same single-point trap as `index`: one measured year reads as its own base
+        // and reports "+0%", a fabricated "nothing changed" for a change that was
+        // never actually observed twice.
+        if (!positiveBase(base) || points.filter((p) => Number.isFinite(p.value)).length < 2) {
             return [];
         }
         return points.map((p) => ({...p, value: ((p.value - base) / base) * 100}));
@@ -1443,7 +1482,7 @@ const DERIVATIONS = {
      *  going 34 → 36 is "+2 yaş"; calling it "+5,9%" is arithmetic nobody asked for. */
     total_diff(points) {
         const base = points.find((p) => Number.isFinite(p.value))?.value;
-        if (base === undefined) {
+        if (base === undefined || points.filter((p) => Number.isFinite(p.value)).length < 2) {
             return [];
         }
         return points.map((p) => ({...p, value: p.value - base}));
@@ -4222,6 +4261,15 @@ function readingShare() {
             "kiplerden farkı bu — ölçüyü kendi bir parçasına değil, o yerde yaşayan " +
             "insan sayısına oranlıyor.";
         bottom = area && populationTotals(level).get(area + "|" + year);
+    } else if (activeBase()) {
+        const named = activeBase();
+        body =
+            "Payda <b>başka bir gösterge</b>: " + esc(named.note || named.label) + " " +
+            "Aynı yıl yoksa denominatörün o alan için en yakın yılı kullanılır.";
+        const denominator = baseTotals(level, named);
+        bottom =
+            area &&
+            (denominator.get(area + "|" + year) ?? nearestDenominator(denominator, area, year));
     } else if (within) {
         body =
             "Payda, <b>" + esc(dimLabel(within)) + "</b> kırılımının bu alandaki " +
@@ -4249,10 +4297,16 @@ function readingShare() {
 
     let example = null;
     if (state.share && area && Number.isFinite(top) && Number.isFinite(bottom) && bottom) {
+        // A base multiplies by its own factor and lands in its own unit (a rate, a
+        // per-1.000, a per-household count) — not the percentage every other share
+        // mode produces.
+        const named = activeBase();
+        const factor = named ? named.factor : 100;
+        const suffix = named ? " " + esc(named.unit) : "%";
         example =
             esc(nameOf(area)) + " " + year + ": " + esc(say(top, rawPlaces())) + " ÷ " +
-            esc(say(bottom, rawPlaces())) + " × 100 = <b>" +
-            esc(say((top / bottom) * 100, 2)) + "</b>%";
+            esc(say(bottom, rawPlaces())) + (factor !== 1 ? " × " + factor : "") +
+            " = <b>" + esc(say((top / bottom) * factor, 2)) + "</b>" + suffix;
     }
 
     // The share's own name, not the derivation's. With an index on, `unitLabel` answers
@@ -4497,6 +4551,23 @@ async function useIndicator(id) {
     fineRows = [];
     invalidate();
 
+    // The level has to be corrected — and its file fetched — before the emptiness
+    // check below, not after. An indicator that lives entirely in a lazily-held level
+    // (literacy_district ships only "district", nothing in the base file) came back
+    // with zero rows from `dataset` alone, read as "not loaded at all", and the reader
+    // saw "uv run python scripts/load.py" for data that was sitting on disk the whole
+    // time — the level box just had not been asked to move off whatever indicator was
+    // on screen before. `levelsInData` reads the declared levels off the indicator
+    // metadata, so it works before `state.rows` has anything in it.
+    state.focus = null;
+    resetMapView();
+
+    const levels = levelsInData();
+    state.level = levels.includes(state.level) ? state.level : levels[0];
+    if (levels.length) {
+        await ensureLevel(state.level);
+    }
+
     if (!state.rows.length) {
         // Still draw the strip: without it there is no way back to an indicator that
         // does have data.
@@ -4509,14 +4580,6 @@ async function useIndicator(id) {
         );
         return false;
     }
-
-    // A map mode belongs to the indicator it was turned on for, not to the session.
-    state.focus = null;
-    resetMapView();
-
-    const levels = levelsInData();
-    state.level = levels.includes(state.level) ? state.level : levels[0];
-    await ensureLevel(state.level);
 
     // Sharing carries over between indicators where it still means something, and is
     // dropped where it does not — a share of a fertility rate is not a number. Against
