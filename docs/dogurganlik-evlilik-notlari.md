@@ -150,7 +150,7 @@ Hepsi `C:\Users\katan\OneDrive\Desktop\demografi\` altında, sadece envanteri
 
 | Dosya | Kapsam | İl var mı | İçerik |
 |---|---|---|---|
-| İl ve Annenin Yaş Grubuna Göre Doğumlar | 2009-2025 | ✔ 81 il | Yaş grubu × il × yıl — bant tahminimin **tam hassas** karşılığı, artık tahmine gerek yok |
+| İl ve Annenin Yaş Grubuna Göre Doğumlar | 2009-2025 | ✔ 81 il | Bkz. Bulgu 9, 10, 11 (kullanıldı) — bant tahmininin tam hassas karşılığı |
 | Yaşa Özel Doğurganlık Hızı | 2001-2025 | ✘ TR toplam | 15-19…40+ her yaş grubunun kendi doğurganlık hızı, TFR'nin bileşenleri |
 | Temel Doğurganlık Göstergeleri | 2001-2025 | ✘ TR toplam | Doğum sayısı, kaba doğum hızı, GDH, TFR, adölesan doğurganlık hızı — hazır |
 | İl ve annenin yasal medeni durumuna göre doğumlar | 2012-2025 | ✔ 81 il | Hiç evlenmedi / evli / eşi öldü — bkz. Bulgu 5 aşağıda |
@@ -235,3 +235,125 @@ doğrudan çocuk sayısını azaltarak, "1 çocukta durarak" gerçekleşiyor):
 kalıyor, doğurganlık aralık açılarak düşüyor; Trakya/Batı'da (Tunceli,
 Antalya, Denizli, Çanakkale) doğurganlık zaten düşük, aralık sabit kalıyor
 — düşüş muhtemelen doğrudan az-çocuk kararıyla oluyor, aralık değişmeden.
+
+## Bulgu 9 — TFR düşüşünün yarısı tek bir yaş bandında: 20-24
+
+Kaynak: masaüstündeki *İl ve Annenin Yaş Grubuna Göre Doğumlar* (11 bant, 81 il,
+2009-2025) — envanterde "tam hassas karşılık" diye işaretlenen dosya. Yaşa özel
+doğurganlık hızı (ASFR) türetildi: pay bu dökümden, payda ambardaki tek yaş kadın
+nüfusundan.
+
+**Doğrulama.** Dökümün 1394 hücresinin tamamı ambardaki `births` ile birebir tuttu.
+Bu yolla hesaplanan TFR ile TÜİK'in resmi il TFR'si arasındaki fark 2025'te ortanca
+0,006, en büyüğü 0,029 — türetme kalibre.
+
+Türkiye, TFR 2,096 → 1,419 (−0,677). Bantların katkısı:
+
+| Bant | ASFR 2009 | ASFR 2025 | Değişim | TFR'ye katkı | Pay |
+|---|---|---|---|---|---|
+| 15-17 | 17,3 | 2,8 | −%84 | −0,043 | %6 |
+| 18-19 | 67,0 | 18,5 | −%72 | −0,097 | %14 |
+| **20-24** | **117,3** | **53,9** | **−%54** | **−0,317** | **%47** |
+| 25-29 | 126,1 | 95,3 | −%24 | −0,154 | %23 |
+| 30-34 | 84,4 | 79,7 | −%6 | −0,024 | %4 |
+| 35-39 | 41,6 | 36,7 | −%12 | −0,024 | %4 |
+| 40-44 | 10,8 | 8,4 | −%23 | −0,012 | %2 |
+| 45-49 | 1,7 | 0,7 | −%58 | −0,005 | %1 |
+
+Ergen doğurganlık oransal olarak en sert çöken bant ama nüfus payı küçük olduğu için
+toplama katkısı %20'de kalıyor. 30 yaş üstü Türkiye genelinde neredeyse sabit.
+
+**İl düzeyinde iki ayrı rejim var.** Düşüşün 30+ bandından gelen payı:
+
+| İl | TFR 2009→2025 | 15-19 | 20-24 | 25-29 | 30+ | Anne yaşı |
+|---|---|---|---|---|---|---|
+| Şanlıurfa | 4,54 → 3,14 | %9 | %9 | %22 | **%61** | −0,05 |
+| Şırnak | 4,69 → 2,53 | %10 | %18 | %22 | %50 | +0,86 |
+| Hakkari | 3,33 → 1,70 | %11 | %22 | %20 | %47 | — |
+| Van | 3,90 → 1,89 | %16 | %25 | %20 | %39 | +1,78 |
+| Kars | 2,94 → 1,60 | %23 | %38 | %20 | %18 | +2,13 |
+| İstanbul | 1,76 → 1,14 | %16 | %52 | %26 | %6 | +2,36 |
+| Denizli | 1,74 → 1,26 | %24 | %68 | %25 | −%18 | +2,63 |
+| Kırklareli | 1,39 → 1,15 | %25 | %96 | %23 | **−%43** | +2,08 |
+
+Eksi pay, o bandın doğurganlığının **arttığı** anlamına gelir. Batıda (Kırklareli, Bolu,
+Eskişehir, Balıkesir, Çanakkale, Kütahya) 30+ doğurganlığı 2009-2025 arasında yükseldi;
+toplam yine düştü çünkü genç bantlar boşaldı — klasik erteleme. Güneydoğuda düşüşün
+%36-61'i 30 yaş üstünden geliyor: kesilen şey geç yaştaki yüksek sıralı doğumlar, 5. ve
+6. çocuk. İl medyanı %3, yani ülkenin yarısı ikisinin arasında.
+
+**Bulgu 6-8 ile birlikte:** aralık açılması tezinin sayısal karşılığı bu. Şanlıurfa ile
+Şırnak aynı %50-61 civarı 30+ payına sahip görünüyor ama Şırnak'ta genç bantlar da
+çökmüş (20-24 −%44) ve ortalama anne yaşı +0,86 artmış; Şanlıurfa'da 20-24 yalnız −%13
+düşmüş ve yaş hiç oynamamış. Aynı tabloda iki farklı mekanizma.
+
+## Bulgu 10 — bant orta noktası tahmininin sapması küçük: Bulgu 1 ayakta
+
+Bulgu 1, 9 bantlı `annedogumyas.xls` üzerinden orta nokta yöntemiyle hesaplanmıştı.
+11 bantlı dosya aynı yöntemle yeniden hesaplandı; iki hesap arasındaki tek fark
+15-19'un 15-17 + 18-19 olarak açılması, yani ölçülen şey tam olarak bant kabalığı.
+
+| | İnce (11 bant) | Kaba (Bulgu 1) | Sapma |
+|---|---|---|---|
+| TR 2009 | 26,991 | 26,922 | −0,069 |
+| TR 2025 | 28,962 | 28,928 | −0,034 |
+| TR değişim | +1,970 | +2,007 | **+0,036** |
+| İl sapması 2009 | | | ortanca −0,072, uç −0,119 (Ardahan) |
+| İl sapması 2025 | | | ortanca −0,030, uç −0,071 |
+| İl değişim sapması | | | uç +0,082 (Çorum) |
+
+Kaba tahmin ortalama yaşı sistematik olarak ~0,07 yıl **düşük** gösteriyor: 15-19
+bandına 17 orta noktası veriliyor ama doğumların çoğu 18-19'da. Sapma zamanla küçülüyor
+(genç doğum azaldıkça), bu yüzden **değişim** ~0,04 yıl abartılıyor.
+
+Sıralamaya etkisi yok denecek kadar az: en çok artan 12 il iki yöntemde de aynı sırada
+(Çorum, Yozgat, Kırşehir, Ordu, Kütahya, Tokat...). 81 ilin 24'ünde sıra oynadı, en
+büyük kayma Ardahan 41→36. Bulgu 3'teki yakınsama okuması bant seçiminin eseri değil.
+
+Sapmanın en büyük olduğu iller (Çorum, Yozgat, Çankırı, Kırıkkale, Ardahan) aynı zamanda
+Bulgu 1'in en çok artan illeri — o listeyi ~%3 oranında abartmış. Yön doğru, büyüklük
+hafif şişkin.
+
+## Bulgu 11 — 30+ doğum payı ile ortalama anne yaşı aynı şeyi ölçüyor (r=0,94)
+
+Kullanıcının sorusu: "30+ payının kendi toplamına göre değişimi" ile ortalama anne yaşı
+aynı şeyi mi söylüyor, yoksa biri eksik mi?
+
+Doğumların 30 yaş ve üstü anneye ait olan payı, TR: %30,7 → %43,8 (+13,0 puan).
+
+En çok artan: Artvin +20,4 puan (%34,9→%55,3), Çorum +19,0, Gümüşhane +18,9, Kütahya
++18,8, Sinop +18,6, Samsun +18,4, Trabzon +18,3, Ordu +18,3. En az artan: **Şanlıurfa
++0,4 puan** (%35,6→%36,0), Kilis +4,1, Gaziantep +5,0, Şırnak +5,5, Ağrı +5,9. 2025'te
+en yüksek seviye Artvin %55,3, Trabzon %54,2, Rize %53,1; en düşük Ağrı %32,0.
+
+**Cevap: neredeyse birebir aynı şeyi söylüyorlar.** r(pay değişimi, yaş değişimi) = 0,942;
+seviyelerde r = 0,987 (2025) ve 0,976 (2009). Uyum doğrusu: pay puanı = −0,37 + 6,63 ×
+yaş değişimi. Yani 30+ payı bağımsız bir bilgi değil, ortalama yaşın tek eşikli vekili.
+
+**İkisinin de kaçırdığı şey aynı:** doğumların yaş dağılımı, kaç çocuk doğduğuna dair
+hiçbir şey söylemiyor. Şanlıurfa'nın TFR'si 1,40 düştü; ne ortalama anne yaşı (−0,05) ne
+30+ payı (+0,4 puan) bunu görüyor. Miktar (quantum) ile takvim (tempo) ayrı ölçü ister:
+birincisi ASFR, ikincisi bunlar. Bu yüzden Bulgu 9'daki ayrıştırma bu ikisinin yerine
+geçmiyor, onları tamamlıyor.
+
+**Ayrıştıkları yer bilgi taşıyor.** Yaş artışına göre beklenenden fazla pay kayması:
+Artvin +2,9 puan, Sinop +2,5, Trabzon +2,3, Gümüşhane +2,2, Bolu +2,1 — kayma tam 30
+eşiğinin üstüne oturmuş. Beklenenden az: Yozgat −3,6 puan, Kırıkkale −3,2, Nevşehir
+−2,9, Çankırı −2,5, Kırşehir −2,2 — Yozgat'ta ortalama yaş +3,11 yıl artmış ama hareket
+30 eşiğini geçmemiş, 15-19'dan 20'li yaşlara olmuş. Tek eşikli oran dağılımın nerede
+hareket ettiğini gizliyor; ortalama yaş gizlemiyor.
+
+## Bu üç bulgunun kendi hataları
+
+**Revize yıl işareti sessizce beş yıl yuttu.** Kaynak dosyada 2020-2024 yılları
+`2024(r)` biçiminde yazılı (revize edilmiş veri). `float("2024(r)")` hata verdi, hatayı
+yutan `except` o satırları atladı ve döküm 17 yıl yerine 12 yılla okundu — çıktı hatasız
+görünüyordu, yalnız 1389 satır vardı, 1394 değil. Yıl sayısını sayana kadar fark
+edilmedi. Ders: kaynağın satır sayısı beklenen çarpıma (17 yıl × 82 alan) eşit mi diye
+bakmak, `except: continue` yazılan her yerde zorunlu.
+
+**Ayrıştırma tablosunun sütun başlığı yanlış okundu.** "30+" sütunu düşüşün kaynağını
+gösteriyor, doğumların yaş payını değil; kullanıcı haklı olarak "%61'i 30 yaşından sonra
+mı doğuruyor?" diye sordu. Değil — o oran %36 ve 2009'dan beri sabit. Panelde sütun
+altına bu ayrım yazıldı. İki farklı yüzde aynı tabloda yan yana durunca başlık tek
+başına yetmiyor.
