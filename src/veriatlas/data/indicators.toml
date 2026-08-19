@@ -130,21 +130,23 @@ label_tr = "Eğitim düzeyi"
 label_en = "Education level"
 
 [dim.egitim_duzeyi.values]
-# MEB'in kendi dört ayrık düzeyi. "Ortaöğretim" kaynakta "Genel Ortaöğretim" + "Mesleki
-# ve Teknik Ortaöğretim"in toplamı olarak da yayımlanıyor (doğrulandı: Adana 2024,
-# 97160+57642=154802) — alt kırılım burada tutulmuyor, çünkü ayrı bir düzey değil aynı
-# düzeyin iki türü; ikisini de saymak toplamı iki katına çıkarır.
+# Uc duzey, dorden degil. Iki ayri birlestirme burada yasiyor:
+#
+# "Ortaöğretim" kaynakta "Genel Ortaöğretim" + "Mesleki ve Teknik Ortaöğretim"in toplamı
+# olarak da yayımlanıyor (doğrulandı: Adana 2024, 97160+57642=154802) — alt kırılım
+# burada tutulmuyor, çünkü ayrı bir düzey değil aynı düzeyin iki türü; ikisini de saymak
+# toplamı iki katına çıkarır.
+#
+# "İlkokul" ve "Ortaokul" hiç ayrı değer olarak tutulmuyor, ikisi de "İlköğretim"e
+# toplanıyor. 4+4+4 reformundan (2012) önce ikisi tek kurumdu; reform sonrasını ayrı
+# tutmak okuru "İlkokul mu Ortaokul mu, yoksa ikisi birden mi" sorusuyla baş başa
+# bırakırdı, kaynak dosyaların hiçbiri de zaten 2012 öncesine gitmiyor (`net_enrollment_rate`
+# hariç, o ayrıca `İlköğretim` satırını doğrudan taşıyabiliyor). Sayı bazlı göstergelerde
+# (öğrenci/derslik/şube/okul) toplama tam; oran bazlı `net_enrollment_rate`de kaynak
+# doğrudan `İlköğretim` vermediği yıllarda öğrenci sayısı ağırlıklı ortalamayla birleşiyor.
 okul_oncesi = "Okul Öncesi"
-ilkokul = "İlkokul"
-ortaokul = "Ortaokul"
-ortaogretim = "Ortaöğretim"
-# Yalnız net okullaşma oranında: 4+4+4 reformu (2012) öncesi İlkokul ve Ortaokul tek
-# kurum ("İlköğretim") olarak yayımlanıyordu. İlkokul/Ortaokul'u ayrı tutmak reform
-# öncesi yıllarda veri yokluğuna, sonrasında da eski "İlköğretim" seriyle karşılaştırma
-# yapılamamasına yol açıyordu — bu yüzden net_enrollment_rate hep tek "İlköğretim"
-# değerini kullanır (reform sonrası yıllarda İlkokul+Ortaokul öğrenci sayısı ağırlıklı
-# ortalamasıyla hesaplanır), İlkokul/Ortaokul'u kendi başlarına bu göstergede taşımaz.
 ilkogretim = "İlköğretim"
+ortaogretim = "Ortaöğretim"
 
 [dim.residence]
 label_tr = "Nerede yaşıyor"

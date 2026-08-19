@@ -58,12 +58,18 @@ FILES = {
     "okul": "İllere ve Yıllara Göre Eğitim Düzeyi Okul Sayıları.xls",
 }
 
-#: The four levels that partition the whole, matched against the dictionary's
-#: `dim.egitim_duzeyi.values` — see the module docstring for what is deliberately left out.
+#: The three levels that partition the whole, matched against the dictionary's
+#: `dim.egitim_duzeyi.values`. İlkokul and Ortaokul both map onto `ilkogretim` — every
+#: count-based source here starts in 2012, the reform year, and only ever published the
+#: two split; there is no pre-reform "İlköğretim" row to prefer here the way
+#: `NetEnrollmentRate` has one. Keeping them apart would still make İlköğretim a level
+#: the reader has to reconstruct by hand everywhere except that one indicator, so counts
+#: are summed into it instead — additive, unlike a rate, so summing is exact rather than
+#: an approximation the way `NetEnrollmentRate`'s weighted average is.
 EGITIM_DUZEYLERI = {
     "Okul Öncesi": "okul_oncesi",
-    "İlkokul": "ilkokul",
-    "Ortaokul": "ortaokul",
+    "İlkokul": "ilkogretim",
+    "Ortaokul": "ilkogretim",
     "Ortaöğretim": "ortaogretim",
 }
 
@@ -288,17 +294,22 @@ class NetEnrollmentRate(_MebAdapter):
         )
 
 
-def _duzey_only(row: dict) -> str | None:
-    return EGITIM_DUZEYLERI.get(row["kategori"])
-
-
 def _load_counts(key: str) -> pl.DataFrame:
-    """A raw-count workbook (öğrenci/derslik/şube/okul), filtered to the four levels."""
+    """A raw-count workbook (öğrenci/derslik/şube/okul), collapsed to the three levels.
+
+    Grouped and summed *after* the rename, not before: İlkokul and Ortaokul both land
+    on `ilkogretim`, so without the sum this returns two rows per (area, year,
+    ilkogretim) instead of one — and the ratio adapters that join two of these frames
+    on `egitim_duzeyi` would then fan out into a cross product instead of dividing one
+    number by another.
+    """
     raw = fetch(key)
     long = read_pivot(raw)
-    long = long.filter(pl.col("kategori").is_in(EGITIM_DUZEYLERI))
-    return long.with_columns(
+    long = long.filter(pl.col("kategori").is_in(EGITIM_DUZEYLERI)).with_columns(
         pl.col("kategori").replace(EGITIM_DUZEYLERI).alias("egitim_duzeyi")
+    )
+    return long.group_by(["area_id", "area_level", "yil", "egitim_duzeyi"]).agg(
+        pl.col("deger").sum()
     )
 
 
@@ -373,6 +384,12 @@ class GenderStudentRatio(_MebAdapter):
                 }
             )
         long2 = pl.DataFrame(rows)
+        # İlkokul ve Ortaokul de "ilkogretim"e dustugu icin toplanmadan pivot edilirse
+        # ayni (alan, yil, cinsiyet, duzey) icin iki satir kalir - _load_counts'taki
+        # ayni nedenle once toplaniyor.
+        long2 = long2.group_by(
+            ["area_id", "area_level", "yil", "egitim_duzeyi", "sex"]
+        ).agg(pl.col("deger").sum())
         wide = long2.pivot(
             on="sex",
             index=["area_id", "area_level", "yil", "egitim_duzeyi"],
