@@ -90,6 +90,7 @@ DATASETS = {
             "natural_increase",
             "infant_mortality",
             "under5_mortality",
+            "district_urbanization",
         )
     },
 }

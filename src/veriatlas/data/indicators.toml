@@ -889,6 +889,21 @@ dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "Ruhsat verilen daire sayısı. Bina sayısıyla karıştırılmamalı."
 
+[indicator.district_urbanization]
+label_tr = "Kentleşme oranı (kayıtlı seçmen)"
+label_en = "Urbanization rate (registered voters)"
+topic = "nufus"
+unit = "percent"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = """
+Kayıtlı seçmenin kentte (mahalle sandığı) yaşayan payı, il ve ilçe düzeyinde. TÜİK'in \
+nüfus verisinde kent/kır kırılımı yok — bu, YSK'nın 2015 sandık dökümünden (AATOPLU) \
+gelen dolaylı bir vekil ölçüdür. Nüfus değil kayıtlı seçmen (18+) sayılıyor, tek bir \
+seçim anına ait, zaman serisi değil. Aydın ilinde ve Siirt'in ilçe kırılımında kaynak \
+eksik, o alanlar boş."""
+
 # endregion
 
 # region Bases — a count read against a *slice of another indicator*

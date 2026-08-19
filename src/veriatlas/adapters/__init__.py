@@ -12,6 +12,7 @@ from .tuik_tfr import TuikTfr
 from .tuik_villages import TuikVillagePopulation
 from .tuik_vital import VITAL_ADAPTERS
 from .tuik_vital_district import DISTRICT_VITAL_ADAPTERS
+from .ysk_urbanization import YskUrbanization2015
 
 #: Everything that can be ingested, by name. `scripts/load.py` runs these.
 ADAPTERS = {
@@ -31,6 +32,7 @@ ADAPTERS = {
     # The same two events at district level are *different measures* in MEDAS, with
     # different codes in the header and shorter series. Their own parser for that reason.
     **DISTRICT_VITAL_ADAPTERS,
+    "ysk_urbanization_2015": YskUrbanization2015,
 }
 
 __all__ = [
@@ -48,6 +50,7 @@ __all__ = [
     "TuikRegistryPopulation",
     "TuikTfr",
     "TuikVillagePopulation",
+    "YskUrbanization2015",
     "history",
     "ingest",
 ]
