@@ -460,6 +460,163 @@
           },
           "fine": {},
           "available": true
+        },
+        {
+          "id": "net_enrollment_rate",
+          "label": "Net okullaşma oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "İlgili yaş grubunun okula kayıtlı olan payı, cinsiyet ve eğitim düzeyi kırılımıyla, 2007-2024. MEB'in kendi hesapladığı oran — kayıtlı öğrenci sayısının cinsiyet dağılımı değil (bkz. `gender_student_ratio`), yaş grubunun ne kadarının fiilen okula gittiği. Okul Öncesi için yayımlanmıyor. İlkokul ve Ortaokul burada ayrı görünmez: 2012 reformu öncesi ikisi tek kurumdu (\"İlköğretim\"), o yüzden gösterge hep bu birleşik düzeyi taşır — reform sonrası yıllarda İlkokul ve Ortaokul öğrenci sayısı ağırlıklı ortalamasıyla hesaplanır.",
+          "dims": [
+            "sex",
+            "egitim_duzeyi"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "net-enrollment-rate.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "gender_student_ratio",
+          "label": "Kadın/Erkek öğrenci oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Kayıtlı kadın öğrenci sayısının erkek öğrenci sayısına oranı (%), eğitim düzeyi kırılımıyla, 2012-2024. 100 = eşit sayıda. Net okullaşma oranından farkı: bu, zaten okula kayıtlı olanlar arasındaki dağılımı ölçer, yaş grubunun tamamını değil.",
+          "dims": [
+            "egitim_duzeyi"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "gender-student-ratio.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "class_size",
+          "label": "Sınıf mevcudu (öğrenci/derslik)",
+          "unit": "öğrenci/derslik",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Öğrenci sayısının derslik sayısına oranı, eğitim düzeyi kırılımıyla, 2012-2024. Fiziksel kapasite baskısının doğrudan ölçüsü — şube/derslik oranından (`section_room_ratio`) farkı, idari bölünme değil gerçek yer darlığını yansıtması.",
+          "dims": [
+            "egitim_duzeyi"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "class-size.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "section_size",
+          "label": "Şube mevcudu (öğrenci/şube)",
+          "unit": "öğrenci/şube",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Öğrenci sayısının şube (sınıf/idari bölüm) sayısına oranı, 2012-2024. Bir öğretmenin fiilen karşısında gördüğü ortalama öğrenci sayısına en yakın ölçü.",
+          "dims": [
+            "egitim_duzeyi"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "section-size.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "section_room_ratio",
+          "label": "Şube/Derslik oranı (ikili öğretim baskısı)",
+          "unit": "şube/derslik",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Şube sayısının derslik sayısına oranı, 2012-2024. 1'in üzerinde olması, derslik başına birden fazla şubenin nöbetleşe (ikili öğretim) kullandığı anlamına gelir — 1'e ne kadar yakınsa okullar o kadar tek vardiyaya dönmüş demektir.",
+          "dims": [
+            "egitim_duzeyi"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "section-room-ratio.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "school_size",
+          "label": "Okul mevcudu (öğrenci/okul)",
+          "unit": "öğrenci/okul",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Öğrenci sayısının okul sayısına oranı, 2012-2024. Az sayıda büyük okul mu, çok sayıda küçük okul mu ölçüsü — kırsal illerde düşük, büyükşehirlerde yüksek çıkması beklenir.",
+          "dims": [
+            "egitim_duzeyi"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "school-size.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
         }
       ]
     },
@@ -1637,6 +1794,13 @@
       "surum": "2026-08",
       "cekim": "2026-08-19",
       "not": "YSK'nın 7 Haziran 2015 sandık dökümü (AATOPLU) — MEDAS değil, tek seçim anına ait. Nüfus değil kayıtlı seçmen sayısı kullanıldı."
+    },
+    {
+      "kapsam": "Eğitim düzeyi göstergeleri (okullaşma, cinsiyet, sınıf yoğunluğu), il, 2007-2024",
+      "kaynak": "meb_egitim",
+      "surum": "2026-08",
+      "cekim": "2026-08-19",
+      "not": "MEB istatistikleri (Net Okullaşma Oranları, Derslik/Şube/Öğrenci/Okul Sayıları), il düzeyi. Sınıf mevcudu, şube/derslik oranı gibi göstergeler MEB tarafından yayımlanmıyor, ham sayılardan hesaplandı."
     }
   ]
 }

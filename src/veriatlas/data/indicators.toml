@@ -125,6 +125,27 @@ unknown = "Bilinmeyen"
 # `covers` lists the dimension values that add up into each group. They must be a
 # partition: no value in two groups, or the total stops being the total.
 
+[dim.egitim_duzeyi]
+label_tr = "Eğitim düzeyi"
+label_en = "Education level"
+
+[dim.egitim_duzeyi.values]
+# MEB'in kendi dört ayrık düzeyi. "Ortaöğretim" kaynakta "Genel Ortaöğretim" + "Mesleki
+# ve Teknik Ortaöğretim"in toplamı olarak da yayımlanıyor (doğrulandı: Adana 2024,
+# 97160+57642=154802) — alt kırılım burada tutulmuyor, çünkü ayrı bir düzey değil aynı
+# düzeyin iki türü; ikisini de saymak toplamı iki katına çıkarır.
+okul_oncesi = "Okul Öncesi"
+ilkokul = "İlkokul"
+ortaokul = "Ortaokul"
+ortaogretim = "Ortaöğretim"
+# Yalnız net okullaşma oranında: 4+4+4 reformu (2012) öncesi İlkokul ve Ortaokul tek
+# kurum ("İlköğretim") olarak yayımlanıyordu. İlkokul/Ortaokul'u ayrı tutmak reform
+# öncesi yıllarda veri yokluğuna, sonrasında da eski "İlköğretim" seriyle karşılaştırma
+# yapılamamasına yol açıyordu — bu yüzden net_enrollment_rate hep tek "İlköğretim"
+# değerini kullanır (reform sonrası yıllarda İlkokul+Ortaokul öğrenci sayısı ağırlıklı
+# ortalamasıyla hesaplanır), İlkokul/Ortaokul'u kendi başlarına bu göstergede taşımaz.
+ilkogretim = "İlköğretim"
+
 [dim.residence]
 label_tr = "Nerede yaşıyor"
 label_en = "Where they live"
@@ -316,6 +337,30 @@ additive = false
 label_tr = "endeks"
 label_en = "index"
 decimals = 1
+additive = false
+
+[unit.student_per_room]
+label_tr = "öğrenci/derslik"
+label_en = "students per classroom"
+decimals = 1
+additive = false
+
+[unit.student_per_section]
+label_tr = "öğrenci/şube"
+label_en = "students per class section"
+decimals = 1
+additive = false
+
+[unit.student_per_school]
+label_tr = "öğrenci/okul"
+label_en = "students per school"
+decimals = 0
+additive = false
+
+[unit.section_per_room]
+label_tr = "şube/derslik"
+label_en = "sections per classroom"
+decimals = 2
 additive = false
 
 [unit.birth]
@@ -903,6 +948,86 @@ nüfus verisinde kent/kır kırılımı yok — bu, YSK'nın 2015 sandık dökü
 gelen dolaylı bir vekil ölçüdür. Nüfus değil kayıtlı seçmen (18+) sayılıyor, tek bir \
 seçim anına ait, zaman serisi değil. Aydın ilinde ve Siirt'in ilçe kırılımında kaynak \
 eksik, o alanlar boş."""
+
+[indicator.net_enrollment_rate]
+label_tr = "Net okullaşma oranı"
+label_en = "Net enrollment rate"
+topic = "nufus"
+unit = "percent"
+frequency = "annual"
+dims = ["sex", "egitim_duzeyi"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+İlgili yaş grubunun okula kayıtlı olan payı, cinsiyet ve eğitim düzeyi kırılımıyla, \
+2007-2024. MEB'in kendi hesapladığı oran — kayıtlı öğrenci sayısının cinsiyet dağılımı \
+değil (bkz. `gender_student_ratio`), yaş grubunun ne kadarının fiilen okula gittiği. \
+Okul Öncesi için yayımlanmıyor. İlkokul ve Ortaokul burada ayrı görünmez: 2012 reformu \
+öncesi ikisi tek kurumdu ("İlköğretim"), o yüzden gösterge hep bu birleşik düzeyi \
+taşır — reform sonrası yıllarda İlkokul ve Ortaokul öğrenci sayısı ağırlıklı \
+ortalamasıyla hesaplanır."""
+
+[indicator.gender_student_ratio]
+label_tr = "Kadın/Erkek öğrenci oranı"
+label_en = "Female/male student ratio"
+topic = "nufus"
+unit = "percent"
+frequency = "annual"
+dims = ["egitim_duzeyi"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Kayıtlı kadın öğrenci sayısının erkek öğrenci sayısına oranı (%), eğitim düzeyi \
+kırılımıyla, 2012-2024. 100 = eşit sayıda. Net okullaşma oranından farkı: bu, zaten \
+okula kayıtlı olanlar arasındaki dağılımı ölçer, yaş grubunun tamamını değil."""
+
+[indicator.class_size]
+label_tr = "Sınıf mevcudu (öğrenci/derslik)"
+label_en = "Class size (students per classroom)"
+topic = "nufus"
+unit = "student_per_room"
+frequency = "annual"
+dims = ["egitim_duzeyi"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Öğrenci sayısının derslik sayısına oranı, eğitim düzeyi kırılımıyla, 2012-2024. Fiziksel \
+kapasite baskısının doğrudan ölçüsü — şube/derslik oranından (`section_room_ratio`) \
+farkı, idari bölünme değil gerçek yer darlığını yansıtması."""
+
+[indicator.section_size]
+label_tr = "Şube mevcudu (öğrenci/şube)"
+label_en = "Section size (students per class section)"
+topic = "nufus"
+unit = "student_per_section"
+frequency = "annual"
+dims = ["egitim_duzeyi"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Öğrenci sayısının şube (sınıf/idari bölüm) sayısına oranı, 2012-2024. Bir öğretmenin \
+fiilen karşısında gördüğü ortalama öğrenci sayısına en yakın ölçü."""
+
+[indicator.section_room_ratio]
+label_tr = "Şube/Derslik oranı (ikili öğretim baskısı)"
+label_en = "Sections per classroom (double-shift pressure)"
+topic = "nufus"
+unit = "section_per_room"
+frequency = "annual"
+dims = ["egitim_duzeyi"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Şube sayısının derslik sayısına oranı, 2012-2024. 1'in üzerinde olması, derslik başına \
+birden fazla şubenin nöbetleşe (ikili öğretim) kullandığı anlamına gelir — 1'e ne kadar \
+yakınsa okullar o kadar tek vardiyaya dönmüş demektir."""
+
+[indicator.school_size]
+label_tr = "Okul mevcudu (öğrenci/okul)"
+label_en = "School size (students per school)"
+topic = "nufus"
+unit = "student_per_school"
+frequency = "annual"
+dims = ["egitim_duzeyi"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Öğrenci sayısının okul sayısına oranı, 2012-2024. Az sayıda büyük okul mu, çok sayıda \
+küçük okul mu ölçüsü — kırsal illerde düşük, büyükşehirlerde yüksek çıkması beklenir."""
 
 # endregion
 

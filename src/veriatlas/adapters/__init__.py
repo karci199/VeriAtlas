@@ -1,6 +1,7 @@
 """Source adapters. One module per source; the contract lives in `base`."""
 
 from .base import Adapter, Manifest, history, ingest
+from .meb_education import MEB_ADAPTERS
 from .tuik_district_population import TuikDistrictPopulation
 from .tuik_marital import TuikMarital
 from .tuik_median_age import TuikMedianAge
@@ -33,11 +34,13 @@ ADAPTERS = {
     # different codes in the header and shorter series. Their own parser for that reason.
     **DISTRICT_VITAL_ADAPTERS,
     "ysk_urbanization_2015": YskUrbanization2015,
+    **{"meb_" + key: cls for key, cls in MEB_ADAPTERS.items()},
 }
 
 __all__ = [
     "ADAPTERS",
     "DISTRICT_VITAL_ADAPTERS",
+    "MEB_ADAPTERS",
     "NARROW_ADAPTERS",
     "VITAL_ADAPTERS",
     "Adapter",

@@ -73,6 +73,12 @@ DATASETS = {
     "mean_marriage_age": "marriage-age.csv",
     "mean_first_marriage_age": "first-marriage-age.csv",
     "life_expectancy": "life-expectancy.csv",
+    "net_enrollment_rate": "net-enrollment-rate.csv",
+    "gender_student_ratio": "gender-student-ratio.csv",
+    "class_size": "class-size.csv",
+    "section_size": "section-size.csv",
+    "section_room_ratio": "section-room-ratio.csv",
+    "school_size": "school-size.csv",
     **{
         name: name.replace("_", "-") + ".csv"
         for name in (
@@ -110,6 +116,12 @@ BROKEN_DOWN = (
     "mean_first_marriage_age",
     "registry_population",
     "life_expectancy",
+    "net_enrollment_rate",
+    "gender_student_ratio",
+    "class_size",
+    "section_size",
+    "section_room_ratio",
+    "school_size",
 )
 
 #: Indicators with no breakdown at all: one value per area and year.
@@ -699,6 +711,14 @@ def main() -> None:
         "registry_population": export_broken_down(
             fact, areas, "registry_population", roll_up=ROLLED_UP["registry_population"]
         ),
+        # MEB'in altı göstergesi: hepsi oran/ratio, tam sayıya yuvarlamak (whole=True)
+        # ondalığı atardı — sınıf mevcudu 28,4 ile 28,9 arasındaki farkı taşıyor.
+        "net_enrollment_rate": export_broken_down(fact, areas, "net_enrollment_rate", whole=False),
+        "gender_student_ratio": export_broken_down(fact, areas, "gender_student_ratio", whole=False),
+        "class_size": export_broken_down(fact, areas, "class_size", whole=False),
+        "section_size": export_broken_down(fact, areas, "section_size", whole=False),
+        "section_room_ratio": export_broken_down(fact, areas, "section_room_ratio", whole=False),
+        "school_size": export_broken_down(fact, areas, "school_size", whole=False),
     }
 
     for indicator_id in PLAIN:
