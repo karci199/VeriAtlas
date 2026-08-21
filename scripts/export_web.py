@@ -90,8 +90,12 @@ DATASETS = {
             "natural_increase",
             "infant_mortality",
             "under5_mortality",
+            "university_applicants",
+            "university_admitted",
         )
     },
+    "student_new_admissions": "student-new-admissions.csv",
+    "student_total": "student-total.csv",
 }
 
 #: Indicators that carry breakdowns and so go out through `export_broken_down` rather
@@ -109,6 +113,8 @@ BROKEN_DOWN = (
     "mean_first_marriage_age",
     "registry_population",
     "life_expectancy",
+    "student_new_admissions",
+    "student_total",
 )
 
 #: Indicators with no breakdown at all: one value per area and year.
@@ -698,6 +704,10 @@ def main() -> None:
         "registry_population": export_broken_down(
             fact, areas, "registry_population", roll_up=ROLLED_UP["registry_population"]
         ),
+        "student_new_admissions": export_broken_down(
+            fact, areas, "student_new_admissions"
+        ),
+        "student_total": export_broken_down(fact, areas, "student_total"),
     }
 
     for indicator_id in PLAIN:
