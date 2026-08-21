@@ -12,6 +12,12 @@ from .tuik_tfr import TuikTfr
 from .tuik_villages import TuikVillagePopulation
 from .tuik_vital import VITAL_ADAPTERS
 from .tuik_vital_district import DISTRICT_VITAL_ADAPTERS
+from .yok_students import (
+    YokStudentsNewAdmissions,
+    YokStudentsTotal,
+    YokUniversityAdmitted,
+    YokUniversityApplicants,
+)
 
 #: Everything that can be ingested, by name. `scripts/load.py` runs these.
 ADAPTERS = {
@@ -31,6 +37,10 @@ ADAPTERS = {
     # The same two events at district level are *different measures* in MEDAS, with
     # different codes in the header and shorter series. Their own parser for that reason.
     **DISTRICT_VITAL_ADAPTERS,
+    "yok_student_new_admissions": YokStudentsNewAdmissions,
+    "yok_student_total": YokStudentsTotal,
+    "yok_university_applicants": YokUniversityApplicants,
+    "yok_university_admitted": YokUniversityAdmitted,
 }
 
 __all__ = [

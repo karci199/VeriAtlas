@@ -44,6 +44,11 @@ label_tr = "Yapı ruhsatı"
 label_en = "Building permits"
 order = 30
 
+[topic.egitim]
+label_tr = "Yükseköğretim"
+label_en = "Higher education"
+order = 27
+
 # endregion
 
 # region Dimensions — the breakdown keys and what their stored values are called
@@ -92,6 +97,16 @@ single_person = "Tek kişilik"
 one_nuclear_family = "Tek çekirdek aileli"
 nuclear_and_others = "Çekirdek aile ve diğerleri"
 no_nuclear_family = "Çekirdek ailesiz, çok kişili"
+
+[dim.edu_level]
+label_tr = "Öğrenim düzeyi"
+label_en = "Education level"
+
+[dim.edu_level.values]
+assoc = "Önlisans"
+bachelor = "Lisans"
+masters = "Yüksek lisans"
+doctorate = "Doktora"
 
 [dim.marital]
 label_tr = "Medeni durum"
@@ -888,6 +903,58 @@ frequency = "quarterly"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "Ruhsat verilen daire sayısı. Bina sayısıyla karıştırılmamalı."
+
+[indicator.student_new_admissions]
+label_tr = "Yeni kayıt olan öğrenci sayısı"
+label_en = "New student admissions"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["edu_level", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = """
+Akademik yıl içinde yükseköğretime yeni kayıt olan öğrenci sayısı, Türkiye toplamı, \
+öğrenim düzeyi ve cinsiyet kırılımıyla. İl kırılımı yok — YÖK bu tabloyu yalnız \
+Türkiye toplamında yayımlıyor. `period_start` akademik yılın başlangıç yılı \
+(2019-2020 → 2019)."""
+
+[indicator.student_total]
+label_tr = "Öğrenci sayısı"
+label_en = "Total students"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["edu_level", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = """
+Akademik yıl içindeki toplam kayıtlı öğrenci sayısı, Türkiye toplamı, öğrenim düzeyi \
+ve cinsiyet kırılımıyla. İl kırılımı yok. 2022-2023'te ~1,3 milyonluk bir düşüş var — \
+YÖK'ün o dönem yaptığı, ilişiği fiilen kesilmiş açıköğretim öğrencilerini kayıttan \
+düşürme temizliğiyle örtüşüyor; veri hatası değil, sayım tanımındaki bir değişiklik."""
+
+[indicator.university_applicants]
+label_tr = "Üniversiteye başvuran aday sayısı"
+label_en = "University applicants"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "line"]
+definition_tr = """
+Yıl içinde üniversiteye başvuran aday sayısı, Türkiye toplamı, 1980'den bugüne."""
+
+[indicator.university_admitted]
+label_tr = "Üniversiteye yerleşen aday sayısı"
+label_en = "University admissions"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "line"]
+definition_tr = """
+Yıl içinde bir yükseköğretim programına yerleşen aday sayısı, Türkiye toplamı, \
+1980'den bugüne. Başvurana oranı (yerleşme oranı) ekranda türetilir, ayrıca \
+depolanmaz (K12)."""
 
 # endregion
 
