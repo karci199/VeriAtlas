@@ -4,14 +4,9 @@ Usage:
     python scripts/endeksa_xlsx.py --district TR-16-006 [--dump endeksa-16-1420.json]
                                    [--raw C:/veri/raw/endeksa] [--out out.xlsx]
 
-Without --dump the raw folder is expected to already hold the per-file layout
-(county.json, <DistrictId>-<slug>.json, election.json, fellowcountryman.json,
-geo.json). With --dump, a single endeksaFetch.download() file is unpacked into
-that layout first.
-
-Everything numeric that can be derived (shares, densities, turnout) is written
-as a formula referencing count columns on the same row, so the workbook stays
-live when a count is corrected. Raw JSON remains the source of truth.
+Layout: one topic per sheet, a two-row header (group / column), counts from the
+source and every derived figure (share, density, mean age, turnout) as a formula
+on the same row. Raw JSON stays the source of truth; see docs/endeksa.md.
 """
 
 from __future__ import annotations
@@ -21,19 +16,27 @@ import csv
 import gzip
 import json
 import re
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from openpyxl import Workbook
 from openpyxl.formatting.rule import ColorScaleRule
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
-from openpyxl.utils import get_column_letter
+from openpyxl.utils import get_column_letter as L
+from openpyxl.worksheet.worksheet import Worksheet
 
 REPO = Path(__file__).resolve().parent.parent
 FONT = "Arial"
-HEAD_FILL = PatternFill("solid", fgColor="1F3864")
-SUB_FILL = PatternFill("solid", fgColor="D9E1F2")
-NOTE_FILL = PatternFill("solid", fgColor="FFF2CC")
-THIN = Side(style="thin", color="BFBFBF")
+NAVY = "1F3864"
+BLUE = "2F5597"
+BAND = "F3F6FB"
+SUBTOTAL = "DDE6F3"
+GREY = "6B6B6B"
+THIN = Side(style="thin", color="D0D7E2")
+FMT_INT = "#,##0"
+FMT_PCT = "0.0%"
+FMT_DEC1 = "0.0"
+FMT_DEC2 = "0.00"
 
 AGE_BANDS = [
     "0_4",
@@ -52,6 +55,9 @@ AGE_BANDS = [
     "65",
 ]
 AGE_LABEL = {b: (b.replace("_", "-") if b != "65" else "65+") for b in AGE_BANDS}
+# band midpoints for the mean-age estimate; open 65+ band set to 74 (TUIK 65+ mean age, 2024)
+AGE_MID = [2, 7, 12, 17, 22, 27, 32, 37, 42, 47, 52, 57, 62, 74]
+SEX = [("Total", "Toplam"), ("Male", "Erkek"), ("Female", "Kadın")]
 EDU = [
     ("EduNonLiterated", "Okuma yazma bilmeyen"),
     ("EduLiteratedUntutored", "Bilen, okul bitirmemiş"),
@@ -93,24 +99,25 @@ EXPENSE = [
 ]
 ELECTION_LABEL = {
     "2011genelsecim": "2011 Genel",
-    "2014cumhurbaskani": "2014 Cumhurbaşkanı",
+    "2014cumhurbaskani": "2014 CB",
     "2014yerel": "2014 Yerel",
-    "2015haziran": "2015 Haziran Genel",
-    "2015kasim": "2015 Kasım Genel",
+    "2015haziran": "2015 Haz. Genel",
+    "2015kasim": "2015 Kas. Genel",
     "2017anayasa": "2017 Referandum",
-    "2018cumhurbaskani": "2018 Cumhurbaşkanı",
+    "2018cumhurbaskani": "2018 CB",
     "2018genel": "2018 Genel",
-    "2019yerelseçimilçebelediye": "2019 Yerel — İlçe Bld.",
-    "2019yerelseçimbelediyemeclisi": "2019 Yerel — Bld. Meclisi",
-    "2019yerelseçimbüyükşehir": "2019 Yerel — Büyükşehir",
+    "2019yerelseçimilçebelediye": "2019 İlçe Bld.",
+    "2019yerelseçimbelediyemeclisi": "2019 Bld. Meclisi",
+    "2019yerelseçimbüyükşehir": "2019 Büyükşehir",
     "2023genel": "2023 Genel",
-    "2023CumhurTur1": "2023 Cumhurbaşkanı 1. tur",
-    "2023CumhurTur2": "2023 Cumhurbaşkanı 2. tur",
-    "2024yerelseçimbelediyebaşkanlığı": "2024 Yerel — İlçe Bld.",
-    "2024yerelseçimbelediyemeclisüyeliği": "2024 Yerel — Bld. Meclisi",
-    "2024yerelseçimbüyükşehirbelediyebaşkanlığı": "2024 Yerel — Büyükşehir",
+    "2023CumhurTur1": "2023 CB 1. tur",
+    "2023CumhurTur2": "2023 CB 2. tur",
+    "2024yerelseçimbelediyebaşkanlığı": "2024 İlçe Bld.",
+    "2024yerelseçimbelediyemeclisüyeliği": "2024 Bld. Meclisi",
+    "2024yerelseçimbüyükşehirbelediyebaşkanlığı": "2024 Büyükşehir",
 }
 FOCUS_ELECTION = "2024yerelseçimbelediyebaşkanlığı"
+KIND_LABEL = {"centre": "Merkez", "rural": "Kır"}
 
 
 def slug(s: str) -> str:
@@ -163,16 +170,20 @@ def load_raw(raw_dir: Path) -> dict:
             quarters[str(q["Demography"]["DistrictId"])] = q["Demography"]
     election = json.loads((raw_dir / "election.json").read_text("utf-8"))
     fellows = json.loads((raw_dir / "fellowcountryman.json").read_text("utf-8"))
+    geo_ids = set()
+    gp = raw_dir / "geo.json"
+    if gp.exists():
+        geo_ids = {f["id"] for f in json.loads(gp.read_text("utf-8"))["features"]}
     return {
         "county": county,
         "quarters": quarters,
         "election": election,
         "fellows": fellows,
+        "geo_ids": geo_ids,
     }
 
 
 def load_tuik(district: str) -> tuple[dict[str, dict], dict[str, dict[int, dict]]]:
-    """Return MEDAS areas (by normalised name) and yearly series per area_id."""
     areas = {}
     with open(
         REPO / "src/veriatlas/data/areas_tr_neighbourhoods.csv", encoding="utf-8"
@@ -187,83 +198,195 @@ def load_tuik(district: str) -> tuple[dict[str, dict], dict[str, dict[int, dict]
         for r in csv.DictReader(f):
             if not r["area_id"].startswith(district + "-"):
                 continue
-            y = int(r["year"])
-            cell = series.setdefault(r["area_id"], {}).setdefault(y, {})
-            key = (r["age"] or "all") + "|" + (r["sex"] or "all")
-            cell[key] = int(r["value"])
+            cell = series.setdefault(r["area_id"], {}).setdefault(int(r["year"]), {})
+            cell[(r["age"] or "all") + "|" + (r["sex"] or "all")] = int(r["value"])
     return areas, series
 
 
-def tuik_total(t: dict, y: int):
+def tuik_get(t: dict, y: int, age: str = "all", sex: str = "all"):
     cell = t.get(y, {})
-    if "all|all" in cell:
-        return cell["all|all"]
-    return (
-        sum(
-            v for k, v in cell.items() if k.endswith("|all") and not k.startswith("all")
+    if age == "all" and sex == "all":
+        return cell.get("all|all") or (
+            sum(
+                v
+                for k, v in cell.items()
+                if k.endswith("|all") and not k.startswith("all")
+            )
+            or None
         )
-        or None
-    )
-
-
-# ---------------------------------------------------------------- styling
-
-
-def style_header(ws, row: int, ncol: int, fill=HEAD_FILL, color="FFFFFF") -> None:
-    for c in range(1, ncol + 1):
-        cell = ws.cell(row=row, column=c)
-        cell.font = Font(name=FONT, bold=True, color=color, size=10)
-        cell.fill = fill
-        cell.alignment = Alignment(
-            horizontal="center", vertical="center", wrap_text=True
+    if age == "all":
+        return cell.get(f"all|{sex}") or (
+            (cell.get(f"18+|{sex}", 0) + cell.get(f"0-17|{sex}", 0)) or None
         )
-        cell.border = Border(bottom=THIN)
-    ws.row_dimensions[row].height = 32
+    return cell.get(f"{age}|{sex}")
 
 
-def finish(
-    ws, header_row: int, widths: dict[int, float] | None = None, first_width: float = 22
-) -> None:
-    ws.freeze_panes = ws.cell(row=header_row + 1, column=2)
-    ws.auto_filter.ref = f"A{header_row}:{get_column_letter(ws.max_column)}{ws.max_row}"
-    ws.column_dimensions["A"].width = first_width
-    for c in range(2, ws.max_column + 1):
-        ws.column_dimensions[get_column_letter(c)].width = (widths or {}).get(c, 11)
-    for row in ws.iter_rows(min_row=header_row + 1):
-        for cell in row:
-            cell.font = Font(name=FONT, size=10)
-    ws.sheet_view.zoomScale = 90
+def median_age(counts: list[int]) -> float | None:
+    total = sum(counts)
+    if total == 0:
+        return None
+    half = total / 2
+    acc = 0
+    edges = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 85]
+    for k, c in enumerate(counts):
+        if acc + c >= half:
+            lo, hi = edges[k], edges[k + 1]
+            return round(lo + (half - acc) / c * (hi - lo), 1) if c else float(lo)
+        acc += c
+    return None
 
 
-def col_fmt(ws, col: int, fmt: str, first: int, last: int) -> None:
-    for r in range(first, last + 1):
-        ws.cell(row=r, column=col).number_format = fmt
+# ---------------------------------------------------------------- table writer
 
 
-def color_scale(ws, col: int, first: int, last: int) -> None:
-    ref = f"{get_column_letter(col)}{first}:{get_column_letter(col)}{last}"
-    ws.conditional_formatting.add(
-        ref,
-        ColorScaleRule(
-            start_type="min",
-            start_color="F8696B",
-            mid_type="percentile",
-            mid_value=50,
-            mid_color="FFEB84",
-            end_type="max",
-            end_color="63BE7B",
-        ),
-    )
+@dataclass
+class Col:
+    label: str
+    fmt: str = FMT_INT
+    width: float = 10
+    scale: bool = False
+    group: str = ""
 
 
-# ---------------------------------------------------------------- sheets
+@dataclass
+class Table:
+    ws: Worksheet
+    title: str
+    subtitle: str
+    cols: list[Col]
+    first_col: Col = field(default_factory=lambda: Col("Mahalle", "@", 24))
+    header_row: int = 4
+    rows_written: int = 0
+
+    def __post_init__(self) -> None:
+        ws = self.ws
+        ws["A1"] = self.title
+        ws["A1"].font = Font(name=FONT, bold=True, size=14, color=NAVY)
+        ws["A2"] = self.subtitle
+        ws["A2"].font = Font(name=FONT, italic=True, size=9, color=GREY)
+        ws.sheet_view.showGridLines = False
+        ws.sheet_view.zoomScale = 90
+        g_row, h_row = self.header_row - 1, self.header_row
+        allcols = [self.first_col] + self.cols
+        c = 1
+        while c <= len(allcols):
+            g = allcols[c - 1].group
+            span = 1
+            while g and c + span <= len(allcols) and allcols[c + span - 1].group == g:
+                span += 1
+            cell = ws.cell(row=g_row, column=c, value=g or None)
+            cell.font = Font(name=FONT, bold=True, size=9, color="FFFFFF")
+            cell.fill = PatternFill("solid", fgColor=BLUE if g else NAVY)
+            cell.alignment = Alignment(horizontal="center", vertical="center")
+            white = Side(style="thin", color="FFFFFF")
+            cell.border = Border(left=white, right=white)
+            for k in range(1, span):
+                ws.cell(row=g_row, column=c + k).fill = PatternFill(
+                    "solid", fgColor=BLUE
+                )
+            if span > 1:
+                ws.merge_cells(
+                    start_row=g_row,
+                    start_column=c,
+                    end_row=g_row,
+                    end_column=c + span - 1,
+                )
+            c += span
+        ws.row_dimensions[g_row].height = 16
+        for i, col in enumerate(allcols, 1):
+            cell = ws.cell(row=h_row, column=i, value=col.label)
+            cell.font = Font(name=FONT, bold=True, size=9, color="FFFFFF")
+            cell.fill = PatternFill("solid", fgColor=NAVY)
+            cell.alignment = Alignment(
+                horizontal="center" if i > 1 else "left",
+                vertical="center",
+                wrap_text=True,
+            )
+            ws.column_dimensions[L(i)].width = col.width
+        ws.row_dimensions[h_row].height = 44
+        ws.freeze_panes = ws.cell(row=h_row + 1, column=2)
+
+    def next_row(self) -> int:
+        return self.header_row + 1 + self.rows_written
+
+    def row(self, values: list, *, style: str = "data") -> int:
+        r = self.next_row()
+        self.rows_written += 1
+        allcols = [self.first_col] + self.cols
+        band = self.rows_written % 2 == 0
+        for i, v in enumerate(values, 1):
+            cell = self.ws.cell(row=r, column=i, value=v)
+            col = allcols[i - 1]
+            bold = style in ("total", "subtotal")
+            cell.font = Font(
+                name=FONT,
+                size=9 if style == "note" else 10,
+                bold=bold,
+                italic=style == "note",
+                color=GREY if style == "note" else "000000",
+            )
+            cell.number_format = col.fmt if i > 1 else "@"
+            cell.alignment = Alignment(
+                horizontal="right" if i > 1 else "left", vertical="center"
+            )
+            cell.border = Border(bottom=THIN)
+            if style == "total":
+                cell.fill = PatternFill("solid", fgColor=SUBTOTAL)
+            elif style == "subtotal":
+                cell.fill = PatternFill("solid", fgColor="EEF2F8")
+            elif band and style == "data":
+                cell.fill = PatternFill("solid", fgColor=BAND)
+        self.ws.row_dimensions[r].height = 15
+        return r
+
+    def finish(self, data_last: int | None = None) -> None:
+        ws = self.ws
+        first = self.header_row + 1
+        last = self.header_row + self.rows_written
+        data_last = data_last or last
+        ws.auto_filter.ref = f"A{self.header_row}:{L(len(self.cols) + 1)}{data_last}"
+        for i, col in enumerate(self.cols, 2):
+            if col.scale and data_last >= first:
+                ref = f"{L(i)}{first}:{L(i)}{data_last}"
+                ws.conditional_formatting.add(
+                    ref,
+                    ColorScaleRule(
+                        start_type="min",
+                        start_color="F8CBAD",
+                        mid_type="percentile",
+                        mid_value=50,
+                        mid_color="FFF2CC",
+                        end_type="max",
+                        end_color="C6E0B4",
+                    ),
+                )
+        ws.print_title_rows = f"{self.header_row - 1}:{self.header_row}"
+        ws.page_setup.orientation = "landscape"
+        ws.page_setup.fitToWidth = 1
+        ws.sheet_properties.pageSetUpPr.fitToPage = True
 
 
-def build(district: str, raw: dict, areas: dict, series: dict, out: Path) -> None:
+def pct(num: str, den: str) -> str:
+    return f'=IF(AND(ISNUMBER({num}),ISNUMBER({den}),{den}>0),{num}/{den},"")'
+
+
+def growth(new: str, old: str) -> str:
+    return f'=IF(AND(ISNUMBER({new}),ISNUMBER({old}),{old}>0),{new}/{old}-1,"")'
+
+
+def cagr(new: str, old: str, years: int) -> str:
+    return f'=IF(AND(ISNUMBER({new}),ISNUMBER({old}),{old}>0),({new}/{old})^(1/{years})-1,"")'
+
+
+# ---------------------------------------------------------------- build
+
+
+def build(raw: dict, areas: dict, series: dict, out: Path) -> None:
     county = raw["county"]["Demography"]
     subs = raw["county"]["SubRegionals"]
     quarters = raw["quarters"]
-    # order: by Endeksa DistrictId (centre quarters first), then name
+    el_q = raw["election"]["quarters"]
+    fel_q = raw["fellows"]["quarters"]
     order = sorted(subs, key=lambda s: (s["DistrictId"] >= 100000, s["RegionName"]))
     rows = []
     for s in order:
@@ -278,578 +401,749 @@ def build(district: str, raw: dict, areas: dict, series: dict, out: Path) -> Non
                 "name": s["RegionName"],
                 "q": q,
                 "area_id": area["area_id"] if area else "",
-                "kind": "merkez" if s["DistrictId"] < 100000 else "kır",
-                "placeholder": q["HouseholdCount"] == 0,
+                "kind": "centre" if s["DistrictId"] < 100000 else "rural",
+                "ph": q["HouseholdCount"] == 0,
                 "tuik": series.get(area["area_id"], {}) if area else {},
             }
         )
     n = len(rows)
+    place = f"{county['CityName'].title()} {county['CountyName'].title()}"
+    fetched = raw["county"].get("_meta", {}).get("fetched", "")
     wb = Workbook()
     wb.calculation.fullCalcOnLoad = True
 
-    # ---- Özet
-    ws = wb.active
-    ws.title = "Özet"
-    title = (
-        f"{county['CityName'].title()} {county['CountyName'].title()} — mahalle özeti"
-    )
-    ws["A1"] = title
-    ws["A1"].font = Font(name=FONT, bold=True, size=14)
-    ws["A2"] = (
-        "Endeksa 2024 kesiti + TÜİK ADNKS 2013-2025. Oran/yoğunluk sütunları formül; sayım sütunları kaynaktan. 'Veri' = hayır olan satırlarda Endeksa mahalle verisi yok (boş şablon), yalnız TÜİK ve seçim geçerli."
-    )
-    ws["A2"].font = Font(name=FONT, italic=True, size=9, color="595959")
-    H = 4
-    heads = [
-        "Mahalle",
-        "Tür",
-        "Veri",
-        "MEDAS kimlik",
-        "Endeksa id",
-        "Nüfus 2024 (TÜİK)",
-        "Nüfus 2013 (TÜİK)",
-        "Değişim 2013→24",
-        "Nüfus 2025 (TÜİK)",
-        "Erkek",
-        "Kadın",
-        "Kadın payı",
-        "0-14",
-        "15-64",
-        "65+",
-        "65+ payı",
-        "0-14 payı",
-        "Yüzölçümü km²",
-        "Yoğunluk kişi/km²",
-        "Hane",
-        "Hane büyüklüğü",
-        "Mülk sahibi %",
-        "Kiracı %",
-        "Lisans+ (kişi)",
-        "Eğitim toplamı",
-        "Lisans+ payı",
-        "SES A+AB",
-        "SES toplam",
-        "AB payı",
-        "Hane geliri ₺/ay",
-        "Kişi başı gelir ₺/ay",
-        "Konut",
-        "Ticari birim",
-        "2024 kayıtlı seçmen",
-        "2024 kullanılan oy",
-        "Katılım",
-        "2024 1. parti",
-        "1. parti oyu",
-        "2024 geçerli oy",
-        "1. parti payı",
-        "Hemşehri 1. il (Bursa dışı)",
-        "Kişi",
-    ]
-    ws.append([])
-    for i, h in enumerate(heads, 1):
-        ws.cell(row=H, column=i, value=h)
-    style_header(ws, H, len(heads))
-    el_q = raw["election"]["quarters"]
-    fel_q = raw["fellows"]["quarters"]
-    for i, r in enumerate(rows):
-        q = r["q"]
-        R = H + 1 + i
-        t = r["tuik"]
+    R0 = 5  # header_row 4 → first data row 5; same row index on every per-neighbourhood sheet
 
-        def tot(y, t=t):
-            return tuik_total(t, y)
+    def rr(i: int) -> int:
+        return R0 + i
 
-        e = next(
-            (x for x in el_q.get(r["did"], []) if x["Code"] == FOCUS_ELECTION), None
-        )
-        top = (
-            max(e["Secenekler"], key=lambda s: s["OySayisi"])
-            if e and e["Secenekler"]
-            else None
-        )
-        fel = [
-            f
-            for f in fel_q.get(r["did"], {}).get("FellowCountryman", [])
-            if f["CitizenCity"] != county["CityName"]
-        ]
-        ph = r["placeholder"]
+    R_CENTRE, R_RURAL, R_COUNTY = R0 + n, R0 + n + 1, R0 + n + 2
+    centre_rows = [rr(i) for i, r in enumerate(rows) if r["kind"] == "centre"]
+    rural_rows = [rr(i) for i, r in enumerate(rows) if r["kind"] == "rural"]
+    yrs = sorted({y for s in series.values() for y in s})
+    Y = len(yrs)
 
-        def num(k, ph=ph, q=q):
-            return None if ph else q[k]
+    def sum_rows(col: str, idx: list[int]) -> str | None:
+        if not idx:
+            return None
+        if idx == list(range(idx[0], idx[-1] + 1)):
+            return f"=SUM({col}{idx[0]}:{col}{idx[-1]})"
+        return "=" + "+".join(f"{col}{r}" for r in idx)
 
-        vals = [
-            r["name"],
-            r["kind"],
-            "hayır" if ph else "evet",
-            r["area_id"],
-            int(r["did"]),
-            tot(2024),
-            tot(2013),
-            f'=IF(AND(ISNUMBER(F{R}),ISNUMBER(G{R}),G{R}>0),F{R}/G{R}-1,"")',
-            tot(2025),
-            q["PopulationMale"],
-            q["PopulationFemale"],
-            f'=IF(J{R}+K{R}>0,K{R}/(J{R}+K{R}),"")',
-            num("Age_Group_0_14"),
-            (
-                None
-                if ph
-                else q["PopulationTotal"] - q["Age_Group_0_14"] - q["Age_65_Total"]
-            ),
-            num("Age_65_Total"),
-            f'=IF(AND(ISNUMBER(O{R}),M{R}+N{R}+O{R}>0),O{R}/(M{R}+N{R}+O{R}),"")',
-            f'=IF(AND(ISNUMBER(M{R}),M{R}+N{R}+O{R}>0),M{R}/(M{R}+N{R}+O{R}),"")',
-            q["Area"],
-            f'=IF(R{R}>0,(J{R}+K{R})/R{R},"")',
-            num("HouseholdCount"),
-            f'=IF(AND(ISNUMBER(T{R}),T{R}>0),(J{R}+K{R})/T{R},"")',
-            None if ph else q["OwnerShare"] / 100,
-            None if ph else q["RentedShare"] / 100,
-            None
-            if ph
-            else q["EduLicenseDegree"] + q["EduGraduate"] + q["EduDoctorate"],
-            num("EducationTotal"),
-            f'=IF(AND(ISNUMBER(X{R}),Y{R}>0),X{R}/Y{R},"")',
-            None if ph else q["SesGroupAPlus"] + q["SesGroupA"] + q["SesGroupB"],
-            None if ph else sum(q[k] for k, _ in SES),
-            f'=IF(AND(ISNUMBER(AA{R}),AB{R}>0),AA{R}/AB{R},"")',
-            num("HouseIncomeTotal"),
-            num("HouseIncome"),
-            q["HousingCount"],
-            q["CommercialCount"],
-            e["KayitliSecmen"] if e else None,
-            e["KullanilanOy"] if e else None,
-            f'=IF(AND(ISNUMBER(AH{R}),AH{R}>0),AI{R}/AH{R},"")',
-            top["Secenek"] if top else None,
-            top["OySayisi"] if top else None,
-            e["GecerliOy"] if e else None,
-            f'=IF(AND(ISNUMBER(AL{R}),AM{R}>0),AL{R}/AM{R},"")',
-            fel[0]["CitizenCity"].title() if fel else None,
-            fel[0]["CountOf"] if fel else None,
-        ]
-        for c, v in enumerate(vals, 1):
-            ws.cell(row=R, column=c, value=v)
-    last = H + n
-    # county row
-    R = last + 1
-    ws.cell(row=R, column=1, value="İLÇE TOPLAMI (Endeksa)").font = Font(
-        name=FONT, bold=True
-    )
-    ws.cell(row=R, column=10, value=county["PopulationMale"])
-    ws.cell(row=R, column=11, value=county["PopulationFemale"])
-    ws.cell(row=R, column=12, value=f"=K{R}/(J{R}+K{R})")
-    ws.cell(row=R, column=13, value=county["Age_Group_0_14"])
-    ws.cell(
-        row=R,
-        column=14,
-        value=county["PopulationTotal"]
-        - county["Age_Group_0_14"]
-        - county["Age_65_Total"],
-    )
-    ws.cell(row=R, column=15, value=county["Age_65_Total"])
-    ws.cell(row=R, column=16, value=f"=O{R}/(M{R}+N{R}+O{R})")
-    ws.cell(row=R, column=18, value=county["Area"])
-    ws.cell(row=R, column=19, value=f"=(J{R}+K{R})/R{R}")
-    ws.cell(row=R, column=20, value=county["HouseholdCount"])
-    ws.cell(row=R, column=30, value=county["HouseIncomeTotal"])
-    ec = next(
-        (x for x in raw["election"]["county"] if x["Code"] == FOCUS_ELECTION), None
-    )
-    if ec:
-        ws.cell(row=R, column=34, value=ec["KayitliSecmen"])
-        ws.cell(row=R, column=35, value=ec["KullanilanOy"])
-        ws.cell(row=R, column=36, value=f"=AI{R}/AH{R}")
-    for c in range(1, len(heads) + 1):
-        ws.cell(row=R, column=c).fill = SUB_FILL
-    R2 = last + 2
-    ws.cell(row=R2, column=1, value="Mahalleler toplamı (kontrol)").font = Font(
-        name=FONT, italic=True
-    )
-    for c in (6, 7, 9, 10, 11, 13, 14, 15, 18, 20, 32, 33, 34, 35):
-        L = get_column_letter(c)
-        ws.cell(row=R2, column=c, value=f"=SUM({L}{H + 1}:{L}{last})")
-    for c in range(1, len(heads) + 1):
-        ws.cell(row=R2, column=c).font = Font(name=FONT, italic=True, size=9)
-    pct_cols = [8, 12, 16, 17, 22, 23, 26, 29, 36, 40]
-    for c in pct_cols:
-        col_fmt(ws, c, "0.0%", H + 1, R2)
-    for c in (
-        6,
-        7,
-        9,
-        10,
-        11,
-        13,
-        14,
-        15,
-        20,
-        24,
-        25,
-        27,
-        28,
-        30,
-        31,
-        32,
-        33,
-        34,
-        35,
-        38,
-        39,
-        42,
-    ):
-        col_fmt(ws, c, "#,##0", H + 1, R2)
-    col_fmt(ws, 18, "0.00", H + 1, R2)
-    col_fmt(ws, 19, "#,##0", H + 1, R2)
-    col_fmt(ws, 21, "0.00", H + 1, R2)
-    for c in (8, 16, 26, 29, 36):
-        color_scale(ws, c, H + 1, last)
-    finish(ws, H, {4: 16, 37: 14, 41: 16})
-
-    # ---- Yaş
-    ws = wb.create_sheet("Yaş")
-    ws["A1"] = (
-        "Yaş grupları (5'lik) × cinsiyet — Endeksa 2024. Satır toplamı ve payı formül."
-    )
-    ws["A1"].font = Font(name=FONT, italic=True, size=9, color="595959")
-    H = 3
-    heads = ["Mahalle", "Toplam"]
-    for b in AGE_BANDS:
-        heads += [f"{AGE_LABEL[b]} T", f"{AGE_LABEL[b]} E", f"{AGE_LABEL[b]} K"]
-    heads += [
-        "0-14 payı",
-        "15-29 payı",
-        "30-44 payı",
-        "45-59 payı",
-        "60+ payı",
-        "Kadın/100 erkek (65+)",
-    ]
-    for i, h in enumerate(heads, 1):
-        ws.cell(row=H, column=i, value=h)
-    style_header(ws, H, len(heads))
-    for i, r in enumerate(rows):
-        q = r["q"]
-        R = H + 1 + i
-        if r["placeholder"]:
-            ws.cell(row=R, column=1, value=r["name"] + " (veri yok)")
-            continue
-        ws.cell(row=R, column=1, value=r["name"])
-        ws.cell(
-            row=R,
-            column=2,
-            value=f"=SUMPRODUCT((MOD(COLUMN(C{R}:AR{R})-3,3)=0)*C{R}:AR{R})",
-        )
-        c = 3
-        for b in AGE_BANDS:
-            for sfx in ("Total", "Male", "Female"):
-                ws.cell(row=R, column=c, value=q[f"Age_{b}_{sfx}"])
-                c += 1
-        # shares: bands T columns: 0-4=C,5-9=F,10-14=I,15-19=L,20-24=O,25-29=R,30-34=U,35-39=X,40-44=AA,45-49=AD,50-54=AG,55-59=AJ,60-64=AM,65+=AP
-        ws.cell(row=R, column=c, value=f'=IF(B{R}>0,(C{R}+F{R}+I{R})/B{R},"")')
-        ws.cell(row=R, column=c + 1, value=f'=IF(B{R}>0,(L{R}+O{R}+R{R})/B{R},"")')
-        ws.cell(row=R, column=c + 2, value=f'=IF(B{R}>0,(U{R}+X{R}+AA{R})/B{R},"")')
-        ws.cell(row=R, column=c + 3, value=f'=IF(B{R}>0,(AD{R}+AG{R}+AJ{R})/B{R},"")')
-        ws.cell(row=R, column=c + 4, value=f'=IF(B{R}>0,(AM{R}+AP{R})/B{R},"")')
-        ws.cell(row=R, column=c + 5, value=f'=IF(AQ{R}>0,AR{R}/AQ{R}*100,"")')
-    last = H + n
-    R = last + 1
-    ws.cell(row=R, column=1, value="İLÇE (Endeksa)").font = Font(name=FONT, bold=True)
-    c = 3
-    for b in AGE_BANDS:
-        for sfx in ("Total", "Male", "Female"):
-            ws.cell(row=R, column=c, value=county[f"Age_{b}_{sfx}"])
-            c += 1
-    ws.cell(
-        row=R,
-        column=2,
-        value=f"=SUMPRODUCT((MOD(COLUMN(C{R}:AR{R})-3,3)=0)*C{R}:AR{R})",
-    )
-    for c in range(1, len(heads) + 1):
-        ws.cell(row=R, column=c).fill = SUB_FILL
-    for c in range(2, 45):
-        col_fmt(ws, c, "#,##0", H + 1, R)
-    for c in range(45, 50):
-        col_fmt(ws, c, "0.0%", H + 1, R)
-        color_scale(ws, c, H + 1, last)
-    col_fmt(ws, 50, "0", H + 1, R)
-    finish(ws, H, {c: 7 for c in range(3, 45)})
-
-    # ---- Eğitim + Medeni
-    ws = wb.create_sheet("Eğitim-Medeni")
-    ws["A1"] = (
-        "Eğitim düzeyi (6+ yaş, kişi) ve medeni hal (15+ yaş, kişi) — Endeksa 2024. Paylar formül."
-    )
-    ws["A1"].font = Font(name=FONT, italic=True, size=9, color="595959")
-    H = 3
-    heads = (
-        ["Mahalle"]
-        + [lbl for _, lbl in EDU]
-        + [
-            "Eğitim toplamı",
-            "İlkokul ve altı payı",
-            "Orta-lise payı",
-            "Lisans+ payı",
-            "",
-        ]
-        + [lbl for _, lbl in MARITAL]
-        + ["15+ toplam", "Evli payı", "Boşanmış payı", "Hiç evlenmemiş payı"]
-    )
-    for i, h in enumerate(heads, 1):
-        ws.cell(row=H, column=i, value=h)
-    style_header(ws, H, len(heads))
-
-    def edu_row(R, q, name, bold=False):
-        ws.cell(row=R, column=1, value=name).font = Font(name=FONT, bold=bold, size=10)
-        for j, (k, _) in enumerate(EDU, 2):
-            ws.cell(row=R, column=j, value=q[k])
-        ws.cell(row=R, column=12, value=f"=SUM(B{R}:K{R})")
-        ws.cell(row=R, column=13, value=f'=IF(L{R}>0,(B{R}+C{R}+D{R})/L{R},"")')
-        ws.cell(row=R, column=14, value=f'=IF(L{R}>0,(E{R}+F{R}+G{R})/L{R},"")')
-        ws.cell(row=R, column=15, value=f'=IF(L{R}>0,(H{R}+I{R}+J{R})/L{R},"")')
-        for j, (k, _) in enumerate(MARITAL, 17):
-            ws.cell(row=R, column=j, value=q[k])
-        ws.cell(row=R, column=21, value=f"=SUM(Q{R}:T{R})")
-        ws.cell(row=R, column=22, value=f'=IF(U{R}>0,R{R}/U{R},"")')
-        ws.cell(row=R, column=23, value=f'=IF(U{R}>0,S{R}/U{R},"")')
-        ws.cell(row=R, column=24, value=f'=IF(U{R}>0,Q{R}/U{R},"")')
-
-    for i, r in enumerate(rows):
-        R = H + 1 + i
-        if r["placeholder"]:
-            ws.cell(row=R, column=1, value=r["name"] + " (veri yok)")
-            continue
-        edu_row(R, r["q"], r["name"])
-    last = H + n
-    edu_row(last + 1, county, "İLÇE (Endeksa)", bold=True)
-    for c in range(1, len(heads) + 1):
-        ws.cell(row=last + 1, column=c).fill = SUB_FILL
-    for c in list(range(2, 13)) + list(range(17, 22)):
-        col_fmt(ws, c, "#,##0", H + 1, last + 1)
-    for c in (13, 14, 15, 22, 23, 24):
-        col_fmt(ws, c, "0.0%", H + 1, last + 1)
-        color_scale(ws, c, H + 1, last)
-    finish(ws, H, {16: 2})
-
-    # ---- SES-Gelir
-    ws = wb.create_sheet("SES-Gelir")
-    ws["A1"] = (
-        "Sosyo-ekonomik statü (kişi), gelir ve aylık hane harcaması (₺) — Endeksa modeli (tahmin, TÜİK değil). Paylar formül."
-    )
-    ws["A1"].font = Font(name=FONT, italic=True, size=9, color="595959")
-    H = 3
-    heads = (
-        ["Mahalle", "Türkiye endeksi", "İl endeksi"]
-        + [f"SES {lbl}" for _, lbl in SES]
-        + [
-            "SES toplam",
-            "AB payı",
-            "D payı",
-            "Hane geliri",
-            "Kişi başı gelir",
-            "Tasarruf",
-            "Harcama toplamı",
-        ]
-        + [lbl for _, lbl in EXPENSE]
-        + ["Mülk sahibi", "Kiracı", "GSYH ₺", "Mobil kullanıcı", "Araç sayısı"]
-    )
-    for i, h in enumerate(heads, 1):
-        ws.cell(row=H, column=i, value=h)
-    style_header(ws, H, len(heads))
-
-    def ses_row(R, q, name, bold=False):
-        ws.cell(row=R, column=1, value=name).font = Font(name=FONT, bold=bold, size=10)
-        ws.cell(row=R, column=2, value=q.get("TurkeyIndex"))
-        ws.cell(row=R, column=3, value=q.get("CityIndex"))
-        for j, (k, _) in enumerate(SES, 4):
-            ws.cell(row=R, column=j, value=q[k])
-        ws.cell(row=R, column=9, value=f"=SUM(D{R}:H{R})")
-        ws.cell(row=R, column=10, value=f'=IF(I{R}>0,(D{R}+E{R}+F{R})/I{R},"")')
-        ws.cell(row=R, column=11, value=f'=IF(I{R}>0,H{R}/I{R},"")')
-        ws.cell(row=R, column=12, value=q["HouseIncomeTotal"])
-        ws.cell(row=R, column=13, value=q["HouseIncome"])
-        ws.cell(row=R, column=14, value=q["SavingTotal"])
-        ws.cell(row=R, column=15, value=q["ExpenseTotal"])
-        for j, (k, _) in enumerate(EXPENSE, 16):
-            ws.cell(row=R, column=j, value=q[k])
-        ws.cell(row=R, column=28, value=q["OwnerShare"] / 100)
-        ws.cell(row=R, column=29, value=q["RentedShare"] / 100)
-        ws.cell(row=R, column=30, value=q["GSYH"])
-        ws.cell(row=R, column=31, value=q["MobileUser"])
-        ws.cell(row=R, column=32, value=q["CarCount"])
-
-    for i, r in enumerate(rows):
-        R = H + 1 + i
-        if r["placeholder"]:
-            ws.cell(row=R, column=1, value=r["name"] + " (veri yok)")
-            continue
-        ses_row(R, r["q"], r["name"])
-    last = H + n
-    ses_row(last + 1, county, "İLÇE (Endeksa)", bold=True)
-    for c in range(1, len(heads) + 1):
-        ws.cell(row=last + 1, column=c).fill = SUB_FILL
-    for c in list(range(4, 10)) + list(range(12, 28)) + [30, 31, 32]:
-        col_fmt(ws, c, "#,##0", H + 1, last + 1)
-    for c in (10, 11, 28, 29):
-        col_fmt(ws, c, "0.0%", H + 1, last + 1)
-    for c in (10, 12):
-        color_scale(ws, c, H + 1, last)
-    finish(ws, H, {2: 12, 3: 12})
-
-    # ---- Konut
-    ws = wb.create_sheet("Konut-Emlak")
-    ws["A1"] = "Konut stoğu ve tapu satışları (adet, yıl) — Endeksa. 2024 kısmi yıl."
-    ws["A1"].font = Font(name=FONT, italic=True, size=9, color="595959")
-    H = 3
-    years = list(range(2012, 2025))
-    heads = (
-        ["Mahalle", "Konut", "Yazlık", "Ticari birim", "Konut/hane"]
-        + [f"Konut satış {y}" for y in years]
-        + [f"Arsa-tarla satış {y}" for y in years]
-        + [f"İlan {y}" for y in range(2014, 2025)]
-        + ["Konut m² satış ₺", "Konut m² kira ₺", "Arsa m² ₺", "Tarla m² ₺"]
-    )
-    for i, h in enumerate(heads, 1):
-        ws.cell(row=H, column=i, value=h)
-    style_header(ws, H, len(heads))
-
-    def housing_row(R, q, name, bold=False):
-        ws.cell(row=R, column=1, value=name).font = Font(name=FONT, bold=bold, size=10)
-        ws.cell(row=R, column=2, value=q["HousingCount"])
-        ws.cell(row=R, column=3, value=q["SummerResortCount"])
-        ws.cell(row=R, column=4, value=q["CommercialCount"])
-        ws.cell(
-            row=R,
-            column=5,
-            value=(f'=IF({q["HouseholdCount"]}>0,B{R}/{q["HouseholdCount"]},"")')
-            if q["HouseholdCount"]
-            else None,
-        )
-        c = 6
-        for y in years:
-            ws.cell(row=R, column=c, value=q.get(f"Total_BB_Sale_{y}"))
-            c += 1
-        for y in years:
-            ws.cell(row=R, column=c, value=q.get(f"Total_AT_Sale_{y}"))
-            c += 1
-        for y in range(2014, 2025):
-            ws.cell(row=R, column=c, value=q.get(f"Total_Listing_{y}"))
-            c += 1
-        for k in (
-            "HouseUnitPriceForSale",
-            "HouseUnitPriceForRent",
-            "PlotUnitPriceForSale",
-            "LandUnitPriceForSale",
+    def add_subtotals(
+        t: Table,
+        numeric_cols: list[int],
+        county_vals: dict[int, object] | None = None,
+        formula_cols: dict[int, str] | None = None,
+        control: bool = True,
+    ) -> None:
+        """Append MERKEZ / KIR / İLÇE rows (+ control sum). formula_cols: col -> template with {r}."""
+        ncol = len(t.cols) + 1
+        for label, idx, style in (
+            ("MERKEZ toplamı", centre_rows, "subtotal"),
+            ("KIR toplamı", rural_rows, "subtotal"),
         ):
-            ws.cell(row=R, column=c, value=q[k] or None)
-            c += 1
+            vals: list = [label] + [None] * (ncol - 1)
+            r = t.next_row()
+            for c in numeric_cols:
+                vals[c - 1] = sum_rows(L(c), idx)
+            for c, f in (formula_cols or {}).items():
+                vals[c - 1] = f.format(r=r)
+            t.row(vals, style=style)
+        vals = ["İLÇE (Endeksa)"] + [None] * (ncol - 1)
+        r = t.next_row()
+        for c, v in (county_vals or {}).items():
+            vals[c - 1] = v
+        for c, f in (formula_cols or {}).items():
+            vals[c - 1] = f.format(r=r)
+        t.row(vals, style="total")
+        if control:
+            vals = ["Mahalleler toplamı (kontrol)"] + [None] * (ncol - 1)
+            for c in numeric_cols:
+                vals[c - 1] = f"=SUM({L(c)}{R0}:{L(c)}{R0 + n - 1})"
+            t.row(vals, style="note")
+
+    YT, YE, YK = "'Yaş Toplam'", "'Yaş Erkek'", "'Yaş Kadın'"
+    mids = "{" + ",".join(str(m) for m in AGE_MID) + "}"
+
+    # ================================================================ Kapak
+    ws = wb.active
+    ws.title = "Kapak"
+    ws.sheet_view.showGridLines = False
+    ws["B2"] = f"{place} — mahalle veri kitabı"
+    ws["B2"].font = Font(name=FONT, bold=True, size=18, color=NAVY)
+    ws["B3"] = (
+        f"Endeksa 2024 kesiti (döküm {fetched}) · TÜİK ADNKS {yrs[0]}-{yrs[-1]} · VeriAtlas"
+    )
+    ws["B3"].font = Font(name=FONT, italic=True, size=10, color=GREY)
+    kpis = [
+        ("Nüfus 2024", county["PopulationTotal"], FMT_INT),
+        ("Yüzölçümü km²", county["Area"], FMT_DEC1),
+        ("Mahalle", n, FMT_INT),
+        ("Veri olan mahalle", sum(1 for r in rows if not r["ph"]), FMT_INT),
+        ("65+ payı", county["Age_65_Total"] / county["PopulationTotal"], FMT_PCT),
+        (
+            "Ortalama yaş",
+            sum(county[f"Age_{b}_Total"] * m for b, m in zip(AGE_BANDS, AGE_MID))
+            / county["PopulationTotal"],
+            FMT_DEC1,
+        ),
+        (
+            "Hane büyüklüğü",
+            county["PopulationTotal"] / county["HouseholdCount"],
+            FMT_DEC2,
+        ),
+    ]
+    for i, (k, v, f) in enumerate(kpis):
+        c = 2 + i
+        ws.cell(row=5, column=c, value=k).font = Font(name=FONT, size=9, color=GREY)
+        cell = ws.cell(row=6, column=c, value=v)
+        cell.font = Font(name=FONT, bold=True, size=16, color=NAVY)
+        cell.number_format = f
+        ws.column_dimensions[L(c)].width = 17
+    ws["B9"] = "Sayfalar"
+    ws["B9"].font = Font(name=FONT, bold=True, size=11, color=NAVY)
+    index = [
+        ("Özet", "Mahalle başına temel göstergeler"),
+        (
+            "Analiz",
+            "Ortalama/medyan yaş, bağımlılık, yaşlanma endeksi; merkez-kır-ilçe",
+        ),
+        ("Kimlik", "MEDAS ve Endeksa kimlikleri, tür, veri ve sınır durumu"),
+        ("Yaş Toplam / Erkek / Kadın", "5'lik yaş grupları, kişi"),
+        ("Yaş Payları", "Yaş grubu payları ve cinsiyet oranı"),
+        ("Eğitim", "Eğitim düzeyi kişi ve pay"),
+        ("Medeni Hal", "15+ medeni hal kişi ve pay"),
+        ("SES", "Sosyo-ekonomik statü grupları (Endeksa modeli)"),
+        ("Gelir-Harcama", "Hane geliri, tasarruf, harcama kalemleri, mülkiyet"),
+        ("Konut", "Konut stoğu, ticari birim, m² fiyat"),
+        ("Emlak Satış", "Tapu satış ve ilan serileri 2012-2024"),
+        ("Seçim 2024", "2024 ilçe belediye başkanlığı, mahalle × parti"),
+        ("Katılım", "17 seçimde katılım, mahalle × seçim"),
+        ("Seçimler", "Tüm seçimler, uzun tablo (pivot için)"),
+        ("Hemşehri", "Nüfusa kayıtlı il, ilk 10"),
+        ("TÜİK Nüfus", f"Yıllık toplam nüfus {yrs[0]}-{yrs[-1]}"),
+        ("TÜİK Yaş-Cinsiyet", "Yıllık 18+ / 0-17 × erkek / kadın"),
+        ("Ham", "Endeksa demografi yanıtının tüm alanları"),
+        ("Notlar", "Kaynak, yıl, sınırlar, yöntem"),
+    ]
+    for i, (k, v) in enumerate(index, 10):
+        ws.cell(row=i, column=2, value=k).font = Font(name=FONT, bold=True, size=10)
+        ws.cell(row=i, column=3, value=v).font = Font(name=FONT, size=10)
+    r0 = 10 + len(index) + 1
+    ws.cell(row=r0, column=2, value="Renkler").font = Font(
+        name=FONT, bold=True, size=11, color=NAVY
+    )
+    legend = [
+        ("Açık mavi satır", "Merkez / Kır ara toplamı", "EEF2F8"),
+        ("Koyu mavi satır", "İlçe (Endeksa)", SUBTOTAL),
+        (
+            "Turuncu → yeşil",
+            "Sütun içinde düşükten yükseğe (yalnız oran sütunları)",
+            "FFF2CC",
+        ),
+        (
+            "(veri yok)",
+            "Endeksa mahalle demografisi boş; TÜİK ve seçim geçerli",
+            "FFFFFF",
+        ),
+    ]
+    for i, (k, v, col) in enumerate(legend, r0 + 1):
+        c = ws.cell(row=i, column=2, value=k)
+        c.fill = PatternFill("solid", fgColor=col)
+        c.font = Font(name=FONT, size=10)
+        ws.cell(row=i, column=3, value=v).font = Font(name=FONT, size=10)
+    ws.column_dimensions["A"].width = 3
+    ws.column_dimensions["B"].width = 26
+    ws.column_dimensions["C"].width = 70
+
+    # ================================================================ Yaş × cinsiyet
+    for sfx, lbl in SEX:
+        t = Table(
+            wb.create_sheet(f"Yaş {lbl}"),
+            f"{place} — yaş grupları, {lbl.lower()} (kişi)",
+            "Endeksa 2024 (TÜİK ADNKS kökenli). Toplam sütunu formül.",
+            [Col("Toplam", FMT_INT, 9)]
+            + [Col(AGE_LABEL[b], FMT_INT, 7, group="Yaş grubu") for b in AGE_BANDS],
+        )
+        for i, r in enumerate(rows):
+            R = rr(i)
+            if r["ph"]:
+                t.row([r["name"] + " (veri yok)"] + [None] * 15)
+                continue
+            t.row(
+                [r["name"], f"=SUM(C{R}:P{R})"]
+                + [r["q"][f"Age_{b}_{sfx}"] for b in AGE_BANDS]
+            )
+        add_subtotals(
+            t,
+            list(range(3, 17)),
+            {c: county[f"Age_{b}_{sfx}"] for c, b in zip(range(3, 17), AGE_BANDS)},
+            {2: "=SUM(C{r}:P{r})"},
+        )
+        t.finish(R0 + n - 1)
+
+    # ================================================================ Yaş payları
+    t = Table(
+        wb.create_sheet("Yaş Payları"),
+        f"{place} — yaş grubu payları ve cinsiyet oranı",
+        "Formül: 'Yaş Toplam' sayfasına bölünerek. Cinsiyet oranı = erkek / kadın × 100.",
+        [
+            Col(g, FMT_PCT, 8, True, "Geniş yaş grubu payı")
+            for g in ("0-14", "15-29", "30-44", "45-64", "65+")
+        ]
+        + [Col(AGE_LABEL[b], FMT_PCT, 7, group="5'lik grup payı") for b in AGE_BANDS]
+        + [
+            Col("Kadın payı", FMT_PCT, 8, True, "Cinsiyet"),
+            Col("Erkek / 100 kadın", "0", 9, True, "Cinsiyet"),
+            Col("65+ erkek / 100 kadın", "0", 10, True, "Cinsiyet"),
+        ],
+    )
+
+    def share_vals(R: int) -> list:
+        tot = f"{YT}!B{R}"
+        v = [
+            f'=IF({tot}>0,SUM({YT}!C{R}:E{R})/{tot},"")',
+            f'=IF({tot}>0,SUM({YT}!F{R}:H{R})/{tot},"")',
+            f'=IF({tot}>0,SUM({YT}!I{R}:K{R})/{tot},"")',
+            f'=IF({tot}>0,SUM({YT}!L{R}:O{R})/{tot},"")',
+            f'=IF({tot}>0,{YT}!P{R}/{tot},"")',
+        ]
+        v += [f'=IF({tot}>0,{YT}!{L(c)}{R}/{tot},"")' for c in range(3, 17)]
+        v += [
+            f'=IF({tot}>0,{YK}!B{R}/{tot},"")',
+            f'=IF({YK}!B{R}>0,{YE}!B{R}/{YK}!B{R}*100,"")',
+            f'=IF({YK}!P{R}>0,{YE}!P{R}/{YK}!P{R}*100,"")',
+        ]
+        return v
 
     for i, r in enumerate(rows):
-        housing_row(H + 1 + i, r["q"], r["name"])
-    last = H + n
-    housing_row(last + 1, county, "İLÇE (Endeksa)", bold=True)
-    for c in range(1, len(heads) + 1):
-        ws.cell(row=last + 1, column=c).fill = SUB_FILL
-    for c in range(2, len(heads) + 1):
-        col_fmt(ws, c, "#,##0", H + 1, last + 1)
-    col_fmt(ws, 5, "0.00", H + 1, last + 1)
-    finish(ws, H, {c: 8 for c in range(6, len(heads) - 3)})
+        t.row(
+            [r["name"] + " (veri yok)"] + [None] * 22
+            if r["ph"]
+            else [r["name"]] + share_vals(rr(i))
+        )
+    for R, label, style in (
+        (R_CENTRE, "MERKEZ", "subtotal"),
+        (R_RURAL, "KIR", "subtotal"),
+        (R_COUNTY, "İLÇE (Endeksa)", "total"),
+    ):
+        t.row([label] + share_vals(R), style=style)
+    t.finish(R0 + n - 1)
 
-    # ---- Seçim 2024 pivot
-    ws = wb.create_sheet("Seçim 2024")
-    ws["A1"] = (
-        f"{ELECTION_LABEL[FOCUS_ELECTION]} — mahalle × parti. Oy sayıları kaynaktan, paylar geçerli oya bölünerek formül. Küçük partiler kaynakta 'Diğer' altında."
+    # ================================================================ Analiz
+    t = Table(
+        wb.create_sheet("Analiz"),
+        f"{place} — yaş yapısı ve nüfus dinamiği",
+        "Ortalama yaş: 5'lik grup orta noktaları (65+ için 74) ile ağırlıklı ortalama, formül. Medyan: grup içi doğrusal ara değer (Python). Bağımlılık oranları 15-64'e göre. Değişim TÜİK.",
+        [
+            Col("Ortalama yaş", FMT_DEC1, 9, True, "Yaş"),
+            Col("Medyan yaş", FMT_DEC1, 9, True, "Yaş"),
+            Col("Ort. yaş erkek", FMT_DEC1, 9, group="Yaş"),
+            Col("Ort. yaş kadın", FMT_DEC1, 9, group="Yaş"),
+            Col("Genç (0-14 / 15-64)", FMT_PCT, 10, True, "Bağımlılık oranı"),
+            Col("Yaşlı (65+ / 15-64)", FMT_PCT, 10, True, "Bağımlılık oranı"),
+            Col("Toplam", FMT_PCT, 9, True, "Bağımlılık oranı"),
+            Col("Yaşlanma endeksi (65+ / 0-14 × 100)", "0", 12, True, "Yapı"),
+            Col("Hane büyüklüğü", FMT_DEC2, 9, True, "Yapı"),
+            Col(f"Nüfus {yrs[0]}", FMT_INT, 9, group="TÜİK"),
+            Col(f"Nüfus {yrs[-1]}", FMT_INT, 9, group="TÜİK"),
+            Col(f"Değişim {yrs[0]}→{yrs[-1]}", FMT_PCT, 10, True, "TÜİK"),
+            Col("Yıllık ort. (CAGR)", "0.00%", 9, True, "TÜİK"),
+        ],
     )
-    ws["A1"].font = Font(name=FONT, italic=True, size=9, color="595959")
-    H = 3
+
+    def analysis_vals(
+        R: int, counts: list[int] | None, hh: int | None, tuik_first, tuik_last
+    ) -> list:
+        tot = f"{YT}!B{R}"
+        c15_64 = f"SUM({YT}!F{R}:O{R})"
+        c0_14 = f"SUM({YT}!C{R}:E{R})"
+        return [
+            f'=IF({tot}>0,SUMPRODUCT({YT}!C{R}:P{R},{mids})/{tot},"")',
+            median_age(counts) if counts else None,
+            f'=IF({YE}!B{R}>0,SUMPRODUCT({YE}!C{R}:P{R},{mids})/{YE}!B{R},"")',
+            f'=IF({YK}!B{R}>0,SUMPRODUCT({YK}!C{R}:P{R},{mids})/{YK}!B{R},"")',
+            f'=IF({c15_64}>0,{c0_14}/{c15_64},"")',
+            f'=IF({c15_64}>0,{YT}!P{R}/{c15_64},"")',
+            f'=IF({c15_64}>0,({c0_14}+{YT}!P{R})/{c15_64},"")',
+            f'=IF({c0_14}>0,{YT}!P{R}/{c0_14}*100,"")',
+            f'=IF({hh or 0}>0,{tot}/{hh},"")' if hh else None,
+            tuik_first,
+            tuik_last,
+            growth(f"L{R}", f"K{R}"),
+            cagr(f"L{R}", f"K{R}", Y - 1),
+        ]
+
+    for i, r in enumerate(rows):
+        R = rr(i)
+        tf, tl = tuik_get(r["tuik"], yrs[0]), tuik_get(r["tuik"], yrs[-1])
+        if r["ph"]:
+            t.row(
+                [r["name"] + " (veri yok)"]
+                + [None] * 9
+                + [tf, tl, growth(f"L{R}", f"K{R}"), cagr(f"L{R}", f"K{R}", Y - 1)]
+            )
+            continue
+        q = r["q"]
+        t.row(
+            [r["name"]]
+            + analysis_vals(
+                R, [q[f"Age_{b}_Total"] for b in AGE_BANDS], q["HouseholdCount"], tf, tl
+            )
+        )
+    for R, label, idx in (
+        (R_CENTRE, "MERKEZ", centre_rows),
+        (R_RURAL, "KIR", rural_rows),
+    ):
+        sel = [rows[x - R0] for x in idx]
+        counts = [
+            sum(s["q"][f"Age_{b}_Total"] for s in sel if not s["ph"]) for b in AGE_BANDS
+        ]
+        hh = sum(s["q"]["HouseholdCount"] for s in sel)
+        t.row(
+            [label]
+            + analysis_vals(R, counts, hh, sum_rows("K", idx), sum_rows("L", idx)),
+            style="subtotal",
+        )
+    t.row(
+        ["İLÇE (Endeksa)"]
+        + analysis_vals(
+            R_COUNTY,
+            [county[f"Age_{b}_Total"] for b in AGE_BANDS],
+            county["HouseholdCount"],
+            None,
+            None,
+        ),
+        style="total",
+    )
+    t.finish(R0 + n - 1)
+
+    # ================================================================ Eğitim
+    t = Table(
+        wb.create_sheet("Eğitim"),
+        f"{place} — eğitim düzeyi (6+ yaş)",
+        "Kişi sayıları Endeksa 2024 (TÜİK kökenli); toplam ve paylar formül. Alt = bilmeyen + bitirmemiş + ilkokul; Orta = ilköğretim + ortaokul + lise; Yüksek = lisans + YL + doktora.",
+        [Col(lbl, FMT_INT, 9, group="Kişi") for _, lbl in EDU]
+        + [
+            Col("Toplam", FMT_INT, 9, group="Kişi"),
+            Col("Alt", FMT_PCT, 8, True, "Pay"),
+            Col("Orta", FMT_PCT, 8, True, "Pay"),
+            Col("Yüksek", FMT_PCT, 8, True, "Pay"),
+            Col("Okuma yazma bilmeyen", FMT_PCT, 9, True, "Pay"),
+        ],
+    )
+
+    def edu_vals(q, R):
+        return [q[k] for k, _ in EDU] + [
+            f"=SUM(B{R}:K{R})",
+            pct(f"SUM(B{R}:D{R})", f"L{R}"),
+            pct(f"SUM(E{R}:G{R})", f"L{R}"),
+            pct(f"SUM(H{R}:J{R})", f"L{R}"),
+            pct(f"B{R}", f"L{R}"),
+        ]
+
+    for i, r in enumerate(rows):
+        t.row(
+            [r["name"] + " (veri yok)"] + [None] * 15
+            if r["ph"]
+            else [r["name"]] + edu_vals(r["q"], rr(i))
+        )
+    add_subtotals(
+        t,
+        list(range(2, 12)),
+        {c + 2: county[k] for c, (k, _) in enumerate(EDU)},
+        {
+            12: "=SUM(B{r}:K{r})",
+            13: '=IF(L{r}>0,SUM(B{r}:D{r})/L{r},"")',
+            14: '=IF(L{r}>0,SUM(E{r}:G{r})/L{r},"")',
+            15: '=IF(L{r}>0,SUM(H{r}:J{r})/L{r},"")',
+            16: '=IF(L{r}>0,B{r}/L{r},"")',
+        },
+    )
+    t.finish(R0 + n - 1)
+
+    # ================================================================ Medeni
+    t = Table(
+        wb.create_sheet("Medeni Hal"),
+        f"{place} — medeni hal (15+ yaş)",
+        "Kişi sayıları Endeksa 2024 (TÜİK kökenli); toplam ve paylar formül.",
+        [Col(lbl, FMT_INT, 10, group="Kişi") for _, lbl in MARITAL]
+        + [Col("Toplam 15+", FMT_INT, 10, group="Kişi")]
+        + [Col(lbl, FMT_PCT, 10, True, "Pay") for _, lbl in MARITAL],
+    )
+    for i, r in enumerate(rows):
+        R = rr(i)
+        t.row(
+            [r["name"] + " (veri yok)"] + [None] * 9
+            if r["ph"]
+            else [r["name"]]
+            + [r["q"][k] for k, _ in MARITAL]
+            + [f"=SUM(B{R}:E{R})"]
+            + [pct(f"{L(c)}{R}", f"F{R}") for c in range(2, 6)]
+        )
+    add_subtotals(
+        t,
+        [2, 3, 4, 5],
+        {c + 2: county[k] for c, (k, _) in enumerate(MARITAL)},
+        {
+            6: "=SUM(B{r}:E{r})",
+            **{6 + j: f'=IF(F{{r}}>0,{L(1 + j)}{{r}}/F{{r}},"")' for j in range(1, 5)},
+        },
+    )
+    t.finish(R0 + n - 1)
+
+    # ================================================================ SES
+    t = Table(
+        wb.create_sheet("SES"),
+        f"{place} — sosyo-ekonomik statü",
+        "Endeksa modeli (tahmin; TÜİK sayımı değil). Kişi sayıları kaynaktan, paylar formül. Endeks etiketi: Endeksa'nın mahalleyi Türkiye / il içinde konumlandırması.",
+        [Col(lbl, FMT_INT, 8, group="Kişi") for _, lbl in SES]
+        + [
+            Col("Toplam", FMT_INT, 9, group="Kişi"),
+            Col("A+ A B", FMT_PCT, 8, True, "Pay"),
+            Col("C", FMT_PCT, 8, True, "Pay"),
+            Col("D", FMT_PCT, 8, True, "Pay"),
+            Col("Türkiye", "@", 11, group="Endeks"),
+            Col("İl", "@", 11, group="Endeks"),
+        ],
+    )
+    for i, r in enumerate(rows):
+        R = rr(i)
+        q = r["q"]
+        t.row(
+            [r["name"] + " (veri yok)"] + [None] * 11
+            if r["ph"]
+            else [r["name"]]
+            + [q[k] for k, _ in SES]
+            + [
+                f"=SUM(B{R}:F{R})",
+                pct(f"SUM(B{R}:D{R})", f"G{R}"),
+                pct(f"E{R}", f"G{R}"),
+                pct(f"F{R}", f"G{R}"),
+                q.get("TurkeyIndex"),
+                q.get("CityIndex"),
+            ]
+        )
+    add_subtotals(
+        t,
+        list(range(2, 7)),
+        {c + 2: county[k] for c, (k, _) in enumerate(SES)},
+        {
+            7: "=SUM(B{r}:F{r})",
+            8: '=IF(G{r}>0,SUM(B{r}:D{r})/G{r},"")',
+            9: '=IF(G{r}>0,E{r}/G{r},"")',
+            10: '=IF(G{r}>0,F{r}/G{r},"")',
+        },
+    )
+    t.finish(R0 + n - 1)
+
+    # ================================================================ Gelir-Harcama
+    t = Table(
+        wb.create_sheet("Gelir-Harcama"),
+        f"{place} — gelir, tasarruf, harcama (₺/ay) ve konut mülkiyeti",
+        "Endeksa modeli (tahmin). Harcama payları formül (kalem / harcama toplamı).",
+        [
+            Col("Hane geliri", FMT_INT, 10, True, "Gelir"),
+            Col("Kişi başı", FMT_INT, 9, True, "Gelir"),
+            Col("Tasarruf", FMT_INT, 9, group="Gelir"),
+            Col("Harcama", FMT_INT, 9, group="Gelir"),
+        ]
+        + [Col(lbl, FMT_INT, 8, group="Harcama kalemi ₺") for _, lbl in EXPENSE]
+        + [
+            Col(g, FMT_PCT, 8, True, "Harcama payı")
+            for g in ("Gıda", "Barınma", "Ulaşım", "Eğitim")
+        ]
+        + [
+            Col("Mülk sahibi", FMT_PCT, 9, True, "Mülkiyet"),
+            Col("Kiracı", FMT_PCT, 9, True, "Mülkiyet"),
+            Col("GSYH ₺", FMT_INT, 13, group="Diğer"),
+            Col("Araç", FMT_INT, 8, group="Diğer"),
+            Col("Mobil kullanıcı", FMT_INT, 9, group="Diğer"),
+        ],
+    )
+
+    def inc_vals(
+        q, R
+    ):  # B gelir, C kişi başı, D tasarruf, E harcama, F..Q kalemler (gıda F, barınma I, ulaşım L, eğitim O)
+        return (
+            [
+                q["HouseIncomeTotal"],
+                q["HouseIncome"],
+                q["SavingTotal"],
+                q["ExpenseTotal"],
+            ]
+            + [q[k] for k, _ in EXPENSE]
+            + [
+                pct(f"F{R}", f"E{R}"),
+                pct(f"I{R}", f"E{R}"),
+                pct(f"L{R}", f"E{R}"),
+                pct(f"O{R}", f"E{R}"),
+                q["OwnerShare"] / 100,
+                q["RentedShare"] / 100,
+                q["GSYH"],
+                q["CarCount"],
+                q["MobileUser"],
+            ]
+        )
+
+    for i, r in enumerate(rows):
+        t.row(
+            [r["name"] + " (veri yok)"] + [None] * 25
+            if r["ph"]
+            else [r["name"]] + inc_vals(r["q"], rr(i))
+        )
+    t.row(["İLÇE (Endeksa)"] + inc_vals(county, R0 + n), style="total")
+    t.finish(R0 + n - 1)
+
+    # ================================================================ Konut
+    t = Table(
+        wb.create_sheet("Konut"),
+        f"{place} — konut stoğu ve fiyatlar",
+        "Endeksa. Konut / hane formül. Fiyatlar ilan bazlı m² (₺); boş = ilan yok.",
+        [
+            Col("Konut", FMT_INT, 9, group="Stok (adet)"),
+            Col("Yazlık", FMT_INT, 8, group="Stok (adet)"),
+            Col("Ticari birim", FMT_INT, 9, group="Stok (adet)"),
+            Col("Hane", FMT_INT, 9, group="Stok (adet)"),
+            Col("Konut / hane", FMT_DEC2, 9, True, "Stok (adet)"),
+            Col("Konut satış", FMT_INT, 9, group="m² fiyat ₺"),
+            Col("Konut kira", FMT_INT, 9, group="m² fiyat ₺"),
+            Col("Ticari satış", FMT_INT, 9, group="m² fiyat ₺"),
+            Col("Ticari kira", FMT_INT, 9, group="m² fiyat ₺"),
+            Col("Arsa", FMT_INT, 8, group="m² fiyat ₺"),
+            Col("Tarla", FMT_INT, 8, group="m² fiyat ₺"),
+            Col("Konut satış (gün)", FMT_INT, 9, group="İlan süresi"),
+            Col("Konut kira (gün)", FMT_INT, 9, group="İlan süresi"),
+        ],
+    )
+
+    def house_vals(q, R):
+        return [
+            q["HousingCount"],
+            q["SummerResortCount"],
+            q["CommercialCount"],
+            q["HouseholdCount"] or None,
+            f'=IF(AND(ISNUMBER(E{R}),E{R}>0),B{R}/E{R},"")',
+        ] + [
+            q[k] or None
+            for k in (
+                "HouseUnitPriceForSale",
+                "HouseUnitPriceForRent",
+                "CommercialUnitPriceForSale",
+                "CommercialUnitPriceForRent",
+                "PlotUnitPriceForSale",
+                "LandUnitPriceForSale",
+                "HouseListingPeriodForSale",
+                "HouseListingPeriodForRent",
+            )
+        ]
+
+    for i, r in enumerate(rows):
+        t.row([r["name"]] + house_vals(r["q"], rr(i)))
+    add_subtotals(
+        t,
+        [2, 3, 4, 5],
+        dict(zip(range(2, 15), house_vals(county, R_COUNTY))),
+        {6: '=IF(AND(ISNUMBER(E{r}),E{r}>0),B{r}/E{r},"")'},
+    )
+    t.finish(R0 + n - 1)
+
+    # ================================================================ Emlak satış
+    years = list(range(2012, 2025))
+    lyears = list(range(2014, 2025))
+    t = Table(
+        wb.create_sheet("Emlak Satış"),
+        f"{place} — tapu satışları ve ilan sayıları (adet / yıl)",
+        "Endeksa (tapu + ilan). 2024 kısmi yıl. Toplam sütunları formül.",
+        [Col(str(y), FMT_INT, 6.5, group="Konut satışı") for y in years]
+        + [Col("Toplam", FMT_INT, 8, group="Konut satışı")]
+        + [Col(str(y), FMT_INT, 6.5, group="Arsa-tarla satışı") for y in years]
+        + [Col("Toplam", FMT_INT, 8, group="Arsa-tarla satışı")]
+        + [Col(str(y), FMT_INT, 6.5, group="İlan") for y in lyears],
+    )
+
+    def sale_vals(q, R):
+        return (
+            [q.get(f"Total_BB_Sale_{y}", 0) for y in years]
+            + [f"=SUM(B{R}:N{R})"]
+            + [q.get(f"Total_AT_Sale_{y}", 0) for y in years]
+            + [f"=SUM(P{R}:AB{R})"]
+            + [q.get(f"Total_Listing_{y}", 0) for y in lyears]
+        )
+
+    for i, r in enumerate(rows):
+        t.row([r["name"]] + sale_vals(r["q"], rr(i)))
+    ncols = 2 * 14 + len(lyears)
+    add_subtotals(
+        t,
+        [c for c in range(2, ncols + 2) if c not in (15, 29)],
+        dict(zip(range(2, ncols + 2), sale_vals(county, R_COUNTY))),
+        {15: "=SUM(B{r}:N{r})", 29: "=SUM(P{r}:AB{r})"},
+    )
+    t.finish(R0 + n - 1)
+
+    # ================================================================ Seçim 2024
     parties: list[str] = []
-    for did, lst in el_q.items():
+    for lst in el_q.values():
         e = next((x for x in lst if x["Code"] == FOCUS_ELECTION), None)
-        if e:
-            for s in e["Secenekler"]:
-                if s["Secenek"] not in parties:
-                    parties.append(s["Secenek"])
-    # order parties by county votes
+        for s in e["Secenekler"] if e else []:
+            if s["Secenek"] not in parties:
+                parties.append(s["Secenek"])
     ec = next(
         (x for x in raw["election"]["county"] if x["Code"] == FOCUS_ELECTION), None
     )
     cv = {s["Secenek"]: s["OySayisi"] for s in ec["Secenekler"]} if ec else {}
     parties.sort(key=lambda p: -cv.get(p, 0))
-    heads = (
-        ["Mahalle", "Sandık", "Kayıtlı", "Kullanılan", "Geçerli", "Geçersiz", "Katılım"]
-        + parties
-        + [f"{p} %" for p in parties]
-        + ["1. parti"]
-    )
-    for i, h in enumerate(heads, 1):
-        ws.cell(row=H, column=i, value=h)
-    style_header(ws, H, len(heads))
+    # keep parties above 1% of county valid votes; fold the rest into "Diğer"
+    threshold = 0.01 * (ec["GecerliOy"] if ec else 0)
+    minor = {p for p in parties if cv.get(p, 0) < threshold}
+    parties = [p for p in parties if p not in minor and p != "Diğer"] + ["Diğer"]
     P = len(parties)
+    VOTE0, SHARE0 = 8, 8 + P
+    TOPC, TOPS, MARGIN = SHARE0 + P, SHARE0 + P + 1, SHARE0 + P + 2
+    t = Table(
+        wb.create_sheet("Seçim 2024"),
+        f"{place} — {ELECTION_LABEL[FOCUS_ELECTION]} başkanlığı, mahalle × parti",
+        "Oy sayıları Endeksa (YSK). Katılım = kullanılan / kayıtlı; pay = oy / geçerli; formül. İlçe geçerli oyunun %1'i altındaki partiler ve kaynaktaki 'Diğer' tek sütunda toplandı (tam döküm 'Seçimler' sayfasında).",
+        [
+            Col("Sandık", "0", 7, group="Seçmen"),
+            Col("Kayıtlı", FMT_INT, 9, group="Seçmen"),
+            Col("Kullanılan", FMT_INT, 9, group="Seçmen"),
+            Col("Geçerli", FMT_INT, 9, group="Seçmen"),
+            Col("Geçersiz", FMT_INT, 8, group="Seçmen"),
+            Col("Katılım", FMT_PCT, 8, True, "Seçmen"),
+        ]
+        + [Col(p, FMT_INT, 8, group="Oy") for p in parties]
+        + [Col(p, FMT_PCT, 8, True, "Pay") for p in parties]
+        + [
+            Col("1. parti", "@", 10, group="Sonuç"),
+            Col("1. parti payı", FMT_PCT, 8, True, "Sonuç"),
+            Col("Fark 1.-2. (puan)", "0.0", 9, True, "Sonuç"),
+        ],
+    )
+    hdr = f"${L(VOTE0)}$4:${L(VOTE0 + P - 1)}$4"
 
-    def el_row(R, e, name, bold=False):
-        ws.cell(row=R, column=1, value=name).font = Font(name=FONT, bold=bold, size=10)
+    def el_vals(e, R):
         if not e:
-            return
-        ws.cell(row=R, column=2, value=e["SandikSayisi"])
-        ws.cell(row=R, column=3, value=e["KayitliSecmen"])
-        ws.cell(row=R, column=4, value=e["KullanilanOy"])
-        ws.cell(row=R, column=5, value=e["GecerliOy"])
-        ws.cell(row=R, column=6, value=e["GecersizOy"])
-        ws.cell(row=R, column=7, value=f'=IF(C{R}>0,D{R}/C{R},"")')
-        votes = {s["Secenek"]: s["OySayisi"] for s in e["Secenekler"]}
-        for j, p in enumerate(parties):
-            ws.cell(row=R, column=8 + j, value=votes.get(p, 0))
-            L = get_column_letter(8 + j)
-            ws.cell(row=R, column=8 + P + j, value=f'=IF(E{R}>0,{L}{R}/E{R},"")')
-        first = get_column_letter(8)
-        lastc = get_column_letter(7 + P)
-        hdr = f"${first}${H}:${lastc}${H}"
-        ws.cell(
-            row=R,
-            column=8 + 2 * P,
-            value=f'=IF(E{R}>0,INDEX({hdr},MATCH(MAX({first}{R}:{lastc}{R}),{first}{R}:{lastc}{R},0)),"")',
+            return [None] * (6 + 2 * P + 3)
+        votes: dict[str, float] = {}
+        for s in e["Secenekler"]:
+            key = (
+                "Diğer"
+                if s["Secenek"] in minor or s["Secenek"] == "Diğer"
+                else s["Secenek"]
+            )
+            votes[key] = votes.get(key, 0) + s["OySayisi"]
+        vr = f"{L(VOTE0)}{R}:{L(VOTE0 + P - 1)}{R}"
+        sr = f"{L(SHARE0)}{R}:{L(SHARE0 + P - 1)}{R}"
+        return (
+            [
+                e["SandikSayisi"],
+                e["KayitliSecmen"],
+                e["KullanilanOy"],
+                e["GecerliOy"],
+                e["GecersizOy"],
+                pct(f"D{R}", f"C{R}"),
+            ]
+            + [votes.get(p, 0) for p in parties]
+            + [pct(f"{L(VOTE0 + j)}{R}", f"E{R}") for j in range(P)]
+            + [
+                f'=IF(E{R}>0,INDEX({hdr},MATCH(MAX({vr}),{vr},0)),"")',
+                f'=IF(E{R}>0,MAX({sr}),"")',
+                f'=IF(E{R}>0,(LARGE({sr},1)-LARGE({sr},2))*100,"")',
+            ]
         )
 
     for i, r in enumerate(rows):
         e = next(
             (x for x in el_q.get(r["did"], []) if x["Code"] == FOCUS_ELECTION), None
         )
-        el_row(H + 1 + i, e, r["name"])
-    last = H + n
-    el_row(last + 1, ec, "İLÇE", bold=True)
-    for c in range(1, len(heads) + 1):
-        ws.cell(row=last + 1, column=c).fill = SUB_FILL
-    for c in list(range(2, 7)) + list(range(8, 8 + P)):
-        col_fmt(ws, c, "#,##0", H + 1, last + 1)
-    col_fmt(ws, 7, "0.0%", H + 1, last + 1)
-    color_scale(ws, 7, H + 1, last)
-    for c in range(8 + P, 8 + 2 * P):
-        col_fmt(ws, c, "0.0%", H + 1, last + 1)
-        color_scale(ws, c, H + 1, last)
-    finish(ws, H, {c: 9 for c in range(2, 8 + 2 * P)})
-
-    # ---- Seçimler (long)
-    ws = wb.create_sheet("Seçimler")
-    ws["A1"] = (
-        "Tüm seçimler, uzun tablo — filtreleyip özet tablo (pivot) kurmak için. Pay = oy / geçerli oy (formül)."
+        t.row([r["name"]] + el_vals(e, rr(i)))
+    sub_formulas = {
+        7: '=IF(C{r}>0,D{r}/C{r},"")',
+        **{
+            SHARE0 + j: f'=IF(E{{r}}>0,{L(VOTE0 + j)}{{r}}/E{{r}},"")' for j in range(P)
+        },
+    }
+    sub_formulas[TOPC] = (
+        f'=IF(E{{r}}>0,INDEX({hdr},MATCH(MAX({L(VOTE0)}{{r}}:{L(VOTE0 + P - 1)}{{r}}),{L(VOTE0)}{{r}}:{L(VOTE0 + P - 1)}{{r}},0)),"")'
     )
-    ws["A1"].font = Font(name=FONT, italic=True, size=9, color="595959")
-    H = 3
-    heads = [
-        "Mahalle",
-        "Seçim kodu",
-        "Seçim",
-        "Sandık",
-        "Kayıtlı",
-        "Kullanılan",
-        "Geçerli",
-        "Geçersiz",
-        "Parti / aday",
-        "Oy",
-        "Pay",
-    ]
-    for i, h in enumerate(heads, 1):
-        ws.cell(row=H, column=i, value=h)
-    style_header(ws, H, len(heads))
-    R = H + 1
-    for r in rows + [{"name": "İLÇE", "did": "__county__"}]:
+    sub_formulas[TOPS] = (
+        f'=IF(E{{r}}>0,MAX({L(SHARE0)}{{r}}:{L(SHARE0 + P - 1)}{{r}}),"")'
+    )
+    sub_formulas[MARGIN] = (
+        f'=IF(E{{r}}>0,(LARGE({L(SHARE0)}{{r}}:{L(SHARE0 + P - 1)}{{r}},1)-LARGE({L(SHARE0)}{{r}}:{L(SHARE0 + P - 1)}{{r}},2))*100,"")'
+    )
+    add_subtotals(
+        t,
+        [2, 3, 4, 5, 6] + list(range(VOTE0, VOTE0 + P)),
+        dict(zip(range(2, 2 + 6 + 2 * P + 3), el_vals(ec, R_COUNTY))),
+        sub_formulas,
+    )
+    t.finish(R0 + n - 1)
+
+    # ================================================================ Katılım
+    codes = [e["Code"] for e in raw["election"]["county"]]
+    C = len(codes)
+    t = Table(
+        wb.create_sheet("Katılım"),
+        f"{place} — seçim katılımı, mahalle × seçim",
+        "Katılım = kullanılan / kayıtlı (formül; sayılar 'Seçimler' sayfasında). Kaynak: Endeksa (YSK).",
+        [
+            Col(ELECTION_LABEL.get(c, c), FMT_PCT, 8.5, True, "Katılım oranı")
+            for c in codes
+        ]
+        + [
+            Col("2024", FMT_INT, 9, group="Kayıtlı seçmen"),
+            Col("2011", FMT_INT, 9, group="Kayıtlı seçmen"),
+            Col("Değişim", FMT_PCT, 9, True, "Kayıtlı seçmen"),
+        ],
+    )
+
+    def turnout_vals(by: dict, R: int) -> list:
+        v = [
+            f"={by[c]['KullanilanOy']}/{by[c]['KayitliSecmen']}"
+            if c in by and by[c]["KayitliSecmen"]
+            else None
+            for c in codes
+        ]
+        k24 = by.get(FOCUS_ELECTION, {}).get("KayitliSecmen")
+        k11 = by.get("2011genelsecim", {}).get("KayitliSecmen")
+        return v + [k24, k11, growth(f"{L(C + 2)}{R}", f"{L(C + 3)}{R}")]
+
+    for i, r in enumerate(rows):
+        t.row(
+            [r["name"]]
+            + turnout_vals({e["Code"]: e for e in el_q.get(r["did"], [])}, rr(i))
+        )
+    t.row(
+        ["İLÇE"]
+        + turnout_vals({e["Code"]: e for e in raw["election"]["county"]}, R0 + n),
+        style="total",
+    )
+    t.finish(R0 + n - 1)
+
+    # ================================================================ Seçimler (long)
+    t = Table(
+        wb.create_sheet("Seçimler"),
+        f"{place} — tüm seçimler, uzun tablo",
+        "Her satır bir mahalle × seçim × seçenek; özet tablo (pivot) için. Pay = oy / geçerli (formül).",
+        [
+            Col("Tür", "@", 8),
+            Col("Seçim", "@", 18),
+            Col("Seçim kodu", "@", 30),
+            Col("Sandık", "0", 7),
+            Col("Kayıtlı", FMT_INT, 9),
+            Col("Kullanılan", FMT_INT, 9),
+            Col("Geçerli", FMT_INT, 9),
+            Col("Geçersiz", FMT_INT, 8),
+            Col("Seçenek", "@", 22),
+            Col("Oy", FMT_INT, 9),
+            Col("Pay", FMT_PCT, 8),
+        ],
+    )
+    for r in rows + [{"name": "İLÇE", "did": "__county__", "kind": None}]:
         lst = (
             raw["election"]["county"]
             if r["did"] == "__county__"
@@ -857,11 +1151,13 @@ def build(district: str, raw: dict, areas: dict, series: dict, out: Path) -> Non
         )
         for e in lst:
             for s in e["Secenekler"]:
-                ws.append(
+                R = t.next_row()
+                t.row(
                     [
                         r["name"],
-                        e["Code"],
+                        KIND_LABEL.get(r["kind"], "İlçe"),
                         ELECTION_LABEL.get(e["Code"], e["Title"]),
+                        e["Code"],
                         e["SandikSayisi"],
                         e["KayitliSecmen"],
                         e["KullanilanOy"],
@@ -869,203 +1165,378 @@ def build(district: str, raw: dict, areas: dict, series: dict, out: Path) -> Non
                         e["GecersizOy"],
                         s["Secenek"],
                         s["OySayisi"],
-                        f'=IF(G{R}>0,J{R}/G{R},"")',
+                        pct(f"K{R}", f"H{R}"),
                     ]
                 )
-                R += 1
-    for c in (4, 5, 6, 7, 8, 10):
-        col_fmt(ws, c, "#,##0", H + 1, R - 1)
-    col_fmt(ws, 11, "0.0%", H + 1, R - 1)
-    finish(ws, H, {2: 30, 3: 26, 9: 24})
+    t.finish()
 
-    # ---- Hemşehri
-    ws = wb.create_sheet("Hemşehri")
-    ws["A1"] = (
-        "Mahalle sakinlerinin nüfusa kayıtlı olduğu il — ilk 10 il (kişi), Endeksa. Pay = il / mahalle nüfusu (formül, Özet sayfasından)."
+    # ================================================================ Hemşehri
+    t = Table(
+        wb.create_sheet("Hemşehri"),
+        f"{place} — nüfusa kayıtlı il (ilk 10)",
+        "Endeksa. Mahallede yaşayanların nüfus kütüğündeki il. Pay = kişi / mahalle nüfusu (Endeksa 2024), formül.",
+        [
+            Col("Sıra", "0", 6),
+            Col("Kayıtlı il", "@", 16),
+            Col("Kişi", FMT_INT, 9),
+            Col("Mahalle nüfusu", FMT_INT, 10),
+            Col("Pay", FMT_PCT, 8, True),
+        ],
     )
-    ws["A1"].font = Font(name=FONT, italic=True, size=9, color="595959")
-    H = 3
-    heads = ["Mahalle", "Sıra", "Kayıtlı il", "Kişi", "Mahalle nüfusu", "Pay"]
-    for i, h in enumerate(heads, 1):
-        ws.cell(row=H, column=i, value=h)
-    style_header(ws, H, len(heads))
-    R = H + 1
     for r in rows + [{"name": "İLÇE", "did": "__county__", "q": county}]:
         f = (
             raw["fellows"]["county"]
             if r["did"] == "__county__"
             else fel_q.get(r["did"], {})
         )
-        popn = r["q"]["PopulationTotal"]
         for k, x in enumerate((f or {}).get("FellowCountryman", []), 1):
-            ws.append(
+            R = t.next_row()
+            t.row(
                 [
                     r["name"],
                     k,
                     x["CitizenCity"].title(),
                     x["CountOf"],
-                    popn,
-                    f'=IF(E{R}>0,D{R}/E{R},"")',
+                    r["q"]["PopulationTotal"],
+                    pct(f"D{R}", f"E{R}"),
                 ]
             )
-            R += 1
-    col_fmt(ws, 4, "#,##0", H + 1, R - 1)
-    col_fmt(ws, 5, "#,##0", H + 1, R - 1)
-    col_fmt(ws, 6, "0.0%", H + 1, R - 1)
-    finish(ws, H, {3: 16, 5: 14})
+    t.finish()
 
-    # ---- TÜİK serisi
-    ws = wb.create_sheet("TÜİK Nüfus")
-    ws["A1"] = (
-        "TÜİK ADNKS mahalle nüfusu 2013-2025 (toplam, 18+, 0-17, erkek, kadın) — VeriAtlas ambarı (tuik_medas)."
-    )
-    ws["A1"].font = Font(name=FONT, italic=True, size=9, color="595959")
-    H = 3
-    yrs = sorted({y for s in series.values() for y in s})
-    heads = (
-        ["Mahalle", "MEDAS kimlik"]
-        + [f"Toplam {y}" for y in yrs]
-        + [f"18+ {y}" for y in yrs]
-        + [f"0-17 {y}" for y in yrs]
-        + [f"Erkek {y}" for y in yrs]
-        + [f"Kadın {y}" for y in yrs]
+    # ================================================================ TÜİK Nüfus
+    t = Table(
+        wb.create_sheet("TÜİK Nüfus"),
+        f"{place} — TÜİK ADNKS mahalle nüfusu",
+        "VeriAtlas ambarı (tuik_medas), yıl sonu nüfusu. Değişim, CAGR ve zirve yılı formül.",
+        [Col(str(y), FMT_INT, 7.5, group="Toplam nüfus") for y in yrs]
         + [
-            f"Değişim {yrs[0]}→{yrs[-1]}",
-            f"18+ payı {yrs[-1]}",
-            f"Kadın payı {yrs[-1]}",
-        ]
+            Col(f"Değişim {yrs[0]}→{yrs[-1]}", FMT_PCT, 10, True, "Özet"),
+            Col("CAGR", "0.00%", 8, True, "Özet"),
+            Col("Zirve yılı", "0", 8, group="Özet"),
+        ],
     )
-    for i, h in enumerate(heads, 1):
-        ws.cell(row=H, column=i, value=h)
-    style_header(ws, H, len(heads))
-    Y = len(yrs)
+    for i, r in enumerate(rows):
+        R = rr(i)
+        a, b = f"B{R}", f"{L(1 + Y)}{R}"
+        t.row(
+            [r["name"]]
+            + [tuik_get(r["tuik"], y) for y in yrs]
+            + [
+                growth(b, a),
+                cagr(b, a, Y - 1),
+                f'=IF(COUNT(B{R}:{L(1 + Y)}{R})>0,INDEX($B$4:${L(1 + Y)}$4,MATCH(MAX(B{R}:{L(1 + Y)}{R}),B{R}:{L(1 + Y)}{R},0))*1,"")',
+            ]
+        )
+    add_subtotals(
+        t,
+        list(range(2, 2 + Y)),
+        {},
+        {
+            2 + Y: f'=IF(AND(ISNUMBER(B{{r}}),B{{r}}>0),{L(1 + Y)}{{r}}/B{{r}}-1,"")',
+            3
+            + Y: f'=IF(AND(ISNUMBER(B{{r}}),B{{r}}>0),({L(1 + Y)}{{r}}/B{{r}})^(1/{Y - 1})-1,"")',
+        },
+        control=False,
+    )
+    # the "İLÇE" row has no Endeksa series; relabel as TÜİK sum of neighbourhoods
+    t.ws.cell(row=R_COUNTY, column=1, value="İLÇE (mahalleler toplamı)")
+    for c in range(2, 2 + Y):
+        t.ws.cell(row=R_COUNTY, column=c, value=f"=SUM({L(c)}{R0}:{L(c)}{R0 + n - 1})")
+    t.finish(R0 + n - 1)
 
-    def tuik_val(t, y, key):
-        cell = t.get(y, {})
-        if key == "all|all":
-            return cell.get("all|all") or (
-                sum(
-                    v
-                    for k, v in cell.items()
-                    if k.endswith("|all") and not k.startswith("all")
-                )
-                or None
-            )
-        return cell.get(key)
+    # ================================================================ TÜİK Yaş-Cinsiyet
+    t = Table(
+        wb.create_sheet("TÜİK Yaş-Cinsiyet"),
+        f"{place} — TÜİK ADNKS 18+ / 0-17 × cinsiyet",
+        "VeriAtlas ambarı. MEDAS mahalle düzeyinde yalnız bu iki yaş grubu var. Paylar formül.",
+        [Col(str(y), FMT_INT, 7, group="18+") for y in yrs]
+        + [Col(str(y), FMT_INT, 7, group="0-17") for y in yrs]
+        + [Col(str(y), FMT_INT, 7, group="Erkek") for y in yrs]
+        + [Col(str(y), FMT_INT, 7, group="Kadın") for y in yrs]
+        + [
+            Col(f"18+ {yrs[-1]}", FMT_PCT, 8, True, "Pay"),
+            Col(f"0-17 {yrs[0]}", FMT_PCT, 8, True, "Pay"),
+            Col(f"0-17 {yrs[-1]}", FMT_PCT, 8, True, "Pay"),
+            Col(f"Kadın {yrs[-1]}", FMT_PCT, 8, True, "Pay"),
+        ],
+    )
+
+    def tuik_age_shares(R: int) -> list:
+        a18, c17, f17, kf = (
+            f"{L(1 + Y)}{R}",
+            f"{L(2 + Y)}{R}",
+            f"{L(1 + 2 * Y)}{R}",
+            f"{L(1 + 4 * Y)}{R}",
+        )
+        tl, tf = f"({a18}+{f17})", f"(B{R}+{c17})"
+        return [
+            f'=IF({tl}>0,{a18}/{tl},"")',
+            f'=IF({tf}>0,{c17}/{tf},"")',
+            f'=IF({tl}>0,{f17}/{tl},"")',
+            f'=IF({tl}>0,{kf}/{tl},"")',
+        ]
 
     for i, r in enumerate(rows):
-        R = H + 1 + i
-        t = r["tuik"]
-        ws.cell(row=R, column=1, value=r["name"])
-        ws.cell(row=R, column=2, value=r["area_id"])
-        c = 3
-        for key in ("all|all", "18+|all", "0-17|all", "all|male", "all|female"):
-            for y in yrs:
-                v = tuik_val(t, y, key)
-                if v is None and key in ("all|male", "all|female"):
-                    sx = key.split("|")[1]
-                    a = t.get(y, {})
-                    v = (a.get(f"18+|{sx}", 0) + a.get(f"0-17|{sx}", 0)) or None
-                ws.cell(row=R, column=c, value=v)
-                c += 1
-        t0, t1 = get_column_letter(3), get_column_letter(2 + Y)
-        ws.cell(
-            row=R,
-            column=c,
-            value=f'=IF(AND(ISNUMBER({t0}{R}),{t0}{R}>0),{t1}{R}/{t0}{R}-1,"")',
-        )
-        a18 = get_column_letter(2 + 2 * Y)
-        ws.cell(
-            row=R,
-            column=c + 1,
-            value=f'=IF(AND(ISNUMBER({a18}{R}),{t1}{R}>0),{a18}{R}/{t1}{R},"")',
-        )
-        kf = get_column_letter(2 + 5 * Y)
-        ws.cell(
-            row=R,
-            column=c + 2,
-            value=f'=IF(AND(ISNUMBER({kf}{R}),{t1}{R}>0),{kf}{R}/{t1}{R},"")',
-        )
-    last = H + n
-    R = last + 1
-    ws.cell(row=R, column=1, value="Mahalleler toplamı").font = Font(
-        name=FONT, bold=True
+        R = rr(i)
+        vals = [r["name"]]
+        for age, sex in (
+            ("18+", "all"),
+            ("0-17", "all"),
+            ("all", "male"),
+            ("all", "female"),
+        ):
+            vals += [tuik_get(r["tuik"], y, age, sex) for y in yrs]
+        t.row(vals + tuik_age_shares(R))
+    add_subtotals(
+        t,
+        list(range(2, 2 + 4 * Y)),
+        {},
+        {2 + 4 * Y + j: f for j, f in enumerate(tuik_age_shares(0))},
+        control=False,
     )
-    for c in range(3, 3 + 5 * Y):
-        L = get_column_letter(c)
-        ws.cell(row=R, column=c, value=f"=SUM({L}{H + 1}:{L}{last})")
-    for c in range(1, len(heads) + 1):
-        ws.cell(row=R, column=c).fill = SUB_FILL
-    for c in range(3, 3 + 5 * Y):
-        col_fmt(ws, c, "#,##0", H + 1, R)
-    for c in range(3 + 5 * Y, 6 + 5 * Y):
-        col_fmt(ws, c, "0.0%", H + 1, R)
-        color_scale(ws, c, H + 1, last)
-    finish(ws, H, {2: 18, **{c: 8 for c in range(3, 3 + 5 * Y)}})
+    for R in (
+        R_CENTRE,
+        R_RURAL,
+        R_COUNTY,
+    ):  # fix {r}-less templates: rewrite shares with real row
+        for j, f in enumerate(tuik_age_shares(R)):
+            t.ws.cell(row=R, column=2 + 4 * Y + j, value=f)
+    t.ws.cell(row=R_COUNTY, column=1, value="İLÇE (mahalleler toplamı)")
+    for c in range(2, 2 + 4 * Y):
+        t.ws.cell(row=R_COUNTY, column=c, value=f"=SUM({L(c)}{R0}:{L(c)}{R0 + n - 1})")
+    t.finish(R0 + n - 1)
 
-    # ---- Ham
-    ws = wb.create_sheet("Ham (Endeksa)")
-    ws["A1"] = (
-        "Endeksa demografi yanıtının tüm alanları, mahalle başına bir satır (ilçe ilk satır). Alan adları kaynaktaki gibi."
+    # ================================================================ Kimlik
+    t = Table(
+        wb.create_sheet("Kimlik"),
+        f"{place} — kimlik tablosu",
+        "MEDAS kimliği: TÜİK / VeriAtlas anahtarı (il-ilçe-mahalle kodu); TÜİK serisi bu kodla bağlanır. Endeksa kimliği: Endeksa'nın kendi numarası. Tür: Merkez = ilçe merkezinin belediye mahalleleri, Kır = 2014 öncesi köy/belde.",
+        [
+            Col("MEDAS kimliği", "@", 18),
+            Col("Endeksa kimliği", "0", 11),
+            Col("Tür", "@", 8),
+            Col("Endeksa verisi", "@", 10),
+            Col("Sınır", "@", 7),
+            Col("Belediye", "@", 18),
+            Col("Yüzölçümü km²", "0.000", 11),
+            Col("Nüfus 2024 TÜİK", FMT_INT, 11),
+            Col("Nüfus 2024 Endeksa", FMT_INT, 11),
+            Col("Fark", "0", 7),
+        ],
     )
-    ws["A1"].font = Font(name=FONT, italic=True, size=9, color="595959")
-    H = 3
+    for i, r in enumerate(rows):
+        R = rr(i)
+        t.row(
+            [
+                r["name"],
+                r["area_id"],
+                int(r["did"]),
+                KIND_LABEL[r["kind"]],
+                "yok" if r["ph"] else "var",
+                "var" if r["did"] in raw["geo_ids"] else "yok",
+                r["q"]["MunicipalityName"].title(),
+                r["q"]["Area"],
+                tuik_get(r["tuik"], 2024),
+                r["q"]["PopulationTotal"],
+                f'=IF(AND(ISNUMBER(I{R}),ISNUMBER(J{R})),J{R}-I{R},"")',
+            ]
+        )
+    t.finish()
+
+    # ================================================================ Özet (references the sheets above)
+    t = Table(
+        wb.create_sheet("Özet"),
+        f"{place} — mahalle özeti",
+        "Her sütun ilgili sayfadan formülle gelir; sayımlar kaynaktan. '(veri yok)' satırlarında Endeksa demografisi boş, TÜİK nüfus ve seçim geçerli.",
+        [
+            Col("Tür", "@", 8, group="Kimlik"),
+            Col(f"Nüfus {yrs[-1]}", FMT_INT, 9, group="TÜİK"),
+            Col(f"Değişim {yrs[0]}→{yrs[-1]}", FMT_PCT, 10, True, "TÜİK"),
+            Col("Kadın payı", FMT_PCT, 8, False, "Yaş-cinsiyet"),
+            Col("0-14 payı", FMT_PCT, 8, True, "Yaş-cinsiyet"),
+            Col("65+ payı", FMT_PCT, 8, True, "Yaş-cinsiyet"),
+            Col("Ort. yaş", FMT_DEC1, 8, True, "Yaş-cinsiyet"),
+            Col("Yaşlanma endeksi", "0", 9, True, "Yaş-cinsiyet"),
+            Col("Yüzölçümü km²", FMT_DEC2, 10, group="Alan"),
+            Col("Yoğunluk kişi/km²", FMT_INT, 10, True, "Alan"),
+            Col("Hane büyüklüğü", FMT_DEC2, 9, True, "Hane"),
+            Col("Mülk sahibi", FMT_PCT, 9, group="Hane"),
+            Col("Yüksek öğrenim payı", FMT_PCT, 9, True, "Eğitim"),
+            Col("SES A+AB payı", FMT_PCT, 9, True, "SES"),
+            Col("Hane geliri ₺/ay", FMT_INT, 10, True, "SES"),
+            Col("Katılım", FMT_PCT, 8, True, "2024 İlçe Bld."),
+            Col("1. parti", "@", 10, group="2024 İlçe Bld."),
+            Col("1. parti payı", FMT_PCT, 8, True, "2024 İlçe Bld."),
+        ],
+    )
+
+    def ozet_vals(R: int, kind: str, area_f, owner, income) -> list:
+        return [
+            kind,
+            f"=Analiz!L{R}",
+            f"=Analiz!M{R}",
+            f"='Yaş Payları'!T{R}",
+            f"='Yaş Payları'!B{R}",
+            f"='Yaş Payları'!F{R}",
+            f"=Analiz!B{R}",
+            f"=Analiz!I{R}",
+            area_f,
+            f'=IF(AND(ISNUMBER(J{R}),J{R}>0,ISNUMBER(C{R})),C{R}/J{R},"")',
+            f"=Analiz!J{R}",
+            owner,
+            f"=Eğitim!O{R}",
+            f"=SES!H{R}",
+            income,
+            f"='Seçim 2024'!G{R}",
+            f"='Seçim 2024'!{L(TOPC)}{R}",
+            f"='Seçim 2024'!{L(TOPS)}{R}",
+        ]
+
+    for i, r in enumerate(rows):
+        R = rr(i)
+        t.row(
+            [r["name"] + (" (veri yok)" if r["ph"] else "")]
+            + ozet_vals(
+                R,
+                KIND_LABEL[r["kind"]],
+                r["q"]["Area"],
+                None if r["ph"] else r["q"]["OwnerShare"] / 100,
+                None if r["ph"] else r["q"]["HouseIncomeTotal"],
+            )
+        )
+    for R, label, idx, style in (
+        (R_CENTRE, "MERKEZ", centre_rows, "subtotal"),
+        (R_RURAL, "KIR", rural_rows, "subtotal"),
+    ):
+        t.row([label] + ozet_vals(R, "", sum_rows("J", idx), None, None), style=style)
+    t.row(
+        ["İLÇE (Endeksa)"]
+        + ozet_vals(
+            R_COUNTY,
+            "",
+            county["Area"],
+            county["OwnerShare"] / 100,
+            county["HouseIncomeTotal"],
+        ),
+        style="total",
+    )
+    t.ws.cell(row=R_COUNTY, column=3, value=county["PopulationTotal"])
+    t.ws.cell(row=R_COUNTY, column=4, value=None)
+    t.finish(R0 + n - 1)
+
+    # ================================================================ Ham
     keys = list(county)
-    for i, k in enumerate(keys, 1):
-        ws.cell(row=H, column=i, value=k)
-    style_header(ws, H, len(keys))
-    ws.append([county.get(k) for k in keys])
+    t = Table(
+        wb.create_sheet("Ham"),
+        f"{place} — Endeksa demografi yanıtı, tüm alanlar",
+        "Alan adları kaynaktaki gibi; ilk satır ilçe. Diğer sayfalarda kullanılmayan alanlar da burada.",
+        [Col(k, "General", 12) for k in keys[1:]],
+        first_col=Col(keys[0], "General", 8),
+    )
+    t.row([county.get(k) for k in keys], style="total")
     for r in rows:
-        ws.append([r["q"].get(k) for k in keys])
-    finish(ws, H, {c: 12 for c in range(2, len(keys) + 1)}, first_width=8)
-    ws.freeze_panes = ws.cell(row=H + 1, column=1)
+        t.row([r["q"].get(k) for k in keys])
+    t.finish()
 
-    # ---- Notlar
+    # ================================================================ Notlar
     ws = wb.create_sheet("Notlar")
+    ws.sheet_view.showGridLines = False
+    ws["B2"] = "Notlar"
+    ws["B2"].font = Font(name=FONT, bold=True, size=14, color=NAVY)
     notes = [
         (
-            "Kaynak",
-            "Endeksa (endeksa.com) demografi, seçim, hemşehri uç noktaları; dökümü "
-            + raw["county"].get("_meta", {}).get("fetched", "")
-            + ". TÜİK ADNKS mahalle serisi VeriAtlas ambarından (public/population-neighbourhood.csv.gz).",
+            "Kaynaklar",
+            f"Endeksa (endeksa.com) demografi, seçim, hemşehri, sınır uç noktaları; döküm {fetched}. TÜİK ADNKS mahalle serisi VeriAtlas ambarından (public/population-neighbourhood.csv.gz, kaynak tuik_medas).",
         ),
         (
             "Yıl",
-            "Endeksa tek kesit: nüfus TÜİK ADNKS 2024 ile birebir. Seçimler kendi tarihlerinde. Emlak satışları yıllık seri (2024 kısmi).",
+            "Endeksa tek kesittir; nüfusu TÜİK ADNKS 2024 ile birebir. Seçimler kendi tarihlerinde. Emlak satış serileri yıllık (2024 kısmi).",
         ),
         (
             "Veri yok",
-            "Küçük eski köylerde Endeksa mahalle düzeyi demografi üretmiyor; bu satırlar Özet'te 'Veri = hayır' ve ilgili sayfalarda '(veri yok)'. Seçim ve hemşehri bu mahallelerde de dolu.",
+            "Küçük eski köylerde Endeksa mahalle düzeyi demografi üretmiyor (hane = 0 şablonu). Bu mahalleler '(veri yok)' etiketli; TÜİK nüfus, seçim ve hemşehri onlarda da dolu. Merkez/Kır toplamları yalnız veri olan mahalleleri içerir; Kır toplamı bu yüzden TÜİK kır nüfusundan küçüktür.",
         ),
         (
             "Tahmin",
-            "SES, gelir, harcama, tasarruf, mülk/kiracı Endeksa modelidir; TÜİK sayımı değildir. Yaş, cinsiyet, eğitim, medeni hal TÜİK kökenli görünüyor.",
+            "SES, gelir, harcama, tasarruf, mülk/kiracı Endeksa modelidir; TÜİK sayımı değildir. Yaş, cinsiyet, eğitim, medeni hal TÜİK ADNKS kökenli görünüyor (toplamlar tutuyor).",
+        ),
+        (
+            "Ortalama yaş",
+            "5'lik grup orta noktaları (2, 7, …, 62) ve 65+ için 74 ile ağırlıklı ortalama; 65+ grubunun gerçek ortalaması mahalleye göre değişir, ±1 yıl belirsizlik. Medyan yaş grup içi doğrusal ara değerle Python'da hesaplandı (formül değil).",
         ),
         (
             "Tür",
-            "'merkez' = Endeksa kimliği < 100000 (ilçe merkezinin eski belediye mahalleleri); 'kır' = 2014 öncesi köy/belde. Belde ayrımı bu sürümde yapılmadı.",
+            "'Merkez' = Endeksa kimliği < 100000 (ilçe merkezinin belediye mahalleleri); 'Kır' = 2014 öncesi köy ve belde. Belde ayrımı bu sürümde yapılmadı (İznik: Boyalıca, Elbeyli eski belde).",
         ),
         (
             "Formüller",
-            "Pay, yoğunluk, katılım, 1. parti gibi sütunlar formüldür; sayım sütunu düzeltilirse güncellenir. Dosya Excel'de açılınca hesaplanır.",
+            "Pay, yoğunluk, ortalama yaş, katılım, 1. parti gibi sütunlar formüldür; bir sayım düzeltilirse güncellenir. Dosya açılınca hesaplanır. Aynı mahalle her sayfada aynı satırdadır; Özet diğer sayfalara bu satır numarasıyla bağlanır.",
         ),
         (
             "Seçim",
-            "Küçük partiler kaynakta 'Diğer' altında; tam döküm için YSK. 'Oran' alanı kaynakta hatalı olduğundan kullanılmadı, paylar yeniden hesaplandı.",
+            "Küçük partiler kaynakta 'Diğer' altında; tam döküm YSK'dan. Kaynaktaki 'Oran' alanı hatalı olduğundan kullanılmadı; paylar geçerli oya bölünerek yeniden hesaplandı.",
+        ),
+        (
+            "Kimlikler",
+            "MEDAS kimliği (TR-il-ilçe-kod) VeriAtlas anahtarı; TÜİK serisiyle bu kodla birleşir. Endeksa kimliği yalnız Endeksa'ya geri dönmek için.",
         ),
         ("Lisans", "Endeksa verisi araştırma amaçlı kopyadır; yayım kararı verilmedi."),
     ]
-    ws["A1"] = "Notlar"
-    ws["A1"].font = Font(name=FONT, bold=True, size=14)
-    for i, (k, v) in enumerate(notes, 3):
-        ws.cell(row=i, column=1, value=k).font = Font(name=FONT, bold=True, size=10)
-        c = ws.cell(row=i, column=2, value=v)
+    for i, (k, v) in enumerate(notes, 4):
+        ws.cell(row=i, column=2, value=k).font = Font(
+            name=FONT, bold=True, size=10, color=NAVY
+        )
+        c = ws.cell(row=i, column=3, value=v)
         c.font = Font(name=FONT, size=10)
         c.alignment = Alignment(wrap_text=True, vertical="top")
-        ws.row_dimensions[i].height = 45
-    ws.column_dimensions["A"].width = 14
-    ws.column_dimensions["B"].width = 110
+        ws.row_dimensions[i].height = 48
+    ws.column_dimensions["A"].width = 3
+    ws.column_dimensions["B"].width = 16
+    ws.column_dimensions["C"].width = 120
 
+    desired = [
+        "Kapak",
+        "Özet",
+        "Analiz",
+        "Kimlik",
+        "Yaş Toplam",
+        "Yaş Erkek",
+        "Yaş Kadın",
+        "Yaş Payları",
+        "Eğitim",
+        "Medeni Hal",
+        "SES",
+        "Gelir-Harcama",
+        "Konut",
+        "Emlak Satış",
+        "Seçim 2024",
+        "Katılım",
+        "Seçimler",
+        "Hemşehri",
+        "TÜİK Nüfus",
+        "TÜİK Yaş-Cinsiyet",
+        "Ham",
+        "Notlar",
+    ]
+    wb._sheets = [wb[nm] for nm in desired]
+    tab = {
+        "Kapak": NAVY,
+        "Özet": NAVY,
+        "Analiz": NAVY,
+        "Kimlik": "7F7F7F",
+        "Ham": "7F7F7F",
+        "Notlar": "7F7F7F",
+    }
+    for sh in wb.worksheets:
+        sh.sheet_properties.tabColor = tab.get(
+            sh.title,
+            BLUE
+            if sh.title.startswith(("Yaş", "Eğitim", "Medeni"))
+            else "548235"
+            if sh.title.startswith(("Seçim", "Katılım"))
+            else "BF8F00",
+        )
+    wb.active = 0
     out.parent.mkdir(parents=True, exist_ok=True)
     wb.save(out)
 
@@ -1087,7 +1558,7 @@ def main() -> None:
     raw = load_raw(raw_dir)
     areas, series = load_tuik(a.district)
     out = a.out or (a.raw / f"{a.district}-endeksa.xlsx")
-    build(a.district, raw, areas, series, out)
+    build(raw, areas, series, out)
     print(out)
 
 
