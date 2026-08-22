@@ -555,7 +555,7 @@ def build(raw: dict, areas: dict, series: dict, out: Path) -> None:
         ws.cell(row=i, column=3, value=v).font = Font(name=FONT, size=10)
     ws.column_dimensions["A"].width = 3
     ws.column_dimensions["B"].width = 26
-    ws.column_dimensions["C"].width = 70
+    ws.column_dimensions["C"].width = 17
 
     # ================================================================ Yaş × cinsiyet
     for sfx, lbl in SEX:
