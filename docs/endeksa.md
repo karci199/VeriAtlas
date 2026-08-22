@@ -94,3 +94,24 @@ okunur.
 `DistrictType` her mahallede "BELEDİYE MAHALLESİ" — köy/belde ayrımını Endeksa
 vermiyor, MEDAS kod sırası (ilk 7 merkez, Boyalıca/Elbeyli belde, kalan köy)
 ve elle doğrulamayla yapılacak.
+
+## Adapter (2026-08-22)
+
+`src/veriatlas/adapters/endeksa.py` — `raw/endeksa/<ilçe>/` → olgu tablosu. Bir
+gösterge = bir adapter sözleşmesi korunuyor; 23 sınıf `MEASURES` tablosundan
+üretiliyor (`ENDEKSA_ADAPTERS`, `load.py endeksa_*` ile çalışır). Sözlük:
+`indicators.toml` → yeni konular (eğitim, sosyoekonomik, konut, seçim), kırılımlar
+(`education`, `ses`, `expense_item`, `dwelling_type`, `tenure`, `property_type`,
+`election`, `option`, `origin`), 20 yeni gösterge.
+
+- TÜİK kökenli sayımlar `measured`; SES/gelir/harcama/mülkiyet `estimated`.
+- Placeholder mahalleler (`HouseholdCount == 0`) demografide atlanır, seçim ve
+  hemşehride kalır. Ad eşleşmeyen mahalle **reddedilir** (KeyError).
+- Seçim: `period_start` = sandık günü; aynı gün üç oylama `election` kırılımıyla
+  ayrılır. Oyu `null` gelen seçenek (bağımsızlar, 2015 "Diğer") yazılmaz.
+  2019'da mahalle dosyalarında ilçeninkinde olmayan **il genel meclisi** kodu var.
+- İlçe satırı: Endeksa'ya özgü göstergelerde yazılır; nüfus/medeni/hane için
+  yazılmaz (TÜİK'inki zaten ambarda, 48 kişi fark).
+- İznik: 23 adapter, 20.021 satır, `public/fact-endeksa.parquet` (deneme; tam
+  `load.py` koşusunda ana `fact.parquet`'e girer).
+- `raw/` çalışma ağacında `C:\veri\raw`'a junction.

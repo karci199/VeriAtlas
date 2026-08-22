@@ -44,6 +44,29 @@ label_tr = "Yapı ruhsatı"
 label_en = "Building permits"
 order = 30
 
+# Endeksa brings subjects the TÜİK exports do not reach at neighbourhood level. They are
+# topics of their own rather than folded into "Nüfus": a reader choosing "Nüfus" expects a
+# count of people, not a party's vote or a household's spending.
+[topic.egitim]
+label_tr = "Eğitim"
+label_en = "Education"
+order = 26
+
+[topic.sosyoekonomik]
+label_tr = "Sosyo-ekonomik"
+label_en = "Socio-economic"
+order = 40
+
+[topic.konut]
+label_tr = "Konut ve emlak"
+label_en = "Housing and property"
+order = 45
+
+[topic.secim]
+label_tr = "Seçim"
+label_en = "Elections"
+order = 50
+
 # endregion
 
 # region Dimensions — the breakdown keys and what their stored values are called
@@ -124,6 +147,128 @@ unknown = "Bilinmeyen"
 #
 # `covers` lists the dimension values that add up into each group. They must be a
 # partition: no value in two groups, or the total stops being the total.
+
+# ---- Endeksa breakdowns (docs/endeksa.md). Values are ids; the Turkish is here.
+
+[dim.education]
+label_tr = "Eğitim düzeyi"
+label_en = "Education level"
+
+[dim.education.values]
+illiterate = "Okuma yazma bilmeyen"
+literate_no_school = "Okuma yazma bilen, okul bitirmemiş"
+primary_school = "İlkokul"
+primary_education = "İlköğretim"
+middle_school = "Ortaokul"
+high_school = "Lise"
+bachelor = "Lisans"
+master = "Yüksek lisans"
+doctorate = "Doktora"
+unknown = "Bilinmeyen"
+
+[dim.ses]
+label_tr = "SES grubu"
+label_en = "SES group"
+
+[dim.ses.values]
+a_plus = "A+"
+a = "A"
+b = "B"
+c = "C"
+d = "D"
+
+[dim.expense_item]
+label_tr = "Harcama kalemi"
+label_en = "Expense item"
+
+[dim.expense_item.values]
+food = "Gıda"
+alcohol_tobacco = "Alkol ve tütün"
+clothing = "Giyim"
+housing = "Barınma"
+furnishing = "Mobilya ve ev eşyası"
+health = "Sağlık"
+transport = "Ulaşım"
+communication = "İletişim"
+recreation = "Eğlence ve kültür"
+education = "Eğitim"
+restaurants = "Lokanta ve otel"
+other = "Diğer"
+
+[dim.dwelling_type]
+label_tr = "Birim türü"
+label_en = "Unit type"
+
+[dim.dwelling_type.values]
+dwelling = "Konut"
+summer_house = "Yazlık"
+commercial = "Ticari birim"
+
+[dim.tenure]
+label_tr = "Mülkiyet"
+label_en = "Tenure"
+
+[dim.tenure.values]
+owner = "Mülk sahibi"
+tenant = "Kiracı"
+
+[dim.property_type]
+label_tr = "Taşınmaz türü"
+label_en = "Property type"
+
+[dim.property_type.values]
+dwelling = "Konut"
+land = "Arsa ve tarla"
+
+# The contest. One id per ballot, so the three ballots cast on the same day in 2024 (ilçe
+# başkanı, meclis, büyükşehir) are three values; `period_start` is the polling day.
+[dim.election]
+label_tr = "Seçim"
+label_en = "Election"
+
+[dim.election.values]
+general_2011 = "2011 Genel"
+local_2014 = "2014 Yerel"
+president_2014 = "2014 Cumhurbaşkanı"
+general_2015_06 = "2015 Haziran Genel"
+general_2015_11 = "2015 Kasım Genel"
+referendum_2017 = "2017 Referandum"
+president_2018 = "2018 Cumhurbaşkanı"
+general_2018 = "2018 Genel"
+local_2019_district = "2019 Yerel — İlçe Belediye"
+local_2019_council = "2019 Yerel — Belediye Meclisi"
+local_2019_metro = "2019 Yerel — Büyükşehir"
+local_2019_provincial = "2019 Yerel — İl Genel Meclisi"
+general_2023 = "2023 Genel"
+president_2023_r1 = "2023 Cumhurbaşkanı 1. tur"
+president_2023_r2 = "2023 Cumhurbaşkanı 2. tur"
+local_2024_district = "2024 Yerel — İlçe Belediye"
+local_2024_council = "2024 Yerel — Belediye Meclisi"
+local_2024_metro = "2024 Yerel — Büyükşehir"
+
+# A party, a candidate, evet/hayır, or the source's own "Diğer". Ids are slugs of the
+# label as Endeksa writes it; only the ones that need a readable form are listed.
+[dim.option]
+label_tr = "Seçenek"
+label_en = "Option"
+
+[dim.option.values]
+ak_parti = "AK Parti"
+chp = "CHP"
+mhp = "MHP"
+iyi = "İYİ Parti"
+yrp = "Yeniden Refah"
+dem = "DEM Parti"
+hdp = "HDP"
+saadet = "Saadet"
+zafer = "Zafer"
+diger = "Diğer"
+bagimsiz = "Bağımsız"
+
+# Province of civil registry (nüfusa kayıtlı il); values are province ids (TR-34).
+[dim.origin]
+label_tr = "Nüfusa kayıtlı il"
+label_en = "Province of registry"
 
 [dim.residence]
 label_tr = "Nerede yaşıyor"
@@ -365,6 +510,60 @@ additive = true
 [unit.dwelling]
 label_tr = "daire"
 label_en = "dwellings"
+decimals = 0
+additive = true
+
+[unit.km2]
+label_tr = "km²"
+label_en = "km²"
+decimals = 2
+additive = true
+
+[unit.lira_per_month]
+label_tr = "₺/ay"
+label_en = "TRY per month"
+decimals = 0
+additive = false
+
+[unit.unit_count]
+label_tr = "birim"
+label_en = "units"
+decimals = 0
+additive = true
+
+[unit.vote]
+label_tr = "oy"
+label_en = "votes"
+decimals = 0
+additive = true
+
+[unit.voter]
+label_tr = "seçmen"
+label_en = "voters"
+decimals = 0
+additive = true
+
+[unit.ballot_box]
+label_tr = "sandık"
+label_en = "ballot boxes"
+decimals = 0
+additive = true
+
+[unit.sale]
+label_tr = "satış"
+label_en = "sales"
+decimals = 0
+additive = true
+
+[unit.listing]
+label_tr = "ilan"
+label_en = "listings"
+decimals = 0
+additive = true
+
+[unit.vehicle]
+label_tr = "araç"
+label_en = "vehicles"
 decimals = 0
 additive = true
 
@@ -888,6 +1087,227 @@ frequency = "quarterly"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "Ruhsat verilen daire sayısı. Bina sayısıyla karıştırılmamalı."
+
+# endregion
+
+# region Endeksa — neighbourhood snapshot 2024, elections, property (docs/endeksa.md)
+#
+# The measured/estimated line runs through these: age, education, marital status and
+# household counts reproduce TÜİK to the person and load as `measured`; the SES grade,
+# income, spending and tenure are Endeksa's model and load as `estimated`.
+
+[indicator.education_level]
+label_tr = "Eğitim düzeyi"
+label_en = "Education level"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["education"]
+views = ["table", "map", "bar"]
+definition_tr = "6 yaş ve üzeri nüfusun bitirdiği en yüksek eğitim düzeyi. Toplamı 6+ nüfustur, ilçe nüfusu değil."
+
+[indicator.area]
+label_tr = "Yüzölçümü"
+label_en = "Area"
+topic = "nufus"
+unit = "km2"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "Mahalle sınırının alanı, Endeksa geometrisinden."
+
+[indicator.dwelling_stock]
+label_tr = "Konut ve işyeri stoğu"
+label_en = "Dwelling and commercial stock"
+topic = "konut"
+unit = "unit_count"
+frequency = "annual"
+additive = true
+dims = ["dwelling_type"]
+views = ["table", "map", "bar"]
+definition_tr = "Bağımsız birim sayısı: konut, yazlık, ticari."
+
+[indicator.ses_group]
+label_tr = "Sosyo-ekonomik statü"
+label_en = "Socio-economic status"
+topic = "sosyoekonomik"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["ses"]
+views = ["table", "map", "bar"]
+definition_tr = "Endeksa'nın A+ … D ölçeğinde kişi sayısı. Sayım değil modeldir; ekranda 'tahmin' rozetiyle durur."
+
+[indicator.household_income]
+label_tr = "Hane geliri"
+label_en = "Household income"
+topic = "sosyoekonomik"
+unit = "lira_per_month"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "Aylık ortalama hane geliri, Endeksa modeli."
+
+[indicator.income_per_capita]
+label_tr = "Kişi başı gelir"
+label_en = "Income per capita"
+topic = "sosyoekonomik"
+unit = "lira_per_month"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "Aylık kişi başı gelir, Endeksa modeli."
+
+[indicator.household_saving]
+label_tr = "Hane tasarrufu"
+label_en = "Household saving"
+topic = "sosyoekonomik"
+unit = "lira_per_month"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "Aylık hane tasarrufu, Endeksa modeli."
+
+[indicator.household_expense]
+label_tr = "Hane harcaması"
+label_en = "Household expense"
+topic = "sosyoekonomik"
+unit = "lira_per_month"
+frequency = "annual"
+additive = true
+dims = ["expense_item"]
+views = ["table", "bar"]
+definition_tr = "Aylık hane harcaması, on iki kalem; Endeksa modeli."
+
+[indicator.housing_tenure]
+label_tr = "Konut mülkiyeti"
+label_en = "Housing tenure"
+topic = "konut"
+unit = "percent"
+frequency = "annual"
+dims = ["tenure"]
+views = ["table", "map", "bar"]
+definition_tr = "Hanelerin mülk sahibi ve kiracı payı (%). İkisi yüze tamamlanmaz: lojman vb. ayrıca verilmiyor. Endeksa modeli."
+
+[indicator.vehicle_count]
+label_tr = "Araç sayısı"
+label_en = "Vehicles"
+topic = "sosyoekonomik"
+unit = "vehicle"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "Mahalledeki otomobil sayısı, Endeksa tahmini."
+
+[indicator.property_sales]
+label_tr = "Konut satışı"
+label_en = "Dwelling sales"
+topic = "konut"
+unit = "sale"
+frequency = "annual"
+additive = true
+dims = ["property_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Tapuda yıl içinde satılan konut sayısı, 2012'den itibaren. 2024 kısmi."
+
+[indicator.property_sales_land]
+label_tr = "Arsa ve tarla satışı"
+label_en = "Land sales"
+topic = "konut"
+unit = "sale"
+frequency = "annual"
+additive = true
+dims = ["property_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Tapuda yıl içinde satılan arsa ve tarla sayısı, 2012'den itibaren."
+
+[indicator.property_listings]
+label_tr = "Emlak ilanı"
+label_en = "Property listings"
+topic = "konut"
+unit = "listing"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Yıl içinde verilen satılık/kiralık ilan sayısı, 2014'ten itibaren."
+
+[indicator.votes]
+label_tr = "Oy"
+label_en = "Votes"
+topic = "secim"
+unit = "vote"
+frequency = "annual"
+additive = true
+dims = ["election", "option"]
+views = ["table", "map", "bar"]
+definition_tr = "Seçenek başına geçerli oy. Kaynak küçük partileri 'Diğer' altında toplar; pay geçerli oya bölünerek hesaplanır (kaynağın kendi oran alanı hatalı)."
+
+[indicator.electorate]
+label_tr = "Kayıtlı seçmen"
+label_en = "Registered voters"
+topic = "secim"
+unit = "voter"
+frequency = "annual"
+additive = true
+dims = ["election"]
+views = ["table", "map", "bar"]
+definition_tr = "Seçmen kütüğündeki kayıtlı seçmen sayısı."
+
+[indicator.votes_cast]
+label_tr = "Kullanılan oy"
+label_en = "Votes cast"
+topic = "secim"
+unit = "vote"
+frequency = "annual"
+additive = true
+dims = ["election"]
+views = ["table", "map", "bar"]
+definition_tr = "Sandığa atılan oy; katılım = kullanılan / kayıtlı."
+
+[indicator.valid_votes]
+label_tr = "Geçerli oy"
+label_en = "Valid votes"
+topic = "secim"
+unit = "vote"
+frequency = "annual"
+additive = true
+dims = ["election"]
+views = ["table", "map", "bar"]
+definition_tr = "Geçerli sayılan oy; parti paylarının paydası."
+
+[indicator.invalid_votes]
+label_tr = "Geçersiz oy"
+label_en = "Invalid votes"
+topic = "secim"
+unit = "vote"
+frequency = "annual"
+additive = true
+dims = ["election"]
+views = ["table", "map", "bar"]
+definition_tr = "Geçersiz sayılan oy. Bazı seçimlerde kaynak 0 veriyor (eksik)."
+
+[indicator.ballot_boxes]
+label_tr = "Sandık sayısı"
+label_en = "Ballot boxes"
+topic = "secim"
+unit = "ballot_box"
+frequency = "annual"
+additive = true
+dims = ["election"]
+views = ["table", "bar"]
+definition_tr = "Mahalledeki sandık sayısı. Bazı seçimlerde kaynak 0 veriyor (eksik)."
+
+[indicator.registry_origin]
+label_tr = "Nüfusa kayıtlı il"
+label_en = "Province of registry"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["origin"]
+views = ["table", "bar"]
+definition_tr = "Mahallede yaşayanların nüfus kütüğündeki il — yalnız ilk on il; toplamı nüfusun tamamı değildir."
 
 # endregion
 

@@ -1,6 +1,7 @@
 """Source adapters. One module per source; the contract lives in `base`."""
 
 from .base import Adapter, Manifest, history, ingest
+from .endeksa import ENDEKSA_ADAPTERS
 from .tuik_district_population import TuikDistrictPopulation
 from .tuik_marital import TuikMarital
 from .tuik_median_age import TuikMedianAge
@@ -31,11 +32,14 @@ ADAPTERS = {
     # The same two events at district level are *different measures* in MEDAS, with
     # different codes in the header and shorter series. Their own parser for that reason.
     **DISTRICT_VITAL_ADAPTERS,
+    # Endeksa: one class per indicator, generated from a table (docs/endeksa.md).
+    **ENDEKSA_ADAPTERS,
 }
 
 __all__ = [
     "ADAPTERS",
     "DISTRICT_VITAL_ADAPTERS",
+    "ENDEKSA_ADAPTERS",
     "NARROW_ADAPTERS",
     "VITAL_ADAPTERS",
     "Adapter",
