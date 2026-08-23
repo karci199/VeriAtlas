@@ -93,26 +93,25 @@ function drawCards() {
     const firstKid = state.kids.years[0];
     const child = childShare(year, scope), childThen = childShare(tenYearsBack(year, firstKid), scope);
 
-    // Households: Endeksa 2024 only, and only where every settlement reports a count.
-    let hh = null, hhNote = "";
+    // Households: Endeksa 2024 only; settlements without a count are left out of both sides.
+    let hh = null;
     if (year === 2024) {
-        const units = d.units.filter((u) => scope === "total" || (scope === "urban") === u.urban);
-        const known = units.filter((u) => u.households);
-        if (known.length === units.length) hh = sum(units.map((u) => u.population)) / sum(units.map((u) => u.households));
-        else if (scope !== "rural" && known.length) { hh = sum(known.map((u) => u.population)) / sum(known.map((u) => u.households)); hhNote = `${units.length - known.length} yerleşimde hane sayısı yok`; }
+        const known = d.units.filter((u) => u.households && (scope === "total" || (scope === "urban") === u.urban));
+        if (known.length) hh = sum(known.map((u) => u.population)) / sum(known.map((u) => u.households));
     }
+    const areaKm2 = state.areaKm2;
 
     $("#cards").innerHTML = [
         card("Nüfus", pop == null ? null : fmt.format(pop), "kişi", [delta(pop, popThen, "n") + ` <span>/ ${year - tenYearsBack(year, firstPop)} yıl</span>`]),
-        card("Hane başına nüfus", hh == null ? null : num(hh, 2), "kişi", [hhNote ? `<span>${hhNote}</span>` : "", `<span>Endeksa 2024${year !== 2024 ? " · yalnız 2024" : ""}</span>`], year !== 2024 ? "yalnız 2024" : ""),
-        card("Yüzölçümü", fmt.format(c.area_km2), "km²", [`<span>${num(pop / c.area_km2)} kişi/km²</span>`, `<span>${c.area_note || ""}</span>`]),
-        card("Kentleşme", "%" + pct(urbanShare), "kentte", [delta(urbanShare, urbanThen, "pt") + ` <span>/ ${year - tenYearsBack(year, firstPop)} yıl</span>`, `<span>${fmt.format(popOf(year, "urban"))} kent · ${fmt.format(popOf(year, "rural"))} kır</span>`], "kapsamdan bağımsız"),
+        card("Hane başına nüfus", hh == null ? null : num(hh, 2), "kişi", [], year !== 2024 ? "yalnız 2024" : ""),
+        card("Yüzölçümü", fmt.format(Math.round(areaKm2)), "km²", [`<span>${num(pop / areaKm2)} kişi/km²</span>`]),
+        card("Kentleşme", "%" + pct(urbanShare), "kentte", [delta(urbanShare, urbanThen, "pt") + ` <span>/ ${year - tenYearsBack(year, firstPop)} yıl</span>`]),
         card("Çocuk nüfus (0-17)", child == null ? null : "%" + pct(child), "", child == null ? [`<span>mahalle verisi ${firstKid}'ten başlıyor</span>`] : [delta(child, childThen, "pt") + ` <span>/ ${year - tenYearsBack(year, firstKid)} yıl</span>`]),
         card("Medyan yaş", g ? num(g.median) : null, "", g ? [delta(g.median, gThen && gThen.median, "") + ` <span>/ ${year - yThen} yıl</span>`] : []),
         g ? `<div class="card wide"><div class="t">Yaş grupları</div><div class="ages">
             ${[["0-14", g.young, "var(--green)"], ["15-64", g.mid, "var(--blue)"], ["65+", g.old, "var(--amber)"]].map(([l, v, col]) =>
                 `<div style="width:${v * 100}%"><div class="lab"><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${col}"></i> ${l} <b>%${pct(v)}</b></div><div class="bar" style="background:${col}"></div></div>`).join("")}
-          </div><div class="keys">${gThen ? `<span>${yThen}: ${pct(gThen.young, 0)} · ${pct(gThen.mid, 0)} · ${pct(gThen.old, 0)}</span>` : ""}${scope !== "total" ? `<span>kent/kır ayrımı tahmin</span>` : ""}</div></div>` : "",
+          </div></div>` : "",
     ].join("");
 
     $("#foot").textContent = `${d.units.length} yerleşim · ${d.units.filter((u) => u.urban).length} kentsel mahalle · ${d.units.filter((u) => !u.urban).length} köy`;
@@ -131,8 +130,7 @@ function drawPyramid() {
         <div class="lab">${a.bands[i]}</div>
         <div class="r"><div class="bar" style="width:${w(a.female[i])}%;background:var(--acc)" title="${a.bands[i]} kadın ${fmt.format(a.female[i])}"></div></div>`).join("");
     $("#pyrFoot").innerHTML = `<span>◀ Erkek ${fmt.format(sum(a.male))}</span><span>Kadın ${fmt.format(sum(a.female))} ▶</span>`;
-    const est = scope !== "total" ? " · kent/kır ayrımı tahmin" : "";
-    $("#pyrSrc").textContent = `ADNKS ${year} · ${{ total: "toplam", urban: "kent", rural: "kır" }[scope]}${est}`;
+    $("#pyrSrc").textContent = `ADNKS ${year} · ${{ total: "toplam", urban: "kent", rural: "kır" }[scope]}`;
 }
 
 // ---------- social / vital ----------
@@ -170,7 +168,6 @@ function unitValue(u, varName) {
     const tot = now.child + now.adult;
     if (varName === "pop") return tot;
     if (varName === "child") return tot ? now.child / tot : null;
-    if (varName === "female") return tot ? now.female / tot : null;
     if (varName === "change") { const then = s[yt]; return then && then.child + then.adult ? tot / (then.child + then.adult) - 1 : null; }
     return null;
 }
@@ -178,22 +175,39 @@ function drawUnits() {
     const y = String(state.year);
     const rows = state.kids.units.filter((u) => state.scope === "total" || (state.scope === "urban") === u.urban)
         .sort((a, b) => a.name.localeCompare(b.name, "tr"));
-    $("#units").innerHTML = `<tr><th>Yerleşim</th><th>Tür</th><th>Nüfus ${y}</th><th>0-17</th><th>Kadın</th><th>10 yıl</th></tr>` + rows.map((u) => {
+    $("#units").innerHTML = `<tr><th>Yerleşim</th><th>Tür</th><th>Nüfus ${y}</th><th>0-17</th><th>10 yıl</th></tr>` + rows.map((u) => {
         const s = u.series[y];
-        if (!s) return `<tr data-id="${u.id}"><td>${u.name}</td><td>${u.urban ? "mahalle" : "köy"}</td><td colspan="4" style="color:var(--mute)">${y} yok</td></tr>`;
+        if (!s) return `<tr data-id="${u.id}"><td>${u.name}</td><td>${u.urban ? "mahalle" : "köy"}</td><td colspan="3" style="color:var(--mute)">${y} yok</td></tr>`;
         const tot = s.child + s.adult, ch = unitValue(u, "change");
-        return `<tr data-id="${u.id}"><td>${u.name}</td><td>${u.urban ? "mahalle" : "köy"}</td><td>${fmt.format(tot)}</td><td>%${pct(s.child / tot, 0)}</td><td>%${pct(s.female / tot, 0)}</td><td>${ch == null ? "—" : (ch >= 0 ? "+" : "−") + pct(Math.abs(ch), 0) + "%"}</td></tr>`;
+        return `<tr data-id="${u.id}"><td>${u.name}</td><td>${u.urban ? "mahalle" : "köy"}</td><td>${fmt.format(tot)}</td><td>%${pct(s.child / tot, 0)}</td><td>${ch == null ? "—" : (ch >= 0 ? "+" : "−") + pct(Math.abs(ch), 0) + "%"}</td></tr>`;
     }).join("");
 }
 
+/** Area of the settlement polygons, km², on a locally-scaled flat projection. */
+function areaKm2Of(features) {
+    let total = 0;
+    for (const f of features) {
+        const rings = f.geometry.type === "Polygon" ? [f.geometry.coordinates] : f.geometry.coordinates;
+        for (const poly of rings) poly.forEach((ring, idx) => {
+            const lat0 = (ring[0][1] * Math.PI) / 180, kx = 111.32 * Math.cos(lat0), ky = 110.57;
+            let a = 0;
+            for (let i = 0; i < ring.length - 1; i++) a += (ring[i][0] * kx) * (ring[i + 1][1] * ky) - (ring[i + 1][0] * kx) * (ring[i][1] * ky);
+            total += (idx === 0 ? 1 : -1) * Math.abs(a) / 2;
+        });
+    }
+    return total;
+}
 let proj = null;
-function projection(features, W) {
+function projection(features, W, aspect) {
     let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
     const walk = (g) => (g.type === "Polygon" ? g.coordinates : g.coordinates.flat()).forEach((r) => r.forEach(([x, y]) => { x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }));
     features.forEach((f) => walk(f.geometry));
     const k = Math.cos(((y0 + y1) / 2) * Math.PI / 180); // shrink longitude to keep shape
     const s = (W * 0.96) / Math.max((x1 - x0) * k, 1e-9), H = (y1 - y0) * s + W * 0.04;
-    return { W, H: Math.min(H, W * 1.1), s, x0, y1, k, ox: W * 0.02, oy: W * 0.02 };
+    // Fit inside W × W/aspect (the frame), centred.
+    const Hf = W / aspect, s2 = Math.min(s, (Hf * 0.96) / Math.max(y1 - y0, 1e-9));
+    const dw = (x1 - x0) * k * s2, dh = (y1 - y0) * s2;
+    return { W, H: Hf, s: s2, x0, y1, k, ox: (W - dw) / 2, oy: (Hf - dh) / 2 };
 }
 function pathOf(g) {
     const rings = g.type === "Polygon" ? g.coordinates : g.coordinates.flat();
@@ -208,7 +222,7 @@ function drawMap() {
     const present = vals.filter((v) => v != null);
     const lo = Math.min(...present), hi = Math.max(...present);
     const t = (v) => (hi > lo ? (v - lo) / (hi - lo) : 0.5);
-    const fmtVar = { pop: (v) => fmt.format(v), child: (v) => "%" + pct(v, 0), female: (v) => "%" + pct(v, 0), change: (v) => (v >= 0 ? "+" : "−") + pct(Math.abs(v), 0) + "%" }[state.mapVar];
+    const fmtVar = { pop: (v) => fmt.format(v), child: (v) => "%" + pct(v, 0), change: (v) => (v >= 0 ? "+" : "−") + pct(Math.abs(v), 0) + "%" }[state.mapVar];
     svg.innerHTML = feats.map((f, i) => {
         const u = byMedas.get(f.properties.area_id), v = vals[i];
         const hidden = state.scope !== "total" && u && (state.scope === "urban") !== u.urban;
@@ -221,7 +235,13 @@ function drawMap() {
 
 // Pan / zoom: the viewBox is the camera. Wheel zooms about the pointer, drag pans,
 // double-click or "0" refits, "+"/"-" step. Paths are never rebuilt for this.
-function setView(v) { state.view = v; $("#map").setAttribute("viewBox", `${v.x} ${v.y} ${v.w} ${v.h}`); }
+function setView(v) {
+    // Clamp so the drawing never leaves the frame entirely: at least a third stays visible.
+    const m = 0.66;
+    v.x = Math.min(Math.max(v.x, -v.w * m), proj.W - v.w * (1 - m));
+    v.y = Math.min(Math.max(v.y, -v.h * m), proj.H - v.h * (1 - m));
+    state.view = v; $("#map").setAttribute("viewBox", `${v.x} ${v.y} ${v.w} ${v.h}`);
+}
 function fitMap() { setView({ x: 0, y: 0, w: proj.W, h: proj.H }); }
 function zoomAt(factor, px, py) {
     const v = state.view, svg = $("#map"), r = svg.getBoundingClientRect();
@@ -254,6 +274,32 @@ function wireMap() {
     });
 }
 
+// ---------- views: the sidebar swaps the panel; the map stays ----------
+function showView(name) {
+    document.querySelectorAll(".view").forEach((v) => (v.hidden = v.dataset.view !== name));
+    document.querySelectorAll("#nav a").forEach((a) => a.classList.toggle("on", a.dataset.view === name));
+    $(".panel").scrollTop = 0;
+}
+function wireViews() {
+    $("#nav").addEventListener("click", (e) => { const a = e.target.closest("a[data-view]"); if (!a) return; e.preventDefault(); history.replaceState(null, "", "#" + a.dataset.view); showView(a.dataset.view); });
+    const h = location.hash.slice(1);
+    if (h && document.querySelector(`.view[data-view="${h}"]`)) showView(h);
+}
+function drawAgeDetail() {
+    const { year, scope } = state, a = ages(year, scope);
+    if (!a) { $("#ageDetail").innerHTML = ""; return; }
+    const tot = total(a), males = sum(a.male), g = ageGroups(a);
+    const i15 = bandIndex(a.bands, 15), i65 = bandIndex(a.bands, 65);
+    const both = a.bands.map((_, i) => a.male[i] + a.female[i]);
+    const dep = (sum(both.slice(0, i15)) + sum(both.slice(i65))) / sum(both.slice(i15, i65));
+    $("#ageDetail").innerHTML = [
+        card("Kadın oranı", "%" + pct((tot - males) / tot), "", [`<span>${fmt.format(tot - males)} kadın · ${fmt.format(males)} erkek</span>`]),
+        card("Yaşlı oranı (65+)", "%" + pct(g.old), "", []),
+        card("Bağımlılık oranı", "%" + pct(dep), "", [`<span>(0-14 + 65+) / 15-64</span>`]),
+        `<div class="card wide"><div class="t">Yaş grupları · ${year}</div><table class="units">${a.bands.map((b, i) => `<tr><td>${b}</td><td>${fmt.format(a.male[i])}</td><td>${fmt.format(a.female[i])}</td><td>${fmt.format(both[i])}</td><td>%${pct(both[i] / tot)}</td></tr>`).join("")}</table></div>`,
+    ].join("");
+}
+
 // ---------- crumb, search ----------
 function drawCrumb() {
     const d = state.data;
@@ -272,11 +318,17 @@ function highlight(id) {
     const row = document.querySelector(`#units tr[data-id="${id}"]`);
     if (row) { row.style.outline = "1px solid var(--amber)"; setTimeout(() => (row.style.outline = ""), 1500); }
     const u = state.kids.units.find((x) => x.id === id), y = u && u.series[String(state.year)];
-    if (u) $("#tip").textContent = y ? `${u.name} · ${fmt.format(y.child + y.adult)} kişi · 0-17 %${pct(y.child / (y.child + y.adult), 0)}` : u.name;
+    const pick = $("#pick");
+    if (!u) { pick.hidden = true; return; }
+    pick.hidden = false;
+    const tot = y ? y.child + y.adult : null, ch = unitValue(u, "change");
+    pick.innerHTML = `<b>${u.name}</b>${u.urban ? "mahalle" : "köy"} · ${state.year}<br>` + (y
+        ? `<span>nüfus <i>${fmt.format(tot)}</i></span><span>0-17 <i>%${pct(y.child / tot, 0)}</i></span>${ch == null ? "" : `<span>10 yıl <i>${(ch >= 0 ? "+" : "−") + pct(Math.abs(ch), 0)}%</i></span>`}`
+        : `<span>bu yıl için veri yok</span>`);
 }
 
 // ---------- wiring ----------
-function render() { drawCards(); drawPyramid(); drawSocial(); drawVital(); drawUnits(); drawMap(); }
+function render() { drawCards(); drawPyramid(); drawAgeDetail(); drawSocial(); drawVital(); drawUnits(); drawMap(); }
 async function main() {
     const [data, kids, geo] = await Promise.all([
         fetch(`../public/atlas/${DISTRICT}.json`).then((r) => r.json()),
@@ -288,8 +340,10 @@ async function main() {
     const ys = Object.keys(data.age_series).map(Number);
     $("#year").min = Math.min(...ys); $("#year").max = Math.max(...ys);
     $("#sources").textContent = "Kaynaklar: " + data.sources.join(" · ") + " · TÜİK ilçe doğum ve ölüm sayıları.";
-    proj = projection(geo.features, 600);
-    fitMap(); wireMap();
+    state.areaKm2 = areaKm2Of(geo.features);
+    const box = $("#map").getBoundingClientRect();
+    proj = projection(geo.features, 600, Math.max(box.width / Math.max(box.height, 1), 0.5));
+    fitMap(); wireMap(); wireViews();
     drawCrumb(); render();
 
     $("#year").addEventListener("input", (e) => { state.year = +e.target.value; $("#yearLabel").textContent = state.year; render(); });

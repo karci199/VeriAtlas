@@ -7,7 +7,7 @@
 <head>
 <meta charset="utf-8">
 <title>VeriAtlas — ilçe</title>
-<link rel="stylesheet" href="district.css?v=2">
+<link rel="stylesheet" href="district.css?v=3">
 </head>
 <body>
 <header>
@@ -22,36 +22,38 @@
   <button class="btn on" id="mapToggle">Harita</button>
 </header>
 <main>
-<nav class="side">
-  <a class="on" href="#ozet">Özet</a>
-  <div class="grp">Nüfus</div><a href="#nufus">Nüfus ve yoğunluk</a><a href="#yas">Yaş ve cinsiyet</a><a href="#hane">Hanehalkı</a>
-  <div class="grp">Sosyal</div><a href="#medeni">Medeni hal</a><a href="#dogum">Doğum · ölüm</a>
-  <div class="grp">Araçlar</div><a href="#yerlesim">Yerleşimler</a>
+<nav class="side" id="nav">
+  <a class="on" href="#ozet" data-view="ozet">Özet</a>
+  <div class="grp">Nüfus</div><a href="#yas" data-view="yas">Yaş ve cinsiyet</a>
+  <div class="grp">Sosyal</div><a href="#medeni" data-view="medeni">Medeni hal</a><a href="#dogum" data-view="dogum">Doğum · ölüm</a>
+  <div class="grp">Araçlar</div><a href="#yerlesim" data-view="yerlesim">Yerleşimler</a>
 </nav>
 <section class="panel">
   <div class="ident"><h1 id="name">…</h1><span class="kind" id="kind"></span></div>
   <div class="foot" id="foot"></div>
-  <div class="cards" id="cards"></div>
-  <div class="box" id="yas">
-    <div class="boxhead"><div><h3>Yaş piramidi</h3><div class="src" id="pyrSrc"></div></div>
+  <div class="view" data-view="ozet">
+    <div class="cards" id="cards"></div>
+    <div class="box">
+      <div class="boxhead"><div><h3>Yaş piramidi</h3><div class="src" id="pyrSrc"></div></div></div>
+      <div class="pyr" id="pyr"></div>
+      <div class="pyrfoot" id="pyrFoot"></div>
     </div>
-    <div class="pyr" id="pyr"></div>
-    <div class="pyrfoot" id="pyrFoot"></div>
   </div>
-  <h2 class="sec" id="medeni">Medeni hal</h2>
-  <div class="cards" id="social"></div>
-  <h2 class="sec" id="dogum">Doğum · ölüm</h2>
-  <div class="cards" id="vital"></div>
-  <h2 class="sec" id="yerlesim">Yerleşimler</h2>
-  <div class="box"><table class="units" id="units"></table></div>
+  <div class="view" data-view="yas" hidden><h2 class="sec">Yaş ve cinsiyet</h2><div class="cards" id="ageDetail"></div></div>
+  <div class="view" data-view="medeni" hidden><h2 class="sec">Medeni hal</h2><div class="cards" id="social"></div></div>
+  <div class="view" data-view="dogum" hidden><h2 class="sec">Doğum · ölüm</h2><div class="cards" id="vital"></div></div>
+  <div class="view" data-view="yerlesim" hidden><h2 class="sec">Yerleşimler</h2><div class="box"><table class="units" id="units"></table></div></div>
   <p class="note" id="sources"></p>
 </section>
 <aside class="map">
-  <div class="maphead"><span id="mapTitle"></span><span>renk: <select id="mapVar"><option value="pop">Nüfus</option><option value="child">Çocuk oranı (0-17)</option><option value="change">10 yıllık değişim</option><option value="female">Kadın oranı</option></select></span></div>
-  <svg id="map" width="100%" tabindex="0" title="tekerlek: yakınlaştır · sürükle: kaydır · çift tık / 0: sığdır · + −"></svg>
-  <div class="legend"><span id="legMin">az</span><span class="ramp"></span><span id="legMax">çok</span><span id="tip" style="margin-left:auto"></span></div>
+  <div class="maphead"><span id="mapTitle"></span><span>renk: <select id="mapVar"><option value="pop">Nüfus</option><option value="child">Çocuk oranı (0-17)</option><option value="change">10 yıllık değişim</option></select></span></div>
+  <div class="mapwrap">
+    <svg id="map" tabindex="0" title="tekerlek: yakınlaştır · sürükle: kaydır · çift tık / 0: sığdır · + −"></svg>
+    <div class="pick" id="pick" hidden></div>
+    <div class="legend"><span id="legMin">az</span><span class="ramp"></span><span id="legMax">çok</span><span id="tip" style="margin-left:auto"></span></div>
+  </div>
 </aside>
 </main>
-<script src="district.js?v=2"></script>
+<script src="district.js?v=3"></script>
 </body>
 </html>
