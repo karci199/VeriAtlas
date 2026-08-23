@@ -653,6 +653,11 @@ Doğrulama: İzmir 2009 47,41 ve Şanlıurfa 2025 96,60; ilçede Harran 160,75, 
 - Ana Sayfa gerçek değerler: nüfus 45.208 (2024), kentsel pay %60,7 (2025: %61,4),
   medyan yaş 42,9 (E 41,7 / K 44,1), rakım 98 m, Bursa'ya 76 km (son ikisi Wikipedia).
 - Açık karar: yoğunluk toplam alanla (753 → 60) mı kara alanıyla (455 → 99) mı.
+- Yaş yapısı kent/kır (2013+): TÜİK kent/kır vermediği için IPF ile tahmin —
+  kenarlar gerçek (ilçe bantları TÜİK, kent toplamı merkez mahalleleri), iç hücreler
+  tahmin; tohum 2012 → 2024 kent payları. Yalnız piramit/arayüzde, Excel'de 65+ tek
+  bant. Algoritma `scripts/estimate_urban_rural_age.py`, çıktı
+  `raw/derived/iznik_age_urban_rural_2007_2025.json`, görsel masaüstü `iznik_piramit.html`.
 
 ## Oturum notu — 2026-08-14/15
 
