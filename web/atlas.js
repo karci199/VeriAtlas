@@ -131,7 +131,7 @@ async function goto(level, id, name) {
 const $ = (s) => document.querySelector(s);
 const svg = $("#map");
 function fitView() { const pad = 30; state.view = { x: -pad, y: -pad, w: proj.W + pad * 2, h: proj.H + pad * 2 }; applyView(); }
-function applyView() { const v = state.view; svg.setAttribute("viewBox", `${v.x} ${v.y} ${v.w} ${v.h}`); }
+function applyView() { const v = state.view; svg.setAttribute("viewBox", `${v.x} ${v.y} ${v.w} ${v.h}`); svg.style.setProperty("--k", (v.w / (proj.W + 60)).toFixed(4)); }
 function hasData(f) {
     if (state.level === "country") return f.properties.area_id === "TR-16";
     if (state.level === "province") return !!BUNDLES[f.properties.area_id];

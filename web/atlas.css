@@ -85,8 +85,9 @@ body { font-family: var(--font); background: var(--bg-page); color: var(--text-p
 .area.muted { fill: var(--map-muted); cursor: default; }
 .area.sel { stroke: var(--map-sel); stroke-width: 2; }
 .area.hl { stroke: var(--female); stroke-width: 2.2; }
-.lbl { font-size: 11px; fill: var(--text-secondary); pointer-events: none; text-anchor: middle; paint-order: stroke; stroke: var(--bg-page); stroke-width: 3px; stroke-linejoin: round; }
-.lbl.big { font-size: 13px; font-weight: 700; fill: var(--text-primary); }
+#map { --k: 1; }
+.lbl { font-size: calc(11px * var(--k)); fill: var(--text-secondary); pointer-events: none; text-anchor: middle; paint-order: stroke; stroke: var(--bg-page); stroke-width: calc(3px * var(--k)); stroke-linejoin: round; }
+.lbl.big { font-size: calc(13px * var(--k)); font-weight: 700; fill: var(--text-primary); }
 .map-hud { position: absolute; right: 12px; top: 12px; display: flex; flex-direction: column; gap: 6px; }
 .legend { position: absolute; left: 12px; bottom: 12px; background: var(--bg-card); border: 1px solid var(--stroke-divider); border-radius: 8px; padding: 8px 10px; font-size: 12px; min-width: 160px; }
 .legend:empty { display: none; }
