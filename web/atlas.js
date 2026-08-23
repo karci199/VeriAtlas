@@ -11,8 +11,9 @@ const GEO = {
 const BUNDLES = { "TR-16-006": "../public/atlas/TR-16-006.json" };
 const KIND_TR = { centre: "Merkez", urban_town: "Kentsel belde", rural_town: "Kırsal belde", village: "Köy" };
 const KIND_COLOR = { centre: "#5b8fd1", urban_town: "#d97706", rural_town: "#7da33a", village: "#8b5e34" };
-const fmt = (n, d = 0) => n == null || Number.isNaN(n) ? "—" : n.toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d });
-const pct = (x, d = 1) => x == null ? "—" : (x * 100).toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d }) + " %";
+const MOCK = new URLSearchParams(location.search).has("bos"); // ?bos → sayılar boş, yapı duruyor
+const fmt = (n, d = 0) => MOCK ? "—" : n == null || Number.isNaN(n) ? "—" : n.toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const pct = (x, d = 1) => MOCK || x == null ? "—" : (x * 100).toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d }) + " %";
 
 const state = {
     level: "country", // country | province | district
@@ -285,6 +286,7 @@ function drawLeft() {
 }
 function medianOf(age) { const tot = age.male.map((m, i) => m + age.female[i]); const n = tot.reduce((a, c) => a + c, 0); let acc = 0; for (let i = 0; i < tot.length; i++) { const w = (i === tot.length - 1) ? 10 : 5; if (acc + tot[i] >= n / 2) return i * 5 + (n / 2 - acc) / tot[i] * w; acc += tot[i]; } return null; }
 function pyramid(age, title) {
+    if (MOCK) return `<h3>${title}</h3><p class="muted">(piramit — veri bağlanınca)</p>`;
     const N = age.bands.length, W = 300, H = 14 * N + 24, cw = 110, cx = W / 2, rh = 14;
     const mx = Math.max(...age.male, ...age.female), sc = cw / mx;
     let s = `<h3>${title}</h3><svg viewBox="0 0 ${W} ${H}" font-family="Lato,sans-serif" font-size="9">`;

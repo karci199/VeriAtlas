@@ -14,7 +14,7 @@
     --kind-village: #8b5e34;
     --map-fill: #dfe6ef;
     --map-fill-hover: #c9d6e6;
-    --map-stroke: #ffffff;
+    --map-stroke: #6b7a90;
     --map-muted: #eef1f5;
     --map-sel: #1f3a73;
     --male: #1f3a73;
@@ -23,7 +23,7 @@
 [data-theme="dark"] :root, :root[data-theme="dark"] {
     --map-fill: #2b3340;
     --map-fill-hover: #3a4558;
-    --map-stroke: #141414;
+    --map-stroke: #8a97ab;
     --map-muted: #1f242c;
     --map-sel: #9ec9e8;
     --male: #8b9fd1;
@@ -57,6 +57,7 @@ body { font-family: var(--font); background: var(--bg-page); color: var(--text-p
 
 /* --- tabela --- */
 .sign { background: var(--sign-navy); border: 3px solid #fff; outline: 3px solid var(--sign-navy); border-radius: 10px; padding: 12px 14px 0; color: #fff; position: relative; overflow: hidden; box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+.sign { text-align: center; }
 .sign .ctx { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #c7d2e8; font-weight: 700; }
 .sign .name { font-family: Lato, sans-serif; font-weight: 900; font-size: 40px; letter-spacing: .02em; line-height: 1.05; margin: 2px 0 10px; text-transform: uppercase; }
 .sign .band { margin: 0 -14px; padding: 8px 14px; font-size: 12px; letter-spacing: .2em; text-transform: uppercase; font-weight: 700; text-align: center; }
@@ -78,8 +79,9 @@ body { font-family: var(--font); background: var(--bg-page); color: var(--text-p
 .map-wrap { position: relative; background: var(--bg-page); min-width: 0; }
 #map { width: 100%; height: 100%; display: block; cursor: grab; }
 #map.dragging { cursor: grabbing; }
-.area { fill: var(--map-fill); stroke: var(--map-stroke); stroke-width: .6; transition: fill .12s; cursor: pointer; vector-effect: non-scaling-stroke; }
-.area:hover { fill: var(--map-fill-hover); }
+.area { fill: var(--map-fill); stroke: var(--map-stroke); stroke-width: 1; stroke-linejoin: round; transition: fill .12s; cursor: pointer; vector-effect: non-scaling-stroke; }
+.area:hover { fill: var(--map-fill-hover); stroke: var(--text-primary); stroke-width: 1.6; }
+.area.muted { stroke-opacity: .5; }
 .area.muted { fill: var(--map-muted); cursor: default; }
 .area.sel { stroke: var(--map-sel); stroke-width: 2; }
 .area.hl { stroke: var(--female); stroke-width: 2.2; }
