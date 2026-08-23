@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<!-- Atlas shell: three panels around a drill-down map (Türkiye → il → ilçe → mahalle).
-     Structure only — atlas.js fills every label from the data bundle (decision K28). -->
-<html lang="tr" data-theme="light">
+<!-- Atlas shell: a boundary-only drill-down map (Türkiye → il → ilçe → mahalle) with a
+     look panel. No data is drawn here on purpose — indicators come later, one at a time
+     (decision K28). Every label is filled in by atlas.js. -->
+<html lang="tr" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,45 +14,88 @@
 <header class="topbar">
   <div class="brand">VeriAtlas</div>
   <nav class="crumbs" id="crumbs" aria-label="Konum"></nav>
-  <div class="topbar-right">
-    <div class="seg" id="mode" role="group" aria-label="Harita modu">
-      <button data-mode="plain" class="on">Düz</button>
-      <button data-mode="kind">Tür</button>
-      <button data-mode="theme">Tematik</button>
-    </div>
-    <select id="indicator" class="select" aria-label="Gösterge" hidden></select>
-    <button id="theme-toggle" class="icon-btn" title="Tema" aria-label="Tema değiştir">◐</button>
-  </div>
+  <span class="spacer"></span>
+  <span class="count" id="count"></span>
+  <button class="icon-btn" id="look-toggle" aria-expanded="true">⚙ Görünüm</button>
 </header>
 
 <main class="layout">
-  <aside class="panel panel-left" id="left">
-    <div class="sign" id="sign"></div>
-    <section class="card" id="card"></section>
-    <section class="card" id="mini"></section>
-  </aside>
-
   <section class="map-wrap">
-    <svg id="map" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Harita"></svg>
+    <svg id="map" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Harita">
+      <g id="areas"></g>
+      <g id="labels"></g>
+    </svg>
     <div class="map-hud">
       <button class="icon-btn" id="zoom-in" title="Yakınlaştır">+</button>
       <button class="icon-btn" id="zoom-out" title="Uzaklaştır">−</button>
       <button class="icon-btn" id="zoom-fit" title="Sığdır">⌂</button>
+      <button class="icon-btn" id="up" title="Bir üst düzey">↑</button>
     </div>
-    <div class="legend" id="legend"></div>
     <div class="tooltip" id="tip" hidden></div>
   </section>
 
-  <aside class="panel panel-right" id="right">
-    <div class="table-head">
-      <h2 id="table-title">Birimler</h2>
-      <div class="table-tools">
-        <input id="filter" class="select" type="search" placeholder="Ara…" aria-label="Ara">
-        <button class="icon-btn" id="csv" title="CSV indir">⤓</button>
+  <aside class="panel" id="look">
+    <div class="setting">
+      <span>Tema</span>
+      <div class="choices" id="set-theme">
+        <button data-value="dark">Koyu</button>
+        <button data-value="light">Açık</button>
       </div>
     </div>
-    <div class="table-scroll"><table id="table"></table></div>
-    <div class="table-foot" id="table-foot"></div>
+
+    <div class="setting">
+      <span>Dolgu</span>
+      <div class="choices" id="set-fill">
+        <button data-value="flat">Tek renk</button>
+        <button data-value="shade">Rastgele ton</button>
+        <button data-value="none">Boş</button>
+      </div>
+    </div>
+
+    <div class="setting">
+      <span>Dolgu rengi</span>
+      <div class="swatches" id="set-hue"></div>
+    </div>
+
+    <div class="setting">
+      <span>Kenar kalınlığı — <b id="set-stroke-value"></b></span>
+      <input type="range" id="set-stroke" min="0" max="30" step="1">
+    </div>
+
+    <div class="setting">
+      <span>Kenar rengi</span>
+      <div class="choices" id="set-stroke-color">
+        <button data-value="dark">Koyu</button>
+        <button data-value="light">Açık</button>
+        <button data-value="accent">Vurgu</button>
+      </div>
+    </div>
+
+    <div class="setting">
+      <span>İsimler</span>
+      <div class="choices" id="set-labels">
+        <button data-value="on">Yazsın</button>
+        <button data-value="hover">Üzerine gelince</button>
+        <button data-value="off">Yazmasın</button>
+      </div>
+    </div>
+
+    <div class="setting">
+      <span>Yazı boyutu — <b id="set-font-value"></b></span>
+      <input type="range" id="set-font" min="6" max="24" step="1">
+    </div>
+
+    <div class="setting">
+      <span>Üzerine gelince</span>
+      <div class="choices" id="set-hover">
+        <button data-value="on">Parlasın</button>
+        <button data-value="off">Değişmesin</button>
+      </div>
+    </div>
+
+    <button class="link-btn" id="set-reset">Varsayılana dön</button>
+    <p class="hint">Tıklama içine girer · sağ tık ya da ↑ bir üst düzeye çıkar ·
+      tekerlek yakınlaştırır · sürükleme kaydırır</p>
   </aside>
 </main>
 <script src="atlas.js"></script>
