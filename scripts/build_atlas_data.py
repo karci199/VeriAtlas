@@ -87,6 +87,16 @@ def title_tr(s: str) -> str:
     return " ".join(w[:1] + w[1:].translate(TR_LOWER) for w in s.split())
 
 
+def load(path: Path):
+    with open(path, encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def dump(obj, path: Path) -> None:
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(obj, fh, ensure_ascii=False)
+
+
 def read_medas(path: Path) -> tuple[list[str], list[str]]:
     raw = path.read_bytes()
     try:
@@ -107,13 +117,13 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     GEO_OUT.mkdir(parents=True, exist_ok=True)
 
-    county = json.load(open(ENDEKSA / "county.json", encoding="utf-8"))["Demography"]
+    county = load(ENDEKSA / "county.json")["Demography"]
     units = []
     urban_age = {s: [0] * 14 for s in ("Male", "Female")}
     urban_marital = {k: 0 for k in MARITAL.values()}
     urban_sex = {"Male": 0, "Female": 0}
     for f in sorted(glob.glob(str(ENDEKSA / "[0-9]*.json"))):
-        d = json.load(open(f, encoding="utf-8"))["Demography"]
+        d = load(f)["Demography"]
         did = d["DistrictId"]
         name = title_tr(d["DistrictName"])
         if did < 100000:
@@ -151,9 +161,9 @@ def main() -> None:
         }
         units.append(u)
         if urban:
-            for s in urban_age:
+            for s, acc in urban_age.items():
                 for i, k in enumerate(age_keys(s)):
-                    urban_age[s][i] += d[k]
+                    acc[i] += d[k]
             for k, v in MARITAL.items():
                 urban_marital[v] += d[k]
             urban_sex["Male"] += d["PopulationMale"]
@@ -176,9 +186,7 @@ def main() -> None:
     assert sum(dist_age["male"]) + sum(dist_age["female"]) == county["PopulationTotal"]
 
     # urban/rural 65+ sub-bands: estimate (IPF) from scripts/estimate_urban_rural_age + 2012 shares
-    est = json.load(
-        open(RAW / "derived" / "iznik_age_urban_rural_2007_2025.json", encoding="utf-8")
-    )[str(YEAR)]
+    est = load(RAW / "derived" / "iznik_age_urban_rural_2007_2025.json")[str(YEAR)]
     urban_age19 = {
         "bands": BANDS19,
         "male": est["Kent"]["m"],
@@ -276,14 +284,10 @@ def main() -> None:
             "HGM (alan), Wikipedia (rakım, uzaklık)",
         ],
     }
-    json.dump(
-        bundle,
-        open(OUT / f"{DISTRICT}.json", "w", encoding="utf-8"),
-        ensure_ascii=False,
-    )
+    dump(bundle, OUT / f"{DISTRICT}.json")
 
     # neighbourhood geometry in the district-file shape
-    geo = json.load(open(ENDEKSA / "geo.json", encoding="utf-8"))
+    geo = load(ENDEKSA / "geo.json")
     by_id = {u["endeksa_id"]: u for u in units}
     feats = []
     for f in geo["features"]:
@@ -304,10 +308,9 @@ def main() -> None:
                 "geometry": f["geometry"],
             }
         )
-    json.dump(
+    dump(
         {"type": "FeatureCollection", "features": feats},
-        open(GEO_OUT / f"{DISTRICT}.geojson", "w", encoding="utf-8"),
-        ensure_ascii=False,
+        GEO_OUT / f"{DISTRICT}.geojson",
     )
     print("ok", len(units), "units,", len(feats), "polygons")
 
