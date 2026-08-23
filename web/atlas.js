@@ -11,7 +11,8 @@ const GEO = {
 const BUNDLES = { "TR-16-006": "../public/atlas/TR-16-006.json" };
 const KIND_TR = { centre: "Merkez", urban_town: "Kentsel belde", rural_town: "Kırsal belde", village: "Köy" };
 const KIND_COLOR = { centre: "#5b8fd1", urban_town: "#d97706", rural_town: "#7da33a", village: "#8b5e34" };
-const MOCK = new URLSearchParams(location.search).has("bos"); // ?bos → sayılar boş, yapı duruyor
+const DATA = new URLSearchParams(location.search).has("veri"); // varsayılan: yalnız sınır + ad; ?veri → göstergeler
+const MOCK = !DATA;
 const fmt = (n, d = 0) => MOCK ? "—" : n == null || Number.isNaN(n) ? "—" : n.toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d });
 const pct = (x, d = 1) => MOCK || x == null ? "—" : (x * 100).toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d }) + " %";
 
@@ -219,16 +220,20 @@ function zoomBy(k, e) {
 $("#zoom-in").onclick = () => zoomBy(0.8); $("#zoom-out").onclick = () => zoomBy(1.25); $("#zoom-fit").onclick = fitView;
 
 // ---------- crumbs / modes ----------
+function clearSelection() { if (!state.selected) return; state.selected = null; drawMap(); drawLeft(); drawTable(); }
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") clearSelection(); });
+svg.addEventListener("click", (e) => { if (e.target === svg) clearSelection(); });
+
 function drawCrumbs() {
     const el = $("#crumbs"); el.innerHTML = "";
     state.path.forEach((p, i) => {
         if (i) { const s = document.createElement("span"); s.className = "sep"; s.textContent = "›"; el.appendChild(s); }
         const a = document.createElement(i === state.path.length - 1 ? "span" : "a"); a.textContent = p.name;
-        if (i === state.path.length - 1) a.className = "cur"; else a.onclick = () => goto(p.level, p.id, p.name);
+        if (i === state.path.length - 1) { a.className = "cur"; a.style.cursor = "pointer"; a.title = "Genel görünüm"; a.onclick = clearSelection; } else a.onclick = () => goto(p.level, p.id, p.name);
         el.appendChild(a);
     });
 }
-document.querySelectorAll("#mode button").forEach((b) => b.onclick = () => { state.mode = b.dataset.mode; document.querySelectorAll("#mode button").forEach((x) => x.classList.toggle("on", x === b)); updateIndicatorBox(); drawMap(); drawLegend(); });
+document.querySelectorAll("#mode button").forEach((b) => { if (b.dataset.mode === "theme" && !DATA) { b.disabled = true; b.title = "Göstergeler birlikte kurulacak"; } b.onclick = () => { state.mode = b.dataset.mode; document.querySelectorAll("#mode button").forEach((x) => x.classList.toggle("on", x === b)); updateIndicatorBox(); drawMap(); drawLegend(); }; });
 function updateIndicatorBox() {
     const sel = $("#indicator"); sel.hidden = !(state.mode === "theme" && state.level === "district" && state.bundle);
     if (!sel.options.length) {
@@ -265,7 +270,7 @@ function drawLeft() {
         if (sel) {
             const u = b.units.find((x) => x.id === sel.id);
             sg = sign(`${b.name} · ${sel.kindTr}`, sel.name, `${({centre: "Mahalle", urban_town: "Belde", rural_town: "Belde", village: "Köy"})[sel.kind]} · ${b.name}`, "var(--sign-iznik)", KIND_COLOR[sel.kind] === "#5b8fd1" ? null : KIND_COLOR[sel.kind]);
-            card = `<h3>Kimlik</h3><div class="kv">
+            card = `<button class="back" id="back-district">← ${b.name} geneli</button><h3>Kimlik</h3><div class="kv">
               <span class="k">Kent / Kır</span><span class="v">${sel.urban}</span><span class="u"></span>
               <span class="k">Semt</span><span class="v">${sel.settlement}</span><span class="u"></span>
               <span class="sect">Nüfus (TÜİK ${b.reference_year})</span>
@@ -311,7 +316,13 @@ function drawLeft() {
         }
     }
     $("#sign").outerHTML = sg.replace('class="sign"', 'class="sign" id="sign"');
+    if (!DATA && state.level === "district" && b) {
+        const sel = unitRows().find((r) => r.id === state.selected);
+        card = (sel ? `<button class="back" id="back-district">← ${b.name} geneli</button>` : "") + `<h3>Kimlik</h3><div class="kv">` + (sel ? `<span class="k">Kent / Kır</span><span class="v">${sel.urban}</span><span class="u"></span><span class="k">Tür</span><span class="v">${sel.kindTr}</span><span class="u"></span><span class="k">Semt</span><span class="v">${sel.settlement}</span><span class="u"></span>` : `<span class="k">İl</span><span class="v">${b.province}</span><span class="u"></span><span class="k">Bölge</span><span class="v">${b.region}</span><span class="u"></span><span class="k">Birim</span><span class="v">${b.units.length}</span><span class="u">adet</span>`) + `</div>`;
+        mini = `<p class="muted">Göstergeler birlikte kurulacak. (<a href="?veri#${b.id}">veri ile göster</a>)</p>`;
+    }
     $("#card").innerHTML = card; $("#mini").innerHTML = mini; $("#mini").className = "card mini";
+    const bk = $("#back-district"); if (bk) bk.onclick = clearSelection;
     const gs = $("#pyr-g"); if (gs) gs.querySelectorAll("button").forEach((x) => x.onclick = () => { state.pyrGroup = x.dataset.g; drawLeft(); });
     const ys = $("#pyr-y"); if (ys) ys.onchange = () => { state.pyrYear = +ys.value; drawLeft(); };
     const shg = $("#share-g"); if (shg) shg.querySelectorAll("button").forEach((x) => x.onclick = () => { const cur = new Set(state.shareGroups || ["district", "urban", "rural"]); cur.has(x.dataset.g) ? (cur.size > 1 && cur.delete(x.dataset.g)) : cur.add(x.dataset.g); state.shareGroups = ["district", "urban", "rural"].filter((k) => cur.has(k)); drawLeft(); });
@@ -360,11 +371,12 @@ function pyramid(age, title) {
 
 // ---------- right table ----------
 function tableRows() {
+    if (state.level === "district" && state.bundle && !DATA) return unitRows().map((r) => ({ id: r.id, name: r.name, kind: r.kind, kindTr: r.kindTr, urban: r.urban }));
     if (state.level === "district" && state.bundle) return unitRows();
     return state.features.map((f) => ({ id: f.properties.area_id, name: f.properties.name_tr, has: hasData(f) ? "var" : "—" }));
 }
 function drawTable() {
-    const cols = state.level === "district" && state.bundle ? COLS.district : COLS.generic;
+    const cols = state.level === "district" && state.bundle ? (DATA ? COLS.district : COLS.district.slice(0, 3)) : COLS.generic;
     let rows = tableRows();
     const q = state.filter.trim().toLocaleLowerCase("tr"); if (q) rows = rows.filter((r) => r.name.toLocaleLowerCase("tr").includes(q));
     const { key, dir } = state.sort;

@@ -81,6 +81,9 @@ body { font-family: var(--font); background: var(--bg-page); color: var(--text-p
 .sign .stripe { position: absolute; left: 0; top: 0; bottom: 0; width: 8px; }
 
 /* --- kart --- */
+.back { display: inline-block; margin-bottom: 8px; border: 1px solid var(--stroke-control); background: var(--bg-control); color: var(--accent); padding: 4px 10px; border-radius: 6px; cursor: pointer; font: inherit; font-size: 12px; font-weight: 700; }
+.back:hover { background: var(--bg-control-hover); }
+.seg button:disabled { opacity: .4; cursor: not-allowed; }
 .card { border: 1px solid var(--stroke-divider); border-radius: 8px; padding: 12px; }
 .card h3 { margin: 0 0 8px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--text-tertiary); }
 .kv { display: grid; grid-template-columns: 1fr auto auto; gap: 4px 10px; font-size: 14px; }
