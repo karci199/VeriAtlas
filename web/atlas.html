@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- Atlas shell: three panels around a drill-down map (Türkiye → il → ilçe → mahalle).
+     Structure only — atlas.js fills every label from the data bundle (decision K28). -->
+<html lang="tr" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VeriAtlas — harita</title>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="atlas.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">VeriAtlas</div>
+  <nav class="crumbs" id="crumbs" aria-label="Konum"></nav>
+  <div class="topbar-right">
+    <div class="seg" id="mode" role="group" aria-label="Harita modu">
+      <button data-mode="plain" class="on">Düz</button>
+      <button data-mode="kind">Tür</button>
+      <button data-mode="theme">Tematik</button>
+    </div>
+    <select id="indicator" class="select" aria-label="Gösterge" hidden></select>
+    <button id="theme-toggle" class="icon-btn" title="Tema" aria-label="Tema değiştir">◐</button>
+  </div>
+</header>
+
+<main class="layout">
+  <aside class="panel panel-left" id="left">
+    <div class="sign" id="sign"></div>
+    <section class="card" id="card"></section>
+    <section class="card" id="mini"></section>
+  </aside>
+
+  <section class="map-wrap">
+    <svg id="map" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Harita"></svg>
+    <div class="map-hud">
+      <button class="icon-btn" id="zoom-in" title="Yakınlaştır">+</button>
+      <button class="icon-btn" id="zoom-out" title="Uzaklaştır">−</button>
+      <button class="icon-btn" id="zoom-fit" title="Sığdır">⌂</button>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="tooltip" id="tip" hidden></div>
+  </section>
+
+  <aside class="panel panel-right" id="right">
+    <div class="table-head">
+      <h2 id="table-title">Birimler</h2>
+      <div class="table-tools">
+        <input id="filter" class="select" type="search" placeholder="Ara…" aria-label="Ara">
+        <button class="icon-btn" id="csv" title="CSV indir">⤓</button>
+      </div>
+    </div>
+    <div class="table-scroll"><table id="table"></table></div>
+    <div class="table-foot" id="table-foot"></div>
+  </aside>
+</main>
+<script src="atlas.js"></script>
+</body>
+</html>
