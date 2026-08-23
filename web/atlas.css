@@ -68,8 +68,8 @@ body {
 
 /* Outlines: the place itself, and its children when grandchildren are drawn */
 #outline path { fill: none; pointer-events: none; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
-#outline path.own { stroke: var(--text-primary); stroke-opacity: .85; stroke-width: 1.5px; stroke-linecap: round; }
-#outline path.inner { stroke: var(--text-primary); stroke-opacity: .55; stroke-width: 1.1px; stroke-linecap: round; }
+#outline path.own { stroke: var(--map-stroke); stroke-width: 2px; stroke-linecap: round; }
+#outline path.inner { stroke: var(--map-stroke); stroke-width: 1.6px; stroke-linecap: round; }
 
 /* Inset locator, bottom-left */
 #inset {
