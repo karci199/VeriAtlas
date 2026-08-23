@@ -214,6 +214,7 @@ function drawAreas() {
         }
     }
     $("#count").textContent = `${LEVEL_TR[here.level]} düzeyi · ${state.features.length} alan`;
+    document.title = `VeriAtlas — ${here.name}`;
     if (state.view) scaleLabels();
 }
 
@@ -276,16 +277,25 @@ function bindMap() {
     $("#up").onclick = goUp;
     svg.addEventListener("contextmenu", (ev) => { ev.preventDefault(); goUp(); });
 
+    // Drag-to-pan on window-level listeners: pointer capture proved unreliable in some
+    // browsers (the press lands on a <path>, the capture on the <svg>), and a drag that
+    // leaves the map must still end cleanly.
     let drag = null;
-    svg.addEventListener("pointerdown", (ev) => { if (ev.button !== 0) return; drag = { x: ev.clientX, y: ev.clientY, v: { ...state.view }, moved: false, path: ev.target.closest("path") }; svg.setPointerCapture(ev.pointerId); });
+    svg.addEventListener("dragstart", (ev) => ev.preventDefault());
+    svg.addEventListener("pointerdown", (ev) => {
+        if (ev.button !== 0) return;
+        ev.preventDefault();
+        drag = { x: ev.clientX, y: ev.clientY, v: { ...state.view }, moved: false, path: ev.target.closest("path") };
+    });
+    window.addEventListener("pointermove", (ev) => {
+        if (!drag) return;
+        const r = svg.getBoundingClientRect();
+        const dx = (ev.clientX - drag.x) / r.width * drag.v.w, dy = (ev.clientY - drag.y) / r.height * drag.v.h;
+        if (!drag.moved && Math.abs(ev.clientX - drag.x) + Math.abs(ev.clientY - drag.y) > 3) { drag.moved = true; svg.classList.add("dragging"); tip.hidden = true; }
+        if (drag.moved) setView({ ...drag.v, x: drag.v.x - dx, y: drag.v.y - dy });
+    });
     svg.addEventListener("pointermove", (ev) => {
-        if (drag) {
-            const r = svg.getBoundingClientRect();
-            const dx = (ev.clientX - drag.x) / r.width * drag.v.w, dy = (ev.clientY - drag.y) / r.height * drag.v.h;
-            if (Math.abs(ev.clientX - drag.x) + Math.abs(ev.clientY - drag.y) > 3) { drag.moved = true; svg.classList.add("dragging"); }
-            setView({ ...drag.v, x: drag.v.x - dx, y: drag.v.y - dy });
-            return;
-        }
+        if (drag) return;
         const path = ev.target.closest("path");
         for (const t of $("#labels").querySelectorAll(".hot")) t.classList.remove("hot");
         if (path) {
@@ -298,10 +308,9 @@ function bindMap() {
             tip.style.left = (ev.clientX - wr.left + 14) + "px"; tip.style.top = (ev.clientY - wr.top + 14) + "px";
         } else tip.hidden = true;
     });
-    svg.addEventListener("pointerup", async (ev) => {
-        // Pointer capture makes the svg the target of pointerup, so the area is the one
-        // the press started on.
-        const path = drag && drag.path, moved = drag && drag.moved; drag = null; svg.classList.remove("dragging");
+    window.addEventListener("pointerup", async (ev) => {
+        if (!drag) return;
+        const { path, moved } = drag; drag = null; svg.classList.remove("dragging");
         if (moved || ev.button !== 0 || !path) return;
         const here = state.path[state.path.length - 1];
         if (!CHILD[here.level]) return;
