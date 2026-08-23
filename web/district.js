@@ -276,20 +276,28 @@ function wireMap() {
     const svg = $("#map");
     let drag = null;
     svg.addEventListener("wheel", (e) => { e.preventDefault(); zoomAt(e.deltaY < 0 ? 1.25 : 0.8, e.clientX, e.clientY); }, { passive: false });
-    svg.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, y: e.clientY, v: { ...state.view }, moved: false }; svg.setPointerCapture(e.pointerId); });
+    // Pointer capture retargets pointerup to the svg, so the path under the press is
+    // remembered here; a press that did not move is a click on it.
+    svg.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, y: e.clientY, v: { ...state.view }, moved: false, path: e.target.closest("path") }; svg.setPointerCapture(e.pointerId); });
     svg.addEventListener("pointermove", (e) => {
-        if (!drag) { const p = e.target.closest("path"); if (p && p.dataset.id) showPick(p.dataset.id, false); else if (state.pinned) showPick(state.pinned, true); else $("#pick").hidden = true; return; }
+        if (!drag) {
+            const p = e.target.closest("path"), id = p && p.dataset.id;
+            if (id === state.hover) return; // same shape: nothing to redraw
+            state.hover = id || null;
+            if (id) showPick(id, id === state.pinned); else if (state.pinned) showPick(state.pinned, true); else $("#pick").hidden = true;
+            return;
+        }
         const r = svg.getBoundingClientRect(), k = drag.v.w / r.width;
         const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
         if (Math.abs(dx) + Math.abs(dy) > 3) { drag.moved = true; svg.classList.add("drag"); }
         setView({ ...drag.v, x: drag.v.x - dx * k, y: drag.v.y - dy * k });
     });
-    svg.addEventListener("pointerup", (e) => {
-        const p = e.target.closest("path");
+    svg.addEventListener("pointerup", () => {
+        const p = drag && drag.path;
         if (drag && !drag.moved && p && p.dataset.id) highlight(p.dataset.id);
         drag = null; svg.classList.remove("drag");
     });
-    svg.addEventListener("pointerleave", () => { if (state.pinned) showPick(state.pinned, true); else $("#pick").hidden = true; });
+    svg.addEventListener("pointerleave", () => { state.hover = null; if (state.pinned) showPick(state.pinned, true); else $("#pick").hidden = true; });
     svg.addEventListener("dblclick", fitMap);
     svg.addEventListener("keydown", (e) => {
         const r = svg.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
@@ -381,7 +389,8 @@ async function main() {
     fitMap(); wireMap(); wireViews();
     drawCrumb(); render();
 
-    $("#year").addEventListener("input", (e) => { state.year = +e.target.value; $("#yearLabel").textContent = state.year; render(); });
+    let raf = 0;
+    $("#year").addEventListener("input", (e) => { state.year = +e.target.value; $("#yearLabel").textContent = state.year; cancelAnimationFrame(raf); raf = requestAnimationFrame(render); });
     $("#scope").addEventListener("click", (e) => { const s = e.target.closest("span[data-v]"); if (!s) return; state.scope = s.dataset.v; document.querySelectorAll("#scope span").forEach((x) => x.classList.toggle("on", x === s)); render(); });
     $("#mapVar").addEventListener("change", (e) => { state.mapVar = e.target.value; drawMap(); });
     $("#mapToggle").addEventListener("click", (e) => { $("main").classList.toggle("nomap"); e.target.classList.toggle("on"); });
