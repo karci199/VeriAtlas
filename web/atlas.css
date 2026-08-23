@@ -68,6 +68,8 @@ body {
 [data-labels="off"] #labels { display: none; }
 [data-labels="hover"] #labels text { display: none; }
 [data-labels="hover"] #labels text.hot { display: block; }
+[data-labels="on"] #labels text.tight { display: none; }
+[data-labels="on"] #labels text.tight.hot { display: block; }
 
 .map-hud {
     position: absolute; top: 12px; left: 12px;

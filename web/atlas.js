@@ -139,6 +139,11 @@ function geoPath(g) {
     if (g.type === "Polygon") return g.coordinates.map(ringPath).join("");
     return g.coordinates.map((poly) => poly.map(ringPath).join("")).join("");
 }
+function bboxWidth(g) { // width of the area in projected units, for "does the name fit"
+    let minX = Infinity, maxX = -Infinity;
+    const walk = (c) => { if (typeof c[0] === "number") { const x = proj.to(c)[0]; minX = Math.min(minX, x); maxX = Math.max(maxX, x); } else c.forEach(walk); };
+    walk(g.coordinates); return maxX - minX;
+}
 function centroid(g) { // area-weighted centroid of the largest ring
     const rings = g.type === "Polygon" ? [g.coordinates[0]] : g.coordinates.map((p) => p[0]);
     let best = null, bestA = 0;
@@ -201,9 +206,10 @@ function drawAreas() {
 
         const c = centroid(f.geometry);
         if (c) {
+            const bw = bboxWidth(f.geometry);
             const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
             t.setAttribute("x", c[0].toFixed(1)); t.setAttribute("y", c[1].toFixed(1));
-            t.dataset.id = p.area_id; t.textContent = p.name_tr;
+            t.dataset.id = p.area_id; t.dataset.w = bw.toFixed(1); t.textContent = p.name_tr;
             labels.appendChild(t);
         }
     }
@@ -218,7 +224,13 @@ function scaleLabels() {
     const rect = svg.getBoundingClientRect();
     const unitsPerPx = Math.max(v.w / rect.width, v.h / rect.height);
     document.documentElement.style.setProperty("--map-font", (look.font * unitsPerPx) + "px");
-    for (const t of $("#labels").children) t.style.strokeWidth = (3 * unitsPerPx) + "px";
+    for (const t of $("#labels").children) {
+        t.style.strokeWidth = (3 * unitsPerPx) + "px";
+        // A name wider than its area would sit on the neighbours; it waits for a zoom-in.
+        // The hovered one is shown regardless, in the tooltip's company.
+        const fits = t.textContent.length * look.font * 0.5 < (+t.dataset.w) / unitsPerPx * 1.25;
+        t.classList.toggle("tight", !fits);
+    }
 }
 
 function drawCrumbs() {
@@ -299,7 +311,16 @@ function bindMap() {
     });
     svg.addEventListener("pointerleave", () => { tip.hidden = true; });
     window.addEventListener("resize", fit);
-    document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" || ev.key === "Backspace") goUp(); });
+    document.addEventListener("keydown", (ev) => {
+        if (ev.target instanceof Element && ev.target.matches("input, select, textarea")) return;
+        if (ev.key === "Escape" || ev.key === "Backspace") goUp();
+        const v = state.view, step = v.w * 0.08;
+        const d = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[ev.key];
+        if (d) { ev.preventDefault(); setView({ ...v, x: v.x + d[0], y: v.y + d[1] }); }
+        if (ev.key === "+" || ev.key === "=") $("#zoom-in").click();
+        if (ev.key === "-") $("#zoom-out").click();
+        if (ev.key === "0") fit();
+    });
 }
 function goUp() { if (state.path.length > 1) { state.path.pop(); loadLevel(); } }
 
