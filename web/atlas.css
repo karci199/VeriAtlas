@@ -59,17 +59,17 @@ body {
 
 /* Neighbours of the place: there, but not the subject. A silhouette, clickable. */
 #context path {
-    fill: var(--bg-control); fill-opacity: .55;
-    stroke: var(--bg-page); stroke-width: .6px; vector-effect: non-scaling-stroke;
-    cursor: pointer; transition: fill-opacity .12s;
+    fill: var(--bg-control); fill-opacity: .9;
+    stroke: var(--text-tertiary); stroke-opacity: .5; stroke-width: .8px; vector-effect: non-scaling-stroke;
+    cursor: pointer; transition: fill-opacity .12s, fill .12s;
 }
-#context path:hover { fill-opacity: .9; }
+#context path:hover { fill: var(--bg-control-hover); stroke-opacity: .9; }
 [data-context="off"] #context { display: none; }
 
 /* Outlines: the place itself, and its children when grandchildren are drawn */
 #outline path { fill: none; pointer-events: none; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
-#outline path.own { stroke: var(--text-primary); stroke-opacity: .8; stroke-width: 1.6px; }
-#outline path.inner { stroke: var(--text-primary); stroke-opacity: .5; stroke-width: 1.1px; }
+#outline path.own { stroke: var(--text-primary); stroke-opacity: .85; stroke-width: 1.5px; stroke-linecap: round; }
+#outline path.inner { stroke: var(--text-primary); stroke-opacity: .55; stroke-width: 1.1px; stroke-linecap: round; }
 
 /* Inset locator, bottom-left */
 #inset {

@@ -49,9 +49,9 @@ function rampColours(count) {
 
 const DEFAULT_LOOK = {
     theme: "dark", fill: "shade", hue: "mavi", stroke: 6, strokeColor: "dark",
-    labels: "hover", font: 11, hover: "on", context: "on", inset: "on",
+    labels: "off", font: 11, hover: "on", context: "on", inset: "on",
 };
-const LOOK_KEY = "veriatlas.atlas.look.v2"; // bumped when defaults change, so a saved look does not hide them
+const LOOK_KEY = "veriatlas.atlas.look.v3"; // bumped when defaults change, so a saved look does not hide them
 let look = loadLook();
 
 function loadLook() {
@@ -250,14 +250,38 @@ function drawAreas() {
     }
     if (state.view) scaleLabels();
 }
-// Outlines on top: the place's own border (from its parent's file), and at depth 2 the
-// children's borders, so a district reads as a district among its neighbourhoods.
-async function drawOutline() {
+// Outlines on top, derived from the drawn shapes themselves rather than from a coarser
+// file: a segment used by one polygon is the outer edge of the place; one shared by two
+// polygons with different parents is a border between children (district lines under a
+// neighbourhood layer). Sources differ in detail, so a parent's own polygon never fits
+// over its children — this does, because it *is* them.
+function drawOutline() {
     const g = $("#outline"); g.innerHTML = "";
-    const place = here(), parent = state.path[state.path.length - 2];
-    const add = (f, cls) => { const el = document.createElementNS(SVG_NS, "path"); el.setAttribute("d", geoPath(f.geometry)); el.setAttribute("class", cls); g.appendChild(el); };
-    if (state.depth === 2) for (const f of await fetchFeatures(place.level, place.id)) add(f, "inner");
-    if (parent) { const own = (await fetchFeatures(parent.level, parent.id) || []).find((f) => f.properties.area_id === place.id); if (own) add(own, "own"); }
+    const seen = new Map(); // "x,y|x,y" -> {n, parents:Set, a, b}
+    const key = (p) => p[0].toFixed(5) + "," + p[1].toFixed(5);
+    for (const f of state.features) {
+        const parent = f.properties.parent_id || "";
+        const gm = f.geometry;
+        const rings = gm.type === "Polygon" ? gm.coordinates : gm.coordinates.flat();
+        for (const ring of rings) {
+            for (let i = 1; i < ring.length; i++) {
+                const a = ring[i - 1], b = ring[i], ka = key(a), kb = key(b);
+                const k = ka < kb ? ka + "|" + kb : kb + "|" + ka;
+                let e = seen.get(k);
+                if (!e) { e = { n: 0, parents: new Set(), a, b }; seen.set(k, e); }
+                e.n++; e.parents.add(parent);
+            }
+        }
+    }
+    let outer = "", inner = "";
+    for (const e of seen.values()) {
+        const d = "M" + proj.to(e.a).map((v) => v.toFixed(1)).join(" ") + "L" + proj.to(e.b).map((v) => v.toFixed(1)).join(" ");
+        if (e.n === 1) outer += d; else if (state.depth === 2 && e.parents.size > 1) inner += d;
+    }
+    for (const [d, cls] of [[inner, "inner"], [outer, "own"]]) {
+        if (!d) continue;
+        const el = document.createElementNS(SVG_NS, "path"); el.setAttribute("d", d); el.setAttribute("class", cls); g.appendChild(el);
+    }
 }
 function drawContext() {
     const g = $("#context"); g.innerHTML = "";
