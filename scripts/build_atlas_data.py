@@ -186,7 +186,30 @@ def main() -> None:
     assert sum(dist_age["male"]) + sum(dist_age["female"]) == county["PopulationTotal"]
 
     # urban/rural 65+ sub-bands: estimate (IPF) from scripts/estimate_urban_rural_age + 2012 shares
-    est = load(RAW / "derived" / "iznik_age_urban_rural_2007_2025.json")[str(YEAR)]
+    est_all = load(RAW / "derived" / "iznik_age_urban_rural_2007_2025.json")
+    est = est_all[str(YEAR)]
+    age_series = {
+        y: {
+            "district": {
+                "bands": BANDS19,
+                "male": v["Toplam"]["m"],
+                "female": v["Toplam"]["f"],
+            },
+            "urban": {
+                "bands": BANDS19,
+                "male": v["Kent"]["m"],
+                "female": v["Kent"]["f"],
+                "estimate_from_band": 0 if v["est"] else None,
+            },
+            "rural": {
+                "bands": BANDS19,
+                "male": v["Kır"]["m"],
+                "female": v["Kır"]["f"],
+                "estimate_from_band": 0 if v["est"] else None,
+            },
+        }
+        for y, v in est_all.items()
+    }
     urban_age19 = {
         "bands": BANDS19,
         "male": est["Kent"]["m"],
@@ -272,6 +295,7 @@ def main() -> None:
         "units": units,
         "series": series,
         "age": {"district": dist_age, "urban": urban_age19, "rural": rural_age19},
+        "age_series": age_series,
         "marital": {
             "district": dist_marital,
             "urban": urban_marital,

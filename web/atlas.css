@@ -20,6 +20,23 @@
     --male: #1f3a73;
     --female: #d97706;
 }
+/* Light: the shared theme's selected tint is too pale for buttons with white text; the
+   atlas uses the sign navy and gives page / card / control three distinct greys. */
+:root[data-theme="light"] {
+    --bg-page: #f3f5f8;
+    --bg-card: #ffffff;
+    --bg-control: #f7f8fa;
+    --bg-control-hover: #e9edf3;
+    --bg-selected: #1f3a73;
+    --text-on-accent: #ffffff;
+    --stroke-divider: #e3e7ee;
+    --stroke-control: #c9d1dd;
+    --panel-heading: #1f3a73;
+    --accent: #2b5aa8;
+    --map-muted: #e6e9ee;
+    --map-fill: #cfd9e6;
+    --map-fill-hover: #b9c8dc;
+}
 [data-theme="dark"] :root, :root[data-theme="dark"] {
     --map-fill: #2b3340;
     --map-fill-hover: #3a4558;
@@ -74,6 +91,9 @@ body { font-family: var(--font); background: var(--bg-page); color: var(--text-p
 .est { color: var(--quality-estimated-fg); }
 .muted { color: var(--text-tertiary); font-size: 12px; }
 .mini svg { width: 100%; height: auto; display: block; }
+.mini-tools { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+.seg.small button { padding: 3px 9px; font-size: 12px; }
+.select.small { padding: 3px 6px; font-size: 12px; }
 
 /* --- harita --- */
 .map-wrap { position: relative; background: var(--bg-page); min-width: 0; }
@@ -82,6 +102,10 @@ body { font-family: var(--font); background: var(--bg-page); color: var(--text-p
 .area { fill: var(--map-fill); stroke: var(--map-stroke); stroke-width: 1; stroke-linejoin: round; transition: fill .12s; cursor: pointer; vector-effect: non-scaling-stroke; }
 .area:hover { fill: var(--map-fill-hover); stroke: var(--text-primary); stroke-width: 1.6; }
 .area.muted { stroke-opacity: .5; }
+#map[data-mode="kind"] .area, #map[data-mode="theme"] .area { stroke: #ffffff; stroke-width: 1.4; }
+:root[data-theme="dark"] #map[data-mode="kind"] .area, :root[data-theme="dark"] #map[data-mode="theme"] .area { stroke: #0f1216; stroke-width: 1.4; }
+#map.focus .area:not(.sel) { opacity: .35; }
+#map.focus .area.sel { opacity: 1; stroke-width: 2.5; }
 .area.muted { fill: var(--map-muted); cursor: default; }
 .area.sel { stroke: var(--map-sel); stroke-width: 2; }
 .area.hl { stroke: var(--female); stroke-width: 2.2; }
@@ -109,10 +133,13 @@ table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-nu
 th { position: sticky; top: 0; background: var(--bg-control); color: var(--text-secondary); text-align: right; padding: 7px 10px; cursor: pointer; user-select: none; white-space: nowrap; font-weight: 700; border-bottom: 1px solid var(--stroke-divider); }
 th:first-child, td:first-child { text-align: left; }
 th.on { color: var(--text-primary); }
+tr.grp th { top: 0; text-align: center; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--panel-heading); background: var(--bg-card); border-left: 1px solid var(--stroke-divider); cursor: default; }
+thead tr:nth-child(2) th { top: 28px; }
 th .arr { font-size: 10px; margin-left: 3px; }
 td { padding: 6px 10px; text-align: right; border-bottom: 1px solid var(--stroke-divider); white-space: nowrap; }
 tr:hover td { background: var(--bg-control-hover); cursor: pointer; }
 tr.sel td { background: var(--bg-selected); color: var(--text-on-accent); }
+tr.sel td .chip { outline: 1px solid #fff; }
 td.dim { color: var(--text-tertiary); }
 .table-foot { padding: 8px 14px; font-size: 12px; color: var(--text-tertiary); border-top: 1px solid var(--stroke-divider); }
 .chip { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 11px; font-weight: 700; color: #fff; }

@@ -20,17 +20,25 @@ Output: JSON {year: {Toplam|Kent|Kır: {m: [...19], f: [...19]}, est: bool}} con
 the population-pyramid page (web) -- not by the Excel workbook, which keeps 65+ as one band.
 See docs/kararlar.md K28 addendum.
 """
+
 from __future__ import annotations
 
 
-def ipf(row_totals: list[float], urban_total: float, seed_share: list[float], iters: int = 300) -> tuple[list[int], list[int]]:
+def ipf(
+    row_totals: list[float],
+    urban_total: float,
+    seed_share: list[float],
+    iters: int = 300,
+) -> tuple[list[int], list[int]]:
     """Fit urban/rural cells to row totals and the urban column total."""
     urban = [v * s for v, s in zip(row_totals, seed_share)]
     rural = [v - u for v, u in zip(row_totals, urban)]
     rural_total = sum(row_totals) - urban_total
     for _ in range(iters):
-        f = urban_total / sum(urban); urban = [x * f for x in urban]
-        g = rural_total / sum(rural); rural = [x * g for x in rural]
+        f = urban_total / sum(urban)
+        urban = [x * f for x in urban]
+        g = rural_total / sum(rural)
+        rural = [x * g for x in rural]
         urban = [u * v / (u + r) for u, r, v in zip(urban, rural, row_totals)]
         rural = [v - u for v, u in zip(row_totals, urban)]
     urban_i = [round(x) for x in urban]
@@ -39,6 +47,12 @@ def ipf(row_totals: list[float], urban_total: float, seed_share: list[float], it
     return urban_i, [int(v) - u for v, u in zip(row_totals, urban_i)]
 
 
-def seed_for_year(year: int, share_a: list[float], share_b: list[float], year_a: int = 2012, year_b: int = 2024) -> list[float]:
+def seed_for_year(
+    year: int,
+    share_a: list[float],
+    share_b: list[float],
+    year_a: int = 2012,
+    year_b: int = 2024,
+) -> list[float]:
     w = min(max((year - year_a) / (year_b - year_a), 0.0), 1.0)
     return [a * (1 - w) + b * w for a, b in zip(share_a, share_b)]

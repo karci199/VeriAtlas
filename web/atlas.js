@@ -63,46 +63,54 @@ function centroid(g) { // area-weighted centroid of the largest ring
 function unitRows() {
     const b = state.bundle; if (!b) return [];
     return b.units.map((u) => {
-        const age = u.age; let median = null, old = null;
+        const age = u.age; let median = null, old = null, young = null;
         if (age) {
             const tot = age.male.map((m, i) => m + age.female[i]); const n = tot.reduce((a, c) => a + c, 0); let acc = 0;
             for (let i = 0; i < tot.length; i++) { const w = i < 13 ? 5 : 10; if (acc + tot[i] >= n / 2) { median = i * 5 + (n / 2 - acc) / tot[i] * w; break; } acc += tot[i]; }
-            old = tot[13] / n;
+            old = tot[13] / n; young = (tot[0] + tot[1] + tot[2]) / n;
         }
         const m = u.marital; const m15 = m ? Object.values(m).reduce((a, c) => a + c, 0) : 0;
         return {
             id: u.id, name: u.name, kind: u.kind, kindTr: KIND_TR[u.kind], urban: u.urban ? "Kent" : "Kır", settlement: u.settlement,
             population: u.population, households: u.households, perHousehold: u.households ? u.population / u.households : null,
-            female100: u.male ? u.female / u.male * 100 : null, median, old, married: m ? m.married / m15 : null, never: m ? m.never / m15 : null,
+            female100: u.male ? u.female / u.male * 100 : null, median, old, young, married: m ? m.married / m15 : null, never: m ? m.never / m15 : null, divorced: m ? m.divorced / m15 : null,
             area: u.area_km2_endeksa,
         };
     });
 }
 const COLS = {
     district: [
-        { key: "name", label: "Birim", text: true },
-        { key: "urban", label: "Kent/Kır", text: true },
-        { key: "kindTr", label: "Tür", text: true },
-        { key: "population", label: "Nüfus", f: (v) => fmt(v) },
-        { key: "households", label: "Hane", f: (v) => fmt(v) },
-        { key: "perHousehold", label: "Kişi/hane", f: (v) => fmt(v, 2) },
-        { key: "female100", label: "Kadın/100 E", f: (v) => fmt(v, 1) },
-        { key: "median", label: "Medyan yaş", f: (v) => fmt(v, 1), est: true },
-        { key: "old", label: "65+", f: (v) => pct(v) },
-        { key: "married", label: "Evli", f: (v) => pct(v) },
-        { key: "never", label: "Hiç evlenmedi", f: (v) => pct(v) },
+        { g: "Kimlik", key: "name", label: "Birim", text: true },
+        { g: "Kimlik", key: "urban", label: "Kent/Kır", text: true },
+        { g: "Kimlik", key: "kindTr", label: "Tür", text: true },
+        { g: "Nüfus", key: "population", label: "Nüfus", f: (v) => fmt(v) },
+        { g: "Nüfus", key: "female100", label: "K/100 E", f: (v) => fmt(v, 1) },
+        { g: "Hane", key: "households", label: "Hane", f: (v) => fmt(v) },
+        { g: "Hane", key: "perHousehold", label: "Kişi/hane", f: (v) => fmt(v, 2) },
+        { g: "Yaş yapısı", key: "median", label: "Medyan", f: (v) => fmt(v, 1) },
+        { g: "Yaş yapısı", key: "young", label: "0–14", f: (v) => pct(v) },
+        { g: "Yaş yapısı", key: "old", label: "65+", f: (v) => pct(v) },
+        { g: "Medeni (15+)", key: "married", label: "Evli", f: (v) => pct(v) },
+        { g: "Medeni (15+)", key: "never", label: "Hiç evl.", f: (v) => pct(v) },
+        { g: "Medeni (15+)", key: "divorced", label: "Boşanmış", f: (v) => pct(v) },
     ],
-    generic: [{ key: "name", label: "Ad", text: true }, { key: "has", label: "Veri", text: true }],
+    generic: [{ g: "", key: "name", label: "Ad", text: true }, { g: "", key: "has", label: "Veri", text: true }],
 };
 const INDICATORS = [
-    { key: "population", label: "Nüfus", f: (v) => fmt(v) },
-    { key: "perHousehold", label: "Hane başına kişi", f: (v) => fmt(v, 2) },
-    { key: "female100", label: "Kadın / 100 erkek", f: (v) => fmt(v, 1) },
-    { key: "median", label: "Medyan yaş", f: (v) => fmt(v, 1) },
-    { key: "old", label: "65+ payı", f: (v) => pct(v) },
-    { key: "married", label: "Evli payı (15+)", f: (v) => pct(v) },
-    { key: "never", label: "Hiç evlenmemiş payı (15+)", f: (v) => pct(v) },
+    { g: "Nüfus", key: "population", label: "Nüfus", f: (v) => fmt(v) },
+    { g: "Nüfus", key: "female100", label: "Kadın / 100 erkek", f: (v) => fmt(v, 1) },
+    { g: "Hane", key: "households", label: "Hane sayısı", f: (v) => fmt(v) },
+    { g: "Hane", key: "perHousehold", label: "Hane başına kişi", f: (v) => fmt(v, 2) },
+    { g: "Yaş yapısı", key: "median", label: "Medyan yaş", f: (v) => fmt(v, 1) },
+    { g: "Yaş yapısı", key: "young", label: "0–14 payı", f: (v) => pct(v) },
+    { g: "Yaş yapısı", key: "old", label: "65+ payı", f: (v) => pct(v) },
+    { g: "Medeni durum (15+)", key: "married", label: "Evli payı", f: (v) => pct(v) },
+    { g: "Medeni durum (15+)", key: "never", label: "Hiç evlenmemiş payı", f: (v) => pct(v) },
+    { g: "Medeni durum (15+)", key: "divorced", label: "Boşanmış payı", f: (v) => pct(v) },
 ];
+const RAMP = ["#eff3ff", "#c6dbef", "#9ecae1", "#6baed6", "#3182bd", "#08519c"];
+const GROUP_TR = { district: "İlçe", urban: "Kent", rural: "Kır" };
+const GROUP_COLOR = { district: "var(--text-primary)", urban: "var(--sign-iznik)", rural: "var(--kind-village)" };
 
 // ---------- load & navigate ----------
 async function loadJSON(url) { const r = await fetch(url); if (!r.ok) throw new Error(url); return r.json(); }
@@ -146,14 +154,18 @@ function fillFor(f, rowsById) {
     }
     return null;
 }
-let rampScale = null;
-function ramp(v) { const t = Math.max(0, Math.min(1, (v - rampScale.min) / (rampScale.max - rampScale.min || 1))); return mix("#e3ebf6", "#1f3a73", t); }
+let rampScale = null; // quantile class edges
+function ramp(v) { let i = 0; while (i < rampScale.breaks.length - 1 && v > rampScale.breaks[i]) i++; return RAMP[i + 1]; }
 function mix(a, b, t) { const p = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)); const [r1, g1, b1] = p(a), [r2, g2, b2] = p(b); return `rgb(${Math.round(r1 + (r2 - r1) * t)},${Math.round(g1 + (g2 - g1) * t)},${Math.round(b1 + (b2 - b1) * t)})`; }
 
 function drawMap() {
     const rows = unitRows(); const rowsById = Object.fromEntries(rows.map((r) => [r.id, r]));
-    if (state.mode === "theme" && state.indicator && rows.length) { const vals = rows.map((r) => r[state.indicator.key]).filter((v) => Number.isFinite(v)); rampScale = { min: Math.min(...vals), max: Math.max(...vals) }; }
-    svg.innerHTML = "";
+    if (state.mode === "theme" && state.indicator && rows.length) {
+        const vals = rows.map((r) => r[state.indicator.key]).filter((v) => Number.isFinite(v)).sort((a, b) => a - b);
+        const q = (p) => vals[Math.min(vals.length - 1, Math.floor(p * vals.length))];
+        rampScale = { breaks: [0.2, 0.4, 0.6, 0.8].map(q).concat([vals[vals.length - 1]]), min: vals[0] };
+    }
+    svg.innerHTML = ""; svg.dataset.mode = state.mode; svg.classList.toggle("focus", !!state.selected);
     const g = document.createElementNS(svg.namespaceURI, "g"); g.id = "areas";
     const labels = document.createElementNS(svg.namespaceURI, "g"); labels.id = "labels";
     for (const f of state.features) {
@@ -219,7 +231,11 @@ function drawCrumbs() {
 document.querySelectorAll("#mode button").forEach((b) => b.onclick = () => { state.mode = b.dataset.mode; document.querySelectorAll("#mode button").forEach((x) => x.classList.toggle("on", x === b)); updateIndicatorBox(); drawMap(); drawLegend(); });
 function updateIndicatorBox() {
     const sel = $("#indicator"); sel.hidden = !(state.mode === "theme" && state.level === "district" && state.bundle);
-    if (!sel.options.length) { INDICATORS.forEach((ind, i) => { const o = document.createElement("option"); o.value = i; o.textContent = ind.label; sel.appendChild(o); }); sel.onchange = () => { state.indicator = INDICATORS[sel.value]; drawMap(); drawLegend(); }; }
+    if (!sel.options.length) {
+        let grp = null, og = null;
+        INDICATORS.forEach((ind, i) => { if (ind.g !== grp) { grp = ind.g; og = document.createElement("optgroup"); og.label = grp; sel.appendChild(og); } const o = document.createElement("option"); o.value = i; o.textContent = ind.label; og.appendChild(o); });
+        sel.onchange = () => { state.indicator = INDICATORS[sel.value]; drawMap(); drawLegend(); };
+    }
     if (!state.indicator) state.indicator = INDICATORS[0];
 }
 $("#theme-toggle").onclick = () => { const h = document.documentElement; h.dataset.theme = h.dataset.theme === "dark" ? "light" : "dark"; drawMap(); };
@@ -228,7 +244,11 @@ function drawLegend() {
     const el = $("#legend"); el.innerHTML = "";
     if (state.level !== "district" || !state.bundle) { if (state.level !== "district") el.innerHTML = `<div class="t">Veri olan alanlar</div><div class="row"><span class="sw" style="background:var(--map-fill)"></span>var</div><div class="row"><span class="sw" style="background:var(--map-muted)"></span>henüz yok</div>`; return; }
     if (state.mode === "kind") { el.innerHTML = `<div class="t">Yerleşim türü</div>` + Object.entries(KIND_TR).filter(([k]) => k !== "urban_town").map(([k, v]) => `<div class="row"><span class="sw" style="background:${KIND_COLOR[k]}"></span>${v}</div>`).join(""); }
-    else if (state.mode === "theme" && state.indicator && rampScale) { el.innerHTML = `<div class="t">${state.indicator.label}</div><div class="ramp" style="background:linear-gradient(90deg,#e3ebf6,#1f3a73)"></div><div class="ends"><span>${state.indicator.f(rampScale.min)}</span><span>${state.indicator.f(rampScale.max)}</span></div><div class="row muted" style="margin-top:4px">gri = veri yok</div>`; }
+    else if (state.mode === "theme" && state.indicator && rampScale) {
+        const f = state.indicator.f, b = rampScale.breaks; let lo = rampScale.min;
+        const rows = b.map((hi, i) => { const r = `<div class="row"><span class="sw" style="background:${RAMP[i + 1]}"></span>${f(lo)} – ${f(hi)}</div>`; lo = hi; return r; });
+        el.innerHTML = `<div class="t">${state.indicator.label}</div>${rows.join("")}<div class="row" style="margin-top:4px"><span class="sw" style="background:var(--map-muted)"></span><span class="muted">veri yok</span></div><div class="muted">beşte birlik sınıflar</div>`;
+    }
 }
 
 // ---------- left panel ----------
@@ -259,7 +279,7 @@ function drawLeft() {
               <span class="k">Evli</span><span class="v">${pct(sel.married)}</span><span class="u"></span>
               <span class="k">Hiç evlenmedi</span><span class="v">${pct(sel.never)}</span><span class="u"></span>
             </div>`;
-            mini = u.age ? pyramid(u.age, `${sel.name} — yaş yapısı`) : `<p class="muted">Bu birim için yaş dağılımı yayımlanmıyor (kır mahallelerinin çoğu).</p>`;
+            mini = u.age ? pyramid(expand65(u.age, u.urban ? b.age.urban : b.age.rural), `${sel.name} — yaş yapısı ${b.reference_year}`) : `<p class="muted">Bu birim için yaş dağılımı yayımlanmıyor (kır mahallelerinin çoğu).</p>`;
         } else {
             const c = b.card;
             sg = sign(`${b.province} ili · ${b.region}`, b.name, `İlçe · ${b.province}`, "var(--sign-bursa)");
@@ -278,11 +298,48 @@ function drawLeft() {
               <span class="k">Kentsel birim</span><span class="v">${c.centre_units}</span><span class="u">adet</span>
               <span class="k">Kırsal birim</span><span class="v">${c.rural_units}</span><span class="u">adet</span>
             </div><p class="muted">${c.area_note}</p>`;
-            mini = pyramid(b.age.district, "İlçe — nüfus piramidi 2024");
+            const yr = state.pyrYear || b.reference_year, pg = state.pyrGroup || "district";
+            const S = b.age_series && b.age_series[yr];
+            const A = S ? S[pg] : b.age[pg];
+            const yrs = b.age_series ? Object.keys(b.age_series) : [];
+            const single = `<div class="seg small" id="pyr-g">${Object.entries(GROUP_TR).map(([k, l]) => `<button data-g="${k}" class="${pg === k ? "on" : ""}">${l}</button>`).join("")}</div>`;
+            const ysel = yrs.length ? `<select id="pyr-y" class="select small">${yrs.map((y) => `<option ${+y === +yr ? "selected" : ""}>${y}</option>`).join("")}</select>` : "";
+            const multi = `<div class="seg small" id="share-g">${Object.entries(GROUP_TR).map(([k, l]) => `<button data-g="${k}" class="${(state.shareGroups || ["district", "urban", "rural"]).includes(k) ? "on" : ""}">${l}</button>`).join("")}</div>`;
+            mini = `<div class="mini-tools">${single}${ysel}</div>` + pyramid(A, `Nüfus piramidi ${yr}`)
+                 + `<div class="mini-tools" style="margin-top:12px">${multi}</div>` + shareBars(S || b.age, state.shareGroups || ["district", "urban", "rural"])
+                 + seriesChart(b.series);
         }
     }
     $("#sign").outerHTML = sg.replace('class="sign"', 'class="sign" id="sign"');
     $("#card").innerHTML = card; $("#mini").innerHTML = mini; $("#mini").className = "card mini";
+    const gs = $("#pyr-g"); if (gs) gs.querySelectorAll("button").forEach((x) => x.onclick = () => { state.pyrGroup = x.dataset.g; drawLeft(); });
+    const ys = $("#pyr-y"); if (ys) ys.onchange = () => { state.pyrYear = +ys.value; drawLeft(); };
+    const sg = $("#share-g"); if (sg) sg.querySelectorAll("button").forEach((x) => x.onclick = () => { const cur = new Set(state.shareGroups || ["district", "urban", "rural"]); cur.has(x.dataset.g) ? (cur.size > 1 && cur.delete(x.dataset.g)) : cur.add(x.dataset.g); state.shareGroups = ["district", "urban", "rural"].filter((k) => cur.has(k)); drawLeft(); });
+}
+function expand65(age, parent) { // 14-band unit → 19 bands; 65+ split by the parent's 65+ shape (estimate)
+    const out = { bands: parent.bands, male: age.male.slice(0, 13), female: age.female.slice(0, 13), estimate_from_band: 13 };
+    for (const s of ["male", "female"]) {
+        const sub = parent[s].slice(13), tot = sub.reduce((a, c) => a + c, 0) || 1, T = age[s][13];
+        const parts = sub.map((v) => Math.round(T * v / tot)); parts[0] += T - parts.reduce((a, c) => a + c, 0); out[s].push(...parts);
+    }
+    return out;
+}
+function shares(age) { const tot = age.male.map((m, i) => m + age.female[i]); const n = tot.reduce((a, c) => a + c, 0); const sum = (a, b) => tot.slice(a, b + 1).reduce((x, y) => x + y, 0) / n; return { "0–14": sum(0, 2), "15–24": sum(3, 4), "25–44": sum(5, 8), "45–64": sum(9, 12), "65+": sum(13, 18) }; }
+function shareBars(ages, groups) {
+    const data = groups.map((g) => ({ g, s: shares(ages[g]) })); const keys = Object.keys(data[0].s); const W = 300, bh = 10, gap = 3, rowH = groups.length * (bh + gap) + 8, H = keys.length * rowH + 6, L = 44, mx = Math.max(...data.flatMap((d) => Object.values(d.s)));
+    let s = `<h3>Yaş grubu payları</h3><svg viewBox="0 0 ${W} ${H}" font-family="Lato,sans-serif" font-size="9">`;
+    keys.forEach((k, i) => { const y0 = i * rowH; s += `<text x="${L - 6}" y="${y0 + rowH / 2}" text-anchor="end" fill="var(--text-secondary)" font-weight="700">${k}</text>`;
+        data.forEach((d, j) => { const w = d.s[k] / mx * (W - L - 40), y = y0 + 4 + j * (bh + gap); s += `<rect x="${L}" y="${y}" width="${w}" height="${bh}" fill="${GROUP_COLOR[d.g]}" rx="2"/><text x="${L + w + 4}" y="${y + bh - 2}" fill="var(--text-secondary)">${(d.s[k] * 100).toFixed(1)}%</text>`; }); });
+    s += `</svg><div class="muted">${groups.map((g) => `<span style="color:${GROUP_COLOR[g]}">■</span> ${GROUP_TR[g]}`).join(" ")}</div>`;
+    return s;
+}
+function seriesChart(series) {
+    const W = 300, H = 130, L = 36, R = 8, T = 14, B = 22, ys = series.map((s) => s.year), mx = Math.max(...series.map((s) => s.urban + s.rural));
+    const x = (y) => L + (y - ys[0]) / (ys[ys.length - 1] - ys[0]) * (W - L - R), yv = (v) => T + (1 - v / mx) * (H - T - B);
+    const line = (k, col) => `<polyline fill="none" stroke="${col}" stroke-width="2" points="${series.map((s) => `${x(s.year).toFixed(1)},${yv(k === "total" ? s.urban + s.rural : s[k]).toFixed(1)}`).join(" ")}"/>`;
+    const ticks = [1935, 1960, 1985, 2010, 2025].map((y) => `<text x="${x(y)}" y="${H - 6}" text-anchor="middle" fill="var(--text-tertiary)">${y}</text>`).join("");
+    const gy = [0, 0.5, 1].map((f) => `<line x1="${L}" x2="${W - R}" y1="${yv(mx * f)}" y2="${yv(mx * f)}" stroke="var(--stroke-divider)"/><text x="${L - 4}" y="${yv(mx * f) + 3}" text-anchor="end" fill="var(--text-tertiary)">${Math.round(mx * f / 1000)}k</text>`).join("");
+    return `<h3 style="margin-top:12px">Nüfus 1935–2025</h3><svg viewBox="0 0 ${W} ${H}" font-family="Lato,sans-serif" font-size="9">${gy}${line("total", GROUP_COLOR.district)}${line("urban", GROUP_COLOR.urban)}${line("rural", GROUP_COLOR.rural)}${ticks}</svg><div class="muted"><span style="color:${GROUP_COLOR.district}">■</span> toplam <span style="color:${GROUP_COLOR.urban}">■</span> kent <span style="color:${GROUP_COLOR.rural}">■</span> kır · sayım + ADNKS</div>`;
 }
 function medianOf(age) { const tot = age.male.map((m, i) => m + age.female[i]); const n = tot.reduce((a, c) => a + c, 0); let acc = 0; for (let i = 0; i < tot.length; i++) { const w = (i === tot.length - 1) ? 10 : 5; if (acc + tot[i] >= n / 2) return i * 5 + (n / 2 - acc) / tot[i] * w; acc += tot[i]; } return null; }
 function pyramid(age, title) {
@@ -313,9 +370,11 @@ function drawTable() {
     const { key, dir } = state.sort;
     if (key) rows.sort((a, b) => { const x = a[key], y = b[key]; if (x == null) return 1; if (y == null) return -1; return (typeof x === "string" ? x.localeCompare(y, "tr") : x - y) * dir; });
     const t = $("#table");
-    t.innerHTML = `<thead><tr>${cols.map((c) => `<th data-key="${c.key}" class="${key === c.key ? "on" : ""}">${c.label}${key === c.key ? `<span class="arr">${dir > 0 ? "▲" : "▼"}</span>` : ""}</th>`).join("")}</tr></thead>` +
+    const groups = []; cols.forEach((c) => { const last = groups[groups.length - 1]; if (last && last.g === c.g) last.n++; else groups.push({ g: c.g, n: 1 }); });
+    const grpRow = groups.some((g) => g.g) ? `<tr class="grp">${groups.map((g) => `<th colspan="${g.n}">${g.g}</th>`).join("")}</tr>` : "";
+    t.innerHTML = `<thead>${grpRow}<tr>${cols.map((c) => `<th data-key="${c.key}" class="${key === c.key ? "on" : ""}">${c.label}${key === c.key ? `<span class="arr">${dir > 0 ? "▲" : "▼"}</span>` : ""}</th>`).join("")}</tr></thead>` +
         `<tbody>${rows.map((r) => `<tr data-id="${r.id}" class="${state.selected === r.id ? "sel" : ""}">${cols.map((c) => { const v = r[c.key]; const txt = c.text ? (v ?? "—") : c.f(v); return `<td class="${v == null ? "dim" : ""}">${c.key === "kindTr" ? `<span class="chip" style="background:${KIND_COLOR[r.kind]}">${txt}</span>` : txt}</td>`; }).join("")}</tr>`).join("")}</tbody>`;
-    t.querySelectorAll("th").forEach((th) => th.onclick = () => { const k = th.dataset.key; state.sort = { key: k, dir: state.sort.key === k ? -state.sort.dir : (cols.find((c) => c.key === k).text ? 1 : -1) }; drawTable(); });
+    t.querySelectorAll("th[data-key]").forEach((th) => th.onclick = () => { const k = th.dataset.key; state.sort = { key: k, dir: state.sort.key === k ? -state.sort.dir : (cols.find((c) => c.key === k).text ? 1 : -1) }; drawTable(); });
     t.querySelectorAll("tbody tr").forEach((tr) => {
         tr.onclick = () => { const id = tr.dataset.id; if (state.level === "district") { state.selected = state.selected === id ? null : id; drawMap(); drawLeft(); drawTable(); } else { const f = state.features.find((x) => x.properties.area_id === id); if (f) onAreaClick(f); } };
         tr.onmouseenter = () => svg.querySelector(`[data-id="${tr.dataset.id}"]`)?.classList.add("hl");
