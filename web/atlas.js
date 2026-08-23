@@ -372,20 +372,8 @@ function boxView(b, pad = 1.1) { // a bbox widened to the map's aspect, as a vie
     return { x: b.x + b.w / 2 - w / 2, y: b.y + b.h / 2 - h / 2, w, h };
 }
 function scaled(v, k) { return { x: v.x + v.w * (1 - k) / 2, y: v.y + v.h * (1 - k) / 2, w: v.w * k, h: v.h * k }; }
-function animateView(to, ms = 320) {
-    // A hidden tab gets no animation frames; jumping there keeps navigation from hanging.
-    if (document.hidden || document.visibilityState !== "visible") { setView(to); return Promise.resolve(); }
-    const from = { ...state.view }, t0 = performance.now();
-    const ease = (t) => 1 - Math.pow(1 - t, 3);
-    return new Promise((done) => {
-        const step = (now) => {
-            const t = Math.min(1, (now - t0) / ms), e = ease(t);
-            setView({ x: from.x + (to.x - from.x) * e, y: from.y + (to.y - from.y) * e, w: from.w + (to.w - from.w) * e, h: from.h + (to.h - from.h) * e });
-            if (t < 1) requestAnimationFrame(step); else done();
-        };
-        requestAnimationFrame(step);
-    });
-}
+// Navigation is a cut, not a film: the reader found the eased zoom distracting.
+function animateView(to) { setView(to); return Promise.resolve(); }
 function zoomAt(factor, cx, cy) { // cx,cy in viewBox units
     const v = state.view, fitW = fitView().w;
     // Bounds: 40× into the fitted view (the data has no more detail than that) and 3× out.
