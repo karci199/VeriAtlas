@@ -411,7 +411,10 @@ async function enter(path) {
     const id = path.dataset.id, name = path.dataset.name;
     const level = layerLevel();
     // A district with a file page opens it; the boundary drill-down stays for the rest.
-    if (level === "district" && (await hasFile(id))) { location.href = `district.html?id=${id}`; return; }
+    // On the neighbourhood layer the click lands on a neighbourhood shape, and the
+    // district it belongs to is what opens.
+    const districtId = level === "district" ? id : level === "neighbourhood" ? findFeature(id).properties.parent_id : null;
+    if (districtId && (await hasFile(districtId))) { location.href = `district.html?id=${districtId}`; return; }
     if (!CHILD[level]) return;
     if (!(await fetchFeatures(level, id))) { $("#tip").innerHTML = `<b>${name}</b><small>alt sınırlar henüz yok</small>`; return; }
     state.busy = true;
@@ -425,7 +428,7 @@ async function enter(path) {
         state.path.push({ level: CHILD[here().level], id: parentId, name: pf ? pf.properties.name_tr : parentId });
     }
     state.path.push({ level: CHILD[here().level], id, name });
-    state.depth = 1;
+    state.depth = 1; // always the district layer first; the finer one is a click away
     await loadPlace();
     setView(scaled(fitView(), 0.6)); await animateView(fitView(), 320);
     state.busy = false;
