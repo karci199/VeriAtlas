@@ -10,6 +10,12 @@ name within the district and writes public/atlas/<district>.children.json:
      "totals": {"2013": {"urban": {"child", "adult"}, "rural": {...}}, ...},
      "vital": {"2014": {"births": n, "deaths": n}, ...}}   # TÜİK district counts
 
+Before 2013 the same measure is published without the age split, and the map was
+different: villages, and towns (belde) with their own neighbourhoods. raw/medas/yerlesim
+holds those totals per province (fetch_medas_settlement_totals.py, --years 2007..2012).
+They are folded in as {"total": n} per unit: villages by name; the district town's
+neighbourhoods by name; a former belde — one unit since 6360 — by its belediye total.
+
 Settlements in MEDAS with no Endeksa counterpart (renamed, merged) are listed under
 "unmatched" rather than dropped silently; their people still count in "totals".
 
@@ -33,9 +39,122 @@ TR_LOWER = str.maketrans(
 
 def fold(name: str) -> str:
     name = name.split("/")[-1].translate(TR_LOWER).strip()
-    for suffix in (" mah.", " mahallesi", " köyü", " köy"):
+    for suffix in (" mah.", " mahallesi", " köy.", " köyü", " köy", " bel."):
         name = name.removesuffix(suffix)
     return "".join(ch for ch in name if ch.isalnum())
+
+
+RAW_SETTLEMENTS = ROOT / "raw" / "medas" / "yerlesim"
+
+#: Old settlement names that no later MEDAS row repeats, so the code trick cannot find
+#: them. Recorded here, not guessed: each entry was checked against the population series.
+ALIASES = {"TR-16-006": {"Nüzhetiye": "Çampınar"}}
+
+
+def read_medas_rows(path: Path):
+    """Yield (year, label, value) from a MEDAS export; a year opens a block, then rows
+    continue it with an empty first cell."""
+    year = None
+    for line in path.read_text(encoding="utf-8-sig").splitlines():
+        cells = line.split("|")
+        if len(cells) < 3 or not cells[1].strip() or "(" not in cells[1]:
+            continue
+        if cells[0].strip().isdigit():
+            year = int(cells[0])
+        if year is None:
+            continue
+        try:
+            yield year, cells[1], int(float(cells[2]))
+        except ValueError:
+            continue
+
+
+def backfill_early(
+    district: str, atlas: dict, units: dict, unmatched: list[str]
+) -> list[int]:
+    """Fold pre-2013 village / town / neighbourhood totals into `units`. Returns the years found."""
+    province = atlas["province"].upper().replace("İ", "I")
+    files = {
+        k: next(RAW_SETTLEMENTS.glob(f"nufus-{k}-{province}-*.csv"), None)
+        for k in ("koy", "belediye", "mahalle")
+    }
+    if not all(files.values()):
+        return []
+    district_name = atlas["name"]
+    by_name = {fold(u["name"]): u for u in atlas["units"]}
+    for old, new in ALIASES.get(district, {}).items():
+        if fold(new) in by_name:
+            by_name[fold(old)] = by_name[fold(new)]
+    found: set[int] = set()
+
+    def put(unit, year, value, label=None):
+        entry = units.setdefault(
+            unit["id"],
+            {
+                "id": unit["id"],
+                "name": unit["name"],
+                "urban": unit["urban"],
+                "medas": [],
+                "series": {},
+            },
+        )
+        entry["series"][str(year)] = {"total": value}
+        found.add(year)
+        if label and fold(label) != fold(
+            unit["name"]
+        ):  # an earlier name, kept as a note
+            entry.setdefault("former", [])
+            if label not in entry["former"]:
+                entry["former"].append(label)
+
+    # Villages: "Bursa(İznik/Merkez Bucağı/Aydınlar Köy.)-7543". A village renamed
+    # between years keeps its code, so rows are grouped by code and the group is matched
+    # by whichever of its names the atlas knows.
+    by_code: dict[str, list] = {}
+    for year, label, value in read_medas_rows(files["koy"]):
+        inner = label[label.index("(") + 1 : label.rindex(")")]
+        parts = inner.split("/")
+        if parts[0] != district_name:
+            continue
+        by_code.setdefault(label.rsplit("-", 1)[-1], []).append(
+            (year, parts[-1], value)
+        )
+    for code, rows in by_code.items():
+        unit = next((by_name[fold(n)] for _, n, _ in rows if fold(n) in by_name), None)
+        if unit:
+            for year, name, value in rows:
+                put(unit, year, value, name.replace(" Köy.", ""))
+        else:
+            unmatched.append(f"köy kodu {code}: {sorted({n for _, n, _ in rows})}")
+    # Towns: "Bursa(İznik/Boyalıca Bel.)-1554" — the district's own town is its centre
+    # neighbourhoods (taken below); a former belde is one unit today, so its total is used.
+    town_of_district = None
+    for year, label, value in read_medas_rows(files["belediye"]):
+        inner = label[label.index("(") + 1 : label.rindex(")")]
+        parts = inner.split("/")
+        if parts[0] != district_name:
+            continue
+        town = parts[-1].replace(" Bel.", "")
+        if fold(town) == fold(district_name):
+            town_of_district = parts[-1]
+            continue
+        unit = by_name.get(fold(town))
+        if unit:
+            put(unit, year, value)
+        elif label not in unmatched:
+            unmatched.append(label)
+    # Neighbourhoods of the district's town: "Bursa(İznik/İznik Bel./Beyler Mah.)-11415"
+    for year, label, value in read_medas_rows(files["mahalle"]):
+        inner = label[label.index("(") + 1 : label.rindex(")")]
+        parts = inner.split("/")
+        if parts[0] != district_name or len(parts) < 3 or parts[1] != town_of_district:
+            continue
+        unit = by_name.get(fold(parts[-1]))
+        if unit:
+            put(unit, year, value)
+        elif label not in unmatched:
+            unmatched.append(label)
+    return sorted(found)
 
 
 def main(district: str) -> None:
@@ -92,6 +211,10 @@ def main(district: str) -> None:
             for key, value in cell.items():
                 acc[key] += value
 
+    # 2007-2012 totals, when the province's scoped files are on disk.
+    early_years = backfill_early(district, atlas, units, unmatched)
+    years = sorted(set(years) | set(early_years))
+
     urban_names = {fold(u["name"]) for u in atlas["units"] if u["urban"]}
     totals = {}
     for (year,), part in rows.group_by(["year"], maintain_order=True):
@@ -99,6 +222,16 @@ def main(district: str) -> None:
         for row in part.iter_rows(named=True):
             side = "urban" if fold(row["area"]) in urban_names else "rural"
             t[side]["child" if row["age"] == "0-17" else "adult"] += row["value"]
+        totals[str(year)] = t
+
+    for (
+        year
+    ) in early_years:  # totals from the units themselves (no age split before 2013)
+        t = {"urban": {"total": 0}, "rural": {"total": 0}}
+        for u in units.values():
+            cell = u["series"].get(str(year))
+            if cell and "total" in cell:
+                t["urban" if u["urban"] else "rural"]["total"] += cell["total"]
         totals[str(year)] = t
 
     vital: dict[str, dict] = {}

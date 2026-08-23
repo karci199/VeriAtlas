@@ -55,16 +55,19 @@ function popOf(year, scope) {
     if (!row) return null;
     return scope === "total" ? row.urban + row.rural : row[scope];
 }
-/** Child share (0-17) for a scope and year from the settlement series (2013+). */
+/** Child share (0-17) for a scope and year from the settlement series (2013+; earlier
+ *  years carry totals only). */
 function childShare(year, scope) {
     const t = state.kids.totals[String(year)];
-    if (!t) return null;
+    if (!t || t.urban.child == null) return null;
     const pick = scope === "total" ? { child: t.urban.child + t.rural.child, adult: t.urban.adult + t.rural.adult } : t[scope];
     return pick.child / (pick.child + pick.adult);
 }
+/** A settlement's population in a year: the age-split cell or the plain total. */
+const unitPop = (cell) => (cell ? (cell.total != null ? cell.total : cell.child + cell.adult) : null);
 function tenYearsBack(year, firstYear) { return Math.max(firstYear, year - 10); }
 function delta(now, then, kind) {
-    if (now == null || then == null) return "";
+    if (now == null || then == null || !isFinite(now - then)) return "";
     const d = now - then;
     const cls = d > 0 ? "up" : d < 0 ? "down" : "";
     const arrow = d > 0 ? "▲" : d < 0 ? "▼" : "•";
@@ -72,6 +75,9 @@ function delta(now, then, kind) {
     if (kind === "n") return `<span class="${cls}">${arrow} ${fmt.format(Math.abs(Math.round(d)))} kişi (%${num(Math.abs(d / then) * 100)})</span>`;
     return `<span class="${cls}">${arrow} ${num(Math.abs(d))}</span>`;
 }
+
+/** "/ N yıl" after a delta — empty when the span is zero or the delta is empty. */
+const span = (d, years) => (d && years > 0 ? d + ` <span>/ ${years} yıl</span>` : "");
 
 // ---------- cards ----------
 function card(title, value, unit, lines, tag) {
@@ -83,15 +89,16 @@ function drawCards() {
     const scopeTr = { total: "toplam", urban: "kent", rural: "kır" }[scope];
     $("#kind").textContent = `İlçe · ${d.province} · ${year} · ${scopeTr}`;
 
-    const firstPop = d.series[0].year;
-    const pop = popOf(year, scope), popThen = popOf(tenYearsBack(year, firstPop), scope);
+    const pop = popOf(year, scope);
+    const yPop = d.series.filter((r) => r.year <= year - 10).map((r) => r.year).pop(); // latest year at least ten back
+    const popThen = yPop != null && year - yPop <= 12 ? popOf(yPop, scope) : null;
     const yThen = tenYearsBack(year, 2007);
     const a = ages(year, scope), aThen = ages(yThen, scope);
     const g = a && ageGroups(a), gThen = aThen && ageGroups(aThen);
     const urbanShare = popOf(year, "urban") / popOf(year, "total");
-    const urbanThen = popOf(tenYearsBack(year, firstPop), "urban") / popOf(tenYearsBack(year, firstPop), "total");
-    const firstKid = state.kids.years[0];
-    const child = childShare(year, scope), childThen = childShare(tenYearsBack(year, firstKid), scope);
+    const urbanThen = yPop != null && year - yPop <= 12 ? popOf(yPop, "urban") / popOf(yPop, "total") : null;
+    const firstKidSplit = state.kids.years.find((y) => state.kids.totals[String(y)].urban.child != null);
+    const child = childShare(year, scope), childThen = childShare(tenYearsBack(year, firstKidSplit), scope);
 
     // Households: Endeksa 2024 only; settlements without a count are left out of both sides.
     let hh = null;
@@ -102,12 +109,12 @@ function drawCards() {
     const areaKm2 = state.areaKm2;
 
     $("#cards").innerHTML = [
-        card("Nüfus", pop == null ? null : fmt.format(pop), "kişi", [delta(pop, popThen, "n") + ` <span>/ ${year - tenYearsBack(year, firstPop)} yıl</span>`]),
+        card("Nüfus", pop == null ? null : fmt.format(pop), "kişi", [span(delta(pop, popThen, "n"), yPop != null ? year - yPop : 0)]),
         card("Hane başına nüfus", hh == null ? null : num(hh, 2), "kişi", [], year !== 2024 ? "yalnız 2024" : ""),
         card("Yüzölçümü", fmt.format(Math.round(areaKm2)), "km²", [`<span>${num(pop / areaKm2)} kişi/km²</span>`]),
-        card("Kentleşme", "%" + pct(urbanShare), "kentte", [delta(urbanShare, urbanThen, "pt") + ` <span>/ ${year - tenYearsBack(year, firstPop)} yıl</span>`]),
-        card("Çocuk nüfus (0-17)", child == null ? null : "%" + pct(child), "", child == null ? [`<span>mahalle verisi ${firstKid}'ten başlıyor</span>`] : [delta(child, childThen, "pt") + ` <span>/ ${year - tenYearsBack(year, firstKid)} yıl</span>`]),
-        card("Medyan yaş", g ? num(g.median) : null, "", g ? [delta(g.median, gThen && gThen.median, "") + ` <span>/ ${year - yThen} yıl</span>`] : []),
+        card("Kentleşme", "%" + pct(urbanShare), "kentte", [span(delta(urbanShare, urbanThen, "pt"), yPop != null ? year - yPop : 0)]),
+        card("Çocuk nüfus (0-17)", child == null ? null : "%" + pct(child), "", child == null ? [`<span>0-17 ayrımı ${firstKidSplit}'ten başlıyor</span>`] : [span(delta(child, childThen, "pt"), year - tenYearsBack(year, firstKidSplit))]),
+        card("Medyan yaş", g ? num(g.median) : null, "", g ? [span(delta(g.median, gThen && gThen.median, ""), year - yThen)] : []),
         g ? (() => { const rows = [["0-14", g.young, "var(--green)"], ["15-64", g.mid, "var(--blue)"], ["65+", g.old, "var(--amber)"]]; return `<div class="card wide"><div class="t">Yaş grupları</div><div class="ages">
             <div class="labs">${rows.map(([l, v, col]) => `<div class="lab"><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${col}"></i> ${l} <b>%${pct(v)}</b></div>`).join("")}</div>
             <div class="bars">${rows.map(([, v, col]) => `<span style="width:${v * 100}%;background:${col}"></span>`).join("")}</div>
@@ -154,21 +161,21 @@ function drawVital() {
     const b = rate("births", y), bThen = rate("births", tenYearsBack(y, firstB));
     const d = rate("deaths", y), dThen = rate("deaths", tenYearsBack(y, firstD));
     $("#vital").innerHTML = [
-        card("Kaba doğum hızı", b == null ? null : "‰ " + num(b), "", b == null ? [`<span>ilçe doğumları ${firstB}'ten başlıyor</span>`] : [delta(b, bThen, "") + ` <span>‰ / ${y - tenYearsBack(y, firstB)} yıl</span>`], "ilçe toplamı"),
-        card("Kaba ölüm hızı", d == null ? null : "‰ " + num(d), "", d == null ? [`<span>ilçe ölümleri ${firstD}'dan başlıyor</span>`] : [delta(d, dThen, "") + ` <span>‰ / ${y - tenYearsBack(y, firstD)} yıl</span>`], "ilçe toplamı"),
+        card("Kaba doğum hızı", b == null ? null : "‰ " + num(b), "", b == null ? [`<span>ilçe doğumları ${firstB}'ten başlıyor</span>`] : [span(delta(b, bThen, ""), y - tenYearsBack(y, firstB))], "ilçe toplamı"),
+        card("Kaba ölüm hızı", d == null ? null : "‰ " + num(d), "", d == null ? [`<span>ilçe ölümleri ${firstD}'dan başlıyor</span>`] : [span(delta(d, dThen, ""), y - tenYearsBack(y, firstD))], "ilçe toplamı"),
         card("Doğal artış", b != null && d != null ? "‰ " + num(b - d) : null, "", [`<span>doğum − ölüm, bin kişiye</span>`], "ilçe toplamı"),
     ].join("");
 }
 
 // ---------- settlements table & map ----------
 function unitValue(u, varName) {
-    const s = u.series, y = String(state.year), yt = String(tenYearsBack(state.year, state.kids.years[0]));
+    const s = u.series, y = String(state.year), yt = String(state.year - 10);
     const now = s[y];
     if (!now) return null;
-    const tot = now.child + now.adult;
+    const tot = unitPop(now);
     if (varName === "pop") return tot;
-    if (varName === "child") return tot ? now.child / tot : null;
-    if (varName === "change") { const then = s[yt]; return then && then.child + then.adult ? tot / (then.child + then.adult) - 1 : null; }
+    if (varName === "child") return tot && now.child != null ? now.child / tot : null;
+    if (varName === "change") { const then = unitPop(s[yt]); return then ? tot / then - 1 : null; }
     return null;
 }
 function drawUnits() {
@@ -178,8 +185,8 @@ function drawUnits() {
     $("#units").innerHTML = `<tr><th>Yerleşim</th><th>Tür</th><th>Nüfus ${y}</th><th>0-17</th><th>10 yıl</th></tr>` + rows.map((u) => {
         const s = u.series[y];
         if (!s) return `<tr data-id="${u.id}"><td>${u.name}</td><td>${u.urban ? "mahalle" : "köy"}</td><td colspan="3" style="color:var(--mute)">${y} yok</td></tr>`;
-        const tot = s.child + s.adult, ch = unitValue(u, "change");
-        return `<tr data-id="${u.id}"><td>${u.name}</td><td>${u.urban ? "mahalle" : "köy"}</td><td>${fmt.format(tot)}</td><td>%${pct(s.child / tot, 0)}</td><td>${ch == null ? "—" : (ch >= 0 ? "+" : "−") + pct(Math.abs(ch), 0) + "%"}</td></tr>`;
+        const tot = unitPop(s), ch = unitValue(u, "change");
+        return `<tr data-id="${u.id}"><td>${u.name}${u.former ? ` <small style="color:var(--mute)">(eski: ${u.former.join(", ")})</small>` : ""}</td><td>${u.urban ? "mahalle" : "köy"}</td><td>${fmt.format(tot)}</td><td>${s.child == null ? "—" : "%" + pct(s.child / tot, 0)}</td><td>${ch == null ? "—" : (ch >= 0 ? "+" : "−") + pct(Math.abs(ch), 0) + "%"}</td></tr>`;
     }).join("");
 }
 
@@ -233,7 +240,7 @@ function drawMap() {
     const d = state.data, nU = d.units.filter((u) => u.urban).length;
     $("#mapTitle").textContent = `${d.name} · ${feats.length} yerleşim (${nU} mahalle, ${feats.length - nU} köy) · ${state.year}`;
     const note = $(".mapnote"); if (note) note.remove();
-    if (!present.length) $(".mapwrap").insertAdjacentHTML("beforeend", `<div class="mapnote">mahalle ve köy nüfusu ${state.kids.years[0]}'ten başlıyor · ${state.year} için renk yok</div>`);
+    if (!present.length) $(".mapwrap").insertAdjacentHTML("beforeend", `<div class="mapnote">${state.year} için bu değişken yok</div>`);
 }
 
 // Pan / zoom: the viewBox is the camera. Wheel zooms about the pointer, drag pans,
@@ -282,10 +289,11 @@ function wireMap() {
 function showPick(id, pinned) {
     const pick = $("#pick"), u = state.kids.units.find((x) => x.id === id);
     if (!u) { pick.hidden = true; return; }
-    const y = u.series[String(state.year)], tot = y ? y.child + y.adult : null, ch = unitValue(u, "change");
+    const y = u.series[String(state.year)], tot = unitPop(y), ch = unitValue(u, "change");
     pick.hidden = false; pick.classList.toggle("pinned", !!pinned);
-    pick.innerHTML = `<b>${u.name}</b><small>${u.urban ? "mahalle" : "köy"} · ${state.year}${pinned ? "" : " · tıkla: sabitle"}</small>` + (y
-        ? `<div class="row"><span>nüfus <i>${fmt.format(tot)}</i></span><span>0-17 <i>%${pct(y.child / tot, 0)}</i></span>${ch == null ? "" : `<span>nüfus, 10 yıl <i>${(ch >= 0 ? "+" : "−") + pct(Math.abs(ch), 0)}%</i></span>`}</div>`
+    const former = u.former && u.former.length ? ` · eski adı ${u.former.join(", ")}` : "";
+    pick.innerHTML = `<b>${u.name}</b><small>${u.urban ? "mahalle" : "köy"}${former} · ${state.year}${pinned ? "" : " · tıkla: sabitle"}</small>` + (y
+        ? `<div class="row"><span>nüfus <i>${fmt.format(tot)}</i></span>${y.child == null ? "" : `<span>0-17 <i>%${pct(y.child / tot, 0)}</i></span>`}${ch == null ? "" : `<span>nüfus, 10 yıl <i>${(ch >= 0 ? "+" : "−") + pct(Math.abs(ch), 0)}%</i></span>`}</div>`
         : `<div class="row"><span>bu yıl için veri yok</span></div>`);
 }
 
