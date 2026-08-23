@@ -606,6 +606,28 @@ ama artık türetme tek bir seriyle sınırlı değil, iki gösterge arasında d
 Doğrulama: İzmir 2009 47,41 ve Şanlıurfa 2025 96,60; ilçede Harran 160,75, Beşiktaş
 16,57. Hepsi Excel'de elle hesaplananla aynı.
 
+## K28 — Dört çıktı ve tabela kimliği (2026-08-23)
+
+İznik pilotu baştan dört çıktı olarak kuruluyor; sıra bu:
+
+1. Haritalı arayüz (il → ilçe → mahalle, tıklanır)
+2. Özet sunum, HTML (kapak + profil + harita; aynı şablon il/ilçe/mahalle)
+3. Ayrıntılı Excel (önde okunur sayfalar, arkada ham/uzun)
+4. Her verinin olduğu CSV (tam döküm, makine okunur)
+
+**Tabela kimliği (kapak ve harita lejantı ortak dil):**
+
+- Gövde sabit lacivert. Alt bant rengi her zaman *üst birimin* rengi (A modeli):
+  Türkiye laciverti, Marmara petrolü, Bursa yeşili, İznik mavisi.
+- Tür (merkez / kentsel belde / kırsal belde / köy) renkle değil, sol kenar çizgisi
+  (8 px) + üst satır metniyle: merkez işaretsiz, kentsel turuncu, kırsal yeşil, köy kahve.
+  Harita lejantına "merkez = işaretsiz" yazılır.
+- Bağlam satırı: ilçe tabelasında "il · bölge"; mahalle/köy tabelasında yalnız ilçe.
+- Kapak sayıları: nüfus (TÜİK 2024), yüzölçümü (HGM/İBBS), yerleşim = mahalle + köy
+  (settlements.csv, 46). Kaynak satırı üçünü ayrı ayrı yazar.
+- Gövde rengi alternatifleri (bordo, antrasit, petrol) reddedildi: bant anlam
+  taşıyorsa gövde sabit kalmalı.
+
 ## Oturum notu — 2026-08-14/15
 
 Bir oturumda yapılanlar, sıradaki oturum buradan devam etsin diye.
