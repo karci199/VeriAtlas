@@ -100,17 +100,24 @@ function drawCards() {
     const firstKidSplit = state.kids.years.find((y) => state.kids.totals[String(y)].urban.child != null);
     const child = childShare(year, scope), childThen = childShare(tenYearsBack(year, firstKidSplit), scope);
 
-    // Households: Endeksa 2024 only; settlements without a count are left out of both sides.
-    let hh = null;
-    if (year === 2024) {
-        const known = d.units.filter((u) => u.households && (scope === "total" || (scope === "urban") === u.urban));
+    // Households: TÜİK district mean size (2008+) for the district total; the urban/rural
+    // split exists only in Endeksa 2024, from the settlements that report a count.
+    const H = state.kids.households || {};
+    let hh = null, hhThen = null, hhSpan = 0;
+    if (scope === "total") {
+        hh = H[String(year)] && H[String(year)].size;
+        const firstH = Math.min(...Object.keys(H).filter((y) => H[y].size != null).map(Number));
+        const yT = tenYearsBack(year, firstH);
+        hhThen = H[String(yT)] && H[String(yT)].size; hhSpan = year - yT;
+    } else if (year === 2024) {
+        const known = d.units.filter((u) => u.households && (scope === "urban") === u.urban);
         if (known.length) hh = sum(known.map((u) => u.population)) / sum(known.map((u) => u.households));
     }
     const areaKm2 = state.areaKm2;
 
     $("#cards").innerHTML = [
         card("Nüfus", pop == null ? null : fmt.format(pop), "kişi", [span(delta(pop, popThen, "n"), yPop != null ? year - yPop : 0)]),
-        card("Hane başına nüfus", hh == null ? null : num(hh, 2), "kişi", [], year !== 2024 ? "yalnız 2024" : ""),
+        card("Hane başına nüfus", hh == null ? null : num(hh, scope === "total" ? 1 : 2), "kişi", [span(delta(hh, hhThen, ""), hhSpan)], scope !== "total" && year !== 2024 ? "kent/kır yalnız 2024" : ""),
         card("Yüzölçümü", fmt.format(Math.round(areaKm2)), "km²", [`<span>${num(pop / areaKm2)} kişi/km²</span>`]),
         card("Kentleşme", "%" + pct(urbanShare), "kentte", [span(delta(urbanShare, urbanThen, "pt"), yPop != null ? year - yPop : 0)]),
         card("Çocuk nüfus (0-17)", child == null ? null : "%" + pct(child), "", child == null ? [`<span>0-17 ayrımı ${firstKidSplit}'ten başlıyor</span>`] : [span(delta(child, childThen, "pt"), year - tenYearsBack(year, firstKidSplit))]),

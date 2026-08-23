@@ -8,7 +8,8 @@ name within the district and writes public/atlas/<district>.children.json:
     {"years": [2013, ...], "units": [{"id": <atlas unit id>, "name", "urban",
         "series": {"2013": {"child": n, "adult": n, "male": n, "female": n}, ...}}],
      "totals": {"2013": {"urban": {"child", "adult"}, "rural": {...}}, ...},
-     "vital": {"2014": {"births": n, "deaths": n}, ...}}   # TÜİK district counts
+     "vital": {"2014": {"births": n, "deaths": n}, ...},   # TÜİK district counts
+     "households": {"2012": {"count": n, "size": x}, ...}}  # TÜİK district, MEDAS basit
 
 Before 2013 the same measure is published without the age split, and the map was
 different: villages, and towns (belde) with their own neighbourhoods. raw/medas/yerlesim
@@ -44,14 +45,33 @@ def fold(name: str) -> str:
     return "".join(ch for ch in name if ch.isalnum())
 
 
-RAW_SETTLEMENTS = ROOT / "raw" / "medas" / "yerlesim"
+RAW = ROOT / "raw"
+RAW_SETTLEMENTS = RAW / "medas" / "yerlesim"
 
 #: Old settlement names that no later MEDAS row repeats, so the code trick cannot find
 #: them. Recorded here, not guessed: each entry was checked against the population series.
 ALIASES = {"TR-16-006": {"Nüzhetiye": "Çampınar"}}
 
 
-def read_medas_rows(path: Path):
+def read_medas_rows2(path: Path):
+    """Like read_medas_rows, for a two-column export (18+ yes / no): yields
+    (year, label, adult, child)."""
+    year = None
+    for line in path.read_text(encoding="utf-8-sig").splitlines():
+        cells = line.split("|")
+        if len(cells) < 4 or not cells[1].strip() or "(" not in cells[1]:
+            continue
+        if cells[0].strip().isdigit():
+            year = int(cells[0])
+        if year is None:
+            continue
+        try:
+            yield year, cells[1], int(float(cells[2])), int(float(cells[3]))
+        except ValueError:
+            continue
+
+
+def read_medas_rows(path: Path, as_float: bool = False):
     """Yield (year, label, value) from a MEDAS export; a year opens a block, then rows
     continue it with an empty first cell."""
     year = None
@@ -64,7 +84,7 @@ def read_medas_rows(path: Path):
         if year is None:
             continue
         try:
-            yield year, cells[1], int(float(cells[2]))
+            yield year, cells[1], float(cells[2]) if as_float else int(float(cells[2]))
         except ValueError:
             continue
 
@@ -154,6 +174,35 @@ def backfill_early(
             put(unit, year, value)
         elif label not in unmatched:
             unmatched.append(label)
+    # The 18+ split before 2013 exists for municipality neighbourhoods only. Where a row
+    # matches a unit that already has that year's total, the split is added to it; the
+    # town's own neighbourhoods are the ones the atlas lists, former belde neighbourhoods
+    # (three of Boyalıca, three of Elbeyli) are summed into their belde unit.
+    early_split = next(
+        (RAW / "medas" / "mahalle").glob(f"nufus-mahalle-{province}-*_*.csv"), None
+    )
+    if early_split:
+        belde_acc: dict[tuple, dict] = {}
+        for year, label, adult, child in read_medas_rows2(early_split):
+            inner = label[label.index("(") + 1 : label.rindex(")")]
+            parts = inner.split("/")
+            if parts[0] != district_name or len(parts) < 3:
+                continue
+            if parts[1] == town_of_district:
+                unit = by_name.get(fold(parts[-1]))
+                key = unit and unit["id"]
+            else:
+                unit = by_name.get(fold(parts[1].replace(" Bel.", "")))
+                key = unit and unit["id"]
+            if not unit:
+                continue
+            acc = belde_acc.setdefault((key, year), {"adult": 0, "child": 0})
+            acc["adult"] += adult
+            acc["child"] += child
+        for (key, year), acc in belde_acc.items():
+            cell = units.get(key, {}).get("series", {}).get(str(year))
+            if cell is not None:
+                cell.update(acc)
     return sorted(found)
 
 
@@ -243,9 +292,24 @@ def main(district: str) -> None:
         for (year,), part in df.group_by(["year"]):
             vital.setdefault(str(year), {})[key] = part["value"].sum()
 
+    # District households: count (2012+) and mean size (2008+), from the simple pulls.
+    households: dict[str, dict] = {}
+    medas_code = f"({atlas['name']})-"
+    for dataset, key in (
+        ("nufus-hane-sayisi-ilce-district", "count"),
+        ("nufus-hane-buyuklugu-ilce-district", "size"),
+    ):
+        path = ROOT / "raw" / "medas" / "basit" / f"{dataset}.csv"
+        if not path.exists():
+            continue
+        for year, label, value in read_medas_rows(path, as_float=True):
+            if medas_code in label and label.startswith(atlas["province"]):
+                households.setdefault(str(year), {})[key] = value
+
     out = {
         "district": district,
         "vital": vital,
+        "households": households,
         "years": years,
         "units": list(units.values()),
         "totals": totals,
