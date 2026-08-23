@@ -221,6 +221,11 @@ async function loadPlace() {
 function layerLevel() { let l = here().level; for (let i = 0; i < state.depth; i++) l = CHILD[l]; return l; }
 
 // ---------- drawing ----------
+const token = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+function strokeColour() {
+    const light = look.theme === "light", hue = HUES.find((h) => h.id === look.hue) || HUES[0];
+    return { dark: token("--bg-card"), light: light ? "#9aa7b8" : "#cfcfcf", accent: light ? hue.light : hue.dark }[look.strokeColor];
+}
 function hashShade(id, ramp) { // deterministic per area id, so a shade never jumps on redraw
     let h = 0; for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
     return ramp[h % ramp.length];
@@ -233,11 +238,16 @@ function drawAreas() {
     const enterable = CHILD[layerLevel()] !== null;
     for (const f of state.features) {
         const p = f.properties;
+        // Drawn exactly as explorer.js draws its map: fill and stroke as attributes on the
+        // path, the stroke in the card colour at 0.6 screen pixels.
         const el = document.createElementNS(SVG_NS, "path");
+        el.setAttribute("class", "area" + (enterable ? " enterable" : ""));
         el.setAttribute("d", geoPath(f.geometry));
+        el.setAttribute("fill", look.fill === "none" ? "none" : look.fill === "shade" ? hashShade(p.area_id, ramp) : ramp[2]);
+        el.setAttribute("vector-effect", "non-scaling-stroke");
+        el.setAttribute("stroke", strokeColour());
+        el.setAttribute("stroke-width", String(look.stroke / 10));
         el.dataset.id = p.area_id; el.dataset.name = p.name_tr;
-        if (look.fill === "shade") { el.classList.add("shade"); el.style.setProperty("--shade", hashShade(p.area_id, ramp)); }
-        if (enterable) el.classList.add("enterable");
         areas.appendChild(el);
 
         const c = centroid(f.geometry);

@@ -39,7 +39,7 @@ body {
 .layout { flex: 1; display: flex; min-height: 0; }
 
 /* region Map */
-.map-wrap { flex: 1; position: relative; min-width: 0; background: var(--bg-page); }
+.map-wrap { flex: 1; position: relative; min-width: 0; background: var(--bg-card); }
 #map {
     width: 100%; height: 100%; display: block; touch-action: none; cursor: grab;
     user-select: none; -webkit-user-drag: none;
@@ -47,15 +47,7 @@ body {
 #map.dragging { cursor: grabbing; }
 #map.dragging #areas path { transition: none; }
 
-#areas path {
-    fill: var(--map-fill);
-    stroke: var(--map-stroke);
-    stroke-width: var(--map-stroke-width);
-    stroke-linejoin: round;
-    vector-effect: non-scaling-stroke;
-    transition: filter .12s, stroke .12s;
-}
-#areas path.shade { fill: var(--shade); }
+/* Areas carry fill/stroke as attributes, as in explorer.css; only hover lives here. */
 
 /* Neighbours of the place: there, but not the subject. A silhouette, clickable. */
 #context path {
@@ -68,8 +60,8 @@ body {
 
 /* Outlines: the place itself, and its children when grandchildren are drawn */
 #outline path { fill: none; pointer-events: none; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
-#outline path.own { stroke: var(--map-stroke); stroke-width: 2px; stroke-linecap: round; }
-#outline path.inner { stroke: var(--map-stroke); stroke-width: 1.6px; stroke-linecap: round; }
+#outline path.own { stroke: var(--bg-card); stroke-width: 2px; stroke-linecap: round; }
+#outline path.inner { stroke: var(--bg-card); stroke-width: 1.6px; stroke-linecap: round; }
 
 /* Inset locator, bottom-left */
 #inset {
@@ -84,13 +76,9 @@ body {
 
 /* Layer switch in the top bar */
 .seg button { padding: 4px 10px; }
-[data-fill="none"] #areas path { fill: transparent; }
 #areas path.enterable { cursor: pointer; }
-[data-hover="on"] #areas path:hover {
-    filter: brightness(1.35) saturate(1.15);
-    stroke: var(--text-primary); stroke-opacity: .7; stroke-width: 1.6px;
-}
-[data-theme="light"][data-hover="on"] #areas path:hover { filter: brightness(0.85) saturate(1.3); }
+/* The explorer's hover: a half-transparent ink ring, nothing else changes. */
+[data-hover="on"] #areas path:hover { stroke: var(--text-primary); stroke-opacity: .45; stroke-width: 1.4; }
 
 #labels text {
     font-family: var(--font, Lato, "Segoe UI", sans-serif);
@@ -98,7 +86,7 @@ body {
     font-weight: 400; letter-spacing: .01em;
     fill: var(--text-primary);
     paint-order: stroke;
-    stroke: var(--bg-page);
+    stroke: var(--bg-card);
     stroke-opacity: .85;
     stroke-linejoin: round;
     text-anchor: middle;
