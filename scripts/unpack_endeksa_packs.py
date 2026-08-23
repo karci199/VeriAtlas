@@ -5,6 +5,8 @@ the tool result lands as a JSON file under the session's tool-results directory 
 `{"pack": <plate>, "b64": "..."}` in its text. This finds every such file, writes
 raw/endeksa/geo/TR-<plate>.json, and runs the export for it.
 
+Multi-part packs carry `part`/`parts`; the parts are joined in order before decoding.
+
 Run:  uv run python scripts/unpack_endeksa_packs.py <tool-results-dir>
 """
 
@@ -22,10 +24,13 @@ RAW = ROOT / "raw" / "endeksa" / "geo"
 def main(results_dir: str) -> None:
     decoder = json.JSONDecoder()
     done = []
+    parts: dict[int, dict[int, str]] = {}
     for path in sorted(Path(results_dir).iterdir()):
         try:
             arr = json.loads(path.read_text(encoding="utf-8"))
             text = arr[0]["text"]
+            if text.startswith('"'):  # the JS string itself was JSON-encoded once more
+                text, _ = decoder.raw_decode(text)
             start = min(i for i in (text.find("{"), text.find("[")) if i >= 0)
             obj, _ = decoder.raw_decode(text[start:])
         except (ValueError, KeyError, IndexError, TypeError):
@@ -37,7 +42,15 @@ def main(results_dir: str) -> None:
             out = RAW / f"TR-{plate:02d}.json"
             if out.exists():
                 continue
-            data = gzip.decompress(base64.b64decode(pack["b64"].rstrip()))
+            b64 = pack["b64"]
+            if "part" in pack:
+                # Large provinces come out in several tool results; wait for all.
+                got = parts.setdefault(plate, {})
+                got[int(pack["part"])] = b64
+                if len(got) < int(pack["parts"]):
+                    continue
+                b64 = "".join(got[i] for i in sorted(got))
+            data = gzip.decompress(base64.b64decode(b64.rstrip()))
             geo = json.loads(data)
             RAW.mkdir(parents=True, exist_ok=True)
             out.write_bytes(data)
