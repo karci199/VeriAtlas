@@ -56,6 +56,29 @@ body {
     transition: filter .12s, stroke .12s;
 }
 #areas path.shade { fill: var(--shade); }
+
+/* Neighbours of the place: there, but not the subject. A silhouette, clickable. */
+#context path {
+    fill: var(--bg-control); fill-opacity: .55;
+    stroke: var(--bg-page); stroke-width: .6px; vector-effect: non-scaling-stroke;
+    cursor: pointer; transition: fill-opacity .12s;
+}
+#context path:hover { fill-opacity: .9; }
+[data-context="off"] #context { display: none; }
+
+/* Inset locator, bottom-left */
+#inset {
+    position: absolute; left: 14px; bottom: 14px; width: 170px; height: auto;
+    background: var(--bg-card); border: 1px solid var(--stroke-divider, #2c2c2c);
+    border-radius: 8px; padding: 6px; box-shadow: 0 2px 10px rgba(0,0,0,.25);
+    pointer-events: none;
+}
+#inset path { fill: var(--bg-control); stroke: var(--bg-page); stroke-width: .5; }
+#inset path.mark { fill: var(--accent); }
+[data-inset="off"] #inset { display: none; }
+
+/* Layer switch in the top bar */
+.seg button { padding: 4px 10px; }
 [data-fill="none"] #areas path { fill: transparent; }
 #areas path.enterable { cursor: pointer; }
 [data-hover="on"] #areas path:hover {

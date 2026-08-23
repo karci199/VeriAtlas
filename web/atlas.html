@@ -8,13 +8,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VeriAtlas — harita</title>
 <link rel="stylesheet" href="theme.css">
-<link rel="stylesheet" href="atlas.css">
+<link rel="stylesheet" href="atlas.css?v=2">
 </head>
 <body>
 <header class="topbar">
   <div class="brand">VeriAtlas</div>
   <nav class="crumbs" id="crumbs" aria-label="Konum"></nav>
   <span class="spacer"></span>
+  <div class="choices seg" id="layer" role="group" aria-label="Katman" hidden></div>
   <span class="count" id="count"></span>
   <button class="icon-btn" id="look-toggle" aria-expanded="true">⚙ Görünüm</button>
 </header>
@@ -22,9 +23,11 @@
 <main class="layout">
   <section class="map-wrap">
     <svg id="map" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Harita">
+      <g id="context"></g>
       <g id="areas"></g>
       <g id="labels"></g>
     </svg>
+    <svg id="inset" xmlns="http://www.w3.org/2000/svg" aria-label="Konum" role="img"></svg>
     <div class="map-hud">
       <button class="icon-btn" id="zoom-in" title="Yakınlaştır">+</button>
       <button class="icon-btn" id="zoom-out" title="Uzaklaştır">−</button>
@@ -93,11 +96,27 @@
       </div>
     </div>
 
+    <div class="setting">
+      <span>Komşular</span>
+      <div class="choices" id="set-context">
+        <button data-value="on">Siluet olarak</button>
+        <button data-value="off">Gizle</button>
+      </div>
+    </div>
+
+    <div class="setting">
+      <span>Konum haritası</span>
+      <div class="choices" id="set-inset">
+        <button data-value="on">Göster</button>
+        <button data-value="off">Gizle</button>
+      </div>
+    </div>
+
     <button class="link-btn" id="set-reset">Varsayılana dön</button>
-    <p class="hint">Tıklama içine girer · sağ tık / Esc bir üst düzeye çıkar ·
+    <p class="hint">Tıklama içine girer · komşu silueti tıklanınca oraya geçer · sağ tık / Esc bir üst düzeye çıkar ·
       tekerlek ya da +/− yakınlaştırır · sürükleme ya da ok tuşları kaydırır · 0 sığdırır</p>
   </aside>
 </main>
-<script src="atlas.js"></script>
+<script src="atlas.js?v=3"></script>
 </body>
 </html>
