@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!-- Boundary puller. Opened by a logged-in endeksa.com tab, which hands over its API
+     token and its list of districts with postMessage; this page then fetches each
+     district's neighbourhood boundaries from app.endeksa.com and POSTs the raw
+     (still encrypted) responses to scripts/serve.py, which writes them under raw/.
+     The token stays between the two browser tabs; nothing here shows or logs it.
+     Decryption happens later in Python (scripts/export_endeksa_geo.py). -->
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>VeriAtlas — sınır alımı</title>
+<style>
+  body { font: 14px/1.5 "Segoe UI", sans-serif; background: #141414; color: #e8e8e8; padding: 24px; }
+  pre { background: #1a1a1a; padding: 12px; border-radius: 6px; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<h1>Sınır alımı</h1>
+<p id="status">Endeksa sekmesinden token ve ilçe listesi bekleniyor…</p>
+<pre id="log"></pre>
+<script>
+"use strict";
+const DELAY = 2800;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const log = (m) => { const el = document.getElementById("log"); el.textContent += m + "\n"; };
+const status = (m) => { document.getElementById("status").textContent = m; };
+window.job = { running: false, province: null, done: [], failed: [], count: 0, skipped: [] };
+
+async function get(url, token) {
+    for (let i = 0; i < 3; i++) {
+        try {
+            const r = await fetch(url, { headers: { Authorization: "Bearer " + token } });
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return await r.text(); // encrypted string as served; decrypted in Python
+        } catch (e) { if (i === 2) throw e; await sleep(8000); }
+    }
+}
+
+async function run(token, dist, provinces) {
+    const job = window.job; job.running = true;
+    for (const c of provinces) {
+        const prov = dist[c];
+        if (!prov) { job.failed.push(c + ":no-districts"); continue; }
+        job.province = c; status(`İl ${c} — ${prov.features.length} ilçe`);
+        const out = {};
+        for (const f of prov.features) {
+            try {
+                out[f.id] = await get(`https://app.endeksa.com/geo/map?cityId=${c}&countryId=1&countyId=${f.id}&level=2&subGeometries=true`, token);
+                job.count++;
+            } catch (e) { job.failed.push(c + "/" + f.id + ":" + e.message); }
+            await sleep(DELAY);
+        }
+        const name = `TR-${String(c).padStart(2, "0")}.raw.json`;
+        const r = await fetch("/ingest/" + name, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(out) });
+        log(`${name} → ${r.status} (${Object.keys(out).length} ilçe)`);
+        job.done.push(c);
+    }
+    job.running = false; status("Bitti");
+}
+
+window.addEventListener("message", (ev) => {
+    if (ev.origin !== "https://www.endeksa.com" && ev.origin !== "https://endeksa.com") return;
+    const { token, provinces } = ev.data || {};
+    if (!token) return;
+    status("Alındı; ilçe listesi okunuyor.");
+    fetch("/raw/endeksa/geo/districts.json").then((r) => r.json())
+        .then((dist) => run(token, dist, provinces || Object.keys(dist).map(Number).filter((c) => c !== 16)))
+        .catch((e) => log("HATA " + e.message));
+});
+</script>
+</body>
+</html>
