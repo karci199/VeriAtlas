@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!-- District file page: summary cards, age pyramid and the settlement map for one
+     district, read from public/atlas/<id>.json (+ .children.json). Only indicators
+     measured at district level are shown; province-level ones are left out rather than
+     painted on (user decision, 2026-08-23). ?id=TR-16-006 picks the district. -->
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>VeriAtlas — ilçe</title>
+<link rel="stylesheet" href="district.css?v=1">
+</head>
+<body>
+<header>
+  <div class="logo">VeriAtlas</div>
+  <div class="search"><span>🔍</span>
+    <div class="crumb" id="crumb"></div>
+    <input id="q" placeholder="yer ara: mahalle, köy… (bu ilçede)" autocomplete="off">
+    <div class="hits" id="hits"></div>
+  </div>
+  <div class="seg" id="scope" title="kapsam: kartlar ve piramit buna göre"><span data-v="total" class="on">Toplam</span><span data-v="urban">Kent</span><span data-v="rural">Kır</span></div>
+  <div class="years">Yıl <input id="year" type="range" min="2007" max="2025" value="2024"> <b id="yearLabel">2024</b></div>
+  <button class="btn on" id="mapToggle">Harita</button>
+</header>
+<main>
+<nav class="side">
+  <a class="on" href="#ozet">Özet</a>
+  <div class="grp">Nüfus</div><a href="#nufus">Nüfus ve yoğunluk</a><a href="#yas">Yaş ve cinsiyet</a><a href="#hane">Hanehalkı</a>
+  <div class="grp">Sosyal</div><a href="#medeni">Medeni hal</a><a href="#dogum">Doğum · ölüm</a>
+  <div class="grp">Araçlar</div><a href="#yerlesim">Yerleşimler</a>
+</nav>
+<section class="panel">
+  <div class="ident"><h1 id="name">…</h1><span class="kind" id="kind"></span></div>
+  <div class="cards" id="cards"></div>
+  <div class="box" id="yas">
+    <div class="boxhead"><div><h3>Yaş piramidi</h3><div class="src" id="pyrSrc"></div></div>
+      <div class="ctl">kıyas <select id="cmp"><option value="2007">2007 (en eski)</option><option value="-10">10 yıl önce</option><option value="">yok</option></select></div></div>
+    <div class="pyr" id="pyr"></div>
+    <div class="pyrfoot" id="pyrFoot"></div>
+  </div>
+  <div class="foot" id="foot"></div>
+  <h2 class="sec" id="medeni">Medeni hal</h2>
+  <div class="cards" id="social"></div>
+  <h2 class="sec" id="dogum">Doğum · ölüm</h2>
+  <div class="cards" id="vital"></div>
+  <h2 class="sec" id="yerlesim">Yerleşimler</h2>
+  <div class="box"><table class="units" id="units"></table></div>
+  <p class="note" id="sources"></p>
+</section>
+<aside class="map">
+  <div class="maphead"><span id="mapTitle"></span><span>renk: <select id="mapVar"><option value="pop">Nüfus</option><option value="child">Çocuk oranı (0-17)</option><option value="change">10 yıllık değişim</option><option value="female">Kadın oranı</option></select></span></div>
+  <svg id="map" width="100%"></svg>
+  <div class="legend"><span id="legMin">az</span><span class="ramp"></span><span id="legMax">çok</span><span id="tip" style="margin-left:auto"></span></div>
+</aside>
+</main>
+<script src="district.js?v=1"></script>
+</body>
+</html>
