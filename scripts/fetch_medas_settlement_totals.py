@@ -30,6 +30,7 @@ sys.path.insert(0, "src")
 sys.path.insert(0, "scripts")
 
 from fetch_medas_districts import URL, check_visible, click_exact, settle
+import fetch_medas_neighbourhoods as nb
 from fetch_medas_neighbourhoods import (
     CELL_LIMIT,
     INDICATORS,
@@ -206,6 +207,9 @@ def fetch(page, level: str, province: str, years: list[int]) -> int:
 
 
 def main() -> None:
+    # The neighbourhood fetcher drops years before 2013 because the 18+ split starts
+    # there. Totals do not: MEDAS offers this measure from 2007, so take every year.
+    nb.FIRST_YEAR = 0
     ensure_dirs()
     OUT.mkdir(parents=True, exist_ok=True)
 

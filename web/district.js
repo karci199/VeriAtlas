@@ -285,7 +285,7 @@ function showPick(id, pinned) {
     const y = u.series[String(state.year)], tot = y ? y.child + y.adult : null, ch = unitValue(u, "change");
     pick.hidden = false; pick.classList.toggle("pinned", !!pinned);
     pick.innerHTML = `<b>${u.name}</b><small>${u.urban ? "mahalle" : "köy"} · ${state.year}${pinned ? "" : " · tıkla: sabitle"}</small>` + (y
-        ? `<div class="row"><span>nüfus <i>${fmt.format(tot)}</i></span><span>0-17 <i>%${pct(y.child / tot, 0)}</i></span>${ch == null ? "" : `<span>10 yıl <i>${(ch >= 0 ? "+" : "−") + pct(Math.abs(ch), 0)}%</i></span>`}</div>`
+        ? `<div class="row"><span>nüfus <i>${fmt.format(tot)}</i></span><span>0-17 <i>%${pct(y.child / tot, 0)}</i></span>${ch == null ? "" : `<span>nüfus, 10 yıl <i>${(ch >= 0 ? "+" : "−") + pct(Math.abs(ch), 0)}%</i></span>`}</div>`
         : `<div class="row"><span>bu yıl için veri yok</span></div>`);
 }
 

@@ -79,6 +79,10 @@ MEASURES = [
     ("hane-buyuklugu", ADNKS, "Ortalama hanehalkı büyüklüğü", False),  # 1
     ("hane-sayisi", ADNKS, "Toplam hanehalkı sayısı", False),  # 1
     ("hane-tipleri", ADNKS, "Hanehalkı tiplerine göre", True),  # 9
+    # The same two household measures at district level: 973 × 19 years is 18.487 cells,
+    # one query. Separate names so levels_for() sends them to İlçe Düzeyi only.
+    ("hane-buyuklugu-ilce", ADNKS, "Ortalama hanehalkı büyüklüğü", False),  # 1
+    ("hane-sayisi-ilce", ADNKS, "Toplam hanehalkı sayısı", False),  # 1
     ("goc-net", ADNKS, "Bölgelerin net göç bilgileri", False),  # 1
     ("goc-net-hizi", ADNKS, "Bölgelerin net göç hızı", False),  # 1
     ("goc-aldigi", ADNKS, "Bölgelerin aldığı göç", True),  # 28
