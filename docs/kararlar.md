@@ -628,6 +628,32 @@ Doğrulama: İzmir 2009 47,41 ve Şanlıurfa 2025 96,60; ilçede Harran 160,75, 
 - Gövde rengi alternatifleri (bordo, antrasit, petrol) reddedildi: bant anlam
   taşıyorsa gövde sabit kalmalı.
 
+**Excel kitabı kalıbı (23.08.2026, İznik.xlsx ile oturdu):**
+
+- Excel'de grafik yok; grafik arayüz (1) ve HTML rapor (2) işi. openpyxl grafikleri
+  OnlyOffice'te bozuluyor, kullanıcının çizdiği grafik de kaydederken kayboluyor.
+- Ana Sayfa = sol kart (Tanım · Değer · Birim; Kimlik / Coğrafya / Nüfus / Yerleşim) +
+  sağ içindekiler (ana başlık › alt başlık › sayfa, iç köprü `location` ile; `#` köprü
+  uyarı verir). Her sayfada A1 "« Ana Sayfa".
+- Sayfa kalıbı: 1–3. satır başlık şeridi (A–J birleşik; ana başlık / sayfa adı /
+  açıklama), tablo 4/5'ten, Toplam satırı başlığın ÜSTÜNDE (sıralama bozmasın),
+  notlar altta tam genişlik sarılı. Tüm hücreler çerçeveli ve ortalı; çok sütunlu
+  bölüm başlıkları solda. Zebra E9EDF4. Yakınlaştırma 140.
+- Sayılar sayı olarak kalır, birim hücre biçimiyle (`#,##0" km²"`, `0.0%`); yüzde
+  0–1 aralığında tutulur.
+- Referans yıl TÜİK 2024 (Endeksa ile birebir); 2025 yalnız Nüfus zaman serisinde.
+- Nüfus serisi 1935–2025 beşer yıl; 1995 ve 2005 geometrik ara değer (turuncu);
+  kent = merkez 7 mahalle (2012 öncesi TÜİK "şehir" ile birebir). Artış = bileşik
+  yıllık ortalama, ayrı sayfa (dönem tanesi). Kentleşme Nüfus sayfasında sütun.
+- Yerleşimler: Birim · Kent/Kır · Semt · Tür · Nüfus · Hane · Hane başına kişi · Alan.
+  Tür = Merkez / Kentsel belde / Kırsal belde / Köy; Kent = Merkez + Kentsel belde.
+  Semt = fiziksel yerleşim (bölünmüş belde → aynı semt adı). "Kopuk kentsel" türü
+  reddedildi. Alan Endeksa poligonu, güvenilmez (mahalle toplamı 578, ilçe poligonu
+  734, resmî 753 göl dahil; göl ≈298).
+- Ana Sayfa gerçek değerler: nüfus 45.208 (2024), kentsel pay %60,7 (2025: %61,4),
+  medyan yaş 42,9 (E 41,7 / K 44,1), rakım 98 m, Bursa'ya 76 km (son ikisi Wikipedia).
+- Açık karar: yoğunluk toplam alanla (753 → 60) mı kara alanıyla (455 → 99) mı.
+
 ## Oturum notu — 2026-08-14/15
 
 Bir oturumda yapılanlar, sıradaki oturum buradan devam etsin diye.
