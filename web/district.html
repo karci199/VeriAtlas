@@ -7,7 +7,7 @@
 <head>
 <meta charset="utf-8">
 <title>VeriAtlas — ilçe</title>
-<link rel="stylesheet" href="district.css?v=1">
+<link rel="stylesheet" href="district.css?v=2">
 </head>
 <body>
 <header>
@@ -30,14 +30,14 @@
 </nav>
 <section class="panel">
   <div class="ident"><h1 id="name">…</h1><span class="kind" id="kind"></span></div>
+  <div class="foot" id="foot"></div>
   <div class="cards" id="cards"></div>
   <div class="box" id="yas">
     <div class="boxhead"><div><h3>Yaş piramidi</h3><div class="src" id="pyrSrc"></div></div>
-      <div class="ctl">kıyas <select id="cmp"><option value="2007">2007 (en eski)</option><option value="-10">10 yıl önce</option><option value="">yok</option></select></div></div>
+    </div>
     <div class="pyr" id="pyr"></div>
     <div class="pyrfoot" id="pyrFoot"></div>
   </div>
-  <div class="foot" id="foot"></div>
   <h2 class="sec" id="medeni">Medeni hal</h2>
   <div class="cards" id="social"></div>
   <h2 class="sec" id="dogum">Doğum · ölüm</h2>
@@ -48,10 +48,10 @@
 </section>
 <aside class="map">
   <div class="maphead"><span id="mapTitle"></span><span>renk: <select id="mapVar"><option value="pop">Nüfus</option><option value="child">Çocuk oranı (0-17)</option><option value="change">10 yıllık değişim</option><option value="female">Kadın oranı</option></select></span></div>
-  <svg id="map" width="100%"></svg>
+  <svg id="map" width="100%" tabindex="0" title="tekerlek: yakınlaştır · sürükle: kaydır · çift tık / 0: sığdır · + −"></svg>
   <div class="legend"><span id="legMin">az</span><span class="ramp"></span><span id="legMax">çok</span><span id="tip" style="margin-left:auto"></span></div>
 </aside>
 </main>
-<script src="district.js?v=1"></script>
+<script src="district.js?v=2"></script>
 </body>
 </html>

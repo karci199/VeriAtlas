@@ -19,7 +19,7 @@ const pct = (x, d = 1) => (x * 100).toLocaleString("tr-TR", { minimumFractionDig
 const num = (x, d = 1) => x.toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d });
 const sum = (a) => a.reduce((s, v) => s + (v || 0), 0);
 
-const state = { year: 2024, scope: "total", cmp: "2007", mapVar: "pop", data: null, kids: null, geo: null };
+const state = { year: 2024, scope: "total", mapVar: "pop", data: null, kids: null, geo: null, view: null };
 
 // ---------- derived readings ----------
 /** Age bands for a scope and year: {bands, male, female} or null when the split is absent. */
@@ -112,10 +112,10 @@ function drawCards() {
         g ? `<div class="card wide"><div class="t">Yaş grupları</div><div class="ages">
             ${[["0-14", g.young, "var(--green)"], ["15-64", g.mid, "var(--blue)"], ["65+", g.old, "var(--amber)"]].map(([l, v, col]) =>
                 `<div style="width:${v * 100}%"><div class="lab"><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${col}"></i> ${l} <b>%${pct(v)}</b></div><div class="bar" style="background:${col}"></div></div>`).join("")}
-          </div><div class="keys">${gThen ? `<span>${yThen}: ${pct(gThen.young, 0)} · ${pct(gThen.mid, 0)} · ${pct(gThen.old, 0)}</span>` : ""}${a.estimate_from_band != null && scope !== "total" ? `<span>kent/kır yaş dağılımı: 65+ üstü bantlar tahmin</span>` : ""}</div></div>` : "",
+          </div><div class="keys">${gThen ? `<span>${yThen}: ${pct(gThen.young, 0)} · ${pct(gThen.mid, 0)} · ${pct(gThen.old, 0)}</span>` : ""}${scope !== "total" ? `<span>kent/kır ayrımı tahmin</span>` : ""}</div></div>` : "",
     ].join("");
 
-    $("#foot").textContent = `${d.units.length} yerleşim (${d.units.filter((u) => u.urban).length} kentsel mahalle, ${d.units.filter((u) => !u.urban).length} kır) · ayrıntı: Yerleşimler`;
+    $("#foot").textContent = `${d.units.length} yerleşim · ${d.units.filter((u) => u.urban).length} kentsel mahalle · ${d.units.filter((u) => !u.urban).length} köy`;
 }
 
 // ---------- pyramid ----------
@@ -123,17 +123,16 @@ function drawPyramid() {
     const { year, scope } = state;
     const a = ages(year, scope);
     const box = $("#pyr");
-    if (!a) { box.innerHTML = `<div class="src">Bu kapsamda ${year} için yaş dağılımı yok.</div>`; $("#pyrFoot").textContent = ""; return; }
-    const cmpYear = state.cmp === "" ? null : state.cmp === "-10" ? tenYearsBack(year, 2007) : parseInt(state.cmp, 10);
-    const b = cmpYear != null && cmpYear !== year ? ages(cmpYear, scope) : null;
-    const max = Math.max(...a.male, ...a.female, ...(b ? [...b.male, ...b.female] : [1]));
+    if (!a) { box.innerHTML = `<div class="src">${year} için bu kapsamda yaş dağılımı yok.</div>`; $("#pyrFoot").textContent = ""; return; }
+    const max = Math.max(...a.male, ...a.female, 1);
     const w = (v) => (100 * (v || 0)) / max;
     box.innerHTML = [...a.bands.keys()].reverse().map((i) => `
-        <div class="l">${b ? `<div class="bar" style="width:${w(b.male[i])}%;background:#2e323a;position:absolute;right:0"></div>` : ""}<div class="bar" style="width:${w(a.male[i])}%;background:var(--blue);position:relative" title="${a.bands[i]} erkek ${fmt.format(a.male[i])}"></div></div>
+        <div class="l"><div class="bar" style="width:${w(a.male[i])}%;background:var(--blue)" title="${a.bands[i]} erkek ${fmt.format(a.male[i])}"></div></div>
         <div class="lab">${a.bands[i]}</div>
-        <div class="r">${b ? `<div class="bar" style="width:${w(b.female[i])}%;background:#2e323a;position:absolute;left:0"></div>` : ""}<div class="bar" style="width:${w(a.female[i])}%;background:var(--acc);position:relative" title="${a.bands[i]} kadın ${fmt.format(a.female[i])}"></div></div>`).join("");
-    $("#pyrFoot").innerHTML = `<span>◀ Erkek ${fmt.format(sum(a.male))}</span><span>${b ? `gri: ${cmpYear} · ${fmt.format(total(b))} kişi` : ""}</span><span>Kadın ${fmt.format(sum(a.female))} ▶</span>`;
-    $("#pyrSrc").textContent = `ADNKS ${year} · 5 yaş grubu · ${{ total: "ilçe toplamı", urban: "kent", rural: "kır" }[scope]}${scope !== "total" ? " (kent/kır yaş dağılımı Endeksa 2024 paylarından tahmin; 2024 ölçüm)" : ""}`;
+        <div class="r"><div class="bar" style="width:${w(a.female[i])}%;background:var(--acc)" title="${a.bands[i]} kadın ${fmt.format(a.female[i])}"></div></div>`).join("");
+    $("#pyrFoot").innerHTML = `<span>◀ Erkek ${fmt.format(sum(a.male))}</span><span>Kadın ${fmt.format(sum(a.female))} ▶</span>`;
+    const est = scope !== "total" ? " · kent/kır ayrımı tahmin" : "";
+    $("#pyrSrc").textContent = `ADNKS ${year} · ${{ total: "toplam", urban: "kent", rural: "kır" }[scope]}${est}`;
 }
 
 // ---------- social / vital ----------
@@ -220,6 +219,41 @@ function drawMap() {
     $("#mapTitle").textContent = `${state.data.name} yerleşimleri · ${feats.length} birim · ${state.year}`;
 }
 
+// Pan / zoom: the viewBox is the camera. Wheel zooms about the pointer, drag pans,
+// double-click or "0" refits, "+"/"-" step. Paths are never rebuilt for this.
+function setView(v) { state.view = v; $("#map").setAttribute("viewBox", `${v.x} ${v.y} ${v.w} ${v.h}`); }
+function fitMap() { setView({ x: 0, y: 0, w: proj.W, h: proj.H }); }
+function zoomAt(factor, px, py) {
+    const v = state.view, svg = $("#map"), r = svg.getBoundingClientRect();
+    const fx = (px - r.left) / r.width, fy = (py - r.top) / r.height;
+    const w = Math.min(Math.max(v.w / factor, proj.W / 40), proj.W * 3), h = w * (v.h / v.w);
+    setView({ x: v.x + fx * (v.w - w), y: v.y + fy * (v.h - h), w, h });
+}
+function wireMap() {
+    const svg = $("#map");
+    let drag = null;
+    svg.addEventListener("wheel", (e) => { e.preventDefault(); zoomAt(e.deltaY < 0 ? 1.25 : 0.8, e.clientX, e.clientY); }, { passive: false });
+    svg.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, y: e.clientY, v: { ...state.view }, moved: false }; svg.setPointerCapture(e.pointerId); });
+    svg.addEventListener("pointermove", (e) => {
+        if (!drag) { const p = e.target.closest("path"); $("#tip").textContent = p ? p.dataset.tip : ""; return; }
+        const r = svg.getBoundingClientRect(), k = drag.v.w / r.width;
+        const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+        if (Math.abs(dx) + Math.abs(dy) > 3) { drag.moved = true; svg.classList.add("drag"); }
+        setView({ ...drag.v, x: drag.v.x - dx * k, y: drag.v.y - dy * k });
+    });
+    svg.addEventListener("pointerup", (e) => {
+        const p = e.target.closest("path");
+        if (drag && !drag.moved && p && p.dataset.id) highlight(p.dataset.id);
+        drag = null; svg.classList.remove("drag");
+    });
+    svg.addEventListener("dblclick", fitMap);
+    svg.addEventListener("keydown", (e) => {
+        const r = svg.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        if (e.key === "+" || e.key === "=") zoomAt(1.25, cx, cy); else if (e.key === "-") zoomAt(0.8, cx, cy); else if (e.key === "0") fitMap(); else return;
+        e.preventDefault();
+    });
+}
+
 // ---------- crumb, search ----------
 function drawCrumb() {
     const d = state.data;
@@ -236,7 +270,9 @@ function search(q) {
 function highlight(id) {
     document.querySelectorAll("#map path").forEach((p) => p.classList.toggle("hit", p.dataset.id === id));
     const row = document.querySelector(`#units tr[data-id="${id}"]`);
-    if (row) { row.scrollIntoView({ block: "center", behavior: "smooth" }); row.style.outline = "1px solid var(--blue)"; setTimeout(() => (row.style.outline = ""), 1500); }
+    if (row) { row.style.outline = "1px solid var(--amber)"; setTimeout(() => (row.style.outline = ""), 1500); }
+    const u = state.kids.units.find((x) => x.id === id), y = u && u.series[String(state.year)];
+    if (u) $("#tip").textContent = y ? `${u.name} · ${fmt.format(y.child + y.adult)} kişi · 0-17 %${pct(y.child / (y.child + y.adult), 0)}` : u.name;
 }
 
 // ---------- wiring ----------
@@ -253,16 +289,13 @@ async function main() {
     $("#year").min = Math.min(...ys); $("#year").max = Math.max(...ys);
     $("#sources").textContent = "Kaynaklar: " + data.sources.join(" · ") + " · TÜİK ilçe doğum ve ölüm sayıları.";
     proj = projection(geo.features, 600);
-    $("#map").setAttribute("viewBox", `0 0 ${proj.W} ${proj.H}`);
+    fitMap(); wireMap();
     drawCrumb(); render();
 
     $("#year").addEventListener("input", (e) => { state.year = +e.target.value; $("#yearLabel").textContent = state.year; render(); });
     $("#scope").addEventListener("click", (e) => { const s = e.target.closest("span[data-v]"); if (!s) return; state.scope = s.dataset.v; document.querySelectorAll("#scope span").forEach((x) => x.classList.toggle("on", x === s)); render(); });
-    $("#cmp").addEventListener("change", (e) => { state.cmp = e.target.value; drawPyramid(); });
     $("#mapVar").addEventListener("change", (e) => { state.mapVar = e.target.value; drawMap(); });
     $("#mapToggle").addEventListener("click", (e) => { $("main").classList.toggle("nomap"); e.target.classList.toggle("on"); });
-    $("#map").addEventListener("mousemove", (e) => { const p = e.target.closest("path"); $("#tip").textContent = p ? p.dataset.tip : ""; });
-    $("#map").addEventListener("click", (e) => { const p = e.target.closest("path"); if (p && p.dataset.id) highlight(p.dataset.id); });
     $("#units").addEventListener("click", (e) => { const r = e.target.closest("tr[data-id]"); if (r) highlight(r.dataset.id); });
     $("#q").addEventListener("input", (e) => search(e.target.value));
     $("#hits").addEventListener("mousedown", (e) => { const h = e.target.closest("div[data-id]"); if (h) { highlight(h.dataset.id); $("#q").value = ""; $("#hits").innerHTML = ""; } });
