@@ -56,6 +56,15 @@ def main(province_id: str) -> None:
         fold(f["properties"]["name_tr"]): f["properties"]["area_id"]
         for f in districts["features"]
     }
+    # Endeksa's "Merkez" is the district our registry names after the province.
+    county_names = {
+        fold(geo["features"][0]["properties"]["County"])
+        for geo in dump.values()
+        if geo.get("features")
+    }
+    unnamed = [k for k in by_name if k not in county_names]
+    if "merkez" in county_names and len(unnamed) == 1:
+        by_name["merkez"] = by_name[unnamed[0]]
 
     OUT.mkdir(parents=True, exist_ok=True)
     written = 0
