@@ -244,7 +244,7 @@ function drawLeft() {
         const rows = unitRows(); const sel = rows.find((r) => r.id === state.selected);
         if (sel) {
             const u = b.units.find((x) => x.id === sel.id);
-            sg = sign(`${b.name} · ${sel.kindTr}`, sel.name, `${sel.kind === "village" ? "Köy" : "Mahalle"} · ${b.name}`, "var(--sign-iznik)", KIND_COLOR[sel.kind] === "#5b8fd1" ? null : KIND_COLOR[sel.kind]);
+            sg = sign(`${b.name} · ${sel.kindTr}`, sel.name, `${({centre: "Mahalle", urban_town: "Belde", rural_town: "Belde", village: "Köy"})[sel.kind]} · ${b.name}`, "var(--sign-iznik)", KIND_COLOR[sel.kind] === "#5b8fd1" ? null : KIND_COLOR[sel.kind]);
             card = `<h3>Kimlik</h3><div class="kv">
               <span class="k">Kent / Kır</span><span class="v">${sel.urban}</span><span class="u"></span>
               <span class="k">Semt</span><span class="v">${sel.settlement}</span><span class="u"></span>
