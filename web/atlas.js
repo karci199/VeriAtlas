@@ -331,6 +331,11 @@ function drawCrumbs() {
     $("#up").disabled = state.path.length === 1;
 }
 const probed = new Map(); // url -> boolean, HEAD results
+async function hasFile(id) {
+    const url = `../public/atlas/${id}.json`;
+    if (!probed.has(url)) probed.set(url, fetch(url, { method: "HEAD" }).then((r) => r.ok, () => false));
+    return probed.get(url);
+}
 async function exists(level, id) {
     const url = GEO[level](id);
     if (cache.has(url)) return cache.get(url) !== null;
@@ -405,6 +410,8 @@ async function enter(path) {
     if (state.busy) return;
     const id = path.dataset.id, name = path.dataset.name;
     const level = layerLevel();
+    // A district with a file page opens it; the boundary drill-down stays for the rest.
+    if (level === "district" && (await hasFile(id))) { location.href = `district.html?id=${id}`; return; }
     if (!CHILD[level]) return;
     if (!(await fetchFeatures(level, id))) { $("#tip").innerHTML = `<b>${name}</b><small>alt sınırlar henüz yok</small>`; return; }
     state.busy = true;
