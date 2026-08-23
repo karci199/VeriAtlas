@@ -66,6 +66,11 @@ body {
 #context path:hover { fill-opacity: .9; }
 [data-context="off"] #context { display: none; }
 
+/* Outlines: the place itself, and its children when grandchildren are drawn */
+#outline path { fill: none; pointer-events: none; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+#outline path.own { stroke: var(--text-primary); stroke-opacity: .8; stroke-width: 1.6px; }
+#outline path.inner { stroke: var(--text-primary); stroke-opacity: .5; stroke-width: 1.1px; }
+
 /* Inset locator, bottom-left */
 #inset {
     position: absolute; left: 14px; bottom: 14px; width: 170px; height: auto;

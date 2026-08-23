@@ -213,7 +213,7 @@ async function loadPlace() {
 
     proj = projectionFor(features, 1000);
     setView(fitView());
-    drawAreas(); drawContext(); drawCrumbs(); drawLayer(); drawInset();
+    drawAreas(); drawContext(); drawOutline(); drawCrumbs(); drawLayer(); drawInset();
     const count = `${LEVEL_TR[layerLevel()]} düzeyi · ${features.length} alan`;
     $("#count").textContent = state.missing ? `${count} · ${state.missing} birimde alt sınır yok` : count;
     document.title = `VeriAtlas — ${place.name}`;
@@ -249,6 +249,15 @@ function drawAreas() {
         }
     }
     if (state.view) scaleLabels();
+}
+// Outlines on top: the place's own border (from its parent's file), and at depth 2 the
+// children's borders, so a district reads as a district among its neighbourhoods.
+async function drawOutline() {
+    const g = $("#outline"); g.innerHTML = "";
+    const place = here(), parent = state.path[state.path.length - 2];
+    const add = (f, cls) => { const el = document.createElementNS(SVG_NS, "path"); el.setAttribute("d", geoPath(f.geometry)); el.setAttribute("class", cls); g.appendChild(el); };
+    if (state.depth === 2) for (const f of await fetchFeatures(place.level, place.id)) add(f, "inner");
+    if (parent) { const own = (await fetchFeatures(parent.level, parent.id) || []).find((f) => f.properties.area_id === place.id); if (own) add(own, "own"); }
 }
 function drawContext() {
     const g = $("#context"); g.innerHTML = "";
@@ -342,7 +351,10 @@ function animateView(to, ms = 320) {
     });
 }
 function zoomAt(factor, cx, cy) { // cx,cy in viewBox units
-    const v = state.view;
+    const v = state.view, fitW = fitView().w;
+    // Bounds: 40× into the fitted view (the data has no more detail than that) and 3× out.
+    const w = v.w / factor;
+    if (w < fitW / 40 || w > fitW * 3) return;
     setView({ x: cx - (cx - v.x) / factor, y: cy - (cy - v.y) / factor, w: v.w / factor, h: v.h / factor });
 }
 function toUnits(ev) {
