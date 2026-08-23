@@ -76,6 +76,7 @@ body {
 
 /* Layer switch in the top bar */
 .seg button { padding: 4px 10px; }
+.seg button:disabled { opacity: .45; cursor: default; }
 #areas path.enterable { cursor: pointer; }
 /* The explorer's hover: a half-transparent ink ring, nothing else changes. */
 [data-hover="on"] #areas path:hover { stroke: var(--text-primary); stroke-opacity: .45; stroke-width: 1.4; }

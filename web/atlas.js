@@ -48,10 +48,10 @@ function rampColours(count) {
 }
 
 const DEFAULT_LOOK = {
-    theme: "dark", fill: "shade", hue: "mavi", stroke: 6, strokeColor: "dark",
+    theme: "dark", fill: "shade", hue: "mavi", stroke: 8, strokeColor: "accent",
     labels: "off", font: 11, hover: "on", context: "on", inset: "on",
 };
-const LOOK_KEY = "veriatlas.atlas.look.v3"; // bumped when defaults change, so a saved look does not hide them
+const LOOK_KEY = "veriatlas.atlas.look.v4"; // bumped when defaults change, so a saved look does not hide them
 let look = loadLook();
 
 function loadLook() {
@@ -125,7 +125,7 @@ function buildPanel() {
         fit();
     };
     $("#layer").onclick = (ev) => {
-        const b = ev.target.closest("button"); if (!b || state.busy) return;
+        const b = ev.target.closest("button"); if (!b || b.disabled || state.busy || +b.dataset.depth === state.depth) return;
         state.depth = +b.dataset.depth; loadPlace();
     };
 }
@@ -330,13 +330,25 @@ function drawCrumbs() {
     });
     $("#up").disabled = state.path.length === 1;
 }
-function drawLayer() {
+const probed = new Map(); // url -> boolean, HEAD results
+async function exists(level, id) {
+    const url = GEO[level](id);
+    if (cache.has(url)) return cache.get(url) !== null;
+    if (!probed.has(url)) probed.set(url, fetch(url, { method: "HEAD" }).then((r) => r.ok, () => false));
+    return probed.get(url);
+}
+async function drawLayer() {
     const l1 = CHILD[here().level], l2 = l1 && CHILD[l1];
     const box = $("#layer");
     box.hidden = !l2;
     if (!l2) return;
     box.innerHTML = [[1, l1], [2, l2]].map(([d, l]) =>
-        `<button data-depth="${d}" class="${state.depth === d ? "on" : ""}">${LEVEL_TR[l]}</button>`).join("");
+        `<button data-depth="${d}" class="${state.depth === d ? "on" : ""}"${d === 2 ? " disabled" : ""}>${LEVEL_TR[l]}</button>`).join("");
+    // The finer layer is offered only where at least one child has a boundary file.
+    const kids = await fetchFeatures(here().level, here().id) || [];
+    const any = (await Promise.all(kids.map((k) => exists(l1, k.properties.area_id)))).some(Boolean);
+    const b = box.querySelector('[data-depth="2"]');
+    if (b) { b.disabled = !any; b.title = any ? "" : "Bu ilde mahalle sınırı henüz yok"; }
 }
 
 // Inset: Türkiye with the current province marked, so a zoomed-in view keeps its bearings.
