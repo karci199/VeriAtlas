@@ -9,7 +9,14 @@ Endeksa's CountyId is its own; the join to our district ids is by folded name ag
 public/geo/districts/<province_id>.geojson. An unmatched county stops the run rather than
 writing a file under a guessed id.
 
-Run:  uv run python scripts/export_endeksa_geo.py TR-16
+District boundaries work the same way one level up: raw/endeksa/geo/districts.json holds
+`{<plate>: <geo/map level=1 response>}`; each county is matched by folded name to the
+district ids already in public/geo/districts/<province_id>.geojson (HDX), and the file is
+rewritten with Endeksa geometry so district and neighbourhood edges come from one source
+and sit edge to edge. A province with any unmatched county keeps its HDX file.
+
+Run:  uv run python scripts/export_endeksa_geo.py TR-16          # neighbourhoods
+      uv run python scripts/export_endeksa_geo.py --districts     # all provinces
 """
 
 import json
@@ -94,5 +101,37 @@ def main(province_id: str) -> None:
     print("written", written)
 
 
+def districts() -> None:
+    dump = json.loads((RAW / "districts.json").read_text(encoding="utf-8"))
+    ok, kept = 0, []
+    for plate, geo in sorted(dump.items(), key=lambda kv: int(kv[0])):
+        province_id = f"TR-{int(plate):02d}"
+        path = DISTRICTS / f"{province_id}.geojson"
+        current = json.loads(path.read_text(encoding="utf-8"))
+        by_name = {fold(f["properties"]["name_tr"]): f["properties"] for f in current["features"]}
+        feats, missing = [], []
+        for f in geo.get("features") or []:
+            name = f["properties"]["description"].strip()
+            props = by_name.get(fold(name))
+            if props is None or not f.get("geometry"):
+                missing.append(name)
+                continue
+            feats.append({"type": "Feature", "properties": {**props, "endeksa_id": int(f["id"])}, "geometry": f["geometry"]})
+        if missing or len(feats) != len(current["features"]):
+            kept.append((province_id, missing, len(feats), len(current["features"])))
+            continue
+        path.write_text(
+            json.dumps({**current, "source_id": "endeksa", "licence": None, "retrieved_at": geo.get("retrieved_at"), "features": feats}, ensure_ascii=False, separators=(",", ":")),
+            encoding="utf-8",
+        )
+        ok += 1
+    print("rewritten", ok)
+    for province_id, missing, got, want in kept:
+        print("kept HDX", province_id, f"{got}/{want}", "unmatched:", ", ".join(missing))
+
+
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else "TR-16")
+    if "--districts" in sys.argv:
+        districts()
+    else:
+        main(sys.argv[1] if len(sys.argv) > 1 else "TR-16")

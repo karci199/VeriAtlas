@@ -276,7 +276,8 @@ function drawOutline() {
     let outer = "", inner = "";
     for (const e of seen.values()) {
         const d = "M" + proj.to(e.a).map((v) => v.toFixed(1)).join(" ") + "L" + proj.to(e.b).map((v) => v.toFixed(1)).join(" ");
-        if (e.n === 1) outer += d; else if (state.depth === 2 && e.parents.size > 1) inner += d;
+        // The country needs no frame (the explorer draws none); a place inside one does.
+        if (e.n === 1) { if (state.path.length > 1) outer += d; } else if (state.depth === 2 && e.parents.size > 1) inner += d;
     }
     for (const [d, cls] of [[inner, "inner"], [outer, "own"]]) {
         if (!d) continue;
