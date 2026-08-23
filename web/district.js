@@ -76,6 +76,12 @@ function delta(now, then, kind) {
     return `<span class="${cls}">${arrow} ${num(Math.abs(d))}</span>`;
 }
 
+/** A two-decimal delta for small ratios (household size). */
+function delta2(now, then) {
+    if (now == null || then == null || !isFinite(now - then)) return "";
+    const d = now - then, cls = d > 0 ? "up" : d < 0 ? "down" : "";
+    return `<span class="${cls}">${d > 0 ? "▲" : d < 0 ? "▼" : "•"} ${num(Math.abs(d), 2)}</span>`;
+}
 /** "/ N yıl" after a delta — empty when the span is zero or the delta is empty. */
 const span = (d, years) => (d && years > 0 ? d + ` <span>/ ${years} yıl</span>` : "");
 
@@ -117,7 +123,7 @@ function drawCards() {
 
     $("#cards").innerHTML = [
         card("Nüfus", pop == null ? null : fmt.format(pop), "kişi", [span(delta(pop, popThen, "n"), yPop != null ? year - yPop : 0)]),
-        card("Hane başına nüfus", hh == null ? null : num(hh, scope === "total" ? 1 : 2), "kişi", [span(delta(hh, hhThen, ""), hhSpan)], scope !== "total" && year !== 2024 ? "kent/kır yalnız 2024" : ""),
+        card("Hane başına nüfus", hh == null ? null : num(hh, 2), "kişi", [span(delta2(hh, hhThen), hhSpan)], scope !== "total" && year !== 2024 ? "kent/kır yalnız 2024" : ""),
         card("Yüzölçümü", fmt.format(Math.round(areaKm2)), "km²", [`<span>${num(pop / areaKm2)} kişi/km²</span>`]),
         card("Kentleşme", "%" + pct(urbanShare), "kentte", [span(delta(urbanShare, urbanThen, "pt"), yPop != null ? year - yPop : 0)]),
         card("Çocuk nüfus (0-17)", child == null ? null : "%" + pct(child), "", child == null ? [`<span>0-17 ayrımı ${firstKidSplit}'ten başlıyor</span>`] : [span(delta(child, childThen, "pt"), year - tenYearsBack(year, firstKidSplit))]),
