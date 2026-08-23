@@ -265,7 +265,7 @@ function bindMap() {
     svg.addEventListener("contextmenu", (ev) => { ev.preventDefault(); goUp(); });
 
     let drag = null;
-    svg.addEventListener("pointerdown", (ev) => { if (ev.button !== 0) return; drag = { x: ev.clientX, y: ev.clientY, v: { ...state.view }, moved: false }; svg.setPointerCapture(ev.pointerId); });
+    svg.addEventListener("pointerdown", (ev) => { if (ev.button !== 0) return; drag = { x: ev.clientX, y: ev.clientY, v: { ...state.view }, moved: false, path: ev.target.closest("path") }; svg.setPointerCapture(ev.pointerId); });
     svg.addEventListener("pointermove", (ev) => {
         if (drag) {
             const r = svg.getBoundingClientRect();
@@ -287,9 +287,10 @@ function bindMap() {
         } else tip.hidden = true;
     });
     svg.addEventListener("pointerup", async (ev) => {
-        const moved = drag && drag.moved; drag = null; svg.classList.remove("dragging");
-        if (moved || ev.button !== 0) return;
-        const path = ev.target.closest("path"); if (!path) return;
+        // Pointer capture makes the svg the target of pointerup, so the area is the one
+        // the press started on.
+        const path = drag && drag.path, moved = drag && drag.moved; drag = null; svg.classList.remove("dragging");
+        if (moved || ev.button !== 0 || !path) return;
         const here = state.path[state.path.length - 1];
         if (!CHILD[here.level]) return;
         if (!(await hasChildren(here.level, path.dataset.id))) { tip.innerHTML = `<b>${path.dataset.name}</b><small>alt sınırlar henüz yok</small>`; return; }

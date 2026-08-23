@@ -47,7 +47,11 @@ body {
 #areas path.shade { fill: var(--shade); }
 [data-fill="none"] #areas path { fill: transparent; }
 /* Hover as in the explorer: a half-transparent ink ring, the fill stays readable. */
-[data-hover="on"] #areas path:hover { stroke: var(--text-primary); stroke-opacity: .55; stroke-width: 1.4px; cursor: pointer; }
+[data-hover="on"] #areas path:hover {
+    filter: brightness(1.35) saturate(1.15);
+    stroke: var(--text-primary); stroke-opacity: .7; stroke-width: 1.6px; cursor: pointer;
+}
+[data-theme="light"][data-hover="on"] #areas path:hover { filter: brightness(0.85) saturate(1.3); }
 #areas path.enterable { cursor: pointer; }
 
 #labels text {
