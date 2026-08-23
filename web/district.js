@@ -276,26 +276,28 @@ function wireMap() {
     const svg = $("#map");
     let drag = null;
     svg.addEventListener("wheel", (e) => { e.preventDefault(); zoomAt(e.deltaY < 0 ? 1.25 : 0.8, e.clientX, e.clientY); }, { passive: false });
-    // Pointer capture retargets pointerup to the svg, so the path under the press is
-    // remembered here; a press that did not move is a click on it.
-    svg.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, y: e.clientY, v: { ...state.view }, moved: false, path: e.target.closest("path") }; svg.setPointerCapture(e.pointerId); });
-    svg.addEventListener("pointermove", (e) => {
-        if (!drag) {
-            const p = e.target.closest("path"), id = p && p.dataset.id;
-            if (id === state.hover) return; // same shape: nothing to redraw
-            state.hover = id || null;
-            if (id) showPick(id, id === state.pinned); else if (state.pinned) showPick(state.pinned, true); else $("#pick").hidden = true;
-            return;
-        }
+    // No pointer capture: the press is remembered, the window follows the drag, and a
+    // press that did not move is a click on the shape it started on.
+    svg.addEventListener("pointerdown", (e) => { if (e.button !== 0) return; drag = { x: e.clientX, y: e.clientY, v: { ...state.view }, moved: false, path: e.target.closest("path") }; e.preventDefault(); });
+    window.addEventListener("pointermove", (e) => {
+        if (!drag) return;
         const r = svg.getBoundingClientRect(), k = drag.v.w / r.width;
         const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-        if (Math.abs(dx) + Math.abs(dy) > 3) { drag.moved = true; svg.classList.add("drag"); }
-        setView({ ...drag.v, x: drag.v.x - dx * k, y: drag.v.y - dy * k });
+        if (!drag.moved && Math.abs(dx) + Math.abs(dy) > 4) { drag.moved = true; svg.classList.add("drag"); }
+        if (drag.moved) setView({ ...drag.v, x: drag.v.x - dx * k, y: drag.v.y - dy * k });
     });
-    svg.addEventListener("pointerup", () => {
-        const p = drag && drag.path;
-        if (drag && !drag.moved && p && p.dataset.id) highlight(p.dataset.id);
+    window.addEventListener("pointerup", () => {
+        if (!drag) return;
+        const p = drag.path;
+        if (!drag.moved && p && p.dataset.id) highlight(p.dataset.id);
         drag = null; svg.classList.remove("drag");
+    });
+    svg.addEventListener("pointermove", (e) => {
+        if (drag) return;
+        const p = e.target.closest("path"), id = p && p.dataset.id;
+        if (id === state.hover) return;
+        state.hover = id || null;
+        if (id) showPick(id, id === state.pinned); else if (state.pinned) showPick(state.pinned, true); else $("#pick").hidden = true;
     });
     svg.addEventListener("pointerleave", () => { state.hover = null; if (state.pinned) showPick(state.pinned, true); else $("#pick").hidden = true; });
     svg.addEventListener("dblclick", fitMap);
@@ -385,7 +387,8 @@ async function main() {
     $("#year").min = Math.min(...ys); $("#year").max = Math.max(...ys);
     state.areaKm2 = areaKm2Of(geo.features);
     const box = $("#map").getBoundingClientRect();
-    proj = projection(geo.features, 600, Math.max(box.width / Math.max(box.height, 1), 0.5));
+    const aspect = box.width > 0 && box.height > 0 ? box.width / box.height : 1.2;
+    proj = projection(geo.features, 600, Math.max(aspect, 0.5));
     fitMap(); wireMap(); wireViews();
     drawCrumb(); render();
 
