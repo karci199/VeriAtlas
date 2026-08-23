@@ -410,6 +410,7 @@ async function enter(path) {
     state.busy = true;
     $("#tip").hidden = true;
     const feature = findFeature(id);
+    here().depth = state.depth; // remembered for the way back
     await animateView(boxView(projBounds(feature.geometry)), 260);
     if (state.depth === 2) { // the clicked area's parent is skipped on the path, but named
         const parentId = feature.properties.parent_id;
@@ -427,7 +428,7 @@ async function goTo(index) {
     state.busy = true;
     await animateView(scaled(fitView(), 0.6), 200);
     const leaving = here().id;
-    state.path = state.path.slice(0, index + 1); state.depth = 1;
+    state.path = state.path.slice(0, index + 1); state.depth = here().depth || 1;
     await loadPlace();
     // Open from the box of the place just left, so the eye lands where it was.
     const f = findFeature(leaving);
