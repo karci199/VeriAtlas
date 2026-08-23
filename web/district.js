@@ -130,8 +130,7 @@ function drawPyramid() {
         <div class="lab">${a.bands[i]}</div>
         <div class="r"><div class="bar" style="width:${w(a.female[i])}%;background:var(--acc)" title="${a.bands[i]} kadın ${fmt.format(a.female[i])}"></div></div>`).join("");
     $("#pyrFoot").innerHTML = `<span>◀ Erkek ${fmt.format(sum(a.male))}</span><span>Kadın ${fmt.format(sum(a.female))} ▶</span>`;
-    $("#pyrSrc").textContent = `ADNKS · ${{ total: "toplam", urban: "kent", rural: "kır" }[scope]}`;
-    $("#pyrYear").value = String(year);
+    $("#pyrSrc").textContent = `ADNKS ${year} · ${{ total: "toplam", urban: "kent", rural: "kır" }[scope]}`;
 }
 
 // ---------- social / vital ----------
@@ -355,8 +354,6 @@ async function main() {
     $("#name").textContent = data.name;
     const ys = Object.keys(data.age_series).map(Number);
     $("#year").min = Math.min(...ys); $("#year").max = Math.max(...ys);
-    $("#pyrYear").innerHTML = ys.sort((a, b) => b - a).map((y) => `<option value="${y}">${y}</option>`).join("");
-    $("#pyrYear").addEventListener("change", (e) => { state.year = +e.target.value; $("#year").value = state.year; $("#yearLabel").textContent = state.year; render(); });
     state.areaKm2 = areaKm2Of(geo.features);
     const box = $("#map").getBoundingClientRect();
     proj = projection(geo.features, 600, Math.max(box.width / Math.max(box.height, 1), 0.5));
