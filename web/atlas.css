@@ -46,8 +46,8 @@ body {
 }
 #areas path.shade { fill: var(--shade); }
 [data-fill="none"] #areas path { fill: transparent; }
-[data-hover="on"] #areas path:hover { fill: var(--map-hover); cursor: pointer; }
-[data-hover="on"][data-fill="none"] #areas path:hover { fill: color-mix(in srgb, var(--map-hover) 35%, transparent); }
+/* Hover as in the explorer: a half-transparent ink ring, the fill stays readable. */
+[data-hover="on"] #areas path:hover { stroke: var(--text-primary); stroke-opacity: .55; stroke-width: 1.4px; cursor: pointer; }
 #areas path.enterable { cursor: pointer; }
 
 #labels text {
@@ -103,6 +103,7 @@ body {
 .choices button.on { background: var(--bg-selected); border-color: var(--accent); }
 .swatches { display: flex; gap: 6px; }
 .swatches button { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; }
+#labels text { font-weight: 400; letter-spacing: .01em; }
 .swatches button.on { border-color: var(--text-primary); }
 input[type=range] { width: 100%; accent-color: var(--accent); }
 .link-btn { background: none; border: 0; color: var(--accent); cursor: pointer; font: inherit; text-align: left; padding: 0; }

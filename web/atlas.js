@@ -14,19 +14,41 @@ const GEO = {
 const LEVEL_TR = { country: "İl", province: "İlçe", district: "Mahalle" };
 const CHILD = { country: "province", province: "district", district: null };
 
+// The explorer's accent hues (K5); fills are built from the hue as an HSL ramp, exactly
+// as explorer.js rampColours() does, so the two pages look like one thing.
 const HUES = [
-    { id: "mavi", dark: "#3b5c8c", light: "#c7d7ec" },
-    { id: "yesil", dark: "#3a6b5e", light: "#c9e3d9" },
-    { id: "turuncu", dark: "#8c4d3a", light: "#f2d3c7" },
-    { id: "mor", dark: "#5b4778", light: "#dfd2ec" },
-    { id: "gri", dark: "#3a3a3a", light: "#dedede" },
+    { id: "mavi", dark: "#7fa8d8", light: "#286bbb" },
+    { id: "yesil", dark: "#6fbfae", light: "#00847e" },
+    { id: "turuncu", dark: "#e8735c", light: "#e56e5a" },
+    { id: "mor", dark: "#b98ad6", light: "#6d3e91" },
+    { id: "gri", dark: "#a0a0a0", light: "#555555" },
 ];
+function hexToHsl(hex) {
+    const n = parseInt(hex.slice(1), 16), r = (n >> 16) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2; let h = 0, s = 0;
+    if (max !== min) {
+        const d = max - min; s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    }
+    return { h: h * 60, s: s * 100, l: l * 100 };
+}
+function rampColours(count) {
+    const hue = HUES.find((x) => x.id === look.hue) || HUES[0];
+    const light = look.theme === "light";
+    const { h, s } = hexToHsl(light ? hue.light : hue.dark);
+    const [l0, l1] = light ? [93, 28] : [24, 76];
+    const [s0, s1] = light ? [Math.min(s, 35), s] : [Math.min(s, 40), Math.min(95, s + 12)];
+    return Array.from({ length: count }, (_, i) => {
+        const t = count < 2 ? 1 : i / (count - 1);
+        return `hsl(${h.toFixed(0)} ${(s0 + (s1 - s0) * t).toFixed(0)}% ${(l0 + (l1 - l0) * t).toFixed(0)}%)`;
+    });
+}
 
 const DEFAULT_LOOK = {
-    theme: "dark", fill: "flat", hue: "mavi", stroke: 8, strokeColor: "dark",
+    theme: "dark", fill: "shade", hue: "mavi", stroke: 6, strokeColor: "dark",
     labels: "hover", font: 11, hover: "on",
 };
-const LOOK_KEY = "veriatlas.atlas.look";
+const LOOK_KEY = "veriatlas.atlas.look.v2"; // bumped when defaults change, so a saved look does not hide them
 let look = loadLook();
 
 function loadLook() {
@@ -53,19 +75,21 @@ function applyLook() {
     root.dataset.hover = look.hover;
 
     const hue = HUES.find((h) => h.id === look.hue) || HUES[0];
-    root.style.setProperty("--map-fill", light ? hue.light : hue.dark);
+    root.style.setProperty("--accent", light ? hue.light : hue.dark);
+    root.style.setProperty("--map-fill", rampColours(6)[2]);
     root.style.setProperty("--map-hover", light ? "#ffd98a" : "#d9a441");
     root.style.setProperty("--map-stroke-width", (look.stroke / 10) + "px");
-    root.style.setProperty("--map-font", look.font + "px");
+    // Explorer draws borders in the card colour: a gap between areas, not a line on them.
     const strokeColors = {
-        dark: light ? "#2b2b2b" : "#0d0d0d",
-        light: light ? "#ffffff" : "#cfcfcf",
-        accent: light ? "#286bbb" : "#7fa8d8",
+        dark: light ? "#ffffff" : "#1a1a1a",
+        light: light ? "#9aa7b8" : "#cfcfcf",
+        accent: light ? hue.light : hue.dark,
     };
     root.style.setProperty("--map-stroke", strokeColors[look.strokeColor]);
 
     localStorage.setItem(LOOK_KEY, JSON.stringify(look));
     syncPanel();
+    if (state.view) { drawAreas(); scaleLabels(); }
 }
 
 function syncPanel() {
@@ -85,11 +109,11 @@ function buildPanel() {
             look[key] = b.dataset.value; applyLook(); if (after) after();
         };
     };
-    pick("set-theme", "theme"); pick("set-fill", "fill", drawAreas); pick("set-hue", "hue");
+    pick("set-theme", "theme"); pick("set-fill", "fill"); pick("set-hue", "hue");
     pick("set-stroke-color", "strokeColor"); pick("set-labels", "labels"); pick("set-hover", "hover");
     $("#set-stroke").oninput = (e) => { look.stroke = +e.target.value; applyLook(); };
     $("#set-font").oninput = (e) => { look.font = +e.target.value; applyLook(); };
-    $("#set-reset").onclick = () => { look = { ...DEFAULT_LOOK }; applyLook(); drawAreas(); };
+    $("#set-reset").onclick = () => { look = { ...DEFAULT_LOOK }; applyLook(); };
     $("#look-toggle").onclick = () => {
         const p = $("#look"); p.hidden = !p.hidden;
         $("#look-toggle").setAttribute("aria-expanded", String(!p.hidden));
@@ -156,24 +180,22 @@ async function hasChildren(level, id) {
 }
 
 // ---------- drawing ----------
-function hashShade(id) {
+function hashShade(id, ramp) { // deterministic per area id, so a shade never jumps on redraw
     let h = 0; for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
-    const light = look.theme === "light";
-    const base = HUES.find((x) => x.id === look.hue) || HUES[0];
-    const t = (h % 1000) / 1000; // 0..1
-    return `color-mix(in srgb, ${light ? base.light : base.dark} ${Math.round(55 + t * 45)}%, ${light ? "#ffffff" : "#000000"})`;
+    return ramp[h % ramp.length];
 }
 
 function drawAreas() {
     const here = state.path[state.path.length - 1];
     const areas = $("#areas"), labels = $("#labels");
     areas.innerHTML = ""; labels.innerHTML = "";
+    const ramp = rampColours(6);
     for (const f of state.features) {
         const p = f.properties;
         const el = document.createElementNS("http://www.w3.org/2000/svg", "path");
         el.setAttribute("d", geoPath(f.geometry));
         el.dataset.id = p.area_id; el.dataset.name = p.name_tr;
-        if (look.fill === "shade") { el.classList.add("shade"); el.style.setProperty("--shade", hashShade(p.area_id)); }
+        if (look.fill === "shade") { el.classList.add("shade"); el.style.setProperty("--shade", hashShade(p.area_id, ramp)); }
         if (CHILD[here.level]) el.classList.add("enterable");
         areas.appendChild(el);
 
@@ -186,7 +208,7 @@ function drawAreas() {
         }
     }
     $("#count").textContent = `${LEVEL_TR[here.level]} düzeyi · ${state.features.length} alan`;
-    scaleLabels();
+    if (state.view) scaleLabels();
 }
 
 // Labels keep a constant on-screen size: SVG text scales with the viewBox, so the font is
@@ -196,7 +218,6 @@ function scaleLabels() {
     const rect = svg.getBoundingClientRect();
     const unitsPerPx = Math.max(v.w / rect.width, v.h / rect.height);
     document.documentElement.style.setProperty("--map-font", (look.font * unitsPerPx) + "px");
-    $("#labels").style.setProperty("--sw", (3 * unitsPerPx) + "px");
     for (const t of $("#labels").children) t.style.strokeWidth = (3 * unitsPerPx) + "px";
 }
 
