@@ -277,6 +277,8 @@ function bindMap() {
         const path = ev.target.closest("path");
         for (const t of $("#labels").querySelectorAll(".hot")) t.classList.remove("hot");
         if (path) {
+            // The ring is a stroke, and later siblings paint over it: raise the hovered area.
+            if (path !== path.parentNode.lastElementChild) path.parentNode.appendChild(path);
             const lbl = $("#labels").querySelector(`[data-id="${path.dataset.id}"]`); if (lbl) lbl.classList.add("hot");
             const here = state.path[state.path.length - 1];
             tip.hidden = false; tip.innerHTML = `<b>${path.dataset.name}</b><small>${LEVEL_TR[here.level]}${CHILD[here.level] ? " · tıkla: içine gir" : ""}</small>`;
