@@ -314,7 +314,7 @@ function drawLeft() {
     $("#card").innerHTML = card; $("#mini").innerHTML = mini; $("#mini").className = "card mini";
     const gs = $("#pyr-g"); if (gs) gs.querySelectorAll("button").forEach((x) => x.onclick = () => { state.pyrGroup = x.dataset.g; drawLeft(); });
     const ys = $("#pyr-y"); if (ys) ys.onchange = () => { state.pyrYear = +ys.value; drawLeft(); };
-    const sg = $("#share-g"); if (sg) sg.querySelectorAll("button").forEach((x) => x.onclick = () => { const cur = new Set(state.shareGroups || ["district", "urban", "rural"]); cur.has(x.dataset.g) ? (cur.size > 1 && cur.delete(x.dataset.g)) : cur.add(x.dataset.g); state.shareGroups = ["district", "urban", "rural"].filter((k) => cur.has(k)); drawLeft(); });
+    const shg = $("#share-g"); if (shg) shg.querySelectorAll("button").forEach((x) => x.onclick = () => { const cur = new Set(state.shareGroups || ["district", "urban", "rural"]); cur.has(x.dataset.g) ? (cur.size > 1 && cur.delete(x.dataset.g)) : cur.add(x.dataset.g); state.shareGroups = ["district", "urban", "rural"].filter((k) => cur.has(k)); drawLeft(); });
 }
 function expand65(age, parent) { // 14-band unit → 19 bands; 65+ split by the parent's 65+ shape (estimate)
     const out = { bands: parent.bands, male: age.male.slice(0, 13), female: age.female.slice(0, 13), estimate_from_band: 13 };
