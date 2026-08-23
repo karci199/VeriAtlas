@@ -36,8 +36,8 @@ HEADERS = {
     "Origin": "https://www.endeksa.com",
     "Referer": "https://www.endeksa.com/",
 }
-PAUSE = 1.0
-WORKERS = 4
+PAUSE = 2.5
+WORKERS = 1
 
 
 def decrypt(text: str) -> dict:
@@ -59,7 +59,7 @@ def get(client: httpx.Client, **params) -> dict:
             return decrypt(r.text)
         except (httpx.HTTPError, ValueError) as exc:
             last = exc
-            time.sleep(5 * (attempt + 1))
+            time.sleep(30 * (attempt + 1))
     raise RuntimeError(f"{params}: {last}")
 
 
@@ -101,7 +101,11 @@ def main(argv: list[str]) -> None:
                 print(f"TR-{plate:02d}: FAILED {exc}", flush=True)
                 continue
             subprocess.run(
-                [sys.executable, str(ROOT / "scripts" / "export_endeksa_geo.py"), f"TR-{plate:02d}"],
+                [
+                    sys.executable,
+                    str(ROOT / "scripts" / "export_endeksa_geo.py"),
+                    f"TR-{plate:02d}",
+                ],
                 check=True,
             )
 
