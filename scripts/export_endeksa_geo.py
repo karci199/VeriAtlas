@@ -108,7 +108,19 @@ def districts() -> None:
         province_id = f"TR-{int(plate):02d}"
         path = DISTRICTS / f"{province_id}.geojson"
         current = json.loads(path.read_text(encoding="utf-8"))
-        by_name = {fold(f["properties"]["name_tr"]): f["properties"] for f in current["features"]}
+        by_name = {
+            fold(f["properties"]["name_tr"]): f["properties"]
+            for f in current["features"]
+        }
+        # Endeksa calls the central district "Merkez"; our registry names it after the
+        # province (Adıyaman, Bayburt…). The one district our file has that Endeksa does
+        # not name is that one.
+        endeksa_names = {
+            fold(f["properties"]["description"]) for f in geo.get("features") or []
+        }
+        unnamed = [k for k in by_name if k not in endeksa_names]
+        if "merkez" in endeksa_names and len(unnamed) == 1:
+            by_name["merkez"] = by_name[unnamed[0]]
         feats, missing = [], []
         for f in geo.get("features") or []:
             name = f["properties"]["description"].strip()
@@ -116,18 +128,36 @@ def districts() -> None:
             if props is None or not f.get("geometry"):
                 missing.append(name)
                 continue
-            feats.append({"type": "Feature", "properties": {**props, "endeksa_id": int(f["id"])}, "geometry": f["geometry"]})
+            feats.append(
+                {
+                    "type": "Feature",
+                    "properties": {**props, "endeksa_id": int(f["id"])},
+                    "geometry": f["geometry"],
+                }
+            )
         if missing or len(feats) != len(current["features"]):
             kept.append((province_id, missing, len(feats), len(current["features"])))
             continue
         path.write_text(
-            json.dumps({**current, "source_id": "endeksa", "licence": None, "retrieved_at": geo.get("retrieved_at"), "features": feats}, ensure_ascii=False, separators=(",", ":")),
+            json.dumps(
+                {
+                    **current,
+                    "source_id": "endeksa",
+                    "licence": None,
+                    "retrieved_at": geo.get("retrieved_at"),
+                    "features": feats,
+                },
+                ensure_ascii=False,
+                separators=(",", ":"),
+            ),
             encoding="utf-8",
         )
         ok += 1
     print("rewritten", ok)
     for province_id, missing, got, want in kept:
-        print("kept HDX", province_id, f"{got}/{want}", "unmatched:", ", ".join(missing))
+        print(
+            "kept HDX", province_id, f"{got}/{want}", "unmatched:", ", ".join(missing)
+        )
 
 
 if __name__ == "__main__":
