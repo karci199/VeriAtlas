@@ -96,13 +96,16 @@ function drawCards() {
     $("#kind").textContent = `İlçe · ${d.province} · ${year} · ${scopeTr}`;
 
     const pop = popOf(year, scope);
-    const yPop = d.series.filter((r) => r.year <= year - 10).map((r) => r.year).pop(); // latest year at least ten back
-    const popThen = yPop != null && year - yPop <= 12 ? popOf(yPop, scope) : null;
+    // Base for the change: the latest year at least ten back, as long as the series is
+    // yearly there; before 2007 only census years exist, so 2007 is the base instead.
+    let yPop = d.series.filter((r) => r.year <= year - 10).map((r) => r.year).pop();
+    if (yPop == null || year - yPop > 12) yPop = year > 2007 ? 2007 : null;
+    const popThen = yPop != null ? popOf(yPop, scope) : null;
     const yThen = tenYearsBack(year, 2007);
     const a = ages(year, scope), aThen = ages(yThen, scope);
     const g = a && ageGroups(a), gThen = aThen && ageGroups(aThen);
     const urbanShare = popOf(year, "urban") / popOf(year, "total");
-    const urbanThen = yPop != null && year - yPop <= 12 ? popOf(yPop, "urban") / popOf(yPop, "total") : null;
+    const urbanThen = yPop != null ? popOf(yPop, "urban") / popOf(yPop, "total") : null;
     const firstKidSplit = state.kids.years.find((y) => state.kids.totals[String(y)].urban.child != null);
     const child = childShare(year, scope), childThen = childShare(tenYearsBack(year, firstKidSplit), scope);
 
@@ -161,7 +164,7 @@ function drawSocial() {
     const cols = [["never", "Hiç evlenmedi", "var(--blue)"], ["married", "Evli", "var(--green)"], ["divorced", "Boşandı", "var(--amber)"], ["widowed", "Eşi öldü", "#6b7280"]];
     if (!t || !cols.every(([k]) => t[k] != null)) { $("#social").innerHTML = card("Medeni hal (15+)", null); return; }
     const tot = sum(cols.map(([k]) => t[k]));
-    $("#social").innerHTML = `<div class="card wide"><div class="t">Medeni hal (15+)${state.year !== 2024 ? " · yalnız 2024" : ""}</div>
+    $("#social").innerHTML = `<div class="card wide"><div class="t">Medeni hal (15+)${state.year !== 2024 ? ` <span class="lvl" style="position:static">2024 verisi</span>` : ""}</div>
         <div class="strip">${cols.map(([k, , c]) => `<span style="width:${(100 * t[k]) / tot}%;background:${c}"></span>`).join("")}</div>
         <div class="keys">${cols.map(([k, l, c]) => `<span><i style="background:${c}"></i>${l} <b>%${pct(t[k] / tot)}</b></span>`).join("")}</div></div>`;
 }
@@ -331,7 +334,7 @@ function wireViews() {
         const a = e.target.closest("a[data-view]"); if (!a) return; e.preventDefault();
         history.replaceState(null, "", a.getAttribute("href"));
         showView(a.dataset.view);
-        if (a.dataset.to) { const t = document.getElementById(a.dataset.to); if (t) t.scrollIntoView({ block: "start" }); }
+        if (a.dataset.to) { const t = document.getElementById(a.dataset.to), panel = $(".panel"); if (t) panel.scrollTop = t.offsetTop - panel.offsetTop - 8; }
         document.querySelectorAll("#nav a").forEach((x) => x.classList.toggle("on", x === a));
     });
     const [view, to] = location.hash.slice(1).split("/");
@@ -348,7 +351,7 @@ function drawAgeDetail() {
         card("Kadın oranı", "%" + pct((tot - males) / tot), "", [`<span>${fmt.format(tot - males)} kadın · ${fmt.format(males)} erkek</span>`]),
         card("Yaşlı oranı (65+)", "%" + pct(g.old), "", []),
         card("Bağımlılık oranı", "%" + pct(dep), "", [`<span>(0-14 + 65+) / 15-64</span>`]),
-        `<div class="card wide"><div class="t">Yaş grupları · ${year}</div><table class="units">${a.bands.map((b, i) => `<tr><td>${b}</td><td>${fmt.format(a.male[i])}</td><td>${fmt.format(a.female[i])}</td><td>${fmt.format(both[i])}</td><td>%${pct(both[i] / tot)}</td></tr>`).join("")}</table></div>`,
+        `<div class="card wide"><div class="t">Yaş grupları · ${year}</div><table class="units"><tr><th>Yaş</th><th>Erkek</th><th>Kadın</th><th>Toplam</th><th>Pay</th></tr>${a.bands.map((b, i) => `<tr><td>${b}</td><td>${fmt.format(a.male[i])}</td><td>${fmt.format(a.female[i])}</td><td>${fmt.format(both[i])}</td><td>%${pct(both[i] / tot)}</td></tr>`).join("")}</table></div>`,
     ].join("");
 }
 
@@ -374,7 +377,7 @@ function highlight(id) {
 }
 
 // ---------- wiring ----------
-function render() { drawCards(); drawPyramid(); drawAgeDetail(); drawSocial(); drawVital(); drawUnits(); drawMap(); }
+function render() { drawCards(); drawPyramid(); drawAgeDetail(); drawSocial(); drawVital(); drawUnits(); drawMap(); if (state.pinned) showPick(state.pinned, true); }
 async function main() {
     const [data, kids, geo] = await Promise.all([
         fetch(`../public/atlas/${DISTRICT}.json`).then((r) => r.json()),
