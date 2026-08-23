@@ -157,6 +157,7 @@ function drawPyramid() {
 }
 
 // ---------- social / vital ----------
+function drawEdu() { $("#edu").innerHTML = card("Eğitim durumu (15+)", null, "", [`<span>henüz bağlanmadı</span>`]); }
 function drawSocial() {
     const m = state.data.marital;
     const key = state.scope === "total" ? "district" : state.scope;
@@ -377,7 +378,7 @@ function highlight(id) {
 }
 
 // ---------- wiring ----------
-function render() { drawCards(); drawPyramid(); drawAgeDetail(); drawSocial(); drawVital(); drawUnits(); drawMap(); if (state.pinned) showPick(state.pinned, true); }
+function render() { drawCards(); drawPyramid(); drawAgeDetail(); drawSocial(); drawVital(); drawEdu(); drawUnits(); drawMap(); if (state.pinned) showPick(state.pinned, true); }
 async function main() {
     const [data, kids, geo] = await Promise.all([
         fetch(`../public/atlas/${DISTRICT}.json`).then((r) => r.json()),
@@ -395,8 +396,8 @@ async function main() {
     fitMap(); wireMap(); wireViews();
     drawCrumb(); render();
 
-    let raf = 0;
-    $("#year").addEventListener("input", (e) => { state.year = +e.target.value; $("#yearLabel").textContent = state.year; cancelAnimationFrame(raf); raf = requestAnimationFrame(render); });
+    let pending = 0;
+    $("#year").addEventListener("input", (e) => { state.year = +e.target.value; $("#yearLabel").textContent = state.year; clearTimeout(pending); pending = setTimeout(render, 30); });
     $("#scope").addEventListener("click", (e) => { const s = e.target.closest("span[data-v]"); if (!s) return; state.scope = s.dataset.v; document.querySelectorAll("#scope span").forEach((x) => x.classList.toggle("on", x === s)); render(); });
     $("#mapVar").addEventListener("change", (e) => { state.mapVar = e.target.value; drawMap(); });
     $("#mapToggle").addEventListener("click", (e) => { $("main").classList.toggle("nomap"); e.target.classList.toggle("on"); });

@@ -24,10 +24,12 @@
 <main>
 <nav class="side" id="nav">
   <a class="on" href="#ozet" data-view="ozet">Özet</a>
+  <div class="grp">Analizler</div>
   <a href="#nufus" data-view="nufus">Nüfus</a>
-  <a class="sub" href="#nufus/yas" data-view="nufus" data-to="yas">Yaş ve cinsiyet</a>
-  <a class="sub" href="#nufus/medeni" data-view="nufus" data-to="medeni">Medeni hal</a>
-  <a class="sub" href="#nufus/dogum" data-view="nufus" data-to="dogum">Doğum · ölüm</a>
+  <a href="#aile" data-view="aile">Aile</a>
+  <a href="#dogum" data-view="dogum">Doğum · ölüm</a>
+  <a href="#egitim" data-view="egitim">Eğitim</a>
+  <div class="grp">Araçlar</div>
   <a href="#yerlesim" data-view="yerlesim">Yerleşimler</a>
 </nav>
 <section class="panel">
@@ -42,8 +44,17 @@
   </div>
   <div class="view" data-view="nufus" hidden>
     <h2 class="sec" id="yas">Yaş ve cinsiyet</h2><div class="cards" id="ageDetail"></div>
-    <h2 class="sec" id="medeni">Medeni hal</h2><div class="cards" id="social"></div>
-    <h2 class="sec" id="dogum">Doğum · ölüm</h2><div class="cards" id="vital"></div>
+  </div>
+  <div class="view" data-view="aile" hidden>
+    <h2 class="sec" id="medeni">Medeni durum</h2><div class="cards" id="social"></div>
+    <p class="note">İleride: evlenme, boşanma, ilk evlilik yaşı (ilçe düzeyi kaynak bağlandığında).</p>
+  </div>
+  <div class="view" data-view="dogum" hidden>
+    <h2 class="sec" id="dogum2">Doğum · ölüm · doğal artış</h2><div class="cards" id="vital"></div>
+  </div>
+  <div class="view" data-view="egitim" hidden>
+    <h2 class="sec">Eğitim</h2><div class="cards" id="edu"></div>
+    <p class="note" id="eduNote">Eğitim durumu (15+), okuma-yazma, yaşa göre eğitim — ilçe düzeyi MEDAS ölçümü bağlanınca burada; toplu/ayrıntılı iki kırılımla.</p>
   </div>
   <div class="view" data-view="yerlesim" hidden><h2 class="sec">Yerleşimler</h2><div class="foot" id="foot"></div><div class="box"><table class="units" id="units"></table></div></div>
 </section>
@@ -56,6 +67,6 @@
   </div>
 </aside>
 </main>
-<script src="district.js?v=16"></script>
+<script src="district.js?v=18"></script>
 </body>
 </html>
