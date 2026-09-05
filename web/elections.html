@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!-- Election comparison page. No map on purpose: pick an election and a place, and
+     read the same numbers for district / province / country side by side, plus the
+     same place's series across all 17 elections. Data: public/elections/. -->
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VeriAtlas — seçimler</title>
+<link rel="stylesheet" href="elections.css?v=1">
+</head>
+<body>
+<header>
+  <div class="logo">VeriAtlas</div>
+  <div class="pick">
+    <label>Seçim <select id="year"></select></label>
+    <label>İl <select id="province"></select></label>
+    <label>İlçe <select id="district"><option value="">— il geneli —</option></select></label>
+  </div>
+</header>
+
+<main>
+  <h1 id="title">—</h1>
+  <p class="lead" id="lead"></p>
+
+  <section class="box">
+    <div class="boxhead">
+      <h2>Parti oyları</h2>
+      <span class="src">geçerli oy içindeki pay, %</span>
+    </div>
+    <div id="parties" class="chart"></div>
+    <div class="keys" id="partyKeys"></div>
+    <p class="note" id="partyNote"></p>
+  </section>
+
+  <section class="box">
+    <div class="boxhead"><h2>Özet</h2><span class="src">aynı seçim, üç ölçek</span></div>
+    <table id="summary"></table>
+  </section>
+
+  <section class="box">
+    <div class="boxhead">
+      <h2>Zaman serisi</h2>
+      <label class="src">ölçüt
+        <select id="metric">
+          <option value="left">Sol blok payı</option>
+          <option value="right">Sağ blok payı</option>
+          <option value="leftNoKurdish">Sol blok (Kürt partileri hariç)</option>
+          <option value="enp">Etkin parti sayısı</option>
+          <option value="turnout">Katılım oranı</option>
+          <option value="invalid">Geçersiz oy oranı</option>
+          <option value="lost">Kayıp oy (kayıtlı − geçerli)</option>
+          <option value="winner">Birinci partinin payı</option>
+        </select>
+      </label>
+    </div>
+    <div id="series" class="chart"></div>
+    <div class="keys" id="seriesKeys"></div>
+    <p class="note" id="seriesNote"></p>
+  </section>
+
+  <p class="src" id="source"></p>
+</main>
+
+<script src="elections.js?v=1"></script>
+</body>
+</html>

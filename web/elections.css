@@ -1,0 +1,45 @@
+/* Election comparison page. Same compact dark palette as the district file page. */
+
+:root {
+  --bg:#121315; --card:#1b1d21; --line:#2a2d33; --fg:#e9eaee; --mute:#8b919c;
+  --unit:#4f8ff7;      /* selected district (or province, when no district) */
+  --prov:#f0a030;      /* province */
+  --tr:#8b919c;        /* country */
+}
+* { box-sizing:border-box; }
+body { margin:0; font:14px/1.45 "Segoe UI",system-ui,sans-serif; background:var(--bg); color:var(--fg); }
+
+header { display:flex; align-items:center; gap:18px; padding:8px 16px; border-bottom:1px solid var(--line);
+         background:#0f1012; position:sticky; top:0; z-index:2; flex-wrap:wrap; }
+.logo { font-weight:700; }
+.pick { display:flex; gap:14px; flex-wrap:wrap; }
+.pick label { font-size:12px; color:var(--mute); display:flex; align-items:center; gap:6px; }
+select { background:#1b1d21; color:var(--fg); border:1px solid var(--line); border-radius:6px;
+         padding:4px 7px; font:inherit; font-size:13px; max-width:230px; }
+
+main { max-width:1040px; margin:0 auto; padding:18px 16px 40px; }
+h1 { margin:0 0 4px; font-size:26px; }
+.lead { margin:0 0 16px; color:var(--mute); font-size:13px; }
+
+.box { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:12px; }
+.boxhead { display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:10px; flex-wrap:wrap; }
+.boxhead h2 { margin:0; font-size:14px; font-weight:600; }
+.src { font-size:11.5px; color:var(--mute); }
+.note { font-size:11.5px; color:var(--mute); margin:8px 0 0; }
+
+.chart { width:100%; overflow-x:auto; }
+.chart svg { display:block; }
+.chart text { fill:var(--mute); font:11px "Segoe UI",system-ui,sans-serif; }
+.chart text.val { fill:var(--fg); font-size:10px; }
+.chart .grid { stroke:var(--line); }
+.chart .axis { stroke:#3b4049; }
+
+.keys { display:flex; flex-wrap:wrap; gap:4px 16px; font-size:12px; color:var(--mute); margin-top:8px; }
+.keys i { display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:5px; }
+
+table { border-collapse:collapse; width:100%; font-size:13px; }
+th, td { text-align:right; padding:5px 8px; border-bottom:1px solid var(--line); white-space:nowrap; }
+th:first-child, td:first-child { text-align:left; }
+thead th { color:var(--mute); font-weight:600; font-size:12px; }
+tbody tr:last-child td { border-bottom:0; }
+td.n { font-variant-numeric:tabular-nums; }
