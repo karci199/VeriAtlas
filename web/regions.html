@@ -5,35 +5,89 @@
 <title>Seçim simülasyonu — 50 bölge</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-  body { margin: 0; font: 14px system-ui, sans-serif; color: #1f2937; background: #f8fafc; }
-  header { padding: 14px 20px; background: #1f3a73; color: #fff; }
-  header h1 { margin: 0; font-size: 18px; font-weight: 600; }
-  header p { margin: 4px 0 0; font-size: 12px; opacity: .85; }
-  main { display: grid; grid-template-columns: 1fr 460px; gap: 16px; padding: 16px 20px; }
-  svg { width: 100%; height: auto; background: #eef2f7; border: 1px solid #d5dbe5; }
-  path.region { stroke: #fff; stroke-width: .6; cursor: pointer; }
-  path.region:hover { stroke: #111; stroke-width: 1.2; }
-  .panel { font-size: 13px; }
-  .card { background: #fff; border: 1px solid #d5dbe5; padding: 12px; margin-bottom: 12px; }
-  .card h2 { margin: 0 0 6px; font-size: 14px; color: #1f3a73; }
-  .card table { display: block; overflow-x: auto; }
-  table { border-collapse: collapse; width: 100%; font-size: 12px; }
-  th, td { padding: 3px 5px; border-bottom: 1px solid #e5e7eb; text-align: right; white-space: nowrap; }
-  th:first-child, td:first-child { text-align: left; }
-  th { background: #e9edf4; color: #1f3a73; }
-  .muted { color: #6b7280; font-size: 12px; }
-  table.shares td.bar { width: 100%; padding-right: 0; }
-  table.shares span.fill { display: block; height: 9px; background: #7d93bd; }
-  table.shares tr.win span.fill { background: #1f3a73; }
-  table.shares td { border-bottom: none; padding: 2px 5px; }
-  table.shares td.name { max-width: 130px; overflow: hidden; text-overflow: ellipsis; }
-  @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f6fa; --card: #ffffff; --ink: #1a2233; --dim: #5f6b80;
+    --line: #d9dee8; --head: #1f3a73; --headink: #ffffff;
+    --track: #e6eaf2; --fill: #6b86bd; --fill-win: #1f3a73;
+    --mapbg: #e8edf4; --stroke: #ffffff;
+    --up: #b3261e; --dn: #1d6b52;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10141c; --card: #1a2030; --ink: #e8ecf4; --dim: #9aa6bd;
+      --line: #2c3446; --head: #16203a; --headink: #eaf0ff;
+      --track: #2a3346; --fill: #6f8ac6; --fill-win: #9fb8ef;
+      --mapbg: #151b27; --stroke: #10141c;
+      --up: #ff9a90; --dn: #6fd3ac;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header { padding: 14px 18px; background: var(--head); color: var(--headink); }
+  header h1 { margin: 0; font-size: 17px; font-weight: 650; letter-spacing: -.2px; }
+  header p { margin: 5px 0 0; font-size: 12.5px; opacity: .82; max-width: 78ch; }
+  main { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 16px;
+         padding: 16px 18px; align-items: start; }
+  @media (max-width: 1000px) { main { grid-template-columns: minmax(0, 1fr); } }
+
+  svg { width: 100%; height: auto; background: var(--mapbg);
+        border: 1px solid var(--line); border-radius: 8px; }
+  path.region { stroke: var(--stroke); stroke-width: .6; cursor: pointer; }
+  path.region:hover, path.region.on { stroke: var(--ink); stroke-width: 1.6; }
+
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+          padding: 13px 14px; margin-bottom: 13px; }
+  .card h2 { margin: 0 0 8px; font-size: 12px; font-weight: 650; color: var(--dim);
+             text-transform: uppercase; letter-spacing: .07em; }
+  .lede { font-size: 13px; margin-bottom: 10px; }
+  .lede b { font-variant-numeric: tabular-nums; }
+  .muted { color: var(--dim); font-size: 12px; }
+  .card > .muted:last-child { margin: 9px 0 0; }
+
+  /* vote shares: one grid, so every row lines up whatever the label length */
+  .shares { display: grid; gap: 3px 8px; align-items: center;
+            grid-template-columns: minmax(78px, 1.5fr) 3.4em minmax(40px, 2fr) 5.2em; }
+  .shares.withseats {
+            grid-template-columns: minmax(78px, 1.5fr) 3.3em minmax(34px, 1.5fr) 4.8em 4.4em; }
+  .shares .nm { font-size: 12.5px; overflow: hidden; text-overflow: ellipsis;
+                white-space: nowrap; }
+  .shares .pc, .shares .vt, .shares .st {
+                font-variant-numeric: tabular-nums; text-align: right;
+                font-size: 12.5px; white-space: nowrap; }
+  .shares .vt { color: var(--dim); }
+  .shares .st { font-weight: 650; font-size: 12px; }
+  .shares .tr { background: var(--track); border-radius: 3px; height: 10px; }
+  .shares .tr i { display: block; height: 100%; background: var(--fill); border-radius: 3px; }
+  .shares .win.nm { font-weight: 650; }
+  .shares .win i { background: var(--fill-win); }
+
+  /* seat table: all columns visible at once, ranges on a second line */
+  table.seats { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  table.seats th, table.seats td {
+    padding: 4px 2px; text-align: right; border-bottom: 1px solid var(--line);
+    font-size: 12px; font-variant-numeric: tabular-nums;
+  }
+  /* sentence case, not caps: the header row has to fit seven columns on a phone */
+  table.seats th { color: var(--dim); font-weight: 600; font-size: 10.5px;
+                   letter-spacing: 0; white-space: nowrap; }
+  table.seats th:first-child, table.seats td:first-child { text-align: left; }
+  table.seats td:first-child { font-size: 11.5px; line-height: 1.2; }
+  table.seats col.p { width: 20%; }
+  table.seats col.n { width: 10.5%; }
+  table.seats col.f { width: 14.5%; }
+  table.seats .rng { display: block; color: var(--dim); font-size: 10px; font-weight: 400; }
+  table.seats .up { color: var(--up); }
+  table.seats .dn { color: var(--dn); }
+  table.seats col.r { width: 13.5%; }
+  table.seats td.real { font-weight: 650; }
 </style>
 </head>
 <body>
 <header>
   <h1>2023 milletvekili seçimi — 100 Türkiye + 50 bölge × 10 simülasyonu</h1>
-  <p>Bölgeler ilçelerden, bitişik, kayıtlı seçmene göre ±7 %, il sınırı serbest. Rastgele planlardan bir örnek. Oylar gerçek sistem altında verildi; sonuç yalnız mekanik etkidir.</p>
+  <p>Bölgeler ilçelerden kuruldu: bitişik, kayıtlı seçmene göre ±7 %, il sınırı serbest. Harita rastgele planlardan bir örnek. Oylar gerçek sistem altında verildi; gösterilen yalnız dağıtımın mekanik etkisi.</p>
 </header>
 <main>
   <div>
@@ -41,15 +95,26 @@
     <p class="muted" id="status">Yükleniyor…</p>
   </div>
   <div class="panel">
-    <div class="card" id="info"><h2>Bölge</h2><div class="muted">Haritada bir bölgenin üstüne gelin.</div></div>
+    <div class="card" id="info"><h2>Bölge</h2><div class="muted">Haritada bir bölgeye dokunun.</div></div>
     <div class="card" id="country"><h2>Türkiye geneli</h2></div>
-    <div class="card" id="seats"><h2>Sandalye (ortanca, plan demeti)</h2></div>
+    <div class="card" id="seats"><h2>Sandalye · 600 · plan demetinin ortancası</h2></div>
   </div>
 </main>
 <script>
 const PLAN = "../public/sim/regions_2023_plan.geojson";
 const SUMMARY = "../public/sim/simulation_2023_summary.json";
 const PALETTE = ["#4e79a7","#f28e2b","#e15759","#76b7b2","#59a14f","#edc948","#b07aa1","#ff9da7","#9c755f","#bab0ac"];
+const NF = new Intl.NumberFormat("tr-TR");
+// ballot names are all-caps and too long for a narrow column; these are display only
+const LABEL = {
+  "AK PARTİ": "AK Parti", "İYİ PARTİ": "İYİ Parti", "YEŞİL SOL PARTİ": "Yeşil Sol",
+  "YENİDEN REFAH": "Yeniden Refah", "ZAFER PARTİSİ": "Zafer", "BÜYÜK BİRLİK": "BBP",
+  "MEMLEKET": "Memleket", "SOL PARTİ": "SOL Parti", "GENÇ PARTİ": "Genç Parti",
+  "VATAN PARTİSİ": "Vatan", "MİLLET": "Millet", "MİLLİ YOL": "Milli Yol",
+  "BĞMZ": "Bağımsız", "AB PARTİ": "AB Parti",
+};
+const label = (p) => LABEL[p] || p;
+const dec = (x, n) => x.toFixed(n).replace(".", ",");  // Turkish decimal comma
 
 function project(lon, lat, b) {
   const cos = Math.cos((b.midLat * Math.PI) / 180);
@@ -78,29 +143,32 @@ function colorFor(i, neighbours, assigned) {
   for (let k = 0; k < PALETTE.length; k++) if (!used.has(k)) return k;
   return i % PALETTE.length;
 }
-const total0 = (s) => Object.values(s.national_votes).reduce((a, c) => a + c, 0);
 
-function shareTable(votes, valid, seatsByFormula) {
+/** Vote shares as an aligned grid. `seatsByFormula` adds the per-region seat column. */
+function shareGrid(votes, valid, seatsByFormula) {
   const rows = Object.entries(votes).sort((a, b) => b[1] - a[1]);
   const top = rows.length ? rows[0][1] : 1;
-  const seatText = (p) =>
-    seatsByFormula
-      ? Object.values(seatsByFormula).map((m) => m[p] || 0).join(" / ")
-      : "";
-  let out = `<table class="shares">`;
+  let out = '<div class="shares' + (seatsByFormula ? " withseats" : "") + '">';
   for (const [party, v] of rows) {
-    const pct = (v / valid) * 100;
-    out += `<tr class="${v === top ? "win" : ""}"><td class="name">${party}</td>` +
-      `<td>${pct.toFixed(1)} %</td>` +
-      `<td class="bar"><span class="fill" style="width:${(v / top) * 100}%"></span></td>` +
-      `<td>${v.toLocaleString("tr-TR")}</td>` +
-      (seatsByFormula ? `<td><b>${seatText(party)}</b></td>` : "") + `</tr>`;
+    const win = v === top ? " win" : "";
+    out +=
+      '<div class="nm' + win + '" title="' + party + '">' + label(party) + "</div>" +
+      '<div class="pc' + win + '">' + dec((v / valid) * 100, 1) + " %</div>" +
+      '<div class="tr' + win + '"><i style="width:' + ((v / top) * 100).toFixed(1) + '%"></i></div>' +
+      '<div class="vt' + win + '">' + NF.format(v) + "</div>";
+    if (seatsByFormula) {
+      const s = Object.values(seatsByFormula).map((m) => m[party] || 0);
+      out += '<div class="st' + win + '">' + s.join(" / ") + "</div>";
+    }
   }
-  return out + "</table>";
+  return out + "</div>";
 }
 
 async function main() {
-  const [plan, summary] = await Promise.all([fetch(PLAN).then((r) => r.json()), fetch(SUMMARY).then((r) => r.json())]);
+  const [plan, summary] = await Promise.all([
+    fetch(PLAN).then((r) => r.json()),
+    fetch(SUMMARY).then((r) => r.json()),
+  ]);
   const b = bounds(plan);
   const svg = document.getElementById("map");
   const feats = plan.features;
@@ -109,54 +177,100 @@ async function main() {
   const touch = (p, q) => !(boxes[p][2] < boxes[q][0] || boxes[q][2] < boxes[p][0] || boxes[p][3] < boxes[q][1] || boxes[q][3] < boxes[p][1]);
   const assigned = [];
   feats.forEach((f, i) => { const nb = feats.map((_, j) => j).filter((j) => j !== i && touch(i, j)); assigned[i] = colorFor(i, nb, assigned); });
-  let target = 0;
+
+  const sizes = feats.map((f) => f.properties.registered);
+  const target = sizes.reduce((a, c) => a + c, 0) / feats.length;
   const info = document.getElementById("info");
+  const paths = [];
+
+  const show = (f, el) => {
+    paths.forEach((p) => p.classList.remove("on"));
+    if (el) el.classList.add("on");
+    const q = f.properties;
+    const dev = (q.registered / target - 1) * 100;
+    info.innerHTML =
+      "<h2>Bölge " + q.region + " · " + q.seats + " milletvekili</h2>" +
+      '<div class="lede">Kayıtlı seçmen <b>' + NF.format(q.registered) + "</b>, ortalamadan " +
+      (dev >= 0 ? "+" : "") + dec(dev, 1) + " %. Geçerli oy <b>" + NF.format(q.valid) +
+      "</b>, katılım " + dec((q.valid / q.registered) * 100, 1) + " %. " +
+      q.districts + " ilçe, iller: " + q.provinces.join(", ") + ".</div>" +
+      shareGrid(q.votes, q.valid, q.seats_by_party) +
+      '<p class="muted">Son sütun bu bölgenin ' + q.seats +
+      " sandalyesi: Hare artık / Sainte-Laguë / D&#39;Hondt. Ülke listesinin 100 sandalyesi ayrı.</p>";
+  };
+
   feats.forEach((f, i) => {
     const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
     p.setAttribute("d", geomPath(f.geometry, b));
     p.setAttribute("class", "region");
     p.setAttribute("fill", PALETTE[assigned[i]]);
-    p.addEventListener("mouseenter", () => {
-      const q = f.properties;
-      const dev = (q.registered / target - 1) * 100;
-      info.innerHTML =
-        `<h2>Bölge ${q.region} — ${q.seats} milletvekili</h2>` +
-        `<div>Kayıtlı seçmen: <b>${q.registered.toLocaleString("tr-TR")}</b> (ortalamadan ${dev >= 0 ? "+" : ""}${dev.toFixed(1)} %)</div>` +
-        `<div>Geçerli oy: ${q.valid.toLocaleString("tr-TR")} · katılım ${((q.valid / q.registered) * 100).toFixed(1)} %</div>` +
-        `<div>${q.districts} ilçe · iller: ${q.provinces.join(", ")}</div>` +
-        shareTable(q.votes, q.valid, q.seats_by_party) +
-        `<p class="muted">Son sütun: sandalye — Hare artık / Sainte-Laguë / D'Hondt. Bu bölgenin kendi 10 sandalyesi; ülke listesinin 100'ü ayrı.</p>`;
-    });
+    p.addEventListener("mouseenter", () => show(f, p));
+    p.addEventListener("click", () => show(f, p));
+    paths.push(p);
     svg.appendChild(p);
   });
-  const sizes = feats.map((f) => f.properties.registered);
-  target = sizes.reduce((a, c) => a + c, 0) / feats.length;
-  document.getElementById("status").textContent = `${feats.length} bölge · en küçük ${Math.min(...sizes).toLocaleString("tr-TR")} · en büyük ${Math.max(...sizes).toLocaleString("tr-TR")} seçmen · ${summary.plans} plan demeti`;
+
+  document.getElementById("status").textContent =
+    feats.length + " bölge · en küçük " + NF.format(Math.min(...sizes)) +
+    " · en büyük " + NF.format(Math.max(...sizes)) + " seçmen · özet " +
+    summary.plans + " planın demeti";
+
+  // ---- Türkiye geneli
+  const total = Object.values(summary.national_votes).reduce((a, c) => a + c, 0);
   const natVotes = Object.fromEntries(
-    Object.entries(summary.national_votes).filter(([, v]) => v / total0(summary) >= 0.005)
+    Object.entries(summary.national_votes).filter(([, v]) => v / total >= 0.005)
   );
-  natVotes["Diğer"] =
-    total0(summary) - Object.values(natVotes).reduce((a, c) => a + c, 0);
+  natVotes["Diğer"] = total - Object.values(natVotes).reduce((a, c) => a + c, 0);
+  const regionSeats = feats.length * summary.region_seats;
+  const seatTotal = summary.national_seats + regionSeats;
   document.getElementById("country").insertAdjacentHTML(
     "beforeend",
-    `<div>Geçerli oy: <b>${total0(summary).toLocaleString("tr-TR")}</b> · ${feats.length} bölge · ${summary.national_seats} ülke listesi + ${feats.length * summary.region_seats} bölge = 600 milletvekili</div>` +
-      shareTable(natVotes, total0(summary), null) +
-      `<p class="muted">%0,5 altındaki partiler &#8220;Diğer&#8221;de. Yurt içi sandıklar.</p>`
+    '<div class="lede">Geçerli oy <b>' + NF.format(total) + "</b>. " +
+      summary.national_seats + " ülke listesi + " + regionSeats + " bölge = " +
+      seatTotal + " milletvekili.</div>" +
+      shareGrid(natVotes, total, null) +
+      '<p class="muted">%0,5 altındaki partiler &#8220;Diğer&#8221;de. Yurt içi sandıklar.</p>'
   );
-  const parties = Object.keys(summary.national_votes).sort((a, c) => summary.national_votes[c] - summary.national_votes[a]);
-  const total = Object.values(summary.national_votes).reduce((a, c) => a + c, 0);
+
+  // ---- seat table
   const ACTUAL_ALIAS = { "YENİDEN REFAH": "YRP" };
   const actualOf = (p) => summary.actual_2023[p] ?? summary.actual_2023[ACTUAL_ALIAS[p]] ?? 0;
-  const seatTotal = summary.national_seats + summary.regions * summary.region_seats;
   const formulas = Object.keys(summary.regional);
-  let html = `<table><tr><th>Parti</th><th>Oy %</th><th>Hak</th><th>TR 100</th>${formulas.map((f) => `<th>${f}</th>`).join("")}<th>Gerçek</th></tr>`;
+  const SHORT = { "Hare artık": "Hare", "Sainte-Laguë": "S-Laguë" };
+  const parties = Object.keys(summary.national_votes).sort(
+    (a, c) => summary.national_votes[c] - summary.national_votes[a]
+  );
+  let html =
+    '<table class="seats"><colgroup><col class="p"><col class="n"><col class="n">' +
+    formulas.map(() => '<col class="f">').join("") +
+    '<col class="r"></colgroup>' +
+    "<tr><th>Parti</th><th>Oy %</th><th>Hak</th>" +
+    formulas.map((f) => "<th>" + (SHORT[f] || f) + "</th>").join("") +
+    "<th>Gerçek</th></tr>";
   for (const p of parties) {
     const share = summary.national_votes[p] / total;
     const nat = summary.national_seats_hare[p] || 0;
     if (share < 0.005 && !nat) continue;
-    html += `<tr><td>${p}</td><td>${(share * 100).toFixed(1)}</td><td>${(share * seatTotal).toFixed(1)}</td><td>${nat}</td>${formulas.map((f) => { const s = summary.regional[f][p]; return `<td>${nat + s.median} <span class="muted">[${nat + s.p5}–${nat + s.p95}]</span></td>`; }).join("")}<td>${actualOf(p)}</td></tr>`;
+    const exp = share * seatTotal;
+    const real = actualOf(p);
+    const d = real - exp;
+    html +=
+      '<tr><td title="' + p + '">' + label(p) + "</td><td>" + dec(share * 100, 1) + "</td><td>" +
+      dec(exp, 1) + "</td>" +
+      formulas
+        .map((f) => {
+          const s = summary.regional[f][p];
+          return "<td>" + (nat + s.median) + '<span class="rng">' +
+            (nat + s.p5) + "–" + (nat + s.p95) + "</span></td>";
+        })
+        .join("") +
+      '<td class="real">' + real + '<span class="rng ' + (d >= 0 ? "up" : "dn") + '">' +
+      (d >= 0 ? "+" : "") + d.toFixed(0) + "</span></td></tr>";
   }
-  html += "</table><p class='muted'>Bölge sütunları 100 Türkiye milletvekilini içerir (toplam 600). &#8220;Hak&#8221; = oy payı × 600, tam orantılı karşılık. Köşeli parantez: planların %5–95 aralığı.</p>";
+  html +=
+    '</table><p class="muted">Bölge sütunları ülke listesinin 100 milletvekilini içerir, toplam 600. ' +
+    "&#8220;Hak&#8221; = oy payı × 600, tam orantılı karşılık. Küçük satır: formüllerde planların " +
+    "%5–95 aralığı, &#8220;Gerçek&#8221; sütununda hak edilenden fark.</p>";
   document.getElementById("seats").insertAdjacentHTML("beforeend", html);
 }
 main().catch((e) => { document.getElementById("status").textContent = "Hata: " + e; });
