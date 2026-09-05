@@ -1,11 +1,13 @@
-# İllerin Türkiye'ye göre eğilimi, 1983–2023
+# İl ve ilçelerin Türkiye'ye göre eğilimi, 1983–2023
 
 Soru: son kırk yılda hangi il ülke ortalamasına **göre** sola, hangisi sağa kaydı?
 Ham sol blok payı işe yaramaz — bir il ülkeyle birlikte sağa gitmiş olabilir. Burada
 bakılan, ilin sol blok payının aynı seçimdeki ülke payından **farkı** ve bu farkın
 zaman içindeki hareketi.
 
-Üretim: `uv run python scripts/analyze_province_lean.py` (veri `public/elections/`).
+Üretim: `uv run python scripts/analyze_province_lean.py` (il) ve
+`uv run python scripts/analyze_province_lean.py --level ilce --start 1995` (ilçe);
+veri `public/elections/`.
 
 ## Yöntem ve kapsam dışı bırakılanlar
 
@@ -94,6 +96,45 @@ Fark, Kürt partilerinin o ildeki katkısının büyüklüğü:
 
 Tunceli ilginç: iki okumada da ülkenin solunda (bugün +42,6 / +4,7), ama Kürt partileri
 sayılmazsa 1983'teki +34,2'lik solculuğunun neredeyse tamamını kaybetmiş görünüyor.
+
+## 5. İlçe düzeyi (1995–2023)
+
+`--level ilce --start 1995`. **750 ilçe**, 7 seçim. 1995'ten başlıyor çünkü 1983–87
+raporlarında ilçelerin çoğu hâlâ "Merkez" diye geçiyor. İki ek eleme var, ikisi de
+sessiz bozulmayı kesmek için:
+
+- **Sınırı değişmiş sayılanlar (38 ilçe):** seçmeni ülkenin 0,45–2,5 katı dışında
+  hareket eden ilçe fikir değil şekil değiştirmiştir. En uçtakiler Battalgazi ×9,0,
+  Edremit (Van) ×7,2, Yeşilyurt ×7,0, Etimesgut ×3,6, Nilüfer ×2,5 — hepsi 2013
+  büyükşehir düzenlemesinin ya da merkez bölünmelerinin ürünü.
+- **5.000 seçmenin altındakiler** dışarıda: birkaç bin seçmen eğilimle değil gürültüyle
+  salınıyor (bu eleme olmadan listenin tepesine Yedisu, Bozcaada gibi yerler çıkıyor).
+
+**Kürt partileri solda — en çok sola:** Güçlükonak (Şırnak) **+49,1**, Patnos (Ağrı)
++45,4, Muradiye (Van) +39,1, İdil (Şırnak) +36,8, Mazıdağı (Mardin) +35,2, Hamur (Ağrı)
++34,5, Taşlıçay +33,7, Dargeçit +33,4.
+
+**En çok sağa:** Akkuş (Ordu) **−21,8**, Ayvacık (Samsun) −19,3, Eflani (Karabük) −18,6,
+Erfelek (Sinop) −17,7, Kumru (Ordu) −17,7, Ulus (Bartın) −17,6, Şenkaya (Erzurum) −17,6,
+Çarşamba (Samsun) −17,4. **Liste neredeyse tamamen Karadeniz kırsalı.**
+
+**Kürt partileri hariç — en çok sola:** Datça (Muğla) **+17,6**, Fındıklı (Rize) +16,3,
+Şavşat (Artvin) +15,8, Bodrum +15,8, Fethiye +15,3, Karşıyaka +15,1, Hacıbektaş +14,9,
+Güzelbahçe +14,6, Beşiktaş +14,5, Karaburun +14,2, Dikili +14,1. **En çok sağa:** Eruh
+(Siirt) −24,6, Şenkaya −20,5, Adaklı (Bingöl) −16,9, Akkuş −14,1, Iğdır Merkez −14,0.
+
+İl düzeyindeki resim ilçede de aynı, daha keskin hâliyle çıkıyor:
+
+- İki okumada da sola gidenler **turizm kıyısı ve büyük şehrin eğitimli merkezi**:
+  Datça (+19,8 / +17,6), Bodrum, Adalar (+22,0 / +12,6), Beşiktaş (+17,5 / +14,5).
+- İki okumada da sağa gidenlerin hepsi **Orta ve Doğu Karadeniz kırsalı**: Akkuş,
+  Ayvacık, Eflani, Erfelek, Kumru, Ulus, Çarşamba, Gökçebey.
+- Fındıklı ve Şavşat ilginç istisna: Rize ve Artvin'in içinde, ülkeye göre sola giden
+  iki ilçe.
+
+40 yıllık uzun pencere (`--start 1983`) yalnız **486 ilçe** bırakıyor — 230'u sınır
+değişikliği elemesine takılıyor — ama sıralamanın tepesi aynı yöne bakıyor: Karayazı
+(Erzurum) **+59,5**, Başkale (Van) +52,0, Bulanık (Muş) +51,2.
 
 ## Ne söylemiyor
 
