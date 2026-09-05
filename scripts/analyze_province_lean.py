@@ -52,15 +52,21 @@ ELECTIONS = {
     "1995": 1995.0,
     "1999": 1999.0,
     "2002": 2002.0,
+    "2007": 2007.0,
+    "2011": 2011.0,
     "2015_7_haziran": 2015.4,
     "2015_1_kasim": 2015.8,
     "2018": 2018.0,
     "2023": 2023.0,
 }
-EXCLUDED = {
-    "2007": "Kürt siyaseti bağımsız girdi",
-    "2011": "Kürt siyaseti bağımsız girdi",
-}
+# In 2007 and 2011 the Kurdish parties ran their candidates as independents, so their
+# votes sit in the pooled independent column. Counting that column as Kurdish-left in
+# those two elections keeps them usable. It is an over-count wherever a non-Kurdish
+# independent ran, but nationally the column is 5.2% in 2007 and 6.6% in 2011 and is
+# concentrated in the southeast; leaving the two elections out instead loses a fifth of
+# the period. --drop-0711 restores the stricter reading.
+INDEPENDENT = "BĞMZ"  # pooled independents column
+INDEPENDENT_IS_KURDISH = {"2007", "2011"}
 
 # Provinces created after 1989 -> the province they were carved out of.
 NEW_PROVINCE = {
@@ -125,18 +131,28 @@ def bloc_of(party: str, year: str, blocs: dict) -> str:
 
 def shares(
     entry: dict, year: str, blocs: dict, kurdish: set
-) -> tuple[float, float, bool]:
-    """(left %, left-without-Kurdish %, CHP was on the ballot)."""
+) -> tuple[float, float, bool, float]:
+    """(left %, left-without-Kurdish %, CHP was on the ballot, Kurdish-party %)."""
     total = left = kurd = 0
+    indep_is_kurdish = year in INDEPENDENT_IS_KURDISH
     for party, votes in entry["p"].items():
         total += votes
+        if party == INDEPENDENT and indep_is_kurdish:
+            left += votes
+            kurd += votes
+            continue
         if bloc_of(party, year, blocs) == "left":
             left += votes
         if party in kurdish:
             kurd += votes
     if not total:
         return None
-    return 100 * left / total, 100 * (left - kurd) / total, "CHP" in entry["p"]
+    return (
+        100 * left / total,
+        100 * (left - kurd) / total,
+        "CHP" in entry["p"],
+        100 * kurd / total,
+    )
 
 
 def fold(counts: dict, entry: dict) -> None:
@@ -166,7 +182,52 @@ def slope(points: list[tuple[float, float]]) -> float:
     return 10 * sum((x - mx) * (y - my) for x, y in points) / denom
 
 
-def collect(level: str = "il", start: int = 1983, min_voters: int = 5000):
+def residual_sd(points: list[tuple[float, float]]) -> float:
+    """Scatter left over once the trend is removed.
+
+    A place that walks steadily in one direction is not unstable, however far it
+    walks; a place that jumps around is. Plain standard deviation cannot tell those
+    apart, so the trend is fitted first and the spread of what remains is measured.
+    """
+    n = len(points)
+    if n < 3:
+        return 0.0
+    mx = sum(x for x, _ in points) / n
+    my = sum(y for _, y in points) / n
+    denom = sum((x - mx) ** 2 for x, _ in points)
+    b = sum((x - mx) * (y - my) for x, y in points) / denom if denom else 0.0
+    return (sum((y - (my + b * (x - mx))) ** 2 for x, y in points) / (n - 2)) ** 0.5
+
+
+def sd(values, weights=None) -> float:
+    """Standard deviation; weighted when weights are given (population weighting)."""
+    values = list(values)
+    if len(values) < 2:
+        return 0.0
+    if weights is None:
+        m = sum(values) / len(values)
+        return (sum((v - m) ** 2 for v in values) / (len(values) - 1)) ** 0.5
+    weights = list(weights)
+    w = sum(weights)
+    m = sum(v * k for v, k in zip(values, weights)) / w
+    return (sum(k * (v - m) ** 2 for v, k in zip(values, weights)) / w) ** 0.5
+
+
+def pearson(xs, ys) -> float:
+    xs, ys = list(xs), list(ys)
+    n = len(xs)
+    mx, my = sum(xs) / n, sum(ys) / n
+    num = sum((x - mx) * (y - my) for x, y in zip(xs, ys))
+    den = (sum((x - mx) ** 2 for x in xs) * sum((y - my) ** 2 for y in ys)) ** 0.5
+    return num / den if den else 0.0
+
+
+def collect(
+    level: str = "il",
+    start: int = 1983,
+    min_voters: int = 5000,
+    drop_0711: bool = False,
+):
     """Deviation-from-country series per unit.
 
     level "il" folds post-1989 provinces back into their parent; level "ilce" keys
@@ -175,7 +236,11 @@ def collect(level: str = "il", start: int = 1983, min_voters: int = 5000):
     """
     index = load_index()
     blocs, kurdish = index["blocs"], set(index["kurdish"])
-    elections = {y: x for y, x in ELECTIONS.items() if x >= start}
+    elections = {
+        y: x
+        for y, x in ELECTIONS.items()
+        if x >= start and not (drop_0711 and y in INDEPENDENT_IS_KURDISH)
+    }
 
     national = {}
     for year in elections:
@@ -208,9 +273,7 @@ def collect(level: str = "il", start: int = 1983, min_voters: int = 5000):
                 names[key] = f"{payload['districts'][d]['name']} ({payload['name']})"
                 area = by_district.get((entry["areaId"], d))
                 if area is None and d == "merkez":
-                    area = by_district.get(
-                        (entry["areaId"], geo_slug(payload["name"]))
-                    )
+                    area = by_district.get((entry["areaId"], geo_slug(payload["name"])))
                 if area:
                     areas[key].append(area)
         for key, years in units:
@@ -227,28 +290,34 @@ def collect(level: str = "il", start: int = 1983, min_voters: int = 5000):
     for slug, years in merged.items():
         series = []
         chp_missing = []
+        kurd_peak = 0.0
         for year, counts in years.items():
             got = shares(counts, year, blocs, kurdish)
             if not got:
                 continue
-            left, left_nk, has_chp = got
+            left, left_nk, has_chp, kurd_share = got
+            kurd_peak = max(kurd_peak, kurd_share)
             if not has_chp and "CHP" in index["national"][year]["p"]:
                 chp_missing.append(year)
                 continue  # no CHP list: an absent choice, not a rejected one
-            nat_left, nat_left_nk, _ = national[year]
+            nat_left, nat_left_nk, _, _ = national[year]
             series.append((elections[year], left - nat_left, left_nk - nat_left_nk))
         if len(series) < min_elections:
             continue
         series.sort()
 
         electorate = mean_registered(years, elections, 2018, 2023)
+        early = mean_registered(years, elections, start, start + 8)
+        growth = (
+            (electorate / early) / (nat_late / nat_early)
+            if early and electorate
+            else None
+        )
         if level == "ilce":
-            early = mean_registered(years, elections, start, start + 8)
             if not early or not electorate:
                 continue
             if electorate < min_voters:
                 continue  # a few thousand voters swing on noise, not on a trend
-            growth = (electorate / early) / (nat_late / nat_early)
             if not GROWTH_MIN <= growth <= GROWTH_MAX:
                 boundary_suspect.append((names[slug], growth))
                 continue
@@ -257,27 +326,111 @@ def collect(level: str = "il", start: int = 1983, min_voters: int = 5000):
             vals = [row[col] for row in rows_ if lo <= row[0] <= hi]
             return sum(vals) / len(vals) if vals else None
 
-        early, late = (start, start + 8), (2018, 2023)
+        early_w, late_w = (start, start + 8), (2018, 2023)
         rows.append(
             {
                 "slug": slug,
                 "name": names[slug],
                 "n": len(series),
                 "electorate": electorate,
+                "growth": growth,
+                "kurd_peak": kurd_peak,
                 "areas": areas.get(slug, []),
                 "chp_missing": chp_missing,
-                "early": window(*early, 1),
-                "late": window(*late, 1),
-                "early_nk": window(*early, 2),
-                "late_nk": window(*late, 2),
+                "early": window(*early_w, 1),
+                "late": window(*late_w, 1),
+                "early_nk": window(*early_w, 2),
+                "late_nk": window(*late_w, 2),
                 "slope": slope([(x, d) for x, d, _ in series]),
                 "slope_nk": slope([(x, d) for x, _, d in series]),
+                "resid": residual_sd([(x, d) for x, d, _ in series]),
+                "resid_nk": residual_sd([(x, d) for x, _, d in series]),
                 "series": series,
             }
         )
         rows[-1]["shift"] = rows[-1]["late"] - rows[-1]["early"]
         rows[-1]["shift_nk"] = rows[-1]["late_nk"] - rows[-1]["early_nk"]
     return index, national, rows, boundary_suspect
+
+
+def dispersion(rows, national, elections, index, unit, width):
+    """How far apart the places are, and how steadily each one moves.
+
+    Three separate questions, easy to run together by accident:
+      1. Are the places spreading apart over time? (cross-section sd per election)
+      2. Which places are unstable rather than merely moving? (residual sd)
+      3. Does a shrinking electorate go with moving right? (correlation)
+    """
+    print("\n### Ayrışma: birimler birbirinden uzaklaşıyor mu?")
+    print(
+        f"  {'seçim':14}{'sapma sd':>10}{'sd (seçmen ağırlıklı)':>24}"
+        f"{'kürtsüz sd':>13}{'birim':>7}"
+    )
+    for year, x in elections.items():
+        vals, weights, vals_nk = [], [], []
+        for r in rows:
+            point = next((p for p in r["series"] if p[0] == x), None)
+            if not point:
+                continue
+            vals.append(point[1])
+            vals_nk.append(point[2])
+            weights.append(r["electorate"] or 1)
+        if len(vals) < 5:
+            continue
+        label = next(y["label"] for y in index["years"] if y["id"] == year)
+        print(
+            f"  {label:14}{sd(vals):>10.2f}{sd(vals, weights):>24.2f}"
+            f"{sd(vals_nk):>13.2f}{len(vals):>7}"
+        )
+
+    for key, title in (
+        ("resid", "Kürt partileri solda"),
+        ("resid_nk", "Kürt partileri hariç"),
+    ):
+        ordered = sorted(rows, key=lambda r: -r[key])
+        print(
+            f"\n### En oynak / en durağan {unit} — eğilim çıkarıldıktan sonra ({title})"
+        )
+        print(f"  {'birim':{width}}{'artık sd':>10}{'kayma':>9}")
+        for group in (ordered[:8], ordered[-8:]):
+            for r in group:
+                shift = r["shift"] if key == "resid" else r["shift_nk"]
+                print(f"  {r['name']:{width}}{r[key]:>10.2f}{shift:>+9.1f}")
+            if group is ordered[:8]:
+                print(f"  {'—' * (width + 19)}")
+
+    # Electorate growth relative to the country: a place that grew far slower than
+    # Türkiye has been emptying out. Does that go with moving right?
+    usable = [r for r in rows if r["growth"]]
+    if len(usable) > 10:
+        print("\n### Seçmen artışı ile kayma arasındaki ilişki")
+        print(
+            "  (artış = birimin seçmen artışı / ülkenin seçmen artışı; "
+            "1'in altı = ülkeden yavaş büyüyen, boşalan yer)"
+        )
+        for label, subset in (
+            (f"tüm {unit}", usable),
+            (
+                "Kürt partisi payı hep %10 altında kalanlar",
+                [r for r in usable if r["kurd_peak"] < 10],
+            ),
+        ):
+            if len(subset) < 10:
+                continue
+            g = [r["growth"] for r in subset]
+            print(
+                f"  {label:44} n={len(subset):>4}  "
+                f"r(kürtlü)={pearson(g, [r['shift'] for r in subset]):+.2f}  "
+                f"r(kürtsüz)={pearson(g, [r['shift_nk'] for r in subset]):+.2f}"
+            )
+        slowest = sorted(usable, key=lambda r: r["growth"])[:15]
+        print(f"\n  En çok boşalan 15 {unit}:")
+        print(f"  {'birim':{width}}{'artış':>8}{'kayma':>9}{'kürtsüz':>9}")
+        for r in slowest:
+            print(
+                f"  {r['name']:{width}}{r['growth']:>8.2f}"
+                f"{r['shift']:>+9.1f}{r['shift_nk']:>+9.1f}"
+            )
 
 
 def table(rows, suffix, title, n=15, width=16, start=1983):
@@ -318,22 +471,40 @@ def main() -> None:
         "ilçelerin çoğu 'Merkez' diye geçiyor)",
     )
     ap.add_argument("--top", type=int, default=15)
+    ap.add_argument(
+        "--dispersion", action="store_true", help="dagilim ve iliski bolumleri"
+    )
+    ap.add_argument(
+        "--drop-0711",
+        action="store_true",
+        help="2007 ve 2011i tamamen disarida birak (bagimsizlari Kurt saymak yerine)",
+    )
     ap.add_argument("--min-voters", type=int, default=5000)
     args = ap.parse_args()
 
-    index, national, rows, boundary = collect(args.level, args.start, args.min_voters)
+    index, national, rows, boundary = collect(
+        args.level, args.start, args.min_voters, args.drop_0711
+    )
     unit = "il" if args.level == "il" else "ilçe"
     width = 16 if args.level == "il" else 30
-    elections = {y: x for y, x in ELECTIONS.items() if x >= args.start}
+    elections = {
+        y: x
+        for y, x in ELECTIONS.items()
+        if x >= args.start and not (args.drop_0711 and y in INDEPENDENT_IS_KURDISH)
+    }
 
     print("Sol blok payı, ülke geneli (%):")
     for year in elections:
-        left, left_nk, _ = national[year]
+        left, left_nk, _, _ = national[year]
         label = next(y["label"] for y in index["years"] if y["id"] == year)
         print(f"  {label:14}{left:>6.1f}{left_nk:>8.1f}  (Kürt partileri hariç)")
     print(
-        f"\nDışarıda bırakılan seçimler: "
-        f"{', '.join(f'{y} ({w})' for y, w in EXCLUDED.items())}"
+        "\n2007 ve 2011: "
+        + (
+            "dışarıda"
+            if args.drop_0711
+            else "içeride, bağımsız sütunu Kürt/sol sayılarak"
+        )
     )
     print(
         f"{unit.capitalize()} sayısı: {len(rows)}"
@@ -382,6 +553,9 @@ def main() -> None:
     for r in agree[:10] + agree[-10:]:
         print(f"  {r['name']:{width}}{r['shift']:>+9.1f}{r['shift_nk']:>+9.1f}")
 
+    if args.dispersion:
+        dispersion(rows, national, elections, index, unit, width)
+
     gap = sorted(rows, key=lambda r: -abs(r["shift"] - r["shift_nk"]))
     print(
         f"\n### İki okumanın en çok ayrıldığı {unit} (fark = Kürt partilerinin katkısı)"
@@ -402,7 +576,9 @@ def main() -> None:
                 next(y["label"] for y in index["years"] if y["id"] == year)
                 for year in elections
             ],
-            "excluded": list(EXCLUDED),
+            "independentsAsKurdish": []
+            if args.drop_0711
+            else sorted(INDEPENDENT_IS_KURDISH),
             "boundaryDropped": len(boundary),
             "units": [
                 {

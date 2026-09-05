@@ -11,15 +11,21 @@ veri `public/elections/`.
 
 ## Yöntem ve kapsam dışı bırakılanlar
 
-- **Seçimler:** 1983–2023, **2007 ve 2011 hariç**. O iki seçimde Kürt siyaseti bağımsız
-  adaylarla girdi; oylar "bağımsız" havuzunda durduğu için sol blok, seçmenle ilgisi
-  olmayan bir sebeple çöküyor.
+- **Seçimler:** 1983–2023, **12 seçim**. 1961–1977 kapsam dışı (pencere 1983'te başlıyor;
+  ayrıca 1977'ye çıpalamak yanıltıcı olurdu, solun tavan yaptığı seçim).
+- **2007 ve 2011 içeride, bağımsız sütunu Kürt/sol sayılarak.** O iki seçimde Kürt
+  siyaseti bağımsız adaylarla girdi, oylar "BĞMZ" havuzunda duruyor. Havuzu o iki yılda
+  Kürt/sol saymak, Kürt olmayan bağımsızın çıktığı yerde bir miktar fazla sayar — ama
+  ülke genelinde sütun 2007'de %5,2, 2011'de %6,6 ve güneydoğuda yoğun; iki seçimi
+  tamamen atmak dönemin altıda birini kaybettiriyordu. `--drop-0711` eski, katı okumayı
+  geri getiriyor. **Kayma rakamları iki okumada aynı** (pencereler 1983–91 ve 2018–23,
+  o yılları içermiyor); değişen, eğim ve ayrışma serisi.
 - **CHP listesi olmayan il-seçimler atlandı** (2023'te Bitlis, Gümüşhane, Muş, Yozgat,
   Çankırı). Olmayan liste bir tercih değil.
 - **1989 sonrası kurulan 14 il** çıktıkları ile katlandı; karşılaştırmanın iki ucu aynı
   toprağı kapsıyor. Kalan: **67 il**.
 - **Kayma** = 2018–2023 ortalama farkı − 1983–1991 ortalama farkı (puan). **Eğilim** =
-  aynı farkın en küçük kareler eğimi (puan / 10 yıl). İkisi de aynı hikâyeyi anlatıyor;
+  aynı farkın en küçük kareler eğimi (puan / 10 yıl, 12 seçimin hepsi kullanılır). İkisi de aynı hikâyeyi anlatıyor;
   kayma daha okunur, eğilim tek bir seçime bağlı değil.
 - İki okuma yan yana: **Kürt partileri solda** ve **Kürt partileri hariç**. Anlaşmadıkları
   yer bulgunun kendisi.
@@ -136,6 +142,64 @@ Güzelbahçe +14,6, Beşiktaş +14,5, Karaburun +14,2, Dikili +14,1. **En çok s
 değişikliği elemesine takılıyor — ama sıralamanın tepesi aynı yöne bakıyor: Karayazı
 (Erzurum) **+59,5**, Başkale (Van) +52,0, Bulanık (Muş) +51,2.
 
+## 6. Ayrışma, oynaklık ve göç (`--dispersion`)
+
+### Ülke coğrafi olarak ayrıştı, 2015'te tepe yaptı
+
+Her seçimde illerin ülkeden sapmasının standart sapması:
+
+| seçim | il sd | seçmen ağırlıklı | kürtsüz sd |
+|---|---|---|---|
+| 1983 | 8,77 | 6,09 | 8,77 |
+| 1995 | 10,45 | 8,33 | 10,73 |
+| 2002 | 12,47 | 10,20 | 8,49 |
+| 2011 | 16,41 | 12,54 | 13,74 |
+| **2015 Haz** | **20,09** | **15,49** | 13,85 |
+| 2018 | 17,28 | 13,72 | 11,83 |
+| 2023 | 15,54 | 12,62 | 10,81 |
+
+İller 40 yılda birbirinden **iki kattan fazla uzaklaştı** (8,8 → 20,1), zirve 2015
+Haziran; 2015'ten beri makas bir miktar kapanıyor. Kürt partileri hariç okumada da
+artıyor (8,8 → 14,4 → 10,8), yani ayrışma yalnız Kürt oyunun hikâyesi değil. İlçe
+düzeyinde aynı eğri, daha yüksek seviyede: 12,25 (1995) → 22,00 (2015 Haz) → 17,77 (2023).
+
+### Oynaklık ≠ kayma
+
+Eğilim çıkarıldıktan sonra kalan artık standart sapma, "yerinde durmayan" yerleri verir.
+En oynak iller **Tunceli 12,7 · Hakkari 12,0 · Ağrı 10,4 · Mardin 9,4 · Rize 8,2**;
+en durağanlar **İstanbul 1,3 · Adana 1,3 · Mersin 1,5 · Samsun 1,6 · Balıkesir 1,7**.
+Büyük iller hem az kayıyor hem az sallanıyor: ülke ortalamasını onlar tanımlıyor.
+Rize istisna — kaymadı (−5,3) ama seçimden seçime çok sallanıyor.
+
+### Göç sorusunun cevabı: kısmen evet, ama sandığın kadar değil
+
+Seçmen artışını ülkeye oranladım (1'in altı = ülkeden yavaş büyüyen, boşalan yer).
+
+| kapsam | n | r (kürtlü) | r (kürtsüz) |
+|---|---|---|---|
+| tüm iller | 67 | **+0,51** | −0,24 |
+| Kürt partisi payı hep %10 altında kalan iller | 44 | **+0,39** | +0,23 |
+| tüm ilçeler | 750 | +0,37 | +0,06 |
+| Kürt partisi payı düşük ilçeler | 531 | +0,26 | +0,14 |
+
+En çok boşalan 15 il, senin tahminini birebir doğruluyor — **İç Anadolu ve Karadeniz**:
+Afyonkarahisar 0,45 · Tunceli 0,46 · Artvin 0,48 · Çankırı 0,52 · Kastamonu 0,52 ·
+Sinop 0,53 · Gümüşhane 0,57 · Erzincan 0,58 · Kars 0,58 · Yozgat 0,59 · Sivas 0,59 ·
+Tokat 0,60 · Amasya 0,61 · Rize 0,61 · Çorum 0,61.
+
+Bunların kayması çoğunlukla sağa: Sivas −19,4, Sinop −16,7, Yozgat −13,8, Tokat −13,4,
+Çankırı −11,9, Kastamonu −9,3.
+
+**Ama üçüncü sütuna bak.** Aynı illerin Kürt partileri hariç okumadaki kayması sıfıra
+yakın: Afyon +1,0, Kastamonu +0,6, Çankırı −0,8, Yozgat −2,9, Rize +4,3. Korelasyon da
++0,39'dan +0,23'e düşüyor. Yani boşalan illerin "sağa kayması"nın büyük kısmı kendi
+seçmenlerinin değiştiğinden değil, **ülke ortalamasının Kürt oyuyla sola gitmesinden**
+kaynaklanıyor: yerinde duran yer, hareket eden bir ortalamaya göre geriye düşmüş görünür.
+
+Geriye kalan +0,23'lük ilişki gerçek ama zayıf — boşalmanın kaymayı açıklayan payı
+%5 civarı. Ve yön bile kesin değil: aynı listede Artvin (+7,6 kürtsüz) ve Rize (+4,3)
+boşalırken sola gitmiş. **Göç bir faktör, tek faktör değil.**
+
 ## Ne söylemiyor
 
 - Bu bir **oy oranı** analizi değil, **göreli konum** analizi. "Sola kaydı", "sol
@@ -144,5 +208,6 @@ değişikliği elemesine takılıyor — ama sıralamanın tepesi aynı yöne ba
   açıkça duruyor ve tartışmaya açıktır. YTP yıla göre çözülüyor (1961–69 sağ, 2002 sol).
 - 1977'ye çıpalanmadı; 1977 solun tavan yaptığı seçim, oraya göre ölçünce her yer sağa
   kaymış görünür.
-- Nüfus hareketi hesaba katılmadı. Alevi yoğun ilçelerde daha önce görülen "sağa dönmedi,
+- Göç ilişkisi korelasyondur, mekanizma değil: kimin gittiği (genç, eğitimli, seçici göç) bu veriden görünmez.
+- Nüfus hareketi doğrudan ölçülmedi; seçmen artışı vekil ölçüt olarak kullanıldı. Alevi yoğun ilçelerde daha önce görülen "sağa dönmedi,
   boşaldı" bulgusu il düzeyinde de geçerli olabilir; bu analiz onu ayırt etmiyor.
