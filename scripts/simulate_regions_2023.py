@@ -179,7 +179,9 @@ def build_adjacency(geo, votes):
         if a in by_name and b in by_name:
             adj[by_name[a]].add(by_name[b])
             adj[by_name[b]].add(by_name[a])
-    return adj
+    # sorted lists, not sets: set iteration order varies with the interpreter's hash
+    # seed, which would make --seed produce a different plan on every run
+    return {i: sorted(neigh) for i, neigh in adj.items()}
 
 
 def components(adj):
@@ -319,6 +321,9 @@ def sainte_lague(votes, seats):
     return divisor(votes, seats, 2.0)
 
 
+PARTY_FLOOR = 0.005  # below this a party is pooled into OTHER on the map
+OTHER = "Diğer"
+
 FORMULAS = {"Hare artık": hare_lr, "Sainte-Laguë": sainte_lague, "D'Hondt": dhondt}
 
 
@@ -347,6 +352,11 @@ def seats_for_plan(plan, votes):
 
 # --------------------------------------------------------------------------- output
 def plan_geojson(plan, geo, votes, weight):
+    """One feature per region, carrying its own vote tally and seat split.
+
+    The map page reads these directly, so every party above PARTY_FLOOR of the region's
+    valid vote is listed; the rest are pooled under OTHER so the shares still sum to 100.
+    """
     from shapely.ops import unary_union
 
     feats = []
@@ -356,6 +366,22 @@ def plan_geojson(plan, geo, votes, weight):
             provs[geo[d]["province"]] += weight[d]
         main = sorted(provs, key=provs.get, reverse=True)
         geom = unary_union([geo[d]["geom"] for d in region]).simplify(0.002)
+
+        tally = defaultdict(int)
+        for d in region:
+            for party, v in votes[d]["votes"].items():
+                tally[party] += v
+        valid = sum(tally.values())
+        party_votes = {p: v for p, v in tally.items() if p != INDEPENDENT and v > 0}
+        listed, other = {}, 0
+        for party, v in sorted(tally.items(), key=lambda kv: -kv[1]):
+            if v >= valid * PARTY_FLOOR:
+                listed[party] = v
+            else:
+                other += v
+        if other:
+            listed[OTHER] = other
+
         feats.append(
             {
                 "type": "Feature",
@@ -365,6 +391,16 @@ def plan_geojson(plan, geo, votes, weight):
                     "districts": len(region),
                     "provinces": main,
                     "seats": REGION_SEATS,
+                    "valid": valid,
+                    "votes": listed,
+                    "seats_by_party": {
+                        name: {
+                            party: n
+                            for party, n in fn(party_votes, REGION_SEATS).items()
+                            if n
+                        }
+                        for name, fn in FORMULAS.items()
+                    },
                 },
                 "geometry": json.loads(json.dumps(geom.__geo_interface__)),
             }
@@ -377,6 +413,11 @@ def main() -> None:
     ap.add_argument("--plans", type=int, default=100)
     ap.add_argument("--tol", type=float, default=0.07)
     ap.add_argument("--seed", type=int, default=1)
+    ap.add_argument(
+        "--no-summary",
+        action="store_true",
+        help="rewrite only the example-plan geojson; keep the existing summary file",
+    )
     args = ap.parse_args()
 
     geo = load_geometry()
@@ -427,6 +468,14 @@ def main() -> None:
             }
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    if args.no_summary:
+        json.dump(
+            plan_geojson(plans[0], geo, votes, weight),
+            (OUT_DIR / "regions_2023_plan.geojson").open("w", encoding="utf-8"),
+            ensure_ascii=False,
+        )
+        print(f"geojson only; summary left untouched; written to {OUT_DIR}")
+        return
     json.dump(
         {
             "year": YEAR,

@@ -22,6 +22,11 @@
   th:first-child, td:first-child { text-align: left; }
   th { background: #e9edf4; color: #1f3a73; }
   .muted { color: #6b7280; font-size: 12px; }
+  table.shares td.bar { width: 100%; padding-right: 0; }
+  table.shares span.fill { display: block; height: 9px; background: #7d93bd; }
+  table.shares tr.win span.fill { background: #1f3a73; }
+  table.shares td { border-bottom: none; padding: 2px 5px; }
+  table.shares td.name { max-width: 130px; overflow: hidden; text-overflow: ellipsis; }
   @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -37,6 +42,7 @@
   </div>
   <div class="panel">
     <div class="card" id="info"><h2>Bölge</h2><div class="muted">Haritada bir bölgenin üstüne gelin.</div></div>
+    <div class="card" id="country"><h2>Türkiye geneli</h2></div>
     <div class="card" id="seats"><h2>Sandalye (ortanca, plan demeti)</h2></div>
   </div>
 </main>
@@ -72,6 +78,27 @@ function colorFor(i, neighbours, assigned) {
   for (let k = 0; k < PALETTE.length; k++) if (!used.has(k)) return k;
   return i % PALETTE.length;
 }
+const total0 = (s) => Object.values(s.national_votes).reduce((a, c) => a + c, 0);
+
+function shareTable(votes, valid, seatsByFormula) {
+  const rows = Object.entries(votes).sort((a, b) => b[1] - a[1]);
+  const top = rows.length ? rows[0][1] : 1;
+  const seatText = (p) =>
+    seatsByFormula
+      ? Object.values(seatsByFormula).map((m) => m[p] || 0).join(" / ")
+      : "";
+  let out = `<table class="shares">`;
+  for (const [party, v] of rows) {
+    const pct = (v / valid) * 100;
+    out += `<tr class="${v === top ? "win" : ""}"><td class="name">${party}</td>` +
+      `<td>${pct.toFixed(1)} %</td>` +
+      `<td class="bar"><span class="fill" style="width:${(v / top) * 100}%"></span></td>` +
+      `<td>${v.toLocaleString("tr-TR")}</td>` +
+      (seatsByFormula ? `<td><b>${seatText(party)}</b></td>` : "") + `</tr>`;
+  }
+  return out + "</table>";
+}
+
 async function main() {
   const [plan, summary] = await Promise.all([fetch(PLAN).then((r) => r.json()), fetch(SUMMARY).then((r) => r.json())]);
   const b = bounds(plan);
@@ -91,13 +118,31 @@ async function main() {
     p.setAttribute("fill", PALETTE[assigned[i]]);
     p.addEventListener("mouseenter", () => {
       const q = f.properties;
-      info.innerHTML = `<h2>Bölge ${q.region}</h2><div>Kayıtlı seçmen: <b>${q.registered.toLocaleString("tr-TR")}</b> (${(((q.registered / target - 1) * 100) >= 0 ? "+" : "") + ((q.registered / target - 1) * 100).toFixed(1)} %)</div><div>İlçe sayısı: ${q.districts}</div><div>İller: ${q.provinces.join(", ")}</div><div>Sandalye: ${q.seats}</div>`;
+      const dev = (q.registered / target - 1) * 100;
+      info.innerHTML =
+        `<h2>Bölge ${q.region} — ${q.seats} milletvekili</h2>` +
+        `<div>Kayıtlı seçmen: <b>${q.registered.toLocaleString("tr-TR")}</b> (ortalamadan ${dev >= 0 ? "+" : ""}${dev.toFixed(1)} %)</div>` +
+        `<div>Geçerli oy: ${q.valid.toLocaleString("tr-TR")} · katılım ${((q.valid / q.registered) * 100).toFixed(1)} %</div>` +
+        `<div>${q.districts} ilçe · iller: ${q.provinces.join(", ")}</div>` +
+        shareTable(q.votes, q.valid, q.seats_by_party) +
+        `<p class="muted">Son sütun: sandalye — Hare artık / Sainte-Laguë / D'Hondt. Bu bölgenin kendi 10 sandalyesi; ülke listesinin 100'ü ayrı.</p>`;
     });
     svg.appendChild(p);
   });
   const sizes = feats.map((f) => f.properties.registered);
   target = sizes.reduce((a, c) => a + c, 0) / feats.length;
   document.getElementById("status").textContent = `${feats.length} bölge · en küçük ${Math.min(...sizes).toLocaleString("tr-TR")} · en büyük ${Math.max(...sizes).toLocaleString("tr-TR")} seçmen · ${summary.plans} plan demeti`;
+  const natVotes = Object.fromEntries(
+    Object.entries(summary.national_votes).filter(([, v]) => v / total0(summary) >= 0.005)
+  );
+  natVotes["Diğer"] =
+    total0(summary) - Object.values(natVotes).reduce((a, c) => a + c, 0);
+  document.getElementById("country").insertAdjacentHTML(
+    "beforeend",
+    `<div>Geçerli oy: <b>${total0(summary).toLocaleString("tr-TR")}</b> · ${feats.length} bölge · ${summary.national_seats} ülke listesi + ${feats.length * summary.region_seats} bölge = 600 milletvekili</div>` +
+      shareTable(natVotes, total0(summary), null) +
+      `<p class="muted">%0,5 altındaki partiler &#8220;Diğer&#8221;de. Yurt içi sandıklar.</p>`
+  );
   const parties = Object.keys(summary.national_votes).sort((a, c) => summary.national_votes[c] - summary.national_votes[a]);
   const total = Object.values(summary.national_votes).reduce((a, c) => a + c, 0);
   const ACTUAL_ALIAS = { "YENİDEN REFAH": "YRP" };
