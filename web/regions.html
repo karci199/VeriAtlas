@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Seçim simülasyonu — 50 bölge</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { margin: 0; font: 14px system-ui, sans-serif; color: #1f2937; background: #f8fafc; }
+  header { padding: 14px 20px; background: #1f3a73; color: #fff; }
+  header h1 { margin: 0; font-size: 18px; font-weight: 600; }
+  header p { margin: 4px 0 0; font-size: 12px; opacity: .85; }
+  main { display: grid; grid-template-columns: 1fr 460px; gap: 16px; padding: 16px 20px; }
+  svg { width: 100%; height: auto; background: #eef2f7; border: 1px solid #d5dbe5; }
+  path.region { stroke: #fff; stroke-width: .6; cursor: pointer; }
+  path.region:hover { stroke: #111; stroke-width: 1.2; }
+  .panel { font-size: 13px; }
+  .card { background: #fff; border: 1px solid #d5dbe5; padding: 12px; margin-bottom: 12px; }
+  .card h2 { margin: 0 0 6px; font-size: 14px; color: #1f3a73; }
+  .card table { display: block; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 12px; }
+  th, td { padding: 3px 5px; border-bottom: 1px solid #e5e7eb; text-align: right; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { background: #e9edf4; color: #1f3a73; }
+  .muted { color: #6b7280; font-size: 12px; }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>2023 milletvekili seçimi — 100 Türkiye + 50 bölge × 10 simülasyonu</h1>
+  <p>Bölgeler ilçelerden, bitişik, kayıtlı seçmene göre ±7 %, il sınırı serbest. Rastgele planlardan bir örnek. Oylar gerçek sistem altında verildi; sonuç yalnız mekanik etkidir.</p>
+</header>
+<main>
+  <div>
+    <svg id="map" viewBox="0 0 1000 480"></svg>
+    <p class="muted" id="status">Yükleniyor…</p>
+  </div>
+  <div class="panel">
+    <div class="card" id="info"><h2>Bölge</h2><div class="muted">Haritada bir bölgenin üstüne gelin.</div></div>
+    <div class="card" id="seats"><h2>Sandalye (ortanca, plan demeti)</h2></div>
+  </div>
+</main>
+<script>
+const PLAN = "../public/sim/regions_2023_plan.geojson";
+const SUMMARY = "../public/sim/simulation_2023_summary.json";
+const PALETTE = ["#4e79a7","#f28e2b","#e15759","#76b7b2","#59a14f","#edc948","#b07aa1","#ff9da7","#9c755f","#bab0ac"];
+
+function project(lon, lat, b) {
+  const cos = Math.cos((b.midLat * Math.PI) / 180);
+  const x = ((lon - b.minLon) * cos) / b.scale + b.pad;
+  const y = (b.maxLat - lat) / b.scale + b.pad;
+  return [x, y];
+}
+function ringPath(ring, b) {
+  return ring.map((p, i) => (i ? "L" : "M") + project(p[0], p[1], b).map((v) => v.toFixed(1)).join(",")).join("") + "Z";
+}
+function geomPath(g, b) {
+  const polys = g.type === "Polygon" ? [g.coordinates] : g.coordinates;
+  return polys.map((poly) => poly.map((ring) => ringPath(ring, b)).join("")).join("");
+}
+function bounds(fc) {
+  let minLon = 180, maxLon = -180, minLat = 90, maxLat = -90;
+  const walk = (c) => { if (typeof c[0] === "number") { minLon = Math.min(minLon, c[0]); maxLon = Math.max(maxLon, c[0]); minLat = Math.min(minLat, c[1]); maxLat = Math.max(maxLat, c[1]); } else c.forEach(walk); };
+  fc.features.forEach((f) => walk(f.geometry.coordinates));
+  const midLat = (minLat + maxLat) / 2;
+  const w = (maxLon - minLon) * Math.cos((midLat * Math.PI) / 180), h = maxLat - minLat;
+  const pad = 8, scale = Math.max(w / (1000 - 2 * pad), h / (480 - 2 * pad));
+  return { minLon, maxLat, midLat, scale, pad };
+}
+function colorFor(i, neighbours, assigned) {
+  const used = new Set(neighbours.map((n) => assigned[n]).filter((c) => c !== undefined));
+  for (let k = 0; k < PALETTE.length; k++) if (!used.has(k)) return k;
+  return i % PALETTE.length;
+}
+async function main() {
+  const [plan, summary] = await Promise.all([fetch(PLAN).then((r) => r.json()), fetch(SUMMARY).then((r) => r.json())]);
+  const b = bounds(plan);
+  const svg = document.getElementById("map");
+  const feats = plan.features;
+  // greedy colouring by bbox overlap so touching regions differ
+  const boxes = feats.map((f) => { let a = [180, 90, -180, -90]; const walk = (c) => { if (typeof c[0] === "number") { a = [Math.min(a[0], c[0]), Math.min(a[1], c[1]), Math.max(a[2], c[0]), Math.max(a[3], c[1])]; } else c.forEach(walk); }; walk(f.geometry.coordinates); return a; });
+  const touch = (p, q) => !(boxes[p][2] < boxes[q][0] || boxes[q][2] < boxes[p][0] || boxes[p][3] < boxes[q][1] || boxes[q][3] < boxes[p][1]);
+  const assigned = [];
+  feats.forEach((f, i) => { const nb = feats.map((_, j) => j).filter((j) => j !== i && touch(i, j)); assigned[i] = colorFor(i, nb, assigned); });
+  let target = 0;
+  const info = document.getElementById("info");
+  feats.forEach((f, i) => {
+    const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    p.setAttribute("d", geomPath(f.geometry, b));
+    p.setAttribute("class", "region");
+    p.setAttribute("fill", PALETTE[assigned[i]]);
+    p.addEventListener("mouseenter", () => {
+      const q = f.properties;
+      info.innerHTML = `<h2>Bölge ${q.region}</h2><div>Kayıtlı seçmen: <b>${q.registered.toLocaleString("tr-TR")}</b> (${(((q.registered / target - 1) * 100) >= 0 ? "+" : "") + ((q.registered / target - 1) * 100).toFixed(1)} %)</div><div>İlçe sayısı: ${q.districts}</div><div>İller: ${q.provinces.join(", ")}</div><div>Sandalye: ${q.seats}</div>`;
+    });
+    svg.appendChild(p);
+  });
+  const sizes = feats.map((f) => f.properties.registered);
+  target = sizes.reduce((a, c) => a + c, 0) / feats.length;
+  document.getElementById("status").textContent = `${feats.length} bölge · en küçük ${Math.min(...sizes).toLocaleString("tr-TR")} · en büyük ${Math.max(...sizes).toLocaleString("tr-TR")} seçmen · ${summary.plans} plan demeti`;
+  const parties = Object.keys(summary.national_votes).sort((a, c) => summary.national_votes[c] - summary.national_votes[a]);
+  const total = Object.values(summary.national_votes).reduce((a, c) => a + c, 0);
+  const ACTUAL_ALIAS = { "YENİDEN REFAH": "YRP" };
+  const actualOf = (p) => summary.actual_2023[p] ?? summary.actual_2023[ACTUAL_ALIAS[p]] ?? 0;
+  const seatTotal = summary.national_seats + summary.regions * summary.region_seats;
+  const formulas = Object.keys(summary.regional);
+  let html = `<table><tr><th>Parti</th><th>Oy %</th><th>Hak</th><th>TR 100</th>${formulas.map((f) => `<th>${f}</th>`).join("")}<th>Gerçek</th></tr>`;
+  for (const p of parties) {
+    const share = summary.national_votes[p] / total;
+    const nat = summary.national_seats_hare[p] || 0;
+    if (share < 0.005 && !nat) continue;
+    html += `<tr><td>${p}</td><td>${(share * 100).toFixed(1)}</td><td>${(share * seatTotal).toFixed(1)}</td><td>${nat}</td>${formulas.map((f) => { const s = summary.regional[f][p]; return `<td>${nat + s.median} <span class="muted">[${nat + s.p5}–${nat + s.p95}]</span></td>`; }).join("")}<td>${actualOf(p)}</td></tr>`;
+  }
+  html += "</table><p class='muted'>Bölge sütunları 100 Türkiye milletvekilini içerir (toplam 600). &#8220;Hak&#8221; = oy payı × 600, tam orantılı karşılık. Köşeli parantez: planların %5–95 aralığı.</p>";
+  document.getElementById("seats").insertAdjacentHTML("beforeend", html);
+}
+main().catch((e) => { document.getElementById("status").textContent = "Hata: " + e; });
+</script>
+</body>
+</html>

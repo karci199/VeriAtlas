@@ -4,8 +4,8 @@
     {
       "name": "veriatlas",
       "runtimeExecutable": "uv",
-      "runtimeArgs": ["run", "python", "scripts/serve.py", "8123"],
-      "port": 8123
+      "runtimeArgs": ["run", "python", "scripts/serve.py", "8124"],
+      "port": 8124
     }
   ]
 }
