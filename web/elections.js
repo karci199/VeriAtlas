@@ -135,7 +135,7 @@ function drawParties() {
     .map((x) => x.p);
 
   const W = Math.max(620, parties.length * 92), H = 300;
-  const pad = { l: 40, r: 8, t: 10, b: 46 };
+  const pad = { l: 40, r: 8, t: 30, b: 30 }; // top: room for the sideways value labels
   const plotW = W - pad.l - pad.r, plotH = H - pad.t - pad.b;
   const { top, ticks } = axisTicks(
     Math.max(...rows.flatMap((r) => (r.m ? parties.map((p) => r.m.shares.find((s) => s.party === p)?.share || 0) : [0])))
@@ -157,19 +157,22 @@ function drawParties() {
     drawn.forEach((r, j) => {
       const share = r.m.shares.find((s) => s.party === party)?.share || 0;
       const h = (plotH * share) / top;
+      const bx = x0 + j * barW, by = pad.t + plotH - h;
       svg.appendChild(
-        el("rect", {
-          x: x0 + j * barW, y: pad.t + plotH - h, width: barW - 2, height: Math.max(h, 0),
-          fill: r.colour, rx: 1,
-        })
+        el("rect", { x: bx, y: by, width: barW - 2, height: Math.max(h, 0), fill: r.colour, rx: 1 })
       ).appendChild(el("title", {}, `${r.name} — ${party}: ${pct(share)}`));
+      // Every bar carries its own number, turned on its side so three fit in a band:
+      // hover is not a way to read a chart on paper or at a glance.
+      const tx = bx + (barW - 2) / 2, ty = by - 4;
+      svg.appendChild(
+        el(
+          "text",
+          { class: "val", x: tx, y: ty, "text-anchor": "start", transform: `rotate(-90 ${tx} ${ty})` },
+          share >= 0.05 ? share.toFixed(1).replace(".", ",") : ""
+        )
+      );
     });
-    const label = el("text", { x: cx, y: H - pad.b + 14, "text-anchor": "middle" }, party);
-    svg.appendChild(label);
-    const best = drawn[0].m.shares.find((s) => s.party === party);
-    svg.appendChild(
-      el("text", { class: "val", x: cx, y: H - pad.b + 28, "text-anchor": "middle" }, best ? pct(best.share) : "—")
-    );
+    svg.appendChild(el("text", { x: cx, y: H - pad.b + 15, "text-anchor": "middle" }, party));
   });
   svg.appendChild(el("line", { class: "axis", x1: pad.l, x2: W - pad.r, y1: pad.t + plotH, y2: pad.t + plotH }));
   host.appendChild(svg);
@@ -180,10 +183,10 @@ function drawParties() {
   const missing = lead.valid - lead.partyTotal;
   document.getElementById("partyNote").textContent =
     missing > 0
-      ? `Alt satırdaki yüzde seçili birime aittir. Tabloda ayrı satırı olmayan küçük partiler ` +
-        `(${fmt(missing)} oy, geçerli oyun %${((100 * missing) / lead.valid).toFixed(1).replace(".", ",")}'i) ` +
-        `dökümde yer almıyor.`
-      : "Alt satırdaki yüzde seçili birime aittir.";
+      ? `Çubukların üzerindeki sayı geçerli oy içindeki paydır (%). Tabloda ayrı satırı ` +
+        `olmayan küçük partiler (${fmt(missing)} oy, geçerli oyun ` +
+        `%${((100 * missing) / lead.valid).toFixed(1).replace(".", ",")}'i) dökümde yer almıyor.`
+      : "Çubukların üzerindeki sayı geçerli oy içindeki paydır (%).";
 }
 
 /* ---- summary table ----------------------------------------------------- */
@@ -233,7 +236,7 @@ function drawSeries() {
 
   const all = rows.flatMap((r) => r.points.filter(Boolean).map((p) => p.v));
   if (!all.length) { host.textContent = "Veri yok."; return; }
-  const W = 900, H = 320, pad = { l: 44, r: 10, t: 12, b: 50 };
+  const W = 900, H = 320, pad = { l: 44, r: 34, t: 16, b: 50 };
   const plotW = W - pad.l - pad.r, plotH = H - pad.t - pad.b;
   const { top, ticks } = axisTicks(Math.max(...all));
   const svg = el("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}` });
@@ -272,10 +275,36 @@ function drawSeries() {
     };
     for (const p of r.points) { if (p) run.push(p); else flush(); }
     flush();
-    for (const p of r.points.filter(Boolean)) {
+    const drawnPoints = r.points.filter(Boolean);
+    for (const p of drawnPoints) {
       const dot = el("circle", { cx: x(p.i), cy: y(p.v), r: 3, fill: r.colour });
       dot.appendChild(el("title", {}, `${r.name} — ${years[p.i].label}: ${unit === "%" ? pct(p.v) : num2(p.v)}`));
       svg.appendChild(dot);
+    }
+    // Numbers on the chart itself: every point of the selected place, and the last
+    // point of the two reference lines. Hover alone is not readable at a glance.
+    const labelled = r === rows[0] ? drawnPoints : drawnPoints.slice(-1);
+    for (const p of labelled) {
+      // Put the number on the side of the line that is free: above when this series
+      // runs highest at that election, below when another line sits over it.
+      const above = rows.every((o) => {
+        const q = o.points[p.i];
+        return o === r || !q || q.v <= p.v;
+      });
+      const last = p.i === years.length - 1;
+      svg.appendChild(
+        el(
+          "text",
+          {
+            class: "val",
+            x: x(p.i) + (last ? 6 : p.i === 0 ? -2 : 0),
+            y: y(p.v) + (above ? -8 : 14),
+            "text-anchor": last ? "start" : p.i === 0 ? "start" : "middle",
+            style: `fill:${r.colour}`,
+          },
+          unit === "%" ? p.v.toFixed(1).replace(".", ",") : num2(p.v)
+        )
+      );
     }
   }
   svg.appendChild(el("line", { class: "axis", x1: pad.l, x2: W - pad.r, y1: pad.t + plotH, y2: pad.t + plotH }));
