@@ -200,6 +200,127 @@ Geriye kalan +0,23'lük ilişki gerçek ama zayıf — boşalmanın kaymayı aç
 %5 civarı. Ve yön bile kesin değil: aynı listede Artvin (+7,6 kürtsüz) ve Rize (+4,3)
 boşalırken sola gitmiş. **Göç bir faktör, tek faktör değil.**
 
+## 7. Ülkeye göre değil, kendine göre
+
+"TR'ye göre fark"ın iki ucu da hareket ediyor. Referansı bırakıp her yeri **kendi
+geçmişiyle** karşılaştırınca resim netleşiyor. Ülke sol blok payı 1983–91'de %31,9,
+2018–23'te %36,1 — yani **+4,2 puan**.
+
+**İl düzeyi.** Kendi sol payı gerçekten düşen: **31/67**. Sol payı *arttığı hâlde*
+ülkeye göre geri düşen: **11 il** — bunlar sağa dönmedi, ülke onlardan hızlı sola gitti.
+
+| il | bugünkü sol % | kendi değişimi | TR'ye göre | fark |
+|---|---|---|---|---|
+| Sivas | 17,5 | **−15,2** | −19,4 | 4,2 |
+| Niğde | 14,7 | −13,2 | −17,5 | 4,3 |
+| Sinop | 27,6 | −12,5 | −16,7 | 4,2 |
+| Yozgat | 12,6 | −10,8 | −13,8 | 3,0 |
+| Zonguldak | 30,3 | −10,0 | −14,2 | 4,2 |
+| Trabzon | 17,9 | −8,7 | −12,9 | 4,2 |
+| Çankırı | 7,2 | −8,9 | −11,9 | 3,0 |
+
+Yani listenin tepesindeki iller **gerçekten sağa gitti** — Sivas'ın kendi sol payı 15
+puan düşmüş. Referans etkisi sabit ve küçük: her yerde ~4 puan, ülkenin kendi
+hareketi kadar. Önceki bölümlerdeki −19,4 rakamının yaklaşık **dörtte biri** ülke
+ortalamasının kaymasından, **dörtte üçü** ilin kendi değişiminden geliyor.
+
+**İlçe düzeyi.** Kendi sol payı düşen: **319/750**. Artmasına rağmen ülkeye göre geri
+düşen: **172 ilçe** — bu grup ilde olduğundan çok daha kalabalık. En sert gerçek
+düşüşler yine Karadeniz: Akkuş −17,8 (bugün %15,6), Ayvacık (Samsun) −15,3 (%6,5),
+Eflani −14,5, Erfelek −13,7, Kumru −13,6 (%8,9).
+
+Kürt ilçelerinde ise "kendi" ve "kürtsüz kendi" sütunları taban tabana zıt: Güçlükonak
+kendi sol payını +53,2 artırmış, Kürt partileri sayılmazsa yalnız +2,0. Diyarbakır'da
+il düzeyinde kendi payı +27,3, kürtsüz **−37,8**. Aynı seçmen, iki farklı sorunun
+cevabı.
+
+## 8. Bileşim mi, fikir mi? (shift-share)
+
+Ülke sol payı, yerel payların nüfusla ağırlıklı ortalaması. İki sebeple değişebilir:
+insanlar farklı oy verdiği için (**within**) ya da büyüyen yerler ile küçülen yerler
+farklı oy verdiği için (**between** — kimse fikrini değiştirmeden ortalama kayar).
+
+| bileşen | il | ilçe |
+|---|---|---|
+| toplam değişim | +4,38 | +3,39 |
+| yerinde fikir değişimi | +2,30 | +2,59 |
+| **nüfus kayması** | **+0,66** | **+0,44** |
+| etkileşim | +1,42 | +0,36 |
+| nüfus kaymasının payı | **%15** | **%13** |
+
+**Göç ülke sonucunu tek başına taşımıyor.** Kırk yıllık nüfus kayması ülke sol payına
+yarım puandan biraz fazla katmış; değişimin %85'i insanların bulundukları yerde farklı
+oy vermesinden geliyor. İl düzeyindeki büyük etkileşim terimi (+1,42) tek bir olguyu
+gösteriyor: hem hızlı büyüyen hem çok sola giden yerler, yani Kürt illeri.
+
+## 9. Yerin kaderi ne kadar sabit?
+
+Birimlerin ülkeden sapmasının ilk ve son pencerede sıralaması ne kadar aynı kalıyor
+(Spearman):
+
+| pencere | il | ilçe |
+|---|---|---|
+| 1995 → 2023 (28 yıl) | 0,91 / 0,95 | 0,88 / 0,91 |
+| 1983 → 2023 (40 yıl) | 0,64 / 0,51 | 0,61 / 0,46 |
+
+(kürtlü / kürtsüz). İl ve ilçe aynı sonucu veriyor — fark düzeyden değil **pencere
+uzunluğundan**. Bir kuşak boyunca coğrafya neredeyse kader (0,9); kırk yılda ciddi bir
+yeniden dizilim var (0,5–0,6). 1980'lerin siyasi haritası bugünün haritası değil.
+
+## 10. Kenarda duran birkaç şey
+
+- **2015'in iki seçimi arasında beş ay var, bazı yerlerde 26 puan.** Kendi sol payı
+  Haziran'dan Kasım'a en çok düşen ilçeler: Köprüköy (Erzurum) −26,5, Eleşkirt (Ağrı)
+  −24,2, Hamur −19,1, Arıcak (Elazığ) −16,7, Gürpınar (Van) −16,0 — hepsi doğuda.
+  Aynı beş ayda Trakya ters yöne gitti: Hanak +8,4, Babaeski +8,3, Saray (Tekirdağ)
+  +8,1, Kırklareli Merkez +7,4. İl düzeyinde de aynı: Şanlıurfa −11,3 ↔ Kırklareli +5,1.
+- **Kürt partileri hariç bugünün en sol ilçeleri** neredeyse tek bir koridor: Karşıyaka
+  %62,5, Beşiktaş %60,3, Narlıdere %59,9, Güzelbahçe %59,7, **Divriği (Sivas) %58,7**,
+  Urla %57,7, Babaeski %56,6, Dikili %55,9. Divriği bu listede tek başına ayrık duruyor
+  — Sivas'ın Alevi ilçesi, ilin geri kalanı %17,5'te.
+- **En düşükler tek bir ilde kümeleniyor:** Muş'un beş ilçesi ilk sekizde (Korkut %1,5,
+  Bulanık %1,5, Malazgirt %1,6, Hasköy %1,6, Muş Merkez %1,9). Kürt partisi çıkarılınca
+  bu ilçelerde sol pratikte yok.
+- **Kırklareli, kürtsüz okumada Türkiye'nin en sol ili** (%49,0) — İzmir'i (%44,3) ve
+  Muğla'yı (%43,9) geçiyor. Edirne ikinci (%44,6).
+
+## 11. Ülkede sol ne zaman düştü?
+
+Sol blok payı, ülke geneli, 17 seçim:
+
+| seçim | sol | kürtsüz | önceki seçime göre |
+|---|---|---|---|
+| 1961 | 36,8 | 36,8 | |
+| 1965 | 31,8 | 31,8 | −5,0 |
+| 1969 | 32,9 | 32,9 | +1,1 |
+| 1973 | 34,6 | 34,6 | +1,6 |
+| **1977** | **42,0** | 42,0 | +7,4 |
+| 1983 | 30,4 | 30,4 | **−11,5** |
+| 1987 | 33,2 | 33,2 | +2,8 |
+| 1991 | 32,0 | 32,0 | −1,2 |
+| 1995 | 29,8 | 25,6 | −2,2 |
+| 1999 | 37,5 | 32,1 | +7,7 |
+| 2002 | 28,9 | 22,8 | −8,5 |
+| **2007** | **27,0** | **21,7** | −2,0 |
+| 2011 | 33,0 | 26,5 | +6,1 |
+| 2015 Haz | 38,8 | 25,8 | +5,7 |
+| 2015 Kas | 36,7 | 26,2 | −2,1 |
+| 2018 | 34,8 | 23,1 | −1,9 |
+| 2023 | 37,4 | 28,5 | +2,6 |
+
+- **Tek seferde en büyük düşüş 1977 → 1983: −11,5 puan.** Askerî darbe ve parti
+  kapatmaları; CHP 1983'te sandıkta yok.
+- **1977 → 1995 aralığı gerçekten dönemin adı:** 42,0 → 29,8, on sekiz yılda −12,2 puan
+  ve dört seçim üst üste düşüş (1983, 1991, 1995). Sezgi doğru.
+- Ama dip 1995 değil: sol blok en düşük seviyesini **2007'de (%27,0)** gördü. 1999'un
+  +7,7'lik DSP sıçraması geçici çıktı, 2002'de −8,5 ile fazlasıyla geri verildi.
+- **Kürt partileri hariç okumada dip daha geç ve daha derin: 2007'de %21,7**, ve o seri
+  bugün bile (%28,5) 1977'nin 13 puan altında. 1977'nin seviyesine hiçbir zaman
+  dönülmedi; sol blok payındaki son toparlanma büyük ölçüde Kürt oyunun eklenmesiyle.
+
+Kısacası: düşüş 1977'de başladı, 1983'te bir defada koptu, 1995'e kadar sürdü,
+1999'da sahte bir sıçrama yaptı ve asıl dibi 2000'lerin ortasında gördü.
+
 ## Ne söylemiyor
 
 - Bu bir **oy oranı** analizi değil, **göreli konum** analizi. "Sola kaydı", "sol

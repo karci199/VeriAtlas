@@ -301,7 +301,19 @@ def collect(
                 chp_missing.append(year)
                 continue  # no CHP list: an absent choice, not a rejected one
             nat_left, nat_left_nk, _, _ = national[year]
-            series.append((elections[year], left - nat_left, left_nk - nat_left_nk))
+            # Deviation first (that is what the trend is fitted on), then the unit's
+            # own shares and weight, so the same series answers "did it move" as well
+            # as "did it move relative to the country".
+            series.append(
+                (
+                    elections[year],
+                    left - nat_left,
+                    left_nk - nat_left_nk,
+                    left,
+                    left_nk,
+                    counts.get("e", 0),
+                )
+            )
         if len(series) < min_elections:
             continue
         series.sort()
@@ -341,15 +353,21 @@ def collect(
                 "late": window(*late_w, 1),
                 "early_nk": window(*early_w, 2),
                 "late_nk": window(*late_w, 2),
-                "slope": slope([(x, d) for x, d, _ in series]),
-                "slope_nk": slope([(x, d) for x, _, d in series]),
-                "resid": residual_sd([(x, d) for x, d, _ in series]),
-                "resid_nk": residual_sd([(x, d) for x, _, d in series]),
+                "own_early": window(*early_w, 3),
+                "own_late": window(*late_w, 3),
+                "own_early_nk": window(*early_w, 4),
+                "own_late_nk": window(*late_w, 4),
+                "slope": slope([(p[0], p[1]) for p in series]),
+                "slope_nk": slope([(p[0], p[2]) for p in series]),
+                "resid": residual_sd([(p[0], p[1]) for p in series]),
+                "resid_nk": residual_sd([(p[0], p[2]) for p in series]),
                 "series": series,
             }
         )
         rows[-1]["shift"] = rows[-1]["late"] - rows[-1]["early"]
         rows[-1]["shift_nk"] = rows[-1]["late_nk"] - rows[-1]["early_nk"]
+        rows[-1]["own"] = rows[-1]["own_late"] - rows[-1]["own_early"]
+        rows[-1]["own_nk"] = rows[-1]["own_late_nk"] - rows[-1]["own_early_nk"]
     return index, national, rows, boundary_suspect
 
 
@@ -431,6 +449,89 @@ def dispersion(rows, national, elections, index, unit, width):
                 f"  {r['name']:{width}}{r['growth']:>8.2f}"
                 f"{r['shift']:>+9.1f}{r['shift_nk']:>+9.1f}"
             )
+
+
+def absolute(rows, national, elections, unit, width, start):
+    """The other question: did a place's own left share actually move?
+
+    "Relative to Türkiye" has two moving ends. A place that never changed looks like
+    it moved right whenever the country moves left. This section drops the reference
+    point and reads each place against its own past, then puts the two side by side.
+    """
+    nat_early = sum(
+        national[y][0] for y, x in elections.items() if start <= x <= start + 8
+    ) / max(1, sum(1 for x in elections.values() if start <= x <= start + 8))
+    nat_late = sum(
+        national[y][0] for y, x in elections.items() if 2018 <= x <= 2023
+    ) / max(1, sum(1 for x in elections.values() if 2018 <= x <= 2023))
+    print(
+        f"\n### Kendi geçmişine göre değişim (ülke: {nat_early:+.1f} → {nat_late:+.1f}, "
+        f"yani {nat_late - nat_early:+.1f} puan)"
+    )
+    print(
+        f"  {'birim':{width}}{'kendi sol %':>13}{'kendi değişim':>15}"
+        f"{'TRye göre':>11}{'kürtsüz kendi':>15}"
+    )
+    ordered = sorted(rows, key=lambda r: -r["own"])
+    for group in (ordered[:12], ordered[-12:]):
+        for r in group:
+            print(
+                f"  {r['name']:{width}}{r['own_late']:>13.1f}{r['own']:>+15.1f}"
+                f"{r['shift']:>+11.1f}{r['own_nk']:>+15.1f}"
+            )
+        if group is ordered[:12]:
+            print(f"  {'—' * (width + 54)}")
+
+    fell = [r for r in rows if r["own"] < 0]
+    rose_but_lost = [r for r in rows if r["own"] > 0 and r["shift"] < 0]
+    print(
+        f"\n  Kendi sol payı gerçekten düşen {unit}: {len(fell)}/{len(rows)}. "
+        f"Sol payı ARTTIĞI hâlde ülkeye göre geri düşen: {len(rose_but_lost)} "
+        f"— bu {unit} sağa dönmedi, ülke onlardan hızlı sola gitti."
+    )
+
+
+def shift_share(rows, national, elections, unit, start):
+    """Did the country change its mind, or did it move house?
+
+    The national left share is a population-weighted average of local shares. It can
+    move because places voted differently (within) or because the places that grew
+    are not the places that shrank (composition). Splitting the two is the only way
+    to say whether migration moved the national result on its own.
+    """
+
+    def snapshot(lo, hi):
+        acc = {}
+        for r in rows:
+            pts = [p for p in r["series"] if lo <= p[0] <= hi]
+            if not pts:
+                return None
+            acc[r["name"]] = (
+                sum(p[3] for p in pts) / len(pts),  # own left share
+                sum(p[5] for p in pts) / len(pts),  # electorate
+            )
+        return acc
+
+    a = snapshot(start, start + 8)
+    b = snapshot(2018, 2023)
+    if not a or not b:
+        print("\n(bileşim ayrıştırması için her birimde iki pencere de gerekli)")
+        return
+    wa_total = sum(w for _, w in a.values())
+    wb_total = sum(w for _, w in b.values())
+    within = sum((a[k][1] / wa_total) * (b[k][0] - a[k][0]) for k in a)
+    between = sum((b[k][1] / wb_total - a[k][1] / wa_total) * a[k][0] for k in a)
+    interaction = sum(
+        (b[k][1] / wb_total - a[k][1] / wa_total) * (b[k][0] - a[k][0]) for k in a
+    )
+    total = within + between + interaction
+    print(f"\n### Ülkedeki değişim nereden geliyor? ({unit} bileşimi)")
+    print(f"  toplam değişim                    {total:>+7.2f} puan")
+    print(f"  yerinde fikir değişimi (within)   {within:>+7.2f}")
+    print(f"  nüfus kaymasi (between)           {between:>+7.2f}")
+    print(f"  etkileşim                         {interaction:>+7.2f}")
+    if abs(total) > 0.01:
+        print(f"  nüfus kaymasının payı: %{100 * between / total:.0f}")
 
 
 def table(rows, suffix, title, n=15, width=16, start=1983):
@@ -555,6 +656,8 @@ def main() -> None:
 
     if args.dispersion:
         dispersion(rows, national, elections, index, unit, width)
+        absolute(rows, national, elections, unit, width, args.start)
+        shift_share(rows, national, elections, unit, args.start)
 
     gap = sorted(rows, key=lambda r: -abs(r["shift"] - r["shift_nk"]))
     print(
