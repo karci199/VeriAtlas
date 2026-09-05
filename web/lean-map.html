@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!-- Choropleth of the relative left/right shift, 1983/1995 -> 2023. One value per
+     province or district: how far its left-bloc distance from the national share moved.
+     Data: public/elections/lean-il.json, lean-ilce.json (scripts/analyze_province_lean.py).
+     Geometry: public/areas.geojson and public/geo/districts/TR-XX.geojson. -->
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VeriAtlas — eğilim haritası</title>
+<link rel="stylesheet" href="lean-map.css?v=2">
+</head>
+<body>
+<header>
+  <div class="logo">VeriAtlas</div>
+  <div class="pick">
+    <div class="seg" id="level">
+      <span data-v="il" class="on">İl</span><span data-v="ilce">İlçe</span>
+    </div>
+    <div class="seg" id="reading">
+      <span data-v="shift" class="on">Kürt partileri solda</span><span data-v="shiftNk">Kürt partileri hariç</span>
+    </div>
+  </div>
+  <a class="navlink" href="elections.html">← Seçim karşılaştırma</a>
+  <div class="status" id="status"></div>
+</header>
+
+<main>
+  <section class="mapwrap">
+    <div id="map"></div>
+    <div class="legend" id="legend"></div>
+    <p class="note" id="note"></p>
+  </section>
+  <aside>
+    <div class="card" id="detail"></div>
+    <div class="card">
+      <h3>En çok sola</h3>
+      <ol id="topLeft" class="rank"></ol>
+      <h3>En çok sağa</h3>
+      <ol id="topRight" class="rank"></ol>
+    </div>
+  </aside>
+</main>
+
+<script src="lean-map.js?v=2"></script>
+</body>
+</html>

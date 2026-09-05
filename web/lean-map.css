@@ -1,0 +1,50 @@
+/* Lean choropleth. Same compact dark palette as the district and election pages. */
+
+:root {
+  --bg:#121315; --card:#1b1d21; --line:#2a2d33; --fg:#e9eaee; --mute:#8b919c;
+}
+* { box-sizing:border-box; }
+body { margin:0; font:14px/1.45 "Segoe UI",system-ui,sans-serif; background:var(--bg); color:var(--fg); }
+
+header { display:flex; align-items:center; gap:18px; padding:8px 16px; border-bottom:1px solid var(--line);
+         background:#0f1012; position:sticky; top:0; z-index:2; flex-wrap:wrap; }
+.logo { font-weight:700; }
+.pick { display:flex; gap:12px; flex-wrap:wrap; }
+.seg { display:inline-flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; font-size:12.5px; }
+.seg span { padding:5px 11px; color:var(--mute); cursor:pointer; }
+.seg span.on { background:#26292f; color:var(--fg); }
+.status { font-size:12px; color:var(--mute); margin-left:auto; }
+
+main { display:grid; grid-template-columns:minmax(560px,1fr) 300px; gap:12px; padding:12px 16px 30px; align-items:start; }
+@media (max-width:900px) { main { grid-template-columns:1fr; } }
+
+.mapwrap { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 12px 12px; }
+#map svg { display:block; width:100%; height:auto; }
+#map path { stroke:#0f1012; stroke-width:0.35; vector-effect:non-scaling-stroke; }
+#map path.hi { stroke:var(--fg); stroke-width:1.4; }
+#map path.na { fill:#24272d; }
+
+.legend { display:flex; align-items:center; gap:0; margin-top:10px; font-size:11px; color:var(--mute); flex-wrap:wrap; }
+.legend .sw { display:flex; flex-direction:column; align-items:center; gap:3px; }
+.legend i { display:block; width:44px; height:11px; }
+.legend .cap { width:100%; margin-top:6px; color:var(--mute); }
+.note { font-size:11.5px; color:var(--mute); margin:8px 0 0; }
+
+aside { display:flex; flex-direction:column; gap:10px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; }
+.card h3 { margin:0 0 6px; font-size:12px; color:var(--mute); text-transform:uppercase; letter-spacing:.5px; }
+.card h3 + ol { margin-bottom:14px; }
+.rank { margin:0; padding-left:20px; font-size:12.5px; }
+.rank li { padding:1px 0; cursor:pointer; }
+.rank li:hover { color:#fff; }
+.rank b { float:right; font-variant-numeric:tabular-nums; }
+
+#detail .name { font-size:17px; font-weight:600; margin-bottom:2px; }
+#detail .big { font-size:26px; font-weight:700; margin:6px 0 2px; font-variant-numeric:tabular-nums; }
+#detail table { width:100%; border-collapse:collapse; font-size:12.5px; margin-top:8px; }
+#detail td { padding:3px 0; border-bottom:1px solid var(--line); }
+#detail td:last-child { text-align:right; font-variant-numeric:tabular-nums; }
+#detail .hint { color:var(--mute); font-size:12px; }
+
+.navlink { margin-left:auto; color:var(--mute); text-decoration:none; font-size:12.5px; }
+.navlink:hover { color:var(--fg); }

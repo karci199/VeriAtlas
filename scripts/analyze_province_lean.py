@@ -37,8 +37,10 @@ from __future__ import annotations
 
 import argparse
 import collections
+import csv
 import json
 import pathlib
+import re
 
 DATA = pathlib.Path(__file__).resolve().parents[1] / "public" / "elections"
 
@@ -89,6 +91,30 @@ GROWTH_MIN, GROWTH_MAX = 0.45, 2.5
 
 def load_index() -> dict:
     return json.loads((DATA / "index.json").read_text(encoding="utf-8"))
+
+
+def geo_slug(text: str) -> str:
+    """Same folding the dataset builder uses, so names join across sources."""
+    text = text.replace("İ", "i").replace("I", "ı").lower()
+    for src, dst in zip("çğıöşü", "cgiosu"):
+        text = text.replace(src, dst)
+    return re.sub(r"[^a-z0-9]+", "-", text).strip("-")
+
+
+def district_area_ids() -> dict[str, str]:
+    """(province area id, district slug) -> district area id, for the map join."""
+    path = (
+        pathlib.Path(__file__).resolve().parents[1]
+        / "src"
+        / "veriatlas"
+        / "data"
+        / "areas_tr_districts.csv"
+    )
+    out = {}
+    with path.open(encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            out[(row["parent_id"], geo_slug(row["name_tr"]))] = row["area_id"]
+    return out
 
 
 def bloc_of(party: str, year: str, blocs: dict) -> str:
@@ -157,6 +183,10 @@ def collect(level: str = "il", start: int = 1983, min_voters: int = 5000):
 
     merged: dict[str, dict[str, dict]] = collections.defaultdict(dict)
     names: dict[str, str] = {}
+    # Area ids for the map join. A folded province carries both its own polygon and
+    # the polygons of the provinces carved out of it: same territory, same value.
+    areas: dict[str, list[str]] = collections.defaultdict(list)
+    by_district = district_area_ids() if level == "ilce" else {}
     for entry in index["provinces"]:
         payload = json.loads(
             (DATA / f"{entry['slug']}.json").read_text(encoding="utf-8")
@@ -166,6 +196,7 @@ def collect(level: str = "il", start: int = 1983, min_voters: int = 5000):
             if slug == entry["slug"]:
                 names[slug] = payload["name"]
             names.setdefault(slug, slug.title())
+            areas[slug].append(entry["areaId"])
             units = [(slug, payload["total"])]
         else:
             units = [
@@ -175,6 +206,13 @@ def collect(level: str = "il", start: int = 1983, min_voters: int = 5000):
             for key, _ in units:
                 d = key.split("/", 1)[1]
                 names[key] = f"{payload['districts'][d]['name']} ({payload['name']})"
+                area = by_district.get((entry["areaId"], d))
+                if area is None and d == "merkez":
+                    area = by_district.get(
+                        (entry["areaId"], geo_slug(payload["name"]))
+                    )
+                if area:
+                    areas[key].append(area)
         for key, years in units:
             for year, counts in years.items():
                 if year in elections:
@@ -226,6 +264,7 @@ def collect(level: str = "il", start: int = 1983, min_voters: int = 5000):
                 "name": names[slug],
                 "n": len(series),
                 "electorate": electorate,
+                "areas": areas.get(slug, []),
                 "chp_missing": chp_missing,
                 "early": window(*early, 1),
                 "late": window(*late, 1),
@@ -269,6 +308,7 @@ def table(rows, suffix, title, n=15, width=16, start=1983):
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--csv", type=pathlib.Path)
+    ap.add_argument("--json", type=pathlib.Path, help="harita için birim başına kayma")
     ap.add_argument("--level", choices=("il", "ilce"), default="il")
     ap.add_argument(
         "--start",
@@ -353,9 +393,43 @@ def main() -> None:
             f"{r['shift'] - r['shift_nk']:>+8.1f}"
         )
 
-    if args.csv:
-        import csv
+    if args.json:
+        payload = {
+            "level": args.level,
+            "start": args.start,
+            "minVoters": args.min_voters,
+            "elections": [
+                next(y["label"] for y in index["years"] if y["id"] == year)
+                for year in elections
+            ],
+            "excluded": list(EXCLUDED),
+            "boundaryDropped": len(boundary),
+            "units": [
+                {
+                    "name": r["name"],
+                    "areas": r["areas"],
+                    "shift": round(r["shift"], 1),
+                    "shiftNk": round(r["shift_nk"], 1),
+                    "early": round(r["early"], 1),
+                    "late": round(r["late"], 1),
+                    "earlyNk": round(r["early_nk"], 1),
+                    "lateNk": round(r["late_nk"], 1),
+                    "n": r["n"],
+                }
+                for r in rows
+                if r["areas"]
+            ],
+        }
+        args.json.parent.mkdir(parents=True, exist_ok=True)
+        args.json.write_text(
+            json.dumps(payload, ensure_ascii=False, separators=(",", ":")),
+            encoding="utf-8",
+        )
+        without = sum(1 for r in rows if not r["areas"])
+        print(f"\n-> {args.json} ({len(payload['units'])} birim", end="")
+        print(f", sınırı bulunamayan {without}" if without else "", end=")\n")
 
+    if args.csv:
         with args.csv.open("w", newline="", encoding="utf-8") as fh:
             w = csv.writer(fh)
             w.writerow(
