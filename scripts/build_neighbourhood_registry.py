@@ -33,6 +33,16 @@ RENAMES = DOCS / "mahalle-adlari.md"
 
 SOURCE_ID = "tuik_medas"
 
+#: MEDAS keeps writing a district's old name long after the rename, and the registry
+#: holds both the closed district and its successor -- so the join lands on the closed
+#: one and its neighbourhoods hang under an id that carries no district-level figure
+#: (Eyupsultan's 28 neighbourhoods did exactly that). These two renames are the ones
+#: observation confirms; docs/ilce-adlari.md keeps the evidence.
+ILCE_ADI = {
+    ("istanbul", "eyup"): "eyupsultan",
+    ("ankara", "kazan"): "kahramankazan",
+}
+
 
 def fold(name: str) -> str:
     """Turkish name to a comparable key. Same rule as the district join."""
@@ -70,7 +80,8 @@ def main() -> None:
         parent = provinces.get(fold(province))
         if parent is None:
             return None
-        found = districts.get((parent, fold(district)))
+        adi = ILCE_ADI.get((fold(province), fold(district)), fold(district))
+        found = districts.get((parent, adi))
         if found is not None:
             return found
         # The two sources name a central district differently: MEDAS says "Merkez", the

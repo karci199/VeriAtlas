@@ -55,7 +55,9 @@ def main(arg: str) -> None:
                 try:
                     nb.fetch_province(page, province, early)
                 except Exception as error:  # noqa: BLE001 — log and move on
-                    print("   HATA:", type(error).__name__, str(error)[:120], flush=True)
+                    print(
+                        "   HATA:", type(error).__name__, str(error)[:120], flush=True
+                    )
                 if scoped.exists():
                     break
             print("   dosya:", scoped.exists() and scoped.stat().st_size, flush=True)
