@@ -365,8 +365,6 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 40354 | TR-34-017-40354 | 2013: Havaalanı Mah. → 2024: Atışalanı Mah. |
 | 40855 | TR-34-018-40855 | 2013: Merkez Mah. → 2015: Bağlarçeşme Mah. → 2024: Merkez Mah. |
 | 40863 | TR-34-018-40863 | 2013: Sanayi Mah. → 2015: Orhan Gazi Mah. |
-| 40365 | TR-34-019-40365 | 2013: Eyüp Merkez Mah. → 2015: Merkez Mah. |
-| 40369 | TR-34-019-40369 | 2013: Mimarsinan Mah. → 2015: Mimar Sinan Mah. |
 | 40317 | TR-34-020-40317 | 2013: Hoca Paşa Mah. → 2015: Hocapaşa Mah. |
 | 40318 | TR-34-020-40318 | 2013: Kemal Paşa Mah. → 2015: Kemalpaşa Mah. |
 | 40323 | TR-34-020-40323 | 2013: Mesih Paşa Mah. → 2015: Mesihpaşa Mah. |
@@ -429,6 +427,8 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 40815 | TR-34-038-40815 | 2013: Murat Reis Mah. → 2015: Muratreis Mah. |
 | 40819 | TR-34-038-40819 | 2013: Selamiali Mah. → 2015: Selami Ali Mah. |
 | 40828 | TR-34-038-40828 | 2013: Validei Atik Mah. → 2015: Valide-İ Atik Mah. |
+| 40365 | TR-34-x1325-40365 | 2013: Eyüp Merkez Mah. → 2015: Merkez Mah. |
+| 40369 | TR-34-x1325-40369 | 2013: Mimarsinan Mah. → 2015: Mimar Sinan Mah. |
 | 192907 | TR-35-001-192907 | 2013: Yenişakran Mah. → 2023: Şakran Hasbi Efendi Mah. |
 | 41119 | TR-35-004-41119 | 2013: Fuat Edip Baksi Mah. → 2014: Fuat Edip Baksı Mah. |
 | 193467 | TR-35-005-193467 | 2013: Kadriye Mah. → 2023: Küçükkaya Mah. |
@@ -582,6 +582,29 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 51807 | TR-44-013-51807 | 2013: Bahçebaşı Mah. → 2022: Konak Mah. |
 | 51808 | TR-44-013-51808 | 2013: Su Mah. → 2022: Banazı Mah. → 2023: Horata Mah. |
 | 51809 | TR-44-013-51809 | 2013: Yeni Mah. → 2022: Cafana Mah. → 2023: Banazı Mah. |
+| 153353 | TR-45-001-153353 | 2013: Cambazlı Mah. → 2022: Canbazlı Mah. |
+| 153809 | TR-45-003-153809 | 2013: Caberkamara Mah. → 2023: Caberkonaklı Mah. |
+| 154111 | TR-45-005-154111 | 2013: Deynekler Mah. → 2014: Değnekler Mah. |
+| 154127 | TR-45-005-154127 | 2013: Tiyenli Mah. → 2014: Tiğinli Mah. → 2016: Tiyenli Mah. |
+| 154319 | TR-45-006-154319 | 2013: Kıran Mah. → 2017: Kıranköy Mah. |
+| 154347 | TR-45-006-154347 | 2013: Kuşluk Mah. → 2017: Kuşlukköy Mah. |
+| 154389 | TR-45-006-154389 | 2013: Merkez Tepe Mah. → 2018: Tepeköy Mah. |
+| 154531 | TR-45-007-154531 | 2013: Öğeçli Mah. → 2018: Öveçli Mah. |
+| 153261 | TR-45-008-153261 | 2013: Borlu Mah. → 2014: Eski Borlu Mah. → 2015: Borlu Mah. |
+| 181392 | TR-45-008-181392 | 2014: Yeşilçam Mah. → 2015: Karaelmacık Mah. |
+| 197193 | TR-45-008-197193 | 2014: Oğuzlar Mah. → 2015: Çarıklar Mah. |
+| 197195 | TR-45-008-197195 | 2014: Menderes Mah. → 2015: Killik Mah. |
+| 197201 | TR-45-008-197201 | 2014: Yeni Borlu Mah. → 2015: Kulalı Mah. |
+| 52311 | TR-45-009-52311 | 2013: Kenan Evren Mah. → 2016: Bey Mah. |
+| 155163 | TR-45-010-155163 | 2013: Bektaşlar Mah. → 2016: Gökçeköy Mah. |
+| 155407 | TR-45-012-155407 | 2013: Gökçe Mah. → 2017: Gökçeköy Mah. |
+| 155515 | TR-45-012-155515 | 2013: Yeniosmaniye Mah. → 2015: Çerkez Osmaniye Mah. |
+| 155531 | TR-45-013-155531 | 2013: Aşağıgüllüce Mah. → 2017: Aşağıtefen Mah. |
+| 155599 | TR-45-013-155599 | 2013: Satılmış Mah. → 2015: Yeşil Mah. |
+| 155615 | TR-45-013-155615 | 2013: Yukarıgüllüce Mah. → 2017: Yukarıtefen Mah. |
+| 153125 | TR-45-015-153125 | 2013: Yenimahmudiye Mah. → 2018: Çerkezmahmudiye Mah. |
+| 153213 | TR-45-017-153213 | 2013: Siyekli Mah. → 2015: Seyitli Mah. |
+| 52114 | TR-45-017-52114 | 2013: Yeni Mahalle Mah. → 2023: Yenimahalle Mah. |
 | 160105 | TR-46-001-160105 | 2013: Dağlıca Mah. → 2022: Marabuz Mah. |
 | 160141 | TR-46-001-160141 | 2013: Kargabükü Mah. → 2015: Anzorey Mah. |
 | 160149 | TR-46-001-160149 | 2013: Ortaklı Mah. → 2020: Mehre Mah. |
@@ -684,6 +707,46 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 61755 | TR-54-013-61755 | 2013: Dibektaş Mah. → 2015: Kurtköy Dibektaş Mah. |
 | 61757 | TR-54-013-61757 | 2013: Yavuzselim Mah. → 2015: Kurtköy Yavuzselim Mah. |
 | 61598 | TR-54-014-61598 | 2013: Orta Mah. → 2020: Yazlık Mah. |
+| 61787 | TR-55-004-61787 | 2013: Yesildere Mah. → 2016: Yeşildere Mah. |
+| 187039 | TR-55-006-187039 | 2013: Kasnakcımermer Mah. → 2023: Kasnakçımermer Mah. |
+| 181744 | TR-55-008-181744 | 2015: Tombazlar Mah. → 2019: İstiklal Mah. |
+| 187229 | TR-55-008-187229 | 2013: Arımköseli Mah. → 2015: Arım Köseli Mah. |
+| 187231 | TR-55-008-187231 | 2013: Aşağıdikencik Mah. → 2015: Aşağı Dikencik Mah. |
+| 187233 | TR-55-008-187233 | 2013: Aşağıdonurlu Mah. → 2015: Aşağı Donurlu Mah. |
+| 187235 | TR-55-008-187235 | 2013: Aşağıesenli Mah. → 2015: Aşağı Esenli Mah. |
+| 187239 | TR-55-008-187239 | 2013: Aşağıkavacık Mah. → 2015: Aşağı Kavacık Mah. |
+| 187241 | TR-55-008-187241 | 2013: Aşağımusalla Mah. → 2015: Aşağı Musalla Mah. |
+| 187283 | TR-55-008-187283 | 2013: Bölmeçayırı Mah. → 2015: Bölmeçayır Mah. |
+| 187303 | TR-55-008-187303 | 2013: Demirarslan Mah. → 2015: Demiraslan Mah. |
+| 187375 | TR-55-008-187375 | 2013: Kestanepınarı Mah. → 2015: Kestanepınar Mah. |
+| 187407 | TR-55-008-187407 | 2013: Kumarlı Mah. → 2022: Çamlıca Mah. |
+| 187447 | TR-55-008-187447 | 2013: Orduköy Mah. → 2015: Ordu Mah. |
+| 187479 | TR-55-008-187479 | 2013: Sahilköy Mah. → 2015: Sahil Mah. |
+| 187513 | TR-55-008-187513 | 2013: Yağcılar Mah. → 2015: Yaycılar Mah. |
+| 187521 | TR-55-008-187521 | 2013: Yenikışla Mah. → 2015: Yeni Kışla Mah. |
+| 187525 | TR-55-008-187525 | 2013: Yeniköseli Mah. → 2015: Yeni Köseli Mah. |
+| 187529 | TR-55-008-187529 | 2013: Yukarıdikencik Mah. → 2015: Yukarı Dikencik Mah. |
+| 187533 | TR-55-008-187533 | 2013: Yukarıdonurlu Mah. → 2015: Yukarı Donurlu Mah. |
+| 187537 | TR-55-008-187537 | 2013: Yukarıesenli Mah. → 2015: Yukarı Esenli Mah. |
+| 187541 | TR-55-008-187541 | 2013: Yukarıkavacık Mah. → 2015: Yukarı Kavacık Mah. |
+| 187573 | TR-55-008-187573 | 2013: Aşağıturgutlu Mah. → 2015: Aşağı Turgutlu Mah. |
+| 187653 | TR-55-008-187653 | 2013: Yenikaracalı Mah. → 2015: Yeni Karacalı Mah. |
+| 187659 | TR-55-008-187659 | 2013: Yukarıkarabahçe Mah. → 2015: Yukarı Karabahçe Mah. |
+| 69924 | TR-55-008-69924 | 2013: Ali Fuat Başgil Mah. → 2015: Ord. Prf. Ali Fuat Başgil Mah. → 2018: Ali Fuat Başgil Mah. |
+| 69933 | TR-55-008-69933 | 2013: Üç Köprü Mah. → 2015: Üçköprü Mah. |
+| 190377 | TR-55-010-190377 | 2013: Çatkaya Mah. → 2014: Kadamut Mah. |
+| 187943 | TR-55-011-187943 | 2013: Alaçamderesi Mah. → 2017: Yukarı Dereköy Mah. |
+| 188037 | TR-55-011-188037 | 2013: Karga Mah. → 2015: Kartepe Mah. |
+| 188103 | TR-55-011-188103 | 2013: Saraykent Mah. → 2015: Yosunlu Mah. |
+| 188213 | TR-55-012-188213 | 2013: Polat Mah. → 2014: Bolat Mah. |
+| 188255 | TR-55-012-188255 | 2013: Şeyhli Mah. → 2014: Şıhlı Mah. |
+| 188295 | TR-55-012-188295 | 2013: Nusretli Mah. → 2015: Nusratlı Mah. |
+| 139964 | TR-55-015-139964 | 2013: Tutluk Mah. → 2017: Dutluk Mah. |
+| 184192 | TR-55-015-184192 | 2018: Fatih Mah. → 2022: Aşağıhüseyinmescit Mah. |
+| 189119 | TR-55-015-189119 | 2013: Dumantepe Mah. → 2016: Cılar Mah. |
+| 189443 | TR-55-016-189443 | 2013: Danabaş Mah. → 2020: Çamlıdere Mah. |
+| 189565 | TR-55-016-189565 | 2013: Kuruçay (Merkez) Mah. → 2017: Özkuruçay Mah. |
+| 189737 | TR-55-016-189737 | 2013: Esentepe (Beşpınar) Mah. → 2017: Özesentepe Mah. |
 | 70144 | TR-56-005-70144 | 2013: Evren Mah. → 2014: Barış Mah. |
 | 70215 | TR-57-002-70215 | 2013: Yeni Mah. → 2014: Kemaldede Mah. → 2015: Yeni Mah. |
 | 183796 | TR-58-003-183796 | 2018: Purunsun Mah. → 2019: Purunsur Mah. |
@@ -709,6 +772,40 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 157243 | TR-61-018-157243 | 2013: Oymalıtepe Mah. → 2016: Oymalı Mah. |
 | 80204 | TR-62-002-80204 | 2013: Hamidiye Mah. → 2017: Diyap Ağa Mah. |
 | 80206 | TR-62-002-80206 | 2013: Yeni Mah. → 2025: Dr. Alpay Karaağaç Mah. |
+| 173897 | TR-63-001-173897 | 2013: Haktanır Mah. → 2018: Nusretiye Mah. |
+| 174125 | TR-63-003-174125 | 2013: Taşlıdere Mah. → 2015: Biris Mah. |
+| 174167 | TR-63-003-174167 | 2013: Binekli Mah. → 2025: Üçkilis Mah. |
+| 174183 | TR-63-003-174183 | 2013: Irmakboyu Mah. → 2015: Narsait Mah. |
+| 174189 | TR-63-003-174189 | 2013: Kaçarsaluca Mah. → 2014: Saluc Mah. |
+| 174235 | TR-63-003-174235 | 2013: Umutlu Mah. → 2015: Göynik Mah. |
+| 100430 | TR-63-004-100430 | 2013: Kepez Mah. → 2016: Fatih Sultan Mehmet Mah. |
+| 174259 | TR-63-004-174259 | 2013: Aşağıtaşyalak Mah. → 2018: Gültepe Mah. |
+| 174279 | TR-63-004-174279 | 2013: Evrenpaşa Mah. → 2016: Özbek Mah. |
+| 174309 | TR-63-004-174309 | 2013: Yukarıtaşyalak Mah. → 2018: Aktepe Mah. |
+| 80359 | TR-63-004-80359 | 2013: Birlik Mah. → 2016: Ensar Mah. |
+| 80360 | TR-63-004-80360 | 2013: Aydınlık Mah. → 2016: Seydo Atilla Mah. |
+| 80363 | TR-63-004-80363 | 2013: Barış Mah. → 2016: Selahaddin Eyyübi Mah. |
+| 80364 | TR-63-004-80364 | 2013: İnkılap Mah. → 2016: Adnan Menderes Mah. |
+| 80368 | TR-63-004-80368 | 2013: Yeni Mah. → 2016: Turgut Özal Mah. |
+| 174443 | TR-63-008-174443 | 2013: Damlasu Mah. → 2017: Tüccariye Mah. → 2021: Damlasu Mah. |
+| 183252 | TR-63-008-183252 | 2018: Yıldız Mah. → 2020: Yeşilova Mah. |
+| 184280 | TR-63-008-184280 | 2018: Küçük Yaygılı Mah. → 2021: Çiftçiler Mah. |
+| 201255 | TR-63-008-201255 | 2020: Damlasu Mah. → 2021: Tüccariye Mah. |
+| 80391 | TR-63-008-80391 | 2013: İmambakır Mah. → 2019: Hazreti İmambakır Mah. |
+| 174605 | TR-63-009-174605 | 2013: Aşağıkucak Mah. → 2017: Karakucak Mah. |
+| 174639 | TR-63-009-174639 | 2013: Uluyazı Mah. → 2016: Hoşin Mah. |
+| 174685 | TR-63-009-174685 | 2013: Angaç Mah. → 2017: Güluşağı Mah. |
+| 174689 | TR-63-009-174689 | 2013: Atamer Mah. → 2016: Orgız Mah. |
+| 173597 | TR-63-010-173597 | 2013: Akziyaret Mah. → 2021: Küçük Akziyaret Mah. |
+| 173631 | TR-63-010-173631 | 2013: Cülmen Mah. → 2021: Büyük Akziyaret Mah. |
+| 173729 | TR-63-010-173729 | 2013: Şahin Mah. → 2025: Kına Mah. |
+| 80316 | TR-63-010-80316 | 2013: Merkez Mah. → 2016: Ali Baba Mah. |
+| 174781 | TR-63-011-174781 | 2013: Baki Mah. → 2025: Takoran Mah. |
+| 174825 | TR-63-011-174825 | 2013: Güvercin Mah. → 2023: Özgöğercin Mah. |
+| 174979 | TR-63-011-174979 | 2013: Tutumlu Mah. → 2017: Arabuk Mah. |
+| 175225 | TR-63-013-175225 | 2013: Büyükbardacık Mah. → 2016: Büyükbardakçı Mah. |
+| 175301 | TR-63-013-175301 | 2013: Kırlık Mah. → 2015: Abalar Mah. |
+| 175311 | TR-63-013-175311 | 2013: Küçükdikme Mah. → 2015: Reyhanlı Mah. |
 | 479493 | TR-64-006-479493 | 2018: Karaağaç Köyü Mah. → 2020: Yeşil Karaağaç Mah. |
 | 527382 | TR-64-006-527382 | 2018: Çevre Mah. → 2024: Akse Mah. |
 | 80478 | TR-64-006-80478 | 2013: Karakuyu Mah. → 2023: Bölme Mah. |
