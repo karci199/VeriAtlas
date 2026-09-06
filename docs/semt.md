@@ -72,12 +72,33 @@ ne olduğu açıkça yazılarak kullanılabilir.
 
 ## Dış kaynak sınaması
 
+Dört bağımsız kaynak sınandı; hiçbiri PTT'nin yerini tutmuyor ve hiçbiri semtin
+resmî bir karşılığı olduğunu göstermiyor.
+
 **OpenStreetMap.** Overpass ile Türkiye'nin tamamı çekildi: `place=suburb` 10.871 +
 `place=quarter` 680 düğüm. Bunlar semt değil, mahalle: OSM adlarının %74'ü PTT mahalle
 adı, yalnız %13'ü semt adı. Yani semtin ikinci bir kaynağı yoktur.
 
 **Bucak değil.** Semt adlarının yalnız %2'si köy kaydındaki bucak adına denk gelir;
 2014'te kaldırılan bucak katmanı semtin karşılığı değildir.
+
+**GeoNames.** Uluslararası coğrafi ad veri tabanının Türkiye dökümünde 1.643 kayıt
+`P.PPLX` ("section of populated place") sınıfında — tanım olarak tam semt. Değil: 1.523
+tekil adın %69'u PTT mahalle adı, yalnız %25'i semt adı. Kapsam da ulusal değil, sekiz
+ilde yığılıyor (İzmir 341, Ordu 255, Bursa 179, Antalya 172).
+
+**Vikipedi — asıl bulgu.** Türkçe Vikipedi'de semt kategorisi yalnız **İstanbul** için
+var (28 alt kategori, 195 sayfa; Ankara ve İzmir'de yok). Bu 179 tekil semtin PTT ile
+kesişimi **%15**. 15'i PTT'de mahalle adı olarak geçiyor, **137'si (%77) PTT'de hiç
+yok**: Akaretler, Aşiyan, Ayaspaşa, Bahariye, Ayrılıkçeşme, Azapkapı, Ahırkapı… Yani
+konuşulan semtlerin büyük kısmı posta kodu tablosunda görünmüyor. PTT'nin İstanbul'da
+251 kutusu var ama bunlar başka bir şeyin — dağıtım bölgelerinin — adları.
+
+**Türetilmiş veri setleri.** GitHub'da "il-ilçe-semt-mahalle" adıyla dolaşan veri
+tabanlarının izlenebilenleri PTT'den türemiş (`semihferik/il-ilce-semt-mahalle` betiği
+bunu açıkça yazıyor; `ayhanbaris/...` 2021 dökümünde 2.469 semt sayıyor — PTT'nin
+2.771'ine yakın, bağımsız bir kaynak değil). Bağımsız gibi görünen çokluk, aynı tablonun
+kopyalarıdır.
 
 **Görünmeyen semtler.** OSM düğümleri ilçe sınırlarına düşürüldüğünde, PTT'nin
 bölmediği 325 ilçenin **291'inde** iki ya da daha fazla adlı düğüm çıkıyor (2.955 nokta).
