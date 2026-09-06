@@ -12,8 +12,14 @@ paging a ZK grid is where the earlier attempt lost rows without noticing.
 Raw files are kept per year under `raw/medas/ilce/` and never overwritten — the parse
 can be fixed and replayed without going back to TÜİK.
 
+The measure is a parameter, because the flow is the same for every ADNKS measure that
+reaches district level -- only the row to click and the breakdowns to tick change. The
+defaults are the population measure this script was written for; `--olcum` and
+`--kirilim-adi` point it at another one without a second copy of the flow.
+
 Run:  uv run python scripts/fetch_medas_districts.py 2023 2022
       uv run python scripts/fetch_medas_districts.py --all
+      uv run python scripts/fetch_medas_districts.py --all --kirilim           --olcum "Yabancı uyruklu nüfus" --kirilim-adi Cinsiyet --ad yabanci
 """
 
 import re
@@ -31,7 +37,15 @@ URL = "https://biruni.tuik.gov.tr/medas/?locale=tr"
 OUT = RAW / "medas" / "ilce"
 
 TOPIC = "Adrese Dayalı Nüfus Kayıt Sistemi Sonuçları"
+
+#: Enough of the measure's row text to pick it out of the list. Overridden by `--olcum`.
 MEASURE_HINT = "BBS-D"
+
+#: Breakdown rows to tick when `--kirilim` is given. Overridden by `--kirilim-adi`.
+BREAKDOWN_HINTS = ("Cinsiyet", "Grubu")
+
+#: File stem, so a second measure does not overwrite the first. Overridden by `--ad`.
+STEM = "nufus-ilce-"
 
 #: ADNKS starts in 2007. The upper end is discovered from the page, not assumed.
 FIRST_YEAR = 2007
@@ -120,9 +134,7 @@ def indicator_count(page) -> int:
 
 
 def target_path(year: int, breakdown: bool):
-    return OUT / (
-        "nufus-ilce-" + ("kirilim-" if breakdown else "") + str(year) + ".csv"
-    )
+    return OUT / (STEM + ("kirilim-" if breakdown else "") + str(year) + ".csv")
 
 
 def offered_years(page) -> list[int]:
@@ -161,7 +173,7 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
         # Only the breakdown list has tick boxes, which keeps this away from the measure
         # list, where "Cinsiyet" also appears as "Cinsiyet oranı" and clicking it
         # silently changes what is being measured.
-        for hint in ("Cinsiyet", "Grubu"):
+        for hint in BREAKDOWN_HINTS:
             index = next((i for i, t in visible_rows(page) if hint in t), None)
             if index is None:
                 print("  ", year, "kirilim satiri yok:", hint)
@@ -261,6 +273,17 @@ def main() -> None:
     wanted = [a for a in sys.argv[1:] if a.isdigit()]
     everything = "--all" in sys.argv
     breakdown = "--kirilim" in sys.argv
+
+    global MEASURE_HINT, BREAKDOWN_HINTS, STEM
+    if "--olcum" in sys.argv:
+        MEASURE_HINT = sys.argv[sys.argv.index("--olcum") + 1]
+    if "--kirilim-adi" in sys.argv:
+        BREAKDOWN_HINTS = tuple(
+            sys.argv[sys.argv.index("--kirilim-adi") + 1].split(",")
+        )
+    if "--ad" in sys.argv:
+        STEM = sys.argv[sys.argv.index("--ad") + 1] + "-ilce-"
+    print("olcum:", MEASURE_HINT, " kirilim:", BREAKDOWN_HINTS if breakdown else "-")
 
     with sync_playwright() as play:
         browser = play.chromium.launch(headless=True)
