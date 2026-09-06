@@ -362,7 +362,9 @@ def main() -> None:
                         print("   ! tek yil da alinamadi:", chunk[0])
                     else:
                         half = len(chunk) // 2
-                        print(f"   · {len(chunk)} yil bolunuyor -> {half} + {len(chunk) - half}")
+                        print(
+                            f"   · {len(chunk)} yil bolunuyor -> {half} + {len(chunk) - half}"
+                        )
                         chunks[:0] = [chunk[:half], chunk[half:]]
                 time.sleep(PAUSE)
             if failed:
