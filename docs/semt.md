@@ -94,6 +94,22 @@ yok**: Akaretler, Aşiyan, Ayaspaşa, Bahariye, Ayrılıkçeşme, Azapkapı, Ah�
 konuşulan semtlerin büyük kısmı posta kodu tablosunda görünmüyor. PTT'nin İstanbul'da
 251 kutusu var ama bunlar başka bir şeyin — dağıtım bölgelerinin — adları.
 
+**Harita Genel Müdürlüğü — resmî haritacılık kurumu, semti yok.** HGM'nin Türkiye
+Yerleşim Yerleri Veri Tabanı (YYVT) her yerleşim yeri için ad, koordinat ve bağlılık
+hiyerarşisi tutuyor; kapsadığı türler **il, ilçe, belde, köy, mahalle** — NVİ ile aynı
+merdiven, semt yok. Herkese açık, ESRI shp / mdb / Excel olarak dağıtılıyor, yani belde
+ve köy koordinatları için iyi bir kaynak; semt için değil. HGM'nin topoğrafik veri
+tabanında (TOPOVT) *mevkii* adları var, ama mevkii semt değil: kırsal arazi parçasının
+adıdır ve kent içi semtle örtüşmez.
+
+**Ticari kaynaklar (sahibinden, emlak siteleri, sigorta).** İlan siteleri gerçekten de
+il → ilçe → **semt** → mahalle merdiveni kullanıyor ve bu, konuşulan semte PTT'den daha
+yakın. Ama: (a) taksonomileri belgelenmemiş, kaynağını yayımlamıyorlar; (b) her site
+kendi listesini tutuyor, ortak bir tanım yok; (c) kullanım koşulları otomatik çekmeye
+kapalı — bu depoda mikroseçim için verilen kararla aynı çizgi ([[mikrosecim]]): yalnız
+tasarım örneği olarak bakılır, veri çekilmez. Sigorta tarafı ise semt kullanmıyor;
+poliçe adresi UAVT adres kodundan gider, o da mahalle düzeyindedir.
+
 **Türetilmiş veri setleri.** GitHub'da "il-ilçe-semt-mahalle" adıyla dolaşan veri
 tabanlarının izlenebilenleri PTT'den türemiş (`semihferik/il-ilce-semt-mahalle` betiği
 bunu açıkça yazıyor; `ayhanbaris/...` 2021 dökümünde 2.469 semt sayıyor — PTT'nin
