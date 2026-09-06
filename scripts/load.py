@@ -77,6 +77,23 @@ def main() -> None:
             print(f"{'turetme':12} {len(both):6} satır  ortalama evlenme yaşı, toplam")
 
     target = PUBLIC / "fact.parquet"
+
+    # A partial run used to write the whole table, so `load.py tuik_medas_villages` left
+    # a fact table holding only villages -- every other indicator gone, and nothing in
+    # the output saying so. It cost a rebuild once. Now a partial run replaces only what
+    # it covers: the (indicator, level) pairs it produced are dropped from the table on
+    # disk and the rest is kept. A full run still writes the table outright, which is the
+    # only way a row that no adapter produces any more can leave it.
+    if len(wanted) < len(ADAPTERS) and target.exists():
+        onceki = pl.read_parquet(target)
+        kapsam = fact.select("indicator_id", "area_level").unique()
+        kalan = onceki.join(kapsam, on=["indicator_id", "area_level"], how="anti")
+        print(
+            f"{'birlestir':12} {kalan.height:6} satır korundu, "
+            f"{onceki.height - kalan.height} satır bu çalışmayla değişti"
+        )
+        fact = pl.concat([kalan, fact], how="diagonal_relaxed")
+
     fact.write_parquet(target)
 
     con = duckdb.connect(WAREHOUSE)

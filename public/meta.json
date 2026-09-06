@@ -276,13 +276,10 @@
             "bar"
           ],
           "dataset": "household-size.csv.gz",
-          "levels": [
-            "country",
-            "province"
-          ],
+          "levels": [],
           "parts": {},
           "fine": {},
-          "available": true
+          "available": false
         },
         {
           "id": "median_age",

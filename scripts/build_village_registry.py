@@ -29,6 +29,23 @@ RENAMES = DOCS / "koy-adlari.md"
 
 SOURCE_ID = "tuik_medas"
 
+#: MEDAS writes a district under a name the boundary registry does not carry, the same
+#: way it does for neighbourhoods (`build_neighbourhood_registry.ILCE_ADI`). Each of
+#: these was confirmed from the export itself rather than from the name: the same MEDAS
+#: village codes appear under both names -- Ilıca's 49 under Aziziye, Aydınlar's 6 under
+#: Tillo, Çağlıyancerit's 9 under the spelling with an `a`. Two carry no overlap because
+#: the villages stopped being villages when the province became metropolitan, so they
+#: were followed into the neighbourhood registry instead: Ondokuzmayıs is written
+#: `19 Mayıs` there, and Akköy's five villages are all Pamukkale neighbourhoods from
+#: 2013 (Akçapınar, Belenardıç, Kavakbaşı, Yukarışamlı, Çeşmebaşı).
+ILCE_ADI = {
+    ("erzurum", "ilica"): "aziziye",
+    ("siirt", "aydinlar"): "tillo",
+    ("kahramanmaras", "cagliyancerit"): "caglayancerit",
+    ("samsun", "ondokuzmayis"): "19mayis",
+    ("denizli", "akkoy"): "pamukkale",
+}
+
 
 def fold(name: str) -> str:
     """Turkish name to a comparable key. Same rule as the district join."""
@@ -66,7 +83,8 @@ def main() -> None:
         parent = provinces.get(fold(province))
         if parent is None:
             return None
-        found = districts.get((parent, fold(district)))
+        adi = ILCE_ADI.get((fold(province), fold(district)), fold(district))
+        found = districts.get((parent, adi))
         if found is not None:
             return found
         # MEDAS says "Merkez"; the boundary registry gives the central district the

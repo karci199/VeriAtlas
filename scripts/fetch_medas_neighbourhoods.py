@@ -73,8 +73,24 @@ PICKED = re.compile(r"d[uü]zey adedi:\s*(\d+)", re.IGNORECASE)
 INDICATORS = re.compile(r"g[oö]sterge adedi:\s*(\d+)", re.IGNORECASE)
 
 
-def target_path(province: str):
-    return OUT / ("nufus-mahalle-" + province.replace(" ", "_") + ".csv")
+def target_path(province: str, chunk=None, all_years=None):
+    """One file per province, or one per year range when the province had to be split."""
+    name = "nufus-mahalle-" + province.replace(" ", "_")
+    if chunk and all_years and len(chunk) != len(all_years):
+        name += f"__{min(chunk)}-{max(chunk)}"
+    return OUT / (name + ".csv")
+
+
+def covered(province: str, years) -> bool:
+    """True when the province is on disk whole, or in chunks that cover every year."""
+    if target_path(province).exists():
+        return True
+    have = set()
+    stem = "nufus-mahalle-" + province.replace(" ", "_") + "__"
+    for path in OUT.glob(stem + "*.csv"):
+        lo, hi = path.stem.split("__")[1].split("-")
+        have |= set(range(int(lo), int(hi) + 1))
+    return bool(years) and have >= set(years)
 
 
 def picked_levels(page) -> int:
@@ -104,10 +120,10 @@ def choose(page, wanted) -> bool:
     return False
 
 
-def fetch_province(page, province: str, years: list[int]) -> int:
+def fetch_province(page, province: str, years: list[int], all_years=None) -> int:
     """Walk the flow for one province. Returns 0 on success, or the number of areas the
     page reported when the request was too large — which is what sizes the year chunk."""
-    target = target_path(province)
+    target = target_path(province, years, all_years)
 
     page.goto(URL, wait_until="networkidle")
     page.locator("select").first.select_option(label=TOPIC)
@@ -214,7 +230,11 @@ def fetch_province(page, province: str, years: list[int]) -> int:
     csv_button = page.locator(
         "img[src*='csv'], a[title*='CSV'], .z-toolbarbutton[title*='CSV']"
     ).first
-    patience = min(600000, 120000 + areas * 300)
+    # A count of zero means the list could not be read, not that the province is empty —
+    # it happens on the big provinces, whose lists the page renders lazily. Those are
+    # exactly the ones that need the longest wait, so an unknown count buys the maximum
+    # rather than the minimum.
+    patience = 600000 if not areas else min(600000, 120000 + areas * 300)
     try:
         csv_button.wait_for(state="visible", timeout=patience)
     except PlaywrightError:
@@ -301,7 +321,7 @@ def main() -> None:
             if province not in names:
                 print("=", province, "listede yok")
                 continue
-            if target_path(province).exists():
+            if covered(province, years):
                 print("=", province, "zaten var, atlandi")
                 continue
             print("=", province)
@@ -311,35 +331,42 @@ def main() -> None:
             # one does not land before "Göstergeleri Ekle" the count comes back 0 and the
             # province is skipped. It succeeds on a second walk. Guarded by the
             # already-downloaded check above, so a retry cannot download twice.
+            # MEDAS builds the report server side, and on the big provinces it never
+            # finishes for all thirteen years at once — the wait was not the problem,
+            # the size was. So a province that fails is retried on halves of its year
+            # list, down to single years, each half written as its own file. The area
+            # count cannot be trusted to predict this: the page reports 0 for exactly
+            # the provinces whose lists are too big to render, so the split is driven
+            # by what actually failed rather than by a size estimate.
             chunks = [years]
+            failed = []
             while chunks:
                 chunk = chunks.pop(0)
-                areas = 0
+                if target_path(province, chunk, years).exists():
+                    continue
+                done = False
                 for attempt in (1, 2):
                     try:
-                        areas = fetch_province(page, province, chunk)
+                        fetch_province(page, province, chunk, years)
                     except PlaywrightError as error:
                         print("   HATA:", type(error).__name__, str(error)[:160])
-                    if target_path(province).exists() or areas:
+                    if target_path(province, chunk, years).exists():
+                        done = True
                         break
                     if attempt == 1:
                         print("   · tekrar deneniyor")
                         time.sleep(PAUSE)
-                if not areas:
-                    break
-                # Too large: split the years and take the halves. The file name has no
-                # year in it, so a province that needs splitting is a case to handle
-                # before running the rest — say so rather than writing a partial file.
-                print(
-                    "   BOLME GEREKIYOR:",
-                    province,
-                    areas,
-                    "mahalle,",
-                    len(chunk),
-                    "yil",
-                )
-                break
-            time.sleep(PAUSE)
+                if not done:
+                    if len(chunk) == 1:
+                        failed.append(chunk[0])
+                        print("   ! tek yil da alinamadi:", chunk[0])
+                    else:
+                        half = len(chunk) // 2
+                        print(f"   · {len(chunk)} yil bolunuyor -> {half} + {len(chunk) - half}")
+                        chunks[:0] = [chunk[:half], chunk[half:]]
+                time.sleep(PAUSE)
+            if failed:
+                print("   ", province, "eksik yillar:", failed)
 
         browser.close()
 

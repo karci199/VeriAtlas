@@ -29,8 +29,8 @@ from playwright.sync_api import sync_playwright
 sys.path.insert(0, "src")
 sys.path.insert(0, "scripts")
 
-from fetch_medas_districts import URL, check_visible, click_exact, settle
 import fetch_medas_neighbourhoods as nb
+from fetch_medas_districts import URL, check_visible, click_exact, settle
 from fetch_medas_neighbourhoods import (
     CELL_LIMIT,
     INDICATORS,
@@ -253,8 +253,16 @@ def main() -> None:
                 continue
             print("=", province)
 
-            chunk = years
-            while chunk:
+            # A province is asked for whole and split only when it will not come whole.
+            # Two things say so, and neither can be told apart from the other before the
+            # request is made: the page answers with an area count too large for the
+            # years asked, or -- Sivas, 1,917 villages over nineteen years -- the tick-all
+            # is refused outright and the count never appears at all, which reads exactly
+            # like a province with no villages. Both are answered the same way: halve the
+            # years and ask again, until a half lands.
+            todo = [years]
+            while todo:
+                chunk = todo.pop(0)
                 areas = 0
                 for attempt in (1, 2):
                     try:
@@ -266,20 +274,28 @@ def main() -> None:
                     if attempt == 1:
                         print("   · tekrar deneniyor")
                         time.sleep(PAUSE)
-                if not areas:
+                geldi = target_path(level, province).exists()
+                if geldi:
                     # A subset of years lands under the plain name, which claims the
                     # whole series. Renamed before anything reads it.
-                    if wanted_years and done.exists():
-                        done.rename(scoped)
-                        print("   ->", scoped.name)
-                    break
-                # Too large even at one indicator per area: halve the years and
-                # say so rather than writing a file that silently covers less.
+                    if len(chunk) < len(years) or wanted_years:
+                        target_path(level, province).rename(
+                            scoped_path(level, province, chunk)
+                        )
+                        print("   ->", scoped_path(level, province, chunk).name)
+                    time.sleep(PAUSE)
+                    continue
+                if len(chunk) == 1:
+                    print(
+                        "   BOLUNEMEDI:", province, chunk[0], "- tek yil bile gelmedi"
+                    )
+                    continue
+                orta = len(chunk) // 2
                 print(
-                    "   BOLME GEREKIYOR:", province, areas, "alan,", len(chunk), "yil"
+                    "   BOLUNUYOR:", province, areas or "?", "alan,", len(chunk), "yil"
                 )
-                break
-            time.sleep(PAUSE)
+                todo[:0] = [chunk[:orta], chunk[orta:]]
+                time.sleep(PAUSE)
 
         browser.close()
 
