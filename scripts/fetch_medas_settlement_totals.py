@@ -29,8 +29,8 @@ from playwright.sync_api import sync_playwright
 sys.path.insert(0, "src")
 sys.path.insert(0, "scripts")
 
-from fetch_medas_districts import URL, check_visible, click_exact, settle
 import fetch_medas_neighbourhoods as nb
+from fetch_medas_districts import URL, check_visible, click_exact, settle
 from fetch_medas_neighbourhoods import (
     CELL_LIMIT,
     INDICATORS,
