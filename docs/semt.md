@@ -87,6 +87,7 @@ karşılığı olduğunu göstermiyor. Aranan yerler ve ne çıktığı:
 | OSM düğüm | hayır | suburb+quarter+neighbourhood 23.775, hepsi mahalle ölçeği |
 | OSM sınır | hayır | admin 4/6/8 = il/ilçe/mahalle; 9-10 mezra ve mevkii |
 | İBB açık veri | hayır | "semt" geçen tek şey semt **pazarları** |
+| haritatr.com | evet | **belde + merkez + köyler** — İznik'i dörde bölen tek kaynak |
 | ticari siteler | evet | belgesiz, her site ayrı, çekilemez |
 
 **OpenStreetMap.** Overpass ile Türkiye'nin tamamı çekildi: `place=suburb` 10.871 +
@@ -132,6 +133,17 @@ kendi listesini tutuyor, ortak bir tanım yok; (c) kullanım koşulları otomati
 kapalı — bu depoda mikroseçim için verilen kararla aynı çizgi ([[mikrosecim]]): yalnız
 tasarım örneği olarak bakılır, veri çekilmez. Sigorta tarafı ise semt kullanmıyor;
 poliçe adresi UAVT adres kodundan gider, o da mahalle düzeyindedir.
+
+**haritatr.com — semti belde olarak okuyan tek kaynak.** İznik'te PTT tek kutu verirken
+bu site dördü sayıyor: **Boyalıca, Elbeyli, İznik Merkez, İznik Köyleri**. Arnavutköy'de
+listelediği Boğazköy, Bolluca, Durusu, Hadımköy da eski beldelerdir. Yani sitenin "semt"
+dediği şey 6360 öncesi belediye yapısıdır — merkez, beldeler ve köyler torbası.
+
+Bu, belde katmanının doğru yol olduğunun bağımsız teyididir; sitenin kendisi kaynak
+olarak alınamaz. Kaynağını yayımlamıyor, "doğruluğu garanti edilmemektedir" diyor ve
+hata taşıyor: Maltepe listesinde PTT'nin dokuz kutusundan sekizi birebir çıkıyor ama
+Büyükbakkalköy düşmüş, yerine Ataşehir'in mahallesi olan Ferhatpaşa girmiş. Kentsel
+ilçelerde PTT'yi kopyalıyor, kırsal ilçelerde belde yapısını gösteriyor.
 
 **Türetilmiş veri setleri.** GitHub'da "il-ilçe-semt-mahalle" adıyla dolaşan veri
 tabanlarının izlenebilenleri PTT'den türemiş (`semihferik/il-ilce-semt-mahalle` betiği
