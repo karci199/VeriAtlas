@@ -72,12 +72,35 @@ ne olduğu açıkça yazılarak kullanılabilir.
 
 ## Dış kaynak sınaması
 
-Dört bağımsız kaynak sınandı; hiçbiri PTT'nin yerini tutmuyor ve hiçbiri semtin
-resmî bir karşılığı olduğunu göstermiyor.
+On bir yol denendi; hiçbiri PTT'nin yerini tutmuyor ve hiçbiri semtin resmî bir
+karşılığı olduğunu göstermiyor. Aranan yerler ve ne çıktığı:
+
+| kaynak | semt var mı | ne çıktı |
+| --- | --- | --- |
+| NVİ / AKS | hayır | il→ilçe→mahalle→sokak |
+| HGM / YYVT | hayır | il, ilçe, belde, köy, mahalle |
+| HGM / TOPOVT | hayır | *mevkii* var, semt değil |
+| PTT 2022 | sözde | posta kodu adı, 973/973 birebir |
+| Vikipedi | kısmen | yalnız İstanbul, 179 ad, PTT ile kesişim %15 |
+| Wikidata | kısmen | "semt" tipli yalnız **100** madde |
+| GeoNames | hayır | 1.643 PPLX, adların %69'u mahalle |
+| OSM düğüm | hayır | suburb+quarter+neighbourhood 23.775, hepsi mahalle ölçeği |
+| OSM sınır | hayır | admin 4/6/8 = il/ilçe/mahalle; 9-10 mezra ve mevkii |
+| İBB açık veri | hayır | "semt" geçen tek şey semt **pazarları** |
+| ticari siteler | evet | belgesiz, her site ayrı, çekilemez |
 
 **OpenStreetMap.** Overpass ile Türkiye'nin tamamı çekildi: `place=suburb` 10.871 +
 `place=quarter` 680 düğüm. Bunlar semt değil, mahalle: OSM adlarının %74'ü PTT mahalle
 adı, yalnız %13'ü semt adı. Yani semtin ikinci bir kaynağı yoktur.
+
+**OSM sınır katmanları.** İdari sınır ilişkileri: `admin_level` 4 = il (83), 6 = ilçe
+(975), 8 = mahalle ve köy (13.795), 9-10 = mezra ve mevkii (44). Arada semt yok. Tek
+ilginç kat **admin_level=7**: 83 ilişki, belde ve bucak (`Kemerhisar Bucağı`,
+`Ürgüp İlçe Merkezi`, `Ortakent`) — yani semt değil, **belde katmanının geometrisi**,
+ama 83 taneyle çok eksik. Belde sınırı için asıl kaynak HGM YYVT'dir.
+
+**Wikidata.** Türkiye'ye bağlı, "semt" tipli yalnız 100 madde var (kasaba 942, insan
+yerleşimi 1.443). Vikipedi'nin aynası olduğu için ondan geniş değil.
 
 **Bucak değil.** Semt adlarının yalnız %2'si köy kaydındaki bucak adına denk gelir;
 2014'te kaldırılan bucak katmanı semtin karşılığı değildir.
