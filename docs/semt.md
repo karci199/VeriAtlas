@@ -15,16 +15,28 @@ Sütun bu yüzden dört ayrı şeyi aynı adla taşır (`raw/ptt/semt_tablo.py`)
 
 | tür | adet | ne demek |
 | --- | ---: | --- |
-| semt | 951 | gerçek kentsel dağıtım bölgesi — Çarşı, Sanayi, Bahçelievler |
-| belde | 772 | adı kayıttaki bir **belediyenin** adı: semt değil, belde katmanı |
-| kır torbası | 723 | ilçenin köylerinin atıldığı kutu; PTT çoğu yerde `MERKEZKÖYLER` yazar |
+| semt | 958 | gerçek kentsel dağıtım bölgesi — Çarşı, Sanayi, Bahçelievler |
+| kır torbası | 714 | ilçenin köylerinin atıldığı kutu; PTT çoğu yerde `MERKEZKÖYLER` yazar |
+| ilçe merkezi | 447 | adı ilçenin kendi adı, ama ilçe bölünmüş: kutu kent merkezi |
+| belde | 327 | adı **başka** bir belediyenin adı: semt değil, belde katmanı |
 | bölünmemiş | 325 | ilçede tek semt var ve adı ilçenin adı — sütun bilgi taşımıyor |
 
-**Belde bulgusu.** Gerçek kentsel kutuların %45'i (772 kutu, 17,9 M kişi) kayıttaki bir
-belediyenin adıdır. Yani PTT'nin "semt" dediği şeyin yarıya yakını halk coğrafyası değil,
-6360 öncesi/sonrası **belde** katmanıdır. Sınama, mahalle kaydının `municipality`
-sütununa karşı yapılır (`semt_analiz.beldeler()`); `bölünmemiş` ilçelerde sınama anlamsız
-olduğu için (semt adı = ilçe adı = ilçe belediyesinin adı) o tür ayrı tutulur.
+**Belde bulgusu ve düzeltmesi.** İlk okuma "kentsel kutuların %45'i belde" diyordu; bu
+fazla genişti. Adı bir belediyeye denk gelen 772 kutunun **465'i ilçenin kendi
+belediyesidir** — Bağcılar, Sincan, Çorlu bir ilçenin içindeki kasaba değil, ilçenin
+merkezidir. Ayrıldıklarında geriye **307 gerçek belde** kalıyor (2,1 M kişi), ilçe
+merkezi kutuları ise 465 ve 15,8 M kişi.
+
+Ayrım adla değil **nüfusla** sınandı: her kutunun nüfusu, aynı adı taşıyan belediyenin
+MEDAS'taki 2025 nüfusuyla karşılaştırıldı (`raw/medas/yerlesim/nufus-belediye-*.csv`,
+3.366 belediye, 2007-2025). Gerçek beldelerin %44'ü ±%10 içinde tutuyor; tutmayanlarda
+**semt her zaman daha büyük** (Adıyaman/Suvarlı: semt 4.874, belediye 1.837), çünkü
+dağıtım bölgesi beldeyi çevresindeki köylerle birlikte alıyor. İlçe merkezi kutularının
+%63'ü tutuyor; tutmayanlarda semt daha küçüktür, çünkü ilçe belediyesinin alanı birden
+çok kutuya bölünmüştür.
+
+Ad sınaması mahalle kaydının `municipality` sütununa karşı yapılır
+(`semt_analiz.beldeler()`); `bölünmemiş` ilçelerde anlamsız olduğu için o tür ayrı tutulur.
 
 **Kır torbası ölçüt.** Önce PTT'nin kendi etiketi okunur — 450 ilçede kutunun adı
 `MERKEZKÖYLER`, birkaç yerde bir beldenin köyleri (`ERKİLET KÖYLER`, `YUKARI KÖYLER`).
@@ -72,7 +84,8 @@ Betik: `scratchpad/osm_semt.py` deseni, Overpass alan kimliği `3600174737`.
 
 ## Kapsam
 
-Eşleşen 49.030 alan, 84.088.334 kişi — kayıttaki 86.063.197'nin **%97,7**'si.
+Eşleşen alanlar 84.623.999 kişi — kayıttaki 86.063.197'nin **%98,3**'ü. (Köy ve mahalle
+kayıtları bölünen ilçeleri takip edecek şekilde yeniden üretildikten sonra yükseldi.)
 Eşleşmeyen 2.160 PTT satırının 147'si organize sanayi bölgesidir (nüfusu yok, eşleşmemesi
 doğru); gerisi düz ad uyuşmazlığıdır, en çok Kastamonu, Tokat ve Afyonkarahisar'da.
 
