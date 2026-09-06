@@ -117,6 +117,15 @@ def main() -> None:
                 "source_id": SOURCE_ID,
             }
         entry["first_seen"] = min(entry["first_seen"], record.year)
+        # A settlement follows its district. When a district splits -- Derecik out of
+        # Şemdinli in 2018, Kemalpaşa out of Hopa in 2017 -- MEDAS starts writing the new
+        # district for the settlements that moved, but the parent was frozen at first
+        # sighting, so they stayed under the old one and the district's own figure never
+        # matched the sum of its settlements (Derecik held 1 of its 66). The newest year
+        # names the district the same way it names the settlement.
+        if record.year >= entry["last_seen"] and parent != entry["parent_id"]:
+            entry["parent_id"] = parent
+            entry["area_id"] = parent + "-" + record.code
         if record.year >= entry["last_seen"]:
             entry["last_seen"] = record.year
             # The newest year wins the name; that is what "current name" means here.
