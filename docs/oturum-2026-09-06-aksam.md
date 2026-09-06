@@ -63,16 +63,20 @@ torbası, bölünmemiş ilçe. Çıktılar: `semt_analiz.html`, `semt_tablo.xlsx
 
 ## Açık kalanlar
 
-- **Semt tablosunda mükerrer sayım.** Toplam nüfus 88,8 M çıkıyor, oysa yerleşim
-  toplamı 86,1 M. Sebep: 7.441 alan birden çok PTT satırına denk geliyor (aynı köyün
-  mahalleleri, bir de "MERKEZ"/il adı ikili yazımı). `semt_tablo.py` içine alan kimliğine
-  göre tekilleştirme yazıldı ama **dosyaya işlenmedi** (grep `alinmis` boş) — ilk iş bu.
-- 2007 çekimi yarım; ardından 2002, 1999, 1995, 1991.
-- Köy toplam nüfus dökümü 76/81 il indi (`raw/medas/yerlesim`); tamamlanınca köy kaydı
-  yeniden üretilmeli — Derecik'in 66 yerleşiminden yalnız 1'i kayıtta, Şemdinli ile
-  karışıyor.
-- `load.py <tek adaptör>` ambarı ve `fact.parquet`'i **yalnız o adaptörle** yeniden
-  yazıyor; tam yükleme ise ilçe nüfusu ve köy ham dökümleri eksik olduğu için şu an
-  çalışmıyor. Bu oturumda tablo bir kez bu yüzden 708 bin satıra düştü, başka bir
-  worktree'deki 30 Ağustos kopyasından geri yüklendi (2,34 M satır / 28 gösterge).
+*(Bu bölüm 7 Eylül oturumunda kapatıldı; kalanlar aşağıda.)*
+
+- ~~Semt tablosunda mükerrer sayım~~ — kapandı, bkz. `docs/semt.md`.
+- ~~2007 çekimi yarım~~ — tamamlandı (925 ilçe), `parse.py` çalıştı: 5.936 rapor,
+  7.429.054 satır, sorun sayısı 0. **2002, 1999, 1995, 1991 sürüyor.**
+- ~~Köy dökümü 76/81~~ — 81/81. Sivas'ta MEDAS hücre sınırını aştığı için tümünü
+  işaretleme sessizce reddediliyordu; çekici artık sayaç gelmediğinde yılları ikiye
+  bölüyor. Köy kaydı yeniden üretildi: 18.402 → 35.345 köy.
+- ~~`load.py <tek adaptör>` tabloyu siliyor~~ — kısmi çalışma artık yalnız kendi
+  kapsadığı gösterge × düzey çiftlerini değiştiriyor.
 - Semtin resmî sınırı yok; analizlerde "PTT dağıtım bölgesi" olarak adlandırılmalı.
+  Ayrıntı ve dış kaynak sınaması: `docs/semt.md`.
+- **Açık:** Endeksa mahalle demografisi 120/973 ilçe; `endeksa_cek.py --eksik` sürüyor.
+- **Açık:** semt eşlemesinde 2.160 PTT satırı hâlâ kayda bağlanamıyor (147'si OSB,
+  gerisi düz ad uyuşmazlığı).
+- **Açık:** `raw/ptt/` ve `raw/tuik_secim/` altındaki analiz betikleri `.gitignore`
+  içindeki veri klasöründe duruyor, sürüm takibi dışında.
