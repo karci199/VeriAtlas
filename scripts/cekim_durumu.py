@@ -8,6 +8,7 @@ Run:  uv run python scripts/cekim_durumu.py
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,6 +27,21 @@ def bar(done: int, total: int, width: int = 32) -> str:
 
 def count(pattern: str, where: Path) -> int:
     return len(list(where.glob(pattern))) if where.exists() else 0
+
+
+def provinces(pattern: str, where: Path) -> int:
+    """Provinces with at least one file, whatever year range the pieces carry.
+
+    A province too wide for one query comes back in chunks (İstanbul: 2007-2021 and
+    2022-2025), so counting files with the full range would call a finished province
+    missing.
+    """
+    if not where.exists():
+        return 0
+    stems = {
+        re.sub(r"-\d{4}-\d{4}\.csv$", "", path.name) for path in where.glob(pattern)
+    }
+    return len(stems)
 
 
 ROWS = [
@@ -47,12 +63,12 @@ ROWS = [
     ),
     (
         "Hemsehrilik (il il)",
-        count("nufus-hemsehrilik-ilce-*-2007-2025.csv", RAW / "medas" / "hemsehrilik"),
+        provinces("nufus-hemsehrilik-ilce-*.csv", RAW / "medas" / "hemsehrilik"),
         PROVINCES,
     ),
     (
         "Okuma-yazma (il il)",
-        count("nufus-okuma-yazma-ilce-*-2008-2025.csv", RAW / "medas" / "egitim"),
+        provinces("nufus-okuma-yazma-ilce-*.csv", RAW / "medas" / "egitim"),
         PROVINCES,
     ),
 ]
