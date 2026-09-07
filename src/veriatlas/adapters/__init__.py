@@ -2,6 +2,7 @@
 
 from .base import Adapter, Manifest, history, ingest
 from .tuik_district_population import TuikDistrictPopulation
+from .tuik_household_excel import HOUSEHOLD_ADAPTERS
 from .tuik_marital import TuikMarital
 from .tuik_median_age import TuikMedianAge
 from .tuik_neighbourhoods import TuikNeighbourhoodPopulation
@@ -26,6 +27,9 @@ ADAPTERS = {
     # One class per narrow measure, generated from a table: the contract is one
     # adapter per indicator, and eleven measures share the same parser.
     **NARROW_ADAPTERS,
+    # The NİP workbooks: one file per measure, all 81 provinces inside, so these read a
+    # spreadsheet where the MEDAS adapters read an export.
+    **HOUSEHOLD_ADAPTERS,
     # Births and deaths: same download, transposed file, so a parser of their own.
     **VITAL_ADAPTERS,
     # The same two events at district level are *different measures* in MEDAS, with
@@ -36,6 +40,7 @@ ADAPTERS = {
 __all__ = [
     "ADAPTERS",
     "DISTRICT_VITAL_ADAPTERS",
+    "HOUSEHOLD_ADAPTERS",
     "NARROW_ADAPTERS",
     "VITAL_ADAPTERS",
     "Adapter",

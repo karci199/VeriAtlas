@@ -139,6 +139,87 @@ label_en = "Where they live"
 own = "İlinde"
 elsewhere = "İl dışında"
 
+[dim.household_size]
+label_tr = "Hanehalkı büyüklüğü"
+label_en = "Household size"
+
+# Nine single sizes and one open band. The band is `10p`, not `10`: TÜİK closes the
+# distribution there, so a household of fourteen is in it and a reader who saw `10`
+# would have no way to know that.
+[dim.household_size.values]
+"1" = "1 kişi"
+"2" = "2 kişi"
+"3" = "3 kişi"
+"4" = "4 kişi"
+"5" = "5 kişi"
+"6" = "6 kişi"
+"7" = "7 kişi"
+"8" = "8 kişi"
+"9" = "9 kişi"
+"10p" = "10 ve üzeri"
+
+[dim.education_level]
+label_tr = "Öğrenim durumu"
+label_en = "Educational attainment"
+
+# `basic_education` is not a synonym of `primary`: İLKÖĞRETİM is the eight-year basic
+# school introduced in 1997, İLKOKUL the five-year primary it replaced. Both appear in
+# every year of the file because both kinds of diploma are still held by living people,
+# and merging them would erase which one a cohort actually has.
+[dim.education_level.values]
+illiterate = "Okuma yazma bilmeyen"
+literate_no_diploma = "Okuma yazma bilen, okul bitirmeyen"
+primary = "İlkokul"
+lower_secondary = "Ortaokul veya dengi meslek okulu"
+basic_education = "İlköğretim"
+upper_secondary = "Lise veya dengi meslek okulu"
+tertiary = "Yüksekokul veya fakülte"
+postgraduate = "Yüksek lisans ve üzeri"
+# Kept for the reason the deaths export's unknown age band is kept: dropping it would
+# make the breakdown sum to less than the population it is a breakdown of, and the gap
+# would be invisible.
+unknown = "Bilinmeyen"
+
+[dim.tenure]
+label_tr = "Konutun mülkiyet durumu"
+label_en = "Housing tenure"
+
+# "Diğer" is mostly lodging and rent-free occupancy — a house lived in without owning or
+# renting it. TÜİK does not break it down further, so neither do we.
+[dim.tenure.values]
+owner = "Ev sahibi"
+tenant = "Kiracı"
+other = "Diğer"
+unknown = "Bilinmeyen"
+
+[dim.building_period]
+label_tr = "Binanın inşa dönemi"
+label_en = "Building construction period"
+
+# The bands are the source's, and they are not equal in length: twenty years, twenty
+# years, and everything since. The last one is open, so its share grows with time for
+# reasons that have nothing to do with building.
+[dim.building_period.values]
+pre_1981 = "1980 ve öncesi"
+between_1981_2000 = "1981-2000"
+post_2000 = "2001 ve sonrası"
+unknown = "Bilinmeyen"
+
+[grouping.household_size_broad]
+label_tr = "Geniş hane büyüklüğü"
+label_en = "Broad household size"
+dim = "household_size"
+note_tr = """
+Tek kişilik, küçük, orta ve kalabalık hane. Onlu dağılımın kendisi haritada okunmuyor \
+— on ayrı harita eder — ama bu dörtlü okunuyor: tek kişilik hane payı ile kalabalık \
+hane payı, hane yapısının iki ucunu tek bakışta verir."""
+
+[grouping.household_size_broad.covers]
+"1" = ["1"]
+"2-3" = ["2", "3"]
+"4-5" = ["4", "5"]
+"6+" = ["6", "7", "8", "9", "10p"]
+
 [grouping.age_broad]
 label_tr = "Geniş yaş grupları"
 label_en = "Broad age groups"
@@ -774,6 +855,64 @@ definition_tr = """
 Hanelerin yapısına göre dağılımı: tek kişilik, tek çekirdek aileli, çekirdek aile ve \
 diğer kişiler, çekirdek ailesiz çok kişili. Dördü birbirini dışlar ve toplamı hane \
 sayısını verir."""
+
+[indicator.household_by_size]
+label_tr = "Hanehalkı büyüklüğüne göre hane sayısı"
+label_en = "Households by size"
+topic = "nufus"
+unit = "household"
+frequency = "annual"
+additive = true
+dims = ["household_size"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Hanelerin kaç kişiden oluştuğuna göre dağılımı, birden dokuza tek tek ve onuncu grup \
+"10 ve üzeri" olarak kapalı. Toplamı hane sayısını verir. Ortalama hanehalkı \
+büyüklüğünden farkı, ortalamanın gizlediğini göstermesi: aynı 3,2 ortalama, hepsi üç \
+kişilik hanelerden de, tek kişiliklerle kalabalıkların yan yana durmasından da \
+çıkabilir."""
+
+[indicator.household_by_tenure]
+label_tr = "Mülkiyet durumuna göre hane sayısı"
+label_en = "Households by tenure"
+topic = "nufus"
+unit = "household"
+frequency = "annual"
+additive = true
+dims = ["tenure"]
+views = ["table", "map", "bar"]
+definition_tr = """
+Oturulan konutun mülkiyet durumu: ev sahibi, kiracı, diğer (lojman ve kira ödemeden \
+oturma), bilinmeyen. **Tek yıl**: yalnızca 2021 için yayımlandı, o yüzden zaman \
+grafiği sunulmuyor."""
+
+[indicator.household_by_building_age]
+label_tr = "Binanın inşa dönemine göre hane sayısı"
+label_en = "Households by building construction period"
+topic = "nufus"
+unit = "household"
+frequency = "annual"
+additive = true
+dims = ["building_period"]
+views = ["table", "map", "bar"]
+definition_tr = """
+Hanenin oturduğu binanın ne zaman yapıldığı. Binayı değil haneyi sayar: aynı binadaki \
+üç daire üç hanedir. **Tek yıl**: yalnızca 2021 için yayımlandı."""
+
+[indicator.education_attainment]
+label_tr = "Öğrenim durumu"
+label_en = "Educational attainment"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["education_level", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+6 yaşını doldurmuş nüfusun bitirdiği en yüksek okul, cinsiyet kırılımıyla. Yaş 6'dan \
+başladığı için toplamı ilin nüfusu değildir. "İlkokul" ile "ilköğretim" ayrı \
+seviyelerdir: ilki beş yıllık eski ilkokul, ikincisi 1997'de gelen sekiz yıllık \
+ilköğretim — ikisinin diploması da hâlâ taşınıyor."""
 
 [indicator.migration_in]
 label_tr = "Aldığı göç"
