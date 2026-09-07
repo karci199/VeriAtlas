@@ -126,6 +126,17 @@ LEVELS = {"district": "İlçe"}
 PROVINCE = "BURSA"
 
 
+def ascii_key(text: str) -> str:
+    """The ascii letters of a name, upper-cased.
+
+    Province names are compared this way rather than exactly because MEDAS serves the page
+    as ISO-8859-9 under a header that claims UTF-8: "İSTANBUL" reaches us with the dotted
+    capital mangled, so an exact match finds nothing while the ascii skeleton (STANBUL)
+    still identifies the province among eighty-one.
+    """
+    return "".join(ch for ch in text.upper() if "A" <= ch <= "Z" or ch.isdigit())
+
+
 def target_path(level: str, years: list[int]):
     return OUT / (
         MEASURE["prefix"]
@@ -242,7 +253,7 @@ def pick_level(page, level: str) -> None:
         if not select.is_visible():
             continue
         options = select.locator("option").all_inner_texts()
-        hit = [o for o in options if o.strip().upper() == PROVINCE]
+        hit = [o for o in options if ascii_key(o) == ascii_key(PROVINCE)]
         if hit:
             select.select_option(label=hit[0])
             settle(page, "il: " + hit[0])
