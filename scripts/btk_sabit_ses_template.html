@@ -1,0 +1,517 @@
+<meta charset="utf-8">
+<title>Sabit Telefon Panosu</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+:root {
+  --ground: #f6f7f9; --panel: #ffffff; --ink: #171b22; --ink-soft: #5c6675;
+  --line: #dde1e8; --line-soft: #eceef3; --accent: #1f5e8c;
+  --tc: #c8890f; --vf: #cf3d38; --tt: #2c6bb5; --all: #6b7382;
+  --shadow: 0 1px 2px rgba(20,26,36,.06), 0 8px 24px rgba(20,26,36,.05);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #12151b; --panel: #191d25; --ink: #e8ebf0; --ink-soft: #99a3b2;
+    --line: #2b313c; --line-soft: #232830; --accent: #6aa8d8;
+    --tc: #e3ad3c; --vf: #e8615c; --tt: #5e9ae4; --all: #8d97a6;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #12151b; --panel: #191d25; --ink: #e8ebf0; --ink-soft: #99a3b2;
+  --line: #2b313c; --line-soft: #232830; --accent: #6aa8d8;
+  --tc: #e3ad3c; --vf: #e8615c; --tt: #5e9ae4; --all: #8d97a6;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--ground); color: var(--ink);
+  font-family: Archivo, "Segoe UI", system-ui, sans-serif;
+  font-size: 15px; line-height: 1.5;
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding: 40px 24px 64px; }
+header { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+.eyebrow {
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 600;
+}
+h1 { font-size: 32px; font-weight: 700; margin: 0; letter-spacing: -.02em; text-wrap: balance; }
+.lede {
+  font-family: Newsreader, Georgia, serif; font-size: 17px; color: var(--ink-soft);
+  max-width: 62ch; margin: 0;
+}
+.stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px;
+  background: var(--line); border: 1px solid var(--line); border-radius: 10px;
+  overflow: hidden; margin-bottom: 24px;
+}
+.stat { background: var(--panel); padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
+.stat .k { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.stat .v { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.stat .s { font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.board { display: grid; grid-template-columns: 232px 1fr; gap: 20px; align-items: start; }
+@media (max-width: 860px) { .board { grid-template-columns: 1fr; } }
+.rail, .plot {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; box-shadow: var(--shadow);
+}
+.rail { padding: 18px 16px; display: flex; flex-direction: column; gap: 20px; }
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field > label {
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 600;
+}
+select, input[type=range] { width: 100%; }
+select {
+  font: inherit; font-size: 13px; color: var(--ink); background: var(--ground);
+  border: 1px solid var(--line); border-radius: 7px; padding: 7px 8px;
+}
+select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ops { display: flex; flex-direction: column; gap: 6px; }
+.op {
+  display: flex; align-items: center; gap: 9px; font-size: 13px;
+  cursor: pointer; padding: 4px 6px; border-radius: 6px; user-select: none;
+}
+.op:hover { background: var(--line-soft); }
+.op input { accent-color: var(--accent); margin: 0; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; display: inline-block; }
+.range-row {
+  display: flex; align-items: baseline; justify-content: space-between;
+  font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums;
+}
+.plot { padding: 16px 18px 12px; }
+.plot-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px; margin-bottom: 6px; flex-wrap: wrap;
+}
+.plot-title { font-size: 15px; font-weight: 600; }
+.plot-unit { font-size: 12px; color: var(--ink-soft); }
+canvas { display: block; width: 100%; height: 420px; }
+.note {
+  margin-top: 26px; font-family: Newsreader, Georgia, serif; font-size: 14.5px;
+  color: var(--ink-soft); max-width: 74ch;
+}
+.note b { color: var(--ink); font-family: Archivo, sans-serif; font-weight: 600; font-size: 13px; }
+.note ul { padding-left: 18px; margin: 8px 0 0; }
+.note li { margin-bottom: 6px; }
+#tip {
+  position: fixed; pointer-events: none; opacity: 0; transition: opacity .12s;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  box-shadow: var(--shadow); padding: 9px 11px; font-size: 12.5px;
+  font-variant-numeric: tabular-nums; z-index: 5; min-width: 152px;
+}
+#tip .th { font-weight: 700; margin-bottom: 5px; }
+#tip .tr { display: flex; justify-content: space-between; gap: 14px; }
+#tip .tr span:first-child { display: flex; align-items: center; gap: 6px; color: var(--ink-soft); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<style>
+.tech { display: flex; flex-direction: column; gap: 6px; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--ink-soft); margin-top: 8px; }
+.legend span { display: flex; align-items: center; gap: 6px; }
+.gapnote { font-size: 12px; color: var(--ink-soft); margin-top: 6px; }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">BTK üç aylık pazar verileri · 2014-4 → 2026-1</div>
+  <h1>Sabit telefonun teknoloji kırılımı</h1>
+  <p class="lede">Çeyreklik abone sayıları iki eksende: hangi teknolojiyle bağlanıyor
+  (analog PSTN, ISDN, VoIP, ankesör) ve kimden alıyor (Türk Telekom mu, alternatif
+  sabit telefon hizmeti işletmecileri mi).</p>
+</header>
+
+<div class="stats" id="stats"></div>
+
+<div class="board">
+  <div class="rail">
+    <div class="field">
+      <label for="metric">Gösterge</label>
+      <select id="metric">
+        <optgroup label="Teknoloji">
+          <option value="stack">Teknoloji kırılımı, adet</option>
+          <option value="share">Teknoloji kırılımı, %</option>
+          <option value="lines">Teknolojiler ayrı çizgi</option>
+        </optgroup>
+        <optgroup label="İşletmeci">
+          <option value="op_stack">Türk Telekom / STH, adet</option>
+          <option value="op_share">Türk Telekom / STH, %</option>
+        </optgroup>
+        <optgroup label="Değişim">
+          <option value="net">Çeyreklik net abone değişimi</option>
+          <option value="ankesor">Ankesörlü telefon</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="field" id="seriesField">
+      <label id="seriesLabel">Teknolojiler</label>
+      <div class="tech" id="tech"></div>
+    </div>
+    <div class="field" id="rangeField">
+      <label for="from">Dönem aralığı</label>
+      <div class="range-row"><span id="fromLabel"></span><span id="toLabel"></span></div>
+      <input type="range" id="from" min="0" step="1" aria-label="Başlangıç dönemi">
+      <input type="range" id="to" min="0" step="1" aria-label="Bitiş dönemi">
+    </div>
+  </div>
+
+  <div class="plot">
+    <div class="plot-head">
+      <div class="plot-title" id="plotTitle"></div>
+      <div class="plot-unit" id="plotUnit"></div>
+    </div>
+    <canvas id="c"></canvas>
+    <div class="legend" id="legend"></div>
+    <div class="gapnote" id="gapnote"></div>
+  </div>
+</div>
+
+<div class="note">
+  <b>Kaynak ve yöntem</b>
+  <ul>
+    <li>BTK üç aylık pazar verileri raporlarındaki "Çizelge 2-1 Abone Sayılarının
+    Teknoloji Bazında Dağılımı". Çizelge ilk kez 2015 raporunda çıkıyor, o yüzden seri
+    2014 son çeyreğinde başlıyor; daha eski raporlarda teknoloji kırılımı yok.</li>
+    <li>Çizelge her çeyrek için iki satır veriyor. Türk Telekom analog PSTN hattı, ISDN
+    ses kanalı dengi ve ankesör bildiriyor; alternatif işletmeciler (STH) PSTN, ISDN ve
+    VoIP. Türk Telekom'un VoIP hücresi hep tire, STH'nin ankesörü hiç yok — bunlar sıfır
+    değil, <em>yok</em>.</li>
+    <li>Her çeyrek, onu hâlâ basan en yeni rapordan alındı. En net örnek 2022-4: 2022
+    raporu o satıra 2020-4'ün STH rakamlarını basmış, doğrusu 2023 raporunda.</li>
+    <li><b>46 çeyreğin 11'inde raporun TOPLAM sütunu, yanında bastığı hücrelerin
+    toplamına eşit değil.</b> Her rakam PDF'ten ikinci kez okundu; fark raporun kendi
+    aritmetiğinden geliyor, çeyrek çeyrek kayıtlı ve testle sabitlendi. En büyükleri
+    2018-4 (38.880) ve 2019-1 (32.308). Grafikte raporun bastığı toplam kullanılıyor;
+    tutmayan dönemlerde grafiğin altında uyarı çıkıyor.</li>
+    <li>2022-3'ün STH satırı raporda 2022-2 ile birebir aynı basılmış ve toplamla
+    tutmuyor; sonraki raporlar bu çeyreği yeniden basmadığı için düzeltilemedi, boş
+    bırakıldı.</li>
+    <li>Sabit telefon abone tanımı 2013 ikinci çeyrekte değişti (VoIP ve ISDN dahil
+    edildi). Bu seri o değişiklikten sonra başladığı için kendi içinde tutarlı.</li>
+  </ul>
+</div>
+</div>
+<div id="tip"></div>
+
+<script>
+const DATA = __DATA__;
+const TECHS = [
+  {k: "tt_pstn", name: "Analog PSTN — Türk Telekom", color: "#2c6bb5"},
+  {k: "sth_pstn", name: "Analog PSTN — STH", color: "#6fa3dd"},
+  {k: "tt_isdn", name: "ISDN — Türk Telekom", color: "#7d55b3"},
+  {k: "sth_isdn", name: "ISDN — STH", color: "#a98cd0"},
+  {k: "sth_voip", name: "VoIP — STH", color: "#1d7d52"},
+  {k: "tt_ankesor", name: "Ankesör", color: "#c8890f"}
+];
+const OPS = [
+  {k: "tt_toplam", name: "Türk Telekom", color: "#2c6bb5"},
+  {k: "sth_toplam", name: "STH işletmecileri", color: "#1d7d52"}
+];
+const METRICS = {
+  stack: {t: "Sabit telefon abonesi, teknoloji kırılımı", u: "milyon abone", kind: "stack", group: TECHS, scale: 1e6, dec: 3},
+  share: {t: "Teknolojilerin payı", u: "%", kind: "stack", group: TECHS, pct: true, dec: 1},
+  lines: {t: "Teknolojiler ayrı ayrı", u: "milyon abone", kind: "lines", group: TECHS, scale: 1e6, dec: 3},
+  op_stack: {t: "Türk Telekom ve alternatif işletmeciler", u: "milyon abone", kind: "stack", group: OPS, scale: 1e6, dec: 3},
+  op_share: {t: "Türk Telekom ve alternatif işletmecilerin payı", u: "%", kind: "stack", group: OPS, pct: true, dec: 1},
+  net: {t: "Bir önceki çeyreğe göre net değişim", u: "bin abone", kind: "bars", scale: 1e3, dec: 0},
+  ankesor: {t: "Ankesörlü telefon sayısı", u: "adet", kind: "single", key: "tt_ankesor", dec: 0}
+};
+const state = {
+  metric: "stack", from: 0, to: DATA.length - 1,
+  on: Object.fromEntries(TECHS.concat(OPS).map(function (t) { return [t.k, true]; }))
+};
+
+// Axis step of 1, 2 or 5 times a power of ten, so tick labels stay round.
+function niceStep(span, target) {
+  const raw = span / target;
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const n = raw / mag;
+  return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * mag;
+}
+function css(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+function fmt(v, dec) {
+  if (v == null) return "—";
+  return v.toLocaleString("tr-TR", {minimumFractionDigits: dec, maximumFractionDigits: dec});
+}
+function rowsFor() { return DATA.slice(state.from, state.to + 1); }
+
+// The share views normalise against the sum of the cells actually printed, not
+// the reported total, so a quarter whose two disagree still adds up to 100.
+function stackBase(row, group) {
+  if (group === OPS) {
+    return (row.tt_toplam || 0) + (row.sth_toplam || 0);
+  }
+  return row.bilesen_toplami;
+}
+
+function seriesFor(rows) {
+  const m = METRICS[state.metric];
+  if (m.kind === "stack" || m.kind === "lines") {
+    return m.group.filter(function (t) { return state.on[t.k]; }).map(function (t) {
+      return {name: t.name, color: t.color, v: rows.map(function (r) {
+        const raw = r[t.k];
+        if (raw == null) return null;
+        if (!m.pct) return raw;
+        const base = stackBase(r, m.group);
+        return base ? 100 * raw / base : null;
+      })};
+    });
+  }
+  if (m.kind === "bars") {
+    return [{name: "Net değişim", color: css("--accent"),
+             v: rows.map(function (r, i) {
+               return i === 0 ? null : r.toplam - rows[i - 1].toplam;
+             })}];
+  }
+  return [{name: METRICS[state.metric].t, color: css("--accent"),
+           v: rows.map(function (r) { return r[m.key]; })}];
+}
+
+const cv = document.getElementById("c"), ctx = cv.getContext("2d");
+let layout = null;
+
+function draw() {
+  const m = METRICS[state.metric];
+  const dpr = window.devicePixelRatio || 1;
+  const w = cv.clientWidth, h = cv.clientHeight;
+  cv.width = w * dpr; cv.height = h * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+
+  const rows = rowsFor();
+  const series = seriesFor(rows);
+  const scale = m.scale || 1;
+  const pad = {l: 62, r: 22, t: 12, b: 30};
+  const pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
+
+  let lo = 0, hi = 0;
+  if (m.kind === "stack") {
+    rows.forEach(function (r, i) {
+      if (!series.every(function (sr) { return sr.v[i] != null; })) return;
+      let s = 0;
+      series.forEach(function (sr) { s += sr.v[i]; });
+      if (s > hi) hi = s;
+    });
+    if (m.pct) hi = 100;
+  } else {
+    series.forEach(function (sr) {
+      sr.v.forEach(function (v) {
+        if (v == null) return;
+        if (v > hi) hi = v;
+        if (v < lo) lo = v;
+      });
+    });
+  }
+  hi = hi / scale; lo = lo / scale;
+  const step = niceStep((hi - lo) || 1, 5);
+  hi = Math.ceil((hi + (m.pct ? 0 : (hi - lo) * 0.04)) / step) * step;
+  lo = Math.floor(lo / step) * step;
+
+  const x = function (i) {
+    return rows.length === 1 ? pad.l + pw / 2 : pad.l + pw * i / (rows.length - 1);
+  };
+  const y = function (v) { return pad.t + ph * (1 - (v - lo) / (hi - lo)); };
+
+  ctx.strokeStyle = css("--line-soft"); ctx.fillStyle = css("--ink-soft");
+  ctx.font = "11px Archivo, sans-serif"; ctx.textAlign = "right";
+  const dec = step < 1 ? (step < 0.1 ? 2 : 1) : 0;
+  for (let v = lo; v <= hi + step / 2; v += step) {
+    const py = Math.round(y(v)) + 0.5;
+    ctx.beginPath(); ctx.moveTo(pad.l, py); ctx.lineTo(w - pad.r, py); ctx.stroke();
+    ctx.fillText(fmt(v, dec), pad.l - 8, py + 4);
+  }
+  if (lo < 0) {
+    ctx.strokeStyle = css("--line");
+    const zy = Math.round(y(0)) + 0.5;
+    ctx.beginPath(); ctx.moveTo(pad.l, zy); ctx.lineTo(w - pad.r, zy); ctx.stroke();
+  }
+
+  const every = Math.max(1, Math.ceil(rows.length / Math.max(1, Math.floor(pw / 52))));
+  rows.forEach(function (r, i) {
+    const last = rows.length - 1;
+    // Skip a periodic label that would land on top of the always-drawn last one.
+    if (i !== last && (i % every || last - i < every / 2)) return;
+    ctx.textAlign = i === rows.length - 1 ? "right" : (i === 0 ? "left" : "center");
+    ctx.fillText(r.d, x(i), h - 10);
+  });
+
+  if (m.kind === "stack") {
+    // A quarter missing any selected series would stack as if it were zero, which
+    // draws a cliff that is not in the data. Draw only the runs where every
+    // selected series has a value, and leave the rest as a visible gap.
+    const runs = [];
+    rows.forEach(function (r, i) {
+      const complete = series.every(function (sr) { return sr.v[i] != null; });
+      if (!complete) return;
+      const last = runs[runs.length - 1];
+      if (last && last[last.length - 1] === i - 1) last.push(i);
+      else runs.push([i]);
+    });
+    const base = rows.map(function () { return 0; });
+    series.forEach(function (sr) {
+      runs.forEach(function (run) {
+        ctx.beginPath();
+        run.forEach(function (i, k) {
+          const px = x(i), py = y((base[i] + sr.v[i]) / scale);
+          k ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+        });
+        for (let k = run.length - 1; k >= 0; k--) {
+          ctx.lineTo(x(run[k]), y(base[run[k]] / scale));
+        }
+        ctx.closePath();
+        ctx.fillStyle = sr.color; ctx.globalAlpha = 0.85; ctx.fill(); ctx.globalAlpha = 1;
+      });
+      runs.forEach(function (run) {
+        run.forEach(function (i) { base[i] += sr.v[i]; });
+      });
+    });
+  } else if (m.kind === "bars") {
+    const bw = Math.max(3, pw / rows.length * 0.6);
+    series[0].v.forEach(function (v, i) {
+      if (v == null) return;
+      const y0 = y(0), y1 = y(v / scale);
+      ctx.fillStyle = v < 0 ? css("--vf") : css("--accent");
+      ctx.fillRect(x(i) - bw / 2, Math.min(y0, y1), bw, Math.abs(y1 - y0));
+    });
+  } else {
+    series.forEach(function (sr) {
+      ctx.strokeStyle = sr.color; ctx.lineWidth = 2; ctx.lineJoin = "round";
+      ctx.beginPath();
+      let started = false;
+      sr.v.forEach(function (v, i) {
+        if (v == null) { started = false; return; }
+        const px = x(i), py = y(v / scale);
+        started ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+        started = true;
+      });
+      ctx.stroke();
+      sr.v.forEach(function (v, i) {
+        if (v == null) return;
+        ctx.fillStyle = sr.color;
+        ctx.beginPath(); ctx.arc(x(i), y(v / scale), 2.4, 0, 6.284); ctx.fill();
+      });
+    });
+  }
+
+  layout = {rows: rows, series: series, x: x, scale: scale};
+  document.getElementById("plotTitle").textContent = m.t;
+  document.getElementById("plotUnit").textContent = m.u;
+
+  const leg = document.getElementById("legend");
+  leg.innerHTML = "";
+  series.forEach(function (sr) {
+    const el = document.createElement("span");
+    el.innerHTML = '<i class="swatch" style="background:' + sr.color + '"></i>' + sr.name;
+    leg.appendChild(el);
+  });
+
+  const flagged = rows.filter(function (r) { return r.gap || r.bilesen_toplami == null; });
+  document.getElementById("gapnote").textContent = flagged.length
+    ? "Bu aralıkta raporun toplamı ile kırılımı " + flagged.length +
+      " çeyrekte tutmuyor: " + flagged.map(function (r) { return r.d; }).join(", ") + "."
+    : "";
+}
+
+const tip = document.getElementById("tip");
+cv.addEventListener("mousemove", function (e) {
+  if (!layout) return;
+  const rect = cv.getBoundingClientRect();
+  const rel = e.clientX - rect.left;
+  let best = 0, bd = Infinity;
+  layout.rows.forEach(function (r, i) {
+    const d = Math.abs(layout.x(i) - rel);
+    if (d < bd) { bd = d; best = i; }
+  });
+  const m = METRICS[state.metric];
+  const row = layout.rows[best];
+  let html = '<div class="th">' + row.d + "</div>";
+  layout.series.forEach(function (sr) {
+    const v = sr.v[best];
+    html += '<div class="tr"><span><i class="swatch" style="background:' + sr.color +
+      '"></i>' + sr.name + "</span><span>" +
+      (v == null ? "—" : fmt(v / layout.scale, m.dec)) + "</span></div>";
+  });
+  if (m.kind === "stack" && !m.pct) {
+    html += '<div class="tr"><span>Raporun toplamı</span><span>' +
+      fmt(row.toplam / 1e6, 3) + "</span></div>";
+  }
+  if (row.gap) {
+    html += '<div class="tr"><span>Toplam − kırılım</span><span>' +
+      fmt(row.gap, 0) + "</span></div>";
+  }
+  tip.innerHTML = html;
+  tip.style.opacity = 1;
+  tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 240) + "px";
+  tip.style.top = (e.clientY - 12) + "px";
+});
+cv.addEventListener("mouseleave", function () { tip.style.opacity = 0; });
+
+const techBox = document.getElementById("tech");
+function renderToggles() {
+  const m = METRICS[state.metric];
+  const group = m.group;
+  techBox.innerHTML = "";
+  if (!group) return;
+  document.getElementById("seriesLabel").textContent =
+    group === OPS ? "İşletmeciler" : "Teknolojiler";
+  group.forEach(function (t) {
+    const l = document.createElement("label");
+    l.className = "op";
+    l.innerHTML = '<input type="checkbox"' + (state.on[t.k] ? " checked" : "") +
+      '><i class="swatch" style="background:' + t.color + '"></i>' + t.name;
+    l.querySelector("input").addEventListener("change", function () {
+      state.on[t.k] = this.checked; draw();
+    });
+    techBox.appendChild(l);
+  });
+}
+
+const fromEl = document.getElementById("from"), toEl = document.getElementById("to");
+fromEl.max = toEl.max = DATA.length - 1;
+fromEl.value = 0; toEl.value = DATA.length - 1;
+function syncRange() {
+  state.from = Math.min(+fromEl.value, +toEl.value);
+  state.to = Math.max(+fromEl.value, +toEl.value);
+  document.getElementById("fromLabel").textContent = DATA[state.from].d;
+  document.getElementById("toLabel").textContent = DATA[state.to].d;
+  draw();
+}
+fromEl.addEventListener("input", syncRange);
+toEl.addEventListener("input", syncRange);
+
+document.getElementById("metric").addEventListener("change", function () {
+  state.metric = this.value;
+  document.getElementById("seriesField").style.display =
+    METRICS[state.metric].group ? "" : "none";
+  renderToggles();
+  draw();
+});
+
+(function () {
+  const last = DATA[DATA.length - 1];
+  const first = DATA[0];
+  const cards = [
+    ["Sabit telefon abonesi", fmt(last.toplam / 1e6, 2) + " mn", last.d],
+    ["Alternatif işletmeci payı",
+     fmt(100 * last.sth_toplam / (last.tt_toplam + last.sth_toplam), 1) + "%",
+     first.d + ": " + fmt(100 * first.sth_toplam / (first.tt_toplam + first.sth_toplam), 1) + "%"],
+    ["Analog PSTN", fmt((last.tt_pstn + last.sth_pstn) / 1e6, 2) + " mn",
+     first.d + ": " + fmt((first.tt_pstn + first.sth_pstn) / 1e6, 2) + " mn"],
+    ["VoIP", fmt(last.sth_voip / 1e6, 2) + " mn",
+     first.d + ": " + fmt(first.sth_voip / 1e6, 2) + " mn"],
+    ["ISDN ses kanalı", fmt((last.tt_isdn + last.sth_isdn) / 1e3, 0) + " bin",
+     first.d + ": " + fmt((first.tt_isdn + first.sth_isdn) / 1e3, 0) + " bin"],
+    ["Ankesörlü telefon", fmt(last.tt_ankesor, 0),
+     first.d + ": " + fmt(first.tt_ankesor, 0)]
+  ];
+  document.getElementById("stats").innerHTML = cards.map(function (c) {
+    return '<div class="stat"><div class="k">' + c[0] + '</div><div class="v">' +
+      c[1] + '</div><div class="s">' + c[2] + "</div></div>";
+  }).join("");
+})();
+
+renderToggles();
+syncRange();
+window.addEventListener("resize", draw);
+</script>

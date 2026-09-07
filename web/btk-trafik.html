@@ -1,0 +1,491 @@
+<meta charset="utf-8">
+<title>Arama Trafiği Panosu</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+:root {
+  --ground: #f6f7f9; --panel: #ffffff; --ink: #171b22; --ink-soft: #5c6675;
+  --line: #dde1e8; --line-soft: #eceef3; --accent: #1f5e8c;
+  --tc: #c8890f; --vf: #cf3d38; --tt: #2c6bb5; --all: #6b7382;
+  --shadow: 0 1px 2px rgba(20,26,36,.06), 0 8px 24px rgba(20,26,36,.05);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #12151b; --panel: #191d25; --ink: #e8ebf0; --ink-soft: #99a3b2;
+    --line: #2b313c; --line-soft: #232830; --accent: #6aa8d8;
+    --tc: #e3ad3c; --vf: #e8615c; --tt: #5e9ae4; --all: #8d97a6;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #12151b; --panel: #191d25; --ink: #e8ebf0; --ink-soft: #99a3b2;
+  --line: #2b313c; --line-soft: #232830; --accent: #6aa8d8;
+  --tc: #e3ad3c; --vf: #e8615c; --tt: #5e9ae4; --all: #8d97a6;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--ground); color: var(--ink);
+  font-family: Archivo, "Segoe UI", system-ui, sans-serif;
+  font-size: 15px; line-height: 1.5;
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding: 40px 24px 64px; }
+header { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+.eyebrow {
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 600;
+}
+h1 { font-size: 32px; font-weight: 700; margin: 0; letter-spacing: -.02em; text-wrap: balance; }
+.lede {
+  font-family: Newsreader, Georgia, serif; font-size: 17px; color: var(--ink-soft);
+  max-width: 62ch; margin: 0;
+}
+.stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px;
+  background: var(--line); border: 1px solid var(--line); border-radius: 10px;
+  overflow: hidden; margin-bottom: 24px;
+}
+.stat { background: var(--panel); padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
+.stat .k { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.stat .v { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.stat .s { font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.board { display: grid; grid-template-columns: 232px 1fr; gap: 20px; align-items: start; }
+@media (max-width: 860px) { .board { grid-template-columns: 1fr; } }
+.rail, .plot {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; box-shadow: var(--shadow);
+}
+.rail { padding: 18px 16px; display: flex; flex-direction: column; gap: 20px; }
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field > label {
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 600;
+}
+select, input[type=range] { width: 100%; }
+select {
+  font: inherit; font-size: 13px; color: var(--ink); background: var(--ground);
+  border: 1px solid var(--line); border-radius: 7px; padding: 7px 8px;
+}
+select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ops { display: flex; flex-direction: column; gap: 6px; }
+.op {
+  display: flex; align-items: center; gap: 9px; font-size: 13px;
+  cursor: pointer; padding: 4px 6px; border-radius: 6px; user-select: none;
+}
+.op:hover { background: var(--line-soft); }
+.op input { accent-color: var(--accent); margin: 0; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; display: inline-block; }
+.range-row {
+  display: flex; align-items: baseline; justify-content: space-between;
+  font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums;
+}
+.plot { padding: 16px 18px 12px; }
+.plot-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px; margin-bottom: 6px; flex-wrap: wrap;
+}
+.plot-title { font-size: 15px; font-weight: 600; }
+.plot-unit { font-size: 12px; color: var(--ink-soft); }
+canvas { display: block; width: 100%; height: 420px; }
+.note {
+  margin-top: 26px; font-family: Newsreader, Georgia, serif; font-size: 14.5px;
+  color: var(--ink-soft); max-width: 74ch;
+}
+.note b { color: var(--ink); font-family: Archivo, sans-serif; font-weight: 600; font-size: 13px; }
+.note ul { padding-left: 18px; margin: 8px 0 0; }
+.note li { margin-bottom: 6px; }
+#tip {
+  position: fixed; pointer-events: none; opacity: 0; transition: opacity .12s;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  box-shadow: var(--shadow); padding: 9px 11px; font-size: 12.5px;
+  font-variant-numeric: tabular-nums; z-index: 5; min-width: 152px;
+}
+#tip .th { font-weight: 700; margin-bottom: 5px; }
+#tip .tr { display: flex; justify-content: space-between; gap: 14px; }
+#tip .tr span:first-child { display: flex; align-items: center; gap: 6px; color: var(--ink-soft); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<style>
+.tech { display: flex; flex-direction: column; gap: 6px; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--ink-soft); margin-top: 8px; }
+.legend span { display: flex; align-items: center; gap: 6px; }
+.gapnote { font-size: 12px; color: var(--ink-soft); margin-top: 6px; }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">BTK üç aylık pazar verileri · 2009 → 2026-1</div>
+  <h1>Arama trafiği</h1>
+  <p class="lede">Türkiye'de konuşulan dakikalar: yıllık toplam mobil–sabit ayrımında,
+  Türk Telekom'un sabit ses trafiği yöne göre çeyreklik, mobil trafik işletmeci
+  bazında.</p>
+</header>
+
+<div class="stats" id="stats"></div>
+
+<div class="board">
+  <div class="rail">
+    <div class="field">
+      <label for="metric">Gösterge</label>
+      <select id="metric">
+        <optgroup label="Yıllık toplam (2009-2025)">
+          <option value="y_stack">Mobil / sabit, milyar dakika</option>
+          <option value="y_share">Mobil / sabit, %</option>
+          <option value="y_fixed">Yalnızca sabit trafik</option>
+        </optgroup>
+        <optgroup label="Türk Telekom sabit ses (çeyreklik)">
+          <option value="tt_stack">Yöne göre dağılım, milyon dakika</option>
+          <option value="tt_share">Yöne göre dağılım, %</option>
+          <option value="tt_lines">Yönler ayrı çizgi</option>
+        </optgroup>
+        <optgroup label="Mobil trafik (çeyreklik)">
+          <option value="m_stack">İşletmeci bazında, milyar dakika</option>
+          <option value="m_share">İşletmeci payları, %</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="field" id="seriesField">
+      <label id="seriesLabel">Seriler</label>
+      <div class="tech" id="tech"></div>
+    </div>
+    <div class="field" id="rangeField">
+      <label for="from">Dönem aralığı</label>
+      <div class="range-row"><span id="fromLabel"></span><span id="toLabel"></span></div>
+      <input type="range" id="from" min="0" step="1" aria-label="Başlangıç dönemi">
+      <input type="range" id="to" min="0" step="1" aria-label="Bitiş dönemi">
+    </div>
+  </div>
+
+  <div class="plot">
+    <div class="plot-head">
+      <div class="plot-title" id="plotTitle"></div>
+      <div class="plot-unit" id="plotUnit"></div>
+    </div>
+    <canvas id="c"></canvas>
+    <div class="legend" id="legend"></div>
+    <div class="gapnote" id="gapnote"></div>
+  </div>
+</div>
+
+<div class="note">
+  <b>Kaynak ve yöntem</b>
+  <ul>
+    <li><b>Yıllık toplam</b> yalnızca Şekil 1-3'te var ve 2017'den sonraki raporlarda
+    grafik görsel — sayfalar render edilip sütun etiketleri gözle okundu. 2009-2012
+    değerleri 2019 raporundan, 2013-2025 değerleri 2026-Q1 raporundan. İki grafik
+    2013-2019'da örtüşüyor ve her değerde birebir aynı; doğrulama bu.</li>
+    <li><b>Türk Telekom sabit ses trafiği</b> gerçek bir çizelge (Çizelge 2-6), metin
+    katmanından okundu. Rakamlar kaynakta tam milyon dakikaya yuvarlı, o yüzden raporun
+    toplamı beş yuvarlanmış kalemin toplamından bir iki dakika sapabiliyor. 2024-2 bunun
+    dışında: uluslararası satırı 9 yazıyor, komşu çeyrekler 5; 5 olsaydı satır tam
+    tutuyordu. Basıldığı gibi bırakıldı, fark testte sabitli.</li>
+    <li><b>Mobil trafik hacmi</b> Şekil 4-19'da ama etiketler üst üste biniyor; oradan
+    yalnızca toplam alındı. İşletmeci hacimleri, okunaklı olan pay grafiğinden
+    (Şekil 4-20) türetildi. BTK yalnızca dokuz çeyrek yayımlıyor.</li>
+    <li>"Rehberlik" satırı yalnızca 2016-2021 raporlarında ayrı veriliyor; 2020'de
+    sıfırlanıyor ve 2022'den itibaren çizelgeden kaldırılmış.</li>
+    <li>Mobil trafik = giden trafik + şebeke içi trafik (BTK'nın tanımı). Türk Telekom
+    satırındaki "Mobil", sabit hattan mobile doğru yapılan aramalardır — mobil şebeke
+    trafiğiyle karıştırılmamalı.</li>
+  </ul>
+</div>
+</div>
+<div id="tip"></div>
+
+<script>
+const ANNUAL = [{"d": "2009", "mobil": 108.2, "sabit": 23.9, "toplam": 132.2, "mobil_pay": 81.8}, {"d": "2010", "mobil": 125.8, "sabit": 23.6, "toplam": 149.5, "mobil_pay": 84.1}, {"d": "2011", "mobil": 147.1, "sabit": 21.8, "toplam": 168.9, "mobil_pay": 87.1}, {"d": "2012", "mobil": 169.8, "sabit": 19.4, "toplam": 189.2, "mobil_pay": 89.7}, {"d": "2013", "mobil": 185.9, "sabit": 16.7, "toplam": 202.6, "mobil_pay": 91.8}, {"d": "2014", "mobil": 205.2, "sabit": 14.0, "toplam": 219.1, "mobil_pay": 93.7}, {"d": "2015", "mobil": 222.6, "sabit": 11.3, "toplam": 233.9, "mobil_pay": 95.2}, {"d": "2016", "mobil": 240.7, "sabit": 9.2, "toplam": 249.9, "mobil_pay": 96.3}, {"d": "2017", "mobil": 256.7, "sabit": 7.6, "toplam": 264.3, "mobil_pay": 97.1}, {"d": "2018", "mobil": 267.6, "sabit": 6.7, "toplam": 274.3, "mobil_pay": 97.6}, {"d": "2019", "mobil": 273.8, "sabit": 6.3, "toplam": 280.0, "mobil_pay": 97.8}, {"d": "2020", "mobil": 296.9, "sabit": 5.7, "toplam": 302.6, "mobil_pay": 98.1}, {"d": "2021", "mobil": 313.2, "sabit": 5.2, "toplam": 318.4, "mobil_pay": 98.4}, {"d": "2022", "mobil": 314.7, "sabit": 4.9, "toplam": 319.6, "mobil_pay": 98.5}, {"d": "2023", "mobil": 316.8, "sabit": 4.6, "toplam": 321.4, "mobil_pay": 98.6}, {"d": "2024", "mobil": 318.0, "sabit": 5.1, "toplam": 323.1, "mobil_pay": 98.4}, {"d": "2025", "mobil": 312.5, "sabit": 5.1, "toplam": 317.5, "mobil_pay": 98.4}];
+const TT = [{"d": "2014-4", "sebeke_ici": 1645.0, "mobil": 523.0, "sth": 89.0, "uluslararasi": 46.0, "rehberlik": null, "bilesen_toplami": 2303.0, "toplam": 2303.0}, {"d": "2015-1", "sebeke_ici": 1501.0, "mobil": 509.0, "sth": 92.0, "uluslararasi": 47.0, "rehberlik": null, "bilesen_toplami": 2149.0, "toplam": 2150.0}, {"d": "2015-2", "sebeke_ici": 1385.0, "mobil": 531.0, "sth": 87.0, "uluslararasi": 49.0, "rehberlik": null, "bilesen_toplami": 2052.0, "toplam": 2052.0}, {"d": "2015-3", "sebeke_ici": 1165.0, "mobil": 507.0, "sth": 82.0, "uluslararasi": 46.0, "rehberlik": null, "bilesen_toplami": 1800.0, "toplam": 1800.0}, {"d": "2015-4", "sebeke_ici": 1229.0, "mobil": 519.0, "sth": 90.0, "uluslararasi": 44.0, "rehberlik": null, "bilesen_toplami": 1882.0, "toplam": 1881.0}, {"d": "2016-1", "sebeke_ici": 1015.0, "mobil": 502.0, "sth": 85.0, "uluslararasi": 38.0, "rehberlik": 3.0, "bilesen_toplami": 1643.0, "toplam": 1643.0}, {"d": "2016-2", "sebeke_ici": 1042.0, "mobil": 515.0, "sth": 79.0, "uluslararasi": 35.0, "rehberlik": 3.0, "bilesen_toplami": 1674.0, "toplam": 1675.0}, {"d": "2016-3", "sebeke_ici": 826.0, "mobil": 458.0, "sth": 71.0, "uluslararasi": 31.0, "rehberlik": 2.0, "bilesen_toplami": 1388.0, "toplam": 1389.0}, {"d": "2016-4", "sebeke_ici": 896.0, "mobil": 479.0, "sth": 82.0, "uluslararasi": 31.0, "rehberlik": 2.0, "bilesen_toplami": 1490.0, "toplam": 1491.0}, {"d": "2017-1", "sebeke_ici": 807.0, "mobil": 458.0, "sth": 86.0, "uluslararasi": 29.0, "rehberlik": 2.0, "bilesen_toplami": 1382.0, "toplam": 1382.0}, {"d": "2017-2", "sebeke_ici": 735.0, "mobil": 446.0, "sth": 81.0, "uluslararasi": 29.0, "rehberlik": 2.0, "bilesen_toplami": 1293.0, "toplam": 1292.0}, {"d": "2017-3", "sebeke_ici": 648.0, "mobil": 435.0, "sth": 83.0, "uluslararasi": 26.0, "rehberlik": 1.0, "bilesen_toplami": 1193.0, "toplam": 1193.0}, {"d": "2017-4", "sebeke_ici": 654.0, "mobil": 422.0, "sth": 86.0, "uluslararasi": 25.0, "rehberlik": 1.0, "bilesen_toplami": 1188.0, "toplam": 1189.0}, {"d": "2018-1", "sebeke_ici": 602.0, "mobil": 396.0, "sth": 83.0, "uluslararasi": 23.0, "rehberlik": 1.0, "bilesen_toplami": 1105.0, "toplam": 1104.0}, {"d": "2018-2", "sebeke_ici": 567.0, "mobil": 399.0, "sth": 76.0, "uluslararasi": 23.0, "rehberlik": 1.0, "bilesen_toplami": 1066.0, "toplam": 1065.0}, {"d": "2018-3", "sebeke_ici": 490.0, "mobil": 389.0, "sth": 74.0, "uluslararasi": 20.0, "rehberlik": 1.0, "bilesen_toplami": 974.0, "toplam": 975.0}, {"d": "2018-4", "sebeke_ici": 487.0, "mobil": 383.0, "sth": 76.0, "uluslararasi": 20.0, "rehberlik": 1.0, "bilesen_toplami": 967.0, "toplam": 966.0}, {"d": "2019-1", "sebeke_ici": 447.0, "mobil": 365.0, "sth": 74.0, "uluslararasi": 18.0, "rehberlik": 1.0, "bilesen_toplami": 905.0, "toplam": 905.0}, {"d": "2019-2", "sebeke_ici": 395.0, "mobil": 350.0, "sth": 71.0, "uluslararasi": 18.0, "rehberlik": 0.5, "bilesen_toplami": 834.5, "toplam": 835.0}, {"d": "2019-3", "sebeke_ici": 352.0, "mobil": 346.0, "sth": 72.0, "uluslararasi": 16.0, "rehberlik": 0.5, "bilesen_toplami": 786.5, "toplam": 787.0}, {"d": "2019-4", "sebeke_ici": 353.0, "mobil": 338.0, "sth": 75.0, "uluslararasi": 16.0, "rehberlik": 0.4, "bilesen_toplami": 782.4, "toplam": 782.0}, {"d": "2020-1", "sebeke_ici": 343.0, "mobil": 331.0, "sth": 72.0, "uluslararasi": 15.0, "rehberlik": 0.4, "bilesen_toplami": 761.4, "toplam": 761.0}, {"d": "2020-2", "sebeke_ici": 337.0, "mobil": 368.0, "sth": 52.0, "uluslararasi": 13.0, "rehberlik": 0.0, "bilesen_toplami": 770.0, "toplam": 769.0}, {"d": "2020-3", "sebeke_ici": 295.0, "mobil": 359.0, "sth": 57.0, "uluslararasi": 13.0, "rehberlik": 0.0, "bilesen_toplami": 724.0, "toplam": 724.0}, {"d": "2020-4", "sebeke_ici": 293.0, "mobil": 360.0, "sth": 54.0, "uluslararasi": 12.0, "rehberlik": 0.0, "bilesen_toplami": 719.0, "toplam": 718.0}, {"d": "2021-1", "sebeke_ici": 263.0, "mobil": 333.0, "sth": 48.0, "uluslararasi": 11.0, "rehberlik": 0.0, "bilesen_toplami": 655.0, "toplam": 655.0}, {"d": "2021-2", "sebeke_ici": 239.0, "mobil": 331.0, "sth": 45.0, "uluslararasi": 10.0, "rehberlik": 0.0, "bilesen_toplami": 625.0, "toplam": 625.0}, {"d": "2021-3", "sebeke_ici": 212.0, "mobil": 327.0, "sth": 48.0, "uluslararasi": 9.0, "rehberlik": 0.0, "bilesen_toplami": 596.0, "toplam": 598.0}, {"d": "2021-4", "sebeke_ici": 198.0, "mobil": 323.0, "sth": 47.0, "uluslararasi": 9.0, "rehberlik": 0.0, "bilesen_toplami": 577.0, "toplam": 578.0}, {"d": "2022-1", "sebeke_ici": 195.0, "mobil": 313.0, "sth": 45.0, "uluslararasi": 9.0, "rehberlik": null, "bilesen_toplami": 562.0, "toplam": 562.0}, {"d": "2022-2", "sebeke_ici": 174.0, "mobil": 303.0, "sth": 42.0, "uluslararasi": 9.0, "rehberlik": null, "bilesen_toplami": 528.0, "toplam": 528.0}, {"d": "2022-3", "sebeke_ici": 157.0, "mobil": 300.0, "sth": 42.0, "uluslararasi": 8.0, "rehberlik": null, "bilesen_toplami": 507.0, "toplam": 506.0}, {"d": "2022-4", "sebeke_ici": 118.0, "mobil": 310.0, "sth": 41.0, "uluslararasi": 8.0, "rehberlik": null, "bilesen_toplami": 477.0, "toplam": 475.0}, {"d": "2023-1", "sebeke_ici": 137.0, "mobil": 307.0, "sth": 41.0, "uluslararasi": 7.0, "rehberlik": null, "bilesen_toplami": 492.0, "toplam": 491.0}, {"d": "2023-2", "sebeke_ici": 130.0, "mobil": 297.0, "sth": 39.0, "uluslararasi": 8.0, "rehberlik": null, "bilesen_toplami": 474.0, "toplam": 474.0}, {"d": "2023-3", "sebeke_ici": 115.0, "mobil": 305.0, "sth": 38.0, "uluslararasi": 8.0, "rehberlik": null, "bilesen_toplami": 466.0, "toplam": 466.0}, {"d": "2023-4", "sebeke_ici": 110.0, "mobil": 294.0, "sth": 34.0, "uluslararasi": 6.0, "rehberlik": null, "bilesen_toplami": 444.0, "toplam": 444.0}, {"d": "2024-1", "sebeke_ici": 100.0, "mobil": 289.0, "sth": 31.0, "uluslararasi": 5.0, "rehberlik": null, "bilesen_toplami": 425.0, "toplam": 425.0}, {"d": "2024-2", "sebeke_ici": 90.0, "mobil": 275.0, "sth": 29.0, "uluslararasi": 9.0, "rehberlik": null, "bilesen_toplami": 403.0, "toplam": 399.0}, {"d": "2024-3", "sebeke_ici": 86.0, "mobil": 300.0, "sth": 31.0, "uluslararasi": 5.0, "rehberlik": null, "bilesen_toplami": 422.0, "toplam": 422.0}, {"d": "2024-4", "sebeke_ici": 82.0, "mobil": 294.0, "sth": 30.0, "uluslararasi": 5.0, "rehberlik": null, "bilesen_toplami": 411.0, "toplam": 410.0}, {"d": "2025-1", "sebeke_ici": 74.0, "mobil": 283.0, "sth": 27.0, "uluslararasi": 5.0, "rehberlik": null, "bilesen_toplami": 389.0, "toplam": 389.0}, {"d": "2025-2", "sebeke_ici": 68.0, "mobil": 294.0, "sth": 26.0, "uluslararasi": 5.0, "rehberlik": null, "bilesen_toplami": 393.0, "toplam": 393.0}, {"d": "2025-3", "sebeke_ici": 64.0, "mobil": 303.0, "sth": 28.0, "uluslararasi": 5.0, "rehberlik": null, "bilesen_toplami": 400.0, "toplam": 401.0}, {"d": "2025-4", "sebeke_ici": 62.0, "mobil": 306.0, "sth": 26.0, "uluslararasi": 4.0, "rehberlik": null, "bilesen_toplami": 398.0, "toplam": 399.0}, {"d": "2026-1", "sebeke_ici": 55.0, "mobil": 282.0, "sth": 25.0, "uluslararasi": 4.0, "rehberlik": null, "bilesen_toplami": 366.0, "toplam": 366.0}];
+const MOBILE = [{"d": "2024-1", "toplam": 76.7, "turkcell": 27.92, "vodafone": 26.61, "ttmobil": 22.17, "turkcell_pay": 36.4, "vodafone_pay": 34.7, "ttmobil_pay": 28.9}, {"d": "2024-2", "toplam": 80.2, "turkcell": 29.27, "vodafone": 27.83, "ttmobil": 23.1, "turkcell_pay": 36.5, "vodafone_pay": 34.7, "ttmobil_pay": 28.8}, {"d": "2024-3", "toplam": 83.2, "turkcell": 29.54, "vodafone": 30.12, "ttmobil": 23.55, "turkcell_pay": 35.5, "vodafone_pay": 36.2, "ttmobil_pay": 28.3}, {"d": "2024-4", "toplam": 77.9, "turkcell": 27.97, "vodafone": 27.11, "ttmobil": 22.82, "turkcell_pay": 35.9, "vodafone_pay": 34.8, "ttmobil_pay": 29.3}, {"d": "2025-1", "toplam": 73.9, "turkcell": 26.16, "vodafone": 25.64, "ttmobil": 22.02, "turkcell_pay": 35.4, "vodafone_pay": 34.7, "ttmobil_pay": 29.8}, {"d": "2025-2", "toplam": 80.4, "turkcell": 28.54, "vodafone": 27.98, "ttmobil": 23.96, "turkcell_pay": 35.5, "vodafone_pay": 34.8, "ttmobil_pay": 29.8}, {"d": "2025-3", "toplam": 81.3, "turkcell": 29.19, "vodafone": 27.64, "ttmobil": 24.47, "turkcell_pay": 35.9, "vodafone_pay": 34.0, "ttmobil_pay": 30.1}, {"d": "2025-4", "toplam": 76.8, "turkcell": 27.26, "vodafone": 26.27, "ttmobil": 23.27, "turkcell_pay": 35.5, "vodafone_pay": 34.2, "ttmobil_pay": 30.3}, {"d": "2026-1", "toplam": 71.8, "turkcell": 25.42, "vodafone": 24.63, "ttmobil": 21.76, "turkcell_pay": 35.4, "vodafone_pay": 34.3, "ttmobil_pay": 30.3}];
+
+const YEAR_SERIES = [
+  {k: "mobil", name: "Mobil", color: "#2c6bb5"},
+  {k: "sabit", name: "Sabit", color: "#8fbf5a"}
+];
+const TT_SERIES = [
+  {k: "sebeke_ici", name: "Şebeke içi", color: "#2c6bb5"},
+  {k: "mobil", name: "Mobile doğru", color: "#1d7d52"},
+  {k: "sth", name: "STH'ye doğru", color: "#7d55b3"},
+  {k: "uluslararasi", name: "Uluslararası", color: "#c8890f"},
+  {k: "rehberlik", name: "Rehberlik", color: "#8d97a6"}
+];
+const OP_SERIES = [
+  {k: "turkcell", name: "Turkcell", color: "#c8890f"},
+  {k: "vodafone", name: "Vodafone", color: "#cf3d38"},
+  {k: "ttmobil", name: "TT Mobil", color: "#2c6bb5"}
+];
+const OP_SHARE = [
+  {k: "turkcell_pay", name: "Turkcell", color: "#c8890f"},
+  {k: "vodafone_pay", name: "Vodafone", color: "#cf3d38"},
+  {k: "ttmobil_pay", name: "TT Mobil", color: "#2c6bb5"}
+];
+
+const METRICS = {
+  y_stack: {t: "Yıllık toplam arama trafiği", u: "milyar dakika", kind: "stack",
+            data: "annual", group: YEAR_SERIES, dec: 1},
+  y_share: {t: "Trafiğin mobil–sabit dağılımı", u: "%", kind: "stack",
+            data: "annual", group: YEAR_SERIES, pct: true, dec: 1},
+  y_fixed: {t: "Sabit şebekede konuşulan dakika", u: "milyar dakika", kind: "lines",
+            data: "annual", group: [YEAR_SERIES[1]], dec: 1},
+  tt_stack: {t: "Türk Telekom sabit ses trafiği, yöne göre", u: "milyon dakika",
+             kind: "stack", data: "tt", group: TT_SERIES, dec: 1},
+  tt_share: {t: "Türk Telekom trafiğinin yöne göre dağılımı", u: "%", kind: "stack",
+             data: "tt", group: TT_SERIES, pct: true, dec: 1},
+  tt_lines: {t: "Türk Telekom trafiği, yönler ayrı", u: "milyon dakika",
+             kind: "lines", data: "tt", group: TT_SERIES, dec: 1},
+  m_stack: {t: "Mobil trafik, işletmeci bazında", u: "milyar dakika", kind: "stack",
+            data: "mobile", group: OP_SERIES, dec: 1},
+  m_share: {t: "Mobil trafikte işletmeci payları", u: "%", kind: "stack",
+            data: "mobile", group: OP_SHARE, pct: true, dec: 1}
+};
+
+const SETS = {annual: ANNUAL, tt: TT, mobile: MOBILE};
+const state = {metric: "y_stack", from: 0, to: 0, on: {}};
+Object.values(METRICS).forEach(function (m) {
+  m.group.forEach(function (g) { state.on[g.k] = true; });
+});
+
+function niceStep(span, target) {
+  const raw = span / target;
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const n = raw / mag;
+  return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * mag;
+}
+function css(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+function fmt(v, dec) {
+  if (v == null) return "—";
+  return v.toLocaleString("tr-TR", {minimumFractionDigits: dec, maximumFractionDigits: dec});
+}
+function activeSet() { return SETS[METRICS[state.metric].data]; }
+function rowsFor() { return activeSet().slice(state.from, state.to + 1); }
+function labelOf(r) { return r.d; }
+
+// Percentage views normalise against the sum of the selected series, so a view
+// with some series switched off still reads as a share of what is shown.
+function seriesFor(rows) {
+  const m = METRICS[state.metric];
+  const active = m.group.filter(function (g) { return state.on[g.k]; });
+  return active.map(function (g) {
+    return {name: g.name, color: g.color, v: rows.map(function (r) {
+      const raw = r[g.k];
+      if (raw == null) return null;
+      if (!m.pct) return raw;
+      let base = 0;
+      active.forEach(function (o) { base += (r[o.k] || 0); });
+      return base ? 100 * raw / base : null;
+    })};
+  });
+}
+
+const cv = document.getElementById("c"), ctx = cv.getContext("2d");
+let layout = null;
+
+function draw() {
+  const m = METRICS[state.metric];
+  const dpr = window.devicePixelRatio || 1;
+  const w = cv.clientWidth, h = cv.clientHeight;
+  cv.width = w * dpr; cv.height = h * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+
+  const rows = rowsFor();
+  const series = seriesFor(rows);
+  const pad = {l: 58, r: 22, t: 12, b: 30};
+  const pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
+
+  let lo = 0, hi = 0;
+  if (m.kind === "stack") {
+    rows.forEach(function (r, i) {
+      let s = 0;
+      series.forEach(function (sr) { s += (sr.v[i] || 0); });
+      if (s > hi) hi = s;
+    });
+    if (m.pct) hi = 100;
+  } else {
+    series.forEach(function (sr) {
+      sr.v.forEach(function (v) {
+        if (v == null) return;
+        if (v > hi) hi = v;
+        if (v < lo) lo = v;
+      });
+    });
+  }
+  const step = niceStep((hi - lo) || 1, 5);
+  hi = Math.ceil((hi + (m.pct ? 0 : (hi - lo) * 0.04)) / step) * step;
+  lo = Math.floor(lo / step) * step;
+
+  const x = function (i) {
+    return rows.length === 1 ? pad.l + pw / 2 : pad.l + pw * i / (rows.length - 1);
+  };
+  const y = function (v) { return pad.t + ph * (1 - (v - lo) / (hi - lo)); };
+
+  ctx.strokeStyle = css("--line-soft"); ctx.fillStyle = css("--ink-soft");
+  ctx.font = "11px Archivo, sans-serif"; ctx.textAlign = "right";
+  const dec = step < 1 ? (step < 0.1 ? 2 : 1) : 0;
+  for (let v = lo; v <= hi + step / 2; v += step) {
+    const py = Math.round(y(v)) + 0.5;
+    ctx.beginPath(); ctx.moveTo(pad.l, py); ctx.lineTo(w - pad.r, py); ctx.stroke();
+    ctx.fillText(fmt(v, dec), pad.l - 8, py + 4);
+  }
+
+  const every = Math.max(1, Math.ceil(rows.length / Math.max(1, Math.floor(pw / 52))));
+  rows.forEach(function (r, i) {
+    const last = rows.length - 1;
+    // Skip a periodic label that would land on top of the always-drawn last one.
+    if (i !== last && (i % every || last - i < every / 2)) return;
+    ctx.textAlign = i === rows.length - 1 ? "right" : (i === 0 ? "left" : "center");
+    ctx.fillText(labelOf(r), x(i), h - 10);
+  });
+
+  if (m.kind === "stack") {
+    const base = rows.map(function () { return 0; });
+    series.forEach(function (sr) {
+      ctx.beginPath();
+      rows.forEach(function (r, i) {
+        const px = x(i), py = y(base[i] + (sr.v[i] || 0));
+        i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+      });
+      for (let i = rows.length - 1; i >= 0; i--) ctx.lineTo(x(i), y(base[i]));
+      ctx.closePath();
+      ctx.fillStyle = sr.color; ctx.globalAlpha = 0.85; ctx.fill(); ctx.globalAlpha = 1;
+      rows.forEach(function (r, i) { base[i] += (sr.v[i] || 0); });
+    });
+  } else {
+    series.forEach(function (sr) {
+      ctx.strokeStyle = sr.color; ctx.lineWidth = 2; ctx.lineJoin = "round";
+      ctx.beginPath();
+      let started = false;
+      sr.v.forEach(function (v, i) {
+        if (v == null) { started = false; return; }
+        const px = x(i), py = y(v);
+        started ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+        started = true;
+      });
+      ctx.stroke();
+      sr.v.forEach(function (v, i) {
+        if (v == null) return;
+        ctx.fillStyle = sr.color;
+        ctx.beginPath(); ctx.arc(x(i), y(v), 2.6, 0, 6.284); ctx.fill();
+      });
+    });
+  }
+
+  layout = {rows: rows, series: series, x: x};
+  document.getElementById("plotTitle").textContent = m.t;
+  document.getElementById("plotUnit").textContent = m.u;
+
+  const leg = document.getElementById("legend");
+  leg.innerHTML = "";
+  series.forEach(function (sr) {
+    const el = document.createElement("span");
+    el.innerHTML = '<i class="swatch" style="background:' + sr.color + '"></i>' + sr.name;
+    leg.appendChild(el);
+  });
+
+  const note = document.getElementById("gapnote");
+  if (m.data === "tt") {
+    note.textContent = "Kaynak tam milyon dakikaya yuvarlı; raporun toplamı ile " +
+      "kalemlerin toplamı bir iki dakika sapabiliyor. 2024-2'de fark 4 dakika " +
+      "(uluslararası satırı büyük ihtimalle 5 yerine 9 basılmış).";
+  } else if (m.data === "annual") {
+    note.textContent = "Değerler grafik etiketlerinden okundu; 2009-2012 için 2019, " +
+      "2013-2025 için 2026-Q1 raporu.";
+  } else {
+    note.textContent = "İşletmeci hacimleri, toplam ile pay grafiğinden türetildi.";
+  }
+}
+
+const tip = document.getElementById("tip");
+cv.addEventListener("mousemove", function (e) {
+  if (!layout) return;
+  const rect = cv.getBoundingClientRect();
+  const rel = e.clientX - rect.left;
+  let best = 0, bd = Infinity;
+  layout.rows.forEach(function (r, i) {
+    const d = Math.abs(layout.x(i) - rel);
+    if (d < bd) { bd = d; best = i; }
+  });
+  const m = METRICS[state.metric];
+  const row = layout.rows[best];
+  let html = '<div class="th">' + labelOf(row) + "</div>";
+  layout.series.forEach(function (sr) {
+    const v = sr.v[best];
+    html += '<div class="tr"><span><i class="swatch" style="background:' + sr.color +
+      '"></i>' + sr.name + "</span><span>" + fmt(v, m.dec) + "</span></div>";
+  });
+  if (m.kind === "stack" && !m.pct && row.toplam != null) {
+    html += '<div class="tr"><span>Toplam</span><span>' +
+      fmt(row.toplam, m.dec) + "</span></div>";
+  }
+  tip.innerHTML = html;
+  tip.style.opacity = 1;
+  tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 220) + "px";
+  tip.style.top = (e.clientY - 12) + "px";
+});
+cv.addEventListener("mouseleave", function () { tip.style.opacity = 0; });
+
+const techBox = document.getElementById("tech");
+function renderToggles() {
+  const group = METRICS[state.metric].group;
+  techBox.innerHTML = "";
+  group.forEach(function (g) {
+    const l = document.createElement("label");
+    l.className = "op";
+    l.innerHTML = '<input type="checkbox"' + (state.on[g.k] ? " checked" : "") +
+      '><i class="swatch" style="background:' + g.color + '"></i>' + g.name;
+    l.querySelector("input").addEventListener("change", function () {
+      state.on[g.k] = this.checked; draw();
+    });
+    techBox.appendChild(l);
+  });
+}
+
+const fromEl = document.getElementById("from"), toEl = document.getElementById("to");
+function resetRange() {
+  const n = activeSet().length;
+  fromEl.max = toEl.max = n - 1;
+  fromEl.value = 0; toEl.value = n - 1;
+  syncRange();
+}
+function syncRange() {
+  state.from = Math.min(+fromEl.value, +toEl.value);
+  state.to = Math.max(+fromEl.value, +toEl.value);
+  const set = activeSet();
+  document.getElementById("fromLabel").textContent = labelOf(set[state.from]);
+  document.getElementById("toLabel").textContent = labelOf(set[state.to]);
+  draw();
+}
+fromEl.addEventListener("input", syncRange);
+toEl.addEventListener("input", syncRange);
+
+document.getElementById("metric").addEventListener("change", function () {
+  state.metric = this.value;
+  renderToggles();
+  resetRange();
+});
+
+(function () {
+  const y = ANNUAL[ANNUAL.length - 1], y0 = ANNUAL[0];
+  const t = TT[TT.length - 1];
+  const peak = ANNUAL.reduce(function (a, b) { return b.toplam > a.toplam ? b : a; });
+  const cards = [
+    ["Toplam arama trafiği", fmt(y.toplam, 1) + " mlr dk", y.d + " · zirve " + peak.d],
+    ["Mobilin payı", fmt(y.mobil_pay, 1) + "%", y0.d + ": " + fmt(y0.mobil_pay, 1) + "%"],
+    ["Sabit şebeke trafiği", fmt(y.sabit, 1) + " mlr dk",
+     y0.d + ": " + fmt(y0.sabit, 1) + " mlr dk"],
+    ["Türk Telekom ses trafiği", fmt(t.toplam, 0) + " mn dk", t.d + ", çeyreklik"],
+    ["TT şebeke içi payı", fmt(100 * t.sebeke_ici / t.toplam, 1) + "%",
+     "2014-4: " + fmt(100 * TT[0].sebeke_ici / TT[0].toplam, 1) + "%"],
+    ["Mobil trafik", fmt(MOBILE[MOBILE.length - 1].toplam, 1) + " mlr dk",
+     MOBILE[MOBILE.length - 1].d + ", çeyreklik"]
+  ];
+  document.getElementById("stats").innerHTML = cards.map(function (c) {
+    return '<div class="stat"><div class="k">' + c[0] + '</div><div class="v">' +
+      c[1] + '</div><div class="s">' + c[2] + "</div></div>";
+  }).join("");
+})();
+
+renderToggles();
+resetRange();
+window.addEventListener("resize", draw);
+</script>

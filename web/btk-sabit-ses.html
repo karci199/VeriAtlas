@@ -1,0 +1,517 @@
+<meta charset="utf-8">
+<title>Sabit Telefon Panosu</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+:root {
+  --ground: #f6f7f9; --panel: #ffffff; --ink: #171b22; --ink-soft: #5c6675;
+  --line: #dde1e8; --line-soft: #eceef3; --accent: #1f5e8c;
+  --tc: #c8890f; --vf: #cf3d38; --tt: #2c6bb5; --all: #6b7382;
+  --shadow: 0 1px 2px rgba(20,26,36,.06), 0 8px 24px rgba(20,26,36,.05);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #12151b; --panel: #191d25; --ink: #e8ebf0; --ink-soft: #99a3b2;
+    --line: #2b313c; --line-soft: #232830; --accent: #6aa8d8;
+    --tc: #e3ad3c; --vf: #e8615c; --tt: #5e9ae4; --all: #8d97a6;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #12151b; --panel: #191d25; --ink: #e8ebf0; --ink-soft: #99a3b2;
+  --line: #2b313c; --line-soft: #232830; --accent: #6aa8d8;
+  --tc: #e3ad3c; --vf: #e8615c; --tt: #5e9ae4; --all: #8d97a6;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--ground); color: var(--ink);
+  font-family: Archivo, "Segoe UI", system-ui, sans-serif;
+  font-size: 15px; line-height: 1.5;
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding: 40px 24px 64px; }
+header { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+.eyebrow {
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 600;
+}
+h1 { font-size: 32px; font-weight: 700; margin: 0; letter-spacing: -.02em; text-wrap: balance; }
+.lede {
+  font-family: Newsreader, Georgia, serif; font-size: 17px; color: var(--ink-soft);
+  max-width: 62ch; margin: 0;
+}
+.stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px;
+  background: var(--line); border: 1px solid var(--line); border-radius: 10px;
+  overflow: hidden; margin-bottom: 24px;
+}
+.stat { background: var(--panel); padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
+.stat .k { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.stat .v { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.stat .s { font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.board { display: grid; grid-template-columns: 232px 1fr; gap: 20px; align-items: start; }
+@media (max-width: 860px) { .board { grid-template-columns: 1fr; } }
+.rail, .plot {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; box-shadow: var(--shadow);
+}
+.rail { padding: 18px 16px; display: flex; flex-direction: column; gap: 20px; }
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field > label {
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 600;
+}
+select, input[type=range] { width: 100%; }
+select {
+  font: inherit; font-size: 13px; color: var(--ink); background: var(--ground);
+  border: 1px solid var(--line); border-radius: 7px; padding: 7px 8px;
+}
+select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ops { display: flex; flex-direction: column; gap: 6px; }
+.op {
+  display: flex; align-items: center; gap: 9px; font-size: 13px;
+  cursor: pointer; padding: 4px 6px; border-radius: 6px; user-select: none;
+}
+.op:hover { background: var(--line-soft); }
+.op input { accent-color: var(--accent); margin: 0; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; display: inline-block; }
+.range-row {
+  display: flex; align-items: baseline; justify-content: space-between;
+  font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums;
+}
+.plot { padding: 16px 18px 12px; }
+.plot-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px; margin-bottom: 6px; flex-wrap: wrap;
+}
+.plot-title { font-size: 15px; font-weight: 600; }
+.plot-unit { font-size: 12px; color: var(--ink-soft); }
+canvas { display: block; width: 100%; height: 420px; }
+.note {
+  margin-top: 26px; font-family: Newsreader, Georgia, serif; font-size: 14.5px;
+  color: var(--ink-soft); max-width: 74ch;
+}
+.note b { color: var(--ink); font-family: Archivo, sans-serif; font-weight: 600; font-size: 13px; }
+.note ul { padding-left: 18px; margin: 8px 0 0; }
+.note li { margin-bottom: 6px; }
+#tip {
+  position: fixed; pointer-events: none; opacity: 0; transition: opacity .12s;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  box-shadow: var(--shadow); padding: 9px 11px; font-size: 12.5px;
+  font-variant-numeric: tabular-nums; z-index: 5; min-width: 152px;
+}
+#tip .th { font-weight: 700; margin-bottom: 5px; }
+#tip .tr { display: flex; justify-content: space-between; gap: 14px; }
+#tip .tr span:first-child { display: flex; align-items: center; gap: 6px; color: var(--ink-soft); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<style>
+.tech { display: flex; flex-direction: column; gap: 6px; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--ink-soft); margin-top: 8px; }
+.legend span { display: flex; align-items: center; gap: 6px; }
+.gapnote { font-size: 12px; color: var(--ink-soft); margin-top: 6px; }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">BTK üç aylık pazar verileri · 2014-4 → 2026-1</div>
+  <h1>Sabit telefonun teknoloji kırılımı</h1>
+  <p class="lede">Çeyreklik abone sayıları iki eksende: hangi teknolojiyle bağlanıyor
+  (analog PSTN, ISDN, VoIP, ankesör) ve kimden alıyor (Türk Telekom mu, alternatif
+  sabit telefon hizmeti işletmecileri mi).</p>
+</header>
+
+<div class="stats" id="stats"></div>
+
+<div class="board">
+  <div class="rail">
+    <div class="field">
+      <label for="metric">Gösterge</label>
+      <select id="metric">
+        <optgroup label="Teknoloji">
+          <option value="stack">Teknoloji kırılımı, adet</option>
+          <option value="share">Teknoloji kırılımı, %</option>
+          <option value="lines">Teknolojiler ayrı çizgi</option>
+        </optgroup>
+        <optgroup label="İşletmeci">
+          <option value="op_stack">Türk Telekom / STH, adet</option>
+          <option value="op_share">Türk Telekom / STH, %</option>
+        </optgroup>
+        <optgroup label="Değişim">
+          <option value="net">Çeyreklik net abone değişimi</option>
+          <option value="ankesor">Ankesörlü telefon</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="field" id="seriesField">
+      <label id="seriesLabel">Teknolojiler</label>
+      <div class="tech" id="tech"></div>
+    </div>
+    <div class="field" id="rangeField">
+      <label for="from">Dönem aralığı</label>
+      <div class="range-row"><span id="fromLabel"></span><span id="toLabel"></span></div>
+      <input type="range" id="from" min="0" step="1" aria-label="Başlangıç dönemi">
+      <input type="range" id="to" min="0" step="1" aria-label="Bitiş dönemi">
+    </div>
+  </div>
+
+  <div class="plot">
+    <div class="plot-head">
+      <div class="plot-title" id="plotTitle"></div>
+      <div class="plot-unit" id="plotUnit"></div>
+    </div>
+    <canvas id="c"></canvas>
+    <div class="legend" id="legend"></div>
+    <div class="gapnote" id="gapnote"></div>
+  </div>
+</div>
+
+<div class="note">
+  <b>Kaynak ve yöntem</b>
+  <ul>
+    <li>BTK üç aylık pazar verileri raporlarındaki "Çizelge 2-1 Abone Sayılarının
+    Teknoloji Bazında Dağılımı". Çizelge ilk kez 2015 raporunda çıkıyor, o yüzden seri
+    2014 son çeyreğinde başlıyor; daha eski raporlarda teknoloji kırılımı yok.</li>
+    <li>Çizelge her çeyrek için iki satır veriyor. Türk Telekom analog PSTN hattı, ISDN
+    ses kanalı dengi ve ankesör bildiriyor; alternatif işletmeciler (STH) PSTN, ISDN ve
+    VoIP. Türk Telekom'un VoIP hücresi hep tire, STH'nin ankesörü hiç yok — bunlar sıfır
+    değil, <em>yok</em>.</li>
+    <li>Her çeyrek, onu hâlâ basan en yeni rapordan alındı. En net örnek 2022-4: 2022
+    raporu o satıra 2020-4'ün STH rakamlarını basmış, doğrusu 2023 raporunda.</li>
+    <li><b>46 çeyreğin 11'inde raporun TOPLAM sütunu, yanında bastığı hücrelerin
+    toplamına eşit değil.</b> Her rakam PDF'ten ikinci kez okundu; fark raporun kendi
+    aritmetiğinden geliyor, çeyrek çeyrek kayıtlı ve testle sabitlendi. En büyükleri
+    2018-4 (38.880) ve 2019-1 (32.308). Grafikte raporun bastığı toplam kullanılıyor;
+    tutmayan dönemlerde grafiğin altında uyarı çıkıyor.</li>
+    <li>2022-3'ün STH satırı raporda 2022-2 ile birebir aynı basılmış ve toplamla
+    tutmuyor; sonraki raporlar bu çeyreği yeniden basmadığı için düzeltilemedi, boş
+    bırakıldı.</li>
+    <li>Sabit telefon abone tanımı 2013 ikinci çeyrekte değişti (VoIP ve ISDN dahil
+    edildi). Bu seri o değişiklikten sonra başladığı için kendi içinde tutarlı.</li>
+  </ul>
+</div>
+</div>
+<div id="tip"></div>
+
+<script>
+const DATA = [{"d": "2014-4", "src": "2015", "note": "", "tt_pstn": 9933616, "tt_isdn": 311382, "tt_ankesor": 83283, "sth_pstn": 1550397, "sth_isdn": 39283, "sth_voip": 610904, "tt_toplam": 10328281, "sth_toplam": 2200584, "bilesen_toplami": 12528865, "toplam": 12528865, "gap": 0}, {"d": "2015-1", "src": "2015", "note": "", "tt_pstn": 9526966, "tt_isdn": 310726, "tt_ankesor": 82716, "sth_pstn": 1630789, "sth_isdn": 33857, "sth_voip": 615441, "tt_toplam": 9920408, "sth_toplam": 2280087, "bilesen_toplami": 12200495, "toplam": 12200495, "gap": 0}, {"d": "2015-2", "src": "2015", "note": "", "tt_pstn": 9194586, "tt_isdn": 310484, "tt_ankesor": 82088, "sth_pstn": 1678619, "sth_isdn": 35385, "sth_voip": 636511, "tt_toplam": 9587158, "sth_toplam": 2350515, "bilesen_toplami": 11937673, "toplam": 11937673, "gap": 0}, {"d": "2015-3", "src": "2015", "note": "", "tt_pstn": 8897899, "tt_isdn": 309140, "tt_ankesor": 81159, "sth_pstn": 1696834, "sth_isdn": 38376, "sth_voip": 672655, "tt_toplam": 9288198, "sth_toplam": 2407865, "bilesen_toplami": 11696063, "toplam": 11696067, "gap": 4}, {"d": "2015-4", "src": "2016", "note": "", "tt_pstn": 8650148, "tt_isdn": 311250, "tt_ankesor": 80798, "sth_pstn": 1702423, "sth_isdn": 42017, "sth_voip": 706419, "tt_toplam": 9042196, "sth_toplam": 2450859, "bilesen_toplami": 11493055, "toplam": 11493057, "gap": 2}, {"d": "2016-1", "src": "2016", "note": "", "tt_pstn": 8342741, "tt_isdn": 311308, "tt_ankesor": 80022, "sth_pstn": 1821554, "sth_isdn": 39908, "sth_voip": 725822, "tt_toplam": 8734071, "sth_toplam": 2587284, "bilesen_toplami": 11321355, "toplam": 11322407, "gap": 1052}, {"d": "2016-2", "src": "2016", "note": "", "tt_pstn": 8092398, "tt_isdn": 309944, "tt_ankesor": 79306, "sth_pstn": 1921786, "sth_isdn": 39329, "sth_voip": 805732, "tt_toplam": 8481648, "sth_toplam": 2766847, "bilesen_toplami": 11248495, "toplam": 11248495, "gap": 0}, {"d": "2016-3", "src": "2016", "note": "", "tt_pstn": 7847143, "tt_isdn": 307072, "tt_ankesor": 77738, "sth_pstn": 1988591, "sth_isdn": 37420, "sth_voip": 822440, "tt_toplam": 8231953, "sth_toplam": 2848451, "bilesen_toplami": 11080404, "toplam": 11080404, "gap": 0}, {"d": "2016-4", "src": "2017", "note": "", "tt_pstn": 7598647, "tt_isdn": 307100, "tt_ankesor": 76362, "sth_pstn": 2116435, "sth_isdn": 47517, "sth_voip": 931498, "tt_toplam": 7982109, "sth_toplam": 3095450, "bilesen_toplami": 11077559, "toplam": 11077559, "gap": 0}, {"d": "2017-1", "src": "2017", "note": "", "tt_pstn": 7342782, "tt_isdn": 300228, "tt_ankesor": 74509, "sth_pstn": 2244748, "sth_isdn": 40075, "sth_voip": 1007272, "tt_toplam": 7717519, "sth_toplam": 3292095, "bilesen_toplami": 11009614, "toplam": 11009614, "gap": 0}, {"d": "2017-2", "src": "2017", "note": "", "tt_pstn": 7121709, "tt_isdn": 294820, "tt_ankesor": 70904, "sth_pstn": 2371281, "sth_isdn": 29404, "sth_voip": 1079326, "tt_toplam": 7487433, "sth_toplam": 3480011, "bilesen_toplami": 10967444, "toplam": 10967444, "gap": 0}, {"d": "2017-3", "src": "2018", "note": "", "tt_pstn": 6916080, "tt_isdn": 292264, "tt_ankesor": 69160, "sth_pstn": 2587257, "sth_isdn": 28075, "sth_voip": 1157117, "tt_toplam": 7277504, "sth_toplam": 3772449, "bilesen_toplami": 11049953, "toplam": 11049953, "gap": 0}, {"d": "2017-4", "src": "2018", "note": "", "tt_pstn": 6735355, "tt_isdn": 292816, "tt_ankesor": 67517, "sth_pstn": 2834614, "sth_isdn": 29905, "sth_voip": 1348237, "tt_toplam": 7095688, "sth_toplam": 4212756, "bilesen_toplami": 11308444, "toplam": 11308444, "gap": 0}, {"d": "2018-1", "src": "2018", "note": "", "tt_pstn": 6520797, "tt_isdn": 291316, "tt_ankesor": 66149, "sth_pstn": 3180518, "sth_isdn": 35614, "sth_voip": 1400663, "tt_toplam": 6878262, "sth_toplam": 4616795, "bilesen_toplami": 11495057, "toplam": 11495057, "gap": 0}, {"d": "2018-2", "src": "2018", "note": "", "tt_pstn": 6344618, "tt_isdn": 291816, "tt_ankesor": 65172, "sth_pstn": 3392354, "sth_isdn": 32484, "sth_voip": 1365185, "tt_toplam": 6701606, "sth_toplam": 4790023, "bilesen_toplami": 11491629, "toplam": 11491629, "gap": 0}, {"d": "2018-3", "src": "2018", "note": "", "tt_pstn": 6177626, "tt_isdn": 291174, "tt_ankesor": 64711, "sth_pstn": 3652152, "sth_isdn": 35743, "sth_voip": 1320694, "tt_toplam": 6533511, "sth_toplam": 5008589, "bilesen_toplami": 11542100, "toplam": 11542100, "gap": 0}, {"d": "2018-4", "src": "2019", "note": "STH VoIP hucresi 2018-3 ile ayni basilmis", "tt_pstn": 5987899, "tt_isdn": 287048, "tt_ankesor": 63856, "sth_pstn": 3973934, "sth_isdn": 38910, "sth_voip": 1320694, "tt_toplam": 6338803, "sth_toplam": 5333538, "bilesen_toplami": 11672341, "toplam": 11633461, "gap": -38880}, {"d": "2019-1", "src": "2019", "note": "", "tt_pstn": 5772299, "tt_isdn": 281036, "tt_ankesor": 61195, "sth_pstn": 4210508, "sth_isdn": 30803, "sth_voip": 1281814, "tt_toplam": 6114530, "sth_toplam": 5523125, "bilesen_toplami": 11637655, "toplam": 11605347, "gap": -32308}, {"d": "2019-2", "src": "2019", "note": "", "tt_pstn": 5549107, "tt_isdn": 267524, "tt_ankesor": 57561, "sth_pstn": 4376948, "sth_isdn": 30565, "sth_voip": 1188460, "tt_toplam": 5874192, "sth_toplam": 5595973, "bilesen_toplami": 11470165, "toplam": 11470165, "gap": 0}, {"d": "2019-3", "src": "2019", "note": "", "tt_pstn": 5387034, "tt_isdn": 267332, "tt_ankesor": 55773, "sth_pstn": 4621801, "sth_isdn": 30985, "sth_voip": 1179623, "tt_toplam": 5710139, "sth_toplam": 5832409, "bilesen_toplami": 11542548, "toplam": 11542548, "gap": 0}, {"d": "2019-4", "src": "2020", "note": "2019 raporu ayni satir icin 11.371.728 basmisti; kendi bilesenleriyle tutmuyordu", "tt_pstn": 5219515, "tt_isdn": 264670, "tt_ankesor": 55113, "sth_pstn": 4820590, "sth_isdn": 25084, "sth_voip": 1147931, "tt_toplam": 5539298, "sth_toplam": 5993605, "bilesen_toplami": 11532903, "toplam": 11532903, "gap": 0}, {"d": "2020-1", "src": "2020", "note": "", "tt_pstn": 5036689, "tt_isdn": 259414, "tt_ankesor": 55779, "sth_pstn": 5042912, "sth_isdn": 23189, "sth_voip": 1301884, "tt_toplam": 5351882, "sth_toplam": 6367985, "bilesen_toplami": 11719867, "toplam": 11716867, "gap": -3000}, {"d": "2020-2", "src": "2020", "note": "", "tt_pstn": 4916700, "tt_isdn": 255552, "tt_ankesor": 52102, "sth_pstn": 5385636, "sth_isdn": 19298, "sth_voip": 1460803, "tt_toplam": 5224354, "sth_toplam": 6865737, "bilesen_toplami": 12090091, "toplam": 12090091, "gap": 0}, {"d": "2020-3", "src": "2020", "note": "", "tt_pstn": 4788334, "tt_isdn": 251996, "tt_ankesor": 51020, "sth_pstn": 5674345, "sth_isdn": 21004, "sth_voip": 1513691, "tt_toplam": 5091350, "sth_toplam": 7209040, "bilesen_toplami": 12300390, "toplam": 12300390, "gap": 0}, {"d": "2020-4", "src": "2021", "note": "", "tt_pstn": 4666259, "tt_isdn": 251112, "tt_ankesor": 49868, "sth_pstn": 5958347, "sth_isdn": 20156, "sth_voip": 1502862, "tt_toplam": 4967239, "sth_toplam": 7481365, "bilesen_toplami": 12448604, "toplam": 12448604, "gap": 0}, {"d": "2021-1", "src": "2021", "note": "", "tt_pstn": 4527322, "tt_isdn": 246940, "tt_ankesor": 48357, "sth_pstn": 6043345, "sth_isdn": 20118, "sth_voip": 1508186, "tt_toplam": 4822619, "sth_toplam": 7571649, "bilesen_toplami": 12394268, "toplam": 12394268, "gap": 0}, {"d": "2021-2", "src": "2021", "note": "", "tt_pstn": 4410850, "tt_isdn": 238280, "tt_ankesor": 47353, "sth_pstn": 6100583, "sth_isdn": 20958, "sth_voip": 1488930, "tt_toplam": 4696483, "sth_toplam": 7610471, "bilesen_toplami": 12306954, "toplam": 12306954, "gap": 0}, {"d": "2021-3", "src": "2021", "note": "", "tt_pstn": 4303407, "tt_isdn": 222142, "tt_ankesor": 46754, "sth_pstn": 6208582, "sth_isdn": 20069, "sth_voip": 1455576, "tt_toplam": 4572303, "sth_toplam": 7684227, "bilesen_toplami": 12256530, "toplam": 12256530, "gap": 0}, {"d": "2021-4", "src": "2022", "note": "", "tt_pstn": 4200206, "tt_isdn": 213664, "tt_ankesor": 45695, "sth_pstn": 6320114, "sth_isdn": 20299, "sth_voip": 1510038, "tt_toplam": 4459565, "sth_toplam": 7850451, "bilesen_toplami": 12310016, "toplam": 12310016, "gap": 0}, {"d": "2022-1", "src": "2022", "note": "", "tt_pstn": 4085078, "tt_isdn": 207460, "tt_ankesor": 45016, "sth_pstn": 6317078, "sth_isdn": 18463, "sth_voip": 1445829, "tt_toplam": 4337554, "sth_toplam": 7781370, "bilesen_toplami": 12118924, "toplam": 12118924, "gap": 0}, {"d": "2022-2", "src": "2022", "note": "", "tt_pstn": 3986124, "tt_isdn": 201682, "tt_ankesor": 44201, "sth_pstn": 6143079, "sth_isdn": 18365, "sth_voip": 1388585, "tt_toplam": 4232007, "sth_toplam": 7550029, "bilesen_toplami": 11782036, "toplam": 11782076, "gap": 40}, {"d": "2022-3", "src": "2022", "note": "STH satiri raporda 2022-2 ile ayni basilmis; toplamla tutmadigi icin bos birakildi", "tt_pstn": 3891957, "tt_isdn": 199106, "tt_ankesor": 43575, "sth_pstn": null, "sth_isdn": null, "sth_voip": null, "tt_toplam": 4134638, "sth_toplam": null, "bilesen_toplami": null, "toplam": 11539908, "gap": null}, {"d": "2022-4", "src": "2023", "note": "2022 raporu ayni satira 2020-4 STH degerlerini basmisti", "tt_pstn": 3808570, "tt_isdn": 197534, "tt_ankesor": 42456, "sth_pstn": 5725536, "sth_isdn": 15862, "sth_voip": 1407939, "tt_toplam": 4048560, "sth_toplam": 7149337, "bilesen_toplami": 11197897, "toplam": 11197979, "gap": 82}, {"d": "2023-1", "src": "2023", "note": "", "tt_pstn": 3707400, "tt_isdn": 195908, "tt_ankesor": 42327, "sth_pstn": 5491190, "sth_isdn": 12037, "sth_voip": 1443345, "tt_toplam": 3945635, "sth_toplam": 6946572, "bilesen_toplami": 10892207, "toplam": 10892207, "gap": 0}, {"d": "2023-2", "src": "2023", "note": "", "tt_pstn": 3597132, "tt_isdn": 191910, "tt_ankesor": 40294, "sth_pstn": 5351328, "sth_isdn": 12037, "sth_voip": 1421884, "tt_toplam": 3829336, "sth_toplam": 6785249, "bilesen_toplami": 10614585, "toplam": 10614585, "gap": 0}, {"d": "2023-3", "src": "2023", "note": "", "tt_pstn": 3510086, "tt_isdn": 188006, "tt_ankesor": 39434, "sth_pstn": 5199018, "sth_isdn": 12036, "sth_voip": 1358695, "tt_toplam": 3737526, "sth_toplam": 6569749, "bilesen_toplami": 10307275, "toplam": 10307275, "gap": 0}, {"d": "2023-4", "src": "2024", "note": "", "tt_pstn": 3425610, "tt_isdn": 187292, "tt_ankesor": 38158, "sth_pstn": 5006599, "sth_isdn": 8883, "sth_voip": 1258992, "tt_toplam": 3651060, "sth_toplam": 6274474, "bilesen_toplami": 9925534, "toplam": 9925534, "gap": 0}, {"d": "2024-1", "src": "2024", "note": "", "tt_pstn": 3337289, "tt_isdn": 184898, "tt_ankesor": 37491, "sth_pstn": 4827703, "sth_isdn": 18241, "sth_voip": 990485, "tt_toplam": 3559678, "sth_toplam": 5836429, "bilesen_toplami": 9396107, "toplam": 9396107, "gap": 0}, {"d": "2024-2", "src": "2024", "note": "", "tt_pstn": 3253460, "tt_isdn": 180062, "tt_ankesor": 37073, "sth_pstn": 4667975, "sth_isdn": 17235, "sth_voip": 1252459, "tt_toplam": 3470595, "sth_toplam": 5937669, "bilesen_toplami": 9408264, "toplam": 9408264, "gap": 0}, {"d": "2024-3", "src": "2024", "note": "", "tt_pstn": 3181902, "tt_isdn": 177208, "tt_ankesor": 36398, "sth_pstn": 4524078, "sth_isdn": 17204, "sth_voip": 1219938, "tt_toplam": 3395508, "sth_toplam": 5761220, "bilesen_toplami": 9156728, "toplam": 9157239, "gap": 511}, {"d": "2024-4", "src": "2025", "note": "", "tt_pstn": 3104080, "tt_isdn": 176470, "tt_ankesor": 36224, "sth_pstn": 4428818, "sth_isdn": 8464, "sth_voip": 1272158, "tt_toplam": 3316774, "sth_toplam": 5709440, "bilesen_toplami": 9026214, "toplam": 9026297, "gap": 83}, {"d": "2025-1", "src": "2026-Q1", "note": "", "tt_pstn": 3015854, "tt_isdn": 168108, "tt_ankesor": 35272, "sth_pstn": 4402089, "sth_isdn": 15852, "sth_voip": 1264387, "tt_toplam": 3219234, "sth_toplam": 5682328, "bilesen_toplami": 8901562, "toplam": 8901562, "gap": 0}, {"d": "2025-2", "src": "2026-Q1", "note": "", "tt_pstn": 2938294, "tt_isdn": 162224, "tt_ankesor": 33611, "sth_pstn": 4286955, "sth_isdn": 14555, "sth_voip": 1359309, "tt_toplam": 3134129, "sth_toplam": 5660819, "bilesen_toplami": 8794948, "toplam": 8794961, "gap": 13}, {"d": "2025-3", "src": "2026-Q1", "note": "", "tt_pstn": 2873578, "tt_isdn": 161130, "tt_ankesor": 31972, "sth_pstn": 4127229, "sth_isdn": 14234, "sth_voip": 1261411, "tt_toplam": 3066680, "sth_toplam": 5402874, "bilesen_toplami": 8469554, "toplam": 8469554, "gap": 0}, {"d": "2025-4", "src": "2026-Q1", "note": "", "tt_pstn": 2799628, "tt_isdn": 157902, "tt_ankesor": 31175, "sth_pstn": 4024187, "sth_isdn": 14811, "sth_voip": 1363153, "tt_toplam": 2988705, "sth_toplam": 5402151, "bilesen_toplami": 8390856, "toplam": 8390856, "gap": 0}, {"d": "2026-1", "src": "2026-Q1", "note": "", "tt_pstn": 2717106, "tt_isdn": 155466, "tt_ankesor": 30077, "sth_pstn": 3947996, "sth_isdn": 14714, "sth_voip": 1421379, "tt_toplam": 2902649, "sth_toplam": 5384089, "bilesen_toplami": 8286738, "toplam": 8286738, "gap": 0}];
+const TECHS = [
+  {k: "tt_pstn", name: "Analog PSTN — Türk Telekom", color: "#2c6bb5"},
+  {k: "sth_pstn", name: "Analog PSTN — STH", color: "#6fa3dd"},
+  {k: "tt_isdn", name: "ISDN — Türk Telekom", color: "#7d55b3"},
+  {k: "sth_isdn", name: "ISDN — STH", color: "#a98cd0"},
+  {k: "sth_voip", name: "VoIP — STH", color: "#1d7d52"},
+  {k: "tt_ankesor", name: "Ankesör", color: "#c8890f"}
+];
+const OPS = [
+  {k: "tt_toplam", name: "Türk Telekom", color: "#2c6bb5"},
+  {k: "sth_toplam", name: "STH işletmecileri", color: "#1d7d52"}
+];
+const METRICS = {
+  stack: {t: "Sabit telefon abonesi, teknoloji kırılımı", u: "milyon abone", kind: "stack", group: TECHS, scale: 1e6, dec: 3},
+  share: {t: "Teknolojilerin payı", u: "%", kind: "stack", group: TECHS, pct: true, dec: 1},
+  lines: {t: "Teknolojiler ayrı ayrı", u: "milyon abone", kind: "lines", group: TECHS, scale: 1e6, dec: 3},
+  op_stack: {t: "Türk Telekom ve alternatif işletmeciler", u: "milyon abone", kind: "stack", group: OPS, scale: 1e6, dec: 3},
+  op_share: {t: "Türk Telekom ve alternatif işletmecilerin payı", u: "%", kind: "stack", group: OPS, pct: true, dec: 1},
+  net: {t: "Bir önceki çeyreğe göre net değişim", u: "bin abone", kind: "bars", scale: 1e3, dec: 0},
+  ankesor: {t: "Ankesörlü telefon sayısı", u: "adet", kind: "single", key: "tt_ankesor", dec: 0}
+};
+const state = {
+  metric: "stack", from: 0, to: DATA.length - 1,
+  on: Object.fromEntries(TECHS.concat(OPS).map(function (t) { return [t.k, true]; }))
+};
+
+// Axis step of 1, 2 or 5 times a power of ten, so tick labels stay round.
+function niceStep(span, target) {
+  const raw = span / target;
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const n = raw / mag;
+  return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * mag;
+}
+function css(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+function fmt(v, dec) {
+  if (v == null) return "—";
+  return v.toLocaleString("tr-TR", {minimumFractionDigits: dec, maximumFractionDigits: dec});
+}
+function rowsFor() { return DATA.slice(state.from, state.to + 1); }
+
+// The share views normalise against the sum of the cells actually printed, not
+// the reported total, so a quarter whose two disagree still adds up to 100.
+function stackBase(row, group) {
+  if (group === OPS) {
+    return (row.tt_toplam || 0) + (row.sth_toplam || 0);
+  }
+  return row.bilesen_toplami;
+}
+
+function seriesFor(rows) {
+  const m = METRICS[state.metric];
+  if (m.kind === "stack" || m.kind === "lines") {
+    return m.group.filter(function (t) { return state.on[t.k]; }).map(function (t) {
+      return {name: t.name, color: t.color, v: rows.map(function (r) {
+        const raw = r[t.k];
+        if (raw == null) return null;
+        if (!m.pct) return raw;
+        const base = stackBase(r, m.group);
+        return base ? 100 * raw / base : null;
+      })};
+    });
+  }
+  if (m.kind === "bars") {
+    return [{name: "Net değişim", color: css("--accent"),
+             v: rows.map(function (r, i) {
+               return i === 0 ? null : r.toplam - rows[i - 1].toplam;
+             })}];
+  }
+  return [{name: METRICS[state.metric].t, color: css("--accent"),
+           v: rows.map(function (r) { return r[m.key]; })}];
+}
+
+const cv = document.getElementById("c"), ctx = cv.getContext("2d");
+let layout = null;
+
+function draw() {
+  const m = METRICS[state.metric];
+  const dpr = window.devicePixelRatio || 1;
+  const w = cv.clientWidth, h = cv.clientHeight;
+  cv.width = w * dpr; cv.height = h * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+
+  const rows = rowsFor();
+  const series = seriesFor(rows);
+  const scale = m.scale || 1;
+  const pad = {l: 62, r: 22, t: 12, b: 30};
+  const pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
+
+  let lo = 0, hi = 0;
+  if (m.kind === "stack") {
+    rows.forEach(function (r, i) {
+      if (!series.every(function (sr) { return sr.v[i] != null; })) return;
+      let s = 0;
+      series.forEach(function (sr) { s += sr.v[i]; });
+      if (s > hi) hi = s;
+    });
+    if (m.pct) hi = 100;
+  } else {
+    series.forEach(function (sr) {
+      sr.v.forEach(function (v) {
+        if (v == null) return;
+        if (v > hi) hi = v;
+        if (v < lo) lo = v;
+      });
+    });
+  }
+  hi = hi / scale; lo = lo / scale;
+  const step = niceStep((hi - lo) || 1, 5);
+  hi = Math.ceil((hi + (m.pct ? 0 : (hi - lo) * 0.04)) / step) * step;
+  lo = Math.floor(lo / step) * step;
+
+  const x = function (i) {
+    return rows.length === 1 ? pad.l + pw / 2 : pad.l + pw * i / (rows.length - 1);
+  };
+  const y = function (v) { return pad.t + ph * (1 - (v - lo) / (hi - lo)); };
+
+  ctx.strokeStyle = css("--line-soft"); ctx.fillStyle = css("--ink-soft");
+  ctx.font = "11px Archivo, sans-serif"; ctx.textAlign = "right";
+  const dec = step < 1 ? (step < 0.1 ? 2 : 1) : 0;
+  for (let v = lo; v <= hi + step / 2; v += step) {
+    const py = Math.round(y(v)) + 0.5;
+    ctx.beginPath(); ctx.moveTo(pad.l, py); ctx.lineTo(w - pad.r, py); ctx.stroke();
+    ctx.fillText(fmt(v, dec), pad.l - 8, py + 4);
+  }
+  if (lo < 0) {
+    ctx.strokeStyle = css("--line");
+    const zy = Math.round(y(0)) + 0.5;
+    ctx.beginPath(); ctx.moveTo(pad.l, zy); ctx.lineTo(w - pad.r, zy); ctx.stroke();
+  }
+
+  const every = Math.max(1, Math.ceil(rows.length / Math.max(1, Math.floor(pw / 52))));
+  rows.forEach(function (r, i) {
+    const last = rows.length - 1;
+    // Skip a periodic label that would land on top of the always-drawn last one.
+    if (i !== last && (i % every || last - i < every / 2)) return;
+    ctx.textAlign = i === rows.length - 1 ? "right" : (i === 0 ? "left" : "center");
+    ctx.fillText(r.d, x(i), h - 10);
+  });
+
+  if (m.kind === "stack") {
+    // A quarter missing any selected series would stack as if it were zero, which
+    // draws a cliff that is not in the data. Draw only the runs where every
+    // selected series has a value, and leave the rest as a visible gap.
+    const runs = [];
+    rows.forEach(function (r, i) {
+      const complete = series.every(function (sr) { return sr.v[i] != null; });
+      if (!complete) return;
+      const last = runs[runs.length - 1];
+      if (last && last[last.length - 1] === i - 1) last.push(i);
+      else runs.push([i]);
+    });
+    const base = rows.map(function () { return 0; });
+    series.forEach(function (sr) {
+      runs.forEach(function (run) {
+        ctx.beginPath();
+        run.forEach(function (i, k) {
+          const px = x(i), py = y((base[i] + sr.v[i]) / scale);
+          k ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+        });
+        for (let k = run.length - 1; k >= 0; k--) {
+          ctx.lineTo(x(run[k]), y(base[run[k]] / scale));
+        }
+        ctx.closePath();
+        ctx.fillStyle = sr.color; ctx.globalAlpha = 0.85; ctx.fill(); ctx.globalAlpha = 1;
+      });
+      runs.forEach(function (run) {
+        run.forEach(function (i) { base[i] += sr.v[i]; });
+      });
+    });
+  } else if (m.kind === "bars") {
+    const bw = Math.max(3, pw / rows.length * 0.6);
+    series[0].v.forEach(function (v, i) {
+      if (v == null) return;
+      const y0 = y(0), y1 = y(v / scale);
+      ctx.fillStyle = v < 0 ? css("--vf") : css("--accent");
+      ctx.fillRect(x(i) - bw / 2, Math.min(y0, y1), bw, Math.abs(y1 - y0));
+    });
+  } else {
+    series.forEach(function (sr) {
+      ctx.strokeStyle = sr.color; ctx.lineWidth = 2; ctx.lineJoin = "round";
+      ctx.beginPath();
+      let started = false;
+      sr.v.forEach(function (v, i) {
+        if (v == null) { started = false; return; }
+        const px = x(i), py = y(v / scale);
+        started ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+        started = true;
+      });
+      ctx.stroke();
+      sr.v.forEach(function (v, i) {
+        if (v == null) return;
+        ctx.fillStyle = sr.color;
+        ctx.beginPath(); ctx.arc(x(i), y(v / scale), 2.4, 0, 6.284); ctx.fill();
+      });
+    });
+  }
+
+  layout = {rows: rows, series: series, x: x, scale: scale};
+  document.getElementById("plotTitle").textContent = m.t;
+  document.getElementById("plotUnit").textContent = m.u;
+
+  const leg = document.getElementById("legend");
+  leg.innerHTML = "";
+  series.forEach(function (sr) {
+    const el = document.createElement("span");
+    el.innerHTML = '<i class="swatch" style="background:' + sr.color + '"></i>' + sr.name;
+    leg.appendChild(el);
+  });
+
+  const flagged = rows.filter(function (r) { return r.gap || r.bilesen_toplami == null; });
+  document.getElementById("gapnote").textContent = flagged.length
+    ? "Bu aralıkta raporun toplamı ile kırılımı " + flagged.length +
+      " çeyrekte tutmuyor: " + flagged.map(function (r) { return r.d; }).join(", ") + "."
+    : "";
+}
+
+const tip = document.getElementById("tip");
+cv.addEventListener("mousemove", function (e) {
+  if (!layout) return;
+  const rect = cv.getBoundingClientRect();
+  const rel = e.clientX - rect.left;
+  let best = 0, bd = Infinity;
+  layout.rows.forEach(function (r, i) {
+    const d = Math.abs(layout.x(i) - rel);
+    if (d < bd) { bd = d; best = i; }
+  });
+  const m = METRICS[state.metric];
+  const row = layout.rows[best];
+  let html = '<div class="th">' + row.d + "</div>";
+  layout.series.forEach(function (sr) {
+    const v = sr.v[best];
+    html += '<div class="tr"><span><i class="swatch" style="background:' + sr.color +
+      '"></i>' + sr.name + "</span><span>" +
+      (v == null ? "—" : fmt(v / layout.scale, m.dec)) + "</span></div>";
+  });
+  if (m.kind === "stack" && !m.pct) {
+    html += '<div class="tr"><span>Raporun toplamı</span><span>' +
+      fmt(row.toplam / 1e6, 3) + "</span></div>";
+  }
+  if (row.gap) {
+    html += '<div class="tr"><span>Toplam − kırılım</span><span>' +
+      fmt(row.gap, 0) + "</span></div>";
+  }
+  tip.innerHTML = html;
+  tip.style.opacity = 1;
+  tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 240) + "px";
+  tip.style.top = (e.clientY - 12) + "px";
+});
+cv.addEventListener("mouseleave", function () { tip.style.opacity = 0; });
+
+const techBox = document.getElementById("tech");
+function renderToggles() {
+  const m = METRICS[state.metric];
+  const group = m.group;
+  techBox.innerHTML = "";
+  if (!group) return;
+  document.getElementById("seriesLabel").textContent =
+    group === OPS ? "İşletmeciler" : "Teknolojiler";
+  group.forEach(function (t) {
+    const l = document.createElement("label");
+    l.className = "op";
+    l.innerHTML = '<input type="checkbox"' + (state.on[t.k] ? " checked" : "") +
+      '><i class="swatch" style="background:' + t.color + '"></i>' + t.name;
+    l.querySelector("input").addEventListener("change", function () {
+      state.on[t.k] = this.checked; draw();
+    });
+    techBox.appendChild(l);
+  });
+}
+
+const fromEl = document.getElementById("from"), toEl = document.getElementById("to");
+fromEl.max = toEl.max = DATA.length - 1;
+fromEl.value = 0; toEl.value = DATA.length - 1;
+function syncRange() {
+  state.from = Math.min(+fromEl.value, +toEl.value);
+  state.to = Math.max(+fromEl.value, +toEl.value);
+  document.getElementById("fromLabel").textContent = DATA[state.from].d;
+  document.getElementById("toLabel").textContent = DATA[state.to].d;
+  draw();
+}
+fromEl.addEventListener("input", syncRange);
+toEl.addEventListener("input", syncRange);
+
+document.getElementById("metric").addEventListener("change", function () {
+  state.metric = this.value;
+  document.getElementById("seriesField").style.display =
+    METRICS[state.metric].group ? "" : "none";
+  renderToggles();
+  draw();
+});
+
+(function () {
+  const last = DATA[DATA.length - 1];
+  const first = DATA[0];
+  const cards = [
+    ["Sabit telefon abonesi", fmt(last.toplam / 1e6, 2) + " mn", last.d],
+    ["Alternatif işletmeci payı",
+     fmt(100 * last.sth_toplam / (last.tt_toplam + last.sth_toplam), 1) + "%",
+     first.d + ": " + fmt(100 * first.sth_toplam / (first.tt_toplam + first.sth_toplam), 1) + "%"],
+    ["Analog PSTN", fmt((last.tt_pstn + last.sth_pstn) / 1e6, 2) + " mn",
+     first.d + ": " + fmt((first.tt_pstn + first.sth_pstn) / 1e6, 2) + " mn"],
+    ["VoIP", fmt(last.sth_voip / 1e6, 2) + " mn",
+     first.d + ": " + fmt(first.sth_voip / 1e6, 2) + " mn"],
+    ["ISDN ses kanalı", fmt((last.tt_isdn + last.sth_isdn) / 1e3, 0) + " bin",
+     first.d + ": " + fmt((first.tt_isdn + first.sth_isdn) / 1e3, 0) + " bin"],
+    ["Ankesörlü telefon", fmt(last.tt_ankesor, 0),
+     first.d + ": " + fmt(first.tt_ankesor, 0)]
+  ];
+  document.getElementById("stats").innerHTML = cards.map(function (c) {
+    return '<div class="stat"><div class="k">' + c[0] + '</div><div class="v">' +
+      c[1] + '</div><div class="s">' + c[2] + "</div></div>";
+  }).join("");
+})();
+
+renderToggles();
+syncRange();
+window.addEventListener("resize", draw);
+</script>
