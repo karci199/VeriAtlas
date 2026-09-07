@@ -122,27 +122,38 @@ class ZK:
         return out
 
     def items(self, listbox: str) -> dict[str, str]:
-        """{label: item uuid} for one listbox — a later fragment shadows an earlier one."""
-        out: dict[str, str] = {}
-        for fragment in self.fragments:
-            marker = f'id="{listbox}'
+        """{label: item uuid} for one listbox, from its newest fragment only.
+
+        Merging every fragment that mentions the listbox looks harmless and is not: after
+        picking a second province the box is redrawn with that province's districts, and a
+        merged reading still carries the first province's — which is how Adıyaman's
+        districts came to be asked for under Amasya.
+        """
+        marker = f'id="{listbox}'
+        for fragment in reversed(self.fragments):
             if marker not in fragment:
                 continue
             body = fragment[fragment.find(marker) :]
-            for uuid, cell in RE_ITEM.findall(body):
-                label = text_of(cell)
-                if label:
-                    out[label] = uuid
-        return out
+            found = {
+                text_of(cell): uuid
+                for uuid, cell in RE_ITEM.findall(body)
+                if text_of(cell)
+            }
+            if found:
+                return found
+        return {}
 
     def options(self, header: str) -> tuple[str | None, dict[str, str]]:
-        """The populated listbox under this header: (uuid, {label: item uuid})."""
-        best: tuple[str | None, dict[str, str]] = (None, {})
-        for uuid in self.listboxes().get(header, []):
+        """The newest populated listbox under this header: (uuid, {label: item uuid}).
+
+        Newest, not largest: a redraw gives the listbox a new uuid and the stale copy of a
+        previous province's list can be the longer one.
+        """
+        for uuid in reversed(self.listboxes().get(header, [])):
             found = self.items(uuid)
-            if len(found) > len(best[1]):
-                best = (uuid, found)
-        return best
+            if found:
+                return uuid, found
+        return None, {}
 
     def widgets(self, kind: str) -> dict[str, str]:
         pattern = RE_RADIO if kind == "Radio" else RE_BUTTON
