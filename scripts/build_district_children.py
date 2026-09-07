@@ -24,6 +24,7 @@ Run:  uv run python scripts/build_district_children.py TR-16-006
 """
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -206,6 +207,62 @@ def backfill_early(
     return sorted(found)
 
 
+def _span(path: Path) -> int:
+    """Number of years a MEDAS pull's filename claims (…-2008-2025.csv -> 18)."""
+    m = re.search(r"-(\d{4})-(\d{4})\.csv$", path.name)
+    return int(m.group(2)) - int(m.group(1)) + 1 if m else 0
+
+
+MARITAL_TR = {
+    "Hiç Evlenmedi": "never",
+    "Evli": "married",
+    "Boşandı": "divorced",
+    "Eşi Öldü": "widowed",
+}
+
+
+def marital_series(path: Path, district: str) -> dict[str, dict]:
+    """Marital status by year for one district, from the multi-year MEDAS district file.
+
+    The year sits in the first column of the first district row of each year block and is
+    blank on the rows below it, so it is carried down. Columns are
+    "<cinsiyet> ve <yas grubu> ve <medeni durum>"; the page shows the district totals, so
+    sex and age are summed here — the 2024 age detail already lives in the atlas bundle.
+    """
+    raw = path.read_bytes()
+    try:
+        text = raw.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        text = raw.decode("iso-8859-9")
+    lines = text.splitlines()
+    header = lines[2].split("|")
+    out: dict[str, dict] = {}
+    year = None
+    for line in lines[3:]:
+        cells = line.split("|")
+        if len(cells) < len(header) or len(cells) < 2:
+            continue
+        if cells[0].strip():
+            year = cells[0].strip()
+        if year is None or district not in cells[1]:
+            continue
+        row = {
+            scope: dict.fromkeys(MARITAL_TR.values(), 0)
+            for scope in ("total", "male", "female")
+        }
+        for h, v in zip(header, cells):
+            if h.count(" ve ") != 2 or not v.strip():
+                continue
+            sex, _age, status = h.split(" ve ")
+            key = MARITAL_TR[status]
+            n = int(float(v))
+            row["total"][key] += n
+            row["male" if sex == "Erkek" else "female"][key] += n
+        if sum(row["total"].values()):
+            out[year] = row
+    return out
+
+
 def main(district: str) -> None:
     atlas = json.loads((ATLAS / f"{district}.json").read_text(encoding="utf-8"))
     frames = []
@@ -306,8 +363,24 @@ def main(district: str) -> None:
             if medas_code in label and label.startswith(atlas["province"]):
                 households.setdefault(str(year), {})[key] = value
 
+    # Marital status 2008-2025 (MEDAS district file for the province). The atlas bundle
+    # carries only the reference year; the page needs the series to draw a trend.
+    marital: dict[str, dict] = {}
+    # Several pulls of the same province exist (single years, re-runs); take the one
+    # covering the most years rather than whichever the glob happens to list first.
+    candidates = sorted(
+        (RAW / "medas" / "medeni").glob(
+            f"nufus-medeni-ilce-{fold(atlas['province'])}-*.csv"
+        ),
+        key=lambda q: -_span(q),
+    )
+    mar_path = candidates[0] if candidates and _span(candidates[0]) else None
+    if mar_path is not None:
+        marital = marital_series(mar_path, atlas["name"])
+
     out = {
         "district": district,
+        "marital": marital,
         "vital": vital,
         "households": households,
         "years": years,

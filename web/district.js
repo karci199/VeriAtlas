@@ -84,7 +84,7 @@ function delta2(now, then) {
 }
 /** The window after a delta, written as the two years it spans — the same card can sit
  *  beside one with a shorter series, so "9 yıl" next to "3 yıl" needs the base spelled out. */
-const span = (d, years) => (d && years > 0 ? d + ` <span>/ ${state.year - years}–${state.year}</span>` : "");
+const span = (d, years, end) => { const e = end == null ? state.year : end; return d && years > 0 ? d + ` <span>/ ${e - years}–${e}</span>` : ""; };
 
 // ---------- cards ----------
 function card(title, value, unit, lines, tag) {
@@ -169,17 +169,63 @@ function drawPyramid() {
 
 // ---------- social / vital ----------
 function drawEdu() { $("#edu").innerHTML = card("Eğitim durumu (15+)", null, "", [`<span>henüz bağlanmadı</span>`]); }
-function drawSocial() {
-    const m = state.data.marital;
-    const key = state.scope === "total" ? "district" : state.scope;
+/** Marital status: the district series (MEDAS 2008-2025) for the total, the 2024
+ *  Endeksa split for kent/kır — the only year that has one. */
+function maritalOf(year, scope) {
+    if (scope === "total") {
+        const row = state.kids.marital && state.kids.marital[String(year)];
+        if (row) return { t: row.total, year };
+        const last = state.kids.marital && Object.keys(state.kids.marital).sort().pop();
+        if (last) return { t: state.kids.marital[last].total, year: +last };
+    }
+    const m = state.data.marital, key = scope === "total" ? "district" : scope;
     const t = m[key] && (m[key].total || m[key]);
-    const cols = [["never", "Hiç evlenmedi", "var(--blue)"], ["married", "Evli", "var(--green)"], ["divorced", "Boşandı", "var(--amber)"], ["widowed", "Eşi öldü", "#6b7280"]];
-    if (!t || !cols.every(([k]) => t[k] != null)) { $("#social").innerHTML = card("Medeni hal (15+)", null); return; }
-    const tot = sum(cols.map(([k]) => t[k]));
-    $("#social").innerHTML = `<div class="card wide"><div class="t">Medeni hal (15+)${state.year !== 2024 ? ` <span class="lvl" style="position:static">2024 verisi</span>` : ""}</div>
-        <div class="strip">${cols.map(([k, , c]) => `<span style="width:${(100 * t[k]) / tot}%;background:${c}"></span>`).join("")}</div>
-        <div class="keys">${cols.map(([k, l, c]) => `<span><i style="background:${c}"></i>${l} <b>%${pct(t[k] / tot)}</b></span>`).join("")}</div></div>`;
+    return t ? { t, year: 2024 } : null;
 }
+const MARITAL_COLS = [["never", "Hiç evlenmedi", "var(--blue)"], ["married", "Evli", "var(--green)"], ["divorced", "Boşandı", "var(--amber)"], ["widowed", "Eşi öldü", "#6b7280"]];
+
+/** Shares over time as four thin lines — the strip shows one year, this shows the run. */
+function maritalTrend() {
+    const ser = state.kids.marital || {};
+    const years = Object.keys(ser).map(Number).sort((a, b) => a - b);
+    if (years.length < 3) return "";
+    const shares = years.map((y) => {
+        const t = ser[String(y)].total, tot = sum(MARITAL_COLS.map(([k]) => t[k]));
+        return Object.fromEntries(MARITAL_COLS.map(([k]) => [k, t[k] / tot]));
+    });
+    const W = 560, H = 120, pad = 4;
+    const lo = 0, hi = Math.max(...shares.map((r) => Math.max(...MARITAL_COLS.map(([k]) => r[k]))));
+    const x = (i) => pad + (i * (W - 2 * pad)) / (years.length - 1);
+    const y = (v) => H - pad - ((v - lo) / (hi - lo)) * (H - 2 * pad);
+    const lines = MARITAL_COLS.map(([k, , c]) => `<path d="${shares.map((r, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(r[k]).toFixed(1)}`).join("")}" fill="none" stroke="${c}" stroke-width="1.8"/>`).join("");
+    const mark = years.indexOf(state.year) >= 0 ? `<line x1="${x(years.indexOf(state.year))}" y1="0" x2="${x(years.indexOf(state.year))}" y2="${H}" stroke="var(--line)" stroke-width="1"/>` : "";
+    return `<div class="card wide"><div class="t">Medeni hal payları · ${years[0]}–${years[years.length - 1]}</div>
+        <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:120px;margin-top:8px">${mark}${lines}</svg>
+        <div class="pyrfoot"><span>${years[0]}</span><span>en yüksek %${pct(hi)}</span><span>${years[years.length - 1]}</span></div>
+        <div class="keys">${MARITAL_COLS.map(([, l, c]) => `<span><i style="background:${c}"></i>${l}</span>`).join("")}</div></div>`;
+}
+function drawSocial() {
+    const got = maritalOf(state.year, state.scope);
+    if (!got || !MARITAL_COLS.every(([k]) => got.t[k] != null)) { $("#social").innerHTML = card("Medeni hal (15+)", null); return; }
+    const t = got.t, tot = sum(MARITAL_COLS.map(([k]) => t[k]));
+    const badge = got.year !== state.year ? ` <span class="lvl" style="position:static">${got.year} verisi</span>` : "";
+    // Ten-year change of the married share, from the series (total scope only).
+    const ser = state.kids.marital || {};
+    const yearsIn = Object.keys(ser).map(Number).sort((a, b) => a - b);
+    let cards = "";
+    if (state.scope === "total" && yearsIn.length) {
+        const base = String(tenYearsBack(got.year, yearsIn[0]));
+        const then = ser[base] && ser[base].total;
+        const share = (row, k) => row[k] / sum(MARITAL_COLS.map(([kk]) => row[kk]));
+        cards = MARITAL_COLS.map(([k, l]) => card(l, "%" + pct(share(t, k)), "",
+            [then ? span(delta(share(t, k), share(then, k), "pt"), got.year - +base, got.year) : ""], "15+")).join("");
+    }
+    $("#social").innerHTML = cards + `<div class="card wide"><div class="t">Medeni hal (15+) · ${got.year}${badge}</div>
+        <div class="strip">${MARITAL_COLS.map(([k, , c]) => `<span style="width:${(100 * t[k]) / tot}%;background:${c}"></span>`).join("")}</div>
+        <div class="keys">${MARITAL_COLS.map(([k, l, c]) => `<span><i style="background:${c}"></i>${l} <b>%${pct(t[k] / tot)}</b></span>`).join("")}</div></div>`
+        + (state.scope === "total" ? maritalTrend() : "");
+}
+
 function drawVital() {
     const v = state.kids.vital, y = state.year;
     const pop = popOf(y, "total");
