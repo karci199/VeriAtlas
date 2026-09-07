@@ -274,8 +274,19 @@ def fetch_years(page, level: str, years: list[int]) -> bool:
 
     # Zaman
     click_exact(page, "İleri")
+    # Same race as in chunk_size: the tab can answer before its rows are drawn, and the
+    # first year then looks missing. Wait for the list itself, not for a fixed time.
+    for _ in range(4):
+        if offered_years(page):
+            break
+        settle(page, "zaman sekmesi bos, bekleniyor")
+        page.wait_for_timeout(4000)
     for year in years:
         row = page.locator(".z-listitem", has_text=str(year)).first
+        if not row.count():
+            settle(page, "yil satiri gelmedi, tekrar bakiliyor: " + str(year))
+            page.wait_for_timeout(4000)
+            row = page.locator(".z-listitem", has_text=str(year)).first
         if not row.count():
             print("   yil listede yok:", year)
             return False
@@ -344,7 +355,17 @@ def chunk_size(page, level: str):
     if not count:
         return 0, []
     click_exact(page, "İleri")
+    # The Zaman tab sometimes answers before it has drawn its rows, and an empty year list
+    # is indistinguishable from "this measure has no years" — which took nine provinces
+    # down in a row on the third pass, all of them fetchable a minute earlier. Settle and
+    # look again before believing it.
     years = [y for y in offered_years(page) if y >= FIRST_YEAR]
+    for _ in range(3):
+        if years:
+            break
+        settle(page, "zaman sekmesi bos, tekrar bakiliyor")
+        page.wait_for_timeout(4000)
+        years = [y for y in offered_years(page) if y >= FIRST_YEAR]
     if not years:
         return 0, []
     row = page.locator(".z-listitem", has_text=str(years[0])).first

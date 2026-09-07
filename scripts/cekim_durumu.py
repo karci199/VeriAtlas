@@ -40,18 +40,19 @@ ROWS = [
         YEARS,
     ),
     (
+        # Household types start in 2014, not 2007: the measure is twelve years long.
         "Hanehalki tipleri (ilce, yil yil)",
         count("nufus-hane-tipleri-ilce-district-*.csv", RAW / "medas" / "basit"),
-        YEARS,
+        12,
     ),
     (
         "Hemsehrilik (il il)",
-        count("*-2007-2025.csv", RAW / "medas" / "hemsehrilik"),
+        count("nufus-hemsehrilik-ilce-*-2007-2025.csv", RAW / "medas" / "hemsehrilik"),
         PROVINCES,
     ),
     (
         "Okuma-yazma (il il)",
-        count("*-2008-2025.csv", RAW / "medas" / "egitim"),
+        count("nufus-okuma-yazma-ilce-*-2008-2025.csv", RAW / "medas" / "egitim"),
         PROVINCES,
     ),
 ]
