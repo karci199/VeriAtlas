@@ -82,13 +82,14 @@ function delta2(now, then) {
     const d = now - then, cls = d > 0 ? "up" : d < 0 ? "down" : "";
     return `<span class="${cls}">${d > 0 ? "▲" : d < 0 ? "▼" : "•"} ${num(Math.abs(d), 2)}</span>`;
 }
-/** "/ N yıl" after a delta — empty when the span is zero or the delta is empty. */
-const span = (d, years) => (d && years > 0 ? d + ` <span>/ ${years} yıl</span>` : "");
+/** The window after a delta, written as the two years it spans — the same card can sit
+ *  beside one with a shorter series, so "9 yıl" next to "3 yıl" needs the base spelled out. */
+const span = (d, years) => (d && years > 0 ? d + ` <span>/ ${state.year - years}–${state.year}</span>` : "");
 
 // ---------- cards ----------
 function card(title, value, unit, lines, tag) {
     const v = value == null ? `<div class="v muted">bu kapsamda yok</div>` : `<div class="v">${value}<span class="u">${unit || ""}</span></div>`;
-    return `<div class="card"><div class="t">${title}</div>${v}<div class="cmp">${(lines || []).filter(Boolean).join("")}</div>${tag ? `<span class="lvl">${tag}</span>` : ""}</div>`;
+    return `<div class="card${value == null ? " empty" : ""}"><div class="t">${title}</div>${v}<div class="cmp">${(lines || []).filter(Boolean).join("")}</div>${tag ? `<span class="lvl">${tag}</span>` : ""}</div>`;
 }
 function drawCards() {
     const { year, scope } = state, d = state.data, c = d.card;
@@ -140,18 +141,28 @@ function drawCards() {
     $("#foot").textContent = `${d.units.length} yerleşim · ${d.units.filter((u) => u.urban).length} kentsel mahalle · ${d.units.filter((u) => !u.urban).length} köy · Endeksa 2024 kent tanımı`;
 }
 
+/** The next round number at or above x, from the 1-2-5 ladder — the pyramid axis top. */
+function niceMax(x) {
+    const p = Math.pow(10, Math.floor(Math.log10(x)));
+    for (const m of [1, 2, 5, 10]) if (x <= m * p) return m * p;
+    return 10 * p;
+}
+
 // ---------- pyramid ----------
 function drawPyramid() {
     const { year, scope } = state;
     const a = ages(year, scope);
     const box = $("#pyr");
-    if (!a) { box.innerHTML = `<div class="src">${year} için bu kapsamda yaş dağılımı yok.</div>`; $("#pyrFoot").textContent = ""; return; }
-    const max = Math.max(...a.male, ...a.female, 1);
+    if (!a) { box.innerHTML = `<div class="src">${year} için bu kapsamda yaş dağılımı yok.</div>`; $("#pyrFoot").textContent = ""; $("#pyrAxis").innerHTML = ""; return; }
+    const max = niceMax(Math.max(...a.male, ...a.female, 1));
     const w = (v) => (100 * (v || 0)) / max;
     box.innerHTML = [...a.bands.keys()].reverse().map((i) => `
         <div class="l"><div class="bar" style="width:${w(a.male[i])}%;background:var(--blue)" title="${a.bands[i]} erkek ${fmt.format(a.male[i])}"></div></div>
         <div class="lab">${a.bands[i]}</div>
-        <div class="r"><div class="bar" style="width:${w(a.female[i])}%;background:var(--acc)" title="${a.bands[i]} kadın ${fmt.format(a.female[i])}"></div></div>`).join("");
+        <div class="r"><div class="bar" style="width:${w(a.female[i])}%;background:var(--fem)" title="${a.bands[i]} kadın ${fmt.format(a.female[i])}"></div></div>`).join("");
+    const ticks = [0, max / 2, max];
+    const tick = (v) => fmt.format(Math.round(v));
+    $("#pyrAxis").innerHTML = `<div class="l">${ticks.slice().reverse().map((v) => `<span>${tick(v)}</span>`).join("")}</div><div class="lab">kişi</div><div class="r">${ticks.map((v) => `<span>${tick(v)}</span>`).join("")}</div>`;
     $("#pyrFoot").innerHTML = `<span>◀ Erkek ${fmt.format(sum(a.male))}</span><span>Kadın ${fmt.format(sum(a.female))} ▶</span>`;
     $("#pyrSrc").textContent = `ADNKS ${year} · ${{ total: "toplam", urban: "kent", rural: "kır" }[scope]}`;
 }
@@ -245,13 +256,24 @@ function drawMap() {
     const vals = feats.map((f) => { const u = byMedas.get(f.properties.area_id); return u ? unitValue(u, state.mapVar) : null; });
     const present = vals.filter((v) => v != null);
     const lo = Math.min(...present), hi = Math.max(...present);
-    const t = (v) => (hi > lo ? (v - lo) / (hi - lo) : 0.5);
+    // Ranked (quantile) shading, not linear: settlement populations span two orders of
+    // magnitude here, and a linear ramp paints every village the same tone.
+    const sorted = present.slice().sort((x, y) => x - y);
+    const t = (v) => {
+        if (!sorted.length) return 0.5;
+        if (sorted.length === 1) return 0.5;
+        let i = sorted.indexOf(v), j = i;
+        while (j + 1 < sorted.length && sorted[j + 1] === v) j++;
+        return ((i + j) / 2) / (sorted.length - 1);
+    };
     const fmtVar = { pop: (v) => fmt.format(v), child: (v) => "%" + pct(v, 0), change: (v) => (v >= 0 ? "+" : "−") + pct(Math.abs(v), 0) + "%" }[state.mapVar];
     svg.innerHTML = feats.map((f, i) => {
         const u = byMedas.get(f.properties.area_id), v = vals[i];
         const hidden = state.scope !== "total" && u && (state.scope === "urban") !== u.urban;
         return `<path d="${pathOf(f.geometry)}" fill="${v == null || hidden ? "#1a1c20" : colour(t(v))}" data-id="${u ? u.id : ""}" data-tip="${f.properties.name_tr}${v == null ? "" : " · " + fmtVar(v)}"></path>`;
     }).join("");
+    const varTr = { pop: "Nüfus", child: "Çocuk oranı (0-17)", change: "10 yıllık nüfus değişimi" }[state.mapVar];
+    $("#legWhat").textContent = `${varTr} · ${state.year} · sıra (yüzdelik)`;
     $("#legMin").textContent = present.length ? fmtVar(lo) : "—";
     $("#legMax").textContent = present.length ? fmtVar(hi) : "—";
     const d = state.data, nU = d.units.filter((u) => u.urban).length;
@@ -319,9 +341,19 @@ function showPick(id, pinned) {
     const y = u.series[String(state.year)], tot = unitPop(y), ch = unitValue(u, "change");
     pick.hidden = false; pick.classList.toggle("pinned", !!pinned);
     const former = u.former && u.former.length ? ` · eski adı ${u.former.join(", ")}` : "";
-    pick.innerHTML = `<b>${u.name}</b><small>${u.urban ? "mahalle" : "köy"}${former} · ${state.year}${pinned ? "" : " · tıkla: sabitle"}</small>` + (y
-        ? `<div class="row"><span>nüfus <i>${fmt.format(tot)}</i></span>${y.child == null ? "" : `<span>0-17 <i>%${pct(y.child / tot, 0)}</i></span>`}${ch == null ? "" : `<span>nüfus, 10 yıl <i>${(ch >= 0 ? "+" : "−") + pct(Math.abs(ch), 0)}%</i></span>`}</div>`
-        : `<div class="row"><span>bu yıl için veri yok</span></div>`);
+    // Each settlement figure carries the district figure beside it, so a share means
+    // something without leaving the map.
+    const dChild = childShare(state.year, "total");
+    const dPop = popOf(state.year, "total"), dPopThen = popOf(state.year - 10, "total");
+    const dCh = dPop && dPopThen ? dPop / dPopThen - 1 : null;
+    const ctx = (txt) => `<small class="ctx">ilçe: ${txt}</small>`;
+    const cells = [];
+    if (y) {
+        cells.push(`<span>nüfus <i>${fmt.format(tot)}</i></span>`);
+        if (y.child != null) cells.push(`<span>0-17 <i>%${pct(y.child / tot, 0)}</i>${dChild == null ? "" : ctx("%" + pct(dChild))}</span>`);
+        if (ch != null) cells.push(`<span>nüfus, 10 yıl <i>${(ch >= 0 ? "+" : "−") + pct(Math.abs(ch), 0)}%</i>${dCh == null ? "" : ctx((dCh >= 0 ? "+" : "−") + pct(Math.abs(dCh), 0) + "%")}</span>`);
+    } else cells.push(`<span>bu yıl için veri yok</span>`);
+    pick.innerHTML = `<b>${u.name}</b><small>${u.urban ? "mahalle" : "köy"}${former} · ${state.year}${pinned ? "" : " · tıkla: sabitle"}</small><div class="row">${cells.join("")}</div>`;
 }
 
 // ---------- views: the sidebar swaps the panel; the map stays ----------
