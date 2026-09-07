@@ -24,6 +24,22 @@ HAM = pathlib.Path(os.environ.get("VERIATLAS_HAM", "C:/veri-ham"))
 OUT = ROOT / "web" / "durum.html"
 
 
+CB = ["cb2023t1", "cb2023t2", "cb2018", "cb2014"]
+HO = ["ho2017", "ho2010", "ho2007", "ho1988", "ho1987", "ho1982"]
+MV = [
+    "mv2023",
+    "mv2018",
+    "mv2015k",
+    "mv2015h",
+    "mv2011",
+    "mv2007",
+    "mv2002",
+    "mv1999",
+    "mv1995",
+    "mv1991",
+]
+
+
 def count(path: pathlib.Path, pattern: str = "*") -> int:
     return len(list(path.glob(pattern))) if path.exists() else 0
 
@@ -95,18 +111,32 @@ def rows() -> list[dict]:
             "not": "2008-2025",
         },
         {
-            "ad": "Seçim arşivi (milletvekili)",
-            "bitti": count(secim / "html", "*.html"),
-            "hedef": 9730,
+            "ad": "Seçim: cumhurbaşkanlığı",
+            "bitti": sum(count(secim / v, "*.html") for v in CB),
+            "hedef": 4 * 81,
             "birim": "rapor",
-            "not": "10 seçim × ~973 ilçe",
+            "not": "2023 iki tur, 2018, 2014 · il başına",
         },
         {
-            "ad": "Seçim arşivi (CB + halkoylaması)",
-            "bitti": count(secim / "html_halk", "*.html"),
-            "hedef": 5000,
+            "ad": "Seçim: halkoylaması",
+            "bitti": sum(count(secim / v, "*.html") for v in HO),
+            "hedef": 6 * 950,
             "birim": "rapor",
-            "not": "CB il başına, halkoylaması ilçe başına",
+            "not": "2017-1982 · ilçe başına",
+        },
+        {
+            "ad": "Seçim: milletvekili",
+            "bitti": sum(count(secim / v, "*.html") for v in MV),
+            "hedef": 10 * 973,
+            "birim": "rapor",
+            "not": "2023-1991 · ilçe başına",
+        },
+        {
+            "ad": "Seçim: yerel",
+            "bitti": sum(count(p, "*.html") for p in secim.glob("yerel_*")),
+            "hedef": 4 * 8 * 81,
+            "birim": "rapor",
+            "not": "4 ofis × 8 yıl · il başına",
         },
     ]
     for row in out:
