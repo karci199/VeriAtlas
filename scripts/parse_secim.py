@@ -41,7 +41,7 @@ CAPTION = re.compile(
 
 def fold(name: str) -> str:
     text = SUFFIX.sub("", (name or "").strip()).lower()
-    for a, b in zip("İIÇĞÖŞÜçğıöşü", "iicgosucgiosu", strict=False):
+    for a, b in zip("İIÇĞÖŞÜçğıöşüâîûÂÎÛ", "iicgosucgiosuaiuaiu", strict=False):
         text = text.replace(a, b)
     return "".join(ch for ch in text if ch.isalnum())
 
@@ -149,6 +149,26 @@ def read_report(path: pathlib.Path) -> list[dict]:
     return out
 
 
+def match_district(districts: dict, province_id: str, name: str) -> str | None:
+    """The district id for a name as the election report writes it.
+
+    The reports name a central district "Adıyaman Merkez" where the registry calls it
+    "Merkez", and spell Kâhta with the circumflex the registry drops. Both were silently
+    dropping two hundred districts off the map — they came out black, which looks like a
+    place that did not vote.
+    """
+    key = fold(name)
+    hit = districts.get((province_id, key))
+    if hit:
+        return hit
+    if key.endswith("merkez"):
+        for candidate in ("merkez", key[: -len("merkez")]):
+            hit = districts.get((province_id, candidate))
+            if hit:
+                return hit
+    return None
+
+
 def area_index() -> tuple[dict, dict, dict]:
     """(province by folded name, district by (province, name), neighbourhood by (district, name))."""
     provinces: dict[str, str] = {}
@@ -199,20 +219,39 @@ def main(argv: list[str]) -> None:
                 if record["level"] == "il":
                     province_id = provinces.get(fold(record["name"]))
                 elif record["level"] == "ilce" and province_id:
-                    area = districts.get((province_id, fold(record["name"])))
+                    area = match_district(districts, province_id, record["name"])
                     if area:
                         district_out[area] = base
                         district_out[area]["ad"] = record["name"]
                     else:
                         unmatched += 1
                 elif record["level"] == "mahalle" and province_id:
-                    parent = districts.get((province_id, fold(record["parent"] or "")))
+                    parent = match_district(districts, province_id, record["parent"] or "")
                     if not parent:
                         continue
                     area = hoods.get((parent, fold(record["name"])))
                     key = area or f"{parent}~{fold(record['name'])}"
                     base["ad"] = record["name"]
                     hood_out.setdefault(province_id, {})[key] = base
+
+        # A country-wide summary for the neighbourhood map: five numbers per settlement
+        # instead of the full breakdown. The detail files stay for the panel — 48.000
+        # settlements with every candidate would be four megabytes to colour one map.
+        adaylar: list[str] = []
+        ozet: dict[str, list] = {}
+        for rows in hood_out.values():
+            for key, row in rows.items():
+                win = max(row["v"].items(), key=lambda kv: kv[1], default=None)
+                if not win:
+                    continue
+                if win[0] not in adaylar:
+                    adaylar.append(win[0])
+                ozet[key] = [row["k"], row["o"], row["g"], adaylar.index(win[0]), win[1]]
+        (OUT / f"secim-{vote}-mahalle-ozet.json").write_text(
+            json.dumps({"adaylar": adaylar, "y": ozet}, separators=(",", ":"),
+                       ensure_ascii=False),
+            encoding="utf-8",
+        )
 
         (OUT / f"secim-{vote}-ilce.json").write_text(
             json.dumps(district_out, separators=(",", ":"), ensure_ascii=False),
