@@ -46,22 +46,67 @@ from fetch_medas_districts import (
 
 from veriatlas.config import RAW, ensure_dirs
 
-OUT = RAW / "medas" / "medeni"
+ADNKS = "Adrese Dayalı Nüfus Kayıt Sistemi Sonuçları"
+EDUCATION = "Ulusal Eğitim İstatistikleri"
 
-TOPIC = "Adrese Dayalı Nüfus Kayıt Sistemi Sonuçları"
+#: The measures this district flow can take, by the name given on the command line.
+#:
+#: `hint` is what identifies the measure in the list: ascii-safe fragments, all of which
+#: must appear in the same row. MEDAS serves ISO-8859-9 under a header that claims
+#: otherwise, so Turkish letters cannot be matched on (docs/medas.md) — and a single
+#: fragment is not enough where two measures differ only in a word carrying one
+#: ("İkamet edilen **ile** göre…" beside "İkamet edilen **ilçeye** göre…").
+#:
+#: `breakdowns` is the list of dimensions to open, again by fragment, or True for every
+#: one the measure offers. `min_indicators` is the sanity floor: a tick that does not land
+#: leaves a narrower table that downloads perfectly well and is wrong.
+MEASURES = {
+    # 5 medeni durum × 2 cinsiyet × 17 yaş bandı. Köy/Şehir left out: the town and
+    # village split is a separate question and doubles the width for it.
+    "medeni": {
+        "topic": ADNKS,
+        "hint": ("Medeni Duruma G",),
+        "breakdowns": ("Medeni", "Cinsiyet", "Grubu"),
+        "dir": "medeni",
+        "prefix": "nufus-medeni-ilce",
+        "min_indicators": 100,
+        "first_year": 2007,
+    },
+    # Where the people living in a district are registered: 81 columns, one per province.
+    # The breakdown is mandatory and cannot be closed, so the measure is 81 indicators
+    # however it is asked for — which is why it is taken province by province.
+    "hemsehrilik": {
+        "topic": ADNKS,
+        "hint": ("kamet edilen il", "eye g", "olunan il"),
+        "breakdowns": True,
+        "dir": "hemsehrilik",
+        "prefix": "nufus-hemsehrilik-ilce",
+        "min_indicators": 70,
+        "first_year": 2007,
+    },
+    # Literacy by sex and age group — the only education measure MEDAS offers at district
+    # level (raw/medas/kesif/ulusal-e-itim-statistikleri.json: "Bitirilen Eğitim Düzeyi"
+    # stops at province).
+    "okuma-yazma": {
+        "topic": EDUCATION,
+        "hint": ("Okuma Yazma Durumu",),
+        "breakdowns": True,
+        "dir": "egitim",
+        "prefix": "nufus-okuma-yazma-ilce",
+        "min_indicators": 40,
+        "first_year": 2008,
+    },
+}
 
-#: Ascii-safe fragment of "Medeni Duruma Göre Nüfus Bilgileri (15 Yaş üstü)". MEDAS serves
-#: ISO-8859-9 under a header that claims otherwise, so the Turkish letters cannot be
-#: matched on (docs/medas.md).
-MEASURE_HINT = "Medeni Duruma G"
-
-#: The three breakdowns, by an ascii-safe fragment each. Köy/Şehir is left out: the town
-#: and village split is a separate question and doubles the width for it.
-BREAKDOWN_HINTS = ("Medeni", "Cinsiyet", "Grubu")
+MEASURE = MEASURES["medeni"]
+OUT = RAW / "medas" / MEASURE["dir"]
+TOPIC = MEASURE["topic"]
+MEASURE_HINT = MEASURE["hint"]
+BREAKDOWN_HINTS = MEASURE["breakdowns"]
 
 CELL_LIMIT = 50000
 
-FIRST_YEAR = 2007
+FIRST_YEAR = MEASURE["first_year"]
 
 PAUSE = 4.0
 
@@ -83,7 +128,8 @@ PROVINCE = "BURSA"
 
 def target_path(level: str, years: list[int]):
     return OUT / (
-        "nufus-medeni-ilce-"
+        MEASURE["prefix"]
+        + "-"
         + PROVINCE.lower()
         + "-"
         + str(min(years))
@@ -111,7 +157,11 @@ def build_query(page) -> int:
 
     items = page.locator(".z-listitem")
     index = next(
-        (i for i in range(items.count()) if MEASURE_HINT in items.nth(i).inner_text()),
+        (
+            i
+            for i in range(items.count())
+            if all(part in items.nth(i).inner_text() for part in MEASURE_HINT)
+        ),
         None,
     )
     if index is None:
@@ -134,15 +184,27 @@ def build_query(page) -> int:
     # off. The measure then went in with two dimensions instead of three, no value list
     # opened for the missing one, and the indicator count came back zero with no error
     # anywhere. A tick is a toggle, so asking first is the only way to mean "on".
-    for hint in BREAKDOWN_HINTS:
-        row = next((i for i, text in visible_rows(page) if hint in text), None)
-        if row is None:
-            print("   kirilim satiri yok:", hint)
-            return 0
-        if is_ticked(page, row):
-            print("   · kirilim zaten acik:", hint)
-            continue
-        tick(page, row, "kirilim: " + hint)
+    if BREAKDOWN_HINTS is True:
+        # Every dimension the measure offers. Re-read after each tick: the list renumbers.
+        while True:
+            pending = [
+                i
+                for i, text in visible_rows(page)
+                if "Hepsi" not in text and not is_ticked(page, i)
+            ]
+            if not pending:
+                break
+            tick(page, pending[0], "kirilim: hepsi")
+    else:
+        for hint in BREAKDOWN_HINTS:
+            row = next((i for i, text in visible_rows(page) if hint in text), None)
+            if row is None:
+                print("   kirilim satiri yok:", hint)
+                return 0
+            if is_ticked(page, row):
+                print("   · kirilim zaten acik:", hint)
+                continue
+            tick(page, row, "kirilim: " + hint)
 
     click_exact(page, "Tamam")
 
@@ -195,7 +257,7 @@ def fetch_years(page, level: str, years: list[int]) -> bool:
     print("   · gosterge adedi:", count)
     # 5 medeni durum × 2 cinsiyet × 17 yaş bandı. Anything much smaller means a tick did
     # not land, and the download would look fine while carrying a narrower table.
-    if count < 100:
+    if count < MEASURE["min_indicators"]:
         print("   kirilim tutmadi, atlandi")
         return False
 
@@ -297,6 +359,19 @@ def chunk_size(page, level: str):
 
 def main() -> None:
     ensure_dirs()
+
+    global MEASURE, OUT, TOPIC, MEASURE_HINT, BREAKDOWN_HINTS, FIRST_YEAR
+    chosen = next(
+        (a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--olcum=")), "medeni"
+    )
+    if chosen not in MEASURES:
+        sys.exit("bilinmeyen olcum: " + chosen + " (" + ", ".join(MEASURES) + ")")
+    MEASURE = MEASURES[chosen]
+    OUT = RAW / "medas" / MEASURE["dir"]
+    TOPIC = MEASURE["topic"]
+    MEASURE_HINT = MEASURE["hint"]
+    BREAKDOWN_HINTS = MEASURE["breakdowns"]
+    FIRST_YEAR = MEASURE["first_year"]
     OUT.mkdir(parents=True, exist_ok=True)
 
     asked = [int(a) for a in sys.argv[1:] if a.isdigit()]

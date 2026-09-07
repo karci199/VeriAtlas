@@ -83,6 +83,18 @@ MEASURES = [
     # one query. Separate names so levels_for() sends them to İlçe Düzeyi only.
     ("hane-buyuklugu-ilce", ADNKS, "Ortalama hanehalkı büyüklüğü", False),  # 1
     ("hane-sayisi-ilce", ADNKS, "Toplam hanehalkı sayısı", False),  # 1
+    # The same narrow measures at district level. The scan (raw/medas/kesif) says which
+    # ones MEDAS offers there at all: ortanca yaş and nüfus yoğunluğu stop at İl, these
+    # do not. 1 × 973 × 19 is 18.487 cells, one query each; the wider two are taken a
+    # year at a time (--yil) because 4 × 973 × 19 and 9 × 973 × 12 both clear the limit.
+    ("bagimlilik-cocuk-ilce", ADNKS, "Çocuk bağımlılık", False),  # 1
+    ("bagimlilik-yasli-ilce", ADNKS, "Yaşlı bağımlılık", False),  # 1
+    ("bagimlilik-toplam-ilce", ADNKS, "Toplam yaş bağımlılık", False),  # 1
+    ("cinsiyet-orani-ilce", ADNKS, "Cinsiyet oranı", False),  # 1
+    ("artis-hizi-ilce", ADNKS, "Yıllık nüfus artış hızı", False),  # 1
+    ("genc-nufus-ilce", ADNKS, "Cinsiyete göre genç nüfus", True),  # 2
+    ("cocuk-nufus-ilce", ADNKS, "Yaş grubuna göre çocuk nüfus", True),  # 4, --yil ile
+    ("hane-tipleri-ilce", ADNKS, "Hanehalkı tiplerine göre", True),  # 9, --yil ile
     ("goc-net", ADNKS, "Bölgelerin net göç bilgileri", False),  # 1
     ("goc-net-hizi", ADNKS, "Bölgelerin net göç hızı", False),  # 1
     ("goc-aldigi", ADNKS, "Bölgelerin aldığı göç", True),  # 28
