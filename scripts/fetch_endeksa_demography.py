@@ -40,7 +40,7 @@ HAM = pathlib.Path(os.environ.get("VERIATLAS_HAM", "C:/veri-ham"))
 OUT = HAM / "endeksa" / "demography"
 GEO = ROOT / "public" / "geo" / "neighbourhoods"
 LOG = HAM / "endeksa" / "demografi.log"
-WORKERS = 3
+WORKERS = 2
 PAUSE = 0.25
 
 _spec = importlib.util.spec_from_file_location(
@@ -177,7 +177,13 @@ def main(argv: list[str]) -> None:
                             level=3,
                         )
                     except Exception as exc:  # noqa: BLE001
-                        log(f"  {area_id}/{district_id}: {exc}")
+                        # 429 means we are asking faster than the service wants; waiting a
+                        # beat is the whole fix, and logging every one of them buries the
+                        # real errors.
+                        if "429" in str(exc):
+                            time.sleep(5)
+                            continue
+                        log(f"  {area_id}/{district_id}: {str(exc)[:120]}")
                         body = None
                     if body:
                         return district_id, {"name_tr": name, "demography": body}
