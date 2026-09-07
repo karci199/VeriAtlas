@@ -3,13 +3,16 @@
 Sirlar .env dosyasindan okunur; .env depoya girmez (.gitignore).
 """
 
+import os
 from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 ROOT = Path(__file__).resolve().parents[2]
 
-RAW = ROOT / "raw"
+# Raw data lives outside the repository: a worktree cleanup once followed a junction into
+# the shared store and emptied it. VERIATLAS_HAM overrides the location.
+RAW = Path(os.environ.get("VERIATLAS_HAM", "C:/veri-ham"))
 PUBLIC = ROOT / "public"
 DOCS = ROOT / "docs"
 #: Registries and the indicator dictionary — files that are decisions, not observations,
