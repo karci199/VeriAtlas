@@ -36,6 +36,9 @@ OUT = ROOT / "public" / "tiles"
 EXTENT = 4096
 
 LAYERS = {
+    # Provinces are not a separate source: they are the districts dissolved, so the two
+    # layers can never disagree about where a border runs.
+    "il": {"dir": GEO / "districts", "min": 0, "max": 7, "layer": "il", "birlestir": True},
     "ilce": {"dir": GEO / "districts", "min": 0, "max": 9, "layer": "ilce"},
     "mahalle": {"dir": GEO / "neighbourhoods", "min": 7, "max": 12, "layer": "mahalle"},
 }
@@ -86,6 +89,21 @@ def build(name: str) -> None:
     target = OUT / f"{name}.pmtiles"
 
     items = list(features_of(spec["dir"]))
+    if spec.get("birlestir"):
+        from shapely.ops import unary_union
+
+        gruplar: dict[str, list] = defaultdict(list)
+        adlar: dict[str, str] = {}
+        for props, geom in items:
+            parent = props.get("ust") or ""
+            gruplar[parent].append(geom)
+            adlar.setdefault(parent, parent)
+        items = [
+            ({"id": parent, "ad": adlar.get(parent, parent), "ust": "TR"},
+             unary_union(geoms).buffer(0))
+            for parent, geoms in gruplar.items()
+            if parent
+        ]
     print(f"{len(items):,} sekil okundu")
 
     with target.open("wb") as fh:

@@ -190,6 +190,52 @@ def area_index() -> tuple[dict, dict, dict]:
     return provinces, districts, hoods
 
 
+ADLAR = {
+    "cb": "Cumhurbaşkanlığı",
+    "ho": "Halk oylaması",
+    "mv": "Milletvekili",
+    "yerel": "Yerel seçim",
+}
+YEREL_OFIS = {
+    "bsb": "büyükşehir belediye başkanlığı",
+    "bel": "belediye başkanlığı",
+    "belmec": "belediye meclisi",
+    "ilgen": "il genel meclisi",
+}
+
+
+def etiket(vote: str) -> str:
+    """A human label for a vote key, so the page's picker needs no table of its own."""
+    if vote.startswith("yerel_"):
+        _, office, year = vote.split("_")
+        return f"{ADLAR['yerel']} {year} · {YEREL_OFIS.get(office, office)}"
+    tur = ADLAR.get(vote[:2], vote[:2])
+    kalan = vote[2:]
+    if kalan.endswith("t1"):
+        return f"{tur} {kalan[:-2]} · 1. tur"
+    if kalan.endswith("t2"):
+        return f"{tur} {kalan[:-2]} · 2. tur"
+    if kalan.endswith("k"):
+        return f"{tur} {kalan[:-1]} · Kasım"
+    if kalan.endswith("h"):
+        return f"{tur} {kalan[:-1]} · Haziran"
+    return f"{tur} {kalan}"
+
+
+def manifest() -> None:
+    """What the page can offer: every vote with a parsed district table, newest first."""
+    votes = []
+    for path in OUT.glob("secim-*-ilce.json"):
+        key = path.name[len("secim-") : -len("-ilce.json")]
+        yil = "".join(ch for ch in key if ch.isdigit())[:4]
+        votes.append({"anahtar": key, "ad": etiket(key), "yil": yil})
+    votes.sort(key=lambda v: (v["yil"], v["anahtar"]), reverse=True)
+    (OUT / "secimler.json").write_text(
+        json.dumps(votes, ensure_ascii=False), encoding="utf-8"
+    )
+    print(f"secimler.json: {len(votes)} secim")
+
+
 def main(argv: list[str]) -> None:
     votes = [a for a in argv if not a.startswith("--")]
     if "--hepsi" in argv or not votes:
@@ -262,6 +308,7 @@ def main(argv: list[str]) -> None:
                 json.dumps(rows, separators=(",", ":"), ensure_ascii=False),
                 encoding="utf-8",
             )
+        manifest()
         total_hoods = sum(len(v) for v in hood_out.values())
         print(
             f"{vote}: {len(district_out)} ilçe, {total_hoods} yerleşim"

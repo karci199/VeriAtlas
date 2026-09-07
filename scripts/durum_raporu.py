@@ -164,7 +164,9 @@ def html() -> str:
     logs = {
         "Endeksa": log_tail(HAM / "endeksa" / "demografi.log"),
         "Seçim": log_tail(HAM / "secim" / "cekim.log"),
-        "MEDAS": log_tail(HAM / "medas" / "cekim.log"),
+        # The MEDAS scripts each print their own progress; the queue's own log is the one
+        # that shows where the lane is.
+        "MEDAS": log_tail(HAM / "medas_kuyruk.log") or log_tail(HAM / "medas" / "cekim.log"),
     }
     bars = "\n".join(
         f"""<tr><td class="ad">{r["ad"]}<small>{r["not"]}</small></td>

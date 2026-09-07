@@ -89,15 +89,12 @@
 <div class="bar">
   <div class="brand">VeriAtlas<small>seçim haritası</small></div>
   <div class="alan"><label for="oy">Seçim</label>
-    <select id="oy">
-      <option value="cb2023t1">Cumhurbaşkanlığı 2023 · 1. tur</option>
-      <option value="cb2023t2">Cumhurbaşkanlığı 2023 · 2. tur</option>
-      <option value="cb2018">Cumhurbaşkanlığı 2018</option>
-    </select></div>
+    <select id="oy"></select></div>
   <div class="alan"><label for="il">İl</label>
     <select id="il"><option value="">Tüm Türkiye</option></select></div>
   <div class="alan"><label>Harita düzeyi</label>
     <div class="seg" id="duzey">
+      <button data-v="il">İl</button>
       <button data-v="ilce" class="on">İlçe</button>
       <button data-v="mahalle">Mahalle</button>
     </div></div>
@@ -150,6 +147,8 @@ maplibregl.addProtocol("pmtiles", protocol.tile);
 
 const state = { oy: "cb2023t1", duzey: "ilce", gosterim: "kazanan", il: "" };
 let ilce = {};        // area_id -> { k, o, g, v, ad }
+let ilTablo = {};     // TR-XX -> ilçelerin toplamı
+let ilSinir = {};     // TR-XX -> [batı, güney, doğu, kuzey]
 let ozet = null;      // { adaylar: [...], y: { area_id: [k, o, g, kazananIndex, oy] } }
 const detay = {};     // il -> { area_id -> tam sonuç }
 let ilAdlari = {};
@@ -160,14 +159,20 @@ const map = new maplibregl.Map({
   style: {
     version: 8,
     sources: {
+      il: { type: "vector", url: "pmtiles://../public/tiles/il.pmtiles", promoteId: "id" },
       ilce: { type: "vector", url: "pmtiles://../public/tiles/ilce.pmtiles", promoteId: "id" },
     },
     layers: [
       { id: "arka", type: "background", paint: { "background-color": "#0f1012" } },
+      { id: "il-dolgu", type: "fill", source: "il", "source-layer": "il",
+        layout: { visibility: "none" },
+        paint: { "fill-color": ["coalesce", ["feature-state", "renk"], "#22252b"] } },
       { id: "ilce-dolgu", type: "fill", source: "ilce", "source-layer": "ilce",
         paint: { "fill-color": ["coalesce", ["feature-state", "renk"], "#22252b"] } },
       { id: "ilce-kenar", type: "line", source: "ilce", "source-layer": "ilce",
         paint: { "line-color": "#0f1012", "line-width": 0.6, "line-opacity": 0.75 } },
+      { id: "il-kenar", type: "line", source: "il", "source-layer": "il",
+        paint: { "line-color": "#0f1012", "line-width": 1.1, "line-opacity": 0.9 } },
       { id: "vurgu", type: "line", source: "ilce", "source-layer": "ilce",
         filter: ["==", "id", ""], paint: { "line-color": "#ffffff", "line-width": 2 } },
     ],
@@ -223,13 +228,13 @@ function temaUygula(ad) {
   const css = getComputedStyle(document.documentElement);
   const oku = (name) => css.getPropertyValue(name).trim();
   map.setPaintProperty("arka", "background-color", oku("--bg"));
-  for (const layer of ["ilce-dolgu", "mahalle-dolgu"]) {
+  for (const layer of ["il-dolgu", "ilce-dolgu", "mahalle-dolgu"]) {
     if (map.getLayer(layer)) {
       map.setPaintProperty(layer, "fill-color",
         ["coalesce", ["feature-state", "renk"], oku("--bos")]);
     }
   }
-  for (const layer of ["ilce-kenar", "mahalle-kenar"]) {
+  for (const layer of ["il-kenar", "ilce-kenar", "mahalle-kenar"]) {
     if (map.getLayer(layer)) map.setPaintProperty(layer, "line-color", oku("--kenar"));
   }
   for (const layer of ["vurgu", "vurgu-mahalle"]) {
@@ -241,11 +246,28 @@ document.getElementById("tema").addEventListener("click", () =>
 
 // ---------- veri ----------
 const mahalleModu = () => state.duzey === "mahalle";
-const kaynak = () => (mahalleModu() ? "mahalle" : "ilce");
+const ilModu = () => state.duzey === "il";
+const kaynak = () => (mahalleModu() ? "mahalle" : ilModu() ? "il" : "ilce");
+
+/** Province results are the districts added up rather than a table of their own:
+ *  one source of truth, and the two levels can never disagree. */
+function ilTablosu() {
+  const out = {};
+  for (const [id, row] of Object.entries(ilce)) {
+    const ilId = id.slice(0, 5);
+    const acc = (out[ilId] = out[ilId] || { k: 0, o: 0, g: 0, v: {}, ad: ilAdlari[ilId] || ilId });
+    acc.k += row.k || 0;
+    acc.o += row.o || 0;
+    acc.g += row.g || 0;
+    for (const [ad, oy] of Object.entries(row.v || {})) acc.v[ad] = (acc.v[ad] || 0) + oy;
+  }
+  return out;
+}
 
 /** One area's result: the full breakdown when the province detail is loaded, otherwise the
  *  five-number summary — enough to colour the map and fill a tooltip. */
 function satir(id) {
+  if (ilModu()) return ilTablo[id];
   if (!mahalleModu()) return ilce[id];
   const il = (id || "").slice(0, 5);
   if (detay[il] && detay[il][id]) return detay[il][id];
@@ -268,7 +290,8 @@ function katilimRengi(row) {
 }
 
 function kimlikler() {
-  return mahalleModu() ? (ozet ? Object.keys(ozet.y) : []) : Object.keys(ilce);
+  if (mahalleModu()) return ozet ? Object.keys(ozet.y) : [];
+  return Object.keys(ilModu() ? ilTablo : ilce);
 }
 
 function boya() {
@@ -357,6 +380,23 @@ async function veriYukle() {
   if (mahalleModu() && !ozet) {
     ozet = await jsonYukle(`../public/tiles/secim-${state.oy}-mahalle-ozet.json`);
   }
+  if (!document.getElementById("oy").options.length) {
+    const secimler = (await jsonYukle("../public/tiles/secimler.json")) || [];
+    const kutu = document.getElementById("oy");
+    for (const secim of secimler) {
+      const option = document.createElement("option");
+      option.value = secim.anahtar;
+      option.textContent = secim.ad;
+      kutu.appendChild(option);
+    }
+    if (secimler.length && !secimler.some((v) => v.anahtar === state.oy)) {
+      state.oy = secimler[0].anahtar;
+    }
+    kutu.value = state.oy;
+  }
+  if (!Object.keys(ilSinir).length) {
+    ilSinir = (await jsonYukle("../public/tiles/il-sinirlar.json")) || {};
+  }
   if (!Object.keys(ilAdlari).length) {
     ilAdlari = (await jsonYukle("../public/tiles/il-adlari.json")) || {};
     const secim = document.getElementById("il");
@@ -367,6 +407,7 @@ async function veriYukle() {
       secim.appendChild(option);
     }
   }
+  ilTablo = ilTablosu();
   document.getElementById("oneri").innerHTML =
     Object.values(ilce).map((row) => `<option value="${row.ad}">`).join("");
 }
@@ -377,12 +418,14 @@ function duzeyUygula() {
     if (map.getLayer(layer)) map.setLayoutProperty(layer, "visibility", on ? "visible" : "none");
   };
   if (mahalleModu()) mahalleKatmaniEkle();
-  goster("ilce-dolgu", !mahalleModu());
+  goster("il-dolgu", ilModu());
+  goster("ilce-dolgu", !mahalleModu() && !ilModu());
   goster("mahalle-dolgu", mahalleModu());
   goster("mahalle-kenar", mahalleModu());
   // District borders stay on above the neighbourhood layer: without them the country
   // dissolves into fifty thousand shapes and nothing is recognisable.
-  goster("ilce-kenar", true);
+  goster("ilce-kenar", !ilModu());
+  goster("il-kenar", true);
   const filtre = state.il ? ["==", ["slice", ["get", "id"], 0, 5], state.il] : null;
   if (map.getLayer("mahalle-dolgu")) {
     map.setFilter("mahalle-dolgu", filtre);
@@ -404,7 +447,9 @@ async function yenile() {
   }
   durum(mahalleModu()
     ? `${fmt.format(ozet ? Object.keys(ozet.y).length : 0)} yerleşim`
-    : `${fmt.format(Object.keys(ilce).length)} ilçe`);
+    : ilModu()
+      ? `${fmt.format(Object.keys(ilTablo).length)} il`
+      : `${fmt.format(Object.keys(ilce).length)} ilçe`);
 }
 
 // Painting is retried on a timer: setFeatureState throws while the style is still loading,
@@ -452,21 +497,25 @@ async function alanSec(feature) {
       durum(`${fmt.format(ozet ? Object.keys(ozet.y).length : 0)} yerleşim`);
     }
     if (map.getLayer("vurgu-mahalle")) map.setFilter("vurgu-mahalle", ["==", "id", id]);
-  } else {
+  } else if (!ilModu()) {
     map.setFilter("vurgu", ["==", "id", id]);
   }
-  panelAc(id, feature.properties.ad);
+  panelAc(id, ilModu() ? ilAdlari[id] || feature.properties.ad : feature.properties.ad);
 }
 
-map.on("mousemove", "ilce-dolgu", (e) => {
-  map.getCanvas().style.cursor = "pointer";
-  if (!mahalleModu()) ipucuGoster(e, e.features[0]);
-});
-map.on("mouseleave", "ilce-dolgu", () => {
-  map.getCanvas().style.cursor = "";
-  ipucu.style.display = "none";
-});
-map.on("click", "ilce-dolgu", (e) => { if (!mahalleModu()) alanSec(e.features[0]); });
+for (const layer of ["il-dolgu", "ilce-dolgu"]) {
+  const kendiDuzeyi = layer === "il-dolgu" ? ilModu : () => !ilModu() && !mahalleModu();
+  map.on("mousemove", layer, (e) => {
+    if (!kendiDuzeyi()) return;
+    map.getCanvas().style.cursor = "pointer";
+    ipucuGoster(e, e.features[0]);
+  });
+  map.on("mouseleave", layer, () => {
+    map.getCanvas().style.cursor = "";
+    ipucu.style.display = "none";
+  });
+  map.on("click", layer, (e) => { if (kendiDuzeyi()) alanSec(e.features[0]); });
+}
 
 document.getElementById("oy").addEventListener("change", async (e) => {
   state.oy = e.target.value;
@@ -478,13 +527,10 @@ document.getElementById("oy").addEventListener("change", async (e) => {
 document.getElementById("il").addEventListener("change", async (e) => {
   state.il = e.target.value;
   if (state.il) {
-    const bounds = new maplibregl.LngLatBounds();
-    for (const f of map.querySourceFeatures("ilce", { sourceLayer: "ilce" })) {
-      if (!(f.properties.id || "").startsWith(state.il)) continue;
-      const walk = (c) => (Array.isArray(c[0]) ? c.forEach(walk) : bounds.extend(c));
-      walk(f.geometry.coordinates);
+    const kutu = ilSinir[state.il];
+    if (kutu) {
+      map.fitBounds([[kutu[0], kutu[1]], [kutu[2], kutu[3]]], { padding: 60, duration: 700 });
     }
-    if (!bounds.isEmpty()) map.fitBounds(bounds, { padding: 60, duration: 700 });
   } else {
     map.flyTo({ center: [35.2, 39.0], zoom: 5.3, duration: 700 });
   }
