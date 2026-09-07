@@ -154,7 +154,14 @@ def main(argv: list[str]) -> None:
             key = key_of(county_name)
             county_id = counties[plate].get(key)
             if county_id is None:
-                # Fall back to the only county whose folded name starts the same way.
+                # The registry names a province's central district after the province
+                # ("Afyonkarahisar"), Endeksa calls it "Merkez" — and Kâhta is written with
+                # the circumflex on one side only. Both were skipping whole districts.
+                for aday in ("merkez", key + "merkez", key.removesuffix("merkez")):
+                    county_id = counties[plate].get(aday)
+                    if county_id:
+                        break
+            if county_id is None:
                 hits = [v for k, v in counties[plate].items() if k.startswith(key[:6])]
                 county_id = hits[0] if len(hits) == 1 else None
             if county_id is None:

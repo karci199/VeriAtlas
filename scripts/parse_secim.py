@@ -182,11 +182,15 @@ def area_index() -> tuple[dict, dict, dict]:
         districts[(row["parent_id"], fold(row["name_tr"]))] = row["area_id"]
         district_name[row["area_id"]] = row["name_tr"]
 
+    # Neighbourhoods are looked up in the index built from the map's own geometry
+    # (build_mahalle_index.py). The MEDAS registry carries different ids, and matching
+    # against it left most settlements grey on the map.
     hoods: dict[tuple[str, str], str] = {}
-    path = DATA / "areas_tr_neighbourhoods.csv"
-    if path.exists():
-        for row in csv.DictReader(path.open(encoding="utf-8")):
-            hoods[(row["parent_id"], fold(row["name_tr"]))] = row["area_id"]
+    index = ROOT / "public" / "tiles" / "mahalle-adlari.json"
+    if index.exists():
+        for district, table in json.loads(index.read_text(encoding="utf-8")).items():
+            for name, area_id in table.items():
+                hoods[(district, name)] = area_id
     return provinces, districts, hoods
 
 

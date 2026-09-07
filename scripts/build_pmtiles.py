@@ -131,7 +131,12 @@ def build(name: str) -> None:
             written = 0
             for (x, y), members in sorted(buckets.items()):
                 west, south, east, north = tile_bounds(zoom, x, y)
-                clip = box(west, south, east, north)
+                # Clipped a little wider than the tile: cutting exactly on the seam turns
+                # the cut itself into an edge, and the border layer then draws the tile
+                # grid across the country as straight lines. Coordinates outside 0..extent
+                # are allowed by the format and the renderer clips them away.
+                pay_x, pay_y = (east - west) * 0.05, (north - south) * 0.05
+                clip = box(west - pay_x, south - pay_y, east + pay_x, north + pay_y)
                 features = []
                 for props, geom in members:
                     piece = geom.intersection(clip)
