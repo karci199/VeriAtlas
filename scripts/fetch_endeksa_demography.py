@@ -31,6 +31,7 @@ import os
 import pathlib
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 
 import httpx
 
@@ -39,11 +40,29 @@ HAM = pathlib.Path(os.environ.get("VERIATLAS_HAM", "C:/veri-ham"))
 OUT = HAM / "endeksa" / "demography"
 GEO = ROOT / "public" / "geo" / "neighbourhoods"
 LOG = HAM / "endeksa" / "demografi.log"
-PAUSE = 0.8
+WORKERS = 3
+PAUSE = 0.25
 
-_spec = importlib.util.spec_from_file_location("fg", ROOT / "scripts" / "fetch_endeksa_geo.py")
+_spec = importlib.util.spec_from_file_location(
+    "fg", ROOT / "scripts" / "fetch_endeksa_geo.py"
+)
 fg = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(fg)
+
+
+#: The geometry helper's `get` always talks to geo/map; the demography answer lives at its
+#: own path. Asking geo/map for a districtId returns a perfectly valid geometry with no
+#: Demography key — which reads as "this neighbourhood has no data" and silently fetched
+#: nothing at all.
+API = "https://app.endeksa.com/demography"
+
+
+def demography(client: httpx.Client, **params) -> dict | None:
+    """The decrypted demography answer, or None when the service returns an empty one."""
+    response = client.get(API, params=params, timeout=30)
+    response.raise_for_status()
+    body = fg.decrypt(response.text)
+    return body.get("Demography")
 
 
 def key_of(name: str) -> str:
@@ -88,9 +107,11 @@ def main(argv: list[str]) -> None:
     log(f"{len(files)} ilce dosyasi")
 
     names = {}
-    for row in (ROOT / "src" / "veriatlas" / "data" / "areas_tr_districts.csv").read_text(
-        encoding="utf-8"
-    ).splitlines()[1:]:
+    for row in (
+        (ROOT / "src" / "veriatlas" / "data" / "areas_tr_districts.csv")
+        .read_text(encoding="utf-8")
+        .splitlines()[1:]
+    ):
         cells = row.split(",")
         if len(cells) > 2:
             names[cells[0]] = cells[2]
@@ -102,7 +123,11 @@ def main(argv: list[str]) -> None:
             area_id = path.stem
             plate = int(area_id.split("-")[1])
             target = OUT / f"{area_id}.json"
-            have = json.loads(target.read_text(encoding="utf-8")) if target.exists() else {}
+            have = (
+                json.loads(target.read_text(encoding="utf-8"))
+                if target.exists()
+                else {}
+            )
 
             geo = json.loads(path.read_text(encoding="utf-8"))
             # Some district files carry the Endeksa id as its own property, others only
@@ -110,7 +135,9 @@ def main(argv: list[str]) -> None:
             wanted = []
             for feature in geo["features"]:
                 props = feature["properties"]
-                ident = props.get("endeksa_id") or props.get("area_id", "").split("-")[-1]
+                ident = (
+                    props.get("endeksa_id") or props.get("area_id", "").split("-")[-1]
+                )
                 if str(ident).isdigit():
                     wanted.append((str(ident), props.get("name_tr")))
             todo = [(i, n) for i, n in wanted if i not in have]
@@ -134,16 +161,14 @@ def main(argv: list[str]) -> None:
                 log(f"  {area_id} ({county_name}): Endeksa ilcesi eslesmedi")
                 continue
 
-            new = 0
-            for district_id, name in todo:
-                # The service answers an empty Demography now and then for a neighbourhood
-                # it will serve a second later, so an empty answer is retried rather than
-                # taken as "no data" — which would leave permanent holes that look like
-                # missing neighbourhoods.
-                body = None
+            def one(job, plate=plate, county_id=county_id, area_id=area_id):
+                """One neighbourhood. Empty answers are retried: the service returns an
+                empty Demography now and then for a neighbourhood it serves a second
+                later, and taking that as "no data" leaves permanent holes."""
+                district_id, name = job
                 for attempt in range(3):
                     try:
-                        body = fg.get(
+                        body = demography(
                             client,
                             countryId=1,
                             cityId=plate,
@@ -154,18 +179,24 @@ def main(argv: list[str]) -> None:
                     except Exception as exc:  # noqa: BLE001
                         log(f"  {area_id}/{district_id}: {exc}")
                         body = None
-                    if body and body.get("Demography"):
-                        break
-                    time.sleep(1.5 * (attempt + 1))
-                if not body or not body.get("Demography"):
-                    continue
-                have[district_id] = {"name_tr": name, "demography": body["Demography"]}
-                new += 1
-                if new % 40 == 0:
-                    target.write_text(
-                        json.dumps(have, ensure_ascii=False), encoding="utf-8"
-                    )
-                time.sleep(PAUSE)
+                    if body:
+                        return district_id, {"name_tr": name, "demography": body}
+                    time.sleep(1.0 * (attempt + 1))
+                return district_id, None
+
+            new = 0
+            # A few at a time: one request at a time put the whole country at seventeen
+            # hours, and the service answers three comfortably.
+            with ThreadPoolExecutor(max_workers=WORKERS) as pool:
+                for district_id, record in pool.map(one, todo):
+                    if record is None:
+                        continue
+                    have[district_id] = record
+                    new += 1
+                    if new % 40 == 0:
+                        target.write_text(
+                            json.dumps(have, ensure_ascii=False), encoding="utf-8"
+                        )
             target.write_text(json.dumps(have, ensure_ascii=False), encoding="utf-8")
             done_total += new
             log(f"  {area_id} ({county_name}): {new} yeni, toplam {len(have)}")
