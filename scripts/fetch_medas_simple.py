@@ -50,6 +50,8 @@ DEATHS = "Ölüm İstatistikleri"
 MARRIAGES = "Evlenme İstatistikleri"
 LIFE = "Hayat Tabloları"
 DIVORCES = "Boşanma İstatistikleri"
+ORGUN = "Örgün Eğitim İstatistikleri"
+ULUSAL = "Ulusal Eğitim İstatistikleri"
 
 CELL_LIMIT = 50000
 
@@ -149,6 +151,26 @@ MEASURES = [
     ("ilk-evlenme-yasi-erkek", MARRIAGES, "Erkeğin ortalama ilk evlenme", False),  # 1
     ("ilk-evlenme-yasi-kadin", MARRIAGES, "Kadının ortalama ilk evlenme", False),  # 1
     ("bosanma", DIVORCES, "Boşanma sayısı", False),  # 1
+    # Schooling. The scan (raw/medas/kesif) says none of these is offered below province:
+    # only "Okuma yazma oranı" carries İlçe Düzeyi, and it is taken separately. So these
+    # are country + province, every year, breakdowns open (education level, sex).
+    # The full-breakdown versions of the marriage, divorce and death counts. The plain
+    # ones above are one indicator and twenty-five years in a single query; opened, the
+    # same measures are 121 and 24 indicators — the woman's age group, the education of
+    # each spouse, how long the marriage lasted, who the children were left with, the age
+    # of the deceased. Too wide for one query, so they are taken a year at a time (--yil).
+    ("evlenme-kirilimli", MARRIAGES, "Evlenme sayısı", True),
+    ("bosanma-kirilimli", DIVORCES, "Boşanma sayısı", True),
+    ("olum-kirilimli", DEATHS, "İkametgah yerine göre ölüm", True),
+    ("okul-sayisi", ORGUN, "Okul sayısı", True),  # 6
+    ("ogrenci-sayisi", ORGUN, "Öğrenci sayısı", True),  # 12
+    ("sube-sayisi", ORGUN, "Şube sayısı", True),  # 6
+    ("derslik-sayisi", ORGUN, "Derslik sayısı", True),  # 6
+    ("ogretmen-sayisi", ORGUN, "Öğretmen sayısı", True),  # 12
+    ("net-okullasma", ORGUN, "Net okullaşma", True),  # 8
+    ("brut-okullasma", ORGUN, "Brüt okullaşma", True),  # 6
+    ("okuma-yazma-orani-ilce", ORGUN, "Okuma yazma oran", True),  # 4, ilce
+    ("ortalama-egitim-suresi", ULUSAL, "Ortalama Eğitim S", False),  # 1
     ("kaba-bosanma-hizi", DIVORCES, "Kaba boşanma", False),  # 1
 ]
 
