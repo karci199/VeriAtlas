@@ -389,7 +389,11 @@ def main() -> None:
     global PROVINCE
     names = [a for a in sys.argv[1:] if not a.isdigit() and not a.startswith("--")]
     if names:
-        PROVINCE = names[0].upper()
+        # Stripped: the province list is read from a file on Windows, so a name arrives
+        # carrying a carriage return. It matched the level box fine and then went into the
+        # file name, where it made the path illegal — the run died after the download,
+        # once per province, with nothing in the directory to show for it.
+        PROVINCE = names[0].strip().upper()
     everything = "--all" in sys.argv
 
     with sync_playwright() as play:
