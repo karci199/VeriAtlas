@@ -1,0 +1,660 @@
+==== 6
+Ýçindekiler       Sayfa               Contents 
+                 Page 
+ 
+                
+               Millî Eðitim Ýstatistikleri, Örgün Eðitim  2023/'24                
+              National Education Statistics, Formal Education 2023/'24           
+VI 
+ Tablo Listesi     List of Tables 
+1 Eðitim Göstergeleri    1 Education Indicators 
+1.1.a Öðretim yýlý ve eðitim seviyesine göre 
+okullaþma oraný 
+ 1  1.1.a Enrollment rates by educational year and 
+level of education  
+1.1.b Öðretim yýlý ve yaþ gruplarýna  göre NET 
+okullaþma oraný 
+ 1  1.1.b NET enrollment rates by educational year 
+and age groups 
+1.2.a Ýstatistiki Bölge Birimleri Sýnýflamasý 1 . 
+düzey ve eðitim sevi yesine göre okullaþma 
+oraný (2023-2024 öðretim yýlý) 
+ 2  1.2.a Enrollment rates  by Statistical Re gions 
+Level 1 and  level of educat ion  (the 
+educational   year 2023-2024) 
+1.2.b Ýstatistiki Bölge Birimleri Sýnýflamasý 2 . 
+düzey ve eðitim seviy esine göre okullaþma 
+oraný (2023-2024 öðretim yýlý) 
+ 3  1.2.b Enrollment rates  by Statistical Regions 
+Level 2 and  level of educati on  (the 
+educational   year 2023-2024) 
+1.2.c Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey ve eðitim seviy esine göre okullaþma 
+oraný (2023-2024 öðretim yýlý) 
+ 4  1.2.c Enrollment rates  by Statistical Regions 
+Level 3 and  level of ed ucation  (the 
+educational   year 2023-2024) 
+1.2.d Ýstatistiki Bölge Birimleri Sýnýflamasý 1. 
+düzey ve eðitim seviyesine göre düzeltilmiþ  
+net okullaþma oraný (2023 -2024 öðretim 
+yýlý) 
+ 8  1.2.d Adjusted net enrol ment rates by 
+Statistical Regions Level 1 and  level of 
+education (the educational   year 2023 -
+2024) 
+1.2.e Ýstatistiki Bölge Birimleri Sýnýflamasý 2. 
+düzey ve eðitim seviyesine göre düzeltilmiþ  
+net okullaþma oraný (2023 -2024 öðretim 
+yýlý) 
+ 9  1.2.e Adjusted net enrol ment rates by 
+Statistical Regions Level 2 and level of 
+education (the educational   year 2023 -
+2024) 
+1.2.f Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey ve eðitim seviyesine göre düzeltilmiþ  
+net okullaþma oraný (2023 -2024 öðretim 
+yýlý) 
+ 10  1.2.f Adjusted net enrol ment rates by 
+Statistical Regions Level 3 and level of 
+education (the educational   year 2023 -
+2024) 
+1.3.a Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey yaþ gruplarýna göre net okullaþma 
+oraný 
+ 12  1.3.a NET enrollment rates  based on age 
+groups (birth year) by Statistical Re gions 
+Level 3 
+1.3.b Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey tek yaþlara göre net okullaþma oraný 
+ 14  1.3.b NET enrollment rates  by ages according 
+to Statistical Regions Levels 3 
+1.4 Öðretim yýlý ve eðitim (5 yýllýk zorunlu 
+eðitim) seviyesine göre cinsiyet oraný 
+ 
+ 18  1.4 Sex ratio by educational year and level of 
+education (5-year compulsory education) 
+1.5 Öðretim yýlý ve eðitim seviyesine göre 
+cinsiyet oraný 
+ 18  1.5 Sex ratio by educational year and level of 
+education 
+1.6 2023-2024 öðretim y ýlý ilköðretim 
+(ilkokul+ortaokul) ve ortaöðretim il bazý 
+cinsiyet oraný 
+ 19  1.6 The sex ratio of primary education 
+(primary school+lower secondary school) 
+and upper secondar y education by 
+provinces in 2023-2024 educational year 
+ 
+1.7 Okul türü ve öðretim yýlýna göre okul / 
+birim, öðretmen, öðrenci ve mezun olan 
+öðrenci sayýsý 
+ 
+ 21  1.7 Number of schools / units, teachers, 
+students and graduates by type of school 
+and educational year 
+1.8 Okul türü ve öðretim yýlýna göre okul, 
+öðretmen, þube, öðrenci ve mez un olan 
+öðrenci sayýsý 
+ 22  1.8 Number of schools, teachers, divisions, 
+students and graduates by type of school 
+and educational year 
+ 
+1.9 2023 YKS okul türü ve öðrenim durumuna 
+göre baþvuran ve yükseköðretim 
+programlarýna yerleþen aday sayýlarý 
+(Sýnavsýz geçiþ dahil) 
+ 26  1.9 Number of applicants and appointed to 
+tertiary education programmes in 2023 by 
+school type and educational status 
+(Transition without examination is 
+included) 
+ 
+1.10 Ýstatistiki Bölge Birimleri Sýnýflamasý 1. 
+düzey ve eðitim seviyesi ne göre okul, 
+þube, öðretmen ve derslik baþýna düþen 
+öðrenci sayýsý 
+ 28  1.10 Number of students per school, division, 
+teacher and classroom by level of 
+education accordi ng to Statistical 
+Regions Level 1 
+ 
+==== 7
+Ýçindekiler       Sayfa               Contents 
+                 Page 
+ 
+                
+               Millî Eðitim Ýstatistikleri, Örgün Eðitim  2023/'24                
+              National Education Statistics, Formal Education 2023/'24           
+VII 
+1.11 Ýstatistiki Bölge Birimleri Sýnýflamasý 2. 
+düzey ve eðitim seviyesine göre okul, þube 
+öðretmen ve derslik baþýna düþen öðrenci 
+sayýsý 
+ 29  1.11 Number of students per school, division, 
+teacher and classroom by level of 
+education accordi ng to Statistical 
+Regions Level 2 
+ 
+1.12 Ýstatistiki Bölge Biriml eri Sýnýflamasý 3. 
+düzey ve eðitim seviyesine göre okul, 
+þube, öðretmen ve derslik baþýna düþen 
+öðrenci sayýsý 
+ 30  1.12 Number of students per school, division, 
+teacher and classroom by level of 
+education according to Statistical  
+Regions Level 3 
+ 
+1.13 Ýstatistikî Bölge Birimleri Sýnýflamasý 3. 
+düzey,  yerleþim yeri ve eðitim seviyesine 
+göre mezun olan öðrenci sayýsý  
+ 33  1.13 Number of graduates by settlement place 
+and level of education according to 
+Statistical  Regions Level 3 
+ 
+1.14 Ýstatistiki Bölge  Birimleri Sýnýflamasý 3 . 
+düzey, yerleþim yeri ve eðitim seviyesine 
+göre yeni kayýt öðrenci sayýsý  
+ 38  1.14 Number of new entrants by settlement 
+place and level of education according to 
+Statistical  Regions Level 3 
+ 
+1.15 Özel Eðitim Kurum larýnda okul, öðrenci, 
+öðretmen ve derslik sayýsý     
+ 44  1.15 Number of s chools, students, teachers 
+and classrooms in Special Education 
+Institutions 
+ 
+1.16.a Özel Öðretim Kuruml arýnda okul, öðrenci, 
+öðretmen ve derslik sayýsý       
+ 45  1.16.a Number of schools, stude nts, teachers 
+and classrooms in Private Education 
+Institutions 
+ 
+1.16.b Yýllara göre özel öðretimin okul ve öðrenci 
+sayýlarýnýn toplam içindeki payý   
+ 45  1.16.b The percentage of Private Education 
+Institutions schools and students in total 
+by years 
+1.17 Ýstatistiki Bölge Birimleri Sýnýflamasý 1., 2.  
+ve 3. düzey ve eðitim seviyesine göre okul, 
+þube, öðrenci, öðretmen ve derslik sayýsý 
+ 46  1.17 Number of schools, divisions, students, 
+teachers and classrooms by Statistical 
+Regions Levels 1 ., 2, and 3 and level of 
+education 
+ 
+1.18 Eðitim kurumlarýnýn kademelere göre okul, 
+öðrenci,  öðretmen ve derslik sayýsý  
+ 58  1.18 Number of schools, students, teachers 
+and classrooms in education institutions 
+by level of education 
+ 
+ 
+2 Örgün Eðitim, 2023-2024     2 Formal Education, 2023-2024 
+ Okulöncesi Eðitim  
+ 
+    Pre-Primary Education 
+2.1 Okulöncesi eðitim kurumlarýnýn okul 
+türlerine göre okul, þube, öðrenci, 
+öðretmen ve derslik sayýsý    
+ 59  2.1 Number of schools, division, students, 
+teachers and classrooms by ty pes of 
+education in pre -primary education 
+institutions 
+ 
+2.2 Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey resmi -  özel ayrým ýnda, yerleþim 
+yerine göre okulöncesi eðitim kurumlarýnda 
+okul,  öðrenci, öðretmen ve derslik sayýsý 
+ 
+ 60  2.2 Number of school s, students, teachers 
+and classrooms in public and private pre -
+primary education institutions by  
+settlement place according to Statis tical 
+Regions Level 3 
+ 
+ 
+2.3 Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey, yerleþim yerine göre okul öncesi 
+eðitim kurumlarýnda okul, þube, öðrenci ve 
+öðretmen sayýsý  
+ 
+ 70  2.3 Number of schools, divisions, students  
+and teachers in pre -primary education 
+institutions by  settlement place according 
+to Statistical Regions Level 3 
+ 
+ 
+==== 8
+Ýçindekiler       Sayfa               Contents 
+                 Page 
+ 
+                
+               Millî Eðitim Ýstatistikleri, Örgün Eðitim  2023/'24                
+              National Education Statistics, Formal Education 2023/'24           
+VIII 
+ Ýlkokul, Ortaokul 
+ 
+    Primary School, L ower Secondary 
+School 
+ 
+2.4.a Ýlkokullarda okul türlerine göre okul, 
+öðrenci,  öðretmen ve derslik sayýsý 
+   
+ 74  2.4.a Number of schools, students, teachers 
+and classrooms in primary schools by 
+types of school 
+2.4.b Ortaokullarda okul türlerine göre okul , 
+öðrenci,  öðretmen ve derslik sayýsý 
+   
+ 75  2.4.b Number of schools, students, teachers 
+and classrooms in lower secondary 
+schools by types of school 
+ 
+2.5.a Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey resmi -  özel ayrýmýnda, yerleþim 
+yerine göre i lkokullarda, okul, öðrenci , 
+öðretmen ve derslik sayýsý    
+ 76  2.5.a Number of schools,  students ,  teachers 
+and classrooms in public and private 
+primary schools by  sett lement place 
+according to Statistical Regions Level 3 
+ 
+2.5.b Ýstatistiki Bölge Biriml eri Sýnýflamasý 3. 
+düzey resmi -  özel ayrýmýnda, yerleþim 
+yerine göre ortaokullarda, okul, öðrenci , 
+öðretmen ve derslik sayýsý    
+ 86  2.5.b Number of schools,  students, teachers 
+and classrooms in public and private 
+lower secondary schools by se ttlement 
+place according to Sta tistical Regions 
+Level 3 
+2.5.c Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey, Din Öðretimi Genel Müdürlüðü’ne 
+baðlý ortaokullarda okul, öðrenci, öðretmen 
+ve derslik sayýsý   
+ 96  2.5.c The number of schools, students, 
+teachers and  classrooms in lower 
+secondary schools dependent on General 
+Directorate of Religious Education 
+according to Statistical Regions Level 3 
+ 
+2.6.a Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey, yerleþim yeri, sýnýflara göre 
+ilkokullarda, okul, þube ve öðrenci sayýsý  
+ 100  2.6.a Number of schools, divisions and 
+students in  primary schools by grade and 
+settlement place accordi ng to Statistical 
+Regions Level 3 
+ 
+2.6.b Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey, yerleþim yeri, sýnýflara göre 
+ortaokullarda, okul, þube ve öðrenci sayýsý  
+ 108  2.6.b Number of schools, divisions and 
+students in lower secondary schools by 
+grade and settlement place accordi ng to 
+Statistical Regions Level 3 
+ 
+2.7.a Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey, yerleþim yer i ve do ðum yýllarýna 
+göre ilkokullarda öðrenci sayýsý   
+ 116  2.7.a Number of students in primary schools by 
+year of birth and settlement place 
+according to Statistical Regions Level 3  
+ 
+2.7.b Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey, yerleþim yer i ve doð um yýllarýna 
+göre ortaokullarda öðrenci sayýsý   
+ 120  2.7.b Number of students in lower secondary 
+schools by year of birth and settlement 
+place according to Statistical Regions 
+Level 3  
+ 
+2.8.a Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzeye gör e taþýmalý uygulamasý yapýlan 
+ilkokul, ortaokul, okul ve öðrenci sayýlarý 
+ 128  2.8.a Number of transporting and transported 
+primary schools, lower secondary schools 
+and  students by Statistical Regions Level 
+3 
+2.8.b Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzeye göre öðrenci taþýma uygulamasý 
+kapsamýnda taþýnan özel eðitim öðrenci /  
+kursiyer sayýlarý 
+    130  2.8.b The numbe r of special education 
+students / trainees transported within the 
+framework of student tran sportation 
+implementation according to Statistical 
+Regions 3. Level 
+ 
+ Ortaöðretim 
+ 
+    Upper Secondary Education 
+2.9 Ortaöðretim kurumlarýnýn genel 
+müdürlüklere göre okul, öðrenci, öðretmen 
+ve derslik sayýsý   
+ 132  2.9 Number of schools, students, teach ers 
+and classrooms in secondary education 
+institutions by general directorate 
+ 
+ 
+2.10 Ortaöðretim kurumlarýnda okul türlerine 
+göre okul, öðrenci, öðretmen ve derslik 
+sayýsý 
+ 133  2.10 Number of schools, students, teachers 
+and classrooms in secondary educat ion 
+institutions by school type  
+ 
+==== 9
+Ýçindekiler       Sayfa               Contents 
+                 Page 
+ 
+                
+               Millî Eðitim Ýstatistikleri, Örgün Eðitim  2023/'24                
+              National Education Statistics, Formal Education 2023/'24           
+IX 
+2.11 Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey,  ortaöðretimde resmi ve özel 
+ayrýmýnda yerleþim yeri, okul,  öðrenci, 
+öðretmen ve derslik sayýsý 
+ 136  2.11 Number of schools, students, teachers 
+and classrooms in pu blic and private 
+secondary education institutions by 
+settlement place according to Statis tical 
+Regions Level 3 
+ 
+2.12 Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey, yerleþim yeri ve sýnýflara göre 
+ortaöðretimde okul, þube ve öðrenci sayýsý 
+ 160  2.12 Number of schools, divisions and 
+students in secondary education by grade 
+and settlement place according to 
+Statistical Regions Levels 3 
+ 
+ 
+2.13 Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey yerleþim yeri ve d oðum yýllarýna 
+göre ortaöðretimde öðrenci sayýsý  
+ 184  2.13 Number of students in secondary 
+education by  year of birth and se ttlement 
+place accordi ng to Statistical Regions 
+Level 3 
+ 
+2.14  Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzey, Anadolu Ýmam Hatip Liseleri ile Açýk 
+Ýmam Hatip Lisesinde  okul, öðrenci, 
+öðretmen ve derslik sayýsý 
+  
+ 218  2.14 The number of schools, students, 
+teachers and classrooms in Anatolian 
+Imam and Preacher High Schools and 
+Open Imam and Preacher High School  
+according to Statistical Regions Level 3 
+ 
+ 
+2.15 Ýstatistiki Böl ge Birimleri Sýnýflamasý 3. 
+düzeye göre taþýmalý ortaöðretim yapýlan 
+öðrenci sayýlarý 
+ 220  2.15 Number of students transporting 
+secondary school by Statistical Regions 
+Level 3 
+2.16.a Öðretim yýlýna göre mesleki ve teknik 
+ortaöðretim mezunlarýnýn toplam 
+ortaöðretim mezunlarý içindeki oraný 
+ 
+ 222  2.16.a The ratio of  graduates from vocational 
+and technical secondary education to 
+total graduates from secondary education 
+according to education years 
+ 
+2.16.b Yýllara göre Genel, Mesleki Teknik ve Din 
+Öðretimi okul ve öðrenci sayýlarýnýn toplam 
+içindeki oranlarý 
+ 
+ 
+ 222  2.16.b The percentage of General, Vocational 
+and Technical, Religious Education 
+schools and students in total by years 
+2.17 Yaygýn eðitim kurumlarýnýn türlerine göre 
+kurum, kursiyer, öðretmen ve derslik sayýsý 
+  223  2.17 Number of institutions, participants, 
+teachers and classrooms by kind of non -
+formal education institutions 
+ 
+ 
+3 Burslu Öðrenciler ve Öðrenci 
+Pansiyonlarý 
+   3 Scholarship Students and   
+Student Boarding   Houses 
+ 
+ 
+3.1 Öðretim dairelerine göre burslu öðrenci 
+sayýsý,  2017-2023 
+ 224  3.1 Number of scholarship students by 
+General D irectorate/Department, 2017 -
+2023 
+ 
+3.2 Ýlköðretim ve ortaöðretim kurumlarýnda 
+burslu öðrenci sayýsý 
+ 224  3.2 Number of scholarship students in primaryr y 
+and secondary education institutions 
+ 
+3.3 Öðretim dairelerine göre pansiyon sayýsý, 
+pansiyon kapasitesi ve pansiyonlarda kalan 
+öðrenci sayýsý 
+   225  3.3 Number of student boarding houses, their 
+capacities and students in boarding 
+houses by General Dire ctorutel 
+Department 
+ 
+ 
+3.4 Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzeye göre resmi pansiyonlu okullarda 
+kalan öðrenci sayýsý ve pansiyon kapasitesi 
+ 225  3.4 Number of  public dormitories, their 
+capacities and students in public 
+dormitories by Statistical Regions Level 3 
+ 
+ 
+3.5 Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzeye göre özel öðrenci yurtlarýnda kalan 
+öðrenci sayýsý ve yurt kapasitesi  
+ 226  3.5 Number of  private dormitories, their 
+capacities and students in private 
+dormitories by Statistical Regions Level 3 
+==== 10
+Ýçindekiler       Sayfa               Contents 
+                 Page 
+ 
+                
+               Millî Eðitim Ýstatistikleri, Örgün Eðitim  2023/'24                
+              National Education Statistics, Formal Education 2023/'24           
+X 
+3.6 Ortaöðretim ve yükseköðretim  özel öðrenci 
+yurtlarý ile öðrenci sayýsý 
+ 227  3.6 Number of  private dormitories  and 
+students in dormitories for secondary and 
+tertiary education 
+ 
+3.7 Özel öðrenci yurtlarýnýn sayýsý, yatak 
+kapasitesi ve yurtta kalan öðrenci sayýsý 
+ 227  3.7 Number of private dormitories, their bed 
+capacity and students in dormitories  
+ 
+ 
+3.8 Yerleþim yerine göre özel öðrenci 
+yurtlarýnýn sayýsý 
+ 228  3.8 Number of private dormitories by 
+settlement place  
+ 
+3.9 Ýlköðretim ve ortaöðretim öðrencilerinin 
+yurtiçi burs ücreti ( 2003-2024) 
+ 228  3.9 Domestic study grants of students in 
+primary and secondary education (2003 -
+2024) 
+ 
+4 Yüksek Öðrenim Kredi ve Yurtlar 
+Kurumu Hizmetleri  
+   4 Services Provided by Higher 
+Education L oans and Dormitories 
+Institution 
+ 
+ 
+4.1 Kredi ve Yurtlar Kurumundan burs, 
+öðrenim ve katký kredisi alan öðrenci sayýsý 
+ve kredi miktarý 
+ 229  4.1 Number of students receiving 
+scholarships, learning and contribution 
+loan from Loans and Dormitories 
+Institution and the amount of loan 
+ 
+4.2 Kredi ve Yurtlar Kurumuna baðlý yurtlar ve 
+kapasiteleri  
+ 230  4.2 Number of dormitories dependent on 
+Loans and Dormitories Institution and 
+their capacities 
+4.3 Ýl ve ilçelere göre Kredi ve Yurtlar 
+Kurumuna baðlý yurtlarda yurt kapasitesi 
+ 231  4.3 Capacities of dormitories affiliated to 
+Loans and Dormitories Institution by 
+province and district 
+ 
+5 Yurt Dýþý Eðitim 
+ 
+ 
+   5 Education Abroad 
+5.1 Türk Cumhuriyetleri ile Türk ve Akraba 
+Topluluklarýnda açýlan öðretim kurumlarý i le 
+Türkiye Türkçesi Eðitim Öðretim  
+Merkezlerinde öðrenci , idareci  ve 
+öðretmenler 
+ 
+ 241  5.1 Number of students , managers  and 
+teachers in Turkish Education Centers 
+and Education Institutions Opened in 
+Turkish Republics and Communities of 
+Turks and Relatives 
+ 
+ 
+5.2 Ülkeler, öðrenim düzeyleri ve öðrenim 
+dallarýna göre yurt dýþýnda öðrenim gören 
+burslu öðrenciler 
+ 
+ 
+ 242  5.2 Scholarship students studying abroad by 
+country, level of education and 
+programme 
+6 Öðretmen Evleri ve Akþam Sanat 
+Okullarý 
+   6 Teachers Houses and Evening Art 
+Schools 
+ 
+6.1 Ýstatistiki Bölge Birimleri Sýnýflamasý 3. 
+düzeye göre öðretmen evleri ve akþam 
+sanat okullarý ile öðretmen lokali sayýsý   
+ 
+ 244  6.1 Number of Teacher's guest houses and 
+clubs, and evening arts schoo ls by 
+Statistical Regions Level 3  
+7 Bütçe 
+ 
+   7 Budget 
+7.1 Eðitim Bütçesi     
+ 
+ 245  7.1 Education Budget 
+7.2 2024 Yýlý Millî Eðitim Bakanlýðý bütçesinin 
+ekonomik sýnýflandýrmaya göre daðýlýmý ve 
+2023 yýlý  bütçe ödeneðine oraný 
+ 246  7.2 Allocation of the budget of Mi nistry of 
+National Education  for year 2 024 by 
+economic classification and it's ratio to 
+net budget appropriation of year 2023  
+ 
+7.3 2024 Yýlý Millî Eðitim Bakanlýðý bütçesinin 
+fonksiyonel sýnýflandýrýlmaya göre daðýlýmý 
+ 246  7.3 Allocation of the  Budget  of Ministry of 
+National Education for 2024 fiscal year by 
+Functional Classification  
+==== 11
+Ýçindekiler       Sayfa               Contents 
+                 Page 
+ 
+                
+               Millî Eðitim Ýstatistikleri, Örgün Eðitim  2023/'24                
+              National Education Statistics, Formal Education 2023/'24           
+XI 
+7.4 Milli Eðitim Bakanlýðý bütçe büyüklükleri      246  7.4 Budget of Ministry  of National Education 
+  
+ 
+7.5 Gayri Safi Yurt Ýçi Hasýla ile 
+Konsolide/Merkezi Yönetim Bü tçesinin Milli 
+Eðitim Bakanlýðý bütçesine oranlarý          
+ 247  7.5 Ratio of MoNE's Budget in Gross 
+Domestic Product and Consolidated 
+/Central Government Budget  
+ 
+ 
+7.6 2024 yýlý Yüksek Öðretim Kurulu,  
+Yükseköðretim Ka lite Kurulu,  üniversiteler 
+ve yüksek  teknoloji enstitüleri  bütçelerinin 
+2023 yýlý bütçesine oraný 
+ 248  7.6 Ratio of 2024  budgets of Higher 
+Education Council, Higher Education 
+Quality Council, universities and hi gh 
+technology institutes to 2023 budget 
+ 
+ 
+7.7 MEB ile YÖK+Yükseköðretim Kalite Kurulu, 
+Üniversiteler bütçesinin Gayri Safi Yurt Ýçi 
+Hasýla ile Konsolide /Merkezi Yönetim 
+bütçe içindeki paylarý    
+ 248  7.7 Proportions of  Budgets of MoNE and  
+HEC+HEQC+Universities  in Gross 
+Domestic Product and Consolidated/ 
+Central Government Budget 
+ 
+ 
+7.8 YÖK, Yükseköðretim Kalite Kurulu,  
+üniversite ve ileri teknoloji enstitülerinin 
+ekonomik sýnýflandýrmaya göre 2024  yýlý 
+bütçesi 
+ 
+ 249  7.8 2024 budget of HEC,  HEQC, universities 
+and high technology institutes by 
+economic classification 
+ 
+ 
+8 Yatýrým 
+ 
+   8 Investment 
+8.1 Konsolide bütçe yatýrýmlarýndan Milli Eðitim 
+Bakanlýðý yatýrýmlarýna ayrýlan pay   
+ 253  8.1 Proportion of MoNE's Investments in 
+Consolidated Budget Investments 
+ 
+8.2 MEB yatýrým bütçesinin Gayri Safi Yurtiçi 
+Hâsýla ve konsolide bütçeye oranlarý     
+ 253  8.2 Ratio of investment budget of MoNE in 
+Gross Domestic Product and 
+Consolidated budget   
+    
+8.3 Milli Eðitim Bakanlýðý bütçesinden 
+yatýrýmlara ayrýlan pay  
+ 254  8.3 Proportion of investments in the budget of 
+MoNE 
+8.4 2003-2023 yýllarý arasýnda yapýlan derslik 
+sayýsý  
+ 254  8.4 Number of classrooms built between 
+2003-2023  
+ 
+8.5 Halkýn ve Ýl Özel Ýdarelerinin eðitime 
+katkýlarý    
+ 
+ 255  8.5 Provincial Private Administrations' and 
+Individuals' Support to Education 
+8.6 2024 yýlýnda tahsisi öngörülen  yatýrým  
+ödenekleri 
+ 256  8.6 Investment appropriations foreseen to be  
+allocated in 2024  
+ 
+ 
