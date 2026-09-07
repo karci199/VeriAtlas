@@ -1,0 +1,409 @@
+<!doctype html>
+<!-- Election map: geometry from two PMTiles archives, results from small JSON tables.
+     No server, no database — the browser fetches byte ranges and one file per province. -->
+<html lang="tr"><head><meta charset="utf-8">
+<title>VeriAtlas — seçim haritası</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0f1012; --card:#1b1d21; --line:#2a2d33; --fg:#e9eaee; --mute:#8b919c;
+    --amber:#e9a13b; --red:#c7384f; --blue:#4f8ff7; --purple:#9b59d0; --green:#3f9c6b;
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; background:var(--bg); color:var(--fg);
+              font:13.5px/1.45 "Segoe UI",system-ui,sans-serif; overflow:hidden; }
+  #map { position:absolute; inset:0; }
+
+  .bar { position:absolute; top:12px; left:12px; right:12px; z-index:3; display:flex;
+         gap:14px; align-items:center; background:rgba(27,29,33,.95); border:1px solid var(--line);
+         border-radius:14px; padding:10px 16px; backdrop-filter:blur(8px); flex-wrap:wrap; }
+  .brand { font-weight:700; letter-spacing:.2px; }
+  .brand small { display:block; color:var(--mute); font-weight:400; font-size:11px; }
+  .alan { display:flex; flex-direction:column; gap:3px; }
+  .alan label { font-size:10.5px; color:var(--mute); text-transform:uppercase; letter-spacing:.5px; }
+  select, input[type=search] { background:#0f1012; color:var(--fg); border:1px solid var(--line);
+        border-radius:9px; padding:6px 9px; font:inherit; min-width:150px; }
+  .seg { display:inline-flex; border:1px solid var(--line); border-radius:9px; overflow:hidden; }
+  .seg button { background:none; border:0; color:var(--mute); padding:6px 12px; cursor:pointer;
+        font:inherit; }
+  .seg button.on { background:#26292f; color:var(--fg); font-weight:600; }
+  .sag { margin-left:auto; }
+
+  .panel { position:absolute; top:84px; right:12px; bottom:12px; width:330px; z-index:3;
+           background:rgba(27,29,33,.96); border:1px solid var(--line); border-radius:14px;
+           padding:14px 16px; overflow:auto; display:none; }
+  .panel h2 { margin:0 0 2px; font-size:17px; } .panel .ust { color:var(--mute); font-size:12px; margin-bottom:12px; }
+  .kazanan { border:1px solid var(--line); border-left:4px solid var(--amber); border-radius:10px;
+             padding:10px 12px; background:#20232a; margin-bottom:10px; }
+  .kazanan small { display:block; color:var(--mute); font-size:10.5px; text-transform:uppercase; letter-spacing:.5px; }
+  .kazanan b { font-size:14.5px; } .kazanan .pay { float:right; font-size:17px; font-weight:700; }
+  .kutular { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+  .kutu { background:#16181c; border:1px solid var(--line); border-radius:10px; padding:8px 10px; }
+  .kutu small { display:block; color:var(--mute); font-size:10.5px; }
+  .kutu b { font-size:15px; font-variant-numeric:tabular-nums; }
+  .satir { display:flex; align-items:center; gap:8px; padding:5px 0; border-bottom:1px solid #22252b; }
+  .satir i { width:9px; height:9px; border-radius:50%; flex:none; }
+  .satir span { flex:1; font-size:12.5px; }
+  .satir em { font-style:normal; color:var(--mute); font-size:12px; font-variant-numeric:tabular-nums; }
+  .satir b { width:52px; text-align:right; font-variant-numeric:tabular-nums; }
+  .cubuk { height:9px; background:#16181c; border-radius:5px; overflow:hidden; margin:3px 0 8px; }
+  .cubuk span { display:block; height:100%; }
+
+  .ipucu { position:absolute; z-index:4; pointer-events:none; background:rgba(15,16,18,.96);
+           border:1px solid var(--line); border-radius:10px; padding:8px 11px; display:none; }
+  .ipucu b { display:block; } .ipucu small { color:var(--mute); }
+  .ipucu .k { margin-top:5px; display:flex; align-items:center; gap:6px; }
+  .ipucu .k i { width:8px; height:8px; border-radius:50%; }
+
+  .gosterge { position:absolute; left:12px; bottom:12px; z-index:3; background:rgba(27,29,33,.95);
+              border:1px solid var(--line); border-radius:12px; padding:10px 14px; }
+  .gosterge div { display:flex; gap:14px; flex-wrap:wrap; margin-top:6px; font-size:12px; color:var(--mute); }
+  .gosterge span { display:flex; align-items:center; gap:6px; }
+  .gosterge i { width:10px; height:10px; border-radius:3px; }
+  .gosterge h4 { margin:0; font-size:10.5px; color:var(--mute); text-transform:uppercase; letter-spacing:.5px; }
+  .durum { position:absolute; left:50%; transform:translateX(-50%); bottom:14px; z-index:3;
+           background:rgba(27,29,33,.95); border:1px solid var(--line); border-radius:20px;
+           padding:5px 14px; font-size:12px; color:var(--mute); }
+</style></head>
+<body>
+<div id="map"></div>
+
+<div class="bar">
+  <div class="brand">VeriAtlas<small>seçim haritası</small></div>
+  <div class="alan"><label for="oy">Seçim</label>
+    <select id="oy">
+      <option value="cb2023t1">Cumhurbaşkanlığı 2023 · 1. tur</option>
+      <option value="cb2023t2">Cumhurbaşkanlığı 2023 · 2. tur</option>
+      <option value="cb2018">Cumhurbaşkanlığı 2018</option>
+    </select></div>
+  <div class="alan"><label for="il">İl</label>
+    <select id="il"><option value="">Tüm Türkiye</option></select></div>
+  <div class="alan"><label>Harita düzeyi</label>
+    <div class="seg" id="duzey">
+      <button data-v="ilce" class="on">İlçe</button>
+      <button data-v="mahalle">Mahalle</button>
+    </div></div>
+  <div class="alan"><label>Gösterim</label>
+    <div class="seg" id="gosterim">
+      <button data-v="kazanan" class="on">Kazanan</button>
+      <button data-v="katilim">Katılım</button>
+    </div></div>
+  <div class="alan sag"><label for="ara">Hızlı arama</label>
+    <input id="ara" type="search" placeholder="il, ilçe veya mahalle ara…" list="oneri">
+    <datalist id="oneri"></datalist></div>
+</div>
+
+<div class="panel" id="panel"></div>
+<div class="ipucu" id="ipucu"></div>
+<div class="gosterge" id="gosterge"></div>
+<div class="durum" id="durum">yükleniyor…</div>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/pmtiles@3.0.6/dist/pmtiles.js"></script>
+<script>
+const fmt = new Intl.NumberFormat("tr-TR");
+const pct = (x) => (100 * x).toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+// Candidate colours, by the shortest unambiguous part of the name: the reports write the
+// full name in capitals and the spelling of "İ" is not stable between years.
+const RENK = [
+  [/ERDO/i, "#e9a13b", "Erdoğan"],
+  [/KILI[CÇ]DARO/i, "#c7384f", "Kılıçdaroğlu"],
+  [/O[GĞ]AN/i, "#e8734a", "Oğan"],
+  [/[İI]NCE/i, "#4f8ff7", "İnce"],
+  [/DEM[İI]RTA/i, "#9b59d0", "Demirtaş"],
+  [/AK[ŞS]ENER/i, "#3f9c6b", "Akşener"],
+  [/[İI]HSANO/i, "#c7384f", "İhsanoğlu"],
+  [/KARAMOLLA/i, "#8b919c", "Karamollaoğlu"],
+  [/PER[İI]N[CÇ]EK/i, "#8b919c", "Perinçek"],
+];
+const KATILIM = ["#1b4332", "#2d6a4f", "#40916c", "#74c69d", "#b7e4c7"];
+
+function renk(ad) {
+  const hit = RENK.find(([re]) => re.test(ad));
+  return hit ? hit[1] : "#6b7280";
+}
+function kisa(ad) {
+  const hit = RENK.find(([re]) => re.test(ad));
+  return hit ? hit[2] : ad.split(" ").slice(-1)[0];
+}
+
+const protocol = new pmtiles.Protocol();
+maplibregl.addProtocol("pmtiles", protocol.tile);
+
+const state = { oy: "cb2023t1", duzey: "ilce", gosterim: "kazanan", il: "", secili: null };
+let ilce = {};                 // area_id -> sonuç
+const mahalle = {};            // il -> { area_id -> sonuç }
+let iller = {};                // TR-16 -> Bursa
+let boyaGerek = true;
+
+const map = new maplibregl.Map({
+  container: "map",
+  style: {
+    version: 8,
+    sources: {
+      ilce: { type: "vector", url: "pmtiles://../public/tiles/ilce.pmtiles", promoteId: "id" },
+      mahalle: { type: "vector", url: "pmtiles://../public/tiles/mahalle.pmtiles", promoteId: "id" },
+    },
+    layers: [
+      { id: "arka", type: "background", paint: { "background-color": "#0f1012" } },
+      { id: "ilce-dolgu", type: "fill", source: "ilce", "source-layer": "ilce",
+        paint: { "fill-color": ["coalesce", ["feature-state", "renk"], "#22252b"], "fill-opacity": 1 } },
+      { id: "mahalle-dolgu", type: "fill", source: "mahalle", "source-layer": "mahalle",
+        layout: { visibility: "none" },
+        paint: { "fill-color": ["coalesce", ["feature-state", "renk"], "#22252b"], "fill-opacity": 1 } },
+      { id: "ilce-kenar", type: "line", source: "ilce", "source-layer": "ilce",
+        paint: { "line-color": "#0f1012", "line-width": 0.7, "line-opacity": 0.8 } },
+      { id: "mahalle-kenar", type: "line", source: "mahalle", "source-layer": "mahalle",
+        layout: { visibility: "none" },
+        paint: { "line-color": "#0f1012", "line-width": 0.4, "line-opacity": 0.6 } },
+      { id: "vurgu", type: "line", source: "ilce", "source-layer": "ilce",
+        filter: ["==", "id", ""], paint: { "line-color": "#ffffff", "line-width": 2 } },
+    ],
+  },
+  center: [35.2, 39.0], zoom: 5.3, minZoom: 4, maxZoom: 13,
+});
+map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+
+const kaynak = () => (state.duzey === "ilce" ? "ilce" : "mahalle");
+const veri = () => (state.duzey === "ilce" ? ilce : mahalle[state.il] || {});
+
+function kazanan(row) {
+  const list = Object.entries(row.v || {}).sort((a, b) => b[1] - a[1]);
+  return list.length ? list[0] : null;
+}
+
+function katilimBandi(row) {
+  const oran = row.k ? row.o / row.k : 0;
+  if (oran >= 0.9) return KATILIM[0];
+  if (oran >= 0.85) return KATILIM[1];
+  if (oran >= 0.8) return KATILIM[2];
+  if (oran >= 0.7) return KATILIM[3];
+  return KATILIM[4];
+}
+
+function boya() {
+  // Tried rather than asked: isStyleLoaded() can stay false while tiles are still coming
+  // in, long after feature state would have been accepted, and the map then never gets
+  // its colours.
+  const rows = veri();
+  if (!Object.keys(rows).length) return false;
+  const source = kaynak();
+  try {
+    map.setFeatureState({ source, sourceLayer: source, id: Object.keys(rows)[0] }, {});
+  } catch {
+    return false;
+  }
+  for (const id in rows) {
+    const row = rows[id];
+    const win = kazanan(row);
+    const colour = state.gosterim === "katilim" ? katilimBandi(row) : win ? renk(win[0]) : "#22252b";
+    map.setFeatureState({ source, sourceLayer: source, id }, { renk: colour });
+  }
+  map.triggerRepaint();
+  gosterge();
+  return true;
+}
+
+function gosterge() {
+  const box = document.getElementById("gosterge");
+  if (state.gosterim === "katilim") {
+    const labels = ["%90+", "%85–90", "%80–85", "%70–80", "%70 altı"];
+    box.innerHTML = `<h4>Katılım oranı</h4><div>${KATILIM.map(
+      (c, i) => `<span><i style="background:${c}"></i>${labels[i]}</span>`).join("")}</div>`;
+    return;
+  }
+  const seen = new Map();
+  for (const id in veri()) {
+    const win = kazanan(veri()[id]);
+    if (win) seen.set(kisa(win[0]), renk(win[0]));
+  }
+  box.innerHTML = `<h4>Haritadaki adaylar</h4><div>${[...seen]
+    .map(([ad, c]) => `<span><i style="background:${c}"></i>${ad}</span>`).join("")}</div>`;
+}
+
+function panelAc(id, ad, ustAd) {
+  const row = veri()[id] || ilce[id];
+  const panel = document.getElementById("panel");
+  if (!row) { panel.style.display = "none"; return; }
+  const list = Object.entries(row.v || {}).sort((a, b) => b[1] - a[1]);
+  const gecerli = row.g || list.reduce((s, [, v]) => s + v, 0);
+  const win = list[0];
+  panel.style.display = "block";
+  panel.innerHTML = `
+    <h2>${ad}</h2><div class="ust">${ustAd || ""}</div>
+    <div class="kazanan" style="border-left-color:${renk(win[0])}">
+      <small>En yüksek oy</small>
+      <span class="pay">%${pct(win[1] / gecerli)}</span>
+      <b>${win[0]}</b><div class="ust" style="margin:2px 0 0">${fmt.format(win[1])} oy</div></div>
+    <div class="kutular">
+      <div class="kutu"><small>Kayıtlı seçmen</small><b>${fmt.format(row.k)}</b></div>
+      <div class="kutu"><small>Oy kullanan</small><b>${fmt.format(row.o)}</b></div>
+      <div class="kutu"><small>Geçerli oy</small><b>${fmt.format(gecerli)}</b></div>
+      <div class="kutu"><small>Katılım oranı</small><b>%${pct(row.o / row.k)}</b></div>
+    </div>
+    ${list.map(([ad2, v]) => `
+      <div class="cubuk"><span style="width:${(100 * v) / gecerli}%;background:${renk(ad2)}"></span></div>
+      <div class="satir"><i style="background:${renk(ad2)}"></i><span>${ad2}</span>
+        <em>${fmt.format(v)} oy</em><b>%${pct(v / gecerli)}</b></div>`).join("")}`;
+}
+
+async function mahalleYukle(ilId) {
+  if (!ilId || mahalle[ilId]) return;
+  const url = `../public/tiles/secim-${state.oy}-mahalle-${ilId}.json`;
+  try {
+    mahalle[ilId] = await fetch(url).then((r) => (r.ok ? r.json() : {}));
+  } catch {
+    mahalle[ilId] = {};
+  }
+}
+
+async function ilceYukle() {
+  ilce = await fetch(`../public/tiles/secim-${state.oy}-ilce.json`).then((r) => r.json());
+  const secim = document.getElementById("il");
+  if (secim.options.length <= 1) {
+    iller = {};
+    for (const id in ilce) iller[id.slice(0, 5)] = id.slice(0, 5);
+    const adlar = await fetch("../public/tiles/il-adlari.json").then((r) => r.ok ? r.json() : {}).catch(() => ({}));
+    for (const id of Object.keys(iller).sort()) {
+      const option = document.createElement("option");
+      option.value = id;
+      option.textContent = adlar[id] ? `${id.slice(3)} · ${adlar[id]}` : id;
+      secim.appendChild(option);
+    }
+  }
+  const liste = document.getElementById("oneri");
+  liste.innerHTML = Object.entries(ilce)
+    .map(([id, row]) => `<option value="${row.ad}" data-id="${id}">`).join("");
+}
+
+function duzeyUygula() {
+  // Called before the style is ready more often than not — the data arrives first — so it
+  // is a no-op then and the timer below applies it once the style is up.
+  if (!map.isStyleLoaded()) return;
+  const goster = (layer, on) =>
+    map.setLayoutProperty(layer, "visibility", on ? "visible" : "none");
+  const mahalleMi = state.duzey === "mahalle";
+  goster("ilce-dolgu", !mahalleMi);
+  goster("ilce-kenar", !mahalleMi);
+  goster("mahalle-dolgu", mahalleMi);
+  goster("mahalle-kenar", mahalleMi);
+  if (mahalleMi && state.il) {
+    map.setFilter("mahalle-dolgu", ["==", ["slice", ["get", "id"], 0, 5], state.il]);
+    map.setFilter("mahalle-kenar", ["==", ["slice", ["get", "id"], 0, 5], state.il]);
+  } else {
+    map.setFilter("mahalle-dolgu", null);
+    map.setFilter("mahalle-kenar", null);
+  }
+}
+
+function durum(text) {
+  document.getElementById("durum").textContent = text;
+}
+
+async function yenile() {
+  durum("veri yükleniyor…");
+  await ilceYukle();
+  if (state.duzey === "mahalle") await mahalleYukle(state.il);
+  boyaGerek = true;
+  duzeyUygula();
+  durum(
+    state.duzey === "ilce"
+      ? `${Object.keys(ilce).length} ilçe`
+      : `${Object.keys(mahalle[state.il] || {}).length} yerleşim`
+  );
+}
+
+// Painting is retried on a timer: setFeatureState throws while the style is still
+// loading, and the data can arrive after the map has gone idle — after which no event
+// comes and the map would sit there uncoloured.
+setInterval(() => {
+  if (!boyaGerek) return;
+  duzeyUygula();
+  if (boya()) boyaGerek = false;
+}, 300);
+
+// Started directly rather than from the map's load event: an async handler that throws
+// leaves nothing in the console, and the fetches do not need the map to be ready.
+yenile();
+
+const ipucu = document.getElementById("ipucu");
+function ipucuGoster(e, feature) {
+  const rows = veri();
+  const row = rows[feature.properties.id];
+  const win = row && kazanan(row);
+  ipucu.style.display = "block";
+  ipucu.style.left = Math.min(e.point.x + 16, innerWidth - 240) + "px";
+  ipucu.style.top = e.point.y + 16 + "px";
+  ipucu.innerHTML = `<b>${feature.properties.ad || ""}</b>
+    <small>${feature.properties.ust || ""}</small>` +
+    (row
+      ? state.gosterim === "katilim"
+        ? `<div class="k"><i style="background:${katilimBandi(row)}"></i>Katılım %${pct(row.o / row.k)}</div>`
+        : `<div class="k"><i style="background:${renk(win[0])}"></i>${kisa(win[0])} %${pct(win[1] / (row.g || 1))}</div>`
+      : `<div class="k"><small>veri yok</small></div>`);
+}
+
+for (const layer of ["ilce-dolgu", "mahalle-dolgu"]) {
+  map.on("mousemove", layer, (e) => {
+    map.getCanvas().style.cursor = "pointer";
+    ipucuGoster(e, e.features[0]);
+  });
+  map.on("mouseleave", layer, () => {
+    map.getCanvas().style.cursor = "";
+    ipucu.style.display = "none";
+  });
+  map.on("click", layer, (e) => {
+    const f = e.features[0];
+    panelAc(f.properties.id, f.properties.ad, f.properties.ust);
+    map.setFilter("vurgu", ["==", "id", f.properties.id]);
+  });
+}
+
+document.getElementById("oy").addEventListener("change", async (e) => {
+  state.oy = e.target.value;
+  for (const key of Object.keys(mahalle)) delete mahalle[key];
+  await yenile();
+});
+document.getElementById("il").addEventListener("change", async (e) => {
+  state.il = e.target.value;
+  if (state.il) {
+    const bounds = new maplibregl.LngLatBounds();
+    const feats = map.querySourceFeatures("ilce", { sourceLayer: "ilce" })
+      .filter((f) => (f.properties.id || "").startsWith(state.il));
+    for (const f of feats) {
+      const walk = (c) => Array.isArray(c[0]) ? c.forEach(walk) : bounds.extend(c);
+      walk(f.geometry.coordinates);
+    }
+    if (!bounds.isEmpty()) map.fitBounds(bounds, { padding: 60, duration: 700 });
+  } else {
+    map.flyTo({ center: [35.2, 39.0], zoom: 5.3 });
+  }
+  await yenile();
+});
+document.getElementById("duzey").addEventListener("click", async (e) => {
+  const button = e.target.closest("button[data-v]");
+  if (!button) return;
+  document.querySelectorAll("#duzey button").forEach((b) => b.classList.toggle("on", b === button));
+  state.duzey = button.dataset.v;
+  if (state.duzey === "mahalle" && !state.il) durum("mahalle düzeyi için önce il seçin");
+  await yenile();
+});
+document.getElementById("gosterim").addEventListener("click", (e) => {
+  const button = e.target.closest("button[data-v]");
+  if (!button) return;
+  document.querySelectorAll("#gosterim button").forEach((b) => b.classList.toggle("on", b === button));
+  state.gosterim = button.dataset.v;
+  boyaGerek = true;
+});
+document.getElementById("ara").addEventListener("change", (e) => {
+  const name = e.target.value.trim().toLocaleLowerCase("tr");
+  const hit = Object.entries(veri()).find(([, row]) => (row.ad || "").toLocaleLowerCase("tr") === name)
+    || Object.entries(ilce).find(([, row]) => (row.ad || "").toLocaleLowerCase("tr") === name);
+  if (!hit) return;
+  panelAc(hit[0], hit[1].ad, "");
+  map.setFilter("vurgu", ["==", "id", hit[0]]);
+});
+</script>
+</body></html>
