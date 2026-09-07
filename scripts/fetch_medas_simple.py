@@ -50,6 +50,9 @@ DEATHS = "Ölüm İstatistikleri"
 MARRIAGES = "Evlenme İstatistikleri"
 LIFE = "Hayat Tabloları"
 DIVORCES = "Boşanma İstatistikleri"
+SUICIDE = "İntihar İstatistikleri"
+TRAFFIC = "Trafik Kaza İstatistikleri"
+VEHICLES = "Motorlu Kara Taşıt İstatistikleri"
 
 CELL_LIMIT = 50000
 
@@ -134,6 +137,31 @@ MEASURES = [
     ("ilk-evlenme-yasi-kadin", MARRIAGES, "Kadının ortalama ilk evlenme", False),  # 1
     ("bosanma", DIVORCES, "Boşanma sayısı", False),  # 1
     ("kaba-bosanma-hizi", DIVORCES, "Kaba boşanma", False),  # 1
+    # External causes. TÜİK publishes no cause-of-death measure in MEDAS at all — the
+    # closest reachable things are these two, and they are two different shapes of
+    # incomplete. Suicide carries the age group and the sex but exists only for the
+    # country; traffic deaths carry the sex and every province but no age at all. The
+    # intersection this project wants — a province's young men by cause — is not a
+    # download away, it is unpublished.
+    # Age alone is 15 indicators and says nothing about the gap this project is chasing;
+    # the sex has to come with it. MEDAS does not tick it as mandatory here the way the
+    # death measures do, so it is named explicitly.
+    ("intihar-yas", SUICIDE, "ntihar sayısı", ("Yaş grubu", "Cinsiyet")),
+    ("kaba-intihar-hizi", SUICIDE, "Kaba intihar", False),  # 1
+    ("trafik-olu", TRAFFIC, "lü sayısı", "Cinsiyet"),  # 4 fully open
+    # Cars. The stock measure ("Motorlu Kara Taşıt Sayısı") reports no level and no year
+    # to the scanner — its breakdown has to be resolved first — so the per-thousand rate
+    # is taken instead: one indicator, 81 provinces, nineteen years, and the stock is
+    # recoverable from it because the population it divides by is already here.
+    ("otomobil-bin-kisi", VEHICLES, "Bin kişi başına otomobil", False),  # 1
+    ("tasit-sayisi", VEHICLES, "Motorlu Kara Taşıt Sayısı", True),  # 18
+    # Deaths per million vehicles is the longest province series in the repo — 1995 to
+    # 2025, thirty-one years — and it is published as a rate, so the Türkiye row is the
+    # weighted mean by construction while the province rows give the unweighted ones.
+    ("trafik-olu-milyon-arac", TRAFFIC, "Bir milyon araç başına ölü", False),  # 1
+    ("trafik-olu-milyon-otomobil", TRAFFIC, "Bir milyon otomobil başına ölü", False),  # 1
+    ("trafik-olu-milyon-nufus", TRAFFIC, "Bir milyon nüfusta trafik kazalarında ölü", False),
+    ("tasit-yasi", VEHICLES, "Trafiğe kayıtlı taşıtların ortalama yaşları", True),  # 8
 ]
 
 #: The Düzey box labels for the levels kept here.
@@ -147,7 +175,7 @@ LEVELS = {
 #: Measures published for the country and nowhere else. The single-year life table is
 #: the case: TÜİK computes it nationally because a province's deaths at age 93 are a
 #: handful of people and the resulting probability would be noise.
-COUNTRY_ONLY = {"hayat-tablosu"}
+COUNTRY_ONLY = {"hayat-tablosu", "intihar-yas"}
 
 
 def levels_for(name: str) -> list[str]:
@@ -200,9 +228,14 @@ def build_query(page, topic: str, hint: str, breakdowns) -> int:
     settle(page)
 
     if breakdowns:
-        wanted = breakdowns if isinstance(breakdowns, str) else None
+        if isinstance(breakdowns, str):
+            wanted = [breakdowns]
+        elif isinstance(breakdowns, (list, tuple)):
+            wanted = list(breakdowns)
+        else:
+            wanted = None
         for row, text in visible_rows(page):
-            keep = wanted is None or wanted.lower() in text.lower()
+            keep = wanted is None or any(w.lower() in text.lower() for w in wanted)
             # Only ever turned on, never off. A tick is a toggle and the mandatory ones
             # arrive already on (docs/medas.md) — deaths always carry the sex of the
             # deceased — so unticking what we did not ask for empties the query instead of
