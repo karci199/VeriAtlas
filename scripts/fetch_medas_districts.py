@@ -176,15 +176,30 @@ def target_path(year: int, breakdown: bool):
     return OUT / (STEM + ("kirilim-" if breakdown else "") + str(year) + ".csv")
 
 
-def offered_years(page) -> list[int]:
-    """Years the Zaman tab lists, newest first."""
-    years = []
-    rows = page.locator(".z-listitem")
-    for index in range(rows.count()):
-        text = rows.nth(index).inner_text().strip()
-        if text.isdigit() and len(text) == 4:
-            years.append(int(text))
-    return sorted(set(years), reverse=True)
+def offered_years(page, tries: int = 6) -> list[int]:
+    """Years the Zaman tab lists, newest first.
+
+    Retried, and this is the whole point of the function having a loop: MEDAS answers the
+    tab before it has drawn the rows, and a list that has not been drawn yet is
+    indistinguishable from a measure that publishes no years — both are `[]`. Taking the
+    first answer is how literacy and three ADNKS measures were each written off as "this
+    measure offers no years" while the data was there. An empty list is now waited on, not
+    believed.
+    """
+    for attempt in range(1, tries + 1):
+        years = []
+        rows = page.locator(".z-listitem")
+        for index in range(rows.count()):
+            text = rows.nth(index).inner_text().strip()
+            if text.isdigit() and len(text) == 4:
+                years.append(int(text))
+        if years:
+            return sorted(set(years), reverse=True)
+        if attempt < tries:
+            print(f"   yil listesi bos, bekleniyor ({attempt}/{tries})", flush=True)
+            time.sleep(3 * attempt)
+            settle(page)
+    return []
 
 
 def fetch_year(page, year: int, breakdown: bool = False) -> bool:
