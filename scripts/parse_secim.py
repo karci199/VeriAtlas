@@ -78,6 +78,13 @@ def columns_of(rows: list[list[str]]) -> list[str]:
         "bucak",
         "dagilimi",
         "ililcebolge",
+        # The milletvekili reports head their label column "Seçim çevresi ve ilçe" and
+        # the local ones "İlçe / Belediye adı / Muhtarlık". Without these the label column
+        # is counted as a party, every row comes out one value too short, and the file
+        # parses to nothing at all — which is what "mv2023: 0 yerlesim" was.
+        "secimcevresi",
+        "belediyeadi",
+        "mahalleadi",
     )
     # Whole-label captions: "İl" and "İlçe" are also column headers, and they are too
     # short to be matched as substrings without hitting a candidate's name.
@@ -112,6 +119,22 @@ def read_report(path: pathlib.Path) -> list[dict]:
         return []
     width = len(AGG) + len(names)
 
+    # Which column a label sits in gives its level, but the columns are not the same
+    # from report to report: the referendum layout puts province/district/settlement at
+    # 0-1 / 2-3 / deeper, the milletvekili one at 2 / 4 / 6. Fixed thresholds read an
+    # electoral district as a district and a district as a settlement — silently, since
+    # every row still parses. So the three depths are taken from the file itself.
+    depths = sorted(
+        {
+            next((i for i, c in enumerate(row) if c and not NUM.fullmatch(c)), None)
+            for row in rows
+            if len([c for c in row if NUM.fullmatch(c)]) in (width, width + 1)
+        }
+        - {None}
+    )
+    il_depth = depths[0] if depths else 0
+    ilce_depth = depths[1] if len(depths) > 1 else il_depth + 2
+
     out: list[dict] = []
     province = district = None
     for row in rows:
@@ -129,10 +152,10 @@ def read_report(path: pathlib.Path) -> list[dict]:
         if CAPTION.match(label):
             continue
         values = dict(zip(AGG + names, [int(v) for v in numbers], strict=False))
-        if index <= 1:
+        if index <= il_depth:
             province, district = label, None
             out.append({"level": "il", "name": label, "parent": None, "values": values})
-        elif index <= 3:
+        elif index <= ilce_depth:
             district = label
             out.append(
                 {"level": "ilce", "name": label, "parent": province, "values": values}
