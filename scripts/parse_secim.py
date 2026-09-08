@@ -88,7 +88,18 @@ def columns_of(rows: list[list[str]]) -> list[str]:
     )
     # Whole-label captions: "İl" and "İlçe" are also column headers, and they are too
     # short to be matched as substrings without hitting a candidate's name.
-    caption_exact = {"il", "ilce", "bolge", "muhtarlikmahalleadi", "yerlesimyeri"}
+    caption_exact = {
+        "il",
+        "ilce",
+        "bolge",
+        "muhtarlikmahalleadi",
+        "yerlesimyeri",
+        # The council reports head their label column "Belediye"; as a whole label it is
+        # a caption, as a substring it would swallow "BÜYÜK BİRLİK" and the rest.
+        "belediye",
+        "koy",
+        "mahalle",
+    }
     for row in rows:
         labels = [c for c in row if c]
         if not labels:
