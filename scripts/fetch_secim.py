@@ -105,17 +105,27 @@ def aday(year_label: str) -> dict:
     }
 
 
-def cikan(year_label: str) -> dict:
-    """Seats each party and independent took, by province."""
+def cikan(year_box: str) -> dict:
+    """Seats each party and independent took — one report for the whole country.
+
+    Two things this table wants that the vote tables do not: the year comes from its own
+    `Yıllar:` box rather than the year radio, and the province box has a "<< Tüm iller >>"
+    entry that answers for all eighty-one at once. Asking province by province returned a
+    report with the two column headings and nothing under them — 3 KB that looked like a
+    successful download. One report per year is 96 KB and carries every province.
+    """
     return {
         "page": "secim.zul",
         "table": (
             "Yıllara ve illere göre siyasi parti ve bağımsızların çıkardığı "
             "milletvekili sayısı"
         ),
-        "year": year_label,
+        "year": None,
         "box": "Seçim çevresi:",
         "sub": None,
+        "alanlar": ["&lt;&lt; Tüm iller &gt;&gt;"],
+        "sabit": (("Yıllar:", year_box),),
+        "ad": year_box,
     }
 
 
@@ -143,8 +153,8 @@ VOTES: dict[str, dict] = {
     "mv1991": mv("1991 seçimi"),
     "aday2023": aday("2023"),
     "aday2018": aday("2018"),
-    "aday2015k": aday("2015 (1 Kasım)"),
-    "aday2015h": aday("2015 (7 Haziran)"),
+    "aday2015k": aday("2015 seçimi (1 Kasım)"),
+    "aday2015h": aday("2015 seçimi (7 Haziran)"),
     "aday2011": aday("2011"),
     "aday2007": aday("2007"),
     "aday2002": aday("2002"),
@@ -160,8 +170,8 @@ VOTES: dict[str, dict] = {
     "aday1961": aday("1961"),
     "cikan2023": cikan("2023"),
     "cikan2018": cikan("2018"),
-    "cikan2015k": cikan("2015 (1 Kasım)"),
     "cikan2015h": cikan("2015 (7 Haziran)"),
+    "cikan2015k": cikan("2015 (1 Kasım)"),
     "cikan2011": cikan("2011"),
     "cikan2007": cikan("2007"),
     "cikan2002": cikan("2002"),
@@ -224,13 +234,17 @@ def open_session(vote: str) -> ZK:
         z.check(spec["year"])
     else:
         z.pick("Tablo seçimi:", spec["table"])
-        z.check(spec["year"])
+        if spec.get("year"):
+            z.check(spec["year"])
         if spec.get("round"):
             z.check(spec["round"])
     return z
 
 
 def dest(vote: str, area) -> pathlib.Path:
+    spec = VOTES[vote]
+    if spec.get("ad"):
+        return OUT / vote / (slug(spec["ad"]) + ".html")
     parts = [area] if isinstance(area, str) else list(area)
     return OUT / vote / ("__".join(slug(p) for p in parts) + ".html")
 
@@ -244,6 +258,8 @@ def plan(vote: str) -> list:
     province by province and resumed.
     """
     spec = VOTES[vote]
+    if spec.get("alanlar"):
+        return list(spec["alanlar"])
     cache = OUT / f"plan_{vote}.json"
     cache.parent.mkdir(parents=True, exist_ok=True)
     done: dict[str, list[str]] = {}
