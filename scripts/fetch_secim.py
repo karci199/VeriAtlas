@@ -286,16 +286,27 @@ def sweep(vote: str, workers: int) -> int:
     return counters["fail"]
 
 
-def fetch(vote: str, workers: int = 1, rounds: int = 3) -> None:
+def fetch(vote: str, workers: int = 1, rounds: int = 12) -> None:
     """Fetch, then sweep again for whatever failed.
 
-    Failures are transient — the server resets a connection every few hundred reports — so
-    a district missed in one pass is simply retried in the next. Without the sweep a year
-    finishes quietly short, which is worse than finishing slowly.
+    Failures are transient — the server resets a connection every few hundred reports, and
+    a dropdown occasionally answers before it is filled — so a district missed in one pass
+    is simply retried in the next. Without the sweep a year finishes quietly short, which
+    is worse than finishing slowly.
+
+    A fixed round count stopped while the gap was still closing: mv2011 ended 70 short with
+    every pass still gaining. So the loop now stops when a pass gains nothing, not after a
+    set number of tries; `rounds` is only the ceiling.
     """
+    missing = None
     for _ in range(rounds):
-        if not sweep(vote, workers):
+        left = sweep(vote, workers)
+        if not left:
             return
+        if missing is not None and left >= missing:
+            log(vote, f"gecis kazanc getirmedi, {left} eksikle birakiliyor")
+            return
+        missing = left
     log(vote, "hala eksik var")
 
 

@@ -26,9 +26,43 @@ def scoped_path(province: str):
     return nb.OUT / f"nufus-mahalle-{province}-{FIRST}_{LAST}.csv"
 
 
-def main(arg: str) -> None:
-    nb.FIRST_YEAR = 0
-    nb.target_path = scoped_path  # the fetcher writes where this points
+def sweep(arg: str, early: list[int], names: list[str]) -> list[str]:
+    """One pass over the provinces still missing. Returns the ones still missing after it."""
+    wanted = names if arg == "--ALL" else [arg]
+    with sync_playwright() as play:
+        browser = play.chromium.launch(headless=True)
+        page = browser.new_page(
+            viewport={"width": 1600, "height": 1000}, accept_downloads=True
+        )
+        page.set_default_timeout(60000)
+        for province in wanted:
+            if province not in names:
+                print("=", province, "listede yok")
+                continue
+            if scoped_path(province).exists():
+                continue
+            print("=", province, flush=True)
+            for attempt in (1, 2):
+                try:
+                    nb.fetch_province(page, province, early)
+                except Exception as error:  # noqa: BLE001 - log and move on
+                    print(
+                        "   HATA:", type(error).__name__, str(error)[:120], flush=True
+                    )
+                if scoped_path(province).exists():
+                    break
+                if attempt == 1:
+                    print("   . tekrar deneniyor", flush=True)
+            path = scoped_path(province)
+            print(
+                "   dosya:", path.stat().st_size if path.exists() else "YOK", flush=True
+            )
+        browser.close()
+    return [q for q in wanted if q in names and not scoped_path(q).exists()]
+
+
+def offered(arg: str) -> tuple[list[str], list[int]]:
+    """Ask MEDAS which provinces and which of 2007-2012 it serves for this measure."""
     with sync_playwright() as play:
         browser = play.chromium.launch(headless=True)
         page = browser.new_page(
@@ -36,32 +70,40 @@ def main(arg: str) -> None:
         )
         page.set_default_timeout(60000)
         names, years = nb.provinces_offered(page)
-        early = [y for y in years if FIRST <= y <= LAST]
-        print("sunulan yillar:", sorted(years), "istenen:", early)
-        if not early:
-            print("MEDAS bu olcumde 2013 oncesini kirilimla sunmuyor")
-            return
-        wanted = names if arg == "--ALL" else [arg]
-        for province in wanted:
-            scoped = scoped_path(province)
-            if scoped.exists():
-                print("=", province, "zaten var")
-                continue
-            if province not in names:
-                print("=", province, "listede yok")
-                continue
-            print("=", province, flush=True)
-            for attempt in (1, 2):
-                try:
-                    nb.fetch_province(page, province, early)
-                except Exception as error:  # noqa: BLE001 — log and move on
-                    print(
-                        "   HATA:", type(error).__name__, str(error)[:120], flush=True
-                    )
-                if scoped.exists():
-                    break
-            print("   dosya:", scoped.exists() and scoped.stat().st_size, flush=True)
         browser.close()
+    early = sorted(y for y in years if FIRST <= y <= LAST)
+    print("sunulan yillar:", sorted(years), "istenen:", early)
+    return names, early
+
+
+def main(arg: str, rounds: int = 12) -> None:
+    """Sweep until a pass gains nothing.
+
+    Same shape as the 2013+ fetcher, for the same reason: a province fails on a tick that
+    did not land in time and succeeds on a later walk, so a single pass ends quietly short
+    and the run looks finished. Each pass opens its own browser; what is still missing at
+    the end is named.
+    """
+    nb.FIRST_YEAR = 0
+    nb.target_path = scoped_path  # the fetcher writes where this points
+
+    names, early = offered(arg)
+    if not early:
+        print("MEDAS bu olcumde 2013 oncesini kirilimla sunmuyor")
+        return
+
+    missing = None
+    for turn in range(1, rounds + 1):
+        left = sweep(arg, early, names)
+        print(f"--- gecis {turn} bitti: {len(left)} il eksik ---", flush=True)
+        if not left:
+            print("butun iller tamam")
+            return
+        if missing is not None and len(left) >= missing:
+            print(f"gecis kazanc getirmedi, {len(left)} il eksik:", ", ".join(left))
+            return
+        missing = len(left)
+    print("hala eksik var")
 
 
 if __name__ == "__main__":
