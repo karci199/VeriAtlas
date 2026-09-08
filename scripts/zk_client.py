@@ -20,6 +20,7 @@ deleted with it. Tools belong in the repository, data outside it.
 
 from __future__ import annotations
 
+import html
 import http.cookiejar
 import re
 import urllib.parse
@@ -49,6 +50,12 @@ RE_BUTTON = re.compile(
     re.DOTALL,
 )
 RE_SPAN = re.compile(r'<span id="(z_[\w]+)"[^>]*>([^<]{3,70})</span>')
+#: Checkboxes are a separate widget from radios and the pages use both: the voter profile
+#: asks for its second variable with one. Same shape, different z.type.
+RE_CKBOX = re.compile(
+    r'<span id="(z_[\w]+)" z\.type="zul\.widget\.Ckbox".*?<label[^>]*>(.*?)</label>',
+    re.DOTALL,
+)
 
 
 def text_of(html: str) -> str:
@@ -156,7 +163,7 @@ class ZK:
         return None, {}
 
     def widgets(self, kind: str) -> dict[str, str]:
-        pattern = RE_RADIO if kind == "Radio" else RE_BUTTON
+        pattern = {"Radio": RE_RADIO, "Ckbox": RE_CKBOX}.get(kind, RE_BUTTON)
         return {text_of(label): uuid for uuid, label in pattern.findall(self.html)}
 
     # -- acting ------------------------------------------------------------
@@ -171,12 +178,21 @@ class ZK:
         return key
 
     def check(self, label: str) -> None:
-        radios = self.widgets("Radio")
-        uuid = radios.get(label) or next(
-            (v for k, v in radios.items() if k.startswith(label)), None
+        """Tick a radio, or a checkbox when no radio carries the label.
+
+        Both answer the same `onCheck` event, so the caller does not need to know which it
+        is looking at — and on these pages the same question can be either.
+        """
+        found = {**self.widgets("Radio"), **self.widgets("Ckbox")}
+        # Labels arrive as the page wrote them, entities and all: the second-variable box
+        # is "2&#039;nci degisken...". Unescaped only for the comparison, so callers that
+        # already match on the escaped form (the "<< Tum iller >>" entries) keep working.
+        found = {**{html.unescape(k): v for k, v in found.items()}, **found}
+        uuid = found.get(label) or next(
+            (v for k, v in found.items() if k.startswith(label)), None
         )
         if uuid is None:
-            raise KeyError(f"radyo yok: {label!r}")
+            raise KeyError(f"radyo/kutu yok: {label!r}")
         self.settle(self.event(uuid, "onCheck", "true"))
 
     def click(self, label: str) -> None:
