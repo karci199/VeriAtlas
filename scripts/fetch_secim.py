@@ -100,6 +100,8 @@ def aday(year_label: str) -> dict:
         "year": year_label,
         "box": "Seçim çevresi:",
         "sub": None,
+        # The label carries its own angle brackets, HTML-escaped as the page serves them.
+        "sabit": (("Siyasi parti:", "&lt;&lt; Tüm partiler &gt;&gt;"),),
     }
 
 
@@ -298,6 +300,11 @@ def fetch_one(z: ZK, vote: str, area) -> None:
         z.pick(spec["sub"], area[1], exact=True)
     else:
         z.pick(spec["box"], area, exact=True)
+    for header, label in spec.get("sabit", ()):
+        # A box that only fills once the area is chosen, and that the report will not be
+        # built without. The candidate table's party list is one: leaving it alone gave no
+        # redirect at all, for every province, with no message saying why.
+        z.pick(header, label, exact=True)
     z.click("Raporu Oluştur")
     if not z.redirect:
         raise RuntimeError("rapor url yok")
