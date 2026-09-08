@@ -44,6 +44,31 @@ MEASURE_HINT = "BBS-D"
 #: Breakdown rows to tick when `--kirilim` is given. Overridden by `--kirilim-adi`.
 BREAKDOWN_HINTS = ("Cinsiyet", "Grubu")
 
+#: Level labels from the deepest upward. MEDAS offers a different set per measure — the
+#: population measure reaches Mahalle, marital status stops at İlçe — so the level is not
+#: assumed, it is read off the box and the deepest one offered is taken. Asking for a level
+#: a measure does not have silently selects nothing and the report comes back at whatever
+#: was already picked, which is how a district table once arrived labelled as provinces.
+#:
+#: Sandık is deliberately absent: the ballot-box level exists in the election application,
+#: not here, and the standing instruction is to stop above it (docs/cekiciler.md).
+LEVEL_ORDER = ("Mahalle", "Köy", "Belediye", "İlçe", "İl Düzeyi", "İBBS")
+
+#: Overridden by `--duzey`, which pins one level instead of taking the deepest.
+LEVEL_PIN = None
+
+
+def deepest(labels: list[str]) -> str | None:
+    """The deepest level this box offers, or the pinned one when `--duzey` named it."""
+    if LEVEL_PIN:
+        return next((label for label in labels if LEVEL_PIN in label), None)
+    for wanted in LEVEL_ORDER:
+        for label in labels:
+            if wanted in label:
+                return label
+    return None
+
+
 #: File stem, so a second measure does not overwrite the first. Overridden by `--ad`.
 STEM = "nufus-ilce-"
 
@@ -220,15 +245,17 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
     (box if box.count() else year_row).click()
     settle(page)
 
-    # Düzey: district level, every province, every district
+    # Düzey: as deep as this measure goes, every province, every unit
     click_exact(page, "İleri")
     for index in range(page.locator("select").count()):
         select = page.locator("select").nth(index)
-        if (
-            select.is_visible()
-            and "İlçe Düzeyi" in select.locator("option").all_inner_texts()
-        ):
-            select.select_option(label="İlçe Düzeyi")
+        if not select.is_visible():
+            continue
+        labels = select.locator("option").all_inner_texts()
+        chosen = deepest(labels)
+        if chosen:
+            print("   duzey:", chosen)
+            select.select_option(label=chosen)
             settle(page)
             break
 
@@ -274,7 +301,9 @@ def main() -> None:
     everything = "--all" in sys.argv
     breakdown = "--kirilim" in sys.argv
 
-    global MEASURE_HINT, BREAKDOWN_HINTS, STEM
+    global MEASURE_HINT, BREAKDOWN_HINTS, STEM, LEVEL_PIN
+    if "--duzey" in sys.argv:
+        LEVEL_PIN = sys.argv[sys.argv.index("--duzey") + 1]
     if "--olcum" in sys.argv:
         MEASURE_HINT = sys.argv[sys.argv.index("--olcum") + 1]
     if "--kirilim-adi" in sys.argv:

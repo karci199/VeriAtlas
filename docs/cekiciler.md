@@ -69,3 +69,18 @@ geçersiz kılar — rapor iner, kaydetme olur, dizinde iz kalmaz.
 
 `C:\veri-ham`. Worktree'ye junction **kurulmaz**: 2026-09-07'de worktree temizliği
 junction'ın içinden geçip ortak depoyu boşalttı, 2,8 GB gitti. Araç repoda, veri dışarıda.
+
+## 7. En alt kırılım neyse o — sandık hariç
+
+Varsayılan düzey **kaynağın sunduğu en alt kırılım**. MEDAS'ta düzey kutusu ölçüme göre
+değişiyor: nüfus ölçümü mahalleye iniyor, medeni hâl ilçede duruyor. Bu yüzden düzey
+varsayılmaz, kutudan okunur ve en alttaki seçilir — `fetch_medas_districts.py:deepest`,
+sıra `Mahalle > Köy > Belediye > İlçe > İl > İBBS`. Tek bir düzeye sabitlemek gerekirse
+`--duzey İlçe`.
+
+Sunulmayan bir düzeyi istemek hiçbir şey seçmiyor ve rapor önceki seçimle geliyor: ilçe
+tablosu bir kez il etiketiyle inmişti. Bu yüzden istenen değil, **sunulan** okunur.
+
+Tek istisna **sandık**: seçim uygulamasında sandık düzeyi var, oraya inilmiyor —
+mahalle/köy düzeyinde durulur. Analiz mahalleye kadar anlamlı, sandık kırılımı hem
+hacmi hem gürültüyü katlıyor.

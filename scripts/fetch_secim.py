@@ -87,6 +87,36 @@ def cb(year_label: str, round_label: str | None = None) -> dict:
     }
 
 
+def aday(year_label: str) -> dict:
+    """Candidates who stood, per electoral district.
+
+    Not per ilçe: a candidacy is registered to a seçim çevresi, so the province (or the
+    numbered slice of one, "İstanbul (1)") is the lowest level the table has. Asking it for
+    a district would not be a deeper cut of the same thing, it would be nothing.
+    """
+    return {
+        "page": "secim.zul",
+        "table": "Milletvekili genel seçimine katılan adaylar",
+        "year": year_label,
+        "box": "Seçim çevresi:",
+        "sub": None,
+    }
+
+
+def cikan(year_label: str) -> dict:
+    """Seats each party and independent took, by province."""
+    return {
+        "page": "secim.zul",
+        "table": (
+            "Yıllara ve illere göre siyasi parti ve bağımsızların çıkardığı "
+            "milletvekili sayısı"
+        ),
+        "year": year_label,
+        "box": "Seçim çevresi:",
+        "sub": None,
+    }
+
+
 def yerel(office: str, year: str) -> dict:
     return {
         "page": "yerel.zul",
@@ -109,6 +139,40 @@ VOTES: dict[str, dict] = {
     "mv1999": mv("1999 seçimi"),
     "mv1995": mv("1995 seçimi"),
     "mv1991": mv("1991 seçimi"),
+    "aday2023": aday("2023"),
+    "aday2018": aday("2018"),
+    "aday2015k": aday("2015 (1 Kasım)"),
+    "aday2015h": aday("2015 (7 Haziran)"),
+    "aday2011": aday("2011"),
+    "aday2007": aday("2007"),
+    "aday2002": aday("2002"),
+    "aday1999": aday("1999"),
+    "aday1995": aday("1995"),
+    "aday1991": aday("1991"),
+    "aday1987": aday("1987"),
+    "aday1983": aday("1983"),
+    "aday1977": aday("1977"),
+    "aday1973": aday("1973"),
+    "aday1969": aday("1969"),
+    "aday1965": aday("1965"),
+    "aday1961": aday("1961"),
+    "cikan2023": cikan("2023"),
+    "cikan2018": cikan("2018"),
+    "cikan2015k": cikan("2015 (1 Kasım)"),
+    "cikan2015h": cikan("2015 (7 Haziran)"),
+    "cikan2011": cikan("2011"),
+    "cikan2007": cikan("2007"),
+    "cikan2002": cikan("2002"),
+    "cikan1999": cikan("1999"),
+    "cikan1995": cikan("1995"),
+    "cikan1991": cikan("1991"),
+    "cikan1987": cikan("1987"),
+    "cikan1983": cikan("1983"),
+    "cikan1977": cikan("1977"),
+    "cikan1973": cikan("1973"),
+    "cikan1969": cikan("1969"),
+    "cikan1965": cikan("1965"),
+    "cikan1961": cikan("1961"),
     "cb2023t1": cb("2023 Cumhurbaşkanlığı seçimi", "1.Tur"),
     "cb2023t2": cb("2023 Cumhurbaşkanlığı seçimi", "2.Tur"),
     "cb2018": cb("2018 Cumhurbaşkanlığı seçimi"),
@@ -220,7 +284,8 @@ def plan(vote: str) -> list:
         )
     areas = [[p, d] for p in provinces for d in done.get(p, [])]
     cache.write_text(
-        json.dumps({"bitti": True, "alanlar": areas}, ensure_ascii=False), encoding="utf-8"
+        json.dumps({"bitti": True, "alanlar": areas}, ensure_ascii=False),
+        encoding="utf-8",
     )
     log(vote, f"plan hazir — {len(areas)} alan")
     return areas
