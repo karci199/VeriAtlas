@@ -11,6 +11,7 @@ Run:  uv run python scripts/fetch_medas_neighbourhoods_early.py BURSA
 """
 
 import sys
+import time
 
 from playwright.sync_api import sync_playwright
 
@@ -84,19 +85,34 @@ def sweep(arg: str, early: list[int], names: list[str]) -> list[str]:
     return [q for q in wanted if q in names and not early_covered(q, early)]
 
 
-def offered(arg: str) -> tuple[list[str], list[int]]:
-    """Ask MEDAS which provinces and which of 2007-2012 it serves for this measure."""
-    with sync_playwright() as play:
-        browser = play.chromium.launch(headless=True)
-        page = browser.new_page(
-            viewport={"width": 1600, "height": 1000}, accept_downloads=True
-        )
-        page.set_default_timeout(60000)
-        names, years = nb.provinces_offered(page)
-        browser.close()
-    early = sorted(y for y in years if FIRST <= y <= LAST)
-    print("sunulan yillar:", sorted(years), "istenen:", early)
-    return names, early
+def offered(arg: str, tries: int = 4) -> tuple[list[str], list[int]]:
+    """Ask MEDAS which provinces and which of 2007-2012 it serves for this measure.
+
+    Retried, because it is one walk through the flow like any other and fails the same
+    way: a click that timed out here used to raise through main and end the whole run
+    before a single province was tried.
+    """
+    for attempt in range(1, tries + 1):
+        try:
+            with sync_playwright() as play:
+                browser = play.chromium.launch(headless=True)
+                page = browser.new_page(
+                    viewport={"width": 1600, "height": 1000}, accept_downloads=True
+                )
+                page.set_default_timeout(60000)
+                names, years = nb.provinces_offered(page)
+                browser.close()
+            if names:
+                early = sorted(y for y in years if FIRST <= y <= LAST)
+                print("sunulan yillar:", sorted(years), "istenen:", early)
+                return names, early
+            print(f"   il listesi bos geldi ({attempt}/{tries})", flush=True)
+        except Exception as error:  # noqa: BLE001 - retry, then give up loudly
+            print(
+                f"   HATA ({attempt}/{tries}):", type(error).__name__, str(error)[:100]
+            )
+        time.sleep(10 * attempt)
+    return [], []
 
 
 def main(arg: str, rounds: int = 12) -> None:
