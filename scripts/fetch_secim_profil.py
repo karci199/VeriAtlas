@@ -44,15 +44,38 @@ PAGES = {
 
 YEARS = ["2023", "2018", "2015 (1 Kasım)", "2015 (7 Haziran)", "2011"]
 
-VARIABLES = ["Yaş grubu", "Eğitim durumu", "Medeni durum"]
+#: The three pages are not the same shape, and assuming they were is what this table is
+#: here to prevent. The candidate pages carry a fourth variable — which party the
+#: candidate stood for — and stop one level higher: a candidacy belongs to a province's
+#: electoral district, so there is no district row to ask for. The voter pages have no
+#: party (a voter does not have one) but do reach the district.
+PAGE_VARS = {
+    "secmen": ["Yaş grubu", "Eğitim durumu", "Medeni durum"],
+    "aday": ["Yaş grubu", "Eğitim durumu", "Medeni durum", "Siyasi parti / Bağımsız"],
+    "kazanan": [
+        "Yaş grubu",
+        "Eğitim durumu",
+        "Medeni durum",
+        "Siyasi parti / Bağımsız",
+    ],
+}
 
-#: Each variable crossed with each later one — three passes cover all three variables
-#: without fetching the same pair twice.
-PAIRS = [(a, b) for i, a in enumerate(VARIABLES) for b in VARIABLES[i + 1 :]]
+PAGE_LEVEL = {
+    "secmen": "İBBS-Düzey4 (İlçe)",
+    "aday": "İBBS-Düzey3 (İl)",
+    "kazanan": "İBBS-Düzey3 (İl)",
+}
 
 ALL_DISTRICTS = "&lt;&lt; Tüm İlçeler &gt;&gt;"
-LEVEL = "İBBS-Düzey4 (İlçe)"
+ALL_LEVELS = "&lt;&lt; Tüm Düzeyler &gt;&gt;"
 SECOND = "2'nci değişken istiyor musunuz?"
+
+
+def pairs(page: str) -> list[tuple[str, str]]:
+    """Each variable crossed with each later one — no pair fetched twice."""
+    names = PAGE_VARS[page]
+    return [(a, b) for i, a in enumerate(names) for b in names[i + 1 :]]
+
 
 PAUSE = 1.0
 
@@ -91,11 +114,15 @@ def open_page(page: str, year: str, pair: tuple[str, str]) -> ZK:
     z.check(pair[0])
     z.check(SECOND)
     z.pick("2 inci değişkenler:", pair[1], exact=True)
-    z.check(LEVEL)
+    z.check(PAGE_LEVEL[page])
     return z
 
 
 def provinces(page: str, year: str, pair: tuple[str, str]) -> list[str]:
+    """What one pass has to walk: every province for the voter page, one whole-country
+    report for the candidate pages, whose level box answers for all of them at once."""
+    if page != "secmen":
+        return [ALL_LEVELS]
     z = open_page(page, year, pair)
     return [p for p in z.options("İl Seçimi:")[1] if "Tüm" not in p]
 
@@ -103,8 +130,11 @@ def provinces(page: str, year: str, pair: tuple[str, str]) -> list[str]:
 def fetch_one(
     z: ZK, page: str, year: str, pair: tuple[str, str], province: str
 ) -> None:
-    z.pick("İl Seçimi:", province, exact=True)
-    z.pick("İlçe Seçimi:", ALL_DISTRICTS, exact=True)
+    if page == "secmen":
+        z.pick("İl Seçimi:", province, exact=True)
+        z.pick("İlçe Seçimi:", ALL_DISTRICTS, exact=True)
+    else:
+        z.pick("Düzey Seçimi:", province, exact=True)
     z.click("Raporu Oluştur")
     if not z.redirect:
         raise RuntimeError("rapor url yok")
@@ -141,7 +171,7 @@ def sweep(page: str, year: str, pair: tuple[str, str], names: list[str]) -> list
 def fetch(page: str, rounds: int = 8) -> None:
     """Every year and every variable pair, swept until a pass gains nothing."""
     for year in YEARS:
-        for pair in PAIRS:
+        for pair in pairs(page):
             try:
                 names = provinces(page, year, pair)
             except Exception as error:  # noqa: BLE001 - this combination may not exist
