@@ -36,7 +36,21 @@ from veriatlas.config import RAW, ensure_dirs
 URL = "https://biruni.tuik.gov.tr/medas/?locale=tr"
 OUT = RAW / "medas" / "ilce"
 
+#: The topic to open. Overridden by `--konu`, because the district flow is the same
+#: whatever the subject heading is — literacy lives under education, not under ADNKS, and
+#: the only thing that changes is which heading the first select is set to. The Turkish
+#: label cannot come from argv (git-bash re-encodes it), so `--konu` takes a short ascii
+#: key instead and the full label is written here.
 TOPIC = "Adrese Dayalı Nüfus Kayıt Sistemi Sonuçları"
+
+TOPICS = {
+    "adnks": "Adrese Dayalı Nüfus Kayıt Sistemi Sonuçları",
+    "egitim": "Ulusal Eğitim İstatistikleri",
+    "olum": "Ölüm İstatistikleri",
+    "dogum": "Doğum İstatistikleri",
+    "evlenme": "Evlenme İstatistikleri",
+    "bosanma": "Boşanma İstatistikleri",
+}
 
 #: Enough of the measure's row text to pick it out of the list. Overridden by `--olcum`.
 MEASURE_HINT = "BBS-D"
@@ -301,7 +315,12 @@ def main() -> None:
     everything = "--all" in sys.argv
     breakdown = "--kirilim" in sys.argv
 
-    global MEASURE_HINT, BREAKDOWN_HINTS, STEM, LEVEL_PIN
+    global MEASURE_HINT, BREAKDOWN_HINTS, STEM, LEVEL_PIN, TOPIC
+    if "--konu" in sys.argv:
+        key = sys.argv[sys.argv.index("--konu") + 1]
+        if key not in TOPICS:
+            raise SystemExit(f"bilinmeyen konu: {key} ({', '.join(TOPICS)})")
+        TOPIC = TOPICS[key]
     if "--duzey" in sys.argv:
         LEVEL_PIN = sys.argv[sys.argv.index("--duzey") + 1]
     if "--olcum" in sys.argv:
