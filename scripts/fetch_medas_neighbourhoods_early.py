@@ -22,8 +22,31 @@ import fetch_medas_neighbourhoods as nb
 FIRST, LAST = 2007, 2012
 
 
-def scoped_path(province: str):
-    return nb.OUT / f"nufus-mahalle-{province}-{FIRST}_{LAST}.csv"
+def scoped_path(province: str, chunk=None, all_years=None):
+    """Where this province's early years land — same shape as the 2013+ fetcher's.
+
+    It stands in for `nb.target_path`, which the fetcher calls with the year chunk it is
+    actually asking for, so it has to accept those arguments: taking only the province
+    raised TypeError inside the fetch and every province failed with an error that looked
+    like MEDAS's, not ours. A province split into chunks writes one file per range, the
+    same way the 2013+ side does.
+    """
+    name = f"nufus-mahalle-{province.replace(' ', '_')}-{FIRST}_{LAST}"
+    if chunk and all_years and len(chunk) != len(all_years):
+        name += f"__{min(chunk)}-{max(chunk)}"
+    return nb.OUT / (name + ".csv")
+
+
+def early_covered(province: str, years) -> bool:
+    """True when the province is on disk whole, or in chunks covering every early year."""
+    if scoped_path(province).exists():
+        return True
+    have = set()
+    stem = f"nufus-mahalle-{province.replace(' ', '_')}-{FIRST}_{LAST}__"
+    for path in nb.OUT.glob(stem + "*.csv"):
+        lo, hi = path.stem.split("__")[1].split("-")
+        have |= set(range(int(lo), int(hi) + 1))
+    return bool(years) and have >= set(years)
 
 
 def sweep(arg: str, early: list[int], names: list[str]) -> list[str]:
@@ -39,7 +62,7 @@ def sweep(arg: str, early: list[int], names: list[str]) -> list[str]:
             if province not in names:
                 print("=", province, "listede yok")
                 continue
-            if scoped_path(province).exists():
+            if early_covered(province, early):
                 continue
             print("=", province, flush=True)
             for attempt in (1, 2):
@@ -49,7 +72,7 @@ def sweep(arg: str, early: list[int], names: list[str]) -> list[str]:
                     print(
                         "   HATA:", type(error).__name__, str(error)[:120], flush=True
                     )
-                if scoped_path(province).exists():
+                if early_covered(province, early):
                     break
                 if attempt == 1:
                     print("   . tekrar deneniyor", flush=True)
@@ -58,7 +81,7 @@ def sweep(arg: str, early: list[int], names: list[str]) -> list[str]:
                 "   dosya:", path.stat().st_size if path.exists() else "YOK", flush=True
             )
         browser.close()
-    return [q for q in wanted if q in names and not scoped_path(q).exists()]
+    return [q for q in wanted if q in names and not early_covered(q, early)]
 
 
 def offered(arg: str) -> tuple[list[str], list[int]]:
@@ -88,6 +111,11 @@ def main(arg: str, rounds: int = 12) -> None:
     nb.target_path = scoped_path  # the fetcher writes where this points
 
     names, early = offered(arg)
+    if not names:
+        # An empty province list used to report success: nothing was missing because
+        # nothing was asked for. Silence like that is what let this measure sit at zero
+        # files while the log said "butun iller tamam".
+        raise SystemExit("il listesi bos geldi — MEDAS cevap vermedi, bitmis sayilmaz")
     if not early:
         print("MEDAS bu olcumde 2013 oncesini kirilimla sunmuyor")
         return
