@@ -60,6 +60,10 @@ PAGE_VARS = {
     ],
 }
 
+#: Abroad is a separate scope with its own level list — no province, no district; the
+#: deepest it goes is the consulate. Asked for with `--yurtdisi`.
+YURTDISI_LEVEL = "Ülke temsilcilikler"
+
 PAGE_LEVEL = {
     "secmen": "İBBS-Düzey4 (İlçe)",
     "aday": "İBBS-Düzey3 (İl)",
@@ -98,29 +102,36 @@ def slug(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
 
 
-def dest(page: str, year: str, pair: tuple[str, str], province: str) -> pathlib.Path:
+def dest(
+    page: str, year: str, pair: tuple[str, str], province: str, abroad: bool = False
+) -> pathlib.Path:
     name = f"{slug(year)}__{slug(pair[0])}__{slug(pair[1])}__{slug(province)}.html"
-    return OUT / page / name
+    return OUT / (page + ("-yurtdisi" if abroad else "")) / name
 
 
-def open_page(page: str, year: str, pair: tuple[str, str]) -> ZK:
+def open_page(page: str, year: str, pair: tuple[str, str], abroad: bool = False) -> ZK:
     """A session with the year, the scope and both variables already answered."""
     z = ZK(PAGES[page], timeout=300)
     z.check(year)
     try:
-        z.check("Yurt içi seçmen")
+        z.check("Yurt dışı seçmen" if abroad else "Yurt içi seçmen")
     except KeyError:
         pass  # only the voter page splits home from abroad
     z.check(pair[0])
     z.check(SECOND)
     z.pick("2 inci değişkenler:", pair[1], exact=True)
-    z.check(PAGE_LEVEL[page])
+    z.check(YURTDISI_LEVEL if abroad else PAGE_LEVEL[page])
     return z
 
 
-def provinces(page: str, year: str, pair: tuple[str, str]) -> list[str]:
+def provinces(
+    page: str, year: str, pair: tuple[str, str], abroad: bool = False
+) -> list[str]:
     """What one pass has to walk: every province for the voter page, one whole-country
     report for the candidate pages, whose level box answers for all of them at once."""
+    if abroad:
+        z = open_page(page, year, pair, abroad=True)
+        return [p for p in z.options("Ülke Seçimi:")[1] if "Tüm" not in p]
     if page != "secmen":
         return [ALL_LEVELS]
     z = open_page(page, year, pair)
@@ -128,9 +139,16 @@ def provinces(page: str, year: str, pair: tuple[str, str]) -> list[str]:
 
 
 def fetch_one(
-    z: ZK, page: str, year: str, pair: tuple[str, str], province: str
+    z: ZK,
+    page: str,
+    year: str,
+    pair: tuple[str, str],
+    province: str,
+    abroad: bool = False,
 ) -> None:
-    if page == "secmen":
+    if abroad:
+        z.pick("Ülke Seçimi:", province, exact=True)
+    elif page == "secmen":
         z.pick("İl Seçimi:", province, exact=True)
         z.pick("İlçe Seçimi:", ALL_DISTRICTS, exact=True)
     else:
@@ -148,9 +166,11 @@ def fetch_one(
     path.write_bytes(data)
 
 
-def sweep(page: str, year: str, pair: tuple[str, str], names: list[str]) -> list[str]:
-    """One pass over the provinces still missing for this year and variable pair."""
-    todo = [p for p in names if not dest(page, year, pair, p).exists()]
+def sweep(
+    page: str, year: str, pair: tuple[str, str], names: list[str], abroad: bool = False
+) -> list[str]:
+    """One pass over the areas still missing for this year and variable pair."""
+    todo = [p for p in names if not dest(page, year, pair, p, abroad).exists()]
     if not todo:
         return []
     print(f"  {year} {pair[0]} x {pair[1]}: {len(todo)} il eksik", flush=True)
@@ -158,22 +178,22 @@ def sweep(page: str, year: str, pair: tuple[str, str], names: list[str]) -> list
     for province in todo:
         try:
             if z is None or used >= 40:
-                z, used = open_page(page, year, pair), 0
-            fetch_one(z, page, year, pair, province)
+                z, used = open_page(page, year, pair, abroad), 0
+            fetch_one(z, page, year, pair, province, abroad)
             used += 1
         except Exception as error:  # noqa: BLE001 - log and carry on
             print(f"    HATA {province}: {str(error)[:80]}", flush=True)
             z = None
         time.sleep(PAUSE)
-    return [p for p in names if not dest(page, year, pair, p).exists()]
+    return [p for p in names if not dest(page, year, pair, p, abroad).exists()]
 
 
-def fetch(page: str, rounds: int = 8) -> None:
+def fetch(page: str, rounds: int = 8, abroad: bool = False) -> None:
     """Every year and every variable pair, swept until a pass gains nothing."""
     for year in YEARS:
         for pair in pairs(page):
             try:
-                names = provinces(page, year, pair)
+                names = provinces(page, year, pair, abroad)
             except Exception as error:  # noqa: BLE001 - this combination may not exist
                 print(f"  {year} {pair}: il listesi alinamadi ({str(error)[:60]})")
                 continue
@@ -182,7 +202,7 @@ def fetch(page: str, rounds: int = 8) -> None:
                 continue
             missing = None
             for _ in range(rounds):
-                left = sweep(page, year, pair, names)
+                left = sweep(page, year, pair, names, abroad)
                 if not left:
                     break
                 if missing is not None and len(left) >= missing:
@@ -192,13 +212,15 @@ def fetch(page: str, rounds: int = 8) -> None:
 
 
 def main(argv: list[str]) -> None:
-    wanted = argv or list(PAGES)
+    abroad = "--yurtdisi" in argv
+    wanted = [a for a in argv if not a.startswith("--")] or list(PAGES)
     for page in wanted:
         if page not in PAGES:
             raise SystemExit(f"bilinmeyen sayfa: {page} ({', '.join(PAGES)})")
-        print("==", page, PAGES[page], flush=True)
-        fetch(page)
-        n = len(list((OUT / page).glob("*.html"))) if (OUT / page).exists() else 0
+        print("==", page, PAGES[page], "yurtdisi" if abroad else "", flush=True)
+        fetch(page, abroad=abroad)
+        klasor = OUT / (page + ("-yurtdisi" if abroad else ""))
+        n = len(list(klasor.glob("*.html"))) if klasor.exists() else 0
         print(f"== {page} bitti: {n} rapor", flush=True)
 
 
