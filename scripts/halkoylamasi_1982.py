@@ -60,7 +60,76 @@ def correlation(pairs: list[tuple[float, float]]) -> float:
     return top / (left * right) if left and right else 0.0
 
 
+def province_view() -> None:
+    """The 1987 and 2017 votes side by side, aggregated to provinces.
+
+    Districts are summed into their province rather than averaged: a province is its
+    voters, not its districts, and averaging would let a village of two thousand weigh as
+    much as a city of three hundred thousand.
+    """
+    votes = {v: load(v) for v in ("ho1982", "ho1987", "ho2017")}
+    names = province_names()
+    rows = []
+    for province in sorted({k[:5] for k in votes["ho1987"]}):
+        line = []
+        for vote in ("ho1982", "ho1987", "ho2017"):
+            yes = total = 0.0
+            for area, (_ad, share, count) in votes[vote].items():
+                if area.startswith(province):
+                    yes += share * count
+                    total += count
+            line.append(yes / total if total else None)
+        if line[1] is None or line[2] is None:
+            continue
+        rows.append((line[1], line[2], line[0], names.get(province, province)))
+
+    pairs = [(a, b) for a, b, *_ in rows]
+    print(f"1987 evet (yasaklar kalksin) -> 2017 evet · {len(rows)} il")
+    print(f"il duzeyinde r = {correlation(pairs):+.2f}")
+    print()
+    print(f"{'İl':<16}{'1982':>8}{'1987':>8}{'2017':>8}{'kalıntı':>10}")
+    # The line itself, so a province can be placed against it rather than only ranked.
+    n = len(pairs)
+    mx = sum(a for a, _ in pairs) / n
+    my = sum(b for _, b in pairs) / n
+    slope = sum((a - mx) * (b - my) for a, b in pairs) / sum(
+        (a - mx) ** 2 for a, _ in pairs
+    )
+    scored = []
+    for y87, y17, y82, name in rows:
+        expected = my + slope * (y87 - mx)
+        scored.append((y17 - expected, y82, y87, y17, name))
+    scored.sort()
+    for title, part in (
+        (
+            "HATTIN ALTINDA — 1987'e göre beklenenden çok daha az evet (2017)",
+            scored[:12],
+        ),
+        ("HATTIN ÜSTÜNDE — beklenenden çok daha fazla evet", scored[-12:]),
+    ):
+        print()
+        print(f"{title}")
+        for residual, y82, y87, y17, name in part:
+            y82text = f"{y82:>7.1f}%" if y82 is not None else f"{'—':>8}"
+            print(f"{name:<16}{y82text}{y87:>7.1f}%{y17:>7.1f}%{residual:>+9.1f}")
+
+
+def province_names() -> dict[str, str]:
+    import csv
+
+    out: dict[str, str] = {}
+    path = ROOT / "src" / "veriatlas" / "data" / "areas_tr.csv"
+    with path.open(encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            if row.get("area_level") == "province":
+                out[row["area_id"]] = row["name_tr"]
+    return out
+
+
 def main() -> None:
+    if "--il" in sys.argv[1:]:
+        province_view()
+        return
     votes = {v: load(v) for v in ("ho1961", "ho1982", "ho1987", "ho2010", "ho2017")}
     y82 = votes["ho1982"]
     total_yes = sum(s * n for _, s, n in y82.values()) / sum(
