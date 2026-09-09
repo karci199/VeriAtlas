@@ -111,10 +111,14 @@ def columns_of(rows: list[list[str]]) -> list[str]:
             continue
         if any(NUM.fullmatch(c) for c in labels):
             break
-        # A line carrying a single short name is the province caption that opens the
-        # block, not a column heading -- counted as a party it shifts every value.
-        if started and len(labels) == 1 and len(labels[0]) <= 40:
-            break
+        # A line carrying exactly one label is never a list of columns: the reports write
+        # the column headings together. It is either a caption spanning the table
+        # ("Geçerli oyların dağılımı") or the province name that opens a block ("Adana"),
+        # and counting either as a party shifts every value in the file. Skipped, not
+        # stopped on -- stopping threw away the Evet and Hayır columns of the 2007
+        # referendum, which are printed after such a caption.
+        if len(labels) == 1:
+            continue
         if not started and not any(
             fold(c).startswith(("sandik", "gecerli")) for c in labels
         ):
@@ -325,7 +329,20 @@ def read_report(path: pathlib.Path) -> list[dict]:
             labels_only = [c for c in row if c]
             if len(labels_only) == 1 and len(labels_only[0]) <= 40:
                 name = labels_only[0]
-                if not CAPTION.match(name) and not DISTRICT_TOTAL.search(name):
+                # The table's own captions are lone labels too -- "Geçerli oyların
+                # dağılımı", "Sandık kurulu sayısı". Taken for a province, the real
+                # province below them is demoted to a district and the settlements under
+                # it lose their parent: the 2017 referendum fell from 39,410 settlements
+                # to 31,380 that way, with no error anywhere.
+                heading = fold(name)
+                if (
+                    not CAPTION.match(name)
+                    and not DISTRICT_TOTAL.search(name)
+                    and not any(
+                        w in heading
+                        for w in ("sayisi", "orani", "dagilimi", "gore", "toplam")
+                    )
+                ):
                     province, district, caption_province = name, None, True
             continue
         # A round percentage stays an integer and makes the row one value too long; it is
