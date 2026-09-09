@@ -45,9 +45,10 @@ SESSION_REPORTS = 60
 
 MV_TABLE = "Seçim çevresi ve bölgelerine göre"
 HO_TABLE = "İl, ilçe ve bölgelerine göre yurt içi halk oylaması sonuçları"
-# The settlement table does not carry the oldest referendums; those answer only from
-# the district table. Asked for the missing one, the province box stays empty and the
-# year reads as "no data" -- which is why 1961-1988 sat at zero reports.
+# The district table, kept for a year the settlement one cannot answer. Measured, not
+# assumed: 1961-1988 answer from BOTH, so they are asked for the deeper one. An empty
+# province list is not proof of a missing year -- the application returns one when it is
+# busy, and a plan cached from such a moment reads as "this year has no data" forever.
 HO_TABLE_OLD = "İl ve ilçelere göre yurt içi halk oylaması sonuçları"
 CB_TABLE = "İl, ilçe ve bölgelerine göre Cumhurbaşkanlığı yurt içi seçim sonuçları"
 YEREL_SCOPE = "Bölge sonucu"
@@ -82,12 +83,20 @@ def mv(year_label: str) -> dict:
 
 
 def ho(year_label: str, old: bool = False) -> dict:
+    """One report per district, or -- for 1961-1988 -- one per province.
+
+    Measured, not assumed. Those four years offer no district at all: the district box
+    stays empty however long it is waited on, and the settlement table answers the report
+    button with nothing. The district table does answer, one report per province, and that
+    report carries the districts inside it. Asking the newer shape instead produced a plan
+    of zero areas, which reads exactly like a year with no data -- and did, for months.
+    """
     return {
         "page": "halkoylama.zul",
         "table": HO_TABLE_OLD if old else HO_TABLE,
         "year": year_label,
         "box": "İl:",
-        "sub": "İlçe:",
+        "sub": None if old else "İlçe:",
     }
 
 
