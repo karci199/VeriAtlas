@@ -49,7 +49,10 @@ TOP_MIDPOINT = 78.0
 #: Which coarse bucket each printed education heading belongs to. The 2011 report grades
 #: candidates in three steps and the later ones in nine; only these three carry across.
 BUCKET = {
-    "okumayazmabilmeyen": "ilkokul ve altı",
+    # Kept apart from the rest of "ilkokul ve altı": being unable to read at all is a
+    # different thing from having left school early, and it is the one that shows what
+    # happened to the oldest women. Merged back for the summary table.
+    "okumayazmabilmeyen": "okuma yazma bilmeyen",
     "okumayazmabilenfakatbirokul": "ilkokul ve altı",
     # The voter report prints this heading on one line, the candidate report breaks it
     # over two. Unrecognised, the column drops out of the sum, the row misses its own
@@ -68,7 +71,18 @@ BUCKET = {
     # comparison: an unknown grade is not a grade.
     "bilinmeyen": "bilinmeyen",
 }
-BUCKETS = ["ilkokul ve altı", "ortaokul-lise", "yükseköğretim"]
+BUCKETS = [
+    "okuma yazma bilmeyen",
+    "ilkokul ve altı",
+    "ortaokul-lise",
+    "yükseköğretim",
+]
+#: How the summary table groups them: the first two are one line.
+SUMMARY = {
+    "ilkokul ve altı": ("okuma yazma bilmeyen", "ilkokul ve altı"),
+    "ortaokul-lise": ("ortaokul-lise",),
+    "yükseköğretim": ("yükseköğretim",),
+}
 
 YEAR_LABEL = {
     "2011": "2011",
@@ -161,14 +175,25 @@ def read(path: pathlib.Path) -> tuple[list[tuple[str, str, str, dict[str, int]]]
             cell = row[column] if 0 <= column < len(row) else ""
             return int(cell.replace(".", "")) if COUNT.match(cell) else 0
 
-        counts = None
+        counts = zero = None
+        # A block's rows can sit a column or two off its own header. The offset is not
+        # guessed: every header seen so far is tried at a few offsets and the report's own
+        # Toplam decides. A reading that finds nobody satisfies the check trivially, so it
+        # is held back and used only if nothing better is found.
         for columns, total_column in reversed(headers):
-            trial: dict[str, int] = dict.fromkeys([*BUCKETS, "bilinmeyen"], 0)
-            for column, heading in columns.items():
-                trial[BUCKET[fold(heading)]] += value(column)
-            if sum(trial.values()) == value(total_column):
-                counts = trial
+            for shift in (0, -1, 1, -2, 2):
+                trial: dict[str, int] = dict.fromkeys([*BUCKETS, "bilinmeyen"], 0)
+                for column, heading in columns.items():
+                    trial[BUCKET[fold(heading)]] += value(column + shift)
+                if sum(trial.values()) != value(total_column + shift):
+                    continue
+                if sum(trial.values()):
+                    counts = trial
+                    break
+                zero = zero or trial
+            if counts:
                 break
+        counts = counts or zero
         if counts is None:
             bad += 1
             continue
@@ -196,7 +221,7 @@ def summarise(page: str) -> None:
         years.setdefault(path.name.split("__")[0], []).append(path)
     print(
         f"{'Yıl':<9}{'Kişi':>12}{'Ort. yaş':>9}{'Kadın %':>9}"
-        + "".join(f"{b:>17}" for b in BUCKETS)
+        + "".join(f"{b:>17}" for b in SUMMARY)
         + "   okunamayan"
     )
     for key in sorted(years, key=lambda k: list(YEAR_LABEL).index(k)):
@@ -219,7 +244,10 @@ def summarise(page: str) -> None:
             f"{YEAR_LABEL[key]:<9}{total:>12,}{weighted / total:>9.1f}"
             f"{100 * women / total:>9.1f}"
         )
-        line += "".join(f"{100 * buckets[b] / total:>16.1f}%" for b in BUCKETS)
+        line += "".join(
+            f"{100 * sum(buckets[p] for p in parts) / total:>16.1f}%"
+            for parts in SUMMARY.values()
+        )
         print(line + f"{bad:>13}")
 
 
