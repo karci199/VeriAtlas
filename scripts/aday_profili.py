@@ -77,102 +77,73 @@ def midpoint(label: str) -> float:
     return (int(match.group(1)) + int(match.group(2))) / 2
 
 
-def header_of(rows: list[list[str]]) -> tuple[dict[int, str], int] | None:
-    """({column: education heading}, total column), read from the header row."""
-    for index, row in enumerate(rows):
-        filled = [(i, c) for i, c in enumerate(row) if c]
-        if not any(fold(c) == "toplam" for _, c in filled):
-            continue
-        total = next(i for i, c in filled if fold(c) == "toplam")
-        # A heading can be broken over several lines -- "Okuma yazma bilen fakat bir
-        # okul" sits one row above "bitirmeyen", and the first grades of the scale can be
-        # a row further up still. Taking only the line that carries "Toplam" loses those
-        # columns, their counts never reach the printed total, and every row of the report
-        # is then thrown away as unreadable.
-        columns: dict[int, str] = {}
-        for near in rows[max(0, index - 4) : index + 2]:
-            for i, c in enumerate(near):
-                if c and i != total and fold(c) in BUCKET:
-                    columns[i] = c
-        if columns:
-            return columns, total
-    return None
+def header_at(rows: list[list[str]], index: int) -> tuple[dict[int, str], int] | None:
+    """({column: education heading}, total column) if this row is a header, else None."""
+    filled = [(i, c) for i, c in enumerate(rows[index]) if c]
+    if not any(fold(c) == "toplam" for _, c in filled):
+        return None
+    total = next(i for i, c in filled if fold(c) == "toplam")
+    # A heading can be broken over several lines -- "Okuma yazma bilen fakat bir okul"
+    # sits one row above "bitirmeyen" -- so the lines around this one are read too.
+    columns: dict[int, str] = {}
+    for near in rows[max(0, index - 4) : index + 2]:
+        for i, c in enumerate(near):
+            if c and i != total and fold(c) in BUCKET:
+                columns[i] = c
+    return (columns, total) if columns else None
 
 
 def read(path: pathlib.Path) -> tuple[list[tuple[str, str, dict[str, int]]], int]:
-    """([(age group, gender, {bucket: count})], rows whose parts did not add up)."""
+    """([(age group, gender, {bucket: count})], rows that could not be read).
+
+    The report is one block per province and it **reprints the header for every block**,
+    in different columns each time: İstanbul's total sits in column 29, a small province's
+    in column 19. Carrying one header across the file puts every other province's values
+    in the wrong grade, or misses them entirely. So the header is picked up again wherever
+    it reappears, and each row is read against the one above it.
+    """
     raw = re.sub(
         r"(?is)<script.*?</script>",
         " ",
         path.read_text(encoding="windows-1254", errors="replace"),
     )
     rows = [cells_of(r) for r in re.findall(r"(?is)<tr[^>]*>(.*?)</tr>", raw)]
-    found = header_of(rows)
-    if not found:
-        return [], 0
-    columns, total_column = found
-
-    def gender_column(row: list[str]) -> int | None:
-        return next((i for i, c in enumerate(row) if c in GENDER), None)
 
     out: list[tuple[str, str, dict[str, int]]] = []
     bad = 0
     age = None
-    for row in rows:
+    header: tuple[dict[int, str], int] | None = None
+    for index, row in enumerate(rows):
+        found = header_at(rows, index)
+        if found:
+            header = found
+            continue
         for cell in row:
             if cell and AGE.match(cell):
                 age = cell
-        here = gender_column(row)
-        if here is None or age is None:
+        gender = next((c for c in row if c in GENDER), None)
+        if gender is None or age is None or header is None:
             continue
-        # A "Toplam" line repeats the province's people under the last age group it saw;
+        # A "Toplam" line repeats the block's people under the last age group it saw;
         # counted, every province would be added twice.
         if any(fold(c) == "toplam" for c in row if c):
             continue
+        columns, total_column = header
 
-        def read_at(shift: int, row: list[str] = row) -> dict[str, int] | None:
-            """The row's counts at this offset, or None if the parts miss the total."""
+        def value(column: int, row: list[str] = row) -> int:
+            cell = row[column] if 0 <= column < len(row) else ""
+            return int(cell) if cell.isdigit() else 0
 
-            def value(column: int) -> int:
-                index = column + shift
-                cell = row[index] if 0 <= index < len(row) else ""
-                return int(cell) if cell.isdigit() else 0
-
-            counts: dict[str, int] = dict.fromkeys([*BUCKETS, "bilinmeyen"], 0)
-            for column, heading in columns.items():
-                counts[BUCKET[fold(heading)]] += value(column)
-            # The report prints the row's own total, so the offset can be *found* rather
-            # than assumed: the one where the parts reach the printed total is the right
-            # one. A row that no offset satisfies is not counted at all.
-            return counts if sum(counts.values()) == value(total_column) else None
-
-        # An age group with no candidate at all prints as dashes and totals zero. It is
-        # a real, readable row -- counting it as unreadable made whole years look broken.
-        widest = max(len(r) for r in rows)
-        fits = [
-            found
-            for shift in sorted(range(-widest, widest + 1), key=abs)
-            if (found := read_at(shift)) is not None
-        ]
-        # An all-zero read satisfies the check trivially -- parts and total both read as
-        # nothing -- so a row aligned at the wrong offset can look empty instead of
-        # unreadable, and its people vanish without a warning. A reading that finds
-        # somebody is therefore preferred over one that finds nobody.
-        counts = next(
-            (found for found in fits if sum(found.values())),
-            fits[0] if fits else None,
-        )
-        if counts is None:
+        counts: dict[str, int] = dict.fromkeys([*BUCKETS, "bilinmeyen"], 0)
+        for column, heading in columns.items():
+            counts[BUCKET[fold(heading)]] += value(column)
+        # The report prints the row's own total, so the reading can be checked against it
+        # rather than trusted: the parts have to reach the total. A row that fails is
+        # counted and reported -- silently dropping it would lose people without a trace.
+        if sum(counts.values()) != value(total_column):
             bad += 1
             continue
-        # The row printed digits but every offset that satisfied the total read it as
-        # empty. That is not an empty row, it is a row this reader cannot align -- the
-        # report omits blank cells entirely, so the columns are not a uniform shift of the
-        # header. Counted and reported; the alternative is losing people in silence.
-        if not sum(counts.values()) and any(c.isdigit() for c in row if c):
-            bad += 1
-            continue
-        out.append((age, row[here], counts))
+        out.append((age, gender, counts))
     return out, bad
 
 
