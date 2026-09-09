@@ -35,7 +35,7 @@ NUM = re.compile(r"-?\d+")
 AGG = ["sandik", "kayitli", "oy_kullanan", "gecerli"]
 SUFFIX = re.compile(r"\s+(mah\.?|mahallesi|köy\.?|köyü|belde|bel\.)\s*$", re.IGNORECASE)
 CAPTION = re.compile(
-    r"^(İl/İlçe merkezi|Belde/Köy|Yurt içi toplam|Türkiye|Şehir|Köy|Bucak)$",
+    r"^(İl/İlçe merkezi|Belde/Köy|Yurt içi toplam|Türkiye|Şehir)$",
     re.IGNORECASE,
 )
 
@@ -133,7 +133,20 @@ VALUE_HEAD = {
 }
 #: Columns that carry a number but are not a vote: seats won, and the percentage columns
 #: the report interleaves. Counted as a party they would be added to the vote total.
-NOT_A_PARTY = ("uyeliksayisi", "orani", "yuzde")
+NOT_A_PARTY = ("uyeliksayisi", "baskanliksayisi", "orani", "yuzde")
+#: Whole headings of the column the area name is written in. Exact, because "İl" as a
+#: substring matches inside a party name.
+LABEL_EXACT = {"il", "ilce", "bolge", "belediye", "koy", "mahalle", "yerlesimyeri"}
+#: The same heading written at length.
+LABEL_HEAD = (
+    "secimcevresi",
+    "ililce",
+    "ililcebolge",
+    "belediye",
+    "mahalle",
+    "yerlesim",
+    "muhtarlik",
+)
 
 
 def header_columns(rows: list[list[str]]) -> tuple[list[int], dict[int, str]] | None:
@@ -148,15 +161,18 @@ def header_columns(rows: list[list[str]]) -> tuple[list[int], dict[int, str]] | 
         filled = [(i, c) for i, c in enumerate(row) if c]
         if not any(fold(c) in VALUE_HEAD for _, c in filled):
             continue
-        first = min(i for i, c in filled if fold(c) in VALUE_HEAD)
-        labels = [i for i, c in filled if i < first]
+        # Not "everything left of the first number is a label": the 2007 milletvekili
+        # report heads column 1 with "Sandık kurulu sayısı" and column 7 with "Seçim
+        # çevresi ve bölgesi", so the label column sits to the RIGHT of a value column.
+        # Each header cell is classified on its own text instead.
+        labels: list[int] = []
         values: dict[int, str] = {}
         for i, c in filled:
-            if i < first:
-                continue
             key = fold(c)
             if key in VALUE_HEAD:
                 values[i] = VALUE_HEAD[key]
+            elif key in LABEL_EXACT or any(w in key for w in LABEL_HEAD):
+                labels.append(i)
             elif not any(w in key for w in NOT_A_PARTY):
                 values[i] = c
         return (labels, values) if labels and values else None
@@ -167,20 +183,20 @@ def read_by_column(
     rows: list[list[str]], label_cols: list[int], value_cols: dict[int, str]
 ) -> list[dict]:
     """Rows read by column position: level from which label column is filled."""
+
     # The header is not always a reliable map of the label columns: the provincial-council
     # report heads them with a single merged "İl İlçe" cell while its rows still indent
     # province, district and settlement into three different columns. So the depths come
     # from the rows, and the header only says where the labels end and the values begin.
-    edge = min(value_cols)
+    def label_cells(row: list[str]) -> list[tuple[int, str]]:
+        return [
+            (i, c)
+            for i, c in enumerate(row)
+            if c and i not in value_cols and not NUM.fullmatch(c)
+        ]
+
     seen = {
-        next(
-            (
-                i
-                for i, c in enumerate(row)
-                if c and i < edge and not NUM.fullmatch(c) and not CAPTION.match(c)
-            ),
-            None,
-        )
+        next((i for i, c in label_cells(row) if not CAPTION.match(c)), None)
         for row in rows
         if any(NUM.fullmatch(row[c]) for c in value_cols if c < len(row))
     } - {None}
@@ -188,9 +204,7 @@ def read_by_column(
     out: list[dict] = []
     province = district = None
     for row in rows:
-        labels = [
-            (i, c) for i, c in enumerate(row) if c and i < edge and not NUM.fullmatch(c)
-        ]
+        labels = label_cells(row)
         if not labels:
             continue
         index, label = labels[0]
@@ -225,6 +239,32 @@ def read_by_column(
     return out
 
 
+#: The settlement type the report prints in its own cell beside the name.
+TYPE_CELL = re.compile(r"^(mah\.?|mahallesi|köy\.?|köyü|bucağı|belde)$", re.IGNORECASE)
+#: "Ceyhan İlçe toplamı" and "Adana(1) nolu seçim çevresi toplamı" -- the older reports
+#: indent province, district and settlement into the SAME column and say the level in
+#: words instead. Read by column alone, every one of their rows comes out a province.
+DISTRICT_TOTAL = re.compile(r"\s*ilçe\s*toplamı\s*$", re.IGNORECASE)
+AREA_TOTAL = re.compile(r"seçim\s*çevresi\s*toplamı", re.IGNORECASE)
+#: A sub-total inside a district. Matched only with the word "toplamı" -- on "bucağı"
+#: alone it would delete real villages whose name ends that way.
+BUCAK_TOTAL = re.compile(r"bucağı\s*toplamı\s*$", re.IGNORECASE)
+
+
+def level_from_text(labels: list[tuple[int, str]]) -> tuple[str, str] | None:
+    """(level, name) where the report names the level instead of indenting it."""
+    _, label = labels[0]
+    if BUCAK_TOTAL.search(label):
+        return "atla", label
+    if any(TYPE_CELL.match(c) for _, c in labels[1:]):
+        return "mahalle", label
+    if DISTRICT_TOTAL.search(label):
+        return "ilce", DISTRICT_TOTAL.sub("", label).strip()
+    if any(AREA_TOTAL.search(c) for _, c in labels):
+        return "il", AREA_TOTAL.sub("", label).strip().rstrip(" nolu").strip()
+    return None
+
+
 def read_report(path: pathlib.Path) -> list[dict]:
     """[{level, name, parent_name, values}] for one report file."""
     raw = path.read_text(encoding="windows-1254", errors="replace")
@@ -253,6 +293,20 @@ def read_report(path: pathlib.Path) -> list[dict]:
 
     out: list[dict] = []
     province = district = None
+    # The "Ceyhan İlçe toplamı" line sits after its settlements in some years, so the
+    # district is read up front; otherwise every settlement above it is parentless and
+    # silently dropped.
+    for row in rows:
+        for cell in row:
+            if cell and DISTRICT_TOTAL.search(cell):
+                district = DISTRICT_TOTAL.sub("", cell).strip()
+                break
+        if district:
+            break
+    # A province line resets the district, and in these reports the province total is
+    # printed above the settlements that belong to the district the file is about. The
+    # district read above is kept as the fallback so they are not orphaned.
+    file_district = district
     for row in rows:
         numbers = [c for c in row if NUM.fullmatch(c)]
         # A round percentage stays an integer and makes the row one value too long; it is
@@ -268,6 +322,28 @@ def read_report(path: pathlib.Path) -> list[dict]:
         if CAPTION.match(label):
             continue
         values = dict(zip(AGG + names, [int(v) for v in numbers], strict=False))
+        named = level_from_text(labels)
+        if named:
+            level, name = named
+            if level == "atla":
+                continue
+            if level == "il":
+                province, district = name, None
+            elif level == "ilce":
+                district = name
+            elif not district:
+                district = file_district
+                if not district:
+                    continue
+            out.append(
+                {
+                    "level": level,
+                    "name": name,
+                    "parent": {"il": None, "ilce": province}.get(level, district),
+                    "values": values,
+                }
+            )
+            continue
         if index <= il_depth:
             province, district = label, None
             out.append({"level": "il", "name": label, "parent": None, "values": values})
@@ -411,7 +487,12 @@ def main(argv: list[str]) -> None:
         unmatched = 0
 
         for path in files:
-            province_id = None
+            # Some years print no province line at all -- the 1995-2007 milletvekili
+            # reports open straight at the district. The file is one province's, and its
+            # name says which, so the id comes from there and the districts inside it are
+            # matched instead of the whole file being dropped.
+            stem = path.stem.split("__")[0]
+            province_id = provinces.get(fold(re.sub(r"_\d+$", "", stem)))
             for record in read_report(path):
                 values = record["values"]
                 base = {
