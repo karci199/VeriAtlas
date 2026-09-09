@@ -35,7 +35,7 @@ NUM = re.compile(r"-?\d+")
 AGG = ["sandik", "kayitli", "oy_kullanan", "gecerli"]
 SUFFIX = re.compile(r"\s+(mah\.?|mahallesi|köy\.?|köyü|belde|bel\.)\s*$", re.IGNORECASE)
 CAPTION = re.compile(
-    r"^(İl/İlçe merkezi|Belde/Köy|Yurt içi toplam|Türkiye|Şehir)$",
+    r"^(İl/İlçe merkezi|Belde/Köy|Yurt içi toplam|Türkiye|Şehir)( toplamı)?$",
     re.IGNORECASE,
 )
 
@@ -100,12 +100,20 @@ def columns_of(rows: list[list[str]]) -> list[str]:
         "belediye",
         "koy",
         "mahalle",
+        # The oldest referendums head the label column "İl ve ilçe"; unrecognised, the
+        # heading itself is counted as a party and every row comes out one value short.
+        "ilveilce",
+        "ililce",
     }
     for row in rows:
         labels = [c for c in row if c]
         if not labels:
             continue
         if any(NUM.fullmatch(c) for c in labels):
+            break
+        # A line carrying a single short name is the province caption that opens the
+        # block, not a column heading -- counted as a party it shifts every value.
+        if started and len(labels) == 1 and len(labels[0]) <= 40:
             break
         if not started and not any(
             fold(c).startswith(("sandik", "gecerli")) for c in labels
@@ -293,6 +301,10 @@ def read_report(path: pathlib.Path) -> list[dict]:
 
     out: list[dict] = []
     province = district = None
+    # The oldest referendums (1961-1988) name the province on a line of its own, with no
+    # numbers on it, and then list the districts one column in. Read by column alone the
+    # province is never seen and every district of the country comes out as a province.
+    caption_province = False
     # The "Ceyhan İlçe toplamı" line sits after its settlements in some years, so the
     # district is read up front; otherwise every settlement above it is parentless and
     # silently dropped.
@@ -309,6 +321,13 @@ def read_report(path: pathlib.Path) -> list[dict]:
     file_district = district
     for row in rows:
         numbers = [c for c in row if NUM.fullmatch(c)]
+        if not numbers:
+            labels_only = [c for c in row if c]
+            if len(labels_only) == 1 and len(labels_only[0]) <= 40:
+                name = labels_only[0]
+                if not CAPTION.match(name) and not DISTRICT_TOTAL.search(name):
+                    province, district, caption_province = name, None, True
+            continue
         # A round percentage stays an integer and makes the row one value too long; it is
         # always the fourth number (katılım) in the referendum layout.
         if len(numbers) == width + 1:
@@ -345,6 +364,20 @@ def read_report(path: pathlib.Path) -> list[dict]:
             )
             continue
         if index <= il_depth:
+            # When the province came from a caption of its own, the shallowest row with
+            # numbers is already a district -- reading it as another province drops the
+            # whole file to one level.
+            if caption_province and province:
+                district = label
+                out.append(
+                    {
+                        "level": "ilce",
+                        "name": label,
+                        "parent": province,
+                        "values": values,
+                    }
+                )
+                continue
             province, district = label, None
             out.append({"level": "il", "name": label, "parent": None, "values": values})
         elif index <= ilce_depth:
