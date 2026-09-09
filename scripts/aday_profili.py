@@ -55,6 +55,9 @@ BUCKET = {
     "yukseklisans": "yükseköğretim",
     "doktora": "yükseköğretim",
     "universiteyuksekokul": "yükseköğretim",
+    # Counted so the row's parts can reach its printed total, but kept out of the
+    # comparison: an unknown grade is not a grade.
+    "bilinmeyen": "bilinmeyen",
 }
 BUCKETS = ["ilkokul ve altı", "ortaokul-lise", "yükseköğretim"]
 
@@ -76,12 +79,21 @@ def midpoint(label: str) -> float:
 
 def header_of(rows: list[list[str]]) -> tuple[dict[int, str], int] | None:
     """({column: education heading}, total column), read from the header row."""
-    for row in rows:
+    for index, row in enumerate(rows):
         filled = [(i, c) for i, c in enumerate(row) if c]
         if not any(fold(c) == "toplam" for _, c in filled):
             continue
         total = next(i for i, c in filled if fold(c) == "toplam")
-        columns = {i: c for i, c in filled if i != total and fold(c) in BUCKET}
+        # A heading can be broken over several lines -- "Okuma yazma bilen fakat bir
+        # okul" sits one row above "bitirmeyen", and the first grades of the scale can be
+        # a row further up still. Taking only the line that carries "Toplam" loses those
+        # columns, their counts never reach the printed total, and every row of the report
+        # is then thrown away as unreadable.
+        columns: dict[int, str] = {}
+        for near in rows[max(0, index - 4) : index + 2]:
+            for i, c in enumerate(near):
+                if c and i != total and fold(c) in BUCKET:
+                    columns[i] = c
         if columns:
             return columns, total
     return None
@@ -126,7 +138,7 @@ def read(path: pathlib.Path) -> tuple[list[tuple[str, str, dict[str, int]]], int
                 cell = row[index] if 0 <= index < len(row) else ""
                 return int(cell) if cell.isdigit() else 0
 
-            counts: dict[str, int] = dict.fromkeys(BUCKETS, 0)
+            counts: dict[str, int] = dict.fromkeys([*BUCKETS, "bilinmeyen"], 0)
             for column, heading in columns.items():
                 counts[BUCKET[fold(heading)]] += value(column)
             # The report prints the row's own total, so the offset can be *found* rather
@@ -134,16 +146,30 @@ def read(path: pathlib.Path) -> tuple[list[tuple[str, str, dict[str, int]]], int
             # one. A row that no offset satisfies is not counted at all.
             return counts if sum(counts.values()) == value(total_column) else None
 
+        # An age group with no candidate at all prints as dashes and totals zero. It is
+        # a real, readable row -- counting it as unreadable made whole years look broken.
         widest = max(len(r) for r in rows)
+        fits = [
+            found
+            for shift in sorted(range(-widest, widest + 1), key=abs)
+            if (found := read_at(shift)) is not None
+        ]
+        # An all-zero read satisfies the check trivially -- parts and total both read as
+        # nothing -- so a row aligned at the wrong offset can look empty instead of
+        # unreadable, and its people vanish without a warning. A reading that finds
+        # somebody is therefore preferred over one that finds nobody.
         counts = next(
-            (
-                found
-                for shift in sorted(range(-widest, widest + 1), key=abs)
-                if (found := read_at(shift)) is not None and sum(found.values())
-            ),
-            None,
+            (found for found in fits if sum(found.values())),
+            fits[0] if fits else None,
         )
         if counts is None:
+            bad += 1
+            continue
+        # The row printed digits but every offset that satisfied the total read it as
+        # empty. That is not an empty row, it is a row this reader cannot align -- the
+        # report omits blank cells entirely, so the columns are not a uniform shift of the
+        # header. Counted and reported; the alternative is losing people in silence.
+        if not sum(counts.values()) and any(c.isdigit() for c in row if c):
             bad += 1
             continue
         out.append((age, row[here], counts))
@@ -161,7 +187,7 @@ def summarise(page: str) -> None:
     for path in files:
         records, bad = read(path)
         total = weighted = women = 0
-        buckets = dict.fromkeys(BUCKETS, 0)
+        buckets = dict.fromkeys([*BUCKETS, "bilinmeyen"], 0)
         for age, gender, counts in records:
             count = sum(counts.values())
             total += count
