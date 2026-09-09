@@ -379,6 +379,27 @@ def read_report(path: pathlib.Path) -> list[dict]:
     return out
 
 
+#: District names the election reports use that the registry does not. Each was checked to
+#: land on exactly one district: a wrong entry welds two different places into one series.
+#: Only spelling and renaming here -- a district that SPLIT is not in this table, because
+#: its votes cannot be attributed to any one successor.
+DISTRICT_ALIAS = {
+    ("TR-04", "dogubeyazit"): "dogubayazit",
+    ("TR-07", "kale"): "demre",
+    ("TR-09", "yenihisar"): "didim",
+    ("TR-22", "suleoglu"): "suloglu",
+    ("TR-25", "ilica"): "aziziye",
+    ("TR-27", "kargamis"): "karkamis",
+    ("TR-31", "samandagi"): "samandag",
+    ("TR-44", "arapkir"): "arapgir",
+    ("TR-44", "poturge"): "puturge",
+    ("TR-56", "aydinlar"): "tillo",
+    # The abbreviation rule cannot reach this one: the registry spells it
+    # "Marmaraereğlisi", so the shortened tail "Ereğli" is not its ending.
+    ("TR-59", "meregli"): "marmaraereglisi",
+}
+
+
 def match_district(districts: dict, province_id: str, name: str) -> str | None:
     """The district id for a name as the election report writes it.
 
@@ -391,11 +412,33 @@ def match_district(districts: dict, province_id: str, name: str) -> str | None:
     hit = districts.get((province_id, key))
     if hit:
         return hit
+    alias = DISTRICT_ALIAS.get((province_id, key))
+    if alias:
+        return districts.get((province_id, alias))
     if key.endswith("merkez"):
         for candidate in ("merkez", key[: -len("merkez")]):
             hit = districts.get((province_id, candidate))
             if hit:
                 return hit
+    # "Ş.Koçhisar" is Şereflikoçhisar and "M.Kemalpaşa" Mustafakemalpaşa: the report
+    # abbreviates the first word to its initial. Expanded only when the province holds
+    # exactly one district that fits, so an ambiguous abbreviation stays unmatched.
+    short = re.match(r"^(\w)\.\s*(.+)$", name.strip())
+    if short:
+        head, tail = fold(short.group(1)), fold(short.group(2))
+        fits = [
+            area
+            for (prov, folded), area in districts.items()
+            if prov == province_id and folded.startswith(head) and folded.endswith(tail)
+        ]
+        if len(fits) == 1:
+            return fits[0]
+    # A district can change province: Osmaniye left Adana in 1996, Düzce left Bolu in
+    # 1999, and reports from before that name them under the old one. Taken only when the
+    # name belongs to exactly one district in the whole country -- "Merkez" never does.
+    elsewhere = [area for (_, folded), area in districts.items() if folded == key]
+    if len(elsewhere) == 1:
+        return elsewhere[0]
     return None
 
 

@@ -45,6 +45,10 @@ SESSION_REPORTS = 60
 
 MV_TABLE = "Seçim çevresi ve bölgelerine göre"
 HO_TABLE = "İl, ilçe ve bölgelerine göre yurt içi halk oylaması sonuçları"
+# The settlement table does not carry the oldest referendums; those answer only from
+# the district table. Asked for the missing one, the province box stays empty and the
+# year reads as "no data" -- which is why 1961-1988 sat at zero reports.
+HO_TABLE_OLD = "İl ve ilçelere göre yurt içi halk oylaması sonuçları"
 CB_TABLE = "İl, ilçe ve bölgelerine göre Cumhurbaşkanlığı yurt içi seçim sonuçları"
 YEREL_SCOPE = "Bölge sonucu"
 YEREL_SCOPE_FROM = 2014
@@ -77,10 +81,10 @@ def mv(year_label: str) -> dict:
     }
 
 
-def ho(year_label: str) -> dict:
+def ho(year_label: str, old: bool = False) -> dict:
     return {
         "page": "halkoylama.zul",
-        "table": HO_TABLE,
+        "table": HO_TABLE_OLD if old else HO_TABLE,
         "year": year_label,
         "box": "İl:",
         "sub": "İlçe:",
@@ -205,9 +209,10 @@ VOTES: dict[str, dict] = {
     "ho2017": ho("2017 Halk oylaması"),
     "ho2010": ho("2010 Halk oylaması"),
     "ho2007": ho("2007 Halk oylaması"),
-    "ho1988": ho("1988 Halk oylaması"),
-    "ho1987": ho("1987 Halk oylaması"),
-    "ho1982": ho("1982 Halk oylaması"),
+    "ho1988": ho("1988 Halk oylaması", old=True),
+    "ho1987": ho("1987 Halk oylaması", old=True),
+    "ho1982": ho("1982 Halk oylaması", old=True),
+    "ho1961": ho("1961 Halk oylaması", old=True),
 }
 for _office in YEREL_OFFICES:
     for _year in ("2024", "2019", "2014", "2009", "2004", "1999", "1994", "1989"):
