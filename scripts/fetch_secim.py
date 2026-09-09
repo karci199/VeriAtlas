@@ -47,6 +47,17 @@ MV_TABLE = "Seçim çevresi ve bölgelerine göre"
 HO_TABLE = "İl, ilçe ve bölgelerine göre yurt içi halk oylaması sonuçları"
 CB_TABLE = "İl, ilçe ve bölgelerine göre Cumhurbaşkanlığı yurt içi seçim sonuçları"
 YEREL_SCOPE = "Bölge sonucu"
+YEREL_SCOPE_FROM = 2014
+# Before 2014 the settlement cut does not exist, and which of the remaining cuts answers
+# depends on the office: the two belediye offices and the metropolitan one are counted by
+# belediye, the provincial council by district. Asking the other one leaves the province
+# list populated and the report button silent -- a failure with no message.
+YEREL_SCOPE_OLD = {
+    "ilgen": "İl ve ilçe sonucu",
+    "belmec": "Belediye sonucu",
+    "bel": "Belediye sonucu",
+    "bsb": "Belediye sonucu",
+}
 
 YEREL_OFFICES = {
     "bsb": "Büyükşehir belediye başkanlığı",
@@ -133,7 +144,9 @@ def yerel(office: str, year: str) -> dict:
     return {
         "page": "yerel.zul",
         "office": YEREL_OFFICES[office],
-        "scope": YEREL_SCOPE,
+        "scope": (
+            YEREL_SCOPE if int(year) >= YEREL_SCOPE_FROM else YEREL_SCOPE_OLD[office]
+        ),
         "year": year,
         "box": "İl seçimi:",
         "sub": None,

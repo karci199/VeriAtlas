@@ -35,7 +35,8 @@ NUM = re.compile(r"-?\d+")
 AGG = ["sandik", "kayitli", "oy_kullanan", "gecerli"]
 SUFFIX = re.compile(r"\s+(mah\.?|mahallesi|köy\.?|köyü|belde|bel\.)\s*$", re.IGNORECASE)
 CAPTION = re.compile(
-    r"^(İl/İlçe merkezi|Belde/Köy|Yurt içi toplam|Türkiye)$", re.IGNORECASE
+    r"^(İl/İlçe merkezi|Belde/Köy|Yurt içi toplam|Türkiye|Şehir|Köy|Bucak)$",
+    re.IGNORECASE,
 )
 
 
@@ -120,6 +121,110 @@ def columns_of(rows: list[list[str]]) -> list[str]:
     return names
 
 
+VALUE_HEAD = {
+    "sandikkurulusayisi": "sandik",
+    "sandiksayisi": "sandik",
+    "kayitlisecmensayisi": "kayitli",
+    "oykullanansecmensayisi": "oy_kullanan",
+    "gecerlioysayisi": "gecerli",
+    # 1989 heads the column "Geçerli oy", without the "sayısı" the later years add.
+    "gecerlioy": "gecerli",
+    "oykullanansecmensayisiveorani": "oy_kullanan",
+}
+#: Columns that carry a number but are not a vote: seats won, and the percentage columns
+#: the report interleaves. Counted as a party they would be added to the vote total.
+NOT_A_PARTY = ("uyeliksayisi", "orani", "yuzde")
+
+
+def header_columns(rows: list[list[str]]) -> tuple[list[int], dict[int, str]] | None:
+    """(label column indices, {column index: value name}) read from the header row.
+
+    Older reports leave a party's cell **empty** where it took no votes, so a row does not
+    carry a fixed count of numbers — counting them and comparing against a width drops
+    every row and the file parses to nothing. The header says which column each value
+    lives in, so the value is read from its column and a blank one is a zero.
+    """
+    for row in rows:
+        filled = [(i, c) for i, c in enumerate(row) if c]
+        if not any(fold(c) in VALUE_HEAD for _, c in filled):
+            continue
+        first = min(i for i, c in filled if fold(c) in VALUE_HEAD)
+        labels = [i for i, c in filled if i < first]
+        values: dict[int, str] = {}
+        for i, c in filled:
+            if i < first:
+                continue
+            key = fold(c)
+            if key in VALUE_HEAD:
+                values[i] = VALUE_HEAD[key]
+            elif not any(w in key for w in NOT_A_PARTY):
+                values[i] = c
+        return (labels, values) if labels and values else None
+    return None
+
+
+def read_by_column(
+    rows: list[list[str]], label_cols: list[int], value_cols: dict[int, str]
+) -> list[dict]:
+    """Rows read by column position: level from which label column is filled."""
+    # The header is not always a reliable map of the label columns: the provincial-council
+    # report heads them with a single merged "İl İlçe" cell while its rows still indent
+    # province, district and settlement into three different columns. So the depths come
+    # from the rows, and the header only says where the labels end and the values begin.
+    edge = min(value_cols)
+    seen = {
+        next(
+            (
+                i
+                for i, c in enumerate(row)
+                if c and i < edge and not NUM.fullmatch(c) and not CAPTION.match(c)
+            ),
+            None,
+        )
+        for row in rows
+        if any(NUM.fullmatch(row[c]) for c in value_cols if c < len(row))
+    } - {None}
+    depths = sorted(seen) or sorted(label_cols)
+    out: list[dict] = []
+    province = district = None
+    for row in rows:
+        labels = [
+            (i, c) for i, c in enumerate(row) if c and i < edge and not NUM.fullmatch(c)
+        ]
+        if not labels:
+            continue
+        index, label = labels[0]
+        if CAPTION.match(label):
+            continue
+        values: dict[str, int] = {}
+        for col, name in value_cols.items():
+            cell = row[col] if col < len(row) else ""
+            values[name] = int(cell) if NUM.fullmatch(cell) else 0
+        if not any(values.values()):
+            continue
+        # The label column a name sits in is its level. Depths come from the header, so a
+        # report that indents differently is read on its own terms.
+        rank = depths.index(index) if index in depths else len(depths) - 1
+        if rank == 0:
+            province, district = label, None
+            out.append({"level": "il", "name": label, "parent": None, "values": values})
+        elif rank == 1 or len(depths) == 2:
+            district = label
+            out.append(
+                {"level": "ilce", "name": label, "parent": province, "values": values}
+            )
+        elif district:
+            out.append(
+                {
+                    "level": "mahalle",
+                    "name": label,
+                    "parent": district,
+                    "values": values,
+                }
+            )
+    return out
+
+
 def read_report(path: pathlib.Path) -> list[dict]:
     """[{level, name, parent_name, values}] for one report file."""
     raw = path.read_text(encoding="windows-1254", errors="replace")
@@ -180,6 +285,21 @@ def read_report(path: pathlib.Path) -> list[dict]:
                     "values": values,
                 }
             )
+    # Older reports leave a party's cell empty where it took no votes, so their rows never
+    # reach the full width: the read above returns nothing, or just the one province total
+    # that happened to be complete. Reading by column position recovers them. Both reads
+    # are done and the longer one wins, so a report the width-based read already
+    # understands keeps being read the way it always was.
+    # A read that reached the settlement is the report understood; it is kept as it is.
+    # Where the width-based read came back with nothing, or with only the handful of rows
+    # that happened to be complete, the column-position read is tried in its place.
+    if any(r["level"] == "mahalle" for r in out):
+        return out
+    header = header_columns(rows)
+    if header:
+        by_column = read_by_column(rows, *header)
+        if len(by_column) > len(out):
+            return by_column
     return out
 
 
@@ -310,7 +430,9 @@ def main(argv: list[str]) -> None:
                     else:
                         unmatched += 1
                 elif record["level"] == "mahalle" and province_id:
-                    parent = match_district(districts, province_id, record["parent"] or "")
+                    parent = match_district(
+                        districts, province_id, record["parent"] or ""
+                    )
                     if not parent:
                         continue
                     area = hoods.get((parent, fold(record["name"])))
@@ -330,10 +452,19 @@ def main(argv: list[str]) -> None:
                     continue
                 if win[0] not in adaylar:
                     adaylar.append(win[0])
-                ozet[key] = [row["k"], row["o"], row["g"], adaylar.index(win[0]), win[1]]
+                ozet[key] = [
+                    row["k"],
+                    row["o"],
+                    row["g"],
+                    adaylar.index(win[0]),
+                    win[1],
+                ]
         (OUT / f"secim-{vote}-mahalle-ozet.json").write_text(
-            json.dumps({"adaylar": adaylar, "y": ozet}, separators=(",", ":"),
-                       ensure_ascii=False),
+            json.dumps(
+                {"adaylar": adaylar, "y": ozet},
+                separators=(",", ":"),
+                ensure_ascii=False,
+            ),
             encoding="utf-8",
         )
 
