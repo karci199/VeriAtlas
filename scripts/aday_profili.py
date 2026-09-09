@@ -105,15 +105,23 @@ def header_at(rows: list[list[str]], index: int) -> tuple[dict[int, str], int] |
     filled = [(i, c) for i, c in enumerate(rows[index]) if c]
     if not any(fold(c) == "toplam" for _, c in filled):
         return None
-    total = next(i for i, c in filled if fold(c) == "toplam")
+    totals = [i for i, c in filled if fold(c) == "toplam"]
     # A heading can be broken over several lines -- "Okuma yazma bilen fakat bir okul"
     # sits one row above "bitirmeyen" -- so the lines around this one are read too.
     columns: dict[int, str] = {}
     for near in rows[max(0, index - 4) : index + 2]:
         for i, c in enumerate(near):
-            if c and i != total and fold(c) in BUCKET:
+            if c and fold(c) in BUCKET:
                 columns[i] = c
-    return (columns, total) if columns else None
+    # "Toplam" and a grade can land in the same column: the heading lines are not always
+    # in step with one another. Dropping that column because "Toplam" claims it loses the
+    # grade, and a whole education level disappears from the block -- six hundred and
+    # fifty-three blocks lost "Yüksekokul veya fakülte" that way. The grade keeps the
+    # column; the total is taken from one that is free.
+    total = next((i for i in totals if i not in columns), None)
+    if total is None or not columns:
+        return None
+    return columns, total
 
 
 def read(path: pathlib.Path) -> tuple[list[tuple[str, str, str, dict[str, int]]], int]:
