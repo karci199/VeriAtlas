@@ -187,13 +187,12 @@ VOTES: dict[str, dict] = {
     "aday1999": aday("1999"),
     "aday1995": aday("1995"),
     "aday1991": aday("1991"),
-    "aday1987": aday("1987"),
-    "aday1983": aday("1983"),
-    "aday1977": aday("1977"),
-    "aday1973": aday("1973"),
-    "aday1969": aday("1969"),
-    "aday1965": aday("1965"),
-    "aday1961": aday("1961"),
+    # Nothing before 1991 for either of these two tables, and it was measured rather than
+    # assumed. The seats table's "Yıllar:" box holds ten years, 1991 to 2023, and no more.
+    # The candidate table shows radios reading "1977-1950 seçimi" and "2023-1983 seçimi",
+    # but choosing one leaves every list on the page empty and the report button silent --
+    # they select a section the application no longer serves. So 1950-1987 candidates and
+    # seats are not fetchable here; they are missing from the source, not from this file.
     "cikan2023": cikan("2023"),
     "cikan2018": cikan("2018"),
     "cikan2015h": cikan("2015 (7 Haziran)"),
@@ -204,13 +203,6 @@ VOTES: dict[str, dict] = {
     "cikan1999": cikan("1999"),
     "cikan1995": cikan("1995"),
     "cikan1991": cikan("1991"),
-    "cikan1987": cikan("1987"),
-    "cikan1983": cikan("1983"),
-    "cikan1977": cikan("1977"),
-    "cikan1973": cikan("1973"),
-    "cikan1969": cikan("1969"),
-    "cikan1965": cikan("1965"),
-    "cikan1961": cikan("1961"),
     "cb2023t1": cb("2023 Cumhurbaşkanlığı seçimi", "1.Tur"),
     "cb2023t2": cb("2023 Cumhurbaşkanlığı seçimi", "2.Tur"),
     "cb2018": cb("2018 Cumhurbaşkanlığı seçimi"),
