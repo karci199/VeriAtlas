@@ -176,6 +176,29 @@ def read(path: pathlib.Path) -> tuple[list[tuple[str, str, str, dict[str, int]]]
             return int(cell.replace(".", "")) if COUNT.match(cell) else 0
 
         counts = zero = None
+        # A reading that does not depend on columns at all: the grades in the order the
+        # header prints them, the row's numbers in the order it prints them, and the last
+        # number as the total. This rescues the blocks whose "Toplam" heading lands on top
+        # of another heading -- there the column map loses a grade and the row is then
+        # read against some other block's header, which quietly reported no illiterates
+        # in places where most of the oldest women cannot read.
+        numbers = [
+            int(c.replace(".", "")) if c != "-" else 0
+            for c in row
+            if c and (COUNT.match(c) or c == "-")
+        ]
+        for columns, _total in reversed(headers):
+            labels = [h for _, h in sorted(columns.items())]
+            if len(numbers) != len(labels) + 1:
+                continue
+            if sum(numbers[:-1]) != numbers[-1]:
+                continue
+            trial = dict.fromkeys([*BUCKETS, "bilinmeyen"], 0)
+            for heading, number in zip(labels, numbers, strict=False):
+                trial[BUCKET[fold(heading)]] += number
+            if sum(trial.values()):
+                counts = trial
+                break
         # A block's rows can sit a column or two off its own header. The offset is not
         # guessed: every header seen so far is tried at a few offsets and the report's own
         # Toplam decides. A reading that finds nobody satisfies the check trivially, so it

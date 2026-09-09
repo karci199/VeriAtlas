@@ -22,6 +22,7 @@ import sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
 from aday_profili import PROFIL, YEAR_LABEL, read
+from parse_secim import fold
 
 OLD = {"65-69", "70-74", "75+"}
 ILLITERATE = "okuma yazma bilmeyen"
@@ -47,11 +48,38 @@ def share(row: list[int]) -> float:
     return 100 * row[0] / row[1] if row[1] else 0.0
 
 
+def trace(names: list[str]) -> None:
+    """One district followed through every year the profile covers."""
+    # Not casefold: "İznik".casefold() puts a combining dot on the i and the name never
+    # matches what the report writes. The project's own fold is the one that agrees.
+    wanted = [fold(n) for n in names]
+    print(
+        f"{'İlçe':<20}{'Yıl':<12}{'65+ kadın':>10}{'okuma yazma bilmeyen':>22}{'erkek':>9}"
+    )
+    for year in YEAR_LABEL:
+        table = tally(year)
+        for (name, gender), row in sorted(table.items()):
+            if gender != "Kadın" or "(" not in name:
+                continue
+            if not any(w in fold(name) for w in wanted):
+                continue
+            men = table.get((name, "Erkek"), [0, 0])
+            print(
+                f"{name.split(' (')[0]:<20}{YEAR_LABEL[year]:<12}{row[1]:>10,}"
+                f"{share(row):>21.1f}%{share(men):>8.1f}%"
+            )
+
+
 def main(argv: list[str]) -> None:
     years = list(YEAR_LABEL)
+    names = [a for a in argv if not a.startswith("--")]
+    if names:
+        trace(names)
+        return
+    year_arg = next((a.split("=")[1] for a in argv if a.startswith("--yil=")), "2023")
     if "--il" in argv or "--ilce" in argv:
         by_district = "--ilce" in argv
-        table = tally("2023")
+        table = tally(year_arg)
         rows = [
             (share(row), name, row[1])
             for (name, gender), row in table.items()
@@ -61,7 +89,8 @@ def main(argv: list[str]) -> None:
         ]
         rows.sort(reverse=True)
         what = "ilçe" if by_district else "il"
-        print(f"2023 · 65+ kadın seçmende okuma yazma bilmeyen oranı ({what})")
+        etiket = YEAR_LABEL.get(year_arg, year_arg)
+        print(f"{etiket} · 65+ kadın seçmende okuma yazma bilmeyen oranı ({what})")
         for title, part in (("EN YÜKSEK", rows[:12]), ("EN DÜŞÜK", rows[-12:])):
             print()
             print(title)
