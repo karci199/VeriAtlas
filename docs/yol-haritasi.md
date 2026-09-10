@@ -18,19 +18,25 @@ doğrudan `C:eri`'de `git log --oneline --all` ile hangi `claude/*` dalının e
 olduğuna bak, `git merge` ile ana dala al, worktree'yi atla. Oturum başında
 `git branch --show-current` ve `git status --short` ile nerede olduğunu doğrula.
 
-## Bilinen kritik hata (2026-09-10) — MEDAS hemşehrilik il-indeks eşleşmesi bozuk
+## Çözüldü — MEDAS hemşehrilik il-indeks eşleşmesi (2026-09-10)
 
-`fetch_medas_districts.py`'de `--il-no N` seçimi, il açılır listesindeki N'inci satırı
-seçiyor (`rest[PROVINCE_INDEX - 1]`) ve bunun plaka/alfabetik sırayla eşleştiğini
-varsayıyor. **Doğru değil.** `--il-no 79` çalıştırıldığında seçilen il "Kilis" değil
-**"Yalova"** çıktı (log: `il: YALOVA`). "YABANCI ÜLKE" satırını filtrelemek (commit
-`4ae0ad7`) sorunu çözmedi, yalnızca bir bozuk satırı temizledi.
+`fetch_medas_districts.py`'de `--il-no N`, açılır listedeki N'inci satırı seçiyor.
+İlk şüphe "plaka koduyla eşleşmiyor" idi (79 = Kilis beklenirken Yalova geldi) ama bu
+yanlış alarmdı: **gerçek sıra plaka değil, Türkçe alfabetik sıra** (Ç/Ş/Ğ/İ/Ö/Ü kendi
+Türkçe alfabe yerinde) — 79 = Yalova zaten doğruydu.
 
-**Sonuç: `C:eri-ham\medas\ilce\hemsehrilik-ilNN-*.csv` dosyalarının en az bir kısmı
-adlarıyla içerikleri uyuşmuyor olabilir — 79 numaralı dosya Yalova verisi taşıyor.**
-Kullanılmadan önce her dosyanın gerçek ili (satırlardaki ilçe adlarından) adıyla
-karşılaştırılıp gerekirse yeniden adlandırılması, eksik kalan gerçek il(ler)in ayrıca
-tespit edilmesi gerekiyor. Bu doğrulama yapılmadan hemşehrilik verisi analize sokulmasın.
+81 dosyanın tamamı satır içeriğinden (gerçek ilçe adlarından) tek tek doğrulandı:
+**79 dosya baştan doğruydu, yalnızca il80 ve il81 yanlıştı** — il80 Yalova'nın
+mükerrer bir kopyasıydı (olması gereken Yozgat), il81 Yozgat verisi taşıyordu
+(olması gereken Zonguldak); Zonguldak hiç çekilmemişti. İkisi de doğru numarayla
+(`--il-no 80`, `--il-no 81`) yeniden çekildi ve içerik doğrulandı (`il: YOZGAT`,
+`il: ZONGULDAK`). **81/81 il artık doğru.**
+
+Not: çoğu ilde yalnızca 1-2 yıl dosyası var (İstanbul hariç, o 19 yılın tamamını tek
+tek çekiyor) — `--il-no` varsayılan olarak `--tum-yillar` istiyor ama 50.000 sınırı
+çoğu ilde tam 19 yılı tek seferde geçirmiyor, sweep de her zaman tamamlamamış
+olabilir. İl-bazlı "tamam" ile yıl-bazlı "tamam" farklı şeyler — durum sayfası
+yalnızca ili sayıyor, yıl derinliğini değil. Bu ayrı bir iş kalemi.
 
 ## Çekim durumu (2026-09-10) — sıradaki üç iş
 
