@@ -400,7 +400,10 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
                 rest = [
                     t
                     for t in labels
-                    if t.strip() and "eçiniz" not in t and "EPS" not in t.upper()
+                    if t.strip()
+                    and "eçiniz" not in t
+                    and "EPS" not in t.upper()
+                    and "YABANCI" not in t.upper()
                 ]
                 if PROVINCE_INDEX > len(rest):
                     print("  ", year, "il sirasi yok:", PROVINCE_INDEX, len(rest))
