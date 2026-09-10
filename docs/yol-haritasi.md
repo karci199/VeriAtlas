@@ -3,7 +3,33 @@
 Bu dosya "sırada ne var" sorusunun tek cevabı. Kararların gerekçesi
 [kararlar.md](kararlar.md)'de; burası yalnızca sıra.
 
-Son güncelleme: 2026-08-14.
+Son güncelleme: 2026-09-10.
+
+## Çekim durumu (2026-09-10) — sıradaki üç iş
+
+Canlı sayılar `web/durum.html`'de (`scripts/durum_raporu.py` üretiyor, dakikada bir
+yenileniyor). O sayfadaki yüzdelere **şu an güvenilmiyor** — iki sayaç doğrulanan
+gerçek durumla çelişiyor:
+
+1. **`durum_raporu.py`nin sayaç mantığı bozuk.** Hemşehrilik "0/81" gösteriyor ama
+   `C:eri-ham\medas\ilce` altında 133 `hemsehrilik-il*-ilce-kirilim-*.csv` dosyası
+   var — sayaç dosya adı kalıbını tanımıyor. Seçim tarafında da `fetch_secim.py`
+   kendi defterine göre milletvekili/cumhurbaşkanlığı/halkoylaması/yerelde "0 eksik"
+   diyor, sayfa ise %54-%97 arası gösteriyor — iki araç farklı birim sayıyor
+   (muhtemelen il düzeyi vs. beklenen ilçe×yıl rapor adedi). Düzeltilmeden bu
+   yüzdelere dayanarak "eksik" sonucuna varmayın.
+2. **MEDAS hemşehrilik CSV indirme zaman aşımına uğruyor.** `fetch_medas_hemsehrilik.py`
+   il01 2023 için iki denemede de `Locator.click` 60 saniyede patlıyor (rapor sayfası
+   hazır ama CSV düğmesi görünmüyor/gelmiyor). Tekrar çalıştırmak tek başına çözmedi;
+   bekleme süresini uzatmak ya da düğme seçicisini gözden geçirmek gerekiyor.
+3. **MEDAS ilçe ölçümleri (bağımlılık, çocuk nüfus, hane tipleri…) 4/60 dosya.**
+   Hangi 56 ölçümün eksik olduğunu (doğru `--konu`/`--olcum` listesi) çıkarmadan
+   çekici tahmini komutla çalıştırılmadı — kalıptaki 4. hata (uydurma komutla yanlış
+   dosya indirme) burada tekrar yaşanmasın diye.
+
+Ayrıca: Endeksa mahalle demografisi (%98) son turda ardışık DNS hatası
+(`getaddrinfo failed`) aldı — ağ kesintisi, gerçek veri eksikliği değil; ağ
+düzelince tek geçişte kapanır.
 
 ## Nerede duruyoruz
 
