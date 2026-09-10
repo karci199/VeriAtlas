@@ -35,7 +35,8 @@ NUM = re.compile(r"-?\d+")
 AGG = ["sandik", "kayitli", "oy_kullanan", "gecerli"]
 SUFFIX = re.compile(r"\s+(mah\.?|mahallesi|köy\.?|köyü|belde|bel\.)\s*$", re.IGNORECASE)
 CAPTION = re.compile(
-    r"^(İl/İlçe merkezi|Belde/Köy|Yurt içi toplam|Türkiye)$", re.IGNORECASE
+    r"^(İl/İlçe merkezi|Belde/Köy|Yurt içi toplam|Türkiye|Şehir)( toplamı)?$",
+    re.IGNORECASE,
 )
 
 
@@ -99,6 +100,10 @@ def columns_of(rows: list[list[str]]) -> list[str]:
         "belediye",
         "koy",
         "mahalle",
+        # The oldest referendums head the label column "İl ve ilçe"; unrecognised, the
+        # heading itself is counted as a party and every row comes out one value short.
+        "ilveilce",
+        "ililce",
     }
     for row in rows:
         labels = [c for c in row if c]
@@ -106,6 +111,14 @@ def columns_of(rows: list[list[str]]) -> list[str]:
             continue
         if any(NUM.fullmatch(c) for c in labels):
             break
+        # A line carrying exactly one label is never a list of columns: the reports write
+        # the column headings together. It is either a caption spanning the table
+        # ("Geçerli oyların dağılımı") or the province name that opens a block ("Adana"),
+        # and counting either as a party shifts every value in the file. Skipped, not
+        # stopped on -- stopping threw away the Evet and Hayır columns of the 2007
+        # referendum, which are printed after such a caption.
+        if len(labels) == 1:
+            continue
         if not started and not any(
             fold(c).startswith(("sandik", "gecerli")) for c in labels
         ):
@@ -118,6 +131,150 @@ def columns_of(rows: list[list[str]]) -> list[str]:
             and not any(w in fold(c) for w in caption_words)
         ]
     return names
+
+
+VALUE_HEAD = {
+    "sandikkurulusayisi": "sandik",
+    "sandiksayisi": "sandik",
+    "kayitlisecmensayisi": "kayitli",
+    "oykullanansecmensayisi": "oy_kullanan",
+    "gecerlioysayisi": "gecerli",
+    # 1989 heads the column "Geçerli oy", without the "sayısı" the later years add.
+    "gecerlioy": "gecerli",
+    "oykullanansecmensayisiveorani": "oy_kullanan",
+}
+#: Columns that carry a number but are not a vote: seats won, and the percentage columns
+#: the report interleaves. Counted as a party they would be added to the vote total.
+NOT_A_PARTY = ("uyeliksayisi", "baskanliksayisi", "orani", "yuzde")
+#: Whole headings of the column the area name is written in. Exact, because "İl" as a
+#: substring matches inside a party name.
+LABEL_EXACT = {"il", "ilce", "bolge", "belediye", "koy", "mahalle", "yerlesimyeri"}
+#: The same heading written at length.
+LABEL_HEAD = (
+    "secimcevresi",
+    "ililce",
+    "ililcebolge",
+    "belediye",
+    "mahalle",
+    "yerlesim",
+    "muhtarlik",
+)
+
+
+def header_columns(rows: list[list[str]]) -> tuple[list[int], dict[int, str]] | None:
+    """(label column indices, {column index: value name}) read from the header row.
+
+    Older reports leave a party's cell **empty** where it took no votes, so a row does not
+    carry a fixed count of numbers — counting them and comparing against a width drops
+    every row and the file parses to nothing. The header says which column each value
+    lives in, so the value is read from its column and a blank one is a zero.
+    """
+    for row in rows:
+        filled = [(i, c) for i, c in enumerate(row) if c]
+        if not any(fold(c) in VALUE_HEAD for _, c in filled):
+            continue
+        # Not "everything left of the first number is a label": the 2007 milletvekili
+        # report heads column 1 with "Sandık kurulu sayısı" and column 7 with "Seçim
+        # çevresi ve bölgesi", so the label column sits to the RIGHT of a value column.
+        # Each header cell is classified on its own text instead.
+        labels: list[int] = []
+        values: dict[int, str] = {}
+        for i, c in filled:
+            key = fold(c)
+            if key in VALUE_HEAD:
+                values[i] = VALUE_HEAD[key]
+            elif key in LABEL_EXACT or any(w in key for w in LABEL_HEAD):
+                labels.append(i)
+            elif not any(w in key for w in NOT_A_PARTY):
+                values[i] = c
+        return (labels, values) if labels and values else None
+    return None
+
+
+def read_by_column(
+    rows: list[list[str]], label_cols: list[int], value_cols: dict[int, str]
+) -> list[dict]:
+    """Rows read by column position: level from which label column is filled."""
+
+    # The header is not always a reliable map of the label columns: the provincial-council
+    # report heads them with a single merged "İl İlçe" cell while its rows still indent
+    # province, district and settlement into three different columns. So the depths come
+    # from the rows, and the header only says where the labels end and the values begin.
+    def label_cells(row: list[str]) -> list[tuple[int, str]]:
+        return [
+            (i, c)
+            for i, c in enumerate(row)
+            if c and i not in value_cols and not NUM.fullmatch(c)
+        ]
+
+    seen = {
+        next((i for i, c in label_cells(row) if not CAPTION.match(c)), None)
+        for row in rows
+        if any(NUM.fullmatch(row[c]) for c in value_cols if c < len(row))
+    } - {None}
+    depths = sorted(seen) or sorted(label_cols)
+    out: list[dict] = []
+    province = district = None
+    for row in rows:
+        labels = label_cells(row)
+        if not labels:
+            continue
+        index, label = labels[0]
+        if CAPTION.match(label):
+            continue
+        values: dict[str, int] = {}
+        for col, name in value_cols.items():
+            cell = row[col] if col < len(row) else ""
+            values[name] = int(cell) if NUM.fullmatch(cell) else 0
+        if not any(values.values()):
+            continue
+        # The label column a name sits in is its level. Depths come from the header, so a
+        # report that indents differently is read on its own terms.
+        rank = depths.index(index) if index in depths else len(depths) - 1
+        if rank == 0:
+            province, district = label, None
+            out.append({"level": "il", "name": label, "parent": None, "values": values})
+        elif rank == 1 or len(depths) == 2:
+            district = label
+            out.append(
+                {"level": "ilce", "name": label, "parent": province, "values": values}
+            )
+        elif district:
+            out.append(
+                {
+                    "level": "mahalle",
+                    "name": label,
+                    "parent": district,
+                    "values": values,
+                }
+            )
+    return out
+
+
+#: The settlement type the report prints in its own cell beside the name.
+TYPE_CELL = re.compile(r"^(mah\.?|mahallesi|köy\.?|köyü|bucağı|belde)$", re.IGNORECASE)
+#: "Ceyhan İlçe toplamı" and "Adana(1) nolu seçim çevresi toplamı" -- the older reports
+#: indent province, district and settlement into the SAME column and say the level in
+#: words instead. Read by column alone, every one of their rows comes out a province.
+DISTRICT_TOTAL = re.compile(r"\s*ilçe\s*toplamı\s*$", re.IGNORECASE)
+AREA_TOTAL = re.compile(r"seçim\s*çevresi\s*toplamı", re.IGNORECASE)
+#: A sub-total inside a district. Matched only with the word "toplamı" -- on "bucağı"
+#: alone it would delete real villages whose name ends that way.
+BUCAK_TOTAL = re.compile(r"bucağı\s*toplamı\s*$", re.IGNORECASE)
+
+
+def level_from_text(labels: list[tuple[int, str]]) -> tuple[str, str] | None:
+    """(level, name) where the report names the level instead of indenting it."""
+    _, label = labels[0]
+    if BUCAK_TOTAL.search(label):
+        return "atla", label
+    if any(TYPE_CELL.match(c) for _, c in labels[1:]):
+        return "mahalle", label
+    if DISTRICT_TOTAL.search(label):
+        return "ilce", DISTRICT_TOTAL.sub("", label).strip()
+    if any(AREA_TOTAL.search(c) for _, c in labels):
+        return "il", AREA_TOTAL.sub("", label).strip().rstrip(" nolu").strip()
+    return None
 
 
 def read_report(path: pathlib.Path) -> list[dict]:
@@ -148,8 +305,46 @@ def read_report(path: pathlib.Path) -> list[dict]:
 
     out: list[dict] = []
     province = district = None
+    # The oldest referendums (1961-1988) name the province on a line of its own, with no
+    # numbers on it, and then list the districts one column in. Read by column alone the
+    # province is never seen and every district of the country comes out as a province.
+    caption_province = False
+    # The "Ceyhan İlçe toplamı" line sits after its settlements in some years, so the
+    # district is read up front; otherwise every settlement above it is parentless and
+    # silently dropped.
+    for row in rows:
+        for cell in row:
+            if cell and DISTRICT_TOTAL.search(cell):
+                district = DISTRICT_TOTAL.sub("", cell).strip()
+                break
+        if district:
+            break
+    # A province line resets the district, and in these reports the province total is
+    # printed above the settlements that belong to the district the file is about. The
+    # district read above is kept as the fallback so they are not orphaned.
+    file_district = district
     for row in rows:
         numbers = [c for c in row if NUM.fullmatch(c)]
+        if not numbers:
+            labels_only = [c for c in row if c]
+            if len(labels_only) == 1 and len(labels_only[0]) <= 40:
+                name = labels_only[0]
+                # The table's own captions are lone labels too -- "Geçerli oyların
+                # dağılımı", "Sandık kurulu sayısı". Taken for a province, the real
+                # province below them is demoted to a district and the settlements under
+                # it lose their parent: the 2017 referendum fell from 39,410 settlements
+                # to 31,380 that way, with no error anywhere.
+                heading = fold(name)
+                if (
+                    not CAPTION.match(name)
+                    and not DISTRICT_TOTAL.search(name)
+                    and not any(
+                        w in heading
+                        for w in ("sayisi", "orani", "dagilimi", "gore", "toplam")
+                    )
+                ):
+                    province, district, caption_province = name, None, True
+            continue
         # A round percentage stays an integer and makes the row one value too long; it is
         # always the fourth number (katılım) in the referendum layout.
         if len(numbers) == width + 1:
@@ -163,7 +358,43 @@ def read_report(path: pathlib.Path) -> list[dict]:
         if CAPTION.match(label):
             continue
         values = dict(zip(AGG + names, [int(v) for v in numbers], strict=False))
+        named = level_from_text(labels)
+        if named:
+            level, name = named
+            if level == "atla":
+                continue
+            if level == "il":
+                province, district = name, None
+            elif level == "ilce":
+                district = name
+            elif not district:
+                district = file_district
+                if not district:
+                    continue
+            out.append(
+                {
+                    "level": level,
+                    "name": name,
+                    "parent": {"il": None, "ilce": province}.get(level, district),
+                    "values": values,
+                }
+            )
+            continue
         if index <= il_depth:
+            # When the province came from a caption of its own, the shallowest row with
+            # numbers is already a district -- reading it as another province drops the
+            # whole file to one level.
+            if caption_province and province:
+                district = label
+                out.append(
+                    {
+                        "level": "ilce",
+                        "name": label,
+                        "parent": province,
+                        "values": values,
+                    }
+                )
+                continue
             province, district = label, None
             out.append({"level": "il", "name": label, "parent": None, "values": values})
         elif index <= ilce_depth:
@@ -180,7 +411,43 @@ def read_report(path: pathlib.Path) -> list[dict]:
                     "values": values,
                 }
             )
+    # Older reports leave a party's cell empty where it took no votes, so their rows never
+    # reach the full width: the read above returns nothing, or just the one province total
+    # that happened to be complete. Reading by column position recovers them. Both reads
+    # are done and the longer one wins, so a report the width-based read already
+    # understands keeps being read the way it always was.
+    # A read that reached the settlement is the report understood; it is kept as it is.
+    # Where the width-based read came back with nothing, or with only the handful of rows
+    # that happened to be complete, the column-position read is tried in its place.
+    if any(r["level"] == "mahalle" for r in out):
+        return out
+    header = header_columns(rows)
+    if header:
+        by_column = read_by_column(rows, *header)
+        if len(by_column) > len(out):
+            return by_column
     return out
+
+
+#: District names the election reports use that the registry does not. Each was checked to
+#: land on exactly one district: a wrong entry welds two different places into one series.
+#: Only spelling and renaming here -- a district that SPLIT is not in this table, because
+#: its votes cannot be attributed to any one successor.
+DISTRICT_ALIAS = {
+    ("TR-04", "dogubeyazit"): "dogubayazit",
+    ("TR-07", "kale"): "demre",
+    ("TR-09", "yenihisar"): "didim",
+    ("TR-22", "suleoglu"): "suloglu",
+    ("TR-25", "ilica"): "aziziye",
+    ("TR-27", "kargamis"): "karkamis",
+    ("TR-31", "samandagi"): "samandag",
+    ("TR-44", "arapkir"): "arapgir",
+    ("TR-44", "poturge"): "puturge",
+    ("TR-56", "aydinlar"): "tillo",
+    # The abbreviation rule cannot reach this one: the registry spells it
+    # "Marmaraereğlisi", so the shortened tail "Ereğli" is not its ending.
+    ("TR-59", "meregli"): "marmaraereglisi",
+}
 
 
 def match_district(districts: dict, province_id: str, name: str) -> str | None:
@@ -195,11 +462,33 @@ def match_district(districts: dict, province_id: str, name: str) -> str | None:
     hit = districts.get((province_id, key))
     if hit:
         return hit
+    alias = DISTRICT_ALIAS.get((province_id, key))
+    if alias:
+        return districts.get((province_id, alias))
     if key.endswith("merkez"):
         for candidate in ("merkez", key[: -len("merkez")]):
             hit = districts.get((province_id, candidate))
             if hit:
                 return hit
+    # "Ş.Koçhisar" is Şereflikoçhisar and "M.Kemalpaşa" Mustafakemalpaşa: the report
+    # abbreviates the first word to its initial. Expanded only when the province holds
+    # exactly one district that fits, so an ambiguous abbreviation stays unmatched.
+    short = re.match(r"^(\w)\.\s*(.+)$", name.strip())
+    if short:
+        head, tail = fold(short.group(1)), fold(short.group(2))
+        fits = [
+            area
+            for (prov, folded), area in districts.items()
+            if prov == province_id and folded.startswith(head) and folded.endswith(tail)
+        ]
+        if len(fits) == 1:
+            return fits[0]
+    # A district can change province: Osmaniye left Adana in 1996, Düzce left Bolu in
+    # 1999, and reports from before that name them under the old one. Taken only when the
+    # name belongs to exactly one district in the whole country -- "Merkez" never does.
+    elsewhere = [area for (_, folded), area in districts.items() if folded == key]
+    if len(elsewhere) == 1:
+        return elsewhere[0]
     return None
 
 
@@ -291,7 +580,12 @@ def main(argv: list[str]) -> None:
         unmatched = 0
 
         for path in files:
-            province_id = None
+            # Some years print no province line at all -- the 1995-2007 milletvekili
+            # reports open straight at the district. The file is one province's, and its
+            # name says which, so the id comes from there and the districts inside it are
+            # matched instead of the whole file being dropped.
+            stem = path.stem.split("__")[0]
+            province_id = provinces.get(fold(re.sub(r"_\d+$", "", stem)))
             for record in read_report(path):
                 values = record["values"]
                 base = {
@@ -310,7 +604,9 @@ def main(argv: list[str]) -> None:
                     else:
                         unmatched += 1
                 elif record["level"] == "mahalle" and province_id:
-                    parent = match_district(districts, province_id, record["parent"] or "")
+                    parent = match_district(
+                        districts, province_id, record["parent"] or ""
+                    )
                     if not parent:
                         continue
                     area = hoods.get((parent, fold(record["name"])))
@@ -330,10 +626,19 @@ def main(argv: list[str]) -> None:
                     continue
                 if win[0] not in adaylar:
                     adaylar.append(win[0])
-                ozet[key] = [row["k"], row["o"], row["g"], adaylar.index(win[0]), win[1]]
+                ozet[key] = [
+                    row["k"],
+                    row["o"],
+                    row["g"],
+                    adaylar.index(win[0]),
+                    win[1],
+                ]
         (OUT / f"secim-{vote}-mahalle-ozet.json").write_text(
-            json.dumps({"adaylar": adaylar, "y": ozet}, separators=(",", ":"),
-                       ensure_ascii=False),
+            json.dumps(
+                {"adaylar": adaylar, "y": ozet},
+                separators=(",", ":"),
+                ensure_ascii=False,
+            ),
             encoding="utf-8",
         )
 
