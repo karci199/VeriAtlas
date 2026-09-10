@@ -22,6 +22,8 @@ Run:  uv run python scripts/fetch_medas_districts.py 2023 2022
       uv run python scripts/fetch_medas_districts.py --all --kirilim           --olcum "Yabancı uyruklu nüfus" --kirilim-adi Cinsiyet --ad yabanci
 """
 
+import os
+import pathlib
 import re
 import sys
 import time
@@ -166,6 +168,70 @@ def tick(page, index: int, note: str) -> None:
     settle(page, note)
 
 
+#: When set, the value list is ticked name by name instead of with <Hepsi>. MEDAS caps
+#: gösterge × düzey × zaman at 50.000, and this measure is 81 provinces × 973 districts =
+#: 78.813 for a single year -- over the cap, so the report is refused. Ticking forty
+#: provinces at a time brings it to 38.920 and two passes cover the year.
+SLICE: tuple[str, ...] = ()
+#: Set by `--il-no`: which entry of the province dropdown to choose, counting from 1 and
+#: skipping "HEPSİ". A number rather than a name, because a Turkish string handed through
+#: git-bash argv arrives re-encoded and would select nothing -- the same trap that makes
+#: the measure label live in the wrapper instead of the command line.
+PROVINCE_INDEX = 0
+#: Set by `--tum-yillar`: tick every year the Zaman tab offers, not one.
+ALL_YEARS = False
+
+
+def tick_by_name(page, names: tuple[str, ...]) -> int:
+    """Tick these rows in the open value list. Returns how many were ticked.
+
+    The list is virtual: about a dozen rows exist in the DOM at a time and the rest are
+    not merely off screen, they are not there. Scrolling a row into view therefore cannot
+    reach them -- the *list* has to be scrolled so the missing rows get drawn. The walk
+    ticks what is present, scrolls a page, and repeats until the list stops moving. A
+    first attempt without this ticked nine provinces of forty-one and wrote a file that
+    looked like a success.
+    """
+    wanted = {" ".join(n.split()) for n in names}
+    done: set[str] = set()
+    # Not `.last`: the page holds four listboxes and the last one is an empty shell with
+    # no height, so scrolling it does nothing at all. The value list is the one carrying
+    # the "<Hepsi>" row -- found by its content rather than by position, which changes.
+    bodies = page.locator(".z-listbox-body")
+    body = bodies.last
+    for index in range(bodies.count()):
+        if bodies.nth(index).locator(".z-listitem", has_text="Hepsi").count():
+            body = bodies.nth(index)
+            break
+    last_top = -1
+    while True:
+        rows = tickable(page)
+        for index in range(rows.count()):
+            row = rows.nth(index)
+            if not row.is_visible():
+                continue
+            text = " ".join(row.inner_text().split())
+            if text not in wanted or text in done:
+                continue
+            if not is_ticked(page, index):
+                row.locator(".z-listitem-checkbox").first.click()
+                settle(page)
+            done.add(text)
+        if done == wanted:
+            break
+        top = body.evaluate(
+            "el => { el.scrollTop += el.clientHeight - 40; return el.scrollTop; }"
+        )
+        settle(page)
+        if top == last_top:
+            break
+        last_top = top
+    missing = wanted - done
+    if missing:
+        print("   · bulunamayan gosterge:", sorted(missing)[:5], f"({len(missing)})")
+    return len(done)
+
+
 def indicator_count(page) -> int:
     """The footer's "Seçilen gösterge adedi: N". Zero means nothing was really added."""
     match = re.search(r"adedi:\s*(\d+)", page.inner_text("body")[-320:])
@@ -227,12 +293,25 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
         # Only the breakdown list has tick boxes, which keeps this away from the measure
         # list, where "Cinsiyet" also appears as "Cinsiyet oranı" and clicking it
         # silently changes what is being measured.
-        for hint in BREAKDOWN_HINTS:
-            index = next((i for i, t in visible_rows(page) if hint in t), None)
-            if index is None:
-                print("  ", year, "kirilim satiri yok:", hint)
-                return False
-            tick(page, index, "kirilim: " + hint)
+        if BREAKDOWN_HINTS == ("*",):
+            # Every breakdown the measure offers, which is what the topic scan does when
+            # it reports a measure as 81 indicators. Naming one of them is not always
+            # enough: "İkamet edilen ilçeye göre nüfusa kayıtlı olunan il" answers with
+            # "gösterge adedi: 0" when only the province dimension is ticked, and zero
+            # indicators reads exactly like a measure that has no data.
+            for index, text in visible_rows(page):
+                if not is_ticked(page, index):
+                    try:
+                        tick(page, index, "kirilim: " + " ".join(text.split())[:40])
+                    except Exception as error:  # noqa: BLE001
+                        print("   · kirilim atlandi:", str(error)[:60])
+        else:
+            for hint in BREAKDOWN_HINTS:
+                index = next((i for i, t in visible_rows(page) if hint in t), None)
+                if index is None:
+                    print("  ", year, "kirilim satiri yok:", hint)
+                    return False
+                tick(page, index, "kirilim: " + hint)
 
     click_exact(page, "Tamam")
 
@@ -242,7 +321,9 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
         # is why the first breakdown run came back byte-identical to the plain total —
         # MEDAS just added the unbroken measure. One `<Hepsi>` heads each value list, and
         # ticking those beats looping over 19 age bands that scroll off screen.
-        while True:
+        if SLICE:
+            tick_by_name(page, SLICE)
+        while not SLICE:
             pending = [
                 index
                 for index, text in visible_rows(page)
@@ -266,13 +347,23 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
 
     # Zaman
     click_exact(page, "İleri")
-    year_row = page.locator(".z-listitem", has_text=str(year)).first
-    if not year_row.count():
-        print("  ", year, "listede yok; sunulan:", offered_years(page)[:25])
-        return False
-    box = year_row.locator(".z-listitem-checkbox")
-    (box if box.count() else year_row).click()
-    settle(page)
+    if ALL_YEARS:
+        # One province at a time costs little: 81 indicators x ~15 districts x 19 years is
+        # 23.000, well inside the 50.000 cap, so the whole series comes in one query
+        # instead of one per year. Nineteen times fewer trips through the flow.
+        for label in offered_years(page):
+            row = page.locator(".z-listitem", has_text=str(label)).first
+            box = row.locator(".z-listitem-checkbox")
+            (box if box.count() else row).click()
+            settle(page)
+    else:
+        year_row = page.locator(".z-listitem", has_text=str(year)).first
+        if not year_row.count():
+            print("  ", year, "listede yok; sunulan:", offered_years(page)[:25])
+            return False
+        box = year_row.locator(".z-listitem-checkbox")
+        (box if box.count() else year_row).click()
+        settle(page)
 
     # Düzey: as deep as this measure goes, every province, every unit
     click_exact(page, "İleri")
@@ -294,7 +385,31 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
             select.is_visible()
             and "HEPSİ" in select.locator("option").all_inner_texts()
         ):
-            select.select_option(label="HEPSİ")
+            # One province instead of all of them. The measure is 81 indicators and the
+            # country is 973 districts: 78.813 for a single year, which MEDAS refuses.
+            # Asked province by province it is a few thousand, and every year fits too.
+            if PROVINCE_INDEX:
+                labels = select.locator("option").all_inner_texts()
+                # The dropdown opens with a placeholder and an all-provinces entry
+                # before the provinces themselves; counting from the raw list selects
+                # "Seçiniz" and the report then comes back with nothing chosen.
+                # Matched on a fragment, not on an upper-cased whole: "Seçiniz".upper()
+                # is "SEÇINIZ" in Python and "SEÇİNİZ" in Turkish, so a set of spellings
+                # misses one of them and the placeholder gets selected as if it were a
+                # province -- the report then has no level at all.
+                rest = [
+                    t
+                    for t in labels
+                    if t.strip() and "eçiniz" not in t and "EPS" not in t.upper()
+                ]
+                if PROVINCE_INDEX > len(rest):
+                    print("  ", year, "il sirasi yok:", PROVINCE_INDEX, len(rest))
+                    return False
+                name = rest[PROVINCE_INDEX - 1]
+                print("   il:", name)
+                select.select_option(label=name)
+            else:
+                select.select_option(label="HEPSİ")
             settle(page)
             break
 
@@ -344,6 +459,25 @@ def main() -> None:
         BREAKDOWN_HINTS = tuple(
             sys.argv[sys.argv.index("--kirilim-adi") + 1].split(",")
         )
+    if "--gosterge-dosya" in sys.argv:
+        # The names come from a file, not from argv: a Turkish string passed through
+        # git-bash arrives re-encoded and would match nothing.
+        global SLICE
+        SLICE = tuple(
+            line.strip()
+            for line in pathlib.Path(sys.argv[sys.argv.index("--gosterge-dosya") + 1])
+            .read_text(encoding="utf-8")
+            .splitlines()
+            if line.strip()
+        )
+    # From the environment, not argv: a bare number sitting after a flag is also read as
+    # a year by the loop below, and every province was writing a second, meaningless file
+    # named after its own index.
+    global PROVINCE_INDEX
+    PROVINCE_INDEX = int(os.environ.get("VERIATLAS_IL_NO", "0") or 0)
+    if "--tum-yillar" in sys.argv:
+        global ALL_YEARS
+        ALL_YEARS = True
     if "--ad" in sys.argv:
         STEM = sys.argv[sys.argv.index("--ad") + 1] + "-ilce-"
     print("olcum:", MEASURE_HINT, " kirilim:", BREAKDOWN_HINTS if breakdown else "-")
