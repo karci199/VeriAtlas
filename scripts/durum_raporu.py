@@ -44,6 +44,31 @@ def count(path: pathlib.Path, pattern: str = "*") -> int:
     return len(list(path.glob(pattern))) if path.exists() else 0
 
 
+def stems(path: pathlib.Path, pattern: str, exclude_prefix: str = "") -> int:
+    """Count distinct measures, not distinct year files (each measure has one file per year)."""
+    if not path.exists():
+        return 0
+    seen = set()
+    for f in path.glob(pattern):
+        if exclude_prefix and f.name.startswith(exclude_prefix):
+            continue
+        stem = f.stem.rsplit("-", 1)[0] if f.stem[-4:].isdigit() else f.stem
+        seen.add(stem)
+    return len(seen)
+
+
+def provinces(path: pathlib.Path, prefix: str) -> int:
+    """Count distinct il numbers among prefix-ilNN-... files."""
+    if not path.exists():
+        return 0
+    seen = set()
+    for f in path.glob(f"{prefix}-il*-*.csv"):
+        parts = f.name.split("-")
+        if len(parts) > 1 and parts[1].startswith("il"):
+            seen.add(parts[1])
+    return len(seen)
+
+
 def bytes_of(path: pathlib.Path) -> int:
     if not path.exists():
         return 0
@@ -84,14 +109,14 @@ def rows() -> list[dict]:
         },
         {
             "ad": "MEDAS ilçe ölçümleri",
-            "bitti": count(medas / "basit", "*ilce*.csv"),
+            "bitti": stems(medas / "ilce", "*.csv", exclude_prefix="hemsehrilik-"),
             "hedef": 60,
             "birim": "dosya",
             "not": "bağımlılık, çocuk nüfus, hane tipleri…",
         },
         {
             "ad": "MEDAS hemşehrilik (il il)",
-            "bitti": count(medas / "hemsehrilik", "*.csv"),
+            "bitti": provinces(medas / "ilce", "hemsehrilik"),
             "hedef": 81,
             "birim": "il",
             "not": "ikamet edilen ilçeye göre nüfusa kayıtlı il",
@@ -120,21 +145,21 @@ def rows() -> list[dict]:
         {
             "ad": "Seçim: halkoylaması",
             "bitti": sum(count(secim / v, "*.html") for v in HO),
-            "hedef": 6 * 950,
+            "hedef": 3051,  # gercek yil basina alan toplami, sabit 950 tahmini degil
             "birim": "rapor",
             "not": "2017-1982 · ilçe başına",
         },
         {
             "ad": "Seçim: milletvekili",
             "bitti": sum(count(secim / v, "*.html") for v in MV),
-            "hedef": 10 * 973,
+            "hedef": 9422,  # gercek yil basina ilce toplami, sabit 973 tahmini degil
             "birim": "rapor",
             "not": "2023-1991 · ilçe başına",
         },
         {
             "ad": "Seçim: yerel",
             "bitti": sum(count(p, "*.html") for p in secim.glob("yerel_*")),
-            "hedef": 4 * 8 * 81,
+            "hedef": 1969,  # gercek ofis/yil toplami (bsb ve 2014+ ilgen kucuk kapsamli)
             "birim": "rapor",
             "not": "4 ofis × 8 yıl · il başına",
         },
