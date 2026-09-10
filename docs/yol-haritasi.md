@@ -5,6 +5,33 @@ Bu dosya "sırada ne var" sorusunun tek cevabı. Kararların gerekçesi
 
 Son güncelleme: 2026-09-10.
 
+## Dal kuralı (2026-09-10) — aynı sorunu tekrar yaşamamak için
+
+Bugün iki kez aynı hata oldu: bir worktree'de (`claude/cekme-islemleri-rapor-8ecaf1`)
+başka dallardan (`claude/veri-cekme-devami-de79ac`, `claude/koy-kaydi-ve-semt-duzeltmeleri`)
+merge yapılıp asıl işe orada devam edildi, ama fetch komutları hâlâ **ana checkout**
+`C:eri`'de çalıştırılıyordu — o da güncel değildi, eski/hatalı betik sürümüyle veri
+kirletti (bkz. aşağıdaki hemşehrilik il-indeks hatası).
+
+**Kural: `C:eri` tek çalışma kopyası.** Yeni bir worktree açıp oraya merge etmek yerine,
+doğrudan `C:eri`'de `git log --oneline --all` ile hangi `claude/*` dalının en ileride
+olduğuna bak, `git merge` ile ana dala al, worktree'yi atla. Oturum başında
+`git branch --show-current` ve `git status --short` ile nerede olduğunu doğrula.
+
+## Bilinen kritik hata (2026-09-10) — MEDAS hemşehrilik il-indeks eşleşmesi bozuk
+
+`fetch_medas_districts.py`'de `--il-no N` seçimi, il açılır listesindeki N'inci satırı
+seçiyor (`rest[PROVINCE_INDEX - 1]`) ve bunun plaka/alfabetik sırayla eşleştiğini
+varsayıyor. **Doğru değil.** `--il-no 79` çalıştırıldığında seçilen il "Kilis" değil
+**"Yalova"** çıktı (log: `il: YALOVA`). "YABANCI ÜLKE" satırını filtrelemek (commit
+`4ae0ad7`) sorunu çözmedi, yalnızca bir bozuk satırı temizledi.
+
+**Sonuç: `C:eri-ham\medas\ilce\hemsehrilik-ilNN-*.csv` dosyalarının en az bir kısmı
+adlarıyla içerikleri uyuşmuyor olabilir — 79 numaralı dosya Yalova verisi taşıyor.**
+Kullanılmadan önce her dosyanın gerçek ili (satırlardaki ilçe adlarından) adıyla
+karşılaştırılıp gerekirse yeniden adlandırılması, eksik kalan gerçek il(ler)in ayrıca
+tespit edilmesi gerekiyor. Bu doğrulama yapılmadan hemşehrilik verisi analize sokulmasın.
+
 ## Çekim durumu (2026-09-10) — sıradaki üç iş
 
 Canlı sayılar `web/durum.html`'de (`scripts/durum_raporu.py` üretiyor, dakikada bir
