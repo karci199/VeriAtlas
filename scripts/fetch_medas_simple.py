@@ -101,6 +101,16 @@ MEASURES = [
         "Nüfusa kayıtlı olunan ile göre ikamet edilen il",
         False,
     ),  # 1
+    # The province-level twin of the district hemşehrilik measure (fetch_medas_hemsehrilik.py):
+    # same 81-indicators-already-open shape, but 81 x 81 areas is small enough for one
+    # query per year here rather than the province-by-province split the district version
+    # needs. --yil= batches years the same way kutuk-nufusu does.
+    (
+        "hemsehrilik-il",
+        ADNKS,
+        "İkamet edilen ile göre nüfusa kayıtlı olunan il",
+        False,
+    ),  # 81
     ("dogum", BIRTHS, "İkametgah yerine göre doğum", True),  # 12
     ("kaba-dogum-hizi", BIRTHS, "Kaba doğum hızı", False),  # 1
     ("olum", DEATHS, "İkametgah yerine göre ölüm", True),  # 24
