@@ -11,12 +11,12 @@ from veriatlas.adapters.tuik_marital import read_export_district
 from veriatlas.adapters.tuik_vital_district import area_at, districts_by_code
 
 HEADER = "||Erkek ve 15-19 ve Evli|Erkek ve 15-19 ve Hiç Evlenmedi|"
-BODY = """||Sütunlar|
+BODY = f"""||Sütunlar|
 Satırlar|Medeni Duruma Göre Nüfus Bilgileri (15 Yaş üstü)|
-{header}
+{HEADER}
 2015|Adana(Aladağ)-1757|12.0|340.0|
 |Ankara(Kazan)-1815|8.0|210.0|
-""".format(header=HEADER)
+"""
 
 
 def written(tmp_path, name: str, body: str):
