@@ -174,3 +174,17 @@ Ayrıca OWID'de olup bizde **bilinçli olarak olmayan** bir şey: onların "per 
 düğmesi nüfusa bölüyor. Bizde oran kipi (K13) kırılım payı ya da Türkiye payı veriyor;
 kişi başı hesap ayrı bir türetme olarak K12'de sırada duruyor ve nüfusu ikinci bir
 gösterge olarak okumayı gerektiriyor — yani aslında 1. maddeyle aynı altyapı.
+
+
+## Oturum özeti (2026-09-12, ikinci tur) — MEDAS eğitim tamamlandı + MEB/YKS keşfi
+
+**Bitirilen Eğitim Düzeyi ilçe çekimi tamamlandı** — 81 il × 18 yıl (2008-2025), 1458 dosya, MEDAS'tan (paralel worker'larla hızlandırıldı, iki hata düzeltildi: yanlış kırılım adı, yıl-satırı yarış durumu — bkz. yukarıki bölüm).
+
+**MEB Örgün Eğitim istatistikleri** (2015-2025, il/ülke düzeyi) doğrudan Excel indirmeyle çekildi ve MEDAS'la çapraz doğrulandı — iki kaynak birebir örtüştü (aynı orijinal TÜİK/MEB verisi, farklı arayüz). **KYK yurt kapasitesi** il+ilçe düzeyinde çekildi — MEB'e özel, MEDAS'ta hiç olmayan tek ilçe-düzey ek veri.
+
+**İznik Anadolu Lisesi vaka analizi** (ayrı, K4 dışı özel analiz — `docs/vaka-*.md` kalıbına taşınmalı, ana veri hattıyla karıştırılmamalı):
+- İznik'e bağlı 32+ okulun kendi web sitelerinden (iznik.meb.gov.tr ve okul altyapısı) derslik/öğretmen/öğrenci/branş dağılımı çekildi — en az 4 farklı HTML şablonu çözüldü (tablo, ikon-kutu, `<li>etiket:değer</li>`, `<strong>` metin).
+- 2013-2024 mezunlarının üniversite yerleşim listeleri tarandı (isim hariç, yalnız yıl/bölüm/üniversite) — sağlık/hukuk/mühendislik/mimarlık kategorilerine göre yıllara göre analiz yapıldı.
+- Üçüncü parti YKS istatistik siteleri keşfedildi: sorubak.com, **sinavizcisi.com** (en zengini — ilçe/il bazlı liderlik tabloları, "Şampiyonlar", göç analizi, prestijli bölüm sayıları), liseradar.com, fevkal.com. sinavizcisi.com üzerinden Bursa'nın 17 ilçesi ve Türkiye'nin 81 ilinin YKS SAY/EA sıralaması (2020-2026 ortalaması) karşılaştırıldı — Bursa 81 il içinde 17., en başarılı il Kırıkkale, en başarısız Hakkari, İstanbul şaşırtıcı şekilde 3. en kötü (büyük okul havuzu ortalamayı aşağı çekiyor olabilir).
+
+**Veri kalitesi dersi:** üçüncü parti YKS siteleri (sinavizcisi.com dahil) **kendi içinde bile tutarsız** — aynı ilçe için farklı sayfalar farklı yıl aralığı (2022-2025 vs 2020-2026) kullanıp farklı ortalama veriyor; "öğrenci sayısı" gibi bazı alanlar resmi okul sitesiyle açıkça çelişebiliyor (261 vs gerçek 345). Her rakam çapraz doğrulanmalı, tek kaynağa güvenilmemeli — [[cekim-kurallari]] ile aynı ilke.
