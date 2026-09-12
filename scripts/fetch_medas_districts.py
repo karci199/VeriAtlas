@@ -311,7 +311,13 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
                 if index is None:
                     print("  ", year, "kirilim satiri yok:", hint)
                     return False
-                tick(page, index, "kirilim: " + hint)
+                # Some measures (okuma-yazma) arrive with dimensions pre-ticked by MEDAS
+                # itself. Ticking is a toggle, so clicking an already-ticked row turns it
+                # back off -- only click what is not already on.
+                if not is_ticked(page, index):
+                    tick(page, index, "kirilim: " + hint)
+                else:
+                    print("   · zaten isaretli:", hint)
 
     click_exact(page, "Tamam")
 
@@ -504,7 +510,26 @@ def main() -> None:
                     items.nth(index).click()
                     settle(page)
                     break
+            if breakdown:
+                # This discovery pass used to skip the breakdown entirely, which is fine
+                # for a measure with no mandatory dimension -- but a measure that arrives
+                # with dimensions pre-ticked (okuma-yazma) still needs its value lists
+                # answered with <Hepsi> before "Tamam" will let the year tab open at all.
+                for hint in BREAKDOWN_HINTS:
+                    index = next((i for i, t in visible_rows(page) if hint in t), None)
+                    if index is not None and not is_ticked(page, index):
+                        tick(page, index, "kirilim: " + hint)
             click_exact(page, "Tamam")
+            if breakdown:
+                while True:
+                    pending = [
+                        index
+                        for index, text in visible_rows(page)
+                        if "Hepsi" in text and not is_ticked(page, index)
+                    ]
+                    if not pending:
+                        break
+                    tick(page, pending[0], "alt kirilim: <Hepsi>")
             click_exact(page, "Göstergeleri Ekle")
             click_exact(page, "İleri")
             years = [y for y in offered_years(page) if y >= FIRST_YEAR]

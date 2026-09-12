@@ -90,6 +90,14 @@ MEASURES = [
     ("yabanci-uyruklu", ADNKS, "Yabancı uyruklu nüfus", True),  # 2
     ("goc-disaridan", ADNKS, "Yurt dışından Türkiye'ye gelen göç", False),  # 1
     ("goc-disariya", ADNKS, "Türkiye'den yurt dışına giden göç", False),  # 1
+    # Kontrol icin: tek yas hesabimizla karsilastirilacak, MEDAS'in kendi ortanca yas
+    # sayisi. Cinsiyet kirilimi kapatilamiyor (2 gosterge), toplam ayri sorulmali (K12).
+    ("ortanca-yas", ADNKS, "Ortanca yaş", True),  # 2
+    # Dogum yerine gore nufus: Turkiye capinda tek satir (83 gosterge, dogum yeri
+    # kirilimi zaten acik), il duzeyinde ayni sekilde -- ikisi de 50.000 siniri altinda
+    # tek yil sorgusu ile.
+    ("dogum-yeri-tr", ADNKS, "Doğum yerlerine göre nüfus", False),  # 83, yalniz Turkiye
+    ("dogum-yeri-il", ADNKS, "İkamet edilen illere göre doğum yerleri", False),  # 83
     # Kütük nüfusu. The measure's name reads as though the rows were the register, and
     # they are not: rows are where people live, columns are where they are registered, and
     # the number wanted is a *column* total (see adapters/tuik_registry). The breakdown
@@ -161,7 +169,7 @@ LEVELS = {
 #: Measures published for the country and nowhere else. The single-year life table is
 #: the case: TÜİK computes it nationally because a province's deaths at age 93 are a
 #: handful of people and the resulting probability would be noise.
-COUNTRY_ONLY = {"hayat-tablosu"}
+COUNTRY_ONLY = {"hayat-tablosu", "dogum-yeri-tr"}
 
 
 def levels_for(name: str) -> list[str]:
