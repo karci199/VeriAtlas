@@ -42,16 +42,22 @@ from pathlib import Path
 
 import polars as pl
 
-from ..areas import load_areas
+from ..areas import load_areas, load_districts
 from ..config import RAW
 from ..indicators import get
 from ..schema import format_dims
 from .tuik_median_age import area_of, single_province_regions
+from .tuik_vital_district import area_at, districts_by_code
 
 DOWNLOADS = RAW / "medas" / "medeni"
 
 #: `Adana-1`, `Türkiye-TR`, `Batı Marmara-TR2`
 LABEL = re.compile(r"^(?P<name>.+)-(?P<code>[A-Z0-9]+)$")
+
+#: `Bursa(Büyükorhan)-1783` — province, district, MEDAS code. Digits only: a province
+#: label's code is the plate number, which is also all digits, but district files are
+#: read separately (glob below) so the two never compete for the same line.
+LABEL_DISTRICT = re.compile(r"^(?P<name>.+)-(?P<code>\d+)$")
 
 #: A header cell: sex, age band and marital status joined by " ve ".
 HEADER = re.compile(r"^(?P<sex>[^|]+?) ve (?P<age>[\d\-+]+) ve (?P<marital>.+)$")
@@ -152,6 +158,92 @@ def read_export(path: Path, single: dict[str, str]) -> list[dict]:
     return rows
 
 
+def read_export_district(path: Path, codes: dict[str, list[dict]]) -> list[dict]:
+    """One district export to rows — same shape as `read_export`, different area join.
+
+    The row label is a MEDAS district code, not a province plate number, so it is
+    resolved through `districts_by_code` / `area_at` (`tuik_vital_district`) rather than
+    `area_of`: a renamed district (Kazan → Kahramankazan) shares its code with the area
+    that held it before, and only the row's own year picks the right one.
+    """
+    lines = read_text(path).splitlines()
+
+    columns: dict[int, tuple[str, str, str]] = {}
+    for line in lines:
+        found = {}
+        for index, cell in enumerate(line.split("|")):
+            match = HEADER.match(cell.strip())
+            if match:
+                found[index] = (
+                    match.group("sex"),
+                    match.group("age"),
+                    match.group("marital"),
+                )
+        if found:
+            columns = found
+            break
+
+    if not columns:
+        raise ValueError("baslik satiri bulunamadi: " + str(path))
+
+    unknown_sex = {s for s, _, _ in columns.values()} - set(SEXES)
+    unknown_marital = {m for _, _, m in columns.values()} - set(MARITAL)
+    if unknown_sex or unknown_marital:
+        raise KeyError(
+            "sozlukte karsiligi olmayan deger: "
+            + ", ".join(sorted(unknown_sex | unknown_marital))
+        )
+
+    rows: list[dict] = []
+    year = None
+    unresolved: set[str] = set()
+    for line in lines:
+        cells = [cell.strip() for cell in line.split("|")]
+        if len(cells) < 3:
+            continue
+        if cells[0].isdigit() and len(cells[0]) == 4:
+            year = int(cells[0])
+
+        label = LABEL_DISTRICT.match(cells[1])
+        if not label or year is None:
+            continue
+        area_id = area_at(codes.get(label.group("code"), []), year)
+        if not area_id:
+            unresolved.add(cells[1])
+            continue
+
+        for index, (sex, age, marital) in columns.items():
+            if index >= len(cells) or not cells[index]:
+                continue
+            try:
+                value = float(cells[index])
+            except ValueError:
+                continue
+            rows.append(
+                {
+                    "year": year,
+                    "area_id": area_id,
+                    "area_level": "district",
+                    "sex": SEXES[sex],
+                    "age": age,
+                    "marital": MARITAL[marital],
+                    "value": value,
+                }
+            )
+    if unresolved:
+        # Named rather than skipped: a district silently dropped takes its people with it
+        # and the year still looks complete (same reasoning as the vital-district adapter).
+        raise KeyError(
+            "kayitta karsiligi olmayan ilce ("
+            + str(len(unresolved))
+            + ") "
+            + path.name
+            + ": "
+            + ", ".join(sorted(unresolved)[:10])
+        )
+    return rows
+
+
 class TuikMarital:
     """Marital status by sex and age band, country through province."""
 
@@ -197,6 +289,35 @@ class TuikMarital:
                 + "): "
                 + ", ".join(sorted(expected - found))
             )
+
+        district_records: list[dict] = []
+        codes = districts_by_code()
+        for path in sorted(raw.glob("nufus-medeni-ilce-*.csv")):
+            district_records.extend(read_export_district(path, codes))
+        if district_records:
+            districts = pl.DataFrame(district_records)
+
+            # Same completeness guard as the vital-district adapter: the newest year must
+            # have every district the registry still considers current. An early year
+            # missing one is the country having had fewer districts; the newest year
+            # missing one is a chunk of the pull that never ran.
+            last = districts.select(pl.col("year").max()).item()
+            expected_districts = {
+                row["area_id"]
+                for row in load_districts().to_dicts()
+                if row.get("valid_to") is None
+            }
+            found_districts = set(districts.filter(pl.col("year") == last)["area_id"])
+            if expected_districts - found_districts:
+                raise KeyError(
+                    "medeni durum: son yilda ("
+                    + str(last)
+                    + ") karsiligi olmayan ilce ("
+                    + str(len(expected_districts - found_districts))
+                    + "): "
+                    + ", ".join(sorted(expected_districts - found_districts)[:10])
+                )
+            frame = pl.concat([frame, districts], how="vertical")
 
         return frame.with_columns(
             pl.lit(self.indicator_id).alias("indicator_id"),

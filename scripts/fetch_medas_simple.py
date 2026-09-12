@@ -130,13 +130,51 @@ MEASURES = [
     # the population age" from an argument into a subtraction. Only the age breakdown is
     # opened: with the month beside it the same question costs twelve times the cells.
     ("olum-yas", DEATHS, "İkametgah yerine göre ölüm", "yaş grubu"),
+    # Births by the mother's age group — the same trade the age breakdown makes on the
+    # death side. It is what separates "more women of childbearing age" from "more births
+    # per woman", which a total birth count cannot answer on its own, and it is the
+    # numerator the age-specific fertility rate wants. Month and sex are left closed: they
+    # multiply the cells by twenty-four to answer a different question.
+    ("dogum-anne-yasi", BIRTHS, "İkametgah yerine göre doğum", "Annenin yaş grubu"),
+    # The rest of the death measure's seven breakdowns, one query each. Opened alone for
+    # the same reason `olum-yas` is: together they multiply out past any limit, and each
+    # answers its own question.
+    #
+    # Single year of age is the one that supersedes rather than adds: K16 says store the
+    # finest grain published and derive the coarse one, so once this lands the age-group
+    # file is a roll-up we can compute instead of a second series to keep in step. It is
+    # also the widest — about a hundred indicators — so it comes a year at a time.
+    ("olum-tek-yas", DEATHS, "İkametgah yerine göre ölüm", "Ölenin yaşı"),
+    # Marital status of the deceased is **not fetchable**, and the failure is MEDAS's own.
+    # The breakdown ticks, the value list opens ([1] Hiç Evlenmedi … [99] Bilinmeyen), and
+    # the moment any value is selected the "Göstergeleri Ekle" button is removed from the
+    # page — display:none, no bounding box, on every route tried: scrolled to, forced,
+    # dispatched, tab re-opened, viewport grown to 1600px, values picked one by one
+    # instead of <Hepsi>. Without that button the query cannot be built, so the measure
+    # comes back as zero indicators. Left here named rather than deleted: the next person
+    # to notice "ölenin medeni durumu" in the breakdown list should find out here that it
+    # has already been tried, rather than spending the afternoon finding out again.
+    # ("olum-medeni", DEATHS, "İkametgah yerine göre ölüm", "medeni"),
+    # How old the baby was when it died, in days and in months — neonatal against
+    # post-neonatal. Not the month of death, which is the calendar breakdown above.
+    ("bebek-olum-gun", DEATHS, "İkametgah yerine göre ölüm", "Günlük bebek"),
+    ("bebek-olum-ay", DEATHS, "İkametgah yerine göre ölüm", "Aylık bebek"),
     ("evlenme", MARRIAGES, "Evlenme sayısı", False),  # 1
     ("kaba-evlenme-hizi", MARRIAGES, "Kaba evlenme", False),  # 1
     ("evlenme-yasi-erkek", MARRIAGES, "Erkeğin ortalama evlenme", False),  # 1
     ("evlenme-yasi-kadin", MARRIAGES, "Kadının ortalama evlenme", False),  # 1
     ("ilk-evlenme-yasi-erkek", MARRIAGES, "Erkeğin ortalama ilk evlenme", False),  # 1
     ("ilk-evlenme-yasi-kadin", MARRIAGES, "Kadının ortalama ilk evlenme", False),  # 1
-    ("bosanma", DIVORCES, "Boşanma sayısı", False),  # 1
+    ("bosanma", DIVORCES, "Boşanma sayısı", False),
+    # Marriage and divorce at district level, one indicator each and twelve years — the
+    # cheapest thing in either topic and the only district-level rows they have. Both are
+    # named unlike their province measures: marriages by the place the wedding happened,
+    # divorces by the man's registered address, because that is what MEDAS publishes below
+    # the province. Those are different questions from the provincial series (residence of
+    # the couple), so they are stored as what they are rather than as "the same measure,
+    # lower level" — see the note in the dictionary.
+    ("evlenme-ilce", MARRIAGES, "lçelere göre evlenmeler", False),  # 1
+    ("bosanma-ilce", DIVORCES, "Erkeğin ikametgah yeri", False),  # 1  # 1
     ("kaba-bosanma-hizi", DIVORCES, "Kaba boşanma", False),  # 1
 ]
 
@@ -151,7 +189,13 @@ LEVELS = {
 #: Measures published for the country and nowhere else. The single-year life table is
 #: the case: TÜİK computes it nationally because a province's deaths at age 93 are a
 #: handful of people and the resulting probability would be noise.
-COUNTRY_ONLY = {"hayat-tablosu"}
+#: Deaths by single year of age belongs here for a reason worth writing down: the measure
+#: itself offers İBBS3, but ticking the `Ölenin yaşı` breakdown takes the province option
+#: out of the Düzey box — the level list narrows to Türkiye alone. It is the same rule the
+#: neighbourhood fetcher meets from the other side (tick the age split and Köy drops out).
+#: So the finest grain K16 asks for stops at the country here, and the province series
+#: keeps the age *group* it already has.
+COUNTRY_ONLY = {"hayat-tablosu", "olum-tek-yas"}
 
 
 def levels_for(name: str) -> list[str]:
@@ -226,8 +270,80 @@ def build_query(page, topic: str, hint: str, breakdowns) -> int:
             break
         tick(page, pending[0], "")
 
-    click_exact(page, "Göstergeler Ekle") or click_exact(page, "Göstergeleri Ekle")
+    add_indicators(page)
+
+    # Waited for, not read straight after the click: the count is written by the server
+    # round trip the click starts, so reading it immediately gives the count from before.
+    settle(page)
     return counted(page, INDICATORS)
+
+
+def select_by_option(page, label: str) -> bool:
+    """Pick `label` in whichever select offers it, scrolling to the box if it is off view.
+
+    Matching on the option list rather than on visibility: the boxes live in tabs that
+    keep their widgets in the DOM, so several selects match a generic query, but only one
+    of them carries this option.
+    """
+    for index in range(page.locator("select").count()):
+        select = page.locator("select").nth(index)
+        try:
+            if label not in select.locator("option").all_inner_texts():
+                continue
+        except PlaywrightError:
+            continue
+        # Scrolling is best-effort and must not disqualify the box: a select that cannot
+        # be scrolled to is usually still selectable, and treating the failure as "wrong
+        # box" skipped the only box that had the option.
+        try:
+            select.scroll_into_view_if_needed(timeout=5000)
+        except PlaywrightError:
+            pass
+        try:
+            select.select_option(label=label)
+        except PlaywrightError:
+            continue
+        settle(page, "secildi: " + label)
+        return True
+    return False
+
+
+def add_indicators(page) -> bool:
+    """Press "Göstergeleri Ekle", scrolling to it first and dispatching if it hides.
+
+    Ticking the value lists grows the panel, and past a certain length the button leaves
+    the visible area — `is_visible()` turns False and Playwright declines to click what a
+    user could not have clicked. One breakdown stays short enough to hide this; ölüm ×
+    medeni durum, at two lists and sixteen rows, does not. The measure then came back
+    with an indicator count of zero and was reported as "kirilim tutmadi", though the
+    query underneath it was built correctly — the same shape of silence the district
+    fetcher hit behind its modal mask, and the same answer: scroll, then dispatch.
+    """
+    for label in ("Göstergeler Ekle", "Göstergeleri Ekle"):
+        button = page.get_by_text(label, exact=True)
+        if not button.count():
+            continue
+        try:
+            button.first.scroll_into_view_if_needed(timeout=5000)
+        except PlaywrightError:
+            pass
+        if click_exact(page, label):
+            return True
+
+        # Still out of view. Two things were tried before this and neither works: a
+        # dispatched click gets ZK to report success without building the query (worse
+        # than not clicking, since the count then reads zero with no error), and growing
+        # the viewport does not bring the button back because ZK sizes the panel itself.
+        # `force` is the one that fits: it skips only the actionability check, and still
+        # sends the real mouse sequence ZK listens for.
+        try:
+            button.first.click(force=True, timeout=10000)
+        except PlaywrightError as error:
+            print("   Ekle tiklanamadi:", str(error).splitlines()[0][:60])
+            continue
+        settle(page, "zorlandi: " + label)
+        return True
+    return False
 
 
 def fetch(
@@ -318,22 +434,19 @@ def fetch(
 
     click_exact(page, "İleri")
     label = LEVELS[level]
-    for index in range(page.locator("select").count()):
-        select = page.locator("select").nth(index)
-        if select.is_visible() and label in select.locator("option").all_inner_texts():
-            select.select_option(label=label)
-            settle(page)
-            break
 
-    for index in range(page.locator("select").count()):
-        select = page.locator("select").nth(index)
-        if (
-            select.is_visible()
-            and "HEPSİ" in select.locator("option").all_inner_texts()
-        ):
-            select.select_option(label="HEPSİ")
-            settle(page)
-            break
+    # Chosen by what the box *offers*, not by whether it is on screen. A long indicator
+    # panel pushes the Düzey box out of view, `is_visible()` turns False, the loop finds
+    # nothing and falls through — leaving the query at whatever level was already set,
+    # which is Türkiye. Nothing errors; the download simply answers a different question
+    # than the one asked, under a file name that says otherwise.
+    if not select_by_option(page, label):
+        print("   duzey kutusu bulunamadi:", label)
+        return False
+
+    # The province box under it, where there is one. Absent at country level, and that is
+    # the right outcome — nothing to narrow.
+    select_by_option(page, "HEPSİ")
 
     # Two things go wrong here and they pull in opposite directions.
     #
@@ -368,6 +481,15 @@ def fetch(
             break
     if not areas:
         print("   alan secilemedi")
+        return False
+
+    # The level box can fail to take without erroring, and then the query runs at whatever
+    # level was already selected. That is how seventeen files named `-province-` came back
+    # holding nothing but Türkiye-TR: the download succeeded, the name said province, the
+    # contents were the country, and loading them would have written the national total
+    # into eighty-one provinces. A level that means many areas must come back with many.
+    if level != "country" and areas < 2:
+        print("   duzey tutmadi:", level, "icin alan =", areas)
         return False
 
     cells = count * areas * len(years)

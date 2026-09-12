@@ -29,8 +29,8 @@ from playwright.sync_api import sync_playwright
 sys.path.insert(0, "src")
 sys.path.insert(0, "scripts")
 
-from fetch_medas_districts import URL, check_visible, click_exact, settle
 import fetch_medas_neighbourhoods as nb
+from fetch_medas_districts import URL, check_visible, click_exact, settle
 from fetch_medas_neighbourhoods import (
     CELL_LIMIT,
     INDICATORS,
@@ -174,8 +174,13 @@ def fetch(page, level: str, province: str, years: list[int]) -> int:
     # settle()'s fixed wait ends before the count arrives and the province reads
     # as empty, which is indistinguishable from a province that genuinely has no
     # villages. So the count is waited for rather than sampled once.
+    # Twenty seconds was not enough: Sivas, the province this note was written about, came
+    # back as zero on two separate runs of the whole country while the fact table already
+    # holds 1.240 of its villages. A wrong zero here is the expensive kind — it reads as
+    # "this province has no villages", which is a real thing in the thirty metropolitan
+    # provinces, so the gap looks like a fact rather than a miss.
     areas = picked_levels(page)
-    for _ in range(10):
+    for _ in range(45):
         if areas:
             break
         page.wait_for_timeout(2000)

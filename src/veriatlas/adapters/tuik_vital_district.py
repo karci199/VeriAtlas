@@ -58,6 +58,15 @@ SEXES = {"Erkek": "male", "Kadın": "female"}
 MEASURES = {
     "dogum-ilce": ("births_district", "births", None),
     "olum-ilce": ("deaths_district", "deaths", "sex"),
+    # Marriage and divorce are the two measures here that do *not* feed the provincial
+    # indicator, because they are not the same count at a lower level: the district series
+    # is by the place the wedding happened and by the man's registered address, while the
+    # provincial one is by where the couple lives. A district with a popular wedding venue
+    # collects marriages belonging to its neighbours, so these rows do not sum to the
+    # province's. Written into indicators of their own so the difference is visible in the
+    # tree rather than hidden inside a level switch.
+    "evlenme-ilce": ("marriages_district", "marriages_district", None),
+    "bosanma-ilce": ("divorces_district", "divorces_district", None),
 }
 
 
@@ -98,10 +107,10 @@ def read_export(path: Path, spec: tuple, codes: dict[str, list[dict]]) -> list[d
     # The header is the line that names the most districts. Counted rather than assumed:
     # the leading blank cells have moved between exports before.
     header: dict[int, str] = {}
-    unknown: set[str] = set()
+    unknown: dict[int, str] = {}
     for line in lines:
         found: dict[int, str] = {}
-        missing: set[str] = set()
+        missing: dict[int, str] = {}
         for index, cell in enumerate(line.split("|")):
             label = LABEL.match(cell.strip())
             if not label:
@@ -113,22 +122,36 @@ def read_export(path: Path, spec: tuple, codes: dict[str, list[dict]]) -> list[d
             if area:
                 found[index] = area
             else:
-                missing.add(cell.strip())
+                missing[index] = cell.strip()
         if len(found) > len(header):
             header, unknown = found, missing
     if not header:
         raise KeyError(indicator_id + ": dosyada ilce sutunu bulunamadi: " + path.name)
-    if unknown:
-        # Named rather than skipped: a district silently dropped takes its births with it
-        # and the year still looks complete.
+
+    # An unresolved column is only a problem when it carries something. MEDAS writes
+    # today's district list into every year, so a district created in 2017 appears as an
+    # empty column back in 2014 — that is the source padding its own table, not a
+    # district of ours gone missing. One that *does* carry a number is the real failure
+    # the check exists for: dropped silently, its births go with it and the year still
+    # looks complete.
+    carrying = {
+        label
+        for index, label in unknown.items()
+        for cells in (line.split("|") for line in lines)
+        if len(cells) > index
+        and cells[2].strip().isdigit()
+        and len(cells[2].strip()) == 4
+        and cells[index].strip()
+    }
+    if carrying:
         raise KeyError(
             indicator_id
             + ": kayitta karsiligi olmayan ilce ("
-            + str(len(unknown))
+            + str(len(carrying))
             + ") "
             + path.name
             + ": "
-            + ", ".join(sorted(unknown)[:10])
+            + ", ".join(sorted(carrying)[:10])
         )
 
     rows: list[dict] = []
@@ -229,15 +252,33 @@ class DistrictVital:
             if row.get("valid_to") is None
         }
         found = set(frame.filter(pl.col("year") == last)["area_id"])
-        if expected - found:
+        missing = expected - found
+
+        # A handful of missing districts in the newest year is the source withholding a
+        # small count, not a download that went short: Bingöl/Yayladere, one of the
+        # smallest districts in the country, has an empty cell for marriages in 2025 — and
+        # an empty cell is a suppressed count, never a zero. Whole tranches missing still
+        # means the pull failed, so the check stays; it is the threshold that moves.
+        if missing and len(missing) > len(expected) // 20:
             raise KeyError(
                 self.indicator_id
                 + ": son yilda ("
                 + str(last)
                 + ") karsiligi olmayan ilce ("
-                + str(len(expected - found))
+                + str(len(missing))
                 + "): "
-                + ", ".join(sorted(expected - found)[:10])
+                + ", ".join(sorted(missing)[:10])
+            )
+        if missing:
+            # Named rather than passed over: the reader should be able to tell a withheld
+            # count from one we never asked for.
+            print(
+                "   UYARI:",
+                self.indicator_id,
+                "· son yilda",
+                len(missing),
+                "ilcede deger yok (kaynak gizlemis):",
+                ", ".join(sorted(missing)[:5]),
             )
 
         # Every district belongs to a province the registry knows. Cheap, and it is the

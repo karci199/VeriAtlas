@@ -93,6 +93,26 @@ one_nuclear_family = "Tek çekirdek aileli"
 nuclear_and_others = "Çekirdek aile ve diğerleri"
 no_nuclear_family = "Çekirdek ailesiz, çok kişili"
 
+[dim.mother_age]
+label_tr = "Annenin yaş grubu"
+label_en = "Mother's age group"
+
+[dim.mother_age.values]
+# The open bands are the source's own: TÜİK closes the bottom at "under 15" and the top
+# at "50 and over", so these are not ranges we chose and must not be tidied into ones.
+"-15" = "15'ten küçük"
+"15-19" = "15-19"
+"20-24" = "20-24"
+"25-29" = "25-29"
+"30-34" = "30-34"
+"35-39" = "35-39"
+"40-44" = "40-44"
+"45-49" = "45-49"
+"50+" = "50 ve üzeri"
+# Kept for the same reason it is kept in medeni durum: without it the bands sum to less
+# than the birth count they break down, and nothing on screen would show the shortfall.
+unknown = "Bilinmeyen"
+
 [dim.marital]
 label_tr = "Medeni durum"
 label_en = "Marital status"
@@ -547,10 +567,12 @@ topic = "dogurganlik"
 unit = "birth"
 frequency = "annual"
 additive = true
-dims = []
+dims = ["mother_age"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-Yıl içindeki canlı doğum sayısı, annenin ikamet ettiği ile göre."""
+Yıl içindeki canlı doğum sayısı, annenin ikamet ettiği ile göre. Ülke ve il düzeyinde \
+annenin yaş grubuna bölünmüştür; ilçe düzeyinde bu ayrım yayımlanmadığı için toplam \
+olarak durur."""
 
 [indicator.deaths]
 label_tr = "Ölüm sayısı"
@@ -580,6 +602,40 @@ dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 Yıl içinde kıyılan resmî nikâh sayısı, nikâhın kıyıldığı ile göre."""
+
+[indicator.marriages_district]
+label_tr = "Evlenme sayısı (ilçe)"
+label_en = "Marriages (district)"
+topic = "evlenme_bosanma"
+unit = "marriage"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+# Kept apart from `marriages` rather than loaded into it as a lower level, because it is
+# not the same measurement one step down: MEDAS publishes the district series by the place
+# the wedding happened and the provincial one by where the couple lives. A district with a
+# popular wedding venue collects marriages belonging to the districts around it, so the
+# district rows do not sum to the province's — and putting them in one indicator would
+# make "Tümü (topla)" answer with a number neither series claims.
+definition_tr = """
+Yıl içinde kıyılan resmî nikâh sayısı, nikâhın kıyıldığı ilçeye göre. İl serisinden farkı \
+budur: il sayıları çiftin ikamet ettiği yere göredir, bu seri olayın gerçekleştiği yere \
+göre. İkisi aynı toplama gitmez."""
+
+[indicator.divorces_district]
+label_tr = "Boşanma sayısı (ilçe)"
+label_en = "Divorces (district)"
+topic = "evlenme_bosanma"
+unit = "divorce"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Yıl içinde kesinleşen boşanma sayısı, erkeğin ikametgahının bulunduğu ilçeye göre. \
+MEDAS ilçe düzeyinde yalnız bu okumayı yayımlıyor; il serisi çiftin ikametine göredir, \
+bu yüzden ikisi ayrı göstergedir."""
 
 [indicator.divorces]
 label_tr = "Boşanma sayısı"

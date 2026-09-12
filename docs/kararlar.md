@@ -659,6 +659,93 @@ Doğrulama: İzmir 2009 47,41 ve Şanlıurfa 2025 96,60; ilçede Harran 160,75, 
   bant. Algoritma `scripts/estimate_urban_rural_age.py`, çıktı
   `raw/derived/iznik_age_urban_rural_2007_2025.json`, görsel masaüstü `iznik_piramit.html`.
 
+## K29 — Bir kırılım geldiğinde kabası silinir (2026-09-12)
+
+Doğum artık annenin yaş grubuna bölünmüş geliyor (ülke ve il, 2009-2025, on bant). Kural
+K16'nın olay sayıları için okunuşu: **kırılımlı dosya kırılımsızın yerine geçer, yanına
+eklenmez.** İkisi birden yüklenseydi aynı doğumlar hem toplam satırında hem onu veren on
+bantta dururdu; kırılım üstünden toplayan her şey — "Tümü (topla)", oran kipinin paydası —
+her doğumu iki kez sayardı. Türkiye 2024 için 940.273 yerine 1.880.546.
+
+Ölüm bu kuralı zaten uyguluyordu (`olum-yas` ay dosyasının yerine geçmişti); doğum da
+aynı satıra geldi. İlçe düzeyi dokunulmadan kaldı: MEDAS il altında anne yaşı
+yayımlamıyor, o yüzden ilçe doğumu toplam olarak duruyor — nüfusta tek yaşın ilde olup
+mahallede olmaması gibi.
+
+Kazanç detay değil, yeni bir soru: **yaşa özel doğurganlık hızı**. Paydası (15-49 yaş
+kadın) K27'nin `base` mekanizmasında zaten vardı; eksik olan pay, annenin kaç yaşında
+olduğunu bilen doğum sayısıydı.
+
+Doğrulama: on bandın toplamı, yüklü doğum sayısıyla dört yılda da birebir (fark 0).
+
+## Kaynak kısıtı — MEDAS'ın vermedikleri (2026-09-12)
+
+Üçü de denendi ve alınamadı. Denenmiş olduğunu buraya yazmanın sebebi, kırılım
+listesinde adlarının görünmeye devam etmesi:
+
+- **Ölenin medeni durumu.** Kırılım işaretleniyor, değer listesi açılıyor
+  (`[1] Hiç Evlenmedi … [99] Bilinmeyen`), ve herhangi bir değer seçilir seçilmez
+  "Göstergeleri Ekle" düğmesi sayfadan siliniyor (`display:none`, bounding box yok).
+  Altı yol denendi: düğmeye kaydırma, `force` tıklama, olayı doğrudan dağıtma, sekmeye
+  geri dönüp bakma, pencereyi 1600 px'e uzatma, `<Hepsi>` yerine değerleri tek tek
+  seçme. Hiçbiri açmadı. Kod `fetch_medas_simple.py`'de yorumlu duruyor.
+- **Ölenin tek yaşı yalnız Türkiye düzeyinde.** Kırılım işaretlenince Düzey kutusundan
+  il seçeneği düşüyor, geriye `Türkiye` kalıyor — mahalle çekicisinin ters yönden
+  gördüğü kuralın aynısı (yaş işaretlenince Köy düzeyi kutudan düşer). İlde en ince
+  tane yaş grubu olarak kalıyor. `COUNTRY_ONLY` listesinde.
+- **İlçede bebek ölümü yok.** İlçe düzeyinde yalnız toplam ölüm sayısı var, yaş kırılımı
+  hiç yok; bebek ölüm hızı ölçüsü ülke/İBBS/il düzeyinde. Ne indirilebiliyor ne
+  türetilebiliyor.
+
+## Oturum notu — 2026-09-12: sessizce bozan yedi yol
+
+Hepsi bu oturumda yaşandı, hiçbiri hata vermedi.
+
+1. **`load.py` alt kümeyle çalışınca depoyu siliyor.** Tek adaptör adı vermek yalnız onu
+   yüklemiyor — `fact.parquet`'i baştan yazıyor ve kalan otuz göstergeyi düşürüyor.
+   Ardından `export_web.py` çalıştırılınca `tfr.csv.gz` sıfır satırla yayına gitti
+   (git'ten geri alındı). Kural: yayına giden yükleme her zaman tam adaptör listesiyle,
+   ve çalışamayan adaptörün public dosyası export sonrası `git checkout` ile korunur.
+2. **Düzey seçimi tutmazsa sorgu Türkiye'de kalıyor, dosya yine `-province-` adıyla
+   iniyor.** On yedi dosya böyle indi; içlerinde tek satır `Türkiye-TR` vardı.
+   Yüklenseydi ülke toplamı seksen bir ile yazılırdı. Artık il/ilçe düzeyinde alan sayısı
+   ikiden azsa indirme reddediliyor.
+3. **"Göstergeleri Ekle" görünmezken tıklanamıyor.** İki kırılım açıkken panel uzuyor,
+   düğme görünür alandan çıkıyor, Playwright görünmeyeni tıklamıyor, gösterge sayısı
+   sıfır kalıyor ve ölçü "kırılım tutmadı" diye düşüyor — yani hatalı veri değil, hiç
+   veri. `force` tıklama çözdü. Dağıtılan olay çözmüyor: ZK tıklamayı kabul ediyor ama
+   sorguyu kurmuyor, düğme "başarılı" diyor ve sayım yine sıfır kalıyor — tıklamamaktan
+   beter, çünkü sessiz.
+4. **Çakışan yıl aralıkları çift anahtar üretiyor.** Yarım kalmış eski çekimin dosyası
+   (`...-denizli-2025-2025.csv`) yeni tam aralıklıyla (`...-2021-2025.csv`) aynı ilçe-yılı
+   iki kez taşıyor. Eksiği tamamlarken eski parça silinir.
+5. **MEDAS bugünün ilçe listesini eski yıllara boş sütun olarak yazıyor.** 2017'de kurulan
+   Sultanhanı, 2014 dosyasında sütun olarak var, hücreleri boş — yani **geriye hesaplama
+   yok**, yalnız tablo dolgusu. `tuik_vital_district` bunu "kayıtta olmayan ilçe" diye
+   hata sayıyordu; kural daraltıldı: değer taşıyorsa dur, boşsa atla.
+6. **Sivas köyleri iki tam ülke taramasında "0" döndü.** Sıfır burada tehlikeli, çünkü
+   otuz büyükşehirde gerçekten sıfır — gap olgu gibi görünüyor. Liste uzunluğu değildi
+   (Kastamonu 2.556 köyle sorunsuz indi): on dokuz yıl birden istenince seçim tutmuyor,
+   yıl yıl istenince 1.234 köy geliyor.
+7. **Kayıt defterleri sıfırdan yazılıyor.** `build_village_registry.py` mevcut defteri
+   okumaz, gördüğü dosyalardan yeniden üretir. Sivas gelmeden çalıştırılsaydı defterdeki
+   1.240 Sivas köyü düşecek ve **hâlihazırda yüklü 16.033 satır yüklenemez hale
+   gelecekti** — yeni veri eklerken eskisini kaybetmek. Defteri üretmeden önce çekimin
+   tam olduğu doğrulanır.
+
+**2007-2012 geriye doldurması ne getirdi.** Köy 236.749 → 442.060 satır (35.345 köy),
+mahalle 802.696 → 1.027.803 (38.408 mahalle), ikisi de 2007'den başlıyor. Seriler
+birbirini doğruluyor: 2012'de 34.292 köy varken 2013'te 18.108 kalıyor, aynı geçişte
+mahalle 18.883'ten 31.653'e çıkıyor — 6360 sayılı yasanın dönüşümü iki taraftan birden
+görünüyor, ve düşen sayı kanunun bilinen "16.000'den fazla köy" büyüklüğünde.
+
+Erken yıllar artık var olmayan ilçeleri de getirdi. Elli altı "tanınmayan ilçe"nin elli
+biri `Merkez` eşlemesiydi (kodda zaten çözülü), geriye beş gerçek vaka kaldı ve hepsi
+yalnız 2007-2012'de görünüyor: Ondokuzmayıs → 19 Mayıs, Çağlıyancerit → Çağlayancerit
+(yazım), Ilıca → Aziziye, Aydınlar → Tillo (2008 ad değişikliği), Akköy → Pamukkale
+(2008'de kapatılıp bağlandı — ad değişikliği değil, birleşme). Beşi de
+`build_village_registry.py`'deki takma ad tablosunda, gerekçeleriyle.
+
 ## Oturum notu — 2026-08-14/15
 
 Bir oturumda yapılanlar, sıradaki oturum buradan devam etsin diye.

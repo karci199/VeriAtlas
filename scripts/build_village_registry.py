@@ -29,6 +29,25 @@ RENAMES = DOCS / "koy-adlari.md"
 
 SOURCE_ID = "tuik_medas"
 
+#: Districts the early exports name in a way the boundary registry does not, by province
+#: and folded name. Every one of them shows up only in 2007-2012 — the span the settlement
+#: backfill added — because the 2013+ exports already use today's names.
+#:
+#: Four are the same district under another name: Ilıca became Aziziye in 2008 and
+#: Aydınlar became Tillo, while `Ondokuzmayıs` and `Çağlıyancerit` are spellings of
+#: `19 Mayıs` and `Çağlayancerit`. The fifth is not a rename: Akköy was closed in 2008 and
+#: its territory went to Pamukkale, so its villages are Pamukkale's villages from then on
+#: — which is the honest mapping for a count, and the reason the join is by district here
+#: rather than by a district id that no longer exists.
+DISTRICT_ALIASES = {
+    # Folded, so without its space: `fold("19 Mayıs")` is `19mayis`.
+    ("TR-55", "ondokuzmayis"): "19mayis",
+    ("TR-25", "ilica"): "aziziye",
+    ("TR-56", "aydinlar"): "tillo",
+    ("TR-20", "akkoy"): "pamukkale",
+    ("TR-46", "cagliyancerit"): "caglayancerit",
+}
+
 
 def fold(name: str) -> str:
     """Turkish name to a comparable key. Same rule as the district join."""
@@ -73,6 +92,9 @@ def main() -> None:
         # province's own name.
         if fold(district) == "merkez":
             return districts.get((parent, fold(province)))
+        alias = DISTRICT_ALIASES.get((parent, fold(district)))
+        if alias:
+            return districts.get((parent, alias))
         return None
 
     seen: dict[str, dict] = {}

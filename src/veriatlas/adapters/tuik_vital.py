@@ -73,6 +73,27 @@ def age_of(label: str) -> str | None:
     return UNKNOWN_AGE if band == "Bilinmeyen" else band
 
 
+#: `Annenin yaş grubu:20-24` — the mother's age band, written plainly. Unlike the age of
+#: the deceased, MEDAS puts no internal code in front of it and no brackets around it, so
+#: this cannot reuse `AGE_IN_LABEL`: the two labels look alike and are not.
+MOTHER_AGE_IN_LABEL = re.compile(r"Annenin yaş grubu\s*:\s*(?P<band>[^|]+)")
+
+
+def mother_age_of(label: str) -> str | None:
+    """The mother's age band a row's label names, or None.
+
+    The open bands keep the source's own shape: `-15` is "under 15" and `50+` is
+    "50 and over", which is where TÜİK closes it. `Bilinmeyen` is kept rather than
+    dropped for the reason the age of death keeps it — without it the breakdown sums to
+    less than the birth count it is a breakdown of, and the gap would not be visible.
+    """
+    found = MOTHER_AGE_IN_LABEL.search(label)
+    if not found:
+        return None
+    band = found.group("band").strip()
+    return UNKNOWN_AGE if band == "Bilinmeyen" else band
+
+
 def sex_of(label: str) -> str | None:
     """The sex a row's label names, or None.
 
@@ -101,10 +122,26 @@ def sex_of(label: str) -> str | None:
 #: carry it. Two files feeding one indicator is also why the adapter name is written out
 #: instead of derived from the indicator id — they would collide.
 #: How to read each dim out of a row label.
-READERS = {"sex": sex_of, "age": age_of}
+READERS = {"sex": sex_of, "age": age_of, "mother_age": mother_age_of}
 
 MEASURES = {
-    "dogum": ("births", "births", None, {}),
+    # Births come from the mother's-age export, not the plain one — the same replacement
+    # the deaths line below makes, and for the same reason. The two files agree to the
+    # birth in every year checked (country 2022-2025, difference zero), so the age file is
+    # this measurement with one more breakdown on it and taking the other would be
+    # choosing to know less. Loading *both* would double every birth: the total row and
+    # the ten bands that sum to it would sit in the fact table at once, and anything
+    # summing across the breakdown — "Tümü (topla)", the share mode's denominator — would
+    # count each birth twice.
+    #
+    # What this buys beyond detail: the age-specific fertility rate. The denominator is
+    # already in the dictionary (`base.women_15_49`, K27) and the numerator was the piece
+    # missing — a birth count that knows how old the mother was.
+    #
+    # The district export is untouched and stays without a breakdown: MEDAS publishes no
+    # mother's age below the province, the same way single years of age stop at the
+    # country on the death side.
+    "dogum-anne-yasi": ("births", "births", ("mother_age",), {}),
     # Deaths come from the age export, not the month one. Both are published, both cover
     # 2009-2025 at province and country, and their totals agree in 1.394 area-years out
     # of 1.394 — so the age file is the same measurement with one more breakdown on it,

@@ -73,6 +73,11 @@ DATASETS = {
     "mean_marriage_age": "marriage-age.csv",
     "mean_first_marriage_age": "first-marriage-age.csv",
     "life_expectancy": "life-expectancy.csv",
+    # Named by what they measure rather than by the indicator id: the id already ends in
+    # `_district`, and the level-split (K14) appends `-district` to whatever file it is
+    # given, so the derived name came out `marriages-district-district.csv`.
+    "marriages_district": "marriages-by-event-place.csv",
+    "divorces_district": "divorces-by-mans-residence.csv",
     **{
         name: name.replace("_", "-") + ".csv"
         for name in (
