@@ -3,18 +3,18 @@
 Bu dosya "sırada ne var" sorusunun tek cevabı. Kararların gerekçesi
 [kararlar.md](kararlar.md)'de; burası yalnızca sıra.
 
-Son güncelleme: 2026-09-10.
+Son güncelleme: 2026-09-12.
 
 ## Dal kuralı (2026-09-10) — aynı sorunu tekrar yaşamamak için
 
 Bugün iki kez aynı hata oldu: bir worktree'de (`claude/cekme-islemleri-rapor-8ecaf1`)
 başka dallardan (`claude/veri-cekme-devami-de79ac`, `claude/koy-kaydi-ve-semt-duzeltmeleri`)
 merge yapılıp asıl işe orada devam edildi, ama fetch komutları hâlâ **ana checkout**
-`C:eri`'de çalıştırılıyordu — o da güncel değildi, eski/hatalı betik sürümüyle veri
+`C:\veri`'de çalıştırılıyordu — o da güncel değildi, eski/hatalı betik sürümüyle veri
 kirletti (bkz. aşağıdaki hemşehrilik il-indeks hatası).
 
-**Kural: `C:eri` tek çalışma kopyası.** Yeni bir worktree açıp oraya merge etmek yerine,
-doğrudan `C:eri`'de `git log --oneline --all` ile hangi `claude/*` dalının en ileride
+**Kural: `C:\veri` tek çalışma kopyası.** Yeni bir worktree açıp oraya merge etmek yerine,
+doğrudan `C:\veri`'de `git log --oneline --all` ile hangi `claude/*` dalının en ileride
 olduğuna bak, `git merge` ile ana dala al, worktree'yi atla. Oturum başında
 `git branch --show-current` ve `git status --short` ile nerede olduğunu doğrula.
 
@@ -38,31 +38,36 @@ tek çekiyor) — `--il-no` varsayılan olarak `--tum-yillar` istiyor ama 50.000
 olabilir. İl-bazlı "tamam" ile yıl-bazlı "tamam" farklı şeyler — durum sayfası
 yalnızca ili sayıyor, yıl derinliğini değil. Bu ayrı bir iş kalemi.
 
-## Çekim durumu (2026-09-10) — sıradaki üç iş
+## Çözüldü — MEDAS tick-toggle hatası ve ilçe ölçümleri (2026-09-11/12)
+
+`fetch_medas_districts.py`, okuma-yazma gibi bazı ölçümlerin kırılım satırlarıyla
+**önceden işaretli** gelebildiğini hesaba katmıyordu; `tick()` bir toggle olduğu
+için zaten işaretli satırı tekrar tıklamak işareti kaldırıyordu. `is_ticked()` ile
+kontrol edilip yalnızca kapalı satırlar tıklanacak şekilde düzeltildi (hem keşif
+hem yıl-sekmesi açma aşamasında). Sonuç: **MEDAS ilçe ölçümleri 4/60 → 85/60
+(%100)**, **hemşehrilik il-il 80/81 → 81/81 (%100)**. `fetch_medas_simple.py`'ye
+`ortanca-yas`, `dogum-yeri-tr`, `dogum-yeri-il` ölçümleri eklendi.
+
+**2007 seçimi de tamamlandı** (`raw/secim`): `mv2007`, `ho2007` 923/923;
+`aday2007` 85/85; `cikan2007` 1/1, hepsi "0 eksik".
+
+## Çekim durumu — açık işler
 
 Canlı sayılar `web/durum.html`'de (`scripts/durum_raporu.py` üretiyor, dakikada bir
-yenileniyor). O sayfadaki yüzdelere **şu an güvenilmiyor** — iki sayaç doğrulanan
-gerçek durumla çelişiyor:
+yenileniyor). Sayfadaki yüzdelerin bir kısmı yakın zamana kadar gerçek durumla
+çelişiyordu; yukarıdaki iki kalem düzeldi. Ama sayaç mantığı tam denetlenmedi —
+seçim tarafında `fetch_secim.py`'nin kendi defteri "0 eksik" derken sayfanın farklı
+bir yüzde göstermesi ihtimaline karşı yeniden kontrol edilmeden yüzdelere körü
+körüne güvenilmemeli.
 
-1. **`durum_raporu.py`nin sayaç mantığı bozuk.** Hemşehrilik "0/81" gösteriyor ama
-   `C:eri-ham\medas\ilce` altında 133 `hemsehrilik-il*-ilce-kirilim-*.csv` dosyası
-   var — sayaç dosya adı kalıbını tanımıyor. Seçim tarafında da `fetch_secim.py`
-   kendi defterine göre milletvekili/cumhurbaşkanlığı/halkoylaması/yerelde "0 eksik"
-   diyor, sayfa ise %54-%97 arası gösteriyor — iki araç farklı birim sayıyor
-   (muhtemelen il düzeyi vs. beklenen ilçe×yıl rapor adedi). Düzeltilmeden bu
-   yüzdelere dayanarak "eksik" sonucuna varmayın.
-2. **MEDAS hemşehrilik CSV indirme zaman aşımına uğruyor.** `fetch_medas_hemsehrilik.py`
+1. **MEDAS hemşehrilik CSV indirme zaman aşımına uğruyor.** `fetch_medas_hemsehrilik.py`
    il01 2023 için iki denemede de `Locator.click` 60 saniyede patlıyor (rapor sayfası
    hazır ama CSV düğmesi görünmüyor/gelmiyor). Tekrar çalıştırmak tek başına çözmedi;
    bekleme süresini uzatmak ya da düğme seçicisini gözden geçirmek gerekiyor.
-3. **MEDAS ilçe ölçümleri (bağımlılık, çocuk nüfus, hane tipleri…) 4/60 dosya.**
-   Hangi 56 ölçümün eksik olduğunu (doğru `--konu`/`--olcum` listesi) çıkarmadan
-   çekici tahmini komutla çalıştırılmadı — kalıptaki 4. hata (uydurma komutla yanlış
-   dosya indirme) burada tekrar yaşanmasın diye.
 
-Ayrıca: Endeksa mahalle demografisi (%98) son turda ardışık DNS hatası
-(`getaddrinfo failed`) aldı — ağ kesintisi, gerçek veri eksikliği değil; ağ
-düzelince tek geçişte kapanır.
+Ayrıca: Endeksa mahalle demografisi son turda ardışık DNS hatası
+(`getaddrinfo failed`) aldı — ağ kesintisi, gerçek veri eksikliği değil; bir
+sonraki turda 972/973 ilçe dosyasıyla %100'e ulaştı.
 
 ## Nerede duruyoruz
 
