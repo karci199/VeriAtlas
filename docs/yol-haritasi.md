@@ -3,110 +3,97 @@
 Bu dosya "sırada ne var" sorusunun tek cevabı. Kararların gerekçesi
 [kararlar.md](kararlar.md)'de; burası yalnızca sıra.
 
-Son güncelleme: 2026-08-14.
+Son güncelleme: 2026-09-12.
 
 ## Nerede duruyoruz
 
+Depoda **27 gösterge, 4,07 milyon satır**. Altı coğrafi düzey: ülke, İBBS (türetilen),
+il, ilçe, mahalle, köy.
+
 | Gösterge | Düzey | Yıl | Kırılım |
 |---|---|---|---|
-| Nüfus | Türkiye, il | 2007-2025 | **tek yaş** × cinsiyet (sayfada 5'lik, istenirse tek yaş) |
-| Nüfus | ilçe (973) | 2007-2025 | 5'lik yaş × cinsiyet |
-| Nüfus | mahalle (Bursa, 1061) | 2013, 2025 | 18 altı / 18 üstü |
+| Nüfus | Türkiye, il | 2007-2025 | tek yaş × cinsiyet |
+| Nüfus | mahalle (38.408) | **2007**-2025 | 0-17 / 18+ |
+| Nüfus | köy (35.345) | **2007**-2025 | yok |
+| Nüfus | ilçe | *çekim sürüyor* | 5'lik yaş × cinsiyet |
+| Medeni durum | Türkiye, il, **ilçe (989)** | 2008-2025 | medeni durum × cinsiyet × yaş |
+| Doğum | Türkiye, il | 2009-2025 | **annenin yaş grubu** |
+| Doğum | ilçe (975) | 2014-2025 | yok |
+| Ölüm | Türkiye, il | 2009-2025 | yaş grubu × cinsiyet |
+| Ölüm | ilçe (989) | 2009-2025 | cinsiyet |
+| Evlenme / boşanma | Türkiye, il | 2001-2025 | yok |
+| Evlenme / boşanma (ilçe) | ilçe (975) | 2014-2025 | yok — **ayrı gösterge**, farklı tanım |
 | Ortanca yaş | Türkiye, il | 2007-2025 | cinsiyet |
-| Toplam doğurganlık hızı | Türkiye, coğrafi bölge, İBBS-1/2, il | 2009-2025 | yok |
+| Toplam doğurganlık hızı | Türkiye, il | 2009-2025 | yok |
+| Göç (4 ölçü), hanehalkı (3), yabancı uyruklu, kütük, yaşam süresi | Türkiye, il | değişken | değişken |
 
-Kırılımın üstünde iki katman var (K17): **gruplamalar** (geniş yaş grupları, doğurgan
-çağ) ve **karşılaştırmalar** (erkek−kadın farkı, cinsiyet oranı). İkisi de sözlükte
-tanımlı, depolanmıyor.
+Mahalle ve köy serileri 2013'ten **2007'ye** indi. İkisi birbirini doğruluyor: 2012'de
+34.292 köy varken 2013'te 18.108 kalıyor, aynı geçişte mahalle 18.883'ten 31.653'e
+çıkıyor — 6360 sayılı yasanın dönüşümü iki taraftan birden görünüyor.
 
-Sözlükte tanımlı ama verisi olmayanlar ekranda gri duruyor: kütük nüfusu, yaş yapısı,
-kaba doğum hızı, yapı ruhsatı (bina ve daire).
+## Sıra
 
-## Veri — sıra
+### 1. İlçe nüfusunun yaş × cinsiyet kırılımı
 
-Bağımlılığa göre sıralı; üsttekiler alttakileri açıyor.
+Ham verisi 2026-09-07 kaybında gitti; yeniden çekiliyor (19 yıl, yıl başına bir sorgu).
+Bitince yüklenecek. `public/population-district.csv.gz` bu sırada git'teki tam haliyle
+(696.900 satır) korunuyor — yani sayfa bozuk değil, yalnız yeniden üretilemez durumda.
 
-### 1. Mahalle verisini ülkeye yayma
+### 2. Kütük nüfusu 2007-2009
 
-Bursa deseni tuttu, geri kalanı tekrar. İki iş var:
+Ham verisi indi, yüklenmeyi bekliyor. Aynı şekilde `registry-population.csv.gz` git'ten
+korunuyor.
 
-- **Çekici.** `fetch_medas_districts.py`'nin mahalle sürümü: il × yıl döngüsü, MEDAS'ın
-  50.000 sınırı yüzünden muhtemelen il başına birkaç yıl. Kırılım kutusu deseni aynı
-  (bkz. `medas.md`).
-- **İl başına dosya.** K14'ün düzey-başına bölmesi mahallede yetmez — 50.000 mahalle ×
-  19 yıl ≈ 1,9 milyon satır. `population-neighbourhood-TR-16.csv.gz` gibi, okuyucu o ile
-  bakarken o il iniyor. Sayfa ilçe *sınırlarını* zaten böyle çekiyor.
+### 3. Ölüm, ölenin tek yaşıyla
 
-**İlk çekilecek il büyükşehir olmayan bir il olmalı** — beldelerin etiketin orta
-parçasında görünüp görünmediğini ancak orada anlarız (kararlar.md, düzey adları).
+Ülke düzeyinde 200 gösterge (100 yaş × cinsiyet), 2009-2025, ham verisi hazır.
+Yüklenmesi bir karar gerektiriyor: aynı gösterge ülkede tek yaş, ilde yaş grubu taşır —
+nüfusun ilde tek yaş, ilçede beşli bant taşıması gibi (K16). İl düzeyinde tek yaş
+**yok**, MEDAS vermiyor.
 
-### 2. Mahallede cinsiyet kesiti
+### 4. Kent / kır ayrımının yeniden kurulması
+
+Bugünkü ayrım yalnız yerleşim türünden çıkıyor (belediye mahallesi = kent, köy = kır) ve
+yalnız 51 ilde işliyor, çünkü 6360 büyükşehirlerde köy bırakmadı. Elimizdeki mahalle ve
+köy serileri artık 2007'ye kadar indiği için ayrımı yerleşimin gerçek karakterine göre
+kurmanın veri tabanı var. Kaynak seçenekleri kararlar.md'de (Wikipedia ilçe sayfaları,
+TÜİK'in üçlü sınıflaması, seçim verisindeki kent-kır etiketi).
+
+### 5. Evlenme ve boşanmanın kırılımları
+
+Taraması yapıldı, hiç çekilmedi. İki ölçü de geniş: evlenme 121 gösterge (kadının/erkeğin
+yaş grubu, önceki medeni durum, eğitim durumu), boşanma 118 (yaş farkı, **evliliğin bitiş
+nedeni**, **evlilik süresi**, eğitim). Ayrıca `Yaş grubuna göre ilk defa evlenen sayısı`
+11 göstergeyle ucuz ve 25 yıl uzunluğunda.
+
+### 6. Mahallede cinsiyet kesiti
 
 MEDAS bu düzeyde yaş *ya da* cinsiyet veriyor, ikisini birlikte değil. Ayrı bir çekim,
-aynı kayıt, `dims` alanı sayesinde aynı göstergeye ek satır olarak giriyor.
+aynı kayıt, `dims` sayesinde aynı göstergeye ek satır.
 
-### 3. Ortanca yaşta toplam
+### 7. Ortanca yaşta toplam
 
-Elimizdeki dosyada yalnız erkek/kadın var. Toplam ayrı çekilmeli — iki medyanın
-ortalaması medyan değildir, hesaplayamayız.
+Elimizdeki dosyada yalnız erkek/kadın var; iki medyanın ortalaması medyan değildir.
 
-### 4. Yaş yapısı (bağımlılık oranları)
+### 8. EVDS ve Dünya Bankası
 
-Sözlükte tanımlı, verisi yok. Aslında nüfustan **türetilebilir**: 0-14 / 15-64 / 65+
-payları ve yaşlı-bağımlılık oranı. K12'ye göre türetme olarak mı, ayrı gösterge olarak
-mı duracağı kararlaştırılmalı — payda başka bir kırılımdan geldiği için oran kipiyle
-(K13) aynı mekanizma değil.
+Adaptör sözleşmesi (K8) bunlar için kuruldu, ikisi de yazılmadı.
 
-### 5. Kaba doğum hızı, kütük nüfusu
+### 9. Zamana bağlı coğrafya
 
-MEDAS'ta ikisi de var, akış bilinen akış. Kaba doğum hızı toplanamaz bir birim (‰).
+Hâlâ açık ve hâlâ zor. İlçelerin geçerlilik aralıkları gözlemden çıkarıldı (K11), ama
+**ardıl eşlemesi** yok. 2007-2012 geriye doldurması bunun beş vakasını görünür kıldı
+(Akköy → Pamukkale gibi) ve köy defterine takma ad olarak yazıldı; ilçe düzeyinde aynı
+iş yapılmadı. Bu olmadan uzun ilçe serileri sessizce yanlış: 2014'ün Aksaray Merkez'i ile
+2020'ninki aynı alan değil.
 
-### 6. Yapı ruhsatı
+## Kaynak kısıtları
 
-Yeni konu, yeni MEDAS ağacı. Bina ve daire iki ayrı gösterge — aynı olgunun iki ölçümü
-olduğu için tek göstergede kırılım yapmak yanlış olur.
-
-### 7. EVDS ve Dünya Bankası
-
-Adaptör sözleşmesi (K8) bunlar için kuruldu ama ikisi de yazılmadı. EVDS'nin API'si var,
-Dünya Bankası SDMX. İkisi de zaman serisi; asıl iş coğrafya değil, dönem eşleme (aylık →
-yıllık) ve o da olgu tablosunun `frequency` sütununda zaten karşılanıyor.
-
-### 8. Zamana bağlı coğrafya
-
-Hâlâ açık ve hâlâ zor: ilçelerin geçerlilik aralıkları gözlemden çıkarıldı (K11), ama
-**ardıl eşlemesi** yok — bölünen bir ilçenin öncesi ile sonrası nasıl bağlanacak? Bu
-olmadan uzun seriler ilçe düzeyinde sessizce yanlış.
+MEDAS'ın vermedikleri kararlar.md'de ayrı başlıkta: ölüm × medeni durum (düğme
+kayboluyor), ölenin tek yaşı il düzeyinde, ilçede bebek ölümü, sektörel GSYİH, ilçe TFH.
 
 ## Ekran — OWID'e göre eksikler
 
-OWID Grapher'ı ölçü aldık (K9/K10). Bugün olanlar: tablo (sıralanabilir), harita
-(sınıflı renk ekseni, ülke çapı ilçe, ile tıklayınca açılma, pan-zoom), çizgi (eksen
-seçimi, imleç okuması), sütun, piramit; mutlak/oran kipi; yedi türetme; düzey ve kırılım
-denetimleri; paylaşılabilir bağlantı; CSV indirme; ayarlanabilir tema.
-
-Eksikler, faydasına göre sıralı:
-
-1. **Dağılım grafiği (scatter).** OWID'in en ayırt edici görünümü ve bizde hiç yok: iki
-   *farklı* gösterge, biri x biri y, alanlar nokta, yıl kaydırmalı. "Doğurganlık ile
-   ortanca yaş ilişkisi" ancak böyle sorulur. Sayfa şu an tek gösterge etrafında kurulu;
-   bu, iskeletin en büyük değişikliği olur.
-2. **Yıl aralığı seçimi.** Çizgide bütün yıllar çiziliyor, "2015-2025 arasını göster"
-   denemiyor. Tek yıllık kaydırıcı var, aralık yok.
-3. **Görüntü olarak indirme.** PNG/SVG yok. Bir grafiği rapora koymak için ekran
-   görüntüsü almak gerekiyor.
-4. **Gömme (embed).** OWID'in her grafiğinin iframe kodu var. Bizde bağlantı var, gömme
-   yok.
-5. **Kaynaklar sekmesi.** Alt satırda künye var ama OWID'deki gibi "bu göstergenin
-   tanımı, kaynağı, sürümü, atıf metni" ayrı bir sekmede değil. Sözlükte bilgi zaten
-   duruyor (`definition_tr`, `note_tr`, `sources`), gösterilmiyor.
-6. **Yığılmış alan grafiği.** Yaş yapısının zaman içindeki değişimi için doğru görünüm
-   bu; piramit tek yıl gösteriyor.
-7. **Eğim grafiği (slope).** İki yıl arasında sıralama değişimi. Ucuz ve okunur.
-8. **Harita projeksiyonu ve dilim yerleştirme.** Bizimki eşdikdörtgen + enlem düzeltmesi;
-   yeterli ama OWID'deki gibi seçilebilir değil.
-
-Ayrıca OWID'de olup bizde **bilinçli olarak olmayan** bir şey: onların "per capita"
-düğmesi nüfusa bölüyor. Bizde oran kipi (K13) kırılım payı ya da Türkiye payı veriyor;
-kişi başı hesap ayrı bir türetme olarak K12'de sırada duruyor ve nüfusu ikinci bir
-gösterge olarak okumayı gerektiriyor — yani aslında 1. maddeyle aynı altyapı.
+Sıralama değişmedi: dağılım grafiği (scatter) · yıl aralığı seçimi · görüntü olarak
+indirme · gömme (embed) · kaynaklar sekmesi · yığılmış alan · eğim grafiği · harita
+projeksiyonu.
