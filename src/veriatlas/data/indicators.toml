@@ -93,6 +93,61 @@ one_nuclear_family = "Tek çekirdek aileli"
 nuclear_and_others = "Çekirdek aile ve diğerleri"
 no_nuclear_family = "Çekirdek ailesiz, çok kişili"
 
+[dim.household_size_band]
+label_tr = "Hanehalkı büyüklüğü"
+label_en = "Household size"
+
+# Bands are already readable ("1", "2", …); only the closing one needs saying.
+[dim.household_size_band.values]
+"10+" = "10 ve üzeri"
+
+[dim.tenure]
+label_tr = "Mülkiyet durumu"
+label_en = "Tenure"
+
+[dim.tenure.values]
+owner = "Ev sahibi"
+tenant = "Kiracı"
+other = "Diğer"
+unknown = "Bilinmeyen"
+
+[dim.cause]
+label_tr = "Ölüm nedeni"
+label_en = "Cause of death"
+
+# Nine groups that partition the whole, so they sum to the death count rather than
+# sitting beside it. TÜİK publishes this grouping from 2022; the earlier series is on a
+# different basis and is not comparable.
+[dim.cause.values]
+circulatory = "Dolaşım sistemi hastalıkları"
+neoplasms = "İyi ve kötü huylu tümörler"
+respiratory = "Solunum sistemi hastalıkları"
+nervous = "Sinir sistemi ve duyu organları"
+endocrine = "Endokrin, beslenme ve metabolizma"
+# Accidents, violence, disasters. This is where the 6 February 2023 earthquake sits:
+# Adıyaman 122 deaths in 2022, 8.342 in 2023.
+external = "Dışsal yaralanma ve zehirlenme"
+# Kept though it empties out — 22.054 deaths in 2022, two in 2025. Folding it into
+# "diğer" would hide the shape of the ending.
+covid19 = "COVID-19"
+other = "Diğer"
+unknown = "Bilinmeyen"
+
+[dim.birth_order]
+label_tr = "Doğum sırası"
+label_en = "Birth order"
+
+[dim.birth_order.values]
+"1" = "İlk doğum"
+"2" = "İkinci doğum"
+"3" = "Üçüncü doğum"
+# TÜİK closes the band here rather than counting on: a fifth and an eighth child are one
+# value in the source, and splitting them would be inventing a distinction.
+"4+" = "Dördüncü ve üzeri"
+# Kept for the reason every unknown here is kept: without it the orders sum to less than
+# the births they break down, and the shortfall would be invisible.
+unknown = "Bilinmeyen"
+
 [dim.mother_age]
 label_tr = "Annenin yaş grubu"
 label_en = "Mother's age group"
@@ -585,6 +640,73 @@ dims = ["sex", "age"]
 views = ["table", "map", "line", "bar", "pyramid"]
 definition_tr = """
 Yıl içindeki ölüm sayısı, ölen kişinin ikamet ettiği ile göre, cinsiyet ve yaş kırılımıyla. Yaş kırılımı il ve Türkiye düzeyinde var, ilçede yok."""
+
+[indicator.household_by_size]
+label_tr = "Hanehalkı sayısı (büyüklüğe göre)"
+label_en = "Households by size"
+topic = "nufus"
+unit = "household"
+frequency = "annual"
+additive = true
+dims = ["household_size_band"]
+views = ["table", "map", "line", "bar"]
+# The distribution behind , which is only its mean. Two provinces can
+# share an average of 3,2 and look nothing alike — one mostly two-person households, the
+# other split between people living alone and crowded houses. The mean cannot tell them
+# apart and this can.
+definition_tr = """
+Hanehalkı sayısı, hanede yaşayan kişi sayısına göre. On bant: birden dokuza tek tek, onuncu bant "10 ve üzeri" olarak kapalı. Toplamı ilin hanehalkı sayısını verir."""
+
+[indicator.household_by_tenure]
+label_tr = "Hanehalkı sayısı (mülkiyet durumuna göre)"
+label_en = "Households by tenure"
+topic = "nufus"
+unit = "household"
+frequency = "annual"
+additive = true
+dims = ["tenure"]
+views = ["table", "map", "bar"]
+definition_tr = """
+Hanehalkı sayısı, oturulan konutun mülkiyet durumuna göre: ev sahibi, kiracı, diğer. Tek yıl (2025) yayımlanıyor."""
+
+[indicator.deaths_by_cause]
+label_tr = "Ölüm sayısı (nedene göre)"
+label_en = "Deaths by cause"
+topic = "olum"
+unit = "death"
+frequency = "annual"
+additive = true
+dims = ["cause"]
+views = ["table", "map", "line", "bar"]
+# A separate indicator from , though it counts the same deaths: the cause series
+# starts in 2022 where  runs from 2009, and it carries no age or sex. Merged, the
+# indicator would gain a breakdown for four years and lose it for the other thirteen.
+definition_tr = """
+Yıl içindeki ölüm sayısı, ölüm nedenine göre, ölenin ikamet ettiği ile göre. Dokuz neden grubu bütünü kapsar: toplamları o yılın ölüm sayısını verir. TÜİK bu seriyi 2022'den itibaren yayımlıyor — öncesi farklı bir sınıflamada ve karşılaştırılabilir değil."""
+
+[indicator.births_by_order]
+label_tr = "Doğum sayısı (doğum sırasıyla)"
+label_en = "Births by birth order"
+topic = "dogurganlik"
+unit = "birth"
+frequency = "annual"
+additive = true
+dims = ["mother_age", "birth_order"]
+views = ["table", "line", "bar"]
+# The only fertility fact here that cannot be derived: every rate on this side is births
+# over some group of women, but whether a birth was a woman's first or her fourth is not
+# in any count of births. TÜİK publishes it for Türkiye only and MEDAS not at all, so it
+# stays a separate indicator rather than a breakdown of `births` — which is by province
+# and would then change shape with the area picked.
+#
+# The age groups are the source's, and finer at the young end than the MEDAS series:
+# 15-17 and 18-19 where `births` has 15-19. Kept as published; merging stays possible,
+# splitting does not.
+definition_tr = """
+Yıl içindeki canlı doğum sayısı, annenin yaş grubu ve çocuğun kaçıncı doğum olduğuyla. \
+Yalnızca Türkiye düzeyinde yayımlanıyor. "Doğum sayısı" göstergesiyle aynı doğumları \
+sayar; farkı, doğumun sırasını bilmesidir — bu bilgi başka hiçbir seriden \
+hesaplanamaz."""
 
 [indicator.deaths_single_age]
 label_tr = "Ölüm sayısı (tek yaş)"

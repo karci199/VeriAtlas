@@ -70,6 +70,10 @@ DATASETS = {
     "foreign_population": "foreign.csv",
     "deaths": "deaths.csv",
     "deaths_single_age": "deaths-single-age.csv",
+    "births_by_order": "births-by-order.csv",
+    "deaths_by_cause": "deaths-by-cause.csv",
+    "household_by_size": "household-by-size.csv",
+    "household_by_tenure": "household-by-tenure.csv",
     "registry_population": "registry-population.csv",
     "mean_marriage_age": "marriage-age.csv",
     "mean_first_marriage_age": "first-marriage-age.csv",
@@ -112,6 +116,10 @@ BROKEN_DOWN = (
     "foreign_population",
     "deaths",
     "deaths_single_age",
+    "births_by_order",
+    "deaths_by_cause",
+    "household_by_size",
+    "household_by_tenure",
     "mean_marriage_age",
     "mean_first_marriage_age",
     "registry_population",
@@ -689,6 +697,10 @@ def main() -> None:
         # finer grain of the line above, because MEDAS publishes it for Türkiye alone —
         # see the dictionary note on `deaths_single_age`.
         "deaths_single_age": export_broken_down(fact, areas, "deaths_single_age"),
+        "births_by_order": export_broken_down(fact, areas, "births_by_order"),
+        "deaths_by_cause": export_broken_down(fact, areas, "deaths_by_cause"),
+        "household_by_size": export_broken_down(fact, areas, "household_by_size"),
+        "household_by_tenure": export_broken_down(fact, areas, "household_by_tenure"),
         # `whole=False` for the same reason the median age has it: an age is a position,
         # not a quantity, so "men plus women" is not a total anyone can use.
         "mean_marriage_age": export_broken_down(

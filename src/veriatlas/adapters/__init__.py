@@ -1,7 +1,10 @@
 """Source adapters. One module per source; the contract lives in `base`."""
 
 from .base import Adapter, Manifest, history, ingest
+from .tuik_birth_order import TuikBirthOrder
+from .tuik_death_cause import TuikDeathCause
 from .tuik_district_population import TuikDistrictPopulation
+from .tuik_household import TuikHouseholdSize, TuikHouseholdTenure
 from .tuik_marital import TuikMarital
 from .tuik_median_age import TuikMedianAge
 from .tuik_neighbourhoods import TuikNeighbourhoodPopulation
@@ -21,6 +24,10 @@ ADAPTERS = {
     "tuik_median_age": TuikMedianAge,
     "tuik_neighbourhoods": TuikNeighbourhoodPopulation,
     "tuik_villages": TuikVillagePopulation,
+    "tuik_birth_order": TuikBirthOrder,
+    "tuik_death_cause": TuikDeathCause,
+    "tuik_household_by_size": TuikHouseholdSize,
+    "tuik_household_by_tenure": TuikHouseholdTenure,
     "tuik_marital": TuikMarital,
     "tuik_registry_population": TuikRegistryPopulation,
     # One class per narrow measure, generated from a table: the contract is one
@@ -40,7 +47,11 @@ __all__ = [
     "VITAL_ADAPTERS",
     "Adapter",
     "Manifest",
+    "TuikBirthOrder",
+    "TuikDeathCause",
     "TuikDistrictPopulation",
+    "TuikHouseholdSize",
+    "TuikHouseholdTenure",
     "TuikMarital",
     "TuikMedianAge",
     "TuikNeighbourhoodPopulation",
