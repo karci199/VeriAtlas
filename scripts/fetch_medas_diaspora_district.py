@@ -1,26 +1,14 @@
-"""Fetch where the people of each district are registered — hemsehrilik at district level.
+"""Fetch where people registered in each district live — the district diaspora.
 
-Variant of fetch_medas_marital.py: Düzey = İlçe, province = PROVINCE, all its districts.
-Usage: python scripts/fetch_medas_marital_district.py BURSA 2024 [2025 ...]
+Measure: "Nüfusa kayıtlı olunan ilçeye göre ikamet edilen il". Rows are the districts of
+registration in one province, columns the 81 provinces of residence. The same square as
+`fetch_medas_hemsehri_district.py` read along the other axis; having both is what makes
+the axis checkable (K24).
 
-The measure is "Medeni Duruma Göre Nüfus Bilgileri (15 Yaş üstü)" and it carries three
-breakdowns at once: medeni durum (5 values), cinsiyet (2) and yaş grubu (17 bands from
-15-19 up). That is 170 indicators — the widest thing we have pulled — and MEDAS still
-caps gösterge × düzey × zaman at 50.000. With 81 provinces that leaves room for three
-years per query, so the **year chunk** is what this script sizes, and it sizes it from
-the page's own counters rather than from arithmetic done here.
+Raw files land in `raw/medas/hemsehri/` as `nufus-diaspora-ilce-<il>-<yil>-<yil>.csv`.
 
-Medeni durum is marked red in MEDAS's breakdown list, meaning the measure refuses to be
-added without it. The other two are ours to ask for.
-
-Age starts at 15, not 0: marital status is only published for the population old enough
-to have one. That is a property of the source and the band list says so — there is no
-0-14 to be missing.
-
-Raw files land in `raw/medas/medeni/` per year chunk and are never overwritten.
-
-Run:  uv run python scripts/fetch_medas_marital.py 2025 2024
-      uv run python scripts/fetch_medas_marital.py --all
+Run:  uv run python scripts/fetch_medas_diaspora_district.py Bursa 2025
+      (all provinces and years: C:/veri-ham/medas_ilce_kuyruk.py diaspora)
 """
 
 import re
@@ -50,12 +38,12 @@ OUT = RAW / "medas" / "hemsehri"
 
 TOPIC = "Adrese Dayalı Nüfus Kayıt Sistemi Sonuçları"
 
-#: Ascii-safe fragment of "Medeni Duruma Göre Nüfus Bilgileri (15 Yaş üstü)". MEDAS serves
+#: Fragment of the measure label to click. MEDAS serves
 #: ISO-8859-9 under a header that claims otherwise, so the Turkish letters cannot be
 #: matched on (docs/medas.md).
 MEASURE_HINT = "fusa kayıtlı olunan ilçeye g"
 
-#: The three breakdowns, by an ascii-safe fragment each. Köy/Şehir is left out: the town
+#: The one breakdown (the other end of the square). Köy/Şehir is left out: the town
 #: and village split is a separate question and doubles the width for it.
 BREAKDOWN_HINTS = ("kamet Edilen",)
 
