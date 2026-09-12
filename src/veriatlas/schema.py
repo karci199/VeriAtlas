@@ -34,6 +34,12 @@ QUALITY_FLAGS = (
 AREA_LEVELS = (
     "country",
     "region",
+    # İBBS-2, and the only İBBS level the fact table stores rather than derives. Every
+    # other statistical region is summed from provinces on the way to the screen (K15) —
+    # but the region-to-region migration matrix is published at İBBS-2 and nowhere finer,
+    # so there is nothing to sum it from. A level exists here when data arrives at it,
+    # not when the hierarchy has a name for it.
+    "nuts2",
     "province",
     "district",
     "neighbourhood",

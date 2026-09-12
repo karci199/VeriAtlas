@@ -93,6 +93,10 @@ one_nuclear_family = "Tek çekirdek aileli"
 nuclear_and_others = "Çekirdek aile ve diğerleri"
 no_nuclear_family = "Çekirdek ailesiz, çok kişili"
 
+[dim.destination]
+label_tr = "Göç edilen bölge"
+label_en = "Destination region"
+
 [dim.household_size_band]
 label_tr = "Hanehalkı büyüklüğü"
 label_en = "Household size"
@@ -640,6 +644,23 @@ dims = ["sex", "age"]
 views = ["table", "map", "line", "bar", "pyramid"]
 definition_tr = """
 Yıl içindeki ölüm sayısı, ölen kişinin ikamet ettiği ile göre, cinsiyet ve yaş kırılımıyla. Yaş kırılımı il ve Türkiye düzeyinde var, ilçede yok."""
+
+[indicator.migration_between_regions]
+label_tr = "Bölgeler arası göç"
+label_en = "Migration between regions"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["destination"]
+views = ["table", "line", "bar"]
+# The flow matrix the other migration indicators are margins of: aldığı is a column
+# total, verdiği a row total, net their difference, and none of them says where anyone
+# went. Stored at İBBS-2 because that is as fine as the published flow gets — the
+# province measure that sounds like a matrix carries the reason for moving, not the
+# destination.
+definition_tr = """
+Bir yıl içinde bir İBBS-2 bölgesinden diğerine taşınan kişi sayısı. Alan, göçü veren bölgedir; kırılım, göçün gittiği bölge. Köşegen sıfırdır: bölge içi taşınma bölgeler arası göç değildir. İl düzeyinde bu matris yayımlanmıyor."""
 
 [indicator.household_by_size]
 label_tr = "Hanehalkı sayısı (büyüklüğe göre)"

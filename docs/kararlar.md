@@ -697,6 +697,45 @@ listesinde adlarının görünmeye devam etmesi:
   hiç yok; bebek ölüm hızı ölçüsü ülke/İBBS/il düzeyinde. Ne indirilebiliyor ne
   türetilebiliyor.
 
+## MEDAS envanteri — ne alındı, ne alınmadı, neden (2026-09-12)
+
+`scan_medas_topic.py` dört konuyu taradı: ADNKS 39 ölçü, Doğum 5, Ölüm 6, Evlenme 9,
+Boşanma 3. Karar listesi, bir daha baştan konuşulmasın diye.
+
+**Alındı.** Nüfus (il / ilçe / mahalle / köy) · medeni durum (ülke / il / ilçe) · doğum
+(annenin yaş grubuyla) · ölüm (yaş grubu × cinsiyet; ülkede ayrıca tek yaş) · ilçe
+doğum/ölüm · ilçe evlenme/boşanma · hanehalkı (sayı, ortalama büyüklük, tip, büyüklük
+dağılımı, mülkiyet) · göç (aldığı / verdiği / net / yurtdışı) · kütük nüfusu · yabancı
+uyruklu · ölüm nedeni · doğum sırası · bölgeler arası göç matrisi.
+
+**Bilerek alınmadı, çünkü türetilebiliyor (K12).** Kaba doğum / ölüm / evlenme / boşanma
+hızı · net göç hızı · cinsiyet oranı · yıllık nüfus artış hızı · çocuk, yaşlı ve toplam
+bağımlılık oranı · genç nüfus · çocuk nüfus · **yaşa özel doğurganlık hızı**.
+
+Sonuncusu sınandı, çünkü türetmenin gerçekten yayımlananla aynı şeyi verdiğini bir kez
+görmek gerekiyordu: kendi verimizden hesaplanan hız TÜİK'in tablosundan %1'in altında
+sapıyor (kalan fark, TÜİK'in yıl ortası nüfus kullanmasından — K19'daki kaba hız
+denetiminde çıkan farkın aynısı). Üstelik bizimki 81 il için, TÜİK'inki yalnız Türkiye
+için: türetme burada indirmekten *fazlasını* veriyor.
+
+**Bilerek alınmadı, çünkü sorusu bu ekranın sorusu değil.** Göç eden nüfusun eğitim
+durumu · göç etme nedeni (çekildi, yüklenmedi; ham dosya duruyor) · olayın gerçekleştiği
+yere göre doğum/ölüm (ikamete göre olan alındı, K19) · intihar nedenleri · ay kırılımları
+· bebek ölümlerinin gün/ay dağılımı.
+
+**Alınamadı, kaynak vermiyor.** Ölüm × medeni durum (değer seçilince MEDAS "Göstergeleri
+Ekle" düğmesini siliyor) · ölenin tek yaşı il düzeyinde (kırılım işaretlenince düzey
+kutusundan il düşüyor) · ilçede bebek ölümü · **ilçede göç** (on dört göç ölçüsünün
+hiçbirinde ilçe düzeyi yok) · il × il göç matrisi (il düzeyindeki ölçü hedefi değil
+*nedeni* taşıyor) · sektörel GSYİH · ilçe TFH.
+
+**Hemşehrilik dörtlüsü.** Aynı 81 sütunlu kare dört şekilde yayımlanıyor: eksen (ikamet /
+kütük) × düzey (il / ilçe). İl düzeyindeki ikisi alındı ve birbirini doğruladı — "ikamet
+edilen ile göre kayıtlı olunan il" satır toplamları, yüklü kütük nüfusuyla **81/81 il
+birebir** tutuyor. Bu, K24'ün eksen kararının bağımsız teyidi: aynı kareyi ters yönden
+çekip aynı sayıyı bulmak, doğru ekseni seçtiğimizi gösteriyor. İlçe düzeyindeki ikisi
+(hemşehrilik ve diaspora) çekim sırasında.
+
 ## Oturum notu — 2026-09-12: sessizce bozan yedi yol
 
 Hepsi bu oturumda yaşandı, hiçbiri hata vermedi.

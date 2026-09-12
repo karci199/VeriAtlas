@@ -7,6 +7,7 @@ from .tuik_district_population import TuikDistrictPopulation
 from .tuik_household import TuikHouseholdSize, TuikHouseholdTenure
 from .tuik_marital import TuikMarital
 from .tuik_median_age import TuikMedianAge
+from .tuik_migration_matrix import TuikMigrationMatrix
 from .tuik_neighbourhoods import TuikNeighbourhoodPopulation
 from .tuik_population import TuikPopulationAgeSex
 from .tuik_registry import TuikRegistryPopulation
@@ -29,6 +30,7 @@ ADAPTERS = {
     "tuik_household_by_size": TuikHouseholdSize,
     "tuik_household_by_tenure": TuikHouseholdTenure,
     "tuik_marital": TuikMarital,
+    "tuik_migration_matrix": TuikMigrationMatrix,
     "tuik_registry_population": TuikRegistryPopulation,
     # One class per narrow measure, generated from a table: the contract is one
     # adapter per indicator, and eleven measures share the same parser.
@@ -54,6 +56,7 @@ __all__ = [
     "TuikHouseholdTenure",
     "TuikMarital",
     "TuikMedianAge",
+    "TuikMigrationMatrix",
     "TuikNeighbourhoodPopulation",
     "TuikPopulationAgeSex",
     "TuikRegistryPopulation",

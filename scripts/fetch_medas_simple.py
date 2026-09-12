@@ -88,6 +88,21 @@ MEASURES = [
     ("goc-aldigi", ADNKS, "Bölgelerin aldığı göç", True),  # 28
     ("goc-verdigi", ADNKS, "Bölgelerin verdiği göç", True),  # 28
     ("yabanci-uyruklu", ADNKS, "Yabancı uyruklu nüfus", True),  # 2
+    # Migration out of each province, broken down by *why* people left. The measure is
+    # 972 indicators — 81 provinces giving migration x 12 reasons — at the country level,
+    # which is 7.776 cells over eight years and one query. It is not the province-to-
+    # province matrix it sounds like: there is no destination in it, only origin and
+    # reason. What it adds to , which is the same flow with no breakdown,
+    # is the reason.
+    ("goc-neden", ADNKS, "İller arası verdiği göç", True),
+    # The flow matrices. There is no province-to-province one — "İller arası verdiği göç"
+    # carries the origin and the reason but never the destination — and at İBBS2 there is:
+    # 26 indicators (one per receiving region) across 26 regions, which is the 26×26 matrix
+    # itself, eighteen years deep and 12.168 cells in one query. "Aldığı" and "verdiği"
+    # are the same matrix read along its two axes; both are taken because each names its
+    # own axis, and having them side by side is what makes the transpose checkable.
+    ("goc-alinan-ibbs2", ADNKS, "İBBS-Düzey2 bölgeler arası aldığı", True),
+    ("goc-verilen-ibbs2", ADNKS, "İBBS-Düzey2 bölgeler arası verdiği", True),
     ("goc-disaridan", ADNKS, "Yurt dışından Türkiye'ye gelen göç", False),  # 1
     ("goc-disariya", ADNKS, "Türkiye'den yurt dışına giden göç", False),  # 1
     # Kütük nüfusu. The measure's name reads as though the rows were the register, and
@@ -101,6 +116,18 @@ MEASURES = [
         "Nüfusa kayıtlı olunan ile göre ikamet edilen il",
         False,
     ),  # 1
+    # The other reading of the register square.  is "nüfusa kayıtlı olunan
+    # ile göre ikamet edilen il" — registered province down the rows. This is the same
+    # square transposed: province of residence down the rows, where they are registered
+    # across. Fetched to check the one against the other, since a square read on the wrong
+    # axis produces totals that look right at the country level and are wrong everywhere
+    # else — which is exactly the trap K24 records falling into.
+    (
+        "ikamet-kutuk",
+        ADNKS,
+        "İkamet edilen ile göre nüfusa kayıtlı olunan il",
+        False,
+    ),  # 81
     ("dogum", BIRTHS, "İkametgah yerine göre doğum", True),  # 12
     ("kaba-dogum-hizi", BIRTHS, "Kaba doğum hızı", False),  # 1
     ("olum", DEATHS, "İkametgah yerine göre ölüm", True),  # 24
@@ -183,6 +210,7 @@ LEVELS = {
     "country": "Türkiye",
     "province": "İBBS3 (İl Düzeyi)",
     "district": "İlçe Düzeyi",
+    "nuts2": "İBBS2 (26 Bölge)",
 }
 
 
@@ -209,6 +237,12 @@ def levels_for(name: str) -> list[str]:
         return ["district"]
     if name in COUNTRY_ONLY:
         return ["country"]
+    # The region-to-region flow matrices exist at one level and only one: the breakdown is
+    # the *other* end of the flow, so "İBBS2 bölgeler arası" asked for at province level
+    # would be a 26-column table of provinces, which is not a matrix and not a thing TÜİK
+    # publishes.
+    if name.endswith("-ibbs2"):
+        return ["nuts2"]
     return ["country", "province"]
 
 
