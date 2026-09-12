@@ -99,9 +99,12 @@
           "dataset": "household-count.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "household-count-district.csv.gz"
+          },
           "fine": {},
           "available": true
         },
@@ -177,9 +180,12 @@
           "dataset": "household-type.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "household-type-district.csv.gz"
+          },
           "fine": {},
           "available": true
         },
@@ -357,9 +363,12 @@
           "dataset": "household-size.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "household-size-district.csv.gz"
+          },
           "fine": {},
           "available": true
         },

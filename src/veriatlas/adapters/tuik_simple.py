@@ -139,8 +139,25 @@ def header_of(lines: list[str]) -> dict[int, str]:
     return best
 
 
-def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
+def read_export(
+    path: Path,
+    spec: tuple,
+    single: dict[str, str],
+    district_codes: dict[str, list[dict]] | None = None,
+) -> list[dict]:
+    """One export as fact-table rows.
+
+    `district_codes` switches the label rule. A district file labels its rows
+    `Adana(Aladağ)-1757`, and that number is a MEDAS district code, not a plate: read with
+    the province rule it becomes TR-17. With the codes given, each row is resolved by code
+    *and year* (a renamed district keeps its code, see `tuik_vital_district.area_at`), and
+    a row that resolves to nothing while carrying a value stops the load rather than
+    quietly dropping that district's households.
+    """
     indicator_id, dim, columns = spec
+    if district_codes is not None:
+        from .tuik_vital_district import area_at
+    unresolved: set[str] = set()
     lines = read_text(path).splitlines()
     header = header_of(lines)
 
@@ -170,7 +187,13 @@ def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
         label = LABEL.match(cells[1])
         if not label or year is None:
             continue
-        area = area_of(label.group("code"), single)
+        if district_codes is None:
+            area = area_of(label.group("code"), single)
+        else:
+            found = area_at(district_codes.get(label.group("code"), []), year)
+            area = (found, "district") if found else None
+            if not area and any(cells[2:]):
+                unresolved.add(cells[1])
         if not area:
             continue
 
@@ -214,7 +237,69 @@ def read_export(path: Path, spec: tuple, single: dict[str, str]) -> list[dict]:
                 "value": sum(values),
             }
         )
+    if unresolved:
+        raise KeyError(
+            indicator_id
+            + ": kayitta karsiligi olmayan ilce ("
+            + str(len(unresolved))
+            + ") "
+            + path.name
+            + ": "
+            + ", ".join(sorted(unresolved)[:10])
+        )
     return rows
+
+
+def check_districts_add_up(
+    frame: pl.DataFrame, indicator_id: str, additive: bool
+) -> None:
+    """District rows against the province rows of the same file set.
+
+    A count must sum to its province exactly, year by year and breakdown by breakdown; a
+    district missing from one year's file, or a code resolved to the wrong province, shows
+    up here as a difference and nowhere else. A mean (household size) does not sum, so it
+    is only checked for coverage: every province with district rows in a year.
+    """
+    districts = frame.filter(pl.col("area_level") == "district").with_columns(
+        pl.col("area_id").str.slice(0, 5).alias("province")
+    )
+    provinces = frame.filter(pl.col("area_level") == "province")
+    keys = ["province", "year", "dims"]
+
+    if not additive:
+        covered = districts.select("province", "year").unique()
+        wanted = provinces.filter(pl.col("year") >= districts["year"].min()).select(
+            pl.col("area_id").alias("province"), "year"
+        )
+        gaps = wanted.join(covered, on=["province", "year"], how="anti")
+        if gaps.height:
+            raise KeyError(
+                indicator_id
+                + ": ilce satiri olmayan il-yil: "
+                + str(gaps.head(5).rows())
+            )
+        return
+
+    summed = districts.group_by(keys).agg(pl.col("value").sum().alias("districts"))
+    compared = summed.join(
+        provinces.select(pl.col("area_id").alias("province"), "year", "dims", "value"),
+        on=keys,
+        how="full",
+        coalesce=True,
+    ).filter(pl.col("year") >= districts["year"].min())
+    off = compared.filter(
+        pl.col("districts").is_null()
+        | pl.col("value").is_null()
+        | ((pl.col("districts") - pl.col("value")).abs() > 0.5)
+    )
+    if off.height:
+        raise ValueError(
+            indicator_id
+            + ": ilce toplami ile il tutmuyor ("
+            + str(off.height)
+            + " il-yil): "
+            + str(off.sort("year").head(5).rows())
+        )
 
 
 class NarrowMeasure:
@@ -258,6 +343,20 @@ class NarrowMeasure:
         if not records:
             raise ValueError("dosya bulunamadi ya da bos: " + self.stem)
 
+        # District files, where the measure was also pulled at İlçe Düzeyi: one file for
+        # every year when it fitted one query, one per year when it did not. Named exactly
+        # for the same reason as above — no wildcard that another stem could fall into.
+        district_files = [raw / ("nufus-" + self.stem + "-ilce-district.csv")] + sorted(
+            raw.glob("nufus-" + self.stem + "-ilce-district-[0-9][0-9][0-9][0-9].csv")
+        )
+        district_files = [path for path in district_files if path.exists()]
+        if district_files:
+            from .tuik_vital_district import districts_by_code
+
+            codes = districts_by_code()
+            for path in district_files:
+                records.extend(read_export(path, self.spec, single, codes))
+
         indicator = get(self.indicator_id)
         frame = pl.DataFrame(records).with_columns(
             pl.lit(self.indicator_id).alias("indicator_id"),
@@ -285,6 +384,9 @@ class NarrowMeasure:
                 + "): "
                 + ", ".join(sorted(expected - found))
             )
+
+        if district_files:
+            check_districts_add_up(frame, self.indicator_id, indicator.unit.additive)
 
         return frame.select(
             "indicator_id",
