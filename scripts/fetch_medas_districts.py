@@ -363,6 +363,14 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
             (box if box.count() else row).click()
             settle(page)
     else:
+        # The Zaman tab renders asynchronously -- offered_years() already retries for
+        # this, but a direct row lookup right after "İleri" does not, and would report a
+        # year "missing" while the list is still empty on screen (a race, not a fact:
+        # offered_years() called a moment later, inside the failure message, finds it).
+        # Waiting for a non-empty offer before hunting the row removes that race.
+        if not offered_years(page):
+            print("  ", year, "yil listesi hic dolmadi")
+            return False
         year_row = page.locator(".z-listitem", has_text=str(year)).first
         if not year_row.count():
             print("  ", year, "listede yok; sunulan:", offered_years(page)[:25])

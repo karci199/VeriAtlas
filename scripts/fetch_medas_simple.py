@@ -50,6 +50,7 @@ DEATHS = "Ölüm İstatistikleri"
 MARRIAGES = "Evlenme İstatistikleri"
 LIFE = "Hayat Tabloları"
 DIVORCES = "Boşanma İstatistikleri"
+ORGUN = "Örgün Eğitim İstatistikleri"
 
 CELL_LIMIT = 50000
 
@@ -156,6 +157,20 @@ MEASURES = [
     ("ilk-evlenme-yasi-kadin", MARRIAGES, "Kadının ortalama ilk evlenme", False),  # 1
     ("bosanma", DIVORCES, "Boşanma sayısı", False),  # 1
     ("kaba-bosanma-hizi", DIVORCES, "Kaba boşanma", False),  # 1
+    # Orgun egitim: okul/derslik/sube/ogretmen/ogrenci sayimi yalniz il duzeyine kadar
+    # iniyor (ilce yok) -- yalniz "Okuma yazma orani" ilce duzeyine iniyor, o yuzden
+    # ayri, fetch_medas_districts.py --konu orgun ile cekiliyor (bkz. docs/medas.md).
+    ("orgun-okul", ORGUN, "Okul sayısı", True),  # 6, egitim seviyeleri
+    ("orgun-ogrenci", ORGUN, "Öğrenci sayısı", True),  # 12, egitim seviyeleri x cinsiyet
+    ("orgun-sube", ORGUN, "Şube sayısı", True),  # 6
+    ("orgun-derslik", ORGUN, "Derslik sayısı", True),  # 6
+    ("orgun-ogretmen", ORGUN, "Öğretmen sayısı", True),  # 12, egitim seviyeleri x cinsiyet
+    ("orgun-net-okullasma", ORGUN, "Net okullaşma oranı", True),  # 8
+    ("orgun-brut-okullasma", ORGUN, "Brüt okullaşma oranı", True),  # 6
+    ("orgun-okul-basina", ORGUN, "Okul başına düşen öğrenci", True),  # 5
+    ("orgun-sube-basina", ORGUN, "Şube başına düşen öğrenci", True),  # 5
+    ("orgun-ogretmen-basina", ORGUN, "Öğretmen başına düşen öğrenci", True),  # 5
+    ("orgun-derslik-basina", ORGUN, "Derslik başına düşen öğrenci", True),  # 4
 ]
 
 #: The Düzey box labels for the levels kept here.
