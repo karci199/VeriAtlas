@@ -28,6 +28,31 @@
           "available": true
         },
         {
+          "id": "migration_between_regions",
+          "label": "Bölgeler arası göç",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Bir yıl içinde bir İBBS-2 bölgesinden diğerine taşınan kişi sayısı. Alan, göçü veren bölgedir; kırılım, göçün gittiği bölge. Köşegen sıfırdır: bölge içi taşınma bölgeler arası göç değildir. İl düzeyinde bu matris yayımlanmıyor.",
+          "dims": [
+            "destination"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": "migration-matrix.csv.gz",
+          "levels": [
+            "nuts2"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
           "id": "natural_increase",
           "label": "Doğal nüfus artışı",
           "unit": "kişi",
@@ -74,6 +99,57 @@
           "dataset": "household-count.csv.gz",
           "levels": [
             "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "household_by_size",
+          "label": "Hanehalkı sayısı (büyüklüğe göre)",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Hanehalkı sayısı, hanede yaşayan kişi sayısına göre. On bant: birden dokuza tek tek, onuncu bant \"10 ve üzeri\" olarak kapalı. Toplamı ilin hanehalkı sayısını verir.",
+          "dims": [
+            "household_size_band"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "household-by-size.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "household_by_tenure",
+          "label": "Hanehalkı sayısı (mülkiyet durumuna göre)",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Hanehalkı sayısı, oturulan konutun mülkiyet durumuna göre: ev sahibi, kiracı, diğer. Tek yıl (2025) yayımlanıyor.",
+          "dims": [
+            "tenure"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": "household-by-tenure.csv.gz",
+          "levels": [
             "province"
           ],
           "parts": {},
@@ -160,9 +236,12 @@
           "dataset": "marital.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "marital-district.csv.gz"
+          },
           "fine": {},
           "available": true
         },
@@ -448,8 +527,10 @@
           "additive": true,
           "per_capita": true,
           "frequency": "annual",
-          "definition": "Yıl içindeki canlı doğum sayısı, annenin ikamet ettiği ile göre.",
-          "dims": [],
+          "definition": "Yıl içindeki canlı doğum sayısı, annenin ikamet ettiği ile göre. Ülke ve il düzeyinde annenin yaş grubuna bölünmüştür; ilçe düzeyinde bu ayrım yayımlanmadığı için toplam olarak durur.",
+          "dims": [
+            "mother_age"
+          ],
           "views": [
             "table",
             "map",
@@ -465,6 +546,32 @@
           "parts": {
             "district": "births-district.csv.gz"
           },
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "births_by_order",
+          "label": "Doğum sayısı (doğum sırasıyla)",
+          "unit": "doğum",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Yıl içindeki canlı doğum sayısı, annenin yaş grubu ve çocuğun kaçıncı doğum olduğuyla. Yalnızca Türkiye düzeyinde yayımlanıyor. \"Doğum sayısı\" göstergesiyle aynı doğumları sayar; farkı, doğumun sırasını bilmesidir — bu bilgi başka hiçbir seriden hesaplanamaz.",
+          "dims": [
+            "mother_age",
+            "birth_order"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": "births-by-order.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
           "fine": {},
           "available": true
         },
@@ -527,6 +634,32 @@
           "available": true
         },
         {
+          "id": "divorces_district",
+          "label": "Boşanma sayısı (ilçe)",
+          "unit": "boşanma",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Yıl içinde kesinleşen boşanma sayısı, erkeğin ikametgahının bulunduğu ilçeye göre. MEDAS ilçe düzeyinde yalnız bu okumayı yayımlıyor; il serisi çiftin ikametine göredir, bu yüzden ikisi ayrı göstergedir.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "divorces-by-mans-residence.csv.gz",
+          "levels": [
+            "district"
+          ],
+          "parts": {
+            "district": "divorces-by-mans-residence-district.csv.gz"
+          },
+          "fine": {},
+          "available": true
+        },
+        {
           "id": "marriages",
           "label": "Evlenme sayısı",
           "unit": "evlenme",
@@ -548,6 +681,32 @@
             "province"
           ],
           "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "marriages_district",
+          "label": "Evlenme sayısı (ilçe)",
+          "unit": "evlenme",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Yıl içinde kıyılan resmî nikâh sayısı, nikâhın kıyıldığı ilçeye göre. İl serisinden farkı budur: il sayıları çiftin ikamet ettiği yere göredir, bu seri olayın gerçekleştiği yere göre. İkisi aynı toplama gitmez.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "marriages-by-event-place.csv.gz",
+          "levels": [
+            "district"
+          ],
+          "parts": {
+            "district": "marriages-by-event-place-district.csv.gz"
+          },
           "fine": {},
           "available": true
         },
@@ -718,6 +877,67 @@
           },
           "fine": {},
           "available": true
+        },
+        {
+          "id": "deaths_by_cause",
+          "label": "Ölüm sayısı (nedene göre)",
+          "unit": "ölüm",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Yıl içindeki ölüm sayısı, ölüm nedenine göre, ölenin ikamet ettiği ile göre. Dokuz neden grubu bütünü kapsar: toplamları o yılın ölüm sayısını verir. TÜİK bu seriyi 2022'den itibaren yayımlıyor — öncesi farklı bir sınıflamada ve karşılaştırılabilir değil.",
+          "dims": [
+            "cause"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "deaths-by-cause.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
+          "id": "deaths_single_age",
+          "label": "Ölüm sayısı (tek yaş)",
+          "unit": "ölüm",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Yıl içindeki ölüm sayısı, ölen kişinin tek yaşı ve cinsiyetiyle. Yalnızca Türkiye düzeyinde yayımlanıyor: kaynak bu kırılımı il için vermiyor. Aynı ölümleri sayar — \"Ölüm sayısı\" göstergesinin daha ince yaş çözünürlüğüdür, ona ek değildir.",
+          "dims": [
+            "sex",
+            "age"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar",
+            "pyramid"
+          ],
+          "dataset": "deaths-single-age.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {
+            "age": {
+              "file": "deaths-single-age-age1.csv.gz",
+              "levels": [
+                "country"
+              ]
+            }
+          },
+          "available": true
         }
       ]
     },
@@ -793,6 +1013,64 @@
         "one_nuclear_family": "Tek çekirdek aileli",
         "nuclear_and_others": "Çekirdek aile ve diğerleri",
         "no_nuclear_family": "Çekirdek ailesiz, çok kişili"
+      }
+    },
+    "destination": {
+      "label": "Göç edilen bölge",
+      "values": {}
+    },
+    "household_size_band": {
+      "label": "Hanehalkı büyüklüğü",
+      "values": {
+        "10+": "10 ve üzeri"
+      }
+    },
+    "tenure": {
+      "label": "Mülkiyet durumu",
+      "values": {
+        "owner": "Ev sahibi",
+        "tenant": "Kiracı",
+        "other": "Diğer",
+        "unknown": "Bilinmeyen"
+      }
+    },
+    "cause": {
+      "label": "Ölüm nedeni",
+      "values": {
+        "circulatory": "Dolaşım sistemi hastalıkları",
+        "neoplasms": "İyi ve kötü huylu tümörler",
+        "respiratory": "Solunum sistemi hastalıkları",
+        "nervous": "Sinir sistemi ve duyu organları",
+        "endocrine": "Endokrin, beslenme ve metabolizma",
+        "external": "Dışsal yaralanma ve zehirlenme",
+        "covid19": "COVID-19",
+        "other": "Diğer",
+        "unknown": "Bilinmeyen"
+      }
+    },
+    "birth_order": {
+      "label": "Doğum sırası",
+      "values": {
+        "1": "İlk doğum",
+        "2": "İkinci doğum",
+        "3": "Üçüncü doğum",
+        "4+": "Dördüncü ve üzeri",
+        "unknown": "Bilinmeyen"
+      }
+    },
+    "mother_age": {
+      "label": "Annenin yaş grubu",
+      "values": {
+        "-15": "15'ten küçük",
+        "15-19": "15-19",
+        "20-24": "20-24",
+        "25-29": "25-29",
+        "30-34": "30-34",
+        "35-39": "35-39",
+        "40-44": "40-44",
+        "45-49": "45-49",
+        "50+": "50 ve üzeri",
+        "unknown": "Bilinmeyen"
       }
     },
     "marital": {
