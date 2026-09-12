@@ -64,9 +64,21 @@ AGE_IN_LABEL = re.compile(r"yaş grubu\s*:\s*\S+\s*\((?P<band>[^)]+)\)")
 UNKNOWN_AGE = "unknown"
 
 
+#: `Ölenin yaşı:0. (0)` — the single year, written with the same internal code and
+#: brackets as the band but under a different word. Kept as its own pattern rather than
+#: loosened into `AGE_IN_LABEL`, because "yaş grubu" and "yaşı" are two resolutions of the
+#: same measure and a regex that matched both by accident would make the file being read
+#: unknowable from the value.
+SINGLE_AGE_IN_LABEL = re.compile(r"yaşı\s*:\s*\S+\s*\((?P<band>[^)]+)\)")
+
+
 def age_of(label: str) -> str | None:
-    """The age band a row's label names, or None."""
-    found = AGE_IN_LABEL.search(label)
+    """The age a row's label names — a band or a single year — or None.
+
+    One reader for both because the dim is the same one (`age`); which of the two a file
+    carries is decided by the measure it came from, not by the row.
+    """
+    found = AGE_IN_LABEL.search(label) or SINGLE_AGE_IN_LABEL.search(label)
     if not found:
         return None
     band = found.group("band").strip()
@@ -153,6 +165,12 @@ MEASURES = {
     # rows carry sex alone — the same shape population already has, where single years
     # exist for provinces and not below.
     "olum-yas": ("deaths", "deaths", ("sex", "age"), {}),
+    # The same deaths at single years of age, country only — its own indicator rather than
+    # a finer grain of the one above, because MEDAS drops the province option the moment
+    # this breakdown is ticked and one indicator must not change resolution with the area
+    # you pick. See the dictionary note on `deaths_single_age`. The files are per year
+    # (`--yil=`), 200 indicators each: 100 ages × two sexes.
+    "olum-tek-yas": ("deaths_single_age", "deaths_single_age", ("sex", "age"), {}),
     "bebek-olum-hizi": ("infant_mortality", "infant_mortality", None, {}),
     "bes-yas-alti-olum-hizi": ("under5_mortality", "under5_mortality", None, {}),
     "evlenme": ("marriages", "marriages", None, {}),
@@ -331,8 +349,16 @@ class VitalMeasure:
         records: list[dict] = []
         for level in ("country", "province"):
             stem = "nufus-" + self.stem + "-" + level
-            for path in sorted(raw.glob(stem + ".csv")) + sorted(
-                raw.glob(stem + "-[0-9].csv")
+            # Three shapes of name, all of them the same measure at the same level: the
+            # plain file, a numbered piece (`-1.csv`) for a measure that came down in
+            # parts, and a year (`-2009.csv`) for one asked for a year at a time because
+            # its breakdown is too wide to take in one query — deaths by single year of
+            # age is that case. A four-digit glob rather than a looser one so a piece
+            # number and a year cannot be confused for each other.
+            for path in (
+                sorted(raw.glob(stem + ".csv"))
+                + sorted(raw.glob(stem + "-[0-9].csv"))
+                + sorted(raw.glob(stem + "-[0-9][0-9][0-9][0-9].csv"))
             ):
                 records.extend(read_export(path, self.spec, single))
         if not records:
@@ -350,13 +376,17 @@ class VitalMeasure:
             pl.lit(self.retrieved_at).alias("retrieved_at"),
         )
 
-        # Every province or none: one quietly absent draws as "veri yok" in the middle of
-        # the map, indistinguishable from a real gap.
+        # Every province or none — and "none" is a real answer here, not a failure. Some
+        # measures are published for the country alone: ticking the single-year-of-age
+        # breakdown takes the province option out of MEDAS's level box entirely, so
+        # `deaths_single_age` arrives with no province rows at all and is right to. What
+        # the check is for is the *partial* case: one province quietly absent draws as
+        # "veri yok" in the middle of the map, indistinguishable from a real gap.
         expected = set(
             load_areas().filter(pl.col("area_level") == "province")["area_id"]
         )
         found = set(frame.filter(pl.col("area_level") == "province")["area_id"])
-        if expected - found:
+        if found and expected - found:
             raise KeyError(
                 self.indicator_id
                 + ": dosyada karsiligi olmayan il ("

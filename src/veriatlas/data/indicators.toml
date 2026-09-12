@@ -586,6 +586,32 @@ views = ["table", "map", "line", "bar", "pyramid"]
 definition_tr = """
 Yıl içindeki ölüm sayısı, ölen kişinin ikamet ettiği ile göre, cinsiyet ve yaş kırılımıyla. Yaş kırılımı il ve Türkiye düzeyinde var, ilçede yok."""
 
+[indicator.deaths_single_age]
+label_tr = "Ölüm sayısı (tek yaş)"
+label_en = "Deaths by single year of age"
+topic = "olum"
+unit = "death"
+frequency = "annual"
+additive = true
+dims = ["sex", "age"]
+views = ["table", "line", "bar", "pyramid"]
+# Kept as its own indicator rather than folded into `deaths`, though it counts the same
+# deaths. MEDAS publishes the single year of age for the country only — tick that
+# breakdown and the province option leaves the level box — so merging the two would give
+# one indicator two resolutions depending on which area you picked: single years at the
+# country, five-year bands at the province. Population lives with exactly that (single
+# years at the province, bands at the district) because there the finer grain is the
+# lower level; here it is the *higher* one, which reads as the series getting coarser as
+# you zoom in. Two indicators say what is true: this one is the country's age curve, and
+# `deaths` is the series that goes all the way down to the district.
+#
+# The two are not added anywhere: they are separate rows in the tree, and their totals
+# agree to the death in every year checked.
+definition_tr = """
+Yıl içindeki ölüm sayısı, ölen kişinin tek yaşı ve cinsiyetiyle. Yalnızca Türkiye \
+düzeyinde yayımlanıyor: kaynak bu kırılımı il için vermiyor. Aynı ölümleri sayar — \
+"Ölüm sayısı" göstergesinin daha ince yaş çözünürlüğüdür, ona ek değildir."""
+
 # Evlenme ve boşanma sayısı, kırılımları kapalı. MEDAS ikisinin altında da on kadar
 # kırılım veriyor — eşlerin yaş grubu, eğitim durumu, evliliğin süresi, çocukların
 # velayeti — ve hepsi açıkken ölçü 121 göstergeye çıkıp indirme iki yılda bir sorguya
