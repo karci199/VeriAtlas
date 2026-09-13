@@ -1240,7 +1240,7 @@ label_en = "In-migration"
 topic = "nufus"
 unit = "person"
 frequency = "annual"
-dims = []
+dims = ["sex", "age"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 Yıl içinde ile başka bir ilden taşınan kişi sayısı. Yurt dışından gelen göç buna dahil \
@@ -1252,7 +1252,7 @@ label_en = "Out-migration"
 topic = "nufus"
 unit = "person"
 frequency = "annual"
-dims = []
+dims = ["sex", "age"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 Yıl içinde ilden başka bir ile taşınan kişi sayısı."""

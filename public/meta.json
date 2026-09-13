@@ -12,7 +12,10 @@
           "per_capita": true,
           "frequency": "annual",
           "definition": "Yıl içinde ile başka bir ilden taşınan kişi sayısı. Yurt dışından gelen göç buna dahil değildir.",
-          "dims": [],
+          "dims": [
+            "sex",
+            "age"
+          ],
           "views": [
             "table",
             "map",
@@ -422,7 +425,10 @@
           "per_capita": true,
           "frequency": "annual",
           "definition": "Yıl içinde ilden başka bir ile taşınan kişi sayısı.",
-          "dims": [],
+          "dims": [
+            "sex",
+            "age"
+          ],
           "views": [
             "table",
             "map",

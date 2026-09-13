@@ -158,6 +158,8 @@ BROKEN_DOWN = (
     "deaths_single_age",
     "births_by_order",
     "marriages_by_age",
+    "migration_in",
+    "migration_out",
     "deaths_by_cause",
     "migration_between_regions",
     "household_by_size",
@@ -837,6 +839,8 @@ def main() -> None:
         "deaths_single_age": export_broken_down(fact, areas, "deaths_single_age"),
         "births_by_order": export_broken_down(fact, areas, "births_by_order"),
         "marriages_by_age": export_broken_down(fact, areas, "marriages_by_age"),
+        "migration_in": export_broken_down(fact, areas, "migration_in"),
+        "migration_out": export_broken_down(fact, areas, "migration_out"),
         "water_abstracted": export_broken_down(
             fact, areas, "water_abstracted", whole=get("water_abstracted").unit.additive
         ),

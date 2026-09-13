@@ -15,9 +15,9 @@ Three shapes, and the third is a trap:
 
 * **No breakdown** — one value column headed `Ölçüm bazında`.
 * **Named columns** — the header names each value, as sexes or household types.
-* **Summed** — migration in and out arrive broken down by sex and fourteen age bands,
-  28 columns. Stored as the total, which is what was asked for; the raw files keep the
-  breakdown, so opening it later needs no new download.
+* **Two breakdowns in one column** — migration in and out arrive as sex × fourteen age
+  bands, 28 columns. Stored with both (2026-09-13; until then summed to a total). The 28
+  cells reproduce the old totals in 1.458 of 1.458 province-years.
 
 The trap: the nine household types MEDAS publishes are **not siblings**. "Tek çekirdek
 aileden oluşan hanehalkı" contains three of the others, and one of those contains two
@@ -58,6 +58,31 @@ HOUSEHOLD_TYPES = {
 
 SEXES = {"Erkek": "male", "Kadın": "female"}
 
+#: Migration in and out arrive as sex × fourteen age bands, 28 columns headed
+#: `Erkek ve 15-19`. Stored with both breakdowns (K29: the broken-down file replaces the
+#: total rather than sitting beside it); the bands are the source's own, closing at 65+.
+MIGRATION_BANDS = [
+    "0-4",
+    "5-9",
+    "10-14",
+    "15-19",
+    "20-24",
+    "25-29",
+    "30-34",
+    "35-39",
+    "40-44",
+    "45-49",
+    "50-54",
+    "55-59",
+    "60-64",
+    "65+",
+]
+MIGRATION_COLUMNS = {
+    f"{sex_tr} ve {band}": {"sex": sex, "age": band}
+    for sex_tr, sex in SEXES.items()
+    for band in MIGRATION_BANDS
+}
+
 #: file stem → (indicator id, dim name or None, column map or None).
 #:
 #: A column map means "keep only these columns, under these ids"; `None` with a dim means
@@ -68,8 +93,8 @@ MEASURES = {
     "hane-buyuklugu": ("household_size", None, None),
     "hane-sayisi": ("household_count", None, None),
     "hane-tipleri": ("household_by_type", "household_type", HOUSEHOLD_TYPES),
-    "goc-aldigi": ("migration_in", None, None),
-    "goc-verdigi": ("migration_out", None, None),
+    "goc-aldigi": ("migration_in", None, MIGRATION_COLUMNS),
+    "goc-verdigi": ("migration_out", None, MIGRATION_COLUMNS),
     "goc-net": ("migration_net", None, None),
     # `goc-net-hizi` is downloaded and not loaded: it is net migration divided by the
     # population, and the screen's "İl nüfusunun %'si" already divides by exactly that.
@@ -215,7 +240,11 @@ def read_export(
                         "area_id": area[0],
                         "area_level": area[1],
                         "year": year,
-                        "dims": format_dims({dim: value_id}),
+                        # A column can carry two breakdowns at once (`Erkek ve 15-19`),
+                        # in which case the map gives the dims whole.
+                        "dims": format_dims(
+                            value_id if isinstance(value_id, dict) else {dim: value_id}
+                        ),
                         "value": value,
                     }
                 )
