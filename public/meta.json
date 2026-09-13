@@ -4694,6 +4694,518 @@
           "available": true
         }
       ]
+    },
+    {
+      "topic": "Hayvancılık",
+      "indicators": [
+        {
+          "id": "beehives",
+          "label": "Arı kovanı",
+          "unit": "kovan",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "animal_product"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "beehives.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "beekeeping_holdings",
+          "label": "Arıcılık yapan işletme",
+          "unit": "işletme",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "beekeeping-holdings.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "large_livestock",
+          "label": "Büyükbaş hayvan",
+          "unit": "baş",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "large-livestock.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "livestock",
+          "label": "Canlı hayvan sayısı (tür, ırk ve yaşa göre)",
+          "unit": "baş",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "livestock"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "livestock.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "other_poultry",
+          "label": "Diğer kümes hayvanları",
+          "unit": "baş",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "poultry"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "other-poultry.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "broilers",
+          "label": "Et tavuğu",
+          "unit": "baş",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "broilers.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "animal_products_tonnes",
+          "label": "Hayvansal üretim (ton)",
+          "unit": "ton",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "animal_product"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "animal-products-tonnes.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "goats",
+          "label": "Keçi",
+          "unit": "baş",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "goats.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "sheep",
+          "label": "Koyun",
+          "unit": "baş",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "sheep.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "small_livestock",
+          "label": "Küçükbaş hayvan",
+          "unit": "baş",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "small-livestock.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "shorn_animals",
+          "label": "Kırkılan hayvan",
+          "unit": "baş",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "livestock_group"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "shorn-animals.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "buffalo",
+          "label": "Manda",
+          "unit": "baş",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "buffalo.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "milked_animals",
+          "label": "Sağılan hayvan",
+          "unit": "baş",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "livestock_group"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "milked-animals.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "cattle",
+          "label": "Sığır",
+          "unit": "baş",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "cattle.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "laying_hens",
+          "label": "Yumurta tavuğu",
+          "unit": "baş",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "laying-hens.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "raw_milk",
+          "label": "Çiğ süt üretimi (yalnız Türkiye)",
+          "unit": "ton",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "animal_product"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "raw-milk.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "sericulture_holdings",
+          "label": "İpek böcekçiliği yapan işletme",
+          "unit": "işletme",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "sericulture-holdings.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "sericulture_villages",
+          "label": "İpek böcekçiliği yapan köy",
+          "unit": "köy",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "sericulture-villages.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "silkworm_boxes",
+          "label": "İpek böceği (kutu)",
+          "unit": "kutu",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "silkworm-boxes.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
     }
   ],
   "dimensions": {
@@ -4962,6 +5474,120 @@
         "industrial_storage": "Sanayi ve depo",
         "public_education_health": "Kamu eğlence, eğitim, hastane, bakım",
         "other_non_residential": "Diğer (ikamet dışı)"
+      }
+    },
+    "livestock": {
+      "label": "Hayvan türü ve yaşı",
+      "values": {
+        "01.41.10.01.01": "Süt Sığırları, Canlı (Saf Kültür), 2 Ve Daha Yukarı Yaşta (İnek)",
+        "01.41.10.01.02": "Süt Sığırları, Canlı (Saf Kültür), 1 - 2 Yaş Arası Dişi (Düve)",
+        "01.41.10.02.01": "Süt Sığırları, Canlı (Kültür Melezi), 2 Ve Daha Yukarı Yaşta (İnek)",
+        "01.41.10.02.02": "Süt Sığırları, Canlı (Kültür Melezi), 1 - 2 Yaş Arası Dişi (Düve)",
+        "01.41.10.03.01": "Süt Sığırları, Canlı (Yerli), 2 Ve Daha Yukarı Yaşta (İnek)",
+        "01.41.10.03.02": "Süt Sığırları, Canlı (Yerli), 1 - 2 Yaş Arası Dişi (Düve)",
+        "01.41.10.04.01": "Süt Sığırları, Canlı (Manda), 2 Ve Daha Yukarı Yaşta (İnek)",
+        "01.41.10.04.02": "Süt Sığırları, Canlı (Manda), 1 - 2 Yaş Arası Dişi (Düve)",
+        "01.42.11.01.01": "Saf Kültür Sığırları, Canlı, 2 Ve Daha Yukarı Yaşta (Boğa)",
+        "01.42.11.01.02": "Saf Kültür Sığırları, Canlı, 2 Ve Daha Yukarı Yaşta (Öküz)",
+        "01.42.11.01.03": "Saf Kültür Sığırları, Canlı, 1 - 2 Yaş Arası Erkek (Tosun)",
+        "01.42.11.02.01": "Melez Sığırlar, Canlı, 2 Ve Daha Yukarı Yaşta (Boğa)",
+        "01.42.11.02.02": "Melez Sığırlar, Canlı, 2 Ve Daha Yukarı Yaşta (Öküz)",
+        "01.42.11.02.03": "Melez Sığırlar, Canlı, 1 - 2 Yaş Arası Erkek (Tosun)",
+        "01.42.11.03.01": "Yerlı Sığırlar, Canlı, 2 Ve Daha Yukarı Yaşta (Boğa)",
+        "01.42.11.03.02": "Yerlı Sığırlar, Canlı, 2 Ve Daha Yukarı Yaşta (Öküz)",
+        "01.42.11.03.03": "Yerlı Sığırlar, Canlı, 1 - 2 Yaş Arası Erkek (Tosun)",
+        "01.42.11.04.01": "Manda, Canlı, 2 Ve Daha Yukarı Yaşta (Boğa)",
+        "01.42.11.04.02": "Manda, Canlı, 2 Ve Daha Yukarı Yaşta (Öküz)",
+        "01.42.11.04.03": "Manda, Canlı, 1 - 2 Yaş Arası Erkek (Tosun)",
+        "01.42.12.01.01": "Buzağı Ve Dana, Canlı (Sığır Saf Kültür), 1 Yaşından Küçük Erkek",
+        "01.42.12.01.02": "Buzağı Ve Dana, Canlı (Sığır Saf Kültür), 1 Yaşından Küçük Dişi",
+        "01.42.12.02.01": "Buzağı Ve Dana, Canlı (Sığır Kültür Melezi), 1 Yaşından Küçük Erkek",
+        "01.42.12.02.02": "Buzağı Ve Dana, Canlı (Sığır Kültür Melezi), 1 Yaşından Küçük Dişi",
+        "01.42.12.03.01": "Buzağı Ve Dana, Canlı (Sığır Yerli), 1 Yaşından Küçük Erkek",
+        "01.42.12.03.02": "Buzağı Ve Dana, Canlı (Sığır Yerli), 1 Yaşından Küçük Dişi",
+        "01.42.12.04.01": "Manda Yavrusu, Canlı, 1 Yaşından Küçük Erkek",
+        "01.42.12.04.02": "Manda Yavrusu, Canlı, 1 Yaşından Küçük Dişi",
+        "01.43.10.01.01": "At, Canlı, 3 Yaşından Küçük (Dişi Ve Erkek) (Tay)",
+        "01.43.10.01.02": "At, Canlı, 3 Ve Daha Yukarı Yaşta (Kısrak)",
+        "01.43.10.01.03": "At, Canlı, 3 Ve Daha Yukarı Yaşta (İğdiş Ve At)",
+        "01.43.10.01.04": "At, Canlı, 3 Ve Daha Yukarı Yaşta (Damızlık) (Aygır)",
+        "01.43.10.02.01": "Katır, Canlı, 3 Yaşından Küçük (Dişi Ve Erkek)",
+        "01.43.10.02.02": "Katır, Canlı, 3 Ve Daha Yukarı Yaşta (Dişi Ve Erkek)",
+        "01.43.10.03.01": "Eşek, Canlı, 1 Yaşından Küçük (Dişi Ve Erkek)",
+        "01.43.10.03.02": "Eşek, Canlı, 1 Ve Daha Yukarı Yaşta (Dişi Ve Erkek)",
+        "01.44.10.00.01": "Deve Ve Devegiller, Canlı, 3 Yaşından Küçük (Dişi Ve Erkek)",
+        "01.44.10.00.02": "Deve Ve Devegiller, Canlı, 3 Ve Daha Yukarı Yaşta (Dişi)",
+        "01.44.10.00.03": "Deve Ve Devegiller, Canlı, 3 Ve Daha Yukarı Yaşta (Erkek)",
+        "01.45.11.01.01": "Koyun (Merinos), Canlı, 6 Aydan Küçük (Dişi Ve Erkek), Kuzu",
+        "01.45.11.01.02": "Koyun (Merinos), Canlı, 6 - 12 Ay Arası (Dişi Ve Erkek), Toklu",
+        "01.45.11.01.03": "Koyun (Merinos), Canlı, 12 - 24 Ay Arası (Dişi Ve Erkek), Şişek",
+        "01.45.11.01.04": "Koyun (Merinos), Canlı, 2 Ve Daha Yukarı Yaşta (Dişi Koyun)",
+        "01.45.11.01.05": "Koyun (Merinos), Canlı, 2 Ve Daha Yukarı Yaşta (Koç)",
+        "01.45.11.02.01": "Koyun (Yerli Ve Diğerleri), Canlı, 6 Aydan Küçük (Dişi Ve Erkek), Kuzu",
+        "01.45.11.02.02": "Koyun (Yerli Ve Diğerleri), Canlı, 6 - 12 Ay Arası (Dişi Ve Erkek), Toklu",
+        "01.45.11.02.03": "Koyun (Yerli Ve Diğerleri), Canlı, 12 - 24 Ay Arası (Dişi Ve Erkek), Şişek",
+        "01.45.11.02.04": "Koyun (Yerli Ve Diğerleri), Canlı, 2 Ve Daha Yukarı Yaşta, Dişi Koyun",
+        "01.45.11.02.05": "Koyun (Yerli Ve Diğerleri), Canlı, 2 Ve Daha Yukarı Yaşta, Koç",
+        "01.45.12.01.01": "Keçi (Tiftik), Canlı, 6 Aydan Küçük (Dişi Ve Erkek), Oğlak",
+        "01.45.12.01.02": "Keçi (Tiftik), Canlı, 6 - 12 Ay Arası (Dişi Ve Erkek), Çebiç",
+        "01.45.12.01.03": "Keçi (Tiftik), Canlı, 12 - 24 Ay Arası (Dişi Ve Erkek), Gezdan",
+        "01.45.12.01.04": "Keçi (Tiftik), Canlı, 2 Ve Daha Yukarı Yaşta, Dişi Keçi",
+        "01.45.12.01.05": "Keçi (Tiftik), Canlı, 2 Ve Daha Yukarı Yaşta, Teke",
+        "01.45.12.02.01": "Keçi (Kıl Keçisi Ve Diğerleri), Canlı, 6 Aydan Küçük (Dişi Ve Erkek), Oğlak",
+        "01.45.12.02.02": "Keçi (Kıl Keçisi Ve Diğerleri), Canlı, 6 - 12 Ay Arası (Dişi Ve Erkek), Çebiç",
+        "01.45.12.02.03": "Keçi (Kıl Keçisi Ve Diğerleri), Canlı, 12 - 24 Ay Arası (Dişi Ve Erkek), Gezdan",
+        "01.45.12.02.04": "Keçi (Kıl Keçisi Ve Diğerleri), Canlı, 2 Ve Daha Yukarı Yaşta, Dişi Keçi",
+        "01.45.12.02.05": "Keçi (Kıl Keçisi Ve Diğerleri), Canlı, 2 Ve Daha Yukarı Yaşta, Teke",
+        "01.46.10.00.01": "Domuz, Canlı, 1 Yaşından Küçük (Dişi Ve Erkek)",
+        "01.46.10.00.02": "Domuz, Canlı, 1 Ve Daha Yukarı Yaşta (Dişi Ve Erkek)"
+      }
+    },
+    "animal_product": {
+      "label": "Hayvansal ürün",
+      "values": {
+        "01.41.20.01.01": "Sığır Sütü (Kültür) (Manda Sütü Hariç)",
+        "01.41.20.01.02": "Sığır Sütü (Kültür Melezi) (Manda Sütü Hariç)",
+        "01.41.20.01.03": "Sığır Sütü (Yerli) (Manda Sütü Hariç)",
+        "01.41.20.02.03": "Manda Sütü (Yerli)",
+        "01.45.21.00.01": "Koyun Sütü, Merinos, İşlenmemiş",
+        "01.45.21.00.02": "Koyun Sütü, Yerli Ve Diğerleri, İşlenmemiş",
+        "01.45.22.00.01": "Keçi Sütü (Tiftik), İşlenmemiş",
+        "01.45.22.00.02": "Keçi Sütü (Kıl Keçisi Ve Diğerleri), İşlenmemiş",
+        "01.45.30.01.01": "Yapağı (Merinos), Hayvancılık",
+        "01.45.30.01.02": "Yapağı (Yerli Ve Diğerleri), Hayvancılık",
+        "01.45.30.02.01": "Tiftik, Hayvancılık",
+        "01.45.30.02.02": "Keçi Kılı, Hayvancılık",
+        "01.49.19.01.01": "Arılar (Kovan Halinde), Eski Tip",
+        "01.49.19.01.02": "Arılar (Kovan Halinde), Yeni Tip",
+        "01.49.19.02.01": "İpek Böceği (Damızlık İpek Böceği Hariç)",
+        "01.49.21": "Doğal Bal",
+        "01.49.25.00.00": "İpek Böceği Kozası, Çile Yapmaya Uygun Olanlar",
+        "01.49.26.00.01": "Balmumu, Arı",
+        "01.41.20.01": "Sığır Sütü (Manda Sütü Hariç)",
+        "01.41.20.02": "Manda Sütü",
+        "01.45.21.00": "Koyun Sütü, İşlenmemiş",
+        "01.45.22.00": "Keçi Sütü, İşlenmemiş"
+      }
+    },
+    "poultry": {
+      "label": "Kümes hayvanı",
+      "values": {
+        "01.47.12": "Hindi, Canlı",
+        "01.47.13": "Kaz, Canlı",
+        "01.47.14": "Ördek Ve Beç Tavuğu, Canlı"
+      }
+    },
+    "livestock_group": {
+      "label": "Hayvan grubu",
+      "values": {
+        "01.41.10.01": "Süt Sığırları, Canlı (Saf Kültür)",
+        "01.41.10.02": "Süt Sığırları, Canlı (Kültür Melezi)",
+        "01.41.10.03": "Süt Sığırları, Canlı (Yerli)",
+        "01.41.10.04": "Süt Sığırları, Canlı (Manda)",
+        "01.45.11.01": "Koyun, Canlı (Merinos)",
+        "01.45.11.02": "Koyun, Canlı (Yerli Ve Diğerleri)",
+        "01.45.12.01": "Keçi, Canlı (Tiftik Keçisi)",
+        "01.45.12.02": "Keçi, Canlı (Kıl Keçisi Ve Diğerleri)"
       }
     },
     "hospital_sector": {

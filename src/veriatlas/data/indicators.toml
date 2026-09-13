@@ -74,6 +74,11 @@ label_tr = "Konut satış"
 label_en = "Housing sales"
 order = 31
 
+[topic.hayvancilik]
+label_tr = "Hayvancılık"
+label_en = "Livestock"
+order = 52
+
 [topic.saglik]
 label_tr = "Sağlık"
 label_en = "Health"
@@ -424,6 +429,126 @@ transport_communication = "Trafik ve iletişim"
 industrial_storage = "Sanayi ve depo"
 public_education_health = "Kamu eğlence, eğitim, hastane, bakım"
 other_non_residential = "Diğer (ikamet dışı)"
+
+# Livestock (adapters/tuik_topics.py). Values are TÜİK product codes (CPA); the names
+# are the labels, as TÜİK writes them.
+[dim.livestock]
+label_tr = "Hayvan türü ve yaşı"
+label_en = "Livestock category"
+
+[dim.livestock.values]
+"01.41.10.01.01" = "Süt Sığırları, Canlı (Saf Kültür), 2 Ve Daha Yukarı Yaşta (İnek)"
+"01.41.10.01.02" = "Süt Sığırları, Canlı (Saf Kültür), 1 - 2 Yaş Arası Dişi (Düve)"
+"01.41.10.02.01" = "Süt Sığırları, Canlı (Kültür Melezi), 2 Ve Daha Yukarı Yaşta (İnek)"
+"01.41.10.02.02" = "Süt Sığırları, Canlı (Kültür Melezi), 1 - 2 Yaş Arası Dişi (Düve)"
+"01.41.10.03.01" = "Süt Sığırları, Canlı (Yerli), 2 Ve Daha Yukarı Yaşta (İnek)"
+"01.41.10.03.02" = "Süt Sığırları, Canlı (Yerli), 1 - 2 Yaş Arası Dişi (Düve)"
+"01.41.10.04.01" = "Süt Sığırları, Canlı (Manda), 2 Ve Daha Yukarı Yaşta (İnek)"
+"01.41.10.04.02" = "Süt Sığırları, Canlı (Manda), 1 - 2 Yaş Arası Dişi (Düve)"
+"01.42.11.01.01" = "Saf Kültür Sığırları, Canlı, 2 Ve Daha Yukarı Yaşta (Boğa)"
+"01.42.11.01.02" = "Saf Kültür Sığırları, Canlı, 2 Ve Daha Yukarı Yaşta (Öküz)"
+"01.42.11.01.03" = "Saf Kültür Sığırları, Canlı, 1 - 2 Yaş Arası Erkek (Tosun)"
+"01.42.11.02.01" = "Melez Sığırlar, Canlı, 2 Ve Daha Yukarı Yaşta (Boğa)"
+"01.42.11.02.02" = "Melez Sığırlar, Canlı, 2 Ve Daha Yukarı Yaşta (Öküz)"
+"01.42.11.02.03" = "Melez Sığırlar, Canlı, 1 - 2 Yaş Arası Erkek (Tosun)"
+"01.42.11.03.01" = "Yerlı Sığırlar, Canlı, 2 Ve Daha Yukarı Yaşta (Boğa)"
+"01.42.11.03.02" = "Yerlı Sığırlar, Canlı, 2 Ve Daha Yukarı Yaşta (Öküz)"
+"01.42.11.03.03" = "Yerlı Sığırlar, Canlı, 1 - 2 Yaş Arası Erkek (Tosun)"
+"01.42.11.04.01" = "Manda, Canlı, 2 Ve Daha Yukarı Yaşta (Boğa)"
+"01.42.11.04.02" = "Manda, Canlı, 2 Ve Daha Yukarı Yaşta (Öküz)"
+"01.42.11.04.03" = "Manda, Canlı, 1 - 2 Yaş Arası Erkek (Tosun)"
+"01.42.12.01.01" = "Buzağı Ve Dana, Canlı (Sığır Saf Kültür), 1 Yaşından Küçük Erkek"
+"01.42.12.01.02" = "Buzağı Ve Dana, Canlı (Sığır Saf Kültür), 1 Yaşından Küçük Dişi"
+"01.42.12.02.01" = "Buzağı Ve Dana, Canlı (Sığır Kültür Melezi), 1 Yaşından Küçük Erkek"
+"01.42.12.02.02" = "Buzağı Ve Dana, Canlı (Sığır Kültür Melezi), 1 Yaşından Küçük Dişi"
+"01.42.12.03.01" = "Buzağı Ve Dana, Canlı (Sığır Yerli), 1 Yaşından Küçük Erkek"
+"01.42.12.03.02" = "Buzağı Ve Dana, Canlı (Sığır Yerli), 1 Yaşından Küçük Dişi"
+"01.42.12.04.01" = "Manda Yavrusu, Canlı, 1 Yaşından Küçük Erkek"
+"01.42.12.04.02" = "Manda Yavrusu, Canlı, 1 Yaşından Küçük Dişi"
+"01.43.10.01.01" = "At, Canlı, 3 Yaşından Küçük (Dişi Ve Erkek) (Tay)"
+"01.43.10.01.02" = "At, Canlı, 3 Ve Daha Yukarı Yaşta (Kısrak)"
+"01.43.10.01.03" = "At, Canlı, 3 Ve Daha Yukarı Yaşta (İğdiş Ve At)"
+"01.43.10.01.04" = "At, Canlı, 3 Ve Daha Yukarı Yaşta (Damızlık) (Aygır)"
+"01.43.10.02.01" = "Katır, Canlı, 3 Yaşından Küçük (Dişi Ve Erkek)"
+"01.43.10.02.02" = "Katır, Canlı, 3 Ve Daha Yukarı Yaşta (Dişi Ve Erkek)"
+"01.43.10.03.01" = "Eşek, Canlı, 1 Yaşından Küçük (Dişi Ve Erkek)"
+"01.43.10.03.02" = "Eşek, Canlı, 1 Ve Daha Yukarı Yaşta (Dişi Ve Erkek)"
+"01.44.10.00.01" = "Deve Ve Devegiller, Canlı, 3 Yaşından Küçük (Dişi Ve Erkek)"
+"01.44.10.00.02" = "Deve Ve Devegiller, Canlı, 3 Ve Daha Yukarı Yaşta (Dişi)"
+"01.44.10.00.03" = "Deve Ve Devegiller, Canlı, 3 Ve Daha Yukarı Yaşta (Erkek)"
+"01.45.11.01.01" = "Koyun (Merinos), Canlı, 6 Aydan Küçük (Dişi Ve Erkek), Kuzu"
+"01.45.11.01.02" = "Koyun (Merinos), Canlı, 6 - 12 Ay Arası (Dişi Ve Erkek), Toklu"
+"01.45.11.01.03" = "Koyun (Merinos), Canlı, 12 - 24 Ay Arası (Dişi Ve Erkek), Şişek"
+"01.45.11.01.04" = "Koyun (Merinos), Canlı, 2 Ve Daha Yukarı Yaşta (Dişi Koyun)"
+"01.45.11.01.05" = "Koyun (Merinos), Canlı, 2 Ve Daha Yukarı Yaşta (Koç)"
+"01.45.11.02.01" = "Koyun (Yerli Ve Diğerleri), Canlı, 6 Aydan Küçük (Dişi Ve Erkek), Kuzu"
+"01.45.11.02.02" = "Koyun (Yerli Ve Diğerleri), Canlı, 6 - 12 Ay Arası (Dişi Ve Erkek), Toklu"
+"01.45.11.02.03" = "Koyun (Yerli Ve Diğerleri), Canlı, 12 - 24 Ay Arası (Dişi Ve Erkek), Şişek"
+"01.45.11.02.04" = "Koyun (Yerli Ve Diğerleri), Canlı, 2 Ve Daha Yukarı Yaşta, Dişi Koyun"
+"01.45.11.02.05" = "Koyun (Yerli Ve Diğerleri), Canlı, 2 Ve Daha Yukarı Yaşta, Koç"
+"01.45.12.01.01" = "Keçi (Tiftik), Canlı, 6 Aydan Küçük (Dişi Ve Erkek), Oğlak"
+"01.45.12.01.02" = "Keçi (Tiftik), Canlı, 6 - 12 Ay Arası (Dişi Ve Erkek), Çebiç"
+"01.45.12.01.03" = "Keçi (Tiftik), Canlı, 12 - 24 Ay Arası (Dişi Ve Erkek), Gezdan"
+"01.45.12.01.04" = "Keçi (Tiftik), Canlı, 2 Ve Daha Yukarı Yaşta, Dişi Keçi"
+"01.45.12.01.05" = "Keçi (Tiftik), Canlı, 2 Ve Daha Yukarı Yaşta, Teke"
+"01.45.12.02.01" = "Keçi (Kıl Keçisi Ve Diğerleri), Canlı, 6 Aydan Küçük (Dişi Ve Erkek), Oğlak"
+"01.45.12.02.02" = "Keçi (Kıl Keçisi Ve Diğerleri), Canlı, 6 - 12 Ay Arası (Dişi Ve Erkek), Çebiç"
+"01.45.12.02.03" = "Keçi (Kıl Keçisi Ve Diğerleri), Canlı, 12 - 24 Ay Arası (Dişi Ve Erkek), Gezdan"
+"01.45.12.02.04" = "Keçi (Kıl Keçisi Ve Diğerleri), Canlı, 2 Ve Daha Yukarı Yaşta, Dişi Keçi"
+"01.45.12.02.05" = "Keçi (Kıl Keçisi Ve Diğerleri), Canlı, 2 Ve Daha Yukarı Yaşta, Teke"
+"01.46.10.00.01" = "Domuz, Canlı, 1 Yaşından Küçük (Dişi Ve Erkek)"
+"01.46.10.00.02" = "Domuz, Canlı, 1 Ve Daha Yukarı Yaşta (Dişi Ve Erkek)"
+
+[dim.animal_product]
+label_tr = "Hayvansal ürün"
+label_en = "Animal product"
+
+[dim.animal_product.values]
+"01.41.20.01.01" = "Sığır Sütü (Kültür) (Manda Sütü Hariç)"
+"01.41.20.01.02" = "Sığır Sütü (Kültür Melezi) (Manda Sütü Hariç)"
+"01.41.20.01.03" = "Sığır Sütü (Yerli) (Manda Sütü Hariç)"
+"01.41.20.02.03" = "Manda Sütü (Yerli)"
+"01.45.21.00.01" = "Koyun Sütü, Merinos, İşlenmemiş"
+"01.45.21.00.02" = "Koyun Sütü, Yerli Ve Diğerleri, İşlenmemiş"
+"01.45.22.00.01" = "Keçi Sütü (Tiftik), İşlenmemiş"
+"01.45.22.00.02" = "Keçi Sütü (Kıl Keçisi Ve Diğerleri), İşlenmemiş"
+"01.45.30.01.01" = "Yapağı (Merinos), Hayvancılık"
+"01.45.30.01.02" = "Yapağı (Yerli Ve Diğerleri), Hayvancılık"
+"01.45.30.02.01" = "Tiftik, Hayvancılık"
+"01.45.30.02.02" = "Keçi Kılı, Hayvancılık"
+"01.49.19.01.01" = "Arılar (Kovan Halinde), Eski Tip"
+"01.49.19.01.02" = "Arılar (Kovan Halinde), Yeni Tip"
+"01.49.19.02.01" = "İpek Böceği (Damızlık İpek Böceği Hariç)"
+"01.49.21" = "Doğal Bal"
+"01.49.25.00.00" = "İpek Böceği Kozası, Çile Yapmaya Uygun Olanlar"
+"01.49.26.00.01" = "Balmumu, Arı"
+"01.41.20.01" = "Sığır Sütü (Manda Sütü Hariç)"
+"01.41.20.02" = "Manda Sütü"
+"01.45.21.00" = "Koyun Sütü, İşlenmemiş"
+"01.45.22.00" = "Keçi Sütü, İşlenmemiş"
+
+[dim.poultry]
+label_tr = "Kümes hayvanı"
+label_en = "Poultry"
+
+[dim.poultry.values]
+"01.47.12" = "Hindi, Canlı"
+"01.47.13" = "Kaz, Canlı"
+"01.47.14" = "Ördek Ve Beç Tavuğu, Canlı"
+
+[dim.livestock_group]
+label_tr = "Hayvan grubu"
+label_en = "Livestock group"
+
+[dim.livestock_group.values]
+"01.41.10.01" = "Süt Sığırları, Canlı (Saf Kültür)"
+"01.41.10.02" = "Süt Sığırları, Canlı (Kültür Melezi)"
+"01.41.10.03" = "Süt Sığırları, Canlı (Yerli)"
+"01.41.10.04" = "Süt Sığırları, Canlı (Manda)"
+"01.45.11.01" = "Koyun, Canlı (Merinos)"
+"01.45.11.02" = "Koyun, Canlı (Yerli Ve Diğerleri)"
+"01.45.12.01" = "Keçi, Canlı (Tiftik Keçisi)"
+"01.45.12.02" = "Keçi, Canlı (Kıl Keçisi Ve Diğerleri)"
 
 # Health (adapters/tuik_topics.py).
 [dim.hospital_sector]
@@ -1211,6 +1336,36 @@ additive = true
 [unit.dwelling_sale]
 label_tr = "konut"
 label_en = "dwellings sold"
+decimals = 0
+additive = true
+
+[unit.head]
+label_tr = "baş"
+label_en = "head"
+decimals = 0
+additive = true
+
+[unit.hive]
+label_tr = "kovan"
+label_en = "hives"
+decimals = 0
+additive = true
+
+[unit.silkworm_box]
+label_tr = "kutu"
+label_en = "boxes"
+decimals = 0
+additive = true
+
+[unit.holding]
+label_tr = "işletme"
+label_en = "holdings"
+decimals = 0
+additive = true
+
+[unit.village]
+label_tr = "köy"
+label_en = "villages"
 decimals = 0
 additive = true
 
@@ -2302,6 +2457,178 @@ frequency = "quarterly"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "Ruhsat verilen daire sayısı. Bina sayısıyla karıştırılmamalı."
+
+# MEDAS hayvancılık, 2026-09-13 (adapters/tuik_topics.py).
+[indicator.livestock]
+label_tr = "Canlı hayvan sayısı (tür, ırk ve yaşa göre)"
+label_en = "Livestock by category"
+topic = "hayvancilik"
+unit = "head"
+frequency = "annual"
+dims = ["livestock"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.animal_products_tonnes]
+label_tr = "Hayvansal üretim (ton)"
+label_en = "Animal products (tonnes)"
+topic = "hayvancilik"
+unit = "tonne"
+frequency = "annual"
+dims = ["animal_product"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.beehives]
+label_tr = "Arı kovanı"
+label_en = "Beehives"
+topic = "hayvancilik"
+unit = "hive"
+frequency = "annual"
+dims = ["animal_product"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.silkworm_boxes]
+label_tr = "İpek böceği (kutu)"
+label_en = "Silkworm boxes"
+topic = "hayvancilik"
+unit = "silkworm_box"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.beekeeping_holdings]
+label_tr = "Arıcılık yapan işletme"
+label_en = "Beekeeping holdings"
+topic = "hayvancilik"
+unit = "holding"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.sericulture_villages]
+label_tr = "İpek böcekçiliği yapan köy"
+label_en = "Sericulture villages"
+topic = "hayvancilik"
+unit = "village"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.sericulture_holdings]
+label_tr = "İpek böcekçiliği yapan işletme"
+label_en = "Sericulture holdings"
+topic = "hayvancilik"
+unit = "holding"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.broilers]
+label_tr = "Et tavuğu"
+label_en = "Broilers"
+topic = "hayvancilik"
+unit = "head"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.laying_hens]
+label_tr = "Yumurta tavuğu"
+label_en = "Laying hens"
+topic = "hayvancilik"
+unit = "head"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.other_poultry]
+label_tr = "Diğer kümes hayvanları"
+label_en = "Other poultry"
+topic = "hayvancilik"
+unit = "head"
+frequency = "annual"
+dims = ["poultry"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.shorn_animals]
+label_tr = "Kırkılan hayvan"
+label_en = "Shorn animals"
+topic = "hayvancilik"
+unit = "head"
+frequency = "annual"
+dims = ["livestock_group"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.milked_animals]
+label_tr = "Sağılan hayvan"
+label_en = "Milked animals"
+topic = "hayvancilik"
+unit = "head"
+frequency = "annual"
+dims = ["livestock_group"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.large_livestock]
+label_tr = "Büyükbaş hayvan"
+label_en = "Large livestock"
+topic = "hayvancilik"
+unit = "head"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.small_livestock]
+label_tr = "Küçükbaş hayvan"
+label_en = "Small livestock"
+topic = "hayvancilik"
+unit = "head"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.raw_milk]
+label_tr = "Çiğ süt üretimi (yalnız Türkiye)"
+label_en = "Raw milk production (Türkiye only)"
+topic = "hayvancilik"
+unit = "tonne"
+frequency = "annual"
+dims = ["animal_product"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.cattle]
+label_tr = "Sığır"
+label_en = "Cattle"
+topic = "hayvancilik"
+unit = "head"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.buffalo]
+label_tr = "Manda"
+label_en = "Buffalo"
+topic = "hayvancilik"
+unit = "head"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.sheep]
+label_tr = "Koyun"
+label_en = "Sheep"
+topic = "hayvancilik"
+unit = "head"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.goats]
+label_tr = "Keçi"
+label_en = "Goats"
+topic = "hayvancilik"
+unit = "head"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
 
 # MEDAS konut satış ve yapı izin (yıllık), 2026-09-13 (adapters/tuik_topics.py).
 [indicator.housing_sales]

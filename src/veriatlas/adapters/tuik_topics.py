@@ -21,7 +21,7 @@ import polars as pl
 
 from ..areas import load_areas
 from ..config import RAW
-from ..indicators import get
+from ..indicators import get, load
 from ..schema import format_dims
 from .tuik_median_age import single_province_regions
 from .tuik_simple import read_text
@@ -172,6 +172,25 @@ MEASURES = {
     "cocuk-egitim-14": ("children_in_daycare", ()),
     "cocuk-egitim-15": ("children_cared_at_home", ()),
     "konut-satis-01": ("housing_sales", ("sale_financing", "sale_hand")),
+    "hayvan-01": ("livestock", ("livestock",)),
+    "hayvan-02#ton": ("animal_products_tonnes", ("animal_product",), "Ton"),
+    "hayvan-02#kovan": ("beehives", ("animal_product",), "Kovan Sayısı"),
+    "hayvan-02#kutu": ("silkworm_boxes", (), "Kutu"),
+    "hayvan-03": ("beekeeping_holdings", ()),
+    "hayvan-04": ("sericulture_villages", ()),
+    "hayvan-05": ("sericulture_holdings", ()),
+    "hayvan-06": ("broilers", ()),
+    "hayvan-07": ("laying_hens", ()),
+    "hayvan-08": ("other_poultry", ("poultry",)),
+    "hayvan-09": ("shorn_animals", ("livestock_group",)),
+    "hayvan-10": ("milked_animals", ("livestock_group",)),
+    "hayvan-11": ("large_livestock", ()),
+    "hayvan-12": ("small_livestock", ()),
+    "hayvan-13": ("raw_milk", ("animal_product",)),
+    "hayvan-14": ("cattle", ()),
+    "hayvan-15": ("buffalo", ()),
+    "hayvan-16": ("sheep", ()),
+    "hayvan-17": ("goats", ()),
     **{
         f"yapi-izin-{n:02d}": (f"{kind}_{what}", ("building_use",))
         for n, (kind, what) in enumerate(
@@ -195,6 +214,9 @@ MEASURES = {
 
 SUBTOTAL: dict[str, str] = {"": ""}
 
+#: Sericulture is practised in a few dozen provinces; the rest have no column at all.
+NOT_EVERY_PROVINCE = {"silkworm_boxes", "sericulture_villages", "sericulture_holdings"}
+
 
 def part_name(part: str) -> str:
     """`Araç türü:1. (Otomobil)` → `Otomobil`; `Erkek` stays `Erkek`."""
@@ -207,12 +229,24 @@ def part_name(part: str) -> str:
     return " ".join(part.split())
 
 
+#: Dims stored by TÜİK product code (`01.41.10.01.01`); names are dictionary labels.
+CODE_DIMS = {"livestock", "animal_product", "poultry", "livestock_group"}
+PRODUCT = re.compile(r"^([\d.]+?)\.?\s*\((.*)\)$")
+
+
 def read_label(label: str, dims: tuple[str, ...]) -> dict[str, str] | None:
     parts = label.split(" ve ")
     if len(parts) != len(dims):
         return None
     out = {}
     for dim, part in zip(dims, parts):
+        if dim in CODE_DIMS:
+            found = PRODUCT.match(part.strip())
+            code = found.group(1).rstrip(".") if found else ""
+            if code not in load().dimensions[dim].values_tr:
+                return None
+            out[dim] = code
+            continue
         stored = NAMES[dim].get(part_name(part))
         if stored is None:
             return None
@@ -221,7 +255,14 @@ def read_label(label: str, dims: tuple[str, ...]) -> dict[str, str] | None:
     return SUBTOTAL if "" in out.values() else out
 
 
-def read_export(path: Path, indicator_id: str, dims, single) -> list[dict]:
+def read_export(
+    path: Path, indicator_id: str, dims, single, unit: str = ""
+) -> list[dict]:
+    """`unit`: keep only rows whose label ends in " ve <unit>" and drop that part.
+
+    "Hayvansal üretim" puts tonnes, hives and silkworm boxes in one table, told apart
+    only by the last part of the label; each becomes its own indicator.
+    """
     lines = read_text(path).splitlines()
     header = header_of(lines, single)
     if not header:
@@ -239,7 +280,20 @@ def read_export(path: Path, indicator_id: str, dims, single) -> list[dict]:
             continue
         if cells[1].strip():
             label = cells[1].strip()
-        if not dims:
+        if unit:
+            head, _, tail = label.rpartition(" ve ")
+            if tail.strip() != unit:
+                continue
+            if not dims:
+                label = "Ölçüm bazında"
+            else:
+                found = read_label(head, dims)
+                if found is None:
+                    unknown.add(label)
+                    continue
+        if unit and dims:
+            pass
+        elif not dims:
             if label != "Ölçüm bazında":
                 unknown.add(label)
                 continue
@@ -293,12 +347,20 @@ class TopicMeasure:
 
     def parse(self, raw: Path) -> pl.DataFrame:
         single = single_province_regions()
-        indicator_id, dims = self.spec
+        indicator_id, dims, *rest = self.spec
+        unit = rest[0] if rest else ""
+        stem = self.stem.split("#")[0]
         records: list[dict] = []
         for level in ("country", "province"):
-            path = raw / ("nufus-" + self.stem + "-" + level + ".csv")
-            if path.exists():
-                records.extend(read_export(path, indicator_id, dims, single))
+            plain = raw / ("nufus-" + stem + "-" + level + ".csv")
+            # A measure over the cell limit comes in numbered slices (`-province-1.csv`).
+            sliced = sorted(
+                p
+                for p in raw.glob("nufus-" + stem + "-" + level + "-*.csv")
+                if re.fullmatch(r"\d+", p.stem.rsplit("-", 1)[1])
+            )
+            for path in [plain] if plain.exists() else sliced:
+                records.extend(read_export(path, indicator_id, dims, single, unit))
         if not records:
             raise ValueError("dosya bulunamadi ya da bos: " + self.stem)
 
@@ -324,7 +386,9 @@ class TopicMeasure:
                 load_areas().filter(pl.col("area_level") == "province")["area_id"]
             )
             missing = expected - set(provinces["area_id"])
-            if missing:
+            if missing and indicator_id in NOT_EVERY_PROVINCE:
+                print("   ", indicator_id, "· faaliyet olmayan il:", len(missing))
+            elif missing:
                 raise KeyError(
                     indicator_id + ": ili olmayan: " + ", ".join(sorted(missing))
                 )
