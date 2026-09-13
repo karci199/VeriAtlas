@@ -29,23 +29,21 @@ RENAMES = DOCS / "koy-adlari.md"
 
 SOURCE_ID = "tuik_medas"
 
-#: Districts the early exports name in a way the boundary registry does not, by province
-#: and folded name. Every one of them shows up only in 2007-2012 — the span the settlement
-#: backfill added — because the 2013+ exports already use today's names.
-#:
-#: Four are the same district under another name: Ilıca became Aziziye in 2008 and
-#: Aydınlar became Tillo, while `Ondokuzmayıs` and `Çağlıyancerit` are spellings of
-#: `19 Mayıs` and `Çağlayancerit`. The fifth is not a rename: Akköy was closed in 2008 and
-#: its territory went to Pamukkale, so its villages are Pamukkale's villages from then on
-#: — which is the honest mapping for a count, and the reason the join is by district here
-#: rather than by a district id that no longer exists.
-DISTRICT_ALIASES = {
-    # Folded, so without its space: `fold("19 Mayıs")` is `19mayis`.
-    ("TR-55", "ondokuzmayis"): "19mayis",
-    ("TR-25", "ilica"): "aziziye",
-    ("TR-56", "aydinlar"): "tillo",
-    ("TR-20", "akkoy"): "pamukkale",
-    ("TR-46", "cagliyancerit"): "caglayancerit",
+#: MEDAS writes a district under a name the boundary registry does not carry, the same
+#: way it does for neighbourhoods (`build_neighbourhood_registry.ILCE_ADI`). Each of
+#: these was confirmed from the export itself rather than from the name: the same MEDAS
+#: village codes appear under both names -- Ilıca's 49 under Aziziye, Aydınlar's 6 under
+#: Tillo, Çağlıyancerit's 9 under the spelling with an `a`. Two carry no overlap because
+#: the villages stopped being villages when the province became metropolitan, so they
+#: were followed into the neighbourhood registry instead: Ondokuzmayıs is written
+#: `19 Mayıs` there, and Akköy's five villages are all Pamukkale neighbourhoods from
+#: 2013 (Akçapınar, Belenardıç, Kavakbaşı, Yukarışamlı, Çeşmebaşı).
+ILCE_ADI = {
+    ("erzurum", "ilica"): "aziziye",
+    ("siirt", "aydinlar"): "tillo",
+    ("kahramanmaras", "cagliyancerit"): "caglayancerit",
+    ("samsun", "ondokuzmayis"): "19mayis",
+    ("denizli", "akkoy"): "pamukkale",
 }
 
 
@@ -85,19 +83,18 @@ def main() -> None:
         parent = provinces.get(fold(province))
         if parent is None:
             return None
-        found = districts.get((parent, fold(district)))
+        adi = ILCE_ADI.get((fold(province), fold(district)), fold(district))
+        found = districts.get((parent, adi))
         if found is not None:
             return found
         # MEDAS says "Merkez"; the boundary registry gives the central district the
         # province's own name.
         if fold(district) == "merkez":
             return districts.get((parent, fold(province)))
-        alias = DISTRICT_ALIASES.get((parent, fold(district)))
-        if alias:
-            return districts.get((parent, alias))
         return None
 
     seen: dict[str, dict] = {}
+    parent_years: dict[str, dict[str, list[int]]] = {}
     history: dict[str, list[tuple[int, str]]] = {}
 
     for record in records:
@@ -109,6 +106,15 @@ def main() -> None:
                 + "/"
                 + record.district
             )
+
+        # Every district the settlement was written under, with its years (K32): the
+        # id follows the newest district so the series runs unbroken, and this keeps the
+        # district it actually sat in — a closed one such as `TR-01-x1284` included.
+        span = parent_years.setdefault(record.code, {}).setdefault(
+            parent, [record.year, record.year]
+        )
+        span[0] = min(span[0], record.year)
+        span[1] = max(span[1], record.year)
 
         entry = seen.get(record.code)
         if entry is None:
@@ -127,6 +133,15 @@ def main() -> None:
             continue
 
         entry["first_seen"] = min(entry["first_seen"], record.year)
+        # A settlement follows its district. When a district splits -- Derecik out of
+        # Şemdinli in 2018, Kemalpaşa out of Hopa in 2017 -- MEDAS starts writing the new
+        # district for the settlements that moved, but the parent was frozen at first
+        # sighting, so they stayed under the old one and the district's own figure never
+        # matched the sum of its settlements (Derecik held 1 of its 66). The newest year
+        # names the district the same way it names the settlement.
+        if record.year >= entry["last_seen"] and parent != entry["parent_id"]:
+            entry["parent_id"] = parent
+            entry["area_id"] = parent + "-" + record.code
         # The newest name wins, and the bucak survives the year MEDAS stopped writing it.
         if record.year >= entry["last_seen"]:
             entry["last_seen"] = record.year
@@ -135,6 +150,13 @@ def main() -> None:
             entry["bucak"] = record.bucak
         if record.name != history[record.code][-1][1]:
             history[record.code].append((record.year, record.name))
+
+    for code, entry in seen.items():
+        spans = sorted(parent_years[code].items(), key=lambda kv: kv[1][0])
+        entry["parent_history"] = ";".join(
+            parent + ":" + str(first) + ("" if first == last else "-" + str(last))
+            for parent, (first, last) in spans
+        )
 
     rows = sorted(seen.values(), key=lambda row: row["area_id"])
     with REGISTRY.open("w", encoding="utf-8", newline="") as handle:

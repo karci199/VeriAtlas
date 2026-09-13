@@ -12,19 +12,24 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 256 | TR-01-002-256 | 2007: Aytemiroğlu Mah. → 2010: Aydemiroğlu Mah. |
 | 271 | TR-01-002-271 | 2007: Kaltakiye Mah. → 2019: Zübeyde Hanım Mah. |
 | 282 | TR-01-002-282 | 2007: Türlübaş Mah. → 2019: Atatürk Mah. |
+| 344 | TR-01-003-344 | 2007: Esentepe Mah. → 2008: Salbaş Esentepe Mah. |
 | 177113 | TR-01-004-177113 | 2013: Çürükler Mah. → 2025: Yeşilvadi Mah. |
 | 177193 | TR-01-005-177193 | 2013: Faydalı Mah. → 2017: Aliler Mah. |
 | 177225 | TR-01-006-177225 | 2013: Aşağıyirikler Mah. → 2017: Aşağıyörükler Mah. |
 | 177273 | TR-01-006-177273 | 2013: Kıralan Mah. → 2023: Hacıkırı Mah. |
 | 177311 | TR-01-006-177311 | 2013: Sarıkonak Mah. → 2015: Fettahlı Mah. |
 | 337 | TR-01-006-337 | 2007: Yeni Mah. → 2017: Çeceli Mah. |
-| 344 | TR-01-006-344 | 2007: Esentepe Mah. → 2008: Salbaş Esentepe Mah. |
 | 348 | TR-01-006-348 | 2007: Cevherli Mah. → 2011: Çatalan Mah. |
 | 355 | TR-01-007-355 | 2007: Hakkı Bey Mah. → 2010: Hakkıbey Mah. |
 | 177445 | TR-01-008-177445 | 2013: Dağlıca Mah. → 2014: Orçan Mah. |
 | 357 | TR-01-008-357 | 2007: Aslanpaşa Mah. → 2011: Arslanpaşa Mah. |
 | 359 | TR-01-008-359 | 2007: Hacı Uşağı Mah. → 2011: Hacıuşağı Mah. |
 | 177617 | TR-01-010-177617 | 2013: Cıvıklı Mah. → 2022: Narlıdere Mah. |
+| 135 | TR-01-011-135 | 2007: R.Oğuz Arık Mah. → 2011: Remzi Oğuz Arık Mah. |
+| 163 | TR-01-011-163 | 2007: Cumhuriyet Mah. → 2008: Buruk Cumhuriyet Mah. |
+| 167 | TR-01-011-167 | 2007: Yenı Mah. → 2011: Yeni Mah. |
+| 242 | TR-01-011-242 | 2007: Dagcı Mah. → 2008: Dağcı Mah. |
+| 245 | TR-01-011-245 | 2007: Karşıyaka Mah. → 2019: Suluca Mah. |
 | 104 | TR-01-012-104 | 2007: Bahçelievler Mah. → 2008: Karayusuflu Bahçelievler Mah. → 2012: Karayusuflu Mah. |
 | 106 | TR-01-012-106 | 2007: Kayışlı Mah. → 2008: Karayusuflu Kayışlı Mah. → 2015: Kayışlı Mah. |
 | 107 | TR-01-012-107 | 2007: Salmanbeyli Mah. → 2008: Karayusuflu Salmanbeyli Mah. → 2015: Salmanbeyli Mah. |
@@ -36,10 +41,7 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 113 | TR-01-012-113 | 2007: Çınarlı Mah. → 2008: Küçükdikili Çınarlı Mah. → 2015: Koza Mah. |
 | 114 | TR-01-012-114 | 2007: Dikili Mah. → 2016: Küçükdikili Mah. |
 | 390 | TR-01-013-390 | 2007: Yeni Camii Mah. → 2010: Yenicami Mah. |
-| 135 | TR-01-015-135 | 2007: R.Oğuz Arık Mah. → 2011: Remzi Oğuz Arık Mah. |
-| 163 | TR-01-015-163 | 2007: Cumhuriyet Mah. → 2008: Buruk Cumhuriyet Mah. |
 | 164 | TR-01-015-164 | 2007: Cumhuriyet Mah. → 2008: İncirlik Cumhuriyet Mah. → 2020: Güzel Cumhuriyet Mah. |
-| 167 | TR-01-015-167 | 2007: Yenı Mah. → 2011: Yeni Mah. |
 | 176 | TR-01-015-176 | 2007: Bahçelievler Mah. → 2008: Doğankent Bahçelievler Mah. |
 | 177 | TR-01-015-177 | 2007: Cumhuriyet Mah. → 2008: Doğankent Cumhuriyet Mah. |
 | 179 | TR-01-015-179 | 2007: Kışla Mah. → 2008: Doğankent Kışla Mah. |
@@ -49,8 +51,6 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 211 | TR-01-015-211 | 2007: Hürriyet Mah. → 2008: Yunusoğlu Hürriyet Mah. |
 | 225 | TR-01-015-225 | 2007: Cumhuriyet Mah. → 2008: Abdioğlu Cumhuriyet Mah. |
 | 238 | TR-01-015-238 | 2007: Cumhuriyet Mah. → 2008: Geçitli Cumhuriyet Mah. |
-| 242 | TR-01-015-242 | 2007: Dagcı Mah. → 2008: Dağcı Mah. |
-| 245 | TR-01-015-245 | 2007: Karşıyaka Mah. → 2019: Suluca Mah. |
 | 430 | TR-02-001-430 | 2007: Petrol Mah. → 2008: Türkiye Petrolleri Mah. |
 | 455 | TR-02-001-455 | 2007: Yünlüce Mah. → 2015: Zivar Mah. |
 | 568 | TR-02-006-568 | 2007: Besele Mah. → 2008: Kılavuz Mah. |
@@ -91,7 +91,6 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 1472 | TR-06-002-1472 | 2007: Gündoğdu Mah. → 2009: Hacettepe Mah. |
 | 1499 | TR-06-002-1499 | 2007: Zül Fazıl Mah. → 2008: Solfasol Mah. |
 | 1509 | TR-06-002-1509 | 2007: Orhangazi Mah. → 2008: Altınova Orhangazi Mah. → 2010: Gicik Mah. |
-| 1512 | TR-06-002-1512 | 2007: Karaköy Mah. → 2008: Altınova Karaköy Mah. → 2009: Karaköy Mah. → 2012: Yeni Karaköy Mah. |
 | 1953 | TR-06-003-1953 | 2007: Çiğdemci Mah. → 2018: Çanıllı Çiğdemci Mah. |
 | 1954 | TR-06-003-1954 | 2007: Uluyol Mah. → 2018: Çanıllı Uluyol Mah. |
 | 1963 | TR-06-003-1963 | 2007: Cuma Mah. → 2018: Sinanlı Cuma Mah. |
@@ -103,8 +102,6 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 1981 | TR-06-004-1981 | 2007: Gaziosmanpaşa Mah. → 2009: Kesikköprü Mah. |
 | 1982 | TR-06-004-1982 | 2007: Kızılırmak Mah. → 2009: Kesikköprü Kızılırmak Mah. |
 | 1983 | TR-06-004-1983 | 2007: Erdemli Mah. → 2009: Kesikköprü Erdemli Mah. |
-| 1984 | TR-06-004-1984 | 2007: Merkez Mah. → 2009: Karaali Merkez Mah. |
-| 1985 | TR-06-004-1985 | 2007: Yazlık Mah. → 2009: Karaali Yazlık Mah. |
 | 178149 | TR-06-006-178149 | 2013: Bükeler Mah. → 2022: Bökeler Mah. |
 | 1516 | TR-06-007-1516 | 2007: Aşağı Dikmen Mah. → 2021: Dumlupınar Mah. |
 | 1553 | TR-06-007-1553 | 2007: Güven Mah. → 2008: Güvenevler Mah. |
@@ -113,17 +110,14 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 1599 | TR-06-007-1599 | 2007: Seyran Mah. → 2008: Seyranbağları Mah. |
 | 2043 | TR-06-008-2043 | 2007: Tuğlaköy Mah. → 2010: Tuğla Mah. |
 | 2060 | TR-06-008-2060 | 2007: Yıldırımbeyazıt Mah. → 2008: Yukarı Çavundur Mah. |
-| 2061 | TR-06-008-2061 | 2007: Yeşilova Mah. → 2009: Sirkeli Yeşilova Mah. |
-| 2062 | TR-06-008-2062 | 2007: Yeşilyurt Mah. → 2009: Sirkeli Yeşilyurt Mah. |
-| 2068 | TR-06-008-2068 | 2007: Kösrelikızığı Mah. → 2012: Kösrelikkızığı Mah. |
 | 2083 | TR-06-009-2083 | 2007: Tekkeköy Mah. → 2011: Tekke Mah. |
 | 2084 | TR-06-009-2084 | 2007: Yenimah Mah. → 2008: Yenimahalle Mah. |
 | 2085 | TR-06-009-2085 | 2007: Bahçelievler Mah. → 2010: Hasanaoğlan Bahçelievler Mah. → 2012: Hasanoğlan Bahçelievler Mah. |
 | 2086 | TR-06-009-2086 | 2007: Fatih Mah. → 2008: Hasanoğlan Fatih Mah. |
 | 2087 | TR-06-009-2087 | 2007: Havuzbaşı Mah. → 2009: Hasanoğlan Havuzbaşı Mah. |
-| 2091 | TR-06-009-2091 | 2007: İstasyon Mah. → 2009: Lalahan Mah. |
 | 2093 | TR-06-009-2093 | 2007: Fatih Mah. → 2008: Yeşildere Fatih Mah. |
 | 1625 | TR-06-010-1625 | 2007: Elvan Mah. → 2010: Ahi Mesut Mah. |
+| 1901 | TR-06-010-1901 | 2007: Ballıkuyumcu Mah. → 2010: Balıkuyumcu Mah. |
 | 1655 | TR-06-012-1655 | 2007: Hallaçlı Mah. → 2009: Halaçlı Mah. |
 | 1658 | TR-06-012-1658 | 2007: Kızılcaaşar Mah. → 2008: Kızılcaşar Mah. |
 | 1664 | TR-06-012-1664 | 2007: Tuluntaş Mah. → 2009: Tulumtaş Mah. |
@@ -133,13 +127,18 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 1676 | TR-06-012-1676 | 2007: Aydın Mah. → 2009: Karagedik Aydın Mah. |
 | 1677 | TR-06-012-1677 | 2007: Ercan Mah. → 2009: Karagedik Ercan Mah. |
 | 1681 | TR-06-012-1681 | 2007: Şehitemrah Mah. → 2009: Selametli Şehit Emrah Mah. |
+| 1984 | TR-06-012-1984 | 2007: Merkez Mah. → 2009: Karaali Merkez Mah. |
+| 1985 | TR-06-012-1985 | 2007: Yazlık Mah. → 2009: Karaali Yazlık Mah. |
+| 2123 | TR-06-012-2123 | 2007: Akarsu Mah. → 2009: Oyaca Akarsu Mah. |
+| 2124 | TR-06-012-2124 | 2007: Yeşilçam Mah. → 2009: Oyaca Yeşilçam Mah. |
 | 2103 | TR-06-013-2103 | 2007: Çağakent Mah. → 2010: Çağabey Mah. |
 | 178365 | TR-06-014-178365 | 2013: Yenice Mah. → 2015: Sindiren Mah. → 2021: Sındıran Mah. |
 | 178375 | TR-06-014-178375 | 2013: Aktepe Mah. → 2015: Alaçık Mah. |
 | 178421 | TR-06-014-178421 | 2013: Karaömerli Mah. → 2021: Mandıra Mah. |
 | 178467 | TR-06-014-178467 | 2013: Yeşilyurt Mah. → 2015: Kadıköy Mah. |
-| 2123 | TR-06-014-2123 | 2007: Akarsu Mah. → 2009: Oyaca Akarsu Mah. |
-| 2124 | TR-06-014-2124 | 2007: Yeşilçam Mah. → 2009: Oyaca Yeşilçam Mah. |
+| 2182 | TR-06-015-2182 | 2007: İğmir Mah. → 2010: İymir Mah. |
+| 2184 | TR-06-015-2184 | 2007: Kışlaköy Mah. → 2010: Kışla Mah. |
+| 2191 | TR-06-015-2191 | 2007: Uçarı Mah. → 2009: Ucarı Mah. → 2010: Uçarı Mah. |
 | 2135 | TR-06-016-2135 | 2007: Ahikemal Mah. → 2008: Ahikemalşenyurt Mah. |
 | 2136 | TR-06-016-2136 | 2007: Ahiler Mah. → 2008: Ahiler Yenice Mah. |
 | 2137 | TR-06-016-2137 | 2007: Cuma Mah. → 2008: Cuma Saray Mah. |
@@ -151,30 +150,20 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 2154 | TR-06-016-2154 | 2007: Bugra Mah. → 2008: Buğra Mah. |
 | 2159 | TR-06-016-2159 | 2007: Tavşanlı Mah. → 2008: Tavşancık Mah. |
 | 1736 | TR-06-017-1736 | 2007: Güzelyurt Mah. → 2008: Bağlum Güzelyurt Mah. |
-| 1739 | TR-06-017-1739 | 2007: Fatih Mah. → 2008: Saray Fatih Mah. |
-| 1740 | TR-06-017-1740 | 2007: Gümüşoluk Mah. → 2009: Saray Gümüşoluk Mah. |
-| 1741 | TR-06-017-1741 | 2007: Osmangazi Mah. → 2009: Saray Osmangazi Mah. |
-| 1742 | TR-06-017-1742 | 2007: Cumhuriyet Mah. → 2009: Saray Cumhuriyet Mah. |
 | 178687 | TR-06-018-178687 | 2013: Yanık Mah. → 2020: Yanık Özbekler Mah. |
 | 2200 | TR-06-018-2200 | 2007: Kemalpaşa Mah. → 2008: Gazi Mustafa Kemalpaşa Mah. |
 | 1747 | TR-06-019-1747 | 2007: Anayurt Mah. → 2018: Diriliş Mah. |
 | 1783 | TR-06-019-1783 | 2007: Peyami Sefa Mah. → 2018: Peyami Safa Mah. |
 | 1800 | TR-06-019-1800 | 2007: Kıbrıs Mah. → 2014: Kıbrısköy Mah. |
-| 2233 | TR-06-021-2233 | 2007: Atatürk Mah. → 2008: Temelli Atatürk Mah. → 2010: Gazi Mah. |
-| 2234 | TR-06-021-2234 | 2007: Cumhuriyet Mah. → 2009: Temelli Cumhuriyet Mah. → 2010: Cumhuriyet Mah. |
-| 2235 | TR-06-021-2235 | 2007: İstiklal Mah. → 2009: Temelli İstiklal Mah. → 2010: İstiklal Mah. |
-| 2236 | TR-06-021-2236 | 2007: Alagöz Mah. → 2009: Temelli Alagöz Mah. → 2010: Alagöz Mah. |
-| 2237 | TR-06-021-2237 | 2007: Alcı Mah. → 2009: Temelli Alcı Mah. → 2010: Alcı Mah. |
-| 2238 | TR-06-021-2238 | 2007: Çokören Mah. → 2009: Temelli Çokören Mah. → 2010: Çokören Mah. |
-| 2239 | TR-06-021-2239 | 2007: Hisarlıkaya Mah. → 2009: Temelli Hisarlıkaya Mah. → 2010: Hisarlıkaya Mah. |
-| 2240 | TR-06-021-2240 | 2007: Malıköy Mah. → 2009: Temelli Malıköy Mah. → 2010: Malıköy Mah. |
-| 2241 | TR-06-021-2241 | 2007: Türkobası Mah. → 2009: Temelli Türkobası Mah. → 2010: Türkobası Mah. |
-| 2242 | TR-06-021-2242 | 2007: Ücret Mah. → 2009: Temelli Ücret Mah. → 2010: Ücret Mah. |
-| 2243 | TR-06-021-2243 | 2007: Yenihisar Mah. → 2009: Temelli Yenihisar Mah. → 2010: Yenihisar Mah. |
-| 2244 | TR-06-021-2244 | 2007: Beyobası Mah. → 2009: Temelli Beyobası Mah. → 2010: Beyobası Mah. |
-| 2245 | TR-06-021-2245 | 2007: Hürriyet Mah. → 2009: Temelli Hürriyet Mah. → 2010: Hürriyet Mah. |
-| 2246 | TR-06-021-2246 | 2007: Girmeç Mah. → 2009: Temelli Girmeç Mah. → 2010: Girmeç Mah. |
-| 2247 | TR-06-021-2247 | 2007: Bacı Mah. → 2009: Temelli Bacı Mah. → 2010: Bacı Mah. |
+| 2091 | TR-06-019-2091 | 2007: İstasyon Mah. → 2009: Lalahan Mah. |
+| 1512 | TR-06-022-1512 | 2007: Karaköy Mah. → 2008: Altınova Karaköy Mah. → 2009: Karaköy Mah. → 2012: Yeni Karaköy Mah. |
+| 1739 | TR-06-022-1739 | 2007: Fatih Mah. → 2008: Saray Fatih Mah. |
+| 1740 | TR-06-022-1740 | 2007: Gümüşoluk Mah. → 2009: Saray Gümüşoluk Mah. |
+| 1741 | TR-06-022-1741 | 2007: Osmangazi Mah. → 2009: Saray Osmangazi Mah. |
+| 1742 | TR-06-022-1742 | 2007: Cumhuriyet Mah. → 2009: Saray Cumhuriyet Mah. |
+| 2061 | TR-06-022-2061 | 2007: Yeşilova Mah. → 2009: Sirkeli Yeşilova Mah. |
+| 2062 | TR-06-022-2062 | 2007: Yeşilyurt Mah. → 2009: Sirkeli Yeşilyurt Mah. |
+| 2068 | TR-06-022-2068 | 2007: Kösrelikızığı Mah. → 2012: Kösrelikkızığı Mah. |
 | 1837 | TR-06-023-1837 | 2016: Ahi Evranosb Mah. → 2018: Ahi Evran Osb Mah. |
 | 1838 | TR-06-023-1838 | 2007: Atatürk Mah. → 2008: Yenikent Atatürk Mah. → 2010: Mustafa Kemal Mah. |
 | 1839 | TR-06-023-1839 | 2007: Maraşalçakmak Mah. → 2008: Yenikent Maraşalçakmak Mah. → 2010: Fevzi Çakmak Mah. |
@@ -186,6 +175,21 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 1845 | TR-06-023-1845 | 2007: Mülkköy Mah. → 2008: Yenikent Mülk Mah. → 2010: Mülk Mah. |
 | 1846 | TR-06-023-1846 | 2007: Yenikayı Mah. → 2008: Yenikent Yenikayı Mah. → 2010: Yenikayı Mah. |
 | 1847 | TR-06-023-1847 | 2008: Yenikent Cumhuriyet Mah. → 2010: 29 Ekim Mah. |
+| 2233 | TR-06-023-2233 | 2007: Atatürk Mah. → 2008: Temelli Atatürk Mah. → 2010: Gazi Mah. |
+| 2234 | TR-06-023-2234 | 2007: Cumhuriyet Mah. → 2009: Temelli Cumhuriyet Mah. → 2010: Cumhuriyet Mah. |
+| 2235 | TR-06-023-2235 | 2007: İstiklal Mah. → 2009: Temelli İstiklal Mah. → 2010: İstiklal Mah. |
+| 2236 | TR-06-023-2236 | 2007: Alagöz Mah. → 2009: Temelli Alagöz Mah. → 2010: Alagöz Mah. |
+| 2237 | TR-06-023-2237 | 2007: Alcı Mah. → 2009: Temelli Alcı Mah. → 2010: Alcı Mah. |
+| 2238 | TR-06-023-2238 | 2007: Çokören Mah. → 2009: Temelli Çokören Mah. → 2010: Çokören Mah. |
+| 2239 | TR-06-023-2239 | 2007: Hisarlıkaya Mah. → 2009: Temelli Hisarlıkaya Mah. → 2010: Hisarlıkaya Mah. |
+| 2240 | TR-06-023-2240 | 2007: Malıköy Mah. → 2009: Temelli Malıköy Mah. → 2010: Malıköy Mah. |
+| 2241 | TR-06-023-2241 | 2007: Türkobası Mah. → 2009: Temelli Türkobası Mah. → 2010: Türkobası Mah. |
+| 2242 | TR-06-023-2242 | 2007: Ücret Mah. → 2009: Temelli Ücret Mah. → 2010: Ücret Mah. |
+| 2243 | TR-06-023-2243 | 2007: Yenihisar Mah. → 2009: Temelli Yenihisar Mah. → 2010: Yenihisar Mah. |
+| 2244 | TR-06-023-2244 | 2007: Beyobası Mah. → 2009: Temelli Beyobası Mah. → 2010: Beyobası Mah. |
+| 2245 | TR-06-023-2245 | 2007: Hürriyet Mah. → 2009: Temelli Hürriyet Mah. → 2010: Hürriyet Mah. |
+| 2246 | TR-06-023-2246 | 2007: Girmeç Mah. → 2009: Temelli Girmeç Mah. → 2010: Girmeç Mah. |
+| 2247 | TR-06-023-2247 | 2007: Bacı Mah. → 2009: Temelli Bacı Mah. → 2010: Bacı Mah. |
 | 98558 | TR-06-023-98558 | 2008: Yenikent Hürriyet Mah. → 2010: Kesiktaş Mah. |
 | 98559 | TR-06-023-98559 | 2008: Adalet Mah. → 2009: Yenikent Adalet Mah. → 2010: Adalet Mah. |
 | 98560 | TR-06-023-98560 | 2008: Erkeksu Mah. → 2009: Yenikent Erkeksu Mah. → 2010: Erkeksu Mah. |
@@ -193,14 +197,20 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 1859 | TR-06-025-1859 | 2007: Demet Mah. → 2010: Demetevler Mah. |
 | 1873 | TR-06-025-1873 | 2007: İvedik Mah. → 2015: İvedikköy Mah. |
 | 1883 | TR-06-025-1883 | 2007: Ostim Mah. → 2013: Serhat Mah. |
-| 1901 | TR-06-025-1901 | 2007: Ballıkuyumcu Mah. → 2010: Balıkuyumcu Mah. |
 | 1911 | TR-06-025-1911 | 2007: Yuva Mah. → 2010: Yuvaköy Mah. |
 | 1913 | TR-06-025-1913 | 2008: Ostimosb Mah. → 2013: Ostim Osb Mah. |
-| 2182 | TR-06-x1815-2182 | 2007: İğmir Mah. → 2010: İymir Mah. |
-| 2184 | TR-06-x1815-2184 | 2007: Kışlaköy Mah. → 2010: Kışla Mah. |
-| 2191 | TR-06-x1815-2191 | 2007: Uçarı Mah. → 2009: Ucarı Mah. → 2010: Uçarı Mah. |
 | 2491 | TR-07-001-2491 | 2007: Merkez Mah. → 2008: Cumhuriyet Mah. |
 | 182169 | TR-07-002-182169 | 2013: Özlü Mah. → 2014: Kundu Mah. |
+| 2426 | TR-07-002-2426 | 2007: Altınova Mah. → 2009: Çalkaya Mah. |
+| 2428 | TR-07-002-2428 | 2007: Güzelyurt Mah. → 2008: Çalkaya Güzelyurt Mah. → 2009: Güzelyurt Mah. |
+| 2438 | TR-07-002-2438 | 2007: Güzelyurt Mah. → 2008: Yurtpınar Güzelyurt Mah. → 2009: Murtuna Mah. |
+| 2439 | TR-07-002-2439 | 2007: Yeni Mah. → 2008: Yurtpınar Yeni Mah. → 2009: Yurtpınar Mah. |
+| 2444 | TR-07-002-2444 | 2007: Hacılar Mah. → 2011: Cumhuriyet Mah. |
+| 2446 | TR-07-002-2446 | 2007: Yeni Mah. → 2008: Pınarlı Yeni Mah. → 2009: Pınarlı Mah. |
+| 2475 | TR-07-005-2475 | 2007: Merkez Mah. → 2009: Çığlık Mah. |
+| 2479 | TR-07-005-2479 | 2007: Aşağı Mah. → 2009: Çınar Mah. |
+| 2485 | TR-07-005-2485 | 2007: Hürriyet Mah. → 2010: Yeşilbayır Mah. |
+| 98561 | TR-07-005-98561 | 2007: Ören Mah. → 2010: Düzlerçamı Mah. |
 | 180441 | TR-07-006-180441 | 2013: Kuzuköy Mah. → 2016: Kuzköy Mah. |
 | 180467 | TR-07-006-180467 | 2013: Akçainiş Mah. → 2017: Akçaeniş Mah. |
 | 180485 | TR-07-006-180485 | 2013: Gölova Mah. → 2024: Müren Mah. |
@@ -213,6 +223,12 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 2656 | TR-07-011-2656 | 2007: Merkez Mah. → 2008: Karşıyaka Mah. |
 | 2669 | TR-07-012-2669 | 2007: Bahçecik Mah. → 2009: Beldibi Bahçecik Mah. |
 | 2670 | TR-07-012-2670 | 2007: Çifteçeşmeler Mah. → 2009: Beldibi Çifteçeşmeler Mah. |
+| 2414 | TR-07-013-2414 | 2007: Esentepe Mah. → 2008: Varsak Esentepe Mah. |
+| 2415 | TR-07-013-2415 | 2007: Karşıyaka Mah. → 2008: Varsak Karşıyaka Mah. |
+| 2416 | TR-07-013-2416 | 2007: Menderes Mah. → 2008: Varsak Menderes Mah. |
+| 2447 | TR-07-014-2447 | 2007: Çamlıbel Mah. → 2019: Doyran Çamlıbel Mah. |
+| 2448 | TR-07-014-2448 | 2007: Dağ Mah. → 2019: Doyran Dağ Mah. |
+| 2450 | TR-07-014-2450 | 2007: Gündoğdu Mah. → 2009: Doyran Mah. |
 | 181185 | TR-07-015-181185 | 2013: Başpınar Mah. → 2016: Yeleme Mah. |
 | 181211 | TR-07-015-181211 | 2013: Gümüşlü Mah. → 2021: Kevzer Mah. |
 | 181273 | TR-07-015-181273 | 2013: Ulucak Mah. → 2021: Sımandır Mah. |
@@ -222,24 +238,8 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 181863 | TR-07-017-181863 | 2013: Çamlıtepe Mah. → 2016: Namaras Mah. |
 | 181873 | TR-07-017-181873 | 2013: Değirmenli Mah. → 2018: Karavca Mah. |
 | 181955 | TR-07-017-181955 | 2013: Bozyaka Mah. → 2017: Beşkonak Mah. |
+| 2356 | TR-07-018-2356 | 2007: Altınova-Yenigöl Mah. → 2011: Yenigöl Mah. |
 | 2770 | TR-07-019-2770 | 2007: Evren Paşa Mah. → 2014: Cumhuriyet Mah. |
-| 2356 | TR-07-x1138-2356 | 2007: Altınova-Yenigöl Mah. → 2011: Yenigöl Mah. |
-| 2414 | TR-07-x1138-2414 | 2007: Esentepe Mah. → 2008: Varsak Esentepe Mah. |
-| 2415 | TR-07-x1138-2415 | 2007: Karşıyaka Mah. → 2008: Varsak Karşıyaka Mah. |
-| 2416 | TR-07-x1138-2416 | 2007: Menderes Mah. → 2008: Varsak Menderes Mah. |
-| 2426 | TR-07-x1138-2426 | 2007: Altınova Mah. → 2009: Çalkaya Mah. |
-| 2428 | TR-07-x1138-2428 | 2007: Güzelyurt Mah. → 2008: Çalkaya Güzelyurt Mah. → 2009: Güzelyurt Mah. |
-| 2438 | TR-07-x1138-2438 | 2007: Güzelyurt Mah. → 2008: Yurtpınar Güzelyurt Mah. → 2009: Murtuna Mah. |
-| 2439 | TR-07-x1138-2439 | 2007: Yeni Mah. → 2008: Yurtpınar Yeni Mah. → 2009: Yurtpınar Mah. |
-| 2444 | TR-07-x1138-2444 | 2007: Hacılar Mah. → 2011: Cumhuriyet Mah. |
-| 2446 | TR-07-x1138-2446 | 2007: Yeni Mah. → 2008: Pınarlı Yeni Mah. → 2009: Pınarlı Mah. |
-| 2447 | TR-07-x1138-2447 | 2007: Çamlıbel Mah. → 2019: Doyran Çamlıbel Mah. |
-| 2448 | TR-07-x1138-2448 | 2007: Dağ Mah. → 2019: Doyran Dağ Mah. |
-| 2450 | TR-07-x1138-2450 | 2007: Gündoğdu Mah. → 2009: Doyran Mah. |
-| 2475 | TR-07-x1138-2475 | 2007: Merkez Mah. → 2009: Çığlık Mah. |
-| 2479 | TR-07-x1138-2479 | 2007: Aşağı Mah. → 2009: Çınar Mah. |
-| 2485 | TR-07-x1138-2485 | 2007: Hürriyet Mah. → 2010: Yeşilbayır Mah. |
-| 98561 | TR-07-x1138-98561 | 2007: Ören Mah. → 2010: Düzlerçamı Mah. |
 | 9988 | TR-08-002-9988 | 2007: A. Hacılar Mah. → 2011: Aşağı Hacılar Mah. |
 | 9993 | TR-08-002-9993 | 2007: Y. Hacılar Mah. → 2011: Yukarı Hacılar Mah. |
 | 10002 | TR-08-005-10002 | 2007: Orta Hopa Mah. → 2008: Ortahopa Mah. |
@@ -249,12 +249,12 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 143757 | TR-09-001-143757 | 2013: Yenice (Merkez) Mah. → 2014: Yeşil Yenice Mah. |
 | 10094 | TR-09-003-10094 | 2007: Hamidabat Mah. → 2010: Hamitabat Mah. |
 | 10102 | TR-09-003-10102 | 2007: Çömlekçi Mah. → 2010: Çömlekci Mah. |
+| 10048 | TR-09-005-10048 | 2007: Köprülü Mah. → 2008: Köprülü-Veysipaşa Mah. |
+| 10055 | TR-09-005-10055 | 2007: Ramazan Paşa Mah. → 2008: Hasanefendi-Ramazan Paşa Mah. |
 | 144051 | TR-09-007-144051 | 2013: Palamutköy Mah. → 2022: Palamut Mah. |
 | 10247 | TR-09-014-10247 | 2007: Cumhuriyet Mah. → 2008: Arslanlı Cumhuriyet Mah. |
 | 10248 | TR-09-014-10248 | 2007: Hürriyet Mah. → 2008: Arslanlı Hürriyet Mah. |
 | 10249 | TR-09-014-10249 | 2007: Zafer Mah. → 2008: Arslanlı Zafer Mah. → 2014: Arslanlı Mah. |
-| 10048 | TR-09-x1159-10048 | 2007: Köprülü Mah. → 2008: Köprülü-Veysipaşa Mah. |
-| 10055 | TR-09-x1159-10055 | 2007: Ramazan Paşa Mah. → 2008: Hasanefendi-Ramazan Paşa Mah. |
 | 147029 | TR-10-001-147029 | 2013: Akçakaya Mah. → 2014: Kesirven Mah. |
 | 147055 | TR-10-001-147055 | 2013: Çiçekpınar Mah. → 2015: Nergiz Mah. |
 | 10357 | TR-10-002-10357 | 2007: Fevzipaşa Mah. → 2008: Fevzipaşa-Vehbibey Mah. |
@@ -305,7 +305,6 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 140777 | TR-15-011-140777 | 2013: Karatlı Mah. → 2014: Karaatlı Mah. |
 | 11335 | TR-16-001-11335 | 2007: Armuçuk Mah. → 2008: Armutçuk Mah. |
 | 183605 | TR-16-001-183605 | 2013: Veletler Mah. → 2015: Bademlik Mah. |
-| 11354 | TR-16-002-11354 | 2007: Cumhuriyet Mah. → 2008: Kurşunlu Cumhuriyet Mah. → 2023: Hankendi Mah. |
 | 11360 | TR-16-002-11360 | 2007: Orhaniye Mah. → 2008: Umurbey Orhaniye Mah. |
 | 183619 | TR-16-002-183619 | 2013: Fevziye Mah. → 2020: Feyziye Mah. |
 | 183625 | TR-16-002-183625 | 2013: Hamidiye (Merkez) Mah. → 2014: Hamidiyeköy Mah. |
@@ -433,30 +432,30 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 99873 | TR-20-011-99873 | 2008: Işıklı Bucağı Yeniköy Mah. → 2011: Yeniköy Mah. |
 | 150527 | TR-20-012-150527 | 2013: Hamdiye Mah. → 2015: Hamidiye Mah. |
 | 98963 | TR-20-013-98963 | 2008: Afşınbey Mah. → 2011: Afşın Bey Mah. |
+| 20537 | TR-20-015-20537 | 2007: İlbadı Mah. → 2008: İlbade Mah. |
+| 20594 | TR-20-015-20594 | 2007: Fatih Mah. → 2008: Göveçlik Fatih Mah. → 2010: Göveçlik Mah. |
+| 20595 | TR-20-015-20595 | 2007: Barbaros Mah. → 2008: Göveçlik Barbaros Mah. → 2009: Barbaros Mah. |
+| 20598 | TR-20-015-20598 | 2007: Yeni Mah. → 2009: Gümüşler Yeni Mah. → 2010: Yeni Mah. |
+| 20607 | TR-20-015-20607 | 2007: Çamlıca Mah. → 2010: Hallaçlar Mah. |
+| 20629 | TR-20-015-20629 | 2007: Erenler Mah. → 2010: Servergazi Mah. |
+| 20630 | TR-20-015-20630 | 2007: Yeşilköy Mah. → 2010: Gerzele Mah. |
+| 20633 | TR-20-015-20633 | 2007: Cumhuriyet Mah. → 2008: Üçler Cumhuriyet Mah. → 2010: Selçuk Bey Mah. |
+| 20553 | TR-20-016-20553 | 2007: Delıktaş Mah. → 2012: Deliktaş Mah. |
+| 20567 | TR-20-016-20567 | 2007: Fatıh Mah. → 2008: Merkez Fatih Mah. → 2010: Fatih Mah. |
+| 20578 | TR-20-016-20578 | 2007: Feslıkan Mah. → 2008: Fesleğen Mah. |
+| 20579 | TR-20-016-20579 | 2007: Mehmetçık Mah. → 2009: Mehmetçik Mah. |
+| 20584 | TR-20-016-20584 | 2007: Merkez Mah. → 2008: Bağbaşı Merkez Mah. → 2010: Bağbaşı Mah. |
+| 20592 | TR-20-016-20592 | 2007: Cumhuriyet Mah. → 2008: Cankurtaran Cumhuriyet Mah. → 2009: Cankurtaran Mah. |
+| 20612 | TR-20-016-20612 | 2007: Merkez Mah. → 2008: Kayhan Merkez Mah. → 2010: Kayıhan Mah. |
+| 20613 | TR-20-016-20613 | 2007: Çamlaraltı Mah. → 2016: Kınıklı Mah. |
+| 20615 | TR-20-016-20615 | 2007: Yunus Emre Mah. → 2008: Kınıklı Yunusemre Mah. → 2009: Yunusemre Mah. |
+| 20617 | TR-20-016-20617 | 2007: Merkez Mah. → 2008: Korucuk Merkez Mah. → 2010: Korucuk Mah. |
+| 20625 | TR-20-016-20625 | 2007: Yeni Mah. → 2008: Gökpınar Yeni Mah. → 2010: Gökpınar Mah. |
 | 20674 | TR-20-016-20674 | 2007: Fatih Mah. → 2013: Fatih (Akköy) Mah. → 2014: Aziziye Mah. |
 | 20676 | TR-20-016-20676 | 2007: Mareşal Fevzi Çakmak Mah. → 2013: Akköy Mah. |
-| 20537 | TR-20-x1271-20537 | 2007: İlbadı Mah. → 2008: İlbade Mah. |
-| 20553 | TR-20-x1271-20553 | 2007: Delıktaş Mah. → 2012: Deliktaş Mah. |
-| 20567 | TR-20-x1271-20567 | 2007: Fatıh Mah. → 2008: Merkez Fatih Mah. → 2010: Fatih Mah. |
-| 20578 | TR-20-x1271-20578 | 2007: Feslıkan Mah. → 2008: Fesleğen Mah. |
-| 20579 | TR-20-x1271-20579 | 2007: Mehmetçık Mah. → 2009: Mehmetçik Mah. |
-| 20584 | TR-20-x1271-20584 | 2007: Merkez Mah. → 2008: Bağbaşı Merkez Mah. → 2010: Bağbaşı Mah. |
 | 20587 | TR-20-x1271-20587 | 2007: Aşağı Mah. → 2008: Başkarcı Aşağı Mah. → 2009: Aşağı Mah. |
 | 20588 | TR-20-x1271-20588 | 2007: Yukarı Mah. → 2008: Başkarcı Yukarı Mah. → 2009: Yukarı Mah. |
-| 20592 | TR-20-x1271-20592 | 2007: Cumhuriyet Mah. → 2008: Cankurtaran Cumhuriyet Mah. → 2009: Cankurtaran Mah. |
 | 20593 | TR-20-x1271-20593 | 2007: Demokrasi Mah. → 2008: Cankurtaran Demokrasi Mah. |
-| 20594 | TR-20-x1271-20594 | 2007: Fatih Mah. → 2008: Göveçlik Fatih Mah. → 2010: Göveçlik Mah. |
-| 20595 | TR-20-x1271-20595 | 2007: Barbaros Mah. → 2008: Göveçlik Barbaros Mah. → 2009: Barbaros Mah. |
-| 20598 | TR-20-x1271-20598 | 2007: Yeni Mah. → 2009: Gümüşler Yeni Mah. → 2010: Yeni Mah. |
-| 20607 | TR-20-x1271-20607 | 2007: Çamlıca Mah. → 2010: Hallaçlar Mah. |
-| 20612 | TR-20-x1271-20612 | 2007: Merkez Mah. → 2008: Kayhan Merkez Mah. → 2010: Kayıhan Mah. |
-| 20613 | TR-20-x1271-20613 | 2007: Çamlaraltı Mah. → 2016: Kınıklı Mah. |
-| 20615 | TR-20-x1271-20615 | 2007: Yunus Emre Mah. → 2008: Kınıklı Yunusemre Mah. → 2009: Yunusemre Mah. |
-| 20617 | TR-20-x1271-20617 | 2007: Merkez Mah. → 2008: Korucuk Merkez Mah. → 2010: Korucuk Mah. |
-| 20625 | TR-20-x1271-20625 | 2007: Yeni Mah. → 2008: Gökpınar Yeni Mah. → 2010: Gökpınar Mah. |
-| 20629 | TR-20-x1271-20629 | 2007: Erenler Mah. → 2010: Servergazi Mah. |
-| 20630 | TR-20-x1271-20630 | 2007: Yeşilköy Mah. → 2010: Gerzele Mah. |
-| 20633 | TR-20-x1271-20633 | 2007: Cumhuriyet Mah. → 2008: Üçler Cumhuriyet Mah. → 2010: Selçuk Bey Mah. |
 | 193897 | TR-21-001-193897 | 2013: Yalankoz Mah. → 2021: Alankoz Mah. |
 | 192027 | TR-21-002-192027 | 2013: Bakacak Mah. → 2022: Seyit Hasan Mah. |
 | 192051 | TR-21-002-192051 | 2013: Gültepe Mah. → 2015: Çorapa Mah. |
@@ -481,15 +480,16 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 193747 | TR-21-015-193747 | 2013: Heybelikonuk Mah. → 2021: Heybelikonak Mah. |
 | 193781 | TR-21-015-193781 | 2013: Çatakköprü Mah. → 2015: Malabadi Mah. |
 | 193839 | TR-21-015-193839 | 2013: Kızlar Mah. → 2021: Kızlal Mah. |
-| 20948 | TR-21-x1284-20948 | 2007: Kıtılbıl Mah. → 2022: Fetih Mah. |
-| 20977 | TR-21-x1284-20977 | 2007: Tavuklu Mah. → 2010: Yeşilli Mah. |
-| 21011 | TR-21-x1284-21011 | 2007: Dicle Mah. → 2022: Bağıvar Mah. |
-| 21018 | TR-21-x1284-21018 | 2007: Yeşilvadi Mah. → 2022: Çarıklı Mah. |
+| 20948 | TR-21-016-20948 | 2007: Kıtılbıl Mah. → 2022: Fetih Mah. |
+| 20977 | TR-21-016-20977 | 2007: Tavuklu Mah. → 2010: Yeşilli Mah. |
+| 21011 | TR-21-016-21011 | 2007: Dicle Mah. → 2022: Bağıvar Mah. |
+| 21018 | TR-21-016-21018 | 2007: Yeşilvadi Mah. → 2022: Çarıklı Mah. |
 | 21224 | TR-22-005-21224 | 2007: Yenimescit Mah. → 2025: Yörük Mah. |
 | 21278 | TR-22-009-21278 | 2007: Atatürk Mah. → 2008: Çöpköy Mah. |
 | 21289 | TR-22-009-21289 | 2007: Cumhuriyet Mah. → 2008: Yeniköy Mah. |
 | 21387 | TR-23-003-21387 | 2007: Camii Mah. → 2010: Cami Mah. |
 | 21393 | TR-23-003-21393 | 2007: Habercik Mah. → 2010: Haberci Mah. |
+| 11354 | TR-23-005-11354 | 2007: Cumhuriyet Mah. → 2008: Kurşunlu Cumhuriyet Mah. → 2023: Hankendi Mah. |
 | 21352 | TR-23-005-21352 | 2007: Gurbet Mezrası Mah. → 2008: Gülpınar Mah. |
 | 21356 | TR-23-005-21356 | 2007: Bahçelievler Mah. → 2008: Hankendi Bahçelievler Mah. → 2009: Bahçelievler Mah. |
 | 21357 | TR-23-005-21357 | 2007: Dilek Mah. → 2008: Hankendi Dilek Mah. → 2009: Dilek Mah. |
@@ -533,6 +533,9 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 21750 | TR-25-001-21750 | 2007: Cahit Aybar Paşa Mah. → 2008: Cahit Aybar Mah. |
 | 21759 | TR-25-001-21759 | 2007: Halitpaşa Mah. → 2008: Yeniköy Halitpaşa Mah. |
 | 99911 | TR-25-001-99911 | 2008: Yeniköy Çiftlik Mah. → 2014: Çiftlik Mah. |
+| 21615 | TR-25-002-21615 | 2007: 200 Evler Mah. → 2008: Dadaşkent 200 Evler Mah. |
+| 21618 | TR-25-002-21618 | 2007: Ahmet Yesevi Mah. → 2011: Ahmet Yasevi Mah. |
+| 21619 | TR-25-002-21619 | 2007: Sultan Alparslan Mah. → 2011: Alparslan Mah. |
 | 188463 | TR-25-004-188463 | 2016: Alikırı Mah. → 2023: Alikırı Abdalan Mah. |
 | 188891 | TR-25-005-188891 | 2013: Yeşilyurt Mah. → 2014: Iğırbığır Mah. |
 | 188909 | TR-25-005-188909 | 2013: Pınar Mah. → 2022: Pinarli Mah. |
@@ -546,6 +549,19 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 190267 | TR-25-012-190267 | 2013: Taşlıköy Mah. → 2017: Hükkam Mah. |
 | 30044 | TR-25-012-30044 | 2007: Hürriyet Mah. → 2008: Merkez Mah. |
 | 30045 | TR-25-012-30045 | 2007: Yeşil Bağlar Mah. → 2020: Merkez Yeşilbağlar Mah. |
+| 21643 | TR-25-013-21643 | 2007: Şehitlerköyü Mah. → 2010: Şehitler Mah. |
+| 21645 | TR-25-013-21645 | 2007: Hancığazköy Mah. → 2010: Hancığaz Mah. |
+| 21647 | TR-25-013-21647 | 2007: Uzun Ahmetköy Mah. → 2010: Uzun Ahmet Mah. |
+| 21649 | TR-25-013-21649 | 2007: Nene Hatunköyü Mah. → 2010: Nene Hatun Mah. |
+| 21650 | TR-25-013-21650 | 2007: Ali Bezirganköyü Mah. → 2010: Ali Bezirgan Mah. |
+| 21651 | TR-25-013-21651 | 2007: Yıkılhanköyü Mah. → 2010: Yıkılgan Mah. |
+| 21652 | TR-25-013-21652 | 2007: Güllüköyü Mah. → 2010: Güllü Mah. |
+| 21653 | TR-25-013-21653 | 2007: Çeperliköyü Mah. → 2010: Çeperli Mah. |
+| 21654 | TR-25-013-21654 | 2007: Sığırlıköyü Mah. → 2010: Sığırlı Mah. |
+| 21656 | TR-25-013-21656 | 2007: Toparlakköyü Mah. → 2010: Toparlak Mah. |
+| 21721 | TR-25-013-21721 | 2007: Solakzade Mah. → 2013: Müftü Solakzade Mah. |
+| 21730 | TR-25-013-21730 | 2007: Yağmurcuk Köyü Mah. → 2010: Yağmurcuk Mah. |
+| 21733 | TR-25-013-21733 | 2007: Teke Deresi Mah. → 2013: Tekkederesi Mah. |
 | 99709 | TR-25-013-99709 | 2008: Aziziyeköy Mah. → 2010: Aziziye Mah. |
 | 190383 | TR-25-014-190383 | 2013: Korucuk Mah. → 2016: Şehit Burak Karakoç Mah. |
 | 190411 | TR-25-014-190411 | 2013: Saksı Mah. → 2025: Karapınar Mah. |
@@ -553,39 +569,23 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 190869 | TR-25-018-190869 | 2013: Ziyaret Mah. → 2014: Ziyaretli Mah. |
 | 30109 | TR-25-018-30109 | 2008: Aşağı Katıklı Mah. → 2009: Kale Mah. |
 | 99812 | TR-25-018-99812 | 2008: Evrenpaşa Mah. → 2010: Osmanbektaş Mah. |
-| 21615 | TR-25-x1319-21615 | 2007: 200 Evler Mah. → 2008: Dadaşkent 200 Evler Mah. |
-| 21618 | TR-25-x1319-21618 | 2007: Ahmet Yesevi Mah. → 2011: Ahmet Yasevi Mah. |
-| 21619 | TR-25-x1319-21619 | 2007: Sultan Alparslan Mah. → 2011: Alparslan Mah. |
-| 21632 | TR-25-x1319-21632 | 2007: Evrenpaşa Mah. → 2012: Barbaros Hayrettin Paşa Mah. |
-| 21634 | TR-25-x1319-21634 | 2007: Yukarı Sanayi Mah. → 2013: Kurtuluş Mah. |
-| 21643 | TR-25-x1319-21643 | 2007: Şehitlerköyü Mah. → 2010: Şehitler Mah. |
-| 21645 | TR-25-x1319-21645 | 2007: Hancığazköy Mah. → 2010: Hancığaz Mah. |
-| 21646 | TR-25-x1319-21646 | 2007: Soğucakköy Mah. → 2013: Soğucak Mah. → 2022: Soğukçermik Mah. |
-| 21647 | TR-25-x1319-21647 | 2007: Uzun Ahmetköy Mah. → 2010: Uzun Ahmet Mah. |
-| 21648 | TR-25-x1319-21648 | 2007: Köse Mehmetköyü Mah. → 2013: Köse Mehmet Mah. |
-| 21649 | TR-25-x1319-21649 | 2007: Nene Hatunköyü Mah. → 2010: Nene Hatun Mah. |
-| 21650 | TR-25-x1319-21650 | 2007: Ali Bezirganköyü Mah. → 2010: Ali Bezirgan Mah. |
-| 21651 | TR-25-x1319-21651 | 2007: Yıkılhanköyü Mah. → 2010: Yıkılgan Mah. |
-| 21652 | TR-25-x1319-21652 | 2007: Güllüköyü Mah. → 2010: Güllü Mah. |
-| 21653 | TR-25-x1319-21653 | 2007: Çeperliköyü Mah. → 2010: Çeperli Mah. |
-| 21654 | TR-25-x1319-21654 | 2007: Sığırlıköyü Mah. → 2010: Sığırlı Mah. |
-| 21655 | TR-25-x1319-21655 | 2007: Çayırtepeköyü Mah. → 2013: Çayırtepe Mah. |
-| 21656 | TR-25-x1319-21656 | 2007: Toparlakköyü Mah. → 2010: Toparlak Mah. |
-| 21660 | TR-25-x1319-21660 | 2007: Mülk Köyü Mah. → 2013: Mülk Mah. |
-| 21665 | TR-25-x1319-21665 | 2007: Gez Mah. → 2013: Üniversite Mah. |
-| 21684 | TR-25-x1319-21684 | 2007: Yukarı Yoncalık Mah. → 2013: Rabia Ana Mah. |
-| 21692 | TR-25-x1319-21692 | 2007: Kazımkarabekir Mah. → 2013: Kazım Karabekir Paşa Mah. |
-| 21706 | TR-25-x1319-21706 | 2007: Umudum Köyü Mah. → 2013: Umudum Mah. |
-| 21707 | TR-25-x1319-21707 | 2007: Yazı Pınarı Köyü Mah. → 2013: Yazı Pınarı Mah. |
-| 21708 | TR-25-x1319-21708 | 2007: Yeşilova Köyü Mah. → 2013: Yeşilova Mah. |
-| 21709 | TR-25-x1319-21709 | 2007: Uzunyayla Köyü Mah. → 2013: Uzunyayla Mah. |
-| 21710 | TR-25-x1319-21710 | 2007: Çayırca Köyü Mah. → 2013: Çayırca Mah. |
-| 21721 | TR-25-x1319-21721 | 2007: Solakzade Mah. → 2013: Müftü Solakzade Mah. |
-| 21730 | TR-25-x1319-21730 | 2007: Yağmurcuk Köyü Mah. → 2010: Yağmurcuk Mah. |
-| 21733 | TR-25-x1319-21733 | 2007: Teke Deresi Mah. → 2013: Tekkederesi Mah. |
-| 21740 | TR-25-x1319-21740 | 2007: İbrahim Paşa Mah. → 2008: Dadaşköy İbrahim Paşa Mah. → 2013: Dadaşköy Mah. |
-| 21745 | TR-25-x1319-21745 | 2007: Şehitler Mah. → 2008: Dumlu Şehitler Mah. → 2013: Dumlu Mah. |
-| 21747 | TR-25-x1319-21747 | 2007: Yolgeçti Mah. → 2022: Karasu Mah. |
+| 21632 | TR-25-020-21632 | 2007: Evrenpaşa Mah. → 2012: Barbaros Hayrettin Paşa Mah. |
+| 21634 | TR-25-020-21634 | 2007: Yukarı Sanayi Mah. → 2013: Kurtuluş Mah. |
+| 21646 | TR-25-020-21646 | 2007: Soğucakköy Mah. → 2013: Soğucak Mah. → 2022: Soğukçermik Mah. |
+| 21648 | TR-25-020-21648 | 2007: Köse Mehmetköyü Mah. → 2013: Köse Mehmet Mah. |
+| 21655 | TR-25-020-21655 | 2007: Çayırtepeköyü Mah. → 2013: Çayırtepe Mah. |
+| 21660 | TR-25-020-21660 | 2007: Mülk Köyü Mah. → 2013: Mülk Mah. |
+| 21665 | TR-25-020-21665 | 2007: Gez Mah. → 2013: Üniversite Mah. |
+| 21684 | TR-25-020-21684 | 2007: Yukarı Yoncalık Mah. → 2013: Rabia Ana Mah. |
+| 21692 | TR-25-020-21692 | 2007: Kazımkarabekir Mah. → 2013: Kazım Karabekir Paşa Mah. |
+| 21706 | TR-25-020-21706 | 2007: Umudum Köyü Mah. → 2013: Umudum Mah. |
+| 21707 | TR-25-020-21707 | 2007: Yazı Pınarı Köyü Mah. → 2013: Yazı Pınarı Mah. |
+| 21708 | TR-25-020-21708 | 2007: Yeşilova Köyü Mah. → 2013: Yeşilova Mah. |
+| 21709 | TR-25-020-21709 | 2007: Uzunyayla Köyü Mah. → 2013: Uzunyayla Mah. |
+| 21710 | TR-25-020-21710 | 2007: Çayırca Köyü Mah. → 2013: Çayırca Mah. |
+| 21740 | TR-25-020-21740 | 2007: İbrahim Paşa Mah. → 2008: Dadaşköy İbrahim Paşa Mah. → 2013: Dadaşköy Mah. |
+| 21745 | TR-25-020-21745 | 2007: Şehitler Mah. → 2008: Dumlu Şehitler Mah. → 2013: Dumlu Mah. |
+| 21747 | TR-25-020-21747 | 2007: Yolgeçti Mah. → 2022: Karasu Mah. |
 | 190953 | TR-26-001-190953 | 2013: Çukurhisar Mah. → 2015: Çerkez Çukurhisar Mah. |
 | 190965 | TR-26-001-190965 | 2013: Güneli Mah. → 2014: Mamure Mah. |
 | 190985 | TR-26-001-190985 | 2013: Yayıklı Mah. → 2014: Koşmat Mah. |
@@ -594,13 +594,13 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 30259 | TR-26-003-30259 | 2007: Erbab Mah. → 2011: Erbap Mah. |
 | 30262 | TR-26-003-30262 | 2007: Yeni Doğan Mah. → 2014: Yenidoğan Mah. |
 | 30294 | TR-26-009-30294 | 2007: Camiikebir Mah. → 2008: Camikebir Mah. |
+| 30185 | TR-26-010-30185 | 2007: Cavlum Mah. → 2011: Çavlum Mah. |
 | 191441 | TR-26-013-191441 | 2013: Demirci (Merkez) Mah. → 2014: Demirciköy Mah. |
-| 30185 | TR-26-x1322-30185 | 2007: Cavlum Mah. → 2011: Çavlum Mah. |
-| 30218 | TR-26-x1322-30218 | 2007: Yeni Mah. → 2008: Merkez Yeni Mah. |
-| 30235 | TR-26-x1322-30235 | 2007: Yeni Mah. → 2008: Çukurhisar Yeni Mah. |
-| 30239 | TR-26-x1322-30239 | 2007: Emirler Mah. → 2015: Muttalip Emirler Mah. |
-| 30241 | TR-26-x1322-30241 | 2007: Koyunlar Mah. → 2015: Muttalip Koyunlar Mah. |
-| 30242 | TR-26-x1322-30242 | 2007: Orta Mah. → 2015: Muttalip Orta Mah. |
+| 30218 | TR-26-014-30218 | 2007: Yeni Mah. → 2008: Merkez Yeni Mah. |
+| 30235 | TR-26-014-30235 | 2007: Yeni Mah. → 2008: Çukurhisar Yeni Mah. |
+| 30239 | TR-26-014-30239 | 2007: Emirler Mah. → 2015: Muttalip Emirler Mah. |
+| 30241 | TR-26-014-30241 | 2007: Koyunlar Mah. → 2015: Muttalip Koyunlar Mah. |
+| 30242 | TR-26-014-30242 | 2007: Orta Mah. → 2015: Muttalip Orta Mah. |
 | 179531 | TR-27-002-179531 | 2013: Aşağıbilenler Mah. → 2015: Şerikanlı Mah. |
 | 179599 | TR-27-002-179599 | 2013: Yolbaşı Mah. → 2025: Haydarkenli Mah. |
 | 179603 | TR-27-002-179603 | 2013: Kaleobası Mah. → 2017: Kale Mah. |
@@ -615,13 +615,13 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 180095 | TR-27-006-180095 | 2013: Büyükkaracaören Mah. → 2014: Büyükkaracaviran Mah. |
 | 180097 | TR-27-006-180097 | 2013: Cumhuriyet (Doğanpınar) Mah. → 2014: Yeni Cumhuriyet Mah. |
 | 180131 | TR-27-006-180131 | 2013: Küçükkaracaören Mah. → 2014: Dero Küçükkaracaviran Mah. |
+| 30463 | TR-27-006-30463 | 2007: Hürriyet Mah. → 2008: Büyükşahinbey Hürriyet Mah. → 2009: Körkün Mah. |
 | 30689 | TR-27-006-30689 | 2007: Küçükkaracaören Mah. → 2008: Küçükkaracaviran Mah. → 2014: Şıh Küçükkaracaviran Mah. |
 | 30691 | TR-27-006-30691 | 2007: Tepebaşı Mah. → 2009: Yeşildere Mah. |
 | 30692 | TR-27-006-30692 | 2007: Yeni Mah. → 2008: Yeşildere Yeni Mah. → 2009: Gürsu Mah. |
 | 30693 | TR-27-006-30693 | 2007: Cumhuriyet Mah. → 2008: Yeşildere Cumhuriyet Mah. → 2009: Hacar Mah. |
 | 179321 | TR-27-007-179321 | 2013: Şahinbey (Merkez) Mah. → 2014: Şahinbey Mülk Mah. |
 | 30389 | TR-27-007-30389 | 2007: Kocaoğlan Mah. → 2016: Tekstilkent Mah. |
-| 30463 | TR-27-007-30463 | 2007: Hürriyet Mah. → 2008: Büyükşahinbey Hürriyet Mah. → 2009: Körkün Mah. |
 | 30467 | TR-27-007-30467 | 2007: Esentepe Mah. → 2008: Burç Esentepe Mah. |
 | 388991 | TR-27-007-388991 | 2016: Ibn-I Sına Mah. → 2017: İbn-İ Sina Mah. |
 | 603787 | TR-27-007-603787 | 2016: Abdülhamit Han Mah. → 2017: Abdülhamid Han Mah. |
@@ -644,11 +644,20 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 30968 | TR-29-004-30968 | 2007: Merkez Mah. → 2015: Cayra Mah. |
 | 100227 | TR-29-005-100227 | 2010: Erenkaya Mah. → 2024: Uluşiran Mah. |
 | 31018 | TR-30-003-31018 | 2007: Moda Mah. → 2025: Navşar Mah. |
-| 31023 | TR-30-003-31023 | 2007: Vapurtepe Mah. → 2020: Üçyan Mah. |
 | 31030 | TR-30-004-31030 | 2007: Yenimah Mah. → 2008: Yeni Mah. |
 | 31042 | TR-30-004-31042 | 2007: Zeydan Mah. → 2012: Kerem Zeydan Mah. |
+| 31023 | TR-30-005-31023 | 2007: Vapurtepe Mah. → 2020: Üçyan Mah. |
 | 149089 | TR-31-002-149089 | 2013: Bohşin Mah. → 2025: Boşin Mah. |
 | 149091 | TR-31-002-149091 | 2013: Bozhöyük Mah. → 2025: Bozhüyük Mah. |
+| 31048 | TR-31-002-31048 | 2007: Akbaba Mah. → 2013: Habib-İ Neccar Mah. |
+| 31064 | TR-31-002-31064 | 2007: Fevzi Paşa Mah. → 2009: Fevzi Çakmak Mah. |
+| 31066 | TR-31-002-31066 | 2007: Gazi Paşa Mah. → 2025: Gazipaşa Mah. |
+| 31067 | TR-31-002-31067 | 2007: Güllü Bahçe Mah. → 2025: Güllübahçe Mah. |
+| 31072 | TR-31-002-31072 | 2007: Kanatlı Mah. → 2010: General Şükrü Kanatlı Mah. |
+| 31076 | TR-31-002-31076 | 2007: Kışla Saray Mah. → 2025: Kışlasaray Mah. |
+| 31087 | TR-31-002-31087 | 2007: Ulucamii Mah. → 2025: Ulucami Mah. |
+| 31088 | TR-31-002-31088 | 2007: Ürgen Paşa Mah. → 2025: Ürgenpaşa Mah. |
+| 31089 | TR-31-002-31089 | 2007: Yeni Camii Mah. → 2025: Yenicami Mah. |
 | 149423 | TR-31-003-149423 | 2013: Karaağaç Mah. → 2018: Karaağaç Konarlı Mah. |
 | 149459 | TR-31-003-149459 | 2013: Bey Mah. → 2016: Beyköyü Mah. |
 | 149477 | TR-31-003-149477 | 2013: Kepirce Mah. → 2015: Aşağı Kepirce Mah. |
@@ -656,7 +665,6 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 149501 | TR-31-004-149501 | 2013: Güzelyayla Mah. → 2017: Soğukoluk Mah. |
 | 149503 | TR-31-004-149503 | 2013: Karapelit Mah. → 2019: Şekere Mah. |
 | 31160 | TR-31-004-31160 | 2007: Şenbük Mah. → 2013: Cumhuriyet Mah. |
-| 31190 | TR-31-006-31190 | 2007: Kürtül Mah. → 2008: Kültür Mah. → 2011: Kürtül Mah. |
 | 149579 | TR-31-008-149579 | 2013: Koruhüyük Mah. → 2025: Koruhöyük Mah. |
 | 149619 | TR-31-008-149619 | 2013: Akkülek Mah. → 2025: Halallar Mah. |
 | 31206 | TR-31-008-31206 | 2007: Derviş Paşa Mah. → 2025: Dervişpaşa Mah. |
@@ -667,6 +675,7 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 31291 | TR-31-010-31291 | 2007: Alakoyun Mah. → 2012: Alsancak Mah. |
 | 149783 | TR-31-011-149783 | 2013: Hamam Mah. → 2024: Yeniköy Mah. |
 | 149789 | TR-31-011-149789 | 2013: Keli Mah. → 2025: Kelli Mah. |
+| 31190 | TR-31-012-31190 | 2007: Kürtül Mah. → 2008: Kültür Mah. → 2011: Kürtül Mah. |
 | 149807 | TR-31-013-149807 | 2013: Cumhuriyet (Merkez) Mah. → 2014: Nergizli Mah. |
 | 149811 | TR-31-013-149811 | 2013: Davutpaşa Mah. → 2025: Davutpaşa Hüyüğü Mah. |
 | 149825 | TR-31-013-149825 | 2013: Kavalcık Mah. → 2014: Harran Mah. |
@@ -681,15 +690,6 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 149273 | TR-31-015-149273 | 2013: Gözlekçiler Mah. → 2014: Dusduru Mah. |
 | 149293 | TR-31-015-149293 | 2013: Yenice Mah. → 2025: Yeniceköy Mah. |
 | 149317 | TR-31-015-149317 | 2013: Çakı Mah. → 2025: Çakıköy Mah. |
-| 31048 | TR-31-x1383-31048 | 2007: Akbaba Mah. → 2013: Habib-İ Neccar Mah. |
-| 31064 | TR-31-x1383-31064 | 2007: Fevzi Paşa Mah. → 2009: Fevzi Çakmak Mah. |
-| 31066 | TR-31-x1383-31066 | 2007: Gazi Paşa Mah. → 2025: Gazipaşa Mah. |
-| 31067 | TR-31-x1383-31067 | 2007: Güllü Bahçe Mah. → 2025: Güllübahçe Mah. |
-| 31072 | TR-31-x1383-31072 | 2007: Kanatlı Mah. → 2010: General Şükrü Kanatlı Mah. |
-| 31076 | TR-31-x1383-31076 | 2007: Kışla Saray Mah. → 2025: Kışlasaray Mah. |
-| 31087 | TR-31-x1383-31087 | 2007: Ulucamii Mah. → 2025: Ulucami Mah. |
-| 31088 | TR-31-x1383-31088 | 2007: Ürgen Paşa Mah. → 2025: Ürgenpaşa Mah. |
-| 31089 | TR-31-x1383-31089 | 2007: Yeni Camii Mah. → 2025: Yenicami Mah. |
 | 31462 | TR-32-003-31462 | 2007: Kızılcıbık Mah. → 2010: Kızılçubuk Mah. |
 | 31463 | TR-32-003-31463 | 2007: Konne Bucağı Mah. → 2011: Konya Bucağı Mah. |
 | 31494 | TR-32-004-31494 | 2007: Hüseyin Avni Paşa Mah. → 2010: Kırevler Mah. |
@@ -698,49 +698,64 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 914218 | TR-32-006-914218 | 2024: Yeni Mah. → 2025: Yeni Yüzyıl Mah. |
 | 31576 | TR-32-009-31576 | 2007: Camii Mah. → 2010: Cami Mah. |
 | 31588 | TR-32-009-31588 | 2007: Camii Mah. → 2011: Cami Mah. |
+| 31800 | TR-33-001-31800 | 2007: Yeşilyurt Mah. → 2009: Dikilitaş Mah. |
+| 31831 | TR-33-001-31831 | 2007: Kürkçü Mah. → 2009: Bahçeli Kürkçü Mah. |
+| 31832 | TR-33-001-31832 | 2007: Aşağı Burhan Mah. → 2009: Bahçeli Aşağıburhan Mah. |
+| 31833 | TR-33-001-31833 | 2007: Yukarı Burhan Mah. → 2009: Bahçeli Yukarıburhan Mah. |
+| 31848 | TR-33-001-31848 | 2007: Tekke Mah. → 2008: Hürriyet Mah. |
+| 31849 | TR-33-001-31849 | 2007: Yeni Mah. → 2008: Kazanlı Yeni Mah. → 2009: Kazanlı Mah. |
+| 31851 | TR-33-001-31851 | 2007: Bahçe Mah. → 2008: Adanalıoğlu Bahçe Mah. → 2009: Adanalıoğlu Mah. |
+| 31852 | TR-33-001-31852 | 2007: Limonlu Mah. → 2009: Adanalıoğlu Limonlu Mah. |
+| 31853 | TR-33-001-31853 | 2007: Akdeniz Mah. → 2008: Karacailyas Akdeniz Mah. → 2009: Abdullah Şahutoğlu Mah. |
+| 31854 | TR-33-001-31854 | 2007: Emek Mah. → 2009: Karacailyas Emek Mah. |
+| 31855 | TR-33-001-31855 | 2007: Evren Mah. → 2009: Karacailyas Evren Mah. |
+| 31857 | TR-33-001-31857 | 2007: Yeşilyurt Mah. → 2008: Karacailyas Yeşilyurt Mah. → 2009: Karacailyas Mah. |
+| 40117 | TR-33-001-40117 | 2007: İhsaniye Mah. → 2008: Bağcılar İhsaniye Mah. → 2009: Bağcılar-İhsaniye Mah. |
 | 182407 | TR-33-002-182407 | 2013: Kükür Mah. → 2019: Yukarı Kükür Mah. |
 | 182487 | TR-33-006-182487 | 2013: Kumkuyu Mah. → 2021: Tırtar Mah. |
 | 182657 | TR-33-007-182657 | 2013: Kurbağ Mah. → 2014: Kurbağa Mah. |
 | 39985 | TR-33-007-39985 | 2007: Akseki Mah. → 2009: Merkez Mah. |
+| 31793 | TR-33-008-31793 | 2007: Fatih Mah. → 2008: Davultepe Fatih Mah. → 2009: İstiklal Mah. |
+| 31794 | TR-33-008-31794 | 2007: Merkez Mah. → 2008: Davultepe Merkez Mah. → 2009: Davultepe Mah. |
+| 31808 | TR-33-008-31808 | 2007: Cumhuriyet Mah. → 2008: Kuyuluk Cumhuriyet Mah. → 2009: Çamlıca Mah. |
+| 31809 | TR-33-008-31809 | 2007: Fatih Mah. → 2008: Kuyuluk Fatih Mah. → 2009: Çankaya Mah. |
+| 31810 | TR-33-008-31810 | 2007: Merkez Mah. → 2008: Kuyuluk Merkez Mah. → 2009: Kuyuluk Mah. |
+| 31813 | TR-33-008-31813 | 2007: Eskiköy Mah. → 2009: Eski Mah. → 2010: Eskiköy Mah. → 2011: Eski Mezitli Mah. |
+| 31819 | TR-33-008-31819 | 2007: Kale Mah. → 2011: Kaleköy Mah. |
+| 31821 | TR-33-008-31821 | 2007: Cumhuriyet Mah. → 2008: Tece Cumhuriyet Mah. → 2009: Deniz Mah. |
+| 31822 | TR-33-008-31822 | 2007: Fatih Mah. → 2008: Tece Fatih Mah. → 2009: Seymenli Mah. |
+| 31824 | TR-33-008-31824 | 2007: Merkez Mah. → 2008: Tece Merkez Mah. → 2009: Tece Mah. |
 | 182747 | TR-33-009-182747 | 2013: Göksu (Merkez) Mah. → 2014: Ceritler Mah. |
 | 182969 | TR-33-010-182969 | 2013: Mağara Mah. → 2022: Mara Mah. |
 | 183025 | TR-33-011-183025 | 2013: Gülek Mah. → 2025: Kahraman Gülek Mah. |
 | 183075 | TR-33-011-183075 | 2013: Çayboyu Mah. → 2014: Egemen Mah. |
 | 183147 | TR-33-011-183147 | 2013: Reşadiye (Merkez) Mah. → 2014: Heleke Mah. |
 | 183183 | TR-33-011-183183 | 2013: Çamalan Mah. → 2015: Çamalan B.M Mah. |
-| 40117 | TR-33-011-40117 | 2007: İhsaniye Mah. → 2008: Bağcılar İhsaniye Mah. → 2009: Bağcılar-İhsaniye Mah. |
 | 183351 | TR-33-012-183351 | 2013: Atlılar Mah. → 2020: Sadiye Mah. |
-| 31784 | TR-33-x1402-31784 | 2007: Afetevler Mah. → 2019: Kuzeykent Mah. |
-| 31790 | TR-33-x1402-31790 | 2007: Merkez Mah. → 2008: Çiftlikköy Merkez Mah. → 2009: Çiftlikköy Mah. |
-| 31793 | TR-33-x1402-31793 | 2007: Fatih Mah. → 2008: Davultepe Fatih Mah. → 2009: İstiklal Mah. |
-| 31794 | TR-33-x1402-31794 | 2007: Merkez Mah. → 2008: Davultepe Merkez Mah. → 2009: Davultepe Mah. |
-| 31796 | TR-33-x1402-31796 | 2007: Çamlıca Mah. → 2012: Erçel Mah. |
-| 31797 | TR-33-x1402-31797 | 2007: Çınarlı Mah. → 2012: Değirmençay Mah. |
-| 31800 | TR-33-x1402-31800 | 2007: Yeşilyurt Mah. → 2009: Dikilitaş Mah. |
-| 31808 | TR-33-x1402-31808 | 2007: Cumhuriyet Mah. → 2008: Kuyuluk Cumhuriyet Mah. → 2009: Çamlıca Mah. |
-| 31809 | TR-33-x1402-31809 | 2007: Fatih Mah. → 2008: Kuyuluk Fatih Mah. → 2009: Çankaya Mah. |
-| 31810 | TR-33-x1402-31810 | 2007: Merkez Mah. → 2008: Kuyuluk Merkez Mah. → 2009: Kuyuluk Mah. |
-| 31813 | TR-33-x1402-31813 | 2007: Eskiköy Mah. → 2009: Eski Mah. → 2010: Eskiköy Mah. → 2011: Eski Mezitli Mah. |
-| 31819 | TR-33-x1402-31819 | 2007: Kale Mah. → 2011: Kaleköy Mah. |
-| 31821 | TR-33-x1402-31821 | 2007: Cumhuriyet Mah. → 2008: Tece Cumhuriyet Mah. → 2009: Deniz Mah. |
-| 31822 | TR-33-x1402-31822 | 2007: Fatih Mah. → 2008: Tece Fatih Mah. → 2009: Seymenli Mah. |
-| 31824 | TR-33-x1402-31824 | 2007: Merkez Mah. → 2008: Tece Merkez Mah. → 2009: Tece Mah. |
-| 31826 | TR-33-x1402-31826 | 2007: Bahçelievler Mah. → 2008: Yalınayak Mah. |
-| 31831 | TR-33-x1402-31831 | 2007: Kürkçü Mah. → 2009: Bahçeli Kürkçü Mah. |
-| 31832 | TR-33-x1402-31832 | 2007: Aşağı Burhan Mah. → 2009: Bahçeli Aşağıburhan Mah. |
-| 31833 | TR-33-x1402-31833 | 2007: Yukarı Burhan Mah. → 2009: Bahçeli Yukarıburhan Mah. |
-| 31848 | TR-33-x1402-31848 | 2007: Tekke Mah. → 2008: Hürriyet Mah. |
-| 31849 | TR-33-x1402-31849 | 2007: Yeni Mah. → 2008: Kazanlı Yeni Mah. → 2009: Kazanlı Mah. |
-| 31851 | TR-33-x1402-31851 | 2007: Bahçe Mah. → 2008: Adanalıoğlu Bahçe Mah. → 2009: Adanalıoğlu Mah. |
-| 31852 | TR-33-x1402-31852 | 2007: Limonlu Mah. → 2009: Adanalıoğlu Limonlu Mah. |
-| 31853 | TR-33-x1402-31853 | 2007: Akdeniz Mah. → 2008: Karacailyas Akdeniz Mah. → 2009: Abdullah Şahutoğlu Mah. |
-| 31854 | TR-33-x1402-31854 | 2007: Emek Mah. → 2009: Karacailyas Emek Mah. |
-| 31855 | TR-33-x1402-31855 | 2007: Evren Mah. → 2009: Karacailyas Evren Mah. |
-| 31857 | TR-33-x1402-31857 | 2007: Yeşilyurt Mah. → 2008: Karacailyas Yeşilyurt Mah. → 2009: Karacailyas Mah. |
+| 31826 | TR-33-012-31826 | 2007: Bahçelievler Mah. → 2008: Yalınayak Mah. |
+| 31784 | TR-33-013-31784 | 2007: Afetevler Mah. → 2019: Kuzeykent Mah. |
+| 31790 | TR-33-013-31790 | 2007: Merkez Mah. → 2008: Çiftlikköy Merkez Mah. → 2009: Çiftlikköy Mah. |
+| 31796 | TR-33-013-31796 | 2007: Çamlıca Mah. → 2012: Erçel Mah. |
+| 31797 | TR-33-013-31797 | 2007: Çınarlı Mah. → 2012: Değirmençay Mah. |
 | 40139 | TR-34-001-40139 | 2007: Burgazadası Mah. → 2015: Burgazada Mah. |
 | 40140 | TR-34-001-40140 | 2007: Büyükada-Maden Mah. → 2015: Maden Mah. |
 | 40141 | TR-34-001-40141 | 2007: Büyükada-Nizam Mah. → 2015: Nizam Mah. |
+| 40478 | TR-34-002-40478 | 2007: Merkez Mah. → 2008: Arnavutköy Merkez Mah. |
+| 40482 | TR-34-002-40482 | 2007: Atatürk Mah. → 2008: Boğazköy Atatürk Mah. → 2011: Atatürk Mah. |
+| 40483 | TR-34-002-40483 | 2007: İstiklal Mah. → 2008: Boğazköy İstiklal Mah. |
+| 40484 | TR-34-002-40484 | 2007: Merkez Mah. → 2008: Boğazköy Merkez Mah. → 2011: Yunus Emre Mah. |
+| 40487 | TR-34-002-40487 | 2007: Merkez Mah. → 2008: Bolluca Merkez Mah. → 2011: Bolluca Mah. |
+| 40489 | TR-34-002-40489 | 2007: Merkez Mah. → 2008: Haraççı Merkez Mah. → 2011: Haraççı Mah. |
+| 40492 | TR-34-002-40492 | 2007: Merkez Mah. → 2008: Taşoluk Merkez Mah. → 2009: Taşoluk Mah. |
+| 40493 | TR-34-002-40493 | 2007: M.Fevzi Çakmak Mah. → 2015: Mareşal Fevzi Çakmak Mah. |
+| 40913 | TR-34-002-40913 | 2007: İstasyon Mah. → 2009: Hadımköy Mah. |
+| 40914 | TR-34-002-40914 | 2007: Cami Mah. → 2011: Terkos Mah. |
+| 40915 | TR-34-002-40915 | 2007: Zafer Mah. → 2011: Durusu Mah. |
 | 99358 | TR-34-002-99358 | 2008: Atatürk Mah. → 2011: Mustafa Kemal Paşa Mah. |
+| 40526 | TR-34-003-40526 | 2007: Yeni Sahra Mah. → 2015: Yenisahra Mah. |
+| 40577 | TR-34-003-40577 | 2007: Ferhatpaşa Mah. → 2008: Ataşehir Ferhatpaşa Mah. → 2015: Ferhatpaşa Mah. |
+| 40793 | TR-34-003-40793 | 2007: Esatpasa Mah. → 2015: Esatpaşa Mah. |
+| 40795 | TR-34-003-40795 | 2007: Fetıh Mah. → 2017: Fetih Mah. |
 | 98687 | TR-34-003-98687 | 2008: Aşık Veysel Mah. → 2015: Aşıkveysel Mah. |
 | 99749 | TR-34-003-99749 | 2008: Ataşehir Atatürk Mah. → 2015: Atatürk Mah. |
 | 40147 | TR-34-004-40147 | 2007: Denızkoskler Mah. → 2011: Denizköşkler Mah. |
@@ -763,6 +778,10 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 40199 | TR-34-007-40199 | 2007: Şenlik Mah. → 2008: Şenlikköy Mah. |
 | 40201 | TR-34-007-40201 | 2007: Ataköy 3-4-11. Mah. → 2015: Ataköy 3-4-11. Kısım Mah. |
 | 40202 | TR-34-007-40202 | 2007: Ataköy 1. Mah. → 2015: Ataköy 1. Kısım Mah. |
+| 40357 | TR-34-008-40357 | 2007: Başakşehir Mah. → 2008: Esenler Başakşehir Mah. → 2009: Başak Mah. |
+| 40585 | TR-34-008-40585 | 2007: Ziyagökalp Mah. → 2011: Ziya Gökalp Mah. |
+| 40871 | TR-34-008-40871 | 2007: 1. Kısım Mah. → 2009: Bahçeşehir 1. Kısım Mah. |
+| 40872 | TR-34-008-40872 | 2007: 2. Kısım Mah. → 2009: Bahçeşehir 2. Kısım Mah. |
 | 40204 | TR-34-009-40204 | 2007: Ortamahalle Mah. → 2018: Orta Mah. |
 | 40214 | TR-34-010-40214 | 2007: Vısnezade Mah. → 2008: Vişnezade Mah. |
 | 40215 | TR-34-010-40215 | 2007: Sınanpasa Mah. → 2008: Sinanpaşa Mah. |
@@ -780,6 +799,9 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 191727 | TR-34-011-191727 | 2013: Cumhuriyet Mah. → 2025: Cumhuriyetköy Mah. |
 | 191735 | TR-34-011-191735 | 2013: Öyümce Mah. → 2014: Öğümce Mah. |
 | 40259 | TR-34-011-40259 | 2007: Çiftlik Mah. → 2025: Çavuşbaşı Çiftlik Mah. |
+| 40867 | TR-34-012-40867 | 2007: Merkez Mah. → 2008: Gürpınar Mah. |
+| 40894 | TR-34-012-40894 | 2007: Merkez Mah. → 2008: Yakuplu Merkez Mah. → 2010: Yakuplu Mah. |
+| 40896 | TR-34-012-40896 | 2007: Merkezosb Mah. → 2008: Beylikdüzüosb Mah. |
 | 40267 | TR-34-013-40267 | 2007: Kadı Mehmet Mah. → 2015: Kadımehmet Efendi Mah. |
 | 40270 | TR-34-013-40270 | 2007: Kalyoncu Kulluk Mah. → 2009: Kalyoncu Kulluğu Mah. |
 | 40274 | TR-34-013-40274 | 2007: Katip Çelebi Mah. → 2009: Katip Mustafa Çelebi Mah. → 2015: Katipmustafa Çelebi Mah. |
@@ -791,65 +813,69 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 40847 | TR-34-014-40847 | 2007: Dızdarıye Mah. → 2015: Dizdariye Mah. |
 | 40848 | TR-34-014-40848 | 2007: Fatıh Mah. → 2015: Fatih Mah. |
 | 40849 | TR-34-014-40849 | 2007: Karaagaç Mah. → 2015: Karaağaç Mah. |
-| 40855 | TR-34-014-40855 | 2007: Merkez Mah. → 2015: Bağlarçeşme Mah. → 2024: Merkez Mah. |
-| 40861 | TR-34-014-40861 | 2007: Ardıçlıevler Mah. → 2008: Ardıçlı Mah. |
-| 40863 | TR-34-014-40863 | 2007: Sanayi Mah. → 2015: Orhan Gazi Mah. |
-| 40867 | TR-34-014-40867 | 2007: Merkez Mah. → 2008: Gürpınar Mah. |
-| 40871 | TR-34-014-40871 | 2007: 1. Kısım Mah. → 2009: Bahçeşehir 1. Kısım Mah. |
-| 40872 | TR-34-014-40872 | 2007: 2. Kısım Mah. → 2009: Bahçeşehir 2. Kısım Mah. |
-| 40879 | TR-34-014-40879 | 2007: Merkez Mah. → 2008: Kıraç Merkez Mah. → 2009: İstiklal Mah. |
-| 40880 | TR-34-014-40880 | 2007: Çakmaklı Mah. → 2008: Akçaburgaz Mah. |
-| 40881 | TR-34-014-40881 | 2007: Namık Kemal Mah. → 2008: Kıraç Namık Kemal Mah. → 2009: Atatürk Mah. |
 | 40884 | TR-34-014-40884 | 2007: Merkez Mah. → 2008: Kumburgaz Merkez Mah. → 2013: Kumburgaz Mah. |
 | 40886 | TR-34-014-40886 | 2007: Batıköy Mah. → 2013: Ekinoba Mah. |
 | 40887 | TR-34-014-40887 | 2007: Merkez Mah. → 2008: Mimarsinan Merkez Mah. → 2013: Mimarsinan Mah. → 2015: Mimar Sinan Merkez Mah. → 2019: Mimarsinan Mah. |
 | 40888 | TR-34-014-40888 | 2007: Murat Çeşme Mah. → 2015: Murat Çesme Mah. |
-| 40894 | TR-34-014-40894 | 2007: Merkez Mah. → 2008: Yakuplu Merkez Mah. → 2010: Yakuplu Mah. |
-| 40896 | TR-34-014-40896 | 2007: Merkezosb Mah. → 2008: Beylikdüzüosb Mah. |
 | 40902 | TR-34-015-40902 | 2007: Bahşeyiş Mah. → 2010: Bahşayiş Mah. |
 | 40905 | TR-34-015-40905 | 2007: Merkez Mah. → 2008: Muratbey Merkez Mah. |
-| 40913 | TR-34-015-40913 | 2007: İstasyon Mah. → 2009: Hadımköy Mah. |
-| 40914 | TR-34-015-40914 | 2007: Cami Mah. → 2011: Terkos Mah. |
-| 40915 | TR-34-015-40915 | 2007: Zafer Mah. → 2011: Durusu Mah. |
 | 40916 | TR-34-015-40916 | 2007: Merkez Mah. → 2008: Karacaköy Merkez Mah. |
 | 40917 | TR-34-015-40917 | 2007: Merkez Mah. → 2008: Çiftlikköy Merkez Mah. → 2015: Çiftlikköy Mah. |
+| 40749 | TR-34-016-40749 | 2007: Merkez Mah. → 2008: Alemdağ Merkez Mah. → 2010: Alemdağ Mah. |
+| 40750 | TR-34-016-40750 | 2007: Catalmese Mah. → 2008: Alemdağ Catalmese Mah. → 2009: Alemdağ Çatalmeşe Mah. → 2010: Çatalmeşe Mah. |
+| 40751 | TR-34-016-40751 | 2007: Eksıoglu Mah. → 2008: Alemdağ Eksıoglu Mah. → 2009: Alemdağ Ekşioğlu Mah. → 2010: Ekşioğlu Mah. |
+| 40752 | TR-34-016-40752 | 2007: Nısantepe Mah. → 2008: Alemdağ Nısantepe Mah. → 2009: Alemdağ Nişantepe Mah. → 2010: Nişantepe Mah. |
+| 40755 | TR-34-016-40755 | 2007: Mehmet Akif Ersoy Mah. → 2009: Mehmet Akif Mah. |
+| 40756 | TR-34-016-40756 | 2007: Merkez Mah. → 2009: Merkez Çekmeköy Mah. → 2010: Merkez Mah. |
+| 40758 | TR-34-016-40758 | 2007: Merkez Mah. → 2008: Ömerli Merkez Mah. → 2010: Ömerli Mah. |
+| 40764 | TR-34-016-40764 | 2007: Sultançiftliği Mah. → 2008: Taşdelen Sultançiftliği Mah. → 2010: Sultançiftliği Mah. |
+| 40765 | TR-34-016-40765 | 2007: Çamlık Mah. → 2008: Taşdelen Çamlık Mah. → 2010: Taşdelen Mah. |
+| 40766 | TR-34-016-40766 | 2007: Aydınlar Mah. → 2008: Taşdelen Aydınlar Mah. → 2010: Aydınlar Mah. |
+| 40767 | TR-34-016-40767 | 2007: Soğukpınar Mah. → 2008: Taşdelen Soğukpınar Mah. → 2010: Soğukpınar Mah. |
+| 40768 | TR-34-016-40768 | 2007: Güngören Mah. → 2008: Taşdelen Güngören Mah. → 2010: Güngören Mah. |
+| 40769 | TR-34-016-40769 | 2007: Cumhuriyet Mah. → 2008: Taşdelen Cumhuriyet Mah. → 2010: Cumhuriyet Mah. |
+| 40770 | TR-34-016-40770 | 2007: Kirazlıdere Mah. → 2008: Taşdelen Kirazlıdere Mah. → 2010: Kirazlıdere Mah. |
 | 40342 | TR-34-017-40342 | 2007: Davut Paşa Mah. → 2015: Davutpaşa Mah. |
 | 40354 | TR-34-017-40354 | 2007: Havaalanı Mah. → 2024: Atışalanı Mah. |
-| 40356 | TR-34-017-40356 | 2007: Habipler Mah. → 2009: Eski Habipler Mah. |
-| 40357 | TR-34-017-40357 | 2007: Başakşehir Mah. → 2008: Esenler Başakşehir Mah. → 2009: Başak Mah. |
+| 40855 | TR-34-018-40855 | 2007: Merkez Mah. → 2015: Bağlarçeşme Mah. → 2024: Merkez Mah. |
+| 40861 | TR-34-018-40861 | 2007: Ardıçlıevler Mah. → 2008: Ardıçlı Mah. |
+| 40863 | TR-34-018-40863 | 2007: Sanayi Mah. → 2015: Orhan Gazi Mah. |
+| 40879 | TR-34-018-40879 | 2007: Merkez Mah. → 2008: Kıraç Merkez Mah. → 2009: İstiklal Mah. |
+| 40880 | TR-34-018-40880 | 2007: Çakmaklı Mah. → 2008: Akçaburgaz Mah. |
+| 40881 | TR-34-018-40881 | 2007: Namık Kemal Mah. → 2008: Kıraç Namık Kemal Mah. → 2009: Atatürk Mah. |
+| 40359 | TR-34-019-40359 | 2007: Alibeyköy Merkez Mah. → 2008: Alibeyköy Mah. |
+| 40365 | TR-34-019-40365 | 2007: Eyüp Merkez Mah. → 2015: Merkez Mah. |
+| 40369 | TR-34-019-40369 | 2007: Mimarsinan Mah. → 2015: Mimar Sinan Mah. |
+| 40379 | TR-34-019-40379 | 2007: Merkez Mah. → 2008: Göktürk Merkez Mah. |
 | 40315 | TR-34-020-40315 | 2008: Hobyar Eminönü Mah. → 2009: Hobyar Mah. |
+| 40317 | TR-34-020-40317 | 2007: Hoca Paşa Mah. → 2015: Hocapaşa Mah. |
+| 40318 | TR-34-020-40318 | 2007: Kemal Paşa Mah. → 2015: Kemalpaşa Mah. |
+| 40323 | TR-34-020-40323 | 2007: Mesih Paşa Mah. → 2015: Mesihpaşa Mah. |
+| 40326 | TR-34-020-40326 | 2007: Mollafenari Mah. → 2015: Molla Fenari Mah. |
+| 40327 | TR-34-020-40327 | 2007: Mollahüsrev Mah. → 2015: Molla Hüsrev Mah. |
 | 40330 | TR-34-020-40330 | 2008: Rüstem Paşa Mah. → 2015: Rüstempaşa Mah. |
 | 40390 | TR-34-020-40390 | 2007: Koca Mustafapaşa Mah. → 2008: Kocamustafapaşa Mah. → 2015: Koca Mustafapaşa Mah. |
 | 40422 | TR-34-020-40422 | 2007: Derviş Ali Mah. → 2008: Dervişali Mah. → 2015: Derviş Ali Mah. |
 | 40459 | TR-34-021-40459 | 2007: Barbaros Hayrettinpaşa Mah. → 2016: Barbaros Hayrettin Paşa Mah. |
 | 40460 | TR-34-021-40460 | 2007: Yeni Mah. → 2015: Yeni Mahalle Mah. |
-| 40471 | TR-34-021-40471 | 2007: 50.Yıl Mah. → 2015: 50. Yıl Mah. |
-| 40477 | TR-34-021-40477 | 2007: Habipler Mah. → 2015: Habibler Mah. |
-| 40478 | TR-34-021-40478 | 2007: Merkez Mah. → 2008: Arnavutköy Merkez Mah. |
-| 40482 | TR-34-021-40482 | 2007: Atatürk Mah. → 2008: Boğazköy Atatürk Mah. → 2011: Atatürk Mah. |
-| 40483 | TR-34-021-40483 | 2007: İstiklal Mah. → 2008: Boğazköy İstiklal Mah. |
-| 40484 | TR-34-021-40484 | 2007: Merkez Mah. → 2008: Boğazköy Merkez Mah. → 2011: Yunus Emre Mah. |
-| 40487 | TR-34-021-40487 | 2007: Merkez Mah. → 2008: Bolluca Merkez Mah. → 2011: Bolluca Mah. |
-| 40489 | TR-34-021-40489 | 2007: Merkez Mah. → 2008: Haraççı Merkez Mah. → 2011: Haraççı Mah. |
-| 40492 | TR-34-021-40492 | 2007: Merkez Mah. → 2008: Taşoluk Merkez Mah. → 2009: Taşoluk Mah. |
-| 40493 | TR-34-021-40493 | 2007: M.Fevzi Çakmak Mah. → 2015: Mareşal Fevzi Çakmak Mah. |
 | 40525 | TR-34-023-40525 | 2007: Sahrayı Cedit Mah. → 2015: Sahrayıcedit Mah. |
-| 40526 | TR-34-023-40526 | 2007: Yeni Sahra Mah. → 2015: Yenisahra Mah. |
 | 40537 | TR-34-024-40537 | 2007: Emniyetevleri Mah. → 2015: Emniyet Evleri Mah. |
 | 40547 | TR-34-024-40547 | 2007: Sanayi Mah. → 2015: Sultan Selim Mah. |
 | 40552 | TR-34-024-40552 | 2007: Yahyakemal Mah. → 2015: Yahya Kemal Mah. |
 | 40557 | TR-34-025-40557 | 2007: Çarşı Mah. → 2015: Yakacık Çarşı Mah. |
 | 40566 | TR-34-025-40566 | 2007: Petroliş Mah. → 2015: Petrol İş Mah. |
 | 40569 | TR-34-025-40569 | 2007: Uğurmumcu Mah. → 2015: Uğur Mumcu Mah. |
-| 40576 | TR-34-025-40576 | 2007: Fatıh Mah. → 2011: Fatih Mah. |
-| 40577 | TR-34-025-40577 | 2007: Ferhatpaşa Mah. → 2008: Ataşehir Ferhatpaşa Mah. → 2015: Ferhatpaşa Mah. |
-| 40579 | TR-34-025-40579 | 2007: Abdurrahman Gazi Mah. → 2008: Samandıra Abdurrahman Gazi Mah. → 2009: Abdurrahmangazi Mah. |
-| 40580 | TR-34-025-40580 | 2007: Osman Gazi Mah. → 2008: Samandıra Osman Gazi Mah. → 2009: Osmangazi Mah. |
-| 40585 | TR-34-026-40585 | 2007: Ziyagökalp Mah. → 2011: Ziya Gökalp Mah. |
 | 40586 | TR-34-026-40586 | 2007: Mehmetakif Mah. → 2015: Mehmet Akif Mah. |
 | 40593 | TR-34-026-40593 | 2007: Tevfik Bey Mah. → 2015: Tevfikbey Mah. |
 | 40611 | TR-34-027-40611 | 2007: Küçükyalı Mah. → 2015: Küçükyalı Merkez Mah. |
 | 40652 | TR-34-028-40652 | 2007: Yeni Mahalle Mah. → 2015: Yeni Mah. |
+| 40576 | TR-34-029-40576 | 2007: Fatıh Mah. → 2011: Fatih Mah. |
+| 40579 | TR-34-029-40579 | 2007: Abdurrahman Gazi Mah. → 2008: Samandıra Abdurrahman Gazi Mah. → 2009: Abdurrahmangazi Mah. |
+| 40580 | TR-34-029-40580 | 2007: Osman Gazi Mah. → 2008: Samandıra Osman Gazi Mah. → 2009: Osmangazi Mah. |
+| 40763 | TR-34-029-40763 | 2007: Merkez Mah. → 2008: Sarıgazi Merkez Mah. → 2009: Sarıgazi Mah. |
+| 40772 | TR-34-029-40772 | 2007: Yunusemre Mah. → 2011: Yunus Emre Mah. |
+| 40774 | TR-34-029-40774 | 2007: Osmangazı Mah. → 2008: Yenidoğan Mah. |
+| 40776 | TR-34-029-40776 | 2007: Abdurrahmangazı Mah. → 2008: Hilal Mah. |
 | 191765 | TR-34-030-191765 | 2013: Demirci Mah. → 2016: Demirciköy Mah. |
 | 191773 | TR-34-030-191773 | 2013: Kumköy Mah. → 2018: Kumköy (Kilyos) Mah. |
 | 40667 | TR-34-030-40667 | 2007: Kazım Karabekir Mah. → 2009: Kazım Karabekir Paşa Mah. |
@@ -877,6 +903,9 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 40938 | TR-34-031-40938 | 2007: Ortakoy Mah. → 2009: Ortaköy Merkez Mah. → 2015: Ortaköy Mah. |
 | 40940 | TR-34-031-40940 | 2007: Merkez Mah. → 2008: Selimpaşa Merkez Mah. → 2015: Selimpaşa Mah. |
 | 40941 | TR-34-031-40941 | 2007: Merkez Mah. → 2008: Büyükçavuşlu Merkez Mah. → 2015: Büyük Çavuşlu Mah. |
+| 40356 | TR-34-033-40356 | 2007: Habipler Mah. → 2009: Eski Habipler Mah. |
+| 40471 | TR-34-033-40471 | 2007: 50.Yıl Mah. → 2015: 50. Yıl Mah. |
+| 40477 | TR-34-033-40477 | 2007: Habipler Mah. → 2015: Habibler Mah. |
 | 191865 | TR-34-034-191865 | 2013: Bozkoca Mah. → 2015: Bozgoca Mah. |
 | 191907 | TR-34-034-191907 | 2013: Gökmaslı Mah. → 2015: Gökmaşlı Mah. |
 | 191925 | TR-34-034-191925 | 2013: Tekeköy Mah. → 2015: Teke Mah. |
@@ -890,24 +919,6 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 40725 | TR-34-036-40725 | 2007: Fırat Mah. → 2009: Akfırat Mah. |
 | 40726 | TR-34-036-40726 | 2007: Tepeoren Mah. → 2015: Tepeören Mah. |
 | 40728 | TR-34-036-40728 | 2007: Merkez Mah. → 2008: Orhanlı Merkez Mah. → 2009: Orhanlı Mah. |
-| 40749 | TR-34-037-40749 | 2007: Merkez Mah. → 2008: Alemdağ Merkez Mah. → 2010: Alemdağ Mah. |
-| 40750 | TR-34-037-40750 | 2007: Catalmese Mah. → 2008: Alemdağ Catalmese Mah. → 2009: Alemdağ Çatalmeşe Mah. → 2010: Çatalmeşe Mah. |
-| 40751 | TR-34-037-40751 | 2007: Eksıoglu Mah. → 2008: Alemdağ Eksıoglu Mah. → 2009: Alemdağ Ekşioğlu Mah. → 2010: Ekşioğlu Mah. |
-| 40752 | TR-34-037-40752 | 2007: Nısantepe Mah. → 2008: Alemdağ Nısantepe Mah. → 2009: Alemdağ Nişantepe Mah. → 2010: Nişantepe Mah. |
-| 40755 | TR-34-037-40755 | 2007: Mehmet Akif Ersoy Mah. → 2009: Mehmet Akif Mah. |
-| 40756 | TR-34-037-40756 | 2007: Merkez Mah. → 2009: Merkez Çekmeköy Mah. → 2010: Merkez Mah. |
-| 40758 | TR-34-037-40758 | 2007: Merkez Mah. → 2008: Ömerli Merkez Mah. → 2010: Ömerli Mah. |
-| 40763 | TR-34-037-40763 | 2007: Merkez Mah. → 2008: Sarıgazi Merkez Mah. → 2009: Sarıgazi Mah. |
-| 40764 | TR-34-037-40764 | 2007: Sultançiftliği Mah. → 2008: Taşdelen Sultançiftliği Mah. → 2010: Sultançiftliği Mah. |
-| 40765 | TR-34-037-40765 | 2007: Çamlık Mah. → 2008: Taşdelen Çamlık Mah. → 2010: Taşdelen Mah. |
-| 40766 | TR-34-037-40766 | 2007: Aydınlar Mah. → 2008: Taşdelen Aydınlar Mah. → 2010: Aydınlar Mah. |
-| 40767 | TR-34-037-40767 | 2007: Soğukpınar Mah. → 2008: Taşdelen Soğukpınar Mah. → 2010: Soğukpınar Mah. |
-| 40768 | TR-34-037-40768 | 2007: Güngören Mah. → 2008: Taşdelen Güngören Mah. → 2010: Güngören Mah. |
-| 40769 | TR-34-037-40769 | 2007: Cumhuriyet Mah. → 2008: Taşdelen Cumhuriyet Mah. → 2010: Cumhuriyet Mah. |
-| 40770 | TR-34-037-40770 | 2007: Kirazlıdere Mah. → 2008: Taşdelen Kirazlıdere Mah. → 2010: Kirazlıdere Mah. |
-| 40772 | TR-34-037-40772 | 2007: Yunusemre Mah. → 2011: Yunus Emre Mah. |
-| 40774 | TR-34-037-40774 | 2007: Osmangazı Mah. → 2008: Yenidoğan Mah. |
-| 40776 | TR-34-037-40776 | 2007: Abdurrahmangazı Mah. → 2008: Hilal Mah. |
 | 98686 | TR-34-037-98686 | 2008: Armağan Evler Mah. → 2015: Armağanevler Mah. |
 | 98708 | TR-34-037-98708 | 2008: Yaman Evler Mah. → 2015: Yamanevler Mah. |
 | 98709 | TR-34-037-98709 | 2008: Yeni Sanayi Mah. → 2010: Esenkent Mah. |
@@ -916,8 +927,6 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 40787 | TR-34-038-40787 | 2007: Beylerbeyı Mah. → 2013: Beylerbeyi Mah. |
 | 40789 | TR-34-038-40789 | 2007: Burhanıye Mah. → 2013: Burhaniye Mah. |
 | 40790 | TR-34-038-40790 | 2007: Cumhurıyet Mah. → 2013: Cumhuriyet Mah. |
-| 40793 | TR-34-038-40793 | 2007: Esatpasa Mah. → 2015: Esatpaşa Mah. |
-| 40795 | TR-34-038-40795 | 2007: Fetıh Mah. → 2017: Fetih Mah. |
 | 40802 | TR-34-038-40802 | 2007: Icadıye Mah. → 2013: İcadiye Mah. |
 | 40804 | TR-34-038-40804 | 2007: Imrahor Salacak Mah. → 2008: Salacak Mah. |
 | 40806 | TR-34-038-40806 | 2007: Kandıllı Mah. → 2013: Kandilli Mah. |
@@ -930,17 +939,9 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 40828 | TR-34-038-40828 | 2007: Valıdeı Atık Mah. → 2013: Validei Atik Mah. → 2015: Valide-İ Atik Mah. |
 | 98668 | TR-34-038-98668 | 2008: Mimarsinan Mah. → 2013: Mimar Sinan Mah. |
 | 40838 | TR-34-039-40838 | 2007: 5 Telsiz Mah. → 2008: Beş Telsiz Mah. → 2009: Beştelsiz Mah. |
-| 40317 | TR-34-x1305-40317 | 2007: Hoca Paşa Mah. → 2015: Hocapaşa Mah. |
-| 40318 | TR-34-x1305-40318 | 2007: Kemal Paşa Mah. → 2015: Kemalpaşa Mah. |
-| 40323 | TR-34-x1305-40323 | 2007: Mesih Paşa Mah. → 2015: Mesihpaşa Mah. |
-| 40326 | TR-34-x1305-40326 | 2007: Mollafenari Mah. → 2015: Molla Fenari Mah. |
-| 40327 | TR-34-x1305-40327 | 2007: Mollahüsrev Mah. → 2015: Molla Hüsrev Mah. |
-| 40359 | TR-34-x1325-40359 | 2007: Alibeyköy Merkez Mah. → 2008: Alibeyköy Mah. |
-| 40365 | TR-34-x1325-40365 | 2007: Eyüp Merkez Mah. → 2015: Merkez Mah. |
-| 40369 | TR-34-x1325-40369 | 2007: Mimarsinan Mah. → 2015: Mimar Sinan Mah. |
-| 40379 | TR-34-x1325-40379 | 2007: Merkez Mah. → 2008: Göktürk Merkez Mah. |
 | 192907 | TR-35-001-192907 | 2013: Yenişakran Mah. → 2023: Şakran Hasbi Efendi Mah. |
 | 41353 | TR-35-003-41353 | 2007: Camii Mah. → 2008: Çırpı Camii Mah. → 2010: İstiklal Mah. → 2011: Çırpı Cami Mah. |
+| 41119 | TR-35-004-41119 | 2007: Fuat Edip Baksi Mah. → 2014: Fuat Edip Baksı Mah. |
 | 193467 | TR-35-005-193467 | 2013: Kadriye Mah. → 2023: Küçükkaya Mah. |
 | 193477 | TR-35-005-193477 | 2013: Kapıkaya Mah. → 2019: Kapukaya Mah. |
 | 193515 | TR-35-005-193515 | 2013: Pireveliler Mah. → 2023: Pirveliler Mah. |
@@ -955,6 +956,8 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 41061 | TR-35-010-41061 | 2007: İstasyonaltı Mah. → 2012: Ataşehir Mah. |
 | 41070 | TR-35-010-41070 | 2007: Yeni Mahalle Mah. → 2023: Yenimahalle Mah. → 2024: Yeni Mahalle Mah. |
 | 41071 | TR-35-010-41071 | 2007: Merkez Mah. → 2008: Sasallı Merkez Mah. → 2014: Sasalı Merkez Mah. |
+| 41538 | TR-35-010-41538 | 2007: Atatürk Mah. → 2008: Harmandalı Atatürk Mah. → 2010: Harmandalı Gazi Mustafa Kemal Atatürk Mah. |
+| 41561 | TR-35-010-41561 | 2007: Ahmetefendi Mah. → 2011: Ahmet Efendi Mah. |
 | 41427 | TR-35-011-41427 | 2007: Atatürk Mah. → 2008: Merkez Mah. |
 | 41438 | TR-35-012-41438 | 2007: Atatürk Mah. → 2008: Gerenköy Atatürk Mah. → 2010: Kemal Atatürk Mah. |
 | 41439 | TR-35-012-41439 | 2007: Fevzi Çakmak Mah. → 2008: Gerenköy Fevzi Çakmak Mah. → 2010: Mareşal Fevzi Çakmak Mah. |
@@ -962,7 +965,7 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 41443 | TR-35-012-41443 | 2007: Fevzi Çakmak Mah. → 2008: Yenifoça Fevzi Çakmak Mah. → 2010: Fevzi Çakmak Mah. |
 | 41096 | TR-35-014-41096 | 2007: Atatürk Mah. → 2008: Yelki Atatürk Mah. → 2009: Mustafa Kemal Paşa Mah. |
 | 41097 | TR-35-014-41097 | 2007: Cumhuriyet Mah. → 2009: Yelki Mah. |
-| 41119 | TR-35-017-41119 | 2007: Fuat Edip Baksi Mah. → 2014: Fuat Edip Baksı Mah. |
+| 41259 | TR-35-015-41259 | 2007: Osman Aksuner Mah. → 2008: Osman Aksüner Mah. |
 | 41138 | TR-35-017-41138 | 2007: Yamaç Mah. → 2010: İnönü Mah. |
 | 41457 | TR-35-018-41457 | 2007: Cumhuriyet Mah. → 2008: Armutlu Cumhuriyet Mah. → 2010: 85.Yıl Cumhuriyet Mah. → 2020: Armutlu 85.Yıl Cumhuriyet Mah. |
 | 41458 | TR-35-018-41458 | 2007: İstiklal Mah. → 2008: Armutlu İstiklal Mah. → 2010: Hürriyet Mah. → 2020: Armutlu Hürriyet Mah. |
@@ -984,7 +987,6 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 41250 | TR-35-021-41250 | 2007: Miralı Mah. → 2008: Mirali Mah. |
 | 41251 | TR-35-021-41251 | 2007: Mithat Paşa Mah. → 2008: Mithatpaşa Mah. |
 | 41258 | TR-35-021-41258 | 2007: Oguzlar Mah. → 2008: Oğuzlar Mah. |
-| 41259 | TR-35-021-41259 | 2007: Osman Aksuner Mah. → 2008: Osman Aksüner Mah. |
 | 41271 | TR-35-021-41271 | 2007: Selcuk Mah. → 2008: Selçuk Mah. |
 | 41274 | TR-35-021-41274 | 2007: Suvari Mah. → 2008: Süvari Mah. |
 | 41294 | TR-35-021-41294 | 2007: Vezırağa Mah. → 2008: Vezirağa Mah. |
@@ -1002,14 +1004,12 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 41510 | TR-35-022-41510 | 2007: Fevzi Çakmak Mah. → 2008: Gümüldür Fevzi Çakmak Mah. |
 | 41511 | TR-35-022-41511 | 2007: İnönü Mah. → 2008: Gümüldür İnönü Mah. |
 | 41512 | TR-35-022-41512 | 2007: Cumhuriyet Mah. → 2008: Özdere Cumhuriyet Mah. |
-| 41538 | TR-35-023-41538 | 2007: Atatürk Mah. → 2008: Harmandalı Atatürk Mah. → 2010: Harmandalı Gazi Mustafa Kemal Atatürk Mah. |
 | 41544 | TR-35-023-41544 | 2007: Atatürk Mah. → 2008: Koyundere Atatürk Mah. → 2010: Kemal Atatürk Mah. |
 | 41545 | TR-35-023-41545 | 2007: Cumhuriyet Mah. → 2008: Koyundere Cumhuriyet Mah. → 2010: Cumhuriyet Mah. |
 | 41548 | TR-35-023-41548 | 2007: Atatürk Mah. → 2008: Maltepe Atatürk Mah. → 2010: Mustafa Kemal Atatürk Mah. |
 | 41549 | TR-35-023-41549 | 2007: Cumhuriyet Mah. → 2008: Maltepe Cumhuriyet Mah. → 2010: 75.Yıl Cumhuriyet Mah. |
 | 41550 | TR-35-023-41550 | 2007: Atatürk Mah. → 2008: Seyrek Atatürk Mah. → 2010: Gazi Mustafa Kemal Mah. |
 | 41551 | TR-35-023-41551 | 2007: Cumhuriyet Mah. → 2008: Seyrek Cumhuriyet Mah. → 2010: 85.Yıl Cumhuriyet Mah. |
-| 41561 | TR-35-023-41561 | 2007: Ahmetefendi Mah. → 2011: Ahmet Efendi Mah. |
 | 41562 | TR-35-023-41562 | 2007: Cumhuriyet Mah. → 2008: Ulukent Cumhuriyet Mah. → 2010: 29 Ekim Mah. |
 | 41567 | TR-35-023-41567 | 2007: Merkez Mah. → 2008: Emiralem Merkez Mah. |
 | 99104 | TR-35-023-99104 | 2008: Ulukent Atatürk Mah. → 2010: İstiklal Mah. |
@@ -1041,8 +1041,6 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 181310 | TR-38-001-181310 | 2014: Vali Orhan Düzgün Mah. → 2016: Gömürgen Yeni Mah. |
 | 180933 | TR-38-002-180933 | 2013: Topsöğüt Mah. → 2025: Taçın Mah. |
 | 42148 | TR-38-002-42148 | 2007: Yeni Mah. → 2017: Gergeme Mah. |
-| 42150 | TR-38-002-42150 | 2007: Fatih Mah. → 2008: Büyükbürüngüz Fatih Mah. → 2018: Büyük Bürüngüz Mah. |
-| 42151 | TR-38-002-42151 | 2007: Yavuz Mah. → 2008: Büyükbürüngüz Yavuz Mah. |
 | 180953 | TR-38-003-180953 | 2013: Sindelhöyük Mah. → 2018: Sindelhöyük Camikebir Mah. |
 | 42178 | TR-38-003-42178 | 2007: Camiikebir Mah. → 2008: Develi Camikebir Mah. |
 | 42228 | TR-38-005-42228 | 2007: Hörmetci Mah. → 2008: Hürmetci Mah. |
@@ -1117,6 +1115,8 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 42120 | TR-38-008-42120 | 2007: Yeşil Mah. → 2010: Gürpınar Yeşil Mah. |
 | 42121 | TR-38-008-42121 | 2007: Subaşı Mah. → 2010: Turan Subaşı Mah. → 2013: Subaşı Mah. |
 | 42122 | TR-38-008-42122 | 2007: Küçükbürüngüz Mah. → 2010: Turan Küçükbürüngüz Mah. → 2013: Küçükbürüngüz Mah. → 2018: Küçük Bürüngüz Mah. |
+| 42150 | TR-38-008-42150 | 2007: Fatih Mah. → 2008: Büyükbürüngüz Fatih Mah. → 2018: Büyük Bürüngüz Mah. |
+| 42151 | TR-38-008-42151 | 2007: Yavuz Mah. → 2008: Büyükbürüngüz Yavuz Mah. |
 | 98722 | TR-38-008-98722 | 2008: Mimarsinandemokrasi Mah. → 2017: Demokrasi Mah. |
 | 181383 | TR-38-010-181383 | 2013: Ayvacık Mah. → 2016: Cabe Mah. |
 | 181399 | TR-38-010-181399 | 2013: Esenköy Mah. → 2025: Toybuk Mah. |
@@ -1133,16 +1133,27 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 49991 | TR-39-008-49991 | 2007: Mimar Sinan Mah. → 2012: Kale Mah. |
 | 50001 | TR-39-008-50001 | 2007: Yenicamii Mah. → 2011: Yeni Cami Mah. |
 | 50018 | TR-40-006-50018 | 2007: Terzali Mah. → 2011: Terziali Mah. |
+| 50199 | TR-41-001-50199 | 2007: Mehmetağa Mah. → 2024: Kullar Merkez Mah. |
+| 50201 | TR-41-001-50201 | 2007: Tepecik Mah. → 2014: Kullar Tepecik Mah. |
+| 50203 | TR-41-001-50203 | 2007: Yakacık Mah. → 2008: Kullar Yakacık Mah. |
+| 50234 | TR-41-001-50234 | 2007: Havuzlu Bahçe Mah. → 2011: Havuzlubahçe Mah. |
+| 50235 | TR-41-001-50235 | 2007: Kılıçarslan Mah. → 2024: Bahçecik Kılıçarslan Mah. → 2025: Bahçecik Kılıçaslan Mah. |
+| 50238 | TR-41-001-50238 | 2007: Şehit Ekrem Mah. → 2011: Şehitekrem Mah. → 2024: Bahçecik Şehitekrem Mah. |
+| 50241 | TR-41-001-50241 | 2007: Başiskele Mah. → 2009: Sahil Mah. |
+| 50242 | TR-41-001-50242 | 2007: Merkez Mah. → 2009: Döngel Mah. |
+| 50245 | TR-41-001-50245 | 2007: Merkez Mah. → 2008: Yeniköy Merkez Mah. |
+| 50247 | TR-41-001-50247 | 2007: Başiskele Mah. → 2008: Yuvacık Başiskele Mah. → 2009: Yeşilyurt Mah. |
+| 50250 | TR-41-001-50250 | 2007: Yakacık Mah. → 2008: Yuvacık Yakacık Mah. |
 | 695098 | TR-41-001-695098 | 2013: Tepecik Merkez Mah. → 2014: Tepecik Mah. |
-| 50284 | TR-41-006-50284 | 2007: Sıra Söğütler Mah. → 2010: Sırasöğütler Mah. |
-| 50317 | TR-41-006-50317 | 2007: Atatürk Mah. → 2008: Şekerpınar Mah. |
-| 50318 | TR-41-006-50318 | 2007: Cumhuriyet Mah. → 2008: Şekerpınarı Cumhuriyet Mah. → 2010: Cumhuriyet Mah. |
-| 50322 | TR-41-006-50322 | 2007: Cumhuriyet Mah. → 2008: Tavşancıl Cumhuriyet Mah. → 2009: Tavşancıl Mah. |
-| 50325 | TR-41-006-50325 | 2007: Yeni Mah. → 2008: Tavşancıl Yeni Mah. |
-| 50332 | TR-41-006-50332 | 2007: Fevzi Çakmak Mah. → 2010: Fevziçakmak Mah. |
-| 50333 | TR-41-006-50333 | 2007: Kazım Karabekir Mah. → 2010: Kazımkarabekir Mah. |
-| 50334 | TR-41-006-50334 | 2007: Nene Hatun Mah. → 2010: Nenehatun Mah. |
-| 50335 | TR-41-006-50335 | 2007: Osman Gazi Mah. → 2010: Osmangazi Mah. |
+| 50317 | TR-41-002-50317 | 2007: Atatürk Mah. → 2008: Şekerpınar Mah. |
+| 50318 | TR-41-002-50318 | 2007: Cumhuriyet Mah. → 2008: Şekerpınarı Cumhuriyet Mah. → 2010: Cumhuriyet Mah. |
+| 50284 | TR-41-003-50284 | 2007: Sıra Söğütler Mah. → 2010: Sırasöğütler Mah. |
+| 50332 | TR-41-003-50332 | 2007: Fevzi Çakmak Mah. → 2010: Fevziçakmak Mah. |
+| 50333 | TR-41-003-50333 | 2007: Kazım Karabekir Mah. → 2010: Kazımkarabekir Mah. |
+| 50334 | TR-41-003-50334 | 2007: Nene Hatun Mah. → 2010: Nenehatun Mah. |
+| 50335 | TR-41-003-50335 | 2007: Osman Gazi Mah. → 2010: Osmangazi Mah. |
+| 50322 | TR-41-005-50322 | 2007: Cumhuriyet Mah. → 2008: Tavşancıl Cumhuriyet Mah. → 2009: Tavşancıl Mah. |
+| 50325 | TR-41-005-50325 | 2007: Yeni Mah. → 2008: Tavşancıl Yeni Mah. |
 | 958066 | TR-41-006-958066 | 2013: Muallim Mah. → 2014: Muallimköy Mah. |
 | 50352 | TR-41-007-50352 | 2007: Merkez Mah. → 2008: Hisareyn Merkez Mah. |
 | 50355 | TR-41-007-50355 | 2007: Merkez Mah. → 2008: İhsaniye Merkez Mah. |
@@ -1154,6 +1165,14 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 50367 | TR-41-007-50367 | 2007: Yeni Mah. → 2008: Halıdere Yeni Mah. |
 | 50368 | TR-41-007-50368 | 2007: Yalı Mah. → 2008: Ulaşlı Yalı Mah. |
 | 50369 | TR-41-007-50369 | 2007: Yavuz Sultan Selim Mah. → 2008: Ulaşlı Yavuz Sultan Selim Mah. |
+| 50166 | TR-41-008-50166 | 2007: Terzi Bayırı Mah. → 2011: Terzibayırı Mah. |
+| 50174 | TR-41-008-50174 | 2007: Cumhuriyet Mah. → 2008: Alikahya Cumhuriyet Mah. |
+| 50175 | TR-41-008-50175 | 2007: Atatürk Mah. → 2008: Alikahya Atatürk Mah. |
+| 50176 | TR-41-008-50176 | 2007: Fatih Mah. → 2008: Alikahya Fatih Mah. |
+| 50178 | TR-41-008-50178 | 2007: Merkez Mah. → 2008: Alikahya Merkez Mah. |
+| 50206 | TR-41-008-50206 | 2007: Fatih Mah. → 2008: Kuruçeşme Fatih Mah. |
+| 50231 | TR-41-008-50231 | 2007: Atatürk Mah. → 2008: Akmeşe Atatürk Mah. |
+| 50232 | TR-41-008-50232 | 2007: Cumhuriyet Mah. → 2008: Akmeşe Cumhuriyet Mah. |
 | 454793 | TR-41-009-454793 | 2013: Duraçali Mah. → 2021: Alaybey Mah. |
 | 474973 | TR-41-009-474973 | 2013: Kıncıllı Mah. → 2018: Kerpe Mah. |
 | 50376 | TR-41-010-50376 | 2007: Hacımehmet Mah. → 2013: 4 Temmuz Mah. |
@@ -1163,41 +1182,22 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 50390 | TR-41-010-50390 | 2007: Merkez Mah. → 2008: Akçat Merkez Mah. |
 | 50392 | TR-41-010-50392 | 2007: Fevzi Çakmak Mah. → 2013: Kızderbent Mah. |
 | 922492 | TR-41-010-922492 | 2013: Nusretiye Mah. → 2017: Akpınar Mah. |
+| 50184 | TR-41-011-50184 | 2007: Orta Mah. → 2008: Arslanbey Orta Mah. → 2013: Arslanbey Mah. |
+| 50192 | TR-41-011-50192 | 2007: Hacı Mustafa Mah. → 2013: Köseköy Mah. |
+| 50209 | TR-41-011-50209 | 2007: Bakırlı Mah. → 2013: Sarımeşe Mah. |
+| 50210 | TR-41-011-50210 | 2007: Hürriyet Mah. → 2008: Sarımeşe Hürriyet Mah. → 2013: Fatih Sultan Mehmet Mah. |
+| 50216 | TR-41-011-50216 | 2007: Orta Mah. → 2008: Suadiye Orta Mah. → 2013: Suadiye Mah. |
+| 50218 | TR-41-011-50218 | 2007: Atakent Mah. → 2010: Uzunçiftlik Atakent Mah. |
+| 50219 | TR-41-011-50219 | 2007: Bahçelievler Mah. → 2013: Ataevler Mah. |
+| 50223 | TR-41-011-50223 | 2007: Çiftlik Mah. → 2013: Uzunçiftlik Mah. |
+| 50224 | TR-41-011-50224 | 2007: Emek Mah. → 2013: Emekevler Mah. |
+| 50226 | TR-41-011-50226 | 2007: Hürriyet Mah. → 2008: Uzunçiftlik Hürriyet Mah. → 2013: Ertuğrul Gazi Mah. |
+| 50255 | TR-41-011-50255 | 2007: Hikmetiye Mah. → 2013: Derbent Mah. |
+| 50257 | TR-41-011-50257 | 2007: Yavuz Sultan Selim Mah. → 2013: Acısu Mah. |
+| 50259 | TR-41-011-50259 | 2007: Yeni Eşme Mah. → 2013: Eşme Mah. |
+| 50260 | TR-41-011-50260 | 2007: Çınarlı Mah. → 2013: Maşukiye Mah. |
+| 50264 | TR-41-011-50264 | 2007: Merkez Mah. → 2008: Uzuntarla Merkez Mah. → 2013: Uzuntarla Mah. |
 | 99820 | TR-41-011-99820 | 2008: Arslanbey Atakent Mah. → 2012: Ataşehir Mah. |
-| 50166 | TR-41-x1478-50166 | 2007: Terzi Bayırı Mah. → 2011: Terzibayırı Mah. |
-| 50174 | TR-41-x1478-50174 | 2007: Cumhuriyet Mah. → 2008: Alikahya Cumhuriyet Mah. |
-| 50175 | TR-41-x1478-50175 | 2007: Atatürk Mah. → 2008: Alikahya Atatürk Mah. |
-| 50176 | TR-41-x1478-50176 | 2007: Fatih Mah. → 2008: Alikahya Fatih Mah. |
-| 50178 | TR-41-x1478-50178 | 2007: Merkez Mah. → 2008: Alikahya Merkez Mah. |
-| 50184 | TR-41-x1478-50184 | 2007: Orta Mah. → 2008: Arslanbey Orta Mah. → 2013: Arslanbey Mah. |
-| 50192 | TR-41-x1478-50192 | 2007: Hacı Mustafa Mah. → 2013: Köseköy Mah. |
-| 50199 | TR-41-x1478-50199 | 2007: Mehmetağa Mah. → 2024: Kullar Merkez Mah. |
-| 50201 | TR-41-x1478-50201 | 2007: Tepecik Mah. → 2014: Kullar Tepecik Mah. |
-| 50203 | TR-41-x1478-50203 | 2007: Yakacık Mah. → 2008: Kullar Yakacık Mah. |
-| 50206 | TR-41-x1478-50206 | 2007: Fatih Mah. → 2008: Kuruçeşme Fatih Mah. |
-| 50209 | TR-41-x1478-50209 | 2007: Bakırlı Mah. → 2013: Sarımeşe Mah. |
-| 50210 | TR-41-x1478-50210 | 2007: Hürriyet Mah. → 2008: Sarımeşe Hürriyet Mah. → 2013: Fatih Sultan Mehmet Mah. |
-| 50216 | TR-41-x1478-50216 | 2007: Orta Mah. → 2008: Suadiye Orta Mah. → 2013: Suadiye Mah. |
-| 50218 | TR-41-x1478-50218 | 2007: Atakent Mah. → 2010: Uzunçiftlik Atakent Mah. |
-| 50219 | TR-41-x1478-50219 | 2007: Bahçelievler Mah. → 2013: Ataevler Mah. |
-| 50223 | TR-41-x1478-50223 | 2007: Çiftlik Mah. → 2013: Uzunçiftlik Mah. |
-| 50224 | TR-41-x1478-50224 | 2007: Emek Mah. → 2013: Emekevler Mah. |
-| 50226 | TR-41-x1478-50226 | 2007: Hürriyet Mah. → 2008: Uzunçiftlik Hürriyet Mah. → 2013: Ertuğrul Gazi Mah. |
-| 50231 | TR-41-x1478-50231 | 2007: Atatürk Mah. → 2008: Akmeşe Atatürk Mah. |
-| 50232 | TR-41-x1478-50232 | 2007: Cumhuriyet Mah. → 2008: Akmeşe Cumhuriyet Mah. |
-| 50234 | TR-41-x1478-50234 | 2007: Havuzlu Bahçe Mah. → 2011: Havuzlubahçe Mah. |
-| 50235 | TR-41-x1478-50235 | 2007: Kılıçarslan Mah. → 2024: Bahçecik Kılıçarslan Mah. → 2025: Bahçecik Kılıçaslan Mah. |
-| 50238 | TR-41-x1478-50238 | 2007: Şehit Ekrem Mah. → 2011: Şehitekrem Mah. → 2024: Bahçecik Şehitekrem Mah. |
-| 50241 | TR-41-x1478-50241 | 2007: Başiskele Mah. → 2009: Sahil Mah. |
-| 50242 | TR-41-x1478-50242 | 2007: Merkez Mah. → 2009: Döngel Mah. |
-| 50245 | TR-41-x1478-50245 | 2007: Merkez Mah. → 2008: Yeniköy Merkez Mah. |
-| 50247 | TR-41-x1478-50247 | 2007: Başiskele Mah. → 2008: Yuvacık Başiskele Mah. → 2009: Yeşilyurt Mah. |
-| 50250 | TR-41-x1478-50250 | 2007: Yakacık Mah. → 2008: Yuvacık Yakacık Mah. |
-| 50255 | TR-41-x1478-50255 | 2007: Hikmetiye Mah. → 2013: Derbent Mah. |
-| 50257 | TR-41-x1478-50257 | 2007: Yavuz Sultan Selim Mah. → 2013: Acısu Mah. |
-| 50259 | TR-41-x1478-50259 | 2007: Yeni Eşme Mah. → 2013: Eşme Mah. |
-| 50260 | TR-41-x1478-50260 | 2007: Çınarlı Mah. → 2013: Maşukiye Mah. |
-| 50264 | TR-41-x1478-50264 | 2007: Merkez Mah. → 2008: Uzuntarla Merkez Mah. → 2013: Uzuntarla Mah. |
 | 50773 | TR-42-003-50773 | 2007: Nasreddin Mah. → 2021: Nasreddin Hoca Mah. |
 | 50779 | TR-42-003-50779 | 2007: Yıldırım Mah. → 2021: Yıldırım Bayezid Mah. |
 | 195169 | TR-42-004-195169 | 2013: Ölmez (Merkez) Mah. → 2015: Yeni Ölmez Mah. |
@@ -1352,6 +1352,7 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 165795 | TR-44-003-165795 | 2013: Çobandere Mah. → 2015: Şotik Mah. |
 | 164987 | TR-44-004-164987 | 2013: Erenli Mah. → 2017: Bahri Mah. |
 | 165251 | TR-44-004-165251 | 2013: Sevildağ Mah. → 2024: Selvidağ Mah. |
+| 51713 | TR-44-004-51713 | 2007: Beydağı Mah. → 2013: Merkez Beydağı Mah. |
 | 51883 | TR-44-004-51883 | 2007: Yeni Mah. → 2018: Serintepe Mah. |
 | 165817 | TR-44-005-165817 | 2013: Aşağıulupınar Mah. → 2025: Ulupınar Mah. |
 | 165859 | TR-44-005-165859 | 2013: Başdirek Mah. → 2020: Palanga Mah. |
@@ -1363,16 +1364,15 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 166487 | TR-44-011-166487 | 2013: Gökçeli Mah. → 2015: Gertan Mah. |
 | 166529 | TR-44-011-166529 | 2013: Sorguçlu Mah. → 2014: Şükan Mah. |
 | 164869 | TR-44-013-164869 | 2013: Görgü Mah. → 2022: Horata Mah. → 2023: Cafana Mah. |
+| 51729 | TR-44-013-51729 | 2007: Fatih Mah. → 2013: Merkez Fatih Mah. |
+| 51807 | TR-44-013-51807 | 2007: Bahçebaşı Mah. → 2022: Konak Mah. |
+| 51808 | TR-44-013-51808 | 2007: Su Mah. → 2022: Banazı Mah. → 2023: Horata Mah. |
+| 51809 | TR-44-013-51809 | 2007: Yeni Mah. → 2022: Cafana Mah. → 2023: Banazı Mah. |
 | 52052 | TR-44-013-52052 | 2007: Evren Mah. → 2012: Turgut Özal Mah. |
 | 52053 | TR-44-013-52053 | 2007: Fatih Sultan Mehmet Mah. → 2012: Yeni Mah. |
-| 51713 | TR-44-x1509-51713 | 2007: Beydağı Mah. → 2013: Merkez Beydağı Mah. |
-| 51729 | TR-44-x1509-51729 | 2007: Fatih Mah. → 2013: Merkez Fatih Mah. |
 | 51794 | TR-44-x1509-51794 | 2007: Merkez Mah. → 2008: Dilek Mah. |
 | 51801 | TR-44-x1509-51801 | 2007: Fatih Mah. → 2008: Hanımınçiftliği Fatih Mah. → 2009: Fatih Mah. |
 | 51806 | TR-44-x1509-51806 | 2007: Merkez Mah. → 2008: Hanımınçiftliği Mah. |
-| 51807 | TR-44-x1509-51807 | 2007: Bahçebaşı Mah. → 2022: Konak Mah. |
-| 51808 | TR-44-x1509-51808 | 2007: Su Mah. → 2022: Banazı Mah. → 2023: Horata Mah. |
-| 51809 | TR-44-x1509-51809 | 2007: Yeni Mah. → 2022: Cafana Mah. → 2023: Banazı Mah. |
 | 51823 | TR-44-x1509-51823 | 2007: Akpınar Mah. → 2008: Topsöğüt Akpınar Mah. → 2009: Akpınar Mah. |
 | 51824 | TR-44-x1509-51824 | 2007: Turgut Özal Mah. → 2008: Topsöğüt Turgut Özal Mah. → 2009: Turgut Özal Mah. |
 | 51825 | TR-44-x1509-51825 | 2007: Karşıyaka Mah. → 2008: Topsöğüt Karşıyaka Mah. → 2009: Karşıyaka Mah. |
@@ -1411,9 +1411,9 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 155599 | TR-45-013-155599 | 2013: Satılmış Mah. → 2015: Yeşil Mah. |
 | 155615 | TR-45-013-155615 | 2013: Yukarıgüllüce Mah. → 2017: Yukarıtefen Mah. |
 | 153125 | TR-45-015-153125 | 2013: Yenimahmudiye Mah. → 2018: Çerkezmahmudiye Mah. |
+| 52079 | TR-45-015-52079 | 2007: Dilşeker Mah. → 2008: Dilşikar Mah. → 2009: Dilşeker Mah. → 2010: Dilşikar Mah. |
 | 153213 | TR-45-017-153213 | 2013: Siyekli Mah. → 2015: Seyitli Mah. |
-| 52079 | TR-45-x1513-52079 | 2007: Dilşeker Mah. → 2008: Dilşikar Mah. → 2009: Dilşeker Mah. → 2010: Dilşikar Mah. |
-| 52114 | TR-45-x1513-52114 | 2007: Yeni Mahalle Mah. → 2023: Yenimahalle Mah. |
+| 52114 | TR-45-017-52114 | 2007: Yeni Mahalle Mah. → 2023: Yenimahalle Mah. |
 | 160105 | TR-46-001-160105 | 2013: Dağlıca Mah. → 2022: Marabuz Mah. |
 | 160141 | TR-46-001-160141 | 2013: Kargabükü Mah. → 2015: Anzorey Mah. |
 | 160149 | TR-46-001-160149 | 2013: Ortaklı Mah. → 2020: Mehre Mah. |
@@ -1423,6 +1423,12 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 160279 | TR-46-002-160279 | 2013: Torlar Mah. → 2014: Tatarlı Mah. |
 | 160309 | TR-46-003-160309 | 2013: Helete Mah. → 2021: Helete Karadağ Mah. |
 | 159835 | TR-46-004-159835 | 2013: Arslanbey Mah. → 2016: Arslanbey Çiftliği Mah. |
+| 52568 | TR-46-004-52568 | 2007: Mamaraş Mah. → 2008: Karacasu Mamaraş Mah. |
+| 52569 | TR-46-004-52569 | 2007: Ferhuş Mah. → 2008: Karacasu Ferhuş Mah. |
+| 52570 | TR-46-004-52570 | 2007: Karaziyaret Mah. → 2008: Karacasu Karaziyaret Mah. |
+| 52571 | TR-46-004-52571 | 2007: Karşıyaka Mah. → 2008: Karacasu Karşıyaka Mah. |
+| 52572 | TR-46-004-52572 | 2007: Kırım Mah. → 2008: Karacasu Kırım Mah. |
+| 98854 | TR-46-004-98854 | 2008: Büğlek Mah. → 2017: Yeşiltepe Mah. |
 | 160335 | TR-46-005-160335 | 2013: Ambar Mah. → 2016: Anbar Mah. |
 | 458760 | TR-46-007-458760 | 2021: Bozarmut Mah. → 2025: Akpınar Mah. |
 | 159853 | TR-46-009-159853 | 2013: Fatih (Merkez) Mah. → 2014: Dönüklü Mah. |
@@ -1430,6 +1436,13 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 159983 | TR-46-009-159983 | 2013: Yeniköy Mah. → 2015: Yenicekale Mah. |
 | 159985 | TR-46-009-159985 | 2013: Çınarpınar Mah. → 2018: Köşürge Mah. |
 | 160007 | TR-46-009-160007 | 2013: Yaylaüstü Mah. → 2018: Avgasır Mah. |
+| 52526 | TR-46-009-52526 | 2007: Orhan Gazi Mah. → 2014: Mercimektepe Mah. |
+| 52536 | TR-46-009-52536 | 2007: Sümbüllü Mah. → 2015: Molla Gürani Mah. |
+| 52550 | TR-46-009-52550 | 2007: Yörük Selim Mah. → 2011: Yürükselim Mah. |
+| 52553 | TR-46-009-52553 | 2007: 12 Şubat Mah. → 2015: Süleymanşah Mah. |
+| 52577 | TR-46-009-52577 | 2007: Fatih Mah. → 2008: Kavlaklı Fatih Mah. → 2014: Kazım Karabekir Mah. |
+| 52578 | TR-46-009-52578 | 2007: Mimar Sinan Mah. → 2008: Kavlaklı Mimar Sinan Mah. → 2014: Kavlaklı Mah. |
+| 52579 | TR-46-009-52579 | 2007: Yunus Emre Mah. → 2008: Kavlaklı Yunus Emre Mah. → 2014: Ceyhan Mah. |
 | 993915 | TR-46-009-993915 | 2023: Yavşanova Mah. → 2025: Fatmalı Yeşilkent Mah. |
 | 160823 | TR-46-010-160823 | 2013: Büyüknacar Mah. → 2018: Büyüknacar Merkez Mah. |
 | 160837 | TR-46-010-160837 | 2013: Yumaklıcerit Mah. → 2018: Yumaklıcerit Cumhuriyet Mah. |
@@ -1443,24 +1456,12 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 52785 | TR-46-010-52785 | 2007: Nurettin Aydın Mah. → 2015: Şehit Nurettin Ademoğlu Mah. |
 | 52786 | TR-46-010-52786 | 2007: Yukarı Pazarcık Mah. → 2008: Bağdınısağır Mah. |
 | 100136 | TR-46-x1515-100136 | 2009: Yeni Mahalle Mah. → 2011: Yeni Mah. |
-| 52526 | TR-46-x1515-52526 | 2007: Orhan Gazi Mah. → 2014: Mercimektepe Mah. |
-| 52536 | TR-46-x1515-52536 | 2007: Sümbüllü Mah. → 2015: Molla Gürani Mah. |
-| 52550 | TR-46-x1515-52550 | 2007: Yörük Selim Mah. → 2011: Yürükselim Mah. |
-| 52553 | TR-46-x1515-52553 | 2007: 12 Şubat Mah. → 2015: Süleymanşah Mah. |
 | 52559 | TR-46-x1515-52559 | 2007: Fatihler Mah. → 2009: Fatih Mah. |
 | 52561 | TR-46-x1515-52561 | 2007: Kisifli Mah. → 2011: Kişifli Mah. |
-| 52568 | TR-46-x1515-52568 | 2007: Mamaraş Mah. → 2008: Karacasu Mamaraş Mah. |
-| 52569 | TR-46-x1515-52569 | 2007: Ferhuş Mah. → 2008: Karacasu Ferhuş Mah. |
-| 52570 | TR-46-x1515-52570 | 2007: Karaziyaret Mah. → 2008: Karacasu Karaziyaret Mah. |
-| 52571 | TR-46-x1515-52571 | 2007: Karşıyaka Mah. → 2008: Karacasu Karşıyaka Mah. |
-| 52572 | TR-46-x1515-52572 | 2007: Kırım Mah. → 2008: Karacasu Kırım Mah. |
-| 52577 | TR-46-x1515-52577 | 2007: Fatih Mah. → 2008: Kavlaklı Fatih Mah. → 2014: Kazım Karabekir Mah. |
-| 52578 | TR-46-x1515-52578 | 2007: Mimar Sinan Mah. → 2008: Kavlaklı Mimar Sinan Mah. → 2014: Kavlaklı Mah. |
-| 52579 | TR-46-x1515-52579 | 2007: Yunus Emre Mah. → 2008: Kavlaklı Yunus Emre Mah. → 2014: Ceyhan Mah. |
 | 52582 | TR-46-x1515-52582 | 2007: Fatih Sultan Mehmet Mah. → 2008: Fatih Sultan Mah. |
 | 52597 | TR-46-x1515-52597 | 2007: Fatih Mah. → 2009: Fatihler Mah. |
 | 52598 | TR-46-x1515-52598 | 2007: Sahiller Mah. → 2009: Sahil Mah. |
-| 98854 | TR-46-x1515-98854 | 2008: Büğlek Mah. → 2017: Yeşiltepe Mah. |
+| 59910 | TR-47-001-59910 | 2007: Evren Mah. → 2010: Kotek Mah. |
 | 140304 | TR-47-004-140304 | 2013: Berçem Mah. → 2018: Şahkulubey Mah. |
 | 140312 | TR-47-004-140312 | 2013: Aşiti Mah. → 2018: Yenikent Mah. |
 | 140314 | TR-47-004-140314 | 2013: Medya Mah. → 2018: Selahattin Eyyubi Mah. |
@@ -1471,7 +1472,6 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 60032 | TR-47-009-60032 | 2007: Devlet Mah. → 2015: Safa Mah. |
 | 60033 | TR-47-009-60033 | 2007: Evren Mah. → 2015: Seydin Mah. |
 | 60034 | TR-47-009-60034 | 2007: Gazi Mah. → 2015: Kaplan Mah. |
-| 59910 | TR-47-x1516-59910 | 2007: Evren Mah. → 2010: Kotek Mah. |
 | 60072 | TR-48-001-60072 | 2007: Omurça Mah. → 2013: Umurça Mah. → 2015: Umurca Mah. |
 | 176347 | TR-48-004-176347 | 2013: Keçiler Mah. → 2015: Karakeçililer Mah. |
 | 176349 | TR-48-004-176349 | 2013: Uzunyurt Mah. → 2014: Faralya Mah. |
@@ -1555,6 +1555,9 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 61314 | TR-53-012-61314 | 2007: Yeni Mah. → 2021: Canpolat Mah. |
 | 61328 | TR-53-012-61328 | 2007: Orta Mah. → 2011: Orta Muradiye Mah. |
 | 99339 | TR-53-012-99339 | 2008: Sırt Mah. → 2010: Sırt Kasarcılar Mah. |
+| 61496 | TR-54-001-61496 | 2007: Camili Mah. → 2017: 15 Temmuz Camili Mah. |
+| 61563 | TR-54-001-61563 | 2007: Merkez Mah. → 2008: Güneşler Merkez Mah. |
+| 61564 | TR-54-001-61564 | 2007: Yeni Mah. → 2008: Güneşler Yeni Mah. |
 | 184857 | TR-54-002-184857 | 2013: Altındere Mah. → 2018: Altındere Gündoğan Mah. |
 | 184859 | TR-54-002-184859 | 2013: Kuzuluk Mah. → 2018: Kuzuluk Ortamahalle Mah. |
 | 184861 | TR-54-002-184861 | 2013: Dokurcun Mah. → 2023: Dokurcun Çengeller Mah. |
@@ -1565,6 +1568,18 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 61657 | TR-54-002-61657 | 2007: İstiklal Mah. → 2008: Küçücek İstiklal Mah. |
 | 61661 | TR-54-002-61661 | 2007: Beyceler Mah. → 2008: Beyciler Mah. |
 | 61662 | TR-54-002-61662 | 2007: Çaylaryeni Mah. → 2010: Çaylar Yeni Mah. |
+| 61540 | TR-54-003-61540 | 2007: Cumhuriyet Mah. → 2008: Merkez İlçe Cumhuriyet Mah. → 2009: Cumhuriyet Mah. |
+| 61576 | TR-54-003-61576 | 2007: Merkez Mah. → 2008: Hanlı Merkez Mah. |
+| 61577 | TR-54-003-61577 | 2007: Yüksek Mah. → 2009: Hanlıköy Mah. |
+| 61578 | TR-54-003-61578 | 2007: Sakarya Mah. → 2008: Hanlı Sakarya Mah. |
+| 61587 | TR-54-003-61587 | 2007: Abdibey Mah. → 2010: Karaaptiler Mah. |
+| 61588 | TR-54-003-61588 | 2007: Cumhuriyet Mah. → 2008: Nehirkent Mah. → 2012: Aşağı Kirazca Mah. |
+| 61545 | TR-54-004-61545 | 2007: Köyiçi Mah. → 2009: Bekirpaşa Mah. |
+| 61561 | TR-54-004-61561 | 2007: Yeni Mah. → 2008: Merkez İlçe Yeni Mah. → 2009: Yeni Mah. |
+| 61562 | TR-54-004-61562 | 2007: Yeşiltepe Mah. → 2008: Merkez İlçe Yeşiltepe Mah. → 2009: Yeşiltepe Mah. |
+| 61602 | TR-54-004-61602 | 2007: Merkez Mah. → 2009: Çaybaşıyeniköy Mah. |
+| 61604 | TR-54-004-61604 | 2007: Yeni Mah. → 2009: Tuapsalar Mah. |
+| 61605 | TR-54-004-61605 | 2007: Yeşiltepe Mah. → 2009: Tepe Mah. |
 | 184805 | TR-54-005-184805 | 2013: Çiftlik Mah. → 2016: Osmanağa Çiftliği Mah. |
 | 184811 | TR-54-005-184811 | 2013: Konuklu Mah. → 2016: Abdürrezzak Mah. |
 | 61606 | TR-54-005-61606 | 2007: Damlık Mah. → 2024: Esentepe Mah. |
@@ -1593,25 +1608,36 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 61755 | TR-54-013-61755 | 2007: Dibektaş Mah. → 2015: Kurtköy Dibektaş Mah. |
 | 61756 | TR-54-013-61756 | 2007: Fatih Mah. → 2008: Kurtköy Fatih Mah. |
 | 61757 | TR-54-013-61757 | 2007: Yavuzselim Mah. → 2015: Kurtköy Yavuzselim Mah. |
-| 61496 | TR-54-x1589-61496 | 2007: Camili Mah. → 2017: 15 Temmuz Camili Mah. |
-| 61540 | TR-54-x1589-61540 | 2007: Cumhuriyet Mah. → 2008: Merkez İlçe Cumhuriyet Mah. → 2009: Cumhuriyet Mah. |
-| 61545 | TR-54-x1589-61545 | 2007: Köyiçi Mah. → 2009: Bekirpaşa Mah. |
-| 61561 | TR-54-x1589-61561 | 2007: Yeni Mah. → 2008: Merkez İlçe Yeni Mah. → 2009: Yeni Mah. |
-| 61562 | TR-54-x1589-61562 | 2007: Yeşiltepe Mah. → 2008: Merkez İlçe Yeşiltepe Mah. → 2009: Yeşiltepe Mah. |
-| 61563 | TR-54-x1589-61563 | 2007: Merkez Mah. → 2008: Güneşler Merkez Mah. |
-| 61564 | TR-54-x1589-61564 | 2007: Yeni Mah. → 2008: Güneşler Yeni Mah. |
-| 61576 | TR-54-x1589-61576 | 2007: Merkez Mah. → 2008: Hanlı Merkez Mah. |
-| 61577 | TR-54-x1589-61577 | 2007: Yüksek Mah. → 2009: Hanlıköy Mah. |
-| 61578 | TR-54-x1589-61578 | 2007: Sakarya Mah. → 2008: Hanlı Sakarya Mah. |
-| 61580 | TR-54-x1589-61580 | 2007: Cumhuriyet Mah. → 2009: Kazımpaşa Mah. |
-| 61581 | TR-54-x1589-61581 | 2007: Pınar Mah. → 2009: Hamitabat Mah. |
-| 61587 | TR-54-x1589-61587 | 2007: Abdibey Mah. → 2010: Karaaptiler Mah. |
-| 61588 | TR-54-x1589-61588 | 2007: Cumhuriyet Mah. → 2008: Nehirkent Mah. → 2012: Aşağı Kirazca Mah. |
-| 61598 | TR-54-x1589-61598 | 2007: Orta Mah. → 2020: Yazlık Mah. |
-| 61602 | TR-54-x1589-61602 | 2007: Merkez Mah. → 2009: Çaybaşıyeniköy Mah. |
-| 61604 | TR-54-x1589-61604 | 2007: Yeni Mah. → 2009: Tuapsalar Mah. |
-| 61605 | TR-54-x1589-61605 | 2007: Yeşiltepe Mah. → 2009: Tepe Mah. |
-| 187039 | TR-55-006-187039 | 2013: Kasnakcımermer Mah. → 2023: Kasnakçımermer Mah. |
+| 61580 | TR-54-014-61580 | 2007: Cumhuriyet Mah. → 2009: Kazımpaşa Mah. |
+| 61581 | TR-54-014-61581 | 2007: Pınar Mah. → 2009: Hamitabat Mah. |
+| 61598 | TR-54-014-61598 | 2007: Orta Mah. → 2020: Yazlık Mah. |
+| 187039 | TR-55-004-187039 | 2013: Kasnakcımermer Mah. → 2023: Kasnakçımermer Mah. |
+| 61785 | TR-55-004-61785 | 2007: Büyükkolpınar Mah. Mah. → 2008: Büyükkolpınar Mah. |
+| 61786 | TR-55-004-61786 | 2007: Denizevleri Mah. Mah. → 2008: Denizevleri Mah. |
+| 61787 | TR-55-004-61787 | 2007: Yesildere Mah. Mah. → 2008: Yesildere Mah. → 2016: Yeşildere Mah. |
+| 61788 | TR-55-004-61788 | 2007: Esenevler Mah. Mah. → 2008: Esenevler Mah. |
+| 61789 | TR-55-004-61789 | 2007: Mimarsinan Mah. Mah. → 2008: Mimarsinan Mah. |
+| 61790 | TR-55-004-61790 | 2007: Cumhurıyet Mah. Mah. → 2008: Cumhurıyet Mah. |
+| 61791 | TR-55-004-61791 | 2007: Küçükkolpınar Mah. Mah. → 2008: Küçükkolpınar Mah. |
+| 61792 | TR-55-004-61792 | 2007: Balaç Mah. Mah. → 2008: Balaç Mah. |
+| 61793 | TR-55-004-61793 | 2007: Beypınar Mah. Mah. → 2008: Beypınar Mah. |
+| 61794 | TR-55-004-61794 | 2007: Çobanlı Mah. Mah. → 2008: Çobanlı Mah. |
+| 61795 | TR-55-004-61795 | 2007: Çobanözü Mah. Mah. → 2008: Çobanözü Mah. |
+| 61796 | TR-55-004-61796 | 2007: İstiklal Mah. Mah. → 2008: İstiklal Mah. |
+| 61797 | TR-55-004-61797 | 2007: Mevlana Mah. Mah. → 2008: Mevlana Mah. |
+| 61863 | TR-55-004-61863 | 2007: Yenimahalle Mah. Mah. → 2008: Yenimahalle Mah. |
+| 61864 | TR-55-004-61864 | 2007: Güzelyalı Mah. Mah. → 2008: Güzelyalı Mah. |
+| 61865 | TR-55-004-61865 | 2007: Alanlı Mah. Mah. → 2008: Alanlı Mah. |
+| 69854 | TR-55-004-69854 | 2007: Körfez Mah. Mah. → 2008: Körfez Mah. |
+| 69855 | TR-55-004-69855 | 2007: Büyükoyumca Mah. Mah. → 2008: Büyükoyumca Mah. |
+| 69860 | TR-55-004-69860 | 2007: Camii Mah. Mah. → 2008: Camii Mah. |
+| 69861 | TR-55-004-69861 | 2007: Merkez Mah. Mah. → 2008: Taflan Merkez Mah. |
+| 69862 | TR-55-004-69862 | 2007: Yalı Mah. Mah. → 2008: Yalı Mah. |
+| 69863 | TR-55-004-69863 | 2007: Çakırlar Mah. Mah. → 2008: Çakırlar Mah. |
+| 69864 | TR-55-004-69864 | 2007: Çakırlar Yalı Mah. Mah. → 2008: Çakırlar Yalı Mah. |
+| 69865 | TR-55-004-69865 | 2007: İncesu Mah. Mah. → 2008: İncesu Mah. |
+| 69866 | TR-55-004-69866 | 2007: İncesu Yalı Mah. Mah. → 2008: İncesu Yalı Mah. |
+| 61798 | TR-55-007-61798 | 2007: Yenimahalle Mah. Mah. → 2008: Yenimahalle Mah. |
 | 181744 | TR-55-008-181744 | 2015: Tombazlar Mah. → 2019: İstiklal Mah. |
 | 187229 | TR-55-008-187229 | 2013: Arımköseli Mah. → 2015: Arım Köseli Mah. |
 | 187231 | TR-55-008-187231 | 2013: Aşağıdikencik Mah. → 2015: Aşağı Dikencik Mah. |
@@ -1644,6 +1670,56 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 69948 | TR-55-008-69948 | 2007: Yukarı Eyercili Mah. → 2008: Yukarı Eğercili Mah. |
 | 69949 | TR-55-008-69949 | 2007: Merkez Mah. Mah. → 2008: Merkez Mah. |
 | 190377 | TR-55-010-190377 | 2013: Çatkaya Mah. → 2014: Kadamut Mah. |
+| 61817 | TR-55-010-61817 | 2007: Çay Mah. Mah. → 2008: Çay Mah. |
+| 61818 | TR-55-010-61818 | 2007: Karadeniz Mah. Mah. → 2008: Karadeniz Mah. |
+| 61819 | TR-55-010-61819 | 2007: Zafer Mah. Mah. → 2008: Zafer Mah. |
+| 61820 | TR-55-010-61820 | 2007: 19 Mayıs Mah. Mah. → 2008: 19 Mayıs Mah. |
+| 61821 | TR-55-010-61821 | 2007: Kazım Karabekir Mah. Mah. → 2008: Kazım Karabekir Mah. |
+| 61822 | TR-55-010-61822 | 2007: Kılıçdede Mah. Mah. → 2008: Kılıçdede Mah. |
+| 61823 | TR-55-010-61823 | 2007: Reşadiye Mah. Mah. → 2008: Reşadiye Mah. |
+| 61824 | TR-55-010-61824 | 2007: Kışla Mah. Mah. → 2008: Kışla Mah. |
+| 61825 | TR-55-010-61825 | 2007: İstasyon Mah. Mah. → 2008: İstasyon Mah. |
+| 61826 | TR-55-010-61826 | 2007: Hürriyet Mah. Mah. → 2008: Hürriyet Mah. |
+| 61827 | TR-55-010-61827 | 2007: Derebahçe Mah. Mah. → 2008: Derebahçe Mah. |
+| 61828 | TR-55-010-61828 | 2007: Fatih Mah. Mah. → 2008: Fatih Mah. |
+| 61829 | TR-55-010-61829 | 2007: Çiftlik Mah. Mah. → 2008: Çiftlik Mah. |
+| 61830 | TR-55-010-61830 | 2007: Yaşardoğu Mah. Mah. → 2008: Yaşardoğu Mah. |
+| 61831 | TR-55-010-61831 | 2007: Yenidoğan Mah. Mah. → 2008: Yenidoğan Mah. |
+| 61832 | TR-55-010-61832 | 2007: Adalet Mah. Mah. → 2008: Adalet Mah. |
+| 61833 | TR-55-010-61833 | 2007: İlyasköy Mah. Mah. → 2008: İlyasköy Mah. |
+| 61834 | TR-55-010-61834 | 2007: Rasathane Mah. Mah. → 2008: Rasathane Mah. |
+| 61835 | TR-55-010-61835 | 2007: Bahçelievler Mah. Mah. → 2008: Bahçelievler Mah. |
+| 61836 | TR-55-010-61836 | 2007: Fevzi Çakmak Mah. Mah. → 2008: Fevzi Çakmak Mah. |
+| 61837 | TR-55-010-61837 | 2007: Tepecik Mah. Mah. → 2008: Tepecik Mah. |
+| 61838 | TR-55-010-61838 | 2007: Çorak Mah. Mah. → 2008: Çorak Mah. → 2009: Yeşiltepe Mah. |
+| 61839 | TR-55-010-61839 | 2007: Ataköy Mah. Mah. → 2011: Ataköy Mah. |
+| 61840 | TR-55-010-61840 | 2007: Güzeldere Mah. Mah. → 2008: Güzeldere Mah. |
+| 61841 | TR-55-010-61841 | 2007: Kalkanca Mah. Mah. → 2008: Kalkanca Mah. → 2009: Kalkancı Mah. |
+| 61842 | TR-55-010-61842 | 2007: Cedit Mah. Mah. → 2008: Cedit Mah. |
+| 61843 | TR-55-010-61843 | 2007: Baruthane Mah. Mah. → 2008: Baruthane Mah. |
+| 61844 | TR-55-010-61844 | 2007: Kadifekale Mah. Mah. → 2008: Kadifekale Mah. |
+| 61845 | TR-55-010-61845 | 2007: Hançerli Mah. Mah. → 2008: Hançerli Mah. |
+| 61846 | TR-55-010-61846 | 2007: Karasamsun Mah. Mah. → 2008: Karasamsun Mah. |
+| 61847 | TR-55-010-61847 | 2007: Çatalarmut Mah. Mah. → 2008: Çatalarmut Mah. |
+| 61848 | TR-55-010-61848 | 2007: Liman Mah. Mah. → 2008: Liman Mah. |
+| 61849 | TR-55-010-61849 | 2007: Unkapanı Mah. Mah. → 2008: Unkapanı Mah. |
+| 61850 | TR-55-010-61850 | 2007: Selahiye Mah. Mah. → 2008: Selahiye Mah. |
+| 61851 | TR-55-010-61851 | 2007: Hastane Mah. Mah. → 2008: Hastane Mah. |
+| 61852 | TR-55-010-61852 | 2007: Pazar Mah. Mah. → 2008: Pazar Mah. |
+| 61853 | TR-55-010-61853 | 2007: Kökçüoğlu Mah. Mah. → 2008: Kökçüoğlu Mah. |
+| 61854 | TR-55-010-61854 | 2007: Saitbey Mah. Mah. → 2008: Saitbey Mah. |
+| 61855 | TR-55-010-61855 | 2007: Anadolu Mah. Mah. → 2008: Anadolu Mah. |
+| 61856 | TR-55-010-61856 | 2007: Ulugazi Mah. Mah. → 2008: Ulugazi Mah. |
+| 61857 | TR-55-010-61857 | 2007: Zeytinlik Mah. Mah. → 2008: Zeytinlik Mah. |
+| 61858 | TR-55-010-61858 | 2007: Kale Mah. Mah. → 2008: Kale Mah. |
+| 61859 | TR-55-010-61859 | 2007: Kadıköy Mah. Mah. → 2008: Kadıköy Mah. |
+| 61860 | TR-55-010-61860 | 2007: Kavacık Mah. Mah. → 2008: Kavacık Mah. |
+| 61861 | TR-55-010-61861 | 2007: Kusçulu Mah. Mah. → 2008: Kusçulu Mah. |
+| 61862 | TR-55-010-61862 | 2007: Uzgur Mah. Mah. → 2008: Uzgur Mah. |
+| 69856 | TR-55-010-69856 | 2007: Kıran Mah. Mah. → 2008: Kıran Mah. |
+| 69857 | TR-55-010-69857 | 2007: Toybelen Mah. Mah. → 2008: Toybelen Mah. |
+| 69858 | TR-55-010-69858 | 2007: Derecik Mah. Mah. → 2008: Derecik Mah. |
+| 69859 | TR-55-010-69859 | 2007: Ahulu Mah. Mah. → 2008: Ahulu Mah. |
 | 187943 | TR-55-011-187943 | 2013: Alaçamderesi Mah. → 2017: Yukarı Dereköy Mah. |
 | 188037 | TR-55-011-188037 | 2013: Karga Mah. → 2015: Kartepe Mah. |
 | 188103 | TR-55-011-188103 | 2013: Saraykent Mah. → 2015: Yosunlu Mah. |
@@ -1690,82 +1766,6 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 189443 | TR-55-016-189443 | 2013: Danabaş Mah. → 2020: Çamlıdere Mah. |
 | 189565 | TR-55-016-189565 | 2013: Kuruçay (Merkez) Mah. → 2017: Özkuruçay Mah. |
 | 189737 | TR-55-016-189737 | 2013: Esentepe (Beşpınar) Mah. → 2017: Özesentepe Mah. |
-| 61785 | TR-55-x1593-61785 | 2007: Büyükkolpınar Mah. Mah. → 2008: Büyükkolpınar Mah. |
-| 61786 | TR-55-x1593-61786 | 2007: Denizevleri Mah. Mah. → 2008: Denizevleri Mah. |
-| 61787 | TR-55-x1593-61787 | 2007: Yesildere Mah. Mah. → 2008: Yesildere Mah. → 2016: Yeşildere Mah. |
-| 61788 | TR-55-x1593-61788 | 2007: Esenevler Mah. Mah. → 2008: Esenevler Mah. |
-| 61789 | TR-55-x1593-61789 | 2007: Mimarsinan Mah. Mah. → 2008: Mimarsinan Mah. |
-| 61790 | TR-55-x1593-61790 | 2007: Cumhurıyet Mah. Mah. → 2008: Cumhurıyet Mah. |
-| 61791 | TR-55-x1593-61791 | 2007: Küçükkolpınar Mah. Mah. → 2008: Küçükkolpınar Mah. |
-| 61792 | TR-55-x1593-61792 | 2007: Balaç Mah. Mah. → 2008: Balaç Mah. |
-| 61793 | TR-55-x1593-61793 | 2007: Beypınar Mah. Mah. → 2008: Beypınar Mah. |
-| 61794 | TR-55-x1593-61794 | 2007: Çobanlı Mah. Mah. → 2008: Çobanlı Mah. |
-| 61795 | TR-55-x1593-61795 | 2007: Çobanözü Mah. Mah. → 2008: Çobanözü Mah. |
-| 61796 | TR-55-x1593-61796 | 2007: İstiklal Mah. Mah. → 2008: İstiklal Mah. |
-| 61797 | TR-55-x1593-61797 | 2007: Mevlana Mah. Mah. → 2008: Mevlana Mah. |
-| 61798 | TR-55-x1593-61798 | 2007: Yenimahalle Mah. Mah. → 2008: Yenimahalle Mah. |
-| 61817 | TR-55-x1593-61817 | 2007: Çay Mah. Mah. → 2008: Çay Mah. |
-| 61818 | TR-55-x1593-61818 | 2007: Karadeniz Mah. Mah. → 2008: Karadeniz Mah. |
-| 61819 | TR-55-x1593-61819 | 2007: Zafer Mah. Mah. → 2008: Zafer Mah. |
-| 61820 | TR-55-x1593-61820 | 2007: 19 Mayıs Mah. Mah. → 2008: 19 Mayıs Mah. |
-| 61821 | TR-55-x1593-61821 | 2007: Kazım Karabekir Mah. Mah. → 2008: Kazım Karabekir Mah. |
-| 61822 | TR-55-x1593-61822 | 2007: Kılıçdede Mah. Mah. → 2008: Kılıçdede Mah. |
-| 61823 | TR-55-x1593-61823 | 2007: Reşadiye Mah. Mah. → 2008: Reşadiye Mah. |
-| 61824 | TR-55-x1593-61824 | 2007: Kışla Mah. Mah. → 2008: Kışla Mah. |
-| 61825 | TR-55-x1593-61825 | 2007: İstasyon Mah. Mah. → 2008: İstasyon Mah. |
-| 61826 | TR-55-x1593-61826 | 2007: Hürriyet Mah. Mah. → 2008: Hürriyet Mah. |
-| 61827 | TR-55-x1593-61827 | 2007: Derebahçe Mah. Mah. → 2008: Derebahçe Mah. |
-| 61828 | TR-55-x1593-61828 | 2007: Fatih Mah. Mah. → 2008: Fatih Mah. |
-| 61829 | TR-55-x1593-61829 | 2007: Çiftlik Mah. Mah. → 2008: Çiftlik Mah. |
-| 61830 | TR-55-x1593-61830 | 2007: Yaşardoğu Mah. Mah. → 2008: Yaşardoğu Mah. |
-| 61831 | TR-55-x1593-61831 | 2007: Yenidoğan Mah. Mah. → 2008: Yenidoğan Mah. |
-| 61832 | TR-55-x1593-61832 | 2007: Adalet Mah. Mah. → 2008: Adalet Mah. |
-| 61833 | TR-55-x1593-61833 | 2007: İlyasköy Mah. Mah. → 2008: İlyasköy Mah. |
-| 61834 | TR-55-x1593-61834 | 2007: Rasathane Mah. Mah. → 2008: Rasathane Mah. |
-| 61835 | TR-55-x1593-61835 | 2007: Bahçelievler Mah. Mah. → 2008: Bahçelievler Mah. |
-| 61836 | TR-55-x1593-61836 | 2007: Fevzi Çakmak Mah. Mah. → 2008: Fevzi Çakmak Mah. |
-| 61837 | TR-55-x1593-61837 | 2007: Tepecik Mah. Mah. → 2008: Tepecik Mah. |
-| 61838 | TR-55-x1593-61838 | 2007: Çorak Mah. Mah. → 2008: Çorak Mah. → 2009: Yeşiltepe Mah. |
-| 61839 | TR-55-x1593-61839 | 2007: Ataköy Mah. Mah. → 2011: Ataköy Mah. |
-| 61840 | TR-55-x1593-61840 | 2007: Güzeldere Mah. Mah. → 2008: Güzeldere Mah. |
-| 61841 | TR-55-x1593-61841 | 2007: Kalkanca Mah. Mah. → 2008: Kalkanca Mah. → 2009: Kalkancı Mah. |
-| 61842 | TR-55-x1593-61842 | 2007: Cedit Mah. Mah. → 2008: Cedit Mah. |
-| 61843 | TR-55-x1593-61843 | 2007: Baruthane Mah. Mah. → 2008: Baruthane Mah. |
-| 61844 | TR-55-x1593-61844 | 2007: Kadifekale Mah. Mah. → 2008: Kadifekale Mah. |
-| 61845 | TR-55-x1593-61845 | 2007: Hançerli Mah. Mah. → 2008: Hançerli Mah. |
-| 61846 | TR-55-x1593-61846 | 2007: Karasamsun Mah. Mah. → 2008: Karasamsun Mah. |
-| 61847 | TR-55-x1593-61847 | 2007: Çatalarmut Mah. Mah. → 2008: Çatalarmut Mah. |
-| 61848 | TR-55-x1593-61848 | 2007: Liman Mah. Mah. → 2008: Liman Mah. |
-| 61849 | TR-55-x1593-61849 | 2007: Unkapanı Mah. Mah. → 2008: Unkapanı Mah. |
-| 61850 | TR-55-x1593-61850 | 2007: Selahiye Mah. Mah. → 2008: Selahiye Mah. |
-| 61851 | TR-55-x1593-61851 | 2007: Hastane Mah. Mah. → 2008: Hastane Mah. |
-| 61852 | TR-55-x1593-61852 | 2007: Pazar Mah. Mah. → 2008: Pazar Mah. |
-| 61853 | TR-55-x1593-61853 | 2007: Kökçüoğlu Mah. Mah. → 2008: Kökçüoğlu Mah. |
-| 61854 | TR-55-x1593-61854 | 2007: Saitbey Mah. Mah. → 2008: Saitbey Mah. |
-| 61855 | TR-55-x1593-61855 | 2007: Anadolu Mah. Mah. → 2008: Anadolu Mah. |
-| 61856 | TR-55-x1593-61856 | 2007: Ulugazi Mah. Mah. → 2008: Ulugazi Mah. |
-| 61857 | TR-55-x1593-61857 | 2007: Zeytinlik Mah. Mah. → 2008: Zeytinlik Mah. |
-| 61858 | TR-55-x1593-61858 | 2007: Kale Mah. Mah. → 2008: Kale Mah. |
-| 61859 | TR-55-x1593-61859 | 2007: Kadıköy Mah. Mah. → 2008: Kadıköy Mah. |
-| 61860 | TR-55-x1593-61860 | 2007: Kavacık Mah. Mah. → 2008: Kavacık Mah. |
-| 61861 | TR-55-x1593-61861 | 2007: Kusçulu Mah. Mah. → 2008: Kusçulu Mah. |
-| 61862 | TR-55-x1593-61862 | 2007: Uzgur Mah. Mah. → 2008: Uzgur Mah. |
-| 61863 | TR-55-x1593-61863 | 2007: Yenimahalle Mah. Mah. → 2008: Yenimahalle Mah. |
-| 61864 | TR-55-x1593-61864 | 2007: Güzelyalı Mah. Mah. → 2008: Güzelyalı Mah. |
-| 61865 | TR-55-x1593-61865 | 2007: Alanlı Mah. Mah. → 2008: Alanlı Mah. |
-| 69854 | TR-55-x1593-69854 | 2007: Körfez Mah. Mah. → 2008: Körfez Mah. |
-| 69855 | TR-55-x1593-69855 | 2007: Büyükoyumca Mah. Mah. → 2008: Büyükoyumca Mah. |
-| 69856 | TR-55-x1593-69856 | 2007: Kıran Mah. Mah. → 2008: Kıran Mah. |
-| 69857 | TR-55-x1593-69857 | 2007: Toybelen Mah. Mah. → 2008: Toybelen Mah. |
-| 69858 | TR-55-x1593-69858 | 2007: Derecik Mah. Mah. → 2008: Derecik Mah. |
-| 69859 | TR-55-x1593-69859 | 2007: Ahulu Mah. Mah. → 2008: Ahulu Mah. |
-| 69860 | TR-55-x1593-69860 | 2007: Camii Mah. Mah. → 2008: Camii Mah. |
-| 69861 | TR-55-x1593-69861 | 2007: Merkez Mah. Mah. → 2008: Taflan Merkez Mah. |
-| 69862 | TR-55-x1593-69862 | 2007: Yalı Mah. Mah. → 2008: Yalı Mah. |
-| 69863 | TR-55-x1593-69863 | 2007: Çakırlar Mah. Mah. → 2008: Çakırlar Mah. |
-| 69864 | TR-55-x1593-69864 | 2007: Çakırlar Yalı Mah. Mah. → 2008: Çakırlar Yalı Mah. |
-| 69865 | TR-55-x1593-69865 | 2007: İncesu Mah. Mah. → 2008: İncesu Mah. |
-| 69866 | TR-55-x1593-69866 | 2007: İncesu Yalı Mah. Mah. → 2008: İncesu Yalı Mah. |
 | 70137 | TR-56-005-70137 | 2007: Bağtepe Mah. → 2013: Halenze Mah. |
 | 70144 | TR-56-005-70144 | 2007: Evren Mah. → 2014: Barış Mah. |
 | 70155 | TR-56-005-70155 | 2007: Tansu Çiller Mah. → 2013: Yeni Mah. |
@@ -1785,15 +1785,15 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 70296 | TR-58-012-70296 | 2007: Uluanak Mah. → 2013: Cami-İ Kebir Mah. |
 | 70455 | TR-58-013-70455 | 2007: Evrenpaşa Mah. → 2013: Göllüköy Mah. |
 | 70539 | TR-58-017-70539 | 2007: Şeyhmerzuran Mah. → 2008: Şeyhmerzuban Mah. |
-| 70615 | TR-59-002-70615 | 2007: Hürriyet Mah. → 2014: Marmaracık Mah. |
+| 70615 | TR-59-003-70615 | 2007: Hürriyet Mah. → 2014: Marmaracık Mah. |
 | 175633 | TR-59-004-175633 | 2013: Lahna Mah. → 2025: Lahana Mah. |
 | 175817 | TR-59-006-175817 | 2013: Yürük Mah. → 2018: Yörük Mah. |
 | 70652 | TR-59-008-70652 | 2007: İstiklal Mah. → 2008: İstiklal-Kurtpınar Mah. |
 | 70653 | TR-59-008-70653 | 2007: Kazım Dirik Mah. → 2008: Kazım Dirik-Turan Mah. |
 | 175889 | TR-59-009-175889 | 2013: Büyükyoncalı Mah. → 2018: Büyükyoncalı Merkez Mah. |
+| 70548 | TR-59-010-70548 | 2007: Ortacami Mah. → 2008: Eskicami-Ortacami Mah. → 2020: Ortacami Mah. |
+| 70558 | TR-59-010-70558 | 2007: Gündoğdu Mah. → 2008: Gündoğdu-Turgut Mah. → 2021: İstiklal Mah. |
 | 70674 | TR-59-011-70674 | 2007: Gündoğdu Mah. → 2008: Gündoğdu-Yeniçeşme Mah. |
-| 70548 | TR-59-x1673-70548 | 2007: Ortacami Mah. → 2008: Eskicami-Ortacami Mah. → 2020: Ortacami Mah. |
-| 70558 | TR-59-x1673-70558 | 2007: Gündoğdu Mah. → 2008: Gündoğdu-Turgut Mah. → 2021: İstiklal Mah. |
 | 70754 | TR-60-001-70754 | 2007: Cumhuriyet Mah. → 2013: Akarçay Cumhuriyet Mah. → 2014: İnönü Mah. |
 | 70755 | TR-60-001-70755 | 2007: Şenyurt Mah. → 2013: Akarçay Şenyurt Mah. |
 | 70756 | TR-60-001-70756 | 2007: İstiklal Mah. → 2013: Akarçay İstiklal Mah. |
@@ -1841,11 +1841,11 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 156891 | TR-61-011-156891 | 2013: Yeşilyurt (Merkez) Mah. → 2014: Yeşiltepe Mah. |
 | 156251 | TR-61-013-156251 | 2013: Fatih (Köy) Mah. → 2014: Fatih Sultan Mah. |
 | 156283 | TR-61-013-156283 | 2013: Yeşiltepe (Köy) Mah. → 2014: Yeşilhisar Mah. |
+| 71129 | TR-61-013-71129 | 2007: Yeni Mah. → 2008: Yenimahalle Mah. |
+| 79848 | TR-61-013-79848 | 2007: Merkez Mah. → 2008: Yeşilova Mah. |
 | 80122 | TR-61-014-80122 | 2007: A.Çavuşlu Mah. → 2008: Çavuşlu Mah. |
 | 80160 | TR-61-017-80160 | 2007: Çamlık Mah. → 2008: Çamlık Sahil Mah. |
 | 157243 | TR-61-018-157243 | 2013: Oymalıtepe Mah. → 2016: Oymalı Mah. |
-| 71129 | TR-61-x1686-71129 | 2007: Yeni Mah. → 2008: Yenimahalle Mah. |
-| 79848 | TR-61-x1686-79848 | 2007: Merkez Mah. → 2008: Yeşilova Mah. |
 | 80202 | TR-62-001-80202 | 2007: Yeni Mah. → 2008: Yenimahalle Mah. |
 | 80204 | TR-62-002-80204 | 2007: Hamidiye Mah. → 2017: Diyap Ağa Mah. |
 | 80206 | TR-62-002-80206 | 2007: Yeni Mah. → 2025: Dr. Alpay Karaağaç Mah. |
@@ -1876,12 +1876,13 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 174639 | TR-63-009-174639 | 2013: Uluyazı Mah. → 2016: Hoşin Mah. |
 | 174685 | TR-63-009-174685 | 2013: Angaç Mah. → 2017: Güluşağı Mah. |
 | 174689 | TR-63-009-174689 | 2013: Atamer Mah. → 2016: Orgız Mah. |
+| 174979 | TR-63-009-174979 | 2013: Tutumlu Mah. → 2017: Arabuk Mah. |
 | 173597 | TR-63-010-173597 | 2013: Akziyaret Mah. → 2021: Küçük Akziyaret Mah. |
 | 173631 | TR-63-010-173631 | 2013: Cülmen Mah. → 2021: Büyük Akziyaret Mah. |
 | 173729 | TR-63-010-173729 | 2013: Şahin Mah. → 2025: Kına Mah. |
+| 80316 | TR-63-010-80316 | 2007: Merkez Mah. → 2016: Ali Baba Mah. |
 | 174781 | TR-63-011-174781 | 2013: Baki Mah. → 2025: Takoran Mah. |
 | 174825 | TR-63-011-174825 | 2013: Güvercin Mah. → 2023: Özgöğercin Mah. |
-| 174979 | TR-63-011-174979 | 2013: Tutumlu Mah. → 2017: Arabuk Mah. |
 | 80404 | TR-63-011-80404 | 2007: Esmer Çayır Mah. → 2013: Esmer Çayı Mah. |
 | 80421 | TR-63-011-80421 | 2007: Yukarı Beş Yamaç Mah. → 2008: Beşyamaç Mah. |
 | 80423 | TR-63-011-80423 | 2007: Kapıkaya Mah. → 2008: Merkez Mah. |
@@ -1892,7 +1893,6 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 80445 | TR-63-013-80445 | 2007: Evrenpaşa Mah. → 2010: Azadi Mah. |
 | 80449 | TR-63-013-80449 | 2007: Keleşabdioğlu Mah. → 2010: Yenişehir Mah. |
 | 80456 | TR-63-013-80456 | 2007: Eyüpnebi Mah. → 2010: Eyyüpnebi Mah. |
-| 80316 | TR-63-x1702-80316 | 2007: Merkez Mah. → 2016: Ali Baba Mah. |
 | 80321 | TR-63-x1702-80321 | 2007: Merkez Mah. → 2012: Kısas Varto Mah. |
 | 80522 | TR-64-004-80522 | 2007: Fevzi Çakmak Mah. → 2008: Akıncılar Mah. |
 | 80534 | TR-64-005-80534 | 2007: Camiikebir Mah. → 2010: Camikebir Mah. |
@@ -1954,10 +1954,10 @@ bu tablo yalnızca eski adla arayan birinin bugünkü adı bulabilmesi için var
 | 89959 | TR-68-002-89959 | 2007: Yeni Mah. → 2014: Yenimahalle Mah. |
 | 89963 | TR-68-002-89963 | 2007: Bahçe Saray Mah. → 2014: Bahçesaray Mah. |
 | 89968 | TR-68-002-89968 | 2007: Yeni Mah. → 2014: Yenimahalle Mah. |
-| 89990 | TR-68-002-89990 | 2007: Türkistanlılar Mah. → 2014: Türkistan Mah. |
 | 89994 | TR-68-002-89994 | 2007: Yeni Camii Mah. → 2008: Yeni Cami Mah. |
 | 89995 | TR-68-002-89995 | 2013: Yavuzselimosb Mah. → 2015: Erenler Osb Mah. |
 | 90012 | TR-68-002-90012 | 2007: Köselli Mah. → 2008: Köseli Mah. |
+| 89990 | TR-68-008-89990 | 2007: Türkistanlılar Mah. → 2014: Türkistan Mah. |
 | 90126 | TR-69-002-90126 | 2007: Camikebir Mah. → 2011: Camiikebir Mah. |
 | 90131 | TR-69-002-90131 | 2007: Mehmetçelebi Mah. → 2011: Mehmet Çelebi Mah. |
 | 90132 | TR-69-002-90132 | 2007: Şeyhheyran Mah. → 2011: Şeyhhayran Mah. |

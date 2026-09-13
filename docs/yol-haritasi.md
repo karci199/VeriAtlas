@@ -5,6 +5,16 @@ Bu dosya "sırada ne var" sorusunun tek cevabı. Kararların gerekçesi
 
 Son güncelleme: 2026-09-13.
 
+## Dal kuralı (2026-09-10, `koy-kaydi` dalından)
+
+Bir worktree'de başka dallar birleştirilip iş orada sürdürülürken çekim komutları güncel
+olmayan ana checkout `C:eri`'de çalıştırıldı ve eski betik sürümü veri kirletti. Kural:
+oturum başında `git branch --show-current` ve `git status --short` ile nerede olunduğu
+doğrulanır; çekim, kodu güncel olan kopyada çalışır.
+
+2026-09-13'te `durum-ozeti-plan` ve `koy-kaydi-ve-semt-duzeltmeleri` birleştirildi (K32):
+iki dal 2007-2012 yerleşim geriye doldurmasını ayrı ayrı yapmıştı.
+
 ## Nerede duruyoruz
 
 Depoda **74 gösterge, 5,78 milyon satır**. Altı depolanan düzey: ülke, İBBS-2 (göç

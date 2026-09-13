@@ -10,10 +10,12 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 ROOT = Path(__file__).resolve().parents[2]
 
-#: `VERIATLAS_RAW` points fetchers and adapters at a raw store outside the worktree. The
-#: default stays `raw/` inside the checkout, but a worktree's `raw/` is deleted with the
-#: worktree — which is how 2,8 GB went on 2026-09-07 — so long pulls should set it.
-RAW = Path(os.environ.get("VERIATLAS_RAW", ROOT / "raw"))
+#: Where raw downloads live. Two branches settled this two ways — one kept `raw/` inside the
+#: checkout, the other moved the default to `C:/veri-ham` after a worktree cleanup emptied
+#: the shared store (2026-09-07). Both environment names are honoured; without either, the
+#: checkout's own `raw/` is used when it exists and the external store otherwise.
+_RAW_ENV = os.environ.get("VERIATLAS_RAW") or os.environ.get("VERIATLAS_HAM")
+RAW = Path(_RAW_ENV) if _RAW_ENV else (ROOT / "raw" if (ROOT / "raw").exists() else Path("C:/veri-ham"))
 PUBLIC = ROOT / "public"
 DOCS = ROOT / "docs"
 #: Registries and the indicator dictionary — files that are decisions, not observations,

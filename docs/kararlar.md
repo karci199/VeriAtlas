@@ -724,6 +724,28 @@ Doğrulama — üçü de dış bir sayıyla:
 **Tuzak:** gizli hücre `-9.98E8` olarak yazılıyor. Sayı diye okunsa bir ilçeden bir
 milyar kişi düşer; negatif hücre gizli sayılır (test: `test_household_district.py`).
 
+## K32 — Yerleşim bugünkü ilçesine bağlanır, ilçe geçmişi yanında durur (2026-09-13)
+
+`durum-ozeti-plan` ve `koy-kaydi-ve-semt-duzeltmeleri` dalları 2007-2012 mahalle/köy geriye
+doldurmasını birbirinden habersiz yaptı ve kayıt defterlerini iki ayrı kuralla üretti:
+
+- bir dal yerleşimi **ilk görüldüğü** ilçeye bağlıyordu (kapanmış ilçe `-x####` dahil);
+- öteki **en yeni yılın** ilçesine — bölünen ilçelerde (Derecik/Şemdinli, Kemalpaşa/Hopa)
+  ilçe toplamı yerleşimlerinin toplamını tutsun diye.
+
+Aynı MEDAS kodu 648 köyde ve 2.072 mahallede iki dalda farklı ilçeye asılıydı. Seçenekler:
+(A) o yılki ilçe, (B) bugünkü ardıl ilçe, (C) ikisi. **C seçildi (kullanıcı).**
+
+Uygulama: `area_id` / `parent_id` en yeni yılın ilçesini izler — seri 2007-2025 tek kimlikle
+kesintisiz; defterlere `parent_history` sütunu eklendi: `TR-01-012:2007;TR-01-003:2008-2025`
+(Çukurova 2008'de Seyhan'dan ayrıldı). O yılki ilçe bu sütundan okunur, kaybolmaz.
+Birleşik defter öbür dalın 32.681 mahalle ve 35.345 köy kimliğinin tamamını ve bu dalın
+2007-2012 mahallelerini taşıyor (38.408).
+
+Doğrulama: birleşme öncesi ve sonrası 2.154 gösterge-düzey-yıl toplamı ve satır sayısı
+birebir aynı (yalnız kimlikler değişti). Yerleşim toplamı ilçe nüfusundan %1'den fazla sapan
+ilçe 2025'te 160 → 19, 2018'de 144 → 19; yerleşim taşıyan ilçe 964 → 973.
+
 ## K31 — Belediye su/atıksu/atık ve elektrik (2026-09-13)
 
 MEDAS'tan 37 gösterge, iki yeni konu (`belediye_hizmetleri`, `enerji`). Su ve atıksu

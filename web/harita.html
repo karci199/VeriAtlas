@@ -1,0 +1,188 @@
+<!doctype html>
+<!-- Map demo: one PMTiles archive for the geometry, one small JSON for the numbers.
+     No tile server, no database — the browser asks for the byte ranges it needs. -->
+<html lang="tr"><head><meta charset="utf-8">
+<title>VeriAtlas — harita denemesi</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+<style>
+  :root { --bg:#121315; --card:#1b1d21; --line:#2a2d33; --fg:#e9eaee; --mute:#8b919c; }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; background:var(--bg); color:var(--fg);
+              font:14px/1.45 "Segoe UI",system-ui,sans-serif; }
+  #map { position:absolute; inset:0; }
+  .panel { position:absolute; top:14px; left:14px; z-index:2; background:rgba(27,29,33,.94);
+           border:1px solid var(--line); border-radius:12px; padding:12px 14px; width:290px;
+           backdrop-filter:blur(6px); }
+  h1 { margin:0 0 2px; font-size:15px; } .alt { color:var(--mute); font-size:12px; margin-bottom:10px; }
+  label { display:block; font-size:11.5px; color:var(--mute); text-transform:uppercase;
+          letter-spacing:.5px; margin:10px 0 4px; }
+  select, input[type=range] { width:100%; }
+  select { background:#0f1012; color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:5px 8px; }
+  .yil { display:flex; justify-content:space-between; font-size:12px; color:var(--mute); }
+  .yil b { color:var(--fg); font-size:15px; }
+  .legend { display:flex; gap:0; margin-top:10px; border-radius:6px; overflow:hidden; height:10px; }
+  .legend i { flex:1; }
+  .legend-lab { display:flex; justify-content:space-between; font-size:11px; color:var(--mute); margin-top:4px; }
+  .pick { position:absolute; right:14px; top:14px; z-index:2; background:rgba(27,29,33,.94);
+          border:1px solid var(--line); border-radius:12px; padding:10px 14px; min-width:210px; display:none; }
+  .pick b { font-size:15px; } .pick .row { display:flex; justify-content:space-between; margin-top:6px;
+          font-size:12.5px; color:var(--mute); } .pick .row i { color:var(--fg); font-style:normal; font-weight:600; }
+  .note { position:absolute; left:14px; bottom:12px; z-index:2; color:var(--mute); font-size:11.5px; }
+</style></head>
+<body>
+<div id="map"></div>
+<div class="panel">
+  <h1>Türkiye · ilçe haritası</h1>
+  <div class="alt">973 ilçe · tek PMTiles dosyası (1,6 MB)</div>
+  <label for="olcut">Gösterge</label>
+  <select id="olcut">
+    <option value="0">Nüfus</option>
+    <option value="1" selected>0-14 yaş payı (%)</option>
+    <option value="2">65+ yaş payı (%)</option>
+  </select>
+  <label for="yil">Yıl</label>
+  <input id="yil" type="range" min="2007" max="2025" value="2024" step="1">
+  <div class="yil"><span>2007</span><b id="yilLabel">2024</b><span>2025</span></div>
+  <div class="legend" id="legend"></div>
+  <div class="legend-lab"><span id="legMin"></span><span id="legMax"></span></div>
+</div>
+<div class="pick" id="pick"></div>
+<div class="note">Kaynak: TÜİK ADNKS · geometri Endeksa · renk ölçeği yüzdelik (quantile)</div>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/pmtiles@3.0.6/dist/pmtiles.js"></script>
+<script>
+const RAMP = ["#0d3b66","#1b5e8f","#2f80b3","#5aa9d6","#93c9e8","#c9e3f2","#f6d5a8","#e8a35a","#d1702f","#a8410f"];
+const fmt = new Intl.NumberFormat("tr-TR");
+
+const protocol = new pmtiles.Protocol();
+maplibregl.addProtocol("pmtiles", protocol.tile);
+
+let veri = {}, yil = 2024, olcut = 1, breaks = [];
+
+const map = new maplibregl.Map({
+  container: "map",
+  style: {
+    version: 8,
+    sources: {
+      // promoteId: the district id becomes the feature id, which is what lets the
+      // colour come from feature-state instead of a thousand-branch expression.
+      ilce: { type: "vector", url: "pmtiles://../public/tiles/ilce.pmtiles",
+              promoteId: "id" }
+    },
+    layers: [
+      { id: "arka", type: "background", paint: { "background-color": "#0f1012" } },
+      { id: "dolgu", type: "fill", source: "ilce", "source-layer": "ilce",
+        paint: {
+          "fill-color": ["case",
+            ["==", ["feature-state", "band"], null], "#1a1c20",
+            ["step", ["feature-state", "band"],
+              RAMP[0], 1, RAMP[1], 2, RAMP[2], 3, RAMP[3], 4, RAMP[4],
+              5, RAMP[5], 6, RAMP[6], 7, RAMP[7], 8, RAMP[8], 9, RAMP[9]]],
+          "fill-opacity": 0.95 } },
+      { id: "kenar", type: "line", source: "ilce", "source-layer": "ilce",
+        paint: { "line-color": "#e9eaee", "line-opacity": 0.15, "line-width": 0.5 } },
+      { id: "vurgu", type: "line", source: "ilce", "source-layer": "ilce",
+        filter: ["==", "id", ""], paint: { "line-color": "#f0a030", "line-width": 2 } }
+    ]
+  },
+  center: [35.2, 39.0], zoom: 5.2, minZoom: 4, maxZoom: 11
+});
+
+/** Quantile breaks: district populations span three orders of magnitude and a linear
+ *  ramp paints every rural district the same tone. */
+function quantiles(values, n) {
+  const sorted = values.slice().sort((a, b) => a - b);
+  return Array.from({ length: n - 1 }, (_, i) =>
+    sorted[Math.floor((sorted.length * (i + 1)) / n)]);
+}
+
+function paint() {
+  const values = [];
+  for (const id in veri) {
+    const row = veri[id][yil];
+    if (row) values.push(row[olcut]);
+  }
+  if (!values.length) return;
+  breaks = quantiles(values, RAMP.length);
+  for (const id in veri) {
+    const row = veri[id][yil];
+    let band = row ? breaks.findIndex((b) => row[olcut] < b) : -1;
+    if (row && band < 0) band = RAMP.length - 1;
+    map.setFeatureState({ source: "ilce", sourceLayer: "ilce", id },
+      { band: row ? band : null });
+  }
+
+  // Feature state alone does not schedule a frame: without this the colours are set and
+  // the canvas keeps showing the grey it drew before the data arrived.
+  map.triggerRepaint();
+
+  document.getElementById("legend").innerHTML =
+    RAMP.map((c) => `<i style="background:${c}"></i>`).join("");
+  const lo = Math.min(...values), hi = Math.max(...values);
+  const unit = olcut === 0 ? "" : "%";
+  document.getElementById("legMin").textContent = unit + fmt.format(Math.round(lo));
+  document.getElementById("legMax").textContent = unit + fmt.format(Math.round(hi));
+}
+
+// The numbers are fetched straight away rather than inside a map event: the load event
+// is easy to miss (an async handler that throws leaves no trace in the console), and a
+// map with geometry but no data looks exactly like a broken map.
+// The numbers are fetched straight away rather than inside a map event, and painted
+// whenever both halves are ready. setFeatureState throws while the style is still
+// loading — the first attempt almost always is — so painting is retried on idle until
+// it takes. An async map handler that throws leaves nothing in the console, and a map
+// with geometry but no colour looks exactly like a broken map.
+let boyaGerek = true;
+
+function boyaDene() {
+  if (!boyaGerek || !map.isStyleLoaded() || !Object.keys(veri).length) return;
+  paint();
+  boyaGerek = false;
+}
+
+fetch("../public/tiles/ilce-veri.json")
+  .then((r) => r.json())
+  .then((j) => { veri = j; boyaDene(); })
+  .catch((err) => console.error("veri okunamadi", err));
+
+// Retried on a timer, not only on map events: "idle" fires once when the map settles and
+// the data can easily arrive a moment later, after which no event comes and the map sits
+// there uncoloured.
+const boyaSayaci = setInterval(() => {
+  boyaDene();
+  if (!boyaGerek) clearInterval(boyaSayaci);
+}, 300);
+map.on("idle", boyaDene);
+
+const pick = document.getElementById("pick");
+map.on("mousemove", "dolgu", (e) => {
+  const f = e.features[0], row = (veri[f.properties.id] || {})[yil];
+  map.setFilter("vurgu", ["==", "id", f.properties.id]);
+  map.getCanvas().style.cursor = "pointer";
+  pick.style.display = "block";
+  pick.innerHTML = `<b>${f.properties.ad}</b>
+    <div class="row"><span>nüfus ${yil}</span><i>${row ? fmt.format(row[0]) : "—"}</i></div>
+    <div class="row"><span>0-14 payı</span><i>${row ? "%" + row[1] : "—"}</i></div>
+    <div class="row"><span>65+ payı</span><i>${row ? "%" + row[2] : "—"}</i></div>`;
+});
+map.on("mouseleave", "dolgu", () => {
+  map.setFilter("vurgu", ["==", "id", ""]);
+  map.getCanvas().style.cursor = "";
+  pick.style.display = "none";
+});
+
+document.getElementById("yil").addEventListener("input", (e) => {
+  yil = +e.target.value;
+  document.getElementById("yilLabel").textContent = yil;
+  boyaGerek = true;
+  boyaDene();
+});
+document.getElementById("olcut").addEventListener("change", (e) => {
+  olcut = +e.target.value;
+  boyaGerek = true;
+  boyaDene();
+});
+</script>
+</body></html>

@@ -33,6 +33,16 @@ RENAMES = DOCS / "mahalle-adlari.md"
 
 SOURCE_ID = "tuik_medas"
 
+#: MEDAS keeps writing a district's old name long after the rename, and the registry
+#: holds both the closed district and its successor -- so the join lands on the closed
+#: one and its neighbourhoods hang under an id that carries no district-level figure
+#: (Eyupsultan's 28 neighbourhoods did exactly that). These two renames are the ones
+#: observation confirms; docs/ilce-adlari.md keeps the evidence.
+ILCE_ADI = {
+    ("istanbul", "eyup"): "eyupsultan",
+    ("ankara", "kazan"): "kahramankazan",
+}
+
 
 def fold(name: str) -> str:
     """Turkish name to a comparable key. Same rule as the district join."""
@@ -70,7 +80,8 @@ def main() -> None:
         parent = provinces.get(fold(province))
         if parent is None:
             return None
-        found = districts.get((parent, fold(district)))
+        adi = ILCE_ADI.get((fold(province), fold(district)), fold(district))
+        found = districts.get((parent, adi))
         if found is not None:
             return found
         # The two sources name a central district differently: MEDAS says "Merkez", the
@@ -80,6 +91,7 @@ def main() -> None:
         return None
 
     seen: dict[str, dict] = {}
+    parent_years: dict[str, dict[str, list[int]]] = {}
     history: dict[str, list[tuple[int, str]]] = {}
 
     for record in records:
@@ -91,6 +103,15 @@ def main() -> None:
                 + "/"
                 + record.district
             )
+
+        # Every district the settlement was written under, with its years (K32): the
+        # id follows the newest district so the series runs unbroken, and this keeps the
+        # district it actually sat in — a closed one such as `TR-01-x1284` included.
+        span = parent_years.setdefault(record.code, {}).setdefault(
+            parent, [record.year, record.year]
+        )
+        span[0] = min(span[0], record.year)
+        span[1] = max(span[1], record.year)
 
         entry = seen.get(record.code)
         if entry is None:
@@ -106,6 +127,15 @@ def main() -> None:
                 "source_id": SOURCE_ID,
             }
         entry["first_seen"] = min(entry["first_seen"], record.year)
+        # A settlement follows its district. When a district splits -- Derecik out of
+        # Şemdinli in 2018, Kemalpaşa out of Hopa in 2017 -- MEDAS starts writing the new
+        # district for the settlements that moved, but the parent was frozen at first
+        # sighting, so they stayed under the old one and the district's own figure never
+        # matched the sum of its settlements (Derecik held 1 of its 66). The newest year
+        # names the district the same way it names the settlement.
+        if record.year >= entry["last_seen"] and parent != entry["parent_id"]:
+            entry["parent_id"] = parent
+            entry["area_id"] = parent + "-" + record.code
         if record.year >= entry["last_seen"]:
             entry["last_seen"] = record.year
             # The newest year wins the name; that is what "current name" means here.
@@ -115,6 +145,13 @@ def main() -> None:
         names = history.setdefault(record.code, [])
         if not names or names[-1][1] != record.name:
             names.append((record.year, record.name))
+
+    for code, entry in seen.items():
+        spans = sorted(parent_years[code].items(), key=lambda kv: kv[1][0])
+        entry["parent_history"] = ";".join(
+            parent + ":" + str(first) + ("" if first == last else "-" + str(last))
+            for parent, (first, last) in spans
+        )
 
     rows = sorted(seen.values(), key=lambda r: r["area_id"])
     REGISTRY.parent.mkdir(parents=True, exist_ok=True)

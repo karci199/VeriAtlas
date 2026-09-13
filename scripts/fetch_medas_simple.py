@@ -50,6 +50,7 @@ DEATHS = "Ölüm İstatistikleri"
 MARRIAGES = "Evlenme İstatistikleri"
 LIFE = "Hayat Tabloları"
 DIVORCES = "Boşanma İstatistikleri"
+ORGUN = "Örgün Eğitim İstatistikleri"
 
 CELL_LIMIT = 50000
 
@@ -105,6 +106,14 @@ MEASURES = [
     ("goc-verilen-ibbs2", ADNKS, "İBBS-Düzey2 bölgeler arası verdiği", True),
     ("goc-disaridan", ADNKS, "Yurt dışından Türkiye'ye gelen göç", False),  # 1
     ("goc-disariya", ADNKS, "Türkiye'den yurt dışına giden göç", False),  # 1
+    # Kontrol icin: tek yas hesabimizla karsilastirilacak, MEDAS'in kendi ortanca yas
+    # sayisi. Cinsiyet kirilimi kapatilamiyor (2 gosterge), toplam ayri sorulmali (K12).
+    ("ortanca-yas", ADNKS, "Ortanca yaş", True),  # 2
+    # Dogum yerine gore nufus: Turkiye capinda tek satir (83 gosterge, dogum yeri
+    # kirilimi zaten acik), il duzeyinde ayni sekilde -- ikisi de 50.000 siniri altinda
+    # tek yil sorgusu ile.
+    ("dogum-yeri-tr", ADNKS, "Doğum yerlerine göre nüfus", False),  # 83, yalniz Turkiye
+    ("dogum-yeri-il", ADNKS, "İkamet edilen illere göre doğum yerleri", False),  # 83
     # Kütük nüfusu. The measure's name reads as though the rows were the register, and
     # they are not: rows are where people live, columns are where they are registered, and
     # the number wanted is a *column* total (see adapters/tuik_registry). The breakdown
@@ -124,6 +133,16 @@ MEASURES = [
     # else — which is exactly the trap K24 records falling into.
     (
         "ikamet-kutuk",
+        ADNKS,
+        "İkamet edilen ile göre nüfusa kayıtlı olunan il",
+        False,
+    ),  # 81
+    # The province-level twin of the district hemşehrilik measure (fetch_medas_hemsehrilik.py):
+    # same 81-indicators-already-open shape, but 81 x 81 areas is small enough for one
+    # query per year here rather than the province-by-province split the district version
+    # needs. --yil= batches years the same way kutuk-nufusu does.
+    (
+        "hemsehrilik-il",
         ADNKS,
         "İkamet edilen ile göre nüfusa kayıtlı olunan il",
         False,
@@ -203,6 +222,20 @@ MEASURES = [
     ("evlenme-ilce", MARRIAGES, "lçelere göre evlenmeler", False),  # 1
     ("bosanma-ilce", DIVORCES, "Erkeğin ikametgah yeri", False),  # 1  # 1
     ("kaba-bosanma-hizi", DIVORCES, "Kaba boşanma", False),  # 1
+    # Orgun egitim: okul/derslik/sube/ogretmen/ogrenci sayimi yalniz il duzeyine kadar
+    # iniyor (ilce yok) -- yalniz "Okuma yazma orani" ilce duzeyine iniyor, o yuzden
+    # ayri, fetch_medas_districts.py --konu orgun ile cekiliyor (bkz. docs/medas.md).
+    ("orgun-okul", ORGUN, "Okul sayısı", True),  # 6, egitim seviyeleri
+    ("orgun-ogrenci", ORGUN, "Öğrenci sayısı", True),  # 12, egitim seviyeleri x cinsiyet
+    ("orgun-sube", ORGUN, "Şube sayısı", True),  # 6
+    ("orgun-derslik", ORGUN, "Derslik sayısı", True),  # 6
+    ("orgun-ogretmen", ORGUN, "Öğretmen sayısı", True),  # 12, egitim seviyeleri x cinsiyet
+    ("orgun-net-okullasma", ORGUN, "Net okullaşma oranı", True),  # 8
+    ("orgun-brut-okullasma", ORGUN, "Brüt okullaşma oranı", True),  # 6
+    ("orgun-okul-basina", ORGUN, "Okul başına düşen öğrenci", True),  # 5
+    ("orgun-sube-basina", ORGUN, "Şube başına düşen öğrenci", True),  # 5
+    ("orgun-ogretmen-basina", ORGUN, "Öğretmen başına düşen öğrenci", True),  # 5
+    ("orgun-derslik-basina", ORGUN, "Derslik başına düşen öğrenci", True),  # 4
 ]
 
 #: The Düzey box labels for the levels kept here.
@@ -223,7 +256,8 @@ LEVELS = {
 #: neighbourhood fetcher meets from the other side (tick the age split and Köy drops out).
 #: So the finest grain K16 asks for stops at the country here, and the province series
 #: keeps the age *group* it already has.
-COUNTRY_ONLY = {"hayat-tablosu", "olum-tek-yas"}
+#: Birthplace for Türkiye as a whole is a country-only measure by construction.
+COUNTRY_ONLY = {"hayat-tablosu", "olum-tek-yas", "dogum-yeri-tr"}
 
 
 def levels_for(name: str) -> list[str]:

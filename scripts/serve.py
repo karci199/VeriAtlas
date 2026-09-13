@@ -20,6 +20,7 @@ Run:  uv run python scripts/serve.py [port]
 
 import http.server
 import json
+import os
 import re
 import socketserver
 import sys
@@ -42,6 +43,49 @@ class NoCache(http.server.SimpleHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Headers", "content-type")
         super().end_headers()
+
+    def send_head(self):
+        """As the parent, plus HTTP Range — PMTiles needs it.
+
+        A PMTiles archive is one file the browser reads in pieces: it asks for the header,
+        then for the byte range holding the tile on screen. Without 206 answers the client
+        pulls the whole archive on every tile and the map never draws.
+        """
+        rng = self.headers.get("Range")
+        if not rng or not rng.startswith("bytes="):
+            return super().send_head()
+        path = self.translate_path(self.path)
+        if os.path.isdir(path):
+            return super().send_head()
+        try:
+            fh = open(path, "rb")  # noqa: SIM115 — kapatmasi asagida, hata yollarinda da
+        except OSError:
+            self.send_error(404, "File not found")
+            return None
+        size = os.fstat(fh.fileno()).st_size
+        first, _, last = rng[len("bytes=") :].partition("-")
+        try:
+            start = int(first) if first else max(0, size - int(last))
+            end = int(last) if last and first else size - 1
+        except ValueError:
+            fh.close()
+            self.send_error(400, "Bad Range")
+            return None
+        end = min(end, size - 1)
+        if start > end:
+            fh.close()
+            self.send_error(416, "Range not satisfiable")
+            return None
+        self.send_response(206)
+        self.send_header("Content-Type", self.guess_type(path))
+        self.send_header("Content-Range", f"bytes {start}-{end}/{size}")
+        self.send_header("Content-Length", str(end - start + 1))
+        self.send_header("Accept-Ranges", "bytes")
+        self.end_headers()
+        fh.seek(start)
+        self.wfile.write(fh.read(end - start + 1))
+        fh.close()
+        return None
 
     def do_OPTIONS(self):
         self.send_response(204)

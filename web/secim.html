@@ -1,0 +1,565 @@
+<!doctype html>
+<!-- Election map. Geometry comes from two PMTiles archives, results from small JSON
+     tables: a per-district file, a country-wide neighbourhood summary (five numbers each)
+     and a per-province detail file fetched only when a settlement is opened. No server,
+     no database — the browser asks for byte ranges. -->
+<html lang="tr" data-tema="koyu"><head><meta charset="utf-8">
+<title>VeriAtlas — seçim haritası</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+<style>
+  /* Both themes are tokens; nothing below picks a colour directly. */
+  :root[data-tema="koyu"] {
+    --bg:#0f1012; --yuzey:#1b1d21; --yuzey2:#16181c; --cizgi:#2a2d33;
+    --fg:#e9eaee; --mute:#8b919c; --bos:#22252b; --kenar:#0f1012; --vurgu:#ffffff;
+    --golge:0 8px 28px rgba(0,0,0,.45);
+  }
+  :root[data-tema="acik"] {
+    --bg:#eef1f5; --yuzey:#ffffff; --yuzey2:#f4f6f9; --cizgi:#d8dee6;
+    --fg:#15181d; --mute:#5d6673; --bos:#dfe4ea; --kenar:#ffffff; --vurgu:#15181d;
+    --golge:0 8px 24px rgba(15,24,40,.12);
+  }
+  * { box-sizing:border-box; }
+  html,body { margin:0; height:100%; background:var(--bg); color:var(--fg);
+              font:13.5px/1.45 "Segoe UI",system-ui,sans-serif; overflow:hidden; }
+  #map { position:absolute; inset:0; }
+
+  .bar { position:absolute; top:12px; left:12px; right:12px; z-index:3; display:flex;
+         gap:16px; align-items:center; background:var(--yuzey); border:1px solid var(--cizgi);
+         border-radius:14px; padding:10px 16px; flex-wrap:wrap; box-shadow:var(--golge); }
+  .brand { font-weight:700; } .brand small { display:block; color:var(--mute); font-weight:400; font-size:11px; }
+  .alan { display:flex; flex-direction:column; gap:3px; }
+  .alan label { font-size:10.5px; color:var(--mute); text-transform:uppercase; letter-spacing:.5px; }
+  select, input[type=search] { background:var(--yuzey2); color:var(--fg); border:1px solid var(--cizgi);
+        border-radius:9px; padding:6px 9px; font:inherit; min-width:150px; }
+  .seg { display:inline-flex; border:1px solid var(--cizgi); border-radius:9px; overflow:hidden; }
+  .seg button { background:none; border:0; color:var(--mute); padding:6px 12px; cursor:pointer; font:inherit; }
+  .seg button.on { background:var(--yuzey2); color:var(--fg); font-weight:600; }
+  .sag { margin-left:auto; }
+  .tema { background:var(--yuzey2); border:1px solid var(--cizgi); color:var(--fg);
+          border-radius:9px; padding:7px 11px; cursor:pointer; font:inherit; }
+
+  .panel { position:absolute; top:84px; right:12px; bottom:12px; width:340px; z-index:3;
+           background:var(--yuzey); border:1px solid var(--cizgi); border-radius:14px;
+           padding:16px; overflow:auto; display:none; box-shadow:var(--golge); }
+  .panel h2 { margin:0 0 2px; font-size:18px; }
+  .panel .ust { color:var(--mute); font-size:12px; margin-bottom:14px; }
+  .kazanan { border:1px solid var(--cizgi); border-left:4px solid var(--mute); border-radius:12px;
+             padding:11px 13px; background:var(--yuzey2); margin-bottom:12px;
+             display:flex; align-items:center; gap:10px; }
+  .kazanan div { flex:1; min-width:0; }
+  .kazanan small { display:block; color:var(--mute); font-size:10px; text-transform:uppercase; letter-spacing:.6px; }
+  .kazanan b { font-size:14px; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .kazanan .oy { color:var(--mute); font-size:12px; }
+  .kazanan .pay { font-size:20px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .kutular { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+  .kutu { background:var(--yuzey2); border:1px solid var(--cizgi); border-radius:11px; padding:9px 11px; }
+  .kutu small { display:block; color:var(--mute); font-size:10.5px; }
+  .kutu b { font-size:15.5px; font-variant-numeric:tabular-nums; }
+  .aday { margin-bottom:10px; }
+  .aday .ad { display:flex; align-items:center; gap:8px; font-size:12.5px; }
+  .aday .ad i { width:9px; height:9px; border-radius:50%; flex:none; }
+  .aday .ad span { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .aday .ad em { font-style:normal; color:var(--mute); font-size:11.5px; font-variant-numeric:tabular-nums; }
+  .aday .ad b { width:56px; text-align:right; font-variant-numeric:tabular-nums; }
+  .aday .cubuk { height:7px; background:var(--yuzey2); border-radius:4px; overflow:hidden; margin-top:5px; }
+  .aday .cubuk span { display:block; height:100%; border-radius:4px; }
+
+  .ipucu { position:absolute; z-index:4; pointer-events:none; background:var(--yuzey);
+           border:1px solid var(--cizgi); border-radius:11px; padding:9px 12px;
+           display:none; box-shadow:var(--golge); }
+  .ipucu b { display:block; } .ipucu small { color:var(--mute); }
+  .ipucu .k { margin-top:6px; display:flex; align-items:center; gap:7px; font-size:12.5px; }
+  .ipucu .k i { width:9px; height:9px; border-radius:50%; }
+
+  .gosterge { position:absolute; left:12px; bottom:12px; z-index:3; background:var(--yuzey);
+              border:1px solid var(--cizgi); border-radius:12px; padding:10px 14px;
+              max-width:340px; box-shadow:var(--golge); }
+  .gosterge h4 { margin:0; font-size:10.5px; color:var(--mute); text-transform:uppercase; letter-spacing:.6px; }
+  .gosterge div { display:flex; gap:12px; flex-wrap:wrap; margin-top:7px; font-size:12px; }
+  .gosterge span { display:flex; align-items:center; gap:6px; }
+  .gosterge i { width:11px; height:11px; border-radius:3px; }
+  .durum { position:absolute; left:50%; transform:translateX(-50%); bottom:14px; z-index:3;
+           background:var(--yuzey); border:1px solid var(--cizgi); border-radius:20px;
+           padding:6px 15px; font-size:12px; color:var(--mute); box-shadow:var(--golge); }
+</style></head>
+<body>
+<div id="map"></div>
+
+<div class="bar">
+  <div class="brand">VeriAtlas<small>seçim haritası</small></div>
+  <div class="alan"><label for="oy">Seçim</label>
+    <select id="oy"></select></div>
+  <div class="alan"><label for="il">İl</label>
+    <select id="il"><option value="">Tüm Türkiye</option></select></div>
+  <div class="alan"><label>Harita düzeyi</label>
+    <div class="seg" id="duzey">
+      <button data-v="il">İl</button>
+      <button data-v="ilce" class="on">İlçe</button>
+      <button data-v="mahalle">Mahalle</button>
+    </div></div>
+  <div class="alan"><label>Gösterim</label>
+    <div class="seg" id="gosterim">
+      <button data-v="kazanan" class="on">Kazanan</button>
+      <button data-v="katilim">Katılım</button>
+    </div></div>
+  <div class="alan sag"><label for="ara">Hızlı arama</label>
+    <input id="ara" type="search" placeholder="ilçe ara…" list="oneri">
+    <datalist id="oneri"></datalist></div>
+  <button class="tema" id="tema" title="Tema değiştir">☾</button>
+</div>
+
+<div class="panel" id="panel"></div>
+<div class="ipucu" id="ipucu"></div>
+<div class="gosterge" id="gosterge"></div>
+<div class="durum" id="durumKutu">yükleniyor…</div>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/pmtiles@3.0.6/dist/pmtiles.js"></script>
+<script>
+const fmt = new Intl.NumberFormat("tr-TR");
+const pct = (x) => (100 * x).toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+// Candidates are matched on the shortest unambiguous part of the name: the reports write
+// them in capitals and the spelling of "İ" is not stable between years.
+const RENK = [
+  [/ERDO/i, "#e9a13b", "Erdoğan"],
+  [/KILI[CÇ]DARO/i, "#c7384f", "Kılıçdaroğlu"],
+  [/O[GĞ]AN/i, "#e8734a", "Oğan"],
+  [/[İI]NCE/i, "#4f8ff7", "İnce"],
+  [/DEM[İI]RTA/i, "#9b59d0", "Demirtaş"],
+  [/AK[ŞS]ENER/i, "#3f9c6b", "Akşener"],
+  [/[İI]HSANO/i, "#c7384f", "İhsanoğlu"],
+  [/KARAMOLLA/i, "#00897b", "Karamollaoğlu"],
+  [/PER[İI]N[CÇ]EK/i, "#b0863c", "Perinçek"],
+];
+const KATILIM = [["#08422a", "%90 ve üzeri"], ["#1b6b45", "%85–90"], ["#2f9163", "%80–85"],
+                 ["#74c69d", "%70–80"], ["#c9e8d6", "%70 altı"]];
+
+const renk = (ad) => (RENK.find(([re]) => re.test(ad)) || [0, "#6b7280"])[1];
+const kisa = (ad) => {
+  const hit = RENK.find(([re]) => re.test(ad));
+  return hit ? hit[2] : ad.split(" ").slice(-1)[0];
+};
+
+const protocol = new pmtiles.Protocol();
+maplibregl.addProtocol("pmtiles", protocol.tile);
+
+const state = { oy: "cb2023t1", duzey: "ilce", gosterim: "kazanan", il: "" };
+let ilce = {};        // area_id -> { k, o, g, v, ad }
+let ilTablo = {};     // TR-XX -> ilçelerin toplamı
+let ilSinir = {};     // TR-XX -> [batı, güney, doğu, kuzey]
+let ozet = null;      // { adaylar: [...], y: { area_id: [k, o, g, kazananIndex, oy] } }
+const detay = {};     // il -> { area_id -> tam sonuç }
+let ilAdlari = {};
+let boyaGerek = true;
+
+const map = new maplibregl.Map({
+  container: "map",
+  style: {
+    version: 8,
+    sources: {
+      il: { type: "vector", url: "pmtiles://../public/tiles/il.pmtiles", promoteId: "id" },
+      ilce: { type: "vector", url: "pmtiles://../public/tiles/ilce.pmtiles", promoteId: "id" },
+    },
+    layers: [
+      { id: "arka", type: "background", paint: { "background-color": "#0f1012" } },
+      { id: "il-dolgu", type: "fill", source: "il", "source-layer": "il",
+        layout: { visibility: "none" },
+        paint: { "fill-color": ["coalesce", ["feature-state", "renk"], "#22252b"] } },
+      { id: "ilce-dolgu", type: "fill", source: "ilce", "source-layer": "ilce",
+        paint: { "fill-color": ["coalesce", ["feature-state", "renk"], "#22252b"] } },
+      { id: "ilce-kenar", type: "line", source: "ilce", "source-layer": "ilce",
+        paint: { "line-color": "#0f1012", "line-width": 0.6, "line-opacity": 0.75 } },
+      { id: "il-kenar", type: "line", source: "il", "source-layer": "il",
+        paint: { "line-color": "#0f1012", "line-width": 1.1, "line-opacity": 0.9 } },
+      { id: "vurgu", type: "line", source: "ilce", "source-layer": "ilce",
+        filter: ["==", "id", ""], paint: { "line-color": "#ffffff", "line-width": 2 } },
+    ],
+  },
+  center: [35.2, 39.0], zoom: 5.3, minZoom: 4, maxZoom: 13,
+});
+map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
+
+const durum = (text) => { document.getElementById("durumKutu").textContent = text; };
+
+// The neighbourhood archive is 65 MB and holds fifty thousand shapes; adding it to the
+// style up front keeps the map "not loaded" for ten seconds and slows the district view
+// for a level most visits never open. So it is added the first time it is asked for.
+let mahalleKatmani = false;
+function mahalleKatmaniEkle() {
+  if (mahalleKatmani || !map.isStyleLoaded()) return mahalleKatmani;
+  map.addSource("mahalle", {
+    type: "vector", url: "pmtiles://../public/tiles/mahalle.pmtiles", promoteId: "id",
+  });
+  map.addLayer({
+    id: "mahalle-dolgu", type: "fill", source: "mahalle", "source-layer": "mahalle",
+    paint: { "fill-color": ["coalesce", ["feature-state", "renk"], "#22252b"] },
+  }, "ilce-kenar");
+  map.addLayer({
+    id: "mahalle-kenar", type: "line", source: "mahalle", "source-layer": "mahalle",
+    paint: { "line-color": "#0f1012", "line-width": 0.35, "line-opacity": 0.5 },
+  }, "ilce-kenar");
+  map.addLayer({
+    id: "vurgu-mahalle", type: "line", source: "mahalle", "source-layer": "mahalle",
+    filter: ["==", "id", ""], paint: { "line-color": "#ffffff", "line-width": 2 },
+  });
+  for (const layer of ["mahalle-dolgu", "mahalle-kenar"]) {
+    map.on("mousemove", layer, (e) => {
+      map.getCanvas().style.cursor = "pointer";
+      if (layer === "mahalle-dolgu") ipucuGoster(e, e.features[0]);
+    });
+  }
+  map.on("mouseleave", "mahalle-dolgu", () => {
+    map.getCanvas().style.cursor = "";
+    ipucu.style.display = "none";
+  });
+  map.on("click", "mahalle-dolgu", (e) => alanSec(e.features[0]));
+  mahalleKatmani = true;
+  return true;
+}
+
+// ---------- tema ----------
+function temaUygula(ad) {
+  document.documentElement.dataset.tema = ad;
+  document.getElementById("tema").textContent = ad === "koyu" ? "☾" : "☀";
+  try { localStorage.setItem("veriatlas-tema", ad); } catch { /* özel pencere */ }
+  if (!map.isStyleLoaded()) return;
+  const css = getComputedStyle(document.documentElement);
+  const oku = (name) => css.getPropertyValue(name).trim();
+  map.setPaintProperty("arka", "background-color", oku("--bg"));
+  for (const layer of ["il-dolgu", "ilce-dolgu", "mahalle-dolgu"]) {
+    if (map.getLayer(layer)) {
+      map.setPaintProperty(layer, "fill-color",
+        ["coalesce", ["feature-state", "renk"], oku("--bos")]);
+    }
+  }
+  for (const layer of ["il-kenar", "ilce-kenar", "mahalle-kenar"]) {
+    if (map.getLayer(layer)) map.setPaintProperty(layer, "line-color", oku("--kenar"));
+  }
+  for (const layer of ["vurgu", "vurgu-mahalle"]) {
+    if (map.getLayer(layer)) map.setPaintProperty(layer, "line-color", oku("--vurgu"));
+  }
+}
+document.getElementById("tema").addEventListener("click", () =>
+  temaUygula(document.documentElement.dataset.tema === "koyu" ? "acik" : "koyu"));
+
+// ---------- veri ----------
+const mahalleModu = () => state.duzey === "mahalle";
+const ilModu = () => state.duzey === "il";
+const kaynak = () => (mahalleModu() ? "mahalle" : ilModu() ? "il" : "ilce");
+
+/** Province results are the districts added up rather than a table of their own:
+ *  one source of truth, and the two levels can never disagree. */
+function ilTablosu() {
+  const out = {};
+  for (const [id, row] of Object.entries(ilce)) {
+    const ilId = id.slice(0, 5);
+    const acc = (out[ilId] = out[ilId] || { k: 0, o: 0, g: 0, v: {}, ad: ilAdlari[ilId] || ilId });
+    acc.k += row.k || 0;
+    acc.o += row.o || 0;
+    acc.g += row.g || 0;
+    for (const [ad, oy] of Object.entries(row.v || {})) acc.v[ad] = (acc.v[ad] || 0) + oy;
+  }
+  return out;
+}
+
+/** One area's result: the full breakdown when the province detail is loaded, otherwise the
+ *  five-number summary — enough to colour the map and fill a tooltip. */
+function satir(id) {
+  if (ilModu()) return ilTablo[id];
+  if (!mahalleModu()) return ilce[id];
+  const il = (id || "").slice(0, 5);
+  if (detay[il] && detay[il][id]) return detay[il][id];
+  const az = ozet && ozet.y[id];
+  if (!az) return null;
+  return { k: az[0], o: az[1], g: az[2], v: { [ozet.adaylar[az[3]]]: az[4] }, kismi: true };
+}
+
+function kazanan(row) {
+  const list = Object.entries(row.v || {}).sort((a, b) => b[1] - a[1]);
+  return list.length ? list[0] : null;
+}
+function katilimRengi(row) {
+  const oran = row.k ? row.o / row.k : 0;
+  if (oran >= 0.9) return KATILIM[0][0];
+  if (oran >= 0.85) return KATILIM[1][0];
+  if (oran >= 0.8) return KATILIM[2][0];
+  if (oran >= 0.7) return KATILIM[3][0];
+  return KATILIM[4][0];
+}
+
+function kimlikler() {
+  if (mahalleModu()) return ozet ? Object.keys(ozet.y) : [];
+  return Object.keys(ilModu() ? ilTablo : ilce);
+}
+
+function boya() {
+  const source = kaynak();
+  const ids = kimlikler();
+  if (!ids.length) return false;
+  try {
+    map.setFeatureState({ source, sourceLayer: source, id: ids[0] }, {});
+  } catch {
+    return false;  // stil henüz hazır değil
+  }
+  for (const id of ids) {
+    const row = satir(id);
+    if (!row) continue;
+    const win = kazanan(row);
+    map.setFeatureState({ source, sourceLayer: source, id },
+      { renk: state.gosterim === "katilim" ? katilimRengi(row) : win ? renk(win[0]) : null });
+  }
+  map.triggerRepaint();
+  gosterge();
+  return true;
+}
+
+function gosterge() {
+  const box = document.getElementById("gosterge");
+  if (state.gosterim === "katilim") {
+    box.innerHTML = `<h4>Katılım oranı</h4><div>${KATILIM.map(
+      ([c, l]) => `<span><i style="background:${c}"></i>${l}</span>`).join("")}</div>`;
+    return;
+  }
+  const say = new Map();
+  for (const id of kimlikler()) {
+    const row = satir(id);
+    const win = row && kazanan(row);
+    if (win) say.set(kisa(win[0]), (say.get(kisa(win[0])) || 0) + 1);
+  }
+  const sirali = [...say].sort((a, b) => b[1] - a[1]);
+  box.innerHTML = `<h4>Haritadaki adaylar · ${mahalleModu() ? "mahalle" : "ilçe"} sayısı</h4>
+    <div>${sirali.map(([ad, n]) =>
+      `<span><i style="background:${renk(ad)}"></i>${ad}
+        <em style="font-style:normal;color:var(--mute)">${fmt.format(n)}</em></span>`).join("")}</div>`;
+}
+
+function panelAc(id, ad) {
+  const row = satir(id);
+  const panel = document.getElementById("panel");
+  if (!row) { panel.style.display = "none"; return; }
+  const list = Object.entries(row.v || {}).sort((a, b) => b[1] - a[1]);
+  const gecerli = row.g || list.reduce((s, [, v]) => s + v, 0);
+  const win = list[0];
+  panel.style.display = "block";
+  panel.innerHTML = `
+    <h2>${ad || ""}</h2>
+    <div class="ust">${ilAdlari[(id || "").slice(0, 5)] || ""}</div>
+    <div class="kazanan" style="border-left-color:${renk(win[0])}">
+      <div><small>En yüksek oy</small><b>${win[0]}</b>
+        <span class="oy">${fmt.format(win[1])} oy</span></div>
+      <span class="pay">%${pct(win[1] / gecerli)}</span></div>
+    <div class="kutular">
+      <div class="kutu"><small>Kayıtlı seçmen</small><b>${fmt.format(row.k)}</b></div>
+      <div class="kutu"><small>Oy kullanan</small><b>${fmt.format(row.o)}</b></div>
+      <div class="kutu"><small>Geçerli oy</small><b>${fmt.format(gecerli)}</b></div>
+      <div class="kutu"><small>Katılım oranı</small><b>%${pct(row.o / row.k)}</b></div>
+    </div>
+    ${row.kismi ? '<div class="ust">yalnız kazanan gösteriliyor — tam döküm için tıklayın</div>' : ""}
+    ${list.map(([ad2, v]) => `
+      <div class="aday">
+        <div class="ad"><i style="background:${renk(ad2)}"></i><span>${ad2}</span>
+          <em>${fmt.format(v)} oy</em><b>%${pct(v / gecerli)}</b></div>
+        <div class="cubuk"><span style="width:${(100 * v) / gecerli}%;background:${renk(ad2)}"></span></div>
+      </div>`).join("")}`;
+}
+
+async function jsonYukle(url) {
+  try {
+    const response = await fetch(url);
+    return response.ok ? await response.json() : null;
+  } catch {
+    return null;
+  }
+}
+
+async function veriYukle() {
+  durum("veri yükleniyor…");
+  ilce = (await jsonYukle(`../public/tiles/secim-${state.oy}-ilce.json`)) || {};
+  if (mahalleModu() && !ozet) {
+    ozet = await jsonYukle(`../public/tiles/secim-${state.oy}-mahalle-ozet.json`);
+  }
+  if (!document.getElementById("oy").options.length) {
+    const secimler = (await jsonYukle("../public/tiles/secimler.json")) || [];
+    const kutu = document.getElementById("oy");
+    for (const secim of secimler) {
+      const option = document.createElement("option");
+      option.value = secim.anahtar;
+      option.textContent = secim.ad;
+      kutu.appendChild(option);
+    }
+    if (secimler.length && !secimler.some((v) => v.anahtar === state.oy)) {
+      state.oy = secimler[0].anahtar;
+    }
+    kutu.value = state.oy;
+  }
+  if (!Object.keys(ilSinir).length) {
+    ilSinir = (await jsonYukle("../public/tiles/il-sinirlar.json")) || {};
+  }
+  if (!Object.keys(ilAdlari).length) {
+    ilAdlari = (await jsonYukle("../public/tiles/il-adlari.json")) || {};
+    const secim = document.getElementById("il");
+    for (const id of Object.keys(ilAdlari).sort()) {
+      const option = document.createElement("option");
+      option.value = id;
+      option.textContent = `${id.slice(3)} · ${ilAdlari[id]}`;
+      secim.appendChild(option);
+    }
+  }
+  ilTablo = ilTablosu();
+  document.getElementById("oneri").innerHTML =
+    Object.values(ilce).map((row) => `<option value="${row.ad}">`).join("");
+}
+
+function duzeyUygula() {
+  if (!map.isStyleLoaded()) return;
+  const goster = (layer, on) => {
+    if (map.getLayer(layer)) map.setLayoutProperty(layer, "visibility", on ? "visible" : "none");
+  };
+  if (mahalleModu()) mahalleKatmaniEkle();
+  goster("il-dolgu", ilModu());
+  goster("ilce-dolgu", !mahalleModu() && !ilModu());
+  goster("mahalle-dolgu", mahalleModu());
+  goster("mahalle-kenar", mahalleModu());
+  // District borders stay on above the neighbourhood layer: without them the country
+  // dissolves into fifty thousand shapes and nothing is recognisable.
+  goster("ilce-kenar", !ilModu());
+  goster("il-kenar", true);
+  const filtre = state.il ? ["==", ["slice", ["get", "id"], 0, 5], state.il] : null;
+  if (map.getLayer("mahalle-dolgu")) {
+    map.setFilter("mahalle-dolgu", filtre);
+    map.setFilter("mahalle-kenar", filtre);
+  }
+}
+
+async function yenile() {
+  await veriYukle();
+  boyaGerek = true;
+  duzeyUygula();
+  document.getElementById("panel").style.display = "none";
+  // Guarded: setFilter throws while the style is still loading, and the throw used to
+  // abort the refresh half way — the map kept saying "veri yükleniyor" with the data
+  // already in memory.
+  if (map.isStyleLoaded()) {
+    map.setFilter("vurgu", ["==", "id", ""]);
+    if (map.getLayer("vurgu-mahalle")) map.setFilter("vurgu-mahalle", ["==", "id", ""]);
+  }
+  durum(mahalleModu()
+    ? `${fmt.format(ozet ? Object.keys(ozet.y).length : 0)} yerleşim`
+    : ilModu()
+      ? `${fmt.format(Object.keys(ilTablo).length)} il`
+      : `${fmt.format(Object.keys(ilce).length)} ilçe`);
+}
+
+// Painting is retried on a timer: setFeatureState throws while the style is still loading,
+// and the data can arrive after the map has gone idle — after which no event comes and the
+// map would sit there uncoloured.
+setInterval(() => {
+  if (!boyaGerek) return;
+  duzeyUygula();
+  if (boya()) {
+    boyaGerek = false;
+    temaUygula(document.documentElement.dataset.tema);
+  }
+}, 300);
+
+let baslangicTema = "koyu";
+try { baslangicTema = localStorage.getItem("veriatlas-tema") || "koyu"; } catch { /* yok */ }
+temaUygula(baslangicTema);
+yenile();
+
+// ---------- etkileşim ----------
+const ipucu = document.getElementById("ipucu");
+function ipucuGoster(e, feature) {
+  const row = satir(feature.properties.id);
+  const win = row && kazanan(row);
+  ipucu.style.display = "block";
+  ipucu.style.left = Math.min(e.point.x + 16, innerWidth - 260) + "px";
+  ipucu.style.top = Math.min(e.point.y + 16, innerHeight - 120) + "px";
+  ipucu.innerHTML = `<b>${feature.properties.ad || ""}</b>
+    <small>${ilAdlari[(feature.properties.id || "").slice(0, 5)] || ""}</small>` +
+    (row
+      ? state.gosterim === "katilim"
+        ? `<div class="k"><i style="background:${katilimRengi(row)}"></i>Katılım %${pct(row.o / row.k)}</div>`
+        : `<div class="k"><i style="background:${renk(win[0])}"></i>${kisa(win[0])} %${pct(win[1] / (row.g || 1))}</div>`
+      : '<div class="k"><small>veri yok</small></div>');
+}
+
+async function alanSec(feature) {
+  const id = feature.properties.id;
+  if (mahalleModu()) {
+    const il = id.slice(0, 5);
+    if (!detay[il]) {
+      durum("mahalle dökümü yükleniyor…");
+      detay[il] = (await jsonYukle(
+        `../public/tiles/secim-${state.oy}-mahalle-${il}.json`)) || {};
+      durum(`${fmt.format(ozet ? Object.keys(ozet.y).length : 0)} yerleşim`);
+    }
+    if (map.getLayer("vurgu-mahalle")) map.setFilter("vurgu-mahalle", ["==", "id", id]);
+  } else if (!ilModu()) {
+    map.setFilter("vurgu", ["==", "id", id]);
+  }
+  panelAc(id, ilModu() ? ilAdlari[id] || feature.properties.ad : feature.properties.ad);
+}
+
+for (const layer of ["il-dolgu", "ilce-dolgu"]) {
+  const kendiDuzeyi = layer === "il-dolgu" ? ilModu : () => !ilModu() && !mahalleModu();
+  map.on("mousemove", layer, (e) => {
+    if (!kendiDuzeyi()) return;
+    map.getCanvas().style.cursor = "pointer";
+    ipucuGoster(e, e.features[0]);
+  });
+  map.on("mouseleave", layer, () => {
+    map.getCanvas().style.cursor = "";
+    ipucu.style.display = "none";
+  });
+  map.on("click", layer, (e) => { if (kendiDuzeyi()) alanSec(e.features[0]); });
+}
+
+document.getElementById("oy").addEventListener("change", async (e) => {
+  state.oy = e.target.value;
+  ozet = null;
+  for (const key of Object.keys(detay)) delete detay[key];
+  await yenile();
+});
+
+document.getElementById("il").addEventListener("change", async (e) => {
+  state.il = e.target.value;
+  if (state.il) {
+    const kutu = ilSinir[state.il];
+    if (kutu) {
+      map.fitBounds([[kutu[0], kutu[1]], [kutu[2], kutu[3]]], { padding: 60, duration: 700 });
+    }
+  } else {
+    map.flyTo({ center: [35.2, 39.0], zoom: 5.3, duration: 700 });
+  }
+  await yenile();
+});
+
+document.getElementById("duzey").addEventListener("click", async (e) => {
+  const button = e.target.closest("button[data-v]");
+  if (!button) return;
+  document.querySelectorAll("#duzey button").forEach((b) => b.classList.toggle("on", b === button));
+  state.duzey = button.dataset.v;
+  await yenile();
+});
+
+document.getElementById("gosterim").addEventListener("click", (e) => {
+  const button = e.target.closest("button[data-v]");
+  if (!button) return;
+  document.querySelectorAll("#gosterim button").forEach((b) => b.classList.toggle("on", b === button));
+  state.gosterim = button.dataset.v;
+  boyaGerek = true;
+});
+
+document.getElementById("ara").addEventListener("change", (e) => {
+  const aranan = e.target.value.trim().toLocaleLowerCase("tr");
+  const hit = Object.entries(ilce).find(([, row]) =>
+    (row.ad || "").toLocaleLowerCase("tr") === aranan);
+  if (!hit) return;
+  panelAc(hit[0], hit[1].ad);
+  map.setFilter("vurgu", ["==", "id", hit[0]]);
+});
+</script>
+</body></html>
