@@ -54,6 +54,11 @@ label_tr = "Enerji"
 label_en = "Energy"
 order = 45
 
+[topic.ulasim]
+label_tr = "Motorlu taşıtlar"
+label_en = "Motor vehicles"
+order = 47
+
 # endregion
 
 # region Dimensions — the breakdown keys and what their stored values are called
@@ -332,6 +337,323 @@ widowed = "Eşi öldü"
 # somewhere would be inventing an answer TÜİK did not give. Disappears from the recent
 # years — the column is simply absent, not zero.
 unknown = "Bilinmeyen"
+
+# Motor vehicles (adapters/tuik_vehicles.py). Brand and engine size are stored by MEDAS
+# code; the names below are the labels.
+[dim.vehicle_type]
+label_tr = "Taşıt türü"
+label_en = "Vehicle type"
+
+[dim.vehicle_type.values]
+car = "Otomobil"
+minibus = "Minibüs"
+bus = "Otobüs"
+pickup = "Kamyonet"
+truck = "Kamyon"
+motorcycle = "Motosiklet"
+special_purpose = "Özel amaçlı taşıt"
+construction_machinery = "Yol ve iş makinası"
+tractor = "Traktör"
+
+[dim.registration]
+label_tr = "Kayıt durumu"
+label_en = "Registration status"
+
+[dim.registration.values]
+registered = "Kaydı yapılan"
+deregistered = "Kaydı silinen"
+
+[dim.fuel]
+label_tr = "Yakıt türü"
+label_en = "Fuel"
+
+[dim.fuel.values]
+petrol = "Benzin"
+diesel = "Dizel"
+lpg = "LPG"
+hybrid = "Hibrit"
+electric = "Elektrik"
+unknown = "Bilinmiyor"
+
+# TÜİK's bands are not one scheme: motorcycles are 125-/126+, cars 1300-…2000+, heavy
+# vehicles 3999-…10000+. Bands from different schemes overlap, so only a vehicle type's
+# own bands add up; across the whole list they do not partition anything.
+[dim.engine_size]
+label_tr = "Motor silindir hacmi (cm³)"
+label_en = "Engine size (cc)"
+
+[dim.engine_size.values]
+"1" = "125 ve altı"
+"2" = "126 ve üzeri"
+"3" = "1300 ve altı"
+"4" = "1301-1400"
+"5" = "1399 ve altı"
+"6" = "1400-1999"
+"7" = "1401-1500"
+"8" = "1501-1600"
+"9" = "1601-2000"
+"10" = "1999 ve altı"
+"11" = "2000 ve üzeri"
+"12" = "2000-2499"
+"13" = "2000-2999"
+"14" = "2001 ve üzeri"
+"15" = "2500 ve üzeri"
+"16" = "3000-3999"
+"17" = "3999 ve altı"
+"18" = "4000 ve üzeri"
+"19" = "4000-5999"
+"20" = "4000-9999"
+"21" = "6000-9999"
+"22" = "10000 ve üzeri"
+"99" = "Bilinmeyen"
+
+[dim.brand]
+label_tr = "Marka"
+label_en = "Brand"
+
+[dim.brand.values]
+"10680" = "Alfa Romeo"
+"10800" = "Alpıne"
+"10950" = "Anadol"
+"11010" = "Antonıo Carraro"
+"11090" = "Aprilia"
+"11160" = "Arctıc Cat"
+"11300" = "Arora"
+"11350" = "Artrak"
+"11450" = "Asya"
+"11560" = "Audı"
+"11590" = "Austın"
+"12010" = "Başak"
+"12140" = "Bedford"
+"12200" = "Beldeyama"
+"12220" = "Benelli"
+"12230" = "Bentley"
+"12550" = "Bisan"
+"12620" = "Bmc"
+"12640" = "Bmw"
+"12890" = "Breda Menarınıbus"
+"13210" = "Byd"
+"13380" = "Case"
+"13540" = "Cfmoto"
+"13620" = "Chery"
+"13650" = "Chevrolet"
+"13710" = "Chrysler"
+"13750" = "Cıtroen"
+"13760" = "Claas"
+"13900" = "Commer"
+"14320" = "Cz"
+"14550" = "Dacıa"
+"14580" = "Daelim"
+"14600" = "Daf"
+"14620" = "Daıhatsu"
+"14980" = "Derbi"
+"15040" = "Desoto"
+"15100" = "Deutz"
+"15250" = "Diger"
+"15300" = "Dodge"
+"15500" = "Ducatı"
+"15590" = "Efe"
+"16060" = "Erkunt"
+"16300" = "Falcon"
+"16310" = "Fargo"
+"16330" = "Farmtrac"
+"16410" = "Fendt"
+"16510" = "Ferrarı"
+"16540" = "Fesan"
+"16560" = "Fıat"
+"16750" = "Ford"
+"16780" = "Foton"
+"17100" = "Gas Gas"
+"17120" = "Gaz"
+"17130" = "Geely"
+"17310" = "Gilera"
+"17760" = "Güleryüz"
+"18080" = "Haojue"
+"18110" = "Harley Davıdson"
+"18270" = "Hattat"
+"18470" = "Hıno"
+"18540" = "Hiscar"
+"18610" = "Holder"
+"18640" = "Honda"
+"18830" = "Husqvarna"
+"18910" = "Hyundaı"
+"18940" = "Ije"
+"18990" = "Ikco"
+"19050" = "Infınıtı"
+"19070" = "Inter"
+"19100" = "Internatınol"
+"19180" = "Isuzu"
+"19240" = "Itmco"
+"19250" = "Iveco(Otoyol)"
+"19400" = "İtaljet"
+"19440" = "Jaguar"
+"19470" = "Jawa"
+"19510" = "Jeep"
+"19690" = "John Deere"
+"20050" = "Kanuni"
+"20110" = "Karsan"
+"20180" = "Kawasakı"
+"20340" = "Kıa"
+"20400" = "Kıotı"
+"20730" = "Kral"
+"20770" = "Krone"
+"20790" = "Ktm"
+"20810" = "Kuba"
+"20820" = "Kubota"
+"20870" = "Kymco"
+"20900" = "Lada"
+"20970" = "Lamborghını"
+"21010" = "Lancıa"
+"21020" = "Land Rover"
+"21030" = "Landını"
+"21200" = "Levent"
+"21230" = "Leyland"
+"21410" = "Lifan"
+"21520" = "Loncın"
+"21570" = "Ls"
+"21620" = "M.E.Z."
+"21710" = "Otokar"
+"21750" = "Mahındra"
+"21800" = "Malagutı"
+"21820" = "Man"
+"21980" = "Massey Ferguson"
+"22090" = "Mazda"
+"22120" = "Mccormıck"
+"22260" = "Mercedes-Benz"
+"22450" = "Mg"
+"22560" = "Mını"
+"22620" = "Mıtsubıshı"
+"22710" = "Mobylette"
+"22760" = "Mondıal"
+"22900" = "Motoguzı"
+"22920" = "Motoran"
+"23040" = "Murat(Tofas)"
+"23110" = "Mv Agusta"
+"23130" = "Mz"
+"23280" = "Neoplan"
+"23370" = "New Holland"
+"23430" = "Nıssan"
+"23830" = "Opel"
+"24820" = "Peugeot"
+"24880" = "Pıaggıo"
+"24960" = "Planet"
+"25070" = "Porsche"
+"25290" = "Puch"
+"25320" = "Pumarex"
+"25390" = "Quswa"
+"25570" = "Regal-Raptor"
+"25610" = "Renault"
+"25700" = "Rıeju"
+"25770" = "Rks"
+"25960" = "Rover"
+"26040" = "Saab"
+"26130" = "Salcano"
+"26170" = "Sam"
+"26190" = "Same"
+"26490" = "Scanıa"
+"26630" = "Seat"
+"26680" = "Seger"
+"26840" = "Setra"
+"27200" = "Skoda"
+"27220" = "Skyjet"
+"27230" = "Skyteam"
+"27250" = "Smart"
+"27340" = "Solıs"
+"27670" = "Steyr"
+"27690" = "Stmax"
+"27760" = "Subaru"
+"27880" = "Suzukı"
+"27920" = "Sym"
+"28180" = "Tafe"
+"28310" = "Tatra"
+"28480" = "Temsa"
+"28540" = "Tesla"
+"28950" = "Toyota"
+"29080" = "Trıumph"
+"29280" = "Tümosan"
+"29320" = "Tvs"
+"29500" = "Unıversal"
+"29580" = "Uzel"
+"29750" = "Valtra"
+"29910" = "Vespa"
+"30050" = "Volkswagen"
+"30080" = "Volvo"
+"30610" = "Yalçın Dorse"
+"30640" = "Yamaha"
+"30940" = "Yuki"
+"31130" = "Zetor"
+"31230" = "Zorro"
+"31280" = "E-Mon"
+"31290" = "Smc"
+"31300" = "Hero"
+"31310" = "Ds"
+"31380" = "Altaı"
+"31400" = "Arnıca"
+"31960" = "Karataş"
+"32040" = "Magırus"
+"32120" = "Motolux"
+"32590" = "Zelsun"
+"32600" = "Zontes"
+"32620" = "Askoll"
+"32630" = "Brıxton"
+"32750" = "Yanmar"
+"32760" = "Menarınıbus"
+"32770" = "Fuso"
+"32780" = "Cupra"
+"32790" = "Sılence"
+"32800" = "Govecs"
+"32810" = "Horwın"
+"32820" = "Lambretta"
+"32830" = "Um"
+"32840" = "Voge"
+"32850" = "Royal Alloy"
+"32870" = "Rakun"
+"32880" = "Magırus(Otokar)"
+"32890" = "Rutec"
+"32910" = "Energıca"
+"32920" = "Segway"
+"32930" = "Qjmotor"
+"32970" = "Bsa"
+"32980" = "Carver"
+"32990" = "Neta"
+"33000" = "Csn"
+"33010" = "Tromox"
+"33020" = "Fantıc Motor"
+"33030" = "Kamax"
+"33040" = "Moto Morını"
+"33050" = "Akeso"
+"33060" = "Jaecoo"
+"33080" = "Barossa"
+"33090" = "Benda"
+"33110" = "Devıncı"
+"33120" = "Dofern"
+"33130" = "Easycool"
+"33140" = "Indıan Motorcycle"
+"33150" = "Jpn Motor"
+"33160" = "Karoval Motorworks"
+"33170" = "Kımmı"
+"33180" = "Leksas"
+"33200" = "Meka"
+"33210" = "Meka Motor"
+"33220" = "Memnun"
+"33240" = "Rm Rüzgar Motor"
+"33250" = "Saıge"
+"33260" = "Slane"
+"33270" = "Swm"
+"33280" = "Taktas"
+"33290" = "Togo"
+"33310" = "Vanderhall"
+"33320" = "Vmoto"
+"33330" = "Altemur"
+"33340" = "Sfd Motor"
+"33350" = "Cenntro"
+"33360" = "Lvneng"
+"33380" = "Znen"
+"33390" = "Sfm"
+"33400" = "Quazzar"
+"33410" = "Musatti"
+"33420" = "Mılyon Moto"
+"33430" = "Togg"
 
 # endregion
 
@@ -667,6 +989,24 @@ label_tr = "daire"
 label_en = "dwellings"
 decimals = 0
 additive = true
+
+[unit.vehicle]
+label_tr = "taşıt"
+label_en = "vehicles"
+decimals = 0
+additive = true
+
+[unit.per_thousand_people]
+label_tr = "bin kişide"
+label_en = "per 1,000 people"
+decimals = 0
+additive = false
+
+[unit.years]
+label_tr = "yıl"
+label_en = "years"
+decimals = 1
+additive = false
 
 # endregion
 
@@ -1720,6 +2060,90 @@ frequency = "quarterly"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "Ruhsat verilen daire sayısı. Bina sayısıyla karıştırılmamalı."
+
+# MEDAS motorlu kara taşıtları, 2026-09-13 (adapters/tuik_vehicles.py).
+[indicator.vehicle_registrations]
+label_tr = "Kaydı yapılan ve silinen taşıt"
+label_en = "Vehicle registrations and deregistrations"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["registration", "vehicle_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Yıl içinde trafiğe kaydı yapılan ve kaydı silinen taşıt sayısı (akım, stok değil)."
+
+[indicator.vehicles_by_fuel]
+label_tr = "Trafiğe kayıtlı taşıt (yakıt türüne göre)"
+label_en = "Registered vehicles by fuel"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["fuel"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Yıl sonunda trafiğe kayıtlı taşıt sayısı (stok)."
+
+[indicator.vehicles_newly_registered]
+label_tr = "Trafiğe kaydı yapılan taşıt (marka ve türe göre)"
+label_en = "Newly registered vehicles by brand and type"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["brand", "vehicle_type"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.vehicles_newly_registered_by_fuel]
+label_tr = "Trafiğe kaydı yapılan taşıt (yakıt türüne göre)"
+label_en = "Newly registered vehicles by fuel"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["fuel"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.vehicles_newly_registered_by_engine]
+label_tr = "Trafiğe kaydı yapılan taşıt (silindir hacmine göre)"
+label_en = "Newly registered vehicles by engine size"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["engine_size"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.vehicles_transferred]
+label_tr = "Devri yapılan taşıt (marka ve türe göre)"
+label_en = "Vehicles changing owner by brand and type"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["brand", "vehicle_type"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.cars_per_thousand]
+label_tr = "Bin kişi başına otomobil"
+label_en = "Cars per 1,000 people"
+topic = "ulasim"
+unit = "per_thousand_people"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.vehicle_mean_age]
+label_tr = "Trafiğe kayıtlı taşıtların ortalama yaşı"
+label_en = "Mean age of registered vehicles"
+topic = "ulasim"
+unit = "years"
+frequency = "annual"
+dims = ["vehicle_type"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.transferred_vehicle_mean_age]
+label_tr = "Devri yapılan taşıtların ortalama yaşı"
+label_en = "Mean age of vehicles changing owner"
+topic = "ulasim"
+unit = "years"
+frequency = "annual"
+dims = ["vehicle_type"]
+views = ["table", "map", "line", "bar"]
 
 # endregion
 

@@ -123,6 +123,16 @@ DATASETS = {
     "electricity_consumption_per_capita": "electricity-consumption-per-capita.csv",
     "electricity_generation": "electricity-generation.csv",
     "installed_capacity": "installed-capacity.csv",
+    # Motor vehicles (adapters/tuik_vehicles).
+    "vehicle_registrations": "vehicle-registrations.csv",
+    "vehicles_by_fuel": "vehicles-by-fuel.csv",
+    "vehicles_newly_registered": "vehicles-newly-registered.csv",
+    "vehicles_newly_registered_by_fuel": "vehicles-newly-registered-by-fuel.csv",
+    "vehicles_newly_registered_by_engine": "vehicles-newly-registered-by-engine.csv",
+    "vehicles_transferred": "vehicles-transferred.csv",
+    "cars_per_thousand": "cars-per-thousand.csv",
+    "vehicle_mean_age": "vehicle-mean-age.csv",
+    "transferred_vehicle_mean_age": "transferred-vehicle-mean-age.csv",
     **{
         name: name.replace("_", "-") + ".csv"
         for name in (

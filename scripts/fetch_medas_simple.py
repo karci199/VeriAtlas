@@ -265,6 +265,15 @@ MEASURES = [
     ("tasit-04", VEHICLES, "Bin kişi başına otomobil sayısı", False),  # 1
     ("tasit-05", VEHICLES, "Trafiğe kayıtlı taşıtların ortalama yaşları", True),  # 8
     ("tasit-06", VEHICLES, "Devri yapılan taşıtların ortalama yaşları", True),  # 8
+    # "Every breakdown on" does not cross them all: 01 came back as kayıt durumu × araç
+    # türü only, 02 and 03 as marka × araç türü. The rest are asked for one at a time.
+    ("tasit-01-yakit", VEHICLES, "Motorlu Kara Taşıt Sayısı", "Yakıt türü"),
+    ("tasit-01-yas", VEHICLES, "Motorlu Kara Taşıt Sayısı", "Yaş grubu"),
+    ("tasit-01-marka", VEHICLES, "Motorlu Kara Taşıt Sayısı", "Marka"),
+    ("tasit-02-yakit", VEHICLES, "Trafiğe Kaydı Yapılan Motorlu", "Yakıt türü"),
+    ("tasit-02-silindir", VEHICLES, "Trafiğe Kaydı Yapılan Motorlu", "Motor silindir"),
+    ("tasit-02-renk", VEHICLES, "Trafiğe Kaydı Yapılan Motorlu", "Renk"),
+    ("tasit-03-yas", VEHICLES, "Devri yapılan motorlu kara", "Yaş grubu"),
 ]
 
 #: The Düzey box labels for the levels kept here.
