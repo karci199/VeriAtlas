@@ -9,6 +9,7 @@ from .tuik_marital import TuikMarital
 from .tuik_median_age import TuikMedianAge
 from .tuik_migration_matrix import TuikMigrationMatrix
 from .tuik_neighbourhoods import TuikNeighbourhoodPopulation
+from .tuik_origin_district import ORIGIN_ADAPTERS
 from .tuik_population import TuikPopulationAgeSex
 from .tuik_registry import TuikRegistryPopulation
 from .tuik_simple import NARROW_ADAPTERS
@@ -40,12 +41,15 @@ ADAPTERS = {
     # The same two events at district level are *different measures* in MEDAS, with
     # different codes in the header and shorter series. Their own parser for that reason.
     **DISTRICT_VITAL_ADAPTERS,
+    # District × province squares: hemşehrilik, diaspora, birthplace.
+    **ORIGIN_ADAPTERS,
 }
 
 __all__ = [
     "ADAPTERS",
     "DISTRICT_VITAL_ADAPTERS",
     "NARROW_ADAPTERS",
+    "ORIGIN_ADAPTERS",
     "VITAL_ADAPTERS",
     "Adapter",
     "Manifest",

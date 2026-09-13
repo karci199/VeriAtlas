@@ -81,6 +81,37 @@ def test_mean_checks_coverage_not_sum():
         check_districts_add_up(frame(rows), "household_size", additive=False)
 
 
+BIRTHPLACE = """||Sütunlar||||
+Satırlar||İkamet Edilen Ilçelere Göre Doğum Yerleri||||
+||Doğum Yeri:Adana|Doğum Yeri:Adıyaman|Doğum Yeri:Yurtdışı|
+||||
+2025|Adana(Aladağ)-1757|14518.0|-9.98E8|12.0|
+"""
+
+
+def test_suppressed_birthplace_cell_is_withheld_not_a_number(tmp_path):
+    """MEDAS writes a withheld cell as -9.98E8; read as a count it takes a billion
+    people off the district."""
+    from veriatlas.adapters.tuik_origin_district import (
+        MEASURES as ORIGIN,
+    )
+    from veriatlas.adapters.tuik_origin_district import (
+        provinces_by_name,
+        read_square,
+    )
+
+    path = tmp_path / "nufus-dogumyeri-ilce-adana-2025-2025.csv"
+    path.write_text(BIRTHPLACE, encoding="utf-8")
+    rows, withheld = read_square(
+        path, ORIGIN["dogumyeri"], provinces_by_name(), districts_by_code()
+    )
+    assert withheld == 1
+    assert {row["dims"]: row["value"] for row in rows} == {
+        "birth_province=TR-01": 14518.0,
+        "birth_province=abroad": 12.0,
+    }
+
+
 def test_spouse_ages_read_from_one_label_are_not_swapped():
     """Both spouses share a label; a reader that took the first band for both would put
     every marriage on the diagonal and still sum to the right total."""

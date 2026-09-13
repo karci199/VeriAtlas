@@ -97,6 +97,23 @@ no_nuclear_family = "Çekirdek ailesiz, çok kişili"
 label_tr = "Göç edilen bölge"
 label_en = "Destination region"
 
+[dim.registry_province]
+label_tr = "Nüfusa kayıtlı olunan il"
+label_en = "Province of registration"
+# Values are province ids (TR-01 … TR-81); their Turkish is the area register's name.
+
+[dim.residence_province]
+label_tr = "İkamet edilen il"
+label_en = "Province of residence"
+
+[dim.birth_province]
+label_tr = "Doğum yeri"
+label_en = "Province of birth"
+
+[dim.birth_province.values]
+abroad = "Yurt dışı"
+unknown = "Bilinmeyen"
+
 [dim.household_size_band]
 label_tr = "Hanehalkı büyüklüğü"
 label_en = "Household size"
@@ -1126,6 +1143,45 @@ dims = ["sex"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 İlde ikamet eden yabancı uyruklu kişi sayısı, cinsiyet kırılımıyla."""
+
+[indicator.population_by_registry_province]
+label_tr = "İlçe nüfusu (nüfusa kayıtlı olunan ile göre)"
+label_en = "District residents by province of registration"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["registry_province"]
+views = ["table", "bar"]
+definition_tr = """
+İlçede yaşayanların nüfus kütüğünün hangi ilde olduğu — hemşehrilik. Satır toplamı \
+ilçe nüfusudur. Yıllar 2007, 2015, 2025."""
+
+[indicator.registered_by_residence_province]
+label_tr = "İlçeye kayıtlı nüfus (ikamet edilen ile göre)"
+label_en = "People registered to the district by province of residence"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["residence_province"]
+views = ["table", "bar"]
+definition_tr = """
+Nüfusu ilçeye kayıtlı olanların bugün hangi ilde yaşadığı — ilçenin diasporası. \
+Yıllar 2008, 2015, 2025."""
+
+[indicator.population_by_birth_province]
+label_tr = "İlçe nüfusu (doğum yerine göre)"
+label_en = "District residents by province of birth"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["birth_province"]
+views = ["table", "bar"]
+definition_tr = """
+İlçede yaşayanların doğduğu il; yurt dışında doğanlar ayrı. Kaynak küçük hücreleri \
+gizler, bu yüzden toplam ilçe nüfusundan biraz az olabilir. Yıllar 2014, 2015, 2025."""
 
 [indicator.registry_population]
 label_tr = "Kütük nüfusu"

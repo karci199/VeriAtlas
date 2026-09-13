@@ -148,6 +148,82 @@ ROLLED_UP: dict[str, tuple[str, ...]] = {
 }
 
 
+#: District × province squares (hemşehrilik, diaspora, birthplace). ~700 thousand rows
+#: together, so the page gets a summary per district-year instead of the square.
+ORIGIN_INDICATORS = (
+    "population_by_registry_province",
+    "registered_by_residence_province",
+    "population_by_birth_province",
+)
+ORIGIN_SUMMARY = "origin-district-summary.csv"
+ORIGIN_TOP = 10
+
+
+def export_origin_summary(fact: pl.DataFrame, areas: pl.DataFrame) -> None:
+    """Per indicator, district and year: the district's own province, abroad/unknown where
+    the square has them, and the ten largest other provinces — each with its share of
+    the row total. Rank 0 is the own province; shares are of what the source published
+    (withheld birthplace cells are not in the denominator)."""
+    rows = fact.filter(pl.col("indicator_id").is_in(ORIGIN_INDICATORS))
+    if rows.height == 0:
+        return
+    names = areas.select(
+        pl.col("area_id").alias("origin_id"), pl.col("name_tr").alias("origin")
+    )
+    slim = (
+        rows.select(
+            "indicator_id",
+            "area_id",
+            pl.col("period_start").dt.year().alias("year"),
+            pl.col("dims").str.extract(r"=([^;]+)").alias("origin_id"),
+            "value",
+        )
+        .with_columns(
+            (
+                pl.col("value")
+                / pl.col("value").sum().over("indicator_id", "area_id", "year")
+            )
+            .round(5)
+            .alias("share"),
+            (pl.col("origin_id") == pl.col("area_id").str.slice(0, 5)).alias("own"),
+            pl.col("origin_id").str.starts_with("TR-").alias("province"),
+        )
+        .with_columns(
+            pl.col("value")
+            .rank("ordinal", descending=True)
+            .over("indicator_id", "area_id", "year", "own", "province")
+            .alias("rank")
+        )
+    )
+    kept = (
+        slim.filter(
+            pl.col("own") | ~pl.col("province") | (pl.col("rank") <= ORIGIN_TOP)
+        )
+        .with_columns(
+            pl.when(pl.col("own")).then(0).otherwise(pl.col("rank")).alias("rank")
+        )
+        .join(
+            areas.select("area_id", pl.col("name_tr").alias("area")),
+            on="area_id",
+            how="left",
+        )
+        .join(names, on="origin_id", how="left")
+        .select(
+            "indicator_id",
+            "area_id",
+            "area",
+            "year",
+            "rank",
+            "origin_id",
+            "origin",
+            pl.col("value").cast(pl.Int64),
+            "share",
+        )
+        .sort("indicator_id", "area_id", "year", "rank")
+    )
+    report(PUBLIC / ORIGIN_SUMMARY, kept)
+
+
 def export_dictionary(
     loaded: set[str],
     levels: dict[str, list[str]],
@@ -201,7 +277,14 @@ def export_dictionary(
                     # and offering the choice where it does not apply is offering a
                     # setting that silently does nothing.
                     "fine": fine.get(ind.indicator_id, {}),
-                    "available": ind.indicator_id in loaded,
+                    # A district square is held whole in the warehouse and served only as
+                    # its summary (decision C); without a dataset the explorer cannot
+                    # draw it, so it is offered through the summary file instead.
+                    "summary": served(ORIGIN_SUMMARY)
+                    if ind.indicator_id in ORIGIN_INDICATORS
+                    else None,
+                    "available": ind.indicator_id in loaded
+                    and ind.indicator_id not in ORIGIN_INDICATORS,
                 }
                 for ind in indicators
             ],
@@ -730,6 +813,8 @@ def main() -> None:
             fact, areas, "registry_population", roll_up=ROLLED_UP["registry_population"]
         ),
     }
+
+    export_origin_summary(fact, areas)
 
     for indicator_id in PLAIN:
         levels[indicator_id] = export_plain(fact, areas, indicator_id)
