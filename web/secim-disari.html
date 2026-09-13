@@ -6,7 +6,7 @@
 <title>VeriAtlas — yurt dışı ve gümrük oyları</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
-  :root[data-tema="koyu"] {
+  :root, :root[data-tema="koyu"] {
     --bg:#0f1012; --yuzey:#1b1d21; --yuzey2:#16181c; --cizgi:#2a2d33;
     --fg:#e9eaee; --mute:#8b919c; --golge:0 8px 28px rgba(0,0,0,.45);
   }
@@ -86,7 +86,9 @@ function temaUygula(ad) {
   document.getElementById("tema").textContent = ad === "koyu" ? "☾" : "☀";
   try { localStorage.setItem("veriatlas-tema", ad); } catch { /* özel pencere */ }
 }
-try { temaUygula(localStorage.getItem("veriatlas-tema") || "koyu"); } catch { temaUygula("koyu"); }
+let tema = "koyu";
+try { tema = localStorage.getItem("veriatlas-tema") === "acik" ? "acik" : "koyu"; } catch { /* yok */ }
+temaUygula(tema);
 document.getElementById("tema").addEventListener("click", () =>
   temaUygula(document.documentElement.dataset.tema === "koyu" ? "acik" : "koyu"));
 

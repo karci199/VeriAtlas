@@ -554,6 +554,10 @@ def manifest() -> None:
     votes = []
     for path in OUT.glob("secim-*-ilce.json"):
         key = path.name[len("secim-") : -len("-ilce.json")]
+        # Candidate and elected-member lists (aday*, cikan*) have no district results;
+        # listed, they gave an empty map under a garbled name.
+        if path.stat().st_size < 10:
+            continue
         yil = "".join(ch for ch in key if ch.isdigit())[:4]
         votes.append({"anahtar": key, "ad": etiket(key), "yil": yil})
     votes.sort(key=lambda v: (v["yil"], v["anahtar"]), reverse=True)

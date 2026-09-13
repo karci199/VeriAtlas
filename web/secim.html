@@ -9,7 +9,7 @@
 <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
 <style>
   /* Both themes are tokens; nothing below picks a colour directly. */
-  :root[data-tema="koyu"] {
+  :root, :root[data-tema="koyu"] {
     --bg:#0f1012; --yuzey:#1b1d21; --yuzey2:#16181c; --cizgi:#2a2d33;
     --fg:#e9eaee; --mute:#8b919c; --bos:#22252b; --kenar:#0f1012; --vurgu:#ffffff;
     --golge:0 8px 28px rgba(0,0,0,.45);
@@ -194,11 +194,11 @@ function mahalleKatmaniEkle() {
     type: "vector", url: "pmtiles://../public/tiles/mahalle.pmtiles", promoteId: "id",
   });
   map.addLayer({
-    id: "mahalle-dolgu", type: "fill", source: "mahalle", "source-layer": "mahalle",
+    id: "mahalle-dolgu", type: "fill", source: "mahalle", "source-layer": "mahalle", minzoom: 7,
     paint: { "fill-color": ["coalesce", ["feature-state", "renk"], "#22252b"] },
   }, "ilce-kenar");
   map.addLayer({
-    id: "mahalle-kenar", type: "line", source: "mahalle", "source-layer": "mahalle",
+    id: "mahalle-kenar", type: "line", source: "mahalle", "source-layer": "mahalle", minzoom: 7,
     paint: { "line-color": "#0f1012", "line-width": 0.35, "line-opacity": 0.5 },
   }, "ilce-kenar");
   map.addLayer({
@@ -296,8 +296,11 @@ function kimlikler() {
 }
 
 function boya() {
-  const source = kaynak();
-  const ids = kimlikler();
+  if (mahalleModu()) boyaKaynak("ilce", Object.keys(ilce), (id) => ilce[id]);
+  return boyaKaynak(kaynak(), kimlikler(), satir);
+}
+
+function boyaKaynak(source, ids, satirOku) {
   if (!ids.length) return false;
   try {
     map.setFeatureState({ source, sourceLayer: source, id: ids[0] }, {});
@@ -305,7 +308,7 @@ function boya() {
     return false;  // stil henüz hazır değil
   }
   for (const id of ids) {
-    const row = satir(id);
+    const row = satirOku(id);
     if (!row) continue;
     const win = kazanan(row);
     map.setFeatureState({ source, sourceLayer: source, id },
@@ -413,6 +416,26 @@ async function veriYukle() {
     Object.values(ilce).map((row) => `<option value="${row.ad}">`).join("");
 }
 
+function yakinlastirIpucu() {
+  if (!mahalleModu()) return;
+  const n = fmt.format(ozet ? Object.keys(ozet.y).length : 0);
+  durum(map.getZoom() < 7
+    ? `${n} yerleşim · mahalleleri görmek için yakınlaştırın (şimdilik ilçe rengi)`
+    : `${n} yerleşim`);
+}
+map.on("zoomend", yakinlastirIpucu);
+
+/** The neighbourhood button is shown only for elections that have neighbourhood results;
+ *  an empty summary is a 21-byte file, read by its size without downloading it. */
+async function mahalleVarMi() {
+  try {
+    const r = await fetch(`../public/tiles/secim-${state.oy}-mahalle-ozet.json`, { method: "HEAD" });
+    return r.ok && Number(r.headers.get("content-length") || 0) > 200;
+  } catch {
+    return false;
+  }
+}
+
 function duzeyUygula() {
   if (!map.isStyleLoaded()) return;
   const goster = (layer, on) => {
@@ -420,7 +443,9 @@ function duzeyUygula() {
   };
   if (mahalleModu()) mahalleKatmaniEkle();
   goster("il-dolgu", ilModu());
-  goster("ilce-dolgu", !mahalleModu() && !ilModu());
+  // The neighbourhood tiles start at zoom 7 (50k shapes at country scale would be a
+  // 75 MB draw); below it the districts, painted from the same election, stand in.
+  goster("ilce-dolgu", !ilModu());
   goster("mahalle-dolgu", mahalleModu());
   goster("mahalle-kenar", mahalleModu());
   // District borders stay on above the neighbourhood layer: without them the country
@@ -435,6 +460,14 @@ function duzeyUygula() {
 }
 
 async function yenile() {
+  const var_ = await mahalleVarMi();
+  const dugme = document.querySelector('#duzey button[data-v="mahalle"]');
+  dugme.hidden = !var_;
+  if (!var_ && mahalleModu()) {
+    state.duzey = "ilce";
+    document.querySelectorAll("#duzey button").forEach((b) =>
+      b.classList.toggle("on", b.dataset.v === "ilce"));
+  }
   await veriYukle();
   boyaGerek = true;
   duzeyUygula();
@@ -446,9 +479,8 @@ async function yenile() {
     map.setFilter("vurgu", ["==", "id", ""]);
     if (map.getLayer("vurgu-mahalle")) map.setFilter("vurgu-mahalle", ["==", "id", ""]);
   }
-  durum(mahalleModu()
-    ? `${fmt.format(ozet ? Object.keys(ozet.y).length : 0)} yerleşim`
-    : ilModu()
+  if (mahalleModu()) { yakinlastirIpucu(); return; }
+  durum(ilModu()
       ? `${fmt.format(Object.keys(ilTablo).length)} il`
       : `${fmt.format(Object.keys(ilce).length)} ilçe`);
 }
@@ -467,6 +499,8 @@ setInterval(() => {
 
 let baslangicTema = "koyu";
 try { baslangicTema = localStorage.getItem("veriatlas-tema") || "koyu"; } catch { /* yok */ }
+// Another page may have stored a value this page has no palette for.
+if (baslangicTema !== "acik") baslangicTema = "koyu";
 temaUygula(baslangicTema);
 yenile();
 
