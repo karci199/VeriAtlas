@@ -2001,6 +2001,174 @@
       "topic": "Yapı ruhsatı",
       "indicators": [
         {
+          "id": "occupancy_buildings",
+          "label": "Yapı kullanma izni — bina sayısı (kullanım amacına göre, yıllık)",
+          "unit": "bina",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "building_use"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "occupancy-buildings.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "occupancy_dwellings",
+          "label": "Yapı kullanma izni — daire sayısı (kullanım amacına göre, yıllık)",
+          "unit": "daire",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "building_use"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "occupancy-dwellings.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "occupancy_other_area",
+          "label": "Yapı kullanma izni — diğer alan (kullanım amacına göre, yıllık)",
+          "unit": "m²",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "building_use"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "occupancy-other-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "occupancy_residential_area",
+          "label": "Yapı kullanma izni — konut alanı (kullanım amacına göre, yıllık)",
+          "unit": "m²",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "building_use"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "occupancy-residential-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "occupancy_common_area",
+          "label": "Yapı kullanma izni — ortak alan (kullanım amacına göre, yıllık)",
+          "unit": "m²",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "building_use"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "occupancy-common-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "occupancy_floor_area",
+          "label": "Yapı kullanma izni — yüzölçümü (kullanım amacına göre, yıllık)",
+          "unit": "m²",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "building_use"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "occupancy-floor-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "building_permits_buildings",
           "label": "Yapı ruhsatı — bina sayısı",
           "unit": "bina",
@@ -2024,6 +2192,34 @@
           "available": false
         },
         {
+          "id": "permit_buildings",
+          "label": "Yapı ruhsatı — bina sayısı (kullanım amacına göre, yıllık)",
+          "unit": "bina",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "building_use"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "permit-buildings.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "building_permits_dwellings",
           "label": "Yapı ruhsatı — daire sayısı",
           "unit": "daire",
@@ -2045,6 +2241,180 @@
           "fine": {},
           "summary": null,
           "available": false
+        },
+        {
+          "id": "permit_dwellings",
+          "label": "Yapı ruhsatı — daire sayısı (kullanım amacına göre, yıllık)",
+          "unit": "daire",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "building_use"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "permit-dwellings.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "permit_other_area",
+          "label": "Yapı ruhsatı — diğer alan (kullanım amacına göre, yıllık)",
+          "unit": "m²",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "building_use"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "permit-other-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "permit_residential_area",
+          "label": "Yapı ruhsatı — konut alanı (kullanım amacına göre, yıllık)",
+          "unit": "m²",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "building_use"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "permit-residential-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "permit_common_area",
+          "label": "Yapı ruhsatı — ortak alan (kullanım amacına göre, yıllık)",
+          "unit": "m²",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "building_use"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "permit-common-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "permit_floor_area",
+          "label": "Yapı ruhsatı — yüzölçümü (kullanım amacına göre, yıllık)",
+          "unit": "m²",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "building_use"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "permit-floor-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
+    },
+    {
+      "topic": "Konut satış",
+      "indicators": [
+        {
+          "id": "housing_sales",
+          "label": "Konut satış sayısı",
+          "unit": "konut",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sale_financing",
+            "sale_hand"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "housing-sales.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
         }
       ]
     },
@@ -4563,6 +4933,35 @@
       "values": {
         "domestic": "Yerli",
         "foreign": "Yabancı"
+      }
+    },
+    "sale_financing": {
+      "label": "Satış şekli",
+      "values": {
+        "mortgaged": "İpotekli",
+        "other": "Diğer"
+      }
+    },
+    "sale_hand": {
+      "label": "İlk / ikinci el",
+      "values": {
+        "first": "İlk satış",
+        "second_hand": "İkinci el"
+      }
+    },
+    "building_use": {
+      "label": "Bina kullanım amacı",
+      "values": {
+        "residential_single": "Bir daireli konut",
+        "residential_multi": "İki ve daha fazla daireli konut",
+        "residential_communal": "Halka açık ikamet yeri",
+        "hotel": "Otel vb.",
+        "office": "Ofis (işyeri)",
+        "retail": "Toptan ve perakende ticaret",
+        "transport_communication": "Trafik ve iletişim",
+        "industrial_storage": "Sanayi ve depo",
+        "public_education_health": "Kamu eğlence, eğitim, hastane, bakım",
+        "other_non_residential": "Diğer (ikamet dışı)"
       }
     },
     "hospital_sector": {

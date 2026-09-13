@@ -63,6 +63,25 @@ NAMES = {
         "Yerleşim Yeri Dışı": "outside_settlement",
     },
     "origin": {"Yerli": "domestic", "Yabancı": "foreign"},
+    "sale_financing": {"İpotekli Satış": "mortgaged", "Diğer Satış": "other"},
+    "sale_hand": {"İlk Satış": "first", "İkinci El Satış": "second_hand"},
+    # Nine leaves that partition "Binalar" exactly (checked every year, all twelve
+    # measures); the three subtotals map to "" and are skipped.
+    "building_use": {
+        "Binalar": "",
+        "İkamet Amaçlı Binalar": "",
+        "İkamet Amaçlı Olmayan Binalar": "",
+        "Bir Daireli Binalar": "residential_single",
+        "İki Ve Daha Fazla Daireli Binalar": "residential_multi",
+        "Halka Açık İkamet Yerleri": "residential_communal",
+        "Otel Vb. Binalar": "hotel",
+        "Ofis (İşyeri) Binaları": "office",
+        "Toptan Ve Perakende Ticaret Binaları": "retail",
+        "Trafik Ve İletişim Binaları": "transport_communication",
+        "Sanayi Binaları Ve Depolar": "industrial_storage",
+        "Kamu Eğlence, Eğitim, Hastane Veya Bakım Kuruluşları Binaları": "public_education_health",
+        "İkamet Amaçlı Binalar Dışındaki Diğer Binalar": "other_non_residential",
+    },
     "sex": {"Erkek": "male", "Kadın": "female"},
     "death_timing": {
         "Kaza Yerinde": "at_scene",
@@ -152,7 +171,29 @@ MEASURES = {
     "cocuk-egitim-13": ("children_in_after_school_care", ()),
     "cocuk-egitim-14": ("children_in_daycare", ()),
     "cocuk-egitim-15": ("children_cared_at_home", ()),
+    "konut-satis-01": ("housing_sales", ("sale_financing", "sale_hand")),
+    **{
+        f"yapi-izin-{n:02d}": (f"{kind}_{what}", ("building_use",))
+        for n, (kind, what) in enumerate(
+            [
+                (kind, what)
+                for kind in ("permit", "occupancy")
+                for what in (
+                    "buildings",
+                    "floor_area",
+                    "dwellings",
+                    "residential_area",
+                    "other_area",
+                    "common_area",
+                )
+            ],
+            start=1,
+        )
+    },
 }
+
+
+SUBTOTAL: dict[str, str] = {"": ""}
 
 
 def part_name(part: str) -> str:
@@ -176,7 +217,8 @@ def read_label(label: str, dims: tuple[str, ...]) -> dict[str, str] | None:
         if stored is None:
             return None
         out[dim] = stored
-    return out
+    # An empty id is a known subtotal row, skipped so the stored values partition.
+    return SUBTOTAL if "" in out.values() else out
 
 
 def read_export(path: Path, indicator_id: str, dims, single) -> list[dict]:
@@ -206,6 +248,8 @@ def read_export(path: Path, indicator_id: str, dims, single) -> list[dict]:
             found = read_label(label, dims)
             if found is None:
                 unknown.add(label)
+                continue
+            if found is SUBTOTAL:
                 continue
         for index, (area_id, level) in header.items():
             cell = cells[index].strip() if index < len(cells) else ""

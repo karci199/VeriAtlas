@@ -69,6 +69,11 @@ label_tr = "Kültür"
 label_en = "Culture"
 order = 49
 
+[topic.konut]
+label_tr = "Konut satış"
+label_en = "Housing sales"
+order = 31
+
 [topic.saglik]
 label_tr = "Sağlık"
 label_en = "Health"
@@ -385,6 +390,40 @@ label_en = "Domestic or foreign"
 [dim.origin.values]
 domestic = "Yerli"
 foreign = "Yabancı"
+
+# Housing and construction (adapters/tuik_topics.py).
+[dim.sale_financing]
+label_tr = "Satış şekli"
+label_en = "Financing"
+
+[dim.sale_financing.values]
+mortgaged = "İpotekli"
+other = "Diğer"
+
+[dim.sale_hand]
+label_tr = "İlk / ikinci el"
+label_en = "First or second hand"
+
+[dim.sale_hand.values]
+first = "İlk satış"
+second_hand = "İkinci el"
+
+# Nine leaves that add up to all buildings; TÜİK's three subtotals are not stored.
+[dim.building_use]
+label_tr = "Bina kullanım amacı"
+label_en = "Building use"
+
+[dim.building_use.values]
+residential_single = "Bir daireli konut"
+residential_multi = "İki ve daha fazla daireli konut"
+residential_communal = "Halka açık ikamet yeri"
+hotel = "Otel vb."
+office = "Ofis (işyeri)"
+retail = "Toptan ve perakende ticaret"
+transport_communication = "Trafik ve iletişim"
+industrial_storage = "Sanayi ve depo"
+public_education_health = "Kamu eğlence, eğitim, hastane, bakım"
+other_non_residential = "Diğer (ikamet dışı)"
 
 # Health (adapters/tuik_topics.py).
 [dim.hospital_sector]
@@ -1160,6 +1199,18 @@ additive = false
 [unit.thousand_persons]
 label_tr = "bin kişi"
 label_en = "thousand persons"
+decimals = 0
+additive = true
+
+[unit.square_metre]
+label_tr = "m²"
+label_en = "m²"
+decimals = 0
+additive = true
+
+[unit.dwelling_sale]
+label_tr = "konut"
+label_en = "dwellings sold"
 decimals = 0
 additive = true
 
@@ -2251,6 +2302,124 @@ frequency = "quarterly"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "Ruhsat verilen daire sayısı. Bina sayısıyla karıştırılmamalı."
+
+# MEDAS konut satış ve yapı izin (yıllık), 2026-09-13 (adapters/tuik_topics.py).
+[indicator.housing_sales]
+label_tr = "Konut satış sayısı"
+label_en = "Housing sales"
+topic = "konut"
+unit = "dwelling_sale"
+frequency = "annual"
+dims = ["sale_financing", "sale_hand"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.permit_buildings]
+label_tr = "Yapı ruhsatı — bina sayısı (kullanım amacına göre, yıllık)"
+label_en = "Construction permits — buildings by building use (annual)"
+topic = "yapi_ruhsati"
+unit = "building"
+frequency = "annual"
+dims = ["building_use"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.permit_floor_area]
+label_tr = "Yapı ruhsatı — yüzölçümü (kullanım amacına göre, yıllık)"
+label_en = "Construction permits — floor area by building use (annual)"
+topic = "yapi_ruhsati"
+unit = "square_metre"
+frequency = "annual"
+dims = ["building_use"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.permit_dwellings]
+label_tr = "Yapı ruhsatı — daire sayısı (kullanım amacına göre, yıllık)"
+label_en = "Construction permits — dwellings by building use (annual)"
+topic = "yapi_ruhsati"
+unit = "dwelling"
+frequency = "annual"
+dims = ["building_use"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.permit_residential_area]
+label_tr = "Yapı ruhsatı — konut alanı (kullanım amacına göre, yıllık)"
+label_en = "Construction permits — residential area by building use (annual)"
+topic = "yapi_ruhsati"
+unit = "square_metre"
+frequency = "annual"
+dims = ["building_use"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.permit_other_area]
+label_tr = "Yapı ruhsatı — diğer alan (kullanım amacına göre, yıllık)"
+label_en = "Construction permits — other area by building use (annual)"
+topic = "yapi_ruhsati"
+unit = "square_metre"
+frequency = "annual"
+dims = ["building_use"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.permit_common_area]
+label_tr = "Yapı ruhsatı — ortak alan (kullanım amacına göre, yıllık)"
+label_en = "Construction permits — common area by building use (annual)"
+topic = "yapi_ruhsati"
+unit = "square_metre"
+frequency = "annual"
+dims = ["building_use"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.occupancy_buildings]
+label_tr = "Yapı kullanma izni — bina sayısı (kullanım amacına göre, yıllık)"
+label_en = "Occupancy permits — buildings by building use (annual)"
+topic = "yapi_ruhsati"
+unit = "building"
+frequency = "annual"
+dims = ["building_use"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.occupancy_floor_area]
+label_tr = "Yapı kullanma izni — yüzölçümü (kullanım amacına göre, yıllık)"
+label_en = "Occupancy permits — floor area by building use (annual)"
+topic = "yapi_ruhsati"
+unit = "square_metre"
+frequency = "annual"
+dims = ["building_use"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.occupancy_dwellings]
+label_tr = "Yapı kullanma izni — daire sayısı (kullanım amacına göre, yıllık)"
+label_en = "Occupancy permits — dwellings by building use (annual)"
+topic = "yapi_ruhsati"
+unit = "dwelling"
+frequency = "annual"
+dims = ["building_use"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.occupancy_residential_area]
+label_tr = "Yapı kullanma izni — konut alanı (kullanım amacına göre, yıllık)"
+label_en = "Occupancy permits — residential area by building use (annual)"
+topic = "yapi_ruhsati"
+unit = "square_metre"
+frequency = "annual"
+dims = ["building_use"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.occupancy_other_area]
+label_tr = "Yapı kullanma izni — diğer alan (kullanım amacına göre, yıllık)"
+label_en = "Occupancy permits — other area by building use (annual)"
+topic = "yapi_ruhsati"
+unit = "square_metre"
+frequency = "annual"
+dims = ["building_use"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.occupancy_common_area]
+label_tr = "Yapı kullanma izni — ortak alan (kullanım amacına göre, yıllık)"
+label_en = "Occupancy permits — common area by building use (annual)"
+topic = "yapi_ruhsati"
+unit = "square_metre"
+frequency = "annual"
+dims = ["building_use"]
+views = ["table", "map", "line", "bar"]
 
 # MEDAS kültür, intihar ve çocuk istatistikleri, 2026-09-13 (adapters/tuik_topics.py).
 [indicator.public_libraries]
