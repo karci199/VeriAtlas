@@ -1113,6 +1113,73 @@
       ]
     },
     {
+      "topic": "Eğitim",
+      "indicators": [
+        {
+          "id": "education_level_district",
+          "label": "Bitirilen eğitim düzeyi (ilçe)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "6 yaş ve üzeri nüfus. TÜİK düzey listesini yıllar içinde değiştirdi (İlköğretim; yüksek lisans ve doktora 2014'ten ayrı); düzeyler yayımlandığı gibi.",
+          "dims": [
+            "sex",
+            "age",
+            "education_level"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "education-level-by-district.csv.gz",
+          "levels": [
+            "district"
+          ],
+          "parts": {
+            "district": "education-level-by-district-district.csv.gz"
+          },
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "literacy_district",
+          "label": "Okuma yazma durumu (ilçe)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sex",
+            "age",
+            "literacy"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "literacy-by-district.csv.gz",
+          "levels": [
+            "district"
+          ],
+          "parts": {
+            "district": "literacy-by-district-district.csv.gz"
+          },
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
+    },
+    {
       "topic": "Sağlık",
       "indicators": [
         {
@@ -8422,6 +8489,29 @@
         "buffalo": "Manda",
         "sheep": "Koyun",
         "goat": "Keçi"
+      }
+    },
+    "education_level": {
+      "label": "Bitirilen eğitim düzeyi",
+      "values": {
+        "illiterate": "Okuma yazma bilmeyen",
+        "literate_no_school": "Okuma yazma bilen, okul bitirmeyen",
+        "primary": "İlkokul",
+        "basic_8_year": "İlköğretim",
+        "lower_secondary": "Ortaokul ve dengi",
+        "upper_secondary": "Lise ve dengi",
+        "higher": "Yüksekokul veya fakülte",
+        "masters": "Yüksek lisans",
+        "doctorate": "Doktora",
+        "unknown": "Bilinmeyen"
+      }
+    },
+    "literacy": {
+      "label": "Okuma yazma durumu",
+      "values": {
+        "literate": "Okuma yazma bilen",
+        "illiterate": "Okuma yazma bilmeyen",
+        "unknown": "Bilinmeyen"
       }
     },
     "hospital_sector": {

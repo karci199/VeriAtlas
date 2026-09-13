@@ -286,6 +286,8 @@ DATASETS = {
     "fishing_vessels": "fishing-vessels.csv",
     "fishery_workers": "fishery-workers.csv",
     "red_meat_production": "red-meat-production.csv",
+    "education_level_district": "education-level-by-district.csv",
+    "literacy_district": "literacy-by-district.csv",
     # Motor vehicles (adapters/tuik_vehicles).
     "vehicle_km": "vehicle-km.csv",
     "vehicle_mean_annual_km": "vehicle-mean-annual-km.csv",

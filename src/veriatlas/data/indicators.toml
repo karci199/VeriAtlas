@@ -104,6 +104,11 @@ label_tr = "Tarım alet ve makineleri"
 label_en = "Farm machinery"
 order = 52
 
+[topic.egitim]
+label_tr = "Eğitim"
+label_en = "Education"
+order = 26
+
 [topic.saglik]
 label_tr = "Sağlık"
 label_en = "Health"
@@ -1524,6 +1529,32 @@ cattle = "Sığır"
 buffalo = "Manda"
 sheep = "Koyun"
 goat = "Keçi"
+
+# District education (adapters/tuik_education_district.py).
+[dim.education_level]
+label_tr = "Bitirilen eğitim düzeyi"
+label_en = "Completed education"
+
+[dim.education_level.values]
+illiterate = "Okuma yazma bilmeyen"
+literate_no_school = "Okuma yazma bilen, okul bitirmeyen"
+primary = "İlkokul"
+basic_8_year = "İlköğretim"
+lower_secondary = "Ortaokul ve dengi"
+upper_secondary = "Lise ve dengi"
+higher = "Yüksekokul veya fakülte"
+masters = "Yüksek lisans"
+doctorate = "Doktora"
+unknown = "Bilinmeyen"
+
+[dim.literacy]
+label_tr = "Okuma yazma durumu"
+label_en = "Literacy"
+
+[dim.literacy.values]
+literate = "Okuma yazma bilen"
+illiterate = "Okuma yazma bilmeyen"
+unknown = "Bilinmeyen"
 
 # Health (adapters/tuik_topics.py).
 [dim.hospital_sector]
@@ -4347,6 +4378,26 @@ topic = "yapi_ruhsati"
 unit = "square_metre"
 frequency = "annual"
 dims = ["building_use"]
+views = ["table", "map", "line", "bar"]
+
+# MEDAS ilçe eğitim düzeyi ve okuma yazma, 2008-2025 (adapters/tuik_education_district.py).
+[indicator.education_level_district]
+label_tr = "Bitirilen eğitim düzeyi (ilçe)"
+label_en = "Completed education level (district)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["sex", "age", "education_level"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "6 yaş ve üzeri nüfus. TÜİK düzey listesini yıllar içinde değiştirdi (İlköğretim; yüksek lisans ve doktora 2014'ten ayrı); düzeyler yayımlandığı gibi."
+
+[indicator.literacy_district]
+label_tr = "Okuma yazma durumu (ilçe)"
+label_en = "Literacy (district)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["sex", "age", "literacy"]
 views = ["table", "map", "line", "bar"]
 
 # MEDAS kültür, intihar ve çocuk istatistikleri, 2026-09-13 (adapters/tuik_topics.py).
