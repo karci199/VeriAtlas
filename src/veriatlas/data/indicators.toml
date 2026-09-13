@@ -44,6 +44,16 @@ label_tr = "Yapı ruhsatı"
 label_en = "Building permits"
 order = 30
 
+[topic.belediye_hizmetleri]
+label_tr = "Belediye su, atıksu ve atık"
+label_en = "Municipal water, wastewater and waste"
+order = 40
+
+[topic.enerji]
+label_tr = "Enerji"
+label_en = "Energy"
+order = 45
+
 # endregion
 
 # region Dimensions — the breakdown keys and what their stored values are called
@@ -113,6 +123,90 @@ label_en = "Province of birth"
 [dim.birth_province.values]
 abroad = "Yurt dışı"
 unknown = "Bilinmeyen"
+
+[dim.water_source]
+label_tr = "Su kaynağı"
+label_en = "Water source"
+
+[dim.water_source.values]
+river = "Akarsu"
+dam = "Baraj"
+sea = "Deniz"
+lake = "Göl"
+pond = "Gölet"
+spring = "Kaynak"
+well = "Kuyu"
+
+[dim.treatment]
+label_tr = "Arıtma türü"
+label_en = "Treatment type"
+
+[dim.treatment.values]
+physical = "Fiziksel arıtma"
+conventional = "Konvansiyonel arıtma"
+biological = "Biyolojik arıtma"
+advanced = "Gelişmiş arıtma"
+natural = "Doğal arıtma (yapay sulak alan)"
+
+[dim.receiving_body]
+label_tr = "Alıcı ortam"
+label_en = "Receiving body"
+
+[dim.receiving_body.values]
+river = "Akarsu"
+land = "Arazi"
+dam = "Baraj"
+sea = "Deniz"
+lake = "Göl"
+pond = "Gölet"
+other = "Diğer"
+
+[dim.treated]
+label_tr = "Arıtılma durumu"
+label_en = "Treated"
+
+[dim.treated.values]
+yes = "Arıtılıyor"
+no = "Arıtılmıyor"
+
+[dim.disposal]
+label_tr = "Bertaraf yöntemi"
+label_en = "Disposal method"
+
+[dim.disposal.values]
+sanitary_landfill = "Düzenli depolama"
+municipal_dump = "Belediye çöplüğü"
+metropolitan_dump = "Büyükşehir belediyesi çöplüğü"
+other_municipality_dump = "Başka belediyenin çöplüğü"
+composting = "Kompost tesisi"
+licensed_firms = "Lisanslı firmalar"
+open_burning = "Açıkta yakma"
+burying = "Gömme"
+dumping_into_water = "Nehir, dere ve göle dökme"
+other_recovery = "Diğer geri kazanım"
+other_disposal = "Diğer bertaraf"
+
+[dim.consumer]
+label_tr = "Tüketici grubu"
+label_en = "Consumer group"
+
+[dim.consumer.values]
+residential = "Mesken"
+commercial_public = "Ticaret ve kamu hizmetleri"
+industrial = "Sanayi"
+agricultural = "Tarımsal faaliyetler"
+lighting = "Aydınlatma"
+
+[dim.energy_source]
+label_tr = "Kaynak"
+label_en = "Energy source"
+
+[dim.energy_source.values]
+natural_gas = "Doğal gaz"
+hydro = "Hidroelektrik"
+coal = "Kömür ve türevleri"
+liquid_fuel = "Sıvı yakıt"
+renewables_waste = "Yenilenebilir enerji ve atıklar"
 
 [dim.household_size_band]
 label_tr = "Hanehalkı büyüklüğü"
@@ -487,6 +581,80 @@ label_tr = "‰ (canlı doğumda)"
 label_en = "per 1.000 live births"
 decimals = 1
 additive = false
+
+[unit.municipality]
+label_tr = "belediye"
+label_en = "municipalities"
+decimals = 0
+additive = true
+
+# A municipality using three disposal methods is counted under each: the breakdown
+# does not sum to the number of municipalities.
+[unit.municipality_by_method]
+label_tr = "belediye"
+label_en = "municipalities"
+decimals = 0
+additive = false
+
+[unit.thousand_m3]
+label_tr = "bin m³"
+label_en = "thousand m³"
+decimals = 0
+additive = true
+
+[unit.m3]
+label_tr = "m³"
+label_en = "m³"
+decimals = 0
+additive = true
+
+[unit.litre_per_person_day]
+label_tr = "litre/kişi-gün"
+label_en = "litres per person per day"
+decimals = 0
+additive = false
+
+[unit.tonne]
+label_tr = "ton"
+label_en = "tonnes"
+decimals = 0
+additive = true
+
+[unit.kg_per_person_day]
+label_tr = "kg/kişi-gün"
+label_en = "kg per person per day"
+decimals = 2
+additive = false
+
+[unit.facility]
+label_tr = "tesis"
+label_en = "facilities"
+decimals = 0
+additive = true
+
+[unit.subscriber]
+label_tr = "abone"
+label_en = "subscribers"
+decimals = 0
+additive = true
+
+[unit.mwh]
+label_tr = "MWh"
+label_en = "MWh"
+decimals = 0
+additive = true
+
+[unit.kwh_per_person]
+label_tr = "kWh/kişi"
+label_en = "kWh per person"
+decimals = 0
+additive = false
+
+[unit.mw]
+label_tr = "MW"
+label_en = "MW"
+decimals = 0
+additive = true
 
 [unit.building]
 label_tr = "bina"
@@ -1182,6 +1350,340 @@ views = ["table", "bar"]
 definition_tr = """
 İlçede yaşayanların doğduğu il; yurt dışında doğanlar ayrı. Kaynak küçük hücreleri \
 gizler, bu yüzden toplam ilçe nüfusundan biraz az olabilir. Yıllar 2014, 2015, 2025."""
+
+# MEDAS belediye su/atıksu/atık ve enerji, 2026-09-13 (adapters/tuik_municipal.py).
+[indicator.municipalities]
+label_tr = "Toplam belediye sayısı"
+label_en = "Municipalities"
+topic = "belediye_hizmetleri"
+unit = "municipality"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.water_network_municipalities]
+label_tr = "İçme suyu şebekesiyle hizmet verilen belediye"
+label_en = "Municipalities with a drinking-water network"
+topic = "belediye_hizmetleri"
+unit = "municipality"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.water_network_population]
+label_tr = "İçme suyu şebekesiyle hizmet verilen belediye nüfusu"
+label_en = "Population served by a drinking-water network"
+topic = "belediye_hizmetleri"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.water_network_population_share]
+label_tr = "İçme suyu şebekesiyle hizmet verilen nüfusun belediye nüfusuna oranı"
+label_en = "Share of municipal population served by a water network"
+topic = "belediye_hizmetleri"
+unit = "percent"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.water_abstracted]
+label_tr = "Şebeke için çekilen su (kaynağa göre)"
+label_en = "Water abstracted for the network, by source"
+topic = "belediye_hizmetleri"
+unit = "thousand_m3"
+frequency = "annual"
+dims = ["water_source"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.water_abstracted_per_capita]
+label_tr = "Kişi başı çekilen günlük su"
+label_en = "Water abstracted per person per day"
+topic = "belediye_hizmetleri"
+unit = "litre_per_person_day"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.water_treatment_plants]
+label_tr = "İçme suyu arıtma tesisi sayısı"
+label_en = "Drinking-water treatment plants"
+topic = "belediye_hizmetleri"
+unit = "facility"
+frequency = "annual"
+dims = ["treatment"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.water_treatment_capacity]
+label_tr = "İçme suyu arıtma tesisi kapasitesi"
+label_en = "Drinking-water treatment capacity"
+topic = "belediye_hizmetleri"
+unit = "thousand_m3"
+frequency = "annual"
+dims = ["treatment"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.water_treated]
+label_tr = "İçme suyu arıtma tesislerinde arıtılan su"
+label_en = "Water treated in drinking-water plants"
+topic = "belediye_hizmetleri"
+unit = "thousand_m3"
+frequency = "annual"
+dims = ["treatment"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.water_treatment_municipalities]
+label_tr = "İçme suyu arıtma tesisiyle hizmet verilen belediye"
+label_en = "Municipalities served by a water treatment plant"
+topic = "belediye_hizmetleri"
+unit = "municipality"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.water_treatment_population]
+label_tr = "İçme suyu arıtma tesisiyle hizmet verilen nüfus"
+label_en = "Population served by a water treatment plant"
+topic = "belediye_hizmetleri"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.water_treatment_population_share]
+label_tr = "İçme suyu arıtma tesisiyle hizmet verilen nüfusun oranı"
+label_en = "Share of municipal population served by water treatment"
+topic = "belediye_hizmetleri"
+unit = "percent"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.water_distribution_municipalities]
+label_tr = "Dağıtılan suya cevap veren belediye"
+label_en = "Municipalities reporting distributed water"
+topic = "belediye_hizmetleri"
+unit = "municipality"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.water_subscribers]
+label_tr = "Dağıtılan suyun abone sayısı"
+label_en = "Water subscribers"
+topic = "belediye_hizmetleri"
+unit = "subscriber"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.water_distributed]
+label_tr = "Dağıtılan su miktarı"
+label_en = "Water distributed"
+topic = "belediye_hizmetleri"
+unit = "m3"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.sewer_municipalities]
+label_tr = "Kanalizasyon şebekesiyle hizmet verilen belediye"
+label_en = "Municipalities with a sewer network"
+topic = "belediye_hizmetleri"
+unit = "municipality"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.sewer_population]
+label_tr = "Kanalizasyon şebekesiyle hizmet verilen nüfus"
+label_en = "Population served by a sewer network"
+topic = "belediye_hizmetleri"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.sewer_population_share]
+label_tr = "Kanalizasyon şebekesiyle hizmet verilen nüfusun oranı"
+label_en = "Share of municipal population served by sewers"
+topic = "belediye_hizmetleri"
+unit = "percent"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.wastewater_discharged]
+label_tr = "Şebekeden deşarj edilen atıksu (alıcı ortama ve arıtılmaya göre)"
+label_en = "Wastewater discharged, by receiving body and treatment"
+topic = "belediye_hizmetleri"
+unit = "thousand_m3"
+frequency = "annual"
+dims = ["receiving_body", "treated"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.wastewater_plants]
+label_tr = "Atıksu arıtma tesisi sayısı"
+label_en = "Wastewater treatment plants"
+topic = "belediye_hizmetleri"
+unit = "facility"
+frequency = "annual"
+dims = ["treatment"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.wastewater_plant_capacity]
+label_tr = "Atıksu arıtma tesisi kapasitesi"
+label_en = "Wastewater treatment capacity"
+topic = "belediye_hizmetleri"
+unit = "thousand_m3"
+frequency = "annual"
+dims = ["treatment"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.wastewater_treated]
+label_tr = "Atıksu arıtma tesislerinde arıtılan atıksu"
+label_en = "Wastewater treated"
+topic = "belediye_hizmetleri"
+unit = "thousand_m3"
+frequency = "annual"
+dims = ["treatment"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.wastewater_treatment_municipalities]
+label_tr = "Atıksu arıtma tesisiyle hizmet verilen belediye"
+label_en = "Municipalities served by wastewater treatment"
+topic = "belediye_hizmetleri"
+unit = "municipality"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.wastewater_treatment_population]
+label_tr = "Atıksu arıtma tesisiyle hizmet verilen nüfus"
+label_en = "Population served by wastewater treatment"
+topic = "belediye_hizmetleri"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.wastewater_treatment_population_share]
+label_tr = "Atıksu arıtma tesisiyle hizmet verilen nüfusun oranı"
+label_en = "Share of municipal population served by wastewater treatment"
+topic = "belediye_hizmetleri"
+unit = "percent"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.wastewater_per_capita]
+label_tr = "Kişi başı günlük deşarj edilen atıksu"
+label_en = "Wastewater discharged per person per day"
+topic = "belediye_hizmetleri"
+unit = "litre_per_person_day"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.waste_service_municipalities]
+label_tr = "Atık hizmeti verilen belediye"
+label_en = "Municipalities with waste service"
+topic = "belediye_hizmetleri"
+unit = "municipality"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.waste_service_population]
+label_tr = "Atık hizmeti verilen nüfus"
+label_en = "Population with waste service"
+topic = "belediye_hizmetleri"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.waste_service_population_share]
+label_tr = "Atık hizmeti verilen nüfusun belediye nüfusuna oranı"
+label_en = "Share of municipal population with waste service"
+topic = "belediye_hizmetleri"
+unit = "percent"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.waste_collected]
+label_tr = "Toplanan belediye atığı"
+label_en = "Municipal waste collected"
+topic = "belediye_hizmetleri"
+unit = "tonne"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.waste_per_capita]
+label_tr = "Kişi başı günlük belediye atığı"
+label_en = "Municipal waste per person per day"
+topic = "belediye_hizmetleri"
+unit = "kg_per_person_day"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.waste_by_disposal]
+label_tr = "Bertaraf yöntemine göre atık"
+label_en = "Waste by disposal method"
+topic = "belediye_hizmetleri"
+unit = "tonne"
+frequency = "annual"
+dims = ["disposal"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.municipalities_by_disposal]
+label_tr = "Bertaraf yöntemine göre belediye sayısı"
+label_en = "Municipalities by disposal method"
+topic = "belediye_hizmetleri"
+unit = "municipality_by_method"
+frequency = "annual"
+dims = ["disposal"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.electricity_consumption]
+label_tr = "Elektrik tüketimi (tüketici grubuna göre)"
+label_en = "Electricity consumption by consumer group"
+topic = "enerji"
+unit = "mwh"
+frequency = "annual"
+dims = ["consumer"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.electricity_consumption_per_capita]
+label_tr = "Kişi başı elektrik tüketimi"
+label_en = "Electricity consumption per person"
+topic = "enerji"
+unit = "kwh_per_person"
+frequency = "annual"
+dims = ["consumer"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.electricity_generation]
+label_tr = "Elektrik üretimi (kaynağa göre, yalnız Türkiye)"
+label_en = "Electricity generation by source (Türkiye only)"
+topic = "enerji"
+unit = "mwh"
+frequency = "annual"
+dims = ["energy_source"]
+views = ["table", "line", "bar"]
+
+[indicator.installed_capacity]
+label_tr = "Kurulu güç (yalnız Türkiye)"
+label_en = "Installed capacity (Türkiye only)"
+topic = "enerji"
+unit = "mw"
+frequency = "annual"
+dims = []
+views = ["table", "line", "bar"]
 
 [indicator.registry_population]
 label_tr = "Kütük nüfusu"

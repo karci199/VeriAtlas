@@ -85,6 +85,44 @@ DATASETS = {
     # given, so the derived name came out `marriages-district-district.csv`.
     "marriages_district": "marriages-by-event-place.csv",
     "divorces_district": "divorces-by-mans-residence.csv",
+    # Municipal water/wastewater/waste and electricity (adapters/tuik_municipal).
+    "municipalities": "municipalities.csv",
+    "water_network_municipalities": "water-network-municipalities.csv",
+    "water_network_population": "water-network-population.csv",
+    "water_network_population_share": "water-network-population-share.csv",
+    "water_abstracted": "water-abstracted.csv",
+    "water_abstracted_per_capita": "water-abstracted-per-capita.csv",
+    "water_treatment_plants": "water-treatment-plants.csv",
+    "water_treatment_capacity": "water-treatment-capacity.csv",
+    "water_treated": "water-treated.csv",
+    "water_treatment_municipalities": "water-treatment-municipalities.csv",
+    "water_treatment_population": "water-treatment-population.csv",
+    "water_treatment_population_share": "water-treatment-population-share.csv",
+    "water_distribution_municipalities": "water-distribution-municipalities.csv",
+    "water_subscribers": "water-subscribers.csv",
+    "water_distributed": "water-distributed.csv",
+    "sewer_municipalities": "sewer-municipalities.csv",
+    "sewer_population": "sewer-population.csv",
+    "sewer_population_share": "sewer-population-share.csv",
+    "wastewater_discharged": "wastewater-discharged.csv",
+    "wastewater_plants": "wastewater-plants.csv",
+    "wastewater_plant_capacity": "wastewater-plant-capacity.csv",
+    "wastewater_treated": "wastewater-treated.csv",
+    "wastewater_treatment_municipalities": "wastewater-treatment-municipalities.csv",
+    "wastewater_treatment_population": "wastewater-treatment-population.csv",
+    "wastewater_treatment_population_share": "wastewater-treatment-population-share.csv",
+    "wastewater_per_capita": "wastewater-per-capita.csv",
+    "waste_service_municipalities": "waste-service-municipalities.csv",
+    "waste_service_population": "waste-service-population.csv",
+    "waste_service_population_share": "waste-service-population-share.csv",
+    "waste_collected": "waste-collected.csv",
+    "waste_per_capita": "waste-per-capita.csv",
+    "waste_by_disposal": "waste-by-disposal.csv",
+    "municipalities_by_disposal": "municipalities-by-disposal.csv",
+    "electricity_consumption": "electricity-consumption.csv",
+    "electricity_consumption_per_capita": "electricity-consumption-per-capita.csv",
+    "electricity_generation": "electricity-generation.csv",
+    "installed_capacity": "installed-capacity.csv",
     **{
         name: name.replace("_", "-") + ".csv"
         for name in (
@@ -128,6 +166,19 @@ BROKEN_DOWN = (
     "mean_first_marriage_age",
     "registry_population",
     "life_expectancy",
+    "water_abstracted",
+    "water_treatment_plants",
+    "water_treatment_capacity",
+    "water_treated",
+    "wastewater_discharged",
+    "wastewater_plants",
+    "wastewater_plant_capacity",
+    "wastewater_treated",
+    "waste_by_disposal",
+    "municipalities_by_disposal",
+    "electricity_consumption",
+    "electricity_consumption_per_capita",
+    "electricity_generation",
 )
 
 #: Indicators with no breakdown at all: one value per area and year.
@@ -786,6 +837,78 @@ def main() -> None:
         "deaths_single_age": export_broken_down(fact, areas, "deaths_single_age"),
         "births_by_order": export_broken_down(fact, areas, "births_by_order"),
         "marriages_by_age": export_broken_down(fact, areas, "marriages_by_age"),
+        "water_abstracted": export_broken_down(
+            fact, areas, "water_abstracted", whole=get("water_abstracted").unit.additive
+        ),
+        "water_treatment_plants": export_broken_down(
+            fact,
+            areas,
+            "water_treatment_plants",
+            whole=get("water_treatment_plants").unit.additive,
+        ),
+        "water_treatment_capacity": export_broken_down(
+            fact,
+            areas,
+            "water_treatment_capacity",
+            whole=get("water_treatment_capacity").unit.additive,
+        ),
+        "water_treated": export_broken_down(
+            fact, areas, "water_treated", whole=get("water_treated").unit.additive
+        ),
+        "wastewater_discharged": export_broken_down(
+            fact,
+            areas,
+            "wastewater_discharged",
+            whole=get("wastewater_discharged").unit.additive,
+        ),
+        "wastewater_plants": export_broken_down(
+            fact,
+            areas,
+            "wastewater_plants",
+            whole=get("wastewater_plants").unit.additive,
+        ),
+        "wastewater_plant_capacity": export_broken_down(
+            fact,
+            areas,
+            "wastewater_plant_capacity",
+            whole=get("wastewater_plant_capacity").unit.additive,
+        ),
+        "wastewater_treated": export_broken_down(
+            fact,
+            areas,
+            "wastewater_treated",
+            whole=get("wastewater_treated").unit.additive,
+        ),
+        "waste_by_disposal": export_broken_down(
+            fact,
+            areas,
+            "waste_by_disposal",
+            whole=get("waste_by_disposal").unit.additive,
+        ),
+        "municipalities_by_disposal": export_broken_down(
+            fact,
+            areas,
+            "municipalities_by_disposal",
+            whole=get("municipalities_by_disposal").unit.additive,
+        ),
+        "electricity_consumption": export_broken_down(
+            fact,
+            areas,
+            "electricity_consumption",
+            whole=get("electricity_consumption").unit.additive,
+        ),
+        "electricity_consumption_per_capita": export_broken_down(
+            fact,
+            areas,
+            "electricity_consumption_per_capita",
+            whole=get("electricity_consumption_per_capita").unit.additive,
+        ),
+        "electricity_generation": export_broken_down(
+            fact,
+            areas,
+            "electricity_generation",
+            whole=get("electricity_generation").unit.additive,
+        ),
         "deaths_by_cause": export_broken_down(fact, areas, "deaths_by_cause"),
         "migration_between_regions": export_broken_down(
             fact, areas, "migration_between_regions"

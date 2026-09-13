@@ -8,6 +8,7 @@ from .tuik_household import TuikHouseholdSize, TuikHouseholdTenure
 from .tuik_marital import TuikMarital
 from .tuik_median_age import TuikMedianAge
 from .tuik_migration_matrix import TuikMigrationMatrix
+from .tuik_municipal import MUNICIPAL_ADAPTERS
 from .tuik_neighbourhoods import TuikNeighbourhoodPopulation
 from .tuik_origin_district import ORIGIN_ADAPTERS
 from .tuik_population import TuikPopulationAgeSex
@@ -43,11 +44,14 @@ ADAPTERS = {
     **DISTRICT_VITAL_ADAPTERS,
     # District × province squares: hemşehrilik, diaspora, birthplace.
     **ORIGIN_ADAPTERS,
+    # Municipal water, wastewater, waste and electricity.
+    **MUNICIPAL_ADAPTERS,
 }
 
 __all__ = [
     "ADAPTERS",
     "DISTRICT_VITAL_ADAPTERS",
+    "MUNICIPAL_ADAPTERS",
     "NARROW_ADAPTERS",
     "ORIGIN_ADAPTERS",
     "VITAL_ADAPTERS",

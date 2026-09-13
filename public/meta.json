@@ -1130,6 +1130,1001 @@
           "available": false
         }
       ]
+    },
+    {
+      "topic": "Belediye su, atıksu ve atık",
+      "indicators": [
+        {
+          "id": "waste_service_municipalities",
+          "label": "Atık hizmeti verilen belediye",
+          "unit": "belediye",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "waste-service-municipalities.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "waste_service_population",
+          "label": "Atık hizmeti verilen nüfus",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "waste-service-population.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "waste_service_population_share",
+          "label": "Atık hizmeti verilen nüfusun belediye nüfusuna oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "waste-service-population-share.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "wastewater_plant_capacity",
+          "label": "Atıksu arıtma tesisi kapasitesi",
+          "unit": "bin m³",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "treatment"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "wastewater-plant-capacity.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "wastewater_plants",
+          "label": "Atıksu arıtma tesisi sayısı",
+          "unit": "tesis",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "treatment"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "wastewater-plants.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "wastewater_treatment_municipalities",
+          "label": "Atıksu arıtma tesisiyle hizmet verilen belediye",
+          "unit": "belediye",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "wastewater-treatment-municipalities.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "wastewater_treatment_population",
+          "label": "Atıksu arıtma tesisiyle hizmet verilen nüfus",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "wastewater-treatment-population.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "wastewater_treatment_population_share",
+          "label": "Atıksu arıtma tesisiyle hizmet verilen nüfusun oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "wastewater-treatment-population-share.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "wastewater_treated",
+          "label": "Atıksu arıtma tesislerinde arıtılan atıksu",
+          "unit": "bin m³",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "treatment"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "wastewater-treated.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "waste_by_disposal",
+          "label": "Bertaraf yöntemine göre atık",
+          "unit": "ton",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "disposal"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "waste-by-disposal.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "municipalities_by_disposal",
+          "label": "Bertaraf yöntemine göre belediye sayısı",
+          "unit": "belediye",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "disposal"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "municipalities-by-disposal.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "water_distributed",
+          "label": "Dağıtılan su miktarı",
+          "unit": "m³",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "water-distributed.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "water_distribution_municipalities",
+          "label": "Dağıtılan suya cevap veren belediye",
+          "unit": "belediye",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "water-distribution-municipalities.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "water_subscribers",
+          "label": "Dağıtılan suyun abone sayısı",
+          "unit": "abone",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "water-subscribers.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "sewer_municipalities",
+          "label": "Kanalizasyon şebekesiyle hizmet verilen belediye",
+          "unit": "belediye",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "sewer-municipalities.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "sewer_population",
+          "label": "Kanalizasyon şebekesiyle hizmet verilen nüfus",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "sewer-population.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "sewer_population_share",
+          "label": "Kanalizasyon şebekesiyle hizmet verilen nüfusun oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "sewer-population-share.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "waste_per_capita",
+          "label": "Kişi başı günlük belediye atığı",
+          "unit": "kg/kişi-gün",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "waste-per-capita.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "wastewater_per_capita",
+          "label": "Kişi başı günlük deşarj edilen atıksu",
+          "unit": "litre/kişi-gün",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "wastewater-per-capita.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "water_abstracted_per_capita",
+          "label": "Kişi başı çekilen günlük su",
+          "unit": "litre/kişi-gün",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "water-abstracted-per-capita.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "municipalities",
+          "label": "Toplam belediye sayısı",
+          "unit": "belediye",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "municipalities.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "waste_collected",
+          "label": "Toplanan belediye atığı",
+          "unit": "ton",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "waste-collected.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "water_treatment_capacity",
+          "label": "İçme suyu arıtma tesisi kapasitesi",
+          "unit": "bin m³",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "treatment"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "water-treatment-capacity.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "water_treatment_plants",
+          "label": "İçme suyu arıtma tesisi sayısı",
+          "unit": "tesis",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "treatment"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "water-treatment-plants.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "water_treatment_municipalities",
+          "label": "İçme suyu arıtma tesisiyle hizmet verilen belediye",
+          "unit": "belediye",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "water-treatment-municipalities.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "water_treatment_population",
+          "label": "İçme suyu arıtma tesisiyle hizmet verilen nüfus",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "water-treatment-population.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "water_treatment_population_share",
+          "label": "İçme suyu arıtma tesisiyle hizmet verilen nüfusun oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "water-treatment-population-share.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "water_treated",
+          "label": "İçme suyu arıtma tesislerinde arıtılan su",
+          "unit": "bin m³",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "treatment"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "water-treated.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "water_network_municipalities",
+          "label": "İçme suyu şebekesiyle hizmet verilen belediye",
+          "unit": "belediye",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "water-network-municipalities.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "water_network_population",
+          "label": "İçme suyu şebekesiyle hizmet verilen belediye nüfusu",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "water-network-population.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "water_network_population_share",
+          "label": "İçme suyu şebekesiyle hizmet verilen nüfusun belediye nüfusuna oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "water-network-population-share.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "water_abstracted",
+          "label": "Şebeke için çekilen su (kaynağa göre)",
+          "unit": "bin m³",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "water_source"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "water-abstracted.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "wastewater_discharged",
+          "label": "Şebekeden deşarj edilen atıksu (alıcı ortama ve arıtılmaya göre)",
+          "unit": "bin m³",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "receiving_body",
+            "treated"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "wastewater-discharged.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
+    },
+    {
+      "topic": "Enerji",
+      "indicators": [
+        {
+          "id": "electricity_consumption",
+          "label": "Elektrik tüketimi (tüketici grubuna göre)",
+          "unit": "MWh",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "consumer"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "electricity-consumption.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "electricity_generation",
+          "label": "Elektrik üretimi (kaynağa göre, yalnız Türkiye)",
+          "unit": "MWh",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "energy_source"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": "electricity-generation.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "electricity_consumption_per_capita",
+          "label": "Kişi başı elektrik tüketimi",
+          "unit": "kWh/kişi",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "consumer"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "electricity-consumption-per-capita.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "installed_capacity",
+          "label": "Kurulu güç (yalnız Türkiye)",
+          "unit": "MW",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": "installed-capacity.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
     }
   ],
   "dimensions": {
@@ -1173,6 +2168,83 @@
       "values": {
         "abroad": "Yurt dışı",
         "unknown": "Bilinmeyen"
+      }
+    },
+    "water_source": {
+      "label": "Su kaynağı",
+      "values": {
+        "river": "Akarsu",
+        "dam": "Baraj",
+        "sea": "Deniz",
+        "lake": "Göl",
+        "pond": "Gölet",
+        "spring": "Kaynak",
+        "well": "Kuyu"
+      }
+    },
+    "treatment": {
+      "label": "Arıtma türü",
+      "values": {
+        "physical": "Fiziksel arıtma",
+        "conventional": "Konvansiyonel arıtma",
+        "biological": "Biyolojik arıtma",
+        "advanced": "Gelişmiş arıtma",
+        "natural": "Doğal arıtma (yapay sulak alan)"
+      }
+    },
+    "receiving_body": {
+      "label": "Alıcı ortam",
+      "values": {
+        "river": "Akarsu",
+        "land": "Arazi",
+        "dam": "Baraj",
+        "sea": "Deniz",
+        "lake": "Göl",
+        "pond": "Gölet",
+        "other": "Diğer"
+      }
+    },
+    "treated": {
+      "label": "Arıtılma durumu",
+      "values": {
+        "yes": "Arıtılıyor",
+        "no": "Arıtılmıyor"
+      }
+    },
+    "disposal": {
+      "label": "Bertaraf yöntemi",
+      "values": {
+        "sanitary_landfill": "Düzenli depolama",
+        "municipal_dump": "Belediye çöplüğü",
+        "metropolitan_dump": "Büyükşehir belediyesi çöplüğü",
+        "other_municipality_dump": "Başka belediyenin çöplüğü",
+        "composting": "Kompost tesisi",
+        "licensed_firms": "Lisanslı firmalar",
+        "open_burning": "Açıkta yakma",
+        "burying": "Gömme",
+        "dumping_into_water": "Nehir, dere ve göle dökme",
+        "other_recovery": "Diğer geri kazanım",
+        "other_disposal": "Diğer bertaraf"
+      }
+    },
+    "consumer": {
+      "label": "Tüketici grubu",
+      "values": {
+        "residential": "Mesken",
+        "commercial_public": "Ticaret ve kamu hizmetleri",
+        "industrial": "Sanayi",
+        "agricultural": "Tarımsal faaliyetler",
+        "lighting": "Aydınlatma"
+      }
+    },
+    "energy_source": {
+      "label": "Kaynak",
+      "values": {
+        "natural_gas": "Doğal gaz",
+        "hydro": "Hidroelektrik",
+        "coal": "Kömür ve türevleri",
+        "liquid_fuel": "Sıvı yakıt",
+        "renewables_waste": "Yenilenebilir enerji ve atıklar"
       }
     },
     "household_size_band": {
