@@ -6527,6 +6527,213 @@
           "available": true
         }
       ]
+    },
+    {
+      "topic": "Yazılı medya",
+      "indicators": [
+        {
+          "id": "media_employees",
+          "label": "Basın çalışanı (tür × cinsiyet × unvan)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "publication_type",
+            "sex",
+            "job_title"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "media-employees.csv.gz",
+          "levels": [
+            "country",
+            "nuts2"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "press_card_holders",
+          "label": "Sarı basın kartı sahibi personel",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "publication_type",
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "press-card-holders.csv.gz",
+          "levels": [
+            "country",
+            "nuts2"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "publications_by_print",
+          "label": "Yayın sayısı (tür × baskı tekniği)",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "publication_type",
+            "print_technique"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "publications-by-print.csv.gz",
+          "levels": [
+            "country",
+            "nuts2"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "print_runs",
+          "label": "Yayınların baskı sayısı (yalnız Türkiye)",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "publication_type",
+            "print_facility"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "print-runs.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "circulation",
+          "label": "Yayınların tirajı (yalnız Türkiye)",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "publication_type",
+            "coverage"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "circulation.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "online_publications",
+          "label": "İnternet yayını yapan yayın",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "publication_type",
+            "online_paid"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "online-publications.csv.gz",
+          "levels": [
+            "country",
+            "nuts2"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "online_publication_visitors",
+          "label": "İnternet yayını ziyaretçi sayısı",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "publication_type",
+            "publication_language"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "online-publication-visitors.csv.gz",
+          "levels": [
+            "country",
+            "nuts2"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
     }
   ],
   "dimensions": {
@@ -7446,6 +7653,73 @@
       "values": {
         "first": "Birinci ekiliş",
         "second": "İkinci ekiliş"
+      }
+    },
+    "publication_type": {
+      "label": "Yayın türü",
+      "values": {
+        "magazine": "Dergi",
+        "newspaper": "Gazete"
+      }
+    },
+    "print_technique": {
+      "label": "Baskı tekniği",
+      "values": {
+        "offset": "Ofset",
+        "letterpress": "Tipo"
+      }
+    },
+    "online_paid": {
+      "label": "İnternetten ücretli abonelik",
+      "values": {
+        "yes": "Var",
+        "no": "Yok"
+      }
+    },
+    "publication_language": {
+      "label": "Yayın dili",
+      "values": {
+        "turkish": "Türkçe",
+        "foreign": "Yabancı dil"
+      }
+    },
+    "print_facility": {
+      "label": "Baskı yeri",
+      "values": {
+        "own": "Kendi tesisleri",
+        "external": "Başka tesis"
+      }
+    },
+    "coverage": {
+      "label": "Yayın bölgesi",
+      "values": {
+        "national": "Yaygın (ulusal)",
+        "regional": "Bölgesel",
+        "local": "Yerel"
+      }
+    },
+    "job_title": {
+      "label": "Unvan",
+      "values": {
+        "columnist": "Başyazar / yazar",
+        "regional_representative": "Bölge / il temsilcisi",
+        "other_staff": "Diğer personel",
+        "proofreader": "Düzeltmen",
+        "general_manager": "Genel müdür / idare müdürü",
+        "editorial_coordinator": "Genel yayın koordinatörü",
+        "editorial_manager": "Genel yayın müdürü",
+        "editor_in_chief": "Genel yayın yönetmeni",
+        "news_manager": "Haber müdürü",
+        "cartoonist": "Karikatürist",
+        "reporter": "Muhabir / foto muhabiri",
+        "copy_editor": "Redaktör",
+        "graphic_artist": "Ressam / grafiker",
+        "page_editor": "Sayfa editörü",
+        "responsible_editor": "Sorumlu yazı işleri müdürü",
+        "publishing_director": "Yayın yönetmeni",
+        "deputy_managing_editor": "Yazı işleri müdür yardımcısı",
+        "managing_editor": "Yazı işleri müdürü",
+        "news_desk_chief": "İstihbarat ve haber bölüm şefi"
       }
     },
     "hospital_sector": {

@@ -94,6 +94,11 @@ label_tr = "Bitkisel üretim"
 label_en = "Crop production"
 order = 51
 
+[topic.medya]
+label_tr = "Yazılı medya"
+label_en = "Print media"
+order = 53
+
 [topic.saglik]
 label_tr = "Sağlık"
 label_en = "Health"
@@ -1116,6 +1121,81 @@ label_en = "Sowing"
 [dim.sowing.values]
 first = "Birinci ekiliş"
 second = "İkinci ekiliş"
+
+# Print media (adapters/tuik_topics.py).
+[dim.publication_type]
+label_tr = "Yayın türü"
+label_en = "Publication type"
+
+[dim.publication_type.values]
+magazine = "Dergi"
+newspaper = "Gazete"
+
+[dim.print_technique]
+label_tr = "Baskı tekniği"
+label_en = "Print technique"
+
+[dim.print_technique.values]
+offset = "Ofset"
+letterpress = "Tipo"
+
+[dim.online_paid]
+label_tr = "İnternetten ücretli abonelik"
+label_en = "Paid online subscription"
+
+[dim.online_paid.values]
+yes = "Var"
+no = "Yok"
+
+[dim.publication_language]
+label_tr = "Yayın dili"
+label_en = "Language"
+
+[dim.publication_language.values]
+turkish = "Türkçe"
+foreign = "Yabancı dil"
+
+[dim.print_facility]
+label_tr = "Baskı yeri"
+label_en = "Printing"
+
+[dim.print_facility.values]
+own = "Kendi tesisleri"
+external = "Başka tesis"
+
+[dim.coverage]
+label_tr = "Yayın bölgesi"
+label_en = "Coverage"
+
+[dim.coverage.values]
+national = "Yaygın (ulusal)"
+regional = "Bölgesel"
+local = "Yerel"
+
+[dim.job_title]
+label_tr = "Unvan"
+label_en = "Job title"
+
+[dim.job_title.values]
+columnist = "Başyazar / yazar"
+regional_representative = "Bölge / il temsilcisi"
+other_staff = "Diğer personel"
+proofreader = "Düzeltmen"
+general_manager = "Genel müdür / idare müdürü"
+editorial_coordinator = "Genel yayın koordinatörü"
+editorial_manager = "Genel yayın müdürü"
+editor_in_chief = "Genel yayın yönetmeni"
+news_manager = "Haber müdürü"
+cartoonist = "Karikatürist"
+reporter = "Muhabir / foto muhabiri"
+copy_editor = "Redaktör"
+graphic_artist = "Ressam / grafiker"
+page_editor = "Sayfa editörü"
+responsible_editor = "Sorumlu yazı işleri müdürü"
+publishing_director = "Yayın yönetmeni"
+deputy_managing_editor = "Yazı işleri müdür yardımcısı"
+managing_editor = "Yazı işleri müdürü"
+news_desk_chief = "İstihbarat ve haber bölüm şefi"
 
 # Health (adapters/tuik_topics.py).
 [dim.hospital_sector]
@@ -3460,6 +3540,70 @@ topic = "bitkisel"
 unit = "kg_per_decare"
 frequency = "annual"
 dims = ["crop", "irrigation", "sowing"]
+views = ["table", "map", "line", "bar"]
+
+# MEDAS yazılı medya, 2026-09-13 (adapters/tuik_topics.py). Türkiye ve İBBS2; il yok.
+[indicator.publications_by_print]
+label_tr = "Yayın sayısı (tür × baskı tekniği)"
+label_en = "Publications by print technique"
+topic = "medya"
+unit = "item"
+frequency = "annual"
+dims = ["publication_type", "print_technique"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.media_employees]
+label_tr = "Basın çalışanı (tür × cinsiyet × unvan)"
+label_en = "Press employees by title"
+topic = "medya"
+unit = "person"
+frequency = "annual"
+dims = ["publication_type", "sex", "job_title"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.press_card_holders]
+label_tr = "Sarı basın kartı sahibi personel"
+label_en = "Press card holders"
+topic = "medya"
+unit = "person"
+frequency = "annual"
+dims = ["publication_type", "sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.online_publications]
+label_tr = "İnternet yayını yapan yayın"
+label_en = "Publications online"
+topic = "medya"
+unit = "item"
+frequency = "annual"
+dims = ["publication_type", "online_paid"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.online_publication_visitors]
+label_tr = "İnternet yayını ziyaretçi sayısı"
+label_en = "Online publication visitors"
+topic = "medya"
+unit = "person"
+frequency = "annual"
+dims = ["publication_type", "publication_language"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.print_runs]
+label_tr = "Yayınların baskı sayısı (yalnız Türkiye)"
+label_en = "Print runs (Türkiye)"
+topic = "medya"
+unit = "item"
+frequency = "annual"
+dims = ["publication_type", "print_facility"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.circulation]
+label_tr = "Yayınların tirajı (yalnız Türkiye)"
+label_en = "Circulation (Türkiye)"
+topic = "medya"
+unit = "item"
+frequency = "annual"
+dims = ["publication_type", "coverage"]
 views = ["table", "map", "line", "bar"]
 
 # MEDAS hayvancılık, 2026-09-13 (adapters/tuik_topics.py).

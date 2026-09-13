@@ -31,6 +31,7 @@ from .tuik_vital_district import area_at, districts_by_code
 DOWNLOADS = RAW / "medas" / "basit"
 
 CODED = re.compile(r"^\d+\.\s*\((.*)\)$")
+NUTS2 = re.compile(r"-(TR[0-9A-C]{2})$")
 
 #: dim → Turkish name as MEDAS writes it → stored id.
 NAMES = {
@@ -121,6 +122,41 @@ NAMES = {
     },
     "elevator": {"Var": "yes", "Yok": "no"},
     "visitor_type": {"T.C.": "citizen", "T.C. Olmayan": "foreign"},
+    "publication_type": {"Dergi": "magazine", "Gazete": "newspaper"},
+    "print_technique": {"Ofset": "offset", "Tipo": "letterpress"},
+    "online_paid": {"Var": "yes", "Yok": "no"},
+    "publication_language": {"Türkçe": "turkish", "Yabancı Dil": "foreign"},
+    "print_facility": {
+        "Kendi Tesisleri": "own",
+        "Başka Bir Tesis": "external",
+        "Toplam Baskı": "",
+    },
+    "coverage": {
+        "Yaygın (Ulusal)": "national",
+        "Bölgesel": "regional",
+        "Yerel": "local",
+    },
+    "job_title": {
+        "Başyazar/Yazar": "columnist",
+        "Bölge / İl Temsilcisi": "regional_representative",
+        "Diğer Personel Toplamı": "other_staff",
+        "Düzeltmen": "proofreader",
+        "Genel Müdür / Müessese Müdürü / İdare Müdürü": "general_manager",
+        "Genel Yayın Koordinatörü": "editorial_coordinator",
+        "Genel Yayın Müdürü": "editorial_manager",
+        "Genel Yayın Yönetmeni": "editor_in_chief",
+        "Haber Müdürü": "news_manager",
+        "Karikatürist": "cartoonist",
+        "Muhabir / Foto Muhabiri": "reporter",
+        "Redaktör": "copy_editor",
+        "Ressam / Grafiker": "graphic_artist",
+        "Sayfa Editörü": "page_editor",
+        "Sorumlu Yazı İşleri Müdürü": "responsible_editor",
+        "Yayın Yönetmeni": "publishing_director",
+        "Yazı İşleri Müdür Yardımcısı": "deputy_managing_editor",
+        "Yazı İşleri Müdürü": "managing_editor",
+        "İstihbarat Ve Haber Bölüm Şefi": "news_desk_chief",
+    },
     "sex": {"Erkek": "male", "Kadın": "female"},
     "death_timing": {
         "Kaza Yerinde": "at_scene",
@@ -230,6 +266,16 @@ MEASURES = {
     "turizm-13": ("citizens_abroad_nights", ()),
     "turizm-15": ("citizens_abroad_personal_spending", ()),
     "turizm-16": ("citizens_abroad_package_spending", ()),
+    "medya-01": ("publications_by_print", ("publication_type", "print_technique")),
+    "medya-02": ("media_employees", ("publication_type", "sex", "job_title")),
+    "medya-03": ("press_card_holders", ("publication_type", "sex")),
+    "medya-04": ("online_publications", ("publication_type", "online_paid")),
+    "medya-05": (
+        "online_publication_visitors",
+        ("publication_type", "publication_language"),
+    ),
+    "medya-06": ("print_runs", ("publication_type", "print_facility")),
+    "medya-07": ("circulation", ("publication_type", "coverage")),
     "hayvan-01": ("livestock", ("livestock",)),
     "hayvan-02#ton": ("animal_products_tonnes", ("animal_product",), "Ton"),
     "hayvan-02#kovan": ("beehives", ("animal_product",), "Kovan Sayısı"),
@@ -346,7 +392,16 @@ def read_export(
     stops the load; an empty column for a district not yet created is padding.
     """
     lines = read_text(path).splitlines()
-    if codes is not None:
+    if path.stem.endswith("-nuts2"):
+        # `Adana, Mersin-TR62`: the İBBS-2 code is the area id.
+        header = {
+            index: (found.group(1), "nuts2")
+            for index, cell in enumerate(
+                max(lines[:6], key=lambda s: s.count("-TR")).split("|")
+            )
+            if (found := NUTS2.search(cell.strip()))
+        }
+    elif codes is not None:
         columns = district_columns(lines)
         header = {index: (code, "district") for index, code in columns.items()}
     else:
@@ -452,7 +507,7 @@ class TopicMeasure:
         unit = rest[0] if rest else ""
         stem = self.stem.split("#")[0]
         records: list[dict] = []
-        for level in ("country", "province"):
+        for level in ("country", "province", "nuts2"):
             plain = raw / ("nufus-" + stem + "-" + level + ".csv")
             # A measure over the cell limit comes in numbered slices (`-province-1.csv`).
             sliced = sorted(

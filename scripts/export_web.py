@@ -270,6 +270,13 @@ DATASETS = {
     "irrigation_harvested_area": "irrigation-harvested-area.csv",
     "irrigation_production": "irrigation-production.csv",
     "irrigation_yield": "irrigation-yield.csv",
+    "publications_by_print": "publications-by-print.csv",
+    "media_employees": "media-employees.csv",
+    "press_card_holders": "press-card-holders.csv",
+    "online_publications": "online-publications.csv",
+    "online_publication_visitors": "online-publication-visitors.csv",
+    "print_runs": "print-runs.csv",
+    "circulation": "circulation.csv",
     # Motor vehicles (adapters/tuik_vehicles).
     "vehicle_registrations": "vehicle-registrations.csv",
     "vehicles_by_fuel": "vehicles-by-fuel.csv",
