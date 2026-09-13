@@ -2191,6 +2191,34 @@
           "available": true
         },
         {
+          "id": "vehicles_transferred_by_age",
+          "label": "Devri yapılan taşıt (taşıt yaşına göre)",
+          "unit": "taşıt",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "vehicle_age"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "vehicles-transferred-by-age.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "transferred_vehicle_mean_age",
           "label": "Devri yapılan taşıtların ortalama yaşı",
           "unit": "yıl",
@@ -2323,6 +2351,34 @@
             "bar"
           ],
           "dataset": "vehicles-newly-registered-by-fuel.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "vehicles_by_brand",
+          "label": "Trafiğe kayıtlı taşıt (markaya göre)",
+          "unit": "taşıt",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "brand"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "vehicles-by-brand.csv.gz",
           "levels": [
             "country",
             "province"
@@ -2667,6 +2723,12 @@
         "99": "Bilinmeyen"
       }
     },
+    "vehicle_age": {
+      "label": "Taşıt yaşı",
+      "values": {
+        "21+": "21 ve üzeri"
+      }
+    },
     "brand": {
       "label": "Marka",
       "values": {
@@ -2828,6 +2890,7 @@
         "28540": "Tesla",
         "28950": "Toyota",
         "29080": "Trıumph",
+        "29150": "Tt",
         "29280": "Tümosan",
         "29320": "Tvs",
         "29500": "Unıversal",

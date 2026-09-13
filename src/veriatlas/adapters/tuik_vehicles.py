@@ -53,6 +53,7 @@ CODES = {
         "9": "tractor",
     },
     "registration": {"1": "registered", "2": "deregistered"},
+    "vehicle_age": {"1": "0-5", "2": "6-10", "3": "11-15", "4": "16-20", "5": "21+"},
     "fuel": {
         "1": "petrol",
         "2": "diesel",
@@ -67,6 +68,8 @@ CODES = {
 MEASURES = {
     "tasit-01": ("vehicle_registrations", ("registration", "vehicle_type")),
     "tasit-01-yakit": ("vehicles_by_fuel", ("fuel",)),
+    "tasit-01-marka": ("vehicles_by_brand", ("brand",)),
+    "tasit-03-yas": ("vehicles_transferred_by_age", ("vehicle_age",)),
     "tasit-02": ("vehicles_newly_registered", ("brand", "vehicle_type")),
     "tasit-02-yakit": ("vehicles_newly_registered_by_fuel", ("fuel",)),
     "tasit-02-silindir": ("vehicles_newly_registered_by_engine", ("engine_size",)),
@@ -163,7 +166,8 @@ def files_for(stem: str, level: str) -> list[Path]:
     plain = DOWNLOADS / ("nufus-" + stem + "-" + level + ".csv")
     if plain.exists():
         return [plain]
-    pattern = re.compile(re.escape("nufus-" + stem + "-" + level) + r"-\d{4}\.csv$")
+    # By year (`-2004`) or by slice (`-3`), whichever the fetcher cut it into.
+    pattern = re.compile(re.escape("nufus-" + stem + "-" + level) + r"-\d+\.csv$")
     return sorted(
         p
         for p in DOWNLOADS.glob("nufus-" + stem + "-" + level + "-*.csv")

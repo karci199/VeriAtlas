@@ -126,6 +126,8 @@ DATASETS = {
     # Motor vehicles (adapters/tuik_vehicles).
     "vehicle_registrations": "vehicle-registrations.csv",
     "vehicles_by_fuel": "vehicles-by-fuel.csv",
+    "vehicles_by_brand": "vehicles-by-brand.csv",
+    "vehicles_transferred_by_age": "vehicles-transferred-by-age.csv",
     "vehicles_newly_registered": "vehicles-newly-registered.csv",
     "vehicles_newly_registered_by_fuel": "vehicles-newly-registered-by-fuel.csv",
     "vehicles_newly_registered_by_engine": "vehicles-newly-registered-by-engine.csv",

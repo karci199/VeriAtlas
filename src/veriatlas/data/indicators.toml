@@ -407,6 +407,13 @@ label_en = "Engine size (cc)"
 "22" = "10000 ve üzeri"
 "99" = "Bilinmeyen"
 
+[dim.vehicle_age]
+label_tr = "Taşıt yaşı"
+label_en = "Vehicle age"
+
+[dim.vehicle_age.values]
+"21+" = "21 ve üzeri"
+
 [dim.brand]
 label_tr = "Marka"
 label_en = "Brand"
@@ -570,6 +577,7 @@ label_en = "Brand"
 "28540" = "Tesla"
 "28950" = "Toyota"
 "29080" = "Trıumph"
+"29150" = "Tt"
 "29280" = "Tümosan"
 "29320" = "Tvs"
 "29500" = "Unıversal"
@@ -2116,6 +2124,24 @@ topic = "ulasim"
 unit = "vehicle"
 frequency = "annual"
 dims = ["brand", "vehicle_type"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.vehicles_by_brand]
+label_tr = "Trafiğe kayıtlı taşıt (markaya göre)"
+label_en = "Registered vehicles by brand"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["brand"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.vehicles_transferred_by_age]
+label_tr = "Devri yapılan taşıt (taşıt yaşına göre)"
+label_en = "Vehicles changing owner by vehicle age"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["vehicle_age"]
 views = ["table", "map", "line", "bar"]
 
 [indicator.cars_per_thousand]
