@@ -1,0 +1,210 @@
+<!doctype html>
+<!-- Abroad and customs-gate election results. None of these rows is a map area (country →
+     mission, province → gate), so they are a table page next to the map, read straight from
+     public/secim-disari.csv.gz (scripts/parse_secim_disari.py). -->
+<html lang="tr" data-tema="koyu"><head><meta charset="utf-8">
+<title>VeriAtlas — yurt dışı ve gümrük oyları</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root[data-tema="koyu"] {
+    --bg:#0f1012; --yuzey:#1b1d21; --yuzey2:#16181c; --cizgi:#2a2d33;
+    --fg:#e9eaee; --mute:#8b919c; --golge:0 8px 28px rgba(0,0,0,.45);
+  }
+  :root[data-tema="acik"] {
+    --bg:#eef1f5; --yuzey:#ffffff; --yuzey2:#f4f6f9; --cizgi:#d8dee6;
+    --fg:#15181d; --mute:#5d6673; --golge:0 8px 24px rgba(15,24,40,.12);
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg);
+         font:13.5px/1.45 "Segoe UI",system-ui,sans-serif; }
+  .bar { position:sticky; top:0; z-index:3; display:flex; gap:16px; align-items:center;
+         background:var(--yuzey); border-bottom:1px solid var(--cizgi); padding:10px 16px;
+         flex-wrap:wrap; box-shadow:var(--golge); }
+  .brand { font-weight:700; } .brand small { display:block; color:var(--mute); font-weight:400; font-size:11px; }
+  .alan { display:flex; flex-direction:column; gap:3px; }
+  .alan label { font-size:10.5px; color:var(--mute); text-transform:uppercase; letter-spacing:.5px; }
+  select { background:var(--yuzey2); color:var(--fg); border:1px solid var(--cizgi);
+           border-radius:9px; padding:6px 9px; font:inherit; min-width:150px; }
+  .seg { display:inline-flex; border:1px solid var(--cizgi); border-radius:9px; overflow:hidden; }
+  .seg button { background:none; border:0; color:var(--mute); padding:6px 12px; cursor:pointer; font:inherit; }
+  .seg button.on { background:var(--yuzey2); color:var(--fg); font-weight:600; }
+  .sag { margin-left:auto; display:flex; gap:10px; align-items:center; }
+  .sag a { color:var(--mute); }
+  .tema { background:var(--yuzey2); border:1px solid var(--cizgi); color:var(--fg);
+          border-radius:9px; padding:7px 11px; cursor:pointer; font:inherit; }
+  main { padding:16px; max-width:1200px; margin:0 auto; }
+  .kutular { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; margin-bottom:14px; }
+  .kutu { background:var(--yuzey); border:1px solid var(--cizgi); border-radius:11px; padding:9px 11px; }
+  .kutu small { display:block; color:var(--mute); font-size:10.5px; }
+  .kutu b { font-size:15.5px; font-variant-numeric:tabular-nums; }
+  .tablo { overflow-x:auto; background:var(--yuzey); border:1px solid var(--cizgi); border-radius:12px; }
+  table { border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; }
+  th, td { padding:6px 10px; border-bottom:1px solid var(--cizgi); text-align:right; white-space:nowrap; }
+  th { position:sticky; top:0; background:var(--yuzey2); color:var(--mute); font-weight:600;
+       font-size:11.5px; cursor:pointer; }
+  th:first-child, td:first-child { text-align:left; }
+  tr.alt td:first-child { padding-left:26px; color:var(--mute); }
+  tr.ust { cursor:pointer; } tr.ust td:first-child::before { content:"▸ "; color:var(--mute); }
+  tr.ust.acik td:first-child::before { content:"▾ "; }
+  td.pay span { display:inline-block; height:6px; border-radius:3px; background:var(--mute);
+                vertical-align:middle; margin-right:6px; opacity:.6; }
+  .not { color:var(--mute); font-size:12px; margin:12px 0; }
+</style></head>
+<body>
+<div class="bar">
+  <div class="brand">VeriAtlas<small>yurt dışı ve gümrük oyları</small></div>
+  <div class="alan"><label for="oy">Seçim</label><select id="oy"></select></div>
+  <div class="alan"><label>Tür</label>
+    <div class="seg" id="tur">
+      <button data-v="yurtdisi" class="on">Yurt dışı</button>
+      <button data-v="gumruk">Gümrük kapıları</button>
+    </div></div>
+  <div class="sag"><a href="secim.html">← seçim haritası</a>
+    <button class="tema" id="tema" title="Tema değiştir">☾</button></div>
+</div>
+<main>
+  <div class="kutular" id="kutular"></div>
+  <div class="tablo"><table id="tablo"></table></div>
+  <p class="not">Kaynak: TÜİK seçim raporları; sandık düzeyi alınmadı. Yüzdeler geçerli oya
+    göre bu sayfada hesaplanır. Yurt dışı raporlarında kayıtlı seçmen sayısı ayrı
+    yayımlanmadığı yıllarda katılım gösterilmez.</p>
+</main>
+<script>
+const ELECTIONS = {
+  cb2014: "2014 Cumhurbaşkanlığı", cb2018: "2018 Cumhurbaşkanlığı",
+  cb2023t1: "2023 Cumhurbaşkanlığı 1. tur", cb2023t2: "2023 Cumhurbaşkanlığı 2. tur",
+  ho2010: "2010 Halkoylaması", ho2017: "2017 Halkoylaması",
+  mv2015h: "2015 Haziran Milletvekili", mv2015k: "2015 Kasım Milletvekili",
+  mv2018: "2018 Milletvekili", mv2023: "2023 Milletvekili",
+};
+const fmt = new Intl.NumberFormat("tr-TR");
+const state = { oy: "cb2023t2", tur: "yurtdisi", sirala: "valid", acik: new Set() };
+let rows = [];
+
+function temaUygula(ad) {
+  document.documentElement.dataset.tema = ad;
+  document.getElementById("tema").textContent = ad === "koyu" ? "☾" : "☀";
+  try { localStorage.setItem("veriatlas-tema", ad); } catch { /* özel pencere */ }
+}
+try { temaUygula(localStorage.getItem("veriatlas-tema") || "koyu"); } catch { temaUygula("koyu"); }
+document.getElementById("tema").addEventListener("click", () =>
+  temaUygula(document.documentElement.dataset.tema === "koyu" ? "acik" : "koyu"));
+
+function csvSatir(line) {
+  const out = []; let cur = "", q = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (q) {
+      if (ch === '"' && line[i + 1] === '"') { cur += '"'; i++; }
+      else if (ch === '"') q = false; else cur += ch;
+    } else if (ch === '"') q = true;
+    else if (ch === ",") { out.push(cur); cur = ""; } else cur += ch;
+  }
+  out.push(cur);
+  return out;
+}
+
+async function yukle() {
+  const response = await fetch("../public/secim-disari.csv.gz");
+  const text = await new Response(
+    response.body.pipeThrough(new DecompressionStream("gzip"))).text();
+  rows = text.trim().split("\n").slice(1).map(csvSatir)
+    .map(([election, kind, level, parent, name, measure, value]) =>
+      ({ election, kind, level, parent, name, measure, value: +value }));
+}
+
+function birimler() {
+  // name → {level, parent, measures}
+  const map = new Map();
+  for (const r of rows) {
+    if (r.election !== state.oy || r.kind !== state.tur) continue;
+    const key = r.level + "|" + r.parent + "|" + r.name;
+    if (!map.has(key)) map.set(key, { level: r.level, parent: r.parent, name: r.name, m: {} });
+    map.get(key).m[r.measure] = (map.get(key).m[r.measure] || 0) + r.value;
+  }
+  return [...map.values()];
+}
+
+function ciz() {
+  const units = birimler();
+  const total = units.find((u) => u.level === "total");
+  const tops = units.filter((u) => u.level === "country" || u.level === "province");
+  const kids = units.filter((u) => u.level === "mission" || u.level === "gate");
+  const sum = total ? total.m : tops.reduce((a, u) => {
+    for (const [k, v] of Object.entries(u.m)) a[k] = (a[k] || 0) + v;
+    return a;
+  }, {});
+  const choices = Object.keys(sum).filter((k) => k.startsWith("votes:"))
+    .sort((a, b) => sum[b] - sum[a]);
+  const shown = choices.slice(0, 6);
+  const katilimVar = sum.registered && sum.voted && sum.registered !== sum.voted;
+
+  document.getElementById("kutular").innerHTML = [
+    ["Oy kullanan", fmt.format(sum.voted || 0)],
+    ["Geçerli oy", fmt.format(sum.valid || 0)],
+    ...(katilimVar ? [["Katılım", "%" + (100 * sum.voted / sum.registered).toFixed(1)]] : []),
+    ...shown.slice(0, 3).map((k) =>
+      [k.slice(6), "%" + (100 * sum[k] / sum.valid).toFixed(1)]),
+  ].map(([a, b]) => `<div class="kutu"><small>${a}</small><b>${b}</b></div>`).join("");
+
+  const pay = (u, k) => (u.m.valid ? 100 * (u.m[k] || 0) / u.m.valid : 0);
+  const deger = (u) => state.sirala === "name" ? 0 :
+    state.sirala.startsWith("votes:") ? pay(u, state.sirala) : (u.m[state.sirala] || 0);
+  const sirali = (list) => state.sirala === "name"
+    ? list.sort((a, b) => a.name.localeCompare(b.name, "tr"))
+    : list.sort((a, b) => deger(b) - deger(a));
+
+  const cols = [["name", state.tur === "yurtdisi" ? "Ülke / temsilcilik" : "İl / kapı"],
+    ["voted", "Oy kullanan"], ["valid", "Geçerli"],
+    ...shown.map((k) => [k, k.slice(6) + " %"])];
+  const hucreler = (u) => [
+    `<td>${u.name}</td>`, `<td>${fmt.format(u.m.voted || 0)}</td>`,
+    `<td>${fmt.format(u.m.valid || 0)}</td>`,
+    ...shown.map((k) => {
+      const p = pay(u, k);
+      return `<td class="pay"><span style="width:${p * 0.6}px"></span>${p.toFixed(1)}</td>`;
+    })].join("");
+  let html = "<thead><tr>" + cols.map(([k, a]) =>
+    `<th data-k="${k}">${a}${state.sirala === k ? " ↓" : ""}</th>`).join("") + "</tr></thead><tbody>";
+  for (const u of sirali(tops)) {
+    const alt = sirali(kids.filter((c) => c.parent === u.name ||
+      c.parent === u.name + " Toplamı"));
+    const acik = state.acik.has(u.name);
+    html += `<tr class="${alt.length ? "ust" : ""}${acik ? " acik" : ""}" data-n="${u.name}">${hucreler(u)}</tr>`;
+    if (acik) for (const c of alt) html += `<tr class="alt">${hucreler(c)}</tr>`;
+  }
+  document.getElementById("tablo").innerHTML = html + "</tbody>";
+}
+
+document.getElementById("tablo").addEventListener("click", (e) => {
+  const th = e.target.closest("th");
+  if (th) { state.sirala = th.dataset.k; ciz(); return; }
+  const tr = e.target.closest("tr.ust");
+  if (tr) {
+    const n = tr.dataset.n;
+    state.acik.has(n) ? state.acik.delete(n) : state.acik.add(n);
+    ciz();
+  }
+});
+document.getElementById("tur").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  state.tur = b.dataset.v; state.acik.clear();
+  for (const x of document.querySelectorAll("#tur button")) x.classList.toggle("on", x === b);
+  turlariGuncelle(); ciz();
+});
+document.getElementById("oy").addEventListener("change", (e) => {
+  state.oy = e.target.value; state.acik.clear(); ciz();
+});
+
+function turlariGuncelle() {
+  const var_ = new Set(rows.filter((r) => r.kind === state.tur).map((r) => r.election));
+  const kutu = document.getElementById("oy");
+  kutu.innerHTML = Object.entries(ELECTIONS).filter(([k]) => var_.has(k))
+    .map(([k, a]) => `<option value="${k}">${a}</option>`).join("");
+  if (!var_.has(state.oy)) state.oy = kutu.options[kutu.options.length - 1].value;
+  kutu.value = state.oy;
+}
+
+yukle().then(() => { turlariGuncelle(); ciz(); });
+</script>
+</body></html>
