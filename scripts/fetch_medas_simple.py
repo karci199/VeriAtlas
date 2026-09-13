@@ -55,6 +55,7 @@ VEHICLES = "Motorlu Kara Taşıt İstatistikleri"
 
 #: "Aylık" with --aylik. Measures without a period box ignore it.
 PERIOD = "Yıllık"
+MONTHS_PER_QUERY = 24
 
 CELL_LIMIT = 50000
 
@@ -355,11 +356,15 @@ def offered_periods(page) -> list[int]:
 
 
 def period_row(page, key: int):
-    """The Zaman row for a year, or for a year-month (the row reads "2025 7")."""
+    """The Zaman row for a year, or for a year-month.
+
+    A month row shows "2025 7" but its textContent, which the locator matches, is "2025-7";
+    a pattern written for what is on screen matched nothing and no month was ticked.
+    """
     if PERIOD != "Aylık":
         pattern = r"^\s*" + str(key) + r"\s*$"
     else:
-        pattern = r"^\s*" + str(key // 100) + r"\s+" + str(key % 100) + r"\s*$"
+        pattern = r"^\s*" + str(key // 100) + r"[\s-]+" + str(key % 100) + r"\s*$"
     return page.locator(".z-listitem", has_text=re.compile(pattern)).first
 
 
@@ -528,6 +533,13 @@ def fetch(
         if not years:
             print("   istenen yillar bu olcumde yok")
             return False
+    # Monthly, all 385 months in one query took ten minutes of ticking and then never
+    # reached the level box; three months went straight through. So the whole span is
+    # handed back as over the limit before a single tick, and main slices it.
+    if PERIOD == "Aylık" and only is None and len(years) > MONTHS_PER_QUERY:
+        areas = {"province": 82, "nuts2": 26}.get(level, 1)
+        print("   · aylik, dilimlenecek:", len(years), "ay")
+        return (count, areas, years)
     # A year at a time, scrolled to before it is clicked. The list is long enough at
     # twenty-five years that the last ones sit below the fold, and a click on a row that
     # is off-screen waits the full minute and then takes the whole measure down with it —
@@ -540,6 +552,9 @@ def fetch(
     for year in years:
         row = period_row(page, year)
         if not row.count():
+            # Offered but not found is a miss, not a skip: counted silently, a pattern
+            # that matched no month let the query run on with nothing ticked.
+            missed.append(year)
             continue
         box = row.locator(".z-listitem-checkbox")
         target_row = box if box.count() else row
@@ -778,11 +793,17 @@ def main() -> None:
                 if not isinstance(outcome, tuple):
                     continue
                 count, areas, years = outcome
+                # The area counter was read while still climbing (6, 7, 24 of 82), so
+                # the slices came out several times too wide and never fit. The level's
+                # real size is known; the counter may only raise it.
+                areas = max(areas, {"province": 82, "nuts2": 26}.get(level, 1))
                 # Nine tenths of the limit, not all of it: the indicator count MEDAS
                 # reports for the whole span is not always the count it applies to a
                 # slice of it, and a batch sized to the millimetre came back over the
                 # line by 2%. The slack costs one extra query and never a wasted one.
                 per_query = int(CELL_LIMIT * 0.9) // max(1, count * areas)
+                if PERIOD == "Aylık":
+                    per_query = min(per_query, MONTHS_PER_QUERY)
                 if per_query < 1:
                     print("   · tek yil bile sigmiyor, bu betik yetmez")
                     continue
