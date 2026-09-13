@@ -3,29 +3,36 @@
 Bu dosya "sırada ne var" sorusunun tek cevabı. Kararların gerekçesi
 [kararlar.md](kararlar.md)'de; burası yalnızca sıra.
 
-Son güncelleme: 2026-09-12.
+Son güncelleme: 2026-09-13.
 
 ## Nerede duruyoruz
 
-Depoda **27 gösterge, 4,07 milyon satır**. Altı coğrafi düzey: ülke, İBBS (türetilen),
-il, ilçe, mahalle, köy.
+Depoda **74 gösterge, 5,78 milyon satır**. Altı depolanan düzey: ülke, İBBS-2 (göç
+matrisi), il, ilçe, mahalle, köy.
 
 | Gösterge | Düzey | Yıl | Kırılım |
 |---|---|---|---|
 | Nüfus | Türkiye, il | 2007-2025 | tek yaş × cinsiyet |
-| Nüfus | mahalle (38.408) | **2007**-2025 | 0-17 / 18+ |
-| Nüfus | köy (35.345) | **2007**-2025 | yok |
-| Nüfus | ilçe | *çekim sürüyor* | 5'lik yaş × cinsiyet |
-| Medeni durum | Türkiye, il, **ilçe (989)** | 2008-2025 | medeni durum × cinsiyet × yaş |
-| Doğum | Türkiye, il | 2009-2025 | **annenin yaş grubu** |
-| Doğum | ilçe (975) | 2014-2025 | yok |
-| Ölüm | Türkiye, il | 2009-2025 | yaş grubu × cinsiyet |
-| Ölüm | ilçe (989) | 2009-2025 | cinsiyet |
-| Evlenme / boşanma | Türkiye, il | 2001-2025 | yok |
-| Evlenme / boşanma (ilçe) | ilçe (975) | 2014-2025 | yok — **ayrı gösterge**, farklı tanım |
-| Ortanca yaş | Türkiye, il | 2007-2025 | cinsiyet |
-| Toplam doğurganlık hızı | Türkiye, il | 2009-2025 | yok |
-| Göç (4 ölçü), hanehalkı (3), yabancı uyruklu, kütük, yaşam süresi | Türkiye, il | değişken | değişken |
+| Nüfus | **ilçe (998)** | 2007-2025 | 5'lik yaş × cinsiyet |
+| Nüfus | mahalle (38.408) | 2007-2025 | 0-17 / 18+ |
+| Nüfus | köy (35.345) | 2007-2025 | yok |
+| Hemşehrilik, diaspora, doğum yeri | **ilçe × 81 il** | 3 kesit | K30 — tam kare depoda, ekrana özet |
+| Medeni durum | Türkiye, il, ilçe (989) | 2008-2025 | medeni durum × cinsiyet × yaş |
+| Hanehalkı sayısı / büyüklüğü / tipi | Türkiye, il, **ilçe** | 2008-2025 | tip |
+| Doğum | Türkiye, il | 2009-2025 | annenin yaş grubu |
+| Doğum, ölüm, evlenme, boşanma | ilçe | 2009/2014-2025 | cinsiyet (ölüm) |
+| Ölüm | Türkiye, il | 2009-2025 | yaş grubu × cinsiyet; Türkiye'de tek yaş; neden (2022+) |
+| Evlenme | Türkiye, il | 2001-2025 | **kadın yaşı × erkek yaşı** |
+| Boşanma | Türkiye, il | 2001-2025 | yok |
+| Göç | il; İBBS-2 matrisi | 2008-2025 | — |
+| Kütük nüfusu | il | 2007-2025 | ilinde / il dışında |
+| **Belediye su, atıksu, atık** (33 ölçü) | Türkiye, il | 2001-2024 | kaynak, arıtma, alıcı ortam, bertaraf |
+| **Elektrik** tüketimi / üretimi / kurulu güç | il; üretim yalnız Türkiye | 2000-2024; 1970-2024 | tüketici grubu, kaynak |
+| Ortanca yaş, TFH, yaşam süresi, yabancı uyruklu | Türkiye, il | değişken | değişken |
+
+Seçim arşivi ayrı hatta (`C:\veri-ham\secim`, tablolar `public/tiles/secim-*.json`):
+yurt içi sonuçlar sandık hariç en alt kırılımda tam. 2026-09-13'te yurt dışı ve gümrük
+sonuç raporları ile yurt dışı seçmen profili (1.662 rapor) **indi, ayrıştırılmadı**.
 
 Mahalle ve köy serileri 2013'ten **2007'ye** indi. İkisi birbirini doğruluyor: 2012'de
 34.292 köy varken 2013'te 18.108 kalıyor, aynı geçişte mahalle 18.883'ten 31.653'e
@@ -33,23 +40,27 @@ Mahalle ve köy serileri 2013'ten **2007'ye** indi. İkisi birbirini doğruluyor
 
 ## Sıra
 
-### 1. İlçe nüfusunun yaş × cinsiyet kırılımı
+İlçe yaş × cinsiyet, kütük 2007-2009 ve ölenin tek yaşı 2026-09-12'de yüklendi; bu
+bölümden çıktılar.
 
-Ham verisi 2026-09-07 kaybında gitti; yeniden çekiliyor (19 yıl, yıl başına bir sorgu).
-Bitince yüklenecek. `public/population-district.csv.gz` bu sırada git'teki tam haliyle
-(696.900 satır) korunuyor — yani sayfa bozuk değil, yalnız yeniden üretilemez durumda.
+### 1. Seçim: yurt dışı ve gümrük raporlarının ayrıştırılması
 
-### 2. Kütük nüfusu 2007-2009
+1.662 yurt dışı seçmen profili (ülke ve temsilcilik düzeyi) ile MV/CB/halkoylaması yurt
+dışı, gümrük ve ülke geneli raporları ham HTML olarak duruyor. `aday_profili.py` ve
+`parse_secim.py` kalıplarıyla okunacak. Çekici hatası: `fetch_secim_profil.fetch_one` yurt
+dışı dosyasını yanlış klasöre yazıyor — kuyruk (`C:\veri-ham\secim_eksik_kuyruk.py`)
+bunu atladı, repo dosyası düzeltilmeli.
 
-Ham verisi indi, yüklenmeyi bekliyor. Aynı şekilde `registry-population.csv.gz` git'ten
-korunuyor.
+### 2. Ekran: yeni göstergelerin sayfada görünmesi
 
-### 3. Ölüm, ölenin tek yaşıyla
+Hanehalkı ilçe, evlenme yaş × yaş, belediye/elektrik dosyaları yazıldı, sayfada gözle
+bakılmadı. İlçe kareleri için özet dosyasını okuyan bir görünüm yok.
 
-Ülke düzeyinde 200 gösterge (100 yaş × cinsiyet), 2009-2025, ham verisi hazır.
-Yüklenmesi bir karar gerektiriyor: aynı gösterge ülkede tek yaş, ilde yaş grubu taşır —
-nüfusun ilde tek yaş, ilçede beşli bant taşıması gibi (K16). İl düzeyinde tek yaş
-**yok**, MEDAS vermiyor.
+### 3. Çekici yolları
+
+Çekiciler ham veriyi worktree içindeki `raw/`a yazıyor, `C:\veri-ham`'a değil;
+2026-09-13 çekimleri elle aynalandı. `config.RAW` ortam değişkenine bağlanmalı.
+`fetch_medas_simple.build_query` bölünmez boşlukta eşleşemiyor (atık konusu).
 
 ### 4. Kent / kır ayrımının yeniden kurulması
 
@@ -59,12 +70,11 @@ köy serileri artık 2007'ye kadar indiği için ayrımı yerleşimin gerçek ka
 kurmanın veri tabanı var. Kaynak seçenekleri kararlar.md'de (Wikipedia ilçe sayfaları,
 TÜİK'in üçlü sınıflaması, seçim verisindeki kent-kır etiketi).
 
-### 5. Evlenme ve boşanmanın kırılımları
+### 5. Evlenme ve boşanmanın kalan kırılımları
 
-Taraması yapıldı, hiç çekilmedi. İki ölçü de geniş: evlenme 121 gösterge (kadının/erkeğin
-yaş grubu, önceki medeni durum, eğitim durumu), boşanma 118 (yaş farkı, **evliliğin bitiş
-nedeni**, **evlilik süresi**, eğitim). Ayrıca `Yaş grubuna göre ilk defa evlenen sayısı`
-11 göstergeyle ucuz ve 25 yıl uzunluğunda.
+Kadın × erkek yaş grubu yüklendi (`marriages_by_age`). Eğitim ve önceki medeni durum MEDAS'ta
+alınamıyor. Kalan ve alınabilen: boşanmada bitiş nedeni, evlilik süresi, dava süresi —
+kullanıcı kararıyla (2026-09-13) şimdilik gerek görülmedi.
 
 ### 6. Mahallede cinsiyet kesiti
 

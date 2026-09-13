@@ -697,6 +697,60 @@ listesinde adlarının görünmeye devam etmesi:
   hiç yok; bebek ölüm hızı ölçüsü ülke/İBBS/il düzeyinde. Ne indirilebiliyor ne
   türetilebiliyor.
 
+## K30 — İlçe × il kareleri tam saklanır, ekrana özet gider (2026-09-13)
+
+Üç MEDAS karesi ilçe düzeyinde alındı: ilçede yaşayanların nüfusa kayıtlı olduğu il
+(hemşehrilik), ilçeye kayıtlı olanların yaşadığı il (diaspora), ilçede yaşayanların doğum
+yeri. Her biri ~973 ilçe × 81 il × 3 yıl; üçü birlikte 684 bin satır.
+
+Seçenekler: (A) tam kare her yere, (B) yalnız özet, (C) tam kare depoda, ekrana özet.
+**C seçildi (kullanıcı).** Veri kaybı yok — "Sivaslılar hangi ilçelerde" gibi ters sorular
+depodan cevaplanır — ve sayfa 700 bin satır taşımaz. Ekrana giden
+`origin-district-summary.csv.gz`: ilçe-yıl başına kendi ili, yurt dışı/bilinmeyen ve en
+büyük on il, paylarıyla (101 bin satır, 1 MB). Gösterge ağacında bu üçü `summary` alanıyla
+işaretli, keşif ekranında çizilmez.
+
+Yıllar ölçüye göre değişir çünkü kaynak öyle: hemşehrilik 2007/2015/2025, diaspora
+2008/2015/2025 (MEDAS 2007 vermiyor), doğum yeri 2014/2015/2025 (2014'te başlıyor).
+
+Doğrulama — üçü de dış bir sayıyla:
+
+- Diaspora, ilin ilçeleri üstünden toplanınca kütük nüfusuna **243/243 il-yıl birebir**.
+- Hemşehrilik satır toplamı ilçe nüfusundan **tam yabancı uyruklu kadar** az (2015:
+  650.308, 2025: 1.519.515). Yabancının Türk nüfus kütüğü yok, hiçbir il sütununa düşmez.
+  Fark gerçek ve yerel: Gülnar %24, Kemer %16, Alanya %10.
+- Doğum yeri ortalama %0,15 (en çok %2,4) eksik: kaynak 24.327 küçük hücreyi gizliyor.
+
+**Tuzak:** gizli hücre `-9.98E8` olarak yazılıyor. Sayı diye okunsa bir ilçeden bir
+milyar kişi düşer; negatif hücre gizli sayılır (test: `test_household_district.py`).
+
+## K31 — Belediye su/atıksu/atık ve elektrik (2026-09-13)
+
+MEDAS'tan 37 gösterge, iki yeni konu (`belediye_hizmetleri`, `enerji`). Su ve atıksu
+2001-2004 sonra iki yılda bir 2022'ye, atık 2024'e, il elektrik tüketimi 2000-2024;
+üretim ve kurulu güç yalnız Türkiye (1970-2024). En alt düzey il — ilçe yok.
+
+- "Toplam belediye sayısı" üç konuda da yayımlanıyor; bir kez, en uzun seriden (atık).
+- Oranlar (hizmet verilen nüfusun belediye nüfusuna oranı) **yüklendi**, türetilmedi:
+  payda olan belediye nüfusu depoda yok, K12'nin "türetilebilir" şartı sağlanmıyor.
+- **Yönteme göre belediye sayısı toplanamaz** (`municipality_by_method`): bir belediye
+  birden çok bertaraf yöntemi kullanır.
+- Arıtma tesisi ölçülerinde tesisi kaydı olmayan il **satır almıyor** — içme suyunda 7 il,
+  atıksuda 2-3 il. Diğer ölçülerde 81 il zorunlu; bu on ikisinde uyarı.
+- İl toplamı = Türkiye her toplanabilir ölçüde, tek istisna TÜİK'in kendi tablosu: 2014
+  arıtılmadan akarsuya deşarj, iller %9 fazla. İkisi de yayımlandığı gibi.
+- Atık konusunda ölçü adları **bölünmez boşlukla** yazılı; düz metin eşleştirme sekiz
+  ölçünün sekizini "bulunamadı" diye düşürüyordu.
+
+## Kaynak kısıtı ekleri (2026-09-13)
+
+- **Evlenme/boşanmada eğitim, önceki medeni durum, velayet.** `<Hepsi>` değerlere
+  yayılmıyor; değerler tek tek seçilince "Göstergeleri Ekle" sunucudan `disabled` geliyor.
+  Yaş kırılımları ise çapraz geliyor (kadın × erkek: evlenme 121, boşanma 118) —
+  `marriages_by_age` bu yüzden var.
+- **Seçim:** 2014 öncesi yurt dışı sonuç yok (yurt dışında oy 2014'te başladı); MV gümrük
+  kapısı tablosu hiçbir yıl rapor vermiyor; 2011 yurt dışı seçmen profili yok.
+
 ## MEDAS envanteri — ne alındı, ne alınmadı, neden (2026-09-12)
 
 `scan_medas_topic.py` dört konuyu taradı: ADNKS 39 ölçü, Doğum 5, Ölüm 6, Evlenme 9,
