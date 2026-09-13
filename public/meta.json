@@ -989,6 +989,32 @@
           "available": true
         },
         {
+          "id": "suicide_rate",
+          "label": "Kaba intihar hızı",
+          "unit": "yüz binde",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "suicide-rate.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "deaths",
           "label": "Ölüm sayısı",
           "unit": "ölüm",
@@ -1267,6 +1293,699 @@
             "bar"
           ],
           "dataset": "hospital-beds-per-100k.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
+    },
+    {
+      "topic": "Çocuk",
+      "indicators": [
+        {
+          "id": "child_marriages",
+          "label": "16-17 yaşında evlenen çocuk",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "child-marriages.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "child_marriage_share",
+          "label": "16-17 yaşında evlenenlerin evlenmeler içindeki oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "child-marriage-share.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "adolescent_birth_share",
+          "label": "Adölesan doğum oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "adolescent-birth-share.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "maternal_mortality",
+          "label": "Anne ölüm oranı (100.000 canlı doğumda)",
+          "unit": "yüz bin canlı doğumda",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "maternal-mortality.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "dtap3_vaccination",
+          "label": "Beşli karma aşı 3. doz aşılama hızı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "dtap3-vaccination.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "foreign_born_children",
+          "label": "Doğum yeri yurt dışı olan çocuk",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "foreign-born-children.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "children_cared_at_home",
+          "label": "Evde bakılan çocuk",
+          "unit": "bin kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "children-cared-at-home.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "children_in_daycare",
+          "label": "Kreşe giden çocuk",
+          "unit": "bin kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "children-in-daycare.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "neonatal_mortality",
+          "label": "Neonatal ölüm hızı",
+          "unit": "‰ (canlı doğumda)",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "neonatal-mortality.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "preschool_gross_enrolment",
+          "label": "Okul öncesi brüt okullaşma (3-5 yaş)",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "preschool-gross-enrolment.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "preschool_net_enrolment",
+          "label": "Okul öncesi net okullaşma (3-5 yaş)",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "preschool-net-enrolment.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "postneonatal_mortality",
+          "label": "Postneonatal ölüm hızı",
+          "unit": "‰ (canlı doğumda)",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "postneonatal-mortality.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "facility_birth_share",
+          "label": "Sağlık kuruluşunda gerçekleşen doğum oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "facility-birth-share.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "caesarean_share",
+          "label": "Sezaryen doğum oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "caesarean-share.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "children_in_single_parent_households",
+          "label": "Tek ebeveynli hanede yaşayan çocuk",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "children-in-single-parent-households.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "children_in_custody_cases",
+          "label": "Velayete verilen çocuk",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "children-in-custody-cases.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "foreign_national_children",
+          "label": "Yabancı uyruklu çocuk",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "foreign-national-children.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "child_population_growth",
+          "label": "Yıllık çocuk nüfus artış hızı",
+          "unit": "‰",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "child-population-growth.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "children_in_after_school_care",
+          "label": "Zorunlu eğitim dışında bakım merkezine giden çocuk",
+          "unit": "bin kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "children-in-after-school-care.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "births_to_child_mothers",
+          "label": "Çocuk annelerin doğumu",
+          "unit": "doğum",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "births-to-child-mothers.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "child_dependency_ratio",
+          "label": "Çocuk bağımlılık oranı (0-14)",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "child-dependency-ratio.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "households_with_children",
+          "label": "Çocuk bulunan hanehalkı",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "households-with-children.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "single_parent_households_with_children",
+          "label": "Çocuk bulunan tek ebeveynli hane",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "single-parent-households-with-children.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "child_sex_ratio",
+          "label": "Çocuk cinsiyet oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "child-sex-ratio.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "child_suicide_rate",
+          "label": "Çocuk intihar hızı (100.000)",
+          "unit": "yüz binde",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "child-suicide-rate.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "child_population_share",
+          "label": "Çocuk nüfus oranı (0-17)",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "child-population-share.csv.gz",
           "levels": [
             "country",
             "province"
@@ -3018,6 +3737,593 @@
           "available": true
         }
       ]
+    },
+    {
+      "topic": "Kültür",
+      "indicators": [
+        {
+          "id": "ministry_museums",
+          "label": "Bakanlığa bağlı müze",
+          "unit": "tesis",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "ministry-museums.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "ministry_museum_visitors",
+          "label": "Bakanlığa bağlı müze ziyaretçisi",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "ministry-museum-visitors.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "ministry_museum_artefacts",
+          "label": "Bakanlığa bağlı müzelerdeki eser",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "ministry-museum-artefacts.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "library_uses_per_thousand",
+          "label": "Bin kişiye halk kütüphanesi kullanımı",
+          "unit": "bin kişide",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "library-uses-per-thousand.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "films_shown",
+          "label": "Gösterilen film (yerli/yabancı)",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "origin"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "films-shown.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "public_library_books",
+          "label": "Halk kütüphanelerindeki kitap",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "public-library-books.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "library_loans",
+          "label": "Halk kütüphanelerinden ödünç verilen materyal",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "library-loans.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "public_library_users",
+          "label": "Halk kütüphanesi kullanıcısı",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "public-library-users.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "public_libraries",
+          "label": "Halk kütüphanesi sayısı",
+          "unit": "tesis",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "public-libraries.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "theatre_works",
+          "label": "Sahnelenen eser (yerli/yabancı)",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "origin"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "theatre-works.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "cinema_seats",
+          "label": "Sinema koltuğu",
+          "unit": "koltuk",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "cinema-seats.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "cinema_halls",
+          "label": "Sinema salonu",
+          "unit": "tesis",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "cinema-halls.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "cinema_audience",
+          "label": "Sinema seyircisi (yerli/yabancı film)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "origin"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "cinema-audience.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "theatre_performances",
+          "label": "Tiyatro gösterisi (yerli/yabancı eser)",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "origin"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "theatre-performances.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "theatre_seats",
+          "label": "Tiyatro koltuğu",
+          "unit": "koltuk",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "theatre-seats.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "theatre_halls",
+          "label": "Tiyatro salonu",
+          "unit": "tesis",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "theatre-halls.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "theatre_audience",
+          "label": "Tiyatro seyircisi (yerli/yabancı eser)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "origin"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "theatre-audience.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "archaeological_sites",
+          "label": "Ören yeri",
+          "unit": "tesis",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "archaeological-sites.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "private_museums",
+          "label": "Özel müze",
+          "unit": "tesis",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "private-museums.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "private_museum_staff",
+          "label": "Özel müze personeli",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "private-museum-staff.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "private_museum_visitors",
+          "label": "Özel müze ziyaretçisi",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "private-museum-visitors.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "private_museum_artefacts",
+          "label": "Özel müzelerdeki eser",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "private-museum-artefacts.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
     }
   ],
   "dimensions": {
@@ -3250,6 +4556,13 @@
         "tractor": "Traktör",
         "tractor_unit": "Çekici",
         "other": "Diğer"
+      }
+    },
+    "origin": {
+      "label": "Yerli/yabancı",
+      "values": {
+        "domestic": "Yerli",
+        "foreign": "Yabancı"
       }
     },
     "hospital_sector": {

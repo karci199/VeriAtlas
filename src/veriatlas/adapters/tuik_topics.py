@@ -62,6 +62,7 @@ NAMES = {
         "Yerleşim Yeri": "inside_settlement",
         "Yerleşim Yeri Dışı": "outside_settlement",
     },
+    "origin": {"Yerli": "domestic", "Yabancı": "foreign"},
     "sex": {"Erkek": "male", "Kadın": "female"},
     "death_timing": {
         "Kaza Yerinde": "at_scene",
@@ -102,6 +103,55 @@ MEASURES = {
     "trafik-10": ("road_injured_per_million_vehicles", ()),
     "trafik-11": ("road_deaths_per_million_cars", ()),
     "trafik-12": ("road_injured_per_million_cars", ()),
+    "kutuphane-01": ("public_libraries", ()),
+    "kutuphane-02": ("public_library_books", ()),
+    "kutuphane-03": ("public_library_users", ()),
+    "kutuphane-04": ("ministry_museums", ()),
+    "kutuphane-05": ("ministry_museum_artefacts", ()),
+    "kutuphane-06": ("ministry_museum_visitors", ()),
+    "kutuphane-07": ("private_museums", ()),
+    "kutuphane-08": ("private_museum_artefacts", ()),
+    "kutuphane-09": ("private_museum_visitors", ()),
+    "kutuphane-10": ("archaeological_sites", ()),
+    "kutuphane-11": ("library_uses_per_thousand", ()),
+    "kutuphane-12": ("library_loans", ()),
+    "kutuphane-13": ("private_museum_staff", ()),
+    "sinema-01": ("cinema_halls", ()),
+    "sinema-02": ("cinema_seats", ()),
+    "sinema-03": ("films_shown", ("origin",)),
+    "sinema-04": ("cinema_audience", ("origin",)),
+    "tiyatro-01": ("theatre_halls", ()),
+    "tiyatro-02": ("theatre_seats", ()),
+    "tiyatro-03": ("theatre_works", ("origin",)),
+    "tiyatro-04": ("theatre_performances", ("origin",)),
+    "tiyatro-05": ("theatre_audience", ("origin",)),
+    "intihar-02": ("suicide_rate", ()),
+    "cocuk-demografi-02": ("child_population_share", ("sex",)),
+    "cocuk-demografi-03": ("child_population_growth", ("sex",)),
+    "cocuk-demografi-04": ("child_sex_ratio", ()),
+    "cocuk-demografi-05": ("child_dependency_ratio", ()),
+    "cocuk-demografi-10": ("foreign_born_children", ("sex",)),
+    "cocuk-demografi-12": ("child_marriages", ("sex",)),
+    "cocuk-demografi-13": ("child_marriage_share", ("sex",)),
+    "cocuk-demografi-14": ("children_in_custody_cases", ()),
+    "cocuk-demografi-16": ("households_with_children", ()),
+    "cocuk-demografi-17": ("single_parent_households_with_children", ()),
+    "cocuk-demografi-18": ("children_in_single_parent_households", ("sex",)),
+    "cocuk-demografi-19": ("foreign_national_children", ("sex",)),
+    "cocuk-saglik-03": ("facility_birth_share", ()),
+    "cocuk-saglik-04": ("births_to_child_mothers", ()),
+    "cocuk-saglik-05": ("maternal_mortality", ()),
+    "cocuk-saglik-06": ("caesarean_share", ()),
+    "cocuk-saglik-07": ("adolescent_birth_share", ()),
+    "cocuk-saglik-09": ("dtap3_vaccination", ()),
+    "cocuk-saglik-13": ("neonatal_mortality", ("sex",)),
+    "cocuk-saglik-14": ("postneonatal_mortality", ("sex",)),
+    "cocuk-saglik-19": ("child_suicide_rate", ("sex",)),
+    "cocuk-egitim-01": ("preschool_gross_enrolment", ("sex",)),
+    "cocuk-egitim-02": ("preschool_net_enrolment", ("sex",)),
+    "cocuk-egitim-13": ("children_in_after_school_care", ()),
+    "cocuk-egitim-14": ("children_in_daycare", ()),
+    "cocuk-egitim-15": ("children_cared_at_home", ()),
 }
 
 
@@ -162,8 +212,9 @@ def read_export(path: Path, indicator_id: str, dims, single) -> list[dict]:
             if not cell:
                 continue
             value = float(cell)
-            if value < 0:
-                # MEDAS's withheld marker (-9.98E8), never a count.
+            if value <= -9e8:
+                # MEDAS's withheld marker (-9.98E8). Not `< 0`: a growth rate is
+                # negative in a shrinking province, and eleven provinces lost theirs.
                 continue
             rows.append(
                 {
@@ -208,6 +259,18 @@ class TopicMeasure:
             raise ValueError("dosya bulunamadi ya da bos: " + self.stem)
 
         frame = pl.DataFrame(records)
+        # Deaths within 30 days were not counted before 2015 (country 0 in 2012, 2.768
+        # men in 2024); the export writes those years as zeros. A zero there is "not
+        # collected", so the rows go rather than reading as nobody dying.
+        if indicator_id == "road_deaths":
+            later = pl.col("dims").str.contains("death_timing=within_30_days")
+            empty = (
+                frame.filter(later & (pl.col("area_level") == "country"))
+                .group_by("year")
+                .agg(pl.col("value").sum())
+                .filter(pl.col("value") == 0)["year"]
+            )
+            frame = frame.filter(~(later & pl.col("year").is_in(empty.implode())))
         if frame.select("area_id", "year", "dims").is_duplicated().any():
             raise ValueError(indicator_id + ": ayni alan-yil-kirilim iki kez")
 

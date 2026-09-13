@@ -59,6 +59,16 @@ label_tr = "Motorlu taşıtlar"
 label_en = "Motor vehicles"
 order = 47
 
+[topic.cocuk]
+label_tr = "Çocuk"
+label_en = "Children"
+order = 28
+
+[topic.kultur]
+label_tr = "Kültür"
+label_en = "Culture"
+order = 49
+
 [topic.saglik]
 label_tr = "Sağlık"
 label_en = "Health"
@@ -367,6 +377,14 @@ tractor = "Traktör"
 # Only in the road-accident vehicle list.
 tractor_unit = "Çekici"
 other = "Diğer"
+
+[dim.origin]
+label_tr = "Yerli/yabancı"
+label_en = "Domestic or foreign"
+
+[dim.origin.values]
+domestic = "Yerli"
+foreign = "Yabancı"
 
 # Health (adapters/tuik_topics.py).
 [dim.hospital_sector]
@@ -1114,6 +1132,36 @@ label_tr = "yıl"
 label_en = "years"
 decimals = 1
 additive = false
+
+[unit.item]
+label_tr = "adet"
+label_en = "items"
+decimals = 0
+additive = true
+
+[unit.seat]
+label_tr = "koltuk"
+label_en = "seats"
+decimals = 0
+additive = true
+
+[unit.per_100k_decimal]
+label_tr = "yüz binde"
+label_en = "per 100,000"
+decimals = 2
+additive = false
+
+[unit.per_100k_live_births]
+label_tr = "yüz bin canlı doğumda"
+label_en = "per 100,000 live births"
+decimals = 1
+additive = false
+
+[unit.thousand_persons]
+label_tr = "bin kişi"
+label_en = "thousand persons"
+decimals = 0
+additive = true
 
 [unit.bed]
 label_tr = "yatak"
@@ -2203,6 +2251,448 @@ frequency = "quarterly"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "Ruhsat verilen daire sayısı. Bina sayısıyla karıştırılmamalı."
+
+# MEDAS kültür, intihar ve çocuk istatistikleri, 2026-09-13 (adapters/tuik_topics.py).
+[indicator.public_libraries]
+label_tr = "Halk kütüphanesi sayısı"
+label_en = "Public libraries"
+topic = "kultur"
+unit = "facility"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.public_library_books]
+label_tr = "Halk kütüphanelerindeki kitap"
+label_en = "Books in public libraries"
+topic = "kultur"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.public_library_users]
+label_tr = "Halk kütüphanesi kullanıcısı"
+label_en = "Public library users"
+topic = "kultur"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.ministry_museums]
+label_tr = "Bakanlığa bağlı müze"
+label_en = "Ministry museums"
+topic = "kultur"
+unit = "facility"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.ministry_museum_artefacts]
+label_tr = "Bakanlığa bağlı müzelerdeki eser"
+label_en = "Artefacts in ministry museums"
+topic = "kultur"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.ministry_museum_visitors]
+label_tr = "Bakanlığa bağlı müze ziyaretçisi"
+label_en = "Ministry museum visitors"
+topic = "kultur"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.private_museums]
+label_tr = "Özel müze"
+label_en = "Private museums"
+topic = "kultur"
+unit = "facility"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.private_museum_artefacts]
+label_tr = "Özel müzelerdeki eser"
+label_en = "Artefacts in private museums"
+topic = "kultur"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.private_museum_visitors]
+label_tr = "Özel müze ziyaretçisi"
+label_en = "Private museum visitors"
+topic = "kultur"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.archaeological_sites]
+label_tr = "Ören yeri"
+label_en = "Archaeological sites"
+topic = "kultur"
+unit = "facility"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.library_uses_per_thousand]
+label_tr = "Bin kişiye halk kütüphanesi kullanımı"
+label_en = "Library uses per 1,000 people"
+topic = "kultur"
+unit = "per_thousand_people_decimal"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.library_loans]
+label_tr = "Halk kütüphanelerinden ödünç verilen materyal"
+label_en = "Library loans"
+topic = "kultur"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.private_museum_staff]
+label_tr = "Özel müze personeli"
+label_en = "Private museum staff"
+topic = "kultur"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.cinema_halls]
+label_tr = "Sinema salonu"
+label_en = "Cinema halls"
+topic = "kultur"
+unit = "facility"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.cinema_seats]
+label_tr = "Sinema koltuğu"
+label_en = "Cinema seats"
+topic = "kultur"
+unit = "seat"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.films_shown]
+label_tr = "Gösterilen film (yerli/yabancı)"
+label_en = "Films shown"
+topic = "kultur"
+unit = "item"
+frequency = "annual"
+dims = ["origin"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.cinema_audience]
+label_tr = "Sinema seyircisi (yerli/yabancı film)"
+label_en = "Cinema audience"
+topic = "kultur"
+unit = "person"
+frequency = "annual"
+dims = ["origin"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.theatre_halls]
+label_tr = "Tiyatro salonu"
+label_en = "Theatre halls"
+topic = "kultur"
+unit = "facility"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.theatre_seats]
+label_tr = "Tiyatro koltuğu"
+label_en = "Theatre seats"
+topic = "kultur"
+unit = "seat"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.theatre_works]
+label_tr = "Sahnelenen eser (yerli/yabancı)"
+label_en = "Theatre works staged"
+topic = "kultur"
+unit = "item"
+frequency = "annual"
+dims = ["origin"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.theatre_performances]
+label_tr = "Tiyatro gösterisi (yerli/yabancı eser)"
+label_en = "Theatre performances"
+topic = "kultur"
+unit = "item"
+frequency = "annual"
+dims = ["origin"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.theatre_audience]
+label_tr = "Tiyatro seyircisi (yerli/yabancı eser)"
+label_en = "Theatre audience"
+topic = "kultur"
+unit = "person"
+frequency = "annual"
+dims = ["origin"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.suicide_rate]
+label_tr = "Kaba intihar hızı"
+label_en = "Crude suicide rate"
+topic = "olum"
+unit = "per_100k_decimal"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.child_population_share]
+label_tr = "Çocuk nüfus oranı (0-17)"
+label_en = "Child population share (0-17)"
+topic = "cocuk"
+unit = "percent"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.child_population_growth]
+label_tr = "Yıllık çocuk nüfus artış hızı"
+label_en = "Child population growth rate"
+topic = "cocuk"
+unit = "per_mille"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.child_sex_ratio]
+label_tr = "Çocuk cinsiyet oranı"
+label_en = "Child sex ratio"
+topic = "cocuk"
+unit = "percent"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.child_dependency_ratio]
+label_tr = "Çocuk bağımlılık oranı (0-14)"
+label_en = "Child dependency ratio (0-14)"
+topic = "cocuk"
+unit = "percent"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.foreign_born_children]
+label_tr = "Doğum yeri yurt dışı olan çocuk"
+label_en = "Foreign-born children"
+topic = "cocuk"
+unit = "person"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.child_marriages]
+label_tr = "16-17 yaşında evlenen çocuk"
+label_en = "Children married at 16-17"
+topic = "cocuk"
+unit = "person"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.child_marriage_share]
+label_tr = "16-17 yaşında evlenenlerin evlenmeler içindeki oranı"
+label_en = "Share of marriages at 16-17"
+topic = "cocuk"
+unit = "percent"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.children_in_custody_cases]
+label_tr = "Velayete verilen çocuk"
+label_en = "Children placed in custody"
+topic = "cocuk"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.households_with_children]
+label_tr = "Çocuk bulunan hanehalkı"
+label_en = "Households with children"
+topic = "cocuk"
+unit = "household"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.single_parent_households_with_children]
+label_tr = "Çocuk bulunan tek ebeveynli hane"
+label_en = "Single-parent households with children"
+topic = "cocuk"
+unit = "household"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.children_in_single_parent_households]
+label_tr = "Tek ebeveynli hanede yaşayan çocuk"
+label_en = "Children in single-parent households"
+topic = "cocuk"
+unit = "person"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.foreign_national_children]
+label_tr = "Yabancı uyruklu çocuk"
+label_en = "Foreign national children"
+topic = "cocuk"
+unit = "person"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.facility_birth_share]
+label_tr = "Sağlık kuruluşunda gerçekleşen doğum oranı"
+label_en = "Share of births in health facilities"
+topic = "cocuk"
+unit = "percent"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.births_to_child_mothers]
+label_tr = "Çocuk annelerin doğumu"
+label_en = "Births to child mothers"
+topic = "cocuk"
+unit = "birth"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.maternal_mortality]
+label_tr = "Anne ölüm oranı (100.000 canlı doğumda)"
+label_en = "Maternal mortality ratio"
+topic = "cocuk"
+unit = "per_100k_live_births"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.caesarean_share]
+label_tr = "Sezaryen doğum oranı"
+label_en = "Caesarean share of births"
+topic = "cocuk"
+unit = "percent"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.adolescent_birth_share]
+label_tr = "Adölesan doğum oranı"
+label_en = "Adolescent share of births"
+topic = "cocuk"
+unit = "percent"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.dtap3_vaccination]
+label_tr = "Beşli karma aşı 3. doz aşılama hızı"
+label_en = "DTaP-IPV-Hib third dose coverage"
+topic = "cocuk"
+unit = "percent"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.neonatal_mortality]
+label_tr = "Neonatal ölüm hızı"
+label_en = "Neonatal mortality rate"
+topic = "cocuk"
+unit = "per_thousand_live_births"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.postneonatal_mortality]
+label_tr = "Postneonatal ölüm hızı"
+label_en = "Post-neonatal mortality rate"
+topic = "cocuk"
+unit = "per_thousand_live_births"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.child_suicide_rate]
+label_tr = "Çocuk intihar hızı (100.000)"
+label_en = "Child suicide rate"
+topic = "cocuk"
+unit = "per_100k_decimal"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.preschool_gross_enrolment]
+label_tr = "Okul öncesi brüt okullaşma (3-5 yaş)"
+label_en = "Pre-school gross enrolment (3-5)"
+topic = "cocuk"
+unit = "percent"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.preschool_net_enrolment]
+label_tr = "Okul öncesi net okullaşma (3-5 yaş)"
+label_en = "Pre-school net enrolment (3-5)"
+topic = "cocuk"
+unit = "percent"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.children_in_after_school_care]
+label_tr = "Zorunlu eğitim dışında bakım merkezine giden çocuk"
+label_en = "Children in after-school care"
+topic = "cocuk"
+unit = "thousand_persons"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.children_in_daycare]
+label_tr = "Kreşe giden çocuk"
+label_en = "Children in day care"
+topic = "cocuk"
+unit = "thousand_persons"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.children_cared_at_home]
+label_tr = "Evde bakılan çocuk"
+label_en = "Children cared for at home"
+topic = "cocuk"
+unit = "thousand_persons"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
 
 # MEDAS sağlık ve trafik kaza, 2026-09-13 (adapters/tuik_topics.py).
 [indicator.hospitals]
