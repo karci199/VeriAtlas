@@ -3,13 +3,17 @@
 Sirlar .env dosyasindan okunur; .env depoya girmez (.gitignore).
 """
 
+import os
 from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 ROOT = Path(__file__).resolve().parents[2]
 
-RAW = ROOT / "raw"
+#: `VERIATLAS_RAW` points fetchers and adapters at a raw store outside the worktree. The
+#: default stays `raw/` inside the checkout, but a worktree's `raw/` is deleted with the
+#: worktree — which is how 2,8 GB went on 2026-09-07 — so long pulls should set it.
+RAW = Path(os.environ.get("VERIATLAS_RAW", ROOT / "raw"))
 PUBLIC = ROOT / "public"
 DOCS = ROOT / "docs"
 #: Registries and the indicator dictionary — files that are decisions, not observations,

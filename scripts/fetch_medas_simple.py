@@ -271,9 +271,17 @@ def build_query(page, topic: str, hint: str, breakdowns) -> int:
     page.locator("select").first.select_option(label=topic)
     settle(page)
 
+    # Compared with whitespace folded: the waste topic writes its measure names with
+    # non-breaking spaces, and a plain `in` found none of its eight measures.
+    wanted = " ".join(hint.split())
     items = page.locator(".z-listitem")
     index = next(
-        (i for i in range(items.count()) if hint in items.nth(i).inner_text()), None
+        (
+            i
+            for i in range(items.count())
+            if wanted in " ".join(items.nth(i).inner_text().split())
+        ),
+        None,
     )
     if index is None:
         print("   olcum bulunamadi:", hint)
