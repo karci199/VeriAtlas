@@ -2419,6 +2419,360 @@
       ]
     },
     {
+      "topic": "Konut nitelikleri",
+      "indicators": [
+        {
+          "id": "households_by_main_fuel",
+          "label": "Hane, ana yakıt türüne göre (2021)",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "main_fuel"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "households-by-main-fuel.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "households_by_bathroom",
+          "label": "Hane, banyonun bulunduğu yere göre (2021)",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "amenity_location"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "households-by-bathroom.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "households_by_parking",
+          "label": "Hane, binada otopark durumuna göre (2021)",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "parking"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "households-by-parking.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "households_by_build_period",
+          "label": "Hane, binanın inşa yılına göre (2021)",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "build_period"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "households-by-build-period.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "households_by_piped_water",
+          "label": "Hane, borulu suyun bulunduğu yere göre (2021)",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "amenity_location"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "households-by-piped-water.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "households_by_elevator",
+          "label": "Hane, kat sayısı ve asansöre göre (2021, yalnız Türkiye)",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "floors_detail",
+            "elevator"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "households-by-elevator.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "households_by_rooms",
+          "label": "Hane, oda sayısına göre (2021)",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "rooms_band"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "households-by-rooms.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "households_by_floors",
+          "label": "Hane, oturduğu binanın kat sayısına göre (2021)",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "floors_band"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "households-by-floors.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "households_by_toilet",
+          "label": "Hane, tuvaletin bulunduğu yere göre (2021)",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "amenity_location"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "households-by-toilet.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "households_by_heating",
+          "label": "Hane, ısıtma sistemine göre (2021)",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "heating"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "households-by-heating.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "mean_rooms",
+          "label": "Konutların ortalama oda sayısı (2021)",
+          "unit": "oda",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "mean-rooms.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "rooms_per_person",
+          "label": "Konutta kişi başına oda (2021)",
+          "unit": "oda",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "rooms-per-person.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "mean_building_floors",
+          "label": "Oturulan binanın ortalama kat sayısı (2021)",
+          "unit": "kat",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "mean-building-floors.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
+    },
+    {
       "topic": "Belediye su, atıksu ve atık",
       "indicators": [
         {
@@ -4696,6 +5050,167 @@
       ]
     },
     {
+      "topic": "Turizm",
+      "indicators": [
+        {
+          "id": "citizens_abroad_nights",
+          "label": "Yurt dışını ziyaret eden vatandaşların geceleme sayısı",
+          "unit": "geceleme",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "citizens-abroad-nights.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "citizens_abroad_personal_spending",
+          "label": "Yurt dışını ziyaret eden vatandaşların kişisel harcaması (bin $)",
+          "unit": "bin $",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "citizens-abroad-personal-spending.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "citizens_abroad_package_spending",
+          "label": "Yurt dışını ziyaret eden vatandaşların paket tur harcaması (bin $)",
+          "unit": "bin $",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "citizens-abroad-package-spending.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "departing_visitor_nights",
+          "label": "Çıkış yapan ziyaretçilerin geceleme sayısı",
+          "unit": "geceleme",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "visitor_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "departing-visitor-nights.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "departing_visitor_personal_spending",
+          "label": "Çıkış yapan ziyaretçilerin kişisel harcaması (bin $)",
+          "unit": "bin $",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "visitor_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "departing-visitor-personal-spending.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "departing_visitor_package_spending",
+          "label": "Çıkış yapan ziyaretçilerin paket tur harcaması (bin $)",
+          "unit": "bin $",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "visitor_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "departing-visitor-package-spending.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
+    },
+    {
       "topic": "Hayvancılık",
       "indicators": [
         {
@@ -5588,6 +6103,75 @@
         "01.45.11.02": "Koyun, Canlı (Yerli Ve Diğerleri)",
         "01.45.12.01": "Keçi, Canlı (Tiftik Keçisi)",
         "01.45.12.02": "Keçi, Canlı (Kıl Keçisi Ve Diğerleri)"
+      }
+    },
+    "floors_band": {
+      "label": "Binanın kat sayısı",
+      "values": {}
+    },
+    "build_period": {
+      "label": "Binanın inşa yılı",
+      "values": {
+        "to_1980": "1980 ve öncesi",
+        "1981_2000": "1981-2000",
+        "from_2001": "2001 ve sonrası",
+        "unknown": "Bilinmeyen"
+      }
+    },
+    "heating": {
+      "label": "Isıtma sistemi",
+      "values": {
+        "central": "Merkezi kalorifer",
+        "unit_boiler": "Kat kaloriferi (kombi vb.)",
+        "stove": "Soba",
+        "other": "Diğer",
+        "unknown": "Bilinmeyen"
+      }
+    },
+    "rooms_band": {
+      "label": "Oda sayısı",
+      "values": {}
+    },
+    "main_fuel": {
+      "label": "Ana yakıt",
+      "values": {
+        "natural_gas": "Doğal gaz",
+        "solid": "Katı yakıt",
+        "other": "Diğer",
+        "unknown": "Bilinmeyen"
+      }
+    },
+    "parking": {
+      "label": "Otopark",
+      "values": {
+        "yes": "Var",
+        "no": "Yok"
+      }
+    },
+    "amenity_location": {
+      "label": "Bulunma durumu",
+      "values": {
+        "inside": "Konutun içinde",
+        "outside": "Konutun dışında",
+        "none": "Yok"
+      }
+    },
+    "floors_detail": {
+      "label": "Binanın kat sayısı",
+      "values": {}
+    },
+    "elevator": {
+      "label": "Asansör",
+      "values": {
+        "yes": "Var",
+        "no": "Yok"
+      }
+    },
+    "visitor_type": {
+      "label": "Ziyaretçi",
+      "values": {
+        "citizen": "Yurt dışında ikamet eden vatandaş",
+        "foreign": "Yabancı"
       }
     },
     "hospital_sector": {

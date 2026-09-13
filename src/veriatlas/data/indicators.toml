@@ -79,6 +79,16 @@ label_tr = "Hayvancılık"
 label_en = "Livestock"
 order = 52
 
+[topic.konut_nitelik]
+label_tr = "Konut nitelikleri"
+label_en = "Dwelling characteristics"
+order = 32
+
+[topic.turizm]
+label_tr = "Turizm"
+label_en = "Tourism"
+order = 50
+
 [topic.saglik]
 label_tr = "Sağlık"
 label_en = "Health"
@@ -549,6 +559,83 @@ label_en = "Livestock group"
 "01.45.11.02" = "Koyun, Canlı (Yerli Ve Diğerleri)"
 "01.45.12.01" = "Keçi, Canlı (Tiftik Keçisi)"
 "01.45.12.02" = "Keçi, Canlı (Kıl Keçisi Ve Diğerleri)"
+
+# Building and dwelling characteristics, tourism (adapters/tuik_topics.py).
+[dim.floors_band]
+label_tr = "Binanın kat sayısı"
+label_en = "Floors"
+
+[dim.build_period]
+label_tr = "Binanın inşa yılı"
+label_en = "Construction period"
+
+[dim.build_period.values]
+"to_1980" = "1980 ve öncesi"
+"1981_2000" = "1981-2000"
+"from_2001" = "2001 ve sonrası"
+"unknown" = "Bilinmeyen"
+
+[dim.heating]
+label_tr = "Isıtma sistemi"
+label_en = "Heating"
+
+[dim.heating.values]
+"central" = "Merkezi kalorifer"
+"unit_boiler" = "Kat kaloriferi (kombi vb.)"
+"stove" = "Soba"
+"other" = "Diğer"
+"unknown" = "Bilinmeyen"
+
+[dim.rooms_band]
+label_tr = "Oda sayısı"
+label_en = "Rooms"
+
+[dim.main_fuel]
+label_tr = "Ana yakıt"
+label_en = "Main fuel"
+
+[dim.main_fuel.values]
+"natural_gas" = "Doğal gaz"
+"solid" = "Katı yakıt"
+"other" = "Diğer"
+"unknown" = "Bilinmeyen"
+
+[dim.parking]
+label_tr = "Otopark"
+label_en = "Parking"
+
+[dim.parking.values]
+"yes" = "Var"
+"no" = "Yok"
+
+[dim.amenity_location]
+label_tr = "Bulunma durumu"
+label_en = "Where available"
+
+[dim.amenity_location.values]
+"inside" = "Konutun içinde"
+"outside" = "Konutun dışında"
+"none" = "Yok"
+
+[dim.floors_detail]
+label_tr = "Binanın kat sayısı"
+label_en = "Floors"
+
+[dim.elevator]
+label_tr = "Asansör"
+label_en = "Elevator"
+
+[dim.elevator.values]
+"yes" = "Var"
+"no" = "Yok"
+
+[dim.visitor_type]
+label_tr = "Ziyaretçi"
+label_en = "Visitor"
+
+[dim.visitor_type.values]
+"citizen" = "Yurt dışında ikamet eden vatandaş"
+"foreign" = "Yabancı"
 
 # Health (adapters/tuik_topics.py).
 [dim.hospital_sector]
@@ -1368,6 +1455,30 @@ label_tr = "köy"
 label_en = "villages"
 decimals = 0
 additive = true
+
+[unit.night]
+label_tr = "geceleme"
+label_en = "nights"
+decimals = 0
+additive = true
+
+[unit.thousand_usd]
+label_tr = "bin $"
+label_en = "thousand USD"
+decimals = 0
+additive = true
+
+[unit.rooms_decimal]
+label_tr = "oda"
+label_en = "rooms"
+decimals = 1
+additive = false
+
+[unit.floors_decimal]
+label_tr = "kat"
+label_en = "floors"
+decimals = 1
+additive = false
 
 [unit.bed]
 label_tr = "yatak"
@@ -2457,6 +2568,178 @@ frequency = "quarterly"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "Ruhsat verilen daire sayısı. Bina sayısıyla karıştırılmamalı."
+
+# MEDAS bina ve konut nitelikleri (2021) ve turizm, 2026-09-13 (adapters/tuik_topics.py).
+[indicator.households_by_floors]
+label_tr = "Hane, oturduğu binanın kat sayısına göre (2021)"
+label_en = "Households by building floors (2021)"
+topic = "konut_nitelik"
+unit = "household"
+frequency = "annual"
+dims = ["floors_band"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.households_by_build_period]
+label_tr = "Hane, binanın inşa yılına göre (2021)"
+label_en = "Households by construction period (2021)"
+topic = "konut_nitelik"
+unit = "household"
+frequency = "annual"
+dims = ["build_period"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.households_by_heating]
+label_tr = "Hane, ısıtma sistemine göre (2021)"
+label_en = "Households by heating (2021)"
+topic = "konut_nitelik"
+unit = "household"
+frequency = "annual"
+dims = ["heating"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.households_by_rooms]
+label_tr = "Hane, oda sayısına göre (2021)"
+label_en = "Households by rooms (2021)"
+topic = "konut_nitelik"
+unit = "household"
+frequency = "annual"
+dims = ["rooms_band"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.households_by_main_fuel]
+label_tr = "Hane, ana yakıt türüne göre (2021)"
+label_en = "Households by main fuel (2021)"
+topic = "konut_nitelik"
+unit = "household"
+frequency = "annual"
+dims = ["main_fuel"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.households_by_parking]
+label_tr = "Hane, binada otopark durumuna göre (2021)"
+label_en = "Households by parking (2021)"
+topic = "konut_nitelik"
+unit = "household"
+frequency = "annual"
+dims = ["parking"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.households_by_piped_water]
+label_tr = "Hane, borulu suyun bulunduğu yere göre (2021)"
+label_en = "Households by piped water (2021)"
+topic = "konut_nitelik"
+unit = "household"
+frequency = "annual"
+dims = ["amenity_location"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.households_by_toilet]
+label_tr = "Hane, tuvaletin bulunduğu yere göre (2021)"
+label_en = "Households by toilet (2021)"
+topic = "konut_nitelik"
+unit = "household"
+frequency = "annual"
+dims = ["amenity_location"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.households_by_bathroom]
+label_tr = "Hane, banyonun bulunduğu yere göre (2021)"
+label_en = "Households by bathroom (2021)"
+topic = "konut_nitelik"
+unit = "household"
+frequency = "annual"
+dims = ["amenity_location"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.households_by_elevator]
+label_tr = "Hane, kat sayısı ve asansöre göre (2021, yalnız Türkiye)"
+label_en = "Households by floors and elevator (2021, Türkiye)"
+topic = "konut_nitelik"
+unit = "household"
+frequency = "annual"
+dims = ["floors_detail", "elevator"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.rooms_per_person]
+label_tr = "Konutta kişi başına oda (2021)"
+label_en = "Rooms per person (2021)"
+topic = "konut_nitelik"
+unit = "rooms_decimal"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.mean_rooms]
+label_tr = "Konutların ortalama oda sayısı (2021)"
+label_en = "Mean rooms per dwelling (2021)"
+topic = "konut_nitelik"
+unit = "rooms_decimal"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.mean_building_floors]
+label_tr = "Oturulan binanın ortalama kat sayısı (2021)"
+label_en = "Mean floors of building lived in (2021)"
+topic = "konut_nitelik"
+unit = "floors_decimal"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.departing_visitor_nights]
+label_tr = "Çıkış yapan ziyaretçilerin geceleme sayısı"
+label_en = "Nights spent by departing visitors"
+topic = "turizm"
+unit = "night"
+frequency = "annual"
+dims = ["visitor_type"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.departing_visitor_personal_spending]
+label_tr = "Çıkış yapan ziyaretçilerin kişisel harcaması (bin $)"
+label_en = "Departing visitors’ personal spending (thousand $)"
+topic = "turizm"
+unit = "thousand_usd"
+frequency = "annual"
+dims = ["visitor_type"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.departing_visitor_package_spending]
+label_tr = "Çıkış yapan ziyaretçilerin paket tur harcaması (bin $)"
+label_en = "Departing visitors’ package-tour spending (thousand $)"
+topic = "turizm"
+unit = "thousand_usd"
+frequency = "annual"
+dims = ["visitor_type"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.citizens_abroad_nights]
+label_tr = "Yurt dışını ziyaret eden vatandaşların geceleme sayısı"
+label_en = "Nights abroad by resident citizens"
+topic = "turizm"
+unit = "night"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.citizens_abroad_personal_spending]
+label_tr = "Yurt dışını ziyaret eden vatandaşların kişisel harcaması (bin $)"
+label_en = "Citizens’ personal spending abroad (thousand $)"
+topic = "turizm"
+unit = "thousand_usd"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.citizens_abroad_package_spending]
+label_tr = "Yurt dışını ziyaret eden vatandaşların paket tur harcaması (bin $)"
+label_en = "Citizens’ package-tour spending abroad (thousand $)"
+topic = "turizm"
+unit = "thousand_usd"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
 
 # MEDAS hayvancılık, 2026-09-13 (adapters/tuik_topics.py).
 [indicator.livestock]
