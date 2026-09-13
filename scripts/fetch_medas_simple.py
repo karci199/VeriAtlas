@@ -451,7 +451,17 @@ def build_query(page, topic: str, hint: str, breakdowns) -> int:
                 # The window is tall for that reason. A forced click was tried and is
                 # worse: ZK ignores it, the query runs as the bare total, and the file
                 # is named for a breakdown it does not hold. So the tick must be seen.
+                box = page.locator(".z-listitem:has(.z-listitem-checkbox)").nth(row)
+                try:
+                    box.scroll_into_view_if_needed(timeout=5000)
+                except PlaywrightError:
+                    pass
                 tick(page, row, "")
+                if not is_ticked(page, row):
+                    # Once more: a long breakdown list re-renders under the first click.
+                    settle(page)
+                    if not is_ticked(page, row):
+                        tick(page, row, "")
                 if not is_ticked(page, row):
                     raise PlaywrightError("kirilim secilemedi: " + text)
 

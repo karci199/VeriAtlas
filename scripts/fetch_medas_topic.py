@@ -112,7 +112,10 @@ simple.main()
 
 MIRROR.mkdir(parents=True, exist_ok=True)
 copied = 0
-for name, *_ in new:
+# With RAW pointing at C:/veri-ham the output *is* the mirror; copying a file onto
+# itself fails on Windows with "in use" and ended the run with a traceback.
+same = simple.OUT.resolve() == MIRROR.resolve()
+for name, *_ in [] if same else new:
     for path in sorted(simple.OUT.glob("nufus-" + name + "-*.csv")):
         shutil.copy2(path, MIRROR / path.name)
         copied += 1
