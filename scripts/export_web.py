@@ -71,6 +71,7 @@ DATASETS = {
     "deaths": "deaths.csv",
     "deaths_single_age": "deaths-single-age.csv",
     "births_by_order": "births-by-order.csv",
+    "marriages_by_age": "marriages-by-age.csv",
     "deaths_by_cause": "deaths-by-cause.csv",
     "migration_between_regions": "migration-matrix.csv",
     "household_by_size": "household-by-size.csv",
@@ -118,6 +119,7 @@ BROKEN_DOWN = (
     "deaths",
     "deaths_single_age",
     "births_by_order",
+    "marriages_by_age",
     "deaths_by_cause",
     "migration_between_regions",
     "household_by_size",
@@ -700,8 +702,11 @@ def main() -> None:
         # see the dictionary note on `deaths_single_age`.
         "deaths_single_age": export_broken_down(fact, areas, "deaths_single_age"),
         "births_by_order": export_broken_down(fact, areas, "births_by_order"),
+        "marriages_by_age": export_broken_down(fact, areas, "marriages_by_age"),
         "deaths_by_cause": export_broken_down(fact, areas, "deaths_by_cause"),
-        "migration_between_regions": export_broken_down(fact, areas, "migration_between_regions"),
+        "migration_between_regions": export_broken_down(
+            fact, areas, "migration_between_regions"
+        ),
         "household_by_size": export_broken_down(fact, areas, "household_by_size"),
         "household_by_tenure": export_broken_down(fact, areas, "household_by_tenure"),
         # `whole=False` for the same reason the median age has it: an age is a position,

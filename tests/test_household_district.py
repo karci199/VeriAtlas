@@ -79,3 +79,13 @@ def test_mean_checks_coverage_not_sum():
     ]
     with pytest.raises(KeyError, match="ilce satiri olmayan"):
         check_districts_add_up(frame(rows), "household_size", additive=False)
+
+
+def test_spouse_ages_read_from_one_label_are_not_swapped():
+    """Both spouses share a label; a reader that took the first band for both would put
+    every marriage on the diagonal and still sum to the right total."""
+    from veriatlas.adapters.tuik_vital import READERS
+
+    label = "Kadının yaş grubu:20-24 ve Erkeğin yaş grubu:Bilinmeyen"
+    assert READERS["bride_age"](label) == "20-24"
+    assert READERS["groom_age"](label) == "unknown"

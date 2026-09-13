@@ -720,6 +720,32 @@
           "available": true
         },
         {
+          "id": "marriages_by_age",
+          "label": "Evlenme sayısı (kadın ve erkeğin yaş grubuyla)",
+          "unit": "evlenme",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Yıl içinde kıyılan nikâhlar, kadının ve erkeğin yaş grubuna göre çapraz: hangi yaştaki kadın hangi yaştaki erkekle evlenmiş. Hücrelerin toplamı evlenme sayısına eşittir.",
+          "dims": [
+            "bride_age",
+            "groom_age"
+          ],
+          "views": [
+            "table",
+            "bar"
+          ],
+          "dataset": "marriages-by-age.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "available": true
+        },
+        {
           "id": "mean_marriage_age",
           "label": "Ortalama evlenme yaşı",
           "unit": "yaş",
@@ -1079,6 +1105,38 @@
         "40-44": "40-44",
         "45-49": "45-49",
         "50+": "50 ve üzeri",
+        "unknown": "Bilinmeyen"
+      }
+    },
+    "bride_age": {
+      "label": "Kadının yaş grubu",
+      "values": {
+        "16-19": "16-19",
+        "20-24": "20-24",
+        "25-29": "25-29",
+        "30-34": "30-34",
+        "35-39": "35-39",
+        "40-44": "40-44",
+        "45-49": "45-49",
+        "50-54": "50-54",
+        "55-59": "55-59",
+        "60+": "60 ve üzeri",
+        "unknown": "Bilinmeyen"
+      }
+    },
+    "groom_age": {
+      "label": "Erkeğin yaş grubu",
+      "values": {
+        "16-19": "16-19",
+        "20-24": "20-24",
+        "25-29": "25-29",
+        "30-34": "30-34",
+        "35-39": "35-39",
+        "40-44": "40-44",
+        "45-49": "45-49",
+        "50-54": "50-54",
+        "55-59": "55-59",
+        "60+": "60 ve üzeri",
         "unknown": "Bilinmeyen"
       }
     },

@@ -90,6 +90,25 @@ def age_of(label: str) -> str | None:
 #: this cannot reuse `AGE_IN_LABEL`: the two labels look alike and are not.
 MOTHER_AGE_IN_LABEL = re.compile(r"Annenin yaş grubu\s*:\s*(?P<band>[^|]+)")
 
+#: `Kadının yaş grubu:20-24 ve Erkeğin yaş grubu:25-29` — both spouses on one label. The
+#: band stops at whitespace, since the label goes on after the first band with " ve ".
+BRIDE_AGE_IN_LABEL = re.compile(r"Kadının yaş grubu\s*:\s*(?P<band>[^|\s]+)")
+GROOM_AGE_IN_LABEL = re.compile(r"Erkeğin yaş grubu\s*:\s*(?P<band>[^|\s]+)")
+
+
+def spouse_age_reader(pattern: re.Pattern):
+    """A reader for one spouse's age band; `Bilinmeyen` is kept as `unknown`, so the
+    121 cells still sum to the marriage count (checked: 2.050 of 2.050 area-years)."""
+
+    def read(label: str) -> str | None:
+        found = pattern.search(label)
+        if not found:
+            return None
+        band = found.group("band").strip()
+        return UNKNOWN_AGE if band == "Bilinmeyen" else band
+
+    return read
+
 
 def mother_age_of(label: str) -> str | None:
     """The mother's age band a row's label names, or None.
@@ -134,7 +153,13 @@ def sex_of(label: str) -> str | None:
 #: carry it. Two files feeding one indicator is also why the adapter name is written out
 #: instead of derived from the indicator id — they would collide.
 #: How to read each dim out of a row label.
-READERS = {"sex": sex_of, "age": age_of, "mother_age": mother_age_of}
+READERS = {
+    "sex": sex_of,
+    "age": age_of,
+    "mother_age": mother_age_of,
+    "bride_age": spouse_age_reader(BRIDE_AGE_IN_LABEL),
+    "groom_age": spouse_age_reader(GROOM_AGE_IN_LABEL),
+}
 
 MEASURES = {
     # Births come from the mother's-age export, not the plain one — the same replacement
@@ -174,6 +199,16 @@ MEASURES = {
     "bebek-olum-hizi": ("infant_mortality", "infant_mortality", None, {}),
     "bes-yas-alti-olum-hizi": ("under5_mortality", "under5_mortality", None, {}),
     "evlenme": ("marriages", "marriages", None, {}),
+    # The same marriages crossed by the bride's and the groom's age group, 11 × 11, one
+    # file per year. A separate indicator rather than a replacement for `marriages`: the
+    # plain count feeds the screen's line and map as it is, and its totals equal these
+    # cells summed in every area-year, so nothing can drift between the two.
+    "evlenme-kadin-erkek-yas": (
+        "marriages_by_age",
+        "marriages_by_age",
+        ("bride_age", "groom_age"),
+        {},
+    ),
     "bosanma": ("divorces", "divorces", None, {}),
     # Doğuşta beklenen yaşam süresi. Same transposed shape, sex on the row label, and
     # a series with holes in it: TÜİK builds the provincial life tables from pooled

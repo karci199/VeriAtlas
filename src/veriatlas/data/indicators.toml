@@ -172,6 +172,42 @@ label_en = "Mother's age group"
 # than the birth count they break down, and nothing on screen would show the shortfall.
 unknown = "Bilinmeyen"
 
+[dim.bride_age]
+label_tr = "Kadının yaş grubu"
+label_en = "Bride's age group"
+
+[dim.bride_age.values]
+# The source's own bands: the youngest is 16-19 (no under-16 band is published) and the
+# oldest is open at 60.
+"16-19" = "16-19"
+"20-24" = "20-24"
+"25-29" = "25-29"
+"30-34" = "30-34"
+"35-39" = "35-39"
+"40-44" = "40-44"
+"45-49" = "45-49"
+"50-54" = "50-54"
+"55-59" = "55-59"
+"60+" = "60 ve üzeri"
+unknown = "Bilinmeyen"
+
+[dim.groom_age]
+label_tr = "Erkeğin yaş grubu"
+label_en = "Groom's age group"
+
+[dim.groom_age.values]
+"16-19" = "16-19"
+"20-24" = "20-24"
+"25-29" = "25-29"
+"30-34" = "30-34"
+"35-39" = "35-39"
+"40-44" = "40-44"
+"45-49" = "45-49"
+"50-54" = "50-54"
+"55-59" = "55-59"
+"60+" = "60 ve üzeri"
+unknown = "Bilinmeyen"
+
 [dim.marital]
 label_tr = "Medeni durum"
 label_en = "Marital status"
@@ -771,6 +807,19 @@ dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 Yıl içinde kıyılan resmî nikâh sayısı, nikâhın kıyıldığı ile göre."""
+
+[indicator.marriages_by_age]
+label_tr = "Evlenme sayısı (kadın ve erkeğin yaş grubuyla)"
+label_en = "Marriages by bride's and groom's age group"
+topic = "evlenme_bosanma"
+unit = "marriage"
+frequency = "annual"
+additive = true
+dims = ["bride_age", "groom_age"]
+views = ["table", "bar"]
+definition_tr = """
+Yıl içinde kıyılan nikâhlar, kadının ve erkeğin yaş grubuna göre çapraz: hangi yaştaki \
+kadın hangi yaştaki erkekle evlenmiş. Hücrelerin toplamı evlenme sayısına eşittir."""
 
 [indicator.marriages_district]
 label_tr = "Evlenme sayısı (ilçe)"
