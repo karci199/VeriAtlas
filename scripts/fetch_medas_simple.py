@@ -274,6 +274,13 @@ MEASURES = [
     ("tasit-02-silindir", VEHICLES, "Trafiğe Kaydı Yapılan Motorlu", "Motor silindir"),
     ("tasit-02-renk", VEHICLES, "Trafiğe Kaydı Yapılan Motorlu", "Renk"),
     ("tasit-03-yas", VEHICLES, "Devri yapılan motorlu kara", "Yaş grubu"),
+    # The topic run (fetch_medas_topic.py) stopped before this one's province file.
+    (
+        "trafik-12",
+        "Trafik Kaza İstatistikleri",
+        "Bir milyon otomobil başına yaralı",
+        False,
+    ),
 ]
 
 #: The Düzey box labels for the levels kept here.

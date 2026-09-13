@@ -59,6 +59,16 @@ label_tr = "Motorlu taşıtlar"
 label_en = "Motor vehicles"
 order = 47
 
+[topic.saglik]
+label_tr = "Sağlık"
+label_en = "Health"
+order = 27
+
+[topic.trafik_kaza]
+label_tr = "Trafik kazaları"
+label_en = "Road accidents"
+order = 48
+
 # endregion
 
 # region Dimensions — the breakdown keys and what their stored values are called
@@ -354,6 +364,77 @@ motorcycle = "Motosiklet"
 special_purpose = "Özel amaçlı taşıt"
 construction_machinery = "Yol ve iş makinası"
 tractor = "Traktör"
+# Only in the road-accident vehicle list.
+tractor_unit = "Çekici"
+other = "Diğer"
+
+# Health (adapters/tuik_topics.py).
+[dim.hospital_sector]
+label_tr = "Hastane türü"
+label_en = "Hospital sector"
+
+[dim.hospital_sector.values]
+ministry = "Sağlık Bakanlığı"
+university = "Üniversite"
+private = "Özel"
+other = "Diğer"
+
+[dim.health_sector]
+label_tr = "Kurum"
+label_en = "Sector"
+
+[dim.health_sector.values]
+ministry = "Sağlık Bakanlığı"
+university = "Üniversite"
+private = "Özel"
+
+[dim.health_profession]
+label_tr = "Unvan"
+label_en = "Profession"
+
+[dim.health_profession.values]
+specialist = "Uzman hekim"
+general_practitioner = "Pratisyen hekim"
+resident = "Asistan hekim"
+dentist = "Diş hekimi"
+nurse = "Hemşire"
+midwife = "Ebe"
+pharmacist = "Eczacı"
+other = "Diğer sağlık personeli"
+
+[dim.facility_type]
+label_tr = "Kurum türü"
+label_en = "Facility type"
+
+[dim.facility_type.values]
+inpatient = "Yataklı"
+outpatient = "Yataksız"
+
+# Road accidents (adapters/tuik_topics.py).
+[dim.accident_location]
+label_tr = "Kazanın yeri"
+label_en = "Accident location"
+
+[dim.accident_location.values]
+inside_settlement = "Yerleşim yeri"
+outside_settlement = "Yerleşim yeri dışı"
+
+[dim.death_timing]
+label_tr = "Ölüm zamanı"
+label_en = "Time of death"
+
+[dim.death_timing.values]
+at_scene = "Kaza yerinde"
+within_30_days = "Kaza sonrası (30 gün)"
+
+[dim.road_user]
+label_tr = "Kazadan etkilenen"
+label_en = "Road user"
+
+[dim.road_user.values]
+driver = "Sürücü"
+passenger = "Yolcu"
+pedestrian = "Yaya"
 
 [dim.registration]
 label_tr = "Kayıt durumu"
@@ -1032,6 +1113,42 @@ additive = false
 label_tr = "yıl"
 label_en = "years"
 decimals = 1
+additive = false
+
+[unit.bed]
+label_tr = "yatak"
+label_en = "beds"
+decimals = 0
+additive = true
+
+[unit.accident]
+label_tr = "kaza"
+label_en = "accidents"
+decimals = 0
+additive = true
+
+[unit.visits_per_doctor]
+label_tr = "müracaat/hekim"
+label_en = "visits per doctor"
+decimals = 0
+additive = false
+
+[unit.per_100k_people]
+label_tr = "yüz bin kişide"
+label_en = "per 100,000 people"
+decimals = 0
+additive = false
+
+[unit.per_thousand_people_decimal]
+label_tr = "bin kişide"
+label_en = "per 1,000 people"
+decimals = 2
+additive = false
+
+[unit.per_million]
+label_tr = "milyonda"
+label_en = "per million"
+decimals = 0
 additive = false
 
 # endregion
@@ -2086,6 +2203,178 @@ frequency = "quarterly"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "Ruhsat verilen daire sayısı. Bina sayısıyla karıştırılmamalı."
+
+# MEDAS sağlık ve trafik kaza, 2026-09-13 (adapters/tuik_topics.py).
+[indicator.hospitals]
+label_tr = "Hastane sayısı"
+label_en = "Hospitals"
+topic = "saglik"
+unit = "facility"
+frequency = "annual"
+dims = ["hospital_sector"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.hospital_beds]
+label_tr = "Hastane yatak sayısı"
+label_en = "Hospital beds"
+topic = "saglik"
+unit = "bed"
+frequency = "annual"
+dims = ["hospital_sector"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.health_staff]
+label_tr = "Sağlık personeli"
+label_en = "Health staff"
+topic = "saglik"
+unit = "person"
+frequency = "annual"
+dims = ["health_profession", "health_sector"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.health_facilities]
+label_tr = "Sağlık kurumu sayısı (yalnız Türkiye)"
+label_en = "Health facilities (Türkiye only)"
+topic = "saglik"
+unit = "facility"
+frequency = "annual"
+dims = ["facility_type"]
+views = ["table", "line", "bar"]
+
+[indicator.visits_per_doctor]
+label_tr = "Hekim başına müracaat (yalnız Türkiye)"
+label_en = "Visits per doctor (Türkiye only)"
+topic = "saglik"
+unit = "visits_per_doctor"
+frequency = "annual"
+dims = []
+views = ["table", "line", "bar"]
+
+[indicator.hospital_beds_per_100k]
+label_tr = "Yüz bin kişiye hastane yatağı"
+label_en = "Hospital beds per 100,000 people"
+topic = "saglik"
+unit = "per_100k_people"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.doctors_per_thousand]
+label_tr = "Bin kişiye hekim"
+label_en = "Doctors per 1,000 people"
+topic = "saglik"
+unit = "per_thousand_people_decimal"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.driving_licence_holders]
+label_tr = "Sürücü belgesi olan kişi"
+label_en = "Driving licence holders"
+topic = "trafik_kaza"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.injury_accidents]
+label_tr = "Ölümlü yaralanmalı trafik kazası"
+label_en = "Road accidents with casualties"
+topic = "trafik_kaza"
+unit = "accident"
+frequency = "annual"
+dims = ["accident_location"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.road_deaths]
+label_tr = "Trafik kazasında ölen"
+label_en = "Road deaths"
+topic = "trafik_kaza"
+unit = "person"
+frequency = "annual"
+dims = ["sex", "death_timing"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.road_injured]
+label_tr = "Trafik kazasında yaralanan"
+label_en = "Road injuries"
+topic = "trafik_kaza"
+unit = "person"
+frequency = "annual"
+dims = ["sex", "road_user"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.vehicles_in_injury_accidents]
+label_tr = "Ölümlü yaralanmalı kazaya karışan taşıt (yalnız Türkiye)"
+label_en = "Vehicles involved in casualty accidents (Türkiye only)"
+topic = "trafik_kaza"
+unit = "vehicle"
+frequency = "annual"
+dims = ["vehicle_type"]
+views = ["table", "line", "bar"]
+
+[indicator.accidents_per_million]
+label_tr = "Milyon kişiye trafik kazası"
+label_en = "Road accidents per million people"
+topic = "trafik_kaza"
+unit = "per_million"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.road_deaths_per_million]
+label_tr = "Milyon kişiye trafik kazasında ölen"
+label_en = "Road deaths per million people"
+topic = "trafik_kaza"
+unit = "per_million"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.road_injured_per_million]
+label_tr = "Milyon kişiye trafik kazasında yaralanan"
+label_en = "Road injuries per million people"
+topic = "trafik_kaza"
+unit = "per_million"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.road_deaths_per_million_vehicles]
+label_tr = "Milyon taşıta ölen"
+label_en = "Road deaths per million vehicles"
+topic = "trafik_kaza"
+unit = "per_million"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.road_injured_per_million_vehicles]
+label_tr = "Milyon taşıta yaralanan"
+label_en = "Road injuries per million vehicles"
+topic = "trafik_kaza"
+unit = "per_million"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.road_deaths_per_million_cars]
+label_tr = "Milyon otomobile ölen"
+label_en = "Road deaths per million cars"
+topic = "trafik_kaza"
+unit = "per_million"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.road_injured_per_million_cars]
+label_tr = "Milyon otomobile yaralanan"
+label_en = "Road injuries per million cars"
+topic = "trafik_kaza"
+unit = "per_million"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
 
 # MEDAS motorlu kara taşıtları, 2026-09-13 (adapters/tuik_vehicles.py).
 [indicator.vehicle_registrations]

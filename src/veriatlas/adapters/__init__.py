@@ -15,6 +15,7 @@ from .tuik_population import TuikPopulationAgeSex
 from .tuik_registry import TuikRegistryPopulation
 from .tuik_simple import NARROW_ADAPTERS
 from .tuik_tfr import TuikTfr
+from .tuik_topics import TOPIC_ADAPTERS
 from .tuik_vehicles import VEHICLE_ADAPTERS
 from .tuik_villages import TuikVillagePopulation
 from .tuik_vital import VITAL_ADAPTERS
@@ -49,6 +50,8 @@ ADAPTERS = {
     **MUNICIPAL_ADAPTERS,
     # Motor vehicles: registrations, stock by fuel, brand, engine size, mean age.
     **VEHICLE_ADAPTERS,
+    # Health and road accidents.
+    **TOPIC_ADAPTERS,
 }
 
 __all__ = [
@@ -57,6 +60,7 @@ __all__ = [
     "MUNICIPAL_ADAPTERS",
     "NARROW_ADAPTERS",
     "ORIGIN_ADAPTERS",
+    "TOPIC_ADAPTERS",
     "VEHICLE_ADAPTERS",
     "VITAL_ADAPTERS",
     "Adapter",

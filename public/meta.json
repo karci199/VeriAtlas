@@ -1087,6 +1087,198 @@
       ]
     },
     {
+      "topic": "Sağlık",
+      "indicators": [
+        {
+          "id": "doctors_per_thousand",
+          "label": "Bin kişiye hekim",
+          "unit": "bin kişide",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "doctors-per-thousand.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "hospitals",
+          "label": "Hastane sayısı",
+          "unit": "tesis",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "hospital_sector"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "hospitals.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "hospital_beds",
+          "label": "Hastane yatak sayısı",
+          "unit": "yatak",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "hospital_sector"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "hospital-beds.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "visits_per_doctor",
+          "label": "Hekim başına müracaat (yalnız Türkiye)",
+          "unit": "müracaat/hekim",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": "visits-per-doctor.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "health_facilities",
+          "label": "Sağlık kurumu sayısı (yalnız Türkiye)",
+          "unit": "tesis",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "facility_type"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": "health-facilities.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "health_staff",
+          "label": "Sağlık personeli",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "health_profession",
+            "health_sector"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "health-staff.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "hospital_beds_per_100k",
+          "label": "Yüz bin kişiye hastane yatağı",
+          "unit": "yüz bin kişide",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "hospital-beds-per-100k.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
+    },
+    {
       "topic": "Yapı ruhsatı",
       "indicators": [
         {
@@ -2501,6 +2693,331 @@
           "available": true
         }
       ]
+    },
+    {
+      "topic": "Trafik kazaları",
+      "indicators": [
+        {
+          "id": "accidents_per_million",
+          "label": "Milyon kişiye trafik kazası",
+          "unit": "milyonda",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "accidents-per-million.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "road_injured_per_million",
+          "label": "Milyon kişiye trafik kazasında yaralanan",
+          "unit": "milyonda",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "road-injured-per-million.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "road_deaths_per_million",
+          "label": "Milyon kişiye trafik kazasında ölen",
+          "unit": "milyonda",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "road-deaths-per-million.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "road_injured_per_million_cars",
+          "label": "Milyon otomobile yaralanan",
+          "unit": "milyonda",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "road-injured-per-million-cars.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "road_deaths_per_million_cars",
+          "label": "Milyon otomobile ölen",
+          "unit": "milyonda",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "road-deaths-per-million-cars.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "road_injured_per_million_vehicles",
+          "label": "Milyon taşıta yaralanan",
+          "unit": "milyonda",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "road-injured-per-million-vehicles.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "road_deaths_per_million_vehicles",
+          "label": "Milyon taşıta ölen",
+          "unit": "milyonda",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "road-deaths-per-million-vehicles.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "driving_licence_holders",
+          "label": "Sürücü belgesi olan kişi",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "driving-licence-holders.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "road_injured",
+          "label": "Trafik kazasında yaralanan",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sex",
+            "road_user"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "road-injured.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "road_deaths",
+          "label": "Trafik kazasında ölen",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "sex",
+            "death_timing"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "road-deaths.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "vehicles_in_injury_accidents",
+          "label": "Ölümlü yaralanmalı kazaya karışan taşıt (yalnız Türkiye)",
+          "unit": "taşıt",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "vehicle_type"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": "vehicles-in-injury-accidents.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "injury_accidents",
+          "label": "Ölümlü yaralanmalı trafik kazası",
+          "unit": "kaza",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "accident_location"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "injury-accidents.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
     }
   ],
   "dimensions": {
@@ -2730,7 +3247,68 @@
         "motorcycle": "Motosiklet",
         "special_purpose": "Özel amaçlı taşıt",
         "construction_machinery": "Yol ve iş makinası",
-        "tractor": "Traktör"
+        "tractor": "Traktör",
+        "tractor_unit": "Çekici",
+        "other": "Diğer"
+      }
+    },
+    "hospital_sector": {
+      "label": "Hastane türü",
+      "values": {
+        "ministry": "Sağlık Bakanlığı",
+        "university": "Üniversite",
+        "private": "Özel",
+        "other": "Diğer"
+      }
+    },
+    "health_sector": {
+      "label": "Kurum",
+      "values": {
+        "ministry": "Sağlık Bakanlığı",
+        "university": "Üniversite",
+        "private": "Özel"
+      }
+    },
+    "health_profession": {
+      "label": "Unvan",
+      "values": {
+        "specialist": "Uzman hekim",
+        "general_practitioner": "Pratisyen hekim",
+        "resident": "Asistan hekim",
+        "dentist": "Diş hekimi",
+        "nurse": "Hemşire",
+        "midwife": "Ebe",
+        "pharmacist": "Eczacı",
+        "other": "Diğer sağlık personeli"
+      }
+    },
+    "facility_type": {
+      "label": "Kurum türü",
+      "values": {
+        "inpatient": "Yataklı",
+        "outpatient": "Yataksız"
+      }
+    },
+    "accident_location": {
+      "label": "Kazanın yeri",
+      "values": {
+        "inside_settlement": "Yerleşim yeri",
+        "outside_settlement": "Yerleşim yeri dışı"
+      }
+    },
+    "death_timing": {
+      "label": "Ölüm zamanı",
+      "values": {
+        "at_scene": "Kaza yerinde",
+        "within_30_days": "Kaza sonrası (30 gün)"
+      }
+    },
+    "road_user": {
+      "label": "Kazadan etkilenen",
+      "values": {
+        "driver": "Sürücü",
+        "passenger": "Yolcu",
+        "pedestrian": "Yaya"
       }
     },
     "registration": {
