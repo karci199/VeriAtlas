@@ -665,6 +665,14 @@ transit = "Transit"
 business = "İş (toplantı, görev vb.)"
 other = "Diğer"
 
+[dim.trip_organisation]
+label_tr = "Seyahatin organize şekli"
+label_en = "Trip organisation"
+
+[dim.trip_organisation.values]
+individual = "Bireysel"
+package_tour = "Paket tur"
+
 [dim.revenue_type]
 label_tr = "Gelir türü"
 label_en = "Revenue type"
@@ -3846,6 +3854,15 @@ topic = "cocuk"
 unit = "person"
 frequency = "annual"
 dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.citizens_abroad]
+label_tr = "Yurt dışını ziyaret eden vatandaş"
+label_en = "Citizens travelling abroad"
+topic = "turizm"
+unit = "person"
+frequency = "annual"
+dims = ["travel_purpose", "trip_organisation"]
 views = ["table", "map", "line", "bar"]
 
 [indicator.departing_visitor_nights]

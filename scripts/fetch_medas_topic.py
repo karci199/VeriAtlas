@@ -51,7 +51,9 @@ for arg in sys.argv[1:]:
         earlier = [
             o for o in labels[:index] if " ".join(label.split()) in " ".join(o.split())
         ]
-        if earlier:
+        # The fetcher now prefers an exact name, so only a label that is not a whole item
+        # name of its own is still ambiguous; OLCULER naming it explicitly takes it.
+        if earlier and not only:
             print("ATLANDI (belirsiz ad):", name, label, "<-", earlier[0])
             continue
         levels = row.get("levels") or []

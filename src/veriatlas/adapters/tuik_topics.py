@@ -133,6 +133,7 @@ NAMES = {
         "İş Amaçlı (Eğitim, Toplantı, Görev Vb.)": "business",
         "Diğer": "other",
     },
+    "trip_organisation": {"Bireysel": "individual", "Paket Tur": "package_tour"},
     "revenue_type": {
         "Ziyaretçilerden Elde Edilen Turizm Geliri": "visitors",
         "Transfer Yolculardan Elde Edilen Turizm Geliri": "transfer_passengers",
@@ -300,6 +301,7 @@ MEASURES = {
     "cocuk-kultur-07": ("child_theatre_audience", ()),
     "turizm-06": ("departing_visitor_personal_spending", ("visitor_type",)),
     "turizm-07": ("departing_visitor_package_spending", ("visitor_type",)),
+    "turizm-12": ("citizens_abroad", ("travel_purpose", "trip_organisation")),
     "turizm-13": ("citizens_abroad_nights", ()),
     "turizm-15": ("citizens_abroad_personal_spending", ()),
     "turizm-16": ("citizens_abroad_package_spending", ()),

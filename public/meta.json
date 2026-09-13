@@ -5719,6 +5719,34 @@
           "available": true
         },
         {
+          "id": "citizens_abroad",
+          "label": "Yurt dışını ziyaret eden vatandaş",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "travel_purpose",
+            "trip_organisation"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "citizens-abroad.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "citizens_abroad_nights",
           "label": "Yurt dışını ziyaret eden vatandaşların geceleme sayısı",
           "unit": "geceleme",
@@ -8027,6 +8055,13 @@
         "transit": "Transit",
         "business": "İş (toplantı, görev vb.)",
         "other": "Diğer"
+      }
+    },
+    "trip_organisation": {
+      "label": "Seyahatin organize şekli",
+      "values": {
+        "individual": "Bireysel",
+        "package_tour": "Paket tur"
       }
     },
     "revenue_type": {

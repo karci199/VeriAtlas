@@ -251,6 +251,7 @@ DATASETS = {
     "child_crime_victims": "child-crime-victims.csv",
     "child_incident_victims": "child-incident-victims.csv",
     "child_misdemeanour_victims": "child-misdemeanour-victims.csv",
+    "citizens_abroad": "citizens-abroad.csv",
     "departing_visitor_nights": "departing-visitor-nights.csv",
     "departing_visitor_personal_spending": "departing-visitor-personal-spending.csv",
     "departing_visitor_package_spending": "departing-visitor-package-spending.csv",

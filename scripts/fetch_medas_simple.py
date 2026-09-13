@@ -485,14 +485,12 @@ def build_query(page, topic: str, hint: str, breakdowns) -> int:
     # non-breaking spaces, and a plain `in` found none of its eight measures.
     wanted = " ".join(hint.split())
     items = page.locator(".z-listitem")
-    index = next(
-        (
-            i
-            for i in range(items.count())
-            if wanted in " ".join(items.nth(i).inner_text().split())
-        ),
-        None,
-    )
+    texts = [" ".join(items.nth(i).inner_text().split()) for i in range(items.count())]
+    # An exact name first: "Yurtdışını Ziyaret Eden Vatandaş Sayısı" is also the start of
+    # its monthly twin listed above it, and the containment test picked the monthly one.
+    index = next((i for i, text in enumerate(texts) if text == wanted), None)
+    if index is None:
+        index = next((i for i, text in enumerate(texts) if wanted in text), None)
     if index is None:
         print("   olcum bulunamadi:", hint)
         return 0
