@@ -1197,6 +1197,13 @@ deputy_managing_editor = "Yazı işleri müdür yardımcısı"
 managing_editor = "Yazı işleri müdürü"
 news_desk_chief = "İstihbarat ve haber bölüm şefi"
 
+[dim.vehicle_age_band]
+label_tr = "Taşıt yaşı"
+label_en = "Vehicle age"
+
+[dim.vehicle_age_band.values]
+"25+" = "25 ve üzeri"
+
 # Health (adapters/tuik_topics.py).
 [dim.hospital_sector]
 label_tr = "Hastane türü"
@@ -2063,6 +2070,18 @@ label_tr = "ağaç"
 label_en = "trees"
 decimals = 0
 additive = true
+
+[unit.million_km]
+label_tr = "milyon km"
+label_en = "million km"
+decimals = 0
+additive = true
+
+[unit.km]
+label_tr = "km"
+label_en = "km"
+decimals = 0
+additive = false
 
 [unit.bed]
 label_tr = "yatak"
@@ -4540,6 +4559,53 @@ unit = "per_million"
 frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
+
+# TÜİK Veri Portalı taşıt-kilometre, 2026-09-13 (adapters/tuik_vehicle_km.py). Yalnız Türkiye.
+[indicator.vehicle_km]
+label_tr = "Taşıt-kilometre (taşıt türüne göre)"
+label_en = "Vehicle-kilometres by vehicle type"
+topic = "ulasim"
+unit = "million_km"
+frequency = "annual"
+dims = ["vehicle_type"]
+views = ["table", "line", "bar"]
+definition_tr = "Trafiğe kayıtlı taşıtların yıl içinde katettiği toplam mesafe. Kaynak TÜİK Veri Portalı, MEDAS'ta yok."
+
+[indicator.vehicle_mean_annual_km]
+label_tr = "Taşıt başına yıllık ortalama km"
+label_en = "Mean annual km per vehicle"
+topic = "ulasim"
+unit = "km"
+frequency = "annual"
+dims = ["vehicle_type"]
+views = ["table", "line", "bar"]
+
+[indicator.car_km_by_fuel]
+label_tr = "Otomobil taşıt-kilometresi (yakıta göre)"
+label_en = "Car vehicle-kilometres by fuel"
+topic = "ulasim"
+unit = "million_km"
+frequency = "annual"
+dims = ["fuel"]
+views = ["table", "line", "bar"]
+
+[indicator.car_mean_annual_km_by_fuel]
+label_tr = "Otomobil başına yıllık ortalama km (yakıta göre)"
+label_en = "Mean annual km per car by fuel"
+topic = "ulasim"
+unit = "km"
+frequency = "annual"
+dims = ["fuel"]
+views = ["table", "line", "bar"]
+
+[indicator.vehicle_km_by_age]
+label_tr = "Taşıt-kilometre (tür × taşıt yaşı)"
+label_en = "Vehicle-kilometres by type and age"
+topic = "ulasim"
+unit = "million_km"
+frequency = "annual"
+dims = ["vehicle_type", "vehicle_age_band"]
+views = ["table", "line", "bar"]
 
 # MEDAS motorlu kara taşıtları, 2026-09-13 (adapters/tuik_vehicles.py).
 [indicator.vehicle_registrations]

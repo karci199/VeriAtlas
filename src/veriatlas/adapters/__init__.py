@@ -18,6 +18,7 @@ from .tuik_registry import TuikRegistryPopulation
 from .tuik_simple import NARROW_ADAPTERS
 from .tuik_tfr import TuikTfr
 from .tuik_topics import TOPIC_ADAPTERS
+from .tuik_vehicle_km import VEHICLE_KM_ADAPTERS
 from .tuik_vehicles import VEHICLE_ADAPTERS
 from .tuik_villages import TuikVillagePopulation
 from .tuik_vital import VITAL_ADAPTERS
@@ -58,6 +59,8 @@ ADAPTERS = {
     **MONTHLY_HOUSING_ADAPTERS,
     # Crop production: area, production, yield by crop.
     **CROP_ADAPTERS,
+    # Vehicle-kilometres, TÜİK Veri Portalı.
+    **VEHICLE_KM_ADAPTERS,
 }
 
 __all__ = [

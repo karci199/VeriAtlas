@@ -4026,6 +4026,137 @@
           "available": true
         },
         {
+          "id": "car_mean_annual_km_by_fuel",
+          "label": "Otomobil başına yıllık ortalama km (yakıta göre)",
+          "unit": "km",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "fuel"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": "car-mean-annual-km-by-fuel.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "car_km_by_fuel",
+          "label": "Otomobil taşıt-kilometresi (yakıta göre)",
+          "unit": "milyon km",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "fuel"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": "car-km-by-fuel.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "vehicle_mean_annual_km",
+          "label": "Taşıt başına yıllık ortalama km",
+          "unit": "km",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "vehicle_type"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": "vehicle-mean-annual-km.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "vehicle_km",
+          "label": "Taşıt-kilometre (taşıt türüne göre)",
+          "unit": "milyon km",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Trafiğe kayıtlı taşıtların yıl içinde katettiği toplam mesafe. Kaynak TÜİK Veri Portalı, MEDAS'ta yok.",
+          "dims": [
+            "vehicle_type"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": "vehicle-km.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "vehicle_km_by_age",
+          "label": "Taşıt-kilometre (tür × taşıt yaşı)",
+          "unit": "milyon km",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "vehicle_type",
+            "vehicle_age_band"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": "vehicle-km-by-age.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "vehicles_newly_registered",
           "label": "Trafiğe kaydı yapılan taşıt (marka ve türe göre)",
           "unit": "taşıt",
@@ -7720,6 +7851,12 @@
         "deputy_managing_editor": "Yazı işleri müdür yardımcısı",
         "managing_editor": "Yazı işleri müdürü",
         "news_desk_chief": "İstihbarat ve haber bölüm şefi"
+      }
+    },
+    "vehicle_age_band": {
+      "label": "Taşıt yaşı",
+      "values": {
+        "25+": "25 ve üzeri"
       }
     },
     "hospital_sector": {

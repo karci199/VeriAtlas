@@ -278,6 +278,11 @@ DATASETS = {
     "print_runs": "print-runs.csv",
     "circulation": "circulation.csv",
     # Motor vehicles (adapters/tuik_vehicles).
+    "vehicle_km": "vehicle-km.csv",
+    "vehicle_mean_annual_km": "vehicle-mean-annual-km.csv",
+    "car_km_by_fuel": "car-km-by-fuel.csv",
+    "car_mean_annual_km_by_fuel": "car-mean-annual-km-by-fuel.csv",
+    "vehicle_km_by_age": "vehicle-km-by-age.csv",
     "vehicle_registrations": "vehicle-registrations.csv",
     "vehicles_by_fuel": "vehicles-by-fuel.csv",
     "vehicles_by_brand": "vehicles-by-brand.csv",
