@@ -51,6 +51,10 @@ MARRIAGES = "Evlenme İstatistikleri"
 LIFE = "Hayat Tabloları"
 DIVORCES = "Boşanma İstatistikleri"
 ORGUN = "Örgün Eğitim İstatistikleri"
+VEHICLES = "Motorlu Kara Taşıt İstatistikleri"
+
+#: "Aylık" with --aylik. Measures without a period box ignore it.
+PERIOD = "Yıllık"
 
 CELL_LIMIT = 50000
 
@@ -226,16 +230,40 @@ MEASURES = [
     # iniyor (ilce yok) -- yalniz "Okuma yazma orani" ilce duzeyine iniyor, o yuzden
     # ayri, fetch_medas_districts.py --konu orgun ile cekiliyor (bkz. docs/medas.md).
     ("orgun-okul", ORGUN, "Okul sayısı", True),  # 6, egitim seviyeleri
-    ("orgun-ogrenci", ORGUN, "Öğrenci sayısı", True),  # 12, egitim seviyeleri x cinsiyet
+    (
+        "orgun-ogrenci",
+        ORGUN,
+        "Öğrenci sayısı",
+        True,
+    ),  # 12, egitim seviyeleri x cinsiyet
     ("orgun-sube", ORGUN, "Şube sayısı", True),  # 6
     ("orgun-derslik", ORGUN, "Derslik sayısı", True),  # 6
-    ("orgun-ogretmen", ORGUN, "Öğretmen sayısı", True),  # 12, egitim seviyeleri x cinsiyet
+    (
+        "orgun-ogretmen",
+        ORGUN,
+        "Öğretmen sayısı",
+        True,
+    ),  # 12, egitim seviyeleri x cinsiyet
     ("orgun-net-okullasma", ORGUN, "Net okullaşma oranı", True),  # 8
     ("orgun-brut-okullasma", ORGUN, "Brüt okullaşma oranı", True),  # 6
     ("orgun-okul-basina", ORGUN, "Okul başına düşen öğrenci", True),  # 5
     ("orgun-sube-basina", ORGUN, "Şube başına düşen öğrenci", True),  # 5
     ("orgun-ogretmen-basina", ORGUN, "Öğretmen başına düşen öğrenci", True),  # 5
     ("orgun-derslik-basina", ORGUN, "Derslik başına düşen öğrenci", True),  # 4
+    # Motor vehicles. The three counts put a Zaman Periyot box (Yıllık / Aylık) in front of
+    # their years; see `pick_period`. With marka open, 02 and 03 are 426 and 472 indicators:
+    # at province level one year (or, with --aylik, one month) per query, via --yil=.
+    ("tasit-01", VEHICLES, "Motorlu Kara Taşıt Sayısı", True),  # 18, 1994-2025
+    (
+        "tasit-02",
+        VEHICLES,
+        "Trafiğe Kaydı Yapılan Motorlu Kara Taşıt Sayısı",
+        True,
+    ),  # 426
+    ("tasit-03", VEHICLES, "Devri yapılan motorlu kara taşıt sayısı", True),  # 472
+    ("tasit-04", VEHICLES, "Bin kişi başına otomobil sayısı", False),  # 1
+    ("tasit-05", VEHICLES, "Trafiğe kayıtlı taşıtların ortalama yaşları", True),  # 8
+    ("tasit-06", VEHICLES, "Devri yapılan taşıtların ortalama yaşları", True),  # 8
 ]
 
 #: The Düzey box labels for the levels kept here.
@@ -289,7 +317,50 @@ def target_path(name: str, level: str, part: int = 0):
     #: Part 0 keeps the plain name every existing file already has; a sliced measure
     #: numbers its pieces from one.
     piece = "-" + str(part) if part else ""
-    return OUT / ("nufus-" + name + "-" + level + piece + ".csv")
+    monthly = "-aylik" if PERIOD == "Aylık" else ""
+    return OUT / ("nufus-" + name + monthly + "-" + level + piece + ".csv")
+
+
+def pick_period(page) -> None:
+    """Set the Zaman Periyot box where the measure has one.
+
+    Unset, the year list stays empty and looks exactly like "this measure has no years":
+    the motor vehicle survey recorded three measures with no years and no levels, and the
+    topic run skipped them, while 1994-2025 yearly and monthly to 2026 were there.
+    """
+    select_by_option(page, PERIOD)
+
+
+def offered_periods(page) -> list[int]:
+    """Years (2025) or, monthly, year-months (202507) the Zaman list offers, newest first."""
+    if PERIOD != "Aylık":
+        return offered_years(page)
+    for attempt in range(1, 7):
+        found = set()
+        rows = page.locator(".z-listitem")
+        for index in range(rows.count()):
+            parts = rows.nth(index).inner_text().split()
+            if (
+                len(parts) == 2
+                and all(p.isdigit() for p in parts)
+                and len(parts[0]) == 4
+            ):
+                found.add(int(parts[0]) * 100 + int(parts[1]))
+        if found:
+            return sorted(found, reverse=True)
+        print(f"   ay listesi bos, bekleniyor ({attempt}/6)", flush=True)
+        time.sleep(3 * attempt)
+        settle(page)
+    return []
+
+
+def period_row(page, key: int):
+    """The Zaman row for a year, or for a year-month (the row reads "2025 7")."""
+    if PERIOD != "Aylık":
+        pattern = r"^\s*" + str(key) + r"\s*$"
+    else:
+        pattern = r"^\s*" + str(key // 100) + r"\s+" + str(key % 100) + r"\s*$"
+    return page.locator(".z-listitem", has_text=re.compile(pattern)).first
 
 
 def build_query(page, topic: str, hint: str, breakdowns) -> int:
@@ -447,7 +518,8 @@ def fetch(
         return False
 
     click_exact(page, "İleri")
-    years = offered_years(page)
+    pick_period(page)
+    years = offered_periods(page)
     if not years:
         print("   yil listesi bos")
         return False
@@ -466,9 +538,7 @@ def fetch(
     # come back short and look complete.
     missed = []
     for year in years:
-        row = page.locator(
-            ".z-listitem", has_text=re.compile(r"^\s*" + str(year) + r"\s*$")
-        ).first
+        row = period_row(page, year)
         if not row.count():
             continue
         box = row.locator(".z-listitem-checkbox")
@@ -487,9 +557,7 @@ def fetch(
     # ones that slipped, with the row found again from scratch, has taken every one of
     # them so far.
     for year in list(missed):
-        row = page.locator(
-            ".z-listitem", has_text=re.compile(r"^\s*" + str(year) + r"\s*$")
-        ).first
+        row = period_row(page, year)
         if not row.count():
             continue
         box = row.locator(".z-listitem-checkbox")
@@ -630,6 +698,18 @@ def main() -> None:
         (a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--yil=")), ""
     )
     years_wanted = [int(y) for y in picked.replace(" ", "").split(",") if y]
+
+    # `--aylik`: the monthly series where a measure has one; `--yil=` then takes year-months
+    # (202507). `--duzey=province`: one level only, for the per-year (or per-month) runs
+    # of a measure whose country file is already in.
+    global PERIOD, levels_for
+    if "--aylik" in sys.argv[1:]:
+        PERIOD = "Aylık"
+    only_level = next(
+        (a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--duzey=")), ""
+    )
+    if only_level:
+        levels_for = lambda name: [only_level]
 
     with sync_playwright() as play:
         browser = play.chromium.launch(headless=True)
