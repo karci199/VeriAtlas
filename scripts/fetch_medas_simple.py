@@ -274,6 +274,28 @@ MEASURES = [
     ("tasit-02-silindir", VEHICLES, "Trafiğe Kaydı Yapılan Motorlu", "Motor silindir"),
     ("tasit-02-renk", VEHICLES, "Trafiğe Kaydı Yapılan Motorlu", "Renk"),
     ("tasit-03-yas", VEHICLES, "Devri yapılan motorlu kara", "Yaş grubu"),
+    # Building permits go down to district, which the topic run (country + province) does
+    # not ask for. 13 indicators × 973 districts × 16 years: sliced by the fetcher.
+    *[
+        (f"yapi-izin-{n:02d}-ilce", "Yapı İzin İstatistikleri", label, True)
+        for n, label in enumerate(
+            [
+                "Yapı ruhsatına göre bina sayısı",
+                "Yapı ruhsatına göre yüzölçümü",
+                "Yapı ruhsatına göre daire sayısı",
+                "Yapı ruhsatına göre konut alanı",
+                "Yapı ruhsatına göre diğer alan",
+                "Yapı ruhsatına göre ortak alan",
+                "Yapı kullanma izin belgesine göre bina sayısı",
+                "Yapı kullanma izin belgesine göre yüzölçümü",
+                "Yapı kullanma izin belgesine göre daire sayısı",
+                "Yapı kullanma izin belgesine göre konut alanı",
+                "Yapı kullanma izin belgesine göre diğer alan",
+                "Yapı kullanma izin belgesine göre ortak alan",
+            ],
+            start=1,
+        )
+    ],
     # The topic run (fetch_medas_topic.py) stopped before this one's province file.
     (
         "trafik-12",
@@ -560,7 +582,7 @@ def fetch(
     # reached the level box; three months went straight through. So the whole span is
     # handed back as over the limit before a single tick, and main slices it.
     if PERIOD == "Aylık" and only is None and len(years) > MONTHS_PER_QUERY:
-        areas = {"province": 82, "nuts2": 26}.get(level, 1)
+        areas = {"province": 82, "nuts2": 26, "district": 973}.get(level, 1)
         print("   · aylik, dilimlenecek:", len(years), "ay")
         return (count, areas, years)
     # A year at a time, scrolled to before it is clicked. The list is long enough at
@@ -819,7 +841,9 @@ def main() -> None:
                 # The area counter was read while still climbing (6, 7, 24 of 82), so
                 # the slices came out several times too wide and never fit. The level's
                 # real size is known; the counter may only raise it.
-                areas = max(areas, {"province": 82, "nuts2": 26}.get(level, 1))
+                areas = max(
+                    areas, {"province": 82, "nuts2": 26, "district": 973}.get(level, 1)
+                )
                 # Nine tenths of the limit, not all of it: the indicator count MEDAS
                 # reports for the whole span is not always the count it applies to a
                 # slice of it, and a batch sized to the millimetre came back over the
