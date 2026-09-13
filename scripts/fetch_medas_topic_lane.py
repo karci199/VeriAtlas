@@ -10,6 +10,9 @@ import subprocess
 import sys
 from pathlib import Path
 
+sys.path.insert(0, "src")
+from veriatlas.config import RAW
+
 log_path = Path(sys.argv[1])
 pairs = sys.argv[2:]
 env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
@@ -19,7 +22,7 @@ with log_path.open("a", encoding="utf-8") as log:
     for pair in pairs:
         topic = pair.split("=", 1)[1]
         slug = re.sub(r"[^A-Za-z0-9]+", "-", topic).strip("-").lower()
-        if not Path("raw/medas/kesif", slug + ".json").exists():
+        if not (RAW / "medas" / "kesif" / (slug + ".json")).exists():
             log.write("== TARAMA " + topic + "\n")
             log.flush()
             subprocess.run(

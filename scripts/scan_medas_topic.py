@@ -95,7 +95,21 @@ def survey(page, topic: str, index: int) -> dict:
     indicators = counted(page)
 
     click_exact(page, "İleri")
-    years = offered_years(page)
+    # A Zaman Periyot box (Yıllık / Aylık / Çeyreklik) keeps the year list empty until a
+    # period is chosen, and the survey then said "no years, no levels" for measures that
+    # have both — every motor vehicle count, and most of housing, tourism and livestock.
+    # Only the yearly series is surveyed; a measure with no yearly option has no years.
+    periodic = False
+    for pos in range(page.locator("select").count()):
+        select = page.locator("select").nth(pos)
+        options = [o.strip() for o in select.locator("option").all_inner_texts()]
+        if "Aylık" in options or "Yıllık" in options or "Çeyreklik" in options:
+            periodic = True
+            if "Yıllık" in options:
+                select.select_option(label="Yıllık")
+                settle(page)
+            break
+    years = offered_years(page, tries=2 if periodic else 6)
     if years:
         row = page.locator(".z-listitem", has_text=str(years[0])).first
         box = row.locator(".z-listitem-checkbox")
