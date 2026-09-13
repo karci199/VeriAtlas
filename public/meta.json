@@ -5326,6 +5326,697 @@
       ]
     },
     {
+      "topic": "Bitkisel üretim",
+      "indicators": [
+        {
+          "id": "irrigation_sown_area",
+          "label": "Kuru/sulu, 1./2. ekiliş: ekilen alan",
+          "unit": "dekar",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop",
+            "irrigation",
+            "sowing"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "irrigation-sown-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "irrigation_harvested_area",
+          "label": "Kuru/sulu, 1./2. ekiliş: hasat edilen alan",
+          "unit": "dekar",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop",
+            "irrigation",
+            "sowing"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "irrigation-harvested-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "irrigation_yield",
+          "label": "Kuru/sulu, 1./2. ekiliş: verim",
+          "unit": "kg/dekar",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop",
+            "irrigation",
+            "sowing"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "irrigation-yield.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "irrigation_production",
+          "label": "Kuru/sulu, 1./2. ekiliş: üretim",
+          "unit": "ton",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop",
+            "irrigation",
+            "sowing"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "irrigation-production.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "fruit_trees_bearing",
+          "label": "Meyve veren yaşta ağaç",
+          "unit": "ağaç",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "fruit-trees-bearing.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "fruit_yield_per_tree",
+          "label": "Meyve verimi (ağaç başına)",
+          "unit": "kg/ağaç",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "fruit-yield-per-tree.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "fruit_yield_per_decare",
+          "label": "Meyve verimi (dekar başına)",
+          "unit": "kg/dekar",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "fruit-yield-per-decare.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "fruit_trees_not_bearing",
+          "label": "Meyve vermeyen yaşta ağaç",
+          "unit": "ağaç",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "fruit-trees-not-bearing.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "fruit_production",
+          "label": "Meyve, içecek ve baharat bitkileri üretimi",
+          "unit": "ton",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "fruit-production.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "vegetable_sown_area",
+          "label": "Sebze ekilen alan",
+          "unit": "dekar",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "vegetable-sown-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "vegetable_production",
+          "label": "Sebze üretimi",
+          "unit": "ton",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "vegetable-production.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "ornamental_area",
+          "label": "Süs bitkileri ekilen alan",
+          "unit": "m²",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "ornamental-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "ornamental_production",
+          "label": "Süs bitkileri üretimi",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "ornamental-production.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "field_crop_sown_area",
+          "label": "Tarla ürünleri ekilen alan",
+          "unit": "dekar",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "field-crop-sown-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "field_crop_harvested_area",
+          "label": "Tarla ürünleri hasat edilen alan",
+          "unit": "dekar",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "field-crop-harvested-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "field_crop_yield",
+          "label": "Tarla ürünleri verimi",
+          "unit": "kg/dekar",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "field-crop-yield.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "field_crop_production",
+          "label": "Tarla ürünleri üretimi",
+          "unit": "ton",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "field-crop-production.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "orchard_area",
+          "label": "Toplu meyvelik alanı",
+          "unit": "dekar",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "orchard-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "greenhouse_fruit_area",
+          "label": "Örtüaltı meyve alanı",
+          "unit": "dekar",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop",
+            "cover_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "greenhouse-fruit-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "greenhouse_fruit_production",
+          "label": "Örtüaltı meyve üretimi",
+          "unit": "ton",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop",
+            "cover_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "greenhouse-fruit-production.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "greenhouse_vegetable_area",
+          "label": "Örtüaltı sebze alanı",
+          "unit": "dekar",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop",
+            "cover_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "greenhouse-vegetable-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "greenhouse_vegetable_production",
+          "label": "Örtüaltı sebze üretimi",
+          "unit": "ton",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop",
+            "cover_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "greenhouse-vegetable-production.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "greenhouse_ornamental_area",
+          "label": "Örtüaltı süs bitkileri alanı",
+          "unit": "m²",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop",
+            "cover_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "greenhouse-ornamental-area.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "greenhouse_ornamental_production",
+          "label": "Örtüaltı süs bitkileri üretimi",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "crop",
+            "cover_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "greenhouse-ornamental-production.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
+    },
+    {
       "topic": "Hayvancılık",
       "indicators": [
         {
@@ -6467,6 +7158,294 @@
         "816": "Vanuatu",
         "823": "Mikronezya",
         "825": "Palau"
+      }
+    },
+    "crop": {
+      "label": "Ürün",
+      "values": {
+        "01.11.11.00.00": "Durum Buğdayı",
+        "01.11.12.00.00": "Buğday, Durum Buğdayı Hariç",
+        "01.11.20.00.00": "Mısır",
+        "01.11.31.00.01": "Arpa (Biralık)",
+        "01.11.31.00.02": "Arpa (Diğer)",
+        "01.11.32.00.00": "Çavdar",
+        "01.11.33.00.00": "Yulaf",
+        "01.11.41.00.00": "Sorgum",
+        "01.11.42.00.00": "Darı",
+        "01.11.49.00.01": "Kaplıca",
+        "01.11.49.00.02": "Kuş Yemi",
+        "01.11.49.00.03": "Mahlut",
+        "01.11.49.00.04": "Triticale",
+        "01.11.49.00.05": "Kara Buğday",
+        "01.11.61.00.01": "Fasulye, Taze",
+        "01.11.61.00.02": "Barbunya, Taze",
+        "01.11.62.00.00": "Bezelye, Taze",
+        "01.11.69.00.01": "Börülce, Taze",
+        "01.11.69.00.02": "Bakla, Taze",
+        "01.11.71.00": "Fasulye, Kuru",
+        "01.11.72.00.00": "Bakla, Kuru (İnsan Tüketimi İçin)",
+        "01.11.73.00.00": "Nohut, Kuru",
+        "01.11.74.00.01": "Mercimek, Kuru (Kırmızı)",
+        "01.11.74.00.02": "Mercimek, Kuru (Yeşil)",
+        "01.11.75.00.00": "Bezelye, Kuru",
+        "01.11.79.00.01": "Börülce, Kuru",
+        "01.11.79.00.02": "Burçak (Dane)",
+        "01.11.79.00.03": "Buy (Çemen Otu)",
+        "01.11.79.00.04": "Mürdümük",
+        "01.11.79.00.05": "Acı Bakla (İnsan Tüketimi İçin)",
+        "01.11.81.00.00": "Soya Fasulyesi",
+        "01.11.82.00.00": "Yerfıstığı, Kabuklu",
+        "01.11.84.00.00": "Pamuk Çekirdeği (Çiğit)",
+        "01.11.91.00.00": "Keten Tohumu",
+        "01.11.93.00.00": "Kanola Veya Kolza Tohumu",
+        "01.11.94.00.00": "Susam Tohumu",
+        "01.11.95.00.01": "Ayçiçeği Tohumu (Yağlık)",
+        "01.11.95.00.02": "Ayçiçeği Tohumu (Çerezlik)",
+        "01.11.99.00.01": "Kenevir Tohumu",
+        "01.11.99.00.02": "Haşhaş Tohumu",
+        "01.11.99.00.03": "Aspir Tohumu",
+        "01.11.99.00.99": "Diğer Yağlı Tohumlar",
+        "01.12.10.00.00": "Çeltik",
+        "01.13.11.00.00": "Kuşkonmaz",
+        "01.13.12.00.01": "Lahana (Beyaz)",
+        "01.13.12.00.02": "Lahana (Kırmızı)",
+        "01.13.12.00.03": "Lahana (Kara Yaprak)",
+        "01.13.12.00.04": "Lahana (Brüksel)",
+        "01.13.13.00.01": "Karnabahar",
+        "01.13.13.00.02": "Brokoli",
+        "01.13.14.00.01": "Marul (Kıvırcık)",
+        "01.13.14.00.02": "Marul (Göbekli)",
+        "01.13.14.00.03": "Marul (İceberg)",
+        "01.13.16.00.00": "Ispanak",
+        "01.13.17.00.00": "Enginar",
+        "01.13.19.00.01": "Kereviz (Sap)",
+        "01.13.19.00.02": "Pazı",
+        "01.13.19.00.03": "Semizotu",
+        "01.13.19.00.04": "Maydanoz",
+        "01.13.19.00.05": "Roka",
+        "01.13.19.00.06": "Tere",
+        "01.13.19.00.07": "Nane",
+        "01.13.19.00.08": "Dereotu",
+        "01.13.19.00.11": "Kuzu Kulağı",
+        "01.13.21.00.00": "Karpuz",
+        "01.13.29.00.00": "Kavun",
+        "01.13.31.00.01": "Biber (Salçalık, Kapya)",
+        "01.13.31.00.02": "Biber (Dolmalık)",
+        "01.13.31.00.03": "Biber (Sivri)",
+        "01.13.31.00.04": "Biber (Çarliston)",
+        "01.13.32.00.01": "Hıyar (Sofralık)",
+        "01.13.32.00.02": "Hıyar (Turşuluk)",
+        "01.13.32.00.03": "Acur",
+        "01.13.33.00.00": "Patlıcan",
+        "01.13.34.00.01": "Domates (Sofralık)",
+        "01.13.34.00.02": "Domates (Salçalık)",
+        "01.13.39.00.01": "Bamya",
+        "01.13.39.00.02": "Kabak (Sakız)",
+        "01.13.39.00.03": "Bal Kabağı",
+        "01.13.39.00.04": "Kabak (Çerezlik)",
+        "01.13.39.00.05": "Altın Çilek (Yer Kirazı)",
+        "01.13.39.00.06": "Kudret Narı",
+        "01.13.39.00.07": "Pepino",
+        "01.13.41.00.01": "Havuç",
+        "01.13.41.00.02": "Şalgam",
+        "01.13.42.00.01": "Sarımsak (Taze)",
+        "01.13.42.00.02": "Sarımsak (Kuru)",
+        "01.13.43.00.01": "Soğan (Taze)",
+        "01.13.43.00.02": "Soğan (Kuru)",
+        "01.13.44.00.01": "Pırasa",
+        "01.13.49.01.00": "Kırmızı Pancar",
+        "01.13.49.02.00": "Kereviz (Kök)",
+        "01.13.49.03.01": "Turp (Bayır)",
+        "01.13.49.03.02": "Turp (Kırmızı)",
+        "01.13.49.03.03": "Turp (Beyaz)",
+        "01.13.51.00.00": "Patates (Tatlı Patates Hariç)",
+        "01.13.52.00.00": "Tatlı Patates",
+        "01.13.59.00.01": "Yer Elması",
+        "01.13.59.00.02": "Salep",
+        "01.13.71.00.00": "Şeker Pancarı",
+        "01.13.72.00.00": "Şeker Pancarı Tohumları",
+        "01.13.80.00.01": "Mantar (Kültür)",
+        "01.14.10.00.00": "Şeker Kamışı",
+        "01.15.10.00.00": "Tütün, İşlenmemiş",
+        "01.16.11.00.01": "Pamuk, Çırçırlanmamış (Kütlü)",
+        "01.16.11.00.02": "Pamuk, Çırçırlanmış (Lifli)",
+        "01.16.19.00.01": "Keten, Lif",
+        "01.16.19.00.02": "Kenevir, Lif",
+        "01.19.10.10": "Fiğ (Yeşilot)",
+        "01.19.10.10.01": "Fiğ (Adi) (Yeşil Ot)",
+        "01.19.10.10.02": "Fiğ (Macar) (Yeşil Ot)",
+        "01.19.10.10.03": "Fiğ (Diğer) (Yeşil Ot)",
+        "01.19.10.11.00": "Burçak (Yeşilot)",
+        "01.19.10.12.00": "Yonca (Yeşilot)",
+        "01.19.10.13.00": "Korunga (Yeşilot)",
+        "01.19.10.14.00": "Üçgül (Yeşilot)",
+        "01.19.10.15.00": "Yulaf (Yeşilot)",
+        "01.19.10.16.00": "Sorgum (Yeşilot)",
+        "01.19.10.17.00": "Triticale (Yeşilot)",
+        "01.19.10.18.00": "Mürdümük (Yeşilot)",
+        "01.19.10.19.00": "Mısır (Hasıl)",
+        "01.19.10.20.00": "Mısır (Slaj)",
+        "01.19.10.22.00": "Hayvan Pancarı",
+        "01.19.10.23.00": "Yem Şalgamı",
+        "01.19.10.24.00": "Buğday (Hasıl/Yeşilot)",
+        "01.19.10.26.00": "Bakla, Kuru (Yemlik)",
+        "01.19.10.27.00": "Sudan Otu (Yemlik)",
+        "01.19.10.28.00": "Çayır Otu (Yeşilot)",
+        "01.19.10.29.00": "Arpa (Yeşilot)",
+        "01.19.10.30.00": "Çavdar (Yeşilot)",
+        "01.19.10.31.00": "Bezelye (Yemlik)",
+        "01.19.10.32.00": "İtalyan Çimi (Yemlik)",
+        "01.19.10.99.00": "Başka Yerde Sınıflandırılmamış Diğer Yem Bitkileri (Tahıl Samanı Ve Kabuklar Hariç)",
+        "01.19.21.00.01": "Karanfil, Kesme",
+        "01.19.21.00.02": "Glayöl, Kesme",
+        "01.19.21.00.03": "Gerbera, Kesme",
+        "01.19.21.00.04": "Gypsohilla, Kesme",
+        "01.19.21.00.05": "Kasımpatı (Krizantem), Kesme",
+        "01.19.21.00.06": "Anemon (Manisa Lalesi), Kesme",
+        "01.19.21.00.07": "Lilyum (Zambak), Kesme",
+        "01.19.21.00.08": "Orkide, Kesme",
+        "01.19.21.00.09": "Lale, Kesme",
+        "01.19.21.00.10": "Gül, Kesme",
+        "01.19.21.00.12": "Lisianthus, Kesme",
+        "01.19.21.00.13": "Fresia, Kesme",
+        "01.19.21.00.14": "Şebboy, Kesme",
+        "01.19.21.00.15": "Sümbül, Kesme",
+        "01.19.21.00.16": "İris, Kesme",
+        "01.19.21.00.17": "Statice, Kesme",
+        "01.19.21.00.18": "Solidago (Altınbaşak), Kesme",
+        "01.19.21.00.19": "Nergis, Kesme",
+        "01.19.21.00.99": "Diğer Kesme Çiçek Ve Çiçek Koncaları",
+        "01.19.31.03.00": "Üçgül Tohumu",
+        "01.19.31.05.00": "Korunga Tohumu",
+        "01.19.31.06": "Fiğ Tohumu",
+        "01.19.31.06.01": "Fiğ (Adi) Tohumu",
+        "01.19.31.06.02": "Fiğ (Macar) Tohumu",
+        "01.19.31.06.03": "Fiğ (Diğer) Tohumu",
+        "01.19.31.08.00": "Çim Tohumu",
+        "01.19.31.09.00": "Yonca Tohumu",
+        "01.21.11.01.01": "Sofralık Üzüm, Çekirdekli",
+        "01.21.11.01.02": "Sofralık Üzüm, Çekirdeksiz",
+        "01.21.12.01.01": "Şaraplık Üzümler",
+        "01.21.12.02.01": "Kurutmalık Üzüm, Çekirdekli",
+        "01.21.12.02.02": "Kurutmalık Üzüm, Çekirdeksiz",
+        "01.22.11.00.00": "Avokado",
+        "01.22.12.00.00": "Muz, Plantain Ve Benzerleri",
+        "01.22.14.00.00": "İncir (Yaş)",
+        "01.22.19.00.01": "Frenk İnciri (Hint, Mısır İnciri)",
+        "01.22.19.00.99": "Diğer Tropikal Ve Subtropikal Meyveler (Frenk İnciri Hariç)",
+        "01.23.11.00.01": "Greyfurt (Altıntop)",
+        "01.23.11.00.02": "Pomelo",
+        "01.23.12.00.00": "Limon Ve Misket Limonu",
+        "01.23.13.00.01": "Portakal (Washington)",
+        "01.23.13.00.02": "Portakal (Yafa)",
+        "01.23.13.00.99": "Diğer Portakallar",
+        "01.23.14.02.01": "Mandalina (Satsuma)",
+        "01.23.14.02.02": "Mandalina (Klemantin)",
+        "01.23.14.02.03": "Mandalina (King)",
+        "01.23.14.02.99": "Mandalina (Diğer)",
+        "01.23.19.00.01": "Turunç",
+        "01.23.19.00.03": "Bergamot",
+        "01.23.19.00.04": "Kamkat",
+        "01.24.10.00.01": "Elma (Golden)",
+        "01.24.10.00.02": "Elma (Starking)",
+        "01.24.10.00.03": "Elma (Amasya)",
+        "01.24.10.00.04": "Elma (Granny Smith)",
+        "01.24.10.00.99": "Diğer Elmalar",
+        "01.24.21.00.00": "Armut",
+        "01.24.22.00.00": "Ayva",
+        "01.24.23.00.01": "Kayısı",
+        "01.24.23.00.02": "Zerdali",
+        "01.24.24.00.01": "Kiraz",
+        "01.24.24.00.02": "Vişne",
+        "01.24.25.00.00": "Şeftali",
+        "01.24.26.00.00": "Nektarin",
+        "01.24.27.00.00": "Erik",
+        "01.24.29.00.01": "Yenidünya (Malta Eriği)",
+        "01.24.29.00.02": "Kızılcık",
+        "01.24.29.00.03": "İğde",
+        "01.24.29.00.04": "Hünnap",
+        "01.24.29.00.07": "Üvez",
+        "01.24.29.00.99": "Diğer Başka Yerde Sınıflandırılmamış Yumuşak Çekirdekli Meyveler Ve Sert Çekirdekli Meyveler",
+        "01.25.11.00.00": "Kivi",
+        "01.25.12.00.00": "Ahududu",
+        "01.25.13.00.00": "Çilek",
+        "01.25.19.00.01": "Maviyemiş",
+        "01.25.19.00.03": "Frenk Üzümü",
+        "01.25.19.00.05": "Böğürtlen",
+        "01.25.19.00.06": "Dut",
+        "01.25.19.00.99": "Diğer, Başka Yerde Sınıflandırılmamış Diğer Üzümsü Meyveler Ve Yabanmersini Familyası Meyveleri",
+        "01.25.31.00.00": "Badem",
+        "01.25.32.00.00": "Kestane",
+        "01.25.33.00.00": "Fındık",
+        "01.25.34.00.00": "Şam Fıstığı (Antep Fıstığı)",
+        "01.25.35.00.00": "Ceviz",
+        "01.25.39.00.00": "Diğer Sert Kabuklu Meyveler (Yabani Yenilebilir Sert Kabuklu Meyveler, Yer Fıstığı Ve Hindistan Cevizi Hariç)",
+        "01.25.90.00.01": "Keçiboynuzu (Harnup)",
+        "01.25.90.00.02": "Muşmula",
+        "01.25.90.00.03": "Nar",
+        "01.25.90.00.04": "Trabzon Hurması (Cennet Elması)",
+        "01.25.90.00.05": "Kuşburnu",
+        "01.26.11.00.00": "Sofralık Zeytinler",
+        "01.26.12.00.00": "Yağlık Zeytinler (Zeytinyağı Üretimi İçin)",
+        "01.27.12.00.00": "Çay Yaprakları",
+        "01.28.12.00.00": "Biber, Kuru, İşlenmemiş",
+        "01.28.14.00.01": "Anason, İşlenmemiş",
+        "01.28.14.00.02": "Kimyon, İşlenmemiş",
+        "01.28.14.00.03": "Rezene, İşlenmemiş",
+        "01.28.14.00.04": "Kişniş, İşlenmemiş",
+        "01.28.17.00.00": "Zencefil, Kuru, İşlenmemiş",
+        "01.28.19.00.01": "Kekik, İşlenmemiş",
+        "01.28.19.00.02": "Safran , İşlenmemiş",
+        "01.28.19.00.03": "Süpürge Otu, İşlenmemiş",
+        "01.28.19.00.04": "Kapari, İşlenmemiş",
+        "01.28.19.00.05": "Defne Yaprağı, İşlenmemiş",
+        "01.28.19.00.06": "Sumak, İşlenmemiş",
+        "01.28.19.00.08": "Çörek Otu Tohumu",
+        "01.28.19.00.09": "Kuşdili Bitkisi (Biberiye)",
+        "01.28.19.00.10": "Fesleğen (Reyhan)",
+        "01.28.19.00.12": "Tarhun",
+        "01.28.20.00.00": "Şerbetçiotu Kozalağı",
+        "01.28.30.00.08": "Haşhaş Kapsülü (Haşhaş Kellesi)",
+        "01.28.30.00.11": "Adaçayı",
+        "01.28.30.00.12": "Ihlamur Çiçeği Ve Yağrağı",
+        "01.28.30.00.15": "Kantaron",
+        "01.28.30.00.17": "Isırgan Otu",
+        "01.28.30.00.19": "Lavanta",
+        "01.28.30.00.22": "Papatya",
+        "01.28.30.00.23": "Oğul Otu (Melisa)",
+        "01.28.30.00.30": "Civanperçemi",
+        "01.28.30.00.31": "Çarkıfelek",
+        "01.28.30.00.34": "Ekinezya",
+        "01.28.30.00.36": "Gül, Yağlık",
+        "01.28.30.00.43": "Mersin",
+        "01.28.30.00.49": "Şeker Otu (Stevia)",
+        "01.28.30.00.99": "Diğer Aromatik Veya Tıbbi Bitkiler",
+        "01.30.10.01": "Çiçek Soğanları",
+        "01.30.10.03.05": "İç Mekan Süs Bitkileri (Oda Bitkileri)",
+        "01.30.10.03.06": "Dış Mekan Süs Bitkileri"
+      }
+    },
+    "cover_type": {
+      "label": "Örtüaltı türü",
+      "values": {
+        "low_tunnel": "Alçak tünel",
+        "high_tunnel": "Yüksek tünel",
+        "plastic_greenhouse": "Plastik sera",
+        "glass_greenhouse": "Cam sera"
+      }
+    },
+    "irrigation": {
+      "label": "Kuru / sulu",
+      "values": {
+        "rainfed": "Kuru",
+        "irrigated": "Sulu"
+      }
+    },
+    "sowing": {
+      "label": "Ekiliş",
+      "values": {
+        "first": "Birinci ekiliş",
+        "second": "İkinci ekiliş"
       }
     },
     "hospital_sector": {

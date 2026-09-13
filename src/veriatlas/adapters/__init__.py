@@ -2,6 +2,7 @@
 
 from .base import Adapter, Manifest, history, ingest
 from .tuik_birth_order import TuikBirthOrder
+from .tuik_crops import CROP_ADAPTERS
 from .tuik_death_cause import TuikDeathCause
 from .tuik_district_population import TuikDistrictPopulation
 from .tuik_household import TuikHouseholdSize, TuikHouseholdTenure
@@ -55,6 +56,8 @@ ADAPTERS = {
     **TOPIC_ADAPTERS,
     # Housing sales published monthly only, summed to years.
     **MONTHLY_HOUSING_ADAPTERS,
+    # Crop production: area, production, yield by crop.
+    **CROP_ADAPTERS,
 }
 
 __all__ = [
