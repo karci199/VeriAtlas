@@ -296,6 +296,32 @@ MEASURES = [
             start=1,
         )
     ],
+    # Building and dwelling characteristics (2021): ticking every breakdown at once fails
+    # on the second row, so one breakdown per query. -tr: Türkiye only; -il: province.
+    *[
+        (f"bina-konut-{n}-{slug}", "Bina ve Konut Nitelikleri Araştırması", label, name)
+        for n, label, rows in (
+            ("01-tr", "Bina ve konut niteliklerine göre hanehalkı", 12),
+            ("02-il", "İl düzeyinde bina ve konut niteliklerine göre", 10),
+        )
+        for slug, name in list(
+            {
+                "kat": "Binanın kat sayısı",
+                "insa": "Binanın inşa yılı",
+                "mulkiyet": "Konutun mülkiyet durumu",
+                "hanetipi": "Hanehalkı tipi",
+                "oda": "Konuttaki oda sayısı",
+                "buyukluk": "Hanehalkı büyüklüğü",
+                "otopark": "Binada otopark bulunma durumu",
+                "isitma": "Konutta en çok kullanılan ısıtma sistemi",
+                "yakit": "Konutta kullanılan ana yakıt türü",
+                "su": "Borulu su sistemi",
+                "tuvalet": "Tuvalet",
+                "banyo": "Banyo",
+            }.items()
+        )
+        if not (n == "02-il" and slug in ("hanetipi", "buyukluk"))
+    ],
     # Housing sales published monthly only (run with --aylik): by district, to foreigners,
     # and by buyer nationality (175 indicators — country only, province would be ~50
     # queries).
@@ -345,6 +371,10 @@ def levels_for(name: str) -> list[str]:
     measures exist *only* at district level, and asking for Türkiye there would download
     the same national total a second time under another measure's name.
     """
+    if name.startswith("bina-konut-01-tr"):
+        return ["country"]
+    if name.startswith("bina-konut-02-il"):
+        return ["province"]
     if name.endswith("-ilce"):
         return ["district"]
     if name in COUNTRY_ONLY:
