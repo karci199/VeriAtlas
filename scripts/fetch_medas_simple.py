@@ -417,7 +417,14 @@ def build_query(page, topic: str, hint: str, breakdowns) -> int:
             # deceased — so unticking what we did not ask for empties the query instead of
             # narrowing it, and MEDAS then refuses the whole measure without saying why.
             if keep and not is_ticked(page, row):
+                # The "gösterge mevcuttur" notice is centred in the window and, at 1000px
+                # high, covers the fifth breakdown (motor vehicles: "Yaş grubu", "Renk").
+                # The window is tall for that reason. A forced click was tried and is
+                # worse: ZK ignores it, the query runs as the bare total, and the file
+                # is named for a breakdown it does not hold. So the tick must be seen.
                 tick(page, row, "")
+                if not is_ticked(page, row):
+                    raise PlaywrightError("kirilim secilemedi: " + text)
 
     click_exact(page, "Tamam")
 
@@ -738,7 +745,7 @@ def main() -> None:
     with sync_playwright() as play:
         browser = play.chromium.launch(headless=True)
         page = browser.new_page(
-            viewport={"width": 1600, "height": 1000}, accept_downloads=True
+            viewport={"width": 1600, "height": 1800}, accept_downloads=True
         )
         page.set_default_timeout(60000)
 

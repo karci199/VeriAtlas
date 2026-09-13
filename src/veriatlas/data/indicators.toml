@@ -414,6 +414,24 @@ label_en = "Vehicle age"
 [dim.vehicle_age.values]
 "21+" = "21 ve üzeri"
 
+[dim.colour]
+label_tr = "Renk"
+label_en = "Colour"
+
+[dim.colour.values]
+white = "Beyaz"
+grey = "Gri"
+brown = "Kahverengi"
+red = "Kırmızı"
+blue = "Mavi"
+purple = "Mor"
+pink = "Pembe"
+yellow = "Sarı"
+black = "Siyah"
+orange = "Turuncu"
+green = "Yeşil"
+other = "Diğer"
+
 [dim.brand]
 label_tr = "Marka"
 label_en = "Brand"
@@ -2133,6 +2151,24 @@ topic = "ulasim"
 unit = "vehicle"
 frequency = "annual"
 dims = ["brand"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.vehicles_by_age]
+label_tr = "Trafiğe kayıtlı taşıt (taşıt yaşına göre)"
+label_en = "Registered vehicles by vehicle age"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["vehicle_age"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.vehicles_newly_registered_by_colour]
+label_tr = "Trafiğe kaydı yapılan taşıt (renge göre)"
+label_en = "Newly registered vehicles by colour"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["colour"]
 views = ["table", "map", "line", "bar"]
 
 [indicator.vehicles_transferred_by_age]

@@ -2305,6 +2305,34 @@
           "available": true
         },
         {
+          "id": "vehicles_newly_registered_by_colour",
+          "label": "Trafiğe kaydı yapılan taşıt (renge göre)",
+          "unit": "taşıt",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "colour"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "vehicles-newly-registered-by-colour.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "vehicles_newly_registered_by_engine",
           "label": "Trafiğe kaydı yapılan taşıt (silindir hacmine göre)",
           "unit": "taşıt",
@@ -2379,6 +2407,34 @@
             "bar"
           ],
           "dataset": "vehicles-by-brand.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "vehicles_by_age",
+          "label": "Trafiğe kayıtlı taşıt (taşıt yaşına göre)",
+          "unit": "taşıt",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "",
+          "dims": [
+            "vehicle_age"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "vehicles-by-age.csv.gz",
           "levels": [
             "country",
             "province"
@@ -2727,6 +2783,23 @@
       "label": "Taşıt yaşı",
       "values": {
         "21+": "21 ve üzeri"
+      }
+    },
+    "colour": {
+      "label": "Renk",
+      "values": {
+        "white": "Beyaz",
+        "grey": "Gri",
+        "brown": "Kahverengi",
+        "red": "Kırmızı",
+        "blue": "Mavi",
+        "purple": "Mor",
+        "pink": "Pembe",
+        "yellow": "Sarı",
+        "black": "Siyah",
+        "orange": "Turuncu",
+        "green": "Yeşil",
+        "other": "Diğer"
       }
     },
     "brand": {
