@@ -296,6 +296,17 @@ MEASURES = [
             start=1,
         )
     ],
+    # Housing sales published monthly only (run with --aylik): by district, to foreigners,
+    # and by buyer nationality (175 indicators — country only, province would be ~50
+    # queries).
+    ("konut-satis-02-ilce", "Konut Satış İstatistikleri", "İlçe Konut Satış", False),
+    (
+        "konut-satis-03",
+        "Konut Satış İstatistikleri",
+        "Yabancılara Yapılan Konut",
+        False,
+    ),
+    ("konut-satis-04", "Konut Satış İstatistikleri", "Ülke Uyruklarına Göre", True),
     # The topic run (fetch_medas_topic.py) stopped before this one's province file.
     (
         "trafik-12",
@@ -324,7 +335,7 @@ LEVELS = {
 #: So the finest grain K16 asks for stops at the country here, and the province series
 #: keeps the age *group* it already has.
 #: Birthplace for Türkiye as a whole is a country-only measure by construction.
-COUNTRY_ONLY = {"hayat-tablosu", "olum-tek-yas", "dogum-yeri-tr"}
+COUNTRY_ONLY = {"hayat-tablosu", "olum-tek-yas", "dogum-yeri-tr", "konut-satis-04"}
 
 
 def levels_for(name: str) -> list[str]:
