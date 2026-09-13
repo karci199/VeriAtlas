@@ -157,6 +157,19 @@ NAMES = {
         "Yazı İşleri Müdürü": "managing_editor",
         "İstihbarat Ve Haber Bölüm Şefi": "news_desk_chief",
     },
+    "sea_region": {
+        "Marmara": "marmara",
+        "TR3. (Ege)": "aegean",
+        "TR6. (Akdeniz)": "mediterranean",
+        "TR8. (Batı Karadeniz)": "west_black_sea",
+        "TR9. (Doğu Karadeniz)": "east_black_sea",
+    },
+    "meat_type": {
+        "Keçi Eti, Taze Veya Soğutulmuş": "goat",
+        "Koyun Eti, Taze Veya Soğutulmuş": "sheep",
+        "Manda Ve Malak Karkasları, Yarım Veya Çeyrek Kemikli Karkasları, Taze Veya Soğutulmuş": "buffalo",
+        "Sığır Veya Dana Karkasları, Yarım Veya Çeyrek Kemikli Karkasları, Taze Veya Soğutulmuş (Manda Ve Malak Hariç)": "cattle",
+    },
     "sex": {"Erkek": "male", "Kadın": "female"},
     "death_timing": {
         "Kaza Yerinde": "at_scene",
@@ -276,6 +289,15 @@ MEASURES = {
     ),
     "medya-06": ("print_runs", ("publication_type", "print_facility")),
     "medya-07": ("circulation", ("publication_type", "coverage")),
+    "alet-makine-01": ("combine_harvesters", ("farm_machine",)),
+    "alet-makine-02": ("tractors", ("farm_machine",)),
+    "alet-makine-03": ("farm_equipment", ("farm_machine",)),
+    "su-urunleri-01": ("sea_catch", ("fish_species", "sea_region")),
+    "su-urunleri-03": ("inland_catch", ("fish_species",)),
+    "su-urunleri-05": ("aquaculture_production", ("fish_species",)),
+    "su-urunleri-08": ("fishing_vessels", ("vessel_length", "sea_region")),
+    "su-urunleri-09": ("fishery_workers", ("fishery_worker", "sea_region")),
+    "kirmizi-et-01": ("red_meat_production", ("meat_type",)),
     "hayvan-01": ("livestock", ("livestock",)),
     "hayvan-02#ton": ("animal_products_tonnes", ("animal_product",), "Ton"),
     "hayvan-02#kovan": ("beehives", ("animal_product",), "Kovan Sayısı"),
@@ -319,7 +341,14 @@ MEASURES = {
 SUBTOTAL: dict[str, str] = {"": ""}
 
 #: Sericulture is practised in a few dozen provinces; the rest have no column at all.
-NOT_EVERY_PROVINCE = {"silkworm_boxes", "sericulture_villages", "sericulture_holdings"}
+NOT_EVERY_PROVINCE = {
+    "silkworm_boxes",
+    "sericulture_villages",
+    "sericulture_holdings",
+    "inland_catch",
+    "aquaculture_production",
+    "combine_harvesters",
+}
 
 
 def part_name(part: str) -> str:
@@ -334,7 +363,16 @@ def part_name(part: str) -> str:
 
 
 #: Dims stored by TÜİK product code (`01.41.10.01.01`); names are dictionary labels.
-CODE_DIMS = {"livestock", "animal_product", "poultry", "livestock_group"}
+CODE_DIMS = {
+    "livestock",
+    "animal_product",
+    "poultry",
+    "livestock_group",
+    "farm_machine",
+    "fish_species",
+    "vessel_length",
+    "fishery_worker",
+}
 PRODUCT = re.compile(r"^([\d.]+?)\.?\s*\((.*)\)$")
 
 

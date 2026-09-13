@@ -322,6 +322,10 @@ MEASURES = [
         )
         if not (n == "02-il" and slug in ("hanetipi", "buyukluk"))
     ],
+    # Poultry and dairy production, published monthly only (run with --aylik), Türkiye.
+    # The seasonally adjusted twins are not taken: they restate the same series.
+    ("kumes-01", "Kümes Hayvancılığı", "Kümes Hayvancılığı Üretimi", True),
+    ("sut-01", "Süt Ürünleri İstatistikleri", "Süt Ve Süt Ürünleri Üretim", True),
     # Housing sales published monthly only (run with --aylik): by district, to foreigners,
     # and by buyer nationality (175 indicators — country only, province would be ~50
     # queries).
@@ -361,7 +365,14 @@ LEVELS = {
 #: So the finest grain K16 asks for stops at the country here, and the province series
 #: keeps the age *group* it already has.
 #: Birthplace for Türkiye as a whole is a country-only measure by construction.
-COUNTRY_ONLY = {"hayat-tablosu", "olum-tek-yas", "dogum-yeri-tr", "konut-satis-04"}
+COUNTRY_ONLY = {
+    "hayat-tablosu",
+    "olum-tek-yas",
+    "dogum-yeri-tr",
+    "konut-satis-04",
+    "kumes-01",
+    "sut-01",
+}
 
 #: Measures whose finest level is İBBS2 (26 regions), with no province: print media.
 #: Asked for at country and region level instead of Türkiye alone.
