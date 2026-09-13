@@ -740,7 +740,7 @@ def export_plain(
             "vintage",
             "source_id",
         )
-        .sort("level", "area", "year")
+        .sort("level", "area", "area_id", "year")
     )
 
     # Split the same way a broken-down indicator is: the dictionary writes a `parts` entry
@@ -812,7 +812,7 @@ def export_broken_down(
         )
         # Sorted on whatever breakdowns this indicator has, for the same reason the fold
         # is sorted: gzip lives on neighbouring rows looking alike.
-        .sort("area", "year", *dims)
+        .sort("area", "area_id", "year", *dims)
     )
 
     # Levels the source never published, built by summing the provinces. Only where the
@@ -836,7 +836,7 @@ def export_broken_down(
                     for level in roll_up
                 ],
             ]
-        ).sort("area", "year", *dims)
+        ).sort("area", "area_id", "year", *dims)
 
     # Single years, where the fact table has them, go out in a file of their own for the
     # reader who asks for that resolution. It is a *replacement* for the banded rows at
@@ -876,7 +876,7 @@ def export_broken_down(
     # Sorted *again* afterwards: group_by returns rows in whatever order it finished in,
     # and gzip lives on neighbouring rows looking alike. Folding after the sort and
     # writing the result straight out took the district file from 3,9 MB to 8,9.
-    slim = to_five_year_bands(slim).sort("area", "year", *dims)
+    slim = to_five_year_bands(slim).sort("area", "area_id", "year", *dims)
 
     base = slim.filter(~pl.col("level").is_in(LAZY_LEVELS))
     report(PUBLIC / (stem + ".csv"), base)
@@ -1120,7 +1120,7 @@ def main() -> None:
     rolled = [
         to_level(provinces, lvl) for lvl in ("country", "region", "nuts1", "nuts2")
     ]
-    slim = pl.concat([provinces, *rolled]).sort("level", "area", "year")
+    slim = pl.concat([provinces, *rolled]).sort("level", "area", "area_id", "year")
 
     report(PUBLIC / "tfr.csv", slim)
 
