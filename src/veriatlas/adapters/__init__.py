@@ -2,6 +2,7 @@
 
 from .base import Adapter, Manifest, history, ingest
 from .tuik_birth_order import TuikBirthOrder
+from .tuik_child_police import CHILD_POLICE_ADAPTERS
 from .tuik_crops import CROP_ADAPTERS
 from .tuik_death_cause import TuikDeathCause
 from .tuik_district_population import TuikDistrictPopulation
@@ -64,6 +65,8 @@ ADAPTERS = {
     **VEHICLE_KM_ADAPTERS,
     # District education level and literacy.
     **EDUCATION_DISTRICT_ADAPTERS,
+    # Children referred to police units (Türkiye).
+    **CHILD_POLICE_ADAPTERS,
 }
 
 __all__ = [

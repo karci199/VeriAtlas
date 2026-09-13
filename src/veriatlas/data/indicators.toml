@@ -649,6 +649,84 @@ label_en = "Elevator"
 "yes" = "Var"
 "no" = "Yok"
 
+# Tourism, child police referrals (adapters/tuik_topics.py, tuik_child_police.py).
+[dim.travel_purpose]
+label_tr = "Seyahat amacı"
+label_en = "Travel purpose"
+
+[dim.travel_purpose.values]
+leisure = "Gezi, eğlence, spor ve kültür"
+visiting_relatives = "Akraba ve arkadaş ziyareti"
+education = "Eğitim, staj (1 yıldan az)"
+health = "Sağlık ve tıbbi nedenler"
+religious = "Dini / hac"
+shopping = "Alışveriş"
+transit = "Transit"
+business = "İş (toplantı, görev vb.)"
+other = "Diğer"
+
+[dim.revenue_type]
+label_tr = "Gelir türü"
+label_en = "Revenue type"
+
+[dim.revenue_type.values]
+visitors = "Ziyaretçilerden"
+transfer_passengers = "Transfer yolculardan"
+
+[dim.police_referral]
+label_tr = "Geliş nedeni"
+label_en = "Reason for referral"
+
+[dim.police_referral.values]
+victim = "Mağdur"
+pushed_into_crime = "Suça sürüklenme"
+information = "Bilgisine başvurma"
+missing_found = "Kayıp (bulunan)"
+misdemeanour = "Kabahat işleme"
+other = "Diğer"
+
+[dim.child_age_band]
+label_tr = "Yaş grubu"
+label_en = "Age band"
+
+[dim.child_age_band.values]
+"0-11" = "11 ve altı"
+"12-14" = "12-14"
+"15-17" = "15-17"
+unknown = "Bilinmeyen"
+
+[dim.offence]
+label_tr = "Suç türü"
+label_en = "Offence"
+
+[dim.offence.values]
+against_justice = "Adliyeye Karşı Suçlar"
+against_family = "Aile Düzenine Karşı Suçlar"
+cyber = "Bilişim Suçları"
+environmental = "Çevreye Karşı Suçlar"
+sexual = "Cinsel Suçlar"
+other = "Diğer"
+fraud = "Dolandırıcılık"
+public_morality = "Genel Ahlaka Karşı Suçlar"
+public_danger = "Genel Tehlike Yaratan Suçlar"
+migrant_smuggling = "Göçmen Kaçakçılığı"
+resisting_officer = "Görevli Memura Mukavemet"
+insult = "Hakaret"
+theft = "Hırsızlık"
+public_health = "Kamu Sağlığına Karşı Suçlar"
+deprivation_of_liberty = "Kişiyi Hürriyetinden Yoksun Kılma"
+trespass = "Konut Dokunulmazlığının İhlali"
+property_damage = "Mala Zarar Verme"
+other_property = "Mal Varlığına Karşı Diğer Suçlar"
+homicide = "Öldürme"
+passport_law = "Pasaport Kanununa Muhalefet"
+forgery = "Sahtecilik"
+threat = "Tehdit"
+social_unrest = "Toplumsal Olaylar"
+drugs = "Uyuşturucu Veya Uyarıcı Madde Kullanmak, Satmak, Satın Almak"
+robbery = "Yağma (Gasp)"
+assault = "Yaralama"
+
 [dim.visitor_type]
 label_tr = "Ziyaretçi"
 label_en = "Visitor"
@@ -3640,6 +3718,134 @@ topic = "konut_nitelik"
 unit = "floors_decimal"
 frequency = "annual"
 dims = []
+views = ["table", "map", "line", "bar"]
+
+# MEDAS 2026-09-13 gece: turizm yıllık, ortalama eğitim süresi, çocuk kütüphane/tiyatro, güvenlik birimi.
+[indicator.departing_visitors]
+label_tr = "Çıkış yapan ziyaretçi"
+label_en = "Departing visitors"
+topic = "turizm"
+unit = "person"
+frequency = "annual"
+dims = ["travel_purpose", "visitor_type"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.tourism_revenue]
+label_tr = "Turizm geliri"
+label_en = "Tourism revenue"
+topic = "turizm"
+unit = "thousand_usd"
+frequency = "annual"
+dims = ["revenue_type"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.tourism_expenditure]
+label_tr = "Turizm gideri (yurt dışına giden vatandaş)"
+label_en = "Tourism expenditure"
+topic = "turizm"
+unit = "thousand_usd"
+frequency = "annual"
+dims = ["travel_purpose"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.mean_years_of_schooling]
+label_tr = "Ortalama eğitim süresi"
+label_en = "Mean years of schooling"
+topic = "egitim"
+unit = "years"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "25 yaş ve üzeri nüfusun ortalama eğitim süresi (yıl)."
+
+[indicator.library_child_users]
+label_tr = "Halk kütüphanesi kullanıcı çocuk"
+label_en = "Child public library users"
+topic = "kultur"
+unit = "person"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.library_child_members]
+label_tr = "Halk kütüphanesi kayıtlı üye çocuk"
+label_en = "Child public library members"
+topic = "kultur"
+unit = "person"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.library_child_loans]
+label_tr = "Çocuklara ödünç verilen materyal"
+label_en = "Library loans to children"
+topic = "kultur"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.child_theatre_performances]
+label_tr = "Çocuk eseri tiyatro gösterisi"
+label_en = "Children's theatre performances"
+topic = "kultur"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.child_theatre_audience]
+label_tr = "Çocuk eseri tiyatro seyircisi"
+label_en = "Children's theatre audience"
+topic = "kultur"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+
+[indicator.child_police_referrals]
+label_tr = "Güvenlik birimine gelen veya getirilen çocuk"
+label_en = "Children referred to police"
+topic = "cocuk"
+unit = "person"
+frequency = "annual"
+dims = ["police_referral", "sex", "child_age_band"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.children_pushed_into_crime]
+label_tr = "Suça sürüklenen çocuk"
+label_en = "Children pushed into crime"
+topic = "cocuk"
+unit = "person"
+frequency = "annual"
+dims = ["offence", "sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.child_crime_victims]
+label_tr = "Suç mağduru çocuk"
+label_en = "Child crime victims"
+topic = "cocuk"
+unit = "person"
+frequency = "annual"
+dims = ["offence", "sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.child_incident_victims]
+label_tr = "Takibi gereken olay mağduru çocuk"
+label_en = "Child victims of incidents requiring follow-up"
+topic = "cocuk"
+unit = "person"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+
+[indicator.child_misdemeanour_victims]
+label_tr = "Kabahat mağduru çocuk"
+label_en = "Child misdemeanour victims"
+topic = "cocuk"
+unit = "person"
+frequency = "annual"
+dims = ["sex"]
 views = ["table", "map", "line", "bar"]
 
 [indicator.departing_visitor_nights]
