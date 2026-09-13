@@ -8,7 +8,7 @@ Son güncelleme: 2026-09-13.
 ## Dal kuralı (2026-09-10, `koy-kaydi` dalından)
 
 Bir worktree'de başka dallar birleştirilip iş orada sürdürülürken çekim komutları güncel
-olmayan ana checkout `C:eri`'de çalıştırıldı ve eski betik sürümü veri kirletti. Kural:
+olmayan ana checkout `C:\veri`'de çalıştırıldı ve eski betik sürümü veri kirletti. Kural:
 oturum başında `git branch --show-current` ve `git status --short` ile nerede olunduğu
 doğrulanır; çekim, kodu güncel olan kopyada çalışır.
 
