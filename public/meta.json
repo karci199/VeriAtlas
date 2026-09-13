@@ -2021,9 +2021,12 @@
           "dataset": "occupancy-buildings.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "occupancy-buildings-district.csv.gz"
+          },
           "fine": {},
           "summary": null,
           "available": true
@@ -2049,9 +2052,12 @@
           "dataset": "occupancy-dwellings.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "occupancy-dwellings-district.csv.gz"
+          },
           "fine": {},
           "summary": null,
           "available": true
@@ -2077,9 +2083,12 @@
           "dataset": "occupancy-other-area.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "occupancy-other-area-district.csv.gz"
+          },
           "fine": {},
           "summary": null,
           "available": true
@@ -2105,9 +2114,12 @@
           "dataset": "occupancy-residential-area.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "occupancy-residential-area-district.csv.gz"
+          },
           "fine": {},
           "summary": null,
           "available": true
@@ -2133,9 +2145,12 @@
           "dataset": "occupancy-common-area.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "occupancy-common-area-district.csv.gz"
+          },
           "fine": {},
           "summary": null,
           "available": true
@@ -2161,9 +2176,12 @@
           "dataset": "occupancy-floor-area.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "occupancy-floor-area-district.csv.gz"
+          },
           "fine": {},
           "summary": null,
           "available": true
@@ -2212,9 +2230,12 @@
           "dataset": "permit-buildings.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "permit-buildings-district.csv.gz"
+          },
           "fine": {},
           "summary": null,
           "available": true
@@ -2263,9 +2284,12 @@
           "dataset": "permit-dwellings.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "permit-dwellings-district.csv.gz"
+          },
           "fine": {},
           "summary": null,
           "available": true
@@ -2291,9 +2315,12 @@
           "dataset": "permit-other-area.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "permit-other-area-district.csv.gz"
+          },
           "fine": {},
           "summary": null,
           "available": true
@@ -2319,9 +2346,12 @@
           "dataset": "permit-residential-area.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "permit-residential-area-district.csv.gz"
+          },
           "fine": {},
           "summary": null,
           "available": true
@@ -2347,9 +2377,12 @@
           "dataset": "permit-common-area.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "permit-common-area-district.csv.gz"
+          },
           "fine": {},
           "summary": null,
           "available": true
@@ -2375,9 +2408,12 @@
           "dataset": "permit-floor-area.csv.gz",
           "levels": [
             "country",
+            "district",
             "province"
           ],
-          "parts": {},
+          "parts": {
+            "district": "permit-floor-area-district.csv.gz"
+          },
           "fine": {},
           "summary": null,
           "available": true

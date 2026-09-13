@@ -317,6 +317,15 @@ BROKEN_DOWN = (
     "electricity_generation",
 )
 
+#: Every other exported indicator the dictionary gives breakdowns. Found, not listed: the
+#: 2026-09-13 loads (vehicles, health, housing, livestock …) were added to DATASETS only,
+#: fell into PLAIN, and went out with the dims column dropped — a brand × vehicle-type
+#: table written as unlabelled rows that looked like repeated years.
+AUTO_BROKEN_DOWN = tuple(
+    name for name in DATASETS if name not in BROKEN_DOWN and get(name).dims
+)
+BROKEN_DOWN = BROKEN_DOWN + AUTO_BROKEN_DOWN
+
 #: Indicators with no breakdown at all: one value per area and year.
 #:
 #: Exported at exactly the levels the source published, with no roll-up. Half of these
@@ -710,6 +719,9 @@ def export_plain(
     rows = fact.filter(pl.col("indicator_id") == indicator_id)
     if rows.height == 0:
         return []
+    # A breakdown here would be dropped without a word: this slice has no dims column.
+    if rows.filter(pl.col("dims") != "").height:
+        raise ValueError(indicator_id + ": kirilimli gosterge duz dilime yazilamaz")
 
     slim = (
         rows.join(areas, on="area_id", how="left")
@@ -1074,6 +1086,10 @@ def main() -> None:
             fact, areas, "registry_population", roll_up=ROLLED_UP["registry_population"]
         ),
     }
+    for indicator_id in AUTO_BROKEN_DOWN:
+        fine[indicator_id] = export_broken_down(
+            fact, areas, indicator_id, whole=get(indicator_id).unit.decimals == 0
+        )
 
     export_origin_summary(fact, areas)
 

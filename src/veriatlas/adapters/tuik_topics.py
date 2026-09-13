@@ -25,7 +25,8 @@ from ..indicators import get, load
 from ..schema import format_dims
 from .tuik_median_age import single_province_regions
 from .tuik_simple import read_text
-from .tuik_vital import header_of
+from .tuik_vital import LABEL, header_of
+from .tuik_vital_district import area_at, districts_by_code
 
 DOWNLOADS = RAW / "medas" / "basit"
 
@@ -312,18 +313,47 @@ def read_label(label: str, dims: tuple[str, ...]) -> dict[str, str] | None:
     return SUBTOTAL if "" in out.values() else out
 
 
+def district_columns(lines: list[str]) -> dict[int, str]:
+    """Column index to MEDAS district code (`Adana(Aladağ)-1757`), from the header line."""
+    best: dict[int, str] = {}
+    for line in lines:
+        found = {}
+        for index, cell in enumerate(line.split("|")):
+            label = LABEL.match(cell.strip())
+            if label and label.group("code").isdigit():
+                found[index] = label.group("code")
+        if len(found) > len(best):
+            best = found
+    return best
+
+
 def read_export(
-    path: Path, indicator_id: str, dims, single, unit: str = ""
+    path: Path,
+    indicator_id: str,
+    dims,
+    single,
+    unit: str = "",
+    codes: dict[str, list[dict]] | None = None,
 ) -> list[dict]:
     """`unit`: keep only rows whose label ends in " ve <unit>" and drop that part.
 
     "Hayvansal üretim" puts tonnes, hives and silkworm boxes in one table, told apart
     only by the last part of the label; each becomes its own indicator.
+
+    `codes`: a district file. Its columns carry MEDAS district codes, resolved per row
+    year to the district that held the code then (a file spans sixteen years, and MEDAS
+    writes today's list into every one of them). A code with a number and no district
+    stops the load; an empty column for a district not yet created is padding.
     """
     lines = read_text(path).splitlines()
-    header = header_of(lines, single)
+    if codes is not None:
+        columns = district_columns(lines)
+        header = {index: (code, "district") for index, code in columns.items()}
+    else:
+        header = header_of(lines, single)
     if not header:
         raise KeyError(indicator_id + ": alan sutunu yok: " + path.name)
+    orphans: set[str] = set()
 
     rows: list[dict] = []
     unknown: set[str] = set()
@@ -371,6 +401,12 @@ def read_export(
                 # MEDAS's withheld marker (-9.98E8). Not `< 0`: a growth rate is
                 # negative in a shrinking province, and eleven provinces lost theirs.
                 continue
+            if codes is not None:
+                resolved = area_at(codes.get(area_id, []), int(stamp))
+                if resolved is None:
+                    orphans.add(area_id + "@" + stamp)
+                    continue
+                area_id = resolved
             rows.append(
                 {
                     "area_id": area_id,
@@ -383,6 +419,14 @@ def read_export(
     if unknown:
         raise KeyError(
             indicator_id + ": taninmayan satir etiketi: " + ", ".join(sorted(unknown))
+        )
+    if orphans:
+        raise KeyError(
+            indicator_id
+            + ": kayitta karsiligi olmayan ilce kodu ("
+            + str(len(orphans))
+            + "): "
+            + ", ".join(sorted(orphans)[:10])
         )
     return rows
 
@@ -418,6 +462,14 @@ class TopicMeasure:
             )
             for path in [plain] if plain.exists() else sliced:
                 records.extend(read_export(path, indicator_id, dims, single, unit))
+        # District level, where it was pulled: `nufus-<stem>-ilce-district-<n>.csv`.
+        district = sorted(raw.glob("nufus-" + stem + "-ilce-district-*.csv"))
+        if district:
+            codes = districts_by_code()
+            for path in district:
+                records.extend(
+                    read_export(path, indicator_id, dims, single, unit, codes)
+                )
         if not records:
             raise ValueError("dosya bulunamadi ya da bos: " + self.stem)
 
