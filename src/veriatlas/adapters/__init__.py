@@ -5,6 +5,7 @@ from .tuik_birth_order import TuikBirthOrder
 from .tuik_death_cause import TuikDeathCause
 from .tuik_district_population import TuikDistrictPopulation
 from .tuik_household import TuikHouseholdSize, TuikHouseholdTenure
+from .tuik_housing_monthly import MONTHLY_HOUSING_ADAPTERS
 from .tuik_marital import TuikMarital
 from .tuik_median_age import TuikMedianAge
 from .tuik_migration_matrix import TuikMigrationMatrix
@@ -52,6 +53,8 @@ ADAPTERS = {
     **VEHICLE_ADAPTERS,
     # Health and road accidents.
     **TOPIC_ADAPTERS,
+    # Housing sales published monthly only, summed to years.
+    **MONTHLY_HOUSING_ADAPTERS,
 }
 
 __all__ = [

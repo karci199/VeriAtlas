@@ -243,6 +243,9 @@ DATASETS = {
     "citizens_abroad_nights": "citizens-abroad-nights.csv",
     "citizens_abroad_personal_spending": "citizens-abroad-personal-spending.csv",
     "citizens_abroad_package_spending": "citizens-abroad-package-spending.csv",
+    "housing_sales_district": "housing-sales-by-district.csv",
+    "housing_sales_foreigners": "housing-sales-foreigners.csv",
+    "housing_sales_by_nationality": "housing-sales-by-nationality.csv",
     # Motor vehicles (adapters/tuik_vehicles).
     "vehicle_registrations": "vehicle-registrations.csv",
     "vehicles_by_fuel": "vehicles-by-fuel.csv",
