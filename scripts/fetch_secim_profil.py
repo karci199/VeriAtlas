@@ -161,7 +161,7 @@ def fetch_one(
     ).read()
     if len(data) < 2000:
         raise RuntimeError(f"kucuk rapor {len(data)}")
-    path = dest(page, year, pair, province)
+    path = dest(page, year, pair, province, abroad)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_bytes(data)
 
