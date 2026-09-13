@@ -41,6 +41,10 @@ for arg in sys.argv[1:]:
     for index, row in enumerate(rows):
         label = row["measure"]
         name = f"{prefix}-{index + 1:02d}"
+        # OLCULER=3,5: only these measure numbers (the rest were fetched or are surveys).
+        only = os.environ.get("OLCULER")
+        if only and str(index + 1) not in only.split(","):
+            continue
         if not row.get("years") and not row.get("breakdowns"):
             print("ATLANDI (yil yok):", name, label)
             continue
