@@ -29,3 +29,6 @@ public/*.json
 
 # Uretilen dosyalar
 cikti/
+
+# Analysis build cache (scripts/build_analysis.py)
+election-cache.csv

@@ -15,7 +15,7 @@ const $ = (s) => document.querySelector(s);
 const params = new URLSearchParams(location.search);
 const DISTRICT = params.get("id") || "TR-16-006";
 const fmt = new Intl.NumberFormat("tr-TR");
-const pct = (x, d = 1) => (x * 100).toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const pct = (x, d = 2) => (x * 100).toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d });
 const num = (x, d = 1) => x.toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d });
 const sum = (a) => a.reduce((s, v) => s + (v || 0), 0);
 

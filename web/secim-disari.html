@@ -144,9 +144,9 @@ function ciz() {
   document.getElementById("kutular").innerHTML = [
     ["Oy kullanan", fmt.format(sum.voted || 0)],
     ["Geçerli oy", fmt.format(sum.valid || 0)],
-    ...(katilimVar ? [["Katılım", "%" + (100 * sum.voted / sum.registered).toFixed(1)]] : []),
+    ...(katilimVar ? [["Katılım", "%" + (100 * sum.voted / sum.registered).toFixed(2)]] : []),
     ...shown.slice(0, 3).map((k) =>
-      [k.slice(6), "%" + (100 * sum[k] / sum.valid).toFixed(1)]),
+      [k.slice(6), "%" + (100 * sum[k] / sum.valid).toFixed(2)]),
   ].map(([a, b]) => `<div class="kutu"><small>${a}</small><b>${b}</b></div>`).join("");
 
   const pay = (u, k) => (u.m.valid ? 100 * (u.m[k] || 0) / u.m.valid : 0);
@@ -164,7 +164,7 @@ function ciz() {
     `<td>${fmt.format(u.m.valid || 0)}</td>`,
     ...shown.map((k) => {
       const p = pay(u, k);
-      return `<td class="pay"><span style="width:${p * 0.6}px"></span>${p.toFixed(1)}</td>`;
+      return `<td class="pay"><span style="width:${p * 0.6}px"></span>${p.toFixed(2)}</td>`;
     })].join("");
   let html = "<thead><tr>" + cols.map(([k, a]) =>
     `<th data-k="${k}">${a}${state.sirala === k ? " ↓" : ""}</th>`).join("") + "</tr></thead><tbody>";

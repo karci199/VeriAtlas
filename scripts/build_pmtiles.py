@@ -38,9 +38,17 @@ EXTENT = 4096
 LAYERS = {
     # Provinces are not a separate source: they are the districts dissolved, so the two
     # layers can never disagree about where a border runs.
-    "il": {"dir": GEO / "districts", "min": 0, "max": 7, "layer": "il", "birlestir": True},
+    "il": {
+        "dir": GEO / "districts",
+        "min": 0,
+        "max": 7,
+        "layer": "il",
+        "birlestir": True,
+    },
     "ilce": {"dir": GEO / "districts", "min": 0, "max": 9, "layer": "ilce"},
-    "mahalle": {"dir": GEO / "neighbourhoods", "min": 7, "max": 12, "layer": "mahalle"},
+    # From zoom 5 so the whole country can be seen at neighbourhood level; the low
+    # zooms are few tiles, each simplified to about a pixel.
+    "mahalle": {"dir": GEO / "neighbourhoods", "min": 5, "max": 12, "layer": "mahalle"},
 }
 
 
@@ -58,7 +66,11 @@ def lonlat_to_tile(lon: float, lat: float, z: int) -> tuple[int, int]:
     x = int((lon + 180) / 360 * n)
     lat = max(min(lat, 85.05), -85.05)
     y = int(
-        (1 - math.log(math.tan(math.radians(lat)) + 1 / math.cos(math.radians(lat))) / math.pi)
+        (
+            1
+            - math.log(math.tan(math.radians(lat)) + 1 / math.cos(math.radians(lat)))
+            / math.pi
+        )
         / 2
         * n
     )
@@ -86,7 +98,9 @@ def features_of(directory: pathlib.Path):
 def build(name: str) -> None:
     spec = LAYERS[name]
     OUT.mkdir(parents=True, exist_ok=True)
-    target = OUT / f"{name}.pmtiles"
+    final = OUT / f"{name}.pmtiles"
+    # Written aside and swapped in: the page reads byte ranges from the live file.
+    target = OUT / f"{name}.pmtiles.tmp"
 
     items = list(features_of(spec["dir"]))
     if spec.get("birlestir"):
@@ -99,8 +113,10 @@ def build(name: str) -> None:
             gruplar[parent].append(geom)
             adlar.setdefault(parent, parent)
         items = [
-            ({"id": parent, "ad": adlar.get(parent, parent), "ust": "TR"},
-             unary_union(geoms).buffer(0))
+            (
+                {"id": parent, "ad": adlar.get(parent, parent), "ust": "TR"},
+                unary_union(geoms).buffer(0),
+            )
             for parent, geoms in gruplar.items()
             if parent
         ]
@@ -142,6 +158,7 @@ def build(name: str) -> None:
                     piece = geom.intersection(clip)
                     if piece.is_empty:
                         continue
+
                     # Tile-local coordinates, y down, 0..EXTENT.
                     def to_tile(px, py, west=west, south=south, east=east, north=north):
                         return (
@@ -152,7 +169,9 @@ def build(name: str) -> None:
                     features.append(
                         {
                             "geometry": transform(to_tile, piece),
-                            "properties": {k: v for k, v in props.items() if v is not None},
+                            "properties": {
+                                k: v for k, v in props.items() if v is not None
+                            },
                         }
                     )
                 if not features:
@@ -192,7 +211,15 @@ def build(name: str) -> None:
                 ],
             },
         )
-    print(f"yazildi: {target} ({target.stat().st_size / 1e6:.1f} MB)")
+    size = target.stat().st_size / 1e6
+    try:
+        target.replace(final)
+    except PermissionError:
+        # Windows will not replace a file the local server holds open; stop it and
+        # rename `<name>.pmtiles.tmp` by hand.
+        print("DEGISTIRILEMEDI (dosya acik):", final)
+        return
+    print(f"yazildi: {final} ({size:.1f} MB)")
 
 
 if __name__ == "__main__":

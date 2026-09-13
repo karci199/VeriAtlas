@@ -466,7 +466,10 @@ def match_district(districts: dict, province_id: str, name: str) -> str | None:
     if alias:
         return districts.get((province_id, alias))
     if key.endswith("merkez"):
-        for candidate in ("merkez", key[: -len("merkez")]):
+        # Since 2013 the registry names most central districts after the province
+        # ("Kütahya"), where the pre-2013 reports print "Merkez": Kütahya was black.
+        own = PROVINCE_NAME.get(province_id, "")
+        for candidate in ("merkez", key[: -len("merkez")], own):
             hit = districts.get((province_id, candidate))
             if hit:
                 return hit
@@ -492,12 +495,46 @@ def match_district(districts: dict, province_id: str, name: str) -> str | None:
     return None
 
 
+#: province id -> folded province name, filled by area_index.
+PROVINCE_NAME: dict[str, str] = {}
+
+
+def successors() -> dict[str, list[str]]:
+    """Map districts for a district that no longer exists (`TR-07-x1138`, Antalya Merkez).
+
+    A renamed district keeps its MEDAS code (Kazan -> Kahramankazan); a split one gives
+    way to the districts its province gained the year after it ended (Antalya Merkez ->
+    Muratpaşa, Kepez, Konyaaltı, Aksu, Döşemealtı in 2008). Without this the old central
+    districts had no shape on today's map and their result was never drawn.
+    """
+    rows = list(
+        csv.DictReader((DATA / "areas_tr_districts.csv").open(encoding="utf-8"))
+    )
+    out: dict[str, list[str]] = {}
+    for old in rows:
+        if "-x" not in old["area_id"] or not old["valid_to"]:
+            continue
+        live = [r for r in rows if "-x" not in r["area_id"]]
+        same = [r["area_id"] for r in live if r["medas_code"] == old["medas_code"]]
+        if same:
+            out[old["area_id"]] = same
+            continue
+        after = str(int(old["valid_to"]) + 1)
+        out[old["area_id"]] = [
+            r["area_id"]
+            for r in live
+            if r["parent_id"] == old["parent_id"] and r["valid_from"] == after
+        ]
+    return out
+
+
 def area_index() -> tuple[dict, dict, dict]:
     """(province by folded name, district by (province, name), neighbourhood by (district, name))."""
     provinces: dict[str, str] = {}
     for row in csv.DictReader((DATA / "areas_tr.csv").open(encoding="utf-8")):
         if row.get("area_level") == "province":
             provinces[fold(row["name_tr"])] = row["area_id"]
+            PROVINCE_NAME[row["area_id"]] = fold(row["name_tr"])
 
     districts: dict[tuple[str, str], str] = {}
     district_name: dict[str, str] = {}
@@ -570,8 +607,27 @@ def manifest() -> None:
 def main(argv: list[str]) -> None:
     votes = [a for a in argv if not a.startswith("--")]
     if "--hepsi" in argv or not votes:
-        votes = sorted(p.name for p in SECIM.iterdir() if p.is_dir())
+        # Abroad, customs and summary reports (`cb2018_yurtdisi`) are not district tables:
+        # parse_secim_disari.py reads those.
+        votes = sorted(
+            p.name
+            for p in SECIM.iterdir()
+            if p.is_dir()
+            and not p.name.endswith(("_genel", "_gumruk", "_yurtdisi"))
+            and not p.name.startswith(("aday", "cikan"))
+        )
     provinces, districts, hoods = area_index()
+    district_name = {
+        area: row
+        for area, row in (
+            (r["area_id"], r["name_tr"])
+            for r in csv.DictReader(
+                (DATA / "areas_tr_districts.csv").open(encoding="utf-8")
+            )
+        )
+    }
+    report: dict[str, dict] = {}
+    later = successors()
     OUT.mkdir(parents=True, exist_ok=True)
 
     for vote in votes:
@@ -582,6 +638,7 @@ def main(argv: list[str]) -> None:
         district_out: dict[str, dict] = {}
         hood_out: dict[str, dict[str, dict]] = {}
         unmatched = 0
+        misses: list[tuple[str, str]] = []
 
         for path in files:
             # Some years print no province line at all -- the 1995-2007 milletvekili
@@ -590,6 +647,8 @@ def main(argv: list[str]) -> None:
             # matched instead of the whole file being dropped.
             stem = path.stem.split("__")[0]
             province_id = provinces.get(fold(re.sub(r"_\d+$", "", stem)))
+            file_total = None
+            matched_here = False
             for record in read_report(path):
                 values = record["values"]
                 base = {
@@ -599,14 +658,31 @@ def main(argv: list[str]) -> None:
                     "v": {k: v for k, v in values.items() if k not in AGG and v},
                 }
                 if record["level"] == "il":
-                    province_id = provinces.get(fold(record["name"]))
+                    # 2023 cuts the name ("Adıyama"); 1995 prints "(İl/İlçe merkezi)
+                    # toplamı". The file's own province stands when the line names none.
+                    province_id = (
+                        provinces.get(fold(record["name"]))
+                        or next(
+                            (
+                                pid
+                                for name, pid in provinces.items()
+                                if len(fold(record["name"])) >= 5
+                                and name.startswith(fold(record["name"]))
+                            ),
+                            None,
+                        )
+                        or provinces.get(fold(re.sub(r"_\d+$", "", stem)))
+                    )
+                    file_total = base
                 elif record["level"] == "ilce" and province_id:
                     area = match_district(districts, province_id, record["name"])
                     if area:
                         district_out[area] = base
                         district_out[area]["ad"] = record["name"]
+                        matched_here = True
                     else:
                         unmatched += 1
+                        misses.append((path.name, record["name"]))
                 elif record["level"] == "mahalle" and province_id:
                     parent = match_district(
                         districts, province_id, record["parent"] or ""
@@ -617,6 +693,24 @@ def main(argv: list[str]) -> None:
                     key = area or f"{parent}~{fold(record['name'])}"
                     base["ad"] = record["name"]
                     hood_out.setdefault(province_id, {})[key] = base
+
+            # One file per district, yet some (2017: 88 of them) print only the province
+            # line, which then holds that district's totals. The file name says which.
+            if not matched_here and "__" in path.stem and file_total and province_id:
+                area = match_district(
+                    districts, province_id, path.stem.split("__")[1].replace("_", " ")
+                )
+                if area and area not in district_out:
+                    district_out[area] = {**file_total, "ad": district_name[area]}
+                elif not area:
+                    misses.append((path.name, "(dosya adi)"))
+
+        # A district that no longer exists is drawn on the districts that replaced it,
+        # flagged: the numbers are the old district's, not each successor's own.
+        for old, row in list(district_out.items()):
+            for area in later.get(old, []):
+                if area not in district_out:
+                    district_out[area] = {**row, "eski": row["ad"]}
 
         # A country-wide summary for the neighbourhood map: five numbers per settlement
         # instead of the full breakdown. The detail files stay for the panel — 48.000
@@ -656,6 +750,10 @@ def main(argv: list[str]) -> None:
                 encoding="utf-8",
             )
         manifest()
+        report[vote] = {"ilce": len(district_out), "eslesmeyen": misses}
+        (SECIM / "eslesme-raporu.json").write_text(
+            json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8"
+        )
         total_hoods = sum(len(v) for v in hood_out.values())
         print(
             f"{vote}: {len(district_out)} ilçe, {total_hoods} yerleşim"

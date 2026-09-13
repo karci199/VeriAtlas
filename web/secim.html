@@ -133,14 +133,40 @@ const RENK = [
   [/[İI]HSANO/i, "#c7384f", "İhsanoğlu"],
   [/KARAMOLLA/i, "#00897b", "Karamollaoğlu"],
   [/PER[İI]N[CÇ]EK/i, "#b0863c", "Perinçek"],
+  // Parties, anchored at the start so "AK PARTİ" does not catch "HAK-PAR".
+  [/^AK PART/i, "#e9a13b", "AK Parti"],
+  [/^CHP$/i, "#c7384f", "CHP"],
+  [/^MHP$/i, "#2f6fb5", "MHP"],
+  [/^[İI]Y[İI]/i, "#3fa9d6", "İYİ Parti"],
+  [/^(HDP|DEM|YE[ŞS][İI]L SOL|BDP|DTP|HADEP|DEHAP|HEP|DEP)/i, "#9b59d0", "HDP çizgisi"],
+  [/^DYP$/i, "#b5651d", "DYP"],
+  [/^ANAP$/i, "#f1c40f", "ANAP"],
+  [/^SHP$/i, "#ff6f91", "SHP"],
+  [/^DSP$/i, "#5dade2", "DSP"],
+  [/^(RP|FP|SP|SAADET)/i, "#2e8b57", "RP / FP / SP"],
+  [/^YEN[İI]DEN REFAH/i, "#1e8449", "Yeniden Refah"],
+  [/^ZAFER/i, "#16a085", "Zafer"],
+  [/^(BBP|B[ÜU]Y[ÜU]K B[İI]RL)/i, "#8b1e2d", "BBP"],
+  [/^GEN[CÇ] PART/i, "#7d3c98", "Genç Parti"],
+  [/^(DP|DEMOKRAT PART)/i, "#e84393", "DP"],
+  [/^MDP$/i, "#a0522d", "MDP"],
+  [/^HP$/i, "#e67e22", "HP"],
+  [/^(BA[ĞG]IMSIZ|B[ĞG]MZ)/i, "#95a5a6", "Bağımsız"],
+  // "ı" has no case pair in a JS /i match, so Hayır is spelt out both ways.
+  [/^EVET/i, "#3f9c6b", "Evet"],
+  [/^HAY[IıİiI]R/i, "#c7384f", "Hayır"],
 ];
-const KATILIM = [["#08422a", "%90 ve üzeri"], ["#1b6b45", "%85–90"], ["#2f9163", "%80–85"],
-                 ["#74c69d", "%70–80"], ["#c9e8d6", "%70 altı"]];
+// Seven steps, blue to red: with five greens most of the country fell in the top two
+// and the map read as one colour.
+const KATILIM = [["#08306b", "%92 ve üzeri"], ["#2171b5", "%89–92"], ["#6baed6", "%86–89"],
+                 ["#c6dbef", "%83–86"], ["#fdd0a2", "%80–83"], ["#f16913", "%75–80"],
+                 ["#a63603", "%75 altı"]];
+const KATILIM_ESIK = [0.92, 0.89, 0.86, 0.83, 0.8, 0.75];
 
 const renk = (ad) => (RENK.find(([re]) => re.test(ad)) || [0, "#6b7280"])[1];
 const kisa = (ad) => {
   const hit = RENK.find(([re]) => re.test(ad));
-  return hit ? hit[2] : ad.split(" ").slice(-1)[0];
+  return hit ? hit[2] : ad;
 };
 
 const protocol = new pmtiles.Protocol();
@@ -194,11 +220,16 @@ function mahalleKatmaniEkle() {
     type: "vector", url: "pmtiles://../public/tiles/mahalle.pmtiles", promoteId: "id",
   });
   map.addLayer({
-    id: "mahalle-dolgu", type: "fill", source: "mahalle", "source-layer": "mahalle", minzoom: 7,
-    paint: { "fill-color": ["coalesce", ["feature-state", "renk"], "#22252b"] },
+    id: "mahalle-dolgu", type: "fill", source: "mahalle", "source-layer": "mahalle", minzoom: 5,
+    // A settlement without a result is left see-through, so the district colour shows
+    // faintly instead of a black hole that reads as "did not vote".
+    paint: {
+      "fill-color": ["coalesce", ["feature-state", "renk"], "#000000"],
+      "fill-opacity": ["case", ["==", ["feature-state", "renk"], null], 0.55, 1],
+    },
   }, "ilce-kenar");
   map.addLayer({
-    id: "mahalle-kenar", type: "line", source: "mahalle", "source-layer": "mahalle", minzoom: 7,
+    id: "mahalle-kenar", type: "line", source: "mahalle", "source-layer": "mahalle", minzoom: 5,
     paint: { "line-color": "#0f1012", "line-width": 0.35, "line-opacity": 0.5 },
   }, "ilce-kenar");
   map.addLayer({
@@ -229,7 +260,7 @@ function temaUygula(ad) {
   const css = getComputedStyle(document.documentElement);
   const oku = (name) => css.getPropertyValue(name).trim();
   map.setPaintProperty("arka", "background-color", oku("--bg"));
-  for (const layer of ["il-dolgu", "ilce-dolgu", "mahalle-dolgu"]) {
+  for (const layer of ["il-dolgu", "ilce-dolgu"]) {
     if (map.getLayer(layer)) {
       map.setPaintProperty(layer, "fill-color",
         ["coalesce", ["feature-state", "renk"], oku("--bos")]);
@@ -283,11 +314,8 @@ function kazanan(row) {
 }
 function katilimRengi(row) {
   const oran = row.k ? row.o / row.k : 0;
-  if (oran >= 0.9) return KATILIM[0][0];
-  if (oran >= 0.85) return KATILIM[1][0];
-  if (oran >= 0.8) return KATILIM[2][0];
-  if (oran >= 0.7) return KATILIM[3][0];
-  return KATILIM[4][0];
+  const i = KATILIM_ESIK.findIndex((e) => oran >= e);
+  return KATILIM[i < 0 ? KATILIM.length - 1 : i][0];
 }
 
 function kimlikler() {
@@ -296,6 +324,9 @@ function kimlikler() {
 }
 
 function boya() {
+  // Not painted until the neighbourhood layer exists: removeFeatureState on a missing
+  // source does not throw, so the retry loop used to stop with the layer never added.
+  if (mahalleModu() && !map.getLayer("mahalle-dolgu")) return false;
   if (mahalleModu()) boyaKaynak("ilce", Object.keys(ilce), (id) => ilce[id]);
   return boyaKaynak(kaynak(), kimlikler(), satir);
 }
@@ -303,7 +334,9 @@ function boya() {
 function boyaKaynak(source, ids, satirOku) {
   if (!ids.length) return false;
   try {
-    map.setFeatureState({ source, sourceLayer: source, id: ids[0] }, {});
+    // Cleared first: an area this election has no row for kept the previous election's
+    // colour, and the map mixed two votes.
+    map.removeFeatureState({ source, sourceLayer: source });
   } catch {
     return false;  // stil henüz hazır değil
   }
@@ -333,7 +366,7 @@ function gosterge() {
     if (win) say.set(kisa(win[0]), (say.get(kisa(win[0])) || 0) + 1);
   }
   const sirali = [...say].sort((a, b) => b[1] - a[1]);
-  box.innerHTML = `<h4>Haritadaki adaylar · ${mahalleModu() ? "mahalle" : "ilçe"} sayısı</h4>
+  box.innerHTML = `<h4>Haritadaki kazananlar · ${mahalleModu() ? "mahalle" : ilModu() ? "il" : "ilçe"} sayısı</h4>
     <div>${sirali.map(([ad, n]) =>
       `<span><i style="background:${renk(ad)}"></i>${ad}
         <em style="font-style:normal;color:var(--mute)">${fmt.format(n)}</em></span>`).join("")}</div>`;
@@ -360,6 +393,7 @@ function panelAc(id, ad) {
       <div class="kutu"><small>Geçerli oy</small><b>${fmt.format(gecerli)}</b></div>
       <div class="kutu"><small>Katılım oranı</small><b>%${pct(row.o / row.k)}</b></div>
     </div>
+    ${row.eski ? `<div class="ust">Bu seçimde ilçe henüz yoktu: gösterilen, o zamanki <b>${row.eski}</b> ilçesinin tamamı.</div>` : ""}
     ${row.kismi ? '<div class="ust">yalnız kazanan gösteriliyor — tam döküm için tıklayın</div>' : ""}
     ${list.map(([ad2, v]) => `
       <div class="aday">
@@ -419,9 +453,7 @@ async function veriYukle() {
 function yakinlastirIpucu() {
   if (!mahalleModu()) return;
   const n = fmt.format(ozet ? Object.keys(ozet.y).length : 0);
-  durum(map.getZoom() < 7
-    ? `${n} yerleşim · mahalleleri görmek için yakınlaştırın (şimdilik ilçe rengi)`
-    : `${n} yerleşim`);
+  durum(`${n} yerleşim`);
 }
 map.on("zoomend", yakinlastirIpucu);
 
@@ -443,8 +475,8 @@ function duzeyUygula() {
   };
   if (mahalleModu()) mahalleKatmaniEkle();
   goster("il-dolgu", ilModu());
-  // The neighbourhood tiles start at zoom 7 (50k shapes at country scale would be a
-  // 75 MB draw); below it the districts, painted from the same election, stand in.
+  // Districts stay painted under the neighbourhoods: a settlement with no result lets
+  // its district's colour through.
   goster("ilce-dolgu", !ilModu());
   goster("mahalle-dolgu", mahalleModu());
   goster("mahalle-kenar", mahalleModu());
@@ -512,7 +544,10 @@ function ipucuGoster(e, feature) {
   ipucu.style.display = "block";
   ipucu.style.left = Math.min(e.point.x + 16, innerWidth - 260) + "px";
   ipucu.style.top = Math.min(e.point.y + 16, innerHeight - 120) + "px";
-  ipucu.innerHTML = `<b>${feature.properties.ad || ""}</b>
+  // Province shapes carry only their id; an old district shows under its own name.
+  const ad = ilModu() ? ilAdlari[feature.properties.id] || feature.properties.ad
+    : row && row.eski ? `${row.eski} (bugünkü ${feature.properties.ad})` : feature.properties.ad;
+  ipucu.innerHTML = `<b>${ad || ""}</b>
     <small>${ilAdlari[(feature.properties.id || "").slice(0, 5)] || ""}</small>` +
     (row
       ? state.gosterim === "katilim"
