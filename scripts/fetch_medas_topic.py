@@ -57,7 +57,11 @@ for arg in sys.argv[1:]:
         # 82 areas), or the survey could not count it: one breakdown per query instead,
         # each a marginal table that fits and is sliced over years by the fetcher.
         wide = row["breakdowns"] and (
-            row["indicators"] == 0 or row["indicators"] * areas > 45000
+            row["indicators"] == 0
+            or row["indicators"] * areas > 45000
+            # KIRILIM_HEPSI=1: every measure one breakdown per query — the way to reach
+            # breakdowns that could not be crossed with the others ("CAPRAZ ALINAMAYAN").
+            or bool(os.environ.get("KIRILIM_HEPSI"))
         )
         if wide and not os.environ.get("KIRILIM_KIRILIM"):
             # Postponed by the user (2026-09-13): see docs/yol-haritasi.md. Run with
@@ -76,8 +80,12 @@ for arg in sys.argv[1:]:
             if wide
             else [(name, bool(row["breakdowns"]))]
         )
+        # Print media stops at İBBS2: without this it came down as Türkiye only.
+        region = not province and any("BBS2" in lv for lv in levels)
         for part_name, breakdowns in parts:
-            if not province:
+            if region:
+                simple.NUTS2_LOWEST.add(part_name)
+            elif not province:
                 simple.COUNTRY_ONLY.add(part_name)
             new.append((part_name, topic, label, breakdowns))
         print(
@@ -109,6 +117,8 @@ exec(patched, simple.__dict__)  # noqa: S102
 simple.MEASURES.extend(new)
 sys.argv = [sys.argv[0], *[name for name, *_ in new]]
 simple.main()
+for hint, breakdown in sorted(set(simple.SKIPPED_BREAKDOWNS)):
+    print("CAPRAZ ALINAMAYAN KIRILIM:", hint, "|", breakdown)
 
 MIRROR.mkdir(parents=True, exist_ok=True)
 copied = 0

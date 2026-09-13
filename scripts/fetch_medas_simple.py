@@ -363,6 +363,14 @@ LEVELS = {
 #: Birthplace for Türkiye as a whole is a country-only measure by construction.
 COUNTRY_ONLY = {"hayat-tablosu", "olum-tek-yas", "dogum-yeri-tr", "konut-satis-04"}
 
+#: Measures whose finest level is İBBS2 (26 regions), with no province: print media.
+#: Asked for at country and region level instead of Türkiye alone.
+NUTS2_LOWEST: set[str] = set()
+
+#: (measure hint, breakdown) pairs that could not be crossed with the others; see
+#: build_query.
+SKIPPED_BREAKDOWNS: list[tuple[str, str]] = []
+
 
 def levels_for(name: str) -> list[str]:
     """Which levels a measure is asked for.
@@ -377,6 +385,8 @@ def levels_for(name: str) -> list[str]:
         return ["province"]
     if name.endswith("-ilce"):
         return ["district"]
+    if name in NUTS2_LOWEST:
+        return ["country", "nuts2"]
     if name in COUNTRY_ONLY:
         return ["country"]
     # The region-to-region flow matrices exist at one level and only one: the breakdown is
@@ -504,7 +514,15 @@ def build_query(page, topic: str, hint: str, breakdowns) -> int:
                     if not is_ticked(page, row):
                         tick(page, row, "")
                 if not is_ticked(page, row):
-                    raise PlaywrightError("kirilim secilemedi: " + text)
+                    if wanted is not None:
+                        raise PlaywrightError("kirilim secilemedi: " + text)
+                    # "Every breakdown on": some breakdowns cannot be crossed with the
+                    # ones already ticked (MEDAS greys them out). Taking the rest keeps
+                    # the measure; the one left out is named and recorded, and the file's
+                    # own labels say which breakdowns it holds. KIRILIM_HEPSI=1 on the topic run then
+                    # takes it on its own.
+                    print("   · kirilim capraz alinamadi, ayrica cekilecek:", text)
+                    SKIPPED_BREAKDOWNS.append((hint, text))
 
     click_exact(page, "Tamam")
 
