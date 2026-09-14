@@ -18,7 +18,8 @@ One JSON per group under `$VERIATLAS_RAW/evds/<group>.json`: the series list as 
 returned it and the observations. The key goes in the `key` header (a query parameter
 is refused with 403).
 
-Run:  uv run python scripts/fetch_evds_housing.py
+Run:  uv run python scripts/fetch_evds_housing.py               # the groups above
+      uv run python scripts/fetch_evds_housing.py bie_tuksehir  # any other group, from 1970
 """
 
 from __future__ import annotations
@@ -56,20 +57,21 @@ def main() -> None:
         raise SystemExit("EVDS_API_KEY tanimli degil")
     out = RAW / "evds"
     out.mkdir(parents=True, exist_ok=True)
+    groups, start = (sys.argv[1:], "01-01-1970") if sys.argv[1:] else (GROUPS, START)
     with httpx.Client(
         base_url=BASE, headers={"key": settings.evds_api_key}, timeout=120
     ) as client:
-        for group in GROUPS:
+        for group in groups:
             series = client.get(f"/serieList/type=json&code={group}")
             series.raise_for_status()
             codes = [s["SERIE_CODE"] for s in series.json()]
-            items: list[dict] = []
+            by_period: dict[str, dict] = {}
             refused: list[str] = []
             chunks = [codes[i : i + BATCH] for i in range(0, len(codes), BATCH)]
             while chunks:
                 chunk = chunks.pop(0)
                 r = client.get(
-                    f"/series={'-'.join(chunk)}&startDate={START}&endDate={END}&type=json"
+                    f"/series={'-'.join(chunk)}&startDate={start}&endDate={END}&type=json"
                 )
                 if r.status_code == 400:
                     # One series EVDS lists but will not serve fails the whole chunk:
@@ -80,16 +82,13 @@ def main() -> None:
                         chunks[:0] = [[code] for code in chunk]
                     continue
                 r.raise_for_status()
-                part = r.json()["items"]
-                if not items:
-                    items = part
-                else:
-                    if len(part) != len(items):
-                        raise ValueError(group + ": parcalarin donem sayisi farkli")
-                    for whole, extra in zip(items, part, strict=True):
-                        if whole["Tarih"] != extra["Tarih"]:
-                            raise ValueError(group + ": parcalarin tarihleri farkli")
-                        whole.update(extra)
+                # Each chunk comes back over its own series' span, so chunks are merged
+                # on the period label, not by position.
+                for extra in r.json()["items"]:
+                    by_period.setdefault(extra["Tarih"], {}).update(extra)
+            items = sorted(
+                by_period.values(), key=lambda i: int(i["UNIXTIME"]["$numberLong"])
+            )
             payload = {
                 "group": group,
                 "series": series.json(),
