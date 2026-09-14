@@ -24651,3 +24651,293 @@ views = ["table", "line", "bar"]
 definition_tr = "Devlet ve il yollarındaki büyük sanat yapılarının toplam uzunluğu, 2002-2024."
 
 # endregion
+
+# region SGK Türkiye-wide work accident tables (adapters/sgk_national.py), 2026-09-14.
+# Classification dims (injury type, ESAW variables, ICD, ISCO, NACE) store the source's
+# codes; their Turkish labels are not yet in this file (open item, docs/sgk.md).
+
+[dim.outcome]
+label_tr = "Olay"
+label_en = "Outcome"
+
+[dim.outcome.values]
+accident = "İş kazası geçiren"
+accident_death = "İş kazası sonucu ölen"
+disease = "Meslek hastalığına tutulan"
+disease_death = "Meslek hastalığı sonucu ölen"
+
+[dim.incapacity_days]
+label_tr = "İş göremezlik süresi"
+label_en = "Incapacity days"
+
+[dim.incapacity_days.values]
+"0_at_work" = "Kaza günü (çalışır)"
+"0_incapacity" = "Kaza günü (iş göremez)"
+"1" = "1 gün"
+"2" = "2 gün"
+"3" = "3 gün"
+"4" = "4 gün"
+"5+" = "5 gün ve üzeri"
+
+[dim.injury_type]
+label_tr = "Yaranın türü"
+label_en = "Type of injury"
+
+[dim.body_part]
+label_tr = "Yaranın vücuttaki yeri"
+label_en = "Part of body injured"
+
+[dim.material_agent]
+label_tr = "Kullanılan materyal"
+label_en = "Material agent"
+
+[dim.work_environment]
+label_tr = "Çalışılan çevre"
+label_en = "Working environment"
+
+[dim.workstation]
+label_tr = "Çalışılan ortam"
+label_en = "Workstation"
+
+[dim.work_process]
+label_tr = "Genel faaliyet"
+label_en = "Working process"
+
+[dim.specific_activity]
+label_tr = "Kazadan az önceki özel faaliyet"
+label_en = "Specific physical activity"
+
+[dim.deviation]
+label_tr = "Sapma"
+label_en = "Deviation"
+
+[dim.contact_mode]
+label_tr = "Yaralanmaya sebep olan olay"
+label_en = "Contact – mode of injury"
+
+[dim.hour]
+label_tr = "Kaza saati"
+label_en = "Hour of accident"
+
+[dim.diagnosis]
+label_tr = "Meslek hastalığı tanısı (ICD-10)"
+label_en = "Diagnosis (ICD-10)"
+
+[dim.occupation]
+label_tr = "Meslek ana grubu (ISCO-08)"
+label_en = "Occupation major group (ISCO-08)"
+
+[dim.occupation.values]
+"0" = "Silahlı kuvvetler"
+"1" = "Yöneticiler"
+"2" = "Profesyonel meslek mensupları"
+"3" = "Teknisyenler, teknikerler ve yardımcı profesyonel meslek mensupları"
+"4" = "Büro hizmetlerinde çalışanlar"
+"5" = "Hizmet ve satış elemanları"
+"6" = "Nitelik gerektiren ormancılık, su ürünleri ve çiftçilik işleri"
+"7" = "Sanatkarlar ve ilgili işlerde çalışanlar"
+"8" = "Tesis ve makine operatörleri ve montajcılar"
+"9" = "Nitelik gerektirmeyen işlerde çalışanlar"
+unknown = "Bilinmeyen"
+unallocated = "Dağıtılmamış"
+
+[dim.workplace_employees]
+label_tr = "İş yerindeki çalışan sayısı"
+label_en = "Employees at workplace"
+
+[dim.job_tenure]
+label_tr = "Son işverende çalışma süresi"
+label_en = "Time with last employer"
+
+[dim.job_tenure.values]
+"1d" = "1 gün"
+"2-7d" = "2-7 gün"
+"8-30d" = "8-30 gün"
+"1-3m" = "1-3 ay"
+"3-12m" = "3 ay-1 yıl"
+"1-2y" = "1-2 yıl"
+"2-5y" = "2-5 yıl"
+"5-10y" = "5-10 yıl"
+"10y+" = "10 yıl ve üzeri"
+unknown = "Bilinmeyen"
+unallocated = "Dağıtılmamış"
+
+[dim.month]
+label_tr = "Ay"
+label_en = "Month"
+
+[dim.nace_class]
+label_tr = "Ekonomik faaliyet sınıfı (NACE, 4 hane)"
+label_en = "Activity class (NACE, 4 digits)"
+
+[indicator.sgk_work_accidents_by_injury_type]
+label_tr = "İş kazası ve meslek hastalığı, yaranın türüne göre"
+label_en = "Work accidents and occupational disease by injury type"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["injury_type", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_body_part]
+label_tr = "İş kazası ve meslek hastalığı, yaranın vücuttaki yerine göre"
+label_en = "Work accidents and occupational disease by body part"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["body_part", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_material_agent]
+label_tr = "İş kazası ve meslek hastalığı, kullanılan materyale göre"
+label_en = "Work accidents and occupational disease by material agent"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["material_agent", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_work_environment]
+label_tr = "İş kazası ve meslek hastalığı, çalışılan çevreye göre"
+label_en = "Work accidents and occupational disease by work environment"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["work_environment", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_workstation]
+label_tr = "İş kazası ve meslek hastalığı, çalışılan ortama göre"
+label_en = "Work accidents and occupational disease by workstation"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["workstation", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_work_process]
+label_tr = "İş kazası ve meslek hastalığı, genel faaliyete göre"
+label_en = "Work accidents and occupational disease by work process"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["work_process", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_specific_activity]
+label_tr = "İş kazası ve meslek hastalığı, kazadan az önceki özel faaliyete göre"
+label_en = "Work accidents and occupational disease by specific activity"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["specific_activity", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_deviation]
+label_tr = "İş kazası ve meslek hastalığı, sapmaya göre"
+label_en = "Work accidents and occupational disease by deviation"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["deviation", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_contact_mode]
+label_tr = "İş kazası ve meslek hastalığı, yaralanmaya sebep olan olaya göre"
+label_en = "Work accidents and occupational disease by contact mode"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["contact_mode", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_hour]
+label_tr = "İş kazası ve meslek hastalığı, kaza saatine göre"
+label_en = "Work accidents and occupational disease by hour"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["hour", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_diagnosis]
+label_tr = "İş kazası ve meslek hastalığı, tanıya göre"
+label_en = "Work accidents and occupational disease by diagnosis"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["diagnosis", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_occupation]
+label_tr = "İş kazası ve meslek hastalığı, meslek ana grubuna göre"
+label_en = "Work accidents and occupational disease by occupation"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["occupation", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_workplace_size]
+label_tr = "İş kazası ve meslek hastalığı, iş yeri büyüklüğüne göre"
+label_en = "Work accidents and occupational disease by workplace size"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["workplace_employees", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_tenure]
+label_tr = "İş kazası ve meslek hastalığı, son işverende çalışma süresine göre"
+label_en = "Work accidents and occupational disease by tenure"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["job_tenure", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_age]
+label_tr = "İş kazası ve meslek hastalığı, yaşa göre"
+label_en = "Work accidents and occupational disease by age"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["age", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza geçiren KİŞİ sayısı (bir kişi birden çok kaza geçirebilir); kaza sayısı veren öteki kırılımlarla toplamı tutmaz. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_month]
+label_tr = "İş kazası ve meslek hastalığı, aya göre"
+label_en = "Work accidents and occupational disease by month"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["month", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza geçiren KİŞİ sayısı (bir kişi birden çok kaza geçirebilir); kaza sayısı veren öteki kırılımlarla toplamı tutmaz. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_work_accidents_by_activity]
+label_tr = "İş kazası ve meslek hastalığı, ekonomik faaliyete (NACE sınıfı) göre"
+label_en = "Work accidents and occupational disease by activity"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["nace_class", "incapacity_days", "outcome", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza geçiren KİŞİ sayısı (bir kişi birden çok kaza geçirebilir); kaza sayısı veren öteki kırılımlarla toplamı tutmaz. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+# endregion

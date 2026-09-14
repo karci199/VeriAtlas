@@ -115,3 +115,40 @@ okunamayan iki il tablosu: `docs/sgk-turkiye-geneli.md`.
 - Oranlar ve ortalamalar (hastalık olayı başına gün, sigortalıya oran): türetilebilir.
 - Yıllığın kendi il nüfusu sütunu: ADNKS zaten depoda.
 - 2007-2008 başlıksız çalışma sayfası ("Sayfa2").
+
+## Türkiye geneli iş kazası ve meslek hastalığı tabloları (2026-09-14)
+
+`adapters/sgk_national.py`, 17 gösterge `sgk_work_accidents_by_*`, 2013-2025, 4/a ve 4/b,
+~443 bin satır. Kırılımlar: yara türü, vücut bölgesi, materyal, çevre, ortam, genel ve özel
+faaliyet, sapma, yaralanma olayı, saat, tanı (ICD-10), meslek ana grubu (ISCO-08), iş yeri
+büyüklüğü, son işverende süre, yaş, ay, NACE sınıfı (4 hane). Her birinde cinsiyet, olay
+(kaza / kazada ölüm / meslek hastalığı / meslek hastalığından ölüm) ve kazalarda iş göremezlik
+gün sınıfı.
+
+Denetim: her tabloda her sütun için satırlar basılı Toplam satırına eşit olmalı (±%0,05);
+tutmayan tablo yüklenmez, `report()` listeler. Dışarıda kalan: 2010-2012 eski düzen,
+2013 ay tablosu, 2019'da iki tablo (satırlar toplamı %2-10 aşıyor).
+
+Sessizce bozan yollar (hepsi testte):
+
+- **Aynı başlık altında ikinci blok gün sayısı**: 2013 ay tablosunda ikinci blok "Geçici İş
+  Göremezlik Süresi (gün)". Kişi diye toplanıyordu; gün sütunları atılıyor.
+- **Yalnız ölüm sayan tablolarda sütun başlığı sadece "İş Kazası"**: başlıktan ölüm bilgisi
+  alınmazsa ölümler kaza sayılır.
+- **Meslek tablosunda silahlı kuvvetler alt satırı "1-Subaylar"**: numarayla bakılırsa
+  yöneticiler ana grubu sanılır. Ana grup numara + ad birlikte eşleşince alınır.
+- **İş yeri büyüklüğünde kod sütunu kaba bant** (1,1,2,2,3...): kod değil etiket okunur.
+- **Aynı tablo iki kez basılı** (2025 ay tablosu: Temmuz 1.882, sonra 1.872): toplamı olan
+  kopya alınır.
+- **Grup satırları** (ESAW `010` > `011`, `01.00` > `01.01`, ICD `M65` > `M65.04`, NACE bölüm
+  satırı): alt satırları basılıysa atılır.
+
+Kaynak özellikleri:
+
+- Yaş, ay ve NACE tabloları kaza geçiren **kişi** sayar (2025 4/a: ~700 bin); öteki kırılımlar
+  **kaza** sayar (766.039). Birbirine toplanmaz.
+- Satırlar basılı toplamdan az kalırsa fark `unallocated` değeriyle saklanır: saat tablosunda
+  saati kayıtsız kazalar (2025: 102.730, %13), meslek hastalığında sigortalılık bittikten sonra
+  tanı konanlar (ayrı satırsa `insurance_ended`). %5 üstü farklar `report()`ta.
+- Ay tablolarında 2018-2025 toplam satırı sıfır basılı; denetlenemiyor.
+- Sınıflama kodlarının Türkçe etiketleri sözlükte yok (açık iş); kaynak etiketi hücrede var.
