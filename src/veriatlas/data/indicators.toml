@@ -23738,3 +23738,139 @@ views = ["table", "line"]
 definition_tr = "EVDS arşivi bie_yssk (ÖZEL SEKTÖRÜN YURT DIŞINDAN SAĞLADIĞI KREDİ BORCU İSTATİSTİKLERİ (TCMB) (ARŞİV)). Birim ve baz yılı kalem adında; kalemler toplanmaz. Yalnız Türkiye."
 
 # endregion
+
+# region Provincial GDP, MEDAS Bölgesel Hesaplar 2009 base (adapters/tuik_topics.py), 2026-09-14.
+
+[dim.gdp_price]
+label_tr = "Fiyat"
+label_en = "Price basis"
+
+[dim.gdp_price.values]
+current = "Cari fiyatlarla"
+chained_volume = "Zincirlenmiş hacim"
+
+[dim.gdp_currency]
+label_tr = "Para birimi"
+label_en = "Currency"
+
+[dim.gdp_currency.values]
+try = "TL"
+usd = "ABD doları"
+
+[dim.gdp_component]
+label_tr = "GSYH bileşeni"
+label_en = "GDP component"
+
+[dim.gdp_component.values]
+gross_value_added = "Gayrisafi katma değer (B1G)"
+gdp = "Gayrisafi yurt içi hasıla (B1GQ)"
+taxes_less_subsidies = "Ürün üzerindeki vergi eksi sübvansiyon (D21X31)"
+
+[dim.gdp_sector]
+label_tr = "Faaliyet kolu (A10)"
+label_en = "Economic activity (A10)"
+
+[dim.gdp_sector.values]
+a = "Tarım, ormancılık ve balıkçılık"
+b_e = "Sanayi (madencilik, imalat, enerji, su)"
+c = "İmalat sanayi (sanayinin içinde)"
+f = "İnşaat"
+g_i = "Ticaret, ulaştırma, konaklama ve yiyecek"
+j = "Bilgi ve iletişim"
+k = "Finans ve sigorta"
+l = "Gayrimenkul"
+m_n = "Mesleki, bilimsel, teknik, idari ve destek"
+o_q = "Kamu yönetimi, eğitim, sağlık ve sosyal hizmet"
+r_u = "Diğer hizmetler"
+
+[indicator.province_gdp_sector_share]
+label_tr = "Sektörlerin il GSYH içindeki payı"
+label_en = "Sector shares in provincial GDP"
+topic = "buyume"
+unit = "percent"
+frequency = "annual"
+dims = ["gdp_price", "gdp_sector"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK Bölgesel Hesaplar (2009 bazlı), 2000-2024, cari fiyatlarla. Sektör payları katma değere oranlanır, vergi-sübvansiyon dışarıda (İstanbul 2024 sektör toplamı %88,8). İmalat (C) sanayinin (B-E) içindedir; sektörler toplanmaz."
+
+[indicator.province_gdp_component_share]
+label_tr = "GSYH bileşenlerinin il GSYH içindeki payı"
+label_en = "Component shares in provincial GDP"
+topic = "buyume"
+unit = "percent"
+frequency = "annual"
+dims = ["gdp_price", "gdp_component"]
+views = ["table", "map", "line"]
+definition_tr = "TÜİK Bölgesel Hesaplar (2009 bazlı), cari fiyatlarla."
+
+[indicator.province_gdp_regional_share_sector]
+label_tr = "İlin Türkiye sektör katma değerindeki payı"
+label_en = "Province share of national sector value added"
+topic = "buyume"
+unit = "percent"
+frequency = "annual"
+dims = ["gdp_price", "gdp_sector"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK Bölgesel Hesaplar (2009 bazlı), cari fiyatlarla: her sektörde ilin Türkiye içindeki payı."
+
+[indicator.province_gdp_regional_share_component]
+label_tr = "İlin Türkiye GSYH'sındaki payı"
+label_en = "Province share of national GDP"
+topic = "buyume"
+unit = "percent"
+frequency = "annual"
+dims = ["gdp_price", "gdp_component"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK Bölgesel Hesaplar (2009 bazlı), cari fiyatlarla."
+
+[indicator.province_gdp_growth_sector]
+label_tr = "İl GSYH reel değişim oranı, sektöre göre"
+label_en = "Provincial real GDP growth by sector"
+topic = "buyume"
+unit = "percent"
+frequency = "annual"
+dims = ["gdp_price", "gdp_sector"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK Bölgesel Hesaplar, zincirlenmiş hacim, bir önceki yıla göre %."
+
+[indicator.province_gdp_growth_component]
+label_tr = "İl GSYH reel değişim oranı"
+label_en = "Provincial real GDP growth"
+topic = "buyume"
+unit = "percent"
+frequency = "annual"
+dims = ["gdp_price", "gdp_component"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK Bölgesel Hesaplar, zincirlenmiş hacim, bir önceki yıla göre %."
+
+[indicator.province_gdp_index_sector]
+label_tr = "İl GSYH hacim endeksi, sektöre göre (2009=100)"
+label_en = "Provincial GDP volume index by sector (2009=100)"
+topic = "buyume"
+unit = "index"
+frequency = "annual"
+dims = ["gdp_price", "gdp_sector"]
+views = ["table", "map", "line"]
+definition_tr = "TÜİK Bölgesel Hesaplar, zincirlenmiş hacim endeksi, 2009=100."
+
+[indicator.province_gdp_index_component]
+label_tr = "İl GSYH hacim endeksi (2009=100)"
+label_en = "Provincial GDP volume index (2009=100)"
+topic = "buyume"
+unit = "index"
+frequency = "annual"
+dims = ["gdp_price", "gdp_component"]
+views = ["table", "map", "line"]
+definition_tr = "TÜİK Bölgesel Hesaplar, zincirlenmiş hacim endeksi, 2009=100. Reel büyümenin il karşılaştırması bununla yapılır."
+
+[indicator.province_gdp_per_capita]
+label_tr = "Kişi başı il GSYH"
+label_en = "Provincial GDP per capita"
+topic = "buyume"
+unit = "source_unit"
+frequency = "annual"
+dims = ["gdp_currency", "gdp_price"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK Bölgesel Hesaplar (2009 bazlı), cari fiyatlarla; TL ve ABD doları ayrı kırılım (birim kırılımda). Türkiye 2004 değeri EVDS ile birebir; 2024'te MEDAS 503.076 TL, EVDS 504.077 TL (revizyon farkı, %0,2)."
+
+# endregion

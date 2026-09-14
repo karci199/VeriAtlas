@@ -35,6 +35,27 @@ NUTS2 = re.compile(r"-(TR[0-9A-C]{2})$")
 
 #: dim → Turkish name as MEDAS writes it → stored id.
 NAMES = {
+    # Provincial GDP, MEDAS "Bölgesel Hesaplar" (2009 base), 2026-09-14.
+    "gdp_price": {"Cari Fiyatlarla": "current", "Zincirlenmiş Hacim": "chained_volume"},
+    "gdp_currency": {"TL": "try", "ABD Doları": "usd"},
+    "gdp_component": {
+        "B1G. (Gayri Safi Katma Değer)": "gross_value_added",
+        "B1GQ. (Gayrisafi Yurtiçi Hasıla (Gsyh))": "gdp",
+        "D21X31. (Vergi Eksi Sübvansiyon (Ürün Üzerindeki))": "taxes_less_subsidies",
+    },
+    "gdp_sector": {
+        "A. (Tarım, Ormancılık Ve Balıkçılık)": "a",
+        "BTE. (İmalat, Madencilik Ve Taş Ocakçılığı Ve Diğer Sanayiler)": "b_e",
+        "C. (İmalat Sanayi)": "c",
+        "F. (İnşaat)": "f",
+        "GTI. (Toptan Ve Perakende Ticaret, Ulaştırma Ve Depolama, Konaklama Ve Yiyecek Hizmeti Faaliyetleri)": "g_i",
+        "J. (Bilgi Ve İletişim)": "j",
+        "K. (Finans Ve Sigorta Faaliyetleri)": "k",
+        "L. (Gayrimenkul Faaliyetleri)": "l",
+        "M_N. (Mesleki, Bilimsel, Teknik, İdari Ve Destek Hizmet Faaliyetleri)": "m_n",
+        "OTQ. (Kamu Yönetimi Ve Savunma, Eğitim, İnsan Sağlığı Ve Sosyal Hizmet Faaliyetleri)": "o_q",
+        "RTU. (Diğer Hizmetler)": "r_u",
+    },
     "hospital_sector": {
         "Hastane (Sağlık Bakanlığı)": "ministry",
         "Hastane (Özel)": "private",
@@ -207,6 +228,22 @@ NAMES = {
 
 #: file stem → (indicator id, dims in label order).
 MEASURES = {
+    # Provincial GDP (MEDAS Bölgesel Hesaplar, 2009 base, 2000-2024). `-k02` files carry the
+    # GDP components, `-k03` the A10 sectors; `gsyh-05` (no breakdown) is byte-identical to
+    # `gsyh-05-k02` and is not read. The value in lira was refused by MEDAS for every
+    # breakdown and is not here.
+    "gsyh-02-k03": ("province_gdp_sector_share", ("gdp_price", "gdp_sector")),
+    "gsyh-02-k02": ("province_gdp_component_share", ("gdp_price", "gdp_component")),
+    "gsyh-03-k03": ("province_gdp_regional_share_sector", ("gdp_price", "gdp_sector")),
+    "gsyh-03-k02": (
+        "province_gdp_regional_share_component",
+        ("gdp_price", "gdp_component"),
+    ),
+    "gsyh-04-k03": ("province_gdp_growth_sector", ("gdp_price", "gdp_sector")),
+    "gsyh-04-k02": ("province_gdp_growth_component", ("gdp_price", "gdp_component")),
+    "gsyh-05-k03": ("province_gdp_index_sector", ("gdp_price", "gdp_sector")),
+    "gsyh-05-k02": ("province_gdp_index_component", ("gdp_price", "gdp_component")),
+    "gsyh-06": ("province_gdp_per_capita", ("gdp_currency", "gdp_price")),
     "saglik-01": ("hospitals", ("hospital_sector",)),
     "saglik-02": ("hospital_beds", ("hospital_sector",)),
     "saglik-03": ("health_staff", ("health_profession", "health_sector")),
