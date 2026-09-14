@@ -5618,7 +5618,7 @@ unit = "try"
 frequency = "annual"
 dims = ["deposit_type"]
 views = ["table", "map", "line", "bar"]
-definition_tr = "TBB, şubenin bulunduğu ile göre yıl sonu mevduat, 1988'den. Tutarlar bugünkü TL (2005 öncesi kaynakta çevrilmiş). Genel müdürlüklerin bulunduğu İstanbul ve Ankara'da kurum mevduatı şişkin."
+definition_tr = "TBB, şubenin bulunduğu ile göre yıl sonu mevduat, 1988'den. Tutarlar bugünkü TL (2005 öncesi kaynakta çevrilmiş). Genel müdürlüklerin bulunduğu İstanbul ve Ankara'da kurum mevduatı şişkin. Üç küçük negatif değer (Van 2005 resmi, Afyonkarahisar ve Çorum 2010 bankalar mevduatı) kaynakta böyle."
 
 [indicator.bank_deposit_accounts]
 label_tr = "Mevduat hesap sayısı"
@@ -5668,7 +5668,7 @@ unit = "item"
 frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
-definition_tr = "TBB, 2010'dan."
+definition_tr = "TBB, 2010'dan. Isparta 2025: 14.476'dan 365.079'a sıçrıyor (Türkiye POS'unun %6'sı); kaynakta böyle, büyük olasılıkla bir bankanın merkezi kaydı — il karşılaştırmasında dikkat."
 
 [indicator.bank_merchants]
 label_tr = "Kartla ödeme alan üye işyeri"
