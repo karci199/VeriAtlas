@@ -1,4 +1,4 @@
-﻿# SGK istatistik yıllıkları — il tabloları
+# SGK istatistik yıllıkları — il tabloları
 
 Kaynak: sgk.gov.tr/Istatistik/Yillik, 2007-2025 yıllık ZIP'leri (Excel).
 Ham: `C:\veri-ham\sgk\yillik\<yıl>\`. Akış:
@@ -50,6 +50,9 @@ Kahramanmaraş, Adıyaman, Malatya'da kayıt taşınmaları yıllık sayıları 
 - 4/b 2011-2018 "bağımsız çalışan (1479)" toplamı + "tarım (2926)"; 2019'dan zorunlu
   (tarım dışı, tarım, muhtar) + isteğe bağlı. "Tarım dışı toplam" 2018'e kadar.
 - 4/c 2018'e kadar yalnız toplam, 2019'dan zorunlu / isteğe bağlı.
+- 4/b tarım zorunlu 2011'den her yıl düşüp 2024'te 427 bine iner, **2025'te 656 bin**.
+  Eşleme hatası değil: 2025 yıllığı üç ayrı tabloda (1.7, 1.8, 1.21) aynı sayıyı doğru
+  başlık altında basıyor. Sebebi (mevzuat ya da kayıt değişikliği) araştırılmadı.
 
 **Zorunlu sigortalı (`sgk_compulsory_insured`)**: cinsiyet 2012'den. 4/a toplamı 2010'dan
 (iş yeri tablolarından). 4/b 2012-2018 "1479" ve "2926", 2019'dan tarım dışı / tarım /
