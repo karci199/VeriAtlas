@@ -40,7 +40,7 @@ def rows_of(payload: dict):
             cell = item.get(column)
             if cell in (None, ""):
                 continue
-            label = item["Tarih"]
+            label = str(item["Tarih"])
             if label.count("-") == 2:
                 day, month, year = label.split("-")
                 date = dt.date(int(year), int(month), int(day))
@@ -93,6 +93,61 @@ INDEX_TREES = {
     "trade_trucks": ("bie_undnakliyeroro", "trade_truck_item"),
     "credit_participation_banks": ("bie_kbkmkre", "credit_participation_item"),
     "card_payment_index": ("bie_kartmetre", "card_payment_index_item"),
+    # GDP. Current and chained-volume levels are thousand TRY (volume at 2009 prices);
+    # the index groups are 2009=100. Aggregates sit next to their components.
+    "gdp_expenditure_current": ("bie_gsyhhrccar", "gdp_expenditure_item"),
+    "gdp_expenditure_current_sa": ("bie_gsyhcrarnd", "gdp_expenditure_sa_item"),
+    "gdp_expenditure_chained": ("bie_gsyhhrczinc", "gdp_expenditure_chained_item"),
+    "gdp_expenditure_index": ("bie_gsyhendex", "gdp_expenditure_index_item"),
+    "gdp_expenditure_index_sca": ("bie_gsyzhend", "gdp_expenditure_index_sca_item"),
+    "gdp_expenditure_index_sa": ("bie_gsyhmevset", "gdp_expenditure_index_sa_item"),
+    "gdp_expenditure_index_ca": ("bie_gsyzhtaken", "gdp_expenditure_index_ca_item"),
+    "gfcf_current": ("bie_gayrfsermol", "gfcf_item"),
+    "gfcf_index": ("bie_gaysafserzinc", "gfcf_index_item"),
+    "household_consumption_durability": (
+        "bie_nihaitukh",
+        "consumption_durability_item",
+    ),
+    "household_consumption_purpose": ("bie_gsyhnihayilcr", "consumption_purpose_item"),
+    "household_consumption_purpose_index": (
+        "bie_gsyhnihayil",
+        "consumption_purpose_index_item",
+    ),
+    "gdp_income_current": ("bie_gsyhgelrcar", "gdp_income_item"),
+    "gdp_income_current_sa": ("bie_gelirmea", "gdp_income_sa_item"),
+    "gdp_production_current": ("bie_gsyhuretcar", "gdp_production_item"),
+    "gdp_production_current_sa": ("bie_uretmeacari", "gdp_production_sa_item"),
+    "gdp_production_chained": ("bie_gsyhuretzinc", "gdp_production_chained_item"),
+    "gdp_production_index_sca": ("bie_uretmtazincr", "gdp_production_index_sca_item"),
+    "gdp_production_annual_current": ("bie_uretcryil", "gdp_production_annual_item"),
+    "gdp_production_annual_chained": (
+        "bie_uretzincyil",
+        "gdp_production_annual_chained_item",
+    ),
+    "gdp_per_capita_try": ("bie_uretmkb", "gdp_per_capita_try_item", r"\.TL$"),
+    "gdp_per_capita_usd": ("bie_uretmkb", "gdp_per_capita_usd_item", r"\.USD$"),
+    "gnp_1987_current_archive": ("bie_urgsmhc", "gnp_1987_current_item"),
+    "gnp_1987_constant_archive": ("bie_urgsmhq", "gnp_1987_constant_item"),
+    "gdp_1998_expenditure_current_archive": (
+        "bie_gsyihhy",
+        "gdp_1998_exp_current_item",
+        r"\.C$",
+    ),
+    "gdp_1998_expenditure_constant_archive": (
+        "bie_gsyihhy",
+        "gdp_1998_exp_constant_item",
+        r"\.S$",
+    ),
+    "gdp_1998_production_current_archive": (
+        "bie_gsyihtf",
+        "gdp_1998_prod_current_item",
+        r"\.C$",
+    ),
+    "gdp_1998_production_constant_archive": (
+        "bie_gsyihtf",
+        "gdp_1998_prod_constant_item",
+        r"\.S$",
+    ),
     "card_spending_weekly": ("bie_kkhartut", "card_sector_amount_item"),
     "card_transactions_weekly": ("bie_kkislade", "card_sector_count_item"),
     "cheques_count": ("bie_btocek", "cheque_count_item", r"TP\.BTO[135]$"),
@@ -284,7 +339,71 @@ def house_price_regions() -> list[dict]:
 
 # endregion
 
+# region Province GDP 1987-2001 (archive)
+
+PRICE_BASIS = {"CAR": "current", "SAB": "constant_1987"}
+#: Known source label errors, code is authoritative (see province_gdp_archive).
+MISLABELLED = {"TP.UR.ERZINCAN.CAR", "TP.UR.ERZINCAN.SAB"}
+OLD_GEO_REGIONS = {
+    "AKDENIZ",
+    "DANADOLU",
+    "EGE",
+    "GANADOLU",
+    "IANADOLU",
+    "KARADENIZ",
+    "MARMARA",
+}
+ASCII_TR = str.maketrans("çğıöşüÇĞİÖŞÜ", "cgiosuCGIOSU")
+
+
+def skeleton(name: str) -> str:
+    return re.sub(r"[^a-z]", "", name.translate(ASCII_TR).lower())
+
+
+def province_gdp_archive() -> list[dict]:
+    """`bie_urgsyih`: "(Cari) ADANA (Arşiv)", lira (new TRY), 79-81 provinces as they
+    existed each year. The seven geographic regions of the old table are not ours."""
+    payload = json.loads((DOWNLOADS / "bie_urgsyih.json").read_text(encoding="utf-8"))
+    ids = {
+        skeleton(row["name_tr"]): row["area_id"]
+        for row in load_areas().filter(pl.col("area_level") == "province").to_dicts()
+    }
+    aliases = {"afyon": "afyonkarahisar", "icel": "mersin", "kmaras": "kahramanmaras"}
+    records = []
+    for series, date, value in rows_of(payload):
+        _, _, place, basis = series["SERIE_CODE"].split(".")
+        if place in OLD_GEO_REGIONS:
+            continue
+        # Matched by the code, checked against the name. The names are not reliable:
+        # TP.UR.ERZINCAN.* is labelled "DENİZLİ" at source, and its values are
+        # Erzincan's (2001: 445 m TRY, the same as the correctly named 2001 table).
+        key = aliases.get(place.lower(), place.lower())
+        name = skeleton(re.sub(r"\(.*?\)", "", series["SERIE_NAME"]))
+        if key not in ids:
+            raise KeyError("il eslesmedi: " + series["SERIE_CODE"])
+        if aliases.get(name, name) != key and series["SERIE_CODE"] not in MISLABELLED:
+            raise KeyError(
+                "kod ve ad farkli il: "
+                + series["SERIE_CODE"]
+                + " "
+                + series["SERIE_NAME"]
+            )
+        records.append(
+            {
+                "area_id": ids[key],
+                "area_level": "province",
+                "period_start": date,
+                "dims": format_dims({"price_basis": PRICE_BASIS[basis]}),
+                "value": value,
+            }
+        )
+    return records
+
+
+# endregion
+
 BUILDERS = {
+    "gdp_province_1987_archive": province_gdp_archive,
     **{ident: (lambda i=ident: index_tree(i)) for ident in INDEX_TREES},
     "property_sales_monthly": property_sales,
     **{

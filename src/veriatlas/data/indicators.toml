@@ -8297,3 +8297,924 @@ views = ["table", "line", "bar"]
 definition_tr = "TCMB, EVDS bie_tsenetler, bin TL varsayımıyla (kaynak birim yazmıyor; çek tutarlarıyla aynı tablo ailesi), 2007'den. Yalnız Türkiye."
 
 # endregion
+
+# region EVDS GDP (adapters/evds_series.py), 2026-09-14.
+
+[topic.buyume]
+label_tr = "Büyüme ve milli gelir"
+label_en = "Growth and national accounts"
+order = 36
+
+[unit.usd]
+label_tr = "$"
+label_en = "USD"
+decimals = 0
+additive = false
+
+[dim.price_basis]
+label_tr = "Fiyat"
+label_en = "Price basis"
+
+[dim.price_basis.values]
+current = "Cari fiyatlarla"
+constant_1987 = "1987 sabit fiyatlarıyla"
+
+[indicator.gdp_province_1987_archive]
+label_tr = "İl GSYH, 1987-2001 (arşiv)"
+label_en = "Provincial GDP, 1987-2001 (archive)"
+topic = "buyume"
+unit = "try"
+frequency = "annual"
+dims = ["price_basis"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_urgsyih: il GSYH, cari ve 1987 sabit fiyatlarıyla, TL (yeni lira; 2001 değerleri Bin YTL etiketli 2001 serisinin bin katı). 1987-2001, iller o yıl var olduklarıyla. 2004 sonrası il GSYH ayrı kaynaktan."
+
+[dim.gdp_expenditure_item]
+label_tr = "Kalem"
+label_en = "gdp expenditure item"
+
+[dim.gdp_expenditure_item.values]
+gsyih20_by_b1gq = "Gayrisafi Yurt İçi Hasıla (Harcama Yöntemiyle, Cari Fiyatlarla)"
+gsyih20_by_p311 = "Yerleşik Hanehalklarının Tüketimi (Harcama Yöntemiyle, Cari Fiyatlarla)"
+gsyih20_by_p312 = "Hanehalkına Hizmet Eden Kar Amacı Olmayan Kuruluşların Tüketimi (Harcama Yöntemiyle, Cari Fiyatlarla)"
+gsyih20_by_p32 = "Devletin Nihai Tüketim Harcamaları (Harcama Yöntemiyle, Cari Fiyatlarla)"
+gsyih20_by_p51g = "Gayrisafi Sabit Sermaye Oluşumu (Harcama Yöntemiyle, Cari Fiyatlarla)"
+gsyih20_by_p52 = "Stoktaki Değişiklikler (Harcama Yöntemiyle, Cari Fiyatlarla)"
+gsyih20_by_p6 = "Mal ve Hizmet İhracatı (Harcama Yöntemiyle, Cari Fiyatlarla)"
+gsyih20_by_p7 = "(Eksi) Mal ve Hizmet İthalatı (Harcama Yöntemiyle, Cari Fiyatlarla)"
+
+[indicator.gdp_expenditure_current]
+label_tr = "GSYH, harcama yöntemi, cari fiyatlarla"
+label_en = "gdp expenditure current"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["gdp_expenditure_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyhhrccar; bin TL. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_expenditure_sa_item]
+label_tr = "Kalem"
+label_en = "gdp expenditure sa item"
+
+[dim.gdp_expenditure_sa_item.values]
+gsyih20_hy_b1gq = "Gayrisafi Yurt İçi Hasıla (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih20_hy_p311 = "Yerleşik Hanehalklarının Tüketimi (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih20_hy_p312 = "Hanehalklarına Hizmet Veren Kar Amacı Olmayan Kurumların Nihai Tüketimi (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih20_hy_p32 = "Devletin Nihai Tüketim Harcamaları (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih20_hy_p51g = "Gayrisafi Sabit Sermaye Oluşumu (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih20_hy_p52 = "Stoktaki Değişiklikler (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih20_hy_p6 = "Mal ve Hizmet İhracatı (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih20_hy_p7 = "(Eksi) Mal ve Hizmet İthalatı (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+
+[indicator.gdp_expenditure_current_sa]
+label_tr = "GSYH, harcama yöntemi, cari, mevsim etkisinden arındırılmış"
+label_en = "gdp expenditure current sa"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["gdp_expenditure_sa_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyhcrarnd; bin TL. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_expenditure_chained_item]
+label_tr = "Kalem"
+label_en = "gdp expenditure chained item"
+
+[dim.gdp_expenditure_chained_item.values]
+gsyih20_cy_b1gq = "Gayrisafi Yurt İçi Hasıla (Harcama Yöntemiyle, Zincirlenmiş Hacim)"
+gsyih20_cy_p311 = "Yerleşik Hanehalklarının Tüketimi (Harcama Yöntemiyle, Zincirlenmiş Hacim)"
+gsyih20_cy_p312 = "Hanehalkına Hizmet Eden Kar Amacı Olmayan Kuruluşların Tüketimi (Harcama Yöntemiyle, Zincirlenmiş Hacim)"
+gsyih20_cy_p32 = "Devletin Nihai Tüketim Harcamaları (Harcama Yöntemiyle, Zincirlenmiş Hacim)"
+gsyih20_cy_p51g = "Gayrisafi Sabit Sermaye Oluşumu (Harcama Yöntemiyle, Zincirlenmiş Hacim)"
+gsyih20_cy_p6 = "Mal ve Hizmet İhracatı (Harcama Yöntemiyle, Zincirlenmiş Hacim)"
+gsyih20_cy_p7 = "(Eksi) Mal ve Hizmet İthalatı (Harcama Yöntemiyle, Zincirlenmiş Hacim)"
+
+[indicator.gdp_expenditure_chained]
+label_tr = "GSYH, harcama yöntemi, zincirlenmiş hacim"
+label_en = "gdp expenditure chained"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["gdp_expenditure_chained_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyhhrczinc; bin TL, 2009 fiyatlarıyla. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_expenditure_index_item]
+label_tr = "Kalem"
+label_en = "gdp expenditure index item"
+
+[dim.gdp_expenditure_index_item.values]
+gsyih50_hy_b1gq = "Gayrisafi Yurt İçi Hasıla (Harcama Yöntemiyle, Zincirlenmiş Endeks)"
+gsyih50_hy_p311 = "Yerleşik Hanehalklarının Tüketimi (Harcama Yöntemiyle, Zincirlenmiş Endeks)"
+gsyih50_hy_p312 = "Hanehalklarına Hizmet Veren Kar Amacı Olmayan Kurumların Nihai Tüketimi (Harcama Yöntemiyle, Zincirlenmiş Endeks)"
+gsyih50_hy_p32 = "Devletin Nihai Tüketim Harcamaları (Harcama Yöntemiyle, Zincirlenmiş Endeks)"
+gsyih50_hy_p51g = "Gayrisafi Sabit Sermaye Oluşumu (Harcama Yöntemiyle, Zincirlenmiş Endeks)"
+gsyih50_hy_p52 = "Stoktaki Değişiklikler (Harcama Yöntemiyle, Zincirlenmiş Endeks)"
+gsyih50_hy_p6 = "Mal ve Hizmet İhracatı (Harcama Yöntemiyle, Zincirlenmiş Endeks)"
+gsyih50_hy_p7 = "(Eksi) Mal ve Hizmet İthalatı (Harcama Yöntemiyle, Zincirlenmiş Endeks)"
+
+[indicator.gdp_expenditure_index]
+label_tr = "GSYH, harcama yöntemi, zincirlenmiş hacim endeksi"
+label_en = "gdp expenditure index"
+topic = "buyume"
+unit = "index"
+frequency = "quarterly"
+dims = ["gdp_expenditure_index_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyhendex; 2009=100. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_expenditure_index_sca_item]
+label_tr = "Kalem"
+label_en = "gdp expenditure index sca item"
+
+[dim.gdp_expenditure_index_sca_item.values]
+gsyih30_hy_b1gq = "Gayrisafi Yurt İçi Hasıla (Harcama Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih30_hy_p311 = "Yerleşik Hanehalklarının Tüketimi (Harcama Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih30_hy_p312 = "Hanehalklarına Hizmet Veren Kar Amacı Olmayan Kurumların Nihai Tüketimi (Harcama Yöntemiyle Mevsim ve Takvim Etkisinden Arındırılmış, Zincirlenmiş Hacim Endeksi)"
+gsyih30_hy_p32 = "Devletin Nihai Tüketim Harcamaları (Harcama Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih30_hy_p51g = "Gayrisafi Sabit Sermaye Oluşumu (Harcama Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih30_hy_p6 = "Mal ve Hizmet İhracatı (Harcama Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih30_hy_p7 = "(Eksi) Mal ve Hizmet İthalatı (Harcama Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih30_hy_p52 = "Stoktaki Değişiklikler (Harcama Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+
+[indicator.gdp_expenditure_index_sca]
+label_tr = "GSYH, harcama yöntemi, hacim endeksi, mevsim ve takvim arındırılmış"
+label_en = "gdp expenditure index sca"
+topic = "buyume"
+unit = "index"
+frequency = "quarterly"
+dims = ["gdp_expenditure_index_sca_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyzhend; 2009=100. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_expenditure_index_sa_item]
+label_tr = "Kalem"
+label_en = "gdp expenditure index sa item"
+
+[dim.gdp_expenditure_index_sa_item.values]
+gsyih60_hy_b1gq = "Gayrisafi Yurt İçi Hasıla (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih60_hy_p311 = "Yerleşik Hanehalklarının Tüketimi (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih60_hy_p312 = "Hanehalklarına Hizmet Veren Kar Amacı Olmayan Kurumların Nihai Tüketimi (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih60_hy_p32 = "Devletin Nihai Tüketim Harcamaları (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih60_hy_p51g = "Gayrisafi Sabit Sermaye Oluşumu (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih60_hy_p52 = "Stoktaki Değişiklikler (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih60_hy_p6 = "Mal ve Hizmet İhracatı (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih60_hy_p7 = "(Eksi) Mal ve Hizmet İthalatı (Harcama Yöntemiyle, Mevsim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+
+[indicator.gdp_expenditure_index_sa]
+label_tr = "GSYH, harcama yöntemi, hacim endeksi, mevsim arındırılmış"
+label_en = "gdp expenditure index sa"
+topic = "buyume"
+unit = "index"
+frequency = "quarterly"
+dims = ["gdp_expenditure_index_sa_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyhmevset; 2009=100. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_expenditure_index_ca_item]
+label_tr = "Kalem"
+label_en = "gdp expenditure index ca item"
+
+[dim.gdp_expenditure_index_ca_item.values]
+gsyih40_hy_b1gq = "Gayrisafi Yurt İçi Hasıla (Harcama Yöntemiyle, Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_hy_p311 = "Yerleşik Hanehalklarının Tüketimi (Harcama Yöntemiyle, Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_hy_p312 = "Hanehalklarına Hizmet Veren Kar Amacı Olmayan Kurumların Nihai Tüketimi (Harcama Yöntemiyle, Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_hy_p32 = "Devletin Nihai Tüketim Harcamaları (Harcama Yöntemiyle, Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_hy_p51g = "Gayrisafi Sabit Sermaye Oluşumu (Harcama Yöntemiyle, Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_hy_p6 = "Mal ve Hizmet İhracatı (Harcama Yöntemiyle, Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_hy_p7 = "(Eksi) Mal ve Hizmet İthalatı (Harcama Yöntemiyle, Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_hy_p52 = "Stoktaki Değişiklikler (Harcama Yöntemiyle, Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+
+[indicator.gdp_expenditure_index_ca]
+label_tr = "GSYH, harcama yöntemi, hacim endeksi, takvim arındırılmış"
+label_en = "gdp expenditure index ca"
+topic = "buyume"
+unit = "index"
+frequency = "quarterly"
+dims = ["gdp_expenditure_index_ca_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyzhtaken; 2009=100. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gfcf_item]
+label_tr = "Kalem"
+label_en = "gfcf item"
+
+[dim.gfcf_item.values]
+gsyih80_hy_p51g = "Üretilmiş Mali Olmayan Aktifler (Gayrisafi Sabit Sermaye Oluşumu, Cari Fiyatlarla)"
+gsyih80_hy_p51g1 = "İnşaat (Gayrisafi Sabit Sermaye Oluşumu, Cari Fiyatlarla)"
+gsyih80_hy_p51g2 = "Makine ve Teçhizat (Gayrisafi Sabit Sermaye Oluşumu, Cari Fiyatlarla)"
+gsyih80_hy_p51g3 = "Diğer Aktifler (Gayrisafi Sabit Sermaye Oluşumu, Cari Fiyatlarla)"
+
+[indicator.gfcf_current]
+label_tr = "Gayrisafi sabit sermaye oluşumu, cari fiyatlarla"
+label_en = "gfcf current"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["gfcf_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gayrfsermol; bin TL. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gfcf_index_item]
+label_tr = "Kalem"
+label_en = "gfcf index item"
+
+[dim.gfcf_index_item.values]
+gsyih90_hy_p51g = "Üretilmiş Mali Olmayan Aktifler (Gayrisafi Sabit Sermaye Oluşumu, Zincirlenmiş Hacim Endeksi)"
+gsyih90_hy_p51g1 = "İnşaat (Gayrisafi Sabit Sermaye Oluşumu, Zincirlenmiş Hacim Endeksi)"
+gsyih90_hy_p51g2 = "Makine ve Teçhizat (Gayrisafi Sabit Sermaye Oluşumu, Zincirlenmiş Hacim Endeksi)"
+gsyih90_hy_p51g3 = "Diğer Aktifler (Gayrisafi Sabit Sermaye Oluşumu, Zincirlenmiş Hacim Endeksi)"
+
+[indicator.gfcf_index]
+label_tr = "Gayrisafi sabit sermaye oluşumu, zincirlenmiş hacim endeksi"
+label_en = "gfcf index"
+topic = "buyume"
+unit = "index"
+frequency = "quarterly"
+dims = ["gfcf_index_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gaysafserzinc; 2009=100. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.consumption_durability_item]
+label_tr = "Kalem"
+label_en = "consumption durability item"
+
+[dim.consumption_durability_item.values]
+gsyih100_hy_p31hnt = "Yerleşik ve Yerleşik Olmayan Hanehalkı Yurtiçi Tüketimi (Hanehalkı Nihai Tüketim Harcamaları, Dayanıklılık Türüne Göre, Cari Fiyatlarla)"
+gsyih100_hy_p311 = "Dayanıklı Mallar (Hanehalkı Nihai Tüketim Harcamaları, Dayanıklılık Türüne Göre, Cari Fiyatlarla)"
+gsyih100_hy_p312 = "Yarı Dayanıklı Mallar (Hanehalkı Nihai Tüketim Harcamaları, Dayanıklılık Türüne Göre, Cari Fiyatlarla)"
+gsyih100_hy_p313 = "Dayanıksız Mallar (Hanehalkı Nihai Tüketim Harcamaları, Dayanıklılık Türüne Göre, Cari Fiyatlarla)"
+gsyih100_hy_p314 = "Hizmetler (Hanehalkı Nihai Tüketim Harcamaları, Dayanıklılık Türüne Göre, Cari Fiyatlarla)"
+
+[indicator.household_consumption_durability]
+label_tr = "Hanehalkı tüketimi, dayanıklılık türüne göre, cari"
+label_en = "household consumption durability"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["consumption_durability_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_nihaitukh; bin TL, 2009'dan. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.consumption_purpose_item]
+label_tr = "Kalem"
+label_en = "consumption purpose item"
+
+[dim.consumption_purpose_item.values]
+gsyhnih_cf_01 = "Gıda ve Alkolsüz İçecekler (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Cari Fiyatlarla, Yıllık)"
+gsyhnih_cf_02 = "Alkollü İçecekler ve Tütün (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Cari Fiyatlarla, Yıllık)"
+gsyhnih_cf_03 = "Giyim ve Ayakkabı (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Cari Fiyatlarla, Yıllık)"
+gsyhnih_cf_04 = "Konut, Su, Elektrik, Gaz ve Diğer Yakıtlar (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Cari Fiyatlarla, Yıllık)"
+gsyhnih_cf_05 = "Mobilyalar, Evde Kullanılan Ekipmanlar İle Rutin Ev Bakım ve Onarımı (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Cari Fiyatlarla, Yıllık)"
+gsyhnih_cf_06 = "Sağlık (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Cari Fiyatlarla, Yıllık)"
+gsyhnih_cf_07 = "Ulaştırma (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Cari Fiyatlarla, Yıllık)"
+gsyhnih_cf_08 = "Bilgi ve İletişim (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Cari Fiyatlarla, Yıllık)"
+gsyhnih_cf_09 = "Eğlence, Spor ve Kültür (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Cari Fiyatlarla, Yıllık)"
+gsyhnih_cf_10 = "Eğitim (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Cari Fiyatlarla, Yıllık)"
+gsyhnih_cf_11 = "Lokantalar ve Konaklama Hizmetleri (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Cari Fiyatlarla, Yıllık)"
+gsyhnih_cf_12 = "Sigorta ve Finansal Hizmetler (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Cari Fiyatlarla, Yıllık)"
+gsyhnih_cf_13 = "Kişisel Bakım, Sosyal Koruma ve Çeşitli Mal ve Hizmetler (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Cari Fiyatlarla, Yıllık)"
+gsyhnih_cf_cf = "Özel Nihai Tüketim Harcamaları (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Cari Fiyatlarla, Yıllık)"
+
+[indicator.household_consumption_purpose]
+label_tr = "Hanehalkı tüketimi, amaca göre, cari (yıllık)"
+label_en = "household consumption purpose"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "annual"
+dims = ["consumption_purpose_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyhnihayilcr; bin TL, 2009'dan. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.consumption_purpose_index_item]
+label_tr = "Kalem"
+label_en = "consumption purpose index item"
+
+[dim.consumption_purpose_index_item.values]
+gsyhnih_zce_01 = "Gıda ve Alkolsüz İçecekler (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Zincirlenmiş Hacim Endeksi, Yıllık)"
+gsyhnih_zce_02 = "Alkollü İçecekler ve Tütün (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Zincirlenmiş Hacim Endeksi, Yıllık)"
+gsyhnih_zce_03 = "Giyim ve Ayakkabı (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Zincirlenmiş Hacim Endeksi, Yıllık)"
+gsyhnih_zce_04 = "Konut, Su, Elektrik, Gaz ve Diğer Yakıtlar (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Zincirlenmiş Hacim Endeksi, Yıllık)"
+gsyhnih_zce_05 = "Mobilyalar, Evde Kullanılan Ekipmanlar İle Rutin Ev Bakım ve Onarımı (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Zincirlenmiş Hacim Endeksi, Yıllık)"
+gsyhnih_zce_06 = "Sağlık (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Zincirlenmiş Hacim Endeksi, Yıllık)"
+gsyhnih_zce_07 = "Ulaştırma (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Zincirlenmiş Hacim Endeksi, Yıllık)"
+gsyhnih_zce_08 = "Bilgi ve İletişim (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Zincirlenmiş Hacim Endeksi, Yıllık)"
+gsyhnih_zce_09 = "Eğlence, Spor ve Kültür (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Zincirlenmiş Hacim Endeksi, Yıllık)"
+gsyhnih_zce_10 = "Eğitim (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Zincirlenmiş Hacim Endeksi, Yıllık)"
+gsyhnih_zce_11 = "Lokantalar ve Konaklama Hizmetleri (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Zincirlenmiş Hacim Endeksi, Yıllık)"
+gsyhnih_zce_12 = "Sigorta ve Finansal Hizmetler (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Zincirlenmiş Hacim Endeksi, Yıllık)"
+gsyhnih_zce_13 = "Kişisel Bakım, Sosyal Koruma ve Çeşitli Mal ve Hizmetler (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Zincirlenmiş Hacim Endeksi, Yıllık)"
+gsyhnih_zce_zhe = "Özel Nihai Tüketim Harcamaları (Harcama Yöntemine Göre, Hanehalkı Nihai Tüketim Harcamaları, Zincirlenmiş Hacim Endeksi, Yıllık)"
+
+[indicator.household_consumption_purpose_index]
+label_tr = "Hanehalkı tüketimi, amaca göre, hacim endeksi (yıllık)"
+label_en = "household consumption purpose index"
+topic = "buyume"
+unit = "index"
+frequency = "annual"
+dims = ["consumption_purpose_index_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyhnihayil; 2009=100. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_income_item]
+label_tr = "Kalem"
+label_en = "gdp income item"
+
+[dim.gdp_income_item.values]
+gsyih30_ay_b1gq = "Gayrisafi Yurt İçi Hasıla (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_a = "A - Tarım, Ormancılık ve Balıkçılık (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_bte = "BCDE - Sanayi (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_c = "C - İmalat Sanayi (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_f = "F - İnşaat (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_gti = "GHI - Hizmetler (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_j = "J - Bilgi ve İletişim (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_k = "K - Finans ve Sigorta Faaliyetleri (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_l = "L - Gayrimenkul Faaliyetleri (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_mn = "MN - Mesleki, İdari ve Destek Hizmet Faaliyetleri (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_otq = "OPQ - Kamu Yönetimi, Eğitim, İnsan Sağlığı ve Sosyal Hizmet Faaliyetleri (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_rtu = "RST - Diğer Hizmet Faaliyetleri (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_d1 = "Toplam İşgücü Ödemeleri (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_d29x39 = "Üretim Üzerindeki Net Vergiler (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_b2a3g = "Brüt İşletme Artığı/Karma Gelir (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_p51c = "Sabit Sermaye Tüketimi (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_b2n3n = "Net İşletme Artığı/Karma Gelir (Gelir Yöntemiyle, Cari Fiyatlarla)"
+gsyih30_ay_d21x31 = "Ürün Üzerindeki Vergiler Eksi Sübvansiyonlar (Gelir Yöntemiyle, Cari Fiyatlarla)"
+
+[indicator.gdp_income_current]
+label_tr = "GSYH, gelir yöntemi, cari fiyatlarla"
+label_en = "gdp income current"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["gdp_income_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyhgelrcar; bin TL. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_income_sa_item]
+label_tr = "Kalem"
+label_en = "gdp income sa item"
+
+[dim.gdp_income_sa_item.values]
+gsyih70_hy_b1gq = "Gayrisafi Yurt İçi Hasıla (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_a = "A - Tarım, Ormancılık ve Balıkçılık (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_bte = "BCDE - Sanayi (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_c = "C - İmalat Sanayi (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_f = "F - İnşaat (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_gti = "GHI - Hizmetler (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_j = "J - Bilgi ve İletişim (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_k = "K - Finans ve Sigorta Faaliyetleri (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_l = "L - Gayrimenkul Faaliyetleri (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_mn = "MN - Mesleki, İdari ve Destek Hizmet Faaliyetleri (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_otq = "OPQ - Kamu Yönetimi, Eğitim, İnsan Sağlığı ve Sosyal Hizmet Faaliyetleri (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_rtu = "RST - Diğer Hizmet Faaliyetleri (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_d1 = "Toplam İşgücü Ödemeleri (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_d29x39 = "Üretim Üzerindeki Net Vergiler (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_b2a3g = "Brüt İşletme Artığı/Karma Gelir (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_p51c = "Sabit Sermaye Tüketimi (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_b2n3n = "Net İşletme Artığı/Karma Gelir (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih70_hy_d21x31 = "Ürün Üzerindeki Vergiler Eksi Sübvansiyonlar (Gelir Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+
+[indicator.gdp_income_current_sa]
+label_tr = "GSYH, gelir yöntemi, cari, mevsim arındırılmış"
+label_en = "gdp income current sa"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["gdp_income_sa_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gelirmea; bin TL. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_production_item]
+label_tr = "Kalem"
+label_en = "gdp production item"
+
+[dim.gdp_production_item.values]
+gsyih040_ifk_b1gq = "Gayrisafi Yurt İçi Hasıla (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Cari Fiyatlarla)"
+gsyih040_ifk_a = "A - Tarım, Ormancılık ve Balıkçılık (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Cari Fiyatlarla)"
+gsyih040_ifk_bte = "BCDE - Sanayi (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Cari Fiyatlarla)"
+gsyih040_ifk_c = "C - İmalat Sanayi (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Cari Fiyatlarla)"
+gsyih040_ifk_f = "F - İnşaat (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Cari Fiyatlarla)"
+gsyih040_ifk_gti = "GHI - Hizmetler (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Cari Fiyatlarla)"
+gsyih040_ifk_j = "J - Bilgi ve İletişim (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Cari Fiyatlarla)"
+gsyih040_ifk_k = "K - Finans ve Sigorta Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Cari Fiyatlarla)"
+gsyih040_ifk_l = "L - Gayrimenkul Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Cari Fiyatlarla)"
+gsyih040_ifk_mn = "MN - Mesleki, İdari ve Destek Hizmet Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Cari Fiyatlarla)"
+gsyih040_ifk_otq = "OPQ - Kamu Yönetimi, Eğitim, İnsan Sağlığı ve Sosyal Hizmet Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Cari Fiyatlarla)"
+gsyih040_ifk_rtu = "RST - Diğer Hizmet Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Cari Fiyatlarla)"
+gsyih040_ifk_b1g = "Sektörler Toplamı (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Cari Fiyatlarla)"
+gsyih040_ifk_d21x31 = "Ürün Üzerindeki Vergiler Eksi Sübvansiyonlar (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Cari Fiyatlarla)"
+
+[indicator.gdp_production_current]
+label_tr = "GSYH, üretim yöntemi (A10), cari fiyatlarla"
+label_en = "gdp production current"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["gdp_production_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyhuretcar; bin TL. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_production_sa_item]
+label_tr = "Kalem"
+label_en = "gdp production sa item"
+
+[dim.gdp_production_sa_item.values]
+gsyih40_ift_b1gq = "Gayrisafi Yurt İçi Hasıla (Üretim Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih40_ift_a = "A - Tarım, Ormancılık ve Balıkçılık (Üretim Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih40_ift_bte = "BCDE - Sanayi (Üretim Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih40_ift_c = "C - İmalat Sanayi (Üretim Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih40_ift_f = "F - İnşaat (Üretim Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih40_ift_gti = "GHI - Ticaret, Ulaştırma, Konaklama ve Yiyecek Hizmetleri (Üretim Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih40_ift_j = "J - Bilgi ve İletişim (Üretim Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih40_ift_k = "K - Finans ve Sigorta Faaliyetleri (Üretim Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih40_ift_l = "L - Gayrimenkul Faaliyetleri (Üretim Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih40_ift_mn = "MN - Mesleki, İdari ve Destek Hizmet Faaliyetleri (Üretim Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih40_ift_otq = "OPQ - Kamu Yönetimi, Eğitim, İnsan Sağlığı ve Sosyal Hizmet Faaliyetleri (Üretim Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih40_ift_rtu = "RST - Diğer Hizmet Faaliyetleri (Üretim Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih40_ift_b1g = "Sektörler Toplamı (Üretim Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+gsyih40_ift_d21x31 = "Ürün Üzerindeki Vergiler Eksi Sübvansiyonlar (Üretim Yöntemiyle, Mevsim Etkisinden Arındırılmış, Cari Fiyatlarla)"
+
+[indicator.gdp_production_current_sa]
+label_tr = "GSYH, üretim yöntemi, cari, mevsim arındırılmış"
+label_en = "gdp production current sa"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["gdp_production_sa_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_uretmeacari; bin TL. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_production_chained_item]
+label_tr = "Kalem"
+label_en = "gdp production chained item"
+
+[dim.gdp_production_chained_item.values]
+gsyih40_ifc_b1gq = "Gayrisafi Yurt İçi Hasıla (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Zincirlenmiş Hacim)"
+gsyih40_ifc_a = "A - Tarım, Ormancılık ve Balıkçılık (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Zincirlenmiş Hacim)"
+gsyih40_ifc_bte = "BCDE - Sanayi (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Zincirlenmiş Hacim)"
+gsyih40_ifc_c = "C - İmalat Sanayi (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Zincirlenmiş Hacim)"
+gsyih40_ifc_f = "F - İnşaat (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Zincirlenmiş Hacim)"
+gsyih40_ifc_gti = "GHI - Hizmetler (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Zincirlenmiş Hacim)"
+gsyih40_ifc_j = "J - Bilgi ve İletişim (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Zincirlenmiş Hacim)"
+gsyih40_ifc_k = "K - Finans ve Sigorta Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Zincirlenmiş Hacim)"
+gsyih40_ifc_l = "L - Gayrimenkul Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Zincirlenmiş Hacim)"
+gsyih40_ifc_mn = "MN - Mesleki, İdari ve Destek Hizmet Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Zincirlenmiş Hacim)"
+gsyih40_ifc_otq = "OPQ - Kamu Yönetimi, Eğitim, İnsan Sağlığı ve Sosyal Hizmet Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Zincirlenmiş Hacim)"
+gsyih40_ifc_rtu = "RST - Diğer Hizmet Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Zincirlenmiş Hacim)"
+gsyih40_ifc_b1g = "Sektörler Toplamı (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Zincirlenmiş Hacim)"
+gsyih40_ifc_d21x31 = "Ürün Üzerindeki Vergiler Eksi Sübvansiyonlar (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına (A10) Göre, Zincirlenmiş Hacim)"
+
+[indicator.gdp_production_chained]
+label_tr = "GSYH, üretim yöntemi (A10), zincirlenmiş hacim"
+label_en = "gdp production chained"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["gdp_production_chained_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyhuretzinc; bin TL, 2009 fiyatlarıyla. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_production_index_sca_item]
+label_tr = "Kalem"
+label_en = "gdp production index sca item"
+
+[dim.gdp_production_index_sca_item.values]
+gsyih40_ifta_b1gq = "Gayrisafi Yurt İçi Hasıla (Üretim Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_ifta_a = "A - Tarım, Ormancılık ve Balıkçılık (Üretim Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_ifta_bte = "BCDE - Sanayi (Üretim Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_ifta_c = "C - İmalat Sanayi (Üretim Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_ifta_f = "F - İnşaat (Üretim Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_ifta_gti = "GHI - Ticaret, Ulaştırma, Konaklama ve Yiyecek Hizmetleri (Üretim Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_ifta_j = "J - Bilgi ve İletişim (Üretim Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_ifta_k = "K - Finans ve Sigorta Faaliyetleri (Üretim Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_ifta_l = "L - Gayrimenkul Faaliyetleri (Üretim Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_ifta_mn = "MN - Mesleki, İdari ve Destek Hizmet Faaliyetleri (Üretim Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_ifta_otq = "OPQ - Kamu Yönetimi, Eğitim, İnsan Sağlığı ve Sosyal Hizmet Faaliyetleri (Üretim Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_ifta_rtu = "RST - Diğer Hizmet Faaliyetleri (Üretim Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_ifta_b1g = "Sektörler Toplamı (Üretim Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+gsyih40_ifta_d21x31 = "Ürün Üzerindeki Vergiler Eksi Sübvansiyonlar (Üretim Yöntemiyle, Mevsim ve Takvim Etkisinden Arındırılmış Zincirlenmiş Hacim Endeksi)"
+
+[indicator.gdp_production_index_sca]
+label_tr = "GSYH, üretim yöntemi, hacim endeksi, mevsim ve takvim arındırılmış"
+label_en = "gdp production index sca"
+topic = "buyume"
+unit = "index"
+frequency = "quarterly"
+dims = ["gdp_production_index_sca_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_uretmtazincr; 2009=100. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_production_annual_item]
+label_tr = "Kalem"
+label_en = "gdp production annual item"
+
+[dim.gdp_production_annual_item.values]
+gsyhfal_cr_a = "Tarım, Ormancılık ve Balıkçılık (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_b = "Madencilik ve Taşocakçılığı (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_c = "İmalat Sanayi (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_d = "Elektrik, Gaz, Buhar ve İklimlendirme Üretimi ve Dağıtımı (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_e = "Su Temini, Kanalizasyon, Atık Yönetimi ve İyileştirme Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_f = "İnşaat (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_g = "Toptan ve Perakende Ticaret, Motorlu Kara Taşıtlarının ve Motosikletlerin Onarımı (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_h = "Ulaştırma ve Depolama (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_i = "Konaklama ve Yiyecek Hizmeti Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_j = "Bilgi ve İletişim (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_k = "Finans ve Sigorta Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_l = "Gayrimenkul Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_m = "Mesleki, Bilimsel ve Teknik Faaliyetler (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_n = "İdari ve Destek Hizmet Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_o = "Kamu Yönetimi ve Savunma, Zorunlu Sosyal Güvenlik (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_p = "Eğitim (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_q = "İnsan Sağlığı ve Sosyal Hizmet Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_r = "Kültür, Sanat, Eğlence, Dinlence ve Spor (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_s = "Diğer Hizmet Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_t = "Hanehalklarının İşverenler Olarak Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_gskd = "Sektörler Toplamı (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_netvergi = "Vergi-Sübvansiyon (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+gsyhfal_cr_gsyh = "Gayrisafi Yurt İçi Hasıla (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Cari Fiyatlarla, Yıllık)"
+
+[indicator.gdp_production_annual_current]
+label_tr = "GSYH, üretim yöntemi (A21), cari fiyatlarla (yıllık)"
+label_en = "gdp production annual current"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "annual"
+dims = ["gdp_production_annual_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_uretcryil; bin TL. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_production_annual_chained_item]
+label_tr = "Kalem"
+label_en = "gdp production annual chained item"
+
+[dim.gdp_production_annual_chained_item.values]
+gsyhfal_zc_a = "Tarım, Ormancılık ve Balıkçılık (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_b = "Madencilik ve Taşocakçılığı (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_c = "İmalat Sanayi (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_d = "Elektrik, Gaz, Buhar ve İklimlendirme Üretimi ve Dağıtımı (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_e = "Su Temini, Kanalizasyon, Atık Yönetimi ve İyileştirme Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_f = "İnşaat (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_g = "Toptan ve Perakende Ticaret, Motorlu Kara Taşıtlarının ve Motosikletlerin Onarımı (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_h = "Ulaştırma ve Depolama (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_i = "Konaklama ve Yiyecek Hizmeti Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_j = "Bilgi ve İletişim (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_k = "Finans ve Sigorta Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_l = "Gayrimenkul Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_m = "Mesleki, Bilimsel ve Teknik Faaliyetler (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_n = "İdari ve Destek Hizmet Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_o = "Kamu Yönetimi ve Savunma, Zorunlu Sosyal Güvenlik (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_p = "Eğitim (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_q = "İnsan Sağlığı ve Sosyal Hizmet Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_r = "Kültür, Sanat, Eğlence, Dinlence ve Spor (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_s = "Diğer Hizmet Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_t = "Hanehalklarının İşverenler Olarak Faaliyetleri (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_gskd = "Sektörler Toplamı (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_netvergi = "Vergi-Sübvansiyon (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+gsyhfal_zc_gsyh = "Gayrisafi Yurt İçi Hasıla (Üretim Yöntemiyle, İktisadi Faaliyet Kollarına Göre A21 Düzeyinde, Zincirlenmiş Hacim, Yıllık)"
+
+[indicator.gdp_production_annual_chained]
+label_tr = "GSYH, üretim yöntemi (A21), zincirlenmiş hacim (yıllık)"
+label_en = "gdp production annual chained"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "annual"
+dims = ["gdp_production_annual_chained_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_uretzincyil; bin TL, 2009 fiyatlarıyla. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_per_capita_try_item]
+label_tr = "Kalem"
+label_en = "gdp per capita try item"
+
+[dim.gdp_per_capita_try_item.values]
+gsyhkb_cf_tl = "TL Cinsinden Kişi Başı Hasıla, Cari Fiyatlarla (Yıllık)"
+
+[indicator.gdp_per_capita_try]
+label_tr = "Kişi başı GSYH (TL)"
+label_en = "gdp per capita try"
+topic = "buyume"
+unit = "try"
+frequency = "annual"
+dims = ["gdp_per_capita_try_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_uretmkb; cari fiyatlarla. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_per_capita_usd_item]
+label_tr = "Kalem"
+label_en = "gdp per capita usd item"
+
+[dim.gdp_per_capita_usd_item.values]
+gsyhkb_cf_usd = "ABD Doları Cinsinden Kişi Başı Hasıla, Cari Fiyatlarla (Yıllık)"
+
+[indicator.gdp_per_capita_usd]
+label_tr = "Kişi başı GSYH (ABD doları)"
+label_en = "gdp per capita usd"
+topic = "buyume"
+unit = "usd"
+frequency = "annual"
+dims = ["gdp_per_capita_usd_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_uretmkb; cari fiyatlarla. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gnp_1987_current_item]
+label_tr = "Kalem"
+label_en = "gnp 1987 current item"
+
+[dim.gnp_1987_current_item.values]
+ur_g01_c = "(Harcama) Özel Nihai Tüketim (Cari Fiyatlarla) (Arşiv)"
+ur_g02_c = "(Harcama) Gıda-İçki (Cari Fiyatlarla) (Arşiv)"
+ur_g03_c = "(Harcama) Dayanıklı Tüketim Malları (Cari Fiyatlarla) (Arşiv)"
+ur_g04_c = "(Harcama) Yarı Dayanıklı ve Dayanıksız Tük.Malları (Cari Fiyatlarla) (Arşiv)"
+ur_g05_c = "(Harcama) Enerji-Ulaştırma-Haberleşme (Cari Fiyatlarla) (Arşiv)"
+ur_g06_c = "(Harcama) Hizmetler (Cari Fiyatlarla) (Arşiv)"
+ur_g07_c = "(Harcama) Konut Sahipliği (Cari Fiyatlarla) (Arşiv)"
+ur_g08_c = "(Harcama) Devletin Nihai Tüketim Harcamalari (Cari Fiyatlarla) (Arşiv)"
+ur_g09_c = "(Harcama) Maaş-Ücret (Cari Fiyatlarla) (Arşiv)"
+ur_g10_c = "(Harcama) Diğer Cari (Cari Fiyatlarla) (Arşiv)"
+ur_g11_c = "(Harcama) Gayrisafi Sabit Sermaye Oluşumu (Cari Fiyatlarla) (Arşiv)"
+ur_g12_c = "(Harcama) Kamu Sektörü (Cari Fiyatlarla) (Arşiv)"
+ur_g13_c = "(Harcama) Makine Techizat (Kamu Sektörü) (Cari Fiyatlarla) (Arşiv)"
+ur_g14_c = "(Harcama) Bina İnşaat (Kamu Sektörü) (Cari Fiyatlarla) (Arşiv)"
+ur_g15_c = "(Harcama) Bina Dışı İnşaat (Cari Fiyatlarla) (Arşiv)"
+ur_g16_c = "(Harcama) Özel Sektör (Cari Fiyatlarla) (Arşiv)"
+ur_g17_c = "(Harcama) Makine Techizat (Özel Sektör) (Cari Fiyatlarla) (Arşiv)"
+ur_g17a_c = "(Harcama) Bina+Konut İnşaatı (Özel Sektör) (Cari Fiyatlarla) (Arşiv)"
+ur_g18_c = "(Harcama) Bina İnşaat (Özel Sektör) (Cari Fiyatlarla) (Arşiv)"
+ur_g19_c = "(Harcama) Konut İnşaat (Özel Sektör) (Cari Fiyatlarla) (Arşiv)"
+ur_g20_c = "(Harcama) Stok Değişmeleri (Cari Fiyatlarla) (Arşiv)"
+ur_g21_c = "(Harcama) Mal ve Hizmet İhracatı (Cari Fiyatlarla) (Arşiv)"
+ur_g22_c = "(Harcama) (Eksi) Mal ve Hizmet İthalatı (Cari Fiyatlarla) (Arşiv)"
+ur_g23_c = "(Harcama) Gayrisafi Yurt İçi Hasıla (GSYİH) (Cari Fiyatlarla) (Arşiv)"
+ur_g24_c = "(Harcama) İstatistiki hata (Cari Fiyatlarla) (Arşiv)"
+ur_g25_c = "(Harcama) GSYİH (İstatistiki hata çıkarıldıktan sonra) (Cari Fiyatlarla) (Arşiv)"
+ur_g26_c = "(Üretim) Çiftçilik (Cari Fiyatlarla) (Arşiv)"
+ur_g27_c = "(Üretim) Ormancılık (Cari Fiyatlarla) (Arşiv)"
+ur_g28_c = "(Üretim) Balıkçılık (Cari Fiyatlarla) (Arşiv)"
+ur_g29_c = "(Üretim) Tarım Toplam (Cari Fiyatlarla) (Arşiv)"
+ur_g30_c = "(Üretim) Taşocakçılığı (Cari Fiyatlarla) (Arşiv)"
+ur_g31_c = "(Üretim) İmalat (Cari Fiyatlarla) (Arşiv)"
+ur_g32_c = "(Üretim) Elektrik, Gaz, Su (Cari Fiyatlarla) (Arşiv)"
+ur_g33_c = "(Üretim) Sanayi Toplam (Cari Fiyatlarla) (Arşiv)"
+ur_g34_c = "(Üretim) İnşaat Sanayi (Cari Fiyatlarla) (Arşiv)"
+ur_g35_c = "(Üretim) Toptan ve Parekende (Cari Fiyatlarla) (Arşiv)"
+ur_g36_c = "(Üretim) Otel ve Lokanta Hizmetleri (Cari Fiyatlarla) (Arşiv)"
+ur_g37_c = "(Üretim) Ticaret Toplam (Cari Fiyatlarla) (Arşiv)"
+ur_g38_c = "(Üretim) Ulaştırma ve Haberleşme (Cari Fiyatlarla) (Arşiv)"
+ur_g39_c = "(Üretim) Mali Kuruluşlar (Cari Fiyatlarla) (Arşiv)"
+ur_g40_c = "(Üretim) Konut Sahipliği (Cari Fiyatlarla) (Arşiv)"
+ur_g41_c = "(Üretim) Serbest Meslek Hizmetleri (Cari Fiyatlarla) (Arşiv)"
+ur_g42_c = "(Üretim) (Eksi) İzafi Banka Hizmetleri (Cari Fiyatlarla) (Arşiv)"
+ur_g43_c = "(Üretim) Sektörler Toplamı (Cari Fiyatlarla) (Arşiv)"
+ur_g44_c = "(Üretim) Devlet Hizmetleri (Cari Fiyatlarla) (Arşiv)"
+ur_g45_c = "(Üretim) Kar Amacı Olmayan Özel Hizmet Kuruluşları (Cari Fiyatlarla) (Arşiv)"
+ur_g46_c = "(Üretim) Toplam (Cari Fiyatlarla) (Arşiv)"
+ur_g47_c = "(Üretim) İthalat Vergisi (Cari Fiyatlarla) (Arşiv)"
+ur_g48_c = "(Üretim) GSYİH (Alıcı Fiyatlarıyla) (Cari Fiyatlarla) (Arşiv)"
+ur_g49_c = "(Üretim) Dış Alemden Gelen (Cari Fiyatlarla) (Arşiv)"
+ur_g50_c = "(Üretim) (Eksi) Dış Aleme Giden (Cari Fiyatlarla) (Arşiv)"
+ur_g51_c = "(Üretim) Dış Alem Net Faktor Gelirleri (Cari Fiyatlarla) (Arşiv)"
+ur_g52_c = "(Üretim) GSMH (Alıcı Fiyatlarıyla) (Cari Fiyatlarla) (Arşiv)"
+ur_g53_c = "(Gelir) Üretim ve İthalat Vergileri (Net) (Cari Fiyatlarla) (Arşiv)"
+ur_g54_c = "(Gelir) Üretim ve İthalat Vergileri (Cari Fiyatlarla) (Arşiv)"
+ur_g55_c = "(Gelir) (Eksi) Subvansiyonlar (Cari Fiyatlarla) (Arşiv)"
+ur_g56_c = "(Gelir) Sabit Sermaye Tüketimi (Cari Fiyatlarla) (Arşiv)"
+ur_g57_c = "(Gelir) İşgücü Ödemeleri (Cari Fiyatlarla) (Arşiv)"
+ur_g58_c = "(Gelir) Kamu (Cari Fiyatlarla) (Arşiv)"
+ur_g59_c = "(Gelir) Özel (Cari Fiyatlarla) (Arşiv)"
+ur_g60_c = "(Gelir) İşletme Artığı (Cari Fiyatlarla) (Arşiv)"
+ur_g61_c = "(Gelir) Tarım (Ucret Disi) (Cari Fiyatlarla) (Arşiv)"
+ur_g62_c = "(Gelir) Diğer (Cari Fiyatlarla) (Arşiv)"
+
+[indicator.gnp_1987_current_archive]
+label_tr = "GSMH ve GSYH, 1987 bazlı seri, cari (arşiv)"
+label_en = "gnp 1987 current archive"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["gnp_1987_current_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_urgsmhc; bin TL (yeni lira), 1987-2007; harcama, üretim ve gelir kalemleri bir arada. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gnp_1987_constant_item]
+label_tr = "Kalem"
+label_en = "gnp 1987 constant item"
+
+[dim.gnp_1987_constant_item.values]
+ur_g01 = "(Harcama) Özel Nihai Tüketim (Sabit Fiyatlarla) (Arşiv)"
+ur_g02 = "(Harcama) Gıda-İçki (Sabit Fiyatlarla) (Arşiv)"
+ur_g03 = "(Harcama) Dayanıklı Tüketim Malları (Sabit Fiyatlarla) (Arşiv)"
+ur_g04 = "(Harcama) Yarı Dayanıklı ve Dayanıksız Tük.Malları (Sabit Fiyatlarla) (Arşiv)"
+ur_g05 = "(Harcama) Enerji-Ulaştırma-Haberleşme (Sabit Fiyatlarla) (Arşiv)"
+ur_g06 = "(Harcama) Hizmetler (Sabit Fiyatlarla) (Arşiv)"
+ur_g07 = "(Harcama) Konut Sahipliği (Sabit Fiyatlarla) (Arşiv)"
+ur_g08 = "(Harcama) Devletin Nihai Tüketim Harcamalari (Sabit Fiyatlarla) (Arşiv)"
+ur_g09 = "(Harcama) Maaş-Ücret (Sabit Fiyatlarla) (Arşiv)"
+ur_g10 = "(Harcama) Diğer Cari (Sabit Fiyatlarla) (Arşiv)"
+ur_g11 = "(Harcama) Gayrisafi Sabit Sermaye Oluşumu (Sabit Fiyatlarla) (Arşiv)"
+ur_g12 = "(Harcama) Kamu Sektörü (Sabit Fiyatlarla) (Arşiv)"
+ur_g13 = "(Harcama) Makine Techizat (Kamu Sektörü) (Sabit Fiyatlarla) (Arşiv)"
+ur_g14 = "(Harcama) Bina İnşaat (Kamu Sektörü) (Sabit Fiyatlarla) (Arşiv)"
+ur_g15 = "(Harcama) Bina Dışı İnşaat (Sabit Fiyatlarla) (Arşiv)"
+ur_g16 = "(Harcama) Özel Sektör (Sabit Fiyatlarla) (Arşiv)"
+ur_g17 = "(Harcama) Makine Techizat (Özel Sektör) (Sabit Fiyatlarla) (Arşiv)"
+ur_g17a = "(Harcama) Bina+Konut İnşaatı (Özel Sektör) (Sabit Fiyatlarla) (Arşiv)"
+ur_g18 = "(Harcama) Bina İnşaat (Özel Sektör) (Sabit Fiyatlarla) (Arşiv)"
+ur_g19 = "(Harcama) Konut İnşaat (Özel Sektör) (Sabit Fiyatlarla) (Arşiv)"
+ur_g20 = "(Harcama) Stok Değişmeleri (Sabit Fiyatlarla) (Arşiv)"
+ur_g21 = "(Harcama) Mal ve Hizmet İhracatı (Sabit Fiyatlarla) (Arşiv)"
+ur_g22 = "(Harcama) (Eksi) Mal ve Hizmet İthalatı (Sabit Fiyatlarla) (Arşiv)"
+ur_g23 = "(Harcama) Gayrisafi Yurt İçi Hasıla (GSYİH) (Sabit Fiyatlarla) (Arşiv)"
+ur_g24 = "(Harcama) İstatistiki hata (Sabit Fiyatlarla) (Arşiv)"
+ur_g25 = "(Harcama) GSYİH (İstatistiki hata çıkarıldıktan sonra) (Sabit Fiyatlarla) (Arşiv)"
+ur_g26 = "(Üretim) Çiftçilik (Sabit Fiyatlarla) (Arşiv)"
+ur_g27 = "(Üretim) Ormancılık (Sabit Fiyatlarla) (Arşiv)"
+ur_g28 = "(Üretim) Balıkçılık (Sabit Fiyatlarla) (Arşiv)"
+ur_g29 = "(Üretim) Tarım Toplam (Sabit Fiyatlarla) (Arşiv)"
+ur_g30 = "(Üretim) Taşocakçılığı (Sabit Fiyatlarla) (Arşiv)"
+ur_g31 = "(Üretim) İmalat (Sabit Fiyatlarla) (Arşiv)"
+ur_g32 = "(Üretim) Elektrik, Gaz, Su (Sabit Fiyatlarla) (Arşiv)"
+ur_g33 = "(Üretim) Sanayi Toplam (Sabit Fiyatlarla) (Arşiv)"
+ur_g34 = "(Üretim) İnşaat Sanayi (Sabit Fiyatlarla) (Arşiv)"
+ur_g35 = "(Üretim) Toptan ve Parekende (Sabit Fiyatlarla) (Arşiv)"
+ur_g36 = "(Üretim) Otel ve Lokanta Hizmetleri (Sabit Fiyatlarla) (Arşiv)"
+ur_g37 = "(Üretim) Ticaret Toplam (Sabit Fiyatlarla) (Arşiv)"
+ur_g38 = "(Üretim) Ulaştırma ve Haberleşme (Sabit Fiyatlarla) (Arşiv)"
+ur_g39 = "(Üretim) Mali Kuruluşlar (Sabit Fiyatlarla) (Arşiv)"
+ur_g40 = "(Üretim) Konut Sahipliği (Sabit Fiyatlarla) (Arşiv)"
+ur_g41 = "(Üretim) Serbest Meslek Hizmetleri (Sabit Fiyatlarla) (Arşiv)"
+ur_g42 = "(Üretim) (Eksi) İzafi Banka Hizmetleri (Sabit Fiyatlarla) (Arşiv)"
+ur_g43 = "(Üretim) Sektörler Toplamı (Sabit Fiyatlarla) (Arşiv)"
+ur_g44 = "(Üretim) Devlet Hizmetleri (Sabit Fiyatlarla) (Arşiv)"
+ur_g45 = "(Üretim) Kar Amacı Olmayan Özel Hizmet Kuruluşları (Sabit Fiyatlarla) (Arşiv)"
+ur_g46 = "(Üretim) Toplam (Sabit Fiyatlarla) (Arşiv)"
+ur_g47 = "(Üretim) İthalat Vergisi (Sabit Fiyatlarla) (Arşiv)"
+ur_g48 = "(Üretim) GSYİH (Alıcı Fiyatlarıyla) (Sabit Fiyatlarla) (Arşiv)"
+ur_g49 = "(Üretim) Dış Alemden Gelen (Sabit Fiyatlarla) (Arşiv)"
+ur_g50 = "(Üretim) (Eksi) Dış Aleme Giden (Sabit Fiyatlarla) (Arşiv)"
+ur_g51 = "(Üretim) Dış Alem Net Faktor Gelirleri (Sabit Fiyatlarla) (Arşiv)"
+ur_g52 = "(Üretim) GSMH (Alıcı Fiyatlarıyla) (Sabit Fiyatlarla) (Arşiv)"
+
+[indicator.gnp_1987_constant_archive]
+label_tr = "GSMH ve GSYH, 1987 bazlı seri, 1987 sabit fiyatlarıyla (arşiv)"
+label_en = "gnp 1987 constant archive"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["gnp_1987_constant_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_urgsmhq; bin TL, 1987 fiyatlarıyla, 1987-2007. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_1998_exp_current_item]
+label_tr = "Kalem"
+label_en = "gdp 1998 exp current item"
+
+[dim.gdp_1998_exp_current_item.values]
+ur_gg01_c = "1. Gayrisafi Yurt İçi Hasıla (Cari) (Arşiv)"
+ur_gg02_c = "3. Yerleşik Hanehalklarının Tüketimi (Cari) (Arşiv)"
+ur_gg03_c = "5. Yerleşik ve Yerleşik Olmayan Hanehalklarının Yurt İçi Tüketimi (Cari) (Arşiv)"
+ur_gg04_c = "7. (Eksi) Yerlesik Olmayan Hanehalklarinin Yurt İçi Tüketimi (Cari) (Arşiv)"
+ur_gg05_c = "9. Yerleşik Hanehalklarının Yurtdışı Tüketimi (Cari) (Arşiv)"
+ur_gg06_c = "11. Devletin Nihai Tüketim Harcamaları (Cari) (Arşiv)"
+ur_gg07_c = "13. Maaş, Ücret (Cari) (Arşiv)"
+ur_gg08_c = "15. Mal ve Hizmet Alımları (Cari) (Arşiv)"
+ur_gg09_c = "17. Gayrisafi Sabit Sermaye Oluşumu (Cari) (Arşiv)"
+ur_gg10_c = "19. Kamu Sektörü (Cari) (Arşiv)"
+ur_gg11_c = "21. Makine-Techizat (Cari) (Arşiv)"
+ur_gg12_c = "23. İnşaat (Cari) (Arşiv)"
+ur_gg13_c = "25. Özel Sektör (Cari) (Arşiv)"
+ur_gg14_c = "27. Makine-Techizat (Cari) (Arşiv)"
+ur_gg15_c = "29. İnşaat (Cari) (Arşiv)"
+ur_gg16_c = "31. Stok Değişmeleri (Cari) (Arşiv)"
+ur_gg17_c = "33. Mal ve Hizmet İhracatı (Cari) (Arşiv)"
+ur_gg18_c = "35. (Eksi) Mal ve Hizmet İthalatı (Cari) (Arşiv)"
+
+[indicator.gdp_1998_expenditure_current_archive]
+label_tr = "GSYH, 1998 bazlı, harcama yöntemi, cari (arşiv)"
+label_en = "gdp 1998 expenditure current archive"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["gdp_1998_exp_current_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyihhy; bin TL, 1998-2016. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_1998_exp_constant_item]
+label_tr = "Kalem"
+label_en = "gdp 1998 exp constant item"
+
+[dim.gdp_1998_exp_constant_item.values]
+ur_gg01_s = "2. Gayrisafi Yurt İçi Hasıla (Sabit) (Arşiv)"
+ur_gg02_s = "4. Yerleşik Hanehalklarının Tüketimi (Sabit) (Arşiv)"
+ur_gg03_s = "6. Yerleşik ve Yerleşik Olmayan Hanehalklarının Yurt İçi Tüketimi (Sabit) (Arşiv)"
+ur_gg04_s = "8. (Eksi) Yerlesik Olmayan Hanehalklarinin Yurt İçi Tüketimi (Sabit) (Arşiv)"
+ur_gg05_s = "10. Yerleşik Hanehalklarının Yurtdışı Tüketimi (Sabit) (Arşiv)"
+ur_gg06_s = "12. Devletin Nihai Tüketim Harcamalari (Sabit) (Arşiv)"
+ur_gg07_s = "14. Maaş, Ücret (Sabit) (Arşiv)"
+ur_gg08_s = "16. Mal ve Hizmet Alımları (Sabit) (Arşiv)"
+ur_gg09_s = "18. Gayrisafi Sabit Sermaye Oluşumu (Sabit) (Arşiv)"
+ur_gg10_s = "20. Kamu Sektörü (Sabit) (Arşiv)"
+ur_gg11_s = "22. Makine-Techizat (Sabit) (Arşiv)"
+ur_gg12_s = "24. İnşaat (Sabit) (Arşiv)"
+ur_gg13_s = "26. Özel Sektör (Sabit) (Arşiv)"
+ur_gg14_s = "28. Makine-Techizat (Sabit) (Arşiv)"
+ur_gg15_s = "30. İnşaat (Sabit) (Arşiv)"
+ur_gg16_s = "32. Stok Değişmeleri (Sabit) (Arşiv)"
+ur_gg17_s = "34. Mal ve Hizmet İhracatı (Sabit) (Arşiv)"
+ur_gg18_s = "36. (Eksi) Mal ve Hizmet İthalatı (Sabit) (Arşiv)"
+
+[indicator.gdp_1998_expenditure_constant_archive]
+label_tr = "GSYH, 1998 bazlı, harcama yöntemi, sabit (arşiv)"
+label_en = "gdp 1998 expenditure constant archive"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["gdp_1998_exp_constant_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyihhy; bin TL, 1998 fiyatlarıyla, 1998-2016. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_1998_prod_current_item]
+label_tr = "Kalem"
+label_en = "gdp 1998 prod current item"
+
+[dim.gdp_1998_prod_current_item.values]
+ur_bpg01_c = "1. Tarım, Ormancılık Ve Balıkçılık (Cari) (Arşiv)"
+ur_bpg011_c = "3. Sanayi (Cari) (Arşiv)"
+ur_bpg02_c = "5. Madencilik ve Taşocakçılığı (Cari) (Arşiv)"
+ur_bpg03_c = "7. İmalat Sanayi (Cari) (Arşiv)"
+ur_bpg04_c = "9. Elektrik, Gaz, Buhar ve İklimlendirme Üretimi ve Dağıtımı (Cari) (Arşiv)"
+ur_bpg05_c = "11. Su Temini Kanalizasyon, Atik Yönetimi ve İyileştirme Faaliyetleri (Cari) (Arşiv)"
+ur_bpg06_c = "13. İnşaat (Cari) (Arşiv)"
+ur_bpg061_c = "15. Hizmetler (Cari) (Arşiv)"
+ur_bpg07_c = "17. Toptan ve Perakende Ticaret (Cari) (Arşiv)"
+ur_bpg08_c = "19. Ulaştırma ve Depolama (Cari) (Arşiv)"
+ur_bpg09_c = "21. Konaklama ve Yiyecek Hizmeti Faaliyetleri (Cari) (Arşiv)"
+ur_bpg10_c = "23. Bilgi ve iletişim (Cari) (Arşiv)"
+ur_bpg11_c = "25. Finans ve Sigorta Faaliyetleri (Cari) (Arşiv)"
+ur_bpg12_c = "27. Gayrimenkul Faaliyetleri (Cari) (Arşiv)"
+ur_bpg13_c = "29. Mesleki, Bilimsel ve Teknik Faaliyetler (Cari) (Arşiv)"
+ur_bpg14_c = "31. İdari ve Destek Hizmet Faaliyetleri (Cari) (Arşiv)"
+ur_bpg15_c = "33. Kamu Yönetimi ve Savunma Zorunlu Sosyal Güvenlik (Cari) (Arşiv)"
+ur_bpg16_c = "35. Eğitim (Cari) (Arşiv)"
+ur_bpg17_c = "37. İnsan Sağlığı ve Sosyal Hizmet Faaliyetleri (Cari) (Arşiv)"
+ur_bpg18_c = "39. Kültür, Sanat, Eğlence, Dinlence ve Spor (Cari) (Arşiv)"
+ur_bpg19_c = "41. Diğer Hizmet Faaliyetleri (Cari) (Arşiv)"
+ur_bpg20_c = "43. Hanehalklarının İşverenler Olarak Faaliyetleri (Cari) (Arşiv)"
+ur_bpg21_c = "45. Sektörler Toplamı (Cari) (Arşiv)"
+ur_bpg22_c = "47. Dolaylı Ölçülen Mali Aracılık Hizmetleri (Cari) (Arşiv)"
+ur_bpg23_c = "49. Vergi-Subvansiyon (Cari) (Arşiv)"
+ur_bpg24_c = "51. Gayrisafi Yurt İçi Hasıla (Alıcı Fiyatlarıyla) (Cari) (Arşiv)"
+
+[indicator.gdp_1998_production_current_archive]
+label_tr = "GSYH, 1998 bazlı, üretim yöntemi, cari (arşiv)"
+label_en = "gdp 1998 production current archive"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["gdp_1998_prod_current_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyihtf; bin TL, 1998-2016. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+[dim.gdp_1998_prod_constant_item]
+label_tr = "Kalem"
+label_en = "gdp 1998 prod constant item"
+
+[dim.gdp_1998_prod_constant_item.values]
+ur_bpg01_s = "2. Tarım, Ormancılık ve Balıkçılık (Sabit) (Arşiv)"
+ur_bpg011_s = "4. Sanayi (Sabit) (Arşiv)"
+ur_bpg02_s = "6. Madencilik ve Taşocakçılığı (Sabit) (Arşiv)"
+ur_bpg03_s = "8. İmalat Sanayi (Sabit) (Arşiv)"
+ur_bpg04_s = "10. Elektrik, Gaz, Buhar ve İklimlendirme Üretimi ve Dağıtımı (Sabit) (Arşiv)"
+ur_bpg05_s = "12. Su Temini Kanalizasyon, Atık Yönetimi ve İyileştirme Faaliyetleri (Sabit) (Arşiv)"
+ur_bpg06_s = "14. İnşaat (Sabit) (Arşiv)"
+ur_bpg061_s = "16. Hizmetler (Sabit) (Arşiv)"
+ur_bpg07_s = "18. Toptan ve Perakende Ticaret (Sabit) (Arşiv)"
+ur_bpg08_s = "20. Ulaştırma ve Depolama (Sabit) (Arşiv)"
+ur_bpg09_s = "22. Konaklama ve Yiyecek Hizmeti Faaliyetleri (Sabit) (Arşiv)"
+ur_bpg10_s = "24. Bilgi ve iletişim (Sabit) (Arşiv)"
+ur_bpg11_s = "26. Finans ve Sigorta Faaliyetleri (Sabit) (Arşiv)"
+ur_bpg12_s = "28. Gayrimenkul Faaliyetleri (Sabit) (Arşiv)"
+ur_bpg13_s = "30. Mesleki, bilimsel ve teknik faaliyetler (Sabit) (Arşiv)"
+ur_bpg14_s = "32. İdari ve Destek Hizmet Faaliyetleri (Sabit) (Arşiv)"
+ur_bpg15_s = "34. Kamu Yönetimi ve Savunma Zorunlu Sosyal Güvenlik (Sabit) (Arşiv)"
+ur_bpg16_s = "36. Eğitim (Sabit) (Arşiv)"
+ur_bpg17_s = "38. İnsan Sağlığı ve Sosyal Hizmet Faaliyetleri (Sabit) (Arşiv)"
+ur_bpg18_s = "40. Kültür, Sanat, Eğlence, Dinlence ve Spor (Sabit) (Arşiv)"
+ur_bpg19_s = "42. Diğer Hizmet Faaliyetleri (Sabit) (Arşiv)"
+ur_bpg20_s = "44. Hanehalklarının İşverenler Olarak Faaliyetleri (Sabit) (Arşiv)"
+ur_bpg21_s = "46. Sektörler Toplamı (Sabit) (Arşiv)"
+ur_bpg22_s = "48. Dolaylı Ölçülen Mali Aracılık Hizmetleri (Sabit) (Arşiv)"
+ur_bpg23_s = "50. Vergi-Subvansiyon (Sabit) (Arşiv)"
+ur_bpg24_s = "52. Gayrisafi Yurt İçi Hasıla (Alıcı Fiyatlarıyla) (Sabit) (Arşiv)"
+
+[indicator.gdp_1998_production_constant_archive]
+label_tr = "GSYH, 1998 bazlı, üretim yöntemi, sabit (arşiv)"
+label_en = "gdp 1998 production constant archive"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "quarterly"
+dims = ["gdp_1998_prod_constant_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK, EVDS bie_gsyihtf; bin TL, 1998 fiyatlarıyla, 1998-2016. Yalnız Türkiye. Toplam ve ana kalemler alt kalemlerin yanında; kalemler toplanmaz."
+
+# endregion
