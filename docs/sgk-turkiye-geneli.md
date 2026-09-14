@@ -20,9 +20,8 @@ Bölge (İBBS) kırılımlı tablo yok: bunlar Türkiye geneli.
 
 ## İl kırılımı olup okunamayanlar (açık iş)
 
-- **4a iş yeri ve sigortalı, faaliyet grubu (NACE 2 hane) × il, 2012-2025**: iller satır
-  değil sütun (il başına iş yeri + sigortalı sütunu), çıkarıcı bu düzeni tanımıyor. En değerli
-  eksik: il sektör yapısı.
+- ~~4a iş yeri ve sigortalı, faaliyet grubu × il~~: 2008-2025 okundu ve depoda
+  (`scripts/extract_sgk_activity.py`).
 - **4a iş yerleri illere göre, 2013-2018 (tablo 1.10)**: iki yan yana il sütunu (1-41, 42-81);
   çıkarıcı yalnız ilk 4 sütunda plaka arıyor. İş yeri toplamı bu yıllar için büyüklük
   tablosundan zaten depoda.

@@ -1506,3 +1506,117 @@ SGK_ADAPTERS = {
     )
     for ident in INDICATORS
 }
+
+
+ACTIVITY_CELLS = RAW / "sgk" / "activity_cells.parquet"
+
+
+class SgkActivity(SgkProvinces):
+    """4/a workplaces and insured by NACE division and province, read by
+    `scripts/extract_sgk_activity.py`, which has already checked both margins. Here the
+    table's province totals are compared once more with the same totals stored from the
+    other tables; a difference stops the load."""
+
+    measure = ""
+
+    def fetch(self) -> Path:
+        return ACTIVITY_CELLS
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        cells = pl.read_parquet(raw)
+        totals = cells.filter((pl.col("division") == "total") & (pl.col("plate") > 0))
+        other = {
+            "workplaces": ("sgk_workplaces", {}),
+            "insured": (
+                "sgk_compulsory_insured",
+                {"scheme": "4a", "insured_type": "total", "sex": "total"},
+            ),
+        }[self.measure]
+        if "rows" not in SgkProvinces._cache:
+            records, report = classified()
+            SgkProvinces._cache["rows"] = resolve(records, report)
+        stored: dict[tuple, float] = defaultdict(float)
+        for r in SgkProvinces._cache["rows"]:
+            if r["indicator_id"] != other[0]:
+                continue
+            if all(
+                r["dims"].get(k) == v or (v == "total" and k not in r["dims"])
+                for k, v in other[1].items()
+            ):
+                stored[(r["area_id"], r["year"])] += r["value"]
+        differ = []
+        for row in totals.filter(pl.col("measure") == self.measure).iter_rows(
+            named=True
+        ):
+            key = (f"TR-{row['plate']:02d}", row["year"])
+            if key in stored and abs(stored[key] - row["value"]) > 0.5:
+                differ.append((key, row["value"], stored[key]))
+        # Two tables of the same yearbook disagree by a few workplaces in some provinces
+        # (2023: Ankara 162.403 / 162.455). Small differences are reported; a large one
+        # would mean a misread column and stops the load.
+        large = [d for d in differ if abs(d[1] - d[2]) > max(5.0, 0.005 * d[2])]
+        if large:
+            raise ValueError(
+                f"{self.indicator_id}: il toplamı diğer tablolarla tutmuyor {large[:5]}"
+            )
+        if differ:
+            years = sorted({d[0][1] for d in differ})
+            worst = max(differ, key=lambda d: abs(d[1] - d[2]) / max(d[2], 1))
+            print(
+                f"{self.indicator_id}: {len(differ)} il-yıl küçük fark (yıllar {years}), en büyük {worst}"
+            )
+        rows = cells.filter(
+            (pl.col("measure") == self.measure)
+            & (pl.col("division") != "total")
+            & (pl.col("plate") > 0)
+        )
+        frame = rows.select(
+            pl.format("TR-{}", pl.col("plate").cast(pl.String).str.zfill(2)).alias(
+                "area_id"
+            ),
+            pl.date(pl.col("year"), 1, 1).alias("period_start"),
+            pl.format("nace_division={}", pl.col("division")).alias("dims"),
+            pl.col("value"),
+        )
+        declared = load().dimensions["nace_division"].values_tr
+        unknown = set(rows["division"].unique()) - set(declared)
+        if unknown:
+            raise KeyError("nace_division sözlükte yok: " + str(sorted(unknown)))
+        if frame.select("area_id", "period_start", "dims").is_duplicated().any():
+            raise ValueError(self.indicator_id + ": ayni il-yil-kirilim iki kez")
+        indicator = get(self.indicator_id)
+        return frame.with_columns(
+            pl.lit(self.indicator_id).alias("indicator_id"),
+            pl.lit("province").alias("area_level"),
+            pl.lit(indicator.frequency).alias("frequency"),
+            pl.lit(indicator.unit.unit_id).alias("unit"),
+            pl.lit("measured").alias("quality_flag"),
+            pl.lit(self.vintage).alias("vintage"),
+            pl.lit(self.source_id).alias("source_id"),
+            pl.lit(self.retrieved_at).alias("retrieved_at"),
+        ).select(
+            "indicator_id",
+            "area_id",
+            "area_level",
+            "period_start",
+            "frequency",
+            "dims",
+            "value",
+            "unit",
+            "quality_flag",
+            "vintage",
+            "source_id",
+            "retrieved_at",
+        )
+
+
+SGK_ADAPTERS["sgk_workplaces_by_activity"] = type(
+    "SgkWorkplacesByActivity",
+    (SgkActivity,),
+    {"indicator_id": "sgk_workplaces_by_activity", "measure": "workplaces"},
+)
+SGK_ADAPTERS["sgk_compulsory_insured_by_activity"] = type(
+    "SgkCompulsoryInsuredByActivity",
+    (SgkActivity,),
+    {"indicator_id": "sgk_compulsory_insured_by_activity", "measure": "insured"},
+)

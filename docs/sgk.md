@@ -66,6 +66,15 @@ cinsiyet" der, içeriği il × cinsiyet.
 2010- 5510 kapsamında. Kamu/özel, daimi/mevsimlik/geçici 2010-. **Mevsimlik 2015'te biter,
 geçici 2016'da başlar**; aynı kavram değil.
 
+**Faaliyet bölümü × il (`sgk_workplaces_by_activity`, `sgk_compulsory_insured_by_activity`)**,
+2008-2025, `scripts/extract_sgk_activity.py` (iller sütunda olduğu için ayrı okuyucu). Her tabloda
+bölüm toplamları ve il toplamları kaynağın kenar toplamlarıyla birebir; il toplamları öteki
+tablolarla sigortalıda birebir, iş yerinde 2023'te 31 ilde küçük fark (en büyük Eskişehir
+23.274 / 23.161). 2007 tablosu eski 43 kodlu gruplamada, alınmadı. 2017'den Ek-9 ev
+hizmetleri ayrı satır. **2025 NACE Rev.2.1**: 45 kodu yok, bazı bölüm adları (60, 63)
+değişti; 2025'i bölüm bazında önceki yıllarla karşılaştırmayın. 2008-2009 sayfa geçişlerinde
+kod ve ad sütunları tekrarlanır.
+
 **Büyüklük sınıfları**: 13 sınıf 2010-2025 aynı (1, 2-3, …, 1000+).
 
 **Ortalama günlük kazanç**: cari TL, prime esas (taban-tavan arası), toplanamaz.
