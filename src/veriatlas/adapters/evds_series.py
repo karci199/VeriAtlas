@@ -41,12 +41,17 @@ def rows_of(payload: dict):
             if cell in (None, ""):
                 continue
             label = item["Tarih"]
-            if "-Q" in label:
+            if label.count("-") == 2:
+                day, month, year = label.split("-")
+                date = dt.date(int(year), int(month), int(day))
+            elif "-Q" in label:
                 year, quarter = label.split("-Q")
                 date = dt.date(int(year), 3 * int(quarter) - 2, 1)
-            else:
+            elif "-" in label:
                 year, month = label.split("-")
                 date = dt.date(int(year), int(month), 1)
+            else:
+                date = dt.date(int(label), 1, 1)
             yield series, date, float(cell)
 
 
@@ -69,16 +74,35 @@ INDEX_TREES = {
     "istanbul_cpi_ito": ("bie_itouge2023", "istanbul_cpi_item"),
     # Not a price index, but the same shape: one Türkiye series per vehicle type (OSD).
     "vehicle_production": ("bie_uroto", "vehicle_type_produced"),
+    # Real sector, credit and rates. A third element keeps only the series whose code
+    # matches it: where one group mixes units (company counts and capital in lira; survey
+    # shares and the count of firms answering), each unit becomes its own indicator.
+    "companies_opened_closed": ("bie_ackap2", "company_count_item", r"\.A$"),
+    "companies_opened_capital": ("bie_ackap2", "company_capital_item", r"\.S$"),
+    "industrial_production_index": ("bie_tsanay2021", "industry_item"),
+    "capacity_utilisation": ("bie_kko2", "capacity_item"),
+    "real_sector_confidence": ("bie_rkgey2", "real_sector_confidence_item"),
+    "economic_tendency_survey": ("bie_iyaw2", "tendency_item", r"\.[A-F]$"),
+    "bank_credit_volume": ("bie_krehacbs", "credit_volume_item"),
+    "loan_interest_rates": ("bie_kt210a", "loan_rate_item"),
+    "loan_profit_share_rates": ("bie_kt210aks", "profit_share_rate_item"),
+    "deposit_interest_rates": ("bie_mt210ags", "deposit_rate_item"),
+    "loan_interest_rates_weekly": ("bie_kt100h", "loan_rate_weekly_item"),
+    "real_effective_exchange_rate_cpi": ("bie_rktufey", "reer_cpi_item"),
+    "real_effective_exchange_rate_ppi": ("bie_rkufey", "reer_ppi_item"),
+    "trade_trucks": ("bie_undnakliyeroro", "trade_truck_item"),
 }
 
 
 def index_tree(indicator_id: str) -> list[dict]:
-    group, dim = INDEX_TREES[indicator_id]
+    group, dim, *keep = INDEX_TREES[indicator_id]
     payload = json.loads((DOWNLOADS / f"{group}.json").read_text(encoding="utf-8"))
     declared = load().dimensions[dim].values_tr
     seen: set[str] = set()
     records = []
     for series, date, value in rows_of(payload):
+        if keep and not re.search(keep[0], series["SERIE_CODE"]):
+            continue
         key = item_value(series["SERIE_CODE"])
         if key not in declared:
             raise KeyError(
