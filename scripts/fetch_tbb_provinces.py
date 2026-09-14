@@ -84,8 +84,14 @@ def main() -> None:
                     "paramParametreler": measure_keys,
                 }
             )
-            values.extend(part)
-            print(year, len(part))
+            # A year without data (2026, listed by blgYillarAll) answers with a few
+            # hundred rows of *other* years rather than nothing. Kept, they were 447
+            # exact duplicates of rows already fetched. Only rows of the year asked for.
+            own = [row for row in part if row["YIL"] == year]
+            if len({row["KEY"] for row in own}) != len(own):
+                raise ValueError(f"{year}: cevapta ayni anahtar iki kez")
+            values.extend(own)
+            print(year, len(own), "baska yil (atildi):", len(part) - len(own))
         (out / "values.json").write_text(
             json.dumps(values, ensure_ascii=False), "utf-8"
         )
