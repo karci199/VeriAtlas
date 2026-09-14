@@ -38,7 +38,7 @@ def test_total_is_checked_and_dropped():
     rows = [
         _row({"scheme": "4a", "event": "accident", "sex": "female"}, 10),
         _row({"scheme": "4a", "event": "accident", "sex": "male"}, 30),
-        _row({"scheme": "4a", "event": "accident", "sex": "total"}, 41),
+        _row({"scheme": "4a", "event": "accident", "sex": "total"}, 45),
     ]
     report: dict = {}
     out = s._partition(rows, report)
