@@ -54,6 +54,12 @@ BATCH = 20
 #: Rows (periods) EVDS returns per request at most.
 ROW_LIMIT = 1000
 
+#: EVDS_AYLIK=1: ask EVDS for monthly averages of daily and business-day series. Twenty
+#: times fewer rows, and the only way the market groups finish (one daily group ran 2.5 h).
+#: Saved as `<group>-aylik.json` so a daily download is never overwritten by an average.
+MONTHLY = bool(os.environ.get("EVDS_AYLIK"))
+MONTHLY_QUERY = "&frequency=5&aggregationTypes=avg"
+
 
 def main() -> None:
     if not settings.evds_api_key:
@@ -75,7 +81,8 @@ def main() -> None:
 
 def fetch_group(client, out, group: str, start: int) -> None:
     # EVDS_ATLA=1: leave groups already on disk alone (the whole-catalogue pull).
-    if os.environ.get("EVDS_ATLA") and (out / f"{group}.json").exists():
+    target = out / (f"{group}-aylik.json" if MONTHLY else f"{group}.json")
+    if os.environ.get("EVDS_ATLA") and target.exists():
         return
     series = client.get(f"/serieList/type=json&code={group}")
     series.raise_for_status()
@@ -89,7 +96,7 @@ def fetch_group(client, out, group: str, start: int) -> None:
         chunk, first, last = chunks.pop(0)
         r = client.get(
             f"/series={'-'.join(chunk)}&startDate=01-01-{first}"
-            f"&endDate=31-12-{last}&type=json"
+            f"&endDate=31-12-{last}&type=json{MONTHLY_QUERY if MONTHLY else ''}"
         )
         if r.status_code == 400:
             # One series EVDS lists but will not serve fails the whole chunk:
@@ -120,9 +127,7 @@ def fetch_group(client, out, group: str, start: int) -> None:
         "refused": refused,
         "items": items,
     }
-    (out / f"{group}.json").write_text(
-        json.dumps(payload, ensure_ascii=False), encoding="utf-8"
-    )
+    target.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     print(group, len(codes), "seri", len(items), "donem", "reddedilen:", refused)
 
 
