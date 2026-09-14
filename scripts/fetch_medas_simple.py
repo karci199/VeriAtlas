@@ -545,7 +545,11 @@ def build_query(page, topic: str, hint: str, breakdowns) -> int:
             break
         tick(page, pending[0], "")
 
-    add_indicators(page)
+    if not add_indicators(page):
+        # Carrying on read the indicators of the *previous* state and downloaded the
+        # measure's plain total under the breakdown's file name (ceza infaz, 2026-09-14).
+        print("   Ekle tiklanamadi: sorgu kurulmadi")
+        return 0
 
     # Waited for, not read straight after the click: the count is written by the server
     # round trip the click starts, so reading it immediately gives the count from before.
@@ -809,8 +813,29 @@ def fetch(
         csv_button.click()
     download.value.save_as(str(target))
 
+    # A breakdown MEDAS will not give (education, marital status of prisoners) can still
+    # produce a report: the plain total, saved under the breakdown's name and loaded as if
+    # it were one of its values. Six files came back like that before this check.
+    if breakdowns and only_totals(target):
+        quarantine = RAW / "medas" / "karantina"
+        quarantine.mkdir(parents=True, exist_ok=True)
+        target.replace(quarantine / target.name)
+        print("   kirilim tutmadi (yalniz toplam), karantinaya:", target.name)
+        return False
+
     print("  ", target.name, target.stat().st_size, "bayt")
     return True
+
+
+def only_totals(path) -> bool:
+    """True when every labelled data row of an export is the measure-wide total."""
+    labels = set()
+    for line in path.read_text(encoding="utf-8").splitlines():
+        cells = line.split("|")
+        year = cells[2].strip() if len(cells) > 3 else ""
+        if len(year) == 4 and year.isdigit() and cells[1].strip():
+            labels.add(cells[1].strip())
+    return labels <= {"Ölçüm bazında"}
 
 
 def main() -> None:
