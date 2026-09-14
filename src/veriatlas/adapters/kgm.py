@@ -49,6 +49,7 @@ PROVINCE_ALIASES = {
     "izmit": "kocaeli",
     "adapazari": "sakarya",
     "icel": "mersin",
+    "afyon": "afyonkarahisar",
 }
 
 SURFACES = (
@@ -87,6 +88,14 @@ def province_id(name: str) -> str:
     # `KOCAELİ (İZMİT)`: the centre town in brackets is not part of the province name.
     key = fold(re.sub(r"\(.*?\)", "", name))
     key = PROVINCE_ALIASES.get(key, key)
+    abbreviated = re.fullmatch(r"\s*([A-ZÇĞİÖŞÜ])\s*\.\s*(\S+)\s*", name)
+    if key not in provinces() and abbreviated:
+        # `D.BAKIR`, `K.MARAŞ`: first letter, dot, the end of the name. Accepted only when
+        # exactly one province fits.
+        head, tail = fold(abbreviated.group(1)), fold(abbreviated.group(2))
+        fits = [k for k in provinces() if k.startswith(head) and k.endswith(tail)]
+        if len(fits) == 1:
+            key = fits[0]
     if key not in provinces():
         raise KeyError("tanınmayan il adı: " + name)
     return provinces()[key]
@@ -239,7 +248,59 @@ class KgmDistrictDistance(Kgm):
         )
 
 
+def distance_sheet(rows: list[tuple], origin: str) -> list[dict]:
+    """81 × 80 province distances from one cetvel, header row found by `İL ADI`."""
+    header_at = next(
+        i
+        for i, row in enumerate(rows)
+        if any(str(c).strip() == "İL ADI" for c in row if c)
+    )
+    header = rows[header_at]
+    name_col = [str(c).strip() for c in header].index("İL ADI")
+    # The 2010-2016 sheets repeat the plate and name columns at the right edge.
+    columns = {
+        j: province_id(str(c))
+        for j, c in enumerate(header)
+        if j > name_col
+        and c
+        and str(c).strip()
+        and str(c).strip() not in ("İL ADI", "İL NO")
+    }
+    records = []
+    seen = set()
+    for row in rows[header_at + 1 :]:
+        if len(row) <= name_col or not row[name_col] or not str(row[name_col]).strip():
+            continue
+        source = province_id(str(row[name_col]))
+        plate = str(row[name_col - 1]).strip().split(".")[0].zfill(2)
+        if source != "TR-" + plate:
+            raise ValueError(
+                f"{origin}: plaka ile ad uyuşmuyor: {plate} {row[name_col]}"
+            )
+        seen.add(source)
+        for j, target in columns.items():
+            if target == source:
+                continue
+            value = row[j] if j < len(row) else None
+            if value in (None, ""):
+                raise ValueError(f"{origin}: il mesafesi boş: {source} -> {target}")
+            records.append({"area_id": source, "to": target, "value": float(value)})
+    if len(seen) != 81 or len(set(columns.values())) != 81 or len(records) != 81 * 80:
+        raise ValueError(
+            f"{origin}: il mesafesi eksik: {len(seen)} satır, {len(columns)} sütun"
+        )
+    return records
+
+
 class KgmProvinceDistance(Kgm):
+    """Road distance between provinces, from the current cetvel and archived copies.
+
+    The current `ilmesafe.xlsx` is dated March 2026; the Wayback Machine kept seventeen
+    versions of the older `ilmesafe.xls` (2010-2018). Each copy is stored under the year
+    it was fetched in, the newest copy of a year winning. New roads shorten routes, so the
+    same pair changes over time (Adana-Adıyaman 329 km in 2010, 337 km in 2026).
+    """
+
     indicator_id = "road_distance_between_provinces"
     vintage = "2026-03"
 
@@ -247,39 +308,28 @@ class KgmProvinceDistance(Kgm):
         return PROVINCE_SHEET
 
     def parse(self, raw: Path) -> pl.DataFrame:
-        sheet = openpyxl.load_workbook(raw, read_only=True).worksheets[0]
-        rows = [r for r in sheet.iter_rows(values_only=True)]
-        header = rows[1]
-        if header[0] != "İL PLAKA NO":
-            raise ValueError("il mesafesi başlığı beklenmedik: " + repr(header[:3]))
-        columns = [province_id(name) for name in header[2:] if name]
+        import xlrd
+
+        sheets: dict[int, tuple[str, list[tuple]]] = {}
+        for path in sorted(ARCHIVE.glob("ilmesafe_*.xls")):
+            book = xlrd.open_workbook(path).sheet_by_index(0)
+            rows = [tuple(book.row_values(i)) for i in range(book.nrows)]
+            sheets[int(path.name.split("_")[1][:4])] = (path.name, rows)
+        current = openpyxl.load_workbook(raw, read_only=True).worksheets[0]
+        sheets[2026] = (raw.name, list(current.iter_rows(values_only=True)))
+
         records = []
-        seen = set()
-        for row in rows[2:]:
-            if not row[1]:
-                continue
-            origin = province_id(row[1])
-            if origin != "TR-" + str(row[0]).zfill(2):
-                raise ValueError(f"plaka ile ad uyuşmuyor: {row[0]} {row[1]}")
-            seen.add(origin)
-            for target, value in zip(columns, row[2 : 2 + len(columns)], strict=True):
-                if target == origin:
-                    continue
-                if value is None:
-                    raise ValueError(f"il mesafesi boş: {origin} -> {target}")
+        for year, (name, rows) in sorted(sheets.items()):
+            for item in distance_sheet(rows, name):
                 records.append(
                     {
-                        "area_id": origin,
+                        "area_id": item["area_id"],
                         "area_level": "province",
-                        "period_start": dt.date(2026, 1, 1),
-                        "dims": "to_area=" + target,
-                        "value": float(value),
+                        "period_start": dt.date(year, 1, 1),
+                        "dims": "to_area=" + item["to"],
+                        "value": item["value"],
                     }
                 )
-        if len(seen) != 81 or len(columns) != 81 or len(records) != 81 * 80:
-            raise ValueError(
-                f"il mesafesi eksik: {len(seen)} satır, {len(columns)} sütun"
-            )
         return fact(records, self.indicator_id, "km", self.vintage, self.retrieved_at)
 
 
@@ -298,7 +348,9 @@ PROVINCE_ROW = re.compile(
 def province_lengths(path: Path) -> dict[str, list[float]]:
     out: dict[str, list[float]] = {}
     for line in pdf_lines(path):
-        # The 2010 inventory's font maps Ş to the digit 6 (`ESKİ6EHİR`, `6ANLIURFA`).
+        # The 2010 inventories lose Ş: one prints the digit 6 (`ESKİ6EHİR`), the other an
+        # unmapped glyph (`ESKİ(cid:3)EHİR`).
+        line = line.replace("(cid:3)", "Ş")
         line = re.sub(r"(?<=[A-ZÇĞİÖÜ])6|6(?=[A-ZÇĞİÖÜ])", "Ş", line)
         match = PROVINCE_ROW.match(line)
         if not match:
@@ -516,6 +568,105 @@ class KgmRoadLengthArchive(Kgm):
         )
 
 
+class KgmRoadClassArchive(Kgm):
+    """State and provincial roads apart, by province and surface, from archived copies.
+
+    `IllereGoreDevletYollari.pdf` and `IllereGoreIlYollari.pdf` were archived more often than
+    the combined table. A year is kept only when both are there; where one year has two
+    copies, the newest that passes the row checks is used (the first 2015 provincial copy
+    does not add up, its replacement does). The current year comes from the live files.
+    """
+
+    indicator_id = "road_length_by_surface"
+    vintage = "2026-02"
+    divided = False
+
+    def fetch(self) -> Path:
+        return ARCHIVE
+
+    def tables(self, raw: Path, stem: str) -> dict[int, dict[str, list[float]]]:
+        found: dict[int, dict[str, list[float]]] = {}
+        for path in sorted(raw.glob(stem + "_*.pdf"), reverse=True):
+            dates = {
+                int(m.group(1)) - 1
+                for m in (
+                    re.search(r"\(01\.01\.(\d{4})\)", line) for line in pdf_lines(path)
+                )
+                if m
+            }
+            if len(dates) != 1:
+                raise ValueError(f"{path.name}: tarih okunamadı")
+            year = dates.pop()
+            if year in found:
+                continue
+            try:
+                found[year] = province_lengths(path)
+            except ValueError:
+                continue
+        return found
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        state = self.tables(raw, "IllereGoreDevletYollari")
+        provincial = self.tables(raw, "IllereGoreIlYollari")
+        state[2025] = province_lengths(INVENTORY / "IllereGoreDevletYollari.pdf")
+        provincial[2025] = province_lengths(INVENTORY / "IllereGoreIlYollari.pdf")
+        combined = KgmRoadLengthArchive().files(ARCHIVE)
+        records = []
+        for year in sorted(set(state) & set(provincial)):
+            if year in combined:
+                whole = province_lengths(combined[year])
+                for pid in whole:
+                    if (
+                        abs(
+                            state[year][pid][7]
+                            + provincial[year][pid][7]
+                            - whole[pid][7]
+                        )
+                        > 1
+                    ):
+                        raise ValueError(
+                            f"{year} {pid}: devlet + il birleşik tabloyu tutmuyor"
+                        )
+            for road_class, table in (
+                ("state", state[year]),
+                ("provincial", provincial[year]),
+            ):
+                for pid, values in table.items():
+                    if self.divided:
+                        items = [("road_class=" + road_class, values[8])]
+                    else:
+                        parts = (
+                            values[0],
+                            values[1],
+                            values[3],
+                            values[4],
+                            values[5],
+                            values[6],
+                        )
+                        items = [
+                            (f"road_class={road_class};surface={surface}", value)
+                            for surface, value in zip(SURFACES, parts, strict=True)
+                        ]
+                    for dims, value in items:
+                        records.append(
+                            {
+                                "area_id": pid,
+                                "area_level": "province",
+                                "period_start": dt.date(year, 1, 1),
+                                "dims": dims,
+                                "value": value,
+                            }
+                        )
+        return fact(
+            records, self.indicator_id, "road_km", self.vintage, self.retrieved_at
+        )
+
+
+class KgmDividedRoadClassArchive(KgmRoadClassArchive):
+    indicator_id = "divided_road_length"
+    divided = True
+
+
 class KgmDividedRoadArchive(KgmRoadLengthArchive):
     indicator_id = "divided_road_length_province"
     column = 8
@@ -611,6 +762,123 @@ class KgmMotorway(Kgm):
         return fact(
             records, self.indicator_id, "road_km", self.vintage, self.retrieved_at
         )
+
+
+TRAFFIC = PDF / "Trafik_TrafikveUlasimBilgileri"
+
+#: `01 ADANA 1.902.633 1.349.978 ...` — plate, name, then either six numbers (vehicle-,
+#: passenger-, tonne-km on motorway and state road) or twelve (motorway, state, provincial,
+#: total for each), with `-` or `‐` where the province has no motorway.
+TRAFFIC_ROW = re.compile(
+    r"^(?P<plate>\d{2}) (?P<name>\D+?) (?P<nums>(?:[\d.]+|[-‐])(?: (?:[\d.]+|[-‐]))+)$"
+)
+MEASURES = ("vehicle_km", "passenger_km", "tonne_km")
+
+
+@cache
+def traffic_pages(path: Path) -> dict[str, list[float]]:
+    """Province -> the numbers of its row in the `İLLERE GÖRE ... TAŞIT-KM` table."""
+    out: dict[str, list[float]] = {}
+    with pdfplumber.open(path) as document:
+        for page in document.pages[-45:]:
+            text = page.extract_text() or ""
+            head = fold(" ".join(text.splitlines()[:3]))
+            if not ("illeregore" in head and "tasitkm" in head):
+                continue
+            for line in text.splitlines():
+                match = TRAFFIC_ROW.match(line.strip())
+                if not match:
+                    continue
+                pid = province_id(match["name"])
+                if pid != "TR-" + match["plate"]:
+                    raise ValueError(f"{path.name}: plaka ile ad uyuşmuyor: {line}")
+                out[pid] = [
+                    0.0 if v in "-‐" else number(v) for v in match["nums"].split()
+                ]
+    return out
+
+
+class KgmVehicleKm(Kgm):
+    """Vehicle-, passenger- and tonne-km on KGM roads by province, 2012-2025 (thousands).
+
+    From the yearly `Trafik ve Ulaşım Bilgileri`. The main volume prints motorway and state
+    road; the provincial road volumes (2012, 2016, 2019, 2023) add provincial roads, and the
+    2012 main volume carries all three. Where two volumes print the same cell they must agree.
+    """
+
+    indicator_id = "kgm_vehicle_km"
+    vintage = "2026-05"
+    measure = 0
+
+    def fetch(self) -> Path:
+        return TRAFFIC
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        cells: dict[tuple[int, str, str], float] = {}
+        for path in sorted(raw.glob("*.pdf")):
+            year = 2000 + int(path.name[:2])
+            if year < 2012:
+                continue
+            rows = traffic_pages(path)
+            if not rows:
+                raise ValueError(f"{path.name}: il taşıt-km tablosu bulunamadı")
+            if len(rows) != 81:
+                raise ValueError(f"{path.name}: {len(rows)} il okundu")
+            for pid, values in rows.items():
+                # The 2016 provincial volume leaves the motorway cell empty instead of `-`
+                # for provinces without one: three numbers short, one per measure.
+                if len(values) in (3, 9):
+                    step = len(values) // 3
+                    values = [
+                        v
+                        for m in range(3)
+                        for v in [0.0, *values[m * step : (m + 1) * step]]
+                    ]
+                if len(values) == 6:
+                    classes = {"motorway": values[0::2], "state": values[1::2]}
+                elif len(values) == 12:
+                    classes = {
+                        "motorway": values[0::4],
+                        "state": values[1::4],
+                        "provincial": values[2::4],
+                    }
+                    for m in range(3):
+                        if abs(sum(values[4 * m : 4 * m + 3]) - values[4 * m + 3]) > 2:
+                            raise ValueError(f"{path.name} {pid}: toplam tutmuyor")
+                else:
+                    raise ValueError(f"{path.name} {pid}: {len(values)} sayı")
+                for road_class, triple in classes.items():
+                    key = (year, pid, road_class)
+                    value = triple[self.measure]
+                    if key in cells and abs(cells[key] - value) > 1:
+                        raise ValueError(
+                            f"{path.name} {key}: iki ciltte farklı {cells[key]} / {value}"
+                        )
+                    cells[key] = value
+        records = [
+            {
+                "area_id": pid,
+                "area_level": "province",
+                "period_start": dt.date(year, 1, 1),
+                "dims": "road_class=" + road_class,
+                "value": value,
+            }
+            for (year, pid, road_class), value in cells.items()
+        ]
+        unit = ("thousand_vehicle_km", "thousand_passenger_km", "thousand_tonne_km")[
+            self.measure
+        ]
+        return fact(records, self.indicator_id, unit, self.vintage, self.retrieved_at)
+
+
+class KgmPassengerKm(KgmVehicleKm):
+    indicator_id = "kgm_passenger_km"
+    measure = 1
+
+
+class KgmTonneKm(KgmVehicleKm):
+    indicator_id = "kgm_tonne_km"
+    measure = 2
 
 
 # endregion
@@ -711,12 +979,15 @@ class KgmBridgeLength(KgmBridges):
 KGM_ADAPTERS = {
     "kgm_province_distance": KgmProvinceDistance,
     "kgm_district_distance": KgmDistrictDistance,
-    "kgm_road_length": KgmRoadLength,
-    "kgm_divided_road": KgmDividedRoad,
+    "kgm_road_length": KgmRoadClassArchive,
+    "kgm_divided_road": KgmDividedRoadClassArchive,
     "kgm_road_length_history": KgmRoadLengthHistory,
     "kgm_road_length_archive": KgmRoadLengthArchive,
     "kgm_divided_road_archive": KgmDividedRoadArchive,
     "kgm_motorway": KgmMotorway,
     "kgm_bridges": KgmBridges,
+    "kgm_vehicle_km": KgmVehicleKm,
+    "kgm_passenger_km": KgmPassengerKm,
+    "kgm_tonne_km": KgmTonneKm,
     "kgm_bridge_length": KgmBridgeLength,
 }

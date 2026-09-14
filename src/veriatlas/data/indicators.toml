@@ -24544,6 +24544,7 @@ label_tr = "Yol sınıfı"
 label_en = "Road class"
 
 [dim.road_class.values]
+motorway = "Otoyol"
 state = "Devlet yolu"
 provincial = "İl yolu"
 
@@ -24577,7 +24578,7 @@ frequency = "annual"
 dims = ["to_area"]
 views = ["table", "map"]
 summary = true
-definition_tr = "İl merkezleri arası karayolu uzunluğu, KGM uzaklık cetveli (Mart 2026). Tek yıl; kaynak geçmiş yılları yayımlamıyor."
+definition_tr = "İl merkezleri arası karayolu uzunluğu, KGM uzaklık cetveli. 2026 güncel cetvel (Mart 2026); 2010-2018 Wayback Machine kopyaları (cetvelin indirildiği yıl). Yeni yollar açıldıkça mesafe değişir."
 
 [indicator.road_distance_between_districts]
 label_tr = "İlçeler arası karayolu mesafesi"
@@ -24598,7 +24599,7 @@ unit = "road_km"
 frequency = "annual"
 dims = ["road_class", "surface"]
 views = ["table", "map", "bar"]
-definition_tr = "KGM sorumluluğundaki yollar, 01.01.2026 durumu (2025 yıl sonu). Otoyollar ve belediye yolları dahil değil."
+definition_tr = "KGM sorumluluğundaki devlet ve il yolları, yıl sonu. 2025 güncel dosya; 2009, 2011, 2014, 2016, 2017, 2020, 2021, 2022, 2024 Wayback Machine kopyaları. Otoyollar ve belediye yolları dahil değil."
 
 [indicator.divided_road_length]
 label_tr = "Bölünmüş yol uzunluğu"
@@ -24608,7 +24609,7 @@ unit = "road_km"
 frequency = "annual"
 dims = ["road_class"]
 views = ["table", "map", "bar"]
-definition_tr = "Devlet ve il yollarının bölünmüş kısmı, 01.01.2026 durumu."
+definition_tr = "Devlet ve il yollarının bölünmüş kısmı, yıl sonu; yıllar kaplama türüne göre uzunlukla aynı."
 
 [indicator.road_length_history]
 label_tr = "Devlet ve il yolu uzunluğu, 1967'den"
@@ -24963,5 +24964,57 @@ frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "Devlet ve il yollarının bölünmüş kısmı, yıl sonu. Yıllar: 2009, 2011, 2014, 2016, 2017, 2020, 2021, 2022, 2025 (Wayback Machine kopyaları)."
+
+# endregion
+
+# region KGM vehicle-, passenger- and tonne-km by province (adapters/kgm.py), 2026-09-14.
+
+[unit.thousand_vehicle_km]
+label_tr = "bin taşıt-km"
+label_en = "thousand vehicle-km"
+decimals = 0
+additive = true
+
+[unit.thousand_passenger_km]
+label_tr = "bin yolcu-km"
+label_en = "thousand passenger-km"
+decimals = 0
+additive = true
+
+[unit.thousand_tonne_km]
+label_tr = "bin ton-km"
+label_en = "thousand tonne-km"
+decimals = 0
+additive = true
+
+[indicator.kgm_vehicle_km]
+label_tr = "KGM yollarında taşıt-km, il"
+label_en = "Vehicle-km on KGM roads by province"
+topic = "karayolu"
+unit = "thousand_vehicle_km"
+frequency = "annual"
+dims = ["road_class"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Trafik ve Ulaşım Bilgileri, 2012-2025. Otoyol ve devlet yolu her yıl; il yolu yalnız il yolları ciltlerinin çıktığı yıllarda (2012, 2016, 2019, 2023). Belediye yolları dahil değil."
+
+[indicator.kgm_passenger_km]
+label_tr = "KGM yollarında yolcu-km, il"
+label_en = "Passenger-km on KGM roads by province"
+topic = "karayolu"
+unit = "thousand_passenger_km"
+frequency = "annual"
+dims = ["road_class"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Trafik ve Ulaşım Bilgileri, 2012-2025; kapsam taşıt-km ile aynı."
+
+[indicator.kgm_tonne_km]
+label_tr = "KGM yollarında ton-km, il"
+label_en = "Tonne-km on KGM roads by province"
+topic = "karayolu"
+unit = "thousand_tonne_km"
+frequency = "annual"
+dims = ["road_class"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Trafik ve Ulaşım Bilgileri, 2012-2025; kapsam taşıt-km ile aynı."
 
 # endregion
