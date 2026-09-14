@@ -1,4 +1,4 @@
-"""Download the CBRT housing price and rent series from EVDS3, untouched.
+﻿"""Download the CBRT housing price and rent series from EVDS3, untouched.
 
 Six data groups, every series in each, at their published frequency:
 
@@ -47,9 +47,11 @@ GROUPS = (
     "bie_dbfy",
     "bie_obfy",
 )
-START, END = "01-01-2000", "31-12-2026"
+START_YEAR, END_YEAR = 2000, 2026
 #: EVDS answers long code lists with an error; twenty codes per request is safe.
 BATCH = 20
+#: Rows (periods) EVDS returns per request at most.
+ROW_LIMIT = 1000
 
 
 def main() -> None:
@@ -57,7 +59,7 @@ def main() -> None:
         raise SystemExit("EVDS_API_KEY tanimli degil")
     out = RAW / "evds"
     out.mkdir(parents=True, exist_ok=True)
-    groups, start = (sys.argv[1:], "01-01-1970") if sys.argv[1:] else (GROUPS, START)
+    groups, start = (sys.argv[1:], 1970) if sys.argv[1:] else (GROUPS, START_YEAR)
     with httpx.Client(
         base_url=BASE, headers={"key": settings.evds_api_key}, timeout=120
     ) as client:
@@ -67,11 +69,15 @@ def main() -> None:
             codes = [s["SERIE_CODE"] for s in series.json()]
             by_period: dict[str, dict] = {}
             refused: list[str] = []
-            chunks = [codes[i : i + BATCH] for i in range(0, len(codes), BATCH)]
+            chunks = [
+                (codes[i : i + BATCH], start, END_YEAR)
+                for i in range(0, len(codes), BATCH)
+            ]
             while chunks:
-                chunk = chunks.pop(0)
+                chunk, first, last = chunks.pop(0)
                 r = client.get(
-                    f"/series={'-'.join(chunk)}&startDate={start}&endDate={END}&type=json"
+                    f"/series={'-'.join(chunk)}&startDate=01-01-{first}"
+                    f"&endDate=31-12-{last}&type=json"
                 )
                 if r.status_code == 400:
                     # One series EVDS lists but will not serve fails the whole chunk:
@@ -79,12 +85,21 @@ def main() -> None:
                     if len(chunk) == 1:
                         refused.append(chunk[0])
                     else:
-                        chunks[:0] = [[code] for code in chunk]
+                        chunks[:0] = [([code], first, last) for code in chunk]
                     continue
                 r.raise_for_status()
+                part = r.json()["items"]
+                if len(part) >= ROW_LIMIT:
+                    # EVDS cuts an answer at ROW_LIMIT rows without saying so, keeping
+                    # the latest: a daily series from 1970 came back as 2023-2026 only.
+                    if first == last:
+                        raise ValueError(group + ": tek yil satir sinirini asiyor")
+                    middle = (first + last) // 2
+                    chunks[:0] = [(chunk, first, middle), (chunk, middle + 1, last)]
+                    continue
                 # Each chunk comes back over its own series' span, so chunks are merged
                 # on the period label, not by position.
-                for extra in r.json()["items"]:
+                for extra in part:
                     by_period.setdefault(extra["Tarih"], {}).update(extra)
             items = sorted(
                 by_period.values(), key=lambda i: int(i["UNIXTIME"]["$numberLong"])
