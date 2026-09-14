@@ -23874,3 +23874,521 @@ views = ["table", "map", "line", "bar"]
 definition_tr = "TÜİK Bölgesel Hesaplar (2009 bazlı), cari fiyatlarla; TL ve ABD doları ayrı kırılım (birim kırılımda). Türkiye 2004 değeri EVDS ile birebir; 2024'te MEDAS 503.076 TL, EVDS 504.077 TL (revizyon farkı, %0,2)."
 
 # endregion
+
+# region Social security by province (SGK statistical yearbooks, adapters/sgk_provinces.py), 2026-09-14.
+
+[topic.sosyal_guvenlik]
+label_tr = "Sosyal güvenlik ve kayıtlı istihdam"
+label_en = "Social security and registered employment"
+order = 37
+
+[unit.day]
+label_tr = "gün"
+label_en = "days"
+decimals = 0
+additive = true
+
+[unit.file]
+label_tr = "dosya"
+label_en = "files"
+decimals = 0
+additive = true
+
+[unit.try_per_day]
+label_tr = "TL/gün"
+label_en = "TRY per day"
+decimals = 2
+additive = false
+
+[dim.scheme]
+label_tr = "Sigortalılık kapsamı"
+label_en = "Scheme"
+
+[dim.scheme.values]
+"4a" = "4/a (hizmet akdiyle, eski SSK)"
+"4b" = "4/b (bağımsız çalışan, eski Bağ-Kur)"
+"4c" = "4/c (kamu görevlisi, eski Emekli Sandığı)"
+non_contributory = "Primsiz ödemeler"
+total = "Toplam"
+
+[dim.insured_type]
+label_tr = "Sigortalı türü"
+label_en = "Insured type"
+
+[dim.insured_type.values]
+compulsory = "Zorunlu"
+long_term = "Zorunlu: uzun vade"
+domestic_ek9 = "Zorunlu: Ek-9 (ev hizmetleri)"
+apprentice = "Çırak"
+agriculture_2925 = "Tarım (2925 sayılı)"
+part_time = "Kısmi süreli"
+collective_abroad = "Yurt dışı topluluk"
+intern = "Stajyer ve kursiyer"
+other = "Diğer"
+voluntary = "İsteğe bağlı"
+muhtar = "Muhtar"
+self_employed_total = "Bağımsız çalışan (tarım dışı) toplamı"
+self_employed_compulsory = "Bağımsız çalışan zorunlu (tarım dışı)"
+agriculture_compulsory = "Tarımda kendi hesabına zorunlu"
+self_employed = "Bağımsız çalışan (tarım dışı)"
+agriculture = "Tarımda kendi hesabına"
+total = "Toplam"
+
+[dim.workplace_size]
+label_tr = "İş yeri büyüklüğü (çalışan)"
+label_en = "Workplace size (employees)"
+
+[dim.workplace_size.values]
+"1" = "1"
+"2-3" = "2-3"
+"4-6" = "4-6"
+"7-9" = "7-9"
+"10-19" = "10-19"
+"20-29" = "20-29"
+"30-49" = "30-49"
+"50-99" = "50-99"
+"100-249" = "100-249"
+"250-499" = "250-499"
+"500-749" = "500-749"
+"750-999" = "750-999"
+"1000+" = "1000 ve üstü"
+
+[dim.employer_sector]
+label_tr = "Sektör"
+label_en = "Sector"
+
+[dim.employer_sector.values]
+public = "Kamu"
+private = "Özel"
+
+[dim.employer_tenure]
+label_tr = "İş yeri niteliği"
+label_en = "Workplace tenure"
+
+[dim.employer_tenure.values]
+permanent = "Daimi"
+seasonal = "Mevsimlik"
+temporary = "Geçici"
+
+[dim.earnings_segment]
+label_tr = "Kesim"
+label_en = "Segment"
+
+[dim.earnings_segment.values]
+total = "Genel"
+public = "Kamu"
+private = "Özel"
+permanent = "Daimi iş yeri"
+seasonal = "Mevsimlik iş yeri"
+temporary = "Geçici iş yeri"
+female = "Kadın"
+male = "Erkek"
+
+[dim.scheme_group]
+label_tr = "Alt kapsam"
+label_en = "Scheme group"
+
+[dim.scheme_group.values]
+all = "Tümü"
+self_employed = "Tarım dışı (1479)"
+agriculture = "Tarım (2926)"
+
+[dim.benefit]
+label_tr = "Aylık / gelir türü"
+label_en = "Benefit"
+
+[dim.benefit.values]
+old_age = "Yaşlılık aylığı"
+invalidity = "Malullük aylığı"
+duty_invalidity = "Vazife malullüğü aylığı"
+survivor_pension = "Ölüm aylığı"
+permanent_incapacity_income = "Sürekli iş göremezlik geliri"
+survivor_income = "Ölüm geliri"
+patriotic = "Vatani hizmet (kendisi/hak sahibi ayrımsız)"
+patriotic_self = "Vatani hizmet: kendisi"
+patriotic_survivor = "Vatani hizmet: hak sahibi"
+law2022_old_age = "2022 sayılı: 65 yaş"
+law2022_disabled = "2022 sayılı: engelli"
+law2022_disabled_under18 = "2022 sayılı: 18 yaş altı engelli"
+law2022_invalidity = "2022 sayılı: malul"
+law2022_silicosis = "2022 sayılı: silikozis"
+all_pensions = "Tüm aylıklar"
+all_incomes = "Tüm gelirler"
+total = "Toplam"
+
+[dim.recipient]
+label_tr = "Alan"
+label_en = "Recipient"
+
+[dim.recipient.values]
+female = "Kadın"
+male = "Erkek"
+wife = "Kadın eş"
+husband = "Erkek eş"
+spouse = "Eş (ayrımsız)"
+daughter = "Kız çocuk"
+son = "Erkek çocuk"
+child = "Çocuk (ayrımsız)"
+mother = "Ana"
+father = "Baba"
+total = "Toplam"
+
+[dim.coverage_component]
+label_tr = "Kapsam bileşeni"
+label_en = "Coverage component"
+
+[dim.coverage_component.values]
+active = "Aktif sigortalı"
+pensioners = "Aylık ve gelir alan"
+dependents = "Bakmakla yükümlü olunan"
+gss_registered = "Yalnız GSS tescilli"
+total = "Toplam"
+
+[dim.event]
+label_tr = "Olay"
+label_en = "Event"
+
+[dim.event.values]
+accident = "İş kazası"
+occupational_disease = "Meslek hastalığı"
+
+[dim.incapacity_band]
+label_tr = "İş göremezlik süresi"
+label_en = "Incapacity duration"
+
+[dim.incapacity_band.values]
+accident_day_working = "Kaza günü (çalışır)"
+accident_day_incapacitated = "Kaza günü (iş göremez)"
+"1" = "1 gün"
+"2" = "2 gün"
+"3" = "3 gün"
+"4" = "4 gün"
+"5plus" = "5 gün ve üstü"
+total = "Toplam"
+
+[dim.care]
+label_tr = "Tedavi"
+label_en = "Care"
+
+[dim.care.values]
+outpatient = "Ayakta"
+inpatient = "Hastanede yatarak"
+total = "Toplam"
+
+[dim.timing]
+label_tr = "Olayın yılı"
+label_en = "Year of event"
+
+[dim.timing.values]
+same_year = "Aynı yıl"
+earlier_years = "Geçmiş yıllar"
+total = "Toplam"
+
+[indicator.sgk_active_insured]
+label_tr = "Aktif sigortalı"
+label_en = "Active insured"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["scheme", "insured_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "SGK yıllığı, yıl sonu (aralık) aktif sigortalı, 2011'den. İl, sigortalının kayıtlı olduğu iş yeri/SGK il müdürlüğüdür, ikamet değil. Türler yıl yıl değişir: kısmi süreli 2016'ya kadar, stajyer/kursiyer ve Ek-9 2017'den; 2017'den sonra 4/a zorunlu, uzun vade ile Ek-9'a ayrılır. Bkz. docs/sgk.md."
+
+[indicator.sgk_active_insured_by_sex]
+label_tr = "Aktif sigortalı (4/b, 4/c), cinsiyete göre"
+label_en = "Active insured (4/b, 4/c) by sex"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["scheme", "insured_type", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "4/b 2012'den, 4/c 2016'dan cinsiyet kırılımlı aktif sigortalı. Toplamları sgk_active_insured ile aynı sayılardır; ikisini toplamayın."
+
+[indicator.sgk_compulsory_insured]
+label_tr = "Zorunlu sigortalı"
+label_en = "Compulsorily insured"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["scheme", "insured_type", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Zorunlu sigortalı, cinsiyete göre 2012'den; 4/a toplamı çok yıllı iş yeri tablolarından 2010'dan (2016-2025 de 2025 yıllığından). Kayıtlı istihdamın il ölçüsü; il, iş yerinin ilidir."
+
+[indicator.sgk_compulsory_insured_by_size]
+label_tr = "4/a zorunlu sigortalı, iş yeri büyüklüğüne göre"
+label_en = "4/a insured by workplace size"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["workplace_size"]
+views = ["table", "map", "bar"]
+definition_tr = "İş yerinde çalıştırılan zorunlu sigortalı sayısına göre büyüklük sınıfı, 2010'dan. 2010-2017 arası bazı yıllarda 1000+ ayrı sütun, bkz. docs/sgk.md."
+
+[indicator.sgk_compulsory_insured_by_sector]
+label_tr = "4/a zorunlu sigortalı, kamu/özel"
+label_en = "4/a insured, public/private"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["employer_sector"]
+views = ["table", "map", "bar"]
+definition_tr = "İş yerinin kamu ya da özel olmasına göre, 2010'dan."
+
+[indicator.sgk_compulsory_insured_by_tenure]
+label_tr = "4/a zorunlu sigortalı, iş yeri niteliğine göre"
+label_en = "4/a insured by workplace tenure"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["employer_tenure"]
+views = ["table", "map", "bar"]
+definition_tr = "Daimi / mevsimlik (2015'e kadar) / geçici (2016'dan) iş yeri. Mevsimlik ile geçici aynı şey değildir; seri 2016'da kırılır."
+
+[indicator.sgk_workplaces]
+label_tr = "4/a iş yeri"
+label_en = "4/a workplaces"
+topic = "sosyal_guvenlik"
+unit = "item"
+frequency = "annual"
+views = ["table", "map", "line", "bar"]
+definition_tr = "Aylık prim ve hizmet belgesi veren iş yeri, 2002'den (2002-2009 eski SSK 'aylık bildirgesi alınan iş yeri')."
+
+[indicator.sgk_workplaces_by_size]
+label_tr = "4/a iş yeri, büyüklüğe göre"
+label_en = "4/a workplaces by size"
+topic = "sosyal_guvenlik"
+unit = "item"
+frequency = "annual"
+dims = ["workplace_size"]
+views = ["table", "map", "bar"]
+definition_tr = "Çalıştırılan zorunlu sigortalı sayısına göre, 2010'dan."
+
+[indicator.sgk_workplaces_by_sector]
+label_tr = "4/a iş yeri, kamu/özel"
+label_en = "4/a workplaces, public/private"
+topic = "sosyal_guvenlik"
+unit = "item"
+frequency = "annual"
+dims = ["employer_sector"]
+views = ["table", "map", "bar"]
+definition_tr = "2010'dan."
+
+[indicator.sgk_workplaces_by_tenure]
+label_tr = "4/a iş yeri, niteliğe göre"
+label_en = "4/a workplaces by tenure"
+topic = "sosyal_guvenlik"
+unit = "item"
+frequency = "annual"
+dims = ["employer_tenure"]
+views = ["table", "map", "bar"]
+definition_tr = "Daimi / mevsimlik (2015'e kadar) / geçici (2016'dan)."
+
+[indicator.sgk_average_daily_earnings]
+label_tr = "Prime esas ortalama günlük kazanç"
+label_en = "Average daily insurable earnings"
+topic = "sosyal_guvenlik"
+unit = "try_per_day"
+frequency = "annual"
+dims = ["earnings_segment"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "4/a zorunlu sigortalıların prime esas ortalama günlük kazancı, cari TL, 2010'dan. Tavan ve taban arasında bildirilen kazançtır, gerçek ücret değil; asgari ücret artışları seriyi taşır. Toplanamaz."
+
+[indicator.sgk_pension_recipients]
+label_tr = "Aylık ve gelir alan"
+label_en = "Pension and income recipients"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["scheme", "scheme_group", "benefit", "recipient"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Yıl sonu aylık/gelir alan kişi, 2007'den (4/a), 4/b ve 4/c için 2011'den; primsiz: vatani hizmet 2013'ten, 2022 sayılı yasa 2007-2011. Ölüm aylığında alan hak sahibidir, dosya sayısı ayrı göstergede. Hak sahibi kırılımı 2007-2011 eş/çocuk, sonra kadın eş/erkek eş/kız/erkek çocuk."
+
+[indicator.sgk_pension_files]
+label_tr = "Aylık ve gelir dosyası"
+label_en = "Pension files"
+topic = "sosyal_guvenlik"
+unit = "file"
+frequency = "annual"
+dims = ["scheme", "scheme_group", "benefit"]
+views = ["table", "map", "line"]
+definition_tr = "Ölüm aylığı/gelirinde bir dosyaya birden çok hak sahibi bağlanır; dosya, ölen sigortalı sayısıdır."
+
+[indicator.sgk_new_pension_awards]
+label_tr = "Yıl içinde aylık/gelir bağlanan"
+label_en = "New pension awards"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["scheme", "scheme_group", "benefit", "recipient"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Yıl içinde aylık veya gelir bağlanan kişi, 2011'den."
+
+[indicator.sgk_new_pension_files]
+label_tr = "Yıl içinde bağlanan dosya"
+label_en = "New pension files"
+topic = "sosyal_guvenlik"
+unit = "file"
+frequency = "annual"
+dims = ["scheme", "scheme_group", "benefit"]
+views = ["table", "map", "line"]
+definition_tr = "2014'ten."
+
+[indicator.sgk_social_security_coverage]
+label_tr = "Sosyal güvenlik kapsamı"
+label_en = "Social security coverage"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["scheme", "coverage_component"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Aktif sigortalı + aylık alan + bakmakla yükümlü olunan (eş, çocuk, ana-baba), 2010'dan. 2010-2012 yeşil kartlılar ve 2022 sayılı yasadan yararlananlar toplamın içinde ayrı sütundu; tanım 2013'te GSS tescilli olanları ayırarak değişti. İl nüfusuna bölmek için ADNKS kullanın, yıllığın kendi nüfus sütunu depolanmadı."
+
+[indicator.sgk_green_card_holders]
+label_tr = "Yeşil kartlı"
+label_en = "Green card holders"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+views = ["table", "map", "line"]
+definition_tr = "3816 sayılı yeşil kart sahibi, 2007-2011 (2012'de GSS'ye devredildi)."
+
+[indicator.sgk_law2022_beneficiaries]
+label_tr = "2022 sayılı yasadan yararlanan"
+label_en = "Beneficiaries of Act 2022"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+views = ["table", "map", "line"]
+definition_tr = "65 yaş üstü ve engelli aylığı alanlar (2022 sayılı yasa), 2010-2011 kapsam tablolarından. Kapsam toplamının dışındadır."
+
+[indicator.sgk_work_accident_cases]
+label_tr = "İş kazası ve meslek hastalığı vakası"
+label_en = "Work accidents and occupational diseases"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["scheme", "event", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "İş kazası geçiren / meslek hastalığına tutulan sigortalı. 2007-2012 yıl içinde 'işlemi tamamlanan' vakalar, 2013'ten yıl içinde bildirilen; seri 2013'te kırılır (bildirim zorunluluğu ve e-bildirge ile sayı birkaç kat artar). 4/b 2017'den."
+
+[indicator.sgk_work_accidents_by_incapacity]
+label_tr = "İş kazası, iş göremezlik süresine göre"
+label_en = "Work accidents by incapacity duration"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["scheme", "incapacity_band", "sex"]
+views = ["table", "map", "bar"]
+definition_tr = "2013'ten."
+
+[indicator.sgk_work_accident_deaths]
+label_tr = "İş kazası ve meslek hastalığından ölüm"
+label_en = "Work accident deaths"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["scheme", "event", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "2007-2012 işlemi tamamlanan ölüm vakası (yalnız iş kazası), 2013'ten yıl içinde ölen sigortalı."
+
+[indicator.sgk_permanent_incapacity_cases]
+label_tr = "Sürekli iş göremezlik vakası"
+label_en = "Permanent incapacity cases"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["scheme", "event", "sex"]
+views = ["table", "map", "line"]
+definition_tr = "2007-2012 işlemi tamamlanan; 2013'ten yerini yıl içinde sürekli iş göremezlik geliri bağlananlar aldı."
+
+[indicator.sgk_temporary_incapacity_days]
+label_tr = "Geçici iş göremezlik süresi"
+label_en = "Temporary incapacity days"
+topic = "sosyal_guvenlik"
+unit = "day"
+frequency = "annual"
+dims = ["scheme", "event", "care", "incapacity_band", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "İş kazası ve meslek hastalığı sonrası geçici iş göremezlik günü, ayakta ve yatarak, 2007'den."
+
+[indicator.sgk_permanent_incapacity_income]
+label_tr = "Sürekli iş göremezlik geliri alan"
+label_en = "Permanent incapacity income recipients"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["scheme", "event", "sex"]
+views = ["table", "map", "line"]
+definition_tr = "Yıl sonu, 2013'ten (2018-2019 yıllıklarında 'birikimli')."
+
+[indicator.sgk_new_permanent_incapacity_income]
+label_tr = "Yıl içinde sürekli iş göremezlik geliri bağlanan"
+label_en = "New permanent incapacity income awards"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["scheme", "event", "timing", "sex"]
+views = ["table", "map", "line"]
+definition_tr = "Olayın aynı yıl mı geçmiş yıllarda mı olduğuna göre, 2013'ten."
+
+[indicator.sgk_survivor_income_recipients]
+label_tr = "İş kazası/meslek hastalığı ölüm geliri alan hak sahibi"
+label_en = "Occupational survivor income recipients"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["scheme", "event", "recipient"]
+views = ["table", "map", "line"]
+definition_tr = "2013'ten."
+
+[indicator.sgk_survivor_income_files]
+label_tr = "İş kazası/meslek hastalığı ölüm geliri dosyası"
+label_en = "Occupational survivor income files"
+topic = "sosyal_guvenlik"
+unit = "file"
+frequency = "annual"
+dims = ["scheme", "event"]
+views = ["table", "map", "line"]
+definition_tr = "2013'ten."
+
+[indicator.sgk_new_survivor_income_awards]
+label_tr = "Yıl içinde ölüm geliri bağlanan hak sahibi"
+label_en = "New occupational survivor income awards"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+dims = ["scheme", "event", "recipient"]
+views = ["table", "map", "line"]
+definition_tr = "Geçmiş yıllarda ölenlere bu yıl bağlananlar dahil, 2013'ten."
+
+[indicator.sgk_new_survivor_income_files]
+label_tr = "Yıl içinde bağlanan ölüm geliri dosyası"
+label_en = "New occupational survivor income files"
+topic = "sosyal_guvenlik"
+unit = "file"
+frequency = "annual"
+dims = ["scheme", "event"]
+views = ["table", "map", "line"]
+definition_tr = "2013'ten."
+
+[indicator.sgk_sickness_cases]
+label_tr = "Geçici iş göremezliğe yol açan hastalık olayı"
+label_en = "Sickness cases"
+topic = "sosyal_guvenlik"
+unit = "item"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line"]
+definition_tr = "4/a sigortalılarda rapor (hastalık) olayı, 2012'den."
+
+[indicator.sgk_sickness_incapacity_days]
+label_tr = "Hastalık geçici iş göremezlik süresi"
+label_en = "Sickness incapacity days"
+topic = "sosyal_guvenlik"
+unit = "day"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line"]
+definition_tr = "2012'den."
+
+# endregion
