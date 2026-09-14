@@ -91,6 +91,17 @@ INDEX_TREES = {
     "real_effective_exchange_rate_cpi": ("bie_rktufey", "reer_cpi_item"),
     "real_effective_exchange_rate_ppi": ("bie_rkufey", "reer_ppi_item"),
     "trade_trucks": ("bie_undnakliyeroro", "trade_truck_item"),
+    "credit_participation_banks": ("bie_kbkmkre", "credit_participation_item"),
+    "credit_development_banks": ("bie_kmkykre", "credit_development_item"),
+    "credit_deposit_banks": ("bie_kmmbkre", "credit_deposit_bank_item"),
+    "bank_credit_volume_weekly": ("bie_hpbitablo6", "credit_weekly_item"),
+    "tendency_survey_small_firms": ("bie_iyabgs2s", "tendency_small_item", r"\.[A-F]$"),
+    "tendency_survey_medium_firms": (
+        "bie_iyabgs3s",
+        "tendency_medium_item",
+        r"\.[A-F]$",
+    ),
+    "tendency_survey_large_firms": ("bie_iyabgs4s", "tendency_large_item", r"\.[A-F]$"),
 }
 
 
