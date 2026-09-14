@@ -42,7 +42,14 @@ INVENTORY = PDF / "Istatistikler_DevletveIlYolEnvanteri"
 DISTRICT_ALIASES = {("TR-34", "eyup"): "eyupsultan", ("TR-55", "ondokuzmayis"): "mayis"}
 
 #: Printed province names in the motorway table that are abbreviated.
-PROVINCE_ALIASES = {"kmaras": "kahramanmaras", "surfa": "sanliurfa"}
+PROVINCE_ALIASES = {
+    "kmaras": "kahramanmaras",
+    "surfa": "sanliurfa",
+    # The 2010 and 2012 inventories name some provinces by their centre town.
+    "izmit": "kocaeli",
+    "adapazari": "sakarya",
+    "icel": "mersin",
+}
 
 SURFACES = (
     "asphalt_concrete",
@@ -291,6 +298,8 @@ PROVINCE_ROW = re.compile(
 def province_lengths(path: Path) -> dict[str, list[float]]:
     out: dict[str, list[float]] = {}
     for line in pdf_lines(path):
+        # The 2010 inventory's font maps Ş to the digit 6 (`ESKİ6EHİR`, `6ANLIURFA`).
+        line = re.sub(r"(?<=[A-ZÇĞİÖÜ])6|6(?=[A-ZÇĞİÖÜ])", "Ş", line)
         match = PROVINCE_ROW.match(line)
         if not match:
             continue
@@ -420,6 +429,96 @@ def split_grouped(text: str, count: int, total_last: bool = True) -> list[float]
     if len(found) != 1:
         raise ValueError(f"satır tek türlü bölünemedi ({len(found)} okuma): {text}")
     return [float(v) for v in found[0]]
+
+
+ARCHIVE = RAW / "kgm" / "wayback"
+
+
+class KgmRoadLengthArchive(Kgm):
+    """State and provincial roads together, by province and surface, from archived copies.
+
+    KGM overwrites the province inventory every year. The Wayback Machine kept nine
+    versions of `IllereGoreDevletVeIlYollari.pdf` (2010-2026), fetched into `raw/kgm/wayback/`
+    by `scripts/fetch_kgm_wayback.sh`. Each is dated inside (`(01.01.2018)`): the network at the end of
+    the year before. The split into state and provincial roads was not archived, so this
+    series is the two together — which the current year's file also gives.
+    """
+
+    indicator_id = "road_length_by_surface_province"
+    vintage = "2026-02"
+    column = None  # surface columns
+
+    def fetch(self) -> Path:
+        return ARCHIVE
+
+    def files(self, raw: Path) -> dict[int, Path]:
+        by_year: dict[int, Path] = {}
+        for path in sorted(raw.glob("IllereGoreDevletVeIlYollari_*.pdf")):
+            dates = [
+                re.search(r"\(01\.01\.(\d{4})\)", line) for line in pdf_lines(path)
+            ]
+            years = {int(m.group(1)) - 1 for m in dates if m}
+            if len(years) != 1:
+                raise ValueError(f"{path.name}: tarih okunamadı {years}")
+            year = years.pop()
+            if year in by_year:
+                raise ValueError(f"{path.name}: {year} iki dosyada")
+            by_year[year] = path
+        return by_year
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        history = {}
+        for line in pdf_lines(INVENTORY / "YillaraGoreDevletVeIlYollari.pdf"):
+            match = HISTORY_ROW.match(line)
+            if match:
+                history[int(match["year"])] = split_grouped(match["rest"], 7)[6]
+        records = []
+        for year, path in self.files(raw).items():
+            table = province_lengths(path)
+            total = sum(values[7] for values in table.values())
+            # Checked against the national series printed in the current yearbook.
+            if year in history and abs(total - history[year]) > 81:
+                raise ValueError(
+                    f"{year}: il toplamı {total:.0f}, Türkiye serisi {history[year]:.0f}"
+                )
+            for pid, values in table.items():
+                if self.column is None:
+                    parts = (
+                        values[0],
+                        values[1],
+                        values[3],
+                        values[4],
+                        values[5],
+                        values[6],
+                    )
+                    for surface, value in zip(SURFACES, parts, strict=True):
+                        records.append(
+                            {
+                                "area_id": pid,
+                                "area_level": "province",
+                                "period_start": dt.date(year, 1, 1),
+                                "dims": "surface=" + surface,
+                                "value": value,
+                            }
+                        )
+                else:
+                    records.append(
+                        {
+                            "area_id": pid,
+                            "area_level": "province",
+                            "period_start": dt.date(year, 1, 1),
+                            "dims": "",
+                            "value": values[self.column],
+                        }
+                    )
+        return fact(
+            records, self.indicator_id, "road_km", self.vintage, self.retrieved_at
+        )
+
+
+class KgmDividedRoadArchive(KgmRoadLengthArchive):
+    indicator_id = "divided_road_length_province"
+    column = 8
 
 
 class KgmRoadLengthHistory(Kgm):
@@ -615,6 +714,8 @@ KGM_ADAPTERS = {
     "kgm_road_length": KgmRoadLength,
     "kgm_divided_road": KgmDividedRoad,
     "kgm_road_length_history": KgmRoadLengthHistory,
+    "kgm_road_length_archive": KgmRoadLengthArchive,
+    "kgm_divided_road_archive": KgmDividedRoadArchive,
     "kgm_motorway": KgmMotorway,
     "kgm_bridges": KgmBridges,
     "kgm_bridge_length": KgmBridgeLength,

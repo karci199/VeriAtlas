@@ -71,3 +71,18 @@ Tuzaklar:
 - Viyadük ayrı sayılmıyor, köprü envanterinin (büyük sanat yapısı) içinde.
 - Trafik ve Ulaşım Bilgileri PDF'lerinde harita sayfalarının fontu bozuk (`cid:`); tablo sayfaları okunuyor.
 - Düşük değerli belgeler (bakım maliyeti, faaliyet raporu, anket) kullanıcı kararıyla işlenmeyecek.
+
+## Wayback Machine kopyaları: il envanteri yıllara göre (2026-09-14)
+
+KGM il bazındaki yol envanterini her yıl aynı adla üzerine yazıyor. Wayback Machine
+`IllereGoreDevletVeIlYollari.pdf`'in 9 farklı sürümünü tutmuş; `scripts/fetch_kgm_wayback.sh`
+indiriyor (`C:\veri-ham\kgm\wayback\`, arşiv kapalıysa bekleyip yeniden dener). Ayrı devlet
+yolu / il yolu tabloları arşivde yok.
+
+Yıllar (yıl sonu): 2009, 2011, 2014, 2016, 2017, 2020, 2021, 2022, 2025. Göstergeler
+`road_length_by_surface_province`, `divided_road_length_province`. Denetim: il toplamı her
+yıl güncel yıllıktaki Türkiye serisine eşit.
+
+Tuzaklar: 2010 ve 2012 dosyalarında il yerine merkez adı (İZMİT, ADAPAZARI); 2010 dosyasının
+yazı tipinde Ş harfi `6` basılı (`ESKİ6EHİR`, `6ANLIURFA`) — okunmadan 9 il sessizce düşüyordu,
+81 il denetimi yakaladı.

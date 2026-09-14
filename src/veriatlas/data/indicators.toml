@@ -24941,3 +24941,27 @@ views = ["table", "line", "bar"]
 definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza geçiren KİŞİ sayısı (bir kişi birden çok kaza geçirebilir); kaza sayısı veren öteki kırılımlarla toplamı tutmaz. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
 
 # endregion
+
+# region KGM province road inventory from Wayback Machine copies (adapters/kgm.py), 2026-09-14.
+
+[indicator.road_length_by_surface_province]
+label_tr = "Devlet ve il yolu uzunluğu, il ve kaplama türüne göre (yıllar)"
+label_en = "State and provincial road length by province and surface, over years"
+topic = "karayolu"
+unit = "road_km"
+frequency = "annual"
+dims = ["surface"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Devlet ve il yolları birlikte, yıl sonu. KGM il envanterini her yıl üzerine yazıyor; geçmiş yıllar Wayback Machine kopyalarından: 2009, 2011, 2014, 2016, 2017, 2020, 2021, 2022, 2025. Arada yıl yok. İl toplamları her yıl KGM'nin Türkiye serisini tutuyor."
+
+[indicator.divided_road_length_province]
+label_tr = "Bölünmüş yol uzunluğu, il (yıllar)"
+label_en = "Divided road length by province, over years"
+topic = "karayolu"
+unit = "road_km"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Devlet ve il yollarının bölünmüş kısmı, yıl sonu. Yıllar: 2009, 2011, 2014, 2016, 2017, 2020, 2021, 2022, 2025 (Wayback Machine kopyaları)."
+
+# endregion
