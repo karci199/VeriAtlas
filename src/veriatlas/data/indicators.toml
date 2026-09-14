@@ -5569,3 +5569,115 @@ views = ["table", "map", "line", "bar"]
 definition_tr = "TCMB, değerlemesi yapılan ofislerin m² fiyatı (EVDS TP.OBFY), 2015'ten. Osmaniye ve Düzce serisi EVDS'de listelenip verilmiyor."
 
 # endregion
+
+# region Banking by province (TBB Veri Sistemi, adapters/tbb_provinces.py), 2026-09-14.
+
+[topic.bankacilik]
+label_tr = "Bankacılık"
+label_en = "Banking"
+order = 33
+
+[unit.try]
+label_tr = "TL"
+label_en = "TRY"
+decimals = 0
+additive = true
+
+[dim.deposit_type]
+label_tr = "Mevduat türü"
+label_en = "Deposit type"
+
+[dim.deposit_type.values]
+savings = "Tasarruf mevduatı"
+certificate = "Mevduat sertifikası"
+public = "Resmi kuruluşlar mevduatı"
+commercial = "Ticari kuruluşlar mevduatı"
+interbank = "Bankalar mevduatı"
+foreign_currency = "Döviz tevdiat hesapları"
+other = "Diğer mevduat"
+gold = "Altın depo hesabı"
+
+[dim.loan_type]
+label_tr = "Kredi türü"
+label_en = "Loan type"
+
+[dim.loan_type.values]
+general = "İhtisas dışı krediler"
+agriculture = "İhtisas kredisi: tarım"
+real_estate = "İhtisas kredisi: gayrimenkul"
+professional = "İhtisas kredisi: mesleki"
+maritime = "İhtisas kredisi: denizcilik"
+tourism = "İhtisas kredisi: turizm"
+other_specialised = "İhtisas kredisi: diğer"
+
+[indicator.bank_deposits]
+label_tr = "Banka mevduatı"
+label_en = "Bank deposits"
+topic = "bankacilik"
+unit = "try"
+frequency = "annual"
+dims = ["deposit_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TBB, şubenin bulunduğu ile göre yıl sonu mevduat, 1988'den. Tutarlar bugünkü TL (2005 öncesi kaynakta çevrilmiş). Genel müdürlüklerin bulunduğu İstanbul ve Ankara'da kurum mevduatı şişkin."
+
+[indicator.bank_deposit_accounts]
+label_tr = "Mevduat hesap sayısı"
+label_en = "Deposit accounts"
+topic = "bankacilik"
+unit = "item"
+frequency = "annual"
+dims = ["deposit_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TBB, şubenin bulunduğu ile göre hesap adedi, 2010'dan."
+
+[indicator.bank_loans]
+label_tr = "Banka kredileri"
+label_en = "Bank loans"
+topic = "bankacilik"
+unit = "try"
+frequency = "annual"
+dims = ["loan_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TBB, kredinin kullandırıldığı şubenin iline göre yıl sonu kredi, 1988'den. Tutarlar bugünkü TL."
+
+[indicator.bank_employees]
+label_tr = "Banka çalışanı"
+label_en = "Bank employees"
+topic = "bankacilik"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "TBB, il şubelerinde çalışan sayısı, 2007'den."
+
+[indicator.bank_atms]
+label_tr = "ATM sayısı"
+label_en = "ATMs"
+topic = "bankacilik"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "TBB, 2010'dan."
+
+[indicator.bank_pos_terminals]
+label_tr = "POS sayısı"
+label_en = "POS terminals"
+topic = "bankacilik"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "TBB, 2010'dan."
+
+[indicator.bank_merchants]
+label_tr = "Kartla ödeme alan üye işyeri"
+label_en = "Card-accepting merchants"
+topic = "bankacilik"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "TBB, 2010'dan."
+
+# endregion
