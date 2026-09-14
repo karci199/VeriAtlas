@@ -25,7 +25,6 @@ doğrulanmadı · ✘ otomatik erişime kapalı (tarayıcıyla denenecek) · dep
 | Türkiye Noterler Birliği | il bazında noter işlem istatistiği bulunamadı | — | — | — | ◐ yok |
 | Valilikler | il istatistik yıllıkları (ör. Kırklareli: tapu, kadastro, imar) | il, ilçe | düzensiz | PDF | ◐ |
 | Resmi İstatistik Portalı | RİP'teki bütün kurum istatistiklerinin kataloğu — envanterin asıl kaynağı | — | — | JS uygulaması | ✘ |
-
 | Dünya Bankası API | kişi başı GSYH (cari $) TR ve dünya, ABD TÜFE | ülke | 1960-2025 | JSON | ✔ analiz `docs/analiz/kisi-basi-gsyh-reel.csv` |
 
 ## Sıradaki adımlar
