@@ -1,4 +1,4 @@
-# Indicator dictionary — what every id in the fact table means.
+﻿# Indicator dictionary — what every id in the fact table means.
 #
 # This file is a record of decisions, not data. TUIK does not tell us that "bina" and
 # "daire" are different things; we do. So it lives in git, next to the code, with the
@@ -5679,5 +5679,60 @@ frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "TBB, 2010'dan."
+
+# endregion
+
+# region Consumer prices and exchange rate (EVDS3, adapters/evds_prices.py), 2026-09-14.
+
+[topic.fiyatlar]
+label_tr = "Fiyatlar ve kur"
+label_en = "Prices and exchange rate"
+order = 34
+
+[unit.try_per_usd]
+label_tr = "TL/$"
+label_en = "TRY/USD"
+decimals = 4
+additive = false
+
+[indicator.cpi_2003]
+label_tr = "Tüketici fiyat endeksi (2003=100)"
+label_en = "Consumer price index (2003=100)"
+topic = "fiyatlar"
+unit = "index"
+frequency = "monthly"
+dims = []
+views = ["table", "line"]
+definition_tr = "TÜİK genel TÜFE, EVDS TP.GENENDEKS.T1. Yalnız Türkiye."
+
+[indicator.cpi_region_2003]
+label_tr = "Bölgesel tüketici fiyat endeksi (2003=100)"
+label_en = "Regional consumer price index (2003=100)"
+topic = "fiyatlar"
+unit = "index"
+frequency = "monthly"
+dims = []
+views = ["table", "map", "line"]
+definition_tr = "TÜİK, İBBS-2 bölgelerine göre TÜFE, 2003-2022 Nisan (EVDS arşivi TP.FG.TS). Sonrası EVDS'de yok."
+
+[indicator.cpi_province_1994]
+label_tr = "İl tüketici fiyat endeksi (1994=100)"
+label_en = "Provincial consumer price index (1994=100)"
+topic = "fiyatlar"
+unit = "index"
+frequency = "monthly"
+dims = []
+views = ["table", "line"]
+definition_tr = "TÜİK, 19 il ve Türkiye için TÜFE, 1995-2004 (EVDS arşivi TP.FG). Diğer iller yayımlanmadı."
+
+[indicator.usd_try_buying]
+label_tr = "ABD doları alış kuru"
+label_en = "USD buying rate"
+topic = "fiyatlar"
+unit = "try_per_usd"
+frequency = "daily"
+dims = []
+views = ["table", "line"]
+definition_tr = "TCMB gösterge alış kuru, iş günleri, 1970'ten (EVDS TP.DK.USD.A.YTL). 2005 öncesi yeni TL'ye çevrilmiş."
 
 # endregion

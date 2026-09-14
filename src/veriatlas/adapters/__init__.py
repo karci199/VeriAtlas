@@ -1,6 +1,9 @@
 """Source adapters. One module per source; the contract lives in `base`."""
 
 from .base import Adapter, Manifest, history, ingest
+from .evds_housing import EVDS_HOUSING_ADAPTERS
+from .evds_prices import EVDS_PRICE_ADAPTERS
+from .tbb_provinces import TBB_ADAPTERS
 from .tuik_birth_order import TuikBirthOrder
 from .tuik_child_police import CHILD_POLICE_ADAPTERS
 from .tuik_crops import CROP_ADAPTERS
@@ -8,8 +11,6 @@ from .tuik_death_cause import TuikDeathCause
 from .tuik_district_population import TuikDistrictPopulation
 from .tuik_education_district import EDUCATION_DISTRICT_ADAPTERS
 from .tuik_household import TuikHouseholdSize, TuikHouseholdTenure
-from .evds_housing import EVDS_HOUSING_ADAPTERS
-from .tbb_provinces import TBB_ADAPTERS
 from .tuik_housing_monthly import MONTHLY_HOUSING_ADAPTERS
 from .tuik_marital import TuikMarital
 from .tuik_median_age import TuikMedianAge
@@ -73,6 +74,8 @@ ADAPTERS = {
     **EVDS_HOUSING_ADAPTERS,
     # Banks Association: deposits, loans, employees, ATM/POS by province.
     **TBB_ADAPTERS,
+    # Consumer prices and the dollar rate (EVDS), the deflators.
+    **EVDS_PRICE_ADAPTERS,
 }
 
 __all__ = [
