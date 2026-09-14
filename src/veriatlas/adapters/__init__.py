@@ -3,6 +3,7 @@
 from .base import Adapter, Manifest, history, ingest
 from .evds_housing import EVDS_HOUSING_ADAPTERS
 from .evds_prices import EVDS_PRICE_ADAPTERS
+from .evds_tourism import EvdsVisitorsByNationality
 from .tbb_provinces import TBB_ADAPTERS
 from .tuik_birth_order import TuikBirthOrder
 from .tuik_child_police import CHILD_POLICE_ADAPTERS
@@ -76,6 +77,7 @@ ADAPTERS = {
     **TBB_ADAPTERS,
     # Consumer prices and the dollar rate (EVDS), the deflators.
     **EVDS_PRICE_ADAPTERS,
+    "evds_foreign_visitors_by_nationality": EvdsVisitorsByNationality,
 }
 
 __all__ = [

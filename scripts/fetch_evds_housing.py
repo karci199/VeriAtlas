@@ -1,4 +1,4 @@
-﻿"""Download the CBRT housing price and rent series from EVDS3, untouched.
+"""Download the CBRT housing price and rent series from EVDS3, untouched.
 
 Six data groups, every series in each, at their published frequency:
 
