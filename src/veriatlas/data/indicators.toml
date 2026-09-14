@@ -8111,3 +8111,189 @@ views = ["table", "line", "bar"]
 definition_tr = "TCMB, EVDS bie_iyabgs4s: yanıt payları (%). Yalnız Türkiye."
 
 # endregion
+
+# region EVDS cards, cheques and bills (adapters/evds_series.py), 2026-09-14.
+
+[dim.card_payment_index_item]
+label_tr = "Endeks"
+label_en = "card payment index item"
+
+[dim.card_payment_index_item.values]
+kartmetre_d1 = "Genel Kartlı Ödeme Endeksi (Nominal)"
+kartmetre_d2 = "Genel Kartlı Ödeme Endeksi (Reel)"
+kartmetre_d3 = "Hanehalkı Kartlı Ödeme Endeksi (Nominal)"
+kartmetre_d4 = "Hanehalkı Kartlı Ödeme Endeksi (Reel)"
+
+[indicator.card_payment_index]
+label_tr = "Kartlı ödeme endeksi (BKM)"
+label_en = "Card payment index (BKM)"
+topic = "bankacilik"
+unit = "index"
+frequency = "monthly"
+dims = ["card_payment_index_item"]
+views = ["table", "line", "bar"]
+definition_tr = "BKM, Nisan 2015=100, EVDS bie_kartmetre; genel ve hanehalkı, nominal ve reel. Yalnız Türkiye."
+
+[dim.card_sector_amount_item]
+label_tr = "Sektör"
+label_en = "card sector amount item"
+
+[dim.card_sector_amount_item.values]
+kkhartut_kt1 = "TOPLAM (*)"
+kkhartut_kt2 = "Araba Kiralama"
+kkhartut_kt3 = "Araç Kiralama-Satış/Servis/Yedek Parça"
+kkhartut_kt4 = "Benzin ve Yakıt İstasyonları"
+kkhartut_kt5 = "Çeşitli Gıda"
+kkhartut_kt6 = "Doğrudan Pazarlama"
+kkhartut_kt7 = "Eğitim / Kırtasiye / Ofis Malzemeleri"
+kkhartut_kt8 = "Elektrik-Elektronik Eşya, Bilgisayar"
+kkhartut_kt9 = "Giyim ve Aksesuar"
+kkhartut_kt10 = "Havayolları"
+kkhartut_kt11 = "Hizmet Sektörleri"
+kkhartut_kt12 = "Konaklama"
+kkhartut_kt13 = "Kulüp / Dernek /Sosyal Hizmetler"
+kkhartut_kt14 = "Kumarhane /İçkili Yerler"
+kkhartut_kt15 = "Kuyumcular"
+kkhartut_kt16 = "Market ve Alışveriş Merkezleri"
+kkhartut_kt17 = "Mobilya ve Dekorasyon"
+kkhartut_kt18 = "Müteahhit İşleri"
+kkhartut_kt19 = "Sağlık/Sağlık Ürünleri/Kozmetik"
+kkhartut_kt20 = "Seyahat Acenteleri/Taşımacılık"
+kkhartut_kt21 = "Sigorta"
+kkhartut_kt22 = "Telekomünikasyon"
+kkhartut_kt23 = "Yapı Malzemeleri, Hırdavat, Nalburiye"
+kkhartut_kt24 = "Yemek"
+kkhartut_kt25 = "Kamu/Vergi Ödemeleri"
+kkhartut_kt26 = "Bireysel Emeklilik"
+kkhartut_kt49 = "Diğer"
+kkhartut_kt50 = "Bilgi için: İnternet Üzerinden Yapılan Alışverişler"
+kkhartut_kt51 = "Bilgi için: Mektupla/Telefonla Yapılan Alışverişler"
+
+[indicator.card_spending_weekly]
+label_tr = "Kartlı harcama tutarı (haftalık)"
+label_en = "Card spending (weekly)"
+topic = "bankacilik"
+unit = "thousand_try"
+frequency = "weekly"
+dims = ["card_sector_amount_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TCMB/BKM, banka ve kredi kartı, EVDS bie_kkhartut, bin TL, 2014 Mart'tan (cuma). İnternet ve mektup/telefon kalemleri kaynağın 'bilgi için' satırları: sektörlerin içinden alt kümedir, toplamaya katılmaz. Yalnız Türkiye."
+
+[dim.card_sector_count_item]
+label_tr = "Sektör"
+label_en = "card sector count item"
+
+[dim.card_sector_count_item.values]
+kkislade_ka1 = "TOPLAM (*)"
+kkislade_ka2 = "Araba Kiralama"
+kkislade_ka3 = "Araç Kiralama-Satış/Servis/Yedek Parça"
+kkislade_ka4 = "Benzin ve Yakıt İstasyonları"
+kkislade_ka5 = "Çeşitli Gıda"
+kkislade_ka6 = "Doğrudan Pazarlama"
+kkislade_ka7 = "Eğitim / Kırtasiye / Ofis Malzemeleri"
+kkislade_ka8 = "Elektrik-Elektronik Eşya, Bilgisayar"
+kkislade_ka9 = "Giyim ve Aksesuar"
+kkislade_ka10 = "Havayolları"
+kkislade_ka11 = "Hizmet Sektörleri"
+kkislade_ka12 = "Konaklama"
+kkislade_ka13 = "Kulüp / Dernek /Sosyal Hizmetler"
+kkislade_ka14 = "Kumarhane /İçkili Yerler"
+kkislade_ka15 = "Kuyumcular"
+kkislade_ka16 = "Market ve Alışveriş Merkezleri"
+kkislade_ka17 = "Mobilya ve Dekorasyon"
+kkislade_ka18 = "Müteahhit İşleri"
+kkislade_ka19 = "Sağlık/Sağlık Ürünleri/Kozmetik"
+kkislade_ka20 = "Seyahat Acenteleri/Taşımacılık"
+kkislade_ka21 = "Sigorta"
+kkislade_ka22 = "Telekomünikasyon"
+kkislade_ka23 = "Yapı Malzemeleri, Hırdavat, Nalburiye"
+kkislade_ka24 = "Yemek"
+kkislade_ka25 = "Kamu/Vergi Ödemeleri"
+kkislade_ka26 = "Bireysel Emeklilik"
+kkislade_ka49 = "Diğer"
+kkislade_ka50 = "Bilgi için: İnternet Üzerinden Yapılan Alışverişler"
+kkislade_ka51 = "Bilgi için: Mektupla/Telefonla Yapılan Alışverişler"
+
+[indicator.card_transactions_weekly]
+label_tr = "Kartlı işlem adedi (haftalık)"
+label_en = "Card transactions (weekly)"
+topic = "bankacilik"
+unit = "item"
+frequency = "weekly"
+dims = ["card_sector_count_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TCMB/BKM, EVDS bie_kkislade, 2014 Mart'tan. İnternet ve mektup/telefon kalemleri alt kümedir, toplamaya katılmaz. Yalnız Türkiye."
+
+[dim.cheque_count_item]
+label_tr = "Çek türü"
+label_en = "cheque count item"
+
+[dim.cheque_count_item.values]
+bto1 = "Toplam İbraz Edilen Çek Adedi"
+bto3 = "Karşılıksız Çek Adedi"
+bto5 = "Mahsuplaşmaya Tabi Çek Adedi"
+
+[indicator.cheques_count]
+label_tr = "Takas odasında ibraz edilen çek adedi"
+label_en = "Cheques presented, count"
+topic = "bankacilik"
+unit = "item"
+frequency = "monthly"
+dims = ["cheque_count_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TCMB, EVDS bie_btocek, 2008'den: toplam, karşılıksız, mahsuplaşmaya tabi. Yalnız Türkiye."
+
+[dim.cheque_amount_item]
+label_tr = "Çek türü"
+label_en = "cheque amount item"
+
+[dim.cheque_amount_item.values]
+bto2 = "Toplam İbraz Edilen Çek Tutarı (Bin TL)"
+bto4 = "Karşılıksız Çek Tutarı (Bin TL)"
+bto6 = "Mahsuplaşmaya Tabi Çek Tutarı (Bin TL)"
+
+[indicator.cheques_amount]
+label_tr = "Takas odasında ibraz edilen çek tutarı"
+label_en = "Cheques presented, amount"
+topic = "bankacilik"
+unit = "thousand_try"
+frequency = "monthly"
+dims = ["cheque_amount_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TCMB, EVDS bie_btocek, bin TL, 2008'den. Yalnız Türkiye."
+
+[dim.bill_count_item]
+label_tr = "Kalem"
+label_en = "bill count item"
+
+[dim.bill_count_item.values]
+tsenetler_adet = "Adet"
+
+[indicator.bills_collected_count]
+label_tr = "Tahsile alınan ticari senet adedi"
+label_en = "Commercial bills taken for collection, count"
+topic = "bankacilik"
+unit = "item"
+frequency = "monthly"
+dims = ["bill_count_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TCMB, EVDS bie_tsenetler, 2007'den. Yalnız Türkiye."
+
+[dim.bill_amount_item]
+label_tr = "Kalem"
+label_en = "bill amount item"
+
+[dim.bill_amount_item.values]
+tsenetler_tutar = "Tutar"
+
+[indicator.bills_collected_amount]
+label_tr = "Tahsile alınan ticari senet tutarı"
+label_en = "Commercial bills taken for collection, amount"
+topic = "bankacilik"
+unit = "thousand_try"
+frequency = "monthly"
+dims = ["bill_amount_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TCMB, EVDS bie_tsenetler, bin TL varsayımıyla (kaynak birim yazmıyor; çek tutarlarıyla aynı tablo ailesi), 2007'den. Yalnız Türkiye."
+
+# endregion
