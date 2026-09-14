@@ -8,6 +8,7 @@ from .tuik_death_cause import TuikDeathCause
 from .tuik_district_population import TuikDistrictPopulation
 from .tuik_education_district import EDUCATION_DISTRICT_ADAPTERS
 from .tuik_household import TuikHouseholdSize, TuikHouseholdTenure
+from .evds_housing import EVDS_HOUSING_ADAPTERS
 from .tuik_housing_monthly import MONTHLY_HOUSING_ADAPTERS
 from .tuik_marital import TuikMarital
 from .tuik_median_age import TuikMedianAge
@@ -67,6 +68,8 @@ ADAPTERS = {
     **EDUCATION_DISTRICT_ADAPTERS,
     # Children referred to police units (Türkiye).
     **CHILD_POLICE_ADAPTERS,
+    # CBRT housing and commercial property prices and rents, at published frequency.
+    **EVDS_HOUSING_ADAPTERS,
 }
 
 __all__ = [

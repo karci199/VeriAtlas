@@ -5443,3 +5443,129 @@ birlikte okunur: TFH sabitken GDH düşüyorsa düşen şey doğurganlık değil
 kuşağın payıdır."""
 
 # endregion
+
+# region CBRT property prices and rents (EVDS3, adapters/evds_housing.py), 2026-09-14.
+# Stored at published frequency: economic series are read month by month (user, 2026-09-14).
+
+[topic.gayrimenkul_fiyat]
+label_tr = "Konut ve gayrimenkul fiyatları"
+label_en = "Property prices and rents"
+order = 32
+
+[unit.try_per_square_metre]
+label_tr = "TL/m²"
+label_en = "TRY/m²"
+decimals = 0
+additive = false
+
+[indicator.house_price_index]
+label_tr = "Konut fiyat endeksi"
+label_en = "House price index"
+topic = "gayrimenkul_fiyat"
+unit = "index"
+frequency = "monthly"
+dims = []
+views = ["table", "line"]
+definition_tr = "TCMB KFE (EVDS TP.KFE). Batıda İBBS-2, doğuda İBBS-1 bölgeleri; il yok."
+
+[indicator.new_house_price_index]
+label_tr = "Yeni konutlar fiyat endeksi"
+label_en = "New dwellings price index"
+topic = "gayrimenkul_fiyat"
+unit = "index"
+frequency = "monthly"
+dims = []
+views = ["table", "line"]
+definition_tr = "TCMB YKFE (EVDS TP.YKFE). Yalnız Türkiye."
+
+[indicator.existing_house_price_index]
+label_tr = "Yeni olmayan konutlar fiyat endeksi"
+label_en = "Existing dwellings price index"
+topic = "gayrimenkul_fiyat"
+unit = "index"
+frequency = "monthly"
+dims = []
+views = ["table", "line"]
+definition_tr = "TCMB YOKFE (EVDS TP.YOKFEND). Yalnız Türkiye."
+
+[indicator.new_tenant_rent_index]
+label_tr = "Yeni kiracı kira endeksi"
+label_en = "New tenant rent index"
+topic = "gayrimenkul_fiyat"
+unit = "index"
+frequency = "monthly"
+dims = []
+views = ["table", "line"]
+definition_tr = "TCMB YKKE (EVDS TP.YKKE), 2018'den. KFE ile aynı bölge grupları."
+
+[indicator.housing_unit_price]
+label_tr = "Konut birim fiyatı"
+label_en = "Housing unit price"
+topic = "gayrimenkul_fiyat"
+unit = "try_per_square_metre"
+frequency = "quarterly"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "TCMB, değerlemesi yapılan konutların m² fiyatı (EVDS TP.BIRIMFIYAT). Satış fiyatı değil, ekspertiz değeri."
+
+[indicator.housing_unit_rent]
+label_tr = "Konut birim kirası"
+label_en = "Housing unit rent"
+topic = "gayrimenkul_fiyat"
+unit = "try_per_square_metre"
+frequency = "quarterly"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "TCMB, değerlemesi yapılan konutların aylık m² kirası (EVDS TP.BK), 2018'den."
+
+[indicator.commercial_property_price_index]
+label_tr = "Ticari gayrimenkul fiyat endeksi"
+label_en = "Commercial property price index"
+topic = "gayrimenkul_fiyat"
+unit = "index"
+frequency = "quarterly"
+dims = []
+views = ["table", "line"]
+definition_tr = "TCMB TGFE (EVDS TP.TGFE), 2015'ten. Türkiye, İstanbul, Ankara, İzmir."
+
+[indicator.shop_price_index]
+label_tr = "Dükkân fiyat endeksi"
+label_en = "Shop price index"
+topic = "gayrimenkul_fiyat"
+unit = "index"
+frequency = "quarterly"
+dims = []
+views = ["table", "line"]
+definition_tr = "TCMB DFE (EVDS TP.DFE), 2015'ten. Türkiye, İstanbul, Ankara, İzmir."
+
+[indicator.office_price_index]
+label_tr = "Ofis fiyat endeksi"
+label_en = "Office price index"
+topic = "gayrimenkul_fiyat"
+unit = "index"
+frequency = "quarterly"
+dims = []
+views = ["table", "line"]
+definition_tr = "TCMB OFE (EVDS TP.OFE), 2015'ten. Türkiye, İstanbul, Ankara, İzmir."
+
+[indicator.shop_unit_price]
+label_tr = "Dükkân birim fiyatı"
+label_en = "Shop unit price"
+topic = "gayrimenkul_fiyat"
+unit = "try_per_square_metre"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "TCMB, değerlemesi yapılan dükkânların m² fiyatı (EVDS TP.DBFY), 2015'ten."
+
+[indicator.office_unit_price]
+label_tr = "Ofis birim fiyatı"
+label_en = "Office unit price"
+topic = "gayrimenkul_fiyat"
+unit = "try_per_square_metre"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "TCMB, değerlemesi yapılan ofislerin m² fiyatı (EVDS TP.OBFY), 2015'ten. Osmaniye ve Düzce serisi EVDS'de listelenip verilmiyor."
+
+# endregion

@@ -40,6 +40,9 @@ AREA_LEVELS = (
     # so there is nothing to sum it from. A level exists here when data arrives at it,
     # not when the hierarchy has a name for it.
     "nuts2",
+    # İBBS-1, stored for the same reason: the CBRT house price and rent indices group the
+    # eastern half of the country into İBBS-1 regions and publish nothing finer there.
+    "nuts1",
     "province",
     "district",
     "neighbourhood",
