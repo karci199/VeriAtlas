@@ -6,6 +6,7 @@ from .evds_housing import EVDS_HOUSING_ADAPTERS
 from .evds_prices import EVDS_PRICE_ADAPTERS
 from .evds_series import EVDS_SERIES_ADAPTERS
 from .evds_tourism import EvdsVisitorsByNationality
+from .kgm import KGM_ADAPTERS
 from .sgk_provinces import SGK_ADAPTERS
 from .tbb_provinces import TBB_ADAPTERS
 from .tuik_birth_order import TuikBirthOrder
@@ -87,6 +88,8 @@ ADAPTERS = {
     "evds_foreign_visitors_by_nationality": EvdsVisitorsByNationality,
     # SGK yearbooks: insured, workplaces, pensions, work accidents by province.
     **SGK_ADAPTERS,
+    # KGM: distances, road lengths, motorways, bridges.
+    **KGM_ADAPTERS,
 }
 
 __all__ = [

@@ -1,7 +1,7 @@
 # KGM (Karayolları Genel Müdürlüğü) — site envanteri ve belgeler
 
-Durum 2026-09-14: **depoya hiçbir şey yüklenmedi.** Envanter çıkarıldı, sayısal belgelerin
-bir kısmı indirildi, iki PDF okundu.
+Durum 2026-09-14 (akşam): mesafeler, yol uzunlukları, otoyol ve köprüler **depoda**
+(`adapters/kgm.py`, 8 gösterge, 1,01 mn satır). Trafik ve Ulaşım Bilgileri ciltleri henüz okunmadı.
 
 ## Akış
 
@@ -46,3 +46,28 @@ trafik hacim haritaları (görsel).
    için sayfa döndürme ya da kelime koordinatları.
 3. Trafik ve Ulaşım Bilgileri ciltlerinin yapısına bak (il/kesim düzeyi mi).
 4. Mesafe cetvelleri (il × il) — ayrı gösterge türü, K kararı gerekebilir.
+
+## Depoya yüklenenler (2026-09-14)
+
+| Gösterge | Kapsam | Denetim |
+|---|---|---|
+| `road_distance_between_provinces` | 81 × 80 il, Mart 2026 | simetrik; büyükşehir merkez noktaları ilçe cetveliyle 870/870 aynı |
+| `road_distance_between_districts` | 1.003 × 1.002 yer | tam kare; köşegen iki kez basılı (0), atıldı |
+| `road_length_by_surface` | il × devlet/il yolu × kaplama, 01.01.2026 | satır toplamları ve devlet + il = birleşik tablo, 81 il |
+| `divided_road_length` | il × yol sınıfı | |
+| `road_length_history` | TR, kaplama türü, 1967-2025 | binlik ayırıcı boşluk: satır toplamını tutan tek bölünme aranır |
+| `motorway_length` | il (28), 2000-2025 | il toplamı her yıl Türkiye toplamına eşit |
+| `bridges`, `bridge_length` | TR × yol sınıfı × malzeme, 2002-2024 | aşağıdaki iki kaynak hatası |
+
+Tuzaklar:
+
+- İlçe cetvelinde `MERKEZ`: 51 ilde il adını taşıyan merkez ilçe; 30 büyükşehirde ilçe
+  değil, il merkezi noktası — il düzeyinde (`TR-06`) saklandı. Eyüp → Eyüpsultan,
+  Ondokuzmayıs → 19 Mayıs.
+- İl cetveli başlığında `KOCAELİ (İZMİT)`; otoyol tablosunda `K.Maraş`, `Ş.Urfa`.
+- Köprü PDF'inde birleşik tablonun 2023 satırı 2024'ün kopyası (devlet 6.165 + il 2.045 ≠
+  8.189); il yolu 2014 malzeme toplamı tutmuyor. Parçalar saklandı, basılı toplam değil.
+- Tünel envanteri **bölge müdürlüğü** düzeyinde; alan düzeyi olmadığı için yüklenmedi.
+- Viyadük ayrı sayılmıyor, köprü envanterinin (büyük sanat yapısı) içinde.
+- Trafik ve Ulaşım Bilgileri PDF'lerinde harita sayfalarının fontu bozuk (`cid:`); tablo sayfaları okunuyor.
+- Düşük değerli belgeler (bakım maliyeti, faaliyet raporu, anket) kullanıcı kararıyla işlenmeyecek.

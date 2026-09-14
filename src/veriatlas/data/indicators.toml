@@ -24508,3 +24508,146 @@ views = ["table", "map", "line"]
 definition_tr = "2012'den."
 
 # endregion
+# region Road network (KGM, adapters/kgm.py), 2026-09-14.
+
+[topic.karayolu]
+label_tr = "Karayolu ağı"
+label_en = "Road network"
+order = 48
+
+[unit.road_km]
+label_tr = "km"
+label_en = "km"
+decimals = 1
+additive = true
+
+[unit.metre]
+label_tr = "m"
+label_en = "m"
+decimals = 0
+additive = true
+
+[unit.bridge]
+label_tr = "köprü"
+label_en = "bridges"
+decimals = 0
+additive = true
+
+[dim.to_area]
+label_tr = "Varış yeri"
+label_en = "Destination"
+# Values are area ids (province TR-01 … TR-81, district TR-01-001 …); their Turkish is the
+# area register's name.
+
+[dim.road_class]
+label_tr = "Yol sınıfı"
+label_en = "Road class"
+
+[dim.road_class.values]
+state = "Devlet yolu"
+provincial = "İl yolu"
+
+[dim.surface]
+label_tr = "Kaplama türü"
+label_en = "Surface type"
+
+[dim.surface.values]
+asphalt_concrete = "Asfalt betonu"
+surface_treatment = "Sathi kaplama"
+stone_block = "Parke"
+stabilized = "Stabilize"
+earth = "Toprak"
+primitive = "Geçit vermez"
+
+[dim.bridge_material]
+label_tr = "Yapı malzemesi"
+label_en = "Material"
+
+[dim.bridge_material.values]
+reinforced_concrete = "Betonarme"
+steel = "Çelik"
+stone = "Taş"
+
+[indicator.road_distance_between_provinces]
+label_tr = "İller arası karayolu mesafesi"
+label_en = "Road distance between provinces"
+topic = "karayolu"
+unit = "km"
+frequency = "annual"
+dims = ["to_area"]
+views = ["table", "map"]
+summary = true
+definition_tr = "İl merkezleri arası karayolu uzunluğu, KGM uzaklık cetveli (Mart 2026). Tek yıl; kaynak geçmiş yılları yayımlamıyor."
+
+[indicator.road_distance_between_districts]
+label_tr = "İlçeler arası karayolu mesafesi"
+label_en = "Road distance between districts"
+topic = "karayolu"
+unit = "km"
+frequency = "annual"
+dims = ["to_area"]
+views = ["table", "map"]
+summary = true
+definition_tr = "İlçe merkezleri arası karayolu uzunluğu, KGM uzaklık cetveli (Mart 2026). Büyükşehirlerde KGM'nin 'Merkez' noktası il merkezidir ve il düzeyinde durur."
+
+[indicator.road_length_by_surface]
+label_tr = "Devlet ve il yolu uzunluğu (kaplama türüne göre)"
+label_en = "State and provincial road length by surface"
+topic = "karayolu"
+unit = "road_km"
+frequency = "annual"
+dims = ["road_class", "surface"]
+views = ["table", "map", "bar"]
+definition_tr = "KGM sorumluluğundaki yollar, 01.01.2026 durumu (2025 yıl sonu). Otoyollar ve belediye yolları dahil değil."
+
+[indicator.divided_road_length]
+label_tr = "Bölünmüş yol uzunluğu"
+label_en = "Divided road length"
+topic = "karayolu"
+unit = "road_km"
+frequency = "annual"
+dims = ["road_class"]
+views = ["table", "map", "bar"]
+definition_tr = "Devlet ve il yollarının bölünmüş kısmı, 01.01.2026 durumu."
+
+[indicator.road_length_history]
+label_tr = "Devlet ve il yolu uzunluğu, 1967'den"
+label_en = "State and provincial road length since 1967"
+topic = "karayolu"
+unit = "road_km"
+frequency = "annual"
+dims = ["surface"]
+views = ["table", "line", "bar"]
+definition_tr = "Türkiye geneli, yıl sonu. İl kırılımı kaynakta yalnız son yıl için var (bkz. kaplama türüne göre uzunluk)."
+
+[indicator.motorway_length]
+label_tr = "Otoyol uzunluğu"
+label_en = "Motorway length"
+topic = "karayolu"
+unit = "road_km"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Yapımı tamamlanmış otoyollar, il bazında, 2000-2025 yıl sonu. İstanbul'daki 2004 düşüşü kaynakta."
+
+[indicator.bridges]
+label_tr = "Büyük köprü sayısı"
+label_en = "Large bridges"
+topic = "karayolu"
+unit = "bridge"
+frequency = "annual"
+dims = ["road_class", "bridge_material"]
+views = ["table", "line", "bar"]
+definition_tr = "Devlet ve il yollarındaki büyük sanat yapıları, Türkiye geneli, 2002-2024. Otoyol köprüleri dahil değil."
+
+[indicator.bridge_length]
+label_tr = "Büyük köprü uzunluğu"
+label_en = "Large bridge length"
+topic = "karayolu"
+unit = "metre"
+frequency = "annual"
+dims = ["road_class", "bridge_material"]
+views = ["table", "line", "bar"]
+definition_tr = "Devlet ve il yollarındaki büyük sanat yapılarının toplam uzunluğu, 2002-2024."
+
+# endregion
