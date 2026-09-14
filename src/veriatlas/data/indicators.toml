@@ -6717,3 +6717,31 @@ views = ["table", "line", "bar"]
 definition_tr = "TÜİK, EVDS bie_inyprh2 / bie_inypkl2, 2010'dan, yalnız Türkiye. Yalnız yapraklar saklanır (3 sahip × 10 kullanım); ayda ayda genel toplamla karşılaştırılır. Değer (TL) serisi kaynakta boş."
 
 # endregion
+
+# region Motor vehicle production (EVDS bie_uroto, OSD), 2026-09-14.
+
+[dim.vehicle_type_produced]
+label_tr = "Üretilen araç türü"
+label_en = "Vehicle type produced"
+
+[dim.vehicle_type_produced.values]
+ur_s08 = "Binek"
+ur_s09 = "Çekici"
+ur_s10 = "Kamyon"
+ur_s11 = "Kamyonet"
+ur_s12 = "Midibüs"
+ur_s13 = "Minibüs"
+ur_s14 = "Otobüs"
+ur_s31 = "Traktör"
+
+[indicator.vehicle_production]
+label_tr = "Motorlu taşıt üretimi"
+label_en = "Motor vehicle production"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "monthly"
+dims = ["vehicle_type_produced"]
+views = ["table", "line", "bar"]
+definition_tr = "Otomotiv Sanayii Derneği (OSD), EVDS TP.UR.S, aylık, 1974'ten, yalnız Türkiye. Yalnız OSD üyesi üreticiler."
+
+# endregion

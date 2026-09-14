@@ -67,6 +67,8 @@ INDEX_TREES = {
     "agricultural_ppi": ("bie_tarimufe", "agricultural_ppi_item"),
     "agricultural_input_pi": ("bie_tarimgfe", "agricultural_input_item"),
     "istanbul_cpi_ito": ("bie_itouge2023", "istanbul_cpi_item"),
+    # Not a price index, but the same shape: one Türkiye series per vehicle type (OSD).
+    "vehicle_production": ("bie_uroto", "vehicle_type_produced"),
 }
 
 
