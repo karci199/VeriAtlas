@@ -1,6 +1,7 @@
 """Source adapters. One module per source; the contract lives in `base`."""
 
 from .base import Adapter, Manifest, history, ingest
+from .evds_archive import EVDS_ARCHIVE_ADAPTERS
 from .evds_housing import EVDS_HOUSING_ADAPTERS
 from .evds_prices import EVDS_PRICE_ADAPTERS
 from .evds_series import EVDS_SERIES_ADAPTERS
@@ -80,6 +81,8 @@ ADAPTERS = {
     **EVDS_PRICE_ADAPTERS,
     # Price index trees, monthly property sales by province, monthly permits.
     **EVDS_SERIES_ADAPTERS,
+    # EVDS archive groups, one indicator per retired table.
+    **EVDS_ARCHIVE_ADAPTERS,
     "evds_foreign_visitors_by_nationality": EvdsVisitorsByNationality,
 }
 
