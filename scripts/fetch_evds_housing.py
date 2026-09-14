@@ -58,7 +58,9 @@ ROW_LIMIT = 1000
 #: times fewer rows, and the only way the market groups finish (one daily group ran 2.5 h).
 #: Saved as `<group>-aylik.json` so a daily download is never overwritten by an average.
 MONTHLY = bool(os.environ.get("EVDS_AYLIK"))
-MONTHLY_QUERY = "&frequency=5&aggregationTypes=avg"
+#: One aggregation per series, dash-joined: a single `avg` for several series is refused
+#: with 400, and the chunk then fell back to one request per series (bond yields: 4,158).
+MONTHLY_QUERY = "&frequency=5&aggregationTypes={}"
 
 
 def main() -> None:
@@ -96,7 +98,8 @@ def fetch_group(client, out, group: str, start: int) -> None:
         chunk, first, last = chunks.pop(0)
         r = client.get(
             f"/series={'-'.join(chunk)}&startDate=01-01-{first}"
-            f"&endDate=31-12-{last}&type=json{MONTHLY_QUERY if MONTHLY else ''}"
+            f"&endDate=31-12-{last}&type=json"
+            + (MONTHLY_QUERY.format("-".join(["avg"] * len(chunk))) if MONTHLY else "")
         )
         if r.status_code == 400:
             # One series EVDS lists but will not serve fails the whole chunk:
