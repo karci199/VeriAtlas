@@ -77,8 +77,8 @@ def main() -> None:
     stamp = f"{date.group(3)}-{date.group(2)}-{date.group(1)}"
 
     rows, total = [], None
-    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", page, re.S):
-        cells = re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)
+    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", page, re.DOTALL):
+        cells = re.findall(r"<td[^>]*>(.*?)</td>", tr, re.DOTALL)
         if len(cells) < 10:
             continue
         button = re.search(r'value="([^"]+)"', cells[0])
