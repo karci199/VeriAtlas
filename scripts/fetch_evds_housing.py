@@ -98,7 +98,7 @@ def fetch_group(client, out, group: str, start: int) -> None:
                 refused.append(chunk[0])
             else:
                 chunks[:0] = [([code], first, last) for code in chunk]
-            return
+            continue
         r.raise_for_status()
         part = r.json()["items"]
         if len(part) >= ROW_LIMIT:
