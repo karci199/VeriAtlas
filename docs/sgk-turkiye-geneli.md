@@ -1,0 +1,695 @@
+# SGK yıllıkları — il kırılımı olmayan tablolar (envanter, 2026-09-14)
+
+Depolanmadı. `scripts/extract_sgk_provinces.py`'nin il tablosu saymadığı, başlığı olan her
+sayfa; başlık yıla göre sadeleştirildi (aynı tablo ifadesi değişince iki satır olur).
+Bölge (İBBS) kırılımlı tablo yok: bunlar Türkiye geneli.
+
+## Konular
+
+- **İş kazası / meslek hastalığı (4a 2014-, 4b 2017-)**: ekonomik faaliyet (NACE), meslek
+  grubu, yaş, cinsiyet, ay, saat, çalışılan ortam, kaza anındaki faaliyet, sapma, yaralanma
+  türü ve vücut bölgesi, kullanılan araç, iş yerindeki çalışan sayısı, meslek hastalığı
+  tanıları, sıklık ve ağırlık hızları (2013-2022), iş göremezlik derecesi.
+- **Hastalık (rapor)**: ekonomik faaliyete ve yaş grubuna göre olay ve oranlar.
+- **Sigortalı**: 4a zorunlu sigortalı yaş × cinsiyet × prim gün sayısı × sigortalılık süresi;
+  kazanç aralığı × sektör × cinsiyet; faaliyet grubu × iş yeri büyüklüğü; 4b ve 4c yaş ×
+  cinsiyet; aktif/pasif oranı (2012-).
+- **Aylık ve gelir**: yaş × aylık türü (4a, 4b, 4c), toptan ödemeler, ölüm aylığı hak
+  sahipleri, aylık almakta iken ölenler, evlenme ödeneği (2019-), vatani ve tütün ikramiyesi.
+- **Mali**: prim gelirleri, giderler (2010-2012 ayrı bölüm).
+
+## İl kırılımı olup okunamayanlar (açık iş)
+
+- **4a iş yeri ve sigortalı, faaliyet grubu (NACE 2 hane) × il, 2012-2025**: iller satır
+  değil sütun (il başına iş yeri + sigortalı sütunu), çıkarıcı bu düzeni tanımıyor. En değerli
+  eksik: il sektör yapısı.
+- **4a iş yerleri illere göre, 2013-2018 (tablo 1.10)**: iki yan yana il sütunu (1-41, 42-81);
+  çıkarıcı yalnız ilk 4 sütunda plaka arıyor. İş yeri toplamı bu yıllar için büyüklük
+  tablosundan zaten depoda.
+
+## Tam başlık listesi
+- 2012-2025 (14) sosyal guvenlik kurumu aktif pasif orani
+- 2013-2025 (13) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi sonucu yil icinde olum geliri baglanan hak sahiplerinin
+- 2013-2025 (13) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi veya meslek hastaligi sonucu olum geliri baglanan hak s
+- 2013-2025 (13) sayili kanunun 4a maddesi kapsamindaki sigortalilardan meslek hastaligi sonucu yil icinde olum geliri baglanan hak sahip
+- 2014-2025 (12) sayili kanunun 4a kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin olayi normal seyrinde
+- 2014-2025 (12) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin calistiklari 
+- 2014-2025 (12) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin is yerinde ca
+- 2014-2025 (12) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin kaza aninda y
+- 2014-2025 (12) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin kazadan az on
+- 2014-2025 (12) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin kullandigi ma
+- 2014-2025 (12) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin meslek grupla
+- 2014-2025 (12) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin son isveren n
+- 2014-2025 (12) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin yaralanmaya s
+- 2014-2025 (12) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin yaranin turun
+- 2014-2025 (12) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin yaranin vucut
+- 2014-2025 (12) sayili kanunun 4a maddesi kapsamindaki sigortalilardan meslek hastaligina tutulanlar ile meslek hastaligi sonucu olenler
+- 2015-2025 (11) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi gecirenlerin calistiklari ortama ve cinsiyete gore dagi
+- 2015-2025 (11) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi gecirenlerin is kazasinin meydana geldigi saatlere ve c
+- 2015-2025 (11) sayili kanunun 4a maddesi kapsamindaki sigortalilardan meslek hastaligina tutulanlarin tanilarina ve cinsiyete gore dagi
+- 2013-2022 (10) is kazasi siklik ve agirlik hizlari
+- 2012-2025 (9) sayili kanunun 4a maddesi kapsamindaki sigortalilardan surekli is goremezlik geliri alanlarin calisma, gelir ve aylik al
+- 2011-2018 (8) sayili kanunun 4a maddesi kapsamindaki isyeri ve zorunlu sigortali sayilarinin, isyerinde calisan sigortali sayilarina g
+- 2011-2018 (8) sayili kanunun 4a maddesi kapsamindaki sigortali sayilari ve sosyal guvenlik kapsami
+- 2018-2025 (8) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi geciren veya meslek hastaligina tutulan sigortali sayil
+- 2018-2025 (8) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi geciren veya meslek hastaligina tutulanlarin yaslara ve
+- 2018-2025 (8) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi gecirenlerin gecici is goremezlik surelerinin ekonomik 
+- 2018-2025 (8) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi veya meslek hastaligi sonucu olenlerin aylara ve cinsiy
+- 2018-2025 (8) sayili kanunun 4a maddesi kapsamindaki sigortalilardan surekli is goremezlik geliri alanlarin is goremezlik derecelerine
+- 2018-2025 (8) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde is kazasi veya meslek hastaligi sonucu olenlerin ekono
+- 2018-2025 (8) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde is kazasi veya meslek hastaligi sonucu olenlerin yasla
+- 2018-2025 (8) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde surekli is goremezlik geliri baglananlarin ekonomik fa
+- 2018-2025 (8) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde surekli is goremezlik geliri baglananlarin is goremezl
+- 2018-2025 (8) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde surekli is goremezlik geliri baglananlarin yas ve cins
+- 2011-2018 (8) sosyal guvenlik kapsami (4a, 4b, 4c maddesi kapsaminda)
+- 2019-2025 (7) /a kapsaminda gecici is goremezlik odenegine neden olan hastalik olaylari ve oranlarinin ekonomik faaliyet siniflamasi v
+- 2019-2025 (7) /a kapsaminda gecici is goremezlik odenegine neden olan hastalik olaylarinin yas grubu ve cinsiyet dagilimi
+- 2019-2025 (7) primsiz odemeler kapsamindaki vataniler ve tutun ikramiyesi alanlarin dagilimi
+- 2019-2025 (7) primsiz odemeler kapsamindaki vatanilerin yas ve cinsiyete gore dagilimi
+- 2012-2018 (7) sayili kanunun 4a maddesi kapsamindaki isyeri ve zorunlu sigortali sayilarinin faaliyet gruplarina ve illere gore dagili
+- 2012-2018 (7) sayili kanunun 4a maddesi kapsamindaki zorunlu sigortalilarin prime esas gunluk kazanclarinin sektor ve cinsiyete gore o
+- 2012-2018 (7) sayili kanunun 4a maddesi kapsamindaki zorunlu sigortalilarin yas, cinsiyet, birikimli prim odeme gun sayisi ve sigortal
+- 2017-2025 (7) sayili kanunun 4b kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin olayi normal seyrinde
+- 2012-2018 (7) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 ve 2926) kapsamindaki sigortali sayilari ve sosyal guvenlik kapsami
+- 2012-2018 (7) sayili kanunun 4b maddesi kapsamindaki aktif sigortalilarin yas ve cinsiyete gore dagilimi
+- 2017-2025 (7) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin calistiklari 
+- 2017-2025 (7) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin is yerinde ca
+- 2017-2025 (7) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin kaza aninda y
+- 2017-2025 (7) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin kazadan az on
+- 2017-2025 (7) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin kullandigi ma
+- 2017-2025 (7) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin meslek grupla
+- 2017-2025 (7) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin yaralanmaya s
+- 2017-2025 (7) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin yaranin turun
+- 2017-2025 (7) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin yaranin vucut
+- 2017-2025 (7) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenlerin calistiklari ortama ve cinsiyete gore dagi
+- 2017-2025 (7) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenlerin is kazasinin meydana geldigi saatlere ve c
+- 2017-2025 (7) sayili kanunun 4b maddesi kapsamindaki sigortalilardan meslek hastaligina tutulanlar ile meslek hastaligi sonucu olenler
+- 2017-2025 (7) sayili kanunun 4b maddesi kapsamindaki sigortalilardan meslek hastaligina tutulanlarin tanilarina ve cinsiyete gore dagi
+- 2017-2025 (7) sayili kanunun 4b maddesi kapsamindaki sigortalilardan yil icinde is kazasi ve meslek hastaligi sonucu olenlerin aylara 
+- 2012-2018 (7) sayili kanunun 4c maddesi kapsamindaki aktif sigortalilarin yas ve cinsiyete gore dagilimi
+- 2012-2018 (7) sayili kanunun 4c maddesi kapsamindaki sigortali sayilari ve sosyal guvenlik kapsami
+- 2019-2025 (7) sosyal guvenlik kapsami (4a, 4b, 4c)
+- 2019-2025 (7) yil icinde evlenme odenegi alanlarin yas ve kapsam turune gore dagilimi
+- 2013-2018 (6) primsiz odemeler kapsaminda vatani hizmet tertibinden aylik alanlarin yillar itibariyla dagilimi (vatani hizmet ayligi)
+- 2013-2018 (6) sayili kanunun 4a maddesi kapsaminda gecici is goremezlik odenegine neden olan hastalik olaylari ve oranlarinin ekonomik
+- 2013-2018 (6) sayili kanunun 4a maddesi kapsaminda gecici is goremezlik odenegine neden olan hastalik olaylarinin yas gruplari ve cins
+- 2013-2018 (6) sayili kanunun 4a maddesi kapsaminda olen sigortalilardan yil icinde aylik/gelir baglanan hak sahipleri sayisi
+- 2013-2018 (6) sayili kanunun 4a maddesi kapsaminda olum ayligi/geliri alan hak sahipleri dagilimi
+- 2013-2018 (6) sayili kanunun 4a maddesi kapsaminda yil icinde aylik ve gelir baglananlarin sayisi
+- 2013-2018 (6) sayili kanunun 4a maddesi kapsamindaki isyeri, zorunlu sigortali sayilari ve prime esas ortalama gunluk kazanclarin sekt
+- 2013-2018 (6) sayili kanunun 4a maddesi kapsamindaki isyerlerinin faaliyet grubu ve isyeri buyuklugune gore dagilimi
+- 2013-2018 (6) sayili kanunun 4a maddesi kapsamindaki isyerlerinin illere gore dagilimi
+- 2020-2025 (6) sayili kanunun 4a maddesi kapsamindaki sigortalilardan surekli is goremezlik geliri alanlarin yas ve cinsiyete gore dagi
+- 2013-2018 (6) sayili kanunun 4a maddesi kapsamindaki zorunlu sigortalilarin faaliyet grubu ve isyeri buyuklugune gore dagilimi
+- 2013-2018 (6) sayili kanunun 4a maddesi kapsamindaki zorunlu sigortalilarin ve prim odeme gun sayilarinin kazanc araligi, sektor ve ci
+- 2013-2018 (6) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda olum ayligi/olum geliri alan hak sahiplerinin dagil
+- 2013-2018 (6) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda yil icinde aylik/gelir baglanan hak sahipleri dagil
+- 2013-2018 (6) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda yil icinde aylik/gelir baglananlarin sayisi
+- 2013-2018 (6) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki aktif sigortalilarin yas grubu, cinsiyet ve kazan
+- 2013-2018 (6) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 ve 2926 ) kapsamindaki aktif sigortalilarin cinsiyet ve kazanc arali
+- 2013-2018 (6) sayili kanunun 4b maddesi (bagimsiz calisanlar 2926 s.k.) kapsaminda olum ayligi/olum geliri alan hak sahiplerinin dagil
+- 2013-2018 (6) sayili kanunun 4b maddesi (bagimsiz calisanlar 2926 s.k.) kapsaminda yil icinde aylik/gelir baglanan hak sahipleri dagil
+- 2013-2018 (6) sayili kanunun 4b maddesi (bagimsiz calisanlar 2926 s.k.) kapsamindaki aktif sigortalilarin yas grubu, cinsiyet ve kazan
+- 2013-2018 (6) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda yil icinde aylik/gelir baglananlarin say
+- 2020-2025 (6) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi geciren veya meslek hastaligina tutulan sigortali sayil
+- 2020-2025 (6) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi geciren veya meslek hastaligina tutulan sigortalilarin 
+- 2020-2025 (6) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenlerin gecici is goremezlik surelerinin ekonomik 
+- 2020-2025 (6) sayili kanunun 4b maddesi kapsamindaki sigortalilardan yil icinde is kazasi veya meslek hastaligi sonucu olenlerin ekono
+- 2020-2025 (6) sayili kanunun 4b maddesi kapsamindaki sigortalilardan yil icinde is kazasi veya meslek hastaligi sonucu olenlerin yasla
+- 2013-2018 (6) sayili kanunun 4c maddesi kapsaminda yil icinde aylik baglanan hak sahipleri dagilimi
+- 2013-2018 (6) sayili kanunun 4c maddesi kapsaminda yil icinde aylik baglananlarin dagilimi
+- 2014-2018 (5) primsiz odemeler kapsaminda vatani hizmet tertibinden aylik alanlarin cinsiyet ve yaslara gore dagilimi
+- 2014-2018 (5) sayili kanunun 4a maddesi kapsaminda aylik alanlarin yaslara ve aylik turune gore dagilimi
+- 2014-2018 (5) sayili kanunun 4a maddesi kapsaminda gelir alanlarin yaslara ve aylik turune gore dagilimi
+- 2014-2018 (5) sayili kanunun 4a maddesi kapsaminda yil icinde aylik baglananlarin yaslara ve aylik turune gore dagilimi
+- 2014-2018 (5) sayili kanunun 4a maddesi kapsaminda yil icinde gelir baglananlarin yaslara ve aylik turune gore dagilimi
+- 2014-2018 (5) sayili kanunun 4a maddesi kapsaminda yil icinde yaslilik toptan odemesi yapilanlarin ve olum toptan odemesi yapilan hak 
+- 2014-2018 (5) sayili kanunun 4a maddesi kapsamindaki sigortalilardan aylik almakta iken yil icinde olenler ve aktif sigortali iken ole
+- 2014-2018 (5) sayili kanunun 4b maddesi kapsaminda (bagimsiz calisanlar 1479 s.k.) aylik alanlarin yaslara ve aylik turune gore dagili
+- 2014-2018 (5) sayili kanunun 4b maddesi kapsaminda (bagimsiz calisanlar 1479 s.k.) gelir alanlarin yaslara ve aylik turune gore dagili
+- 2014-2018 (5) sayili kanunun 4b maddesi kapsaminda (bagimsiz calisanlar 1479 s.k.) yil icinde aylik baglananlarin yaslara ve aylik tur
+- 2014-2018 (5) sayili kanunun 4b maddesi kapsaminda (bagimsiz calisanlar 1479 s.k.) yil icinde gelir baglananlarin yaslara ve aylik tur
+- 2014-2018 (5) sayili kanunun 4b maddesi kapsaminda (bagimsiz calisanlar 1479 s.k.) yil icinde yaslilik toptan odemesi yapilanlarin ve 
+- 2014-2018 (5) sayili kanunun 4b maddesi kapsaminda (bagimsiz calisanlar 2926 s.k.) aylik alanlarin yaslara ve aylik turune gore dagili
+- 2014-2018 (5) sayili kanunun 4b maddesi kapsaminda (bagimsiz calisanlar 2926 s.k.) gelir alanlarin yaslara ve aylik turune gore dagili
+- 2014-2018 (5) sayili kanunun 4b maddesi kapsaminda (bagimsiz calisanlar 2926 s.k.) yil icinde aylik baglananlarin yaslara ve aylik tur
+- 2014-2018 (5) sayili kanunun 4b maddesi kapsaminda (bagimsiz calisanlar 2926 s.k.) yil icinde gelir baglananlarin yaslara ve aylik tur
+- 2014-2018 (5) sayili kanunun 4b maddesi kapsaminda (bagimsiz calisanlar 2926 s.k.) yil icinde yaslilik toptan odemesi yapilanlarin ve 
+- 2014-2018 (5) sayili kanunun 4b maddesi kapsamindaki (bagimsiz calisanlar 1479 s.k.) sigortalilardan aylik almakta iken yil icinde ole
+- 2014-2018 (5) sayili kanunun 4b maddesi kapsamindaki (bagimsiz calisanlar 2926 s.k.) sigortalilardan aylik almakta iken yil icinde ole
+- 2014-2018 (5) sayili kanunun 4c maddesi kapsaminda aktif sigortali iken olen sigortalilarin (hak sahiplerine aylik baglananlarin) cins
+- 2014-2018 (5) sayili kanunun 4c maddesi kapsaminda aylik alanlarin cinsiyet ve yaslara gore dagilimi
+- 2014-2018 (5) sayili kanunun 4c maddesi kapsaminda yil icinde aylik baglananlarin cinsiyet ve yaslara gore dagilimi
+- 2014-2018 (5) sayili kanunun 4c maddesi kapsaminda yil icinde yaslilik toptan odemesi yapilanlarin ve olum toptan odemesi yapilan hak 
+- 2014-2018 (5) sayili kanunun 4c maddesi kapsamindaki sigortalilardan aylik almakta iken yil icinde olenlerin cinsiyet ve yaslara gore 
+- 2019-2022 (4) /a kapsaminda aktif sigortalilar, aylik veya gelir alanlar
+- 2019-2022 (4) /a kapsaminda aylik alanlarin yas, cinsiyet ve aylik turune gore dagilimi
+- 2019-2022 (4) /a kapsaminda aylik/gelir baglanan hak sahiplerinin dagilimi
+- 2019-2022 (4) /a kapsaminda gelir alanlarin yas, cinsiyet ve gelir turune gore dagilimi
+- 2019-2022 (4) /a kapsaminda yil icinde aylik baglananlarin yas, cinsiyet ve aylik turune gore dagilimi
+- 2019-2022 (4) /a kapsaminda yil icinde aylik/gelir baglanan hak sahiplerinin dagilimi
+- 2019-2022 (4) /a kapsaminda yil icinde aylik/gelir baglananlarin dagilimi
+- 2019-2022 (4) /a kapsaminda yil icinde gelir baglananlarin yas, cinsiyet ve gelir turune gore dagilimi
+- 2019-2022 (4) /a kapsaminda yil icinde olum ayligi baglanilan sigortali dosyalarinin cinsiyet ve yasa gore dagilimi
+- 2019-2022 (4) /a kapsaminda yil icinde yaslilik ve olum toptan odemesi yapilan hak sahiplerinin cinsiyet ve yasa gore dagilimi
+- 2019-2022 (4) /a kapsaminda zorunlu sigortalilarin ve is yerlerinin isyeri buyuklugune gore dagilimi
+- 2019-2022 (4) /a kapsamindaki is yerleri ile zorunlu sigortalilarin faaliyet grubu ve ile gore dagilimi
+- 2019-2022 (4) /a kapsamindaki is yerleri, zorunlu sigortalilar ile prime esas ortalama gunluk kazanclarin faaliyet grubu, sektor ve ci
+- 2019-2022 (4) /a kapsamindaki is yerlerinin faaliyet grubu ve is yeri buyuklugune gore dagilimi
+- 2019-2022 (4) /a kapsamindaki zorunlu sigortalilarin faaliyet grubu ve is yeri buyuklugune gore dagilimi
+- 2019-2022 (4) /a kapsamindaki zorunlu sigortalilarin prime esas gunluk kazanc araligi, sektor ve cinsiyete gore dagilimi
+- 2019-2022 (4) /a kapsamindaki zorunlu sigortalilarin prime esas gunluk kazanc araligi, sektor ve cinsiyete gore oransal dagilimi
+- 2019-2022 (4) /a kapsamindaki zorunlu sigortalilarin yas, cinsiyet, birikimli prim odeme gun sayisi ve sigortalilik suresine gore dagi
+- 2019-2022 (4) /b kapsaminda (tarim haric) yil icinde olum ayligi baglanilan sigortali dosyalarinin, cinsiyet ve yasa gore dagilimi
+- 2019-2022 (4) /b kapsaminda aktif sigortalilar, aylik veya gelir alanlar
+- 2019-2022 (4) /b kapsaminda aylik alanlarin yas, cinsiyet ve aylik turune gore dagilimi
+- 2019-2022 (4) /b kapsaminda gelir alanlarin yas, cinsiyet ve gelir turune gore dagilimi
+- 2019-2022 (4) /b kapsaminda olum ayligi/geliri alan hak sahiplerinin dagilimi
+- 2019-2022 (4) /b kapsaminda yil icinde aylik baglananlarin yas, cinsiyet ve aylik turune gore dagilimi
+- 2019-2022 (4) /b kapsaminda yil icinde aylik/gelir baglanan hak sahiplerinin dagilimi
+- 2019-2022 (4) /b kapsaminda yil icinde gelir baglananlarin yas, cinsiyet ve gelir turune gore dagilimi
+- 2019-2022 (4) /b kapsaminda yil icinde toptan odeme yapilanlarin yas ve cinsiyete gore dagilimi
+- 2019-2022 (4) /b kapsamindaki (tarim) sigortalilardan yil icinde olenlerin (hak sahiplerine aylik baglananlarin) dosya durumu, cinsiye
+- 2019-2022 (4) /b kapsamindaki aktif sigortalilarin (tarim haric) yas grubu, cinsiyet ve kazanc araligina gore dagilimi
+- 2019-2022 (4) /b kapsamindaki aktif sigortalilarin (tarim) yas grubu, cinsiyet ve kazanc araligina gore dagilimi
+- 2019-2022 (4) /b kapsamindaki aktif sigortalilarin kazanc araligi ve cinsiyete gore dagilimi
+- 2019-2022 (4) /b kapsamindaki aktif sigortalilarin yas ve cinsiyete gore dagilimi
+- 2019-2022 (4) /c kapsaminda aktif sigortali iken olen ve hak sahiplerine yil icinde olum ayligi baglanan dosyalarin yas ve cinsiyete g
+- 2019-2022 (4) /c kapsaminda aktif sigortalilar ve aylik alanlar
+- 2019-2022 (4) /c kapsaminda aylik alanlarin yas ve cinsiyete gore dagilimi
+- 2019-2022 (4) /c kapsaminda aylik almakta iken olen ve hak sahiplerine yil icinde olum ayligi baglanan dosyalarin cinsiyet ve yasa gor
+- 2019-2022 (4) /c kapsaminda yil icinde aylik baglanan hak sahipleri dagilimi
+- 2019-2022 (4) /c kapsaminda yil icinde aylik baglananlarin dagilimi
+- 2019-2022 (4) /c kapsaminda yil icinde aylik baglananlarin yas, cinsiyet ve aylik turune gore dagilimi
+- 2019-2022 (4) /c kapsaminda yil icinde toptan odeme yapilanlarin yas ve cinsiyete gore dagilimi
+- 2019-2022 (4) /c kapsamindaki aktif sigortalilarin yas ve cinsiyete gore dagilimi
+- 2017-2022 (4) is kazasi siklik ve agirlik hizlari (4b)
+- 2007-2010 (4) sayili kanuna gore aylik alan kisilerin cinsiyete gore dagilimi
+- 2010-2013 (4) sayili kanunun 4a maddesi kapsaminda malulluk ayligi almakta olanlarin cinsiyet ve yas gruplarina gore dagilimi
+- 2010-2013 (4) sayili kanunun 4a maddesi kapsamindaki sigortalilardan malulluk ayligi almakta iken yil icinde olenlerin cinsiyet ve yas
+- 2015-2018 (4) sayili kanununa gore aylik veya gelir almakta iken evlenmeleri sebebiyle evlenme odenegi alan kiz cocuklarinin yaslarina
+- 2007-2010 (4) yili is kazalari siklik (*) ve agirlik (**) hizlari
+- 2023-2025 (3) /1-a kapsaminda aktif sigortalilar, aylik veya gelir alanlar
+- 2023-2025 (3) /1-a kapsaminda aylik alanlarin yas, cinsiyet ve aylik turune gore dagilimi
+- 2023-2025 (3) /1-a kapsaminda aylik/gelir baglanan hak sahiplerinin dagilimi
+- 2023-2025 (3) /1-a kapsaminda gelir alanlarin yas, cinsiyet ve gelir turune gore dagilimi
+- 2023-2025 (3) /1-a kapsaminda yil icinde aylik baglananlarin il, cinsiyet ve aylik turune gore dagilimi
+- 2023-2025 (3) /1-a kapsaminda yil icinde aylik baglananlarin yas, cinsiyet ve aylik turune gore dagilimi
+- 2023-2025 (3) /1-a kapsaminda yil icinde aylik/gelir baglanan hak sahiplerinin dagilimi
+- 2023-2025 (3) /1-a kapsaminda yil icinde aylik/gelir baglananlarin dagilimi
+- 2023-2025 (3) /1-a kapsaminda yil icinde gelir baglananlarin yas, cinsiyet ve gelir turune gore dagilimi
+- 2023-2025 (3) /1-a kapsaminda yil icinde olum ayligi baglanilan sigortali dosyalarinin cinsiyet ve yasa gore dagilimi
+- 2023-2025 (3) /1-a kapsaminda yil icinde yaslilik ve olum toptan odemesi yapilan hak sahiplerinin cinsiyet ve yasa gore dagilimi
+- 2023-2025 (3) /1-a kapsamindaki is yerleri ile zorunlu sigortalilarin faaliyet grubu ve ile gore dagilimi
+- 2023-2025 (3) /1-a kapsamindaki is yerleri, zorunlu sigortalilar ile prime esas ortalama gunluk kazanclarin faaliyet grubu, sektor ve 
+- 2023-2025 (3) /1-a kapsamindaki is yerlerinin faaliyet grubu ve is yeri buyuklugune gore dagilimi
+- 2023-2025 (3) /1-a kapsamindaki zorunlu sigortalilarin faaliyet grubu ve is yeri buyuklugune gore dagilimi
+- 2023-2025 (3) /1-a kapsamindaki zorunlu sigortalilarin prime esas gunluk kazanc araligi, sektor ve cinsiyete gore dagilimi
+- 2023-2025 (3) /1-a kapsamindaki zorunlu sigortalilarin prime esas gunluk kazanc araligi, sektor ve cinsiyete gore oransal dagilimi
+- 2023-2025 (3) /1-a kapsamindaki zorunlu sigortalilarin yas, cinsiyet, birikimli prim odeme gun sayisi ve sigortalilik suresine gore da
+- 2023-2025 (3) /1-b kapsaminda (tarim haric) yil icinde olum ayligi baglanilan sigortali dosyalarinin, cinsiyet ve yasa gore dagilimi
+- 2023-2025 (3) /1-b kapsaminda aktif sigortalilar, aylik veya gelir alanlar
+- 2023-2025 (3) /1-b kapsaminda aylik alanlarin yas, cinsiyet ve aylik turune gore dagilimi
+- 2023-2025 (3) /1-b kapsaminda gelir alanlarin yas, cinsiyet ve gelir turune gore dagilimi
+- 2023-2025 (3) /1-b kapsaminda olum ayligi/geliri alan hak sahiplerinin dagilimi
+- 2023-2025 (3) /1-b kapsaminda yil icinde aylik baglananlarin yas, cinsiyet ve aylik turune gore dagilimi
+- 2023-2025 (3) /1-b kapsaminda yil icinde aylik/gelir baglanan hak sahiplerinin dagilimi
+- 2023-2025 (3) /1-b kapsaminda yil icinde gelir baglananlarin yas, cinsiyet ve gelir turune gore dagilimi
+- 2023-2025 (3) /1-b kapsaminda yil icinde toptan odeme yapilanlarin yas ve cinsiyete gore dagilimi
+- 2023-2025 (3) /1-b kapsamindaki (tarim) sigortalilardan yil icinde olenlerin (hak sahiplerine aylik baglananlarin) dosya durumu, cinsi
+- 2023-2025 (3) /1-b kapsamindaki aktif sigortalilarin (tarim haric) yas grubu, cinsiyet ve kazanc araligina gore dagilimi
+- 2023-2025 (3) /1-b kapsamindaki aktif sigortalilarin (tarim) yas grubu, cinsiyet ve kazanc araligina gore dagilimi
+- 2023-2025 (3) /1-b kapsamindaki aktif sigortalilarin kazanc araligi ve cinsiyete gore dagilimi
+- 2023-2025 (3) /1-b kapsamindaki aktif sigortalilarin yas ve cinsiyete gore dagilimi
+- 2023-2025 (3) /1-c kapsaminda aktif sigortali iken olen ve hak sahiplerine yil icinde olum ayligi baglanan dosyalarin yas ve cinsiyete
+- 2023-2025 (3) /1-c kapsaminda aktif sigortalilar ve aylik alanlar
+- 2023-2025 (3) /1-c kapsaminda aylik alanlarin yas ve cinsiyete gore dagilimi
+- 2023-2025 (3) /1-c kapsaminda aylik almakta iken olen ve hak sahiplerine yil icinde olum ayligi baglanan dosyalarin cinsiyet ve yasa g
+- 2023-2025 (3) /1-c kapsaminda yil icinde aylik baglanan hak sahipleri dagilimi
+- 2023-2025 (3) /1-c kapsaminda yil icinde aylik baglananlarin dagilimi
+- 2023-2025 (3) /1-c kapsaminda yil icinde aylik baglananlarin yas, cinsiyet ve aylik turune gore dagilimi
+- 2023-2025 (3) /1-c kapsaminda yil icinde toptan odeme yapilanlarin yas ve cinsiyete gore dagilimi
+- 2023-2025 (3) /1-c kapsamindaki aktif sigortalilarin yas ve cinsiyete gore dagilimi
+- 2020-2022 (3) /a kapsaminda yil icinde aylik baglananlarin il, cinsiyet ve aylik turune gore dagilimi
+- 2007-2009 (3) aktif sigortali iken olenler ile malulluk - yaslilik ayligi alirken olenlerin cinsiyet ve yas gruplarina gore dagilimi
+- 2007-2009 (3) analik olaylarinin illere gore dagilimi
+- 2007-2009 (3) aylik alan sigortalilarin yas gruplarina ve cinsiyetlere dagilimi
+- 2007-2009 (3) gecici isgoremezlige neden olan hastalik olaylarinin illere gore dagilimi (*)
+- 2007-2009 (3) is kazalari ile meslek hast. sigortasindan surekli is goremezlik geliri alanlarin cinsiyet ve yas gruplarina gore dagili
+- 2007-2009 (3) is kazalari vakalarinin sigortalilarin yas gruplarina ve cinsiyete gore dagilimi
+- 2007-2009 (3) is kazalarinin is yerinde calisan sigortali sayilarina gore dagilimi
+- 2007-2009 (3) is kazalarinin kaza sebeplerine gore dagilimi
+- 2023-2025 (3) is kazasi frekans ve agirlik hizlari
+- 2023-2025 (3) is kazasi frekans ve agirlik hizlari (4b)
+- 2007-2009 (3) is kazasi sonucu olusan yaranin cesidi
+- 2007-2009 (3) is kazasi sonucu olusan yaranin vucuttaki yeri
+- 2007-2009 (3) is kazasi veya meslek hastaligi sonucu olenlerin yil icinde gelir baglanan hak sahipleri sayisi (*)
+- 2007-2009 (3) iskazasi ve meslek hastaligi vakalarinin meslek gruplarina gore dagilimi
+- 2007-2009 (3) istege bagli sigorta primi odeyen kisilerin odenen prim tutarlarina ve cinsiyete gore dagilimi(*)
+- 2007-2009 (3) istege bagli sigorta primi odeyen kisilerin yas ve cinsiyete gore dagilimi(*)
+- 2007-2009 (3) kadin sigortali analigi olaylarinin dogan cocugun
+- 2007-2009 (3) malulluk ayligi almakta iken yil icinde olenlerin cinsiyet ve yas gruplarina gore dagilimi
+- 2007-2009 (3) malulluk ayligi almakta olanlarin cinsiyet ve yas gruplarina gore dagilimi
+- 2007-2009 (3) meslek hastaliklari sonucu teshis olunan hastalik
+- 2007-2009 (3) meslek hastaliklarinin is yerinde calisan sigortali sayilarina gore dagilimi ve orani
+- 2007-2010 (3) primsiz odemelere gore aylik ve ikramiye alanlarin yillara gore dagilimi
+- 2010-2012 (3) sayili kanunun 4a maddesi kapsaminda olum ayligi alan hak sahiplerinin cinsiyet ve yas gruplarina gore dagilimi
+- 2010-2012 (3) sayili kanunun 4a maddesi kapsamindaki aktif kadin sigortali analigi olaylarinin dogan cocugun durumuna gore dagilimi
+- 2010-2012 (3) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin analik olaylarinin illere gore dagilimi
+- 2010-2012 (3) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin is kazalari sonucu olusan yaralarinin vucuttaki yeri
+- 2010-2012 (3) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin is kazalarinin gecici is goremezlik surelerine gore dagilimi
+- 2010-2012 (3) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin is kazalarinin is yerinde calisan sigortali sayilarina gore 
+- 2010-2012 (3) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin surekli is goremezlik sebebinin is kazasi ve meslek hastalig
+- 2015-2017 (3) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi geciren ve meslek hastaligina tutulan sigortali sayilar
+- 2015-2017 (3) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi geciren ve meslek hastaligina tutulan sigortalilarin ya
+- 2015-2017 (3) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi gecirenlerin gecici is goremezlik sureleri ile hastaned
+- 2015-2017 (3) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi ve meslek hastaligi sonucu surekli is goremezlik geliri
+- 2015-2017 (3) sayili kanunun 4a maddesi kapsamindaki sigortalilardan meslek hastaligina tutulanlarin gecici is goremezlik sureleri ile
+- 2011-2013 (3) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yaslilik ayligi almakta iken olenlerin, ortalama olum yasi ve bun
+- 2015-2017 (3) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde is kazasi ve meslek hastaligi sonucu olenlerin ekonomi
+- 2015-2017 (3) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde is kazasi ve meslek hastaligi sonucu olenlerin yaslara
+- 2015-2017 (3) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde is kazasi ve meslek hastaligi sonucu surekli is goreme
+- 2009-2011 (3) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda aylik alan istege bagli sigortalilarin mesleklerde 
+- 2011-2013 (3) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda aylik almakta iken yil icinde olenlerin cinsiyet ve
+- 2011-2013 (3) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda aylik ve gelir alanlarin cinsiyet ve yas gruplarina
+- 2009-2012 (3) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki aktif sigortalilarin meslek kuruluslarina ve kaza
+- 2009-2012 (3) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki aktif sigortalilarin mesleklere gore dagilimi
+- 2009-2012 (3) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki aktif sigortalilarin yas gruplarina, cinsiyetleri
+- 2009-2012 (3) sayili kanunun 4b maddesi (bagimsiz calisanlar 2926 s.k.) kapsamindaki aktif sigortalilarin yas gruplarina, cinsiyetleri
+- 2011-2013 (3) sayili kanunun 4c maddesi kapsaminda aylik alanlarin cinsiyet ve yas gruplarina gore dagilimi
+- 2012-2014 (3) sayili kanununa gore aylik veya gelir almakta iken evlenmeleri sebebiyle evlenme odenegi alan kiz cocuklarinin yas grupl
+- 2007-2009 (3) sayili yasaya gore sigortalilarin illere gore dagilimi
+- 2010-2012 (3) sosyal guvenlik kurumu prim gelirleri, emekli ayligi ve saglik odemeleri
+- 2007-2009 (3) surekli is goremezlik durumuna girenlerin cinsiyet ve yas gruplarina gore dagilimi
+- 2007-2009 (3) surekli is goremezlik sebebinin is kazasi ve meslek hastaligina gore dagilimi
+- 2007-2009 (3) yaslara ve cinsiyete gore istirakci sayilari (aralik
+- 2007-2009 (3) yaslilik ayligi almakta iken olenlerin ortalama olum yasi ve bunlarin yaslilik ayligi alanlar icindeki orani
+- 2007-2009 (3) yaslilik sigortasindan yil icinde toptan odeme yapilan sigortalilarin cinsiyet ve yas gruplarina gore dagilimi
+- 2007-2009 (3) yil icinde maluliyet ayligi baglanan sigortalilarin sektorler, cinsiyet ve yas gruplarina gore dagilimi
+- 2007-2009 (3) yil icinde yaslilik ayligi baglanan sigortalilarin sektorler, cinsiyet ve yas gruplarina gore dagilimi
+- 2007-2009 (3) yili aralik ayi aylik prim ve hizmet belgesi alinan isyerlerinin ve sigortalilarin faaliyet gruplarina ve illere gore da
+- 2007-2009 (3) yili aralik ayi aylik prim ve hizmet belgesine gore isyeri ve zorunlu
+- 2007-2009 (3) yili aralik ayi itibariyle malulluk yaslilik ve olum ayligi ile surekli isgoremezlik ve olum geliri alanlarin aylik ve g
+- 2007-2009 (3) yili aralik ayina iliskin aylik prim ve hizmet belgelerinden duzenlenen kazanclarin sektorler, cinsiyet ve prim odeme gu
+- 2007-2009 (3) yili icinde olum sigortasindan aylik baglanan hak sahiplerinin cinsiyet ve yas gruplarina gore dagilimi
+- 2007-2009 (3) yili isyeri ve zorunlu sigortali sayilari ile prime esas ortalama gunluk kazancin, isin mahiyeti, kamu - ozel sektor ve 
+- 2007-2009 (3) yili itibariyle yas gruplari ve cinsiyete gore gecici is goremezlige neden olan hastalik olaylarinin dagilimi
+- 2007-2009 (3) yili kamu calisani aktif istirakcilerin ve emeklilerin illere gore dagilimi
+- 2007-2009 (3) yili sonu itibariyle is kazasi-meslek hastaligi sonucu olum geliri alan haksahiplerinin yas gruplarina gore dagilimi
+- 2007-2009 (3) yili sonu itibariyle olum ayligi alan haksahiplerinin cinsiyet ve yas gruplarina gore dagilimi
+- 2007-2009 (3) yilinda faaliyet kollarina gore gecici isgoremezlik odenegi alinan hastalik olaylarinin sayisi ve oranlari
+- 2007-2009 (3) yilinda islemi tamamlanan is kazalari ve meslek hastaliklari vak'alari sonucu toplam gecici is goremezlik sureleri ile h
+- 2007-2009 (3) yilinda islemi tamamlanan is kazalari, meslek hastaliklari, surekli is goremezlik, olum vak'alari ve standardize is kaza
+- 2007-2009 (3) yillar itibariyle olen sigortalilarin hak sahiplerine toptan odeme yapilan sigortalilarin cinsiyet ve yas gruplarina gor
+- 2007-2009 (3) yillar itibariyle surekli is goremezlik durumuna girenlerin
+- 2007-2009 (3) zorunlu sigortali ve isyeri sayilarinin sektorlere ve cinsiyete gore dagilimi
+- 2024-2025 (2) /1-a kapsaminda zorunlu sigortalilarin ve is yerlerinin isyeri buyuklugune gore dagilimi
+- 2018-2019 (2) ik- 4b kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin olayi normal seyrinden saptiran 
+- 2018-2019 (2) ik- 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin calistiklari cevreye ve 
+- 2018-2019 (2) ik- 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin is yerinde calisan sigor
+- 2018-2019 (2) ik- 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin kaza aninda yurutmekte o
+- 2018-2019 (2) ik- 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin kazadan az onceki zamand
+- 2018-2019 (2) ik- 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin kullandigi materyale ve 
+- 2018-2019 (2) ik- 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin meslek gruplarina ve cin
+- 2018-2019 (2) ik- 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin yaralanmaya sebep olan o
+- 2018-2019 (2) ik- 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin yaranin turune ve cinsiy
+- 2018-2019 (2) ik- 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenler ile is kazasi sonucu olenlerin yaranin vucuttaki yerine
+- 2018-2019 (2) ik- 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenlerin calistiklari ortama ve cinsiyete gore dagilimi
+- 2018-2019 (2) ik- 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenlerin gecici is goremezlik surelerinin ekonomik faaliyet ve
+- 2018-2019 (2) ik- 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenlerin is kazasinin meydana geldigi saatlere ve cinsiyete go
+- 2018-2019 (2) ik- is kazasi siklik ve agirlik hizlari (4b)
+- 2018-2019 (2) ikmh- 4b maddesi kapsamindaki sigortalilardan is kazasi geciren veya meslek hastaligina tutulan sigortali sayilarinin ay
+- 2018-2019 (2) ikmh- 4b maddesi kapsamindaki sigortalilardan is kazasi geciren veya meslek hastaligina tutulan sigortali sayilarinin ek
+- 2018-2019 (2) ikmh- 4b maddesi kapsamindaki sigortalilardan is kazasi geciren veya meslek hastaligina tutulan sigortalilarin yaslarina
+- 2018-2019 (2) ikmh- 4b maddesi kapsamindaki sigortalilardan yil icinde is kazasi ve meslek hastaligi sonucu olenlerin aylara ve cinsiy
+- 2018-2019 (2) ikmh- 4b maddesi kapsamindaki sigortalilardan yil icinde is kazasi veya meslek hastaligi sonucu olenlerin ekonomik faali
+- 2018-2019 (2) ikmh- 4b maddesi kapsamindaki sigortalilardan yil icinde is kazasi veya meslek hastaligi sonucu olenlerin yaslara ve cin
+- 2007-2008 (2) is kazalari vakalarinin gecici is goremezlik surelerine gore dagilimi
+- 2011-2012 (2) is kazasi siklik (*) ve agirlik (**) hizlari
+- 2018-2019 (2) mh- 4b maddesi kapsamindaki sigortalilardan meslek hastaligina tutulanlar ile meslek hastaligi sonucu olenlerin is yerin
+- 2018-2019 (2) mh- 4b maddesi kapsamindaki sigortalilardan meslek hastaligina tutulanlar ile meslek hastaligi sonucu olenlerin meslek g
+- 2018-2019 (2) mh- 4b maddesi kapsamindaki sigortalilardan meslek hastaligina tutulanlarin tanilarina ve cinsiyete gore dagilimi
+- 2007-2008 (2) no:9/3
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsaminda aktif sigortali iken olen sigortalilardan hak sahiplerine aylik baglananlarin cinsi
+- 2010-2011 (2) sayili kanunun 4a maddesi kapsaminda aktif sigortali iken olenler ile malulluk - yaslilik ayligi alirken olenlerin cinsi
+- 2013-2014 (2) sayili kanunun 4a maddesi kapsaminda gecici is goremezlik odenegine neden olan analik olaylari ve emzirme odenegi alanla
+- 2013-2014 (2) sayili kanunun 4a maddesi kapsaminda is kazasi geciren sigortalilarin calistiklari ortama ve cinsiyete gore dagilimi
+- 2013-2014 (2) sayili kanunun 4a maddesi kapsaminda is kazasi geciren sigortalilarin gecici is goremezlik sureleri ile hastanede gecen 
+- 2013-2014 (2) sayili kanunun 4a maddesi kapsaminda is kazasi/meslek hastaligi geciren sigortali sayilarinin aylara ve cinsiyete gore d
+- 2013-2014 (2) sayili kanunun 4a maddesi kapsaminda is kazasi/meslek hastaligi geciren sigortali sayilarinin ekonomik faaliyet siniflam
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsaminda malulluk, yaslilik ve olum ayligi ile surekli is goremezlik ve olum geliri alanlari
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsaminda malulluk, yaslilik, olum ayligi ile surekli is goremezlik ve olum geliri alanlarin 
+- 2013-2014 (2) sayili kanunun 4a maddesi kapsaminda meslek hastaligina tutulan sigortalilarin gecici is goremezlik sureleri ile hastane
+- 2013-2014 (2) sayili kanunun 4a maddesi kapsaminda meslek hastaligina tutulanlarin tanilarina ve cinsiyete gore dagilimi
+- 2012-2013 (2) sayili kanunun 4a maddesi kapsaminda yaslilik ayligi almakta olanlarin cinsiyet ve yas gruplarina gore dagilimi
+- 2017-2018 (2) sayili kanunun 4a maddesi kapsaminda yil icinde aylik baglananlarin illere ve aylik turune gore dagilimi
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsaminda yil icinde olum ayligi baglanan hak sahiplerinin cinsiyet ve yas gruplarina gore da
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilardan is kazasi veya meslek hastaligi sonucu olenlerin yil icinde
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilardan islemi tamamlanan is kazalari ve meslek hastaliklari vak'al
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilardan islemi tamamlanan is kazalari, meslek hastaliklari, surekli
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilardan yil icinde surekli is goremezlik durumuna girenlerin is gor
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin faaliyet kollarina gore gecici is goremezlik odenegi alinan 
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin gecici is goremezligine neden olan hastalik olaylarinin yas 
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin gecirdigi is kazalarinin kaza sebeplerine gore dagilimi
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin is kazalari sonucu olusan yaralarinin cesidi
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin is kazalari vakalarinin yas gruplarina ve cinsiyete gore dag
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin is kazasi ve meslek hastaligi vakalarinin meslek gruplarina 
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin meslek hastaliklarinin turune gore dagilimi
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki isyeri sayilarinin faaliyet gruplarina ve isyeri buyuklugune gore dagilimi
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki isyeri, zorunlu sigortali sayilari ve prime esas ortalama gunluk kazanclarin faal
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki pasif sigortalilarin emekli ayligi seviyeleri ve prime esas kazanc tutarlari
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazalari ile meslek hastaliklari sigortasindan olum geliri ala
+- 2018-2019 (2) sayili kanunun 4a maddesi kapsamindaki sigortalilardan surekli is goremezlik geliri alanlarin yas ve cinsiyete gore biri
+- 2012-2013 (2) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yaslilik ayligi almakta iken yil icinde olenlerin cinsiyet ve yas
+- 2015-2016 (2) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde is kazasi ve meslek hastaligi sonucu olenlerin aylara 
+- 2012-2013 (2) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde malulluk ayligi baglananlarin sektor, cinsiyet ve yas 
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde toptan odeme yapilanlarin cinsiyet ve yas gruplarina g
+- 2010-2011 (2) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde yaslilik ayligi almakta iken olenlerin cinsiyet ve yas
+- 2012-2013 (2) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde yaslilik ayligi baglananlarin sektor, cinsiyet ve yas 
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki sigortalilarin prim gelirleri, emekli ayligi ve saglik odemeleri
+- 2011-2012 (2) sayili kanunun 4a maddesi kapsamindaki zorunlu sigortali sayilarinin faaliyet gruplarina ve isyeri buyuklugune gore dagi
+- 2009-2010 (2) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda aylik alanlarin aylik ve gelir sinirlarina gore dag
+- 2009-2010 (2) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda aylik alanlarin illere gore dagilimi
+- 2009-2010 (2) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda aylik alanlarin meslek kuruluslarina gore dagilimi
+- 2009-2010 (2) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda aylik alanlarin yillara gore dagilimi
+- 2011-2012 (2) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda aylik ve gelir alanlarin dagilimi
+- 2011-2012 (2) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda aylik ve gelir alanlarin meslek kuruluslarina gore 
+- 2011-2012 (2) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda olum sigortasindan yil icinde aylik baglanan hak sa
+- 2009-2010 (2) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda yil icinde aylik baglananlarin yillar itibariyle da
+- 2011-2012 (2) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda yil icinde aylik ve gelir baglananlarin sayisi
+- 2009-2011 (2) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki istege bagli sigortalilarin mesleklere gore dagil
+- 2011-2012 (2) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki sigortalilarin prim ve aylik tutarlari
+- 2011-2012 (2) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 ve 2926 ) kapsamindaki aktif sigortalilarin cinsiyetlerine ve kazanc
+- 2011-2012 (2) sayili kanunun 4b maddesi (bagimsiz calisanlar 2926 s.k.) kapsamindaki aktif sigortalilarin mesleklerine ve kazanc arali
+- 2010-2011 (2) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda aylik alanlarin mesleklere gore dagilimi
+- 2012-2013 (2) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda aylik almakta iken yil icinde olenlerin 
+- 2012-2013 (2) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda aylik ve gelir alanlarin cinsiyet ve yas
+- 2011-2012 (2) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda olum sigortasindan yil icinde aylik bagl
+- 2012-2013 (2) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda yil icinde aylik ve gelir baglananlarin 
+- 2011-2012 (2) sayili kanunun 4b maddesi kapsamindaki sigortalilarin prim gelirleri, emekli ayligi ve saglik odemeleri
+- 2011-2012 (2) sayili kanunun 4c maddesi kapsaminda aktif sigortalilar ile aylik alanlarin dagilimi
+- 2011-2012 (2) sayili kanunun 4c maddesi kapsamindaki emeklilerin aylik seviyeleri
+- 2011-2012 (2) sayili kanunun 4c maddesi kapsamindaki kamu calisanlarinin aktif pasif dengesi
+- 2011-2012 (2) sayili kanunun 4c maddesi kapsamindaki kamu calisanlarinin prim gelirleri, emekli ayligi ve saglik odemeleri
+- 2011-2012 (2) sosyal guvenlik kurumuna yapilan butce transferleri
+- 2010-2011 (2) sosyal guvenlik kurumunun konsolide nakit akim tablolari
+- 2007-2008 (2) yili aralik ayi aylik prim ve hizmet belgelerinin prime esas gunluk kazanc araliklarinda sektorler ve cinsiyete gore ora
+- 2007-2008 (2) yili aralik ayi aylik prim ve hizmet belgelerinin sigortalilarin yas, cinsiyet, birikimli prim odeme gun sayisi ve sigor
+- 2007-2008 (2) yili aralik ayi itibariyle malulluk, yaslilik, olum ayligi ile surekli isgoremezlik ve olum geliri alanlarin aylik ve ge
+- 2007-2008 (2) yili isyeri, zorunlu sigortali sayilari ve prime esas ortalama gunluk kazanclarin faaliyet gruplarina gore dagilimi (*)
+- 2007-2008 (2) yili itibariyle sosyal guvenlik kapsaminda bulunan nufus gruplarinin
+- 2007-2008 (2) yilinda hak sahiplerine aylik baglanan ve yil icinde olen sigortalilarin cinsiyet ve yas gruplarina dagilimi(*)
+- 2007-2008 (2) yillar itibariyle zorunlu, istege bagli, topluluk, tarim sigortalilari, ciraklar, sosyal guvenlik destek primi odeyenler
+- 2007-2008 (2) yillara gore aktif, emekli, malul, dul ve yetim dagilimi
+- 2007-2007 (1) / 11
+- 2007-2007 (1) / 14
+- 2023-2023 (1) /1-a kapsaminda zorunlu sigortalilarin ve is yerlerinin is yeri buyuklugune gore dagilimi
+- 2008-2008 (1) /b' ye (1479 sayili yasa) gore sigortalilarin illere gore dagilimi
+- 2008-2008 (1) aktif sigortalilarin cinsiyetlerine gore basamaklara dagilimi ve oranlari
+- 2008-2008 (1) aktif sigortalilarin illere gore basamaklara dagilimi
+- 2007-2007 (1) aktif sigortalilarin illere gore basamaklara dagilimi (1479 s.k.)
+- 2007-2007 (1) aktif sigortalilarin illere gore basamaklara dagilimi (2926 s.k.)
+- 2008-2008 (1) aktif sigortalilarin illere gore meslek kuruluslarina dagilimi
+- 2007-2007 (1) aktif sigortalilarin illere gore meslek kuruluslarina dagilimi (1479 s.k.)
+- 2008-2008 (1) aktif sigortalilarin meslek kuruluslarina gore basamaklara dagilimi
+- 2007-2007 (1) aktif sigortalilarin meslek kuruluslarina gore basamaklara dagilimi (1479 s.k.)
+- 2008-2008 (1) aktif sigortalilarin mesleklere dagilimi
+- 2007-2007 (1) aktif sigortalilarin mesleklere dagilimi (1479 s.k.)
+- 2008-2008 (1) aktif sigortalilarin mesleklere gore basamaklara dagilimi
+- 2007-2007 (1) aktif sigortalilarin mesleklere gore basamaklara dagilimi (2926 s.k.)
+- 2008-2008 (1) aktif sigortalilarin yas gruplarina ve cinsiyetlerine gore basamaklara dagilimi
+- 2007-2007 (1) aktif sigortalilarin yas gruplarina ve cinsiyetlerine gore basamaklara dagilimi (1479 s.k.)
+- 2007-2007 (1) aktif sigortalilarin yas gruplarina ve cinsiyetlerine gore basamaklara dagilimi (2926 s.k.)
+- 2008-2008 (1) aktif sigortalilarin yillara gore basamaklara dagilimi
+- 2007-2007 (1) aktif sigortalilarin yillara gore basamaklara dagilimi (2926 s.k.)
+- 2008-2008 (1) aylik alan istege bagli sigortalilarin basamaklara dagilimi
+- 2007-2007 (1) aylik alan istege bagli sigortalilarin basamaklara dagilimi (1479 s.k.)
+- 2008-2008 (1) aylik alanlarin basamaklara dagilimi
+- 2007-2007 (1) aylik alanlarin basamaklara dagilimi (1479 s.k.)
+- 2007-2007 (1) aylik alanlarin basamaklara dagilimi (2926 s.k.)
+- 2008-2008 (1) aylik alanlarin illere dagilimi
+- 2007-2007 (1) aylik alanlarin illere dagilimi (2926 s.k.)
+- 2008-2008 (1) aylik alanlarin illere gore dagilimi
+- 2007-2007 (1) aylik alanlarin illere gore dagilimi (1479 s.k.)
+- 2009-2009 (1) aylik alanlarin illere gore dagilimi [4b (tarimsal faaliyette bulunanlar 2926 s.k.)]
+- 2008-2008 (1) aylik alanlarin mesleklere dagilimi
+- 2009-2009 (1) aylik alanlarin mesleklere gore dagilimi [4b (tarimsal faaliyette bulunanlar 2926 s.k.)]
+- 2007-2007 (1) aylik alanlarin yas gruplarina gore cinsiyet dagilimi (1479 s.k.)
+- 2008-2008 (1) aylik alanlarin yas gruplarina gore cinsiyetlere dagilimi
+- 2007-2007 (1) aylik alanlarin yas gruplarina gore cinsiyetlere dagilimi (2926 s.k.)
+- 2009-2009 (1) aylik alanlarin yas gruplarina gore dagilimi
+- 2009-2009 (1) aylik alanlarin yas gruplarina ve cinsiyete gore dagilimi [4b (tarimsal faaliyette bulunanlar 2926 s.k.)]
+- 2009-2009 (1) aylik alanlarin yillar itibariyle dagilimi [4b (tarimsal faaliyette bulunanlar 2926 s.k.)]
+- 2007-2007 (1) aylik alanlarin yillara dagilimi (2926 s.k.)
+- 2007-2007 (1) aylik alanlarin yillara gore dagilimi (1479 s.k.)
+- 2009-2009 (1) aylik ve gelir alanlarin aylik ve gelir sinirlarina gore dagilimi [4b (tarimsal faaliyette bulunanlar 2926 s.k.)]
+- 2012-2012 (1) aylik ve gelir almakta olanlarin yas grubu ve aylik turune gore dagilimi
+- 2012-2012 (1) diger kanunlara gore aylik alanlarin dagilimi (vatani hizmet ayligi)
+- 2008-2008 (1) hak sahiplerinin (dul ve yetimlerin) illere gore basamaklara dagilimi
+- 2007-2007 (1) hak sahiplerinin (dul ve yetimlerin) illere gore basamaklara dagilimi (1479 s.k.)
+- 2009-2009 (1) hak sahiplerinin (dul ve yetimlerin) illere gore dagilimi [4b (bagimsiz calisanlar 1479 s.k.)]
+- 2009-2009 (1) hak sahiplerinin (dul ve yetimlerin) illere gore dagilimi [4b (tarimsal faaliyette bulunanlar 2926 s.k.)]
+- 2008-2008 (1) haksahiplerinin (dul ve yetimlerin) illere gore basamaklara dagilimi
+- 2007-2007 (1) haksahiplerinin (dul ve yetimlerin) illere gore basamaklara dagilimi (2926 s.k.)
+- 2007-2007 (1) haksahiplerinin (dul ve yetimlerin) yillar itibariyle basamaklara gore dagilimi (1479 s.k.)
+- 2007-2007 (1) haksahiplerinin (dul ve yetimlerin) yillar itibariyle basamaklara gore dagilimi (2926 s.k.)
+- 2009-2009 (1) is kazalarinin gecici is goremezlik surelerine gore dagilimi
+- 2008-2008 (1) istege bagli sigortalilarin meslek kodlarina dagilimi
+- 2010-2010 (1) kamu (sgk +devlet memurlari+yesil kart) 2008-2009-2010 yillari itibariyle
+- 2008-2008 (1) malulluk ayligi alanlarin illere gore basamaklara dagilimi
+- 2007-2007 (1) malulluk ayligi alanlarin illere gore basamaklara dagilimi (1479 s.k.)
+- 2007-2007 (1) malulluk ayligi alanlarin illere gore basamaklara dagilimi (2926 s.k.)
+- 2008-2008 (1) malulluk ayligi alanlarin meslek kuruluslarina gore basamaklara dagilimi
+- 2007-2007 (1) malulluk ayligi alanlarin meslek kuruluslarina gore basamaklara dagilimi (1479 s.k.)
+- 2008-2008 (1) malulluk ayligi alanlarin yas gruplarina gore basamaklara dagilimi
+- 2007-2007 (1) malulluk ayligi alanlarin yas gruplarina gore basamaklara dagilimi (1479 s.k.)
+- 2007-2007 (1) malulluk ayligi alanlarin yas gruplarina gore basamaklara dagilimi (2926 s.k.)
+- 2007-2007 (1) malulluk ayligi alanlarin yillara gore basamaklara dagilimi (2926 s.k.)
+- 2007-2007 (1) olumleri dolayisiyla hak sahiplerine aylik odenen sigortalilarin meslek kuruluslarina gore basamaklara dagilimi (1479 s.
+- 2008-2008 (1) olumleri dolayisiyla hak sahiplerine aylik odenen sigortalilarin meslek kuruluslarina ve basamaklara gore dagilimi
+- 2008-2008 (1) olumleri dolayisiyla haksahiplerine aylik odenen sigortalilarin illere gore basamaklara dagilimi
+- 2007-2007 (1) olumleri dolayisiyla haksahiplerine aylik odenen sigortalilarin illere gore basamaklara dagilimi (1479 s.k.)
+- 2007-2007 (1) olumleri dolayisiyla haksahiplerine aylik odenen sigortalilarin illere gore basamaklara dagilimi (2926 s.k.)
+- 2008-2008 (1) olumleri dolayisiyla haksahiplerine aylik odenen sigortalilarin yas gruplarina gore basamaklara dagilimi
+- 2007-2007 (1) olumleri dolayisiyla haksahiplerine aylik odenen sigortalilarin yas gruplarina gore basamaklara dagilimi (1479 s.k.)
+- 2008-2008 (1) olumleri dolayisiyla haksahiplerine aylik odenen sigortalilarin yillara gore basamaklara dagilimi
+- 2007-2007 (1) olumleri dolayisiyla haksahiplerine aylik odenen sigortalilarin yillara gore basamaklara dagilimi (1479 s.k.)
+- 2007-2007 (1) olumleri dolayisiyla haksahiplerine aylik odenen sigortalilarin yillara gore basamaklara dagilimi (2926 s.k.)
+- 2013-2013 (1) primsiz odemeler kapsaminda vatani hizmet tertibinden aylik alanlarin cinsiyet ve yas gruplarina gore dagilimi
+- 2011-2011 (1) primsiz odemelere gore aylik alanlarin dagilimi
+- 2009-2009 (1) say. kan. 4b maddesi (bagimsiz calisanlar 2926 s.k.) kapsamindaki aktif sigortalilarin mesleklerine ve kazanc araliklari
+- 2011-2011 (1) sayili kanuna gore aylik alanlarin aylik turu ve cinsiyete gore dagilimi
+- 2010-2010 (1) sayili kanunun 4. maddesi kapsaminda zorunlu sigortali ve isyeri sayilari dagilimi
+- 2012-2012 (1) sayili kanunun 4. maddesi kapsamindaki sigortali ve isyeri sayilari
+- 2011-2011 (1) sayili kanunun 4. maddesi kapsamindaki zorunlu sigortali ve isyeri sayilari dagilimi
+- 2013-2013 (1) sayili kanunun 4a kapsaminda is kazasi gecirenler ile is kazasindan dolayi olenlerin olayi normal seyrinden saptiran ve 
+- 2010-2010 (1) sayili kanunun 4a kapsamindaki pasif sigortalilarin emekli ayligi seviyeleri
+- 2010-2010 (1) sayili kanunun 4a kapsamindaki sigortalilarin prim gelirleri ve emekli ayligi odemeleri
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsaminda 2010 yil sonu itibariyle isyeri ve zorunlu sigortali sayilarinin, isyerinde calisan
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsaminda 2010 yil sonu itibariyle isyerlerinin ve sigortalilarin faaliyet gruplarina ve ille
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda aktif sigortali iken olen sigortalilarin (hak sahiplerine aylik baglananlarin) cins
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsaminda aralik ayi itibariyle malulluk yaslilik ve olum ayligi ile surekli isgoremezlik ve 
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsaminda aralik ayi itibariyle malulluk, yaslilik, olum ayligi ile surekli isgoremezlik ve o
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda gecici is goremezlik odenegine neden olan analik olaylarinin dogan cocugun durumuna
+- 2014-2014 (1) sayili kanunun 4a maddesi kapsaminda gecici is goremezlik odenegine neden olan analik olaylarinin istirahat surelerine g
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda gecici is goremezlik odenegine neden olan hastalik olaylarinin gecici is goremezlik
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazalarinin meydana geldigi saatlere ve cinsiyete gore dagilimi
+- 2014-2014 (1) sayili kanunun 4a maddesi kapsaminda is kazasi geciren sigortalilarin is kazasinin meydana geldigi saatlere ve cinsiyete
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi gecirenler ile is kazasindan dolayi olenlerin calistiklari cevreye ve cin
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi gecirenler ile is kazasindan dolayi olenlerin is yerinde calisan sigortal
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi gecirenler ile is kazasindan dolayi olenlerin kaza aninda yurutmekte oldu
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi gecirenler ile is kazasindan dolayi olenlerin kazadan az onceki zamanda y
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi gecirenler ile is kazasindan dolayi olenlerin kullandigi materyale ve cin
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi gecirenler ile is kazasindan dolayi olenlerin meslek gruplari ve cinsiyet
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi gecirenler ile is kazasindan dolayi olenlerin son isveren nezdindeki cali
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi gecirenler ile is kazasindan dolayi olenlerin yaralanmaya sebep olan hare
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi gecirenler ile is kazasindan dolayi olenlerin yaranin turune ve cinsiyete
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi gecirenler ile is kazasindan dolayi olenlerin yaranin vucuttaki yerine ve
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi/ meslek hastaligindan dolayi olenlerin aylara ve cinsiyete gore dagilimi
+- 2014-2014 (1) sayili kanunun 4a maddesi kapsaminda is kazasi/meslek hastaligi geciren sigortlilarin yaslara ve cinsiyete gore dagilimi
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi/meslek hastaligi gecirenlerin yas ve cinsiyet dagilimi
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi/meslek hastaligindan dolayi olenlerin ekonomik faaliyet siniflamasi ve ci
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi/meslek hastaligindan dolayi surekli is goremezlik geliri alanlarin calism
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi/meslek hastaligindan dolayi surekli is goremezlik geliri alanlarin is gor
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi/meslek hastaligindan dolayi surekli is goremezlik geliri alanlarin yas ve
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda is kazasi/meslek hastaligindan dolayi yil icinde surekli is goremezlik durumuna gir
+- 2012-2012 (1) sayili kanunun 4a maddesi kapsaminda malulluk, yaslilik ve olum sigortalarindan aylik almakta olanlarin dagilimi
+- 2011-2011 (1) sayili kanunun 4a maddesi kapsaminda malulluk, yaslilik ve olum sigortalarindan aylik almakta olanlarin dagilimi (*)
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda meslek hastaligina tutulanlar ile meslek hastaligindan dolayi olenlerin is yerinde 
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda meslek hastaligina tutulanlar ile meslek hastaligindan dolayi olenlerin meslek grup
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda meslek hastaligina tutulanlar ile meslek hastaligindan dolayi olenlerin son isveren
+- 2012-2012 (1) sayili kanunun 4a maddesi kapsaminda olen sigortalilardan yil icinde aylik baglanan hak sahipleri sayisi
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda olum ayligi alan hak sahiplerinin yas gruplarina gore dagilimi
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda olum toptan odemesi yapilan hak sahiplerinin cinsiyet ve yas gruplarina gore dagili
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda yil icinde is kazasi ve meslek hastaliginda dolayi surekli is goremezlik geliri bag
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda yil icinde is kazasi/meslek hastaligindan dolayi olenlerin yas ve cinsiyet dagilimi
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda yil icinde olum ayligi baglanan hak sahiplerinin yas gruplarina gore dagilimi
+- 2013-2013 (1) sayili kanunun 4a maddesi kapsaminda yil icinde yaslilik toptan odemesi yapilanlarin cinsiyet ve yas gruplarina gore dag
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsaminda yillar itibariyle malulluk, yaslilik ve olum sigortalarindan aylik almakta olanlari
+- 2012-2012 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilardan is kazasi veya meslek hastaligi sonucu olenlerin cinsiyet v
+- 2011-2011 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilardan surekli is goremezlik durumuna girenlerin cinsiyet ve yas g
+- 2012-2012 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilardan yil icinde surekli is goremezlik durumuna girenlerin cinsiy
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin 2010 yilinda faaliyet kollarina gore gecici isgoremezlik ode
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin 2010 yilinda islemi tamamlanan is kazalari ve meslek hastali
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin 2010 yilinda islemi tamamlanan is kazalari, meslek hastalikl
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin aralik ayi itibariyle yas, cinsiyet, birikimli prim odeme gu
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin aralik ayina iliskin aylik prim ve hizmet belgelerinden duze
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin aralik ayina iliskin aylik prim ve hizmet belgelerinin prime
+- 2011-2011 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin aylik prim ve hizmet belgelerindeki prime esas gunluk kazanc
+- 2011-2011 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin aylik prim ve hizmet belgelerinden duzenlenen kazanclarin se
+- 2011-2011 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin gecici is goremezlige neden olan hastalik olaylarinin illere
+- 2012-2012 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin gecici is goremezligine neden olan hastalik olaylarinin geci
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin gecici isgoremezlige neden olan hastalik olaylarinin illere 
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin is kazalari sonucu olusan yaralarini cesidi
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin is kazalari vakalarinin sigortalilarin yas gruplarina ve cin
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin is kazalarinin kaza sebeplerine gore dagilimi
+- 2012-2012 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin is kazalarinin meydana geldigi is saatlerine gore dagilimi
+- 2012-2012 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin is kazalarinin meydana geldigi saatlere gore dagilimi
+- 2012-2012 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin is kazasi ve meslek hastaligi vakalarinin sigortalinin son i
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin is kazasi veya meslek hastaligi sonucu olenlerinin yil icind
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin iskazasi ve meslek hastaligi vakalarinin meslek gruplarina g
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin meslek hastaliklari sonucu teshis olunan hastalik
+- 2012-2012 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin meslek hastaliklari vakalarinin yas gruplarina ve cinsiyete 
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin surekli is goremezlik durumuna girenlerinin cinsiyet ve yas 
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin yas gruplari ve cinsiyete gore gecici is goremezlige neden o
+- 2011-2011 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin yas, cinsiyet, birikimli prim odeme gun sayisi ve sigortalil
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki aktif sigortalilarin yillar itibariyle surekli is goremezlik durumuna girenlerini
+- 2011-2011 (1) sayili kanunun 4a maddesi kapsamindaki isyeri ve sigortali sayilarinin faaliyet gruplarina ve illere gore dagilimi
+- 2012-2012 (1) sayili kanunun 4a maddesi kapsamindaki olen sigortalilardan dolayi kendisine toptan odeme yapilan hak sahiplerinin cinsi
+- 2011-2011 (1) sayili kanunun 4a maddesi kapsamindaki olen sigortalilardan hak sahiplerine toptan odeme yapilanlarin cinsiyet ve yas gr
+- 2011-2011 (1) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazalari ile meslek hastaliklari sigortasindan surekli is gore
+- 2017-2017 (1) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi ve meslek hastaligi sonucu olenlerin aylara ve cinsiyet
+- 2014-2014 (1) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi veya meslek hastaligi sonucu olenlerin ekonomik faaliye
+- 2014-2014 (1) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi veya meslek hastaligi sonucu surekli is goremezlik geli
+- 2014-2014 (1) sayili kanunun 4a maddesi kapsamindaki sigortalilardan is kazasi/ meslek hastaligi sonucu olenlerin aylara ve cinsiyete 
+- 2012-2012 (1) sayili kanunun 4a maddesi kapsamindaki sigortalilardan surekli is goremezlik geliri alanlarin cinsiyet ve yas gruplarina
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yaslilik ayligi almakta iken olenlerin ortalama olum yasi ve bunl
+- 2014-2014 (1) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde is kazasi veya meslek hastaligi sonucu surekli is gore
+- 2014-2014 (1) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde is kazasi/meslek hastaligi sonucu olenlerin yaslara ve
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde maluliyet ayligi baglanan sigortalilarin sektorler, ci
+- 2011-2011 (1) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde malulluk ayligi baglananlarin sektorler, cinsiyet ve y
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde yaslilik ayligi baglanan sigortalilarin sektorler, cin
+- 2011-2011 (1) sayili kanunun 4a maddesi kapsamindaki sigortalilardan yil icinde yaslilik ayligi baglananlarin sektorler, cinsiyet ve y
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki sigortalilarin is kazasi-meslek hastaligi sonucu olum geliri alan haksahiplerinin
+- 2010-2010 (1) sayili kanunun 4a maddesi kapsamindaki zorunlu sigortali sayilarinin faaliyet kollarina ve isyeri buyuklugune gore dagil
+- 2012-2012 (1) sayili kanunun 4a maddesi kapsamindaki zorunlu sigortalilarin ve prim odeme gun sayilarinin kazanc araliklarina, sektorl
+- 2010-2010 (1) sayili kanunun 4b (bagimsiz calisanlar 1479 s.k.) kapsamindaki sigortalilarin prim ve aylik tutarlari
+- 2009-2009 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda aylik alanlarin yas gruplarina ve cinsiyete gore da
+- 2010-2010 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda aylik almakta iken olenlerin cinsiyet ve yas grupla
+- 2011-2011 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda olum ayligi alan hak sahiplerinin cinsiyet ve yas g
+- 2009-2009 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda yil icinde aylik almakta iken olenlerin cinsiyet ve
+- 2013-2013 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda yil icinde aylik ve gelir baglananlarin cinsiyet ve
+- 2009-2009 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki aktif sigortalilarin cinsiyetlerine ve kazanc ara
+- 2009-2009 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki aktif sigortalilarin illere ve kazanc araliklarin
+- 2009-2009 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki aktif sigortalilarin illere ve meslek kuruluslari
+- 2009-2009 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki aktif sigortalilarin yillar itibariyle dagilimi
+- 2009-2009 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki sigortalilarin illere gore dagilimi
+- 2010-2010 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki sigortalilarin olum ayligi alan haksahiplerinin (
+- 2010-2010 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki sigortalilarin olum sigortasindan aylik baglanan 
+- 2011-2011 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 1479 ve 2926) kapsamindaki aktif ve pasif sigortali sayilari
+- 2009-2009 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 2926 s.k.) kapsamindaki aktif sigortalilarin illere gore dagilimi
+- 2009-2009 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 2926 s.k.) kapsamindaki aktif sigortalilarin illere ve kazanc araliklarin
+- 2009-2009 (1) sayili kanunun 4b maddesi (bagimsiz calisanlar 2926 s.k.) kapsamindaki aktif sigortalilarin yillar itibariyle dagilimi
+- 2010-2010 (1) sayili kanunun 4b maddesi (bagimsiz calisanlarinlar 1479 ve 2926) kapsamindaki aktif ve pasif sigortali sayilari
+- 2011-2011 (1) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda aylik alanlarin cinsiyet ve yas gruplari
+- 2011-2011 (1) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda aylik alanlarin dagilimi
+- 2010-2010 (1) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda aylik alanlarin illere gore dagilimi
+- 2010-2010 (1) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda aylik alanlarin yillar itibariyle dagili
+- 2010-2010 (1) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda aylik almakta iken olenlerin cinsiyet ve
+- 2010-2010 (1) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda aylik ve gelir alanlarin aylik ve gelir 
+- 2012-2012 (1) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda aylik ve gelir alanlarin dagilimi
+- 2012-2012 (1) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda aylik ve gelir alanlarin mesleklere gore
+- 2011-2011 (1) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda olum ayligi alan hak sahiplerinin cinsiy
+- 2011-2011 (1) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda yil icinde aylik baglananlarin sayisi
+- 2010-2010 (1) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda yillar itibariyle aylik baglananlarin sa
+- 2010-2010 (1) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsamindaki sigortalilarin hak sahiplerinin (dul v
+- 2010-2010 (1) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsamindaki sigortalilarin olum ayligi alan haksah
+- 2010-2010 (1) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsamindaki sigortalilarin olum sigortasindan ayli
+- 2012-2012 (1) sayili kanunun 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsamindaki sigortalilarin prim ve aylik tutarlari
+- 2012-2012 (1) sayili kanunun 4b maddesi kapsaminda aylik alan istege bagli sigortalilarin mesleklerde aylik ve gelir sinirlarina gore 
+- 2012-2012 (1) sayili kanunun 4b maddesi kapsamindaki istege bagli sigortalilarin mesleklere gore dagilimi
+- 2017-2017 (1) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi geciren ve meslek hastaligina tutulan sigortali sayilar
+- 2017-2017 (1) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi geciren ve meslek hastaligina tutulan sigortalilarin ya
+- 2017-2017 (1) sayili kanunun 4b maddesi kapsamindaki sigortalilardan is kazasi gecirenlerin gecici is goremezlik sureleri ile hastaned
+- 2017-2017 (1) sayili kanunun 4b maddesi kapsamindaki sigortalilardan meslek hastaligina tutulanlarin gecici is goremezlik sureleri ile
+- 2017-2017 (1) sayili kanunun 4b maddesi kapsamindaki sigortalilardan yil icinde is kazasi ve meslek hastaligi sonucu olenlerin ekonomi
+- 2017-2017 (1) sayili kanunun 4b maddesi kapsamindaki sigortalilardan yil icinde is kazasi ve meslek hastaligi sonucu olenlerin yaslara
+- 2010-2010 (1) sayili kanunun 4c kapsamindaki emeklilerin aylik seviyeleri
+- 2012-2012 (1) sayili kanunun 4c maddesi kapsaminda aylik alan haksahiplerinin cinsiyet ve yas gruplarina gore dagilimi
+- 2011-2011 (1) sayili kanunun 4c maddesi kapsaminda aylik alan sigortalilarin cinsiyet ve yas gruplarina gore dagilimi
+- 2013-2013 (1) sayili kanunun 4c maddesi kapsaminda yil icinde aylik baglananlarin cinsiyet ve yas gruplarina gore dagilimi
+- 2011-2011 (1) sayili kanunun 4c maddesi kapsamindaki aktif ve pasif sigortali sayilari
+- 2010-2010 (1) sayili kanunun 4c maddesi kapsamindaki calisanlarin aktif ve pasif sigortali sayilari
+- 2009-2009 (1) sayili yasaya gore sigortalilarin illere gore dagilimi (4b 1479)
+- 2010-2010 (1) sgk ve kamu 2008-2009-2010 yillari aylar itibariyle eczane provizyon sistemi recete analizi
+- 2010-2010 (1) sosyal guvenlik kapsami ( 4a, 4b, 4c maddesi kapsaminda)
+- 2012-2012 (1) sosyal guvenlik kurumu (4a, 4b, 4c) toplam saglik harcamalari
+- 2012-2012 (1) sosyal guvenlik kurumu gelir ve gider dengesi
+- 2012-2012 (1) sosyal guvenlik kurumu konsolide nakit akim tablolari
+- 2012-2012 (1) sosyal guvenlik kurumu toplam saglik harcamalari
+- 2011-2011 (1) sosyal guvenlik kurumunun (4a, 4b, 4c) toplam saglik harcamalari
+- 2011-2011 (1) sosyal guvenlik kurumunun gelir ve gider dengesi
+- 2011-2011 (1) sosyal guvenlik kurumunun toplam saglik harcamalari
+- 2008-2008 (1) yaslilik ayligi alanlarin illere gore basamaklara dagilimi
+- 2007-2007 (1) yaslilik ayligi alanlarin illere gore basamaklara dagilimi (1479 s.k.)
+- 2007-2007 (1) yaslilik ayligi alanlarin illere gore basamaklara dagilimi (2926 s.k.)
+- 2008-2008 (1) yaslilik ayligi alanlarin meslek kuruluslarina gore basamaklara dagilimi
+- 2007-2007 (1) yaslilik ayligi alanlarin meslek kuruluslarina gore basamaklara dagilimi (1479 s.k.)
+- 2008-2008 (1) yaslilik ayligi alanlarin yas gruplarina gore basamaklara dagilimi
+- 2007-2007 (1) yaslilik ayligi alanlarin yas gruplarina gore basamaklara dagilimi (2926 s.k.)
+- 2007-2007 (1) yaslilik ayligi alanlarin yillara gore basamaklara dagilimi (1479 s.k.)
+- 2007-2007 (1) yaslilik ayligi alanlarin yillara gore basamaklara dagilimi (2926 s.k.)
+- 2010-2010 (1) yaslilik sigortasindan yil icinde toptan odeme yapilan 4a maddesi kapsamindaki sigortalilarin cinsiyet ve yas gruplarina
+- 2009-2009 (1) yil icinde aylik almakta iken olenlerin cinsiyet ve yas gruplarina gore dagilimi [4b (tarimsal faaliyette bulunanlar 292
+- 2010-2010 (1) yili 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki sigortalilarin hak sahiplerinin (dul ve yetimlerin) illere 
+- 2009-2009 (1) yili aralik ayi aylik prim ve hizmet belgelerine gore sigortalilarin yas, cinsiyet, birikimli prim odeme gun sayisi ve s
+- 2010-2010 (1) yili aralik ayi itibariyle 4a maddesi kapsamindaki isyeri sayilarinin faaliyet kollarina ve isyeri buyuklugune gore dagi
+- 2009-2009 (1) yili aralik ayina iliskin aylik prim ve hizmet belgelerinin prime esas gunluk kazanc araliklarinda sektorler ve cinsiyet
+- 2008-2008 (1) yili aylar itibariyle aylik ve gelir alanlarin dagilimi
+- 2010-2010 (1) yili icinde olum sigortasindan aylik baglanan 4a maddesi kapsamindaki sigortalilarin hak sahiplerinin cinsiyet ve yas gr
+- 2009-2009 (1) yili icinde olum sigortasindan aylik baglanan hak sahiplerinin (dul ve yetimlerin) cinsiyet ve yas gruplarina gore dagil
+- 2009-2009 (1) yili isyeri, zorunlu sigortali sayilari ve prime esas ortalama gunluk kazanclarin faaliyet gruplarina gore dagilimi
+- 2009-2009 (1) yili itibariyla sosyal guvenlik kapsami (4a, 4b, 4c)
+- 2010-2010 (1) yili itibariyle 4a maddesi kapsaminda isyeri, zorunlu sigortali sayilari ve prime esas ortalama gunluk kazanclarin faali
+- 2010-2010 (1) yili itibariyle 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki aktif sigortalilarin cinsiyetlerine ve kazanc ar
+- 2010-2010 (1) yili itibariyle 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki aktif sigortalilarin illere ve kazanc araliklari
+- 2010-2010 (1) yili itibariyle 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki aktif sigortalilarin illere ve meslek kuruluslar
+- 2010-2010 (1) yili itibariyle 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki aktif sigortalilarin meslek kuruluslarina ve kaz
+- 2010-2010 (1) yili itibariyle 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki aktif sigortalilarin mesleklere gore dagilimi
+- 2010-2010 (1) yili itibariyle 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki aktif sigortalilarin yas gruplarina, cinsiyetler
+- 2010-2010 (1) yili itibariyle 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki istege bagli sigortalilarin mesleklere gore dagi
+- 2010-2010 (1) yili itibariyle 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsamindaki sigortalilarin illere gore dagilimi
+- 2010-2010 (1) yili itibariyle 4b maddesi (bagimsiz calisanlar 1479 ve 2926 s.k.) kapsamindaki aktif ve pasif sigortali sayilari
+- 2010-2010 (1) yili itibariyle 4b maddesi (bagimsiz calisanlar 2926 s.k.) kapsamindaki aktif sigortalilarin cinsiyetlerine ve kazanc ar
+- 2010-2010 (1) yili itibariyle 4b maddesi (bagimsiz calisanlar 2926 s.k.) kapsamindaki aktif sigortalilarin illere ve kazanc araliklari
+- 2010-2010 (1) yili itibariyle 4b maddesi (bagimsiz calisanlar 2926 s.k.) kapsamindaki aktif sigortalilarin mesleklerine ve kazanc aral
+- 2010-2010 (1) yili itibariyle 4b maddesi (bagimsiz calisanlar 2926 s.k.) kapsamindaki aktif sigortalilarin yas gruplarina, cinsiyetler
+- 2010-2010 (1) yili itibariyle 4b maddesi (bagimsiz calisanlar 2926 s.k.) kapsamindaki sigortalilarin illere gore dagilimi
+- 2010-2010 (1) yili itibariyle 4c maddesi kapsaminda aylik alan sigortalilarin yas gruplarina ve cinsiyetlere dagilimi
+- 2010-2010 (1) yili itibariyle 4c maddesi kapsamindaki kamu calisani aktif istirakcilerin ve emeklilerin illere gore dagilimi
+- 2009-2009 (1) yili sonu itibariyle olum ayligi alan haksahiplerinin (dul ve yetimlerin) cinsiyet ve yas gruplarina gore dagilimi [4b (
+- 2010-2010 (1) yilinda 4a maddesi kapsamindaki sigortalilarin hak sahiplerine aylik baglanan ve yil icinde olen sigortalilarin cinsiyet
+- 2010-2010 (1) yilinda 4b maddesi (bagimsiz calisanlar 1479 s.k.) kapsaminda aylik alanlarin yas gruplarina ve cinsiyete gore dagilimi
+- 2010-2010 (1) yilinda 4b maddesi (tarimsal faaliyette bulunanlar 2926 s.k.) kapsaminda aylik alanlarin yas gruplarina ve cinsiyete gor
+- 2009-2009 (1) yilinda hak sahiplerine aylik baglanan ve yil icinde olen sigortalilarin cinsiyet ve yas gruplarina dagilimi
+- 2009-2009 (1) yillar itibariyla zorunlu, istege bagli, topluluk, tarim sigortalilari, ciraklar, sosyal guvenlik destek primi odeyenler
+- 2010-2010 (1) yillar itibariyle 4a maddesi kapsamindaki olen sigortalilarin hak sahiplerine toptan odeme yapilan sigortalilarin cinsiy
+- 2010-2010 (1) yillar itibariyle 4c maddesi kapsamindaki kamu calisanlarinin aktif pasif dengesi
+- 2008-2008 (1) yillar itibariyle aktif sigortali durumu
+- 2007-2007 (1) yillar itibariyle aktif sigortali durumu (2926 s.k.)
+- 2008-2008 (1) yillar itibariyle aylik baglananlarin sayisi
+- 2007-2007 (1) yillar itibariyle aylik baglananlarin sayisi (1479 s.k.)
+- 2007-2007 (1) yillar itibariyle aylik baglananlarin sayisi (2926 s.k.)
+- 2009-2009 (1) yillar itibariyle aylik baglananlarin sayisi [4b (tarimsal faaliyette bulunanlar 2926 s.k.)]
+- 2008-2008 (1) yillar itibariyle malulluk, yaslilik ve olum sigortalarindan aylik almakta olanlarin dagilimi (*)
+- 2010-2010 (1) yillara gore 4c maddesi kapsaminda aktif, emekli, malul, dul ve yetim ayligi alanlarin dagilimi
+- 2009-2009 (1) yillara gore aktif, emekli, malul, dul ve yetim ayligi alanlarin dagilimi
+- 2010-2010 (1) yillari arasi sosyal guvenlik kurumunun (4a,4b,4c) toplam saglik harcamalari
+- 2010-2010 (1) yillari arasi sosyal guvenlik kurumunun toplam saglik harcamalari
+- 2010-2010 (1) yillari aylar itibariyle fatura tutari (fatura turune gore)
+- 2010-2010 (1) yillari aylar itibariyle fatura tutari (saglik hizmet sunucusuna gore)
+- 2010-2010 (1) yillari aylar itibariyle muracaat sayisi (fatura turune gore)
+- 2010-2010 (1) yillari aylar itibariyle muracaat sayisi (saglik hizmet sunucusuna gore)
+- 2010-2010 (1) yillari aylar itibariyle ortalama maliyet (fatura turune gore)
+- 2010-2010 (1) yillari aylar itibariyle ortalama maliyet (saglik hizmet sunucusuna gore)
+- 2010-2010 (1) yillari itibariyle hastane analiz bilgileri

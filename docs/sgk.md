@@ -92,6 +92,11 @@ Seri 2013'te kırılır. 4/b iş kazası tabloları 2017'den. Geçici iş görem
 
 ## Bilerek depolanmayanlar
 
+Tabloların kendisi okunabilir Markdown olarak `docs/sgk-dislanan/` altında
+(`scripts/sgk_skipped_markdown.py`). İl kırılımı olmayan Türkiye geneli tablolar ve
+okunamayan iki il tablosu: `docs/sgk-turkiye-geneli.md`.
+
+
 - 4/b kazanç aralığı tabloları: aralıklar asgari ücretle her yıl değişir.
 - 2007-2009 SSK "kapsamındaki nüfus" ve isteğe bağlı sigortalı tabloları: devamı yok,
   sütunları n' işaretli, tanımsız.
