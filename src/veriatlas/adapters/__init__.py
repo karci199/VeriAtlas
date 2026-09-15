@@ -4,6 +4,7 @@ from .base import Adapter, Manifest, history, ingest
 from .epdk import EPDK_ADAPTERS
 from .epdk_capacity import EPDK_CAPACITY_ADAPTERS
 from .epdk_history import EPDK_HISTORY_ADAPTERS
+from .epdk_monthly import EPDK_MONTHLY_ADAPTERS
 from .evds_archive import EVDS_ARCHIVE_ADAPTERS
 from .evds_housing import EVDS_HOUSING_ADAPTERS
 from .evds_prices import EVDS_PRICE_ADAPTERS
@@ -102,6 +103,7 @@ ADAPTERS = {
     # Earlier years from the EPDK Word reports; same keys, so these replace the above.
     **EPDK_HISTORY_ADAPTERS,
     **EPDK_CAPACITY_ADAPTERS,
+    **EPDK_MONTHLY_ADAPTERS,
     # İlçe SEGE-2022 development score, rank and level.
     **SEGE_ADAPTERS,
 }

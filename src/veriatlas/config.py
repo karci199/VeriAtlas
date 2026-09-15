@@ -15,7 +15,11 @@ ROOT = Path(__file__).resolve().parents[2]
 #: the shared store (2026-09-07). Both environment names are honoured; without either, the
 #: checkout's own `raw/` is used when it exists and the external store otherwise.
 _RAW_ENV = os.environ.get("VERIATLAS_RAW") or os.environ.get("VERIATLAS_HAM")
-RAW = Path(_RAW_ENV) if _RAW_ENV else (ROOT / "raw" if (ROOT / "raw").exists() else Path("C:/veri-ham"))
+RAW = (
+    Path(_RAW_ENV)
+    if _RAW_ENV
+    else (ROOT / "raw" if (ROOT / "raw").exists() else Path("C:/veri-ham"))
+)
 PUBLIC = ROOT / "public"
 DOCS = ROOT / "docs"
 #: Registries and the indicator dictionary — files that are decisions, not observations,

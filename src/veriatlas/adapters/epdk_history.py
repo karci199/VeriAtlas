@@ -132,6 +132,10 @@ def near(a: float, b: float, what: str, rounding: float) -> None:
         raise TotalMismatch(f"{what}: parçalar {a:,.3f}, basılı toplam {b:,.3f}")
 
 
+#: (table, row, column its printed total left out) — source slips found by `wide_table`.
+ROW_TOTAL_SLIPS: list[tuple[str, str, str]] = []
+
+
 def wide_table(
     grid,
     kinds: dict[str, str],
@@ -157,6 +161,7 @@ def wide_table(
     whole: set[str] = set()
     other = 0.0
     grand = None
+    pending: list[tuple[str, float, float]] = []
     for line in grid[1:]:
         name = fold(line[0]) if line else ""
         if name in ("geneltoplam", "toplam"):
@@ -173,7 +178,24 @@ def wide_table(
             else None
         )
         if total is not None:
-            near(sum(values.values()), total, f"{what} {line[0]}", rounding)
+            try:
+                near(sum(values.values()), total, f"{what} {line[0]}", rounding)
+            except TotalMismatch:
+                # A printed row total that left one column out (İstanbul May 2016 omits
+                # "CNG Diğer"): the columns are kept and the slip is noted. Any other
+                # mismatch still stops the load.
+                dropped = [
+                    k
+                    for k, v in values.items()
+                    if v
+                    and abs(sum(values.values()) - v - total) <= max(rounding, 0.01)
+                ]
+                if dropped:
+                    ROW_TOTAL_SLIPS.append((what, line[0], dropped[0]))
+                else:
+                    # Decided at the end: if every column adds up to the national row,
+                    # the cells are right and the printed row total is the misprint.
+                    pending.append((line[0], sum(values.values()), total))
         pid = province_or_none(line[0])
         if pid is None:
             other += total if total is not None else sum(values.values())
@@ -187,9 +209,48 @@ def wide_table(
             out[pid] = values
     if len(out) != provinces:
         raise ValueError(f"{what}: {len(out)} il")
+    if pending:
+        columns_hold = grand is not None and all(
+            abs(
+                sum(v.get(k, 0.0) for v in out.values())
+                + sum(
+                    number_tr(l[i]) or 0.0
+                    for l in grid[1:]
+                    if l
+                    and i < len(l)
+                    and province_or_none(l[0]) is None
+                    and fold(l[0])
+                    not in ("geneltoplam", "toplam", "", "iladi", "il", "iller")
+                )
+                - (number_tr(grand[i]) or 0.0)
+            )
+            <= max(rounding * 81, 0.05)
+            for k, i in cols.items()
+            if i < len(grand)
+        )
+        if not columns_hold:
+            name, parts, printed = pending[0]
+            raise TotalMismatch(
+                f"{what} {name}: parçalar {parts:,.3f}, basılı toplam {printed:,.3f}"
+            )
+        ROW_TOTAL_SLIPS.extend((what, name, "satır toplamı") for name, _, _ in pending)
     if grand is not None and total_col is not None:
         national = sum(sum(v.values()) for v in out.values()) + other
-        near(national, number_tr(grand[total_col]), f"{what} Türkiye", rounding * 81)
+        printed = number_tr(grand[total_col])
+        try:
+            near(national, printed, f"{what} Türkiye", rounding * 81)
+        except TotalMismatch:
+            # The same slip at the national row: its total leaves one column out.
+            dropped = [
+                k
+                for k, i in cols.items()
+                if i < len(grand)
+                and abs(national - (number_tr(grand[i]) or 0.0) - printed)
+                <= max(rounding * 81, 0.05)
+            ]
+            if not dropped:
+                raise
+            ROW_TOTAL_SLIPS.append((what, "Türkiye", dropped[0]))
     return out
 
 

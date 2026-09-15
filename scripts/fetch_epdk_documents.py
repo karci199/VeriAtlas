@@ -39,7 +39,10 @@ def main() -> None:
         else set()
     )
     with index.open("a", encoding="utf-8") as out:
+        markets = set(sys.argv[1:])  # e.g. dogalgaz_resmi; none given = every market
         for market, _page, doc_id, label in rows:
+            if markets and market not in markets:
+                continue
             if doc_id in done or doc_id in known:
                 continue
             done.add(doc_id)

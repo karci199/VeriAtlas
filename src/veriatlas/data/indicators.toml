@@ -26851,3 +26851,17 @@ views = ["table", "map"]
 definition_tr = "İl SEGE-2017 kademesi, 1 (en gelişmiş) - 6 (en az gelişmiş)."
 
 # endregion
+
+# region EPDK monthly (adapters/epdk_monthly.py), 2026-09-15.
+
+[indicator.epdk_natural_gas_consumption_monthly]
+label_tr = "Doğal gaz tüketimi, temin şekline göre (aylık)"
+label_en = "Natural gas consumption by supply form (monthly)"
+topic = "enerji"
+unit = "m3"
+frequency = "monthly"
+dims = ["gas_supply"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "EPDK Doğal Gaz Piyasası aylık sektör raporları Tablo 5.2, 2015-2025 (milyon Sm3 olarak basılı). Ekim 2017 raporu sitede yok (yerine Eylül 2017 tekrar konmuş). Basılı satır toplamı hatalı üç tablo not edildi, sütun değerleri kullanıldı."
+
+# endregion
