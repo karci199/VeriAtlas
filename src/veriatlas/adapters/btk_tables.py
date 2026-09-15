@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import datetime as dt
 import json
+import math
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -210,7 +211,7 @@ class Table:
                 slot = (self.indicator, dims, start_, frequency)
                 if slot in out:
                     raise ValueError(f"{report} {self.indicator}: {slot} iki kez")
-                if cell == cell:
+                if not math.isnan(cell):
                     out[slot] = cell * self.scale
                 else:
                     broken = True
@@ -223,7 +224,7 @@ class Table:
                 start_, _ = period_start(token)
                 parts = sum(v for s, v in out.items() if s[2] == start_) / self.scale
                 gap = abs(parts - printed)
-                if printed == printed and gap > max(2.0, abs(printed) * 1e-6):
+                if not math.isnan(printed) and gap > max(2.0, abs(printed) * 1e-6):
                     # BTK's own total misses its rows now and then (2012 other operators by
                     # up to 7% - a type left out of the rows - 2024-1 complaints by 90); a
                     # misread row misses by more.
