@@ -18,6 +18,7 @@ typos kept as parts (TOTAL_GAPS). A lone "---" cell is the total less the other 
 from __future__ import annotations
 
 import datetime as dt
+import math
 import re
 from pathlib import Path
 
@@ -152,7 +153,7 @@ def read(path: Path, layout, years: range) -> dict[tuple[str, str, int], float]:
                         f"{path.name} {indicator} {year}: {len(values)} sütun"
                     )
                 parts = values[:-1]
-                blanks = [k for k, v in enumerate(parts) if v != v]
+                blanks = [k for k, v in enumerate(parts) if math.isnan(v)]
                 if len(blanks) == 1:  # 2011 manufactured single-SIM IMEIs print "---"
                     parts[blanks[0]] = 0.0
                     parts[blanks[0]] = values[-1] - sum(parts)
