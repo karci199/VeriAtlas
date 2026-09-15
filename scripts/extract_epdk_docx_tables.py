@@ -19,6 +19,8 @@ from veriatlas.config import RAW
 
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 ROOT = RAW / "epdk" / "files"
+PATTERN = sys.argv[1] if len(sys.argv) > 1 else "*_yillik/*.docx"
+OUT = sys.argv[2] if len(sys.argv) > 2 else "docx_cells.parquet"
 
 
 def text(node) -> str:
@@ -27,7 +29,7 @@ def text(node) -> str:
 
 def main() -> None:
     records = []
-    for path in sorted(ROOT.glob("*_yillik/*.docx")):
+    for path in sorted(ROOT.glob(PATTERN)):
         body = ET.fromstring(zipfile.ZipFile(path).read("word/document.xml")).find(
             W + "body"
         )
@@ -71,7 +73,7 @@ def main() -> None:
         ],
         orient="row",
     )
-    frame.write_parquet(RAW / "epdk" / "docx_cells.parquet")
+    frame.write_parquet(RAW / "epdk" / OUT)
     print(frame.height, "hucre")
 
 

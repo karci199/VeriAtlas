@@ -64,3 +64,16 @@ Tuzaklar (hepsi denetim yakaladı):
 
 Aylık resmi istatistik Excel'leri (2024-2026: il × kaynak kurulu güç, iletim-dağıtım kırılımlı
 tüketim, serbest tüketici) ; 2014 ve öncesi PDF raporlar; kurulu güç il tabloları (Word'de var, gösterge yok).
+
+## Kurulu güç (2026-09-15)
+
+| Gösterge | Kapsam | Kaynak |
+|---|---|---|
+| `epdk_unlicensed_capacity` | il × kaynak (güneş, rüzgâr, hidro, biyokütle, doğalgaz, linyit), 2016-2025 yıl sonu | aylık raporların Aralık sayıları (`docx_resmi_cells.parquet`) |
+| `epdk_licensed_capacity` | il toplamı, 2017-2024 | yıllık rapor Tablo 1.3 |
+
+Tuzaklar: Aralık 2021 tablosunda "Küthahya" (119 MW) — tanınmayan ad artık yüklemeyi durdurur;
+2019 lisanslı tabloda AYDIN iki kez (1.194,9 ve 44,0 MW), ikisi Türkiye toplamında, 44 MW ile
+atanmadı; Kilis'te lisanslı santral yok; santrali olmayan iller lisanssız tabloda listelenmiyor
+(2016: 63 il); güneş fotovoltaik ve yoğunlaştırılmış 2016-2019 ayrı sütun, toplandı. İl × kaynak
+lisanslı kurulu güç yalnız 2026 aylık Excel'lerinde var (yıllık kural gereği alınmadı).

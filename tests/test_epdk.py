@@ -55,3 +55,11 @@ def test_istanbul_two_sides_are_added_not_overwritten():
     grid.append(["Genel Toplam", "110", "110"])
     out = wide_table(grid, kinds, "deneme")
     assert out["TR-34"]["residential"] == 30.0
+
+
+def test_misspelt_province_resolves_and_unknown_one_stops():
+    from veriatlas.adapters.kgm import province_id
+
+    assert province_id("Küthahya") == "TR-43"
+    with pytest.raises(KeyError):
+        province_id("Kütahyaa")

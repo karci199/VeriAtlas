@@ -50,6 +50,8 @@ PROVINCE_ALIASES = {
     "adapazari": "sakarya",
     "icel": "mersin",
     "afyon": "afyonkarahisar",
+    # EPDK monthly report, December 2021.
+    "kuthahya": "kutahya",
 }
 
 SURFACES = (

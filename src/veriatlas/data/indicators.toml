@@ -272,6 +272,10 @@ hydro = "Hidroelektrik"
 coal = "Kömür ve türevleri"
 liquid_fuel = "Sıvı yakıt"
 renewables_waste = "Yenilenebilir enerji ve atıklar"
+solar = "Güneş"
+wind = "Rüzgâr"
+biomass = "Biyokütle"
+lignite = "Linyit"
 
 [dim.household_size_band]
 label_tr = "Hanehalkı büyüklüğü"
@@ -25189,5 +25193,29 @@ frequency = "annual"
 dims = ["gas_supply"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "EPDK Doğal Gaz Piyasası Gelişim Raporları Tablo 8.3, 2017-2024 (milyon Sm3 olarak basılı). İletim şebekesinde dahili kullanım ve terminal işletme gazı (il yok) dışarıda."
+
+# endregion
+
+# region EPDK installed capacity by province (adapters/epdk_capacity.py), 2026-09-15.
+
+[indicator.epdk_unlicensed_capacity]
+label_tr = "Lisanssız elektrik kurulu gücü, kaynağa göre"
+label_en = "Unlicensed installed capacity by source"
+topic = "enerji"
+unit = "mw"
+frequency = "annual"
+dims = ["energy_source"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "EPDK aylık elektrik piyasası raporlarının Aralık sayıları, 2016-2025 yıl sonu. Çoğu çatı ve arazi güneşi; güneş fotovoltaik ve yoğunlaştırılmış toplamı. Santrali olmayan iller listede yok."
+
+[indicator.epdk_licensed_capacity]
+label_tr = "Lisanslı elektrik kurulu gücü"
+label_en = "Licensed installed capacity"
+topic = "enerji"
+unit = "mw"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "EPDK yıllık elektrik piyasası raporları Tablo 1.3, 2017-2024 yıl sonu, il toplamı (kaynak kırılımı yok). Kilis'te lisanslı santral yok. 2019 tablosunda AYDIN iki kez basılı (1.194,9 ve 44,0 MW); 44 MW ile atanmadı."
 
 # endregion
