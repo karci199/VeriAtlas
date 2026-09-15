@@ -26964,3 +26964,12 @@ views = ["table", "map", "bar"]
 definition_tr = "YÖK Atlas / ÖSYM 2026 tercih kılavuzundaki program sayısı (burs oranı ayrı sayılır), programın bulunduğu il."
 
 # endregion
+
+[indicator.tobb_company_capital]
+label_tr = "Kurulan şirketlerin sermayesi"
+label_en = "Capital of companies established"
+topic = "reel_kesim"
+unit = "try"
+frequency = "annual"
+views = ["table", "map", "line", "bar"]
+definition_tr = "TOBB Kurulan ve Kapanan Şirket İstatistikleri, Aralık dosyalarının 'İller sermaye' tablosu, yıl içinde kurulan şirketlerin toplam sermayesi (cari TL), 2015-2025. Her ilde yanındaki şirket sayısı birikimli il tablosuyla eşleşir. Enflasyondan arındırılmamıştır."

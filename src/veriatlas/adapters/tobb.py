@@ -181,3 +181,122 @@ class TobbCompanies:
 
 
 TOBB_ADAPTERS = {"tobb_companies": TobbCompanies}
+
+
+def read_capital(path: Path) -> dict[str, float]:
+    """ "İLLER SERMAYE": capital of the companies established in the year, TL, by province.
+
+    The year's block is the last "Sermaye" column (2015-2016 print December and the whole
+    year side by side, the year second). The count column beside it must equal the company
+    count read from "İLLER ( BİRİKİMLİ)", province by province: that is what ties the capital
+    to the right column and the right year.
+    """
+    import re
+
+    import xlrd
+
+    book = xlrd.open_workbook(path)
+    if "İLLER SERMAYE" not in book.sheet_names():
+        return {}
+    sheet = book.sheet_by_name("İLLER SERMAYE")
+    rows = [[str(v).strip() for v in sheet.row_values(r)] for r in range(sheet.nrows)]
+    year = int(path.name[:4])
+    head = next(
+        i for i, r in enumerate(rows) if any(c.startswith("Sermaye") for c in r)
+    )
+    # The year block starts at the last header cell naming the year (2015-2016: "2015
+    # ARALIK" then "2015 OCAK-ARALIK"); its first "Sermaye" column is the companies'.
+    year_row = max(
+        i for i in range(head) if any(c.startswith(str(year)) for c in rows[i])
+    )
+    start = max(j for j, c in enumerate(rows[year_row]) if c.startswith(str(year)))
+    col = min(
+        j for j, c in enumerate(rows[head]) if c.startswith("Sermaye") and j >= start
+    )
+    counts = read_year_file(path)[year]
+    # 2020 leaves one province name blank beside its NUTS code (TRA12): codes are resolved
+    # through the same file's cumulative sheet, where every code has its name.
+    cumulative = book.sheet_by_name("İLLER ( BİRİKİMLİ)")
+    by_code: dict[str, str] = {}
+    for r in range(cumulative.nrows):
+        cells = [str(v).strip() for v in cumulative.row_values(r)[:3]]
+        code = next((c for c in cells if re.fullmatch(r"TR\w\d\d", c)), None)
+        if code:
+            for c in cells:
+                try:
+                    by_code[code] = province_id(c)
+                    break
+                except KeyError:
+                    continue
+    out: dict[str, float] = {}
+    total = None
+    for r in rows[head + 1 :]:
+        if any(fold(c) == "toplam" for c in r[:3]):
+            total = r
+            break
+        area = None
+        for cell in r[:3]:
+            try:
+                area = province_id(cell)
+                break
+            except KeyError:
+                continue
+        if area is None:
+            code = next((c for c in r[:3] if c in by_code), None)
+            if code is None:
+                continue
+            area = by_code[code]
+        count = float(r[col - 1] or 0)
+        expected = counts[(area, "established", "company")]
+        if abs(count - expected) > 0.5:
+            raise ValueError(
+                f"TOBB sermaye {path.name} {area}: sayı {count:.0f}, birikimli tablo {expected:.0f}"
+            )
+        out[area] = float(r[col] or 0)
+    if len(out) != 81:
+        raise ValueError(f"TOBB sermaye {path.name}: {len(out)} il")
+    if (
+        total is None
+    ):  # 2015-2016 print no TOPLAM row; the counts check above still holds
+        return out
+    printed = [float(c) for c in total if re.fullmatch(r"\d+(\.\d+)?(e\+\d+)?", c)]
+    if not any(abs(p - sum(out.values())) <= max(1.0, p * 1e-9) for p in printed):
+        raise ValueError(
+            f"TOBB sermaye {path.name}: iller {sum(out.values()):,.0f} TOPLAM'da yok"
+        )
+    return out
+
+
+class TobbCapital:
+    source_id = "tobb"
+    indicator_id = "tobb_company_capital"
+
+    def fetch(self) -> Path:
+        return FILES
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        records = [
+            {
+                "area_id": area,
+                "period_start": dt.date(int(path.name[:4]), 1, 1),
+                "dims": "",
+                "value": value,
+            }
+            for path in sorted(FILES.glob("20??-12.xls*"))
+            for area, value in read_capital(path).items()
+        ]
+        return pl.DataFrame(
+            records, schema_overrides={"value": pl.Float64}
+        ).with_columns(
+            pl.lit(self.indicator_id).alias("indicator_id"),
+            pl.lit("province").alias("area_level"),
+            pl.lit("annual").alias("frequency"),
+            pl.lit("try").alias("unit"),
+            pl.lit("measured").alias("quality_flag"),
+            pl.lit("2026-07").alias("vintage"),
+            pl.lit(self.source_id).alias("source_id"),
+            pl.lit(dt.date(2026, 9, 15)).alias("retrieved_at"),
+        )
+
+
+TOBB_ADAPTERS["tobb_company_capital"] = TobbCapital
