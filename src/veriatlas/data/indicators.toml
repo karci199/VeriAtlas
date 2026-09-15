@@ -26942,6 +26942,7 @@ label_en = "University type"
 [dim.university_type.values]
 state = "Devlet"
 foundation = "Vakıf"
+foundation_vocational = "Vakıf meslek yüksekokulu"
 
 [indicator.university_quota]
 label_tr = "Üniversite kontenjanı (YKS tercih kılavuzu)"
@@ -26973,3 +26974,57 @@ unit = "try"
 frequency = "annual"
 views = ["table", "map", "line", "bar"]
 definition_tr = "TOBB Kurulan ve Kapanan Şirket İstatistikleri, Aralık dosyalarının 'İller sermaye' tablosu, yıl içinde kurulan şirketlerin toplam sermayesi (cari TL), 2015-2025. Her ilde yanındaki şirket sayısı birikimli il tablosuyla eşleşir. Enflasyondan arındırılmamıştır."
+
+# region YÖK İstatistik (adapters/yok_istatistik.py), 2026-09-15.
+
+[dim.education_delivery]
+label_tr = "Öğretim türü"
+label_en = "Delivery"
+
+[dim.education_delivery.values]
+formal = "Örgün öğretim"
+evening = "İkinci öğretim"
+distance = "Uzaktan öğretim"
+open = "Açık öğretim"
+
+[dim.higher_education_level]
+label_tr = "Öğrenim düzeyi"
+label_en = "Level"
+
+[dim.higher_education_level.values]
+associate = "Önlisans"
+bachelor = "Lisans"
+master = "Yüksek lisans"
+doctorate = "Doktora"
+
+[indicator.yok_students]
+label_tr = "Yükseköğretim öğrenci sayısı (öğrenim görülen il/ilçe)"
+label_en = "Higher education students (place of study)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["education_delivery", "higher_education_level", "sex", "university_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "YÖK İstatistik yıllık yayınları, Tablo 102 'Öğrenim gördüğü il ve ilçelere göre öğrenci sayıları', 2014-2015 ... 2025-2026 öğretim yılları; dönem öğretim yılının ilk yılıdır. İl, üniversitenin yayında basılan yerleşke ilidir; açıköğretim öğrencileri üniversitenin merkez ilinde sayılır (Eskişehir, Erzurum, İstanbul). Her il toplamı basılı TOPLAM satırını tutar; ilçe düzeyi 2014-2016 yayınlarında eski ilçe adları yüzünden eksiktir."
+
+[indicator.yok_new_students]
+label_tr = "Yükseköğretime yeni kayıt olan öğrenci sayısı (öğrenim görülen il/ilçe)"
+label_en = "Higher education new registrations (place of study)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["education_delivery", "higher_education_level", "sex", "university_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "YÖK İstatistik Tablo 101, 2014-2015 ... 2025-2026. 2016-2017 yayınında doktora sütunları ne il ne ilçe toplamıyla basılı toplamı tutmadığı için o yıl doktora yok."
+
+[indicator.yok_graduates]
+label_tr = "Yükseköğretim mezun sayısı (öğrenim görülen il/ilçe)"
+label_en = "Higher education graduates (place of study)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["education_delivery", "higher_education_level", "sex", "university_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "YÖK İstatistik Tablo M102 'Öğrenim gördüğü il ve ilçelere göre mezun sayıları', 2013-2014 ... 2025-2026 yayınları; dönem yayının öğretim yılının ilk yılıdır (mezuniyet yılı YÖK'ün yayınladığı gibi, kaydırılmadı)."
+
+# endregion

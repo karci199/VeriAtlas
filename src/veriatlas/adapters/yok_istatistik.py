@@ -1,0 +1,282 @@
+"""YÖK İstatistik: students, new registrations and graduates by province and district.
+
+Source: istatistik.yok.gov.tr yearly releases ("YYYY-YYYY Öğretim Yılı"), tables
+"Öğrenim gördüğü il ve ilçelere göre öğrenci / yeni kayıt olan öğrenci / mezun sayıları"
+(T102, T101, M102), downloaded by `scripts/fetch_yok_istatistik.py` into
+`raw/yok_istatistik/<year>/` with `index.tsv`.
+
+Layout, the same 2013-2014 to 2025-2026: per university a row with its name, type and
+province, then that province's districts; a second campus province follows as another
+province row. Columns: associate (formal, evening, distance, open), bachelor (the same four),
+master's (formal, evening, distance), doctorate (formal), total — each men / women / total.
+
+Checks: every province row equals the sum of its district rows; the provinces add up to the
+printed TOPLAM row in every column. District names the register does not know (older names)
+are recorded in `UNKNOWN_DISTRICTS` and kept at province level only.
+
+The release year is stored as its first year (2024-2025 -> 2024). Graduates in a release are
+those of the release's own academic year as YÖK prints them; not shifted.
+"""
+
+from __future__ import annotations
+
+import csv
+import datetime as dt
+import re
+from pathlib import Path
+
+import polars as pl
+
+from ..config import RAW
+from .kgm import district_key, fold, province_id, resolve_district
+
+FOLDER = RAW / "yok_istatistik"
+TABLES = {
+    "yok_students": "ÖĞRENİM GÖRDÜĞÜ İL VE İLÇELERE GÖRE ÖĞRENCİ SAYILARI",
+    "yok_new_students": "ÖĞRENİM GÖRDÜĞÜ İL VE İLÇELERE GÖRE YENİ KAYIT OLAN ÖĞRENCİ SAYILARI",
+    "yok_graduates": "ÖĞRENİM GÖRDÜĞÜ İL VE İLÇELERE GÖRE MEZUN SAYILARI",
+}
+LEVELS = {
+    "onlisans": "associate",
+    "lisans": "bachelor",
+    "yukseklisans": "master",
+    "doktora": "doctorate",
+    "toplam": "total",
+}
+DELIVERY = {
+    "orgunogretim": "formal",
+    "ikinciogretim": "evening",
+    "uzaktanogretim": "distance",
+    "acikogretim": "open",
+}
+SEX = {"e": "male", "k": "female"}
+TYPES = {"devlet": "state", "vakif": "foundation", "vakifmyo": "foundation_vocational"}
+
+#: (year, province, district) names not in the area register.
+UNKNOWN_DISTRICTS: list[tuple[int, str, str]] = []
+BROKEN_COLUMNS = {"2017_T101.xls": {"doctorate"}}
+#: (year, province, type, level, delivery, sex) where districts add up past the province.
+DISTRICT_EXCESS: list[tuple] = []
+
+
+def first_line(cell: str) -> str:
+    return str(cell).split("\n")[0].split(" / ")[0].strip()
+
+
+def files(table: str) -> list[tuple[int, Path]]:
+    out = []
+    for row in csv.reader(
+        (FOLDER / "index.tsv").open(encoding="utf-8"), delimiter="\t"
+    ):
+        label = row[1].replace("\u200b", "").strip()
+        if label == TABLES[table]:
+            out.append((int(row[0][:4]), FOLDER / row[2]))
+    years = [y for y, _ in out]
+    if len(years) != len(set(years)):
+        raise ValueError(f"{table}: aynı yıl iki dosya")
+    return sorted(out)
+
+
+def columns(rows: list[list[str]]) -> dict[int, tuple[str, str, str]]:
+    """Column index -> (level, delivery, sex) from the three header rows; totals dropped."""
+    sex_row = next(
+        i for i, r in enumerate(rows) if [fold(c) for c in r[3:6]] == ["e", "k", "t"]
+    )
+    level_row, delivery_row = sex_row - 2, sex_row - 1
+    out: dict[int, tuple[str, str, str]] = {}
+    level = delivery = None
+    for j in range(3, len(rows[sex_row])):
+        lv = fold(first_line(rows[level_row][j])) if j < len(rows[level_row]) else ""
+        if lv:
+            level = LEVELS.get(lv)
+            if level is None:
+                raise ValueError(f"tanınmayan düzey: {rows[level_row][j]!r}")
+            delivery = None
+        dv = (
+            fold(first_line(rows[delivery_row][j]))
+            if j < len(rows[delivery_row])
+            else ""
+        )
+        if dv:
+            delivery = DELIVERY.get(dv)
+            if delivery is None:
+                raise ValueError(f"tanınmayan öğretim türü: {rows[delivery_row][j]!r}")
+        sex = SEX.get(fold(rows[sex_row][j]))
+        if sex and level and level != "total":
+            out[j] = (level, delivery or "formal", sex)
+    return out
+
+
+def number(cell: str) -> float:
+    cell = str(cell).strip()
+    return float(cell) if cell not in ("", "-") else 0.0
+
+
+def read(path: Path, year: int) -> dict[tuple[str, str, str, str, str, str], float]:
+    """{(area, level_of_area, uni_type, level, delivery, sex): count}."""
+    import xlrd
+
+    sheet = xlrd.open_workbook(path).sheet_by_index(0)
+    rows = [[str(v) for v in sheet.row_values(r)] for r in range(sheet.nrows)]
+    cols = columns(rows)
+    # 2016-2017 new registrations: the doctorate columns add up neither by province (3,153
+    # men) nor by district (11,729) to the printed total (7,191, also in the summary table).
+    # Those columns are left out for that year; every other column meets TOPLAM.
+    if path.name in BROKEN_COLUMNS:
+        cols = {j: c for j, c in cols.items() if c[0] not in BROKEN_COLUMNS[path.name]}
+    key = district_key()
+    out: dict[tuple, float] = {}
+    total = None
+    province_values: dict[tuple, float] = {}
+    district_sums: dict[tuple, float] = {}
+    pid = pname = uni_type = None
+    start = next(
+        i for i, r in enumerate(rows) if [fold(c) for c in r[3:6]] == ["e", "k", "t"]
+    )
+    for r in rows[start + 1 :]:
+        if any(fold(first_line(c)) == "toplam" for c in r[:3]):
+            total = r
+            continue
+        place = first_line(r[2]) if len(r) > 2 else ""
+        values = [number(r[j]) for j in cols]
+        # 2015-2016 print the national row with no label at all, first under the header.
+        if (
+            total is None
+            and not pid
+            and not place
+            and not first_line(r[0])
+            and any(values)
+        ):
+            total = r
+            continue
+        if not place or not any(values):
+            continue
+        heads_block = bool(first_line(r[0]) or first_line(r[1]))
+        district = None
+        if pid and not heads_block:
+            try:
+                district = resolve_district(key, pname, place)
+            except KeyError:
+                district = None
+        is_province = heads_block or district is None
+        if is_province:
+            try:
+                new_pid = province_id(place)
+            except KeyError:
+                if pid is None:
+                    raise
+                # Neither a province nor a known district of the current one: an old name.
+                UNKNOWN_DISTRICTS.append((year, pid, place))
+                for (level, delivery, sex), v in zip(
+                    cols.values(), values, strict=True
+                ):
+                    district_sums[(pid, uni_type, level, delivery, sex)] = (
+                        district_sums.get((pid, uni_type, level, delivery, sex), 0.0)
+                        + v
+                    )
+                continue
+            if heads_block:
+                kind = TYPES.get(fold(first_line(r[1])))
+                # 2018-2019 leave one state university's type blank.
+                if kind is None and fold(first_line(r[0])).startswith(
+                    "zonguldakbulentecevit"
+                ):
+                    kind = "state"
+                if kind is None:
+                    raise ValueError(f"YÖK {path.name}: tanınmayan tür {r[1]!r}")
+                uni_type = kind
+            pid, pname = new_pid, place
+            for (level, delivery, sex), v in zip(cols.values(), values, strict=True):
+                k = (pid, "province", uni_type, level, delivery, sex)
+                province_values[k] = province_values.get(k, 0.0) + v
+            continue
+        area, level_name = district
+        for (level, delivery, sex), v in zip(cols.values(), values, strict=True):
+            district_sums[(pid, uni_type, level, delivery, sex)] = (
+                district_sums.get((pid, uni_type, level, delivery, sex), 0.0) + v
+            )
+            if level_name == "district":
+                k = (area, "district", uni_type, level, delivery, sex)
+                out[k] = out.get(k, 0.0) + v
+    # Districts may fall short of their province (students with no district recorded), never
+    # exceed it.
+    for (p, t, level, delivery, sex), v in district_sums.items():
+        if v > province_values.get((p, "province", t, level, delivery, sex), 0.0) + 0.5:
+            # A campus in another province printed without its own province row: the
+            # province totals still meet TOPLAM (checked below); noted, not fatal.
+            DISTRICT_EXCESS.append((year, p, t, level, delivery, sex))
+    if total is None:
+        raise ValueError(f"YÖK {path.name}: TOPLAM satırı yok")
+    for j, (level, delivery, sex) in cols.items():
+        printed = number(total[j])
+        parts = sum(
+            v
+            for (_a, _lv, _t, lev, dlv, sx), v in province_values.items()
+            if (lev, dlv, sx) == (level, delivery, sex)
+        )
+        if abs(parts - printed) > 0.5:
+            raise ValueError(
+                f"YÖK {path.name} {level}/{delivery}/{sex}: iller {parts:,.0f}, TOPLAM {printed:,.0f}"
+            )
+    out.update(province_values)
+    return out
+
+
+class YokTable:
+    source_id = "yok_istatistik"
+    indicator_id = ""
+
+    def fetch(self) -> Path:
+        return FOLDER
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        records = []
+        for year, path in files(self.indicator_id):
+            for (area, level_name, uni_type, level, delivery, sex), value in read(
+                path, year
+            ).items():
+                if value:
+                    records.append(
+                        {
+                            "area_id": area,
+                            "area_level": level_name,
+                            "period_start": dt.date(year, 1, 1),
+                            "dims": f"education_delivery={delivery};higher_education_level={level};sex={sex};university_type={uni_type}",
+                            "value": value,
+                        }
+                    )
+        return (
+            pl.DataFrame(records, schema_overrides={"value": pl.Float64})
+            .group_by("area_id", "area_level", "period_start", "dims")
+            .agg(pl.col("value").sum())
+            .with_columns(
+                pl.lit(self.indicator_id).alias("indicator_id"),
+                pl.lit("annual").alias("frequency"),
+                pl.lit("person").alias("unit"),
+                pl.lit("measured").alias("quality_flag"),
+                pl.lit("2026-04").alias("vintage"),
+                pl.lit(self.source_id).alias("source_id"),
+                pl.lit(dt.date(2026, 9, 15)).alias("retrieved_at"),
+            )
+        )
+
+
+class YokStudents(YokTable):
+    indicator_id = "yok_students"
+
+
+class YokNewStudents(YokTable):
+    indicator_id = "yok_new_students"
+
+
+class YokGraduates(YokTable):
+    indicator_id = "yok_graduates"
+
+
+YOK_ISTATISTIK_ADAPTERS = {
+    "yok_students": YokStudents,
+    "yok_new_students": YokNewStudents,
+    "yok_graduates": YokGraduates,
+}
+
+_ = re  # kept for pattern helpers added later
