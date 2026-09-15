@@ -6,6 +6,7 @@ from .epdk_capacity import EPDK_CAPACITY_ADAPTERS
 from .epdk_history import EPDK_HISTORY_ADAPTERS
 from .epdk_monthly import EPDK_MONTHLY_ADAPTERS
 from .tobb import TOBB_ADAPTERS
+from .yokatlas import YOKATLAS_ADAPTERS
 from .evds_archive import EVDS_ARCHIVE_ADAPTERS
 from .evds_housing import EVDS_HOUSING_ADAPTERS
 from .evds_prices import EVDS_PRICE_ADAPTERS
@@ -106,6 +107,7 @@ ADAPTERS = {
     **EPDK_CAPACITY_ADAPTERS,
     **EPDK_MONTHLY_ADAPTERS,
     **TOBB_ADAPTERS,
+    **YOKATLAS_ADAPTERS,
     # İlçe SEGE-2022 development score, rank and level.
     **SEGE_ADAPTERS,
 }

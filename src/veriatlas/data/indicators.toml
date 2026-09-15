@@ -26917,3 +26917,50 @@ views = ["table", "map", "line", "bar"]
 definition_tr = "TOBB Kurulan ve Kapanan Şirket İstatistikleri, Aralık dosyalarının 'İller (birikimli)' tablosu, 2009-2025. Kaynak Türkiye Ticaret Sicili Gazetesi. Bir yıl iki dosyada varsa (sonraki yılın dosyasındaki önceki yıl sütunu) yeni dosyadaki sayı alındı. Gerçek kişi ticari işletmelerin tasfiye sütunu yok."
 
 # endregion
+
+# region YÖK Atlas (adapters/yokatlas.py), 2026-09-15.
+
+[unit.program]
+label_tr = "program"
+label_en = "programmes"
+decimals = 0
+additive = true
+per_capita = false
+
+[dim.program_level]
+label_tr = "Düzey"
+label_en = "Level"
+
+[dim.program_level.values]
+bachelor = "Lisans"
+associate = "Önlisans"
+
+[dim.university_type]
+label_tr = "Üniversite türü"
+label_en = "University type"
+
+[dim.university_type.values]
+state = "Devlet"
+foundation = "Vakıf"
+
+[indicator.university_quota]
+label_tr = "Üniversite kontenjanı (YKS tercih kılavuzu)"
+label_en = "University places (YKS guide)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["program_level", "university_type"]
+views = ["table", "map", "bar"]
+definition_tr = "YÖK Atlas / ÖSYM 2026 tercih kılavuzu, programın bulunduğu il. Açıköğretim ve ek kontenjan dahil değil; KKTC, yurt dışı ve Türk üniversitelerinin yurt dışı kampüsleri (104 program) il dışında. Program ayrıntısı public/yokatlas_programs.parquet."
+
+[indicator.university_programs]
+label_tr = "Üniversite program sayısı (YKS tercih kılavuzu)"
+label_en = "University programmes (YKS guide)"
+topic = "egitim"
+unit = "program"
+frequency = "annual"
+dims = ["program_level", "university_type"]
+views = ["table", "map", "bar"]
+definition_tr = "YÖK Atlas / ÖSYM 2026 tercih kılavuzundaki program sayısı (burs oranı ayrı sayılır), programın bulunduğu il."
+
+# endregion
