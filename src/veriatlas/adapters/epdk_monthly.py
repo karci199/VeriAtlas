@@ -257,3 +257,113 @@ class FuelSalesMonthly:
 
 
 EPDK_MONTHLY_ADAPTERS["epdk_fuel_sales_monthly"] = FuelSalesMonthly
+
+
+LPG_MONTHLY_CELLS = RAW / "epdk" / "docx_lpg_aylik_cells.parquet"
+#: (month, printed national total, sum of provinces) where the TOPLAM row is not theirs.
+LPG_TOTAL_SLIPS: list[tuple[str, float, float]] = []
+
+
+class LpgSalesMonthly:
+    """LPG monthly reports, Tablo 3.9 (3.6 in some): sales by province and product (tonnes).
+
+    Two header rows: the product names, then "Satış (ton) | Pay (%)" under each. The share
+    columns are dropped; the month comes from the caption ("Temmuz 2017 Döneminde").
+    Total columns are printed to two decimals, so rows are checked to within 0.05 t.
+    """
+
+    source_id = "epdk"
+    indicator_id = "epdk_lpg_sales_monthly"
+
+    def fetch(self) -> Path:
+        return LPG_MONTHLY_CELLS
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        from .epdk import LPG_PRODUCTS
+        from .epdk_history import number_tr
+
+        cells = pl.read_parquet(LPG_MONTHLY_CELLS)
+        seen: dict[dt.date, tuple[str, list]] = {}
+        records = []
+        for file, caption, grid in grids(
+            cells, "LPG Satışlarının İllere ve Ürün Türüne Göre"
+        ):
+            found = MONTH_IN_CAPTION.search(caption)
+            if not found or "-" in caption.split("Döneminde")[0]:
+                raise ValueError(f"LPG aylık {file}: tek ay değil: {caption}")
+            month = dt.date(int(found.group(2)), MONTHS.index(found.group(1)) + 1, 1)
+            if month in seen:
+                if seen[month][1] != grid:
+                    raise ValueError(
+                        f"LPG aylık {month}: iki farklı rapor {seen[month][0]} {file}"
+                    )
+                continue
+            seen[month] = (file, grid)
+            header = ["İl"]
+            for name in grid[0][1:]:
+                header += [name, ""]  # sales, then its share column
+            rows = [
+                [clean(c) for c in line]
+                for line in grid[1:]
+                if line
+                and line[0].strip()
+                and line != grid[0]
+                and "Satış" not in " ".join(line)
+            ]
+            totals = [
+                r for r in rows if r[0].strip().lower() in ("toplam", "genel toplam")
+            ]
+            body = [r for r in rows if r not in totals]
+            table = wide_table(
+                [header, *body],
+                LPG_PRODUCTS,
+                f"LPG aylık {month:%Y-%m}",
+                rounding=0.05,
+                provinces=len(_province_ids([header, *body])),
+            )
+            # The printed TOPLAM row is sometimes another month's (April 2021: 320,987 t
+            # against 285,572 t of provinces). The share column is the check that holds:
+            # each province's printed share of the total must match its share of the sum.
+            national = sum(sum(v.values()) for v in table.values())
+            for r in body:
+                share = number_tr(r[8]) if len(r) > 8 else None
+                total = number_tr(r[7]) if len(r) > 7 else None
+                if share is not None and total and share >= 1:
+                    if (
+                        abs(total / national * 100 - share) > 0.06
+                    ):  # shares printed to 1-2 decimals
+                        raise ValueError(
+                            f"LPG aylık {month}: {r[0]} payı {share} ama hesap "
+                            f"{total / national * 100:.2f}"
+                        )
+            if totals and abs((number_tr(totals[0][7]) or 0) - national) > 1:
+                LPG_TOTAL_SLIPS.append(
+                    (f"{month:%Y-%m}", number_tr(totals[0][7]), national)
+                )
+            if len(table) < 75:
+                raise ValueError(f"LPG aylık {month}: {len(table)} il")
+            for area, kinds in table.items():
+                for kind, value in kinds.items():
+                    records.append(
+                        {
+                            "area_id": area,
+                            "period_start": month,
+                            "dims": f"lpg_product={kind}",
+                            "value": value,
+                        }
+                    )
+        return pl.DataFrame(
+            records, schema_overrides={"value": pl.Float64}
+        ).with_columns(
+            pl.lit(self.indicator_id).alias("indicator_id"),
+            pl.lit("province").alias("area_level"),
+            pl.lit("monthly").alias("frequency"),
+            pl.lit("tonne").alias("unit"),
+            pl.lit("measured").alias("quality_flag"),
+            pl.lit("2026-09").alias("vintage"),
+            pl.lit("epdk").alias("source_id"),
+            pl.lit(dt.date(2026, 9, 15)).alias("retrieved_at"),
+        )
+
+
+EPDK_MONTHLY_ADAPTERS["epdk_lpg_sales_monthly"] = LpgSalesMonthly
