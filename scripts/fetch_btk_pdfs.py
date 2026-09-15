@@ -33,12 +33,12 @@ def main() -> None:
     )
     for page in PAGES:
         html = client.get(f"https://www.btk.gov.tr/{page}").text.replace('\\"', '"')
-        files = dict(
-            (re.sub(r"[^\w\-. ]", "_", title).strip(), url)
+        files = {
+            re.sub(r"[^\w\-. ]", "_", title).strip(): url
             for title, url in re.findall(
                 r'"title":"([^"]{1,90})"[^{}]{0,300}?"url":"([^"]+\.pdf)"', html
             )
-        )
+        }
         folder = ROOT / page
         folder.mkdir(parents=True, exist_ok=True)
         for name, url in files.items():

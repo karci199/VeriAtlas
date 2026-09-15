@@ -50,7 +50,7 @@ Sitede 67 pazar raporu var; 2018-Q2 ve 2018-Q4 yok.
 
 - **İki kaynak karşılaştırması:** Çizelgelerdeki işletmeci geliri ile diğer işletmeci gelirinin
   toplamı, çeyreklik özet sayfasındaki sektör geliriyle karşılaştırıldı. 2015-4 ile 2026-1
-  arasındaki 41 çeyreğin 35'inde fark %0,05'in altında. Sapmalar:
+  arasındaki 41 çeyreğin 37'sinde fark %0,05'in altında. Sapmalar:
   - 2021-4, 2022-3, 2025-1: yaklaşık %0,3.
   - 2018-3: %2.
 - **M2M:** Özet tablodaki M2M, eski `btk_m2m_subscribers` serisiyle her yıl birebir aynı.
