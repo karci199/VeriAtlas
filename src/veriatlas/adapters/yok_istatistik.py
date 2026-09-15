@@ -361,3 +361,150 @@ YOK_ISTATISTIK_ADAPTERS = {
 }
 
 _ = re  # kept for pattern helpers added later
+
+
+# region 1982-2013 national summary
+
+ARCHIVE = FOLDER / "1982-2013" / "1982-2013_OGRENCI-MEZUN_OZET.xlsx"
+ARCHIVE_LEVELS = {
+    "onlisans": "associate",
+    "lisans": "bachelor",
+    "yukseklisans": "master",
+    "doktora": "doctorate",
+}
+ARCHIVE_SUBROWS = {
+    "acikogretimharic": "not_open",
+    "ikinciogretim": "evening",
+    "acikogretim": "open",
+}
+
+
+def archive() -> dict[str, dict[tuple[int, str, str, str], float]]:
+    """{indicator: {(year, level, delivery, sex): count}} from the 1982-2013 summary.
+
+    Each block names two years: new registrations and students for the first, graduates for
+    the one before. Level rows are followed by their parts: "açıköğretim hariç" and "açık
+    öğretim" (1983-1992), plus "ikinci öğretim" (1992 on). In the later layout the three
+    parts are disjoint and add up to the level (evening is outside "hariç"); in the earlier
+    one "hariç" holds evening classes. Parts are stored when present, the level otherwise;
+    every level must equal its parts and the levels must equal TOPLAM.
+    """
+    import openpyxl
+
+    sheet = openpyxl.load_workbook(ARCHIVE, data_only=True).active
+    rows = [list(r) for r in sheet.iter_rows(values_only=True)]
+    out: dict[str, dict] = {
+        k: {} for k in ("yok_new_students", "yok_students", "yok_graduates")
+    }
+    blocks: list[tuple[int, int, list]] = []
+    for r in rows:
+        if r[1] and re.fullmatch(r"\d{4}-\d{4}", str(r[1]).strip()):
+            blocks.append((int(str(r[1])[:4]), int(str(r[7])[:4]), []))
+        elif blocks and r[0] and str(r[0]).strip():
+            label = fold(first_line(r[0]))
+            values = [float(x) if x not in (None, "") else 0.0 for x in r[1:10]]
+            blocks[-1][2].append((label, values))
+    parts = {
+        "yok_new_students": (0, "first"),
+        "yok_students": (3, "first"),
+        "yok_graduates": (6, "second"),
+    }
+    for first, second, lines in blocks:
+        total = next(v for label, v in lines if label == "toplam")
+        levels: list[tuple[str, list[float], list[tuple[str, list[float]]]]] = []
+        for label, values in lines:
+            if label in ARCHIVE_LEVELS:
+                levels.append((ARCHIVE_LEVELS[label], values, []))
+            elif label in ARCHIVE_SUBROWS:
+                levels[-1][2].append((ARCHIVE_SUBROWS[label], values))
+        later = any(d == "evening" for _, _, subs in levels for d, _ in subs)
+        for indicator, (offset, which) in parts.items():
+            year = first if which == "first" else second
+            for i, sex in ((0, "male"), (1, "female")):
+                if (
+                    abs(sum(v[offset + i] for _, v, _ in levels) - total[offset + i])
+                    > 0.5
+                ):
+                    raise ValueError(
+                        f"YÖK arşiv {first}: düzeyler TOPLAM'ı tutmuyor ({indicator})"
+                    )
+                for level, values, subs in levels:
+                    if subs and any(v[offset + i] for _, v in subs):
+                        if (
+                            abs(
+                                sum(v[offset + i] for _, v in subs) - values[offset + i]
+                            )
+                            > 0.5
+                        ):
+                            raise ValueError(
+                                f"YÖK arşiv {first}: {level} alt satırları tutmuyor"
+                            )
+                        for delivery, v in subs:
+                            name = (
+                                "formal"
+                                if (delivery == "not_open" and later)
+                                else delivery
+                            )
+                            out[indicator][(year, level, name, sex)] = v[offset + i]
+                    else:
+                        out[indicator][(year, level, "all", sex)] = values[offset + i]
+    return out
+
+
+class YokArchive:
+    source_id = "yok_istatistik"
+    indicator_id = ""
+    table = ""
+
+    def fetch(self) -> Path:
+        return ARCHIVE
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        records = [
+            {
+                "area_id": "TR",
+                "area_level": "country",
+                "period_start": dt.date(year, 1, 1),
+                "dims": f"education_delivery={delivery};higher_education_level={level};sex={sex}",
+                "value": value,
+            }
+            for (year, level, delivery, sex), value in archive()[self.table].items()
+            if value
+        ]
+        return pl.DataFrame(
+            records, schema_overrides={"value": pl.Float64}
+        ).with_columns(
+            pl.lit(self.indicator_id).alias("indicator_id"),
+            pl.lit("annual").alias("frequency"),
+            pl.lit("person").alias("unit"),
+            pl.lit("measured").alias("quality_flag"),
+            pl.lit("2014-01").alias("vintage"),
+            pl.lit(self.source_id).alias("source_id"),
+            pl.lit(dt.date(2026, 9, 15)).alias("retrieved_at"),
+        )
+
+
+class YokStudentsArchive(YokArchive):
+    indicator_id = "yok_students_archive"
+    table = "yok_students"
+
+
+class YokNewStudentsArchive(YokArchive):
+    indicator_id = "yok_new_students_archive"
+    table = "yok_new_students"
+
+
+class YokGraduatesArchive(YokArchive):
+    indicator_id = "yok_graduates_archive"
+    table = "yok_graduates"
+
+
+YOK_ISTATISTIK_ADAPTERS.update(
+    {
+        "yok_students_archive": YokStudentsArchive,
+        "yok_new_students_archive": YokNewStudentsArchive,
+        "yok_graduates_archive": YokGraduatesArchive,
+    }
+)
+
+# endregion

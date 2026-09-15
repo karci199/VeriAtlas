@@ -26986,6 +26986,8 @@ formal = "Örgün öğretim"
 evening = "İkinci öğretim"
 distance = "Uzaktan öğretim"
 open = "Açık öğretim"
+not_open = "Açıköğretim dışı (örgün ve ikinci öğretim birlikte)"
+all = "Tümü (kırılım yok)"
 
 [dim.higher_education_level]
 label_tr = "Öğrenim düzeyi"
@@ -27028,3 +27030,33 @@ views = ["table", "map", "line", "bar"]
 definition_tr = "YÖK İstatistik Tablo M102 'Öğrenim gördüğü il ve ilçelere göre mezun sayıları', 2013-2014 ... 2025-2026 yayınları; dönem yayının öğretim yılının ilk yılıdır (mezuniyet yılı YÖK'ün yayınladığı gibi, kaydırılmadı)."
 
 # endregion
+
+[indicator.yok_students_archive]
+label_tr = "Yükseköğretim öğrenci sayısı, Türkiye (1983-2012)"
+label_en = "Higher education öğrenci, Türkiye (archive)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["education_delivery", "higher_education_level", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "YÖK İstatistik '1982-2013 Öğrenci - Mezun Özet' tablosu, Türkiye geneli. Dönem öğretim yılının ilk yılıdır; mezunlar her blokta bir önceki öğretim yılınındır. 1983-1991 bloklarında önlisans kırılımsız, lisans 'açıköğretim dışı' ve 'açık öğretim'; 1992 sonrasında önlisans ve lisans örgün, ikinci ve açık öğretim olarak ayrı. İl kırılımı yok; 2013 sonrası il/ilçe serileri yok_students, yok_new_students, yok_graduates."
+
+[indicator.yok_new_students_archive]
+label_tr = "Yükseköğretime yeni kayıt, Türkiye (1983-2012)"
+label_en = "Higher education yeni kayıt, Türkiye (archive)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["education_delivery", "higher_education_level", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "YÖK İstatistik '1982-2013 Öğrenci - Mezun Özet' tablosu, Türkiye geneli. Dönem öğretim yılının ilk yılıdır; mezunlar her blokta bir önceki öğretim yılınındır. 1983-1991 bloklarında önlisans kırılımsız, lisans 'açıköğretim dışı' ve 'açık öğretim'; 1992 sonrasında önlisans ve lisans örgün, ikinci ve açık öğretim olarak ayrı. İl kırılımı yok; 2013 sonrası il/ilçe serileri yok_students, yok_new_students, yok_graduates."
+
+[indicator.yok_graduates_archive]
+label_tr = "Yükseköğretim mezun sayısı, Türkiye (1982-2011)"
+label_en = "Higher education mezun, Türkiye (archive)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["education_delivery", "higher_education_level", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "YÖK İstatistik '1982-2013 Öğrenci - Mezun Özet' tablosu, Türkiye geneli. Dönem öğretim yılının ilk yılıdır; mezunlar her blokta bir önceki öğretim yılınındır. 1983-1991 bloklarında önlisans kırılımsız, lisans 'açıköğretim dışı' ve 'açık öğretim'; 1992 sonrasında önlisans ve lisans örgün, ikinci ve açık öğretim olarak ayrı. İl kırılımı yok; 2013 sonrası il/ilçe serileri yok_students, yok_new_students, yok_graduates."
