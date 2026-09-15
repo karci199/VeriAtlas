@@ -42,8 +42,9 @@ ve YÖK Atlas API (`scripts/fetch_yokatlas.py`). Adaptörler: `yok_istatistik.py
 
 - Alan tabloları 2013-2014, 2014-2015: eski sınıflama; 2014-2015'te satırlar toplamın 3 katını
   1.182 kişi eksik veriyor, hiyerarşi çözülmüyor.
-- Lisansüstü alan: 2021-2022 öğrenci ve mezun, 2025-2026 mezun — satırlar 3 kat tutuyor ama sıra
-  bozuk.
+- Lisansüstü alan mezun 2025-2026: sonda kodlu tekrar satırlar ("GENİŞ ALAN 08 …"), toplam 1 kişi
+  tutmuyor. (2021-2022 lisansüstü öğrenci ve mezun düzeltildi: "(boş)" satırları sınıflanmamış
+  alanın yanlış yere basılmış alt satırları.)
 - 2025-2026 uluslararası öğrenci uyruk tablosu yayında yok.
 - Yerleşen adayın geldiği il/lise (YÖK Atlas yeni API'de girişsiz değil).
 - MEB: robots.txt engeli, çekilmez.

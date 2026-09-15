@@ -300,6 +300,12 @@ def resolve_tree(path: Path, data, total) -> list[tuple[str, str, dict]]:
     Walks the rows once: at each depth, rows are taken until they add up to the parent
     (the TOPLAM row at the top); every row taken above the deepest level first takes its own
     children the same way. Tried three levels deep, then two (older scheme)."""
+    # 2021-2022 postgraduate tables print the unclassified field's narrow and detailed rows
+    # as "(boş)" in the middle of the table, its broad row (SINIFLANMAMIŞ) at the end:
+    # those rows are dropped, SINIFLANMAMIŞ stands alone, and every sum still has to hold.
+    blanks = [row for row in data if fold(row[0]) in ("", "bos")]
+    if blanks and any(fold(row[0]).startswith("siniflanmamis") for row in data):
+        data = [row for row in data if fold(row[0]) not in ("", "bos")]
     keys = list(total)
     vector = [[v.get(k, 0.0) for k in keys] for _, v in data]
     names = ["broad", "narrow", "detailed"]
