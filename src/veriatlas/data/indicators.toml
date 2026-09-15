@@ -28334,6 +28334,24 @@ dims = ["message_type", "telecom_operator"]
 views = ["table", "line", "bar"]
 definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok). Milyon adet basılı; çeyreklik 2014-1'den."
 
+[dim.esignature_type]
+label_tr = "Sertifika türü"
+label_en = "Certificate type"
+
+[dim.esignature_type.values]
+electronic = "Güvenli elektronik imza"
+mobile = "Mobil imza"
+
+[indicator.btk_esignature_certificates]
+label_tr = "Oluşturulan nitelikli elektronik sertifika (e-imza, mobil imza), birikimli"
+label_en = "Qualified electronic certificates issued, cumulative"
+topic = "iletisim"
+unit = "item"
+frequency = "quarterly"
+dims = ["esignature_type"]
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri, çizelge; çeyrek sonu birikimli, 2011-1 … 2026-1. 2024'ten tablo duruma göre (iptal, süresi bitmiş, askıda, aktif) basılıyor; yalnız 'Toplam Oluşturulan' satırı alındı, 2023-4 değeri iki biçimde aynı. 2021-2 ve 2021-4 basılı toplamları satırları tutmuyor."
+
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
 label_en = "Mobile generation"

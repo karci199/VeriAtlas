@@ -45,6 +45,7 @@ Sitede 67 pazar raporu var; 2018-Q2 ve 2018-Q4 yok.
 | `btk_fiber_alternative*` (eski tanım), `btk_fiber_operators*` (2022'den geniş tanım) | çizelge, sahiplik ve omurga/erişim | çeyreklik 2014-1 … 2025-4 / 2019-1 … 2025-3 |
 | `btk_mobile_broadband_tech` | 3G/4.5G abone, mobil internet, TB | çeyreklik 2011-3 … 2026-1 (boşluklu) |
 | `btk_carrier_selection`, `btk_messages_by_operator` | çizelge | çeyreklik 2014-1 … 2026-1 |
+| `btk_esignature_certificates` | çizelge, birikimli e-imza ve mobil imza sertifikası | çeyreklik 2011-1 … 2026-1 |
 
 ### Kontroller
 
@@ -87,8 +88,8 @@ Sitede 67 pazar raporu var; 2018-Q2 ve 2018-Q4 yok.
 - **Pazar payı tabloları** (STH, İSS, uydu, GMPCS, rehberlik, altyapı, posta): yüzde, işletmeci
   adları değişken; yüklenmedi.
 - **Sıralama tabloları:** en çok aranan kısa numaralar, en çok trafik alan ülkeler.
-- **Nitelikli e-imza sertifikaları ve KEP hesapları:** başlıkları çok satırlı; 2016-2026 arası orta
-  zorlukta.
+- **KEP hesapları ve e-imzanın durum kırılımı** (iptal, süresi bitmiş, aktif; 2024+): çok satırlı
+  başlık, yalnız 9 rapor.
 - **Posta sektörü raporları** (2021-1 … 2025-2, 6 aylık): şube, gönderi, kargo, gelir, istihdam,
   yatırım, şikâyet. Rakamlar grafik etiketinde; x konumuna göre dönemle eşleştirilmeli (orta).
 - **Gizli damga:** 2024-Q2, 2024-Q3, 2025-Q1…Q3 ve 2026-Q1 raporlarında bazı sayfalar "GİZLİ — SADECE

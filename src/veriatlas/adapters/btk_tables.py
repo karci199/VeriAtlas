@@ -75,6 +75,9 @@ def report_lines(report: str) -> list[str]:
         if not re.search(r"G\s*İ\s*Z\s*L\s*İ|SADECE KURUM İÇİ", page)
         for line in page.splitlines()
     ]
+    lines = [
+        line.replace("Ġ", "İ").replace("ġ", "ş") for line in lines
+    ]  # 2012 font map
     return [re.sub(r"\b(20\d\d) - ([1-4])\b", r"\1-\2", line) for line in lines]
 
 
@@ -119,6 +122,7 @@ class Table:
     # down tables: [(part column indexes, total column index)] per layout column count
     sums: dict[int, list[tuple[tuple[int, ...], int]]] = field(default_factory=dict)
     scale: float = 1.0
+    trailing: int = 0  # extra cells after the periods ("Çeyrek Dönemlik Artış %")
     dash_is_blank: bool = False  # "-" means "not yet offered" (4.5G before 2016), not 0
     stacked: bool = (
         False  # SMS/MMS: "SMS a b c" / period / "MMS a b c", operators across
@@ -139,6 +143,13 @@ class Table:
         start = find_title(lines, self.title)
         if start is None:
             return {}
+        if self.indicator == "btk_esignature_certificates":
+            # 2024-Q1 on the table is certificates by status, two quarters, three columns
+            # each (electronic, mobile, total) and a growth rate: only the cumulative
+            # "Toplam Oluşturulan" row continues the older series.
+            status = self.read_status(report, lines, start)
+            if status is not None:
+                return status
         if self.stacked:
             return self.read_stacked(report, lines, start)
         if self.layouts:
@@ -160,6 +171,8 @@ class Table:
         if header is None:
             return {}  # a magazine-layout report: the title is not above its table
         i, periods = header
+        if any(fold(line).startswith("nitelikli") for line in lines[i + 1 : i + 3]):
+            return {}  # 2024-Q4 on: certificates by status, another table
         if len(set(periods)) != len(periods) and all("-" in p for p in periods):
             # 2025-Q1 complaints print "2023-3 2024-4 2024-1 …": consecutive quarters
             # ending at the last one are meant.
@@ -204,9 +217,19 @@ class Table:
             )
             if below and self.row_dims(f"{full} {below}") is not None:
                 block[n + 1] = ""  # the tail is used up
+            elif below and not label and dims is None and not is_total:
+                # a label printed under its numbers (2015-2023 e-signature table)
+                dims = self.row_dims(below)
+                is_total = bool(self.total) and bool(
+                    re.fullmatch(self.total, fold(below))
+                )
+                if dims is not None or is_total:
+                    block[n + 1] = ""
             if dims is None and not is_total:
                 if "(cid:" in line:
                     return {}
+                if out and len(label.split()) > 6:
+                    break  # prose after the table
                 if self.total is None:
                     # no total to betray a lost row: note it, the period comes from
                     # a neighbouring report (2014-Q4 prints the labels under the numbers)
@@ -217,6 +240,8 @@ class Table:
                 )
             if dims == "_skip":
                 continue
+            if self.trailing and len(numbers) == len(periods) + self.trailing:
+                numbers = numbers[: len(periods)]
             if len(numbers) != len(periods):
                 broken = True
                 if is_total:
@@ -256,6 +281,40 @@ class Table:
                             f"{report} {self.indicator} {token}: parçalar {parts:,.0f}, toplam {printed:,.0f}"
                         )
                     TOTAL_GAPS.append((report, self.indicator, token, parts, printed))
+        return out
+
+    def read_status(
+        self, report: str, lines: list[str], start: int
+    ) -> dict[Slot, float] | None:
+        block = lines[start : start + 18]
+        if not any("nitelikli" in fold(line) for line in block[:3]):
+            return None
+        periods = []
+        for line in block[:3]:
+            periods += re.findall(r"\b20\d\d-[1-4]\b", line)
+        # "Toplam Oluşturulan" sometimes holds its numbers, sometimes has them on the line
+        # between "Toplam" and "Oluşturulan": the first row of six or seven numbers.
+        row = next(
+            (
+                split_row(line.replace("%", ""))[1]
+                for line in block
+                if len(split_row(line.replace("%", ""))[1]) >= 3 * len(periods)
+            ),
+            None,
+        )
+        if len(periods) != 2 or row is None:
+            raise ValueError(f"{report} {self.indicator}: durum tablosu okunamadı")
+        numbers = row[: 3 * len(periods)]
+        out: dict[Slot, float] = {}
+        for k, token in enumerate(periods):
+            electronic, mobile, total = (value(x) for x in numbers[3 * k : 3 * k + 3])
+            if abs(electronic + mobile - total) > 2:
+                raise ValueError(f"{report} {self.indicator} {token}: toplam tutmuyor")
+            start_, frequency = period_start(token)
+            out[(self.indicator, "esignature_type=electronic", start_, frequency)] = (
+                electronic
+            )
+            out[(self.indicator, "esignature_type=mobile", start_, frequency)] = mobile
         return out
 
     def read_stacked(
@@ -429,6 +488,15 @@ TABLES = [
         total=None,
     ),
     Table(
+        r"^(elektronikvemobilimza|niteliklielektroniksertifikasayilari)",
+        "btk_esignature_certificates",
+        {
+            r"(.*artis)?elektronikimza": "esignature_type=electronic",  # under "Artış %"
+            r"mobilimza": "esignature_type=mobile",
+        },
+        trailing=1,
+    ),
+    Table(
         r"^isletmecibazindasmsvemmsmiktari",
         "btk_messages_by_operator",
         OPERATORS,
@@ -547,6 +615,7 @@ UNITS = {
     "btk_carrier_selection": "subscriber",
     "btk_satellite_platform_revenue": "try",
     "btk_messages_by_operator": "item",
+    "btk_esignature_certificates": "item",
     "btk_pamr": "subscriber",
     "btk_pamr_revenue": "try",
     "btk_directory_services": "item",
