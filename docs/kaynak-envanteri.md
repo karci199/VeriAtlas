@@ -40,3 +40,18 @@ doğrulanmadı · ✘ otomatik erişime kapalı (tarayıcıyla denenecek) · dep
 4. İlçe SEGE-2022 değişken tablosunun (56 değişken × 973 ilçe) PDF ekinde mi, Excel'de mi
    olduğunu bulmak — ilçe atlası için en değerli tek kaynak adayı.
 5. Muhasebat il tahsilat serisinin 2020 sonrası devamı.
+
+## Keşif turu 2026-09-15 (httpx ile 5 dakikalık bakış)
+
+| Kurum | Ne var | Biçim | Zorluk | Not |
+|---|---|---|---|---|
+| TOBB kurulan/kapanan şirket | il bazında kurulan-kapanan şirket, il sermaye; Aralık dosyasında yıllık birikimli | xls/xlsx, 2010-2026 aylık | kolay | `Documents/ResmiDosya/<yıl>/<yıl>-<ay>.xls`; sayfa "İLLER (BİRİKİMLİ)" |
+| YÖK İstatistik | üniversite/birim öğrenci, öğretim elemanı | ZK uygulaması (MEDAS gibi) | orta | ZK protokolü MEDAS'ta çözülmüştü |
+| YÖK Atlas | program bazında taban puan, kontenjan, yerleşen profili (il, lise) | React + `/api` | orta | robots.txt gerçek dosya değil; API uç noktaları bulunmalı |
+| MEB SGB | örgün eğitim istatistikleri | xls, pdf | ✘ | robots.txt yapay zekâ ajanlarını engelliyor — alınmaz |
+| Adalet Adli Sicil | adalet istatistikleri kitabı 2022-2025 | PDF | zor | il/adliye tabloları PDF'te |
+| Diyanet, OGM, SBB | yayın/istatistik | PDF | zor | |
+| Sağlık Bakanlığı, İŞKUR, AFAD, Muhasebat | istatistik sayfaları | JS uygulaması | orta/bilinmiyor | tarayıcıyla bakılmalı |
+| Kültür Turizm, GSB, Veri Portalı, Ankara BB | — | bağlantı hatası | bilinmiyor | buradan erişilemedi, tarayıcıyla denenmeli |
+| İBB Açık Veri | CKAN API | JSON | ✘ | robots.txt yasak |
+| ÖSYM | sonuç istatistikleri | — | bilinmiyor | istatistik sayfası adresi bulunamadı |
