@@ -16,11 +16,33 @@ sys.path.insert(0, "src")
 from veriatlas.adapters.epdk_history import number_tr, province_or_none
 from veriatlas.adapters.kgm import fold
 
-NAMES = (
-    ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
-)
+NAMES = [
+    "Ocak",
+    "Şubat",
+    "Mart",
+    "Nisan",
+    "Mayıs",
+    "Haziran",
+    "Temmuz",
+    "Ağustos",
+    "Eylül",
+    "Ekim",
+    "Kasım",
+    "Aralık",
+]
 M = {fold(x): i + 1 for i, x in enumerate(NAMES)}
-N = r"(-?[\d.]+(?:,\d+)?|-)"  # a lone "-" is a zero
+# A lone "-" is a zero; one stray glyph may stand in for a digit ("晉2.247" in Oct 2012).
+N = r"([^\s\d.,%-]?-?[\d.]+(?:,\d+)?|-)"
+
+
+def value(token):
+    if token == "-":
+        return 0.0
+    if not token[0].isdigit() and token[0] != "-":
+        return None  # a glyph lost a digit: rebuilt from the row where possible
+    return number_tr(token)
+
+
 ROW = re.compile(r"^(\D+?) " + " ".join([N + r" %?" + N + "%?"] * 4) + r"\s*$")
 PRODUCT_TABLE = re.compile(
     r"illere göre ürün bazında|illere ve ürünlere göre|il ve ürün bazında|illere ve ürün türüne",
@@ -64,16 +86,38 @@ for n, f in enumerate(files, 1):
             carry = False
             continue
         else:
-            carry = False  # the table's second page: no caption, rows go on
+            # A page with no caption: the table goes on (over up to three pages in 2016)
+            # until all provinces are read.
+            pass
         pages += 1
-        for raw in tx.split("\n"):
-            m = ROW.match(raw.strip())
+        # A long name broken over a line ("KAHRAMANMA|RAŞ", March 2015) leaves the name
+        # alone on its line with the numbers on the next: join them.
+        joined = []
+        for x in (line.strip() for line in tx.replace("￾", "").split("\n")):
+            if (
+                joined
+                and re.fullmatch(r"[A-ZÇĞİÖŞÜ]+", joined[-1])
+                and re.match(r"[\d-]", x)
+            ):
+                joined[-1] = joined[-1] + " " + x
+            else:
+                joined.append(x)
+        for raw in joined:
+            m = ROW.match(raw)
             if not m:
                 continue
-            v = [number_tr(x) for x in m.groups()[1:]]
+            v = [value(x) for x in m.groups()[1:]]
+            if v[6] is None and None not in (v[0], v[2], v[4]):
+                v[6] = v[0] + v[2] + v[4]
+            if None in (v[0], v[2], v[4], v[6]):
+                bad.append("BOZUK " + raw)
+                continue
             name = m.group(1).strip()
             if fold(name) in ("toplam", "geneltoplam"):
-                total = v
+                # The first TOPLAM after the provinces; later pages carry company
+                # tables whose TOPLAM rows are one province's (October 2012: Adana).
+                if total is None and len(rows) >= 70:
+                    total = v
                 continue
             pid = province_or_none(name)
             if pid is None:

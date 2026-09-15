@@ -18,10 +18,10 @@ karşılaştırıldı (en büyük fark %0,5).
 
 - Doğalgaz: 2017-10 (sayfada Eylül 2017 raporu iki kez; Ekim yok).
 - Akaryakıt: 2016-01, 2025-12; 2011-2015 raporlarında il × ürün tablosu yok.
-- LPG: 2011-09, 2012-10, 2012-12, 2013-02 – 2014-02, 2016-08 – 2016-10. Nedenleri: rapor
-  sayfada yok ya da PDF farklı biçimde (2012-10'da tablo toplamı 10.029 t basılmış; 2016
-  Nisan-Ekim PDF'lerinde tablo iki sayfaya farklı bölünmüş, 67-68 il okunuyor). 2016-04 –
-  2016-07 Word raporundan alındı. 2009-2011/07 aylık raporlarda il tablosu yok.
+- LPG: 2011-09, 2012-12, 2013-02 – 2014-02 (sayfada bu aylara rapor dosyası bulunamadı).
+  2009 – 2011-07 aylık raporlarda il tablosu yok. PDF okunurken düzeltilenler: Ekim 2012
+  Konya toplam hücresinde bir rakam bozuk karakter (ürünlerden yeniden kuruldu), Mart 2015
+  "KAHRAMANMA|RAŞ" iki satıra bölünmüş, 2016 tabloları üç sayfaya yayılıyor.
 
 ## Kaynak hataları (il değerleri kullanıldı)
 
