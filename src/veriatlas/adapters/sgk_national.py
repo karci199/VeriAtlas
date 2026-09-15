@@ -251,7 +251,11 @@ def category(
 
     if suffix == "occupation":
         match = re.match(r"^(\d) ?-", parts[0])
-        if match and len(parts) == 1 and re.search(ISCO_MAJOR[match.group(1)], parts[0]):
+        if (
+            match
+            and len(parts) == 1
+            and re.search(ISCO_MAJOR[match.group(1)], parts[0])
+        ):
             return match.group(1)
         return None
 
@@ -432,6 +436,16 @@ def tables() -> tuple[dict, list[str]]:
                 )
         except Unreadable as error:
             skipped.append(f"{year} {title[:70]}: {str(error)[-90:]}")
+            continue
+        # Time with the last employer breaks in the source from 2022: the share of accidents
+        # in "10+ years" goes 3 % (2013-2021) → 57 % (2022) → 99.4 % (2023-2025), while
+        # under a year falls from 55 % to 0.3 %. The tables still add up, so no check
+        # catches it; the years are left out rather than stored as if workers had all been
+        # with their employer for a decade.
+        if suffix == "tenure" and int(year) >= 2022:
+            skipped.append(
+                f"{year} {title[:70]}: çalışma süresi kodlaması 2022'den bozuk"
+            )
             continue
         out[(suffix, topic_key, scheme, int(year))].extend(rows)
     return out, skipped + notes

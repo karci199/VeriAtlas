@@ -152,3 +152,12 @@ Kaynak özellikleri:
   tanı konanlar (ayrı satırsa `insurance_ended`). %5 üstü farklar `report()`ta.
 - Ay tablolarında 2018-2025 toplam satırı sıfır basılı; denetlenemiyor.
 - Sınıflama kodlarının Türkçe etiketleri sözlükte yok (açık iş); kaynak etiketi hücrede var.
+
+### Düzeltmeler (2026-09-15)
+
+- **Son işverende çalışma süresi 2022'den bozuk (kaynak):** "10 yıldan fazla" payı 2013-2021'de
+  %3-4, 2022'de %57, 2023-2025'te %99,4; bir yıldan az %55 → %0,3. Tablolar toplamı tuttuğu için
+  denetim yakalamadı; 2022-2025 bu göstergeden çıkarıldı, seri 2013-2021.
+- **Kod etiketleri:** yara türü, vücut bölgesi, materyal, çevre, ortam, faaliyet, sapma, olay,
+  tanı (ICD-10), NACE sınıfı ve ay kodlarının Türkçe adları sözlükte
+  (`scripts/sgk_national_labels.py`, en son yılın etiketi; İngilizce yarısı ayrılarak).
