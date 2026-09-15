@@ -382,6 +382,37 @@ DATASETS.update(
     }
 )
 
+#: EVDS indicators, annual ones only. The page keys every row by area and year, so a
+#: monthly or weekly series written here would put twelve (or fifty-two) values on one key
+#: and the page would draw whichever came last — a wrong number with nothing saying so.
+#: Sub-annual EVDS series stay out until the page reads periods, or a yearly reading is
+#: chosen per indicator (sum for flows, December or mean for stocks and indices).
+DATASETS.update(
+    {
+        ind.indicator_id: ind.indicator_id.replace("_", "-") + ".csv"
+        for ind in load().indicators.values()
+        if ind.frequency == "annual"
+        and ind.indicator_id not in DATASETS
+        and ind.indicator_id
+        in {
+            "gdp_production_annual_chained",
+            "gdp_production_annual_current",
+            "gdp_per_capita_usd",
+            "gdp_per_capita_try",
+            "gdp_province_1987_archive",
+            "household_consumption_purpose",
+            "household_consumption_purpose_index",
+            "shop_unit_price",
+            "office_unit_price",
+            "archive_urhkisi",
+            "archive_urgsyih3",
+            "archive_kbkborc",
+            "archive_kamuborcy",
+            "archive_turhar",
+        }
+    }
+)
+
 #: Indicators that carry breakdowns and so go out through `export_broken_down` rather
 #: than the plain line-chart slice. Named once: the same list drives the level map and the
 #: files, and having it written out twice is how marital status came to be loaded into the
