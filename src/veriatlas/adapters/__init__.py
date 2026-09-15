@@ -6,6 +6,7 @@ from .evds_housing import EVDS_HOUSING_ADAPTERS
 from .evds_prices import EVDS_PRICE_ADAPTERS
 from .evds_series import EVDS_SERIES_ADAPTERS
 from .evds_tourism import EvdsVisitorsByNationality
+from .epdk import EPDK_ADAPTERS
 from .kgm import KGM_ADAPTERS
 from .sgk_national import SGK_NATIONAL_ADAPTERS
 from .sgk_provinces import SGK_ADAPTERS
@@ -93,6 +94,8 @@ ADAPTERS = {
     **KGM_ADAPTERS,
     # SGK yearbooks, Türkiye-wide work accident and occupational disease tables.
     **SGK_NATIONAL_ADAPTERS,
+    # EPDK market report annexes: electricity, gas, fuel, LPG by province.
+    **EPDK_ADAPTERS,
 }
 
 __all__ = [

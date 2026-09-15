@@ -25059,3 +25059,110 @@ views = ["table", "line", "bar"]
 definition_tr = "Türkiye, 2006-2016. Sonradan (30 gün içinde) ölenler 2015'ten itibaren sayılıyor; önceki yıllarda yalnız kaza yerinde ölen var — 2015'teki ölü sıçraması tanım değişikliği."
 
 # endregion
+
+# region EPDK market reports, Excel annexes (adapters/epdk.py), 2026-09-15.
+
+[dim.gas_sector]
+label_tr = "Sektör"
+label_en = "Sector"
+
+[dim.gas_sector.values]
+conversion = "Dönüşüm/çevrim (santral)"
+energy = "Enerji sektörü"
+transport = "Ulaşım"
+industry = "Sanayi"
+services = "Hizmet"
+residential = "Konut"
+other = "Diğer"
+
+[dim.gas_customer]
+label_tr = "Tüketici"
+label_en = "Customer"
+
+[dim.gas_customer.values]
+subscriber = "Abone"
+eligible_consumer = "Serbest tüketici"
+
+[dim.fuel_product]
+label_tr = "Ürün"
+label_en = "Product"
+
+[dim.fuel_product.values]
+gasoline = "Benzin"
+diesel = "Motorin"
+fuel_oil = "Fuel oil"
+aviation_fuel = "Havacılık yakıtı"
+marine_fuel = "Denizcilik yakıtı"
+kerosene = "Gazyağı"
+other = "Diğer ürünler"
+
+[dim.lpg_product]
+label_tr = "LPG türü"
+label_en = "LPG product"
+
+[dim.lpg_product.values]
+cylinder = "Tüplü"
+bulk = "Dökme"
+autogas = "Otogaz"
+
+[indicator.epdk_electricity_consumption]
+label_tr = "Faturalanan elektrik tüketimi (EPDK)"
+label_en = "Billed electricity consumption (EPDK)"
+topic = "enerji"
+unit = "mwh"
+frequency = "annual"
+dims = ["consumer"]
+views = ["table", "map", "bar"]
+definition_tr = "EPDK Elektrik Piyasası Gelişim Raporu 2025 eki, 2024-2025. Faturalanan tüketim: kayıt dışı kullanım dahil değil, bu yüzden faturalamanın sıkılaştığı yerlerde (Dicle bölgesi) tüketim gerçekte olduğundan hızlı artmış görünür. TÜİK il elektrik tüketimi (electricity_consumption) santral iç tüketimi ve iletim bağlantılı büyük tüketicileri farklı sayar; iki seri karıştırılmamalı."
+
+[indicator.epdk_electricity_consumers]
+label_tr = "Elektrik tüketici (abone) sayısı"
+label_en = "Electricity consumers"
+topic = "enerji"
+unit = "subscriber"
+frequency = "annual"
+dims = ["consumer"]
+views = ["table", "map", "bar"]
+definition_tr = "EPDK Elektrik Piyasası Gelişim Raporu 2025 eki, 2024-2025, yıl sonu."
+
+[indicator.epdk_natural_gas_sales]
+label_tr = "Doğal gaz satışı, sektöre göre"
+label_en = "Natural gas sales by sector"
+topic = "enerji"
+unit = "m3"
+frequency = "annual"
+dims = ["gas_sector"]
+views = ["table", "map", "bar"]
+definition_tr = "EPDK Doğal Gaz Piyasası Gelişim Raporu 2025 eki (Sm3), şirketler toplanarak. İletim şebekesi ve depolamada kullanılan gaz (il yok) dışarıda."
+
+[indicator.epdk_natural_gas_subscribers]
+label_tr = "Doğal gaz abone ve serbest tüketici sayısı"
+label_en = "Natural gas subscribers and eligible consumers"
+topic = "enerji"
+unit = "subscriber"
+frequency = "annual"
+dims = ["gas_customer"]
+views = ["table", "map", "bar"]
+definition_tr = "EPDK Doğal Gaz Piyasası Gelişim Raporu 2025 eki, 2025 yıl sonu."
+
+[indicator.epdk_fuel_sales]
+label_tr = "Akaryakıt yurt içi satışı, ürüne göre"
+label_en = "Domestic fuel sales by product"
+topic = "enerji"
+unit = "tonne"
+frequency = "annual"
+dims = ["fuel_product"]
+views = ["table", "map", "bar"]
+definition_tr = "EPDK Petrol Piyasası Gelişim Raporu 2025 eki, Tablo 17 (ton)."
+
+[indicator.epdk_lpg_sales]
+label_tr = "LPG satışı, türe göre"
+label_en = "LPG sales by product"
+topic = "enerji"
+unit = "tonne"
+frequency = "annual"
+dims = ["lpg_product"]
+views = ["table", "map", "bar"]
+definition_tr = "EPDK LPG Piyasası Gelişim Raporu 2025 eki, Tablo 1 (ton)."
+
+# endregion
