@@ -26885,3 +26885,35 @@ frequency = "monthly"
 dims = ["lpg_product"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "EPDK LPG Piyasası aylık sektör raporları Tablo 3.9, Ocak 2017 - Aralık 2025 (ton). Mayıs 2019 ve Nisan 2021 raporlarında basılı Türkiye toplamı illerin toplamıyla uyuşmuyor; il payları il toplamına göre hesaplandığı için il değerleri kullanıldı."
+
+# region TOBB company statistics (adapters/tobb.py), 2026-09-15.
+
+[dim.company_event]
+label_tr = "Olay"
+label_en = "Event"
+
+[dim.company_event.values]
+established = "Kurulan"
+liquidation = "Tasfiyeye giren"
+closed = "Kapanan"
+
+[dim.company_type]
+label_tr = "Tür"
+label_en = "Type"
+
+[dim.company_type.values]
+company = "Şirket"
+cooperative = "Kooperatif"
+sole_trader = "Gerçek kişi ticari işletme"
+
+[indicator.tobb_companies]
+label_tr = "Kurulan, tasfiyeye giren ve kapanan şirketler"
+label_en = "Companies established, in liquidation and closed"
+topic = "reel_kesim"
+unit = "company"
+frequency = "annual"
+dims = ["company_event", "company_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TOBB Kurulan ve Kapanan Şirket İstatistikleri, Aralık dosyalarının 'İller (birikimli)' tablosu, 2009-2025. Kaynak Türkiye Ticaret Sicili Gazetesi. Bir yıl iki dosyada varsa (sonraki yılın dosyasındaki önceki yıl sütunu) yeni dosyadaki sayı alındı. Gerçek kişi ticari işletmelerin tasfiye sütunu yok."
+
+# endregion
