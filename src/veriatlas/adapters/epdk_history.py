@@ -55,6 +55,14 @@ OLD_CONSUMER_TYPES = {
     "ticarethane": "commercial_public",
     **CONSUMER_TYPES,
 }
+ELECTRICITY_2016 = ("ZeM0_S9N9E8_.docx", 14)
+ENGLISH_CONSUMER_TYPES = {
+    "lighting": "lighting",
+    "household": "residential",
+    "industry": "industrial",
+    "agriculturalirrigation": "agricultural",
+    "commerce": "commercial_public",
+}
 GAS_SUPPLY = {
     "borugazi": "pipeline",
     "lng": "lng",
@@ -263,6 +271,26 @@ class ElectricityConsumptionHistory(EpdkElectricityConsumption):
                 tables[year] = wide_table(
                     grid, OLD_CONSUMER_TYPES, f"elektrik {year}", rounding=5.0
                 )
+        # 2016: the Turkish Word report has no province table; the English edition does
+        # (table 14, MWh, kinds in the header's second row).
+        cap, grid = docx_tables()[(ELECTRICITY_2016[0], ELECTRICITY_2016[1])]
+        if fold(grid[0][0]) != "province" or len(grid) not in (84, 85):
+            raise ValueError("elektrik 2016: İngilizce tablo beklenen biçimde değil")
+        header = ["il", *grid[1][1:-1], "Grand Total"]
+        rows = [
+            [
+                {
+                    "grandtotal": "toplam",
+                    "istasya": "İSTANBUL",
+                    "istavrupa": "İSTANBUL",
+                }.get(fold(r[0]), r[0]),
+                *r[1:],
+            ]
+            for r in grid[2:]
+        ]
+        tables[2016] = wide_table(
+            [header, *rows], ENGLISH_CONSUMER_TYPES, "elektrik 2016", rounding=5.0
+        )
         return merge_years(
             super().parse(raw), records(tables, "consumer"), "elektrik tüketimi"
         )
