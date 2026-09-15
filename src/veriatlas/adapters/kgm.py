@@ -903,7 +903,7 @@ def accident_series() -> dict[int, list[float | None]]:
     for path in sorted(ARCHIVE.glob("TrafikKazalariOzeti2017_*.pdf")):
         try:
             lines = pdf_lines(path)
-        except Exception:  # noqa: BLE001 — two archived copies are truncated
+        except Exception:  # noqa: BLE001, S112 — two archived copies are truncated
             continue
         for line in lines:
             match = ACCIDENT_ROW.match(line)
