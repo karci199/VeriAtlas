@@ -363,6 +363,24 @@ class LpgSalesMonthly:
                             "value": value,
                         }
                     )
+        # Earlier months from the PDF reports, only where no Word report covers them.
+        for month, rows in lpg_pdf_months().items():
+            if month in seen:
+                continue
+            for area, (cylinder, bulk, autogas, _total) in rows.items():
+                for kind, value in (
+                    ("cylinder", cylinder),
+                    ("bulk", bulk),
+                    ("autogas", autogas),
+                ):
+                    records.append(
+                        {
+                            "area_id": area,
+                            "period_start": month,
+                            "dims": f"lpg_product={kind}",
+                            "value": value,
+                        }
+                    )
         return pl.DataFrame(
             records, schema_overrides={"value": pl.Float64}
         ).with_columns(
@@ -378,3 +396,37 @@ class LpgSalesMonthly:
 
 
 EPDK_MONTHLY_ADAPTERS["epdk_lpg_sales_monthly"] = LpgSalesMonthly
+
+
+LPG_PDF_SCAN = RAW / "epdk" / "lpg_pdf_scan.json"
+#: PDF months that did not pass (fewer than 78 provinces or not adding to the total).
+LPG_PDF_REJECTED: list[str] = []
+
+
+def lpg_pdf_months() -> dict[dt.date, dict[str, list[float]]]:
+    """Months from `scripts/scan_epdk_lpg_monthly_pdfs.py` whose provinces add up.
+
+    A month is kept only when at least 78 provinces were read and their totals come to the
+    printed Türkiye total (within 5 t or 0.1 %), and each row's products add to its total.
+    """
+    import json
+
+    kept: dict[dt.date, dict[str, list[float]]] = {}
+    LPG_PDF_REJECTED.clear()
+    for ym, reports in json.loads(LPG_PDF_SCAN.read_text(encoding="utf-8")).items():
+        report = reports[0]
+        rows, total = report["rows"], report["total"]
+        national = sum(r[3] for r in rows.values())
+        rows_hold = all(abs(sum(r[:3]) - r[3]) <= 3 for r in rows.values())
+        if (
+            ym == "?"
+            or len(rows) < 78
+            or not total
+            or abs(national - total[6]) > max(5, total[6] * 0.001)
+            or not rows_hold
+        ):
+            LPG_PDF_REJECTED.append(ym)
+            continue
+        year, month = map(int, ym.split("-"))
+        kept[dt.date(year, month, 1)] = rows
+    return kept
