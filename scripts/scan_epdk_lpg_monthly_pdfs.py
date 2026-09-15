@@ -20,7 +20,7 @@ NAMES = (
     ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
 )
 M = {fold(x): i + 1 for i, x in enumerate(NAMES)}
-N = r"(-?[\d.]+(?:,\d+)?)"
+N = r"(-?[\d.]+(?:,\d+)?|-)"  # a lone "-" is a zero
 ROW = re.compile(r"^(\D+?) " + " ".join([N + r" %?" + N + "%?"] * 4) + r"\s*$")
 PRODUCT_TABLE = re.compile(
     r"illere göre ürün bazında|illere ve ürünlere göre|il ve ürün bazında|illere ve ürün türüne",
