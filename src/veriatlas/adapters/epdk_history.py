@@ -133,7 +133,11 @@ def near(a: float, b: float, what: str, rounding: float) -> None:
 
 
 def wide_table(
-    grid, kinds: dict[str, str], what: str, rounding: float = 0.0
+    grid,
+    kinds: dict[str, str],
+    what: str,
+    rounding: float = 0.0,
+    provinces: int = 81,
 ) -> dict[str, dict[str, float]]:
     """Province rows × kind columns, checked against row totals and the grand total row.
 
@@ -181,7 +185,7 @@ def wide_table(
             out[pid] = {k: out[pid].get(k, 0.0) + v for k, v in values.items()}
         elif pid not in whole:
             out[pid] = values
-    if len(out) != 81:
+    if len(out) != provinces:
         raise ValueError(f"{what}: {len(out)} il")
     if grand is not None and total_col is not None:
         national = sum(sum(v.values()) for v in out.values()) + other
@@ -326,7 +330,232 @@ class GasConsumption(Epdk):
             tables[year] = {
                 p: {k: v * 1e6 for k, v in d.items()} for p, d in table.items()
             }
+        for year, (file, first, count) in GAS_CONSUMPTION_PDFS.items():
+            grid = pdf_grid(
+                FILES / "dogalgaz_yillik" / f"{file}.pdf", first, "Tablo 8.4"
+            )
+            table = wide_table(
+                grid, GAS_SUPPLY, f"doğalgaz tüketim {year}", 0.02, provinces=count
+            )
+            tables[year] = {
+                p: {k: v * 1e6 for k, v in d.items()} for p, d in table.items()
+            }
         return fact(records(tables, "gas_supply"), self.indicator_id, "m3", "2026-05")
+
+
+#: Year -> (PDF, page of Tablo 8.3 / 8.2). 2014 prints the province total only.
+#: Year -> (PDF, page, provinces listed). Tunceli has no row in 2015 (no gas used there).
+GAS_CONSUMPTION_PDFS = {2015: ("Jo_r3O_Xi5s_", 65, 80), 2016: ("zd_qHXQpFYw_", 76, 81)}
+NUMBER = re.compile(r"\d{1,3}(\.\d{3})*,\d+")
+
+
+def pdf_grid(path: Path, first: int, stop: str) -> list[list[str]]:
+    """A province table rebuilt from word positions, as rows of cell strings.
+
+    Plain text loses empty cells. Here the header words are merged into columns (words on
+    one line less than 8 pt apart, or stacked over each other, belong to one header), and
+    every number goes to the column whose header centre is nearest. A row is the words
+    sharing a baseline; rows whose label does not start at the table's left edge (a chart
+    drawn over the page, its axis labels) are dropped. `wide_table` then checks each row
+    against its printed total, so a number put in the wrong column cannot pass.
+    """
+    import pdfplumber
+
+    rows: list[list[str]] = []
+    header: list[str] | None = None
+    centres: list[float] = []
+    with pdfplumber.open(path) as document:
+        for raw_page in document.pages[first : first + 4]:
+            # The 2015 report carries the table twice, a second text layer in another
+            # font drawn offset over the first, and the two interleave letter by letter
+            # ("BATMBAİNNGÖ L"). Keep only the font size the table body is set in.
+            sizes = Counter(
+                round(c["size"]) for c in raw_page.chars if c["text"].isdigit()
+            )
+            body = sizes.most_common(1)[0][0] if sizes else None
+            page = raw_page.filter(
+                lambda o: o.get("object_type") != "char" or round(o["size"]) == body
+            )
+            words = page.extract_words()
+            if rows and stop in (page.extract_text() or ""):
+                cut = min(w["top"] for w in words if w["text"] == stop.split()[0])
+                words = [w for w in words if w["top"] < cut]
+            # The 2015 report draws the table twice, once with the header garbled into
+            # the title; the copy to read is the ADANA with a clean "Boru" header above.
+            anchor = next(
+                (
+                    w
+                    for w in words
+                    if w["text"] == "ADANA"
+                    and any(
+                        fold(o["text"]) == "boru" and 3 < w["top"] - o["top"] < 30
+                        for o in words
+                    )
+                ),
+                None,
+            )
+            if header is None:
+                if anchor is None:
+                    continue
+                band = [
+                    w
+                    for w in words
+                    if anchor["top"] - 30 < w["top"] < anchor["top"] - 3
+                    and not NUMBER.fullmatch(w["text"])
+                    and w["x0"] > 150
+                ]
+                groups: list[list[dict]] = []
+                for w in sorted(band, key=lambda w: w["x0"]):
+                    for g in groups:
+                        if any(
+                            (abs(w["top"] - o["top"]) < 3 and w["x0"] - o["x1"] < 8)
+                            or (w["x0"] < o["x1"] and o["x0"] < w["x1"])
+                            for o in g
+                        ):
+                            g.append(w)
+                            break
+                    else:
+                        groups.append([w])
+                groups.sort(key=lambda g: min(w["x0"] for w in g))
+                header = ["İl"] + [
+                    " ".join(
+                        w["text"]
+                        for w in sorted(g, key=lambda w: (round(w["top"]), w["x0"]))
+                    )
+                    for g in groups
+                ]
+                centres = [
+                    (min(w["x0"] for w in g) + max(w["x1"] for w in g)) / 2
+                    for g in groups
+                ]
+                left = anchor["x0"]
+            # A continuation page can sit the table elsewhere: its left edge is where its
+            # first province name starts, and the columns shift with it.
+            first_name = next((w for w in words if province_or_none(w["text"])), None)
+            if first_name is None:
+                continue
+            shift = first_name["x0"] - left
+            left = first_name["x0"]
+            centres = [c + shift for c in centres]
+            lines: dict[float, list[dict]] = {}
+            for w in sorted(words, key=lambda w: w["top"]):
+                key = next((k for k in lines if abs(k - w["top"]) < 2), w["top"])
+                lines.setdefault(key, []).append(w)
+            for key in sorted(lines):
+                ws = sorted(lines[key], key=lambda w: w["x0"])
+                if abs(ws[0]["x0"] - left) > 4 or NUMBER.fullmatch(ws[0]["text"]):
+                    continue
+                label = " ".join(
+                    w["text"] for w in ws if not NUMBER.fullmatch(w["text"])
+                )
+                cells = [""] * len(centres)
+                for w in ws:
+                    if NUMBER.fullmatch(w["text"]):
+                        centre = (w["x0"] + w["x1"]) / 2
+                        i = min(
+                            range(len(centres)), key=lambda i: abs(centres[i] - centre)
+                        )
+                        if cells[i]:
+                            raise ValueError(
+                                f"{path.name}: {label} iki sayı bir sütunda"
+                            )
+                        cells[i] = w["text"]
+                if any(cells):
+                    rows.append([label, *cells])
+            if rows and stop in (page.extract_text() or ""):
+                break
+    if header is None:
+        raise ValueError(f"{path.name}: tablo bulunamadı")
+    return [header, *rows]
+
+
+#: Year -> (PDF, first page of Tablo 7.3). 2014 prints residential subscribers only.
+GAS_SUBSCRIBER_PDFS = {2015: ("Jo_r3O_Xi5s_", 47), 2016: ("zd_qHXQpFYw_", 57)}
+
+
+def gas_subscriber_pdf(file: str, first: int, year: int) -> dict[str, list[float]]:
+    """Tablo 7.3 of the 2015-2016 PDF reports, read by word position.
+
+    Plain text drops empty cells, so a province with no free consumers prints one number
+    and nothing says which column it belongs to. Each number is instead placed under the
+    header "Sayısı" nearest to its centre. Province rows are told from company rows by
+    their name resolving to a province; company rows are summed per province and must equal
+    it, and the provinces must add up to the printed Genel Toplam.
+    """
+    import pdfplumber
+
+    provinces: dict[str, list[float]] = {}
+    companies: dict[str, list[float]] = {}
+    grand = None
+    current = None
+    with pdfplumber.open(FILES / "dogalgaz_yillik" / f"{file}.pdf") as document:
+        for page in document.pages[first : first + 10]:
+            words = page.extract_words()
+            heads = [w for w in words if re.fullmatch(r"Sayısı\*?", w["text"])]
+            if heads:
+                # Only the header row: a chart further down repeats the word.
+                heads = [h for h in heads if h["top"] < heads[0]["top"] + 3]
+                centres = sorted((h["x0"] + h["x1"]) / 2 for h in heads)
+                subs_x, eligible_x = centres[0], centres[-1]
+                start = heads[0]["top"] + 5
+            elif provinces:
+                start = (
+                    60  # continuation page: header not repeated, running title above
+                )
+            else:
+                continue
+            # The next table (7.4) starts on the page after the last province.
+            if grand is not None or (provinces and "Tablo 7.4" in page.extract_text()):
+                break
+            lines: dict[int, list[dict]] = {}
+            for w in words:
+                # Below the table the page number sits under the free-consumer column.
+                if start < w["top"] < page.height - 45:
+                    lines.setdefault(round(w["top"] / 3), []).append(w)
+            for key in sorted(lines):
+                ws = sorted(lines[key], key=lambda w: w["x0"])
+                label = " ".join(
+                    w["text"] for w in ws if not re.fullmatch(r"[\d.]+", w["text"])
+                )
+                nums = [w for w in ws if re.fullmatch(r"\d{1,3}(\.\d{3})*", w["text"])]
+                if not nums:
+                    continue
+                values = [0.0, 0.0]
+                for w in nums:
+                    centre = (w["x0"] + w["x1"]) / 2
+                    if abs(centre - subs_x) < 20:
+                        values[0] = number_tr(w["text"])
+                    elif abs(centre - eligible_x) < 20:
+                        values[1] = number_tr(w["text"])
+                if fold(label) in ("geneltoplam", "toplam"):
+                    grand = values
+                    break
+                pid = province_or_none(label)
+                if pid and pid in provinces:
+                    raise ValueError(f"doğalgaz abone PDF {year}: {label} iki kez")
+                if pid:
+                    current = pid
+                    provinces[pid] = values
+                    companies[pid] = [0.0, 0.0]
+                elif current:
+                    companies[current][0] += values[0]
+                    companies[current][1] += values[1]
+    if len(provinces) < 65:
+        raise ValueError(f"doğalgaz abone PDF {year}: {len(provinces)} il")
+    for pid, values in provinces.items():
+        close(companies[pid][0], values[0], f"doğalgaz abone {year} {pid}")
+        close(companies[pid][1], values[1], f"doğalgaz serbest {year} {pid}")
+    # 2016 prints no Genel Toplam; its provinces rest on the company rows alone.
+    if grand is not None:
+        close(
+            sum(v[0] for v in provinces.values()), grand[0], f"doğalgaz abone {year} TR"
+        )
+        close(
+            sum(v[1] for v in provinces.values()),
+            grand[1],
+            f"doğalgaz serbest {year} TR",
+        )
+    return provinces
 
 
 class GasSubscribersHistory(EpdkGasSubscribers):
@@ -339,6 +568,12 @@ class GasSubscribersHistory(EpdkGasSubscribers):
             companies: dict[str, list[float]] = {}
             current = None
             grand = None
+            # 2017-2019 add a "Konut Abone" column between the two: the free consumers
+            # are the column so headed, not the third cell. Read as the third cell, the
+            # residential subscribers had been stored as free consumers (13,6 mn in 2017).
+            eligible_col = next(
+                i for i, h in enumerate(grid[0]) if "serbest" in fold(h)
+            )
             for line in grid[1:]:
                 name = line[0].strip()
                 if not name or fold(name) in ("ilsirket", "iladi"):
@@ -346,7 +581,10 @@ class GasSubscribersHistory(EpdkGasSubscribers):
                 if fold(name) == "geneltoplam":
                     grand = number_tr(line[1])
                     continue
-                values = [number_tr(line[1]) or 0.0, number_tr(line[2]) or 0.0]
+                values = [
+                    number_tr(line[1]) or 0.0,
+                    number_tr(line[eligible_col]) or 0.0,
+                ]
                 pid = province_or_none(name)
                 if pid:
                     current = pid
@@ -367,6 +605,13 @@ class GasSubscribersHistory(EpdkGasSubscribers):
                 )
             for pid, (subs, eligible) in provinces.items():
                 close(companies[pid][0], subs, f"doğalgaz abone {year} {pid}")
+                close(companies[pid][1], eligible, f"doğalgaz serbest {year} {pid}")
+                history += [
+                    row(pid, year, "gas_customer=subscriber", subs),
+                    row(pid, year, "gas_customer=eligible_consumer", eligible),
+                ]
+        for year, (file, page) in GAS_SUBSCRIBER_PDFS.items():
+            for pid, (subs, eligible) in gas_subscriber_pdf(file, page, year).items():
                 history += [
                     row(pid, year, "gas_customer=subscriber", subs),
                     row(pid, year, "gas_customer=eligible_consumer", eligible),
