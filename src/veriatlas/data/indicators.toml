@@ -27559,6 +27559,27 @@ decimals = 0
 additive = true
 per_capita = false
 
+[unit.minute_per_month]
+label_tr = "dk/ay"
+label_en = "minutes per month"
+decimals = 0
+additive = false
+per_capita = false
+
+[unit.terabyte]
+label_tr = "TB"
+label_en = "terabytes"
+decimals = 0
+additive = true
+per_capita = false
+
+[unit.gigabyte_per_month]
+label_tr = "GB/ay"
+label_en = "GB per month"
+decimals = 2
+additive = false
+per_capita = false
+
 [unit.usd_per_month]
 label_tr = "$/ay"
 label_en = "USD per month"
@@ -27636,6 +27657,147 @@ label_en = "Tariff"
 [dim.tariff_type.values]
 prepaid = "Ön ödemeli"
 postpaid = "Faturalı"
+
+[dim.operator_count]
+label_tr = "Sayım"
+label_en = "Count"
+
+[dim.operator_count.values]
+operators = "İşletmeci"
+authorisations = "Yetkilendirme"
+
+[dim.subscriber_type]
+label_tr = "Abone türü"
+label_en = "Subscriber type"
+
+[dim.subscriber_type.values]
+fixed = "Sabit telefon"
+mobile_total = "Mobil, toplam (M2M dahil)"
+m2m = "M2M"
+mobile_persons = "Mobil abone (kişi)"
+cable_tv = "Kablo TV"
+
+[dim.message_type]
+label_tr = "Mesaj"
+label_en = "Message"
+
+[dim.message_type.values]
+sms = "SMS"
+mms = "MMS"
+
+[dim.arpu_scope]
+label_tr = "Kapsam"
+label_en = "Scope"
+
+[dim.arpu_scope.values]
+turk_telekom = "Türk Telekom (sabit)"
+mobile = "Mobil sektör"
+
+[dim.fiber_owner]
+label_tr = "Fiber sahibi"
+label_en = "Fibre owner"
+
+[dim.fiber_owner.values]
+turk_telekom = "Türk Telekom"
+alternative = "Alternatif işletmeciler"
+
+[indicator.btk_operators]
+label_tr = "Elektronik haberleşme işletmeci ve yetkilendirme sayısı"
+label_en = "Operators and authorisations"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+dims = ["operator_count"]
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri raporları, yıl sonu raporunun Özet Bilgiler tablosu; 2012-2025, her yıl onu basan en yeni rapordan (2018-4 raporu sitede yok, 2018 2019 raporundan). "
+
+[indicator.btk_sector_revenue]
+label_tr = "Elektronik haberleşme sektörü geliri"
+label_en = "Electronic communications sector revenue"
+topic = "iletisim"
+unit = "try"
+frequency = "annual"
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri raporları, yıl sonu raporunun Özet Bilgiler tablosu; 2012-2025, her yıl onu basan en yeni rapordan (2018-4 raporu sitede yok, 2018 2019 raporundan). Cari TL. 2014 değeri 2015 raporunda 35,5 milyardan 33,7 milyara düzeltilmiş; yeni değer kullanıldı."
+
+[indicator.btk_sector_investment]
+label_tr = "Elektronik haberleşme sektörü yatırımı"
+label_en = "Electronic communications sector investment"
+topic = "iletisim"
+unit = "try"
+frequency = "annual"
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri raporları, yıl sonu raporunun Özet Bilgiler tablosu; 2012-2025, her yıl onu basan en yeni rapordan (2018-4 raporu sitede yok, 2018 2019 raporundan). Cari TL. 2015'e 4.5G (IMT) ihale bedeli dahil (17,3 milyar)."
+
+[indicator.btk_subscribers_summary]
+label_tr = "Sabit, mobil, M2M ve kablo TV abonesi"
+label_en = "Fixed, mobile, M2M and cable TV subscriptions"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "annual"
+dims = ["subscriber_type"]
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri raporları, yıl sonu raporunun Özet Bilgiler tablosu; 2012-2025, her yıl onu basan en yeni rapordan (2018-4 raporu sitede yok, 2018 2019 raporundan). Yıl sonu. Mobil (kişi) 2012-2020 toplam−M2M−mobil bilgisayar, 2021'den toplam−M2M. Kablo TV yalnız 2012-2014."
+
+[indicator.btk_messages]
+label_tr = "SMS ve MMS trafiği"
+label_en = "SMS and MMS traffic"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+dims = ["message_type"]
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri raporları, yıl sonu raporunun Özet Bilgiler tablosu; 2012-2025, her yıl onu basan en yeni rapordan (2018-4 raporu sitede yok, 2018 2019 raporundan). Milyon adet basılı; yalnız 2012-2014 özet tablosunda."
+
+[indicator.btk_minutes_of_use]
+label_tr = "Abone başına aylık konuşma süresi (MoU)"
+label_en = "Minutes of use per subscriber per month"
+topic = "iletisim"
+unit = "minute_per_month"
+frequency = "annual"
+dims = ["network"]
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri raporları, yıl sonu raporunun Özet Bilgiler tablosu; 2012-2025, her yıl onu basan en yeni rapordan (2018-4 raporu sitede yok, 2018 2019 raporundan). 4. çeyrek verisi."
+
+[indicator.btk_arpu_summary]
+label_tr = "Abone başına aylık gelir (ARPU), Türk Telekom ve mobil"
+label_en = "ARPU, Türk Telekom and mobile sector"
+topic = "iletisim"
+unit = "try_per_month"
+frequency = "annual"
+dims = ["arpu_scope"]
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri raporları, yıl sonu raporunun Özet Bilgiler tablosu; 2012-2025, her yıl onu basan en yeni rapordan (2018-4 raporu sitede yok, 2018 2019 raporundan). 4. çeyrek, cari TL. 2024 Türk Telekom 2025 raporunda 138,4'ten 146,9'a düzeltilmiş."
+
+[indicator.btk_data_traffic]
+label_tr = "Genişbant internet data trafiği"
+label_en = "Broadband data traffic"
+topic = "iletisim"
+unit = "terabyte"
+frequency = "annual"
+dims = ["network"]
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri raporları, yıl sonu raporunun Özet Bilgiler tablosu; 2012-2025, her yıl onu basan en yeni rapordan (2018-4 raporu sitede yok, 2018 2019 raporundan). Yıllık toplam."
+
+[indicator.btk_data_per_subscriber]
+label_tr = "Genişbant abone başına aylık data"
+label_en = "Broadband data per subscriber per month"
+topic = "iletisim"
+unit = "gigabyte_per_month"
+frequency = "annual"
+dims = ["network"]
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri raporları, yıl sonu raporunun Özet Bilgiler tablosu; 2012-2025, her yıl onu basan en yeni rapordan (2018-4 raporu sitede yok, 2018 2019 raporundan). Yeni rapor önceki yılı daha az ondalıkla basabiliyor (2014 mobil 0,84 → 0,8)."
+
+[indicator.btk_fiber_length]
+label_tr = "Fiber optik kablo uzunluğu, sahibine göre"
+label_en = "Fibre-optic cable length by owner"
+topic = "iletisim"
+unit = "km"
+frequency = "annual"
+dims = ["fiber_owner"]
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri raporları, yıl sonu raporunun Özet Bilgiler tablosu; 2012-2025, her yıl onu basan en yeni rapordan (2018-4 raporu sitede yok, 2018 2019 raporundan). Özet sayfasındaki cümleden; 2012-2024 (2025 raporunda yok)."
 
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
