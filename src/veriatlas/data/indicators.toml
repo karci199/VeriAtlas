@@ -27990,6 +27990,280 @@ dims = ["network"]
 views = ["table", "line"]
 definition_tr = "BTK İletişim Hizmetleri İstatistikleri (çeyreklik özet tablo, 2016-4 … 2026-1); her çeyrek bir yıl sonraki sayfanın önceki-yıl sütunundan (BTK geri dönük düzeltiyor), yoksa kendi sayfasından; kapsam 2015-4 … 2026-1. "
 
+[dim.telecom_operator]
+label_tr = "İşletmeci"
+label_en = "Operator"
+
+[dim.telecom_operator.values]
+turk_telekom = "Türk Telekom"
+turkcell = "Turkcell"
+vodafone = "Vodafone"
+tt_mobil = "TT Mobil (Avea)"
+
+[dim.authorisation]
+label_tr = "Yetkilendirme türü"
+label_en = "Authorisation"
+
+[dim.authorisation.values]
+isp = "İnternet servis sağlayıcı (İSS)"
+fixed_telephony = "Sabit telefon (STH)"
+infrastructure = "Altyapı"
+satellite_communication = "Uydu haberleşme"
+satellite_platform = "Uydu platform"
+directory = "Rehberlik"
+cable_tv = "Kablo TV"
+gmpcs = "GMPCS"
+pamr = "Ortak kullanımlı telsiz (OKTH)"
+mvno = "Sanal mobil şebeke"
+
+[dim.complaint_sector]
+label_tr = "Sektör"
+label_en = "Sector"
+
+[dim.complaint_sector.values]
+mobile = "Mobil"
+isp = "İSS"
+satellite_platform = "Uydu platform"
+fixed_telephony = "Sabit telefon"
+cable_tv = "Kablo TV"
+
+[dim.pamr_measure]
+label_tr = "Ölçü"
+label_en = "Measure"
+
+[dim.pamr_measure.values]
+subscribers = "Abone"
+users = "Kullanıcı"
+
+[dim.directory_measure]
+label_tr = "Ölçü"
+label_en = "Measure"
+
+[dim.directory_measure.values]
+calls = "Çağrı sayısı"
+call_minutes = "Çağrı süresi (dk)"
+name_queries = "İsimle sorgulama"
+number_queries = "Numarayla sorgulama"
+individual_number_queries = "Bireysel numara sorgulama"
+corporate_number_queries = "Kurumsal numara sorgulama"
+
+[dim.cable_service]
+label_tr = "Hizmet"
+label_en = "Service"
+
+[dim.cable_service.values]
+cable_tv = "Kablo TV"
+cable_internet = "Kablo internet"
+cable_telephony = "Kablo telefon"
+iptv = "IPTV"
+
+[dim.fiber_part]
+label_tr = "Sahiplik"
+label_en = "Ownership"
+
+[dim.fiber_part.values]
+own = "Kendisine ait"
+leased = "Kiralık"
+
+[dim.fiber_use]
+label_tr = "Kullanım"
+label_en = "Use"
+
+[dim.fiber_use.values]
+backbone = "Omurga"
+access = "Erişim"
+
+[indicator.btk_operator_revenue]
+label_tr = "Net satış geliri, Türk Telekom ve mobil işletmeciler"
+label_en = "Net sales, Türk Telekom and mobile operators"
+topic = "iletisim"
+unit = "try"
+frequency = "quarterly"
+dims = ["telecom_operator"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyreklik, cari TL, 2010-1'den. Avea 2016'dan TT Mobil."
+
+[indicator.btk_operator_investment]
+label_tr = "Yatırım, Türk Telekom ve mobil işletmeciler"
+label_en = "Investment, Türk Telekom and mobile operators"
+topic = "iletisim"
+unit = "try"
+frequency = "quarterly"
+dims = ["telecom_operator"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyreklik, cari TL, 2012-1'den; 2015-3'e 4.5G, 2026-1'e 5G ihale bedelleri dahil."
+
+[indicator.btk_other_operator_revenue]
+label_tr = "Diğer işletmecilerin geliri, yetkilendirme türüne göre"
+label_en = "Other operators' revenue by authorisation"
+topic = "iletisim"
+unit = "try"
+frequency = "quarterly"
+dims = ["authorisation"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyreklik, cari TL. 2012 basılı toplamları satırlardan yüzde 2-7 fazla (listede olmayan tür); satırlar yüklendi."
+
+[indicator.btk_other_operator_investment]
+label_tr = "Diğer işletmecilerin yatırımı"
+label_en = "Other operators' investment"
+topic = "iletisim"
+unit = "try"
+frequency = "quarterly"
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyreklik, cari TL."
+
+[indicator.btk_consumer_complaints]
+label_tr = "Tüketici şikâyeti, sektöre göre"
+label_en = "Consumer complaints by sector"
+topic = "iletisim"
+unit = "item"
+frequency = "quarterly"
+dims = ["complaint_sector"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). BTK online şikâyet sistemi, çeyreklik 2014-1'den. 2024-1 basılı toplam satırlardan 90 fazla."
+
+[indicator.btk_pamr]
+label_tr = "Ortak kullanımlı telsiz (OKTH) abone ve kullanıcı"
+label_en = "PAMR subscribers and users"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "quarterly"
+dims = ["pamr_measure"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyrek sonu."
+
+[indicator.btk_pamr_revenue]
+label_tr = "OKTH geliri"
+label_en = "PAMR revenue"
+topic = "iletisim"
+unit = "try"
+frequency = "quarterly"
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyreklik, cari TL."
+
+[indicator.btk_directory_services]
+label_tr = "Rehberlik hizmetleri: çağrı ve sorgulama"
+label_en = "Directory services: calls and queries"
+topic = "iletisim"
+unit = "item"
+frequency = "quarterly"
+dims = ["directory_measure"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyreklik. 2015'ten telefon, SMS ve internet sorgulamaları birlikte."
+
+[indicator.btk_directory_revenue]
+label_tr = "Rehberlik hizmeti geliri"
+label_en = "Directory services revenue"
+topic = "iletisim"
+unit = "try"
+frequency = "quarterly"
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyreklik, cari TL."
+
+[indicator.btk_cable_services]
+label_tr = "Kablolu yayın hizmetleri abone"
+label_en = "Cable services subscribers"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "quarterly"
+dims = ["cable_service"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyrek sonu; kablo internet ve telefon Türksat'ın, IPTV TTNet ve Superonline'ın."
+
+[indicator.btk_satellite_subscribers]
+label_tr = "Uydu haberleşme abone"
+label_en = "Satellite communication subscribers"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "quarterly"
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyrek sonu."
+
+[indicator.btk_satellite_revenue]
+label_tr = "Uydu haberleşme geliri"
+label_en = "Satellite communication revenue"
+topic = "iletisim"
+unit = "try"
+frequency = "quarterly"
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyreklik, cari TL."
+
+[indicator.btk_gmpcs_subscribers]
+label_tr = "GMPCS (uydu mobil telefon) abone"
+label_en = "GMPCS subscribers"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "quarterly"
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyrek sonu. 2014-1 ve 2014-2 hücreleri metinde bozuk, yok."
+
+[indicator.btk_gmpcs_revenue]
+label_tr = "GMPCS geliri"
+label_en = "GMPCS revenue"
+topic = "iletisim"
+unit = "try"
+frequency = "quarterly"
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyreklik, cari TL."
+
+[indicator.btk_fixed_telephony_revenue]
+label_tr = "Alternatif sabit telefon (STH) işletmecileri net satış"
+label_en = "Alternative fixed telephony operators' net sales"
+topic = "iletisim"
+unit = "try"
+frequency = "quarterly"
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyreklik, cari TL."
+
+[indicator.btk_infrastructure_revenue]
+label_tr = "Alternatif altyapı işletmeciliği geliri"
+label_en = "Alternative infrastructure operators' revenue"
+topic = "iletisim"
+unit = "try"
+frequency = "quarterly"
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyreklik, cari TL."
+
+[indicator.btk_fiber_alternative]
+label_tr = "Alternatif işletmecilerin fiber uzunluğu, sahipliğe göre"
+label_en = "Alternative operators' fibre length by ownership"
+topic = "iletisim"
+unit = "km"
+frequency = "quarterly"
+dims = ["fiber_part"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Çeyrek sonu, 2014-1 … 2025-4 (eski tanım, Türk Telekom hariç). 2021-3/4 raporlarında 2021-1 satırı tutmuyor, yeni rapordan alındı."
+
+[indicator.btk_fiber_alternative_use]
+label_tr = "Alternatif işletmecilerin fiber uzunluğu, kullanıma göre"
+label_en = "Alternative operators' fibre length by use"
+topic = "iletisim"
+unit = "km"
+frequency = "quarterly"
+dims = ["fiber_use"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). Omurga + erişim = toplam."
+
+[indicator.btk_fiber_operators]
+label_tr = "İşletmecilerin fiber uzunluğu, sahipliğe göre"
+label_en = "Operators' fibre length by ownership"
+topic = "iletisim"
+unit = "km"
+frequency = "quarterly"
+dims = ["fiber_part"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). 2022'den basılan geniş tanım (2019-1'e kadar geriye)."
+
+[indicator.btk_fiber_operators_use]
+label_tr = "İşletmecilerin fiber uzunluğu, kullanıma göre"
+label_en = "Operators' fibre length by use"
+topic = "iletisim"
+unit = "km"
+frequency = "quarterly"
+dims = ["fiber_use"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). "
+
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
 label_en = "Mobile generation"
