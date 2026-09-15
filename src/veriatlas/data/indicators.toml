@@ -25113,7 +25113,7 @@ unit = "mwh"
 frequency = "annual"
 dims = ["consumer"]
 views = ["table", "map", "bar"]
-definition_tr = "EPDK Elektrik Piyasası Gelişim Raporu 2025 eki, 2024-2025. Faturalanan tüketim: kayıt dışı kullanım dahil değil, bu yüzden faturalamanın sıkılaştığı yerlerde (Dicle bölgesi) tüketim gerçekte olduğundan hızlı artmış görünür. TÜİK il elektrik tüketimi (electricity_consumption) santral iç tüketimi ve iletim bağlantılı büyük tüketicileri farklı sayar; iki seri karıştırılmamalı."
+definition_tr = "EPDK Elektrik Piyasası Gelişim Raporları, 2017-2025 (2025 eki Excel, öncesi Word rapor). 2017-2021 tüketici türleri eski tarife grupları: Ticarethane (ticaret+kamu) ve Tarımsal Sulama; 2022 kırılması tarife reformu. 2024 rakamları 2025 ekinin revize değerleri. Faturalanan tüketim: kayıt dışı kullanım dahil değil, bu yüzden faturalamanın sıkılaştığı yerlerde (Dicle bölgesi) tüketim gerçekte olduğundan hızlı artmış görünür. TÜİK il elektrik tüketimi (electricity_consumption) santral iç tüketimi ve iletim bağlantılı büyük tüketicileri farklı sayar; iki seri karıştırılmamalı."
 
 [indicator.epdk_electricity_consumers]
 label_tr = "Elektrik tüketici (abone) sayısı"
@@ -25123,7 +25123,7 @@ unit = "subscriber"
 frequency = "annual"
 dims = ["consumer"]
 views = ["table", "map", "bar"]
-definition_tr = "EPDK Elektrik Piyasası Gelişim Raporu 2025 eki, 2024-2025, yıl sonu."
+definition_tr = "EPDK Elektrik Piyasası Gelişim Raporları, 2021-2025, yıl sonu. 2021 türleri eski tarife grupları."
 
 [indicator.epdk_natural_gas_sales]
 label_tr = "Doğal gaz satışı, sektöre göre"
@@ -25143,7 +25143,7 @@ unit = "subscriber"
 frequency = "annual"
 dims = ["gas_customer"]
 views = ["table", "map", "bar"]
-definition_tr = "EPDK Doğal Gaz Piyasası Gelişim Raporu 2025 eki, 2025 yıl sonu."
+definition_tr = "EPDK Doğal Gaz Piyasası Gelişim Raporları, 2017-2025 yıl sonu. Şebekesi olmayan iller o yıl yok (2017: 77 il)."
 
 [indicator.epdk_fuel_sales]
 label_tr = "Akaryakıt yurt içi satışı, ürüne göre"
@@ -25153,7 +25153,7 @@ unit = "tonne"
 frequency = "annual"
 dims = ["fuel_product"]
 views = ["table", "map", "bar"]
-definition_tr = "EPDK Petrol Piyasası Gelişim Raporu 2025 eki, Tablo 17 (ton)."
+definition_tr = "EPDK Petrol Piyasası Gelişim Raporları, 2015-2025 (ton). 2015 tablosu dağıtıcı ve ihrakiye lisans sahiplerinin yurt içi satışları."
 
 [indicator.epdk_lpg_sales]
 label_tr = "LPG satışı, türe göre"
@@ -25163,6 +25163,31 @@ unit = "tonne"
 frequency = "annual"
 dims = ["lpg_product"]
 views = ["table", "map", "bar"]
-definition_tr = "EPDK LPG Piyasası Gelişim Raporu 2025 eki, Tablo 1 (ton)."
+definition_tr = "EPDK LPG Piyasası Gelişim Raporları, 2016-2025 (ton)."
+
+# endregion
+
+# region EPDK Word reports, earlier years (adapters/epdk_history.py), 2026-09-15.
+
+[dim.gas_supply]
+label_tr = "Temin şekli"
+label_en = "Supply form"
+
+[dim.gas_supply.values]
+pipeline = "Boru gazı"
+lng = "LNG"
+cng = "CNG"
+auto_cng = "Oto CNG"
+auto_lng = "Oto LNG"
+
+[indicator.epdk_natural_gas_consumption]
+label_tr = "Doğal gaz tüketimi, temin şekline göre"
+label_en = "Natural gas consumption by supply form"
+topic = "enerji"
+unit = "m3"
+frequency = "annual"
+dims = ["gas_supply"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "EPDK Doğal Gaz Piyasası Gelişim Raporları Tablo 8.3, 2017-2024 (milyon Sm3 olarak basılı). İletim şebekesinde dahili kullanım ve terminal işletme gazı (il yok) dışarıda."
 
 # endregion

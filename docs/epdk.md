@@ -1,6 +1,7 @@
 # EPDK — enerji piyasası il verisi
 
-Durum 2026-09-15: 2025 Gelişim Raporu Excel ekleri **depoda** (`adapters/epdk.py`, 6 gösterge).
+Durum 2026-09-15: 2025 Excel ekleri ve 2015-2024 Word raporları **depoda** (`adapters/epdk.py`,
+`adapters/epdk_history.py`, 7 gösterge).
 
 ## Akış
 
@@ -30,8 +31,36 @@ Durum 2026-09-15: 2025 Gelişim Raporu Excel ekleri **depoda** (`adapters/epdk.p
   (iletim bağlantılı sanayi/santral farklı sayılıyor). Ayrı gösterge, karıştırma.
 - Faturalanan tüketim: Şırnak mesken 2023→2025 %80 artış, abone %5 — faturalamanın sıkılaşması.
 
+## Geçmiş yıllar (Word raporları)
+
+`scripts/extract_epdk_docx_tables.py` bütün Word raporlarının tablolarını başlıklarıyla
+`raw/epdk/docx_cells.parquet`'e yazar (1,9 mn hücre). Türkçe başlıkla seçildiği için İngilizce
+kopyalar okunmaz. Rapor yılı raporun kendi başlıklarından ("2019 Yılı Sonu") alınır.
+
+| Gösterge | Yıllar |
+|---|---|
+| elektrik tüketimi (il × tür) | 2017-2025 |
+| elektrik abone (il × tür) | 2021-2025 |
+| doğalgaz tüketimi (il × temin şekli) | 2017-2024 |
+| doğalgaz abone / serbest tüketici | 2017-2025 |
+| akaryakıt satışı (il × ürün) | 2015-2025 |
+| LPG satışı (il × tür) | 2016-2025 |
+
+Tuzaklar (hepsi denetim yakaladı):
+
+- İstanbul 2017-2021 tablolarında Avrupa ve Anadolu iki satır: ile göre yazan okuyucu ikincisini
+  birincinin üstüne yazıyor, İstanbul'un yarısı (13,4 TWh) kayboluyordu. Yakalar toplanıyor.
+- 2017-2021 elektrik türleri eski tarife grupları (Ticarethane, Tarımsal Sulama): 2022 kırılması.
+- 2024 raporu tüketici tablosunu "2023" diye başlıklandırmış; yıl tablo başlığından alınmaz.
+- Doğalgaz sütun adları yıldan yıla değişiyor (CNG Diğer / CNG OTOGAZ / Oto CNG / Oto LNG),
+  sütun sırası da (2023'te CNG ilk sütun).
+- Yuvarlanmış tablolar (milyon Sm3 üç ondalık, tam ton/MWh): toplam denetimi yuvarlama payıyla.
+- 2017'de 77 ilde doğalgaz dağıtımı var; eksik iller şebekesiz iller.
+- **Revizyon:** 2024 elektrik 2024 raporunda ve 2025 ekinde 50 hücrede farklı; 49'u <%2,4.
+  Mardin tarımsal 2024: 222,0 → 253,7 GWh (+%14), revizyon olarak kabul edildi. Yeni değer tutulur;
+  başka hücrede %5'i aşan fark yüklemeyi durdurur.
+
 ## Sıradaki
 
 Aylık resmi istatistik Excel'leri (2024-2026: il × kaynak kurulu güç, iletim-dağıtım kırılımlı
-tüketim, serbest tüketici) ve Word/PDF raporlardan 2014-2023 il tabloları (doğalgaz il tüketimi,
-akaryakıt il satışı, LPG il satışı).
+tüketim, serbest tüketici) ; 2014 ve öncesi PDF raporlar; kurulu güç il tabloları (Word'de var, gösterge yok).

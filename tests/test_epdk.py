@@ -36,3 +36,22 @@ def test_national_total_not_adding_up_stops_the_load(monkeypatch):
     monkeypatch.setattr(epdk, "sheet", lambda path, name: electricity_rows(900.0))
     with pytest.raises(epdk.TotalMismatch):
         epdk.electricity("Tablo 3")
+
+
+def test_istanbul_two_sides_are_added_not_overwritten():
+    from veriatlas.adapters.epdk_history import wide_table
+    from veriatlas.adapters.kgm import province_id
+
+    kinds = {"mesken": "residential"}
+    grid = [["İller", "Mesken", "Genel Toplam"]]
+    for name in provinces():
+        if province_id(name) == "TR-34":
+            grid += [
+                ["İSTANBUL (ANADOLU)", "10", "10"],
+                ["İSTANBUL (AVRUPA)", "20", "20"],
+            ]
+        else:
+            grid.append([name.upper(), "1", "1"])
+    grid.append(["Genel Toplam", "110", "110"])
+    out = wide_table(grid, kinds, "deneme")
+    assert out["TR-34"]["residential"] == 30.0

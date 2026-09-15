@@ -7,6 +7,7 @@ from .evds_prices import EVDS_PRICE_ADAPTERS
 from .evds_series import EVDS_SERIES_ADAPTERS
 from .evds_tourism import EvdsVisitorsByNationality
 from .epdk import EPDK_ADAPTERS
+from .epdk_history import EPDK_HISTORY_ADAPTERS
 from .kgm import KGM_ADAPTERS
 from .sgk_national import SGK_NATIONAL_ADAPTERS
 from .sgk_provinces import SGK_ADAPTERS
@@ -96,6 +97,8 @@ ADAPTERS = {
     **SGK_NATIONAL_ADAPTERS,
     # EPDK market report annexes: electricity, gas, fuel, LPG by province.
     **EPDK_ADAPTERS,
+    # Earlier years from the EPDK Word reports; same keys, so these replace the above.
+    **EPDK_HISTORY_ADAPTERS,
 }
 
 __all__ = [
