@@ -1,7 +1,15 @@
-import json, glob, re, sys, csv
-import numpy as np, polars as pl, duckdb
+import csv
+import glob
+import json
+import re
+import sys
+
+import duckdb
+import polars as pl
+
 sys.path.insert(0,"scripts")
 from parse_secim import fold
+
 pl.Config.set_tbl_rows(40); pl.Config.set_tbl_cols(20); pl.Config.set_tbl_width_chars(250)
 T="public/tiles/"
 def load(v):
@@ -10,7 +18,7 @@ def load(v):
     return out
 a=load("mv2015k"); b=load("mv2023")
 B={"akp":(r"^AK PART",r"^AK PART"),"chp":(r"^CHP$",r"^CHP$"),"mhp":(r"^MHP$",r"^MHP$"),"hdp":(r"^HDP$",r"^YE[ŞS][İI]L SOL")}
-def sh(r,p): return 100*sum(n for c,n in r["v"].items() if re.search(p,c,re.I))/r["g"] if r.get("g") else None
+def sh(r,p): return 100*sum(n for c,n in r["v"].items() if re.search(p,c,re.IGNORECASE))/r["g"] if r.get("g") else None
 def swings(ra,rb): return {f"d_{p}":sh(rb,y)-sh(ra,x) for p,(x,y) in B.items()} | {"cumhur15":sh(ra,B["akp"][0])}
 F="public/fact.parquet"
 # TÜİK neighbourhood population by (district, folded name)

@@ -1,4 +1,5 @@
 import sys
+
 from playwright.sync_api import sync_playwright
 
 sys.path.insert(0, "src")

@@ -4,7 +4,6 @@ Kept as a script rather than typed into the page by hand so the change is review
 repeatable; delete it once the page has settled.
 """
 
-import io
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -18,7 +17,7 @@ def replace(text: str, old: str, new: str, label: str) -> str:
 
 
 def main() -> None:
-    s = io.open(PAGE, encoding="utf-8").read()
+    s = open(PAGE, encoding="utf-8").read()
 
     s = replace(
         s,
@@ -247,7 +246,7 @@ def main() -> None:
         "alan sec",
     )
 
-    io.open(PAGE, "w", encoding="utf-8", newline="").write(s)
+    open(PAGE, "w", encoding="utf-8", newline="").write(s)
     print("secim.html yamalandi")
 
 

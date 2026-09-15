@@ -35,6 +35,7 @@ from .epdk import (
     EpdkElectricityConsumers,
     EpdkElectricityConsumption,
     EpdkFuelSales,
+    EpdkGasSales,
     EpdkGasSubscribers,
     EpdkLpgSales,
     TotalMismatch,
@@ -496,3 +497,135 @@ class LpgSalesLong(LpgSalesHistory):
 
 
 EPDK_HISTORY_ADAPTERS["epdk_lpg_sales"] = LpgSalesLong
+
+
+GAS_SECTOR_COLUMNS = {
+    "donusumcevrimsektoru": "conversion",
+    "enerjisektoru": "energy",
+    "ulasimsektoru": "transport",
+    "sanayisektoru": "industry",
+    "hizmetsektoru": "services",
+    "konutlar": "residential",
+    "diger": "other",
+}
+
+
+GAS_SECTOR_NATIONAL_MISSES: list[tuple[str, str, float, float]] = []
+
+
+def gas_sector_tables(file: str) -> dict[str, dict[str, float]]:
+    """Section 10 of a Word gas report: one table per province, company rows × sector.
+
+    Read in document order, because a province block can run over two Word tables (a page
+    break) with the second one carrying no header: rows belong to the last province named
+    until its TOPLAM row. The block's company rows must add up to TOPLAM in every sector; the
+    provinces plus DİĞER (gas used in the grid, no province) must add up to TÜRKİYE.
+    """
+    tables = sorted(
+        (tb, grid) for (f, tb), (_, grid) in docx_tables().items() if f == file
+    )
+    out: dict[str, dict[str, float]] = {}
+    national: dict[str, float] = {}
+    other: dict[str, float] = {}
+    header: list[str | None] | None = None
+    current: str | None = None
+    sums: dict[str, float] = {}
+    for _tb, grid in tables:
+        for line in grid:
+            if len(line) > 1 and fold(line[1]) == "lisanstipi":
+                header = [GAS_SECTOR_COLUMNS.get(fold(c)) for c in line]
+                name = fold(line[0].rstrip("*"))
+                if not name:  # header repeated after a page break, province unchanged
+                    continue
+                current = (
+                    "TR"
+                    if name == "turkiye"
+                    else "other"
+                    if name == "diger"
+                    else province_id(line[0])
+                )
+                sums = {}
+                continue
+            if header is None or current is None:
+                continue
+            # Cells are aligned from the right: a row whose company name spans the licence
+            # column (or is missing) has one cell fewer or more on the left.
+            # The last len(header) - 2 cells are the sector values and the grand total.
+            width = len(header) - 2
+            if len(line) < width + 1:
+                if any(re.search(r"\d", c) for c in line):
+                    raise ValueError(f"doğalgaz sektör {file}: kısa satır {line}")
+                continue
+            cells = line[-width:]
+            try:
+                values = {
+                    sec: number_tr(cell) or 0.0
+                    for sec, cell in zip(header[2:], cells, strict=True)
+                    if sec
+                }
+            except ValueError:
+                # A label-only row ("DİĞER" under its own header) carries no numbers.
+                if any(re.search(r"\d", c) for c in cells):
+                    raise ValueError(f"doğalgaz sektör {file}: {line}") from None
+                continue
+            if any(fold(c) == "toplam" for c in line[:2]):
+                for sector, value in values.items():
+                    if current != "TR":
+                        near(
+                            sums.get(sector, 0.0),
+                            value,
+                            f"doğalgaz sektör {file} {current} {sector}",
+                            1.0,
+                        )
+                if current == "TR":
+                    # Some reports leave DİĞER out of the TÜRKİYE total, and the 2023 report
+                    # prints a transport total its own company rows do not add up to; the
+                    # province blocks are checked above, so a national miss is reported, not
+                    # fatal.
+                    for sector, value in values.items():
+                        parts = national.get(sector, 0.0)
+                        if (
+                            abs(parts - value) > 81
+                            and abs(parts - other.get(sector, 0.0) - value) > 81
+                        ):
+                            GAS_SECTOR_NATIONAL_MISSES.append(
+                                (file, sector, parts, value)
+                            )
+                else:
+                    for sector, value in values.items():
+                        national[sector] = national.get(sector, 0.0) + value
+                    if current == "other":
+                        other = values
+                    else:
+                        out[current] = values
+                current = None
+                continue
+            for sector, value in values.items():
+                sums[sector] = sums.get(sector, 0.0) + value
+    if len(out) < 75:
+        raise ValueError(f"doğalgaz sektör {file}: {len(out)} il")
+    return out
+
+
+class GasSalesHistory(EpdkGasSales):
+    def parse(self, raw: Path) -> pl.DataFrame:
+        files = {
+            f
+            for (f, _), (_, grid) in docx_tables().items()
+            if (FILES / "dogalgaz_yillik" / f).exists()
+            and grid
+            and len(grid[0]) > 1
+            and fold(grid[0][1]) == "lisanstipi"
+        }
+        tables = {}
+        for f in files:
+            year = report_year(f)
+            if year in tables:
+                raise ValueError(f"doğalgaz sektör {year}: iki rapor")
+            tables[year] = gas_sector_tables(f)
+        return merge_years(
+            super().parse(raw), records(tables, "gas_sector"), "doğalgaz sektör"
+        )
+
+
+EPDK_HISTORY_ADAPTERS["epdk_natural_gas_sales"] = GasSalesHistory

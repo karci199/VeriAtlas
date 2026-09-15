@@ -28,7 +28,7 @@ from veriatlas.adapters.sgk_national import (
 
 TURKISH = re.compile(r"[çğıöşüÇĞİÖŞÜ]")
 MONTHS = (
-    "Ocak Şubat Mart Nisan Mayıs Haziran Temmuz Ağustos Eylül Ekim Kasım Aralık".split()
+    ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
 )
 SKIP = {"age", "hour", "workplace_employees", "job_tenure", "occupation", "month"}
 

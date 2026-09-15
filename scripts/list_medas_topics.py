@@ -10,7 +10,7 @@ from playwright.sync_api import sync_playwright
 
 sys.path.insert(0, "src")
 sys.path.insert(0, "scripts")
-from fetch_medas_districts import URL  # noqa: E402
+from fetch_medas_districts import URL
 
 
 def main() -> None:

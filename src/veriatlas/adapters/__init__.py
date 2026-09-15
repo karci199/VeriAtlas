@@ -1,16 +1,16 @@
 """Source adapters. One module per source; the contract lives in `base`."""
 
 from .base import Adapter, Manifest, history, ingest
+from .epdk import EPDK_ADAPTERS
+from .epdk_capacity import EPDK_CAPACITY_ADAPTERS
+from .epdk_history import EPDK_HISTORY_ADAPTERS
 from .evds_archive import EVDS_ARCHIVE_ADAPTERS
 from .evds_housing import EVDS_HOUSING_ADAPTERS
 from .evds_prices import EVDS_PRICE_ADAPTERS
 from .evds_series import EVDS_SERIES_ADAPTERS
 from .evds_tourism import EvdsVisitorsByNationality
-from .epdk import EPDK_ADAPTERS
-from .epdk_capacity import EPDK_CAPACITY_ADAPTERS
-from .sege import SEGE_ADAPTERS
-from .epdk_history import EPDK_HISTORY_ADAPTERS
 from .kgm import KGM_ADAPTERS
+from .sege import SEGE_ADAPTERS
 from .sgk_national import SGK_NATIONAL_ADAPTERS
 from .sgk_provinces import SGK_ADAPTERS
 from .tbb_provinces import TBB_ADAPTERS
