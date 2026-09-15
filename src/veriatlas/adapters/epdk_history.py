@@ -277,7 +277,7 @@ class ElectricityConsumptionHistory(EpdkElectricityConsumption):
                 )
         # 2016: the Turkish Word report has no province table; the English edition does
         # (table 14, MWh, kinds in the header's second row).
-        cap, grid = docx_tables()[(ELECTRICITY_2016[0], ELECTRICITY_2016[1])]
+        _, grid = docx_tables()[(ELECTRICITY_2016[0], ELECTRICITY_2016[1])]
         if fold(grid[0][0]) != "province" or len(grid) not in (84, 85):
             raise ValueError("elektrik 2016: İngilizce tablo beklenen biçimde değil")
         header = ["il", *grid[1][1:-1], "Grand Total"]
@@ -374,7 +374,9 @@ def pdf_grid(path: Path, first: int, stop: str) -> list[list[str]]:
             )
             body = sizes.most_common(1)[0][0] if sizes else None
             page = raw_page.filter(
-                lambda o: o.get("object_type") != "char" or round(o["size"]) == body
+                lambda o, body=body: (
+                    o.get("object_type") != "char" or round(o["size"]) == body
+                )
             )
             words = page.extract_words()
             if rows and stop in (page.extract_text() or ""):

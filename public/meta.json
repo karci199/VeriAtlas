@@ -2250,8 +2250,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "occupancy-permit-buildings-monthly.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -2275,8 +2277,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "occupancy-permit-dwellings-monthly.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -2300,8 +2304,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "occupancy-permit-floor-area-monthly.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -2534,8 +2540,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "construction-permit-buildings-monthly.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -2613,8 +2621,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "construction-permit-dwellings-monthly.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -2762,8 +2772,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "construction-permit-floor-area-monthly.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -2880,8 +2892,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "property-sales-monthly.csv.gz",
+          "levels": [
+            "province"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -2984,8 +2998,11 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "shop-price-index.csv.gz",
+          "levels": [
+            "country",
+            "nuts2"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3007,8 +3024,11 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "housing-unit-price.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3030,8 +3050,11 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "housing-unit-rent.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3051,8 +3074,12 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "house-price-index.csv.gz",
+          "levels": [
+            "country",
+            "nuts1",
+            "nuts2"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3073,8 +3100,11 @@
             "map",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "house-price-index-2017.csv.gz",
+          "levels": [
+            "country",
+            "nuts2"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3120,8 +3150,11 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "office-price-index.csv.gz",
+          "levels": [
+            "country",
+            "nuts2"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3141,8 +3174,11 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "commercial-property-price-index.csv.gz",
+          "levels": [
+            "country",
+            "nuts2"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3162,8 +3198,12 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "new-tenant-rent-index.csv.gz",
+          "levels": [
+            "country",
+            "nuts1",
+            "nuts2"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3183,8 +3223,10 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "new-house-price-index.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3204,8 +3246,10 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "existing-house-price-index.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3683,8 +3727,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "credit-development-banks.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3730,8 +3776,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "card-spending-weekly.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3754,8 +3802,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "card-transactions-weekly.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3778,8 +3828,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "card-payment-index.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3802,8 +3854,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "credit-participation-banks.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3826,8 +3880,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "loan-interest-rates-weekly.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3850,8 +3906,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "loan-interest-rates.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3874,8 +3932,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "bank-credit-volume-weekly.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3898,8 +3958,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "loan-profit-share-rates.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3922,8 +3984,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "credit-deposit-banks.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -3946,8 +4010,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "deposit-interest-rates.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4018,8 +4084,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "bills-collected-count.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4042,8 +4110,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "bills-collected-amount.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4066,8 +4136,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "cheques-count.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4090,8 +4162,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "cheques-amount.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4114,8 +4188,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "bank-credit-volume.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4140,8 +4216,10 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "usd-try-buying.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4162,8 +4240,11 @@
             "map",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "cpi-region-2003.csv.gz",
+          "levels": [
+            "country",
+            "nuts2"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4186,8 +4267,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "foreign-visitors-by-nationality.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4209,8 +4292,10 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "services-ppi.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4233,8 +4318,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "real-effective-exchange-rate-cpi.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4257,8 +4344,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "real-effective-exchange-rate-ppi.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4280,8 +4369,10 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "agricultural-ppi.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4303,8 +4394,10 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "agricultural-input-pi.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4324,8 +4417,10 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "cpi-2003.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4347,8 +4442,10 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "cpi-2025-items.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4370,8 +4467,10 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "ppi-export.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4393,8 +4492,10 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "ppi-domestic.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4416,8 +4517,10 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "cpi-2025-special.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4437,8 +4540,11 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "cpi-province-1994.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4460,8 +4566,10 @@
             "table",
             "line"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "istanbul-cpi-ito.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4489,8 +4597,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "trade-trucks.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4513,8 +4623,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "companies-opened-closed.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4537,8 +4649,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "companies-opened-capital.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4561,8 +4675,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "real-sector-confidence.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4585,8 +4701,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "industrial-production-index.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4609,8 +4727,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "economic-tendency-survey.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4633,8 +4753,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "tendency-survey-small-firms.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4657,8 +4779,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "tendency-survey-medium-firms.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4681,8 +4805,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "tendency-survey-large-firms.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4705,8 +4831,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "capacity-utilisation.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4734,8 +4862,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gnp-1987-constant-archive.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4758,8 +4888,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gnp-1987-current-archive.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4807,8 +4939,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-1998-expenditure-current-archive.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4831,8 +4965,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-1998-expenditure-constant-archive.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4855,8 +4991,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-1998-production-current-archive.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4879,8 +5017,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-1998-production-constant-archive.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4903,8 +5043,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-income-current.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4927,8 +5069,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-income-current-sa.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4951,8 +5095,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-expenditure-current.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4975,8 +5121,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-expenditure-current-sa.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4999,8 +5147,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-expenditure-index-sa.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -5023,8 +5173,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-expenditure-index-sca.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -5047,8 +5199,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-expenditure-index-ca.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -5071,8 +5225,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-expenditure-chained.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -5095,8 +5251,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-expenditure-index.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -5119,8 +5277,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-production-current.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -5143,8 +5303,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-production-chained.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -5219,8 +5381,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-production-current-sa.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -5243,8 +5407,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gdp-production-index-sca.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -5267,8 +5433,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gfcf-current.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -5291,8 +5459,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "gfcf-index.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -5367,8 +5537,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "household-consumption-durability.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -8561,8 +8733,10 @@
             "line",
             "bar"
           ],
-          "dataset": null,
-          "levels": [],
+          "dataset": "vehicle-production.csv.gz",
+          "levels": [
+            "country"
+          ],
           "parts": {},
           "fine": {},
           "summary": null,
