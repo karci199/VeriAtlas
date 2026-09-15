@@ -8,6 +8,7 @@ from .epdk_monthly import EPDK_MONTHLY_ADAPTERS
 from .tobb import TOBB_ADAPTERS
 from .yokatlas import YOKATLAS_ADAPTERS
 from .yok_istatistik import YOK_ISTATISTIK_ADAPTERS
+from .yok_national import YOK_NATIONAL_ADAPTERS
 from .evds_archive import EVDS_ARCHIVE_ADAPTERS
 from .evds_housing import EVDS_HOUSING_ADAPTERS
 from .evds_prices import EVDS_PRICE_ADAPTERS
@@ -110,6 +111,7 @@ ADAPTERS = {
     **TOBB_ADAPTERS,
     **YOKATLAS_ADAPTERS,
     **YOK_ISTATISTIK_ADAPTERS,
+    **{k: v for k, v in YOK_NATIONAL_ADAPTERS.items() if "_by_field" not in k},
     # İlçe SEGE-2022 development score, rank and level.
     **SEGE_ADAPTERS,
 }
