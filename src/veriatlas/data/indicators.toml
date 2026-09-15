@@ -25247,7 +25247,7 @@ unit = "index"
 frequency = "annual"
 dims = []
 views = ["table", "map", "bar"]
-definition_tr = "Sanayi ve Teknoloji Bakanlığı İlçe SEGE-2022 (Şubat 2022): 56 değişkenle (demografi, istihdam, eğitim, sağlık, finans, rekabetçilik, yenilikçilik, yaşam kalitesi) temel bileşenler analizi skoru; ortalama 0, yüksek daha gelişmiş. Verilerin çoğu 2019-2021. 973 ilçe. Değişken değerleri yayımlanmadı."
+definition_tr = "Sanayi ve Teknoloji Bakanlığı İlçe SEGE-2022 (Şubat 2022): 56 değişkenle (demografi, istihdam, eğitim, sağlık, finans, rekabetçilik, yenilikçilik, yaşam kalitesi) temel bileşenler analizi skoru; ortalama 0, yüksek daha gelişmiş. Verilerin çoğu 2019-2021. 973 ilçe. Değişken değerleri yayımlanmadı. 2017 dönemi İlçe SEGE-2017 (2014 verisi, 970 ilçe, 50 değişken): skorlar ayrı analizden, yıllar arasında skor değil sıra karşılaştırılmalı."
 
 [indicator.sege_district_rank]
 label_tr = "İlçe SEGE sıralaması"
@@ -25257,7 +25257,7 @@ unit = "rank"
 frequency = "annual"
 dims = []
 views = ["table", "map"]
-definition_tr = "İlçe SEGE-2022 genel sıralaması, 1 en gelişmiş, 973 en az gelişmiş."
+definition_tr = "İlçe SEGE genel sıralaması, 1 en gelişmiş; 2017 (970 ilçe) ve 2022 (973 ilçe)."
 
 [indicator.sege_district_level]
 label_tr = "İlçe SEGE kademesi"
@@ -25267,6 +25267,6 @@ unit = "development_level"
 frequency = "annual"
 dims = []
 views = ["table", "map"]
-definition_tr = "İlçe SEGE-2022 gelişmişlik kademesi, 1 (en gelişmiş) - 6 (en az gelişmiş)."
+definition_tr = "İlçe SEGE gelişmişlik kademesi, 1 (en gelişmiş) - 6 (en az gelişmiş); 2017 ve 2022. 2017 raporu Kars Kağızman ve Digor'u il tablosuna basmamış, bu iki ilçenin 2017 kademesi yok."
 
 # endregion

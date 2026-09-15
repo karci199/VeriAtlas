@@ -29,6 +29,13 @@ from .kgm import district_key, province_id, resolve_district
 
 PDF = RAW / "sege" / "sege-2022.pdf"
 
+#: Edition -> (PDF, number of districts, vintage). İlçe SEGE-2017 uses 2014 data and 970
+#: districts (bebka.org.tr copy); SEGE-2022 973.
+EDITIONS = {
+    2017: (RAW / "sege" / "sege-2017.pdf", 970, "2017-12"),
+    2022: (PDF, 973, "2022-02"),
+}
+
 NATIONAL = re.compile(r"(\d{1,3}) (\D+?) (-?\d,\d{3})")
 PROVINCE_TABLE = re.compile(
     r"([A-ZÇĞİÖŞÜa-zçğıöşü][^\d]*?) (\d{1,3}) (\d{1,2}) (-?\d,\d{3}) ([1-6])(?!\d)"
@@ -39,11 +46,15 @@ def score(text: str) -> float:
     return float(text.replace(",", "."))
 
 
+MISSING: dict[int, list[int]] = {2017: [], 2022: []}
+
+
 @cache
-def sege() -> list[dict]:
+def sege(edition: int = 2022) -> list[dict]:
+    pdf, count, _ = EDITIONS[edition]
     national: dict[int, tuple[list[str], str]] = {}
     by_rank: dict[int, tuple[int, str, int]] = {}
-    with pdfplumber.open(PDF) as document:
+    with pdfplumber.open(pdf) as document:
         for page in document.pages:
             text = page.extract_text() or ""
             is_national = "Sıra İl Adı" in text and "Skor" in text
@@ -60,13 +71,19 @@ def sege() -> list[dict]:
                         m.group(4),
                         int(m.group(5)),
                     )
-    if sorted(national) != list(range(1, 974)):
+    if sorted(national) != list(range(1, count + 1)):
         raise ValueError(f"SEGE: ulusal liste {len(national)} sıra")
     key = district_key()
     out = []
     for rank, (words, printed) in sorted(national.items()):
         if rank not in by_rank:
-            raise ValueError(f"SEGE: {rank}. sıra il tablolarında yok")
+            # The 2017 report leaves two Kars districts (Kağızman, Digor) out of its
+            # province table; their score and rank are in the national list, their level
+            # is not stored rather than guessed.
+            if len(MISSING[edition]) >= 5:
+                raise ValueError(f"SEGE {edition}: il tablolarında çok eksik sıra")
+            MISSING[edition].append(rank)
+            by_rank[rank] = (None, printed, None)
         province_rank, province_score, level = by_rank[rank]
         if province_score != printed:
             raise ValueError(
@@ -95,7 +112,7 @@ def sege() -> list[dict]:
             }
         )
     areas = [o["area_id"] for o in out]
-    if len(set(areas)) != 973:
+    if len(set(areas)) != count:
         raise ValueError("SEGE: iki sıra aynı ilçeye eşlendi")
     return out
 
@@ -110,23 +127,34 @@ class Sege:
         return PDF
 
     def parse(self, raw: Path) -> pl.DataFrame:
-        rows = sege()
-        return pl.DataFrame(
-            {
-                "indicator_id": self.indicator_id,
-                "area_id": [r["area_id"] for r in rows],
-                "area_level": "district",
-                "period_start": dt.date(2022, 1, 1),
-                "frequency": "annual",
-                "dims": "",
-                "value": [float(r[self.column]) for r in rows],
-                "unit": self.unit,
-                "quality_flag": "measured",
-                "vintage": "2022-02",
-                "source_id": self.source_id,
-                "retrieved_at": dt.date(2026, 9, 15),
-            }
-        )
+        frames = []
+        for edition, (_pdf, _count, vintage) in EDITIONS.items():
+            rows = sege(edition)
+            frames.append(
+                pl.DataFrame(
+                    {
+                        "indicator_id": self.indicator_id,
+                        "area_id": [
+                            r["area_id"] for r in rows if r[self.column] is not None
+                        ],
+                        "area_level": "district",
+                        "period_start": dt.date(edition, 1, 1),
+                        "frequency": "annual",
+                        "dims": "",
+                        "value": [
+                            float(r[self.column])
+                            for r in rows
+                            if r[self.column] is not None
+                        ],
+                        "unit": self.unit,
+                        "quality_flag": "measured",
+                        "vintage": vintage,
+                        "source_id": self.source_id,
+                        "retrieved_at": dt.date(2026, 9, 15),
+                    }
+                )
+            )
+        return pl.concat(frames)
 
 
 class SegeScore(Sege):

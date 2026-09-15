@@ -12,4 +12,14 @@ Durum 2026-09-15: **depoda** (`adapters/sege.py`), 973 ilçe × skor, genel sır
   taşıyan ilçe). Kademe dağılımı 67/173/175/215/222/121 — rapordaki 6. kademe 121 ile aynı.
 - Veri yılları çoğunlukla 2019-2021; depoda 2022 dönemi olarak durur.
 
-Açık: İlçe SEGE-2017 (2014 verisi) aynı yöntemle eklenirse değişim izlenebilir; il SEGE-2017.
+## İlçe SEGE-2017 (2026-09-15)
+
+Aynı okuyucu (`EDITIONS`), PDF `bebka.org.tr` kopyası → `C:eri-ham\sege\sege-2017.pdf`.
+970 ilçe, 2014 verisi. Skorlar ayrı temel bileşen analizinden: yıllar arası **sıra** karşılaştırılır.
+2017-2022 sıra korelasyonu 0,96.
+
+Tuzaklar: "Kazan" (2016'da Kahramankazan), "Denizli - Kale"; 2017 il tablolarında Kars
+Kağızman ve Digor basılmamış (skor ve sıra ulusal listede var, kademe yok). 2017'de olmayan
+ilçeler: Kemalpaşa (Artvin), Derecik (Hakkari), Sultanhanı (Aksaray).
+
+Açık: il SEGE-2017.

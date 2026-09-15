@@ -39,7 +39,13 @@ PROVINCE_SHEET = PDF / "Root_Uzakliklar" / "ilmesafe.xlsx"
 INVENTORY = PDF / "Istatistikler_DevletveIlYolEnvanteri"
 
 #: Printed district names that are not the register's spelling of the same district.
-DISTRICT_ALIASES = {("TR-34", "eyup"): "eyupsultan", ("TR-55", "ondokuzmayis"): "mayis"}
+DISTRICT_ALIASES = {
+    ("TR-34", "eyup"): "eyupsultan",
+    ("TR-55", "ondokuzmayis"): "mayis",
+    # İlçe SEGE-2017: Kazan before its 2016 renaming, and Kale written with its province.
+    ("TR-06", "kazan"): "kahramankazan",
+    ("TR-20", "denizlikale"): "kale",
+}
 
 #: Printed province names in the motorway table that are abbreviated.
 PROVINCE_ALIASES = {
