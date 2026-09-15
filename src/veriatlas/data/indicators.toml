@@ -26865,3 +26865,13 @@ views = ["table", "map", "line", "bar"]
 definition_tr = "EPDK Doğal Gaz Piyasası aylık sektör raporları Tablo 5.2, 2015-2025 (milyon Sm3 olarak basılı). Ekim 2017 raporu sitede yok (yerine Eylül 2017 tekrar konmuş). Basılı satır toplamı hatalı üç tablo not edildi, sütun değerleri kullanıldı."
 
 # endregion
+
+[indicator.epdk_fuel_sales_monthly]
+label_tr = "Akaryakıt yurt içi satışı, ürüne göre (aylık)"
+label_en = "Domestic fuel sales by product (monthly)"
+topic = "enerji"
+unit = "tonne"
+frequency = "monthly"
+dims = ["fuel_product"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "EPDK Petrol Piyasası aylık sektör raporları Tablo 3.1, Şubat 2016 - Kasım 2025 (ton). Ekim 2016 raporu sitede iki kez listeli, biri alındı."

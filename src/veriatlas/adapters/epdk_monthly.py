@@ -19,9 +19,20 @@ from ..config import RAW
 from .epdk_history import GAS_SUPPLY, wide_table
 
 GAS_MONTHLY_CELLS = RAW / "epdk" / "docx_gaz_aylik_cells.parquet"
-MONTHS = (
-    ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
-)
+MONTHS = [
+    "Ocak",
+    "Şubat",
+    "Mart",
+    "Nisan",
+    "Mayıs",
+    "Haziran",
+    "Temmuz",
+    "Ağustos",
+    "Eylül",
+    "Ekim",
+    "Kasım",
+    "Aralık",
+]
 MONTH_IN_CAPTION = re.compile(r"(" + "|".join(MONTHS) + r") (20\d\d)")
 
 #: Months with no Word report on the EPDK page, filled in when a source is found.
@@ -164,3 +175,85 @@ def _province_ids(grid) -> set[str]:
 EPDK_MONTHLY_ADAPTERS = {
     "epdk_natural_gas_consumption_monthly": GasConsumptionMonthly,
 }
+
+PETROL_MONTHLY_CELLS = RAW / "epdk" / "docx_petrol_aylik_cells.parquet"
+
+
+def report_month(path: Path) -> dt.date:
+    """The month a monthly Word report covers, from its cover ("PETROL PİYASASI ... MART 2015")."""
+    import zipfile
+    from xml.etree import ElementTree as ET
+
+    from .kgm import fold
+
+    w = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
+    body = ET.fromstring(zipfile.ZipFile(path).read("word/document.xml")).find(
+        w + "body"
+    )
+    head = " ".join(
+        "".join(t.text or "" for t in p.iter(w + "t"))
+        for p in list(body)[:80]
+        if p.tag == w + "p"
+    )
+    words = re.findall(r"\w+", head)
+    months = {fold(name): i + 1 for i, name in enumerate(MONTHS)}
+    for i, word in enumerate(words[:-1]):
+        if fold(word) in months and re.fullmatch(r"20\d\d", words[i + 1]):
+            return dt.date(int(words[i + 1]), months[fold(word)], 1)
+    raise ValueError(f"{path.name}: rapor ayı okunamadı")
+
+
+class FuelSalesMonthly:
+    """Petrol monthly reports, Tablo 3.1: domestic sales by province and product (tonnes).
+
+    The table is the month's own sales, not the year to date: the twelve months of 2017 add
+    up to 28.45 million tonnes against 28.46 in the yearly report.
+    """
+
+    source_id = "epdk"
+    indicator_id = "epdk_fuel_sales_monthly"
+
+    def fetch(self) -> Path:
+        return PETROL_MONTHLY_CELLS
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        from .epdk_history import FILES, PETROL_PRODUCTS
+
+        cells = pl.read_parquet(PETROL_MONTHLY_CELLS)
+        seen: dict[dt.date, tuple[str, list]] = {}
+        records = []
+        for file, _caption, grid in grids(cells, "Tablo 3.1. İllere Göre Yurtiçi"):
+            month = report_month(FILES / "petrol_resmi" / file)
+            if month in seen:
+                if seen[month][1] != grid:
+                    raise ValueError(
+                        f"akaryakıt aylık {month}: iki farklı rapor {seen[month][0]} {file}"
+                    )
+                continue  # October 2016 is listed twice, same bytes
+            seen[month] = (file, grid)
+            table = wide_table(grid, PETROL_PRODUCTS, f"akaryakıt aylık {month:%Y-%m}")
+            for area, kinds in table.items():
+                for kind, value in kinds.items():
+                    records.append(
+                        {
+                            "area_id": area,
+                            "period_start": month,
+                            "dims": f"fuel_product={kind}",
+                            "value": value,
+                        }
+                    )
+        return pl.DataFrame(
+            records, schema_overrides={"value": pl.Float64}
+        ).with_columns(
+            pl.lit(self.indicator_id).alias("indicator_id"),
+            pl.lit("province").alias("area_level"),
+            pl.lit("monthly").alias("frequency"),
+            pl.lit("tonne").alias("unit"),
+            pl.lit("measured").alias("quality_flag"),
+            pl.lit("2026-09").alias("vintage"),
+            pl.lit("epdk").alias("source_id"),
+            pl.lit(dt.date(2026, 9, 15)).alias("retrieved_at"),
+        )
+
+
+EPDK_MONTHLY_ADAPTERS["epdk_fuel_sales_monthly"] = FuelSalesMonthly
