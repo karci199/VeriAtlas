@@ -25018,3 +25018,44 @@ views = ["table", "map", "line", "bar"]
 definition_tr = "Trafik ve Ulaşım Bilgileri, 2012-2025; kapsam taşıt-km ile aynı."
 
 # endregion
+
+# region KGM traffic accident summaries, archived editions (adapters/kgm.py), 2026-09-15.
+
+[dim.accident_kind]
+label_tr = "Kaza türü"
+label_en = "Accident kind"
+
+[dim.accident_kind.values]
+fatal_or_injury = "Ölümlü veya yaralanmalı"
+damage_only = "Maddi hasarlı"
+
+[dim.casualty]
+label_tr = "Kazazede"
+label_en = "Casualty"
+
+[dim.casualty.values]
+killed_at_scene = "Kaza yerinde ölen"
+killed_within_30_days = "Sonradan (30 gün içinde) ölen"
+injured = "Yaralı"
+
+[indicator.traffic_accidents_total]
+label_tr = "Trafik kazası sayısı (maddi hasarlı dahil)"
+label_en = "Traffic accidents including damage-only"
+topic = "karayolu"
+unit = "accident"
+frequency = "annual"
+dims = ["accident_kind"]
+views = ["table", "line", "bar"]
+definition_tr = "Türkiye, 2006-2016. KGM Trafik Kazaları Özeti 2015 ve 2016 sürümleri (Wayback Machine), kaynak TÜİK. Güncel sürümün tablosu metin değil çizim, okunamıyor; 2012 sonrası ölümlü-yaralanmalı kaza il bazında TÜİK göstergesinde."
+
+[indicator.traffic_casualties]
+label_tr = "Trafik kazasında ölen ve yaralanan"
+label_en = "Traffic accident casualties"
+topic = "karayolu"
+unit = "person"
+frequency = "annual"
+dims = ["casualty"]
+views = ["table", "line", "bar"]
+definition_tr = "Türkiye, 2006-2016. Sonradan (30 gün içinde) ölenler 2015'ten itibaren sayılıyor; önceki yıllarda yalnız kaza yerinde ölen var — 2015'teki ölü sıçraması tanım değişikliği."
+
+# endregion

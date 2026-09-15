@@ -86,3 +86,24 @@ yıl güncel yıllıktaki Türkiye serisine eşit.
 Tuzaklar: 2010 ve 2012 dosyalarında il yerine merkez adı (İZMİT, ADAPAZARI); 2010 dosyasının
 yazı tipinde Ş harfi `6` basılı (`ESKİ6EHİR`, `6ANLIURFA`) — okunmadan 9 il sessizce düşüyordu,
 81 il denetimi yakaladı.
+
+## Wayback ile tamamlananlar (2026-09-15)
+
+| Gösterge | Yıllar | Kaynak |
+|---|---|---|
+| `road_distance_between_provinces` | 2010-2018, 2026 | `ilmesafe.xls` 17 kopya + güncel xlsx |
+| `road_length_by_surface`, `divided_road_length` (devlet/il yolu ayrı) | 2009, 2011, 2014, 2016, 2017, 2020-2022, 2024, 2025 | `IllereGoreDevletYollari` 11 + `IllereGoreIlYollari` 10 kopya |
+| `kgm_vehicle_km`, `kgm_passenger_km`, `kgm_tonne_km` (il × otoyol/devlet/il yolu) | 2012-2025 | Trafik ve Ulaşım Bilgileri ciltleri |
+| `traffic_accidents_total`, `traffic_casualties` (Türkiye) | 2006-2016 | Trafik Kazaları Özeti 2015/2016 kopyaları |
+
+Tuzaklar: eski cetvelde `AFYON`, sağ kenarda tekrar eden `İL ADI`/`İL NO` sütunları; il
+yolu 2010 dosyasında Ş `(cid:3)`; 2015 il yolu ilk kopyası satır toplamı tutmuyor (sonraki
+kopya alınır); il taşıt-km'de `D.BAKIR` kısaltması ve 2016 il yolu cildinde boş bırakılan
+otoyol hücresi (üç sayı eksik satır); güncel kaza özetinde Tablo 1.1 çizim, metin değil;
+2009-2011 özetleri EGM+Jandarma sayımı (2008'den anlaşmalı maddi hasarlılar hariç), TÜİK
+serisiyle karıştırılmadı; 2015'te ölü sayısı 30 gün içinde ölenleri katınca iki katına çıkıyor.
+
+Çekilemeyen: güncel kaza özeti tablolarının çoğu (çizim); tünel envanteri bölge müdürlüğü
+düzeyinde (alan düzeyi yok); otoyol kesim trafiği kesim adıyla basılı, ile eşleme yok.
+Veri Portalı dosyaları tarayıcı dışından indirilemiyor (`Erişim engellendi`); tarayıcı paneli
+yerel adrese de gönderemiyor — `scripts/receive_browser_files.py` bu yüzden kullanılamadı.

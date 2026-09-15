@@ -883,6 +883,98 @@ class KgmTonneKm(KgmVehicleKm):
 
 # endregion
 
+# region Traffic accident summaries
+
+#: `2015 1.313.359 183.011 1.130.348 7.530 3.831 3.699 304.421` — year, all accidents,
+#: fatal or injury, damage only, deaths total, at the scene, within 30 days (`-` before
+#: 2015: not collected), injured.
+ACCIDENT_ROW = re.compile(r"^(?P<year>20\d{2}) (?P<nums>[\d.]+(?: (?:[\d.]+|-)){6})$")
+
+
+@cache
+def accident_series() -> dict[int, list[float | None]]:
+    """Table 1 of the archived summaries (2015 and 2016 editions), newest edition winning.
+
+    The current edition prints the table as drawing, not text, and the 2009-2011 editions
+    use police and gendarmerie counts that drop agreed damage-only accidents from 2008 —
+    a different series. Only the TÜİK-based Table 1 is read.
+    """
+    series: dict[int, list[float | None]] = {}
+    for path in sorted(ARCHIVE.glob("TrafikKazalariOzeti2017_*.pdf")):
+        try:
+            lines = pdf_lines(path)
+        except Exception:  # noqa: BLE001 — two archived copies are truncated
+            continue
+        for line in lines:
+            match = ACCIDENT_ROW.match(line)
+            if not match:
+                continue
+            values = [None if v == "-" else number(v) for v in match["nums"].split()]
+            total, injury, damage, deaths, scene, later, _ = values
+            if total != injury + damage or deaths != scene + (later or 0):
+                raise ValueError(f"{path.name}: kaza satırı toplamı tutmuyor: {line}")
+            series[int(match["year"])] = values
+    return series
+
+
+class KgmTrafficAccidents(Kgm):
+    """Traffic accidents, Türkiye, 2006-2016, by kind (KGM summaries, TÜİK figures)."""
+
+    indicator_id = "traffic_accidents_total"
+    vintage = "2017-07"
+
+    def fetch(self) -> Path:
+        return ARCHIVE
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        records = []
+        for year, values in accident_series().items():
+            for kind, value in (
+                ("fatal_or_injury", values[1]),
+                ("damage_only", values[2]),
+            ):
+                records.append(
+                    {
+                        "area_id": "TR",
+                        "area_level": "country",
+                        "period_start": dt.date(year, 1, 1),
+                        "dims": "accident_kind=" + kind,
+                        "value": value,
+                    }
+                )
+        return fact(
+            records, self.indicator_id, "accident", self.vintage, self.retrieved_at
+        )
+
+
+class KgmTrafficCasualties(KgmTrafficAccidents):
+    """Killed (at the scene, within 30 days) and injured, Türkiye, 2006-2016."""
+
+    indicator_id = "traffic_casualties"
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        records = []
+        for year, values in accident_series().items():
+            items = [("killed_at_scene", values[4]), ("injured", values[6])]
+            if values[5] is not None:
+                items.append(("killed_within_30_days", values[5]))
+            for kind, value in items:
+                records.append(
+                    {
+                        "area_id": "TR",
+                        "area_level": "country",
+                        "period_start": dt.date(year, 1, 1),
+                        "dims": "casualty=" + kind,
+                        "value": value,
+                    }
+                )
+        return fact(
+            records, self.indicator_id, "person", self.vintage, self.retrieved_at
+        )
+
+
+# endregion
+
 # region Bridges
 
 BRIDGE_TITLES = (
@@ -986,6 +1078,8 @@ KGM_ADAPTERS = {
     "kgm_divided_road_archive": KgmDividedRoadArchive,
     "kgm_motorway": KgmMotorway,
     "kgm_bridges": KgmBridges,
+    "kgm_traffic_accidents": KgmTrafficAccidents,
+    "kgm_traffic_casualties": KgmTrafficCasualties,
     "kgm_vehicle_km": KgmVehicleKm,
     "kgm_passenger_km": KgmPassengerKm,
     "kgm_tonne_km": KgmTonneKm,
