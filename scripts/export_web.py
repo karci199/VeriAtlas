@@ -54,8 +54,20 @@ def write_dataset(frame: pl.DataFrame, path) -> int:
     which is the point of having it there at all.
     """
     target = path.with_suffix(path.suffix + ".gz")
-    with gzip.open(target, "wb", compresslevel=6) as handle:
-        frame.write_csv(handle)
+    # Windows briefly locks a file that was just written (a scanner, the indexer): opening
+    # it again fails with "Invalid argument" on a different file each run. A short retry
+    # gets past it; a lock that outlasts five tries is a real error and still raises.
+    import time
+
+    for attempt in range(5):
+        try:
+            with gzip.open(target, "wb", compresslevel=6) as handle:
+                frame.write_csv(handle)
+            break
+        except OSError:
+            if attempt == 4:
+                raise
+            time.sleep(1 + attempt)
     return target.stat().st_size
 
 
@@ -342,6 +354,33 @@ DATASETS = {
         )
     },
 }
+
+#: 2026-09-15 loads: SGK national work accidents, KGM roads, EPDK energy, SEGE. Listed by
+#: id prefix from the dictionary rather than one by one, so a new indicator of these
+#: sources is not silently missing from the page again (366 were, on the day this was
+#: added). The district distance square (1 M rows) stays in the warehouse only, as the
+#: district × province squares do (K30).
+DATASETS.update(
+    {
+        ind_id: ind_id.replace("_", "-") + ".csv"
+        for ind_id in load().indicators
+        if ind_id.startswith(
+            (
+                "sgk_work_accidents_by_",
+                "epdk_",
+                "sege_",
+                "kgm_",
+                "road_length",
+                "divided_road_length",
+                "motorway_length",
+                "bridge",
+                "traffic_",
+                "road_distance_between_provinces",
+            )
+        )
+        and ind_id not in DATASETS
+    }
+)
 
 #: Indicators that carry breakdowns and so go out through `export_broken_down` rather
 #: than the plain line-chart slice. Named once: the same list drives the level map and the
