@@ -46,6 +46,7 @@ TITLE = re.compile(
 
 Slot = tuple[str, str, dt.date, str]  # indicator, dims, period start, frequency
 TOTAL_GAPS: list[tuple] = []  # printed totals BTK got wrong, kept for the notes
+SKIPPED_ROWS: list[tuple] = []  # unreadable rows of tables without a total
 
 
 def value(token: str) -> float:
@@ -111,8 +112,15 @@ class Table:
     # down tables: [(part column indexes, total column index)] per layout column count
     sums: dict[int, list[tuple[tuple[int, ...], int]]] = field(default_factory=dict)
     scale: float = 1.0
+    dash_is_blank: bool = False  # "-" means "not yet offered" (4.5G before 2016), not 0
+    stacked: bool = (
+        False  # SMS/MMS: "SMS a b c" / period / "MMS a b c", operators across
+    )
 
     def row_dims(self, label: str) -> str | None:
+        # fold drops digits: keep 3G and 4.5G apart first
+        label = re.sub(r"4[.,]5\s*G", "dortbucukG", label)
+        label = re.sub(r"\b3\s*G", "ucG", label)
         key = fold(label)
         for pattern, dims in self.rows.items():
             if re.fullmatch(pattern, key):
@@ -124,6 +132,8 @@ class Table:
         start = find_title(lines, self.title)
         if start is None:
             return {}
+        if self.stacked:
+            return self.read_stacked(report, lines, start)
         if self.layouts:
             return self.read_down(report, lines, start)
         return self.read_across(report, lines, start)
@@ -179,30 +189,36 @@ class Table:
                 else ""
             )
             # a label broken around its numbers: "UYDU" / numbers / "HABERLEŞME"
-            names = [t for t in (label, full, f"{full} {below}".strip()) if t]
+            # longest reading first, so "Mobil Cepten İnternet" + "(4.5G)" is not taken as the total
+            names = [t for t in (f"{full} {below}".strip(), full, label) if t]
             dims = next((d for d in map(self.row_dims, names) if d is not None), None)
             is_total = bool(self.total) and any(
                 re.fullmatch(self.total, fold(t)) for t in names
             )
-            if (
-                dims is not None
-                and below
-                and self.row_dims(f"{full} {below}") == dims
-                and self.row_dims(full) is None
-            ):
+            if below and self.row_dims(f"{full} {below}") is not None:
                 block[n + 1] = ""  # the tail is used up
             if dims is None and not is_total:
                 if "(cid:" in line:
                     return {}
+                if self.total is None:
+                    # no total to betray a lost row: note it, the period comes from
+                    # a neighbouring report (2014-Q4 prints the labels under the numbers)
+                    SKIPPED_ROWS.append((report, self.indicator, line))
+                    continue
                 raise ValueError(
                     f"{report} {self.indicator}: tanınmayan satır {line!r}"
                 )
+            if dims == "_skip":
+                continue
             if len(numbers) != len(periods):
                 broken = True
                 if is_total:
                     break
                 continue
-            cells = [value(n) for n in numbers]
+            cells = [
+                float("nan") if (self.dash_is_blank and token == "-") else value(token)
+                for token in numbers
+            ]
             if is_total:
                 total_row = cells
                 break
@@ -233,6 +249,58 @@ class Table:
                             f"{report} {self.indicator} {token}: parçalar {parts:,.0f}, toplam {printed:,.0f}"
                         )
                     TOTAL_GAPS.append((report, self.indicator, token, parts, printed))
+        return out
+
+    def read_stacked(
+        self, report: str, lines: list[str], start: int
+    ) -> dict[Slot, float]:
+        """ "Hizmet Türü Avea Turkcell Vodafone", then per period "SMS a b c", the period
+        alone, "MMS a b c" (the period sits between its two rows)."""
+        header = lines[start + 1]
+        operators = [
+            self.row_dims(name)
+            for name in re.findall(r"TT Mobil|Avea|Turkcell|Vodafone", header)
+        ]
+        if not operators:
+            return {}  # 2014 reports print SMS and MMS as totals by quarter; 2021-Q1 unreadable
+        if len(operators) != 3 or None in operators:
+            raise ValueError(f"{report} {self.indicator}: işletmeci başlığı {header!r}")
+        out: dict[Slot, float] = {}
+        pending: dict[str, list[float]] = {}
+        period = None
+        for line in lines[start + 2 : start + 60]:
+            label, numbers = split_row(line)
+            key = fold(label)
+            if key in ("sms", "mms") and len(numbers) == 3:
+                if (
+                    key == "mms"
+                ):  # millions with one decimal: "4.5" is 4,5 here, not cut
+                    numbers = [
+                        t.replace(".", ",") if re.fullmatch(r"\d+\.\d{1,2}", t) else t
+                        for t in numbers
+                    ]
+                pending[key] = [value(t) for t in numbers]
+            elif re.fullmatch(r"20\d\d-[1-4]", line):
+                period = line
+            else:
+                if out or pending:
+                    break
+                continue
+            if period and len(pending) == 2:
+                start_, frequency = period_start(period)
+                for kind, cells in pending.items():
+                    for operator, cell in zip(operators, cells, strict=True):
+                        if math.isnan(cell):
+                            continue
+                        out[
+                            (
+                                self.indicator,
+                                f"message_type={kind};{operator}",
+                                start_,
+                                frequency,
+                            )
+                        ] = cell * self.scale
+                pending, period = {}, None
         return out
 
     def read_down(self, report: str, lines: list[str], start: int) -> dict[Slot, float]:
@@ -314,6 +382,52 @@ TABLES = [
         r"sektorbazindaucayliktuketicisikayet",
         "btk_consumer_complaints",
         SECTORS,
+    ),
+    Table(
+        r"(ucg|ghizmetikullaniciverileri|gvedortbucukghizmeti)",
+        "btk_mobile_broadband_tech",
+        {
+            r"ucgabonesayisi(mmaboneleridahil)?": "mobile_bb_measure=subscribers_3g",
+            r"dortbucukgabonesayisi(mmaboneleridahil)?": "mobile_bb_measure=subscribers_45g",
+            r"mobilbilgisayardaninternet(toplam)?": "mobile_bb_measure=computer_total",
+            r"mobilbilgisayardanintern?e?t?dortbucukg": "mobile_bb_measure=computer_45g",
+            r"mobilcepteninternet(toplam)?": "mobile_bb_measure=handset_total",
+            r"mobilcepteninternetdortbucukg": "mobile_bb_measure=handset_45g",
+            r"mobilinternetkullanimmiktaritbyte(toplam)?": "mobile_bb_measure=data_tb_total",
+            r"mobilinternetkullanimmiktaritbytedortbucukg": "mobile_bb_measure=data_tb_45g",
+            # 2010-2012 "mobil internet" tables: another definition, and data in GB
+            r"mobilinternet(kullanici|abone)sayisi": "_skip",
+            r"mobilinternetkullanimmiktarigbyte": "_skip",
+        },
+        total=None,
+        dash_is_blank=True,
+    ),
+    Table(
+        r"sthisletmecilerinintasiyicisecimi",
+        "btk_carrier_selection",
+        {
+            r"tasiyicionsecimi": "carrier_selection=preselection",
+            r"aramabazindatasiyicisecimi": "carrier_selection=call_by_call",
+        },
+        total=None,
+    ),
+    Table(
+        r"^uyduplatformhizmetigelirleri",
+        "btk_satellite_platform_revenue",
+        {
+            r"yurtici(toplam)?gelir": "revenue_scope=domestic",
+            r"yurtdisi(toplam)?gelir": "revenue_scope=abroad",
+            r"toplamgelir": "revenue_scope=domestic",  # 2022 on: one row, abroad no longer printed
+        },
+        total=None,
+    ),
+    Table(
+        r"^isletmecibazindasmsvemmsmiktari",
+        "btk_messages_by_operator",
+        OPERATORS,
+        total=None,
+        stacked=True,
+        scale=1e6,
     ),
     Table(
         r"^okth(hizmetleri|abone)",
@@ -422,6 +536,10 @@ UNITS = {
     "btk_other_operator_revenue": "try",
     "btk_other_operator_investment": "try",
     "btk_consumer_complaints": "item",
+    "btk_mobile_broadband_tech": "subscriber",
+    "btk_carrier_selection": "subscriber",
+    "btk_satellite_platform_revenue": "try",
+    "btk_messages_by_operator": "item",
     "btk_pamr": "subscriber",
     "btk_pamr_revenue": "try",
     "btk_directory_services": "item",
@@ -454,7 +572,7 @@ class BtkTable:
         records = [
             {"period_start": start, "frequency": frequency, "dims": dims, "value": v}
             for (indicator, dims, start, frequency), v in _CACHE.items()
-            if indicator == self.indicator_id
+            if indicator == self.indicator_id and not math.isnan(v)  # cut-off cells
         ]
         return pl.DataFrame(
             records, schema_overrides={"value": pl.Float64}

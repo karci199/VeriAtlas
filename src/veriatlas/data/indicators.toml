@@ -28264,6 +28264,76 @@ dims = ["fiber_use"]
 views = ["table", "line", "bar"]
 definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok: 2018-Q4 raporu sitede yok, 2019 raporlarının tabloları metin olarak okunamıyor). "
 
+[dim.mobile_bb_measure]
+label_tr = "Ölçü"
+label_en = "Measure"
+
+[dim.mobile_bb_measure.values]
+subscribers_3g = "3G abone (2026'dan M2M dahil yazılı)"
+subscribers_45g = "4.5G abone"
+computer_total = "Mobil bilgisayardan internet, toplam"
+computer_45g = "Mobil bilgisayardan internet, 4.5G"
+handset_total = "Mobil cepten internet, toplam"
+handset_45g = "Mobil cepten internet, 4.5G"
+data_tb_total = "Mobil internet kullanımı (TB), toplam"
+data_tb_45g = "Mobil internet kullanımı (TB), 4.5G"
+
+[dim.carrier_selection]
+label_tr = "Yöntem"
+label_en = "Method"
+
+[dim.carrier_selection.values]
+preselection = "Taşıyıcı ön seçimi"
+call_by_call = "Arama bazında taşıyıcı seçimi"
+
+[dim.revenue_scope]
+label_tr = "Kapsam"
+label_en = "Scope"
+
+[dim.revenue_scope.values]
+domestic = "Yurt içi (2022'den tek satır: toplam)"
+abroad = "Yurt dışı (2021'e kadar)"
+
+[indicator.btk_mobile_broadband_tech]
+label_tr = "3G ve 4.5G kullanıcı verileri"
+label_en = "3G and 4.5G user data"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "quarterly"
+dims = ["mobile_bb_measure"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok). Çeyrek sonu abone; data kullanımı çeyrek içi TB (birim sütunu abone, data satırları TB). 4.5G 2016-2'den. 2012-2014 raporları yıllık karşılaştırma basıyor, bazı çeyrekler yok."
+
+[indicator.btk_carrier_selection]
+label_tr = "STH taşıyıcı seçimi kullanıcı sayısı"
+label_en = "Carrier selection users"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "quarterly"
+dims = ["carrier_selection"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok). Çeyrek sonu, 2014-1'den."
+
+[indicator.btk_satellite_platform_revenue]
+label_tr = "Uydu platform hizmeti geliri"
+label_en = "Satellite platform revenue"
+topic = "iletisim"
+unit = "try"
+frequency = "quarterly"
+dims = ["revenue_scope"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok). Çeyreklik, cari TL, 2012-3'ten. 2022'den yurt dışı ayrı basılmıyor; tek satır yurt içi olarak yüklendi."
+
+[indicator.btk_messages_by_operator]
+label_tr = "SMS ve MMS, işletmeciye göre"
+label_en = "SMS and MMS by operator"
+topic = "iletisim"
+unit = "item"
+frequency = "quarterly"
+dims = ["message_type", "telecom_operator"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları, çizelge; her çeyrek onu basan en yeni rapordan (2018-4 yok). Milyon adet basılı; çeyreklik 2014-1'den."
+
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
 label_en = "Mobile generation"
