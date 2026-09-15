@@ -9,6 +9,7 @@ from .tobb import TOBB_ADAPTERS
 from .yokatlas import YOKATLAS_ADAPTERS
 from .yok_istatistik import YOK_ISTATISTIK_ADAPTERS
 from .yok_national import YOK_NATIONAL_ADAPTERS
+from .yks import YKS_ADAPTERS
 from .evds_archive import EVDS_ARCHIVE_ADAPTERS
 from .evds_housing import EVDS_HOUSING_ADAPTERS
 from .evds_prices import EVDS_PRICE_ADAPTERS
@@ -112,6 +113,7 @@ ADAPTERS = {
     **YOKATLAS_ADAPTERS,
     **YOK_ISTATISTIK_ADAPTERS,
     **YOK_NATIONAL_ADAPTERS,
+    **YKS_ADAPTERS,
     # İlçe SEGE-2022 development score, rank and level.
     **SEGE_ADAPTERS,
 }

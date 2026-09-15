@@ -27494,3 +27494,53 @@ views = ["table", "line", "bar"]
 definition_tr = "YÖK İstatistik Tablo M7, 2013-2014 ... 2025-2026. 2015-2016 doktora kadın sütununda satırlar TOPLAM'dan 1 fazla (basım farkı)."
 
 # endregion
+
+# region YKS applicants and placements (adapters/yks.py), 2026-09-15.
+
+[dim.exam_outcome]
+label_tr = "Sonuç"
+label_en = "Outcome"
+
+[dim.exam_outcome.values]
+applied = "Başvuran"
+placed = "Yerleşen"
+placed_bachelor = "Lisansa yerleşen"
+placed_associate = "Önlisansa yerleşen"
+placed_open = "Açıköğretime yerleşen"
+
+[dim.candidate_status]
+label_tr = "Aday durumu"
+label_en = "Candidate status"
+
+[dim.candidate_status.values]
+final_year = "Lise son sınıf"
+graduate_not_placed = "Mezun, daha önce yerleşmemiş"
+enrolled_elsewhere = "Bir yükseköğretim programına kayıtlı"
+placed_before = "Daha önce yerleşmiş"
+total = "Toplam"
+
+[dim.school_type]
+label_tr = "Okul türü"
+label_en = "School type"
+
+[indicator.yks_applicants_placed]
+label_tr = "Üniversiteye başvuran ve yerleşen aday, Türkiye (1980-2025)"
+label_en = "University applicants and placements, Türkiye"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["exam_outcome"]
+views = ["table", "line", "bar"]
+definition_tr = "YÖK İstatistik 'Yıllara göre üniversitelere başvuran ve yerleşen aday sayıları' (ÖSYM kaynaklı), 1980-2025. 2015-2025 yıllık okul türü dosyalarının toplamları bu seriyle birebir ya da 1-14 kişi farkla tutar; 2024'te yerleşen yıllık dosyada 986.861, bu seride 987.911."
+
+[indicator.yks_applicants_by_school]
+label_tr = "Üniversiteye başvuran ve yerleşen aday, okul türü ve aday durumuna göre"
+label_en = "University applicants and placements by school type and candidate status"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["candidate_status", "exam_outcome", "school_type"]
+views = ["table", "line", "bar"]
+definition_tr = "YÖK İstatistik 2015 ÖSYS ... 2025 YKS 'Okul türü ve öğrenim durumuna göre başvuran-yerleşen' tabloları; yüzde sütunları alınmadı. Okul türleri her grupta basılı ara toplamı ve genel toplamı tutar. 2021'de okul türü listesi 27'den 30'a çıktı."
+
+# endregion
