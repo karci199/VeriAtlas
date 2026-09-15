@@ -413,6 +413,78 @@ DATASETS.update(
     }
 )
 
+#: Sub-annual EVDS series read as one number per year. Flows (counts, amounts, m², sales)
+#: are summed over the year; stocks (credit volumes) take the year's last period; indices,
+#: rates and prices take the mean of the year. A year is written only when every period of
+#: it is present (12 months, 4 quarters, 52 weeks, 240 working days), so a running year is
+#: never shown as a whole one. The 172 `archive_*` series are left out: their unit is "see
+#: the item name", so no reading can be chosen for them without checking each by hand.
+YEAR_END_STOCKS = {
+    "bank_credit_volume",
+    "bank_credit_volume_weekly",
+    "credit_deposit_banks",
+    "credit_development_banks",
+    "credit_participation_banks",
+}
+MIN_PERIODS = {"monthly": 12, "quarterly": 4, "weekly": 52, "daily": 240}
+EVDS_LOADED = set(
+    pl.scan_parquet(PUBLIC / "fact.parquet")
+    .filter(pl.col("source_id").str.contains("evds"))
+    .select("indicator_id")
+    .unique()
+    .collect()["indicator_id"]
+)
+YEARLY_FROM_SUBANNUAL = {
+    ind.indicator_id: ind
+    for ind in load().indicators.values()
+    if ind.frequency in MIN_PERIODS
+    and ind.indicator_id not in DATASETS
+    and not ind.indicator_id.startswith("archive_")
+    and ind.indicator_id in EVDS_LOADED
+}
+DATASETS.update({i: i.replace("_", "-") + ".csv" for i in YEARLY_FROM_SUBANNUAL})
+
+
+def to_yearly(fact: pl.DataFrame) -> pl.DataFrame:
+    """Replace the sub-annual rows of `YEARLY_FROM_SUBANNUAL` with yearly readings."""
+    sub = fact.filter(pl.col("indicator_id").is_in(list(YEARLY_FROM_SUBANNUAL)))
+    if sub.height == 0:
+        return fact
+    frames = []
+    keys = ["indicator_id", "area_id", "area_level", "dims", "year"]
+    for ind_id, group in sub.with_columns(
+        pl.col("period_start").dt.year().alias("year")
+    ).group_by("indicator_id"):
+        ind = YEARLY_FROM_SUBANNUAL[ind_id[0]]
+        if ind_id[0] in YEAR_END_STOCKS:
+            value = pl.col("value").sort_by("period_start").last()
+        elif ind.unit.additive:
+            value = pl.col("value").sum()
+        else:
+            value = pl.col("value").mean()
+        yearly = (
+            group.group_by(keys)
+            .agg(
+                value.alias("value"),
+                pl.col("period_start").n_unique().alias("periods"),
+                pl.col("unit").first(),
+                pl.col("quality_flag").first(),
+                pl.col("vintage").max(),
+                pl.col("source_id").first(),
+                pl.col("retrieved_at").max(),
+            )
+            .filter(pl.col("periods") >= MIN_PERIODS[ind.frequency])
+            .with_columns(
+                pl.date(pl.col("year"), 1, 1).alias("period_start"),
+                pl.lit("annual").alias("frequency"),
+            )
+            .select(fact.columns)
+        )
+        frames.append(yearly.cast(fact.schema))
+    rest = fact.filter(~pl.col("indicator_id").is_in(list(YEARLY_FROM_SUBANNUAL)))
+    return pl.concat([rest, *frames])
+
+
 #: Indicators that carry breakdowns and so go out through `export_broken_down` rather
 #: than the plain line-chart slice. Named once: the same list drives the level map and the
 #: files, and having it written out twice is how marital status came to be loaded into the
@@ -1066,7 +1138,7 @@ def sources() -> list[dict[str, str]]:
 
 
 def main() -> None:
-    fact = pl.read_parquet(PUBLIC / "fact.parquet")
+    fact = to_yearly(pl.read_parquet(PUBLIC / "fact.parquet"))
     # Districts live in their own registry (they carry validity columns the others do
     # not), so the name lookup is the two files stacked.
     areas = pl.concat(
