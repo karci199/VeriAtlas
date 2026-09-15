@@ -149,7 +149,7 @@ unit = "person"
 frequency = "annual"
 dims = ["field", "field_level", "higher_education_level", "sex", "student_event"]
 views = ["table", "line", "bar"]
-definition_tr = "YÖK İstatistik Tablo 17 (lisans) ve 19 (önlisans), ISCED-F 2013 eğitim alanları, 2015-2016 ... 2025-2026. Geniş, dar ve ayrıntılı alan aynı tabloda üst üste basılı; düzey (field_level) toplamlardan çözüldü, bir düzeyi toplayın (düzeyler toplanırsa üç kat sayılır). Geniş alan toplamları her yıl il tablosu (yok_students) önlisans ve lisans sayısıyla birebir aynı. 2013-2014 ve 2014-2015 başka düzende, alınmadı; lisansüstü alan tablosu ayrı, alınmadı."
+definition_tr = "YÖK İstatistik Tablo 17 (lisans) ve 19 (önlisans), ISCED-F 2013 eğitim alanları, 2015-2016 ... 2025-2026. Geniş, dar ve ayrıntılı alan aynı tabloda üst üste basılı; düzey (field_level) toplamlardan çözüldü, bir düzeyi toplayın (düzeyler toplanırsa üç kat sayılır). Geniş alan toplamları her yıl il tablosu (yok_students) önlisans ve lisans sayısıyla birebir aynı. Lisansüstü (Tablo 24) yüksek lisans ve doktora olarak ayrı; 2021-2022 lisansüstü tablosu satır sırası bozuk olduğu için yok. 2013-2014 ve 2014-2015 eski sınıflamada, alınmadı (docs/yok.md)."
 
 [indicator.yok_graduates_by_field]
 label_tr = "Mezun, eğitim alanına göre"
@@ -159,7 +159,7 @@ unit = "person"
 frequency = "annual"
 dims = ["field", "field_level", "higher_education_level", "sex"]
 views = ["table", "line", "bar"]
-definition_tr = "YÖK İstatistik Tablo M17/M19, 2015-2016 ... 2025-2026; bir alan düzeyi seçilerek kullanılır."
+definition_tr = "YÖK İstatistik Tablo M17 (lisans), M19 (önlisans), M24 (lisansüstü), 2015-2016 ... 2025-2026; bir alan düzeyi seçilerek kullanılır. Lisansüstü mezun 2021-2022 ve 2025-2026 yok (satır sırası bozuk). Toplamlar il tablosu (yok_graduates) ile birebir."
 
 [indicator.yok_academic_staff_by_field]
 label_tr = "Öğretim elemanı, eğitim alanına ve unvana göre"

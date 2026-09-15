@@ -365,12 +365,12 @@ FAMILIES = {
     ),
     "yok_graduates_by_age": (r"YAŞLARA GÖRE.*MEZUN", "age_group", False),
     "yok_students_by_field": (
-        r"SINIFLAMASINA GÖRE .*DÜZEYİNDEKİ ÖĞRENCİ",
+        r"SINIFLAMASINA GÖRE (.*DÜZEYİNDEKİ|LİSANSÜSTÜ) ÖĞRENCİ",
         "field",
         True,
     ),
     "yok_graduates_by_field": (
-        r"SINIFLAMASINA GÖRE .*DÜZEYİNDEKİ MEZUN",
+        r"SINIFLAMASINA GÖRE (.*DÜZEYİNDEKİ|LİSANSÜSTÜ) MEZUN",
         "field",
         True,
     ),
@@ -432,7 +432,23 @@ class YokNational:
                 continue
             data, total, _ = parse_table(path)
             if tree:
-                rows = resolve_tree(path, data, total)
+                try:
+                    rows = resolve_tree(path, data, total)
+                except ValueError:
+                    # Postgraduate field tables of 2021-2022 (students, graduates) and
+                    # 2025-2026 (graduates) add up to three times the total but their rows
+                    # are out of order; left out, noted. Any other table still stops.
+                    if scope.get("level") != "postgraduate":
+                        raise
+                    NOTES.append(
+                        (
+                            self.indicator_id,
+                            year,
+                            path.name,
+                            "satır sırası çözülemedi, alınmadı",
+                        )
+                    )
+                    continue
             else:
                 check_flat(path, data, total)
                 rows = [(name, None, values) for name, values in data]
@@ -448,7 +464,9 @@ class YokNational:
                         if category == "age_group"
                         else slug(name)
                     )
-                    raw_dims = {**dict(col), **scope, category: code}
+                    # The table's own scope fills a dimension only where its columns do not
+                    # (postgraduate tables split master's and doctorate in their columns).
+                    raw_dims = {**scope, **dict(col), category: code}
                     dims = {DIM_NAMES.get(k, k): v for k, v in raw_dims.items()}
                     if depth:
                         dims["field_level"] = depth
