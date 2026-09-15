@@ -37,3 +37,13 @@ karşılaştırıldı (en büyük fark %0,5).
 - LPG il × şirket × ürün: Excel yalnız 7 ay.
 - Doğalgaz il × şirket × sektör (aylık bölüm 8), abone sayıları (aylık Tablo 5.3).
 - Şarj: EPDK il kırılımı yayımlamıyor; resmi istatistik sayfası boş.
+
+## Son notlar (2026-09-15)
+
+- EPDK kapandı: yıllık il serileri (elektrik 2016-2025, doğalgaz 2015-2025, akaryakıt
+  2015-2025, LPG 2006-2025, kurulu güç) ve aylık il serileri (doğalgaz, akaryakıt, LPG) depoda.
+- Zorluk kaynağın biçimindeydi: PDF'te boş hücre ve sütun kaybı, yıldan yıla değişen tablo
+  adları, sayfaya bölünen tablolar, bozuk karakterler ve EPDK'nın kendi baskı hataları.
+- Ders: yeni kaynağa başlamadan 5 dakikalık keşif (API / Excel / Word / PDF, yıl kapsamı, biçim
+  değişimi) ve "kolay / orta / zor" kararı; PDF zor çıkarsa baştan atlanabilir.
+- Her tablo basılı toplamlara karşı sınanır; tutmayan ay yüklenmez, nedeni burada yazılır.
