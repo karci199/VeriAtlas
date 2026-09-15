@@ -25219,3 +25219,54 @@ views = ["table", "map", "line", "bar"]
 definition_tr = "EPDK yıllık elektrik piyasası raporları Tablo 1.3, 2017-2024 yıl sonu, il toplamı (kaynak kırılımı yok). Kilis'te lisanslı santral yok. 2019 tablosunda AYDIN iki kez basılı (1.194,9 ve 44,0 MW); 44 MW ile atanmadı."
 
 # endregion
+
+# region İlçe SEGE-2022 (adapters/sege.py), 2026-09-15.
+
+[topic.gelismislik]
+label_tr = "Sosyo-ekonomik gelişmişlik"
+label_en = "Socio-economic development"
+order = 36
+
+[unit.rank]
+label_tr = "sıra"
+label_en = "rank"
+decimals = 0
+additive = false
+
+[unit.development_level]
+label_tr = "kademe"
+label_en = "level"
+decimals = 0
+additive = false
+
+[indicator.sege_district_score]
+label_tr = "İlçe SEGE skoru"
+label_en = "District socio-economic development score"
+topic = "gelismislik"
+unit = "index"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "Sanayi ve Teknoloji Bakanlığı İlçe SEGE-2022 (Şubat 2022): 56 değişkenle (demografi, istihdam, eğitim, sağlık, finans, rekabetçilik, yenilikçilik, yaşam kalitesi) temel bileşenler analizi skoru; ortalama 0, yüksek daha gelişmiş. Verilerin çoğu 2019-2021. 973 ilçe. Değişken değerleri yayımlanmadı."
+
+[indicator.sege_district_rank]
+label_tr = "İlçe SEGE sıralaması"
+label_en = "District development rank"
+topic = "gelismislik"
+unit = "rank"
+frequency = "annual"
+dims = []
+views = ["table", "map"]
+definition_tr = "İlçe SEGE-2022 genel sıralaması, 1 en gelişmiş, 973 en az gelişmiş."
+
+[indicator.sege_district_level]
+label_tr = "İlçe SEGE kademesi"
+label_en = "District development level"
+topic = "gelismislik"
+unit = "development_level"
+frequency = "annual"
+dims = []
+views = ["table", "map"]
+definition_tr = "İlçe SEGE-2022 gelişmişlik kademesi, 1 (en gelişmiş) - 6 (en az gelişmiş)."
+
+# endregion

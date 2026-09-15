@@ -8,6 +8,7 @@ from .evds_series import EVDS_SERIES_ADAPTERS
 from .evds_tourism import EvdsVisitorsByNationality
 from .epdk import EPDK_ADAPTERS
 from .epdk_capacity import EPDK_CAPACITY_ADAPTERS
+from .sege import SEGE_ADAPTERS
 from .epdk_history import EPDK_HISTORY_ADAPTERS
 from .kgm import KGM_ADAPTERS
 from .sgk_national import SGK_NATIONAL_ADAPTERS
@@ -101,6 +102,8 @@ ADAPTERS = {
     # Earlier years from the EPDK Word reports; same keys, so these replace the above.
     **EPDK_HISTORY_ADAPTERS,
     **EPDK_CAPACITY_ADAPTERS,
+    # İlçe SEGE-2022 development score, rank and level.
+    **SEGE_ADAPTERS,
 }
 
 __all__ = [
