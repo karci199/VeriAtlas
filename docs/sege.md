@@ -23,3 +23,7 @@ Kağızman ve Digor basılmamış (skor ve sıra ulusal listede var, kademe yok)
 ilçeler: Kemalpaşa (Artvin), Derecik (Hakkari), Sultanhanı (Aksaray).
 
 Açık: il SEGE-2017.
+
+## İl SEGE-2017 (2026-09-15)
+
+81 il, skor/sıra/kademe (`province_sege`), kalkinmakutuphanesi.gov.tr kopyası → `C:eri-ham\sege\il-sege-2017.pdf`. Denetim: 1-81 sıra birer kez, skor sırayla azalıyor. "Hakkâri" düzeltme işaretli.

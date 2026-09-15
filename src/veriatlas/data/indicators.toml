@@ -26817,3 +26817,37 @@ unallocated = "Dağıtılmamış"
 "9" = "Diğer çalışılan ortam"
 unknown = "Bilinmeyen"
 unallocated = "Dağıtılmamış"
+
+# region İl SEGE-2017 (adapters/sege.py), 2026-09-15.
+
+[indicator.sege_province_score]
+label_tr = "İl SEGE skoru"
+label_en = "Province socio-economic development score"
+topic = "gelismislik"
+unit = "index"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "Sanayi ve Teknoloji Bakanlığı İllerin Sosyo-Ekonomik Gelişmişlik Sıralaması SEGE-2017 (2019'da yayımlandı, çoğu değişken 2015): 52 değişkenle temel bileşenler skoru. İlçe SEGE skorlarıyla aynı ölçekte değil."
+
+[indicator.sege_province_rank]
+label_tr = "İl SEGE sıralaması"
+label_en = "Province development rank"
+topic = "gelismislik"
+unit = "rank"
+frequency = "annual"
+dims = []
+views = ["table", "map"]
+definition_tr = "İl SEGE-2017 sıralaması, 1 en gelişmiş, 81 en az gelişmiş."
+
+[indicator.sege_province_level]
+label_tr = "İl SEGE kademesi"
+label_en = "Province development level"
+topic = "gelismislik"
+unit = "development_level"
+frequency = "annual"
+dims = []
+views = ["table", "map"]
+definition_tr = "İl SEGE-2017 kademesi, 1 (en gelişmiş) - 6 (en az gelişmiş)."
+
+# endregion

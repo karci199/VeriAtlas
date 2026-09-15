@@ -180,3 +180,98 @@ SEGE_ADAPTERS = {
     "sege_district_rank": SegeRank,
     "sege_district_level": SegeLevel,
 }
+
+
+# region Province SEGE-2017
+
+PROVINCE_PDF = RAW / "sege" / "il-sege-2017.pdf"
+PROVINCE_ROW = re.compile(r"(\d{1,2}) (\D+?) (-?\d,\d{3}) ([1-6])(?=\s|$)")
+
+
+@cache
+def province_sege() -> list[dict]:
+    """İllerin SEGE-2017 (2015 data, 52 variables): rank, province, score, level, 81 rows.
+
+    `kalkinmakutuphanesi.gov.tr` copy. The table is printed in two side-by-side halves on one
+    page; ranks 1-81 must each appear once and the scores must fall with the rank.
+    """
+    with pdfplumber.open(PROVINCE_PDF) as document:
+        text = next(
+            p.extract_text()
+            for p in document.pages
+            if "İllerin Sosyo-Ekonomik Gelişmişlik Sıralaması"
+            in (p.extract_text() or "")
+            and "Skor Kademe" in (p.extract_text() or "")
+        )
+    found: dict[int, dict] = {}
+    for m in PROVINCE_ROW.finditer(text):
+        rank = int(m.group(1))
+        if rank in found:
+            raise ValueError(f"il SEGE: {rank}. sıra iki kez")
+        found[rank] = {
+            "area_id": province_id(m.group(2).replace("â", "a")),
+            "rank": rank,
+            "score": score(m.group(3)),
+            "level": int(m.group(4)),
+        }
+    if sorted(found) != list(range(1, 82)):
+        raise ValueError(f"il SEGE: {len(found)} sıra")
+    scores = [found[r]["score"] for r in range(1, 82)]
+    if scores != sorted(scores, reverse=True):
+        raise ValueError("il SEGE: skorlar sıraya göre azalmıyor")
+    if len({f["area_id"] for f in found.values()}) != 81:
+        raise ValueError("il SEGE: iki sıra aynı ile eşlendi")
+    return list(found.values())
+
+
+class ProvinceSege(Sege):
+    def fetch(self) -> Path:
+        return PROVINCE_PDF
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        rows = province_sege()
+        return pl.DataFrame(
+            {
+                "indicator_id": self.indicator_id,
+                "area_id": [r["area_id"] for r in rows],
+                "area_level": "province",
+                "period_start": dt.date(2017, 1, 1),
+                "frequency": "annual",
+                "dims": "",
+                "value": [float(r[self.column]) for r in rows],
+                "unit": self.unit,
+                "quality_flag": "measured",
+                "vintage": "2019-12",
+                "source_id": self.source_id,
+                "retrieved_at": dt.date(2026, 9, 15),
+            }
+        )
+
+
+class ProvinceSegeScore(ProvinceSege):
+    indicator_id = "sege_province_score"
+    column = "score"
+    unit = "index"
+
+
+class ProvinceSegeRank(ProvinceSege):
+    indicator_id = "sege_province_rank"
+    column = "rank"
+    unit = "rank"
+
+
+class ProvinceSegeLevel(ProvinceSege):
+    indicator_id = "sege_province_level"
+    column = "level"
+    unit = "development_level"
+
+
+SEGE_ADAPTERS.update(
+    {
+        "sege_province_score": ProvinceSegeScore,
+        "sege_province_rank": ProvinceSegeRank,
+        "sege_province_level": ProvinceSegeLevel,
+    }
+)
+
+# endregion
