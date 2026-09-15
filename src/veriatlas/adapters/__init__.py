@@ -11,6 +11,7 @@ from .yok_istatistik import YOK_ISTATISTIK_ADAPTERS
 from .yok_national import YOK_NATIONAL_ADAPTERS
 from .yks import YKS_ADAPTERS
 from .btk import BTK_ADAPTERS
+from .btk_province import BTK_PROVINCE_ADAPTERS
 from .evds_archive import EVDS_ARCHIVE_ADAPTERS
 from .evds_housing import EVDS_HOUSING_ADAPTERS
 from .evds_prices import EVDS_PRICE_ADAPTERS
@@ -116,6 +117,7 @@ ADAPTERS = {
     **YOK_NATIONAL_ADAPTERS,
     **YKS_ADAPTERS,
     **BTK_ADAPTERS,
+    **BTK_PROVINCE_ADAPTERS,
     # İlçe SEGE-2022 development score, rank and level.
     **SEGE_ADAPTERS,
 }

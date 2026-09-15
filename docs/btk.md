@@ -38,3 +38,30 @@ BTK il kırılımı yayımlamıyor.
 - Adaylar (eski not): yatırımlar, işletmeci gelirleri, fiber uzunluğu, şikâyetler, uydu/kablo/IPTV,
   SMS/MMS (metin katmanında, kolay); churn, MoU, hız dağılımı (grafik, zor).
 - 2026-Q1 raporunda "GİZLİ — SADECE KURUM İÇİ" damgalı sayfalar (82, 86): kullanıcı kararı bekliyor.
+
+## Yıllık İl İstatistikleri (depoda, 2026-09-15)
+
+Kaynak: btk.gov.tr/yillik-il-istatistikleri. 14 Excel dosyası var, her biri altı yıllık bir pencere (2007-2012 … 2020-2025). Ham dosyalar `C:\veri-ham\btk\il` klasöründe. Adaptör: `src/veriatlas/adapters/btk_province.py`. Yüklenen göstergeler (hepsi `btk_province_*`):
+
+- sabit hat
+- santral kapasitesi
+- ankesör
+- mobil abone: toplam ve nesle göre
+- genişbant: fiber, xDSL, kablo, diğer, mobil bilgisayar, mobil cep
+- kablo TV
+- fiber km
+- 4.5G kapsama
+
+Nasıl okundu, nelere dikkat:
+
+- **Yıl seçimi:** BTK geçmiş yılları düzeltiyor. Her yıl, onu basan en yeni dosyadan alındı; aynı yıla ait eski ve yeni dosyalar arasında 4.666 hücre farkı var.
+- **Sabit hat:** TOPLAM satırı illerin toplamından yılda yaklaşık 300 bin hat fazla; bu hatlar hiçbir ile dağıtılmamış. "Diğer" genişbantta aynı fark yaklaşık 24 bin.
+- **Basılı toplamlar:** Dosya başına 1-6 il-yılda BTK'nın basılı genişbant toplamı parçaların toplamını tutmuyor (örnek: İstanbul 2011'de +15 bin, Tunceli 2020'de +2 bin). Toplamlar yüklenmedi, parçalar yüklendi.
+- **Nüfus:** yüklenmedi, depoda TÜİK ADNKS zaten var.
+- **Veri başlangıçları:**
+  - Genişbantın il dağılımı 2011'den başlıyor.
+  - 2G ayrımı 2010'dan başlıyor.
+  - Kablo TV yalnız 25 ilde var.
+  - 4.5G kapsama yalnız 2025 için basılı.
+
+Sitenin geri kalanında (iletişim hizmetleri istatistikleri, IMEI, posta sektörü, yıllık pazar bülteni, faaliyet raporları) yalnız PDF var. Çeyreklik pazar raporları zaten işlendi.

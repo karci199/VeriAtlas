@@ -27580,6 +27580,7 @@ fixed_wireless = "Sabit kablosuz"
 other = "Diğer"
 mobile_computer = "Mobil bilgisayar"
 mobile_handset = "Mobil cep"
+fiber = "Fiber"
 
 [dim.fixed_voice_line]
 label_tr = "Hat türü"
@@ -27628,6 +27629,97 @@ label_en = "Tariff"
 [dim.tariff_type.values]
 prepaid = "Ön ödemeli"
 postpaid = "Faturalı"
+
+[dim.mobile_generation]
+label_tr = "Mobil nesil"
+label_en = "Mobile generation"
+
+[dim.mobile_generation.values]
+2g = "2G"
+3g_plus = "3G ve üstü (3G+4.5G)"
+
+[indicator.btk_province_fixed_lines]
+label_tr = "Sabit telefon erişim hattı (il)"
+label_en = "Fixed telephone access lines by province"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "annual"
+views = ["table", "line", "map"]
+definition_tr = "BTK Yıllık İl İstatistikleri (btk.gov.tr/yillik-il-istatistikleri), 2007-2025; her yıl onu basan en yeni altı yıllık dosyadan (BTK geçmiş yılları düzeltiyor). Türkiye satırı basılı TOPLAM; illerin toplamı yılda ~300 bin hat eksik (ile dağıtılmamış)."
+
+[indicator.btk_province_exchange_capacity]
+label_tr = "Sabit telefon santral kapasitesi (il)"
+label_en = "Fixed telephony exchange capacity by province"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+views = ["table", "line", "map"]
+definition_tr = "BTK Yıllık İl İstatistikleri (btk.gov.tr/yillik-il-istatistikleri), 2007-2025; her yıl onu basan en yeni altı yıllık dosyadan (BTK geçmiş yılları düzeltiyor). Hat kapasitesi."
+
+[indicator.btk_province_payphones]
+label_tr = "Ankesörlü telefon (il)"
+label_en = "Payphones by province"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+views = ["table", "line", "map"]
+definition_tr = "BTK Yıllık İl İstatistikleri (btk.gov.tr/yillik-il-istatistikleri), 2007-2025; her yıl onu basan en yeni altı yıllık dosyadan (BTK geçmiş yılları düzeltiyor). Yalnız eski dosyalarda basılı."
+
+[indicator.btk_province_mobile_subscribers]
+label_tr = "Mobil telefon abonesi (il)"
+label_en = "Mobile subscriptions by province"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "annual"
+views = ["table", "line", "map"]
+definition_tr = "BTK Yıllık İl İstatistikleri (btk.gov.tr/yillik-il-istatistikleri), 2007-2025; her yıl onu basan en yeni altı yıllık dosyadan (BTK geçmiş yılları düzeltiyor). BTK'nın il dağıtımı; bazı değerler ondalıklı."
+
+[indicator.btk_province_mobile_by_generation]
+label_tr = "Mobil abone, nesle göre (il)"
+label_en = "Mobile subscriptions by generation and province"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "annual"
+dims = ["mobile_generation"]
+views = ["table", "line", "map"]
+definition_tr = "BTK Yıllık İl İstatistikleri (btk.gov.tr/yillik-il-istatistikleri), 2007-2025; her yıl onu basan en yeni altı yıllık dosyadan (BTK geçmiş yılları düzeltiyor). 2G ayrımı 2010'dan; 3G sütunu 2016'dan sonra 3G+4.5G. 2023'te 2G/3G arasında ~187 bin abone il toplamında yer değiştiriyor; iki kalemin toplamı tutuyor."
+
+[indicator.btk_province_broadband]
+label_tr = "Genişbant abonesi, teknolojiye göre (il)"
+label_en = "Broadband subscriptions by technology and province"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "annual"
+dims = ["internet_technology"]
+views = ["table", "line", "map"]
+definition_tr = "BTK Yıllık İl İstatistikleri (btk.gov.tr/yillik-il-istatistikleri), 2007-2025; her yıl onu basan en yeni altı yıllık dosyadan (BTK geçmiş yılları düzeltiyor). Sabit: fiber, xDSL, kablo, diğer; mobil: bilgisayardan, cepten. İl dağıtımı 2011'den. Basılı toplamlar dosya başına birkaç hücrede parçaları tutmuyor (BTK), parçalar yüklendi."
+
+[indicator.btk_province_cable_tv]
+label_tr = "Kablo TV abonesi (il)"
+label_en = "Cable TV subscriptions by province"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "annual"
+views = ["table", "line", "map"]
+definition_tr = "BTK Yıllık İl İstatistikleri (btk.gov.tr/yillik-il-istatistikleri), 2007-2025; her yıl onu basan en yeni altı yıllık dosyadan (BTK geçmiş yılları düzeltiyor). "
+
+[indicator.btk_province_fiber_km]
+label_tr = "Fiber optik kablo uzunluğu (il)"
+label_en = "Fibre-optic cable length by province"
+topic = "iletisim"
+unit = "km"
+frequency = "annual"
+views = ["table", "line", "map"]
+definition_tr = "BTK Yıllık İl İstatistikleri (btk.gov.tr/yillik-il-istatistikleri), 2007-2025; her yıl onu basan en yeni altı yıllık dosyadan (BTK geçmiş yılları düzeltiyor). "
+
+[indicator.btk_province_4g_coverage]
+label_tr = "4.5G nüfus kapsama oranı (il)"
+label_en = "4.5G coverage rate by province"
+topic = "iletisim"
+unit = "percent"
+frequency = "annual"
+views = ["table", "line", "map"]
+definition_tr = "BTK Yıllık İl İstatistikleri (btk.gov.tr/yillik-il-istatistikleri), 2007-2025; her yıl onu basan en yeni altı yıllık dosyadan (BTK geçmiş yılları düzeltiyor). Yalnız son yıl(lar) basılı; Türkiye satırı ortalama değil toplam değil, basıldığı gibi."
 
 [indicator.btk_internet_subscribers]
 label_tr = "İnternet abonesi, teknolojiye göre"
