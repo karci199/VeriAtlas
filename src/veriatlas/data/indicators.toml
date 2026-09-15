@@ -27544,3 +27544,167 @@ views = ["table", "line", "bar"]
 definition_tr = "YÖK İstatistik 2015 ÖSYS ... 2025 YKS 'Okul türü ve öğrenim durumuna göre başvuran-yerleşen' tabloları; yüzde sütunları alınmadı. Okul türleri her grupta basılı ara toplamı ve genel toplamı tutar. 2021'de okul türü listesi 27'den 30'a çıktı."
 
 # endregion
+
+# region BTK electronic communications (adapters/btk.py), 2026-09-15.
+
+[topic.iletisim]
+label_tr = "Elektronik haberleşme"
+label_en = "Electronic communications"
+order = 40
+
+[unit.minute]
+label_tr = "dakika"
+label_en = "minutes"
+decimals = 0
+additive = true
+per_capita = false
+
+[unit.try_per_month]
+label_tr = "TL/ay"
+label_en = "TRY per month"
+decimals = 2
+additive = false
+per_capita = false
+
+[dim.internet_technology]
+label_tr = "Bağlantı teknolojisi"
+label_en = "Technology"
+
+[dim.internet_technology.values]
+xdsl = "xDSL"
+cable = "Kablo"
+ftth = "Fiber (FTTH)"
+fttb = "Fiber (FTTB)"
+fiber_combined = "Fiber (FTTH+FTTB, 2010-2013)"
+fixed_wireless = "Sabit kablosuz"
+other = "Diğer"
+mobile_computer = "Mobil bilgisayar"
+mobile_handset = "Mobil cep"
+
+[dim.fixed_voice_line]
+label_tr = "Hat türü"
+label_en = "Line type"
+
+[dim.fixed_voice_line.values]
+turk_telekom_pstn = "Türk Telekom PSTN"
+turk_telekom_isdn = "Türk Telekom ISDN"
+turk_telekom_payphone = "Türk Telekom ankesör"
+alternative_pstn = "Alternatif işletmeci PSTN"
+alternative_isdn = "Alternatif işletmeci ISDN"
+alternative_voip = "Alternatif işletmeci VoIP"
+
+[dim.network]
+label_tr = "Şebeke"
+label_en = "Network"
+
+[dim.network.values]
+mobile = "Mobil"
+fixed = "Sabit"
+
+[dim.call_destination]
+label_tr = "Arama yönü"
+label_en = "Destination"
+
+[dim.call_destination.values]
+on_net = "Şebeke içi"
+to_mobile = "Mobile"
+to_alternative_fixed = "Alternatif sabit işletmeciye"
+international = "Uluslararası"
+directory = "Rehberlik"
+
+[dim.mobile_operator]
+label_tr = "Mobil işletmeci"
+label_en = "Mobile operator"
+
+[dim.mobile_operator.values]
+turkcell = "Turkcell"
+vodafone = "Vodafone"
+turk_telekom = "Türk Telekom (Avea)"
+
+[dim.tariff_type]
+label_tr = "Tarife"
+label_en = "Tariff"
+
+[dim.tariff_type.values]
+prepaid = "Ön ödemeli"
+postpaid = "Faturalı"
+
+[indicator.btk_internet_subscribers]
+label_tr = "İnternet abonesi, teknolojiye göre"
+label_en = "Internet subscribers by technology"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "annual"
+dims = ["internet_technology"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri, Çizelge 3-1, yıl sonu (4. çeyrek) 2008-2025 ve 2026-1 çeyreği; her dönem onu basan en yeni rapordan. 2008-2009 fiber ayrı değil; 2010-2013 fiber FTTH+FTTB birleşik; 2020'ye kadar sabit kablosuz 'diğer' içinde."
+
+[indicator.btk_fixed_broadband_revenue]
+label_tr = "Sabit genişbant geliri"
+label_en = "Fixed broadband revenue"
+topic = "iletisim"
+unit = "try"
+frequency = "annual"
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri, cari TL; yıllık 2020-2025 ve son çeyrek(ler)."
+
+[indicator.btk_fixed_voice_lines]
+label_tr = "Sabit telefon hattı, işletmeci ve teknolojiye göre"
+label_en = "Fixed telephone lines by operator group and technology"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "quarterly"
+dims = ["fixed_voice_line"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK Çizelge 2-1, çeyreklik 2014-4 ... 2026-1. 46 çeyreğin 11'inde basılı TOPLAM hücre toplamına eşit değil (BTK hatası); hücreler kullanıldı. 2022-4 STH satırı 2023 raporundan."
+
+[indicator.btk_call_minutes]
+label_tr = "Arama trafiği, mobil ve sabit"
+label_en = "Call minutes, mobile and fixed"
+topic = "iletisim"
+unit = "minute"
+frequency = "annual"
+dims = ["network"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK Şekil 1-3 (grafik etiketleri gözle okundu), 2009-2025; 2009-2012 2019 raporundan, 2013-2025 2026-Q1 raporundan; iki grafiğin örtüşen 2013-2019 değerleri birebir aynı."
+
+[indicator.btk_turk_telekom_traffic]
+label_tr = "Türk Telekom sabit ses trafiği, yöne göre"
+label_en = "Türk Telekom fixed voice traffic by destination"
+topic = "iletisim"
+unit = "minute"
+frequency = "quarterly"
+dims = ["call_destination"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK Çizelge 2-6, çeyreklik 2014-4 ... 2026-1, milyon dakika yuvarlanmış basılı."
+
+[indicator.btk_mobile_traffic_by_operator]
+label_tr = "Mobil arama trafiği, işletmeciye göre"
+label_en = "Mobile call traffic by operator"
+topic = "iletisim"
+unit = "minute"
+frequency = "quarterly"
+dims = ["mobile_operator"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK Şekil 4-19 toplamı × Şekil 4-20 payları, 2024-1 ... 2026-1."
+
+[indicator.btk_m2m_subscribers]
+label_tr = "M2M (makineler arası) mobil abone"
+label_en = "M2M mobile subscriptions"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "annual"
+views = ["table", "line"]
+definition_tr = "BTK özet bilgiler tablosu, yıllık tam sayı 2011-2025 (2011 grafik etiketinden, yüz bine yuvarlı); çeyreklik 2024-1 ... 2026-1 grafikten (milyon, bir ondalık)."
+
+[indicator.btk_mobile_arpu]
+label_tr = "Mobil ARPU, işletmeci ve tarifeye göre"
+label_en = "Mobile ARPU by operator and tariff"
+topic = "iletisim"
+unit = "try_per_month"
+frequency = "quarterly"
+dims = ["mobile_operator", "tariff_type"]
+views = ["table", "line"]
+definition_tr = "BTK Şekil 4-30/4-31 (grafik etiketleri gözle okundu), cari TL/ay, çeyreklik 2011-1 ... 2026-1; rapor pencereleri örtüşen çeyreklerde karşılaştırıldı. Sektör ortalaması yayımlanmıyor."
+
+# endregion

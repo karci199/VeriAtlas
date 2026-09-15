@@ -1,0 +1,489 @@
+<title>Elektronik Haberleşme Panosu</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+:root {
+  --ground: #f6f7f9; --panel: #ffffff; --ink: #171b22; --ink-soft: #5c6675;
+  --line: #dde1e8; --line-soft: #eceef3; --accent: #1f5e8c;
+  --tc: #c8890f; --vf: #cf3d38; --tt: #2c6bb5; --all: #6b7382;
+  --shadow: 0 1px 2px rgba(20,26,36,.06), 0 8px 24px rgba(20,26,36,.05);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #12151b; --panel: #191d25; --ink: #e8ebf0; --ink-soft: #99a3b2;
+    --line: #2b313c; --line-soft: #232830; --accent: #6aa8d8;
+    --tc: #e3ad3c; --vf: #e8615c; --tt: #5e9ae4; --all: #8d97a6;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #12151b; --panel: #191d25; --ink: #e8ebf0; --ink-soft: #99a3b2;
+  --line: #2b313c; --line-soft: #232830; --accent: #6aa8d8;
+  --tc: #e3ad3c; --vf: #e8615c; --tt: #5e9ae4; --all: #8d97a6;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--ground); color: var(--ink);
+  font-family: Archivo, "Segoe UI", system-ui, sans-serif;
+  font-size: 15px; line-height: 1.5;
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding: 40px 24px 64px; }
+header { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+.eyebrow {
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 600;
+}
+h1 { font-size: 32px; font-weight: 700; margin: 0; letter-spacing: -.02em; text-wrap: balance; }
+.lede {
+  font-family: Newsreader, Georgia, serif; font-size: 17px; color: var(--ink-soft);
+  max-width: 62ch; margin: 0;
+}
+.stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px;
+  background: var(--line); border: 1px solid var(--line); border-radius: 10px;
+  overflow: hidden; margin-bottom: 24px;
+}
+.stat { background: var(--panel); padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
+.stat .k { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.stat .v { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.stat .s { font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.board { display: grid; grid-template-columns: 232px 1fr; gap: 20px; align-items: start; }
+@media (max-width: 860px) { .board { grid-template-columns: 1fr; } }
+.rail, .plot {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; box-shadow: var(--shadow);
+}
+.rail { padding: 18px 16px; display: flex; flex-direction: column; gap: 20px; }
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field > label {
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 600;
+}
+select, input[type=range] { width: 100%; }
+select {
+  font: inherit; font-size: 13px; color: var(--ink); background: var(--ground);
+  border: 1px solid var(--line); border-radius: 7px; padding: 7px 8px;
+}
+select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ops { display: flex; flex-direction: column; gap: 6px; }
+.op {
+  display: flex; align-items: center; gap: 9px; font-size: 13px;
+  cursor: pointer; padding: 4px 6px; border-radius: 6px; user-select: none;
+}
+.op:hover { background: var(--line-soft); }
+.op input { accent-color: var(--accent); margin: 0; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; display: inline-block; }
+.range-row {
+  display: flex; align-items: baseline; justify-content: space-between;
+  font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums;
+}
+.plot { padding: 16px 18px 12px; }
+.plot-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px; margin-bottom: 6px; flex-wrap: wrap;
+}
+.plot-title { font-size: 15px; font-weight: 600; }
+.plot-unit { font-size: 12px; color: var(--ink-soft); }
+canvas { display: block; width: 100%; height: 420px; }
+.note {
+  margin-top: 26px; font-family: Newsreader, Georgia, serif; font-size: 14.5px;
+  color: var(--ink-soft); max-width: 74ch;
+}
+.note b { color: var(--ink); font-family: Archivo, sans-serif; font-weight: 600; font-size: 13px; }
+.note ul { padding-left: 18px; margin: 8px 0 0; }
+.note li { margin-bottom: 6px; }
+#tip {
+  position: fixed; pointer-events: none; opacity: 0; transition: opacity .12s;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  box-shadow: var(--shadow); padding: 9px 11px; font-size: 12.5px;
+  font-variant-numeric: tabular-nums; z-index: 5; min-width: 152px;
+}
+#tip .th { font-weight: 700; margin-bottom: 5px; }
+#tip .tr { display: flex; justify-content: space-between; gap: 14px; }
+#tip .tr span:first-child { display: flex; align-items: center; gap: 6px; color: var(--ink-soft); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">BTK üç aylık pazar verileri · 2004 → 2025</div>
+  <h1>Türkiye elektronik haberleşme pazarı</h1>
+  <p class="lede">Mobil abone sayıları, ön ödemeli–faturalı ayrımı ve numara taşıma
+  çeyreklik; sektör geliri ile sabit telefon aboneliği yıllık. Gelir dört ayrı birimde: nominal lira,
+  cari dolar, 2025 lirası ve 2025 doları.</p>
+</header>
+
+<div class="stats" id="stats"></div>
+
+<div class="board">
+  <div class="rail">
+    <div class="field">
+      <label for="metric">Gösterge</label>
+      <select id="metric">
+        <optgroup label="Mutlak (milyon abone)">
+          <option value="total">Toplam abone</option>
+          <option value="pre">Ön ödemeli abone</option>
+          <option value="post">Faturalı abone</option>
+        </optgroup>
+        <optgroup label="Oran (%)">
+          <option value="shareTotal">Pazar payı</option>
+          <option value="preShare">Ön ödemelilerin dağılımı</option>
+          <option value="postShare">Faturalıların dağılımı</option>
+          <option value="preRatio">Operatör içi ön ödemeli oranı</option>
+        </optgroup>
+        <optgroup label="Numara taşınabilirliği">
+          <option value="port">Çeyreklik taşınan numara</option>
+        </optgroup>
+        <optgroup label="Yıllık — gelir">
+          <option value="rev_tl">Gelir, nominal ₺</option>
+          <option value="rev_usd">Gelir, cari dolar</option>
+          <option value="rev_real">Gelir, 2025 fiyatlarıyla ₺</option>
+          <option value="rev_usdreal">Gelir, 2025 dolarıyla</option>
+        </optgroup>
+        <optgroup label="Yıllık — sabit hat">
+          <option value="fixed">Sabit telefon abonesi</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="field">
+      <label id="opsLabel">Operatörler</label>
+      <div class="ops" id="ops"></div>
+    </div>
+    <div class="field">
+      <label for="ma">Hareketli ortalama</label>
+      <select id="ma">
+        <option value="1">Yok — ham veri</option>
+        <option value="2">2 dönem</option>
+        <option value="4">4 dönem</option>
+        <option value="8">8 dönem</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="from">Dönem aralığı</label>
+      <div class="range-row"><span id="fromLabel"></span><span id="toLabel"></span></div>
+      <input type="range" id="from" min="0" step="1" aria-label="Başlangıç çeyreği">
+      <input type="range" id="to" min="0" step="1" aria-label="Bitiş çeyreği">
+    </div>
+  </div>
+
+  <div class="plot">
+    <div class="plot-head">
+      <div class="plot-title" id="plotTitle"></div>
+      <div class="plot-unit" id="plotUnit"></div>
+    </div>
+    <canvas id="c"></canvas>
+  </div>
+</div>
+
+<div class="note">
+  <b>Kaynak ve yöntem</b>
+  <ul>
+    <li>Abone sayıları BTK üç aylık pazar verileri raporlarındaki "Mobil İşletmeci
+    Bazında Toplam Abone Sayıları" şeklinden alındı. 2009-2016 raporlarında grafik
+    etiketleri metin katmanında duruyor; 2017 sonrasında grafikler görsel olduğu için
+    ilgili sayfalar tek tek okundu.</li>
+    <li>Ön ödemeli/faturalı abone <em>sayısı</em> raporlarda yayımlanmıyor. Ön ödemeli
+    ve faturalı abonelerin operatörlere dağılımı (%) ile operatör toplamlarından en
+    küçük kareler yöntemiyle çözüldü. Raporların ayrıca verdiği "operatör içi ön
+    ödemeli oranı" ile karşılaştırıldığında sapma 2019 sonrasında 0,3-1,2 puan,
+    2015-2016'da 2 puana kadar çıkıyor.</li>
+    <li>Numara taşıma toplamları raporların kümülatif rakamlarıyla doğrulandı:
+    2022-2025 yıllık toplamları kümülatif farklara birebir oturuyor.</li>
+    <li>Yıllık gelir serisi, her yılı kapsayan <em>en yeni</em> rapordan alındı; 2013-2017 için UFRS satırı kullanıldı (raporlar o yıllarda UFRS ve VUK değerlerini ayrı ayrı veriyor). Dolar çevrimi yıllık ortalama kurla yapıldı. Reelleştirme iki ayrı deflatörle: lira serisi Türkiye TÜFE'si ile 2025 lirasına, dolar serisi ABD TÜFE'si (CPI-U) ile 2025 dolarına — cari dolar da sabit bir ölçü değil, bu dönemde alım gücünün yaklaşık %41'ini yitirdi. Kur ve Türkiye TÜFE'si Dünya Bankası API, ABD TÜFE'si FRED. 2025 ABD ortalaması 11 aylıktır; BLS hükümet kapanması nedeniyle Ekim 2025 endeksini yayımlamadı.</li>
+    <li>Sabit telefon abone tanımı iki kez değişti: 2013-2. çeyrekte veri formu (VoIP ve ISDN dahil edildi), 2020 civarında STH işletmecilerinin abonelerinin kapsanmasıyla seri yeniden yükseldi. 2009-2020 ile 2020 sonrası doğrudan karşılaştırılamaz.</li>
+    <li>Avea 2016.da TT Mobil adını aldı; seri kesintisiz sürdürüldü. 2018-3 taşıma
+    değerinde 2019 ve 2021 raporları çelişiyor, sonraki rapor esas alındı.</li>
+  </ul>
+</div>
+</div>
+<div id="tip"></div>
+
+<script>
+const DATA = [{"d": "2008-1", "total": 62.9, "pre": null, "post": null, "port": null, "turkcell": {"total": 35.2, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 17.2, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 10.5, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2008-2", "total": 63.6, "pre": null, "post": null, "port": null, "turkcell": {"total": 35.4, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 17.3, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 11.0, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2008-3", "total": 65.3, "pre": null, "post": null, "port": null, "turkcell": {"total": 36.3, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 17.3, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 11.7, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2008-4", "total": 65.8, "pre": null, "post": null, "port": 653362, "turkcell": {"total": 37.0, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 16.6, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 12.2, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2009-1", "total": 64.4, "pre": null, "post": null, "port": 1309935, "turkcell": {"total": 36.4, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 15.4, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 12.6, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2009-2", "total": 63.6, "pre": null, "post": null, "port": 2054328, "turkcell": {"total": 36.3, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 14.9, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 12.4, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2009-3", "total": 63.7, "pre": null, "post": null, "port": 3015291, "turkcell": {"total": 36.0, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 15.6, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 12.1, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2009-4", "total": 62.8, "pre": null, "post": null, "port": 3063363, "turkcell": {"total": 35.4, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 15.6, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 11.8, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2010-1", "total": 61.63, "pre": null, "post": null, "port": 3662738, "turkcell": {"total": 34.26, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 15.72, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 11.65, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2010-2", "total": 61.54, "pre": null, "post": null, "port": 3443119, "turkcell": {"total": 33.93, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 16.13, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 11.47, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2010-3", "total": 61.89, "pre": null, "post": null, "port": 4425667, "turkcell": {"total": 33.92, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 16.54, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 11.43, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2010-4", "total": 61.77, "pre": null, "post": null, "port": 3267737, "turkcell": {"total": 33.47, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 16.68, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 11.62, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2011-1", "total": 61.72, "pre": null, "post": null, "port": 3534492, "turkcell": {"total": 33.05, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 16.84, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 11.82, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2011-2", "total": 63.8, "pre": null, "post": null, "port": 3433940, "turkcell": {"total": 34.06, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 17.51, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 12.23, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2011-3", "total": 64.79, "pre": null, "post": null, "port": 3450795, "turkcell": {"total": 34.43, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 17.84, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 12.53, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2011-4", "total": 65.32, "pre": null, "post": null, "port": 3385525, "turkcell": {"total": 34.53, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 18.03, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 12.76, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2012-1", "total": 65.75, "pre": null, "post": null, "port": 3616690, "turkcell": {"total": 34.52, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 18.3, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 12.93, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2012-2", "total": 66.14, "pre": null, "post": null, "port": 3789552, "turkcell": {"total": 34.71, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 18.43, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 13.0, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2012-3", "total": 67.17, "pre": null, "post": null, "port": 3000278, "turkcell": {"total": 35.15, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 18.81, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 13.21, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2012-4", "total": 67.68, "pre": null, "post": null, "port": 3153838, "turkcell": {"total": 35.12, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 19.07, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 13.49, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2013-1", "total": 67.91, "pre": null, "post": null, "port": 3688569, "turkcell": {"total": 34.85, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 19.32, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 13.73, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2013-2", "total": 68.03, "pre": null, "post": null, "port": 3527190, "turkcell": {"total": 34.66, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 19.47, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 13.89, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2013-3", "total": 68.91, "pre": null, "post": null, "port": 2549241, "turkcell": {"total": 34.99, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 19.81, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 14.12, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2013-4", "total": 69.66, "pre": null, "post": null, "port": 2711912, "turkcell": {"total": 35.2, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 19.93, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 14.53, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2014-1", "total": 70.12, "pre": null, "post": null, "port": 3355104, "turkcell": {"total": 34.79, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 20.03, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 15.29, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2014-2", "total": 70.79, "pre": null, "post": null, "port": 3476395, "turkcell": {"total": 34.64, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 20.37, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 15.78, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2014-3", "total": 71.91, "pre": null, "post": null, "port": 3655772, "turkcell": {"total": 34.73, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 20.95, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 16.23, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2014-4", "total": 71.89, "pre": null, "post": null, "port": 3131101, "turkcell": {"total": 34.63, "pre": null, "post": null, "preShare": null, "postShare": null}, "vodafone": {"total": 20.92, "pre": null, "post": null, "preShare": null, "postShare": null}, "ttmobil": {"total": 16.33, "pre": null, "post": null, "preShare": null, "postShare": null}}, {"d": "2015-1", "total": 72.04, "pre": 39.626, "post": 32.414, "port": 3268086, "turkcell": {"total": 34.26, "pre": 18.901, "post": 15.364, "preShare": 47.7, "postShare": 47.4}, "vodafone": {"total": 21.14, "pre": 12.125, "post": 9.011, "preShare": 30.6, "postShare": 27.8}, "ttmobil": {"total": 16.64, "pre": 8.599, "post": 8.039, "preShare": 21.7, "postShare": 24.8}}, {"d": "2015-2", "total": 72.17, "pre": 38.321, "post": 33.849, "port": 3050413, "turkcell": {"total": 33.97, "pre": 18.011, "post": 15.943, "preShare": 47.0, "postShare": 47.1}, "vodafone": {"total": 21.46, "pre": 11.956, "post": 9.512, "preShare": 31.2, "postShare": 28.1}, "ttmobil": {"total": 16.74, "pre": 8.354, "post": 8.395, "preShare": 21.8, "postShare": 24.8}}, {"d": "2015-3", "total": 73.24, "pre": 38.078, "post": 35.162, "port": 2651835, "turkcell": {"total": 34.24, "pre": 17.783, "post": 16.456, "preShare": 46.7, "postShare": 46.8}, "vodafone": {"total": 22.01, "pre": 11.995, "post": 10.021, "preShare": 31.5, "postShare": 28.5}, "ttmobil": {"total": 16.98, "pre": 8.301, "post": 8.685, "preShare": 21.8, "postShare": 24.7}}, {"d": "2015-4", "total": 73.64, "pre": 38.65, "post": 34.99, "port": 2903726, "turkcell": {"total": 34.01, "pre": 17.663, "post": 16.34, "preShare": 45.7, "postShare": 46.7}, "vodafone": {"total": 22.37, "pre": 12.329, "post": 10.042, "preShare": 31.9, "postShare": 28.7}, "ttmobil": {"total": 17.26, "pre": 8.658, "post": 8.608, "preShare": 22.4, "postShare": 24.6}}, {"d": "2016-1", "total": 73.81, "pre": 38.401, "post": 35.409, "port": 3212126, "turkcell": {"total": 33.34, "pre": 16.973, "post": 16.323, "preShare": 44.2, "postShare": 46.1}, "vodafone": {"total": 22.75, "pre": 12.404, "post": 10.339, "preShare": 32.3, "postShare": 29.2}, "ttmobil": {"total": 17.72, "pre": 9.024, "post": 8.746, "preShare": 23.5, "postShare": 24.7}}, {"d": "2016-2", "total": 73.65, "pre": 36.437, "post": 37.213, "port": 2908718, "turkcell": {"total": 32.57, "pre": 15.705, "post": 16.857, "preShare": 43.1, "postShare": 45.3}, "vodafone": {"total": 23.04, "pre": 11.988, "post": 11.052, "preShare": 32.9, "postShare": 29.7}, "ttmobil": {"total": 18.03, "pre": 8.745, "post": 9.303, "preShare": 24.0, "postShare": 25.0}}, {"d": "2016-3", "total": 74.46, "pre": 35.637, "post": 38.823, "port": 2335202, "turkcell": {"total": 32.75, "pre": 15.288, "post": 17.47, "preShare": 42.9, "postShare": 45.0}, "vodafone": {"total": 23.33, "pre": 11.725, "post": 11.608, "preShare": 32.9, "postShare": 29.9}, "ttmobil": {"total": 18.38, "pre": 8.624, "post": 9.745, "preShare": 24.2, "postShare": 25.1}}, {"d": "2016-4", "total": 75.06, "pre": 37.745, "post": 37.315, "port": 2344977, "turkcell": {"total": 33.04, "pre": 16.306, "post": 16.755, "preShare": 43.2, "postShare": 44.9}, "vodafone": {"total": 23.46, "pre": 12.342, "post": 11.12, "preShare": 32.7, "postShare": 29.8}, "ttmobil": {"total": 18.56, "pre": 9.096, "post": 9.441, "preShare": 24.1, "postShare": 25.3}}, {"d": "2017-1", "total": 75.72, "pre": 35.765, "post": 39.955, "port": 2783905, "turkcell": {"total": 33.4, "pre": 15.379, "post": 17.98, "preShare": 43.0, "postShare": 45.0}, "vodafone": {"total": 23.63, "pre": 11.552, "post": 11.987, "preShare": 32.3, "postShare": 30.0}, "ttmobil": {"total": 18.7, "pre": 8.584, "post": 9.989, "preShare": 24.0, "postShare": 25.0}}, {"d": "2017-2", "total": 76.62, "pre": 36.367, "post": 40.253, "port": 2720425, "turkcell": {"total": 34.15, "pre": 16.001, "post": 18.114, "preShare": 44.0, "postShare": 45.0}, "vodafone": {"total": 23.71, "pre": 11.637, "post": 12.076, "preShare": 32.0, "postShare": 30.0}, "ttmobil": {"total": 18.75, "pre": 8.728, "post": 10.063, "preShare": 24.0, "postShare": 25.0}}, {"d": "2017-3", "total": 77.88, "pre": 36.3, "post": 41.58, "port": 2602313, "turkcell": {"total": 34.62, "pre": 15.972, "post": 18.711, "preShare": 44.0, "postShare": 45.0}, "vodafone": {"total": 24.09, "pre": 11.616, "post": 12.474, "preShare": 32.0, "postShare": 30.0}, "ttmobil": {"total": 19.17, "pre": 8.712, "post": 10.395, "preShare": 24.0, "postShare": 25.0}}, {"d": "2017-4", "total": 77.9, "pre": 36.75, "post": 41.15, "port": 3289530, "turkcell": {"total": 34.09, "pre": 16.17, "post": 18.106, "preShare": 44.0, "postShare": 44.0}, "vodafone": {"total": 24.22, "pre": 11.76, "post": 12.757, "preShare": 32.0, "postShare": 31.0}, "ttmobil": {"total": 19.59, "pre": 9.187, "post": 10.699, "preShare": 25.0, "postShare": 26.0}}, {"d": "2018-1", "total": 78.94, "pre": 32.005, "post": 46.935, "port": 2824568, "turkcell": {"total": 34.62, "pre": 14.402, "post": 20.182, "preShare": 45.0, "postShare": 43.0}, "vodafone": {"total": 24.4, "pre": 9.922, "post": 14.55, "preShare": 31.0, "postShare": 31.0}, "ttmobil": {"total": 19.92, "pre": 7.681, "post": 12.203, "preShare": 24.0, "postShare": 26.0}}, {"d": "2018-2", "total": 79.54, "pre": 29.723, "post": 49.817, "port": 2758676, "turkcell": {"total": 34.8, "pre": 13.375, "post": 21.421, "preShare": 45.0, "postShare": 43.0}, "vodafone": {"total": 24.53, "pre": 8.917, "post": 15.443, "preShare": 30.0, "postShare": 31.0}, "ttmobil": {"total": 20.22, "pre": 7.431, "post": 12.952, "preShare": 25.0, "postShare": 26.0}}, {"d": "2018-3", "total": 80.64, "pre": 31.258, "post": 49.382, "port": 2595502, "turkcell": {"total": 34.93, "pre": 14.066, "post": 20.74, "preShare": 45.0, "postShare": 42.0}, "vodafone": {"total": 24.91, "pre": 9.377, "post": 15.308, "preShare": 30.0, "postShare": 31.0}, "ttmobil": {"total": 20.8, "pre": 7.815, "post": 12.839, "preShare": 25.0, "postShare": 26.0}}, {"d": "2018-4", "total": 80.12, "pre": 42.73, "post": 37.39, "port": 2817652, "turkcell": {"total": 33.76, "pre": 18.374, "post": 15.33, "preShare": 43.0, "postShare": 41.0}, "vodafone": {"total": 24.84, "pre": 12.819, "post": 11.965, "preShare": 30.0, "postShare": 32.0}, "ttmobil": {"total": 21.52, "pre": 11.537, "post": 10.095, "preShare": 27.0, "postShare": 27.0}}, {"d": "2019-1", "total": 80.93, "pre": 34.252, "post": 46.678, "port": 3023130, "turkcell": {"total": 33.68, "pre": 14.968, "post": 18.718, "preShare": 43.7, "postShare": 40.1}, "vodafone": {"total": 25.15, "pre": 10.036, "post": 15.124, "preShare": 29.3, "postShare": 32.4}, "ttmobil": {"total": 22.1, "pre": 9.248, "post": 12.836, "preShare": 27.0, "postShare": 27.5}}, {"d": "2019-2", "total": 81.58, "pre": 34.359, "post": 47.221, "port": 2864998, "turkcell": {"total": 33.89, "pre": 15.187, "post": 18.7, "preShare": 44.2, "postShare": 39.6}, "vodafone": {"total": 25.32, "pre": 9.964, "post": 15.347, "preShare": 29.0, "postShare": 32.5}, "ttmobil": {"total": 22.37, "pre": 9.208, "post": 13.175, "preShare": 26.8, "postShare": 27.9}}, {"d": "2019-3", "total": 82.9, "pre": 33.82, "post": 49.08, "port": 3309804, "turkcell": {"total": 34.42, "pre": 14.881, "post": 19.534, "preShare": 44.0, "postShare": 39.8}, "vodafone": {"total": 25.72, "pre": 9.808, "post": 15.902, "preShare": 29.0, "postShare": 32.4}, "ttmobil": {"total": 22.76, "pre": 9.131, "post": 13.644, "preShare": 27.0, "postShare": 27.8}}, {"d": "2019-4", "total": 80.79, "pre": 29.844, "post": 50.946, "port": 3418638, "turkcell": {"total": 32.71, "pre": 11.997, "post": 20.735, "preShare": 40.2, "postShare": 40.7}, "vodafone": {"total": 25.13, "pre": 8.864, "post": 16.252, "preShare": 29.7, "postShare": 31.9}, "ttmobil": {"total": 22.95, "pre": 8.983, "post": 13.959, "preShare": 30.1, "postShare": 27.4}}, {"d": "2020-1", "total": 81.83, "pre": 26.705, "post": 55.125, "port": 3609494, "turkcell": {"total": 33.28, "pre": 10.709, "post": 22.601, "preShare": 40.1, "postShare": 41.0}, "vodafone": {"total": 25.35, "pre": 8.626, "post": 17.475, "preShare": 32.3, "postShare": 31.7}, "ttmobil": {"total": 23.2, "pre": 8.065, "post": 14.994, "preShare": 30.2, "postShare": 27.2}}, {"d": "2020-2", "total": 81.72, "pre": 30.31, "post": 51.41, "port": 3118547, "turkcell": {"total": 33.39, "pre": 12.397, "post": 20.975, "preShare": 40.9, "postShare": 40.8}, "vodafone": {"total": 25.51, "pre": 9.093, "post": 16.4, "preShare": 30.0, "postShare": 31.9}, "ttmobil": {"total": 22.82, "pre": 8.82, "post": 13.983, "preShare": 29.1, "postShare": 27.2}}, {"d": "2020-3", "total": 82.8, "pre": 28.585, "post": 54.215, "port": 3330058, "turkcell": {"total": 33.69, "pre": 11.691, "post": 22.011, "preShare": 40.9, "postShare": 40.6}, "vodafone": {"total": 26.01, "pre": 8.661, "post": 17.349, "preShare": 30.3, "postShare": 32.0}, "ttmobil": {"total": 23.09, "pre": 8.232, "post": 14.855, "preShare": 28.8, "postShare": 27.4}}, {"d": "2020-4", "total": 82.13, "pre": 28.956, "post": 53.174, "port": 2966707, "turkcell": {"total": 33.42, "pre": 11.872, "post": 21.535, "preShare": 41.0, "postShare": 40.5}, "vodafone": {"total": 25.51, "pre": 8.397, "post": 17.122, "preShare": 29.0, "postShare": 32.2}, "ttmobil": {"total": 23.19, "pre": 8.687, "post": 14.516, "preShare": 30.0, "postShare": 27.3}}, {"d": "2021-1", "total": 83.5, "pre": 28.663, "post": 54.837, "port": 2855159, "turkcell": {"total": 34.02, "pre": 11.895, "post": 22.154, "preShare": 41.5, "postShare": 40.4}, "vodafone": {"total": 26.18, "pre": 8.312, "post": 17.877, "preShare": 29.0, "postShare": 32.6}, "ttmobil": {"total": 23.29, "pre": 8.484, "post": 14.806, "preShare": 29.6, "postShare": 27.0}}, {"d": "2021-2", "total": 84.65, "pre": 28.599, "post": 56.051, "port": 2257292, "turkcell": {"total": 34.55, "pre": 11.897, "post": 22.645, "preShare": 41.6, "postShare": 40.4}, "vodafone": {"total": 26.73, "pre": 8.351, "post": 18.385, "preShare": 29.2, "postShare": 32.8}, "ttmobil": {"total": 23.36, "pre": 8.351, "post": 15.022, "preShare": 29.2, "postShare": 26.8}}, {"d": "2021-3", "total": 86.95, "pre": 27.854, "post": 59.096, "port": 2618893, "turkcell": {"total": 35.66, "pre": 11.782, "post": 23.875, "preShare": 42.3, "postShare": 40.4}, "vodafone": {"total": 27.43, "pre": 8.106, "post": 19.324, "preShare": 29.1, "postShare": 32.7}, "ttmobil": {"total": 23.86, "pre": 7.966, "post": 15.897, "preShare": 28.6, "postShare": 26.9}}, {"d": "2021-4", "total": 86.29, "pre": 27.84, "post": 58.45, "port": 2595502, "turkcell": {"total": 35.63, "pre": 11.86, "post": 23.731, "preShare": 42.6, "postShare": 40.6}, "vodafone": {"total": 26.62, "pre": 7.6, "post": 18.996, "preShare": 27.3, "postShare": 32.5}, "ttmobil": {"total": 24.03, "pre": 8.352, "post": 15.665, "preShare": 30.0, "postShare": 26.8}}, {"d": "2022-1", "total": 87.38, "pre": 27.501, "post": 59.879, "port": 2346365, "turkcell": {"total": 36.11, "pre": 11.825, "post": 24.311, "preShare": 43.0, "postShare": 40.6}, "vodafone": {"total": 26.89, "pre": 7.37, "post": 19.521, "preShare": 26.8, "postShare": 32.6}, "ttmobil": {"total": 24.37, "pre": 8.305, "post": 16.048, "preShare": 30.2, "postShare": 26.8}}, {"d": "2022-2", "total": 88.54, "pre": 27.738, "post": 60.802, "port": 2181577, "turkcell": {"total": 36.6, "pre": 12.011, "post": 24.564, "preShare": 43.3, "postShare": 40.4}, "vodafone": {"total": 27.33, "pre": 7.378, "post": 19.943, "preShare": 26.6, "postShare": 32.8}, "ttmobil": {"total": 24.61, "pre": 8.321, "post": 16.295, "preShare": 30.0, "postShare": 26.8}}, {"d": "2022-3", "total": 90.78, "pre": 28.934, "post": 61.846, "port": 2186537, "turkcell": {"total": 37.53, "pre": 12.586, "post": 24.924, "preShare": 43.5, "postShare": 40.3}, "vodafone": {"total": 27.96, "pre": 7.61, "post": 20.347, "preShare": 26.3, "postShare": 32.9}, "ttmobil": {"total": 25.3, "pre": 8.738, "post": 16.575, "preShare": 30.2, "postShare": 26.8}}, {"d": "2022-4", "total": 90.3, "pre": 30.426, "post": 59.874, "port": 2853750, "turkcell": {"total": 37.5, "pre": 13.509, "post": 24.129, "preShare": 44.4, "postShare": 40.3}, "vodafone": {"total": 27.29, "pre": 9.828, "post": 19.698, "preShare": 32.3, "postShare": 32.9}, "ttmobil": {"total": 25.51, "pre": 9.676, "post": 15.986, "preShare": 31.8, "postShare": 26.7}}, {"d": "2023-1", "total": 90.69, "pre": 26.133, "post": 64.557, "port": 2257266, "turkcell": {"total": 37.48, "pre": 11.551, "post": 25.952, "preShare": 44.2, "postShare": 40.2}, "vodafone": {"total": 27.59, "pre": 6.22, "post": 21.368, "preShare": 23.8, "postShare": 33.1}, "ttmobil": {"total": 25.62, "pre": 8.363, "post": 17.237, "preShare": 32.0, "postShare": 26.7}}, {"d": "2023-2", "total": 91.36, "pre": 25.718, "post": 65.642, "port": 2465812, "turkcell": {"total": 37.64, "pre": 11.342, "post": 26.323, "preShare": 44.1, "postShare": 40.1}, "vodafone": {"total": 28.11, "pre": 6.249, "post": 21.859, "preShare": 24.3, "postShare": 33.3}, "ttmobil": {"total": 25.61, "pre": 8.127, "post": 17.461, "preShare": 31.6, "postShare": 26.6}}, {"d": "2023-3", "total": 92.8, "pre": 26.153, "post": 66.647, "port": 2449425, "turkcell": {"total": 38.23, "pre": 11.638, "post": 26.592, "preShare": 44.5, "postShare": 39.9}, "vodafone": {"total": 28.43, "pre": 6.224, "post": 22.193, "preShare": 23.8, "postShare": 33.3}, "ttmobil": {"total": 26.15, "pre": 8.264, "post": 17.861, "preShare": 31.6, "postShare": 26.8}}, {"d": "2023-4", "total": 92.23, "pre": 24.036, "post": 68.194, "port": 2988257, "turkcell": {"total": 38.0, "pre": 10.936, "post": 27.073, "preShare": 45.5, "postShare": 39.7}, "vodafone": {"total": 28.0, "pre": 5.36, "post": 22.64, "preShare": 22.3, "postShare": 33.2}, "ttmobil": {"total": 26.23, "pre": 7.74, "post": 18.481, "preShare": 32.2, "postShare": 27.1}}, {"d": "2024-1", "total": 92.9, "pre": 22.896, "post": 70.004, "port": 2358139, "turkcell": {"total": 38.23, "pre": 10.441, "post": 27.792, "preShare": 45.6, "postShare": 39.7}, "vodafone": {"total": 28.46, "pre": 5.289, "post": 23.171, "preShare": 23.1, "postShare": 33.1}, "ttmobil": {"total": 26.21, "pre": 7.167, "post": 19.041, "preShare": 31.3, "postShare": 27.2}}, {"d": "2024-2", "total": 93.32, "pre": 22.448, "post": 70.872, "port": 2374925, "turkcell": {"total": 38.47, "pre": 10.281, "post": 28.207, "preShare": 45.8, "postShare": 39.8}, "vodafone": {"total": 28.52, "pre": 5.275, "post": 23.246, "preShare": 23.5, "postShare": 32.8}, "ttmobil": {"total": 26.34, "pre": 6.892, "post": 19.419, "preShare": 30.7, "postShare": 27.4}}, {"d": "2024-3", "total": 94.5, "pre": 22.255, "post": 72.245, "port": 3486680, "turkcell": {"total": 38.72, "pre": 10.081, "post": 28.609, "preShare": 45.3, "postShare": 39.6}, "vodafone": {"total": 28.79, "pre": 5.141, "post": 23.624, "preShare": 23.1, "postShare": 32.7}, "ttmobil": {"total": 26.99, "pre": 7.032, "post": 19.94, "preShare": 31.6, "postShare": 27.6}}, {"d": "2024-4", "total": 94.32, "pre": 20.307, "post": 74.013, "port": 4391955, "turkcell": {"total": 38.3, "pre": 9.077, "post": 29.235, "preShare": 44.7, "postShare": 39.5}, "vodafone": {"total": 28.67, "pre": 4.468, "post": 24.202, "preShare": 22.0, "postShare": 32.7}, "ttmobil": {"total": 27.35, "pre": 6.762, "post": 20.576, "preShare": 33.3, "postShare": 27.8}}, {"d": "2025-1", "total": 95.03, "pre": 20.223, "post": 74.807, "port": 3030737, "turkcell": {"total": 38.27, "pre": 9.06, "post": 29.25, "preShare": 44.8, "postShare": 39.1}, "vodafone": {"total": 28.89, "pre": 4.388, "post": 24.537, "preShare": 21.7, "postShare": 32.8}, "ttmobil": {"total": 27.86, "pre": 6.795, "post": 21.096, "preShare": 33.6, "postShare": 28.2}}, {"d": "2025-2", "total": 96.49, "pre": 19.831, "post": 76.659, "port": 4958583, "turkcell": {"total": 38.73, "pre": 8.745, "post": 29.974, "preShare": 44.1, "postShare": 39.1}, "vodafone": {"total": 29.22, "pre": 4.383, "post": 24.838, "preShare": 22.1, "postShare": 32.4}, "ttmobil": {"total": 28.54, "pre": 6.703, "post": 21.848, "preShare": 33.8, "postShare": 28.5}}, {"d": "2025-3", "total": 99.13, "pre": 19.383, "post": 79.747, "port": 4896014, "turkcell": {"total": 39.03, "pre": 8.412, "post": 30.623, "preShare": 43.4, "postShare": 38.4}, "vodafone": {"total": 29.3, "pre": 4.09, "post": 25.2, "preShare": 21.1, "postShare": 31.6}, "ttmobil": {"total": 30.81, "pre": 6.861, "post": 23.924, "preShare": 35.4, "postShare": 30.0}}, {"d": "2025-4", "total": 99.69, "pre": 17.373, "post": 82.317, "port": 4948293, "turkcell": {"total": 39.11, "pre": 7.557, "post": 31.527, "preShare": 43.5, "postShare": 38.3}, "vodafone": {"total": 29.09, "pre": 3.544, "post": 25.518, "preShare": 20.4, "postShare": 31.0}, "ttmobil": {"total": 31.49, "pre": 6.272, "post": 25.189, "preShare": 36.1, "postShare": 30.6}}];
+const ANNUAL = [{"d": "2004", "big4_tl": 13280707292.0, "big4_usd": 9316525634.5142, "big4_real": 389280233202.4958, "big4_usdreal": 15879619724.1277, "sector_tl": null, "sector_usd": null, "sector_real": null, "sector_usdreal": null, "fixed": null, "fx": 1.4255}, {"d": "2005", "big4_tl": 15747802918.0, "big4_usd": 11720603541.2325, "big4_real": 426694842307.0882, "big4_usdreal": 19321663283.0583, "sector_tl": null, "sector_usd": null, "sector_real": null, "sector_usdreal": null, "fixed": null, "fx": 1.3436}, {"d": "2006", "big4_tl": 16140709456.0, "big4_usd": 11299061572.2786, "big4_real": 399044058543.2139, "big4_usdreal": 18044633615.2431, "sector_tl": null, "sector_usd": null, "sector_real": null, "sector_usdreal": null, "fixed": null, "fx": 1.4285}, {"d": "2007", "big4_tl": 19276812781.0, "big4_usd": 14795312595.7479, "big4_real": 438204959145.4869, "big4_usdreal": 22972901404.505, "sector_tl": null, "sector_usd": null, "sector_real": null, "sector_usdreal": null, "fixed": null, "fx": 1.3029}, {"d": "2008", "big4_tl": 20362009642.0, "big4_usd": 15645032379.562, "big4_real": 419106718265.3487, "big4_usdreal": 23394047734.4642, "sector_tl": null, "sector_usd": null, "sector_real": null, "sector_usdreal": null, "fixed": null, "fx": 1.3015}, {"d": "2009", "big4_tl": 20717080387.0, "big4_usd": 13365858314.1935, "big4_real": 401328009132.7908, "big4_usdreal": 20057353851.5334, "sector_tl": null, "sector_usd": null, "sector_real": null, "sector_usdreal": null, "fixed": 16600000.0, "fx": 1.55}, {"d": "2010", "big4_tl": 21178756016.0, "big4_usd": 14092863997.8706, "big4_real": 377896991132.2513, "big4_usdreal": 20807035413.2263, "sector_tl": null, "sector_usd": null, "sector_real": null, "sector_usdreal": null, "fixed": 16200000.0, "fx": 1.5028}, {"d": "2011", "big4_tl": 22354992235.0, "big4_usd": 13346264020.8955, "big4_real": 374638234463.0272, "big4_usdreal": 19101784384.5628, "sector_tl": null, "sector_usd": null, "sector_real": null, "sector_usdreal": null, "fixed": 15210000.0, "fx": 1.675}, {"d": "2012", "big4_tl": 23816356090.0, "big4_usd": 13260777332.9621, "big4_real": 366537785515.3563, "big4_usdreal": 18594625455.83, "sector_tl": null, "sector_usd": null, "sector_real": null, "sector_usdreal": null, "fixed": 13860000.0, "fx": 1.796}, {"d": "2013", "big4_tl": 26469970032.0, "big4_usd": 13903755663.41, "big4_real": 378981299227.0334, "big4_usdreal": 19214777016.9826, "sector_tl": null, "sector_usd": null, "sector_real": null, "sector_usdreal": null, "fixed": 13550000.0, "fx": 1.9038}, {"d": "2014", "big4_tl": 28129811046.0, "big4_usd": 12853466322.1385, "big4_real": 369985571206.2403, "big4_usdreal": 17479739068.6174, "sector_tl": null, "sector_usd": null, "sector_real": null, "sector_usdreal": null, "fixed": 12530000.0, "fx": 2.1885}, {"d": "2015", "big4_tl": 31390314032.0, "big4_usd": 11540556629.4118, "big4_real": 383454257769.616, "big4_usdreal": 15675674837.4282, "sector_tl": null, "sector_usd": null, "sector_real": null, "sector_usdreal": null, "fixed": 11490000.0, "fx": 2.72}, {"d": "2016", "big4_tl": 35335337821.0, "big4_usd": 11700055568.0275, "big4_real": 400505544329.7096, "big4_usdreal": 15694338039.0467, "sector_tl": null, "sector_usd": null, "sector_real": null, "sector_usdreal": null, "fixed": 11077559.0, "fx": 3.0201}, {"d": "2017", "big4_tl": 39452570626.0, "big4_usd": 10814552952.4958, "big4_real": 402334415078.985, "big4_usdreal": 14203939381.4677, "sector_tl": null, "sector_usd": null, "sector_real": null, "sector_usdreal": null, "fixed": 11308444.0, "fx": 3.6481}, {"d": "2018", "big4_tl": 45034299065.0, "big4_usd": 9326961118.59, "big4_real": 394780739109.0907, "big4_usdreal": 11958049132.0522, "sector_tl": 59030389376.0, "sector_usd": 12225662616.1876, "sector_real": 517473597493.2997, "sector_usdreal": 15674459491.9428, "fixed": 11633461.0, "fx": 4.8284}, {"d": "2019", "big4_tl": 50632331846.0, "big4_usd": 8923883789.7, "big4_real": 385367211625.2407, "big4_usdreal": 11237642305.5398, "sector_tl": 66682625641.0, "sector_usd": 11752727561.9514, "sector_real": 507527434945.7413, "sector_usdreal": 14799940425.9509, "fixed": 11532903.0, "fx": 5.6738}, {"d": "2020", "big4_tl": 57552349454.0, "big4_usd": 8211675577.7188, "big4_real": 390131088844.903, "big4_usdreal": 10214756986.8264, "sector_tl": 77088009102.0, "sector_usd": 10999059598.4933, "sector_real": 522557796739.2401, "sector_usdreal": 13682070098.7119, "fixed": 12448604.0, "fx": 7.0086}, {"d": "2021", "big4_tl": 67221113725.0, "big4_usd": 7595262781.9082, "big4_real": 381009399004.1667, "big4_usdreal": 9024031021.131, "sector_tl": 92376308641.0, "sector_usd": 10437529223.6509, "sector_real": 523589091092.9835, "sector_usdreal": 12400964943.9047, "fixed": 12310016.0, "fx": 8.8504}, {"d": "2022", "big4_tl": 95220320285.0, "big4_usd": 5753876105.6626, "big4_real": 313221610376.9299, "big4_usdreal": 6329706087.6641, "sector_tl": 130309590040.0, "sector_usd": 7874214602.7833, "sector_real": 428645687367.1747, "sector_usdreal": 8662241451.0733, "fixed": 11197928.0, "fx": 16.5489}, {"d": "2023", "big4_tl": 170991710895.0, "big4_usd": 7203108477.1216, "big4_real": 365572321569.7679, "big4_usdreal": 7610683068.8672, "sector_tl": 224557207766.0, "sector_usd": 9459580925.8339, "sector_real": 480092861452.5126, "sector_usdreal": 9994833844.2338, "fixed": 9925534.0, "fx": 23.7386}, {"d": "2024", "big4_tl": 317649055827.0, "big4_usd": 9682680732.033, "big4_real": 428448662877.6888, "big4_usdreal": 9937458064.876, "sector_tl": 407459451465.0, "sector_usd": 12420310110.8337, "sector_real": 549585946989.6682, "sector_usdreal": 12747121824.5209, "fixed": 9026297.0, "fx": 32.8059}, {"d": "2025", "big4_tl": 476439083134.0, "big4_usd": 12075567057.3416, "big4_real": 476439083134.0, "big4_usdreal": 12075567057.3416, "sector_tl": 620204536214.0, "sector_usd": 15719368396.5956, "sector_real": 620204536214.0, "sector_usdreal": 15719368396.5956, "fixed": 8390856.0, "fx": 39.4548}];
+const OPS = [
+  {k: "turkcell", name: "Turkcell", css: "--tc"},
+  {k: "vodafone", name: "Vodafone", css: "--vf"},
+  {k: "ttmobil", name: "TT Mobil / Avea", css: "--tt"},
+  {k: "_all", name: "Toplam", css: "--all"}
+];
+// Yearly metrics carry their own two-line legend instead of the operator toggles.
+const YEAR_LINES = {
+  rev_tl: [["big4_tl", "4 büyük işletmeci", "--tt"], ["sector_tl", "Tüm sektör", "--vf"]],
+  rev_usd: [["big4_usd", "4 büyük işletmeci", "--tt"], ["sector_usd", "Tüm sektör", "--vf"]],
+  rev_real: [["big4_real", "4 büyük işletmeci", "--tt"], ["sector_real", "Tüm sektör", "--vf"]],
+  rev_usdreal: [["big4_usdreal", "4 büyük işletmeci", "--tt"], ["sector_usdreal", "Tüm sektör", "--vf"]],
+  fixed: [["fixed", "Sabit telefon abonesi", "--tc"]]
+};
+const METRICS = {
+  total: {t: "Toplam abone sayısı", u: "milyon abone", all: true, dec: 2},
+  pre: {t: "Ön ödemeli abone sayısı", u: "milyon abone", all: true, dec: 2},
+  post: {t: "Faturalı abone sayısı", u: "milyon abone", all: true, dec: 2},
+  shareTotal: {t: "Abone sayısına göre pazar payı", u: "%", all: false, dec: 1, max100: true},
+  preShare: {t: "Ön ödemeli abonelerin operatörlere dağılımı", u: "% — ön ödemeli toplamı 100", all: false, dec: 1, max100: true},
+  postShare: {t: "Faturalı abonelerin operatörlere dağılımı", u: "% — faturalı toplamı 100", all: false, dec: 1, max100: true},
+  preRatio: {t: "Operatörün kendi abonesinde ön ödemeli oranı", u: "%", all: true, dec: 1, max100: true},
+  port: {t: "Çeyrek içinde taşınan numara", u: "adet", all: true, dec: 0, onlyAll: true},
+  rev_tl: {t: "Yıllık net satış geliri", u: "milyar ₺, nominal", dec: 1, yearly: true, scale: 1e9},
+  rev_usd: {t: "Yıllık net satış geliri", u: "milyar $, yıllık ortalama kurla", dec: 2, yearly: true, scale: 1e9},
+  rev_real: {t: "Yıllık net satış geliri", u: "milyar ₺, 2025 fiyatlarıyla", dec: 1, yearly: true, scale: 1e9},
+  rev_usdreal: {t: "Yıllık net satış geliri", u: "milyar $, 2025 dolarıyla (ABD TÜFE ile)", dec: 2, yearly: true, scale: 1e9},
+  fixed: {t: "Sabit telefon abone sayısı", u: "milyon abone", dec: 2, yearly: true, scale: 1e6}
+};
+const state = {
+  metric: "total", ma: 1, from: 0, to: DATA.length - 1,
+  yearFrom: 0, yearTo: ANNUAL.length - 1,
+  on: {turkcell: true, vodafone: true, ttmobil: true, _all: true}
+};
+function isYearly() { return !!METRICS[state.metric].yearly; }
+function activeData() { return isYearly() ? ANNUAL : DATA; }
+function activeFrom() { return isYearly() ? state.yearFrom : state.from; }
+function activeTo() { return isYearly() ? state.yearTo : state.to; }
+
+function value(row, opKey, metric) {
+  if (metric === "port") return opKey === "_all" ? row.port : null;
+  if (opKey === "_all") {
+    if (metric === "total") return row.total;
+    if (metric === "pre") return row.pre;
+    if (metric === "post") return row.post;
+    if (metric === "preRatio") return row.pre == null ? null : 100 * row.pre / row.total;
+    return null;
+  }
+  const o = row[opKey];
+  if (metric === "total") return o.total;
+  if (metric === "pre") return o.pre;
+  if (metric === "post") return o.post;
+  if (metric === "shareTotal") return o.total == null ? null : 100 * o.total / row.total;
+  if (metric === "preShare") return o.preShare;
+  if (metric === "postShare") return o.postShare;
+  if (metric === "preRatio") return o.pre == null ? null : 100 * o.pre / o.total;
+  return null;
+}
+
+function smooth(series, win) {
+  if (win <= 1) return series;
+  return series.map(function (v, i) {
+    if (v == null) return null;
+    let sum = 0, n = 0;
+    for (let j = Math.max(0, i - win + 1); j <= i; j++) {
+      if (series[j] != null) { sum += series[j]; n++; }
+    }
+    return n === win ? sum / n : null;
+  });
+}
+
+function css(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+function fmt(v, dec) {
+  if (v == null) return "—";
+  return v.toLocaleString("tr-TR", {minimumFractionDigits: dec, maximumFractionDigits: dec});
+}
+
+const cv = document.getElementById("c"), ctx = cv.getContext("2d");
+let layout = null;
+
+function draw() {
+  const m = METRICS[state.metric];
+  const dpr = window.devicePixelRatio || 1;
+  const w = cv.clientWidth, h = cv.clientHeight;
+  cv.width = w * dpr; cv.height = h * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+
+  const rows = activeData().slice(activeFrom(), activeTo() + 1);
+  let series;
+  if (m.yearly) {
+    series = YEAR_LINES[state.metric].map(function (line) {
+      return {
+        op: {name: line[1], css: line[2]},
+        v: smooth(rows.map(function (r) {
+          return r[line[0]] == null ? null : r[line[0]] / m.scale;
+        }), state.ma)
+      };
+    });
+  } else {
+    const active = OPS.filter(function (o) {
+      return state.on[o.k] && !(o.k === "_all" && !m.all) && !(m.onlyAll && o.k !== "_all");
+    });
+    series = active.map(function (o) {
+      return {op: o, v: smooth(rows.map(function (r) { return value(r, o.k, state.metric); }), state.ma)};
+    });
+  }
+
+  const vals = series.reduce(function (acc, s) { return acc.concat(s.v); }, [])
+    .filter(function (v) { return v != null; });
+  const padL = 62, padR = 16, padT = 12, padB = 30;
+  if (!vals.length) { layout = null; return; }
+  let lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+  if (m.max100) { lo = Math.max(0, lo - 4); hi = Math.min(100, hi + 4); }
+  else { const p = (hi - lo) * 0.12 || hi * 0.1; lo = Math.max(0, lo - p); hi = hi + p; }
+  const X = function (i) {
+    return padL + (w - padL - padR) * (rows.length < 2 ? 0.5 : i / (rows.length - 1));
+  };
+  const Y = function (v) { return h - padB - (h - padT - padB) * (v - lo) / (hi - lo || 1); };
+  layout = {rows: rows, series: series, X: X, Y: Y, padT: padT, padB: padB, h: h, m: m};
+
+  const grid = css("--line-soft"), soft = css("--ink-soft");
+  ctx.font = "11px Archivo, sans-serif";
+  const ticks = 5;
+  for (let i = 0; i <= ticks; i++) {
+    const v = lo + (hi - lo) * i / ticks, y = Y(v);
+    ctx.strokeStyle = grid; ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(padL, Math.round(y) + 0.5); ctx.lineTo(w - padR, Math.round(y) + 0.5);
+    ctx.stroke();
+    ctx.fillStyle = soft; ctx.textAlign = "right"; ctx.textBaseline = "middle";
+    const lbl = m.dec === 0
+      ? Math.round(v).toLocaleString("tr-TR")
+      : v.toLocaleString("tr-TR", {maximumFractionDigits: 1});
+    ctx.fillText(lbl, padL - 8, y);
+  }
+  ctx.textAlign = "center"; ctx.textBaseline = "top";
+  const step = Math.ceil(rows.length / 9);
+  rows.forEach(function (r, i) {
+    if (i % step) return;
+    ctx.fillStyle = soft;
+    ctx.fillText(r.d, X(i), h - padB + 8);
+  });
+
+  series.forEach(function (s) {
+    const color = css(s.op.css);
+    ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.lineJoin = "round";
+    ctx.beginPath();
+    let pen = false;
+    s.v.forEach(function (v, i) {
+      if (v == null) { pen = false; return; }
+      const x = X(i), y = Y(v);
+      if (!pen) { ctx.moveTo(x, y); pen = true; } else { ctx.lineTo(x, y); }
+    });
+    ctx.stroke();
+    for (let i = s.v.length - 1; i >= 0; i--) {
+      if (s.v[i] != null) {
+        ctx.fillStyle = color;
+        ctx.beginPath(); ctx.arc(X(i), Y(s.v[i]), 3.5, 0, 6.284); ctx.fill();
+        break;
+      }
+    }
+  });
+
+  document.getElementById("plotTitle").textContent =
+    m.t + (state.ma > 1
+      ? " · " + state.ma + (m.yearly ? " yıllık" : " çeyrek") + " hareketli ortalama" : "");
+  document.getElementById("plotUnit").textContent = m.u;
+}
+
+const tip = document.getElementById("tip");
+cv.addEventListener("mousemove", function (e) {
+  if (!layout) return;
+  const rect = cv.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const rows = layout.rows, series = layout.series, X = layout.X, Y = layout.Y, m = layout.m;
+  let best = 0, bd = Infinity;
+  rows.forEach(function (_, i) {
+    const d = Math.abs(X(i) - x);
+    if (d < bd) { bd = d; best = i; }
+  });
+  draw();
+  if (bd > 40) { tip.style.opacity = 0; return; }
+  ctx.strokeStyle = css("--line"); ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(X(best) + 0.5, layout.padT); ctx.lineTo(X(best) + 0.5, layout.h - layout.padB);
+  ctx.stroke();
+  let html = '<div class="th">' + rows[best].d + "</div>";
+  series.forEach(function (s) {
+    if (s.v[best] == null) return;
+    const color = css(s.op.css);
+    ctx.fillStyle = css("--panel"); ctx.strokeStyle = color; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(X(best), Y(s.v[best]), 4, 0, 6.284); ctx.fill(); ctx.stroke();
+    html += '<div class="tr"><span><i class="swatch" style="background:' + color + '"></i>' +
+      s.op.name + "</span><b>" + fmt(s.v[best], m.dec) + "</b></div>";
+  });
+  tip.innerHTML = html;
+  tip.style.opacity = 1;
+  tip.style.left = Math.min(e.clientX + 14, window.innerWidth - tip.offsetWidth - 10) + "px";
+  tip.style.top = (e.clientY + 14) + "px";
+});
+cv.addEventListener("mouseleave", function () { tip.style.opacity = 0; draw(); });
+
+function buildOps() {
+  const box = document.getElementById("ops");
+  box.innerHTML = "";
+  document.getElementById("opsLabel").textContent = isYearly() ? "Seriler" : "Operatörler";
+  if (isYearly()) {
+    box.innerHTML = YEAR_LINES[state.metric].map(function (line) {
+      return '<span class="op"><i class="swatch" style="background:var(' + line[2] + ')"></i>' +
+        line[1] + "</span>";
+    }).join("");
+    return;
+  }
+  OPS.forEach(function (o) {
+    const l = document.createElement("label");
+    l.className = "op";
+    l.innerHTML = '<input type="checkbox" ' + (state.on[o.k] ? "checked" : "") + ">" +
+      '<i class="swatch" style="background:var(' + o.css + ')"></i>' + o.name;
+    l.querySelector("input").addEventListener("change", function (e) {
+      state.on[o.k] = e.target.checked;
+      draw();
+    });
+    box.appendChild(l);
+  });
+}
+
+function buildStats() {
+  const last = DATA[DATA.length - 1], prev = DATA[DATA.length - 5];
+  const items = [
+    ["Toplam abone", fmt(last.total, 2) + " mn",
+      last.d + " · yılda +" + fmt(last.total - prev.total, 2) + " mn"],
+    ["Faturalı", fmt(last.post, 1) + " mn", "payı %" + fmt(100 * last.post / last.total, 1)],
+    ["Ön ödemeli", fmt(last.pre, 1) + " mn", "payı %" + fmt(100 * last.pre / last.total, 1)],
+    ["Taşınan numara", (last.port / 1e6).toFixed(2) + " mn", last.d + " çeyreği"]
+  ];
+  document.getElementById("stats").innerHTML = items.map(function (it) {
+    return '<div class="stat"><span class="k">' + it[0] + '</span><span class="v">' +
+      it[1] + '</span><span class="s">' + it[2] + "</span></div>";
+  }).join("");
+}
+
+const fromEl = document.getElementById("from"), toEl = document.getElementById("to");
+
+function syncRange() {
+  const rows = activeData();
+  fromEl.max = toEl.max = rows.length - 1;
+  fromEl.value = activeFrom(); toEl.value = activeTo();
+  document.getElementById("fromLabel").textContent = rows[activeFrom()].d;
+  document.getElementById("toLabel").textContent = rows[activeTo()].d;
+}
+
+fromEl.addEventListener("input", function () {
+  const v = Math.min(+fromEl.value, activeTo() - 2);
+  if (isYearly()) state.yearFrom = v; else state.from = v;
+  syncRange(); draw();
+});
+toEl.addEventListener("input", function () {
+  const v = Math.max(+toEl.value, activeFrom() + 2);
+  if (isYearly()) state.yearTo = v; else state.to = v;
+  syncRange(); draw();
+});
+document.getElementById("metric").addEventListener("change", function (e) {
+  state.metric = e.target.value;
+  const needsSplit = ["pre", "post", "preShare", "postShare", "preRatio"].indexOf(state.metric) >= 0;
+  if (needsSplit && DATA[state.from].pre == null) {
+    state.from = DATA.findIndex(function (r) { return r.pre != null; });
+  }
+  if (isYearly()) {
+    // Revenue starts in 2004, the fixed-line series in 2009: open on the filled part.
+    const key = YEAR_LINES[state.metric][0][0];
+    const first = ANNUAL.findIndex(function (r) { return r[key] != null; });
+    if (first > state.yearFrom) state.yearFrom = first;
+  }
+  buildOps(); syncRange(); draw();
+});
+document.getElementById("ma").addEventListener("change", function (e) {
+  state.ma = +e.target.value; draw();
+});
+window.addEventListener("resize", draw);
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", draw);
+
+buildOps(); buildStats(); syncRange(); draw();
+</script>

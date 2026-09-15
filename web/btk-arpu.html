@@ -1,0 +1,451 @@
+<meta charset="utf-8">
+<title>Mobil ARPU Panosu</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+:root {
+  --ground: #f6f7f9; --panel: #ffffff; --ink: #171b22; --ink-soft: #5c6675;
+  --line: #dde1e8; --line-soft: #eceef3; --accent: #1f5e8c;
+  --tc: #c8890f; --vf: #cf3d38; --tt: #2c6bb5; --all: #6b7382;
+  --shadow: 0 1px 2px rgba(20,26,36,.06), 0 8px 24px rgba(20,26,36,.05);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #12151b; --panel: #191d25; --ink: #e8ebf0; --ink-soft: #99a3b2;
+    --line: #2b313c; --line-soft: #232830; --accent: #6aa8d8;
+    --tc: #e3ad3c; --vf: #e8615c; --tt: #5e9ae4; --all: #8d97a6;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #12151b; --panel: #191d25; --ink: #e8ebf0; --ink-soft: #99a3b2;
+  --line: #2b313c; --line-soft: #232830; --accent: #6aa8d8;
+  --tc: #e3ad3c; --vf: #e8615c; --tt: #5e9ae4; --all: #8d97a6;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--ground); color: var(--ink);
+  font-family: Archivo, "Segoe UI", system-ui, sans-serif;
+  font-size: 15px; line-height: 1.5;
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding: 40px 24px 64px; }
+header { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+.eyebrow {
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 600;
+}
+h1 { font-size: 32px; font-weight: 700; margin: 0; letter-spacing: -.02em; text-wrap: balance; }
+.lede {
+  font-family: Newsreader, Georgia, serif; font-size: 17px; color: var(--ink-soft);
+  max-width: 62ch; margin: 0;
+}
+.stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px;
+  background: var(--line); border: 1px solid var(--line); border-radius: 10px;
+  overflow: hidden; margin-bottom: 24px;
+}
+.stat { background: var(--panel); padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
+.stat .k { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.stat .v { font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.stat .s { font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.board { display: grid; grid-template-columns: 232px 1fr; gap: 20px; align-items: start; }
+@media (max-width: 860px) { .board { grid-template-columns: 1fr; } }
+.rail, .plot {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; box-shadow: var(--shadow);
+}
+.rail { padding: 18px 16px; display: flex; flex-direction: column; gap: 20px; }
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field > label {
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 600;
+}
+select, input[type=range] { width: 100%; }
+select {
+  font: inherit; font-size: 13px; color: var(--ink); background: var(--ground);
+  border: 1px solid var(--line); border-radius: 7px; padding: 7px 8px;
+}
+select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ops { display: flex; flex-direction: column; gap: 6px; }
+.op {
+  display: flex; align-items: center; gap: 9px; font-size: 13px;
+  cursor: pointer; padding: 4px 6px; border-radius: 6px; user-select: none;
+}
+.op:hover { background: var(--line-soft); }
+.op input { accent-color: var(--accent); margin: 0; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; display: inline-block; }
+.range-row {
+  display: flex; align-items: baseline; justify-content: space-between;
+  font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums;
+}
+.plot { padding: 16px 18px 12px; }
+.plot-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px; margin-bottom: 6px; flex-wrap: wrap;
+}
+.plot-title { font-size: 15px; font-weight: 600; }
+.plot-unit { font-size: 12px; color: var(--ink-soft); }
+canvas { display: block; width: 100%; height: 420px; }
+.note {
+  margin-top: 26px; font-family: Newsreader, Georgia, serif; font-size: 14.5px;
+  color: var(--ink-soft); max-width: 74ch;
+}
+.note b { color: var(--ink); font-family: Archivo, sans-serif; font-weight: 600; font-size: 13px; }
+.note ul { padding-left: 18px; margin: 8px 0 0; }
+.note li { margin-bottom: 6px; }
+#tip {
+  position: fixed; pointer-events: none; opacity: 0; transition: opacity .12s;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  box-shadow: var(--shadow); padding: 9px 11px; font-size: 12.5px;
+  font-variant-numeric: tabular-nums; z-index: 5; min-width: 152px;
+}
+#tip .th { font-weight: 700; margin-bottom: 5px; }
+#tip .tr { display: flex; justify-content: space-between; gap: 14px; }
+#tip .tr span:first-child { display: flex; align-items: center; gap: 6px; color: var(--ink-soft); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<style>
+.tech { display: flex; flex-direction: column; gap: 6px; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--ink-soft); margin-top: 8px; }
+.legend span { display: flex; align-items: center; gap: 6px; }
+.gapnote { font-size: 12px; color: var(--ink-soft); margin-top: 6px; }
+.seg { display: flex; gap: 0; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
+.seg button {
+  flex: 1; font: inherit; font-size: 12.5px; padding: 6px 4px; cursor: pointer;
+  background: var(--ground); color: var(--ink-soft); border: 0; border-right: 1px solid var(--line);
+}
+.seg button:last-child { border-right: 0; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: #fff; font-weight: 600; }
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">BTK üç aylık pazar verileri · 2011-1 → 2026-1</div>
+  <h1>Mobil ARPU: ön ödemeli ve faturalı</h1>
+  <p class="lede">Abone başına aylık gelir, üç operatör için çeyreklik. Üç para
+  biriminde — lira, avro, dolar — ve her biri hem nominal hem 2025 dördüncü çeyreği
+  fiyatlarıyla.</p>
+</header>
+
+<div class="stats" id="stats"></div>
+
+<div class="board">
+  <div class="rail">
+    <div class="field">
+      <label>Abone tipi</label>
+      <div class="seg" id="tipSeg">
+        <button data-v="faturali" aria-pressed="true">Faturalı</button>
+        <button data-v="on_odemeli" aria-pressed="false">Ön ödemeli</button>
+        <button data-v="makas" aria-pressed="false">Makas</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Para birimi</label>
+      <div class="seg" id="parSeg">
+        <button data-v="tl" aria-pressed="true">₺</button>
+        <button data-v="eur" aria-pressed="false">€</button>
+        <button data-v="usd" aria-pressed="false">$</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Fiyat bazı</label>
+      <div class="seg" id="bazSeg">
+        <button data-v="nominal" aria-pressed="true">Nominal</button>
+        <button data-v="reel" aria-pressed="false">2025-4 fiyatlarıyla</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>İşletmeciler</label>
+      <div class="tech" id="ops"></div>
+    </div>
+    <div class="field">
+      <label for="from">Dönem aralığı</label>
+      <div class="range-row"><span id="fromLabel"></span><span id="toLabel"></span></div>
+      <input type="range" id="from" min="0" step="1" aria-label="Başlangıç dönemi">
+      <input type="range" id="to" min="0" step="1" aria-label="Bitiş dönemi">
+    </div>
+  </div>
+
+  <div class="plot">
+    <div class="plot-head">
+      <div class="plot-title" id="plotTitle"></div>
+      <div class="plot-unit" id="plotUnit"></div>
+    </div>
+    <canvas id="c"></canvas>
+    <div class="legend" id="legend"></div>
+    <div class="gapnote" id="gapnote"></div>
+  </div>
+</div>
+
+<div class="note">
+  <b>Kaynak ve yöntem</b>
+  <ul>
+    <li>BTK bu iki seriyi yalnızca grafik olarak yayımlıyor ("Şekil 4-30 Ön Ödemeli
+    Mobil ARPU", "Şekil 4-31/4-32 Faturalı Mobil ARPU") ve 2017 sonrası raporlarda
+    grafiklerin metin katmanı yok. Her değer, ilgili sayfa render edilip sütun
+    etiketleri gözle okunarak alındı.</li>
+    <li>Raporların pencereleri farklı: 2012 raporu 8 çeyrek, 2019 raporu 16 çeyrek,
+    2026-Q1 raporu 5 çeyrek taşıyor. Pencereler örtüştüğü için çoğu çeyrek iki kez
+    basılmış — <b>doğrulama buradan geliyor</b>: iki raporun ortak çeyrekleri
+    karşılaştırıldı ve test setine sabitlendi. Yalnızca iki hücrede fark çıktı
+    (2012-4 Turkcell, ikinci ondalıkta); yeni rapor esas alındı.</li>
+    <li>Seri 2011-1'de başlıyor. Daha eskisi için yalnızca 2010 raporu var, o da
+    çeyrek değil üç ayrı <em>ay</em> (Ekim/Kasım/Aralık) veriyor; farklı frekans
+    olduğu için dışarıda bırakıldı. 2009 raporunda bu grafikler hiç yok.</li>
+    <li><b>Sektör toplamı yok.</b> Hiçbir raporda "Toplam" çubuğu bulunmuyor; ağırlıklı
+    ortalama almak için gereken operatör bazında ön ödemeli/faturalı abone sayısı da
+    yayımlanmıyor. Bu yüzden burada toplam türetilmedi.</li>
+    <li>Avea 2016'da TT Mobil adını aldı; tek işletmeci, tek seri olarak sürdürüldü.</li>
+    <li>Kur: Avrupa Merkez Bankası günlük referans kurlarının çeyrek ortalaması
+    (EUR/TRY doğrudan, USD/TRY = EUR/TRY ÷ EUR/USD). BTK'nın avro çevrimlerinde
+    kullandığı yöntemle aynı mantık.</li>
+    <li>Reelleştirme, her para birimi kendi deflatörüyle: lira Türkiye TÜFE'si, dolar
+    ABD TÜFE'si (CPIAUCNS), avro Euro Bölgesi HICP'si. Baz dönem 2025-4.
+    <b>Türkiye TÜFE'si için açık bir API bulunamadı</b> — TÜİK'in kendi servisi yok,
+    FRED'in taşıdığı OECD serisi 2025 başında bitiyor. Eurostat'ın Türkiye HICP'si
+    kullanıldı ve o da 2025-12'de bitiyor; bu yüzden <b>2026-1 için reel lira boş</b>.
+    Tahmin yürütülmedi.</li>
+  </ul>
+</div>
+</div>
+<div id="tip"></div>
+
+<script>
+const DATA = [{"donem": "2011-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 9.8, "eur": 4.54, "usd": 6.21, "tl_reel": 186.02, "eur_reel": 6.23, "usd_reel": 9.08}, {"donem": "2011-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 11.9, "eur": 5.51, "usd": 7.54, "tl_reel": 225.88, "eur_reel": 7.56, "usd_reel": 11.02}, {"donem": "2011-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 10.9, "eur": 5.05, "usd": 6.91, "tl_reel": 206.9, "eur_reel": 6.93, "usd_reel": 10.1}, {"donem": "2011-2", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 11.2, "eur": 4.96, "usd": 7.14, "tl_reel": 207.35, "eur_reel": 6.7, "usd_reel": 10.26}, {"donem": "2011-2", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 13.3, "eur": 5.89, "usd": 8.48, "tl_reel": 246.23, "eur_reel": 7.95, "usd_reel": 12.18}, {"donem": "2011-2", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 10.9, "eur": 4.83, "usd": 6.95, "tl_reel": 201.8, "eur_reel": 6.52, "usd_reel": 9.98}, {"donem": "2011-3", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 12.16, "eur": 4.96, "usd": 7.0, "tl_reel": 224.76, "eur_reel": 6.7, "usd_reel": 10.02}, {"donem": "2011-3", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 14.5, "eur": 5.91, "usd": 8.34, "tl_reel": 268.01, "eur_reel": 8.0, "usd_reel": 11.94}, {"donem": "2011-3", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 11.15, "eur": 4.54, "usd": 6.42, "tl_reel": 206.09, "eur_reel": 6.15, "usd_reel": 9.18}, {"donem": "2011-4", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 11.0, "eur": 4.44, "usd": 5.99, "tl_reel": 192.83, "eur_reel": 5.95, "usd_reel": 8.58}, {"donem": "2011-4", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 12.03, "eur": 4.86, "usd": 6.55, "tl_reel": 210.89, "eur_reel": 6.5, "usd_reel": 9.38}, {"donem": "2011-4", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 11.09, "eur": 4.48, "usd": 6.04, "tl_reel": 194.41, "eur_reel": 6.0, "usd_reel": 8.65}, {"donem": "2012-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 10.13, "eur": 4.3, "usd": 5.64, "tl_reel": 173.94, "eur_reel": 5.74, "usd_reel": 8.01}, {"donem": "2012-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 11.5, "eur": 4.88, "usd": 6.4, "tl_reel": 197.47, "eur_reel": 6.52, "usd_reel": 9.1}, {"donem": "2012-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 10.92, "eur": 4.64, "usd": 6.08, "tl_reel": 187.51, "eur_reel": 6.19, "usd_reel": 8.64}, {"donem": "2012-2", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 11.31, "eur": 4.88, "usd": 6.26, "tl_reel": 191.11, "eur_reel": 6.44, "usd_reel": 8.82}, {"donem": "2012-2", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 12.7, "eur": 5.48, "usd": 7.03, "tl_reel": 214.6, "eur_reel": 7.23, "usd_reel": 9.91}, {"donem": "2012-2", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 12.1, "eur": 5.23, "usd": 6.69, "tl_reel": 204.46, "eur_reel": 6.89, "usd_reel": 9.44}, {"donem": "2012-3", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 12.56, "eur": 5.57, "usd": 6.96, "tl_reel": 212.79, "eur_reel": 7.35, "usd_reel": 9.8}, {"donem": "2012-3", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 13.96, "eur": 6.19, "usd": 7.74, "tl_reel": 236.51, "eur_reel": 8.16, "usd_reel": 10.89}, {"donem": "2012-3", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 13.03, "eur": 5.78, "usd": 7.22, "tl_reel": 220.75, "eur_reel": 7.62, "usd_reel": 10.16}, {"donem": "2012-4", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 12.08, "eur": 5.19, "usd": 6.73, "tl_reel": 198.34, "eur_reel": 6.79, "usd_reel": 9.47}, {"donem": "2012-4", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 13.47, "eur": 5.79, "usd": 7.51, "tl_reel": 221.16, "eur_reel": 7.57, "usd_reel": 10.56}, {"donem": "2012-4", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 13.56, "eur": 5.83, "usd": 7.56, "tl_reel": 222.64, "eur_reel": 7.62, "usd_reel": 10.63}, {"donem": "2013-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 11.46, "eur": 4.86, "usd": 6.42, "tl_reel": 183.29, "eur_reel": 6.37, "usd_reel": 8.98}, {"donem": "2013-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 12.37, "eur": 5.25, "usd": 6.93, "tl_reel": 197.84, "eur_reel": 6.88, "usd_reel": 9.69}, {"donem": "2013-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 12.88, "eur": 5.46, "usd": 7.21, "tl_reel": 206.0, "eur_reel": 7.16, "usd_reel": 10.09}, {"donem": "2013-2", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 12.2, "eur": 5.08, "usd": 6.63, "tl_reel": 193.04, "eur_reel": 6.6, "usd_reel": 9.22}, {"donem": "2013-2", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 13.99, "eur": 5.82, "usd": 7.6, "tl_reel": 221.36, "eur_reel": 7.56, "usd_reel": 10.58}, {"donem": "2013-2", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 14.67, "eur": 6.1, "usd": 7.97, "tl_reel": 232.12, "eur_reel": 7.93, "usd_reel": 11.09}, {"donem": "2013-3", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 12.33, "eur": 4.73, "usd": 6.26, "tl_reel": 193.13, "eur_reel": 6.15, "usd_reel": 8.67}, {"donem": "2013-3", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 13.72, "eur": 5.26, "usd": 6.96, "tl_reel": 214.9, "eur_reel": 6.85, "usd_reel": 9.65}, {"donem": "2013-3", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 13.33, "eur": 5.11, "usd": 6.77, "tl_reel": 208.79, "eur_reel": 6.65, "usd_reel": 9.38}, {"donem": "2013-4", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 11.26, "eur": 4.09, "usd": 5.57, "tl_reel": 171.99, "eur_reel": 5.31, "usd_reel": 7.73}, {"donem": "2013-4", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 12.94, "eur": 4.7, "usd": 6.4, "tl_reel": 197.65, "eur_reel": 6.1, "usd_reel": 8.89}, {"donem": "2013-4", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 13.1, "eur": 4.76, "usd": 6.47, "tl_reel": 200.09, "eur_reel": 6.17, "usd_reel": 9.0}, {"donem": "2014-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 10.7, "eur": 3.52, "usd": 4.83, "tl_reel": 158.35, "eur_reel": 4.59, "usd_reel": 6.65}, {"donem": "2014-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 11.9, "eur": 3.92, "usd": 5.37, "tl_reel": 176.11, "eur_reel": 5.11, "usd_reel": 7.4}, {"donem": "2014-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 12.7, "eur": 4.18, "usd": 5.73, "tl_reel": 187.95, "eur_reel": 5.45, "usd_reel": 7.9}, {"donem": "2014-2", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 11.6, "eur": 4.0, "usd": 5.49, "tl_reel": 167.86, "eur_reel": 5.17, "usd_reel": 7.48}, {"donem": "2014-2", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 12.6, "eur": 4.35, "usd": 5.96, "tl_reel": 182.33, "eur_reel": 5.62, "usd_reel": 8.13}, {"donem": "2014-2", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 13.7, "eur": 4.73, "usd": 6.48, "tl_reel": 198.25, "eur_reel": 6.11, "usd_reel": 8.84}, {"donem": "2014-3", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 12.2, "eur": 4.25, "usd": 5.64, "tl_reel": 174.64, "eur_reel": 5.52, "usd_reel": 7.68}, {"donem": "2014-3", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 13.2, "eur": 4.6, "usd": 6.1, "tl_reel": 188.96, "eur_reel": 5.97, "usd_reel": 8.3}, {"donem": "2014-3", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 14.7, "eur": 5.13, "usd": 6.79, "tl_reel": 210.43, "eur_reel": 6.65, "usd_reel": 9.25}, {"donem": "2014-4", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 11.4, "eur": 4.03, "usd": 5.04, "tl_reel": 160.04, "eur_reel": 5.23, "usd_reel": 6.92}, {"donem": "2014-4", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 13.0, "eur": 4.6, "usd": 5.75, "tl_reel": 182.5, "eur_reel": 5.96, "usd_reel": 7.89}, {"donem": "2014-4", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 14.4, "eur": 5.09, "usd": 6.37, "tl_reel": 202.15, "eur_reel": 6.6, "usd_reel": 8.74}, {"donem": "2015-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 11.0, "eur": 3.97, "usd": 4.46, "tl_reel": 151.46, "eur_reel": 5.19, "usd_reel": 6.16}, {"donem": "2015-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 12.7, "eur": 4.58, "usd": 5.15, "tl_reel": 174.86, "eur_reel": 5.99, "usd_reel": 7.11}, {"donem": "2015-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 14.0, "eur": 5.05, "usd": 5.68, "tl_reel": 192.76, "eur_reel": 6.6, "usd_reel": 7.83}, {"donem": "2015-2", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 11.0, "eur": 3.72, "usd": 4.12, "tl_reel": 147.46, "eur_reel": 4.79, "usd_reel": 5.61}, {"donem": "2015-2", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 13.8, "eur": 4.67, "usd": 5.16, "tl_reel": 185.0, "eur_reel": 6.01, "usd_reel": 7.04}, {"donem": "2015-2", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 15.0, "eur": 5.08, "usd": 5.61, "tl_reel": 201.08, "eur_reel": 6.53, "usd_reel": 7.65}, {"donem": "2015-3", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 13.3, "eur": 4.19, "usd": 4.66, "tl_reel": 177.35, "eur_reel": 5.41, "usd_reel": 6.33}, {"donem": "2015-3", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 14.8, "eur": 4.66, "usd": 5.18, "tl_reel": 197.35, "eur_reel": 6.02, "usd_reel": 7.05}, {"donem": "2015-3", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 15.8, "eur": 4.98, "usd": 5.53, "tl_reel": 210.68, "eur_reel": 6.43, "usd_reel": 7.53}, {"donem": "2015-4", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 12.6, "eur": 3.95, "usd": 4.33, "tl_reel": 163.5, "eur_reel": 5.11, "usd_reel": 5.92}, {"donem": "2015-4", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 14.3, "eur": 4.49, "usd": 4.92, "tl_reel": 185.56, "eur_reel": 5.8, "usd_reel": 6.72}, {"donem": "2015-4", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 15.3, "eur": 4.8, "usd": 5.26, "tl_reel": 198.54, "eur_reel": 6.21, "usd_reel": 7.19}, {"donem": "2016-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 12.1, "eur": 3.73, "usd": 4.11, "tl_reel": 153.53, "eur_reel": 4.87, "usd_reel": 5.61}, {"donem": "2016-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 14.0, "eur": 4.31, "usd": 4.75, "tl_reel": 177.64, "eur_reel": 5.63, "usd_reel": 6.49}, {"donem": "2016-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 15.3, "eur": 4.71, "usd": 5.19, "tl_reel": 194.13, "eur_reel": 6.16, "usd_reel": 7.09}, {"donem": "2016-2", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 13.1, "eur": 4.01, "usd": 4.52, "tl_reel": 164.54, "eur_reel": 5.16, "usd_reel": 6.1}, {"donem": "2016-2", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 14.5, "eur": 4.43, "usd": 5.01, "tl_reel": 182.13, "eur_reel": 5.71, "usd_reel": 6.75}, {"donem": "2016-2", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 16.4, "eur": 5.01, "usd": 5.66, "tl_reel": 205.99, "eur_reel": 6.46, "usd_reel": 7.64}, {"donem": "2016-3", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 14.5, "eur": 4.38, "usd": 4.89, "tl_reel": 179.27, "eur_reel": 5.65, "usd_reel": 6.58}, {"donem": "2016-3", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 15.6, "eur": 4.71, "usd": 5.26, "tl_reel": 192.87, "eur_reel": 6.07, "usd_reel": 7.08}, {"donem": "2016-3", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 16.8, "eur": 5.08, "usd": 5.67, "tl_reel": 207.71, "eur_reel": 6.54, "usd_reel": 7.62}, {"donem": "2016-4", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 15.3, "eur": 4.32, "usd": 4.65, "tl_reel": 184.6, "eur_reel": 5.54, "usd_reel": 6.24}, {"donem": "2016-4", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 15.1, "eur": 4.26, "usd": 4.59, "tl_reel": 182.18, "eur_reel": 5.47, "usd_reel": 6.16}, {"donem": "2016-4", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 17.1, "eur": 4.82, "usd": 5.2, "tl_reel": 206.31, "eur_reel": 6.19, "usd_reel": 6.98}, {"donem": "2017-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 14.3, "eur": 3.63, "usd": 3.87, "tl_reel": 164.93, "eur_reel": 4.66, "usd_reel": 5.15}, {"donem": "2017-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 14.7, "eur": 3.73, "usd": 3.98, "tl_reel": 169.54, "eur_reel": 4.79, "usd_reel": 5.29}, {"donem": "2017-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 16.9, "eur": 4.29, "usd": 4.57, "tl_reel": 194.92, "eur_reel": 5.51, "usd_reel": 6.08}, {"donem": "2017-2", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 14.6, "eur": 3.71, "usd": 4.08, "tl_reel": 164.31, "eur_reel": 4.7, "usd_reel": 5.41}, {"donem": "2017-2", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 15.6, "eur": 3.96, "usd": 4.36, "tl_reel": 175.57, "eur_reel": 5.02, "usd_reel": 5.78}, {"donem": "2017-2", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 17.9, "eur": 4.54, "usd": 5.01, "tl_reel": 201.45, "eur_reel": 5.76, "usd_reel": 6.63}, {"donem": "2017-3", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 15.7, "eur": 3.8, "usd": 4.47, "tl_reel": 175.5, "eur_reel": 4.83, "usd_reel": 5.89}, {"donem": "2017-3", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 16.8, "eur": 4.07, "usd": 4.78, "tl_reel": 187.8, "eur_reel": 5.17, "usd_reel": 6.3}, {"donem": "2017-3", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 18.4, "eur": 4.46, "usd": 5.23, "tl_reel": 205.69, "eur_reel": 5.66, "usd_reel": 6.9}, {"donem": "2017-4", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 15.1, "eur": 3.37, "usd": 3.97, "tl_reel": 162.37, "eur_reel": 4.27, "usd_reel": 5.22}, {"donem": "2017-4", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 16.2, "eur": 3.62, "usd": 4.26, "tl_reel": 174.2, "eur_reel": 4.58, "usd_reel": 5.6}, {"donem": "2017-4", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 18.4, "eur": 4.11, "usd": 4.84, "tl_reel": 197.85, "eur_reel": 5.2, "usd_reel": 6.36}, {"donem": "2018-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 14.9, "eur": 3.18, "usd": 3.91, "tl_reel": 155.82, "eur_reel": 4.03, "usd_reel": 5.09}, {"donem": "2018-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 16.4, "eur": 3.5, "usd": 4.3, "tl_reel": 171.51, "eur_reel": 4.43, "usd_reel": 5.6}, {"donem": "2018-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 18.5, "eur": 3.94, "usd": 4.85, "tl_reel": 193.47, "eur_reel": 5.0, "usd_reel": 6.32}, {"donem": "2018-2", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 15.5, "eur": 2.97, "usd": 3.53, "tl_reel": 154.65, "eur_reel": 3.7, "usd_reel": 4.55}, {"donem": "2018-2", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 17.5, "eur": 3.35, "usd": 3.99, "tl_reel": 174.61, "eur_reel": 4.18, "usd_reel": 5.14}, {"donem": "2018-2", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 19.7, "eur": 3.77, "usd": 4.49, "tl_reel": 196.56, "eur_reel": 4.7, "usd_reel": 5.79}, {"donem": "2018-3", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 18.4, "eur": 2.8, "usd": 3.25, "tl_reel": 172.2, "eur_reel": 3.48, "usd_reel": 4.18}, {"donem": "2018-3", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 18.8, "eur": 2.86, "usd": 3.32, "tl_reel": 175.94, "eur_reel": 3.55, "usd_reel": 4.27}, {"donem": "2018-3", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 20.0, "eur": 3.04, "usd": 3.53, "tl_reel": 187.17, "eur_reel": 3.78, "usd_reel": 4.54}, {"donem": "2018-4", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 17.0, "eur": 2.7, "usd": 3.08, "tl_reel": 149.38, "eur_reel": 3.35, "usd_reel": 3.96}, {"donem": "2018-4", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 18.2, "eur": 2.89, "usd": 3.3, "tl_reel": 159.92, "eur_reel": 3.59, "usd_reel": 4.24}, {"donem": "2018-4", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 19.2, "eur": 3.05, "usd": 3.48, "tl_reel": 168.71, "eur_reel": 3.78, "usd_reel": 4.48}, {"donem": "2019-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 16.8, "eur": 2.75, "usd": 3.12, "tl_reel": 146.51, "eur_reel": 3.44, "usd_reel": 4.0}, {"donem": "2019-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 18.3, "eur": 2.99, "usd": 3.4, "tl_reel": 159.59, "eur_reel": 3.74, "usd_reel": 4.36}, {"donem": "2019-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 19.6, "eur": 3.21, "usd": 3.64, "tl_reel": 170.93, "eur_reel": 4.01, "usd_reel": 4.67}, {"donem": "2019-2", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 17.5, "eur": 2.65, "usd": 2.98, "tl_reel": 148.03, "eur_reel": 3.26, "usd_reel": 3.77}, {"donem": "2019-2", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 19.5, "eur": 2.95, "usd": 3.32, "tl_reel": 164.95, "eur_reel": 3.63, "usd_reel": 4.2}, {"donem": "2019-2", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 20.7, "eur": 3.13, "usd": 3.52, "tl_reel": 175.1, "eur_reel": 3.85, "usd_reel": 4.46}, {"donem": "2019-3", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 19.1, "eur": 3.03, "usd": 3.37, "tl_reel": 157.44, "eur_reel": 3.73, "usd_reel": 4.25}, {"donem": "2019-3", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 20.5, "eur": 3.25, "usd": 3.61, "tl_reel": 168.98, "eur_reel": 4.0, "usd_reel": 4.56}, {"donem": "2019-3", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 21.3, "eur": 3.38, "usd": 3.76, "tl_reel": 175.58, "eur_reel": 4.16, "usd_reel": 4.74}, {"donem": "2019-4", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 18.5, "eur": 2.88, "usd": 3.19, "tl_reel": 147.36, "eur_reel": 3.55, "usd_reel": 4.02}, {"donem": "2019-4", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 19.4, "eur": 3.02, "usd": 3.35, "tl_reel": 154.53, "eur_reel": 3.72, "usd_reel": 4.22}, {"donem": "2019-4", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 18.9, "eur": 2.95, "usd": 3.26, "tl_reel": 150.55, "eur_reel": 3.62, "usd_reel": 4.11}, {"donem": "2020-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 19.6, "eur": 2.91, "usd": 3.2, "tl_reel": 152.45, "eur_reel": 3.59, "usd_reel": 4.02}, {"donem": "2020-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 20.2, "eur": 3.0, "usd": 3.3, "tl_reel": 157.11, "eur_reel": 3.7, "usd_reel": 4.14}, {"donem": "2020-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 20.6, "eur": 3.06, "usd": 3.37, "tl_reel": 160.22, "eur_reel": 3.78, "usd_reel": 4.23}, {"donem": "2020-2", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 19.7, "eur": 2.6, "usd": 2.87, "tl_reel": 149.25, "eur_reel": 3.19, "usd_reel": 3.62}, {"donem": "2020-2", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 20.6, "eur": 2.72, "usd": 3.0, "tl_reel": 156.07, "eur_reel": 3.34, "usd_reel": 3.78}, {"donem": "2020-2", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 21.4, "eur": 2.83, "usd": 3.11, "tl_reel": 162.13, "eur_reel": 3.47, "usd_reel": 3.93}, {"donem": "2020-3", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 23.8, "eur": 2.81, "usd": 3.29, "tl_reel": 175.54, "eur_reel": 3.47, "usd_reel": 4.11}, {"donem": "2020-3", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 22.6, "eur": 2.67, "usd": 3.12, "tl_reel": 166.69, "eur_reel": 3.29, "usd_reel": 3.9}, {"donem": "2020-3", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 24.2, "eur": 2.86, "usd": 3.35, "tl_reel": 178.49, "eur_reel": 3.53, "usd_reel": 4.17}, {"donem": "2020-4", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 22.2, "eur": 2.36, "usd": 2.82, "tl_reel": 155.79, "eur_reel": 2.91, "usd_reel": 3.51}, {"donem": "2020-4", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 22.2, "eur": 2.36, "usd": 2.82, "tl_reel": 155.79, "eur_reel": 2.91, "usd_reel": 3.51}, {"donem": "2020-4", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 23.9, "eur": 2.54, "usd": 3.03, "tl_reel": 167.72, "eur_reel": 3.13, "usd_reel": 3.77}, {"donem": "2021-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 22.2, "eur": 2.49, "usd": 3.0, "tl_reel": 149.38, "eur_reel": 3.05, "usd_reel": 3.69}, {"donem": "2021-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 22.1, "eur": 2.48, "usd": 2.99, "tl_reel": 148.71, "eur_reel": 3.03, "usd_reel": 3.68}, {"donem": "2021-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 23.1, "eur": 2.59, "usd": 3.12, "tl_reel": 155.44, "eur_reel": 3.17, "usd_reel": 3.84}, {"donem": "2021-2", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 24.3, "eur": 2.4, "usd": 2.89, "tl_reel": 157.24, "eur_reel": 2.89, "usd_reel": 3.48}, {"donem": "2021-2", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 23.3, "eur": 2.3, "usd": 2.77, "tl_reel": 150.77, "eur_reel": 2.77, "usd_reel": 3.34}, {"donem": "2021-2", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 25.5, "eur": 2.52, "usd": 3.04, "tl_reel": 165.0, "eur_reel": 3.03, "usd_reel": 3.65}, {"donem": "2021-3", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 28.3, "eur": 2.81, "usd": 3.31, "tl_reel": 175.04, "eur_reel": 3.37, "usd_reel": 3.92}, {"donem": "2021-3", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 26.0, "eur": 2.58, "usd": 3.04, "tl_reel": 160.82, "eur_reel": 3.09, "usd_reel": 3.61}, {"donem": "2021-3", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 28.2, "eur": 2.8, "usd": 3.3, "tl_reel": 174.42, "eur_reel": 3.36, "usd_reel": 3.91}, {"donem": "2021-4", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 26.9, "eur": 2.09, "usd": 2.39, "tl_reel": 150.0, "eur_reel": 2.47, "usd_reel": 2.79}, {"donem": "2021-4", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 25.3, "eur": 1.97, "usd": 2.25, "tl_reel": 141.07, "eur_reel": 2.32, "usd_reel": 2.62}, {"donem": "2021-4", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 27.3, "eur": 2.13, "usd": 2.43, "tl_reel": 152.23, "eur_reel": 2.5, "usd_reel": 2.83}, {"donem": "2022-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 27.8, "eur": 1.77, "usd": 1.99, "tl_reel": 120.84, "eur_reel": 2.04, "usd_reel": 2.27}, {"donem": "2022-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 28.1, "eur": 1.79, "usd": 2.01, "tl_reel": 122.15, "eur_reel": 2.07, "usd_reel": 2.29}, {"donem": "2022-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 28.2, "eur": 1.8, "usd": 2.02, "tl_reel": 122.58, "eur_reel": 2.07, "usd_reel": 2.3}, {"donem": "2022-2", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 33.2, "eur": 1.97, "usd": 2.1, "tl_reel": 123.43, "eur_reel": 2.2, "usd_reel": 2.32}, {"donem": "2022-2", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 33.6, "eur": 1.99, "usd": 2.12, "tl_reel": 124.92, "eur_reel": 2.22, "usd_reel": 2.35}, {"donem": "2022-2", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 34.8, "eur": 2.06, "usd": 2.2, "tl_reel": 129.38, "eur_reel": 2.3, "usd_reel": 2.43}, {"donem": "2022-3", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 43.4, "eur": 2.4, "usd": 2.42, "tl_reel": 148.27, "eur_reel": 2.63, "usd_reel": 2.64}, {"donem": "2022-3", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 38.0, "eur": 2.1, "usd": 2.12, "tl_reel": 129.82, "eur_reel": 2.3, "usd_reel": 2.31}, {"donem": "2022-3", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 42.6, "eur": 2.36, "usd": 2.37, "tl_reel": 145.54, "eur_reel": 2.58, "usd_reel": 2.59}, {"donem": "2022-4", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 43.9, "eur": 2.31, "usd": 2.36, "tl_reel": 138.04, "eur_reel": 2.47, "usd_reel": 2.57}, {"donem": "2022-4", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 41.3, "eur": 2.17, "usd": 2.22, "tl_reel": 129.86, "eur_reel": 2.33, "usd_reel": 2.42}, {"donem": "2022-4", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 46.9, "eur": 2.47, "usd": 2.52, "tl_reel": 147.47, "eur_reel": 2.64, "usd_reel": 2.74}, {"donem": "2023-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 52.1, "eur": 2.57, "usd": 2.76, "tl_reel": 146.69, "eur_reel": 2.74, "usd_reel": 2.97}, {"donem": "2023-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 49.2, "eur": 2.43, "usd": 2.61, "tl_reel": 138.53, "eur_reel": 2.59, "usd_reel": 2.81}, {"donem": "2023-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 54.4, "eur": 2.68, "usd": 2.88, "tl_reel": 153.17, "eur_reel": 2.87, "usd_reel": 3.11}, {"donem": "2023-2", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 65.8, "eur": 2.87, "usd": 3.12, "tl_reel": 174.09, "eur_reel": 3.01, "usd_reel": 3.33}, {"donem": "2023-2", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 58.5, "eur": 2.55, "usd": 2.78, "tl_reel": 154.78, "eur_reel": 2.68, "usd_reel": 2.96}, {"donem": "2023-2", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 65.7, "eur": 2.86, "usd": 3.12, "tl_reel": 173.83, "eur_reel": 3.01, "usd_reel": 3.32}, {"donem": "2023-3", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 83.5, "eur": 2.86, "usd": 3.11, "tl_reel": 182.44, "eur_reel": 2.99, "usd_reel": 3.29}, {"donem": "2023-3", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 69.2, "eur": 2.37, "usd": 2.58, "tl_reel": 151.19, "eur_reel": 2.48, "usd_reel": 2.72}, {"donem": "2023-3", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 82.6, "eur": 2.83, "usd": 3.08, "tl_reel": 180.47, "eur_reel": 2.96, "usd_reel": 3.25}, {"donem": "2023-4", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 87.6, "eur": 2.86, "usd": 3.07, "tl_reel": 169.15, "eur_reel": 2.98, "usd_reel": 3.24}, {"donem": "2023-4", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 80.7, "eur": 2.63, "usd": 2.83, "tl_reel": 155.82, "eur_reel": 2.74, "usd_reel": 2.99}, {"donem": "2023-4", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 93.6, "eur": 3.05, "usd": 3.28, "tl_reel": 180.73, "eur_reel": 3.18, "usd_reel": 3.46}, {"donem": "2024-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 97.1, "eur": 2.89, "usd": 3.14, "tl_reel": 163.8, "eur_reel": 3.01, "usd_reel": 3.28}, {"donem": "2024-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 90.9, "eur": 2.71, "usd": 2.94, "tl_reel": 153.34, "eur_reel": 2.82, "usd_reel": 3.07}, {"donem": "2024-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 109.6, "eur": 3.26, "usd": 3.54, "tl_reel": 184.89, "eur_reel": 3.39, "usd_reel": 3.7}, {"donem": "2024-2", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 112.5, "eur": 3.23, "usd": 3.47, "tl_reel": 172.74, "eur_reel": 3.31, "usd_reel": 3.59}, {"donem": "2024-2", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 106.5, "eur": 3.05, "usd": 3.29, "tl_reel": 163.53, "eur_reel": 3.13, "usd_reel": 3.39}, {"donem": "2024-2", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 126.3, "eur": 3.62, "usd": 3.9, "tl_reel": 193.93, "eur_reel": 3.71, "usd_reel": 4.03}, {"donem": "2024-3", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 140.4, "eur": 3.81, "usd": 4.19, "tl_reel": 199.05, "eur_reel": 3.9, "usd_reel": 4.31}, {"donem": "2024-3", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 120.8, "eur": 3.28, "usd": 3.6, "tl_reel": 171.26, "eur_reel": 3.35, "usd_reel": 3.71}, {"donem": "2024-3", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 134.4, "eur": 3.65, "usd": 4.01, "tl_reel": 190.54, "eur_reel": 3.73, "usd_reel": 4.12}, {"donem": "2024-4", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 129.1, "eur": 3.5, "usd": 3.74, "tl_reel": 169.94, "eur_reel": 3.57, "usd_reel": 3.84}, {"donem": "2024-4", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 119.6, "eur": 3.24, "usd": 3.46, "tl_reel": 157.43, "eur_reel": 3.31, "usd_reel": 3.56}, {"donem": "2024-4", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 132.6, "eur": 3.59, "usd": 3.84, "tl_reel": 174.55, "eur_reel": 3.67, "usd_reel": 3.94}, {"donem": "2025-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 133.2, "eur": 3.49, "usd": 3.67, "tl_reel": 160.79, "eur_reel": 3.55, "usd_reel": 3.73}, {"donem": "2025-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 122.0, "eur": 3.19, "usd": 3.36, "tl_reel": 147.27, "eur_reel": 3.25, "usd_reel": 3.42}, {"donem": "2025-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 141.4, "eur": 3.7, "usd": 3.9, "tl_reel": 170.69, "eur_reel": 3.76, "usd_reel": 3.96}, {"donem": "2025-2", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 146.0, "eur": 3.32, "usd": 3.76, "tl_reel": 164.72, "eur_reel": 3.33, "usd_reel": 3.79}, {"donem": "2025-2", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 138.4, "eur": 3.14, "usd": 3.57, "tl_reel": 156.14, "eur_reel": 3.16, "usd_reel": 3.59}, {"donem": "2025-2", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 148.3, "eur": 3.37, "usd": 3.82, "tl_reel": 167.31, "eur_reel": 3.39, "usd_reel": 3.85}, {"donem": "2025-3", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 173.8, "eur": 3.65, "usd": 4.26, "tl_reel": 184.89, "eur_reel": 3.65, "usd_reel": 4.26}, {"donem": "2025-3", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 152.9, "eur": 3.21, "usd": 3.75, "tl_reel": 162.65, "eur_reel": 3.21, "usd_reel": 3.75}, {"donem": "2025-3", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 161.1, "eur": 3.38, "usd": 3.95, "tl_reel": 171.38, "eur_reel": 3.39, "usd_reel": 3.95}, {"donem": "2025-4", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 153.0, "eur": 3.11, "usd": 3.62, "tl_reel": 153.0, "eur_reel": 3.11, "usd_reel": 3.62}, {"donem": "2025-4", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 139.3, "eur": 2.83, "usd": 3.3, "tl_reel": 139.3, "eur_reel": 2.83, "usd_reel": 3.3}, {"donem": "2025-4", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 154.3, "eur": 3.14, "usd": 3.65, "tl_reel": 154.3, "eur_reel": 3.14, "usd_reel": 3.65}, {"donem": "2026-1", "isletmeci": "turkcell", "tip": "on_odemeli", "tl": 162.7, "eur": 3.18, "usd": 3.72, "tl_reel": null, "eur_reel": 3.17, "usd_reel": 3.68}, {"donem": "2026-1", "isletmeci": "vodafone", "tip": "on_odemeli", "tl": 148.4, "eur": 2.9, "usd": 3.39, "tl_reel": null, "eur_reel": 2.89, "usd_reel": 3.36}, {"donem": "2026-1", "isletmeci": "ttmobil", "tip": "on_odemeli", "tl": 166.5, "eur": 3.25, "usd": 3.81, "tl_reel": null, "eur_reel": 3.24, "usd_reel": 3.77}, {"donem": "2011-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 37.9, "eur": 17.55, "usd": 24.01, "tl_reel": 719.4, "eur_reel": 24.08, "usd_reel": 35.11}, {"donem": "2011-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 35.5, "eur": 16.44, "usd": 22.49, "tl_reel": 673.84, "eur_reel": 22.55, "usd_reel": 32.89}, {"donem": "2011-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 30.2, "eur": 13.99, "usd": 19.14, "tl_reel": 573.24, "eur_reel": 19.19, "usd_reel": 27.98}, {"donem": "2011-2", "isletmeci": "turkcell", "tip": "faturali", "tl": 38.2, "eur": 16.92, "usd": 24.34, "tl_reel": 707.21, "eur_reel": 22.84, "usd_reel": 34.98}, {"donem": "2011-2", "isletmeci": "vodafone", "tip": "faturali", "tl": 37.0, "eur": 16.39, "usd": 23.58, "tl_reel": 685.0, "eur_reel": 22.12, "usd_reel": 33.88}, {"donem": "2011-2", "isletmeci": "ttmobil", "tip": "faturali", "tl": 31.8, "eur": 14.08, "usd": 20.26, "tl_reel": 588.73, "eur_reel": 19.01, "usd_reel": 29.12}, {"donem": "2011-3", "isletmeci": "turkcell", "tip": "faturali", "tl": 40.4, "eur": 16.47, "usd": 23.25, "tl_reel": 746.73, "eur_reel": 22.28, "usd_reel": 33.28}, {"donem": "2011-3", "isletmeci": "vodafone", "tip": "faturali", "tl": 38.4, "eur": 15.65, "usd": 22.1, "tl_reel": 709.77, "eur_reel": 21.17, "usd_reel": 31.63}, {"donem": "2011-3", "isletmeci": "ttmobil", "tip": "faturali", "tl": 32.56, "eur": 13.27, "usd": 18.74, "tl_reel": 601.82, "eur_reel": 17.95, "usd_reel": 26.82}, {"donem": "2011-4", "isletmeci": "turkcell", "tip": "faturali", "tl": 37.5, "eur": 15.15, "usd": 20.41, "tl_reel": 657.38, "eur_reel": 20.27, "usd_reel": 29.25}, {"donem": "2011-4", "isletmeci": "vodafone", "tip": "faturali", "tl": 37.56, "eur": 15.17, "usd": 20.44, "tl_reel": 658.43, "eur_reel": 20.31, "usd_reel": 29.3}, {"donem": "2011-4", "isletmeci": "ttmobil", "tip": "faturali", "tl": 31.7, "eur": 12.8, "usd": 17.25, "tl_reel": 555.7, "eur_reel": 17.14, "usd_reel": 24.73}, {"donem": "2012-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 36.52, "eur": 15.5, "usd": 20.32, "tl_reel": 627.09, "eur_reel": 20.71, "usd_reel": 28.89}, {"donem": "2012-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 35.7, "eur": 15.16, "usd": 19.86, "tl_reel": 613.01, "eur_reel": 20.24, "usd_reel": 28.24}, {"donem": "2012-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 30.6, "eur": 12.99, "usd": 17.02, "tl_reel": 525.43, "eur_reel": 17.35, "usd_reel": 24.21}, {"donem": "2012-2", "isletmeci": "turkcell", "tip": "faturali", "tl": 37.7, "eur": 16.28, "usd": 20.86, "tl_reel": 637.04, "eur_reel": 21.45, "usd_reel": 29.41}, {"donem": "2012-2", "isletmeci": "vodafone", "tip": "faturali", "tl": 37.16, "eur": 16.05, "usd": 20.56, "tl_reel": 627.91, "eur_reel": 21.15, "usd_reel": 28.99}, {"donem": "2012-2", "isletmeci": "ttmobil", "tip": "faturali", "tl": 31.84, "eur": 13.75, "usd": 17.61, "tl_reel": 538.02, "eur_reel": 18.12, "usd_reel": 24.84}, {"donem": "2012-3", "isletmeci": "turkcell", "tip": "faturali", "tl": 38.38, "eur": 17.01, "usd": 21.27, "tl_reel": 650.23, "eur_reel": 22.44, "usd_reel": 29.93}, {"donem": "2012-3", "isletmeci": "vodafone", "tip": "faturali", "tl": 38.08, "eur": 16.88, "usd": 21.1, "tl_reel": 645.15, "eur_reel": 22.27, "usd_reel": 29.7}, {"donem": "2012-3", "isletmeci": "ttmobil", "tip": "faturali", "tl": 32.65, "eur": 14.47, "usd": 18.09, "tl_reel": 553.15, "eur_reel": 19.09, "usd_reel": 25.46}, {"donem": "2012-4", "isletmeci": "turkcell", "tip": "faturali", "tl": 38.09, "eur": 16.37, "usd": 21.22, "tl_reel": 625.39, "eur_reel": 21.41, "usd_reel": 29.86}, {"donem": "2012-4", "isletmeci": "vodafone", "tip": "faturali", "tl": 37.43, "eur": 16.08, "usd": 20.86, "tl_reel": 614.56, "eur_reel": 21.04, "usd_reel": 29.34}, {"donem": "2012-4", "isletmeci": "ttmobil", "tip": "faturali", "tl": 32.67, "eur": 14.04, "usd": 18.2, "tl_reel": 536.4, "eur_reel": 18.37, "usd_reel": 25.61}, {"donem": "2013-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 36.44, "eur": 15.46, "usd": 20.41, "tl_reel": 582.81, "eur_reel": 20.27, "usd_reel": 28.54}, {"donem": "2013-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 36.84, "eur": 15.63, "usd": 20.63, "tl_reel": 589.21, "eur_reel": 20.49, "usd_reel": 28.85}, {"donem": "2013-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 32.66, "eur": 13.85, "usd": 18.29, "tl_reel": 522.35, "eur_reel": 18.17, "usd_reel": 25.58}, {"donem": "2013-2", "isletmeci": "turkcell", "tip": "faturali", "tl": 37.91, "eur": 15.77, "usd": 20.6, "tl_reel": 599.84, "eur_reel": 20.49, "usd_reel": 28.66}, {"donem": "2013-2", "isletmeci": "vodafone", "tip": "faturali", "tl": 37.87, "eur": 15.75, "usd": 20.58, "tl_reel": 599.21, "eur_reel": 20.47, "usd_reel": 28.63}, {"donem": "2013-2", "isletmeci": "ttmobil", "tip": "faturali", "tl": 33.64, "eur": 14.0, "usd": 18.28, "tl_reel": 532.28, "eur_reel": 18.19, "usd_reel": 25.43}, {"donem": "2013-3", "isletmeci": "turkcell", "tip": "faturali", "tl": 38.47, "eur": 14.74, "usd": 19.53, "tl_reel": 602.56, "eur_reel": 19.2, "usd_reel": 27.06}, {"donem": "2013-3", "isletmeci": "vodafone", "tip": "faturali", "tl": 36.35, "eur": 13.93, "usd": 18.45, "tl_reel": 569.36, "eur_reel": 18.14, "usd_reel": 25.57}, {"donem": "2013-3", "isletmeci": "ttmobil", "tip": "faturali", "tl": 31.92, "eur": 12.23, "usd": 16.2, "tl_reel": 499.97, "eur_reel": 15.93, "usd_reel": 22.45}, {"donem": "2013-4", "isletmeci": "turkcell", "tip": "faturali", "tl": 36.54, "eur": 13.27, "usd": 18.06, "tl_reel": 558.12, "eur_reel": 17.22, "usd_reel": 25.1}, {"donem": "2013-4", "isletmeci": "vodafone", "tip": "faturali", "tl": 36.23, "eur": 13.16, "usd": 17.91, "tl_reel": 553.39, "eur_reel": 17.08, "usd_reel": 24.88}, {"donem": "2013-4", "isletmeci": "ttmobil", "tip": "faturali", "tl": 30.19, "eur": 10.96, "usd": 14.92, "tl_reel": 461.13, "eur_reel": 14.23, "usd_reel": 20.73}, {"donem": "2014-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 36.0, "eur": 11.85, "usd": 16.23, "tl_reel": 532.76, "eur_reel": 15.45, "usd_reel": 22.39}, {"donem": "2014-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 34.8, "eur": 11.46, "usd": 15.69, "tl_reel": 515.01, "eur_reel": 14.93, "usd_reel": 21.64}, {"donem": "2014-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 29.2, "eur": 9.61, "usd": 13.17, "tl_reel": 432.13, "eur_reel": 12.53, "usd_reel": 18.16}, {"donem": "2014-2", "isletmeci": "turkcell", "tip": "faturali", "tl": 36.2, "eur": 12.49, "usd": 17.13, "tl_reel": 523.85, "eur_reel": 16.15, "usd_reel": 23.35}, {"donem": "2014-2", "isletmeci": "vodafone", "tip": "faturali", "tl": 35.4, "eur": 12.22, "usd": 16.75, "tl_reel": 512.27, "eur_reel": 15.79, "usd_reel": 22.83}, {"donem": "2014-2", "isletmeci": "ttmobil", "tip": "faturali", "tl": 30.0, "eur": 10.35, "usd": 14.2, "tl_reel": 434.13, "eur_reel": 13.38, "usd_reel": 19.35}, {"donem": "2014-3", "isletmeci": "turkcell", "tip": "faturali", "tl": 38.5, "eur": 13.43, "usd": 17.79, "tl_reel": 551.13, "eur_reel": 17.42, "usd_reel": 24.22}, {"donem": "2014-3", "isletmeci": "vodafone", "tip": "faturali", "tl": 35.6, "eur": 12.42, "usd": 16.45, "tl_reel": 509.61, "eur_reel": 16.11, "usd_reel": 22.4}, {"donem": "2014-3", "isletmeci": "ttmobil", "tip": "faturali", "tl": 30.6, "eur": 10.67, "usd": 14.14, "tl_reel": 438.04, "eur_reel": 13.84, "usd_reel": 19.25}, {"donem": "2014-4", "isletmeci": "turkcell", "tip": "faturali", "tl": 37.6, "eur": 13.3, "usd": 16.62, "tl_reel": 527.84, "eur_reel": 17.23, "usd_reel": 22.81}, {"donem": "2014-4", "isletmeci": "vodafone", "tip": "faturali", "tl": 35.1, "eur": 12.42, "usd": 15.52, "tl_reel": 492.74, "eur_reel": 16.09, "usd_reel": 21.29}, {"donem": "2014-4", "isletmeci": "ttmobil", "tip": "faturali", "tl": 30.8, "eur": 10.89, "usd": 13.61, "tl_reel": 432.38, "eur_reel": 14.12, "usd_reel": 18.69}, {"donem": "2015-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 36.7, "eur": 13.23, "usd": 14.88, "tl_reel": 505.32, "eur_reel": 17.3, "usd_reel": 20.54}, {"donem": "2015-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 35.3, "eur": 12.73, "usd": 14.32, "tl_reel": 486.04, "eur_reel": 16.64, "usd_reel": 19.75}, {"donem": "2015-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 30.1, "eur": 10.85, "usd": 12.21, "tl_reel": 414.44, "eur_reel": 14.19, "usd_reel": 16.84}, {"donem": "2015-2", "isletmeci": "turkcell", "tip": "faturali", "tl": 37.2, "eur": 12.59, "usd": 13.92, "tl_reel": 498.69, "eur_reel": 16.2, "usd_reel": 18.98}, {"donem": "2015-2", "isletmeci": "vodafone", "tip": "faturali", "tl": 36.4, "eur": 12.32, "usd": 13.62, "tl_reel": 487.97, "eur_reel": 15.86, "usd_reel": 18.57}, {"donem": "2015-2", "isletmeci": "ttmobil", "tip": "faturali", "tl": 30.5, "eur": 10.33, "usd": 11.41, "tl_reel": 408.87, "eur_reel": 13.29, "usd_reel": 15.56}, {"donem": "2015-3", "isletmeci": "turkcell", "tip": "faturali", "tl": 39.1, "eur": 12.31, "usd": 13.69, "tl_reel": 521.37, "eur_reel": 15.91, "usd_reel": 18.62}, {"donem": "2015-3", "isletmeci": "vodafone", "tip": "faturali", "tl": 38.5, "eur": 12.12, "usd": 13.48, "tl_reel": 513.37, "eur_reel": 15.67, "usd_reel": 18.34}, {"donem": "2015-3", "isletmeci": "ttmobil", "tip": "faturali", "tl": 31.8, "eur": 10.01, "usd": 11.14, "tl_reel": 424.03, "eur_reel": 12.94, "usd_reel": 15.15}, {"donem": "2015-4", "isletmeci": "turkcell", "tip": "faturali", "tl": 38.0, "eur": 11.93, "usd": 13.06, "tl_reel": 493.11, "eur_reel": 15.42, "usd_reel": 17.85}, {"donem": "2015-4", "isletmeci": "vodafone", "tip": "faturali", "tl": 38.7, "eur": 12.15, "usd": 13.31, "tl_reel": 502.19, "eur_reel": 15.7, "usd_reel": 18.18}, {"donem": "2015-4", "isletmeci": "ttmobil", "tip": "faturali", "tl": 31.6, "eur": 9.92, "usd": 10.86, "tl_reel": 410.06, "eur_reel": 12.82, "usd_reel": 14.84}, {"donem": "2016-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 37.2, "eur": 11.46, "usd": 12.62, "tl_reel": 472.0, "eur_reel": 14.97, "usd_reel": 17.23}, {"donem": "2016-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 38.3, "eur": 11.8, "usd": 13.0, "tl_reel": 485.96, "eur_reel": 15.41, "usd_reel": 17.74}, {"donem": "2016-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 32.0, "eur": 9.86, "usd": 10.86, "tl_reel": 406.02, "eur_reel": 12.88, "usd_reel": 14.82}, {"donem": "2016-2", "isletmeci": "turkcell", "tip": "faturali", "tl": 37.4, "eur": 11.43, "usd": 12.91, "tl_reel": 469.77, "eur_reel": 14.73, "usd_reel": 17.42}, {"donem": "2016-2", "isletmeci": "vodafone", "tip": "faturali", "tl": 38.8, "eur": 11.86, "usd": 13.39, "tl_reel": 487.35, "eur_reel": 15.28, "usd_reel": 18.07}, {"donem": "2016-2", "isletmeci": "ttmobil", "tip": "faturali", "tl": 32.9, "eur": 10.06, "usd": 11.36, "tl_reel": 413.25, "eur_reel": 12.96, "usd_reel": 15.33}, {"donem": "2016-3", "isletmeci": "turkcell", "tip": "faturali", "tl": 39.2, "eur": 11.84, "usd": 13.22, "tl_reel": 484.65, "eur_reel": 15.26, "usd_reel": 17.79}, {"donem": "2016-3", "isletmeci": "vodafone", "tip": "faturali", "tl": 39.7, "eur": 11.99, "usd": 13.39, "tl_reel": 490.84, "eur_reel": 15.46, "usd_reel": 18.01}, {"donem": "2016-3", "isletmeci": "ttmobil", "tip": "faturali", "tl": 33.7, "eur": 10.18, "usd": 11.37, "tl_reel": 416.65, "eur_reel": 13.12, "usd_reel": 15.29}, {"donem": "2016-4", "isletmeci": "turkcell", "tip": "faturali", "tl": 40.4, "eur": 11.4, "usd": 12.28, "tl_reel": 487.43, "eur_reel": 14.63, "usd_reel": 16.48}, {"donem": "2016-4", "isletmeci": "vodafone", "tip": "faturali", "tl": 39.8, "eur": 11.23, "usd": 12.1, "tl_reel": 480.19, "eur_reel": 14.41, "usd_reel": 16.24}, {"donem": "2016-4", "isletmeci": "ttmobil", "tip": "faturali", "tl": 33.9, "eur": 9.56, "usd": 10.31, "tl_reel": 409.01, "eur_reel": 12.27, "usd_reel": 13.83}, {"donem": "2017-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 40.5, "eur": 10.28, "usd": 10.95, "tl_reel": 467.11, "eur_reel": 13.21, "usd_reel": 14.58}, {"donem": "2017-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 39.7, "eur": 10.08, "usd": 10.74, "tl_reel": 457.88, "eur_reel": 12.95, "usd_reel": 14.29}, {"donem": "2017-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 34.9, "eur": 8.86, "usd": 9.44, "tl_reel": 402.52, "eur_reel": 11.38, "usd_reel": 12.57}, {"donem": "2017-2", "isletmeci": "turkcell", "tip": "faturali", "tl": 40.8, "eur": 10.35, "usd": 11.41, "tl_reel": 459.18, "eur_reel": 13.14, "usd_reel": 15.11}, {"donem": "2017-2", "isletmeci": "vodafone", "tip": "faturali", "tl": 40.7, "eur": 10.33, "usd": 11.38, "tl_reel": 458.06, "eur_reel": 13.1, "usd_reel": 15.07}, {"donem": "2017-2", "isletmeci": "ttmobil", "tip": "faturali", "tl": 36.5, "eur": 9.26, "usd": 10.21, "tl_reel": 410.79, "eur_reel": 11.75, "usd_reel": 13.51}, {"donem": "2017-3", "isletmeci": "turkcell", "tip": "faturali", "tl": 43.5, "eur": 10.54, "usd": 12.37, "tl_reel": 486.27, "eur_reel": 13.38, "usd_reel": 16.32}, {"donem": "2017-3", "isletmeci": "vodafone", "tip": "faturali", "tl": 41.7, "eur": 10.1, "usd": 11.86, "tl_reel": 466.15, "eur_reel": 12.83, "usd_reel": 15.65}, {"donem": "2017-3", "isletmeci": "ttmobil", "tip": "faturali", "tl": 36.7, "eur": 8.89, "usd": 10.44, "tl_reel": 410.25, "eur_reel": 11.29, "usd_reel": 13.77}, {"donem": "2017-4", "isletmeci": "turkcell", "tip": "faturali", "tl": 42.8, "eur": 9.56, "usd": 11.25, "tl_reel": 460.22, "eur_reel": 12.09, "usd_reel": 14.79}, {"donem": "2017-4", "isletmeci": "vodafone", "tip": "faturali", "tl": 41.2, "eur": 9.2, "usd": 10.83, "tl_reel": 443.02, "eur_reel": 11.64, "usd_reel": 14.23}, {"donem": "2017-4", "isletmeci": "ttmobil", "tip": "faturali", "tl": 35.5, "eur": 7.93, "usd": 9.33, "tl_reel": 381.73, "eur_reel": 10.03, "usd_reel": 12.26}, {"donem": "2018-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 44.0, "eur": 9.38, "usd": 11.53, "tl_reel": 460.14, "eur_reel": 11.9, "usd_reel": 15.02}, {"donem": "2018-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 40.9, "eur": 8.72, "usd": 10.72, "tl_reel": 427.73, "eur_reel": 11.06, "usd_reel": 13.96}, {"donem": "2018-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 35.7, "eur": 7.61, "usd": 9.36, "tl_reel": 373.34, "eur_reel": 9.65, "usd_reel": 12.19}, {"donem": "2018-2", "isletmeci": "turkcell", "tip": "faturali", "tl": 45.3, "eur": 8.67, "usd": 10.32, "tl_reel": 451.99, "eur_reel": 10.82, "usd_reel": 13.31}, {"donem": "2018-2", "isletmeci": "vodafone", "tip": "faturali", "tl": 41.6, "eur": 7.96, "usd": 9.48, "tl_reel": 415.07, "eur_reel": 9.93, "usd_reel": 12.22}, {"donem": "2018-2", "isletmeci": "ttmobil", "tip": "faturali", "tl": 37.6, "eur": 7.2, "usd": 8.57, "tl_reel": 375.16, "eur_reel": 8.98, "usd_reel": 11.04}, {"donem": "2018-3", "isletmeci": "turkcell", "tip": "faturali", "tl": 47.8, "eur": 7.26, "usd": 8.44, "tl_reel": 447.35, "eur_reel": 9.03, "usd_reel": 10.85}, {"donem": "2018-3", "isletmeci": "vodafone", "tip": "faturali", "tl": 43.1, "eur": 6.55, "usd": 7.61, "tl_reel": 403.36, "eur_reel": 8.14, "usd_reel": 9.78}, {"donem": "2018-3", "isletmeci": "ttmobil", "tip": "faturali", "tl": 39.5, "eur": 6.0, "usd": 6.98, "tl_reel": 369.67, "eur_reel": 7.46, "usd_reel": 8.96}, {"donem": "2018-4", "isletmeci": "turkcell", "tip": "faturali", "tl": 47.9, "eur": 7.61, "usd": 8.68, "tl_reel": 420.89, "eur_reel": 9.44, "usd_reel": 11.16}, {"donem": "2018-4", "isletmeci": "vodafone", "tip": "faturali", "tl": 42.4, "eur": 6.73, "usd": 7.69, "tl_reel": 372.56, "eur_reel": 8.36, "usd_reel": 9.88}, {"donem": "2018-4", "isletmeci": "ttmobil", "tip": "faturali", "tl": 39.3, "eur": 6.24, "usd": 7.12, "tl_reel": 345.32, "eur_reel": 7.75, "usd_reel": 9.16}, {"donem": "2019-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 49.4, "eur": 8.08, "usd": 9.18, "tl_reel": 430.81, "eur_reel": 10.11, "usd_reel": 11.77}, {"donem": "2019-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 41.7, "eur": 6.82, "usd": 7.75, "tl_reel": 363.66, "eur_reel": 8.53, "usd_reel": 9.93}, {"donem": "2019-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 38.2, "eur": 6.25, "usd": 7.1, "tl_reel": 333.14, "eur_reel": 7.82, "usd_reel": 9.1}, {"donem": "2019-2", "isletmeci": "turkcell", "tip": "faturali", "tl": 52.6, "eur": 7.96, "usd": 8.95, "tl_reel": 444.93, "eur_reel": 9.79, "usd_reel": 11.33}, {"donem": "2019-2", "isletmeci": "vodafone", "tip": "faturali", "tl": 43.6, "eur": 6.6, "usd": 7.42, "tl_reel": 368.8, "eur_reel": 8.12, "usd_reel": 9.39}, {"donem": "2019-2", "isletmeci": "ttmobil", "tip": "faturali", "tl": 40.5, "eur": 6.13, "usd": 6.89, "tl_reel": 342.58, "eur_reel": 7.54, "usd_reel": 8.72}, {"donem": "2019-3", "isletmeci": "turkcell", "tip": "faturali", "tl": 58.4, "eur": 9.26, "usd": 10.3, "tl_reel": 481.4, "eur_reel": 11.41, "usd_reel": 13.0}, {"donem": "2019-3", "isletmeci": "vodafone", "tip": "faturali", "tl": 46.8, "eur": 7.42, "usd": 8.25, "tl_reel": 385.78, "eur_reel": 9.14, "usd_reel": 10.42}, {"donem": "2019-3", "isletmeci": "ttmobil", "tip": "faturali", "tl": 42.7, "eur": 6.77, "usd": 7.53, "tl_reel": 351.98, "eur_reel": 8.34, "usd_reel": 9.51}, {"donem": "2019-4", "isletmeci": "turkcell", "tip": "faturali", "tl": 57.8, "eur": 9.01, "usd": 9.98, "tl_reel": 460.41, "eur_reel": 11.08, "usd_reel": 12.57}, {"donem": "2019-4", "isletmeci": "vodafone", "tip": "faturali", "tl": 46.3, "eur": 7.22, "usd": 7.99, "tl_reel": 368.81, "eur_reel": 8.87, "usd_reel": 10.07}, {"donem": "2019-4", "isletmeci": "ttmobil", "tip": "faturali", "tl": 42.7, "eur": 6.66, "usd": 7.37, "tl_reel": 340.13, "eur_reel": 8.18, "usd_reel": 9.29}, {"donem": "2020-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 55.3, "eur": 8.2, "usd": 9.04, "tl_reel": 430.11, "eur_reel": 10.14, "usd_reel": 11.35}, {"donem": "2020-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 45.9, "eur": 6.81, "usd": 7.5, "tl_reel": 357.0, "eur_reel": 8.42, "usd_reel": 9.42}, {"donem": "2020-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 40.0, "eur": 5.93, "usd": 6.54, "tl_reel": 311.11, "eur_reel": 7.34, "usd_reel": 8.21}, {"donem": "2020-2", "isletmeci": "turkcell", "tip": "faturali", "tl": 55.4, "eur": 7.32, "usd": 8.06, "tl_reel": 419.71, "eur_reel": 8.98, "usd_reel": 10.17}, {"donem": "2020-2", "isletmeci": "vodafone", "tip": "faturali", "tl": 47.2, "eur": 6.24, "usd": 6.87, "tl_reel": 357.59, "eur_reel": 7.65, "usd_reel": 8.67}, {"donem": "2020-2", "isletmeci": "ttmobil", "tip": "faturali", "tl": 42.7, "eur": 5.64, "usd": 6.21, "tl_reel": 323.5, "eur_reel": 6.92, "usd_reel": 7.84}, {"donem": "2020-3", "isletmeci": "turkcell", "tip": "faturali", "tl": 59.3, "eur": 7.01, "usd": 8.2, "tl_reel": 437.38, "eur_reel": 8.64, "usd_reel": 10.23}, {"donem": "2020-3", "isletmeci": "vodafone", "tip": "faturali", "tl": 49.7, "eur": 5.88, "usd": 6.87, "tl_reel": 366.58, "eur_reel": 7.24, "usd_reel": 8.57}, {"donem": "2020-3", "isletmeci": "ttmobil", "tip": "faturali", "tl": 44.3, "eur": 5.24, "usd": 6.13, "tl_reel": 326.75, "eur_reel": 6.45, "usd_reel": 7.64}, {"donem": "2020-4", "isletmeci": "turkcell", "tip": "faturali", "tl": 58.9, "eur": 6.27, "usd": 7.47, "tl_reel": 413.33, "eur_reel": 7.72, "usd_reel": 9.3}, {"donem": "2020-4", "isletmeci": "vodafone", "tip": "faturali", "tl": 50.0, "eur": 5.32, "usd": 6.34, "tl_reel": 350.88, "eur_reel": 6.56, "usd_reel": 7.9}, {"donem": "2020-4", "isletmeci": "ttmobil", "tip": "faturali", "tl": 44.1, "eur": 4.69, "usd": 5.59, "tl_reel": 309.47, "eur_reel": 5.78, "usd_reel": 6.96}, {"donem": "2021-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 57.1, "eur": 6.4, "usd": 7.71, "tl_reel": 384.23, "eur_reel": 7.84, "usd_reel": 9.5}, {"donem": "2021-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 48.9, "eur": 5.48, "usd": 6.61, "tl_reel": 329.05, "eur_reel": 6.71, "usd_reel": 8.14}, {"donem": "2021-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 43.5, "eur": 4.88, "usd": 5.88, "tl_reel": 292.71, "eur_reel": 5.97, "usd_reel": 7.24}, {"donem": "2021-2", "isletmeci": "turkcell", "tip": "faturali", "tl": 58.8, "eur": 5.8, "usd": 7.0, "tl_reel": 380.48, "eur_reel": 7.0, "usd_reel": 8.42}, {"donem": "2021-2", "isletmeci": "vodafone", "tip": "faturali", "tl": 50.9, "eur": 5.02, "usd": 6.06, "tl_reel": 329.36, "eur_reel": 6.06, "usd_reel": 7.29}, {"donem": "2021-2", "isletmeci": "ttmobil", "tip": "faturali", "tl": 46.7, "eur": 4.61, "usd": 5.56, "tl_reel": 302.18, "eur_reel": 5.56, "usd_reel": 6.69}, {"donem": "2021-3", "isletmeci": "turkcell", "tip": "faturali", "tl": 62.3, "eur": 6.19, "usd": 7.29, "tl_reel": 385.34, "eur_reel": 7.42, "usd_reel": 8.64}, {"donem": "2021-3", "isletmeci": "vodafone", "tip": "faturali", "tl": 53.0, "eur": 5.26, "usd": 6.2, "tl_reel": 327.82, "eur_reel": 6.31, "usd_reel": 7.35}, {"donem": "2021-3", "isletmeci": "ttmobil", "tip": "faturali", "tl": 48.6, "eur": 4.83, "usd": 5.69, "tl_reel": 300.6, "eur_reel": 5.78, "usd_reel": 6.74}, {"donem": "2021-4", "isletmeci": "turkcell", "tip": "faturali", "tl": 64.0, "eur": 4.98, "usd": 5.69, "tl_reel": 356.87, "eur_reel": 5.87, "usd_reel": 6.63}, {"donem": "2021-4", "isletmeci": "vodafone", "tip": "faturali", "tl": 54.6, "eur": 4.25, "usd": 4.85, "tl_reel": 304.45, "eur_reel": 5.01, "usd_reel": 5.66}, {"donem": "2021-4", "isletmeci": "ttmobil", "tip": "faturali", "tl": 49.4, "eur": 3.85, "usd": 4.39, "tl_reel": 275.46, "eur_reel": 4.53, "usd_reel": 5.12}, {"donem": "2022-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 64.9, "eur": 4.14, "usd": 4.64, "tl_reel": 282.11, "eur_reel": 4.77, "usd_reel": 5.3}, {"donem": "2022-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 56.6, "eur": 3.61, "usd": 4.05, "tl_reel": 246.03, "eur_reel": 4.16, "usd_reel": 4.62}, {"donem": "2022-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 49.9, "eur": 3.18, "usd": 3.57, "tl_reel": 216.91, "eur_reel": 3.67, "usd_reel": 4.07}, {"donem": "2022-2", "isletmeci": "turkcell", "tip": "faturali", "tl": 72.9, "eur": 4.33, "usd": 4.6, "tl_reel": 271.02, "eur_reel": 4.83, "usd_reel": 5.1}, {"donem": "2022-2", "isletmeci": "vodafone", "tip": "faturali", "tl": 62.3, "eur": 3.7, "usd": 3.93, "tl_reel": 231.61, "eur_reel": 4.12, "usd_reel": 4.36}, {"donem": "2022-2", "isletmeci": "ttmobil", "tip": "faturali", "tl": 56.6, "eur": 3.36, "usd": 3.57, "tl_reel": 210.42, "eur_reel": 3.75, "usd_reel": 3.96}, {"donem": "2022-3", "isletmeci": "turkcell", "tip": "faturali", "tl": 86.0, "eur": 4.76, "usd": 4.79, "tl_reel": 293.81, "eur_reel": 5.22, "usd_reel": 5.24}, {"donem": "2022-3", "isletmeci": "vodafone", "tip": "faturali", "tl": 69.4, "eur": 3.84, "usd": 3.87, "tl_reel": 237.1, "eur_reel": 4.21, "usd_reel": 4.23}, {"donem": "2022-3", "isletmeci": "ttmobil", "tip": "faturali", "tl": 65.2, "eur": 3.61, "usd": 3.63, "tl_reel": 222.75, "eur_reel": 3.95, "usd_reel": 3.97}, {"donem": "2022-4", "isletmeci": "turkcell", "tip": "faturali", "tl": 96.9, "eur": 5.1, "usd": 5.2, "tl_reel": 304.68, "eur_reel": 5.46, "usd_reel": 5.67}, {"donem": "2022-4", "isletmeci": "vodafone", "tip": "faturali", "tl": 77.7, "eur": 4.09, "usd": 4.17, "tl_reel": 244.31, "eur_reel": 4.38, "usd_reel": 4.55}, {"donem": "2022-4", "isletmeci": "ttmobil", "tip": "faturali", "tl": 72.0, "eur": 3.79, "usd": 3.87, "tl_reel": 226.39, "eur_reel": 4.06, "usd_reel": 4.21}, {"donem": "2023-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 105.9, "eur": 5.23, "usd": 5.61, "tl_reel": 298.18, "eur_reel": 5.58, "usd_reel": 6.05}, {"donem": "2023-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 81.1, "eur": 4.0, "usd": 4.29, "tl_reel": 228.35, "eur_reel": 4.27, "usd_reel": 4.63}, {"donem": "2023-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 78.1, "eur": 3.85, "usd": 4.14, "tl_reel": 219.9, "eur_reel": 4.11, "usd_reel": 4.46}, {"donem": "2023-2", "isletmeci": "turkcell", "tip": "faturali", "tl": 127.5, "eur": 5.56, "usd": 6.05, "tl_reel": 337.34, "eur_reel": 5.84, "usd_reel": 6.45}, {"donem": "2023-2", "isletmeci": "vodafone", "tip": "faturali", "tl": 102.9, "eur": 4.49, "usd": 4.88, "tl_reel": 272.25, "eur_reel": 4.71, "usd_reel": 5.2}, {"donem": "2023-2", "isletmeci": "ttmobil", "tip": "faturali", "tl": 94.1, "eur": 4.1, "usd": 4.47, "tl_reel": 248.97, "eur_reel": 4.31, "usd_reel": 4.76}, {"donem": "2023-3", "isletmeci": "turkcell", "tip": "faturali", "tl": 154.3, "eur": 5.29, "usd": 5.75, "tl_reel": 337.13, "eur_reel": 5.52, "usd_reel": 6.08}, {"donem": "2023-3", "isletmeci": "vodafone", "tip": "faturali", "tl": 124.1, "eur": 4.25, "usd": 4.63, "tl_reel": 271.14, "eur_reel": 4.44, "usd_reel": 4.89}, {"donem": "2023-3", "isletmeci": "ttmobil", "tip": "faturali", "tl": 110.8, "eur": 3.8, "usd": 4.13, "tl_reel": 242.09, "eur_reel": 3.97, "usd_reel": 4.36}, {"donem": "2023-4", "isletmeci": "turkcell", "tip": "faturali", "tl": 169.0, "eur": 5.51, "usd": 5.93, "tl_reel": 326.32, "eur_reel": 5.75, "usd_reel": 6.25}, {"donem": "2023-4", "isletmeci": "vodafone", "tip": "faturali", "tl": 141.9, "eur": 4.63, "usd": 4.98, "tl_reel": 273.99, "eur_reel": 4.83, "usd_reel": 5.25}, {"donem": "2023-4", "isletmeci": "ttmobil", "tip": "faturali", "tl": 128.2, "eur": 4.18, "usd": 4.5, "tl_reel": 247.54, "eur_reel": 4.36, "usd_reel": 4.74}, {"donem": "2024-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 193.1, "eur": 5.75, "usd": 6.24, "tl_reel": 325.75, "eur_reel": 5.98, "usd_reel": 6.52}, {"donem": "2024-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 160.0, "eur": 4.76, "usd": 5.17, "tl_reel": 269.91, "eur_reel": 4.95, "usd_reel": 5.4}, {"donem": "2024-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 146.5, "eur": 4.36, "usd": 4.73, "tl_reel": 247.14, "eur_reel": 4.54, "usd_reel": 4.94}, {"donem": "2024-2", "isletmeci": "turkcell", "tip": "faturali", "tl": 228.9, "eur": 6.56, "usd": 7.07, "tl_reel": 351.46, "eur_reel": 6.73, "usd_reel": 7.3}, {"donem": "2024-2", "isletmeci": "vodafone", "tip": "faturali", "tl": 196.3, "eur": 5.63, "usd": 6.06, "tl_reel": 301.41, "eur_reel": 5.77, "usd_reel": 6.26}, {"donem": "2024-2", "isletmeci": "ttmobil", "tip": "faturali", "tl": 188.8, "eur": 5.41, "usd": 5.83, "tl_reel": 289.89, "eur_reel": 5.55, "usd_reel": 6.02}, {"donem": "2024-3", "isletmeci": "turkcell", "tip": "faturali", "tl": 253.4, "eur": 6.88, "usd": 7.56, "tl_reel": 359.25, "eur_reel": 7.03, "usd_reel": 7.78}, {"donem": "2024-3", "isletmeci": "vodafone", "tip": "faturali", "tl": 240.7, "eur": 6.53, "usd": 7.18, "tl_reel": 341.24, "eur_reel": 6.68, "usd_reel": 7.39}, {"donem": "2024-3", "isletmeci": "ttmobil", "tip": "faturali", "tl": 212.1, "eur": 5.76, "usd": 6.32, "tl_reel": 300.69, "eur_reel": 5.89, "usd_reel": 6.51}, {"donem": "2024-4", "isletmeci": "turkcell", "tip": "faturali", "tl": 281.3, "eur": 7.62, "usd": 8.14, "tl_reel": 370.28, "eur_reel": 7.78, "usd_reel": 8.36}, {"donem": "2024-4", "isletmeci": "vodafone", "tip": "faturali", "tl": 262.5, "eur": 7.11, "usd": 7.6, "tl_reel": 345.54, "eur_reel": 7.26, "usd_reel": 7.8}, {"donem": "2024-4", "isletmeci": "ttmobil", "tip": "faturali", "tl": 237.1, "eur": 6.43, "usd": 6.86, "tl_reel": 312.1, "eur_reel": 6.56, "usd_reel": 7.05}, {"donem": "2025-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 317.9, "eur": 8.32, "usd": 8.76, "tl_reel": 383.74, "eur_reel": 8.46, "usd_reel": 8.9}, {"donem": "2025-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 282.5, "eur": 7.39, "usd": 7.78, "tl_reel": 341.01, "eur_reel": 7.52, "usd_reel": 7.91}, {"donem": "2025-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 259.1, "eur": 6.78, "usd": 7.14, "tl_reel": 312.76, "eur_reel": 6.9, "usd_reel": 7.26}, {"donem": "2025-2", "isletmeci": "turkcell", "tip": "faturali", "tl": 345.4, "eur": 7.85, "usd": 8.9, "tl_reel": 389.68, "eur_reel": 7.89, "usd_reel": 8.97}, {"donem": "2025-2", "isletmeci": "vodafone", "tip": "faturali", "tl": 310.2, "eur": 7.05, "usd": 7.99, "tl_reel": 349.97, "eur_reel": 7.08, "usd_reel": 8.05}, {"donem": "2025-2", "isletmeci": "ttmobil", "tip": "faturali", "tl": 281.7, "eur": 6.4, "usd": 7.26, "tl_reel": 317.82, "eur_reel": 6.43, "usd_reel": 7.31}, {"donem": "2025-3", "isletmeci": "turkcell", "tip": "faturali", "tl": 371.4, "eur": 7.79, "usd": 9.1, "tl_reel": 395.09, "eur_reel": 7.81, "usd_reel": 9.11}, {"donem": "2025-3", "isletmeci": "vodafone", "tip": "faturali", "tl": 344.6, "eur": 7.23, "usd": 8.45, "tl_reel": 366.58, "eur_reel": 7.25, "usd_reel": 8.45}, {"donem": "2025-3", "isletmeci": "ttmobil", "tip": "faturali", "tl": 287.7, "eur": 6.04, "usd": 7.05, "tl_reel": 306.05, "eur_reel": 6.05, "usd_reel": 7.06}, {"donem": "2025-4", "isletmeci": "turkcell", "tip": "faturali", "tl": 377.8, "eur": 7.68, "usd": 8.94, "tl_reel": 377.8, "eur_reel": 7.68, "usd_reel": 8.94}, {"donem": "2025-4", "isletmeci": "vodafone", "tip": "faturali", "tl": 345.4, "eur": 7.02, "usd": 8.17, "tl_reel": 345.4, "eur_reel": 7.02, "usd_reel": 8.17}, {"donem": "2025-4", "isletmeci": "ttmobil", "tip": "faturali", "tl": 278.0, "eur": 5.65, "usd": 6.58, "tl_reel": 278.0, "eur_reel": 5.65, "usd_reel": 6.58}, {"donem": "2026-1", "isletmeci": "turkcell", "tip": "faturali", "tl": 401.1, "eur": 7.84, "usd": 9.17, "tl_reel": null, "eur_reel": 7.82, "usd_reel": 9.08}, {"donem": "2026-1", "isletmeci": "vodafone", "tip": "faturali", "tl": 361.6, "eur": 7.07, "usd": 8.27, "tl_reel": null, "eur_reel": 7.05, "usd_reel": 8.19}, {"donem": "2026-1", "isletmeci": "ttmobil", "tip": "faturali", "tl": 283.2, "eur": 5.54, "usd": 6.48, "tl_reel": null, "eur_reel": 5.52, "usd_reel": 6.41}];
+const OPS = [
+  {k: "turkcell", name: "Turkcell", color: "#c8890f"},
+  {k: "vodafone", name: "Vodafone", color: "#cf3d38"},
+  {k: "ttmobil", name: "TT Mobil / Avea", color: "#2c6bb5"}
+];
+const CURRENCY = {
+  tl: {sym: "₺", name: "lira"}, eur: {sym: "€", name: "avro"}, usd: {sym: "$", name: "dolar"}
+};
+const PERIODS = [];
+DATA.forEach(function (r) { if (PERIODS.indexOf(r.donem) < 0) PERIODS.push(r.donem); });
+
+const index = {};
+DATA.forEach(function (r) { index[r.tip + "|" + r.donem + "|" + r.isletmeci] = r; });
+
+const state = {
+  tip: "faturali", par: "tl", baz: "nominal",
+  from: 0, to: PERIODS.length - 1,
+  on: {turkcell: true, vodafone: true, ttmobil: true}
+};
+
+function field() { return state.par + (state.baz === "reel" ? "_reel" : ""); }
+function value(tip, donem, op) {
+  const r = index[tip + "|" + donem + "|" + op];
+  return r ? r[field()] : null;
+}
+// The gap view is postpaid minus prepaid: what the operator gets for moving a
+// subscriber onto a contract.
+function seriesValue(donem, op) {
+  if (state.tip !== "makas") return value(state.tip, donem, op);
+  const a = value("faturali", donem, op), b = value("on_odemeli", donem, op);
+  return (a == null || b == null) ? null : a - b;
+}
+
+function niceStep(span, target) {
+  const raw = span / target;
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const n = raw / mag;
+  return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * mag;
+}
+function css(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+function fmt(v, dec) {
+  if (v == null) return "—";
+  return v.toLocaleString("tr-TR", {minimumFractionDigits: dec, maximumFractionDigits: dec});
+}
+function rowsFor() { return PERIODS.slice(state.from, state.to + 1); }
+
+const cv = document.getElementById("c"), ctx = cv.getContext("2d");
+let layout = null;
+
+function draw() {
+  const dpr = window.devicePixelRatio || 1;
+  const w = cv.clientWidth, h = cv.clientHeight;
+  cv.width = w * dpr; cv.height = h * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+
+  const periods = rowsFor();
+  const series = OPS.filter(function (o) { return state.on[o.k]; }).map(function (o) {
+    return {name: o.name, color: o.color,
+            v: periods.map(function (d) { return seriesValue(d, o.k); })};
+  });
+  const pad = {l: 58, r: 22, t: 12, b: 30};
+  const pw = w - pad.l - pad.r, ph = h - pad.t - pad.b;
+
+  let lo = 0, hi = 0;
+  series.forEach(function (sr) {
+    sr.v.forEach(function (v) {
+      if (v == null) return;
+      if (v > hi) hi = v;
+      if (v < lo) lo = v;
+    });
+  });
+  const step = niceStep((hi - lo) || 1, 5);
+  hi = Math.ceil((hi + (hi - lo) * 0.04) / step) * step;
+  lo = Math.floor(lo / step) * step;
+
+  const x = function (i) {
+    return periods.length === 1 ? pad.l + pw / 2 : pad.l + pw * i / (periods.length - 1);
+  };
+  const y = function (v) { return pad.t + ph * (1 - (v - lo) / (hi - lo)); };
+
+  ctx.strokeStyle = css("--line-soft"); ctx.fillStyle = css("--ink-soft");
+  ctx.font = "11px Archivo, sans-serif"; ctx.textAlign = "right";
+  const dec = step < 1 ? (step < 0.1 ? 2 : 1) : 0;
+  for (let v = lo; v <= hi + step / 2; v += step) {
+    const py = Math.round(y(v)) + 0.5;
+    ctx.beginPath(); ctx.moveTo(pad.l, py); ctx.lineTo(w - pad.r, py); ctx.stroke();
+    ctx.fillText(fmt(v, dec), pad.l - 8, py + 4);
+  }
+
+  const every = Math.max(1, Math.ceil(periods.length / Math.max(1, Math.floor(pw / 52))));
+  periods.forEach(function (d, i) {
+    const last = periods.length - 1;
+    if (i !== last && (i % every || last - i < every / 2)) return;
+    ctx.textAlign = i === last ? "right" : (i === 0 ? "left" : "center");
+    ctx.fillText(d, x(i), h - 10);
+  });
+
+  series.forEach(function (sr) {
+    ctx.strokeStyle = sr.color; ctx.lineWidth = 2; ctx.lineJoin = "round";
+    ctx.beginPath();
+    let started = false;
+    sr.v.forEach(function (v, i) {
+      if (v == null) { started = false; return; }
+      const px = x(i), py = y(v);
+      started ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+      started = true;
+    });
+    ctx.stroke();
+    sr.v.forEach(function (v, i) {
+      if (v == null) return;
+      ctx.fillStyle = sr.color;
+      ctx.beginPath(); ctx.arc(x(i), y(v), 2.4, 0, 6.284); ctx.fill();
+    });
+  });
+
+  layout = {periods: periods, series: series, x: x};
+
+  const cur = CURRENCY[state.par];
+  const label = state.tip === "makas" ? "Faturalı − ön ödemeli farkı"
+    : (state.tip === "faturali" ? "Faturalı abone başına aylık gelir"
+                               : "Ön ödemeli abone başına aylık gelir");
+  document.getElementById("plotTitle").textContent = label;
+  document.getElementById("plotUnit").textContent = cur.sym + " · " +
+    (state.baz === "reel" ? "2025-4 fiyatlarıyla" : "nominal");
+
+  const leg = document.getElementById("legend");
+  leg.innerHTML = "";
+  series.forEach(function (sr) {
+    const el = document.createElement("span");
+    el.innerHTML = '<i class="swatch" style="background:' + sr.color + '"></i>' + sr.name;
+    leg.appendChild(el);
+  });
+
+  const missing = periods.filter(function (d) {
+    return series.some(function (sr) { return sr.v[periods.indexOf(d)] == null; });
+  });
+  document.getElementById("gapnote").textContent = missing.length
+    ? "Reel lira için Türkiye TÜFE'si 2025-12'de bitiyor; " + missing.join(", ") +
+      " boş bırakıldı."
+    : "";
+}
+
+const tip = document.getElementById("tip");
+cv.addEventListener("mousemove", function (e) {
+  if (!layout) return;
+  const rect = cv.getBoundingClientRect();
+  const rel = e.clientX - rect.left;
+  let best = 0, bd = Infinity;
+  layout.periods.forEach(function (d, i) {
+    const dist = Math.abs(layout.x(i) - rel);
+    if (dist < bd) { bd = dist; best = i; }
+  });
+  const cur = CURRENCY[state.par];
+  let html = '<div class="th">' + layout.periods[best] + "</div>";
+  layout.series.forEach(function (sr) {
+    html += '<div class="tr"><span><i class="swatch" style="background:' + sr.color +
+      '"></i>' + sr.name + "</span><span>" + fmt(sr.v[best], 1) + " " + cur.sym +
+      "</span></div>";
+  });
+  tip.innerHTML = html;
+  tip.style.opacity = 1;
+  tip.style.left = Math.min(e.clientX + 14, window.innerWidth - 210) + "px";
+  tip.style.top = (e.clientY - 12) + "px";
+});
+cv.addEventListener("mouseleave", function () { tip.style.opacity = 0; });
+
+function wireSegment(id, key) {
+  const box = document.getElementById(id);
+  box.addEventListener("click", function (e) {
+    const b = e.target.closest("button");
+    if (!b) return;
+    state[key] = b.dataset.v;
+    box.querySelectorAll("button").forEach(function (o) {
+      o.setAttribute("aria-pressed", String(o === b));
+    });
+    draw();
+    headline();
+  });
+}
+wireSegment("tipSeg", "tip");
+wireSegment("parSeg", "par");
+wireSegment("bazSeg", "baz");
+
+const opsBox = document.getElementById("ops");
+OPS.forEach(function (o) {
+  const l = document.createElement("label");
+  l.className = "op";
+  l.innerHTML = '<input type="checkbox" checked><i class="swatch" style="background:' +
+    o.color + '"></i>' + o.name;
+  l.querySelector("input").addEventListener("change", function () {
+    state.on[o.k] = this.checked; draw();
+  });
+  opsBox.appendChild(l);
+});
+
+const fromEl = document.getElementById("from"), toEl = document.getElementById("to");
+fromEl.max = toEl.max = PERIODS.length - 1;
+fromEl.value = 0; toEl.value = PERIODS.length - 1;
+function syncRange() {
+  state.from = Math.min(+fromEl.value, +toEl.value);
+  state.to = Math.max(+fromEl.value, +toEl.value);
+  document.getElementById("fromLabel").textContent = PERIODS[state.from];
+  document.getElementById("toLabel").textContent = PERIODS[state.to];
+  draw();
+}
+fromEl.addEventListener("input", syncRange);
+toEl.addEventListener("input", syncRange);
+
+function headline() {
+  const last = PERIODS[PERIODS.length - 1];
+  const first = PERIODS[0];
+  const cur = CURRENCY[state.par];
+  // The real-lira headline uses the last quarter that has a deflator.
+  const realLast = state.par === "tl" && state.baz === "reel" ? "2025-4" : last;
+  function v(tip, d, op) { return value(tip, d, op); }
+  const cards = OPS.map(function (o) {
+    return ["Faturalı — " + o.name,
+            fmt(v("faturali", realLast, o.k), 1) + " " + cur.sym,
+            realLast];
+  }).concat(OPS.map(function (o) {
+    return ["Ön ödemeli — " + o.name,
+            fmt(v("on_odemeli", realLast, o.k), 1) + " " + cur.sym,
+            first + ": " + fmt(v("on_odemeli", first, o.k), 1) + " " + cur.sym];
+  }));
+  document.getElementById("stats").innerHTML = cards.map(function (c) {
+    return '<div class="stat"><div class="k">' + c[0] + '</div><div class="v">' +
+      c[1] + '</div><div class="s">' + c[2] + "</div></div>";
+  }).join("");
+}
+
+headline();
+syncRange();
+window.addEventListener("resize", draw);
+</script>
