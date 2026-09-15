@@ -67,7 +67,14 @@ def period_start(token: str) -> tuple[dt.date, str]:
 
 def report_lines(report: str) -> list[str]:
     pages = json.loads((TEXT / f"{report}.json").read_text(encoding="utf-8"))
-    lines = [line.strip() for page in pages[6:] for line in page.splitlines()]
+    # Pages stamped "GİZLİ — SADECE KURUM İÇİ" (2024-Q2, 2024-Q3, 2025-Q1…Q3, 2026-Q1) are left
+    # out until the user decides on them; their periods come from the neighbouring reports.
+    lines = [
+        line.strip()
+        for page in pages[6:]
+        if not re.search(r"G\s*İ\s*Z\s*L\s*İ|SADECE KURUM İÇİ", page)
+        for line in page.splitlines()
+    ]
     return [re.sub(r"\b(20\d\d) - ([1-4])\b", r"\1-\2", line) for line in lines]
 
 
