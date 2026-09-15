@@ -30,6 +30,14 @@ import polars as pl
 from ..config import RAW
 from .kgm import district_key, fold, province_id, resolve_district
 
+
+def province_or_none(name: str) -> str | None:
+    try:
+        return province_id(name)
+    except KeyError:
+        return None
+
+
 FOLDER = RAW / "yok_istatistik"
 TABLES = {
     "yok_students": "ÖĞRENİM GÖRDÜĞÜ İL VE İLÇELERE GÖRE ÖĞRENCİ SAYILARI",
@@ -54,7 +62,19 @@ TYPES = {"devlet": "state", "vakif": "foundation", "vakifmyo": "foundation_vocat
 
 #: (year, province, district) names not in the area register.
 UNKNOWN_DISTRICTS: list[tuple[int, str, str]] = []
-BROKEN_COLUMNS = {"2017_T101.xls": {"doctorate"}}
+#: (university, province) -> Counter of district areas seen in newer releases. Filled while
+#: reading, newest release first, and used to place an older "MERKEZ" row of the same campus.
+CAMPUS: dict[tuple[str, str], dict[str, float]] = {}
+#: (year, province, name, how) for rows placed by inference: "campus" (MERKEZ via a newer
+#: release), "moved" (a district of another province: students moved there), or "kept"
+#: (abroad campus, blank name, or unplaceable: left at province level only).
+PLACED: list[tuple[int, str, str, str]] = []
+#: Campuses abroad printed in the district column. Güzelyurt is METU's KKTC campus, not
+#: Aksaray's district of the same name.
+ABROAD_CAMPUSES = {"gazimagusa", "lefkosa", "guzelyurt", "girne", "mogadisu", "taskent"}
+#: Campus names for districts: Balcalı is Çukurova University's campus in Sarıçam.
+CAMPUS_ALIASES = {"balcali": "saricam"}
+DERIVE_DOCTORATE = {"2017_T101.xls"}
 #: (year, province, type, level, delivery, sex) where districts add up past the province.
 DISTRICT_EXCESS: list[tuple] = []
 
@@ -107,6 +127,15 @@ def columns(rows: list[list[str]]) -> dict[int, tuple[str, str, str]]:
     return out
 
 
+def districts_by_name() -> dict[str, list[tuple[str, str]]]:
+    """Folded district name -> [(district area, province)] over the whole register."""
+    out: dict[str, list[tuple[str, str]]] = {}
+    for (province, name), (area, level) in district_key().items():
+        if level == "district":
+            out.setdefault(name, []).append((area, province))
+    return out
+
+
 def number(cell: str) -> float:
     cell = str(cell).strip()
     return float(cell) if cell not in ("", "-") else 0.0
@@ -119,26 +148,61 @@ def read(path: Path, year: int) -> dict[tuple[str, str, str, str, str, str], flo
     sheet = xlrd.open_workbook(path).sheet_by_index(0)
     rows = [[str(v) for v in sheet.row_values(r)] for r in range(sheet.nrows)]
     cols = columns(rows)
-    # 2016-2017 new registrations: the doctorate columns add up neither by province (3,153
-    # men) nor by district (11,729) to the printed total (7,191, also in the summary table).
-    # Those columns are left out for that year; every other column meets TOPLAM.
-    if path.name in BROKEN_COLUMNS:
-        cols = {j: c for j, c in cols.items() if c[0] not in BROKEN_COLUMNS[path.name]}
+    # 2016-2017 new registrations: the doctorate cells are scrambled across rows (Korkuteli
+    # prints 64 men where its row total leaves room for none; the row above is 64 short),
+    # while every row total is right. For that file the doctorate is derived as row total
+    # minus the other levels; the result must still meet the printed TOPLAM like any column.
+    derive = path.name in DERIVE_DOCTORATE
+    if derive:
+        sex_row = next(
+            i
+            for i, r in enumerate(rows)
+            if [fold(c) for c in r[3:6]] == ["e", "k", "t"]
+        )
+        level_row = sex_row - 2
+        total_start = next(
+            j for j, c in enumerate(rows[level_row]) if fold(first_line(c)) == "toplam"
+        )
+        total_cols = {
+            SEX[fold(rows[sex_row][j])]: j
+            for j in range(total_start, total_start + 3)
+            if fold(rows[sex_row][j]) in SEX
+        }
     key = district_key()
     out: dict[tuple, float] = {}
     total = None
     province_values: dict[tuple, float] = {}
     district_sums: dict[tuple, float] = {}
-    pid = pname = uni_type = None
+    pid = pname = uni_type = uni = None
+    by_name = districts_by_name()
     start = next(
         i for i, r in enumerate(rows) if [fold(c) for c in r[3:6]] == ["e", "k", "t"]
     )
+
+    def add_district(area: str, province: str, values: list[float]) -> None:
+        for (level, delivery, sex), v in zip(cols.values(), values, strict=True):
+            sums_key = (province, uni_type, level, delivery, sex)
+            district_sums[sums_key] = district_sums.get(sums_key, 0.0) + v
+            k = (area, "district", uni_type, level, delivery, sex)
+            out[k] = out.get(k, 0.0) + v
+        campus = CAMPUS.setdefault((uni, province), {})
+        campus[area] = campus.get(area, 0.0) + sum(values)
+
     for r in rows[start + 1 :]:
         if any(fold(first_line(c)) == "toplam" for c in r[:3]):
             total = r
             continue
         place = first_line(r[2]) if len(r) > 2 else ""
         values = [number(r[j]) for j in cols]
+        if derive:
+            for i, (level, _delivery, sex) in enumerate(cols.values()):
+                if level == "doctorate":
+                    others = sum(
+                        v
+                        for v, (lv, _d, sx) in zip(values, cols.values(), strict=True)
+                        if sx == sex and lv != "doctorate"
+                    )
+                    values[i] = max(number(r[total_cols[sex]]) - others, 0.0)
         # 2015-2016 print the national row with no label at all, first under the header.
         if (
             total is None
@@ -149,32 +213,20 @@ def read(path: Path, year: int) -> dict[tuple[str, str, str, str, str, str], flo
         ):
             total = r
             continue
-        if not place or not any(values):
+        if not any(values):
             continue
         heads_block = bool(first_line(r[0]) or first_line(r[1]))
+        if not place and not heads_block:
+            if pid:
+                PLACED.append((year, pid, "(boş)", "kept"))
+            continue
         district = None
         if pid and not heads_block:
             try:
                 district = resolve_district(key, pname, place)
             except KeyError:
                 district = None
-        is_province = heads_block or district is None
-        if is_province:
-            try:
-                new_pid = province_id(place)
-            except KeyError:
-                if pid is None:
-                    raise
-                # Neither a province nor a known district of the current one: an old name.
-                UNKNOWN_DISTRICTS.append((year, pid, place))
-                for (level, delivery, sex), v in zip(
-                    cols.values(), values, strict=True
-                ):
-                    district_sums[(pid, uni_type, level, delivery, sex)] = (
-                        district_sums.get((pid, uni_type, level, delivery, sex), 0.0)
-                        + v
-                    )
-                continue
+        if heads_block or (district is None and province_or_none(place)):
             if heads_block:
                 kind = TYPES.get(fold(first_line(r[1])))
                 # 2018-2019 leave one state university's type blank.
@@ -185,19 +237,46 @@ def read(path: Path, year: int) -> dict[tuple[str, str, str, str, str, str], flo
                 if kind is None:
                     raise ValueError(f"YÖK {path.name}: tanınmayan tür {r[1]!r}")
                 uni_type = kind
-            pid, pname = new_pid, place
+                uni = fold(first_line(r[0]))
+            pid, pname = province_id(place), place
             for (level, delivery, sex), v in zip(cols.values(), values, strict=True):
                 k = (pid, "province", uni_type, level, delivery, sex)
                 province_values[k] = province_values.get(k, 0.0) + v
             continue
+        if district is None:
+            # A district of another province, printed under this one's campus (Selçuklu under
+            # an Ankara university): when the name is one district in the register, its
+            # students move there, province totals with them.
+            if fold(place) in ABROAD_CAMPUSES:
+                PLACED.append((year, pid, place, "kept"))
+                continue
+            found = by_name.get(CAMPUS_ALIASES.get(fold(place), fold(place)), [])
+            if len(found) == 1:
+                area, other = found[0]
+                for (level, delivery, sex), v in zip(
+                    cols.values(), values, strict=True
+                ):
+                    here = (pid, "province", uni_type, level, delivery, sex)
+                    there = (other, "province", uni_type, level, delivery, sex)
+                    province_values[here] = province_values.get(here, 0.0) - v
+                    province_values[there] = province_values.get(there, 0.0) + v
+                add_district(area, other, values)
+                PLACED.append((year, pid, place, "moved"))
+            else:
+                UNKNOWN_DISTRICTS.append((year, pid, place))
+                PLACED.append((year, pid, place, "kept"))
+            continue
         area, level_name = district
-        for (level, delivery, sex), v in zip(cols.values(), values, strict=True):
-            district_sums[(pid, uni_type, level, delivery, sex)] = (
-                district_sums.get((pid, uni_type, level, delivery, sex), 0.0) + v
-            )
-            if level_name == "district":
-                k = (area, "district", uni_type, level, delivery, sex)
-                out[k] = out.get(k, 0.0) + v
+        if level_name != "district":
+            # "MERKEZ" in a metropolitan province: the same campus's district in a newer
+            # release, when it had one.
+            seen = CAMPUS.get((uni, pid), {})
+            if not seen:
+                PLACED.append((year, pid, place, "kept"))
+                continue
+            area = max(seen, key=seen.get)
+            PLACED.append((year, pid, place, "campus"))
+        add_district(area, pid, values)
     # Districts may fall short of their province (students with no district recorded), never
     # exceed it.
     for (p, t, level, delivery, sex), v in district_sums.items():
@@ -231,7 +310,9 @@ class YokTable:
 
     def parse(self, raw: Path) -> pl.DataFrame:
         records = []
-        for year, path in files(self.indicator_id):
+        # Newest first, so an older release's "MERKEZ" rows can use the campus districts
+        # the newer ones printed.
+        for year, path in sorted(files(self.indicator_id), reverse=True):
             for (area, level_name, uni_type, level, delivery, sex), value in read(
                 path, year
             ).items():

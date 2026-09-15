@@ -27005,7 +27005,7 @@ unit = "person"
 frequency = "annual"
 dims = ["education_delivery", "higher_education_level", "sex", "university_type"]
 views = ["table", "map", "line", "bar"]
-definition_tr = "YÖK İstatistik yıllık yayınları, Tablo 102 'Öğrenim gördüğü il ve ilçelere göre öğrenci sayıları', 2014-2015 ... 2025-2026 öğretim yılları; dönem öğretim yılının ilk yılıdır. İl, üniversitenin yayında basılan yerleşke ilidir; açıköğretim öğrencileri üniversitenin merkez ilinde sayılır (Eskişehir, Erzurum, İstanbul). Her il toplamı basılı TOPLAM satırını tutar; ilçe düzeyi 2014-2016 yayınlarında eski ilçe adları yüzünden eksiktir."
+definition_tr = "YÖK İstatistik yıllık yayınları, Tablo 102 'Öğrenim gördüğü il ve ilçelere göre öğrenci sayıları', 2014-2015 ... 2025-2026 öğretim yılları; dönem öğretim yılının ilk yılıdır. İl, üniversitenin yayında basılan yerleşke ilidir; açıköğretim öğrencileri üniversitenin merkez ilinde sayılır (Eskişehir, Erzurum, İstanbul). Her il toplamı basılı TOPLAM satırını tutar; Büyükşehirlerdeki eski 'MERKEZ' satırları aynı kampüsün sonraki yayınlardaki ilçesine, başka ilin ilçesi olarak basılan kampüsler (ör. Ankara üniversitesinin Selçuklu yerleşkesi) o ile taşındı; yurt dışı kampüsler (Gazimağusa, Lefkoşa, Güzelyurt, Mogadişu, Taşkent) ve ilçesi boş satırlar yalnız il düzeyinde. İlçe kapsamı her yıl %99,7-100."
 
 [indicator.yok_new_students]
 label_tr = "Yükseköğretime yeni kayıt olan öğrenci sayısı (öğrenim görülen il/ilçe)"
@@ -27015,7 +27015,7 @@ unit = "person"
 frequency = "annual"
 dims = ["education_delivery", "higher_education_level", "sex", "university_type"]
 views = ["table", "map", "line", "bar"]
-definition_tr = "YÖK İstatistik Tablo 101, 2014-2015 ... 2025-2026. 2016-2017 yayınında doktora sütunları ne il ne ilçe toplamıyla basılı toplamı tutmadığı için o yıl doktora yok."
+definition_tr = "YÖK İstatistik Tablo 101, 2014-2015 ... 2025-2026. 2016-2017 yayınında doktora hücreleri satırlar arasında karışık basılmış; satır toplamları doğru olduğu için doktora = satır toplamı - diğer düzeyler olarak türetildi ve basılı Türkiye toplamını (7.191 E, 5.267 K) tutuyor."
 
 [indicator.yok_graduates]
 label_tr = "Yükseköğretim mezun sayısı (öğrenim görülen il/ilçe)"
