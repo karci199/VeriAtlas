@@ -458,7 +458,6 @@ def lpg_pdf_table(
             start = len(pending.split())
         pending = ""
         name = " ".join(words[:start])
-        values = [w for w in words[start:] if "%" not in w]
         if fold(name) in ("toplam", "geneltoplam", "turkiye"):
             numbers = [number_tr(w) for w in words[start:] if "%" not in w]
             national = [v for v in numbers if v not in (100.0,)]
