@@ -107,3 +107,20 @@ serisiyle karıştırılmadı; 2015'te ölü sayısı 30 gün içinde ölenleri 
 düzeyinde (alan düzeyi yok); otoyol kesim trafiği kesim adıyla basılı, ile eşleme yok.
 Veri Portalı dosyaları tarayıcı dışından indirilemiyor (`Erişim engellendi`); tarayıcı paneli
 yerel adrese de gönderemiyor — `scripts/receive_browser_files.py` bu yüzden kullanılamadı.
+
+## Otoyol kesim trafiği ve il eşlemesi (2026-09-15, karar)
+
+Trafik ve Ulaşım Bilgileri'ndeki otoyol kesim tabloları (kesim adı, uzunluk, hafif/ağır taşıt,
+YOGT) il kodu taşımıyor; kesim uçları kavşak ve yer adı. İle eşlemek tahmine dayanır ve yeni
+bilgi getirmez: il bazında otoyol trafiği zaten `kgm_vehicle_km` (road_class=motorway) ile
+`motorway_length` oranından çıkıyor — ortalama günlük trafik = taşıt-km / (uzunluk × 365).
+Bu türetme depolanmaz (K12). Kesim tabloları okunmadı.
+
+Oranın ortaya çıkardığı iki KGM iç tutarsızlığı:
+
+- Konya'nın 2020-2025 otoyol taşıt-km'si var (2025: 27,7 mn), otoyol uzunluğu tablosunda Konya yok.
+- Kırşehir'in 25 km otoyolu var, otoyol taşıt-km'si 0.
+
+2025 il ortalama günlük otoyol trafiği: Yalova 43.037, İstanbul 40.217, Kocaeli 35.856, Adana
+34.751, Ankara 32.380; en düşük Çanakkale 5.197, Denizli 5.270. Türkiye ağırlıklı: 2012 21.098 →
+2020 18.118 (salgın) → 2025 25.754.
