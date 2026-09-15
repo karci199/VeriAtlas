@@ -25167,7 +25167,7 @@ unit = "tonne"
 frequency = "annual"
 dims = ["lpg_product"]
 views = ["table", "map", "bar"]
-definition_tr = "EPDK LPG Piyasası Gelişim Raporları, 2016-2025 (ton)."
+definition_tr = "EPDK LPG Piyasası Sektör ve Gelişim Raporları, 2006-2025 (ton). 2006-2015 PDF raporlardan, 2016-2025 Word ve Excel."
 
 # endregion
 

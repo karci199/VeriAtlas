@@ -58,6 +58,8 @@ PROVINCE_ALIASES = {
     "afyon": "afyonkarahisar",
     # EPDK monthly report, December 2021.
     "kuthahya": "kutahya",
+    # EPDK LPG report 2007.
+    "malataya": "malatya",
 }
 
 SURFACES = (

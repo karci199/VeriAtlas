@@ -397,3 +397,103 @@ EPDK_HISTORY_ADAPTERS = {
     "epdk_fuel_sales": FuelSalesHistory,
     "epdk_lpg_sales": LpgSalesHistory,
 }
+
+
+#: The 2006-2015 LPG reports as PDF: file -> (report year, pages of the province × product
+#: table). The year is not in a machine-readable place: it was read from each cover ("2008
+#: Yılı Sektör Raporu", "TÜRKİYE LPG PİYASASI BÜYÜKLÜKLERİ (2009)") and, for the three reports
+#: whose covers cite several years (2011-2013), from their licence tables and the world data
+#: they quote; autogas then rises every year 2009-2016, which the order would break if two
+#: were swapped.
+LPG_PDFS = {
+    "mCrcaNTln84_": (2006, (30, 31)),
+    "DYGIdjqtHqk_": (2007, (25, 26)),
+    "dd6mSfa0pZQ_": (2008, (22, 23)),
+    "OUHfpoxVFx8_": (2009, (21, 22)),
+    "Z35HY3UyDx8_": (2010, (21, 22)),
+    "eEB0nJQ2OZc_": (2011, (20, 21)),
+    "icsaPKY6fJU_": (2012, (32, 33)),
+    "qV0pokY56Gg_": (2013, (36, 37)),
+    "b5KW7ZIgO9g_": (2014, (36, 37)),
+    "ClrL1VI5wIY_": (2015, (34, 35)),
+}
+
+
+def lpg_pdf_table(
+    path: Path, pages: tuple[int, int], year: int
+) -> dict[str, dict[str, float]]:
+    """Rows "İl  tüplü pay  dökme pay  otogaz pay  toplam [pay]", totals checked."""
+    import pdfplumber
+
+    with pdfplumber.open(path) as document:
+        lines = [
+            line
+            for p in pages
+            for line in (document.pages[p].extract_text() or "").splitlines()
+        ]
+    out: dict[str, dict[str, float]] = {}
+    national = None
+    pending = ""
+    held: list[str] = []
+    for line in lines:
+        # 2009-2010 fonts print İ as Đ; a long name (KAHRAMANMARAŞ, 2013) can sit alone on
+        # the line above its numbers.
+        words = line.replace("Đ", "İ").split()
+        start = next((i for i, w in enumerate(words) if re.match(r"^[%\d]", w)), None)
+        if start is None:
+            if held and province_or_none(pending + "".join(words)):
+                words = (pending + "".join(words)).split() + held
+                start = 1
+                held = []
+            else:
+                pending = " ".join(words)
+                continue
+        if start == 0:
+            if not province_or_none(pending):
+                # "KAHRAMANMAR" above the numbers and "AŞ" below (2013): the numbers wait
+                # for the rest of the name on the next line.
+                held = words
+                continue
+            words = pending.split() + words
+            start = len(pending.split())
+        pending = ""
+        name = " ".join(words[:start])
+        values = [w for w in words[start:] if "%" not in w]
+        if fold(name) in ("toplam", "geneltoplam", "turkiye"):
+            numbers = [number_tr(w) for w in words[start:] if "%" not in w]
+            national = [v for v in numbers if v not in (100.0,)]
+            continue
+        pid = province_or_none(name)
+        if not pid:
+            continue
+        # Shares follow each quantity; with the % sign gone they are the small numbers
+        # in alternate positions.
+        quantities = [number_tr(w) for w in words[start:][0::2]]
+        if len(quantities) < 4:
+            raise ValueError(f"LPG {year} {name}: {line}")
+        cylinder, bulk, autogas, total = quantities[:4]
+        near(cylinder + bulk + autogas, total, f"LPG {year} {pid}", 3.0)
+        out[pid] = {"cylinder": cylinder, "bulk": bulk, "autogas": autogas}
+    if len(out) != 81:
+        raise ValueError(f"LPG {year}: {len(out)} il")
+    if national:
+        near(
+            sum(sum(v.values()) for v in out.values()),
+            national[-1] if len(national) < 4 else national[3],
+            f"LPG {year} Türkiye",
+            81 * 3.0,
+        )
+    return out
+
+
+class LpgSalesLong(LpgSalesHistory):
+    def parse(self, raw: Path) -> pl.DataFrame:
+        recent = super().parse(raw)
+        tables = {
+            year: lpg_pdf_table(FILES / "lpg_yillik" / f"{name}.pdf", pages, year)
+            for name, (year, pages) in LPG_PDFS.items()
+        }
+        return merge_years(recent, records(tables, "lpg_product"), "LPG 2006-2015")
+
+
+EPDK_HISTORY_ADAPTERS["epdk_lpg_sales"] = LpgSalesLong

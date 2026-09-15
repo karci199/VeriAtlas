@@ -77,3 +77,14 @@ Tuzaklar: Aralık 2021 tablosunda "Küthahya" (119 MW) — tanınmayan ad artık
 atanmadı; Kilis'te lisanslı santral yok; santrali olmayan iller lisanssız tabloda listelenmiyor
 (2016: 63 il); güneş fotovoltaik ve yoğunlaştırılmış 2016-2019 ayrı sütun, toplandı. İl × kaynak
 lisanslı kurulu güç yalnız 2026 aylık Excel'lerinde var (yıllık kural gereği alınmadı).
+
+## LPG 2006-2015, PDF raporlar (2026-09-15)
+
+`LPG_PDFS`: 10 rapor, il × tüplü/dökme/otogaz; yıl kapak ve lisans tablolarından, sıra otogazın
+2009-2016 kesintisiz artışıyla doğrulandı. Her yıl il satırı toplamı ve Türkiye toplamı tutuyor.
+Tuzaklar: 2009-2010 yazı tipinde İ → Đ; "Malataya" (2007); "İçel" (2009-2010); 2013'te
+KAHRAMANMAR / sayılar / AŞ üç satıra bölünmüş.
+
+Alınmayanlar: doğalgaz 2014-2016 il tüketimi (PDF'te boş hücreler kayboluyor, sütun ayrılamıyor;
+2014 Word'de yalnız il toplamı); akaryakıt 2011-2014 (litre, bayi pompa satışı — 2015 sonrası ton
+serisiyle aynı ölçü değil); şarj hizmeti (il kırılımı yok, Türkiye grafikleri).
