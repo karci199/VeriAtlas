@@ -119,6 +119,58 @@ label_tr = "Trafik kazaları"
 label_en = "Road accidents"
 order = 48
 
+[dim.field]
+label_tr = "Eğitim alanı"
+label_en = "Field of education"
+
+[dim.field_level]
+label_tr = "Alan düzeyi"
+label_en = "Field level"
+
+[dim.field_level.values]
+broad = "Geniş alan"
+narrow = "Dar alan"
+detailed = "Ayrıntılı alan"
+
+[dim.staff_unit]
+label_tr = "Görev birimi"
+label_en = "Unit"
+
+[dim.staff_unit.values]
+bachelor_programmes = "Lisans programları"
+associate_programmes = "Önlisans programları"
+institute = "Enstitü ve araştırma merkezleri"
+
+[indicator.yok_students_by_field]
+label_tr = "Öğrenci ve yeni kayıt, eğitim alanına göre"
+label_en = "Students and new registrations by field of education"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["field", "field_level", "higher_education_level", "sex", "student_event"]
+views = ["table", "line", "bar"]
+definition_tr = "YÖK İstatistik Tablo 17 (lisans) ve 19 (önlisans), ISCED-F 2013 eğitim alanları, 2015-2016 ... 2025-2026. Geniş, dar ve ayrıntılı alan aynı tabloda üst üste basılı; düzey (field_level) toplamlardan çözüldü, bir düzeyi toplayın (düzeyler toplanırsa üç kat sayılır). Geniş alan toplamları her yıl il tablosu (yok_students) önlisans ve lisans sayısıyla birebir aynı. 2013-2014 ve 2014-2015 başka düzende, alınmadı; lisansüstü alan tablosu ayrı, alınmadı."
+
+[indicator.yok_graduates_by_field]
+label_tr = "Mezun, eğitim alanına göre"
+label_en = "Graduates by field of education"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["field", "field_level", "higher_education_level", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "YÖK İstatistik Tablo M17/M19, 2015-2016 ... 2025-2026; bir alan düzeyi seçilerek kullanılır."
+
+[indicator.yok_academic_staff_by_field]
+label_tr = "Öğretim elemanı, eğitim alanına ve unvana göre"
+label_en = "Academic staff by field of education and title"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["academic_title", "field", "field_level", "sex", "staff_unit"]
+views = ["table", "line", "bar"]
+definition_tr = "YÖK İstatistik Tablo 30 (lisans programları), 32 (önlisans), 34 (enstitü ve araştırma merkezleri), 2015-2016 ... 2025-2026; bir alan düzeyi seçilerek kullanılır."
+
 # endregion
 
 # region Dimensions — the breakdown keys and what their stored values are called

@@ -111,7 +111,7 @@ ADAPTERS = {
     **TOBB_ADAPTERS,
     **YOKATLAS_ADAPTERS,
     **YOK_ISTATISTIK_ADAPTERS,
-    **{k: v for k, v in YOK_NATIONAL_ADAPTERS.items() if "_by_field" not in k},
+    **YOK_NATIONAL_ADAPTERS,
     # İlçe SEGE-2022 development score, rank and level.
     **SEGE_ADAPTERS,
 }

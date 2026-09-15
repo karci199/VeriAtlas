@@ -110,7 +110,9 @@ def family_files(pattern: str) -> list[tuple[int, str, Path]]:
 
 def is_total(label: str) -> bool:
     key = fold(label)
-    return key in ("toplam", "toplamtotal") or key.startswith("universitelertoplam")
+    return key in ("toplam", "toplamtotal", "geneltoplam") or key.startswith(
+        "universitelertoplam"
+    )
 
 
 def parse_table(path: Path) -> tuple[list[tuple[str, dict]], dict, dict]:
@@ -124,6 +126,27 @@ def parse_table(path: Path) -> tuple[list[tuple[str, dict]], dict, dict]:
     sheet = xlrd.open_workbook(path).sheet_by_index(0)
     rows = [[str(v) for v in sheet.row_values(r)] for r in range(sheet.nrows)]
     first = next((i for i, r in enumerate(rows) if is_total(first_line(r[0]))), None)
+    unlabeled_total = False
+    if first is None:
+        # 2021-2023 print the TOPLAM row with its label cell empty, right under E/K/T.
+        sex_index = next(
+            (
+                i
+                for i, r in enumerate(rows[:10])
+                if {fold(c) for c in r[1:] if c.strip()} >= {"e", "k"}
+            ),
+            None,
+        )
+        if (
+            sex_index is not None
+            and sex_index + 1 < len(rows)
+            and not rows[sex_index + 1][0].strip()
+            and any(
+                re.fullmatch(r"\d+(\.0)?", c.strip()) for c in rows[sex_index + 1][1:]
+            )
+        ):
+            first = sex_index + 1
+            unlabeled_total = True
     if first is None:
         raise ValueError(f"{path.name}: TOPLAM satırı yok")
     header = rows[1:first]
@@ -211,8 +234,10 @@ def parse_table(path: Path) -> tuple[list[tuple[str, dict]], dict, dict]:
     data: list[tuple[str, dict]] = []
     total: dict = {}
     current = None
-    for r in rows[first:]:
+    for position, r in enumerate(rows[first:]):
         label = first_line(r[0])
+        if unlabeled_total and position == 0:
+            label = "TOPLAM"
         if down:
             sex = SEXES.get(fold(r[sex_col]))
             if label and not is_total(label):
@@ -270,39 +295,48 @@ def check_flat(path: Path, data, total) -> None:
 
 
 def resolve_tree(path: Path, data, total) -> list[tuple[str, str, dict]]:
-    """[(label, depth, values)] with depth broad / narrow / detailed, from the sums."""
+    """[(label, depth, values)] with depth broad / narrow / detailed, from the sums.
+
+    Walks the rows once: at each depth, rows are taken until they add up to the parent
+    (the TOPLAM row at the top); every row taken above the deepest level first takes its own
+    children the same way. Tried three levels deep, then two (older scheme)."""
     keys = list(total)
     vector = [[v.get(k, 0.0) for k in keys] for _, v in data]
-    target = [total[k] for k in keys]
+    names = ["broad", "narrow", "detailed"]
 
-    def consume(start: int, goal: list[float], depth: int):
-        """Rows from `start` at `depth` whose sums reach `goal`; returns (assignments, end)."""
-        out: list[tuple[int, int]] = []
-        acc = [0.0] * len(goal)
-        i = start
-        while i < len(vector) and any(
-            abs(a - g) > 0.5 for a, g in zip(acc, goal, strict=True)
-        ):
-            out.append((i, depth))
-            row = vector[i]
-            i += 1
-            if depth < 2:
-                children, i = consume(i, row, depth + 1)
-                if children is None:
-                    return None, i
-                out.extend(children)
-            acc = [a + b for a, b in zip(acc, row, strict=True)]
-            if any(a - g > 0.5 for a, g in zip(acc, goal, strict=True)):
-                return None, i
-        if any(abs(a - g) > 0.5 for a, g in zip(acc, goal, strict=True)):
-            return None, i
-        return out, i
+    for levels in (3, 2):
+        position = 0
+        assigned: list[tuple[int, int]] = []
 
-    for top_depth in (0, 1):  # three levels, or two (older scheme)
-        assigned, end = consume(0, target, top_depth)
-        if assigned is not None and end == len(vector):
-            names = ["broad", "narrow", "detailed"]
-            return [(data[i][0], names[d], data[i][1]) for i, d in assigned]
+        def take(goal: list[float], depth: int, levels: int = levels) -> bool:
+            nonlocal position
+            acc = [0.0] * len(goal)
+            while position < len(vector) and any(
+                abs(a - g) > 0.5 for a, g in zip(acc, goal, strict=True)
+            ):
+                index = position
+                row = vector[index]
+                position += 1
+                assigned.append((index, depth))
+                # "SINIFLANMAMIŞ" (unclassified) closes the table as a broad field printed
+                # once, with no narrow or detailed rows under it.
+                # Printed once in most years, three times (broad, narrow, detailed) in 2024.
+                leaf = fold(data[index][0]).startswith(
+                    ("siniflanmamis", "bilinmeyen")
+                ) and (
+                    index + 1 >= len(vector)
+                    or fold(data[index + 1][0]) != fold(data[index][0])
+                )
+                if depth < levels - 1 and not leaf and not take(row, depth + 1):
+                    return False
+                acc = [a + b for a, b in zip(acc, row, strict=True)]
+                if any(a - g > 0.5 for a, g in zip(acc, goal, strict=True)):
+                    return False
+            return all(abs(a - g) <= 0.5 for a, g in zip(acc, goal, strict=True))
+
+        if take([total[k] for k in keys], 0) and position == len(vector):
+            offset = 3 - levels
+            return [(data[i][0], names[d + offset], data[i][1]) for i, d in assigned]
     raise ValueError(f"{path.name}: alan hiyerarşisi toplamlardan çözülemedi")
 
 
@@ -389,6 +423,13 @@ class YokNational:
             key = (year, str(sorted(scope.items())))
             if key in seen:
                 continue  # 2013-2014 lists some tables twice (the "DEK" copies)
+            if tree and year < 2015:
+                # 2013-2014 and 2014-2015 print the field tables in another layout whose
+                # hierarchy does not resolve from the sums; left out, noted.
+                NOTES.append(
+                    (self.indicator_id, year, path.name, "eski düzen, alınmadı")
+                )
+                continue
             data, total, _ = parse_table(path)
             if tree:
                 rows = resolve_tree(path, data, total)
