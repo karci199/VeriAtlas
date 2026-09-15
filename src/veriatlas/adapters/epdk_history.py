@@ -882,6 +882,164 @@ def gas_sector_tables(file: str) -> dict[str, dict[str, float]]:
     return out
 
 
+#: Header anchor word -> sector, for the PDF section 10 tables.
+GAS_SECTOR_ANCHORS = {
+    "donusum": "conversion",
+    "enerji": "energy",
+    "ulasim": "transport",
+    "sanayi": "industry",
+    "hizmet": "services",
+    "konutlar": "residential",
+    "diger": "other",
+    "genel": "total",
+}
+
+
+def gas_sector_pdf(file: str, first: int, year: int) -> dict[str, dict[str, float]]:
+    """Section 10 of the 2015-2016 PDF reports: each province's TOPLAM row by sector.
+
+    Only the TOPLAM row of each province block is read. Its numbers go to the header
+    column whose anchor word ("Enerji", "Sanayi", "Konutlar"…) is nearest, the header being
+    repeated on every page. Checked: the seven sectors add up to the row's Genel Toplam,
+    and that total must equal the province's total in the consumption table (Tablo 8.3),
+    read separately — a number put in the wrong column breaks the first check, a row given
+    to the wrong province breaks the second.
+    """
+    import pdfplumber
+
+    out: dict[str, dict[str, float]] = {}
+    province = None
+    headers: list[tuple[int, float, dict[str, float]]] = []
+    with pdfplumber.open(FILES / "dogalgaz_yillik" / f"{file}.pdf") as document:
+        for raw_page in document.pages[first:]:
+            sizes = Counter(
+                round(c["size"]) for c in raw_page.chars if c["text"].isdigit()
+            )
+            common = sizes.most_common(2)
+            # 2015 only: a second text layer. The 2016 report sets tables in two sizes
+            # on one page, which the same test would take for a layer and drop.
+            if year == 2015 and len(common) == 2 and common[1][1] > 50:
+                # The second layer is Times New Roman at 13.8 pt; the report itself is
+                # Swiss 721 at 6-10 pt. Drop that layer by its font, not by a size count.
+                page = raw_page.filter(
+                    lambda o: (
+                        o.get("object_type") != "char"
+                        or not ("Times" in o["fontname"] and o["size"] > 12)
+                    )
+                )
+            else:
+                page = raw_page
+            text = page.extract_text() or ""
+            if out and not re.search(r"Tablo 10\.\d+|Lisans Tipi", text):
+                break
+            words = page.extract_words()
+            # A page can hold two province tables with their headers set differently, so
+            # every header row ("Lisans" and its sector words) is kept with its height and
+            # each TOPLAM row reads the nearest header above it.
+            for lisans in (w for w in words if fold(w["text"]) == "lisans"):
+                found: dict[str, float] = {}
+                for w in words:
+                    key = fold(
+                        w["text"].split("/")[0]
+                    )  # "Dönüşüm/" or "Dönüşüm/Çevrim"
+                    if (
+                        key in GAS_SECTOR_ANCHORS
+                        and abs(w["top"] - lisans["top"]) < 25
+                        and w["x0"] > lisans["x1"]
+                    ):
+                        found.setdefault(
+                            GAS_SECTOR_ANCHORS[key], (w["x0"] + w["x1"]) / 2
+                        )
+                headers.append((raw_page.page_number, lisans["top"], found))
+            events = []
+            for m in re.finditer(r"Tablo 10\.\d+:? ?(.+)", text):
+                events.append(("name", m.group(1).strip()))
+            titles = [
+                (
+                    w["top"],
+                    " ".join(
+                        o["text"]
+                        for o in words
+                        if abs(o["top"] - w["top"]) < 2
+                        and o["x0"] > w["x1"]
+                        and not re.fullmatch(r"10\.\d+:?", o["text"])
+                    ),
+                )
+                for w in words
+                if w["text"] == "Tablo"
+            ]
+            items = [(t, "name", n) for t, n in titles]
+            for w in words:
+                if w["text"] == "TOPLAM" and not any(
+                    fold(o["text"]) == "genel" and abs(o["top"] - w["top"]) < 2
+                    for o in words
+                ):
+                    items.append((w["top"], "total", w))
+            for top, kind, item in sorted(items, key=lambda x: x[0]):
+                if kind == "name":
+                    name = re.sub(r"^10\.\d+:?\s*", "", item).strip()
+                    province = (
+                        "other"
+                        if fold(name).startswith("diger")
+                        else "TR"
+                        if fold(name) == "turkiye"
+                        else province_id(name)
+                    )
+                    continue
+                anchors = next(
+                    (
+                        h
+                        for n, t, h in reversed(headers)
+                        if n < raw_page.page_number or t < top
+                    ),
+                    {},
+                )
+                if len(anchors) != 8 or province is None:
+                    raise ValueError(
+                        f"doğalgaz sektör PDF {year}: sayfa {raw_page.page_number} "
+                        f"başlık {sorted(anchors)} il {province}"
+                    )
+                values: dict[str, float] = {}
+                for w in words:
+                    if abs(w["top"] - top) < 2 and NUMBER.fullmatch(w["text"]):
+                        centre = (w["x0"] + w["x1"]) / 2
+                        sector = min(anchors, key=lambda k: abs(anchors[k] - centre))
+                        if sector in values:
+                            raise ValueError(
+                                f"doğalgaz sektör PDF {year} {province}: {sector} iki kez"
+                            )
+                        values[sector] = number_tr(w["text"])
+                total = values.pop("total", None)
+                if (
+                    not values and total is None
+                ):  # a province with no sales (Tunceli 2015)
+                    province = None
+                    continue
+                if total is None:
+                    raise ValueError(
+                        f"doğalgaz sektör PDF {year} {province}: genel toplam yok"
+                    )
+                full = {k: values.get(k, 0.0) for k in GAS_SECTOR_COLUMNS.values()}
+                near(
+                    sum(full.values()),
+                    total,
+                    f"doğalgaz sektör {year} {province}",
+                    total * 1e-5,
+                )
+                if province not in ("other", "TR"):
+                    if province in out:
+                        raise ValueError(
+                            f"doğalgaz sektör PDF {year}: {province} iki kez"
+                        )
+                    out[province] = full
+                province = None
+    return out
+
+
+#: Year -> (PDF, first page of section 10).
+GAS_SECTOR_PDFS = {2015: ("Jo_r3O_Xi5s_", 77), 2016: ("zd_qHXQpFYw_", 92)}
+
+
 class GasSalesHistory(EpdkGasSales):
     def parse(self, raw: Path) -> pl.DataFrame:
         files = {
@@ -898,6 +1056,27 @@ class GasSalesHistory(EpdkGasSales):
             if year in tables:
                 raise ValueError(f"doğalgaz sektör {year}: iki rapor")
             tables[year] = gas_sector_tables(f)
+        consumption = GasConsumption().parse(raw)
+        for year, (file, first) in GAS_SECTOR_PDFS.items():
+            table = gas_sector_pdf(file, first, year)
+            used = consumption.filter(pl.col("period_start").dt.year() == year)
+            totals = dict(
+                used.group_by("area_id").agg(pl.col("value").sum()).iter_rows()
+            )
+            if set(table) != set(totals):
+                raise ValueError(
+                    f"doğalgaz sektör {year}: il kümesi tüketim tablosundan farklı "
+                    f"{sorted(set(table) ^ set(totals))}"
+                )
+            for pid, sectors in table.items():
+                # Tablo 8.3 is in million Sm3 to two decimals: 5,000 m3 of rounding a cell.
+                near(
+                    sum(sectors.values()),
+                    totals[pid],
+                    f"doğalgaz sektör/tüketim {year} {pid}",
+                    25_000.0,
+                )
+            tables[year] = table
         return merge_years(
             super().parse(raw), records(tables, "gas_sector"), "doğalgaz sektör"
         )
