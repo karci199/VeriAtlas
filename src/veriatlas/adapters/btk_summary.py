@@ -33,6 +33,11 @@ ITEMS = [
     (r"sektorugelirleri", "btk_sector_revenue", ""),
     (r"sektoruyatirimlari", "btk_sector_investment", ""),
     (r"^sabitabonesayisi", "btk_subscribers_summary", "subscriber_type=fixed"),
+    (  # 2026-1 on: BTK counts mobile subscriptions without M2M
+        r"^toplammobilabonesayisimmharic",
+        "btk_subscribers_summary",
+        "subscriber_type=mobile_excl_m2m",
+    ),
     (
         r"^toplammobilabonesayisi",
         "btk_subscribers_summary",
@@ -142,12 +147,16 @@ def summary_text(path: Path) -> tuple[int, str]:
 def parse_summary(path: Path) -> tuple[int, dict[tuple[str, str], tuple[float, float]]]:
     """{(indicator, dims): (this year, previous year)} from one year-end report."""
     year, text = summary_text(path)
+    return year, parse_text(text, path.name)
+
+
+def parse_text(text: str, name: str) -> dict[tuple[str, str], tuple[float, float]]:
     lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
     found: dict[tuple[str, str], tuple[float, float]] = {}
 
     def put(slot, current, previous):
         if slot in found:
-            raise ValueError(f"{path.name}: {slot} iki kez")
+            raise ValueError(f"{name}: {slot} iki kez")
         found[slot] = (current, previous)
 
     section = None
@@ -170,13 +179,27 @@ def parse_summary(path: Path) -> tuple[int, dict[tuple[str, str], tuple[float, f
             section = "btk_data_per_subscriber"
         if key in ("mobil", "sabit") and section:
             slot = (section, "network=" + ("fixed" if key == "sabit" else "mobile"))
-            if len(numbers) >= 2:
+            below = split(table_lines[n + 1])[1] if n + 1 < len(table_lines) else []
+            if (
+                len(numbers) == 2
+                and len(below) == 1
+                and not split(table_lines[n + 1])[0]
+            ):
+                # 2022-3/4 sheets: "Mobil 2.310.787 36,0" then "3.143.336" alone — the
+                # current value dropped below the previous one and the change.
+                current, previous = to_float(below[0]), to_float(numbers[0])
+                change = to_float(numbers[1])
+                if abs((current / previous - 1) * 100 - change) > 0.2:
+                    raise ValueError(f"{name}: {line!r} değişim tutmuyor")
+                put(slot, current, previous)
+                skip_next = True
+            elif len(numbers) >= 2:
                 put(slot, to_float(numbers[0]), to_float(numbers[1]))
             elif len(numbers) == 1:
                 # 2025: "74.319.563 65.153.324" on the line above, "Sabit 14,1" here.
                 prev_label, prev_numbers = split(table_lines[n - 1])
                 if prev_label or len(prev_numbers) != 2:
-                    raise ValueError(f"{path.name}: {line!r} değer satırı yok")
+                    raise ValueError(f"{name}: {line!r} değer satırı yok")
                 put(slot, to_float(prev_numbers[0]), to_float(prev_numbers[1]))
             continue
         if len(numbers) < 2:
@@ -214,7 +237,7 @@ def parse_summary(path: Path) -> tuple[int, dict[tuple[str, str], tuple[float, f
         before, after, tt_before, tt_after = (to_float(g) for g in fibre.groups())
         put(("btk_fiber_length", "fiber_owner=alternative"), after, before)
         put(("btk_fiber_length", "fiber_owner=turk_telekom"), tt_after, tt_before)
-    return year, found
+    return found
 
 
 def reports() -> dict[int, dict[tuple[str, str], tuple[float, float]]]:
@@ -250,6 +273,119 @@ def load_all() -> dict[tuple[str, str, int], float]:
                 out[(indicator, dims, year - 1)] = previous
                 out[(indicator, dims, year)] = current
     return out
+
+
+QUARTERLY_FOLDER = RAW / "btk" / "pdf" / "iletisim-hizmetleri-istatistikleri"
+QUARTERLY_REQUIRED = REQUIRED - {
+    ("btk_subscribers_summary", "subscriber_type=mobile_total"),
+    ("btk_subscribers_summary", "subscriber_type=mobile_persons"),
+}
+
+
+def quarterly_reports() -> dict[
+    tuple[int, int], dict[tuple[str, str], tuple[float, float]]
+]:
+    """ "İletişim Hizmetleri İstatistikleri" quarterly sheets, 2016-4 … 2026-1: the same table
+    for one quarter beside the same quarter a year before."""
+    import pdfplumber
+
+    out = {}
+    for path in sorted(QUARTERLY_FOLDER.glob("*İstatistik.pdf")):
+        with pdfplumber.open(path) as document:
+            pages = [page.extract_text() or "" for page in document.pages]
+        text = chr(10).join(pages)
+        head = re.search(r"(20\d\d)-([1-4])\s+(20\d\d)-([1-4])", text)
+        if not head:
+            raise ValueError(f"{path.name}: dönem başlığı yok")
+        year, quarter, prev_year, prev_quarter = (int(g) for g in head.groups())
+        name_year, name_quarter = re.match(r"(20\d\d) _([1-4])", path.name).groups()
+        if (year, quarter) != (int(name_year), int(name_quarter)) or (
+            prev_year,
+            prev_quarter,
+        ) != (year - 1, quarter):
+            raise ValueError(f"{path.name}: başlık {head.group(0)}")
+        found = parse_text(text, path.name)
+        has_total = ("btk_subscribers_summary", "subscriber_type=mobile_total") in found
+        has_excl = (
+            "btk_subscribers_summary",
+            "subscriber_type=mobile_excl_m2m",
+        ) in found
+        missing = QUARTERLY_REQUIRED - set(found)
+        if missing or has_total == has_excl:
+            raise ValueError(
+                f"{path.name}: bulunamadı {sorted(missing)} / mobil toplam {has_total}, {has_excl}"
+            )
+        for column in (0, 1):
+            parts = sum(found[("_bb", c)][column] for c in BROADBAND)
+            total = found[("_bb_total", "")][column]
+            if abs(parts - total) > 2:
+                raise ValueError(
+                    f"{path.name} sütun {column}: genişbant {parts:,.0f} ≠ {total:,.0f}"
+                )
+        out[(year, quarter)] = found
+    if len(out) < 38:
+        raise FileNotFoundError(f"{QUARTERLY_FOLDER}: {len(out)} çeyrek")
+    return out
+
+
+def load_quarterly() -> dict[tuple[str, str, dt.date], float]:
+    """Oldest sheet first: a sheet's year-before column overwrites the older sheet."""
+    out: dict[tuple[str, str, dt.date], float] = {}
+    for (year, quarter), found in sorted(quarterly_reports().items()):
+        start = dt.date(year, (quarter - 1) * 3 + 1, 1)
+        for (indicator, dims), (current, previous) in found.items():
+            if indicator.startswith("_"):
+                continue
+            out[(indicator + "_quarterly", dims, start.replace(year=year - 1))] = (
+                previous
+            )
+            out[(indicator + "_quarterly", dims, start)] = current
+    return out
+
+
+class BtkSummaryQuarterly:
+    source_id = "btk"
+    indicator_id = ""
+
+    def fetch(self) -> Path:
+        return QUARTERLY_FOLDER
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        base = self.indicator_id.removesuffix("_quarterly")
+        records = [
+            {
+                "period_start": start,
+                "dims": dims,
+                "value": value * SCALES.get(base, 1.0),
+            }
+            for (indicator, dims, start), value in load_quarterly().items()
+            if indicator == self.indicator_id
+        ]
+        return pl.DataFrame(
+            records, schema_overrides={"value": pl.Float64}
+        ).with_columns(
+            pl.lit("TR").alias("area_id"),
+            pl.lit("country").alias("area_level"),
+            pl.lit(self.indicator_id).alias("indicator_id"),
+            pl.lit("quarterly").alias("frequency"),
+            pl.lit(UNITS[base]).alias("unit"),
+            pl.lit("measured").alias("quality_flag"),
+            pl.lit("2026-06").alias("vintage"),
+            pl.lit("btk").alias("source_id"),
+            pl.lit(dt.date(2026, 9, 16)).alias("retrieved_at"),
+        )
+
+
+QUARTERLY = [
+    "btk_operators",
+    "btk_sector_revenue",
+    "btk_sector_investment",
+    "btk_subscribers_summary",
+    "btk_minutes_of_use",
+    "btk_arpu_summary",
+    "btk_data_traffic",
+    "btk_data_per_subscriber",
+]
 
 
 class BtkSummary:
@@ -289,4 +425,12 @@ BTK_SUMMARY_ADAPTERS = {
         f"BtkSummary_{indicator}", (BtkSummary,), {"indicator_id": indicator}
     )
     for indicator in UNITS
+}
+BTK_SUMMARY_ADAPTERS |= {
+    indicator + "_quarterly": type(
+        f"BtkSummaryQuarterly_{indicator}",
+        (BtkSummaryQuarterly,),
+        {"indicator_id": indicator + "_quarterly"},
+    )
+    for indicator in QUARTERLY
 }

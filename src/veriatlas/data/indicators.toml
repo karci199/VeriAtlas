@@ -27675,6 +27675,7 @@ fixed = "Sabit telefon"
 mobile_total = "Mobil, toplam (M2M dahil)"
 m2m = "M2M"
 mobile_persons = "Mobil abone (kişi)"
+mobile_excl_m2m = "Mobil, M2M hariç (2026-1'den)"
 cable_tv = "Kablo TV"
 
 [dim.message_type]
@@ -27910,6 +27911,84 @@ frequency = "annual"
 dims = ["call_outcome"]
 views = ["table", "line", "bar"]
 definition_tr = "BTK Elektronik Kimlik Bilgisini Haiz Cihazlara Dair İstatistikler (yıllık PDF); 2010-2015 2015 PDF'inden, 2007-2009 Eylül 2010 tarihli PDF'ten. "
+
+[indicator.btk_operators_quarterly]
+label_tr = "İşletmeci ve yetkilendirme sayısı, çeyreklik"
+label_en = "BTK operators, quarterly"
+topic = "iletisim"
+unit = "item"
+frequency = "quarterly"
+dims = ["operator_count"]
+views = ["table", "line"]
+definition_tr = "BTK İletişim Hizmetleri İstatistikleri (çeyreklik özet tablo, 2016-4 … 2026-1); her çeyrek bir yıl sonraki sayfanın önceki-yıl sütunundan (BTK geri dönük düzeltiyor), yoksa kendi sayfasından; kapsam 2015-4 … 2026-1. "
+
+[indicator.btk_sector_revenue_quarterly]
+label_tr = "Elektronik haberleşme sektörü geliri, çeyreklik"
+label_en = "BTK sector revenue, quarterly"
+topic = "iletisim"
+unit = "try"
+frequency = "quarterly"
+views = ["table", "line"]
+definition_tr = "BTK İletişim Hizmetleri İstatistikleri (çeyreklik özet tablo, 2016-4 … 2026-1); her çeyrek bir yıl sonraki sayfanın önceki-yıl sütunundan (BTK geri dönük düzeltiyor), yoksa kendi sayfasından; kapsam 2015-4 … 2026-1. Çeyrek içi gelir, cari TL."
+
+[indicator.btk_sector_investment_quarterly]
+label_tr = "Elektronik haberleşme sektörü yatırımı, çeyreklik"
+label_en = "BTK sector investment, quarterly"
+topic = "iletisim"
+unit = "try"
+frequency = "quarterly"
+views = ["table", "line"]
+definition_tr = "BTK İletişim Hizmetleri İstatistikleri (çeyreklik özet tablo, 2016-4 … 2026-1); her çeyrek bir yıl sonraki sayfanın önceki-yıl sütunundan (BTK geri dönük düzeltiyor), yoksa kendi sayfasından; kapsam 2015-4 … 2026-1. Çeyrek içi, cari TL; 2015-4'e 4.5G, 2026-1'e 5G ihale bedeli dahil."
+
+[indicator.btk_subscribers_summary_quarterly]
+label_tr = "Sabit, mobil ve M2M abone, çeyreklik"
+label_en = "BTK subscribers summary, quarterly"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "quarterly"
+dims = ["subscriber_type"]
+views = ["table", "line"]
+definition_tr = "BTK İletişim Hizmetleri İstatistikleri (çeyreklik özet tablo, 2016-4 … 2026-1); her çeyrek bir yıl sonraki sayfanın önceki-yıl sütunundan (BTK geri dönük düzeltiyor), yoksa kendi sayfasından; kapsam 2015-4 … 2026-1. Çeyrek sonu. 2026-1'den BTK toplam mobili M2M hariç basıyor (ayrı kırılım). Mobil (kişi) 2021-3'ten basılmıyor."
+
+[indicator.btk_minutes_of_use_quarterly]
+label_tr = "Abone başına aylık konuşma (MoU), çeyreklik"
+label_en = "BTK minutes of use, quarterly"
+topic = "iletisim"
+unit = "minute_per_month"
+frequency = "quarterly"
+dims = ["network"]
+views = ["table", "line"]
+definition_tr = "BTK İletişim Hizmetleri İstatistikleri (çeyreklik özet tablo, 2016-4 … 2026-1); her çeyrek bir yıl sonraki sayfanın önceki-yıl sütunundan (BTK geri dönük düzeltiyor), yoksa kendi sayfasından; kapsam 2015-4 … 2026-1. "
+
+[indicator.btk_arpu_summary_quarterly]
+label_tr = "ARPU, Türk Telekom ve mobil, çeyreklik"
+label_en = "BTK arpu summary, quarterly"
+topic = "iletisim"
+unit = "try_per_month"
+frequency = "quarterly"
+dims = ["arpu_scope"]
+views = ["table", "line"]
+definition_tr = "BTK İletişim Hizmetleri İstatistikleri (çeyreklik özet tablo, 2016-4 … 2026-1); her çeyrek bir yıl sonraki sayfanın önceki-yıl sütunundan (BTK geri dönük düzeltiyor), yoksa kendi sayfasından; kapsam 2015-4 … 2026-1. Cari TL."
+
+[indicator.btk_data_traffic_quarterly]
+label_tr = "Genişbant data trafiği, çeyreklik"
+label_en = "BTK data traffic, quarterly"
+topic = "iletisim"
+unit = "terabyte"
+frequency = "quarterly"
+dims = ["network"]
+views = ["table", "line"]
+definition_tr = "BTK İletişim Hizmetleri İstatistikleri (çeyreklik özet tablo, 2016-4 … 2026-1); her çeyrek bir yıl sonraki sayfanın önceki-yıl sütunundan (BTK geri dönük düzeltiyor), yoksa kendi sayfasından; kapsam 2015-4 … 2026-1. Çeyrek içi toplam. 2022-3/4 sayfalarında cari değer ayrı satıra kaymış; değişim oranıyla doğrulandı."
+
+[indicator.btk_data_per_subscriber_quarterly]
+label_tr = "Genişbant abone başına aylık data, çeyreklik"
+label_en = "BTK data per subscriber, quarterly"
+topic = "iletisim"
+unit = "gigabyte_per_month"
+frequency = "quarterly"
+dims = ["network"]
+views = ["table", "line"]
+definition_tr = "BTK İletişim Hizmetleri İstatistikleri (çeyreklik özet tablo, 2016-4 … 2026-1); her çeyrek bir yıl sonraki sayfanın önceki-yıl sütunundan (BTK geri dönük düzeltiyor), yoksa kendi sayfasından; kapsam 2015-4 … 2026-1. "
 
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
