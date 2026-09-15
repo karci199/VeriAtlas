@@ -69,7 +69,7 @@ class EpdkUnlicensedCapacity(Epdk):
         )
         records = []
         years = set()
-        for (_file, _table), (caption, grid) in monthly_tables().items():
+        for caption, grid in monthly_tables().values():
             match = pattern.search(caption)
             if not match:
                 continue
