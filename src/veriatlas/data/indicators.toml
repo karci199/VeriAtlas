@@ -27799,6 +27799,118 @@ dims = ["fiber_owner"]
 views = ["table", "line"]
 definition_tr = "BTK üç aylık pazar verileri raporları, yıl sonu raporunun Özet Bilgiler tablosu; 2012-2025, her yıl onu basan en yeni rapordan (2018-4 raporu sitede yok, 2018 2019 raporundan). Özet sayfasındaki cümleden; 2012-2024 (2025 raporunda yok)."
 
+[dim.sim]
+label_tr = "SIM"
+label_en = "SIM"
+
+[dim.sim.values]
+single = "Tek SIM"
+dual = "Çift SIM"
+
+[dim.registration_channel]
+label_tr = "Başvuru kanalı"
+label_en = "Channel"
+
+[dim.registration_channel.values]
+abone_kayit = "Abone kayıt merkezi"
+bim = "Bilgi ve İhbar Merkezi"
+e_devlet = "e-Devlet"
+tk = "TK (2007-2009)"
+akm = "AKM (2007-2009)"
+
+[dim.order_channel]
+label_tr = "Talimat kanalı"
+label_en = "Order channel"
+
+[dim.order_channel.values]
+bim = "BİM ve bölge müdürlükleri"
+uyap = "UYAP"
+
+[dim.order_action]
+label_tr = "İşlem"
+label_en = "Action"
+
+[dim.order_action.values]
+block = "Kapama"
+unblock = "Açma"
+
+[dim.report_status]
+label_tr = "İhbar durumu"
+label_en = "Report status"
+
+[dim.report_status.values]
+verified = "Doğrulanan"
+unverified = "Doğrulanmayan"
+
+[dim.call_outcome]
+label_tr = "Çağrı"
+label_en = "Call"
+
+[dim.call_outcome.values]
+answered = "Cevaplanan"
+failed = "Bağlanamayan"
+outbound = "Dış arama"
+
+[indicator.btk_imei_import]
+label_tr = "İthalatla kayda alınan IMEI"
+label_en = "IMEIs registered by importers"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+dims = ["sim"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK Elektronik Kimlik Bilgisini Haiz Cihazlara Dair İstatistikler (yıllık PDF); 2010-2015 2015 PDF'inden, 2007-2009 Eylül 2010 tarihli PDF'ten. Çift SIM cihaz iki IMEI sayılır. 2009 Temmuz öncesi imalat da buradadır. 2010 toplamı parçalardan 4 bin fazla basılı."
+
+[indicator.btk_imei_manufacture]
+label_tr = "İmalatla kayda alınan IMEI"
+label_en = "IMEIs registered by manufacturers"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+dims = ["sim"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK Elektronik Kimlik Bilgisini Haiz Cihazlara Dair İstatistikler (yıllık PDF); 2010-2015 2015 PDF'inden, 2007-2009 Eylül 2010 tarihli PDF'ten. 6 Temmuz 2009'dan. 2011 tek SIM basılmamış; toplamdan çıkarıldı (1.560)."
+
+[indicator.btk_imei_traveller]
+label_tr = "Yolcu beraberinde getirilen cihaz kaydı"
+label_en = "Devices registered by travellers"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+dims = ["registration_channel"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK Elektronik Kimlik Bilgisini Haiz Cihazlara Dair İstatistikler (yıllık PDF); 2010-2015 2015 PDF'inden, 2007-2009 Eylül 2010 tarihli PDF'ten. Kanal adları 2007-2009 ile 2010 sonrası farklı basılmış."
+
+[indicator.btk_imei_court_orders]
+label_tr = "Mahkeme/savcılık talimatıyla IMEI kapama ve açma"
+label_en = "IMEI blocking and unblocking by court order"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+dims = ["order_channel", "order_action"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK Elektronik Kimlik Bilgisini Haiz Cihazlara Dair İstatistikler (yıllık PDF); 2010-2015 2015 PDF'inden, 2007-2009 Eylül 2010 tarihli PDF'ten. UYAP 22 Temmuz 2009'dan."
+
+[indicator.btk_imei_theft_reports]
+label_tr = "Kayıp/çalıntı cihaz ihbarı"
+label_en = "Lost and stolen device reports"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+dims = ["report_status"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK Elektronik Kimlik Bilgisini Haiz Cihazlara Dair İstatistikler (yıllık PDF); 2010-2015 2015 PDF'inden, 2007-2009 Eylül 2010 tarihli PDF'ten. 2007-2009 basılı toplamlar parçaları tutmuyor (+625, +156, +1)."
+
+[indicator.btk_imei_call_centre]
+label_tr = "Bilgi ve İhbar Merkezi çağrı trafiği"
+label_en = "Information and Reporting Centre calls"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+dims = ["call_outcome"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK Elektronik Kimlik Bilgisini Haiz Cihazlara Dair İstatistikler (yıllık PDF); 2010-2015 2015 PDF'inden, 2007-2009 Eylül 2010 tarihli PDF'ten. "
+
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
 label_en = "Mobile generation"
