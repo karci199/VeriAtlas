@@ -508,3 +508,168 @@ YOK_ISTATISTIK_ADAPTERS.update(
 )
 
 # endregion
+
+
+# region Academic staff by title (Tablo 10)
+
+TITLES = {
+    "profesor": "professor",
+    "prof": "professor",
+    "docent": "associate_professor",
+    "doc": "associate_professor",
+    "yardimcidocent": "assistant_professor",
+    "ydoc": "assistant_professor",
+    "doktorogretimuyesi": "assistant_professor",
+    "ogretimgorevlisi": "lecturer",
+    "ogrgrv": "lecturer",
+    "okutman": "instructor",
+    "uzman": "specialist",
+    "arastirmagorevlisi": "research_assistant",
+    "arsgrv": "research_assistant",
+    "cevirici": "translator",
+    "eopl": "education_planner",
+}
+
+
+def staff_files() -> list[tuple[int, Path]]:
+    """Per release the university-level table: label "...AKADEMİK GÖREVLERİNE GÖRE SAYILARI"
+    (not foreign staff), the file with a university type in column B and the fewest rows
+    (T10; T28 repeats it with every unit)."""
+    import xlrd
+
+    best: dict[int, tuple[int, Path]] = {}
+    for row in csv.reader(
+        (FOLDER / "index.tsv").open(encoding="utf-8"), delimiter="\t"
+    ):
+        label = row[1].replace("\u200b", "")
+        if "AKADEMİK GÖREVLERİNE GÖRE SAYILARI" not in label or "YABANCI" in label:
+            continue
+        if not row[0][:4].isdigit():
+            continue
+        path = FOLDER / row[2]
+        sheet = xlrd.open_workbook(path).sheet_by_index(0)
+        typed = sum(
+            1
+            for i in range(sheet.nrows)
+            if fold(first_line(sheet.cell_value(i, 1))) in TYPES
+        )
+        if typed < 100:
+            continue
+        year = int(row[0][:4])
+        if year not in best or sheet.nrows < best[year][0]:
+            best[year] = (sheet.nrows, path)
+    return sorted((y, p) for y, (_, p) in best.items())
+
+
+def read_staff(path: Path) -> dict[tuple[str, str, str, str], float]:
+    """{(province, university type, title, sex): count}, checked against TOPLAM.
+
+    Two layouts: from 2014-2015 one row per university with men / women / total under each
+    title; 2013-2014 three rows per university (T, E, K) with titles across. The province is
+    the university's own (column C), not each unit's.
+    """
+    import xlrd
+
+    sheet = xlrd.open_workbook(path).sheet_by_index(0)
+    rows = [[str(v) for v in sheet.row_values(r)] for r in range(sheet.nrows)]
+    head = next(
+        i
+        for i, r in enumerate(rows[:8])
+        if sum(fold(first_line(c)) in TITLES for c in r) >= 4
+    )
+    title_cols = {
+        j: TITLES[fold(first_line(c))]
+        for j, c in enumerate(rows[head])
+        if fold(first_line(c)) in TITLES
+    }
+    out: dict[tuple, float] = {}
+    total: dict[tuple[str, str], float] = {}
+    sex_row = rows[head + 1]
+    wide = [fold(c) for c in sex_row[3:6]] == ["e", "k", "t"]
+    uni_type = pid = None
+    for r in rows[head + (2 if wide else 1) :]:
+        name = fold(first_line(r[0]))
+        kind = TYPES.get(fold(first_line(r[1])))
+        if wide:
+            cells = {
+                (t, s): number(r[j + o])
+                for j, t in title_cols.items()
+                for o, s in ((0, "male"), (1, "female"))
+            }
+            if name == "toplam":
+                for (t, s), v in cells.items():
+                    total[(t, s)] = total.get((t, s), 0.0) + v
+                continue
+            if kind is None:
+                continue
+            # 2025-2026 leaves İzmir Konak MYO's province blank; its name says İzmir.
+            place = first_line(r[2]) or (
+                "İZMİR" if name.startswith("izmirkonak") else ""
+            )
+            pid = province_id(place)
+            for (t, s), v in cells.items():
+                k = (pid, kind, t, s)
+                out[k] = out.get(k, 0.0) + v
+        else:
+            sex = {"e": "male", "k": "female"}.get(fold(r[3]))
+            if name.startswith("universiteler") or (not name and sex and pid is None):
+                if sex:
+                    for j, t in title_cols.items():
+                        total[(t, sex)] = total.get((t, sex), 0.0) + number(r[j])
+                continue
+            if kind is not None and first_line(r[2]):
+                uni_type, pid = kind, province_id(first_line(r[2]))
+            if sex and pid:
+                for j, t in title_cols.items():
+                    k = (pid, uni_type, t, sex)
+                    out[k] = out.get(k, 0.0) + number(r[j])
+    if not total:
+        raise ValueError(f"YÖK akademisyen {path.name}: TOPLAM yok")
+    for (t, s), printed in total.items():
+        parts = sum(v for (_p, _k, tt, ss), v in out.items() if (tt, ss) == (t, s))
+        if abs(parts - printed) > 0.5:
+            raise ValueError(
+                f"YÖK akademisyen {path.name} {t}/{s}: üniversiteler {parts:,.0f}, TOPLAM {printed:,.0f}"
+            )
+    return out
+
+
+class YokStaff:
+    source_id = "yok_istatistik"
+    indicator_id = "yok_academic_staff"
+
+    def fetch(self) -> Path:
+        return FOLDER
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        records = [
+            {
+                "area_id": pid,
+                "area_level": "province",
+                "period_start": dt.date(year, 1, 1),
+                "dims": f"academic_title={title};sex={sex};university_type={kind}",
+                "value": value,
+            }
+            for year, path in staff_files()
+            for (pid, kind, title, sex), value in read_staff(path).items()
+            if value
+        ]
+        return (
+            pl.DataFrame(records, schema_overrides={"value": pl.Float64})
+            .group_by("area_id", "area_level", "period_start", "dims")
+            .agg(pl.col("value").sum())
+            .with_columns(
+                pl.lit(self.indicator_id).alias("indicator_id"),
+                pl.lit("annual").alias("frequency"),
+                pl.lit("person").alias("unit"),
+                pl.lit("measured").alias("quality_flag"),
+                pl.lit("2026-04").alias("vintage"),
+                pl.lit(self.source_id).alias("source_id"),
+                pl.lit(dt.date(2026, 9, 15)).alias("retrieved_at"),
+            )
+        )
+
+
+YOK_ISTATISTIK_ADAPTERS["yok_academic_staff"] = YokStaff
+
+# endregion

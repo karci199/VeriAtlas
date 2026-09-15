@@ -27060,3 +27060,28 @@ frequency = "annual"
 dims = ["education_delivery", "higher_education_level", "sex"]
 views = ["table", "line", "bar"]
 definition_tr = "YÖK İstatistik '1982-2013 Öğrenci - Mezun Özet' tablosu, Türkiye geneli. Dönem öğretim yılının ilk yılıdır; mezunlar her blokta bir önceki öğretim yılınındır. 1983-1991 bloklarında önlisans kırılımsız, lisans 'açıköğretim dışı' ve 'açık öğretim'; 1992 sonrasında önlisans ve lisans örgün, ikinci ve açık öğretim olarak ayrı. İl kırılımı yok; 2013 sonrası il/ilçe serileri yok_students, yok_new_students, yok_graduates."
+
+[dim.academic_title]
+label_tr = "Unvan"
+label_en = "Academic title"
+
+[dim.academic_title.values]
+professor = "Profesör"
+associate_professor = "Doçent"
+assistant_professor = "Doktor öğretim üyesi / yardımcı doçent"
+lecturer = "Öğretim görevlisi"
+instructor = "Okutman"
+specialist = "Uzman"
+research_assistant = "Araştırma görevlisi"
+translator = "Çevirici"
+education_planner = "Eğitim-öğretim planlamacısı"
+
+[indicator.yok_academic_staff]
+label_tr = "Öğretim elemanı sayısı, unvana göre"
+label_en = "Academic staff by title"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["academic_title", "sex", "university_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "YÖK İstatistik Tablo 10 'Öğretim elemanlarının akademik görevlerine göre sayıları', 2013-2014 ... 2025-2026; il üniversitenin kendi ilidir (başka ildeki birimleri dahil). 2018'de yardımcı doçentlik doktor öğretim üyesine dönüştü, okutman, uzman, çevirici ve eğitim-öğretim planlamacısı öğretim görevlisine katıldı: 2017 öncesinde bu unvanlar ayrı."
