@@ -27559,6 +27559,13 @@ decimals = 0
 additive = true
 per_capita = false
 
+[unit.usd_per_month]
+label_tr = "$/ay"
+label_en = "USD per month"
+decimals = 2
+additive = false
+per_capita = false
+
 [unit.try_per_month]
 label_tr = "TL/ay"
 label_en = "TRY per month"
@@ -27798,5 +27805,25 @@ frequency = "quarterly"
 dims = ["mobile_operator", "tariff_type"]
 views = ["table", "line"]
 definition_tr = "BTK Şekil 4-30/4-31 (grafik etiketleri gözle okundu), cari TL/ay, çeyreklik 2011-1 ... 2026-1; rapor pencereleri örtüşen çeyreklerde karşılaştırıldı. Sektör ortalaması yayımlanmıyor."
+
+[indicator.btk_mobile_arpu_usd]
+label_tr = "Mobil ARPU, dolar"
+label_en = "Mobile ARPU by operator and tariff, USD"
+topic = "iletisim"
+unit = "usd_per_month"
+frequency = "quarterly"
+dims = ["mobile_operator", "tariff_type"]
+views = ["table", "line"]
+definition_tr = "btk_mobile_arpu (cari TL) / çeyreğin ortalama TCMB dolar alış kuru (EVDS, depodaki usd_try_buying)."
+
+[indicator.btk_mobile_arpu_real]
+label_tr = "Mobil ARPU, reel (2026-1 fiyatlarıyla TL)"
+label_en = "Mobile ARPU by operator and tariff, real lira"
+topic = "iletisim"
+unit = "try_per_month"
+frequency = "quarterly"
+dims = ["mobile_operator", "tariff_type"]
+views = ["table", "line"]
+definition_tr = "btk_mobile_arpu × (2026-1 TÜFE / çeyrek TÜFE); TÜFE 2003=100, çeyrek içi üç ayın ortalaması (EVDS, depodaki cpi_2003)."
 
 # endregion

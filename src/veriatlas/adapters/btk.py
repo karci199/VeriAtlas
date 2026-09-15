@@ -260,6 +260,54 @@ class MobileArpu(Btk):
         return out
 
 
+def quarterly_deflators() -> tuple[dict[dt.date, float], dict[dt.date, float]]:
+    """Quarter start -> (mean USD/TRY buying rate, mean CPI 2003=100), from the EVDS rows
+    already in the warehouse. A quarter needs all three CPI months."""
+    import duckdb
+
+    fact = str(ROOT / "public" / "fact.parquet")
+    con = duckdb.connect()
+    query = """
+        select make_date(year(period_start), (quarter(period_start) - 1) * 3 + 1, 1) q,
+               avg(value), count(distinct month(period_start))
+        from read_parquet(?) where indicator_id = ? and dims = '' group by 1
+    """
+    usd = {q: v for q, v, _ in con.execute(query, [fact, "usd_try_buying"]).fetchall()}
+    cpi = {q: v for q, v, n in con.execute(query, [fact, "cpi_2003"]).fetchall() if n == 3}
+    return usd, cpi
+
+
+class MobileArpuUsd(MobileArpu):
+    """Nominal ARPU / quarterly mean CBRT USD buying rate (EVDS usd_try_buying)."""
+
+    indicator_id = "btk_mobile_arpu_usd"
+    unit = "usd_per_month"
+
+    def records(self):
+        usd, _ = quarterly_deflators()
+        out = super().records()
+        missing = {o["period_start"] for o in out} - set(usd)
+        if missing:
+            raise ValueError(f"BTK ARPU $: kur yok {sorted(missing)}")
+        return [{**o, "value": o["value"] / usd[o["period_start"]]} for o in out]
+
+
+class MobileArpuReal(MobileArpu):
+    """Nominal ARPU in lira of the last quarter with full CPI (TÜİK CPI 2003=100 via EVDS)."""
+
+    indicator_id = "btk_mobile_arpu_real"
+    unit = "try_per_month"
+
+    def records(self):
+        _, cpi = quarterly_deflators()
+        out = super().records()
+        base = cpi[max(o["period_start"] for o in out)]
+        missing = {o["period_start"] for o in out} - set(cpi)
+        if missing:
+            raise ValueError(f"BTK ARPU reel: TÜFE yok {sorted(missing)}")
+        return [{**o, "value": o["value"] * base / cpi[o["period_start"]]} for o in out]
+
+
 BTK_ADAPTERS = {
     cls.indicator_id: cls
     for cls in (
@@ -271,5 +319,7 @@ BTK_ADAPTERS = {
         MobileTraffic,
         M2M,
         MobileArpu,
+        MobileArpuUsd,
+        MobileArpuReal,
     )
 }
