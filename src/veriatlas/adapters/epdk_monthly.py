@@ -17,6 +17,7 @@ import polars as pl
 
 from ..config import RAW
 from .epdk_history import GAS_SUPPLY, wide_table
+from .kgm import fold
 
 GAS_MONTHLY_CELLS = RAW / "epdk" / "docx_gaz_aylik_cells.parquet"
 MONTHS = [
@@ -33,7 +34,7 @@ MONTHS = [
     "Kasım",
     "Aralık",
 ]
-MONTH_IN_CAPTION = re.compile(r"(" + "|".join(MONTHS) + r") (20\d\d)")
+MONTH_IN_CAPTION = re.compile(r"(" + "|".join(MONTHS) + r")\s+(20\d\d)")
 
 #: Months with no Word report on the EPDK page, filled in when a source is found.
 MISSING_MONTHS: list[str] = []
@@ -285,11 +286,21 @@ class LpgSalesMonthly:
         cells = pl.read_parquet(LPG_MONTHLY_CELLS)
         seen: dict[dt.date, tuple[str, list]] = {}
         records = []
-        for file, caption, grid in grids(
-            cells, "LPG Satışlarının İllere ve Ürün Türüne Göre"
-        ):
+        found_grids = [
+            *grids(cells, "LPG Satışlarının İllere ve Ürün Türüne Göre"),
+            # 2015-2016 wording; the caption can sit over a monthly summary table first.
+            *grids(cells, "satışlarının illere ve ürünlere göre"),
+        ]
+        for file, caption, grid in found_grids:
+            start = next(
+                (i for i, line in enumerate(grid) if line and fold(line[0]) == "il"),
+                None,
+            )
+            if start is None:
+                raise ValueError(f"LPG aylık {file}: il tablosu yok: {caption}")
+            grid = grid[start:]
             found = MONTH_IN_CAPTION.search(caption)
-            if not found or "-" in caption.split("Döneminde")[0]:
+            if not found or "-" in caption.lower().split("dönem")[0]:
                 raise ValueError(f"LPG aylık {file}: tek ay değil: {caption}")
             month = dt.date(int(found.group(2)), MONTHS.index(found.group(1)) + 1, 1)
             if month in seen:
