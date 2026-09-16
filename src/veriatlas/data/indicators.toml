@@ -338,6 +338,13 @@ solar = "Güneş"
 wind = "Rüzgâr"
 biomass = "Biyokütle"
 lignite = "Linyit"
+geothermal = "Jeotermal"
+waste_heat = "Atık ısı"
+coal_import = "İthal kömür"
+coal_local = "Yerli kömür"
+fuel_oil = "Fuel oil ve sıvı yakıt"
+multi_fuel = "Çok yakıtlı"
+other = "Diğer"
 
 [dim.household_size_band]
 label_tr = "Hanehalkı büyüklüğü"
@@ -29051,3 +29058,25 @@ views = ["table", "line"]
 definition_tr = "btk_mobile_arpu × (2026-1 TÜFE / çeyrek TÜFE); TÜFE 2003=100, çeyrek içi üç ayın ortalaması (EVDS, depodaki cpi_2003)."
 
 # endregion
+
+[indicator.etkb_added_capacity]
+label_tr = "Devreye giren kurulu güç"
+label_en = "Capacity added"
+topic = "enerji"
+unit = "mw"
+frequency = "annual"
+additive = true
+dims = ["energy_source"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Enerji ve Tabii Kaynaklar Bakanlığı, Enerji İşleri Genel Müdürlüğü yıllık enerji yatırımları tabloları (enerji.gov.tr/eigm-raporlari), 2003-2025; indirme scripts/fetch_etkb.py, adaptör src/veriatlas/adapters/etkb.py. Her satır o yıl geçici kabulü yapılan bir santral; il, kaynak ve eklenen güç basılı. Her dosyanın sonundaki yıl toplamı okumanın denetimi; iki il adıyla yazılan santraller ilk ile yazıldı. Eklenen güç, MWe."
+
+[indicator.etkb_added_plants]
+label_tr = "Devreye giren santral sayısı"
+label_en = "Plants commissioned"
+topic = "enerji"
+unit = "facility"
+frequency = "annual"
+additive = true
+dims = ["energy_source"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Enerji ve Tabii Kaynaklar Bakanlığı, Enerji İşleri Genel Müdürlüğü yıllık enerji yatırımları tabloları (enerji.gov.tr/eigm-raporlari), 2003-2025; indirme scripts/fetch_etkb.py, adaptör src/veriatlas/adapters/etkb.py. Her satır o yıl geçici kabulü yapılan bir santral; il, kaynak ve eklenen güç basılı. Her dosyanın sonundaki yıl toplamı okumanın denetimi; iki il adıyla yazılan santraller ilk ile yazıldı. Tabloda o yıl geçici kabulü yapılan satır sayısı."
