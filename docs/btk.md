@@ -137,60 +137,61 @@ işletmecilere ait, büyükten küçüğe Turkcell, Vodafone, Avea/TT Mobil.
   çeyrekte (2015-4 … 2017-1) hesaplanan değer, grafikten okunandan en fazla 30 bin abone
   (%0,1) farklı.
 
-## Yapılamayanlar ve nedenleri (2026-09-16)
+## Yöntemler ve kalanlar (2026-09-16, BTK kapandı)
 
-Üç yöntem denendi: çizelgeleri metin katmanından okumak, grafik etiketlerini kelime
-konumlarından okumak, rakamı grafiği tanıtan cümleden almak. Aşağıdakiler bu üçüyle çıkmadı;
-kalanı için sayfayı görüntüye çevirip gözle okumak gerekiyor (rapor başına birkaç grafik,
-40'tan fazla rapor).
+Dört yöntem kullanıldı, kolaydan zora:
 
-**Gözle okuma denendi ve yürüdü:** Sayfa pypdfium2 ile 4 kat büyütülüp görüntü olarak okundu.
-Churn böyle çıkarıldı (`scripts/btk_churn_dataset.py`, `btk_mobile_churn`): grafiğin altındaki
-veri tablosu aylık; şimdilik 2026-Q1 raporu, Mart 2025 - Mart 2026. Her yılın 1. çeyrek raporu
-önceki 12 ayı taşıyor, yılda bir rapor okunarak 2016'ya kadar uzatılabilir (örtüşen mart ayı
-transkripsiyonu doğrular). Sayfa başına yaklaşık 4 bin token.
+1. **Çizelgeler metin katmanından** (`btk_tables.py`): raporların numaralı tabloları.
+2. **Grafik etiketleri kelime konumlarından** (`btk_charts.py`, `btk_posta.py`): 2017'ye kadar
+   grafikler vektör, etiketleri PDF kelimeleri arasında; dönem etiketlerinin yatay konumu
+   sütunları veriyor.
+3. **Rakamı grafiği tanıtan cümleden** (`btk_prose.py`): 2017 sonrası grafikler görüntü, ama
+   aynı rakam metinde geçiyor.
+4. **Sayfayı görüntüye çevirip gözle okumak** (pypdfium2, 4 kat, sayfa başına ~4 bin token).
+   Transkripsiyonlar `scripts/btk_*_dataset.py` dosyalarında, kontrolleriyle:
+   - `btk_mobile_churn`: aylık 2016-04 … 2026-03, her yılın 1. çeyrek raporundan; örtüşen aylar
+     ve cümledeki son ay doğruluyor (Nisan 2018 - Şubat 2019 yok, 2019 raporları okunamıyor).
+   - `btk_broadband_by_speed`: 2021-4 … 2026-1 kesitleri; dokuz payın toplamı 100.
+   - `btk_mobile_service_revenue`: yıllık 2017-2025 (UFRS ve Vergi Usul Kanunu) ve çeyreklik
+     2024-1 … 2026-1; çeyrekler yıllık değeri veriyor.
+   - `btk_mobile_subscribers_by_operator` (2. yöntem): 2008-1 … 2017-1; üç işletmecinin toplamı
+     basılı toplamı, yıl sonları ise özet tablodaki toplam aboneyi tutuyor.
 
-Aynı yöntemle çıkarılan diğer seriler:
+### Yüklenmeyenler ve nedenleri
 
-- `btk_broadband_by_speed`: sabit genişbant abonelerinin hıza göre dağılımı, 2021-4 … 2026-1
-  kesitleri (`scripts/btk_speed_dataset.py`). Dokuz payın toplamı 100 kontrolünden geçiyor.
-  2021 öncesi bantlar farklı tanımlı (x≤1, 4-8, 10-30), karşılaştırılamadığı için alınmadı.
-- `btk_mobile_postpaid_share`: faturalı abone payı; cümleden okundu, yalnız 2021-1 grafikten.
-- `btk_mobile_service_revenue`: mobil hizmet geliri, yıllık 2017-2025 (UFRS ve Vergi Usul Kanunu
-  esasıyla) ve çeyreklik 2024-1 … 2026-1 (`scripts/btk_mobile_revenue_dataset.py`). 2024 ve 2025
-  çeyrekleri yıllık değeri veriyor, son çeyrek rapor cümlesiyle aynı.
+**Kaynak kendi içinde çelişiyor:**
 
-**MNT net gelen abone: yüklenmedi, çünkü BTK'nın grafikleri çelişiyor.** 2022-Q1 raporu
-2022'nin birinci çeyreğinde Vodafone'u −74 bin, Turkcell'i −1 bin gösteriyor; 2024-Q1 raporu
-aynı çeyrekte tam tersini. İki grafikte de üç işletmecinin toplamı sıfır çıkıyor, yani hangisinin
-serileri karışmış ayırt edilemiyor. Üçüncü bir kaynak gerekiyor.
+- **MNT kapsamında net gelen abone.** 2022-Q1 raporu 2022'nin birinci çeyreğinde Vodafone'u
+  −74 bin, Turkcell'i −1 bin gösteriyor; 2024-Q1 raporu aynı çeyrekte tam tersini. İki grafikte
+  de üç işletmecinin toplamı sıfır olduğu için hangisinin serileri karışmış ayırt edilemiyor.
+  Üçüncü bir kaynak gerekiyor.
 
-**Grafikten gözle okunacak kalanlar (2017 sonrası grafikler görüntü):**
-- AB ülkeleriyle karşılaştırmalar: mobil yaygınlık, MoU, ARPU (euro). Grafikler okunabiliyor
-  ama veri 15 yabancı ülkeye ait ve kaynağı GSMA Intelligence; depo Türkiye odaklı olduğu için
-  alınmadı (yabancı ülke alan kaydı yok).
+**Depo modeline uymuyor:**
 
-**Bilinçli alınmayanlar:**
+- **AB ülkeleriyle karşılaştırmalar** (mobil yaygınlık, MoU, euro ARPU). Grafikler okunabiliyor
+  ama veri 15 yabancı ülkeye ait ve kaynağı GSMA Intelligence; depoda yabancı ülke alanı yok.
+  Bilgi olarak: 2026-1'de Türkiye %100,3 ile listenin sonunda, Portekiz %167,1 ile başında.
+- **Pazar payı yüzdesi tabloları** (STH, İSS, uydu, GMPCS, rehberlik, altyapı, posta şirketleri).
+  İşletmeci adları ve satır sayısı her raporda değişiyor, yüzdeler toplanamıyor.
+- **Sıralama tabloları:** en çok aranan kısa numaralar, en çok trafik gönderilen/alınan ülkeler.
 
-- Pazar payı yüzdesi tabloları (STH, İSS, uydu, GMPCS, rehberlik, altyapı, posta şirketleri).
-  İşletmeci adları ve satır sayısı her raporda değişiyor; yüzde olduğu için toplanamıyor.
-- Sıralama tabloları: en çok aranan kısa numaralar, en çok trafik gönderilen/alınan ülkeler.
-- Yıllık gelir ve yatırım tabloları. Çeyreklik seri depoda olduğu için ayrıca yüklenmedi;
-  ayrıca 2019-2020 raporları bunları UFRS ve VUK olarak iki kez basıyor.
-- KEP (kayıtlı elektronik posta) hesap sayısı ve e-imzanın durum kırılımı (iptal, süresi
-  bitmiş, askıda, aktif). Başlık beş satıra bölünmüş, yalnız 2024 sonrası 9 raporda var.
-- Posta raporlarında yığılmış grafikler: sektörün toplam geliri, koli/kargo geliri, teslim
-  yeri ve ağırlık payları, EHY payı, teslim süresi dağılımı. Bir sütunda üç sayı olduğu için
-  hangisinin hangi seriye ait olduğu konumdan çıkmıyor.
+**Okuması pahalı, değeri düşük:**
+
+- **KEP hesap sayısı** ve e-imzanın durum kırılımı (iptal, süresi bitmiş, askıda, aktif):
+  başlık beş satıra bölünmüş, yalnız 2024 sonrası 9 raporda var. E-imzanın ana serisi depoda.
+- **Posta raporlarındaki yığılmış grafikler:** sektörün toplam geliri, koli/kargo geliri, teslim
+  yeri ve ağırlık payları, EHY payı, teslim süresi dağılımı. Bir sütunda üç sayı var, hangisinin
+  hangi seriye ait olduğu konumdan çıkmıyor.
 
 **Kaynakta olmayan ya da okunamayan:**
 
 - 2018-Q2 ve 2018-Q4 raporları sitede yok.
 - 2019 raporları ve 2020-Q2 dergi düzeninde: tablolar satır olarak çıkmıyor.
 - 2021-Q1 raporu kodlanmış fontla basılmış: metin katmanı okunamıyor.
-- Bu üçünün sonucu: çizelge serilerinde 2018-4 çeyreği eksik.
-- "GİZLİ — SADECE KURUM İÇİ" damgalı sayfalar (2024-Q2, 2024-Q3, 2025-Q1…Q3, 2026-Q1):
-  karar verilene kadar okunmuyor. Bu yüzden `btk_fiber_operators` 2025-3'te bitiyor.
+- Bu üçünün sonucu: çizelge serilerinde 2018-4 çeyreği eksik, churn'de 11 ay boşluk var.
+- **Karar bekleyen:** "GİZLİ — SADECE KURUM İÇİ" damgalı sayfalar (2024-Q2, 2024-Q3, 2025-Q1…Q3,
+  2026-Q1). Şu an okunmuyor; bu yüzden `btk_fiber_operators` 2025-3'te bitiyor. Kullanıcı karar
+  verirse o sayfalar da okunabilir.
 
 ## Yıllık İl İstatistikleri (depoda, 2026-09-15)
 
