@@ -192,7 +192,7 @@ def read_book(path: Path) -> dict[Key, float]:
             airport = airport_key(label)
             if airport is None:
                 continue
-            code, province = airport
+            code, _province = airport
             for year, month, first in groups:
                 cells = row[first : first + 3]
                 if not all(isinstance(c, (int, float)) for c in cells):
