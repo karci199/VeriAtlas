@@ -28593,6 +28593,124 @@ dims = ["accounting_basis"]
 views = ["table", "line", "bar"]
 definition_tr = "BTK 2026-Q1 raporu, Şekil 4-24 ve 4-25; grafikler görüntü olduğu için sayfa render edilip gözle okundu (scripts/btk_mobile_revenue_dataset.py). Yıllık 2017-2025 iki muhasebe esasıyla (UFRS ve Vergi Usul Kanunu), çeyreklik 2024-1 … 2026-1 (UFRS). Milyar TL basılı, cari. 2024 ve 2025 çeyrekleri yıllık değeri veriyor; son çeyrek rapor cümlesiyle aynı."
 
+[dim.airport]
+label_tr = "Havalimanı"
+label_en = "Airport"
+
+[dim.airport.values]
+adana = "Adana Şakirpaşa"
+adiyaman = "Adıyaman"
+agri = "Ağrı Ahmed-i Hani"
+gazipasa = "Gazipaşa Alanya"
+merzifon = "Amasya Merzifon"
+esenboga = "Ankara Esenboğa"
+antalya = "Antalya"
+ataturk = "İstanbul Atatürk"
+cildir = "Aydın Çıldır"
+balikesir = "Balıkesir Merkez"
+kocaseyit = "Balıkesir Koca Seyit (Körfez)"
+batman = "Batman"
+bingol = "Bingöl"
+yenisehir = "Bursa Yenişehir"
+canakkale = "Çanakkale"
+gokceada = "Çanakkale Gökçeada"
+cardak = "Denizli Çardak"
+cukurova = "Çukurova"
+dalaman = "Muğla Dalaman"
+diyarbakir = "Diyarbakır"
+elazig = "Elazığ"
+erzincan = "Erzincan Yıldırım Akbulut"
+erzurum = "Erzurum"
+hasanpolatkan = "Eskişehir Hasan Polatkan"
+gaziantep = "Gaziantep"
+hakkari = "Hakkari Yüksekova Selahaddin Eyyubi"
+hatay = "Hatay"
+igdir = "Iğdır Şehit Bülent Aydın"
+suleymandemirel = "Isparta Süleyman Demirel"
+istanbul = "İstanbul"
+sabihagokcen = "İstanbul Sabiha Gökçen"
+adnanmenderes = "İzmir Adnan Menderes"
+kahramanmaras = "Kahramanmaraş"
+kapadokya = "Nevşehir Kapadokya"
+kars = "Kars Harakani"
+kastamonu = "Kastamonu"
+kayseri = "Kayseri"
+cengiztopel = "Kocaeli Cengiz Topel"
+konya = "Konya"
+malatya = "Malatya"
+mardin = "Mardin Prof. Dr. Aziz Sancar"
+milasbodrum = "Muğla Milas-Bodrum"
+mus = "Muş Sultan Alparslan"
+ordugiresun = "Ordu-Giresun"
+rizeartvin = "Rize-Artvin"
+carsamba = "Samsun Çarşamba"
+gap = "Şanlıurfa GAP"
+siirt = "Siirt"
+sinop = "Sinop"
+sirnak = "Şırnak Şerafettin Elçi"
+sivas = "Sivas Nuri Demirağ"
+corlu = "Tekirdağ Çorlu"
+tokat = "Tokat"
+trabzon = "Trabzon"
+usak = "Uşak"
+van = "Van Ferit Melen"
+zafer = "Zafer (Kütahya)"
+caycuma = "Zonguldak Çaycuma"
+
+[dim.aircraft_type]
+label_tr = "Uçak türü"
+label_en = "Aircraft"
+
+[dim.aircraft_type.values]
+all = "Tüm uçak (ticari + genel havacılık)"
+commercial = "Ticari uçak"
+
+[dim.route]
+label_tr = "Hat"
+label_en = "Route"
+
+[dim.route.values]
+domestic = "İç hat"
+international = "Dış hat"
+
+[dim.freight_type]
+label_tr = "Yük türü"
+label_en = "Freight"
+
+[dim.freight_type.values]
+freight = "Yük (bagaj + kargo + posta)"
+cargo = "Kargo"
+
+[indicator.dhmi_air_traffic]
+label_tr = "Uçak trafiği"
+label_en = "Aircraft movements"
+topic = "ulasim"
+unit = "item"
+frequency = "monthly"
+dims = ["airport", "aircraft_type", "route"]
+views = ["table", "line", "map"]
+definition_tr = "DHMİ havalimanı istatistikleri (dhmi.gov.tr), aylık Excel; dosyalar yıl başından o aya birikimli, aylık değer önceki aydan çıkarılarak bulundu. Her ay iki dosyada basılı (kendi yılında ve bir yıl sonra karşılaştırma sütununda), ikisi karşılaştırıldı. Adaptör src/veriatlas/adapters/dhmi.py, indirme scripts/fetch_dhmi.py. İniş ve kalkış toplamı."
+
+[indicator.dhmi_air_passengers]
+label_tr = "Havayolu yolcu sayısı"
+label_en = "Air passengers"
+topic = "ulasim"
+unit = "person"
+frequency = "monthly"
+dims = ["airport", "route"]
+views = ["table", "line", "map"]
+definition_tr = "DHMİ havalimanı istatistikleri (dhmi.gov.tr), aylık Excel; dosyalar yıl başından o aya birikimli, aylık değer önceki aydan çıkarılarak bulundu. Her ay iki dosyada basılı (kendi yılında ve bir yıl sonra karşılaştırma sütununda), ikisi karşılaştırıldı. Adaptör src/veriatlas/adapters/dhmi.py, indirme scripts/fetch_dhmi.py. Gelen ve giden yolcu toplamı; direkt transit hariç."
+
+[indicator.dhmi_air_freight]
+label_tr = "Havayolu yük ve kargo"
+label_en = "Air freight and cargo"
+topic = "ulasim"
+unit = "tonne"
+frequency = "monthly"
+dims = ["airport", "freight_type", "route"]
+views = ["table", "line", "map"]
+definition_tr = "DHMİ havalimanı istatistikleri (dhmi.gov.tr), aylık Excel; dosyalar yıl başından o aya birikimli, aylık değer önceki aydan çıkarılarak bulundu. Her ay iki dosyada basılı (kendi yılında ve bir yıl sonra karşılaştırma sütununda), ikisi karşılaştırıldı. Adaptör src/veriatlas/adapters/dhmi.py, indirme scripts/fetch_dhmi.py. Yük = bagaj + kargo + posta; kargo ayrı kırılım olarak da var (yükün içinde)."
+
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
 label_en = "Mobile generation"
