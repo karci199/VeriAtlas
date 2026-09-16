@@ -29284,3 +29284,231 @@ additive = false
 dims = ["expenditure_type"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "Diyanet İşleri Başkanlığı istatistikleri (stratejigelistirme.diyanet.gov.tr/sayfa/57/istatistikler), 2023 yayımı; indirme scripts/fetch_diyanet.py, adaptör src/veriatlas/adapters/diyanet.py. İl tabloları İBBS-3. düzeyde basılı, her düzey-3 bölgesi bir il olduğu için il düzeyine yazıldı; her tabloda iller basılı Türkiye satırıyla denetlendi. 2022 ve 2023 gerçekleşmesi, TL."
+
+[dim.care_level]
+label_tr = "Basamak"
+label_en = "Care level"
+
+[dim.care_level.values]
+primary = "Birinci basamak"
+secondary_tertiary = "İkinci ve üçüncü basamak"
+
+[indicator.moh_hospitals]
+label_tr = "Hastane sayısı (Sağlık Bakanlığı yıllığı)"
+label_en = "Hospitals (MoH yearbook)"
+topic = "saglik"
+unit = "facility"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi."
+
+[indicator.moh_hospital_beds]
+label_tr = "Hastane yatağı (Sağlık Bakanlığı yıllığı)"
+label_en = "Hospital beds (MoH yearbook)"
+topic = "saglik"
+unit = "bed"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi."
+
+[indicator.moh_qualified_beds]
+label_tr = "Nitelikli yatak"
+label_en = "Qualified beds"
+topic = "saglik"
+unit = "bed"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yıllığın tanımı: 1 veya 2 yataklı, tuvaletli ve duşlu odalardaki yataklar."
+
+[indicator.moh_icu_beds]
+label_tr = "Yoğun bakım yatağı"
+label_en = "Intensive care beds"
+topic = "saglik"
+unit = "bed"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi."
+
+[indicator.moh_qualified_bed_share]
+label_tr = "Nitelikli yatak oranı"
+label_en = "Share of qualified beds"
+topic = "saglik"
+unit = "percent"
+frequency = "annual"
+additive = false
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yıllığın dipnotuna göre yoğun bakım yatakları dahil değil: nitelikli ÷ (toplam − yoğun bakım); 2024 Adana 4.642 ÷ (7.203 − 1.551) = %82,1."
+
+[indicator.moh_family_medicine_units]
+label_tr = "Aile hekimliği birimi"
+label_en = "Family medicine units"
+topic = "saglik"
+unit = "item"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi."
+
+[indicator.moh_emergency_stations]
+label_tr = "112 acil yardım istasyonu"
+label_en = "Emergency (112) stations"
+topic = "saglik"
+unit = "facility"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yalnız Sağlık Bakanlığı."
+
+[indicator.moh_emergency_ambulances]
+label_tr = "112 acil yardım ambulansı"
+label_en = "Emergency (112) ambulances"
+topic = "saglik"
+unit = "vehicle"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yalnız Sağlık Bakanlığı."
+
+[indicator.moh_false_emergency_call_share]
+label_tr = "112 asılsız ihbar oranı"
+label_en = "Share of false emergency calls"
+topic = "saglik"
+unit = "percent"
+frequency = "annual"
+additive = false
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. 2019-2024."
+
+[indicator.moh_visits]
+label_tr = "Hekime müracaat"
+label_en = "Doctor visits"
+topic = "saglik"
+unit = "item"
+frequency = "annual"
+additive = true
+dims = ["care_level"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi."
+
+[indicator.moh_dental_visits]
+label_tr = "Diş hekimine müracaat"
+label_en = "Dentist visits"
+topic = "saglik"
+unit = "item"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi."
+
+[indicator.moh_inpatients]
+label_tr = "Yatan hasta"
+label_en = "Inpatients"
+topic = "saglik"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi."
+
+[indicator.moh_inpatient_days]
+label_tr = "Yatılan gün"
+label_en = "Inpatient days"
+topic = "saglik"
+unit = "item"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi."
+
+[indicator.moh_surgeries]
+label_tr = "Ameliyat sayısı"
+label_en = "Surgeries"
+topic = "saglik"
+unit = "item"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi."
+
+[indicator.moh_bed_occupancy]
+label_tr = "Yatak doluluk oranı"
+label_en = "Bed occupancy rate"
+topic = "saglik"
+unit = "percent"
+frequency = "annual"
+additive = false
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi."
+
+[indicator.moh_average_stay]
+label_tr = "Ortalama kalış günü"
+label_en = "Average length of stay"
+topic = "saglik"
+unit = "day"
+frequency = "annual"
+additive = false
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi."
+
+[indicator.moh_bed_turnover_rate]
+label_tr = "Yatak devir hızı"
+label_en = "Bed turnover rate"
+topic = "saglik"
+unit = "source_unit"
+frequency = "annual"
+additive = false
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yatak başına yıllık yatan hasta."
+
+[indicator.moh_bed_turnover_interval]
+label_tr = "Yatak devir aralığı"
+label_en = "Bed turnover interval"
+topic = "saglik"
+unit = "day"
+frequency = "annual"
+additive = false
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. İki hasta arasında yatağın boş kaldığı ortalama gün."
+
+[indicator.moh_hospital_crude_death_rate]
+label_tr = "Hastane kaba ölüm hızı"
+label_en = "Hospital crude death rate"
+topic = "saglik"
+unit = "source_unit"
+frequency = "annual"
+additive = false
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yıllıkta tanımı verilmiyor; yalnız 2018 ve 2019 yıllıklarında basılı."
+
+[indicator.moh_health_staff]
+label_tr = "Sağlık personeli (Sağlık Bakanlığı yıllığı)"
+label_en = "Health staff (MoH yearbook)"
+topic = "saglik"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["health_profession"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2018-2024 (sbsgm.saglik.gov.tr), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Toplam hekim = uzman + pratisyen + asistan, ayrıca yazılmadı."
