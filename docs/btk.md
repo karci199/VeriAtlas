@@ -119,11 +119,13 @@ işletmecilere ait, büyükten küçüğe Turkcell, Vodafone, Avea/TT Mobil.
   sayısını 2012-2016 arasında %0,01'den az farkla tutuyor (etiketler milyon ve iki ondalık
   basılı, fark yuvarlamadan).
 - 2009-1 sütunu atlandı: o grafikte eksen sayıları etiketlere karışıyor.
+- `btk_mobile_subscribers_by_operator_estimated`: 2017-2 … 2025-4, paylar × toplam mobil abone
+  (grafik görüntü olduğu için mutlak sayı basılmıyor). Kalite işareti "tahmin". Örtüşen 18
+  çeyrekte (2015-4 … 2017-1) hesaplanan değer, grafikten okunandan en fazla 30 bin abone
+  (%0,1) farklı.
 
 ## Kalanlar (zor, sonraya)
 
-- **Mobil abone, işletmeci bazında 2017-2'den sonrası:** grafik görüntü. 2008-1 … 2017-1
-  grafik etiketlerinden çekildi (`btk_charts.py`, aşağıda); sonrası için paylar × toplam abone.
 - **Ön ödemeli/faturalı kırılımı:** grafik; cümledeki oran güvenilir çıkmadı (2026 raporunun
   dergi düzeninde kelimeler karışıyor).
 - **Sektör geliri ve sabit abone 2009-2011:** özet tablo 2012'den başlıyor; öncesi grafikte.

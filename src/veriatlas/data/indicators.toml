@@ -28462,6 +28462,16 @@ dims = ["telecom_operator"]
 views = ["table", "line", "bar"]
 definition_tr = "BTK üç aylık pazar verileri, \"İşletmeci Bazında Toplam Abone Sayıları\" grafiği; 2017'ye kadar grafik etiketleri PDF metninde, konumlarından okundu. Milyon olarak basılı (iki ondalık). Sütundaki dört etiketten toplamı verenler işletmeciler; büyükten küçüğe Turkcell, Vodafone, Avea/TT Mobil (bu sıra 2017'ye kadar korunuyor). 2017-2'den sonra grafik görüntü: pay serisi btk_mobile_subscriber_share, toplam btk_subscribers_summary."
 
+[indicator.btk_mobile_subscribers_by_operator_estimated]
+label_tr = "Mobil abone sayısı, işletmeciye göre (paylardan hesaplanan)"
+label_en = "Mobile subscriptions by operator, derived from shares"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "quarterly"
+dims = ["telecom_operator"]
+views = ["table", "line", "bar"]
+definition_tr = "btk_mobile_subscriber_share (metinden, bir ondalık) × btk_subscribers_summary_quarterly toplam mobil abone. Grafikten okunan btk_mobile_subscribers_by_operator 2017-1'de bittiği için sonrası; kalite işareti 'tahmin', çünkü pay yuvarlaması abone sayısında ±50 bin belirsizlik bırakıyor."
+
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
 label_en = "Mobile generation"

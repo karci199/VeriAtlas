@@ -23,7 +23,7 @@ from pathlib import Path
 
 import polars as pl
 
-from ..config import RAW
+from ..config import PUBLIC, RAW
 from .kgm import fold
 
 FOLDER = RAW / "btk" / "pdf" / "elektronik-haberlesme-pazar-verileri"
@@ -164,3 +164,84 @@ class BtkMobileSubscribersByOperator:
 BTK_CHART_ADAPTERS = {
     BtkMobileSubscribersByOperator.indicator_id: BtkMobileSubscribersByOperator
 }
+
+
+def totals_and_shares():
+    """Total mobile subscriptions, the operators' shares and the quarters already read off
+    the charts — all three from the warehouse, so the PDFs are not opened again."""
+    import duckdb
+
+    fact = str(PUBLIC / "fact.parquet")
+    con = duckdb.connect()
+    totals = dict(
+        con.execute(
+            "select period_start, value from read_parquet(?) where indicator_id = ? "
+            "and dims = ? and frequency = 'quarterly'",
+            [fact, "btk_subscribers_summary_quarterly", "subscriber_type=mobile_total"],
+        ).fetchall()
+    )
+    shares = {
+        (dims, start): value
+        for dims, start, value in con.execute(
+            "select dims, period_start, value from read_parquet(?) "
+            "where indicator_id = ?",
+            [fact, "btk_mobile_subscriber_share"],
+        ).fetchall()
+    }
+    measured = {
+        start
+        for (start,) in con.execute(
+            "select distinct period_start from read_parquet(?) where indicator_id = ?",
+            [fact, "btk_mobile_subscribers_by_operator"],
+        ).fetchall()
+    }
+    return totals, shares, measured
+
+
+class BtkMobileSubscribersEstimated:
+    """Share × total, for the quarters the chart no longer prints (2017-2 on).
+
+    The reports stopped printing the operators' subscription numbers when the charts became
+    images; the prose keeps the shares, and the summary page keeps the total, so the product
+    continues the series. Only quarters with both, and only where the read series stops:
+    the figures are marked ``estimated`` because BTK rounds the shares to one decimal, which
+    leaves about ±50 thousand subscriptions of slack.
+    """
+
+    source_id = "btk"
+    indicator_id = "btk_mobile_subscribers_by_operator_estimated"
+
+    def fetch(self) -> Path:
+        return FOLDER
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        totals, shares, measured = totals_and_shares()
+        records = []
+        for (dims, start), share in shares.items():
+            if start in measured or start not in totals:
+                continue
+            records.append(
+                {
+                    "period_start": start,
+                    "dims": dims,
+                    "value": totals[start] * share / 100,
+                }
+            )
+        return pl.DataFrame(
+            records, schema_overrides={"value": pl.Float64}
+        ).with_columns(
+            pl.lit("TR").alias("area_id"),
+            pl.lit("country").alias("area_level"),
+            pl.lit(self.indicator_id).alias("indicator_id"),
+            pl.lit("quarterly").alias("frequency"),
+            pl.lit("subscriber").alias("unit"),
+            pl.lit("estimated").alias("quality_flag"),
+            pl.lit("2026-06").alias("vintage"),
+            pl.lit("btk").alias("source_id"),
+            pl.lit(dt.date(2026, 9, 16)).alias("retrieved_at"),
+        )
+
+
+BTK_CHART_ADAPTERS[BtkMobileSubscribersEstimated.indicator_id] = (
+    BtkMobileSubscribersEstimated
+)
