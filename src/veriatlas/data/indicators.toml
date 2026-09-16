@@ -28517,6 +28517,25 @@ dims = ["internet_speed"]
 views = ["table", "line", "bar"]
 definition_tr = "BTK üç aylık pazar verileri, Şekil 3-4 pasta grafiği; grafik görüntü olduğu için sayfa render edilip gözle okundu (scripts/btk_speed_dataset.py). 2021-4, 2022-4, 2023-4, 2024-4, 2025-4 ve 2026-1 kesitleri. Dokuz payın toplamı 100 ± 0,3 kontrolünden geçiyor. 2021 öncesi bantlar farklı (x≤1, 4-8, 10-30 gibi), karşılaştırılabilir olmadığı için alınmadı."
 
+[indicator.btk_fixed_subscribers]
+label_tr = "Sabit telefon abonesi (rapor cümlesinden)"
+label_en = "Fixed telephone subscriptions, from the report sentence"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "quarterly"
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri; sabit pazar bölümünü açan cümleden okundu. Çeyreklik 2009-1 … 2026-1 (2021-1 cümlesi okunamadı). 2012-4 … 2022-2 tam sayı; öncesi ve sonrası milyon olarak yuvarlı basılı (örnek 8,28 milyon). Özet tablodaki btk_subscribers_summary ile aynı büyüklük; o seri 2012'den başlıyor, bu seri 2009'a iniyor."
+
+[indicator.btk_mobile_broadband_by_tariff]
+label_tr = "Mobil genişbant abonesi, ön ödemeli ve faturalı"
+label_en = "Mobile broadband subscriptions, prepaid and postpaid"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "quarterly"
+dims = ["tariff_type"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri; faturalı-ön ödemeli mobil genişbant grafiğini tanıtan cümleden okundu (grafik görüntü). Çeyreklik 2014-2'den; cümlesi bölünmüş çeyrekler yok."
+
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
 label_en = "Mobile generation"

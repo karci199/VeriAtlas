@@ -106,6 +106,13 @@ tanıtan cümle aynı rakamları veriyor. Adaptör `src/veriatlas/adapters/btk_p
 - `btk_number_portability`: çeyrek içinde taşınan mobil numara, 2014-3 … 2026-1.
 - `btk_number_portability_total`: birikimli mobil taşıma, 2021-2'den (2026-1'de 211,3 milyon).
 - `btk_number_portability_fixed_total`: birikimli sabit hat taşıma, 2014-1 … 2026-1 (2,92 milyon).
+- `btk_fixed_subscribers`: sabit telefon abonesi, çeyreklik 2009-1 … 2026-1 (2021-1 yok). Özet
+  tablo 2012'den başladığı için 2009-2011 ancak buradan geliyor. **Doğrulama:** tam sayı basılan
+  2012-4 … 2022-2 çeyreklerinde özet tablodaki seriyle birebir aynı; milyon olarak yuvarlı basılan
+  çeyreklerde fark %0,5'in altında, tek istisna 2024-1 (%2,5 — cümlede 9,4 milyon, tabloda 9,64).
+- `btk_mobile_broadband_by_tariff`: ön ödemeli ve faturalı mobil genişbant abonesi, çeyreklik
+  2014-2'den. Ön ödemeli 2016-1'de 18,6 milyondu, 2026-1'de 11,3 milyona indi; faturalı aynı
+  dönemde 23,4 milyondan 65,4 milyona çıktı.
 
 ## Grafik etiketlerinden (depoda, 2026-09-16)
 
@@ -151,9 +158,9 @@ serileri karışmış ayırt edilemiyor. Üçüncü bir kaynak gerekiyor.
 
 **Grafikten gözle okunacak kalanlar (2017 sonrası grafikler görüntü):**
 - Mobil gelirin UFRS/VUK ayrımı ve kalem kırılımı.
-- Faturalı / ön ödemeli mobil genişbant abone sayısı.
 - AB ülkeleriyle karşılaştırmalar: mobil yaygınlık, MoU, ARPU (euro).
-- Sektör geliri ve sabit abone sayısı 2009-2011. Özet tablo 2012'den başlıyor, öncesi grafikte.
+- Sektör geliri 2009-2011. Özet tablo 2012'den başlıyor, öncesi grafikte. (Sabit abone sayısı
+  2009-2011 cümlelerden çekildi, yukarıda.)
 
 **Bilinçli alınmayanlar:**
 

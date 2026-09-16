@@ -11,6 +11,11 @@ states the same quarter's figures. This adapter reads those sentences from
 * the operators' postpaid share of subscriptions, from the sentence above the prepaid /
   postpaid chart (2011-4 … 2026-1; 2021-1, whose sentence the magazine layout breaks, was
   read off the chart image instead, see `scripts/btk_churn_dataset.py`);
+* fixed telephone subscriptions, from the sentence that opens the fixed market section
+  ("… itibarıyla 8.286.738 sabit telefon abonesi bulunan Türkiye'de …"), 2009-1 … 2026-1 —
+  exact between 2012-4 and 2022-2, rounded to millions before and after;
+* prepaid and postpaid mobile broadband subscriptions, from the sentence under the
+  prepaid/postpaid chart, 2016-1 on (the quarters whose sentence is broken are missing);
 * mobile number portability: the quarter's successful ports and the cumulative total since
   the service started, and the cumulative total for fixed lines (a separate sentence, the
   service started in September 2009).
@@ -43,12 +48,31 @@ PORTS_TOTAL = re.compile(r"toplam\s+([\d.]{7,})\s+adet numara taşıma işlemi")
 PORTS_TOTAL_FIXED = re.compile(
     r"Sabit hatlarda numara taşınabilirliği[^.]{0,220}?toplam\s+([\d.]{7,})\s+adet numara taşıma"
 )
+FIXED = re.compile(
+    r"(?:yaklaşık\s*)?(\d{1,3}(?:[.,]\d+)*)\s*(milyon\s+)?sabit (?:telefon )?abone(?:si)?\s*bulunan",
+    re.IGNORECASE,
+)
+MOBILE_BROADBAND = re.compile(
+    r"ön ödemeli mobil genişbant abone sayısı\s*([\d.]{5,})[^.]{0,90}?"
+    r"faturalı mobil genişbant abone sayısı\s*(?:ise\s*)?([\d.]{5,})"
+)
+
+
+def million_or_exact(token: str, million: bool) -> float:
+    """ "13.859.672" is exact; "15,21 milyon" and "11.5 milyon" are millions."""
+    if not million:
+        return float(token.replace(".", ""))
+    return round(float(token.replace(",", ".")) * 1e6)  # "8,28 milyon" is 8.280.000
+
+
 UNITS = {
     "btk_mobile_subscriber_share": "percent",
     "btk_mobile_postpaid_share": "percent",
     "btk_number_portability": "item",
     "btk_number_portability_total": "item",
     "btk_number_portability_fixed_total": "item",
+    "btk_fixed_subscribers": "subscriber",
+    "btk_mobile_broadband_by_tariff": "subscriber",
 }
 
 
@@ -160,6 +184,19 @@ def load_all() -> dict[tuple[str, str, dt.date], float]:
                 out[
                     ("btk_mobile_postpaid_share", f"telecom_operator={name}", start)
                 ] = share
+        fixed_subscribers = FIXED.search(text)
+        if fixed_subscribers:
+            out[("btk_fixed_subscribers", "", start)] = million_or_exact(
+                fixed_subscribers.group(1), bool(fixed_subscribers.group(2))
+            )
+        broadband = MOBILE_BROADBAND.search(text)
+        if broadband:
+            for kind, token in zip(
+                ("prepaid", "postpaid"), broadband.groups(), strict=True
+            ):
+                out[
+                    ("btk_mobile_broadband_by_tariff", f"tariff_type={kind}", start)
+                ] = million_or_exact(token, False)
         ports = PORTS.search(text)
         if ports:
             out[("btk_number_portability", "", start)] = number(ports.group(1))
