@@ -19,7 +19,8 @@ import polars as pl
 # region Vocabularies
 
 #: How long the period starting at ``period_start`` lasts.
-FREQUENCIES = ("daily", "weekly", "monthly", "quarterly", "annual")
+#: ``semiannual`` is the BTK postal sector reports, which publish every six months.
+FREQUENCIES = ("daily", "weekly", "monthly", "quarterly", "semiannual", "annual")
 
 #: Where the number comes from. Drives the badge shown on the chart: a reader must be
 #: able to tell a measurement from a model output without leaving the screen.

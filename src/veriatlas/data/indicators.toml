@@ -28352,6 +28352,69 @@ dims = ["esignature_type"]
 views = ["table", "line"]
 definition_tr = "BTK üç aylık pazar verileri, çizelge; çeyrek sonu birikimli, 2011-1 … 2026-1. 2024'ten tablo duruma göre (iptal, süresi bitmiş, askıda, aktif) basılıyor; yalnız 'Toplam Oluşturulan' satırı alındı, 2023-4 değeri iki biçimde aynı. 2021-2 ve 2021-4 basılı toplamları satırları tutmuyor."
 
+[indicator.btk_post_branches]
+label_tr = "Posta şube ve acente sayısı"
+label_en = "Post offices and agencies"
+topic = "iletisim"
+unit = "item"
+frequency = "semiannual"
+views = ["table", "line", "bar"]
+definition_tr = "BTK Posta Sektörü Pazar Verileri Raporu (6 aylık, 2021-1 … 2025-2). Rakamlar tabloda değil çubuk grafiğin etiketinde; etiketin yatay konumu dönemle eşleştirildi. Her dönem birden çok raporda basılı, en yeni rapor esas; raporlar arası fark %0,5'i geçerse hata. "
+
+[indicator.btk_post_letters]
+label_tr = "Haberleşme gönderisi (mektup) sayısı"
+label_en = "Letter post items"
+topic = "iletisim"
+unit = "item"
+frequency = "semiannual"
+views = ["table", "line", "bar"]
+definition_tr = "BTK Posta Sektörü Pazar Verileri Raporu (6 aylık, 2021-1 … 2025-2). Rakamlar tabloda değil çubuk grafiğin etiketinde; etiketin yatay konumu dönemle eşleştirildi. Her dönem birden çok raporda basılı, en yeni rapor esas; raporlar arası fark %0,5'i geçerse hata. Milyon adet basılı."
+
+[indicator.btk_post_parcels]
+label_tr = "Posta kolisi ve kargo gönderi sayısı"
+label_en = "Parcel and courier items"
+topic = "iletisim"
+unit = "item"
+frequency = "semiannual"
+views = ["table", "line", "bar"]
+definition_tr = "BTK Posta Sektörü Pazar Verileri Raporu (6 aylık, 2021-1 … 2025-2). Rakamlar tabloda değil çubuk grafiğin etiketinde; etiketin yatay konumu dönemle eşleştirildi. Her dönem birden çok raporda basılı, en yeni rapor esas; raporlar arası fark %0,5'i geçerse hata. Milyon adet basılı."
+
+[indicator.btk_post_letter_revenue]
+label_tr = "Haberleşme gönderisi geliri"
+label_en = "Letter post revenue"
+topic = "iletisim"
+unit = "try"
+frequency = "semiannual"
+views = ["table", "line", "bar"]
+definition_tr = "BTK Posta Sektörü Pazar Verileri Raporu (6 aylık, 2021-1 … 2025-2). Rakamlar tabloda değil çubuk grafiğin etiketinde; etiketin yatay konumu dönemle eşleştirildi. Her dönem birden çok raporda basılı, en yeni rapor esas; raporlar arası fark %0,5'i geçerse hata. Milyon TL basılı, cari."
+
+[indicator.btk_post_employment]
+label_tr = "Posta sektöründe istihdam"
+label_en = "Postal sector employment"
+topic = "iletisim"
+unit = "person"
+frequency = "semiannual"
+views = ["table", "line", "bar"]
+definition_tr = "BTK Posta Sektörü Pazar Verileri Raporu (6 aylık, 2021-1 … 2025-2). Rakamlar tabloda değil çubuk grafiğin etiketinde; etiketin yatay konumu dönemle eşleştirildi. Her dönem birden çok raporda basılı, en yeni rapor esas; raporlar arası fark %0,5'i geçerse hata. 2023-2'den esnaf/girişimci kurye dahil. 2024-2 etiketi basılmamış."
+
+[indicator.btk_post_investment]
+label_tr = "Posta sektöründe yatırım"
+label_en = "Postal sector investment"
+topic = "iletisim"
+unit = "try"
+frequency = "semiannual"
+views = ["table", "line", "bar"]
+definition_tr = "BTK Posta Sektörü Pazar Verileri Raporu (6 aylık, 2021-1 … 2025-2). Rakamlar tabloda değil çubuk grafiğin etiketinde; etiketin yatay konumu dönemle eşleştirildi. Her dönem birden çok raporda basılı, en yeni rapor esas; raporlar arası fark %0,5'i geçerse hata. Milyon TL basılı, cari."
+
+[indicator.btk_post_complaints]
+label_tr = "Posta şikâyeti (CİMER ve dilekçe)"
+label_en = "Postal complaints"
+topic = "iletisim"
+unit = "item"
+frequency = "semiannual"
+views = ["table", "line", "bar"]
+definition_tr = "BTK Posta Sektörü Pazar Verileri Raporu (6 aylık, 2021-1 … 2025-2). Rakamlar tabloda değil çubuk grafiğin etiketinde; etiketin yatay konumu dönemle eşleştirildi. Her dönem birden çok raporda basılı, en yeni rapor esas; raporlar arası fark %0,5'i geçerse hata. Bin adet basılı."
+
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
 label_en = "Mobile generation"

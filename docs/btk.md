@@ -74,6 +74,26 @@ Sitede 67 pazar raporu var; 2018-Q2 ve 2018-Q4 yok.
 - **Metin katmanı bozuklukları:** Kesik hane ("5.945.413.12") ya da kaymış hücre içeren satır o
   raporda atlandı. Aynı dönem komşu rapordan geliyor ve o raporda toplam kontrolü yapılmadı.
 
+## Posta sektörü (depoda, 2026-09-16)
+
+Kaynak: 8 rapor (btk.gov.tr/posta-sektoru-pazar-verileri-raporu), 6 aylık dönemler
+2019-1 … 2025-2. Adaptör `src/veriatlas/adapters/btk_posta.py`. Rakamlar tabloda değil çubuk
+grafiğin etiketinde: dönem etiketlerinin yatay konumu sütun merkezlerini veriyor, her etiket
+en yakın sütuna yazıldı. Yalnız sayılardan oluşan satırlar etiket sayıldı; paragraf içindeki
+sayılar böyle ayıklandı. Şemaya `semiannual` frekansı eklendi.
+
+Göstergeler: `btk_post_branches` (şube/acente), `btk_post_letters` (mektup, adet),
+`btk_post_parcels` (koli/kargo, adet), `btk_post_letter_revenue`, `btk_post_employment`,
+`btk_post_investment`, `btk_post_complaints`.
+
+- **Çoğunluk kuralı:** Bir dönem 8 raporun çoğunda basılı. Raporlar çeliştiğinde çoğunluğun
+  değeri alındı. Çelişenler:
+  - Mektup 2024-1: dört rapor 132,81 milyon, 2025-2 raporu 232,81 milyon (baskı hatası).
+  - Koli/kargo 2022-1, 2022-2 ve 2023-1: 2025-2 raporu altı rapordan 40-50 milyon düşük basıyor.
+- **Yüklenmeyenler:** sektörün toplam geliri ve koli/kargo geliri yığılmış grafik (bir sütunda üç
+  sayı), pay grafikleri (teslim yeri, ağırlık, EHY, şirket payları) ve teslim süresi dağılımı.
+- **İstihdam** 2023-2'den esnaf/girişimci kuryeleri içeriyor; 2024-2 etiketi basılmamış.
+
 ## Kalanlar (zor, sonraya)
 
 - **Mobil abone, işletmeci bazında 2008-2025** ve ön ödemeli/faturalı kırılımı: yalnız grafikte
@@ -90,8 +110,6 @@ Sitede 67 pazar raporu var; 2018-Q2 ve 2018-Q4 yok.
 - **Sıralama tabloları:** en çok aranan kısa numaralar, en çok trafik alan ülkeler.
 - **KEP hesapları ve e-imzanın durum kırılımı** (iptal, süresi bitmiş, aktif; 2024+): çok satırlı
   başlık, yalnız 9 rapor.
-- **Posta sektörü raporları** (2021-1 … 2025-2, 6 aylık): şube, gönderi, kargo, gelir, istihdam,
-  yatırım, şikâyet. Rakamlar grafik etiketinde; x konumuna göre dönemle eşleştirilmeli (orta).
 - **Gizli damga:** 2024-Q2, 2024-Q3, 2025-Q1…Q3 ve 2026-Q1 raporlarında bazı sayfalar "GİZLİ — SADECE
   KURUM İÇİ" damgalı (rehberlik, uydu payları, fiber uzunluğu). Karar verilene kadar bu sayfalar
   okunmuyor; dönemler komşu raporlardan geliyor. Bu yüzden `btk_fiber_operators` 2025-3'te bitiyor.
