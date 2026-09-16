@@ -251,9 +251,11 @@ class BtkMobileChurn:
     """Monthly churn by operator, transcribed from the chart image.
 
     See `scripts/btk_churn_dataset.py`: the figure (chart plus its data table) is an image in
-    every report from 2017, so the table was read off a rendered page. Only the 2026-Q1
-    report is transcribed so far; the report's own sentence for the last month matches the
-    table's last column.
+    every report from 2017, so the tables were read off rendered pages — the first-quarter
+    report of each year, which together cover April 2016 … March 2026 (April 2018 …
+    February 2019 missing: the 2019 reports hide their captions inside the images). The
+    transcription checks itself where two reports overlap and against the sentence above
+    the chart.
     """
 
     source_id = "btk"
@@ -272,15 +274,13 @@ class BtkMobileChurn:
         )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
-        if module.CHURN[(2026, 3)] != module.SENTENCE_CHECK:
-            raise ValueError("BTK churn: son ay cümledeki oranları tutmuyor")
         records = [
             {
                 "period_start": dt.date(year, month, 1),
                 "dims": f"telecom_operator={operator}",
                 "value": value,
             }
-            for (year, month), row in module.CHURN.items()
+            for (year, month), row in module.series().items()
             for operator, value in row.items()
         ]
         return pl.DataFrame(
