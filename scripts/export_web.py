@@ -382,6 +382,45 @@ DATASETS.update(
     }
 )
 
+#: 2026-09-14..16 loads: SGK provincial yearbooks, banks, provincial GDP, YÖK, TOBB, BTK,
+#: Diyanet, MGM normals, ETKB, Ministry of Health yearbooks. Annual indicators only, by the
+#: same rule as EVDS below; the monthly DHMİ series and the daily MGM records stay in the
+#: warehouse. The district × province squares stay out (K30). An indicator the dictionary
+#: calls annual can still hold quarterly rows (four BTK series print both); the page would
+#: show one of them per year with nothing saying which, so those stay out too.
+MIXED_FREQUENCY = set(
+    pl.scan_parquet(PUBLIC / "fact.parquet")
+    .filter(pl.col("frequency") != "annual")
+    .select("indicator_id")
+    .unique()
+    .collect()["indicator_id"]
+)
+DATASETS.update(
+    {
+        ind.indicator_id: ind.indicator_id.replace("_", "-") + ".csv"
+        for ind in load().indicators.values()
+        if ind.frequency == "annual"
+        and ind.indicator_id not in DATASETS
+        and ind.indicator_id not in MIXED_FREQUENCY
+        and ind.indicator_id.startswith(
+            (
+                "sgk_",
+                "bank_",
+                "province_gdp_",
+                "yok_",
+                "yks_",
+                "university_",
+                "tobb_",
+                "btk_",
+                "diyanet_",
+                "mgm_",
+                "etkb_",
+                "moh_",
+            )
+        )
+    }
+)
+
 #: EVDS indicators, annual ones only. The page keys every row by area and year, so a
 #: monthly or weekly series written here would put twelve (or fifty-two) values on one key
 #: and the page would draw whichever came last — a wrong number with nothing saying so.
