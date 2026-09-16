@@ -55,3 +55,20 @@ doğrulanmadı · ✘ otomatik erişime kapalı (tarayıcıyla denenecek) · dep
 | Kültür Turizm, GSB, Veri Portalı, Ankara BB | — | bağlantı hatası | bilinmiyor | buradan erişilemedi, tarayıcıyla denenmeli |
 | İBB Açık Veri | CKAN API | JSON | ✘ | robots.txt yasak |
 | ÖSYM | sonuç istatistikleri | — | bilinmiyor | istatistik sayfası adresi bulunamadı |
+
+## Keşif turu 2026-09-16 (BTK bitti, yeni kaynak avı)
+
+| Kurum | Ne var | Biçim | Zorluk | Durum |
+|---|---|---|---|---|
+| DHMİ | havalimanı bazında uçak, yolcu, yük, kargo; iç/dış hat; aylık birikimli | xlsx, 2008-2026 | kolay | **depoda** (`docs/dhmi.md`) |
+| MGM | il bazında aylık iklim normalleri (sıcaklık, güneş, yağış, yağışlı gün) ve rekorlar | HTML tablo | kolay | **depoda** (`docs/mgm.md`) |
+| EPİAŞ Şeffaflık | elektrik üretim/tüketim/fiyat, saatlik; 301 uç nokta, dağıtım bölgesi kırılımı | REST API + swagger | orta | ✘ tarihsel veri TGT (hesap) istiyor; açık uçlar yalnız bugünün üretimi ve tek günlük fiyat. Kullanıcı hesap açarsa çekilebilir |
+| TEİAŞ | elektrik üretim-iletim istatistikleri | JS uygulaması | orta | ✘ httpx ile dosya görünmüyor |
+| AFAD | afet istatistikleri | PDF | orta | ◐ sayfada 4 PDF |
+| TCDD | demiryolu istatistikleri | — | bilinmiyor | ✘ 403 |
+| NVİ, OGM, UAB | — | — | bilinmiyor | ✘ 404 |
+| İŞKUR, Ticaret Bakanlığı, Kültür Turizm, GSB | istatistik sayfaları | JS / bağlantı hatası | bilinmiyor | ✘ tarayıcıyla denenmeli |
+| BDDK | aylık bülten | — | bilinmiyor | ✘ bağlantı kurulamadı |
+
+MGM'de ilçe düzeyi de var ama sayfa adlandırması farklı (`m=IZNIK` boş döndü); ilçe iklim
+verisi ayrı bir iş olarak duruyor.
