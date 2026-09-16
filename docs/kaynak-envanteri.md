@@ -72,3 +72,14 @@ doğrulanmadı · ✘ otomatik erişime kapalı (tarayıcıyla denenecek) · dep
 
 MGM'de ilçe düzeyi de var ama sayfa adlandırması farklı (`m=IZNIK` boş döndü); ilçe iklim
 verisi ayrı bir iş olarak duruyor.
+
+## Keşif turu 2026-09-16 akşam (ETKB ve Diyanet çekildi, EPİAŞ kapandı)
+
+| Kurum | Ne var | Biçim | Zorluk | Durum |
+|---|---|---|---|---|
+| ETKB / EİGM | il × kaynak devreye giren kurulu güç ve santral sayısı, 2003-2025 | xls/xlsx, yılda bir dosya | kolay | **depoda** (`docs/etkb.md`) |
+| Diyanet | cami, personel, Kur'an kursu, hac-umre, ihtida, bütçe; il tabloları İBBS-3 | 11 xls/xlsx | kolay | **depoda** (`docs/diyanet.md`) |
+| EPİAŞ Şeffaflık | PTF/SMF saatlik fiyat, gerçek zamanlı üretim (kaynak bazında), santral bazlı üretim, dağıtım bölgesi tüketimi, dengesizlik, YEKDEM, doğal gaz piyasası | REST API | orta | ✘ **kapatıldı.** Dört uç nokta denendi, hepsi kimlik istiyor (`401` ya da "TGT göndermeniz gerekmektedir"). Hesap açmak kullanıcıya ait; kullanıcıyla "çok gerekli mi" diye konuşuldu ve **vazgeçildi**: fiyat tarafı EVDS+EPDK'da, üretim-tüketim aylık olarak EPDK'da var; EPİAŞ'ın eklediği saatlik çözünürlük ve santral bazı, projenin il ekseninde az kazanç. Tek gerçek boşluk il bazında **fiilî üretim** — istenirse hesapla açılır |
+| Sağlık Bakanlığı (SBSGM) | Sağlık İstatistikleri Yıllığı: il bazında hastane, yatak, hekim, başvuru, aşılama | PDF (e-kütüphane), sayfalar JS ile çiziliyor, Excel yok | orta | ◐ **sıradaki aday.** BTK'da geliştirilen PDF merdiveni burada da işler. Depoda TÜİK/MEDAS'tan gelen 7 sağlık göstergesi var (hastane, yatak, hekim, hekime başvuru), yıllık bunları uzatır ve derinleştirir |
+| İŞKUR | işgücü piyasası, açık iş, işe yerleştirme | sayfa JS; httpx'le bağlantı yok | bilinmiyor | ✘ tarayıcıyla yeniden denenmeli |
+| MEB | örgün eğitim istatistikleri | xls/pdf | ✘ | **alınmadı ve alınmayacak**: robots.txt yapay zekâ ajanlarını engelliyor. Eğitimde depodaki veri TÜİK/MEDAS (ilçe eğitim düzeyi, okuryazarlık) ve YÖK üzerinden geliyor; okul/öğretmen/öğrenci sayıları eksik kalıyor |
