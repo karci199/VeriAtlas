@@ -192,7 +192,13 @@ class Table:
             if TITLE.match(line) or line.startswith(("Şekil", "•")):
                 break
             label, numbers = split_row(line)
+            # a rotated "UFRS" / "VUK" heading leaves one letter in front of the row
+            label = re.sub(r"^[A-ZÇĞİÖŞÜ]\s+", "", label)
             if not numbers:
+                if re.search(r"\d", label):
+                    # a malformed cell ("7.253.226575"): the row cannot be read
+                    broken = True
+                    continue
                 pending = (pending + " " + label).strip()
                 misses += 1
                 if out and misses > 2:
@@ -436,7 +442,28 @@ TABLES = [
         OPERATORS,
     ),
     Table(
+        r"turktelekom(un)?vemobil(sebeke)?isletmecilerin(in)?yilliknetsatis",
+        "btk_operator_revenue_annual",
+        OPERATORS,
+    ),
+    Table(
+        r"turktelekom(un)?vemobil(sebeke)?isletmecilerin(in)?toplamyillikyatirim",
+        "btk_operator_investment_annual",
+        OPERATORS,
+    ),
+    Table(
         r"digerisletmecilerinucaylikgelir", "btk_other_operator_revenue", AUTHORISATIONS
+    ),
+    Table(
+        r"digerisletmecilerinyillikgelir",
+        "btk_other_operator_revenue_annual",
+        AUTHORISATIONS,
+    ),
+    Table(
+        r"digerisletmecilerintoplamyillikyatirim",
+        "btk_other_operator_investment_annual",
+        {r"digerisletmeciler": ""},
+        total=None,
     ),
     Table(
         r"digerisletmecilerinucaylikyatirim",
@@ -609,6 +636,10 @@ UNITS = {
     "btk_operator_revenue": "try",
     "btk_operator_investment": "try",
     "btk_other_operator_revenue": "try",
+    "btk_operator_revenue_annual": "try",
+    "btk_operator_investment_annual": "try",
+    "btk_other_operator_revenue_annual": "try",
+    "btk_other_operator_investment_annual": "try",
     "btk_other_operator_investment": "try",
     "btk_consumer_complaints": "item",
     "btk_mobile_broadband_tech": "subscriber",

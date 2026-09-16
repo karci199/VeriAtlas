@@ -45,6 +45,8 @@ Sitede 67 pazar raporu var; 2018-Q2 ve 2018-Q4 yok.
 | `btk_fiber_alternative*` (eski tanım), `btk_fiber_operators*` (2022'den geniş tanım) | çizelge, sahiplik ve omurga/erişim | çeyreklik 2014-1 … 2025-4 / 2019-1 … 2025-3 |
 | `btk_mobile_broadband_tech` | 3G/4.5G abone, mobil internet, TB | çeyreklik 2011-3 … 2026-1 (boşluklu) |
 | `btk_carrier_selection`, `btk_messages_by_operator` | çizelge | çeyreklik 2014-1 … 2026-1 |
+| `btk_operator_revenue_annual`, `btk_operator_investment_annual` | yıllık çizelge, işletmeci bazında | 2005-2025 / 2008-2025 |
+| `btk_other_operator_revenue_annual`, `btk_other_operator_investment_annual` | yıllık çizelge | 2011-2025 |
 | `btk_esignature_certificates` | çizelge, birikimli e-imza ve mobil imza sertifikası | çeyreklik 2011-1 … 2026-1 |
 
 ### Kontroller
@@ -55,6 +57,10 @@ Sitede 67 pazar raporu var; 2018-Q2 ve 2018-Q4 yok.
   - 2021-4, 2022-3, 2025-1: yaklaşık %0,3.
   - 2018-3: %2.
 - **M2M:** Özet tablodaki M2M, eski `btk_m2m_subscribers` serisiyle her yıl birebir aynı.
+- **Yıllık ve çeyreklik gelir:** İşletmeci gelirinin yıllık çizelgesi, çeyrekliklerin toplamıyla
+  2014-2025 arasında birebir aynı. 2018'de %26 fark var, çünkü 2018-4 çeyreği kaynakta yok;
+  2010-2013'te %1-2 fark var, BTK o yılları sonradan düzeltmiş. Sektör geliri artık 2005'e iniyor
+  (özet tablo 2012'den başlıyordu).
 - **Genişbant:** Özet tablolarda genişbant parçaları, her rapor ve her sütunda basılı toplamı veriyor.
 - **Basılı toplam hataları:** BTK'nın kendi toplamları bazen satırları tutmuyor. Bunlar kodda
   listelendi; toplamlar değil satırlar yüklendi:
@@ -159,8 +165,6 @@ serileri karışmış ayırt edilemiyor. Üçüncü bir kaynak gerekiyor.
 **Grafikten gözle okunacak kalanlar (2017 sonrası grafikler görüntü):**
 - Mobil gelirin UFRS/VUK ayrımı ve kalem kırılımı.
 - AB ülkeleriyle karşılaştırmalar: mobil yaygınlık, MoU, ARPU (euro).
-- Sektör geliri 2009-2011. Özet tablo 2012'den başlıyor, öncesi grafikte. (Sabit abone sayısı
-  2009-2011 cümlelerden çekildi, yukarıda.)
 
 **Bilinçli alınmayanlar:**
 
