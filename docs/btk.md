@@ -124,23 +124,48 @@ işletmecilere ait, büyükten küçüğe Turkcell, Vodafone, Avea/TT Mobil.
   çeyrekte (2015-4 … 2017-1) hesaplanan değer, grafikten okunandan en fazla 30 bin abone
   (%0,1) farklı.
 
-## Kalanlar (zor, sonraya)
+## Yapılamayanlar ve nedenleri (2026-09-16)
 
-- **Ön ödemeli/faturalı kırılımı:** grafik; cümledeki oran güvenilir çıkmadı (2026 raporunun
-  dergi düzeninde kelimeler karışıyor).
-- **Sektör geliri ve sabit abone 2009-2011:** özet tablo 2012'den başlıyor; öncesi grafikte.
-- **Grafik-only diğerleri:** churn, AB ülkeleriyle MoU karşılaştırması, hıza göre genişbant, mobil
-  gelir kırılımı (UFRS/VUK), faturalı/ön ödemeli mobil genişbant.
-- **Yıllık gelir tabloları:** 2019-2020 raporlarında UFRS/VUK ayrımıyla basılı. Çeyreklik seri
-  depoda olduğundan yüklenmedi.
-- **Pazar payı tabloları** (STH, İSS, uydu, GMPCS, rehberlik, altyapı, posta): yüzde, işletmeci
-  adları değişken; yüklenmedi.
-- **Sıralama tabloları:** en çok aranan kısa numaralar, en çok trafik alan ülkeler.
-- **KEP hesapları ve e-imzanın durum kırılımı** (iptal, süresi bitmiş, aktif; 2024+): çok satırlı
-  başlık, yalnız 9 rapor.
-- **Gizli damga:** 2024-Q2, 2024-Q3, 2025-Q1…Q3 ve 2026-Q1 raporlarında bazı sayfalar "GİZLİ — SADECE
-  KURUM İÇİ" damgalı (rehberlik, uydu payları, fiber uzunluğu). Karar verilene kadar bu sayfalar
-  okunmuyor; dönemler komşu raporlardan geliyor. Bu yüzden `btk_fiber_operators` 2025-3'te bitiyor.
+Üç yöntem denendi: çizelgeleri metin katmanından okumak, grafik etiketlerini kelime
+konumlarından okumak, rakamı grafiği tanıtan cümleden almak. Aşağıdakiler bu üçüyle çıkmadı;
+kalanı için sayfayı görüntüye çevirip gözle okumak gerekiyor (rapor başına birkaç grafik,
+40'tan fazla rapor).
+
+**Grafikten gözle okunması gerekenler (2017 sonrası grafikler görüntü):**
+
+- Abone kayıp oranı (churn), işletmeci bazında. Cümlede tek bir oran geçiyor, hangi işletmeciye
+  ait olduğu belirsiz.
+- Ön ödemeli / faturalı abone oranı. Cümleden denendi ama 2019-2020 ve 2026 raporlarının dergi
+  düzeninde kelimeler birbirine karışıyor; çıkan oran güvenilir değil.
+- Hıza göre sabit genişbant abone dağılımı.
+- Mobil gelirin UFRS/VUK ayrımı ve kalem kırılımı.
+- Faturalı / ön ödemeli mobil genişbant abone sayısı.
+- AB ülkeleriyle karşılaştırmalar: mobil yaygınlık, MoU, ARPU (euro).
+- MNT kapsamında işletmecilerin net gelen abonesi. Üç seri var, toplamı sıfıra yakın ve
+  değerler negatif olabiliyor; sıralamadan hangi işletmeci olduğu çıkarılamıyor.
+- Sektör geliri ve sabit abone sayısı 2009-2011. Özet tablo 2012'den başlıyor, öncesi grafikte.
+
+**Bilinçli alınmayanlar:**
+
+- Pazar payı yüzdesi tabloları (STH, İSS, uydu, GMPCS, rehberlik, altyapı, posta şirketleri).
+  İşletmeci adları ve satır sayısı her raporda değişiyor; yüzde olduğu için toplanamıyor.
+- Sıralama tabloları: en çok aranan kısa numaralar, en çok trafik gönderilen/alınan ülkeler.
+- Yıllık gelir ve yatırım tabloları. Çeyreklik seri depoda olduğu için ayrıca yüklenmedi;
+  ayrıca 2019-2020 raporları bunları UFRS ve VUK olarak iki kez basıyor.
+- KEP (kayıtlı elektronik posta) hesap sayısı ve e-imzanın durum kırılımı (iptal, süresi
+  bitmiş, askıda, aktif). Başlık beş satıra bölünmüş, yalnız 2024 sonrası 9 raporda var.
+- Posta raporlarında yığılmış grafikler: sektörün toplam geliri, koli/kargo geliri, teslim
+  yeri ve ağırlık payları, EHY payı, teslim süresi dağılımı. Bir sütunda üç sayı olduğu için
+  hangisinin hangi seriye ait olduğu konumdan çıkmıyor.
+
+**Kaynakta olmayan ya da okunamayan:**
+
+- 2018-Q2 ve 2018-Q4 raporları sitede yok.
+- 2019 raporları ve 2020-Q2 dergi düzeninde: tablolar satır olarak çıkmıyor.
+- 2021-Q1 raporu kodlanmış fontla basılmış: metin katmanı okunamıyor.
+- Bu üçünün sonucu: çizelge serilerinde 2018-4 çeyreği eksik.
+- "GİZLİ — SADECE KURUM İÇİ" damgalı sayfalar (2024-Q2, 2024-Q3, 2025-Q1…Q3, 2026-Q1):
+  karar verilene kadar okunmuyor. Bu yüzden `btk_fiber_operators` 2025-3'te bitiyor.
 
 ## Yıllık İl İstatistikleri (depoda, 2026-09-15)
 
