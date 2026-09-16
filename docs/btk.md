@@ -107,11 +107,25 @@ tanıtan cümle aynı rakamları veriyor. Adaptör `src/veriatlas/adapters/btk_p
 - `btk_number_portability_total`: birikimli mobil taşıma, 2021-2'den (2026-1'de 211,3 milyon).
 - `btk_number_portability_fixed_total`: birikimli sabit hat taşıma, 2014-1 … 2026-1 (2,92 milyon).
 
+## Grafik etiketlerinden (depoda, 2026-09-16)
+
+`src/veriatlas/adapters/btk_charts.py`: 2017'ye kadar raporların grafikleri vektör, etiketleri
+PDF kelimeleri arasında. "İşletmeci Bazında Toplam Abone Sayıları" grafiği böyle okundu:
+dönem etiketleri sütunları veriyor, bir sütundaki dört etiketten toplamı tutan üçlü
+işletmecilere ait, büyükten küçüğe Turkcell, Vodafone, Avea/TT Mobil.
+
+- `btk_mobile_subscribers_by_operator`: çeyreklik 2008-1 … 2017-1 (37 çeyrek, kesintisiz).
+- **Doğrulama:** Üç işletmecinin yıl sonu toplamı, ayrı kaynaktan gelen toplam mobil abone
+  sayısını 2012-2016 arasında %0,01'den az farkla tutuyor (etiketler milyon ve iki ondalık
+  basılı, fark yuvarlamadan).
+- 2009-1 sütunu atlandı: o grafikte eksen sayıları etiketlere karışıyor.
+
 ## Kalanlar (zor, sonraya)
 
-- **Mobil abone, işletmeci bazında mutlak sayı** ve ön ödemeli/faturalı kırılımı: grafikte.
-  Paylar metinden çekildi (yukarıda), mutlak sayı paylar × toplam abone ile türetilebilir.
-  2009-2016 raporlarının grafiklerinde etiketler metin katmanında; oradan da okunabilir.
+- **Mobil abone, işletmeci bazında 2017-2'den sonrası:** grafik görüntü. 2008-1 … 2017-1
+  grafik etiketlerinden çekildi (`btk_charts.py`, aşağıda); sonrası için paylar × toplam abone.
+- **Ön ödemeli/faturalı kırılımı:** grafik; cümledeki oran güvenilir çıkmadı (2026 raporunun
+  dergi düzeninde kelimeler karışıyor).
 - **Sektör geliri ve sabit abone 2009-2011:** özet tablo 2012'den başlıyor; öncesi grafikte.
 - **Grafik-only diğerleri:** churn, AB ülkeleriyle MoU karşılaştırması, hıza göre genişbant, mobil
   gelir kırılımı (UFRS/VUK), faturalı/ön ödemeli mobil genişbant.

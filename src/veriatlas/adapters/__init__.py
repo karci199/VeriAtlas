@@ -13,6 +13,7 @@ from .yks import YKS_ADAPTERS
 from .btk import BTK_ADAPTERS
 from .btk_province import BTK_PROVINCE_ADAPTERS
 from .btk_summary import BTK_SUMMARY_ADAPTERS
+from .btk_charts import BTK_CHART_ADAPTERS
 from .btk_imei import BTK_IMEI_ADAPTERS
 from .btk_posta import BTK_POSTA_ADAPTERS
 from .btk_prose import BTK_PROSE_ADAPTERS
@@ -125,6 +126,7 @@ ADAPTERS = {
     **BTK_PROVINCE_ADAPTERS,
     **BTK_SUMMARY_ADAPTERS,
     **BTK_IMEI_ADAPTERS,
+    **BTK_CHART_ADAPTERS,
     **BTK_TABLE_ADAPTERS,
     **BTK_POSTA_ADAPTERS,
     **BTK_PROSE_ADAPTERS,

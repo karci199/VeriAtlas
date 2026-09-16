@@ -28452,6 +28452,16 @@ frequency = "quarterly"
 views = ["table", "line"]
 definition_tr = "BTK üç aylık pazar verileri raporları; grafik görüntü olduğu için değer, grafiği tanıtan cümleden okundu. Her çeyrek yalnız kendi raporunda geçiyor. Sabit hatlarda uygulama Eylül 2009'da başladı; birikimli, 2014-1 … 2026-1."
 
+[indicator.btk_mobile_subscribers_by_operator]
+label_tr = "Mobil abone sayısı, işletmeciye göre"
+label_en = "Mobile subscriptions by operator"
+topic = "iletisim"
+unit = "subscriber"
+frequency = "quarterly"
+dims = ["telecom_operator"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri, \"İşletmeci Bazında Toplam Abone Sayıları\" grafiği; 2017'ye kadar grafik etiketleri PDF metninde, konumlarından okundu. Milyon olarak basılı (iki ondalık). Sütundaki dört etiketten toplamı verenler işletmeciler; büyükten küçüğe Turkcell, Vodafone, Avea/TT Mobil (bu sıra 2017'ye kadar korunuyor). 2017-2'den sonra grafik görüntü: pay serisi btk_mobile_subscriber_share, toplam btk_subscribers_summary."
+
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
 label_en = "Mobile generation"
