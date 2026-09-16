@@ -110,7 +110,7 @@ def read_page(words: list[dict]) -> dict[tuple[str, dt.date], float] | None:
             # a y-axis tick fell in the column, or the chart is laid out some other way
             SKIPPED.append((token, values))
             continue
-        total, parts = reading
+        _total, parts = reading
         year, quarter = token.split("-")
         period = dt.date(int(year), (int(quarter) - 1) * 3 + 1, 1)
         for operator, number in zip(ORDER, parts, strict=True):
