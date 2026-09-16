@@ -156,6 +156,9 @@ Aynı yöntemle çıkarılan diğer seriler:
   kesitleri (`scripts/btk_speed_dataset.py`). Dokuz payın toplamı 100 kontrolünden geçiyor.
   2021 öncesi bantlar farklı tanımlı (x≤1, 4-8, 10-30), karşılaştırılamadığı için alınmadı.
 - `btk_mobile_postpaid_share`: faturalı abone payı; cümleden okundu, yalnız 2021-1 grafikten.
+- `btk_mobile_service_revenue`: mobil hizmet geliri, yıllık 2017-2025 (UFRS ve Vergi Usul Kanunu
+  esasıyla) ve çeyreklik 2024-1 … 2026-1 (`scripts/btk_mobile_revenue_dataset.py`). 2024 ve 2025
+  çeyrekleri yıllık değeri veriyor, son çeyrek rapor cümlesiyle aynı.
 
 **MNT net gelen abone: yüklenmedi, çünkü BTK'nın grafikleri çelişiyor.** 2022-Q1 raporu
 2022'nin birinci çeyreğinde Vodafone'u −74 bin, Turkcell'i −1 bin gösteriyor; 2024-Q1 raporu
@@ -163,8 +166,9 @@ aynı çeyrekte tam tersini. İki grafikte de üç işletmecinin toplamı sıfı
 serileri karışmış ayırt edilemiyor. Üçüncü bir kaynak gerekiyor.
 
 **Grafikten gözle okunacak kalanlar (2017 sonrası grafikler görüntü):**
-- Mobil gelirin UFRS/VUK ayrımı ve kalem kırılımı.
-- AB ülkeleriyle karşılaştırmalar: mobil yaygınlık, MoU, ARPU (euro).
+- AB ülkeleriyle karşılaştırmalar: mobil yaygınlık, MoU, ARPU (euro). Grafikler okunabiliyor
+  ama veri 15 yabancı ülkeye ait ve kaynağı GSMA Intelligence; depo Türkiye odaklı olduğu için
+  alınmadı (yabancı ülke alan kaydı yok).
 
 **Bilinçli alınmayanlar:**
 

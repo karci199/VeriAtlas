@@ -353,3 +353,63 @@ class BtkBroadbandBySpeed:
 
 
 BTK_CHART_ADAPTERS[BtkBroadbandBySpeed.indicator_id] = BtkBroadbandBySpeed
+
+
+class BtkMobileRevenue:
+    """Revenue from mobile services, transcribed from the 2026-Q1 report's two charts.
+
+    See `scripts/btk_mobile_revenue_dataset.py`: yearly 2017-2025 on both accounting bases
+    (IFRS and the tax code) and quarterly 2024-1 … 2026-1 (IFRS). The quarters of 2024 and
+    2025 add up to those years' yearly figure, and the last quarter matches the sentence.
+    """
+
+    source_id = "btk"
+    indicator_id = "btk_mobile_service_revenue"
+
+    def fetch(self) -> Path:
+        return FOLDER
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        import importlib.util
+
+        from ..config import ROOT
+
+        spec = importlib.util.spec_from_file_location(
+            "btk_mobile_revenue", ROOT / "scripts" / "btk_mobile_revenue_dataset.py"
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        module.check()
+        records = [
+            {
+                "period_start": dt.date(year, 1, 1),
+                "frequency": "annual",
+                "dims": f"accounting_basis={basis}",
+                "value": value * 1e9,
+            }
+            for year, values in module.ANNUAL.items()
+            for basis, value in zip(("ifrs", "tax_code"), values, strict=True)
+        ] + [
+            {
+                "period_start": dt.date(year, (quarter - 1) * 3 + 1, 1),
+                "frequency": "quarterly",
+                "dims": "accounting_basis=ifrs",
+                "value": value * 1e9,
+            }
+            for (year, quarter), value in module.QUARTERLY.items()
+        ]
+        return pl.DataFrame(
+            records, schema_overrides={"value": pl.Float64}
+        ).with_columns(
+            pl.lit("TR").alias("area_id"),
+            pl.lit("country").alias("area_level"),
+            pl.lit(self.indicator_id).alias("indicator_id"),
+            pl.lit("try").alias("unit"),
+            pl.lit("measured").alias("quality_flag"),
+            pl.lit("2026-06").alias("vintage"),
+            pl.lit("btk").alias("source_id"),
+            pl.lit(dt.date(2026, 9, 16)).alias("retrieved_at"),
+        )
+
+
+BTK_CHART_ADAPTERS[BtkMobileRevenue.indicator_id] = BtkMobileRevenue

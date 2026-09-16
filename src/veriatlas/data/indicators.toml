@@ -28575,6 +28575,24 @@ frequency = "annual"
 views = ["table", "line", "bar"]
 definition_tr = "BTK üç aylık pazar verileri, yıllık çizelge; her yıl onu basan en yeni rapordan. 2011-2025, cari TL."
 
+[dim.accounting_basis]
+label_tr = "Muhasebe esası"
+label_en = "Accounting basis"
+
+[dim.accounting_basis.values]
+ifrs = "UFRS"
+tax_code = "Vergi Usul Kanunu"
+
+[indicator.btk_mobile_service_revenue]
+label_tr = "Mobil hizmet geliri"
+label_en = "Revenue from mobile services"
+topic = "iletisim"
+unit = "try"
+frequency = "annual"
+dims = ["accounting_basis"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK 2026-Q1 raporu, Şekil 4-24 ve 4-25; grafikler görüntü olduğu için sayfa render edilip gözle okundu (scripts/btk_mobile_revenue_dataset.py). Yıllık 2017-2025 iki muhasebe esasıyla (UFRS ve Vergi Usul Kanunu), çeyreklik 2024-1 … 2026-1 (UFRS). Milyar TL basılı, cari. 2024 ve 2025 çeyrekleri yıllık değeri veriyor; son çeyrek rapor cümlesiyle aynı."
+
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
 label_en = "Mobile generation"
