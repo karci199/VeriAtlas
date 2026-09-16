@@ -28472,6 +28472,16 @@ dims = ["telecom_operator"]
 views = ["table", "line", "bar"]
 definition_tr = "btk_mobile_subscriber_share (metinden, bir ondalık) × btk_subscribers_summary_quarterly toplam mobil abone. Grafikten okunan btk_mobile_subscribers_by_operator 2017-1'de bittiği için sonrası; kalite işareti 'tahmin', çünkü pay yuvarlaması abone sayısında ±50 bin belirsizlik bırakıyor."
 
+[indicator.btk_mobile_churn]
+label_tr = "Mobil abone kayıp oranı (churn), işletmeciye göre"
+label_en = "Mobile churn rate by operator"
+topic = "iletisim"
+unit = "percent"
+frequency = "monthly"
+dims = ["telecom_operator"]
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri, Şekil 4-14'ün altındaki veri tablosu; tablo görüntü olduğu için sayfa render edilip gözle okundu (scripts/btk_churn_dataset.py). Şimdilik yalnız 2026-Q1 raporu: Mart 2025 - Mart 2026. Aylık; raporun cümlesindeki son ay oranları tabloyu doğruluyor. Tanım: dönemde hizmeti sona erdiren abone / dönemin ortalama abone sayısı."
+
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
 label_en = "Mobile generation"

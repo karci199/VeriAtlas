@@ -245,3 +245,57 @@ class BtkMobileSubscribersEstimated:
 BTK_CHART_ADAPTERS[BtkMobileSubscribersEstimated.indicator_id] = (
     BtkMobileSubscribersEstimated
 )
+
+
+class BtkMobileChurn:
+    """Monthly churn by operator, transcribed from the chart image.
+
+    See `scripts/btk_churn_dataset.py`: the figure (chart plus its data table) is an image in
+    every report from 2017, so the table was read off a rendered page. Only the 2026-Q1
+    report is transcribed so far; the report's own sentence for the last month matches the
+    table's last column.
+    """
+
+    source_id = "btk"
+    indicator_id = "btk_mobile_churn"
+
+    def fetch(self) -> Path:
+        return FOLDER
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        import importlib.util
+
+        from ..config import ROOT
+
+        spec = importlib.util.spec_from_file_location(
+            "btk_churn", ROOT / "scripts" / "btk_churn_dataset.py"
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        if module.CHURN[(2026, 3)] != module.SENTENCE_CHECK:
+            raise ValueError("BTK churn: son ay cümledeki oranları tutmuyor")
+        records = [
+            {
+                "period_start": dt.date(year, month, 1),
+                "dims": f"telecom_operator={operator}",
+                "value": value,
+            }
+            for (year, month), row in module.CHURN.items()
+            for operator, value in row.items()
+        ]
+        return pl.DataFrame(
+            records, schema_overrides={"value": pl.Float64}
+        ).with_columns(
+            pl.lit("TR").alias("area_id"),
+            pl.lit("country").alias("area_level"),
+            pl.lit(self.indicator_id).alias("indicator_id"),
+            pl.lit("monthly").alias("frequency"),
+            pl.lit("percent").alias("unit"),
+            pl.lit("measured").alias("quality_flag"),
+            pl.lit("2026-06").alias("vintage"),
+            pl.lit("btk").alias("source_id"),
+            pl.lit(dt.date(2026, 9, 16)).alias("retrieved_at"),
+        )
+
+
+BTK_CHART_ADAPTERS[BtkMobileChurn.indicator_id] = BtkMobileChurn

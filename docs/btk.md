@@ -131,10 +131,13 @@ konumlarından okumak, rakamı grafiği tanıtan cümleden almak. Aşağıdakile
 kalanı için sayfayı görüntüye çevirip gözle okumak gerekiyor (rapor başına birkaç grafik,
 40'tan fazla rapor).
 
-**Grafikten gözle okunması gerekenler (2017 sonrası grafikler görüntü):**
+**Gözle okuma denendi ve yürüdü:** Sayfa pypdfium2 ile 4 kat büyütülüp görüntü olarak okundu.
+Churn böyle çıkarıldı (`scripts/btk_churn_dataset.py`, `btk_mobile_churn`): grafiğin altındaki
+veri tablosu aylık; şimdilik 2026-Q1 raporu, Mart 2025 - Mart 2026. Her yılın 1. çeyrek raporu
+önceki 12 ayı taşıyor, yılda bir rapor okunarak 2016'ya kadar uzatılabilir (örtüşen mart ayı
+transkripsiyonu doğrular). Sayfa başına yaklaşık 4 bin token.
 
-- Abone kayıp oranı (churn), işletmeci bazında. Cümlede tek bir oran geçiyor, hangi işletmeciye
-  ait olduğu belirsiz.
+**Grafikten gözle okunacak kalanlar (2017 sonrası grafikler görüntü):**
 - Ön ödemeli / faturalı abone oranı. Cümleden denendi ama 2019-2020 ve 2026 raporlarının dergi
   düzeninde kelimeler birbirine karışıyor; çıkan oran güvenilir değil.
 - Hıza göre sabit genişbant abone dağılımı.
