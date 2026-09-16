@@ -104,6 +104,13 @@ def series() -> dict[tuple[int, int], dict[str, float]]:
     return out
 
 
+#: Postpaid share by operator, for the one quarter whose sentence cannot be parsed
+#: (2021-Q1, a magazine layout): read off the same rendered page as the churn table.
+POSTPAID_SHARE = {
+    "2021-Q1": {"vodafone": 68.9, "turkcell": 65.8, "tt_mobil": 64.3},
+}
+
+
 if __name__ == "__main__":
     data = series()
     print(len(data), "ay", min(data), "-", max(data))

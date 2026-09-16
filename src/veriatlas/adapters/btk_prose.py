@@ -8,6 +8,9 @@ states the same quarter's figures. This adapter reads those sentences from
 * mobile operators' share of subscriptions (Şekil "Abone Sayısına Göre Pazar Payları"),
   2013-2 … 2026-1: the three shares must add up to 100 ± 0.5, which is what makes a
   misread sentence visible;
+* the operators' postpaid share of subscriptions, from the sentence above the prepaid /
+  postpaid chart (2011-4 … 2026-1; 2021-1, whose sentence the magazine layout breaks, was
+  read off the chart image instead, see `scripts/btk_churn_dataset.py`);
 * mobile number portability: the quarter's successful ports and the cumulative total since
   the service started, and the cumulative total for fixed lines (a separate sentence, the
   service started in September 2009).
@@ -42,6 +45,7 @@ PORTS_TOTAL_FIXED = re.compile(
 )
 UNITS = {
     "btk_mobile_subscriber_share": "percent",
+    "btk_mobile_postpaid_share": "percent",
     "btk_number_portability": "item",
     "btk_number_portability_total": "item",
     "btk_number_portability_fixed_total": "item",
@@ -98,6 +102,47 @@ def subscriber_shares(text: str) -> dict[str, float] | None:
     return None
 
 
+POSTPAID = re.compile(
+    r"en fazla faturalı aboneye\s+(Turkcell|Vodafone|TT\s*Mobil|Avea)[’'][^%]{0,80}?"
+    r"%\s?(\d{1,2}(?:,\d+)?)[’']?[^.]{0,40}?faturalı"
+)
+FOLLOWER = re.compile(
+    r"%\s?(\d{1,2}(?:,\d+)?)\s*ile\s+(Turkcell|Vodafone|TT\s*Mobil|Avea)"
+)
+
+
+def operator_code(name: str) -> str:
+    name = name.replace(" ", "")
+    return "tt_mobil" if name in ("TTMobil", "Avea") else name.lower()
+
+
+def postpaid_shares(text: str) -> dict[str, float] | None:
+    """ "…en fazla faturalı aboneye Vodafone'un sahip olduğu ve Vodafone abonelerinin
+    %88,4'ünün faturalı abonelerden oluştuğu … Vodafone'u %81 ile Turkcell ve %80,4 ile
+    TT Mobil takip etmektedir." — the three operators' postpaid share."""
+    leader = POSTPAID.search(text)
+    if not leader:
+        return None
+    found = {operator_code(leader.group(1)): number(leader.group(2))}
+    for share, name in FOLLOWER.findall(text[leader.end() : leader.end() + 320]):
+        found[operator_code(name)] = number(share)
+    return found if len(found) == 3 else None
+
+
+def image_postpaid() -> dict[str, dict[str, float]]:
+    """The quarters whose sentence does not parse, read off the chart image instead."""
+    import importlib.util
+
+    from ..config import ROOT
+
+    spec = importlib.util.spec_from_file_location(
+        "btk_churn", ROOT / "scripts" / "btk_churn_dataset.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.POSTPAID_SHARE
+
+
 def load_all() -> dict[tuple[str, str, dt.date], float]:
     out: dict[tuple[str, str, dt.date], float] = {}
     for report in reports():
@@ -108,6 +153,12 @@ def load_all() -> dict[tuple[str, str, dt.date], float]:
             for name, share in shares.items():
                 out[
                     ("btk_mobile_subscriber_share", f"telecom_operator={name}", start)
+                ] = share
+        postpaid = postpaid_shares(text) or image_postpaid().get(report)
+        if postpaid:
+            for name, share in postpaid.items():
+                out[
+                    ("btk_mobile_postpaid_share", f"telecom_operator={name}", start)
                 ] = share
         ports = PORTS.search(text)
         if ports:
