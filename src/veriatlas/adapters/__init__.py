@@ -2,6 +2,7 @@
 
 from .base import Adapter, Manifest, history, ingest
 from .dhmi import DHMI_ADAPTERS
+from .diyanet import DIYANET_ADAPTERS
 from .etkb import ETKB_ADAPTERS
 from .mgm import MGM_ADAPTERS
 from .epdk import EPDK_ADAPTERS
@@ -131,6 +132,7 @@ ADAPTERS = {
     **BTK_IMEI_ADAPTERS,
     **BTK_CHART_ADAPTERS,
     **DHMI_ADAPTERS,
+    **DIYANET_ADAPTERS,
     **ETKB_ADAPTERS,
     **MGM_ADAPTERS,
     **BTK_TABLE_ADAPTERS,

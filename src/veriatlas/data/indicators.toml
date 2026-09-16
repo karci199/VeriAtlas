@@ -1695,6 +1695,7 @@ label_tr = "Bitirilen eğitim düzeyi"
 label_en = "Completed education"
 
 [dim.education_level.values]
+preschool = "Okul öncesi"
 illiterate = "Okuma yazma bilmeyen"
 literate_no_school = "Okuma yazma bilen, okul bitirmeyen"
 primary = "İlkokul"
@@ -27477,6 +27478,61 @@ zimbabve = "Zi̇mbabve Cumhuri̇yeti̇"
 label_tr = "Yaş"
 label_en = "Age"
 
+[dim.staff_group]
+label_tr = "Personel grubu"
+label_en = "Staff group"
+
+[dim.staff_group.values]
+total = "Toplam"
+permanent = "Kadrolu"
+contract = "Sözleşmeli"
+general_admin = "Genel idare hizmetleri"
+mufti = "Müftü"
+preacher = "Vaiz ve cezaevi vaizi"
+quran_teacher = "Kur'an kursu öğreticisi"
+imam = "İmam-hatip"
+muezzin = "Müezzin-kayyım"
+
+[dim.pilgrimage]
+label_tr = "İbadet"
+label_en = "Pilgrimage"
+
+[dim.pilgrimage.values]
+hajj = "Hac"
+umrah = "Umre"
+
+[dim.former_belief]
+label_tr = "Önceki din/inanç"
+label_en = "Former belief"
+
+[dim.former_belief.values]
+christian = "Hristiyan"
+jewish = "Musevi"
+buddhist = "Budist"
+atheist = "Ateist"
+other = "Diğer dinler"
+
+[dim.convert_reason]
+label_tr = "İhtida sebebi"
+label_en = "Reason for conversion"
+
+[dim.convert_reason.values]
+study = "İnceleme ve araştırma"
+marriage = "Evlenme"
+advice = "Tavsiye-yönlendirme"
+influence = "Etkilenme"
+
+[dim.expenditure_type]
+label_tr = "Harcama türü"
+label_en = "Expenditure type"
+
+[dim.expenditure_type.values]
+personnel = "Personel giderleri"
+other_current = "Diğer cari giderler"
+investment = "Yatırımlar"
+transfer = "Transferler"
+total = "Genel toplam"
+
 [dim.student_event]
 label_tr = "Kayıt durumu"
 label_en = "Registration"
@@ -29080,3 +29136,151 @@ additive = true
 dims = ["energy_source"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "Enerji ve Tabii Kaynaklar Bakanlığı, Enerji İşleri Genel Müdürlüğü yıllık enerji yatırımları tabloları (enerji.gov.tr/eigm-raporlari), 2003-2025; indirme scripts/fetch_etkb.py, adaptör src/veriatlas/adapters/etkb.py. Her satır o yıl geçici kabulü yapılan bir santral; il, kaynak ve eklenen güç basılı. Her dosyanın sonundaki yıl toplamı okumanın denetimi; iki il adıyla yazılan santraller ilk ile yazıldı. Tabloda o yıl geçici kabulü yapılan satır sayısı."
+
+[topic.din]
+label_tr = "Din hizmetleri"
+label_en = "Religious services"
+order = 41
+
+[indicator.diyanet_mosques]
+label_tr = "Cami sayısı"
+label_en = "Number of mosques"
+topic = "din"
+unit = "facility"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Diyanet İşleri Başkanlığı istatistikleri (stratejigelistirme.diyanet.gov.tr/sayfa/57/istatistikler), 2023 yayımı; indirme scripts/fetch_diyanet.py, adaptör src/veriatlas/adapters/diyanet.py. İl tabloları İBBS-3. düzeyde basılı, her düzey-3 bölgesi bir il olduğu için il düzeyine yazıldı; her tabloda iller basılı Türkiye satırıyla denetlendi. Türkiye 2013-2023, il 2023."
+
+[indicator.diyanet_personnel]
+label_tr = "Diyanet personeli"
+label_en = "Diyanet personnel"
+topic = "din"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["staff_group"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Diyanet İşleri Başkanlığı istatistikleri (stratejigelistirme.diyanet.gov.tr/sayfa/57/istatistikler), 2023 yayımı; indirme scripts/fetch_diyanet.py, adaptör src/veriatlas/adapters/diyanet.py. İl tabloları İBBS-3. düzeyde basılı, her düzey-3 bölgesi bir il olduğu için il düzeyine yazıldı; her tabloda iller basılı Türkiye satırıyla denetlendi. Türkiye 2013-2023 (tüm Başkanlık, 2023'te 140.185) ve il 2023 (yalnız il/ilçe müftülükleri, 136.384). İl satırlarının kendi 'genel toplam'ı genel idare hizmetleri personelini saymıyor; kırılımda ayrı duruyor."
+
+[indicator.diyanet_quran_courses]
+label_tr = "Kur'an kursu sayısı"
+label_en = "Number of Qur'an courses"
+topic = "din"
+unit = "facility"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Diyanet İşleri Başkanlığı istatistikleri (stratejigelistirme.diyanet.gov.tr/sayfa/57/istatistikler), 2023 yayımı; indirme scripts/fetch_diyanet.py, adaptör src/veriatlas/adapters/diyanet.py. İl tabloları İBBS-3. düzeyde basılı, her düzey-3 bölgesi bir il olduğu için il düzeyine yazıldı; her tabloda iller basılı Türkiye satırıyla denetlendi. Öğretime açık kurslar, 2023."
+
+[indicator.diyanet_quran_attendance]
+label_tr = "Kur'an kursu kursiyeri"
+label_en = "Qur'an course participants"
+topic = "din"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Diyanet İşleri Başkanlığı istatistikleri (stratejigelistirme.diyanet.gov.tr/sayfa/57/istatistikler), 2023 yayımı; indirme scripts/fetch_diyanet.py, adaptör src/veriatlas/adapters/diyanet.py. İl tabloları İBBS-3. düzeyde basılı, her düzey-3 bölgesi bir il olduğu için il düzeyine yazıldı; her tabloda iller basılı Türkiye satırıyla denetlendi. Kursa devam eden kursiyer, 2023."
+
+[indicator.diyanet_quran_hafiz]
+label_tr = "Hafızlık kursiyeri"
+label_en = "Hafiz participants"
+topic = "din"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Diyanet İşleri Başkanlığı istatistikleri (stratejigelistirme.diyanet.gov.tr/sayfa/57/istatistikler), 2023 yayımı; indirme scripts/fetch_diyanet.py, adaptör src/veriatlas/adapters/diyanet.py. İl tabloları İBBS-3. düzeyde basılı, her düzey-3 bölgesi bir il olduğu için il düzeyine yazıldı; her tabloda iller basılı Türkiye satırıyla denetlendi. Hafızlık kursiyerleri, 2023."
+
+[indicator.diyanet_quran_graduates]
+label_tr = "Kur'an kursunu bitiren"
+label_en = "Qur'an course graduates"
+topic = "din"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Diyanet İşleri Başkanlığı istatistikleri (stratejigelistirme.diyanet.gov.tr/sayfa/57/istatistikler), 2023 yayımı; indirme scripts/fetch_diyanet.py, adaptör src/veriatlas/adapters/diyanet.py. İl tabloları İBBS-3. düzeyde basılı, her düzey-3 bölgesi bir il olduğu için il düzeyine yazıldı; her tabloda iller basılı Türkiye satırıyla denetlendi. Kursu bitiren kursiyerler, 2023."
+
+[indicator.diyanet_quran_graduates_education]
+label_tr = "Kur'an kursunu bitiren (eğitim durumu)"
+label_en = "Qur'an course graduates by education"
+topic = "din"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["education_level"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Diyanet İşleri Başkanlığı istatistikleri (stratejigelistirme.diyanet.gov.tr/sayfa/57/istatistikler), 2023 yayımı; indirme scripts/fetch_diyanet.py, adaptör src/veriatlas/adapters/diyanet.py. İl tabloları İBBS-3. düzeyde basılı, her düzey-3 bölgesi bir il olduğu için il düzeyine yazıldı; her tabloda iller basılı Türkiye satırıyla denetlendi. Kursu bitirenlerin eğitim durumu, 2023; toplamı cinsiyet kırılımıyla birebir tutuyor."
+
+[indicator.diyanet_quran_graduates_age]
+label_tr = "Kur'an kursunu bitiren (yaş)"
+label_en = "Qur'an course graduates by age"
+topic = "din"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["age_group"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Diyanet İşleri Başkanlığı istatistikleri (stratejigelistirme.diyanet.gov.tr/sayfa/57/istatistikler), 2023 yayımı; indirme scripts/fetch_diyanet.py, adaptör src/veriatlas/adapters/diyanet.py. İl tabloları İBBS-3. düzeyde basılı, her düzey-3 bölgesi bir il olduğu için il düzeyine yazıldı; her tabloda iller basılı Türkiye satırıyla denetlendi. Kursu bitirenlerin yaş grubu, 2023."
+
+[indicator.diyanet_pilgrims]
+label_tr = "Hacca ve umreye gidenler"
+label_en = "Pilgrims"
+topic = "din"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["pilgrimage", "sex", "age_group"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Diyanet İşleri Başkanlığı istatistikleri (stratejigelistirme.diyanet.gov.tr/sayfa/57/istatistikler), 2023 yayımı; indirme scripts/fetch_diyanet.py, adaptör src/veriatlas/adapters/diyanet.py. İl tabloları İBBS-3. düzeyde basılı, her düzey-3 bölgesi bir il olduğu için il düzeyine yazıldı; her tabloda iller basılı Türkiye satırıyla denetlendi. Yurt içinden gidenler, 2023."
+
+[indicator.diyanet_converts]
+label_tr = "İhtida edenler (önceki inanç)"
+label_en = "Converts by former belief"
+topic = "din"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["former_belief", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Diyanet İşleri Başkanlığı istatistikleri (stratejigelistirme.diyanet.gov.tr/sayfa/57/istatistikler), 2023 yayımı; indirme scripts/fetch_diyanet.py, adaptör src/veriatlas/adapters/diyanet.py. İl tabloları İBBS-3. düzeyde basılı, her düzey-3 bölgesi bir il olduğu için il düzeyine yazıldı; her tabloda iller basılı Türkiye satırıyla denetlendi. 2023."
+
+[indicator.diyanet_converts_reason]
+label_tr = "İhtida edenler (sebep)"
+label_en = "Converts by reason"
+topic = "din"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["convert_reason", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Diyanet İşleri Başkanlığı istatistikleri (stratejigelistirme.diyanet.gov.tr/sayfa/57/istatistikler), 2023 yayımı; indirme scripts/fetch_diyanet.py, adaptör src/veriatlas/adapters/diyanet.py. İl tabloları İBBS-3. düzeyde basılı, her düzey-3 bölgesi bir il olduğu için il düzeyine yazıldı; her tabloda iller basılı Türkiye satırıyla denetlendi. 2023."
+
+[indicator.diyanet_converts_age]
+label_tr = "İhtida edenler (yaş)"
+label_en = "Converts by age"
+topic = "din"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["age_group", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Diyanet İşleri Başkanlığı istatistikleri (stratejigelistirme.diyanet.gov.tr/sayfa/57/istatistikler), 2023 yayımı; indirme scripts/fetch_diyanet.py, adaptör src/veriatlas/adapters/diyanet.py. İl tabloları İBBS-3. düzeyde basılı, her düzey-3 bölgesi bir il olduğu için il düzeyine yazıldı; her tabloda iller basılı Türkiye satırıyla denetlendi. 2023."
+
+[indicator.diyanet_budget]
+label_tr = "Diyanet bütçe harcaması"
+label_en = "Diyanet budget expenditure"
+topic = "din"
+unit = "try"
+frequency = "annual"
+additive = false
+dims = ["expenditure_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Diyanet İşleri Başkanlığı istatistikleri (stratejigelistirme.diyanet.gov.tr/sayfa/57/istatistikler), 2023 yayımı; indirme scripts/fetch_diyanet.py, adaptör src/veriatlas/adapters/diyanet.py. İl tabloları İBBS-3. düzeyde basılı, her düzey-3 bölgesi bir il olduğu için il düzeyine yazıldı; her tabloda iller basılı Türkiye satırıyla denetlendi. 2022 ve 2023 gerçekleşmesi, TL."
