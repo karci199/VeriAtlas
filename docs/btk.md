@@ -94,12 +94,24 @@ Göstergeler: `btk_post_branches` (şube/acente), `btk_post_letters` (mektup, ad
   sayı), pay grafikleri (teslim yeri, ağırlık, EHY, şirket payları) ve teslim süresi dağılımı.
 - **İstihdam** 2023-2'den esnaf/girişimci kuryeleri içeriyor; 2024-2 etiketi basılmamış.
 
+## Metinden okunanlar (depoda, 2026-09-16)
+
+2017'den sonraki raporlarda grafikler görüntü; etiketleri metin katmanında yok. Ama grafiği
+tanıtan cümle aynı rakamları veriyor. Adaptör `src/veriatlas/adapters/btk_prose.py`:
+
+- `btk_mobile_subscriber_share`: işletmecilerin abone payı, çeyreklik 2009-1 … 2026-1 (M2M
+  dahil). Üç payın toplamı 100 ± 0,5 kontrolünden geçiyor; cümlesi okunamayan üç çeyrek
+  (2019-4, 2021-1, 2024-4) yok. Toplam mobil abone depoda olduğu için işletmeci bazında abone
+  sayısı bu paylardan hesaplanabilir.
+- `btk_number_portability`: çeyrek içinde taşınan mobil numara, 2014-3 … 2026-1.
+- `btk_number_portability_total`: birikimli mobil taşıma, 2021-2'den (2026-1'de 211,3 milyon).
+- `btk_number_portability_fixed_total`: birikimli sabit hat taşıma, 2014-1 … 2026-1 (2,92 milyon).
+
 ## Kalanlar (zor, sonraya)
 
-- **Mobil abone, işletmeci bazında 2008-2025** ve ön ödemeli/faturalı kırılımı: yalnız grafikte
-  var. Eski CSV kayıp; etiketler sayfa render edilip okunmalı. Toplam mobil abone yıllık
-  2012+ ve çeyreklik 2015-4+ özetten depoda.
-- **Numara taşıma:** yalnız grafikte.
+- **Mobil abone, işletmeci bazında mutlak sayı** ve ön ödemeli/faturalı kırılımı: grafikte.
+  Paylar metinden çekildi (yukarıda), mutlak sayı paylar × toplam abone ile türetilebilir.
+  2009-2016 raporlarının grafiklerinde etiketler metin katmanında; oradan da okunabilir.
 - **Sektör geliri ve sabit abone 2009-2011:** özet tablo 2012'den başlıyor; öncesi grafikte.
 - **Grafik-only diğerleri:** churn, AB ülkeleriyle MoU karşılaştırması, hıza göre genişbant, mobil
   gelir kırılımı (UFRS/VUK), faturalı/ön ödemeli mobil genişbant.

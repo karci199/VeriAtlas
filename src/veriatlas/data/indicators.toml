@@ -28415,6 +28415,43 @@ frequency = "semiannual"
 views = ["table", "line", "bar"]
 definition_tr = "BTK Posta Sektörü Pazar Verileri Raporu (6 aylık, 2021-1 … 2025-2). Rakamlar tabloda değil çubuk grafiğin etiketinde; etiketin yatay konumu dönemle eşleştirildi. Her dönem birden çok raporda basılı, en yeni rapor esas; raporlar arası fark %0,5'i geçerse hata. Bin adet basılı."
 
+[indicator.btk_mobile_subscriber_share]
+label_tr = "Mobil işletmecilerin abone payı"
+label_en = "Mobile operators' share of subscriptions"
+topic = "iletisim"
+unit = "percent"
+frequency = "quarterly"
+dims = ["telecom_operator"]
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri raporları; grafik görüntü olduğu için değer, grafiği tanıtan cümleden okundu. Her çeyrek yalnız kendi raporunda geçiyor. Çeyreklik 2009-1 … 2026-1 (2019-4, 2021-1 ve 2024-4 cümlesi okunamadı). M2M aboneleri dahil. Üç payın toplamı 100 ± 0,5 kontrolünden geçti."
+
+[indicator.btk_number_portability]
+label_tr = "Mobil numara taşıma (çeyrek içinde)"
+label_en = "Mobile number ports in the quarter"
+topic = "iletisim"
+unit = "item"
+frequency = "quarterly"
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri raporları; grafik görüntü olduğu için değer, grafiği tanıtan cümleden okundu. Her çeyrek yalnız kendi raporunda geçiyor. Başarıyla gerçekleştirilen taşıma sayısı, 2014-3 … 2026-1."
+
+[indicator.btk_number_portability_total]
+label_tr = "Mobil numara taşıma, birikimli"
+label_en = "Mobile number ports, cumulative"
+topic = "iletisim"
+unit = "item"
+frequency = "quarterly"
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri raporları; grafik görüntü olduğu için değer, grafiği tanıtan cümleden okundu. Her çeyrek yalnız kendi raporunda geçiyor. 2008 Kasım'da başlayan uygulamadan beri birikimli; 2021-2 raporundan itibaren basılıyor (öncesi yok). 2026-1: 211,3 milyon."
+
+[indicator.btk_number_portability_fixed_total]
+label_tr = "Sabit numara taşıma, birikimli"
+label_en = "Fixed-line number ports, cumulative"
+topic = "iletisim"
+unit = "item"
+frequency = "quarterly"
+views = ["table", "line"]
+definition_tr = "BTK üç aylık pazar verileri raporları; grafik görüntü olduğu için değer, grafiği tanıtan cümleden okundu. Her çeyrek yalnız kendi raporunda geçiyor. Sabit hatlarda uygulama Eylül 2009'da başladı; birikimli, 2014-1 … 2026-1."
+
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
 label_en = "Mobile generation"
