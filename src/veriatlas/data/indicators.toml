@@ -59,6 +59,16 @@ label_tr = "Motorlu taşıtlar"
 label_en = "Motor vehicles"
 order = 47
 
+[topic.havacilik]
+label_tr = "Havacılık"
+label_en = "Aviation"
+order = 48
+
+[topic.iklim]
+label_tr = "İklim"
+label_en = "Climate"
+order = 49
+
 [topic.cocuk]
 label_tr = "Çocuk"
 label_en = "Children"
@@ -2438,6 +2448,41 @@ label_tr = "bin kişide"
 label_en = "per 1,000 people"
 decimals = 0
 additive = false
+
+[unit.celsius]
+label_tr = "°C"
+label_en = "°C"
+decimals = 1
+additive = false
+per_capita = false
+
+[unit.hour]
+label_tr = "saat"
+label_en = "hours"
+decimals = 1
+additive = false
+per_capita = false
+
+[unit.mm]
+label_tr = "mm"
+label_en = "mm"
+decimals = 1
+additive = true
+per_capita = false
+
+[unit.cm]
+label_tr = "cm"
+label_en = "cm"
+decimals = 0
+additive = false
+per_capita = false
+
+[unit.metre_per_second]
+label_tr = "m/sn"
+label_en = "m/s"
+decimals = 1
+additive = false
+per_capita = false
 
 [unit.years]
 label_tr = "yıl"
@@ -28684,7 +28729,7 @@ cargo = "Kargo"
 [indicator.dhmi_air_traffic]
 label_tr = "Uçak trafiği"
 label_en = "Aircraft movements"
-topic = "ulasim"
+topic = "havacilik"
 unit = "item"
 frequency = "monthly"
 dims = ["airport", "aircraft_type", "route"]
@@ -28694,7 +28739,7 @@ definition_tr = "DHMİ havalimanı istatistikleri (dhmi.gov.tr), aylık Excel; d
 [indicator.dhmi_air_passengers]
 label_tr = "Havayolu yolcu sayısı"
 label_en = "Air passengers"
-topic = "ulasim"
+topic = "havacilik"
 unit = "person"
 frequency = "monthly"
 dims = ["airport", "route"]
@@ -28704,12 +28749,117 @@ definition_tr = "DHMİ havalimanı istatistikleri (dhmi.gov.tr), aylık Excel; d
 [indicator.dhmi_air_freight]
 label_tr = "Havayolu yük ve kargo"
 label_en = "Air freight and cargo"
-topic = "ulasim"
+topic = "havacilik"
 unit = "tonne"
 frequency = "monthly"
 dims = ["airport", "freight_type", "route"]
 views = ["table", "line", "map"]
 definition_tr = "DHMİ havalimanı istatistikleri (dhmi.gov.tr), aylık Excel; dosyalar yıl başından o aya birikimli, aylık değer önceki aydan çıkarılarak bulundu. Her ay iki dosyada basılı (kendi yılında ve bir yıl sonra karşılaştırma sütununda), ikisi karşılaştırıldı. Adaptör src/veriatlas/adapters/dhmi.py, indirme scripts/fetch_dhmi.py. Yük = bagaj + kargo + posta; kargo ayrı kırılım olarak da var (yükün içinde)."
+
+
+[dim.temperature_measure]
+label_tr = "Sıcaklık ölçüsü"
+label_en = "Temperature measure"
+
+[dim.temperature_measure.values]
+mean = "Ortalama"
+mean_max = "Ortalama en yüksek"
+mean_min = "Ortalama en düşük"
+record_max = "Ölçülmüş en yüksek"
+record_min = "Ölçülmüş en düşük"
+
+[dim.normals_period]
+label_tr = "Normal dönemi"
+label_en = "Normals period"
+
+[dim.normals_period.values]
+station = "İstasyonun tüm ölçüm dönemi"
+"1991_2020" = "1991-2020 standart normali"
+
+[dim.period_bound]
+label_tr = "Dönem ucu"
+label_en = "Period bound"
+
+[dim.period_bound.values]
+start = "İlk ölçüm yılı"
+end = "Son ölçüm yılı"
+
+[indicator.mgm_temperature]
+label_tr = "Aylık sıcaklık normalleri"
+label_en = "Monthly temperature normals"
+topic = "iklim"
+unit = "celsius"
+frequency = "annual"
+dims = ["month", "temperature_measure", "normals_period"]
+views = ["table", "map", "bar"]
+definition_tr = "MGM il ve ilçeler istatistikleri (mgm.gov.tr), il sayfalarındaki HTML tabloları; indirme scripts/fetch_mgm.py, adaptör src/veriatlas/adapters/mgm.py. İki normal yayımlanıyor: istasyonun tüm ölçüm dönemi (ile göre 1927-2025 arası başlıyor) ve 1991-2020 standart normali (81 ilin 79'unda var). Normaller, ortalamanın kapsadığı dönemin son yılına yazıldı; ölçüm döneminin ilk ve son yılı mgm_measurement_period göstergesinde. Ortalama, ortalama en yüksek ve en düşük; ayrıca istasyonun ölçtüğü en yüksek ve en düşük sıcaklık (yalnız tüm ölçüm dönemi tablosunda)."
+
+[indicator.mgm_sunshine]
+label_tr = "Aylık ortalama günlük güneşlenme süresi"
+label_en = "Mean daily sunshine duration"
+topic = "iklim"
+unit = "hour"
+frequency = "annual"
+dims = ["month", "normals_period"]
+views = ["table", "map", "bar"]
+definition_tr = "MGM il ve ilçeler istatistikleri (mgm.gov.tr), il sayfalarındaki HTML tabloları; indirme scripts/fetch_mgm.py, adaptör src/veriatlas/adapters/mgm.py. İki normal yayımlanıyor: istasyonun tüm ölçüm dönemi (ile göre 1927-2025 arası başlıyor) ve 1991-2020 standart normali (81 ilin 79'unda var). Normaller, ortalamanın kapsadığı dönemin son yılına yazıldı; ölçüm döneminin ilk ve son yılı mgm_measurement_period göstergesinde. Günlük ortalama, saat."
+
+[indicator.mgm_rainy_days]
+label_tr = "Aylık ortalama yağışlı gün sayısı"
+label_en = "Mean number of rainy days"
+topic = "iklim"
+unit = "day"
+frequency = "annual"
+dims = ["month", "normals_period"]
+views = ["table", "map", "bar"]
+definition_tr = "MGM il ve ilçeler istatistikleri (mgm.gov.tr), il sayfalarındaki HTML tabloları; indirme scripts/fetch_mgm.py, adaptör src/veriatlas/adapters/mgm.py. İki normal yayımlanıyor: istasyonun tüm ölçüm dönemi (ile göre 1927-2025 arası başlıyor) ve 1991-2020 standart normali (81 ilin 79'unda var). Normaller, ortalamanın kapsadığı dönemin son yılına yazıldı; ölçüm döneminin ilk ve son yılı mgm_measurement_period göstergesinde. "
+
+[indicator.mgm_precipitation]
+label_tr = "Aylık toplam yağış ortalaması"
+label_en = "Mean monthly total precipitation"
+topic = "iklim"
+unit = "mm"
+frequency = "annual"
+dims = ["month", "normals_period"]
+views = ["table", "map", "bar"]
+definition_tr = "MGM il ve ilçeler istatistikleri (mgm.gov.tr), il sayfalarındaki HTML tabloları; indirme scripts/fetch_mgm.py, adaptör src/veriatlas/adapters/mgm.py. İki normal yayımlanıyor: istasyonun tüm ölçüm dönemi (ile göre 1927-2025 arası başlıyor) ve 1991-2020 standart normali (81 ilin 79'unda var). Normaller, ortalamanın kapsadığı dönemin son yılına yazıldı; ölçüm döneminin ilk ve son yılı mgm_measurement_period göstergesinde. "
+
+[indicator.mgm_measurement_period]
+label_tr = "İstasyonun ölçüm dönemi"
+label_en = "Station measurement period"
+topic = "iklim"
+unit = "years"
+frequency = "annual"
+dims = ["period_bound"]
+views = ["table", "map", "bar"]
+definition_tr = "MGM il ve ilçeler istatistikleri (mgm.gov.tr), il sayfalarındaki HTML tabloları; indirme scripts/fetch_mgm.py, adaptör src/veriatlas/adapters/mgm.py. İki normal yayımlanıyor: istasyonun tüm ölçüm dönemi (ile göre 1927-2025 arası başlıyor) ve 1991-2020 standart normali (81 ilin 79'unda var). Normaller, ortalamanın kapsadığı dönemin son yılına yazıldı; ölçüm döneminin ilk ve son yılı mgm_measurement_period göstergesinde. İlk ve son ölçüm yılı; normallerin hangi dönemi kapsadığını gösterir."
+
+[indicator.mgm_record_daily_precipitation]
+label_tr = "Günlük en yüksek yağış rekoru"
+label_en = "Record daily precipitation"
+topic = "iklim"
+unit = "mm"
+frequency = "daily"
+views = ["table", "map"]
+definition_tr = "MGM il ve ilçeler istatistikleri (mgm.gov.tr), il sayfalarındaki HTML tabloları; indirme scripts/fetch_mgm.py, adaptör src/veriatlas/adapters/mgm.py. İki normal yayımlanıyor: istasyonun tüm ölçüm dönemi (ile göre 1927-2025 arası başlıyor) ve 1991-2020 standart normali (81 ilin 79'unda var). Normaller, ortalamanın kapsadığı dönemin son yılına yazıldı; ölçüm döneminin ilk ve son yılı mgm_measurement_period göstergesinde. Rekorun gerçekleştiği gün, dönem olarak yazıldı."
+
+[indicator.mgm_record_wind_speed]
+label_tr = "En hızlı rüzgar rekoru"
+label_en = "Record wind speed"
+topic = "iklim"
+unit = "metre_per_second"
+frequency = "daily"
+views = ["table", "map"]
+definition_tr = "MGM il ve ilçeler istatistikleri (mgm.gov.tr), il sayfalarındaki HTML tabloları; indirme scripts/fetch_mgm.py, adaptör src/veriatlas/adapters/mgm.py. İki normal yayımlanıyor: istasyonun tüm ölçüm dönemi (ile göre 1927-2025 arası başlıyor) ve 1991-2020 standart normali (81 ilin 79'unda var). Normaller, ortalamanın kapsadığı dönemin son yılına yazıldı; ölçüm döneminin ilk ve son yılı mgm_measurement_period göstergesinde. Rekorun gerçekleştiği gün, dönem olarak yazıldı."
+
+[indicator.mgm_record_snow_depth]
+label_tr = "En yüksek kar kalınlığı rekoru"
+label_en = "Record snow depth"
+topic = "iklim"
+unit = "cm"
+frequency = "daily"
+views = ["table", "map"]
+definition_tr = "MGM il ve ilçeler istatistikleri (mgm.gov.tr), il sayfalarındaki HTML tabloları; indirme scripts/fetch_mgm.py, adaptör src/veriatlas/adapters/mgm.py. İki normal yayımlanıyor: istasyonun tüm ölçüm dönemi (ile göre 1927-2025 arası başlıyor) ve 1991-2020 standart normali (81 ilin 79'unda var). Normaller, ortalamanın kapsadığı dönemin son yılına yazıldı; ölçüm döneminin ilk ve son yılı mgm_measurement_period göstergesinde. Rekorun gerçekleştiği gün, dönem olarak yazıldı. Bir ilde (kar ölçülmemiş) yok."
 
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
