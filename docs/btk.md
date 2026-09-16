@@ -137,15 +137,22 @@ veri tablosu aylık; şimdilik 2026-Q1 raporu, Mart 2025 - Mart 2026. Her yılı
 önceki 12 ayı taşıyor, yılda bir rapor okunarak 2016'ya kadar uzatılabilir (örtüşen mart ayı
 transkripsiyonu doğrular). Sayfa başına yaklaşık 4 bin token.
 
+Aynı yöntemle çıkarılan diğer seriler:
+
+- `btk_broadband_by_speed`: sabit genişbant abonelerinin hıza göre dağılımı, 2021-4 … 2026-1
+  kesitleri (`scripts/btk_speed_dataset.py`). Dokuz payın toplamı 100 kontrolünden geçiyor.
+  2021 öncesi bantlar farklı tanımlı (x≤1, 4-8, 10-30), karşılaştırılamadığı için alınmadı.
+- `btk_mobile_postpaid_share`: faturalı abone payı; cümleden okundu, yalnız 2021-1 grafikten.
+
+**MNT net gelen abone: yüklenmedi, çünkü BTK'nın grafikleri çelişiyor.** 2022-Q1 raporu
+2022'nin birinci çeyreğinde Vodafone'u −74 bin, Turkcell'i −1 bin gösteriyor; 2024-Q1 raporu
+aynı çeyrekte tam tersini. İki grafikte de üç işletmecinin toplamı sıfır çıkıyor, yani hangisinin
+serileri karışmış ayırt edilemiyor. Üçüncü bir kaynak gerekiyor.
+
 **Grafikten gözle okunacak kalanlar (2017 sonrası grafikler görüntü):**
-- Ön ödemeli / faturalı abone oranı. Cümleden denendi ama 2019-2020 ve 2026 raporlarının dergi
-  düzeninde kelimeler birbirine karışıyor; çıkan oran güvenilir değil.
-- Hıza göre sabit genişbant abone dağılımı.
 - Mobil gelirin UFRS/VUK ayrımı ve kalem kırılımı.
 - Faturalı / ön ödemeli mobil genişbant abone sayısı.
 - AB ülkeleriyle karşılaştırmalar: mobil yaygınlık, MoU, ARPU (euro).
-- MNT kapsamında işletmecilerin net gelen abonesi. Üç seri var, toplamı sıfıra yakın ve
-  değerler negatif olabiliyor; sıralamadan hangi işletmeci olduğu çıkarılamıyor.
 - Sektör geliri ve sabit abone sayısı 2009-2011. Özet tablo 2012'den başlıyor, öncesi grafikte.
 
 **Bilinçli alınmayanlar:**

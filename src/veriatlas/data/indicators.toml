@@ -28492,6 +28492,31 @@ dims = ["telecom_operator"]
 views = ["table", "line"]
 definition_tr = "BTK üç aylık pazar verileri; ön ödemeli/faturalı grafiğini tanıtan cümleden okundu (grafik görüntü). Çeyreklik 2011-4 … 2026-1. Kalan pay ön ödemeli abonedir. 2021-1 cümlesi dergi düzeninde bölündüğü için o çeyrek grafik görüntüsünden okundu (scripts/btk_churn_dataset.py)."
 
+[dim.internet_speed]
+label_tr = "Bağlantı hızı"
+label_en = "Speed band"
+
+[dim.internet_speed.values]
+le_2 = "2 Mbit/s ve altı"
+"2_4" = "2-4 Mbit/s"
+"4_10" = "4-10 Mbit/s"
+"10_16" = "10-16 Mbit/s"
+"16_24" = "16-24 Mbit/s"
+"24_35" = "24-35 Mbit/s"
+"35_50" = "35-50 Mbit/s"
+"50_100" = "50-100 Mbit/s"
+gt_100 = "100 Mbit/s üstü"
+
+[indicator.btk_broadband_by_speed]
+label_tr = "Sabit genişbant abonelerinin hıza göre dağılımı"
+label_en = "Fixed broadband subscriptions by speed band"
+topic = "iletisim"
+unit = "percent"
+frequency = "quarterly"
+dims = ["internet_speed"]
+views = ["table", "line", "bar"]
+definition_tr = "BTK üç aylık pazar verileri, Şekil 3-4 pasta grafiği; grafik görüntü olduğu için sayfa render edilip gözle okundu (scripts/btk_speed_dataset.py). 2021-4, 2022-4, 2023-4, 2024-4, 2025-4 ve 2026-1 kesitleri. Dokuz payın toplamı 100 ± 0,3 kontrolünden geçiyor. 2021 öncesi bantlar farklı (x≤1, 4-8, 10-30 gibi), karşılaştırılabilir olmadığı için alınmadı."
+
 [dim.mobile_generation]
 label_tr = "Mobil nesil"
 label_en = "Mobile generation"

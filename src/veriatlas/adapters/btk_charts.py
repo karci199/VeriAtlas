@@ -299,3 +299,57 @@ class BtkMobileChurn:
 
 
 BTK_CHART_ADAPTERS[BtkMobileChurn.indicator_id] = BtkMobileChurn
+
+
+class BtkBroadbandBySpeed:
+    """Fixed broadband subscriptions by speed band, transcribed from the pie charts.
+
+    See `scripts/btk_speed_dataset.py`. Quarterly snapshots (the fourth quarter of
+    2021-2025 and 2026-1); the speed bands changed in 2021, so the older charts are left
+    out. The nine shares of a chart must add up to 100.
+    """
+
+    source_id = "btk"
+    indicator_id = "btk_broadband_by_speed"
+
+    def fetch(self) -> Path:
+        return FOLDER
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        import importlib.util
+
+        from ..config import ROOT
+
+        spec = importlib.util.spec_from_file_location(
+            "btk_speed", ROOT / "scripts" / "btk_speed_dataset.py"
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        records = []
+        for report, bands in module.series().items():
+            year, quarter = report.split("-Q")
+            start = dt.date(int(year), (int(quarter) - 1) * 3 + 1, 1)
+            for band, share in bands.items():
+                records.append(
+                    {
+                        "period_start": start,
+                        "dims": f"internet_speed={band}",
+                        "value": share,
+                    }
+                )
+        return pl.DataFrame(
+            records, schema_overrides={"value": pl.Float64}
+        ).with_columns(
+            pl.lit("TR").alias("area_id"),
+            pl.lit("country").alias("area_level"),
+            pl.lit(self.indicator_id).alias("indicator_id"),
+            pl.lit("quarterly").alias("frequency"),
+            pl.lit("percent").alias("unit"),
+            pl.lit("measured").alias("quality_flag"),
+            pl.lit("2026-06").alias("vintage"),
+            pl.lit("btk").alias("source_id"),
+            pl.lit(dt.date(2026, 9, 16)).alias("retrieved_at"),
+        )
+
+
+BTK_CHART_ADAPTERS[BtkBroadbandBySpeed.indicator_id] = BtkBroadbandBySpeed
