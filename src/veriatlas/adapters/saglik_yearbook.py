@@ -316,7 +316,7 @@ def tables_2017() -> list[dict[str, list[str]]]:
                         readable = province_id(printed.translate(GLYPHS))
                     except KeyError:
                         readable = None
-                    if printed.startswith("Türkiye") or printed.startswith("Tƺrkiye"):
+                    if printed.startswith(("Türkiye", "Tƺrkiye")):
                         readable = "TR"
                     expected = "TR" if name == "Türkiye" else province_id(name)
                     if readable is not None and readable != expected:
