@@ -189,9 +189,11 @@ Dört yöntem kullanıldı, kolaydan zora:
 - 2019 raporları ve 2020-Q2 dergi düzeninde: tablolar satır olarak çıkmıyor.
 - 2021-Q1 raporu kodlanmış fontla basılmış: metin katmanı okunamıyor.
 - Bu üçünün sonucu: çizelge serilerinde 2018-4 çeyreği eksik, churn'de 11 ay boşluk var.
-- **Karar bekleyen:** "GİZLİ — SADECE KURUM İÇİ" damgalı sayfalar (2024-Q2, 2024-Q3, 2025-Q1…Q3,
-  2026-Q1). Şu an okunmuyor; bu yüzden `btk_fiber_operators` 2025-3'te bitiyor. Kullanıcı karar
-  verirse o sayfalar da okunabilir.
+- **Bilerek alınmadı (kullanıcı kararı, 2026-09-17):** "GİZLİ — SADECE KURUM İÇİ" damgalı sayfalar
+  (2024-Q2, 2024-Q3, 2025-Q1…Q3, 2026-Q1). Rapor herkese açık yayımlansa da damgaya uyuldu; bu
+  yüzden `btk_fiber_operators` 2025-3'te bitiyor.
+- Pazar payı ve AB karşılaştırma tabloları da 2026-09-17 kullanıcı kararıyla kapandı (yukarıdaki
+  gerekçeler).
 
 ## Yıllık İl İstatistikleri (depoda, 2026-09-15)
 
