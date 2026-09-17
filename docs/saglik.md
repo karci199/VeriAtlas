@@ -5,7 +5,11 @@ sayfada Türkçe PDF (dosyamerkez.saglik.gov.tr). Site düz HTTP istemcisine bo�
 bağlantılar 2026-09-16'da tarayıcıyla okundu ve `scripts/fetch_saglik_yearbooks.py` içine yazıldı.
 Ham veri `C:\veri-ham\saglik` (8 PDF, ~245 MB; sayfa metinleri `siy<yıl>_text.json`).
 
-Adaptör `src/veriatlas/adapters/saglik_yearbook.py`, 20 `moh_*` gösterge, 2018-2024, il + Türkiye.
+Adaptör `src/veriatlas/adapters/saglik_yearbook.py`, 20 `moh_*` gösterge, 2012-2016 ve 2018-2024, il + Türkiye.
+
+2011-2016 yıllıkları yalnız www.saglik.gov.tr/TR-84930 listesinde (sbsgm listesi 2017'de başlıyor),
+dosyalar dosyasb.saglik.gov.tr'de. 2010 sayfası açılmadı. 2011 yıllığı il tablosu basmıyor (yalnız
+İBBS-1 grafikleri).
 
 ## Ne alındı
 
@@ -18,7 +22,8 @@ Her yıllıkta dört-beş "İllere Göre Bazı Sağlık Göstergeleri" tablosu, 
 | 10.12 personel | uzman, pratisyen, asistan hekim, diş hekimi, eczacı, hemşire, ebe, diğer |
 | 12.4 acil | 112 istasyonu, ambulans, asılsız ihbar oranı |
 
-2017-2018'de aile hekimliği ve 112 ayrı bir tabloda, acil tablosu 2019'da başlıyor; 2018-2019'da
+2012-2014'te hastane tablosu aile hekimliği ve 112 sütunlarını da taşır (11 sütun), başvuru ile
+yatan hasta tek tabloda (13 sütun). 2015-2018'de aile hekimliği ve 112 ayrı bir tabloda, acil tablosu 2019'da başlıyor; 2012-2019'da
 yatan hasta tablosunda "kaba ölüm hızı" sütunu var. Yıl başına tablo sırası `LAYOUTS`'ta.
 
 Alınmayanlar: "10.000 kişiye düşen", "birim başına nüfus", "kişi başı müracaat" — bakanlığın
@@ -42,4 +47,8 @@ nüfus rakamına bağlı, depodaki sayım ve nüfustan yeniden kurulabilir. Böl
   (`\x14` = 1, `\x11` = nokta), ı/ğ/ş/ö/Ç başka glifler — bunlar `repair` ile çözülüyor — ama satırlar
   ortadan kırılıyor ve personel tablosunda il adları tamamen karışık. 2017 için sayfaları görüntüye
   çevirip okumak (BTK yöntem 4) gerekir, ~10 sayfa.
-- 2017 öncesi yıllıklar bu sayfada listelenmiyor; e-kütüphanede aranmadı.
+- 2016: "Türkiye"nin i'si ve "Bartın"ın tı'sı U+FFFE olarak basılı; 2012-2013 "Kahraman￾maraş";
+  2014 "Kahraman-" / "-maraş" iki satır. `GLYPHS` + `NAME_FIXES`.
+- 2012 hastane tablosunun Türkiye satırı adsız basılı: aynı sayfada aynı genişlikte adsız sayı
+  satırı toplam sayılır, toplam denetimi yanlış eşleşmeyi yakalar.
+- Tablo sayısı yıl başına sabit beklenir; bir tablo kaçarsa yükleme durur.

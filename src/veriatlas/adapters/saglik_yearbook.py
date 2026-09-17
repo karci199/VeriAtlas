@@ -1,4 +1,4 @@
-r"""Ministry of Health statistics yearbooks, 2018-2024: the provincial tables.
+r"""Ministry of Health statistics yearbooks, 2012-2016 and 2018-2024: the provincial tables.
 
 `scripts/fetch_saglik_yearbooks.py` keeps the PDFs and their text layer in
 `C:\veri-ham\saglik` (`siy<year>_text.json`, one string per page).
@@ -17,6 +17,12 @@ The 2017 text layer has two encoding faults, both regular: digits and the thousa
 as control characters 29 code points below their value, and the Turkish letters ı ğ ş ö Ç as
 other glyphs. `repair` undoes both.
 
+Years not loaded: 2011 prints no provincial tables (regional charts only); 2017's text layer
+breaks rows mid-line and scrambles the names of the staff table. 2012-2014 print hospitals with
+the family medicine and 112 columns in one table, and visits with inpatient care in another.
+2016 prints the "i" of "Türkiye" as U+FFFE; 2014 breaks "Kahraman-maraş" over two lines;
+2012 prints the Türkiye row of the hospital table without its name.
+
 Checks on every load: each table has 81 provinces; every count column sums to the printed
 Türkiye row (2017's staff table prints no Türkiye row, its total is not checked).
 """
@@ -34,11 +40,38 @@ from ..config import RAW
 from .kgm import province_id
 
 FOLDER = RAW / "saglik" if (RAW / "saglik").exists() else Path("C:/veri-ham/saglik")
-#: 2017 is left out: its text layer breaks rows mid-line and scrambles the staff table.
-YEARS = range(2018, 2025)
+YEARS = (2012, 2013, 2014, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024)
 SKIP = None
 #: table kind -> one entry per printed column: (indicator, dims) or SKIP
 COLUMNS = {
+    "hospital11": [
+        ("moh_hospitals", ""),
+        ("moh_hospital_beds", ""),
+        SKIP,
+        ("moh_qualified_beds", ""),
+        ("moh_icu_beds", ""),
+        ("moh_family_medicine_units", ""),
+        SKIP,
+        ("moh_emergency_stations", ""),
+        SKIP,
+        ("moh_emergency_ambulances", ""),
+        SKIP,
+    ],
+    "use13": [
+        ("moh_visits", "care_level=primary"),
+        ("moh_visits", "care_level=secondary_tertiary"),
+        SKIP,
+        ("moh_dental_visits", ""),
+        SKIP,
+        ("moh_inpatients", ""),
+        ("moh_inpatient_days", ""),
+        ("moh_surgeries", ""),
+        ("moh_bed_occupancy", ""),
+        ("moh_average_stay", ""),
+        ("moh_bed_turnover_rate", ""),
+        ("moh_bed_turnover_interval", ""),
+        ("moh_hospital_crude_death_rate", ""),
+    ],
     "hospital7": [
         ("moh_hospitals", ""),
         ("moh_hospital_beds", ""),
@@ -114,6 +147,9 @@ COLUMNS = {
 }
 #: year -> the provincial tables in the order printed
 LAYOUTS = {
+    **{year: ["hospital11", "use13", "staff9"] for year in (2012, 2013, 2014)},
+    2015: ["hospital7", "primary_care6", "visits5", "inpatient8", "staff9"],
+    2016: ["hospital7", "primary_care6", "visits5", "inpatient8", "staff9"],
     2017: ["hospital7", "primary_care6", "visits5", "inpatient8", "staff9"],
     2018: ["hospital7", "primary_care6", "visits5", "inpatient8", "staff9"],
     2019: ["hospital9", "visits5", "inpatient8", "staff9", "emergency5"],
@@ -155,7 +191,14 @@ RATIOS = {
 }
 CELL = r"-|[\d.]+(?:,\d+)?"
 ROW = re.compile(r"^(\S+)((?:\s+(?:" + CELL + r"))+)$")
-GLYPHS = str.maketrans({"Ŧ": "ı", "Œ": "ğ", "Ɣ": "ş", "Ƃ": "ö", "\x17": "Ç"})
+TOTAL = re.compile(r"^(?:" + CELL + r")(?:\s+(?:" + CELL + r")){4,}$")
+GLYPHS = str.maketrans({"Ŧ": "ı", "Œ": "ğ", "Ɣ": "ş", "Ƃ": "ö", "\x17": "Ç", "\ufffe": "i"})
+#: names a line break or a lost glyph (U+FFFE, read as "i" above) broke
+NAME_FIXES = {
+    "-maraş": "Kahramanmaraş",
+    "Kahramanimaraş": "Kahramanmaraş",
+    "Barin": "Bartın",
+}
 Row = tuple[str, str, str, int]  # indicator, area, dims, year
 
 
@@ -163,7 +206,8 @@ def repair(line: str) -> str:
     """Undo the 2017 encoding: shifted digits in the cells, other glyphs in the name."""
     name, _, rest = line.strip().partition(" ")
     rest = re.sub(r"[\x11-\x1c]", lambda m: chr(ord(m.group()) + 29), rest)
-    return name.translate(GLYPHS) + " " + rest
+    name = name.translate(GLYPHS)
+    return NAME_FIXES.get(name, name) + " " + rest
 
 
 def number(cell: str) -> float | None:
@@ -175,7 +219,13 @@ def tables(pages: list[str]) -> list[dict[str, list[str]]]:
     runs: list[tuple[int, int, dict[str, list[str]]]] = []  # last page, cells, rows
     for index, text in enumerate(pages):
         by_width: dict[int, dict[str, list[str]]] = {}
+        unlabeled: dict[int, list[str]] = {}
         for line in text.splitlines():
+            if TOTAL.match(line.strip()):
+                # 2012 prints the Türkiye row without its name
+                cells = line.split()
+                unlabeled[len(cells)] = cells
+                continue
             match = ROW.match(repair(line).strip())
             if not match or len(match.group(2).split()) < 5:
                 continue
@@ -184,6 +234,8 @@ def tables(pages: list[str]) -> list[dict[str, list[str]]]:
         for width, rows in by_width.items():
             if len(rows) < 15:
                 continue
+            if "Türkiye" not in rows and width in unlabeled:
+                rows["Türkiye"] = unlabeled[width]
             for i, (last, cells, found) in enumerate(runs):
                 if last == index - 1 and cells == width:
                     found.update(rows)

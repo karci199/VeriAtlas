@@ -2,7 +2,8 @@
 
 sbsgm.saglik.gov.tr lists one page per yearbook (TR-93566); each page links the Turkish PDF on
 dosyamerkez.saglik.gov.tr. The site answers plain HTTP clients with an empty JS shell, so the
-links below were read in a browser on 2026-09-16.
+links below were read in a browser on 2026-09-16; 2011-2016 are listed only on
+www.saglik.gov.tr (TR-84930) and served from dosyasb.saglik.gov.tr.
 
 PDFs go to C:/veri-ham/saglik/siy<year>.pdf (existing files are kept); the text, page by page,
 to C:/veri-ham/saglik/siy<year>_text.json for `veriatlas.adapters.saglik_yearbook`.
@@ -19,6 +20,12 @@ import pypdfium2
 ROOT = Path("C:/veri-ham/saglik")
 BASE = "https://dosyamerkez.saglik.gov.tr/Eklenti/"
 PDFS = {
+    2011: "https://dosyasb.saglik.gov.tr/Eklenti/23526/0/2011-yili3pdf.pdf",
+    2012: "https://dosyasb.saglik.gov.tr/Eklenti/5111/0/istaturk2012pdf.pdf",
+    2013: "https://dosyasb.saglik.gov.tr/Eklenti/5112/0/saglik-istatistik-yilligi-2013pdf.pdf",
+    2014: "https://dosyasb.saglik.gov.tr/Eklenti/5119/0/yilliktrpdf.pdf",
+    2015: "https://dosyasb.saglik.gov.tr/Eklenti/23530/0/2015-yili29pdf.pdf",
+    2016: "https://dosyasb.saglik.gov.tr/Eklenti/13183/0/sy2016turkcepdf.pdf",
     2017: "31113/0/111turkcesiydijiv1pdf.pdf",
     2018: "47155/0/siy2018---turkcepdf.pdf",
     2019: "40564/0/saglik-istatistikleri-yilligi-2019pdf.pdf",
@@ -38,7 +45,7 @@ def main() -> None:
     for year, path in PDFS.items():
         pdf = ROOT / f"siy{year}.pdf"
         if not pdf.exists():
-            response = client.get(BASE + path)
+            response = client.get(path if path.startswith("http") else BASE + path)
             response.raise_for_status()
             pdf.write_bytes(response.content)
         doc = pypdfium2.PdfDocument(pdf)
