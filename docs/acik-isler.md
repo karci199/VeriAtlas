@@ -75,6 +75,36 @@ yıllık. Anlık veri yalnız gerektiğinde tek seferlik.
 | Hava Kalitesi (ÇŞB SİM) | istasyon bazlı PM10/SO2/NO2 | bilinmiyor | `/Services/AirQuality?type=0` düz istekte HTML döndü; tarayıcı gerekir |
 | Göç İdaresi, OGM, TÜRKPATENT, VGM | ikamet izni; orman/yangın; marka-patent; vakıf | bilinmiyor | hepsi JS uygulaması, tarayıcıyla bakılacak |
 
+### Belediye açık veri portalları — 14 çalışan CKAN (2026-09-18 taraması)
+
+İlk 200 veri seti kaynaklarıyla taranarak sıralandı. "Tablolu" = CSV/XLSX/XLS/JSON kaynağı olan
+veri seti sayısı; "ilçe/nüfus" = başlık ya da açıklamasında ilçe, mahalle veya nüfus geçenler.
+
+| Portal | Veri seti | Tablolu | İlçe/nüfus | Baskın biçim | Kolaylık |
+|---|---|---|---|---|---|
+| Sakarya (`veri.sakarya.bel.tr`) | 307 | 200/200 | 30 | XLSX | **en kolay** |
+| Manisa (`acikveri.manisa.bel.tr`) | **1.168** | 180/200 | **130** | XLSX, XLS | **en kolay + en zengin** |
+| Konya (`acikveri.konya.bel.tr`) | 239 | 180/200 | 14 | CSV | kolay |
+| Balıkesir (`acikveri.balikesir.bel.tr`) | 250 | 171/200 | 27 | XLSX | kolay |
+| İzmir (`acikveri.bizizmir.com`) | 261 | 165/200 | 56 | CSV, XLSX | kolay |
+| Kadıköy (`acikveri.kadikoy.bel.tr`) | 160 | 116/160 | 49 | CSV | kolay |
+| Tuzla (`veri.tuzla.bel.tr`) | 97 | 91/91 | 26 | CSV | kolay |
+| Gaziantep (`acikveri.gaziantep.bel.tr`) | 252 | 90/200 | 32 | CSV, PDF | orta |
+| Çanakkale (`acikveri.canakkale.bel.tr`) | 119 | 64/119 | 0 | XLSX, PDF | orta |
+| Nilüfer (`acikveri.nilufer.bel.tr`) | 65 | 44/65 | 12 | XLSX | orta |
+| Ordu (`acikveri.ordu.bel.tr`) | 743 | 58/200 | 114 | **PDF (772)** | zor — içerik zengin ama PDF |
+| Sivas (`acikveri.sivas.bel.tr`) | 45 | 32/45 | 2 | SHP, KML | zor (geometri) |
+| Bursa (`acikyesil.bursa.bel.tr`) | 49 | 20/49 | 2 | GEOJSON | zor (geometri) |
+| B40 (`opendata.b40cities.org`) | 645 | 4/200 | 1 | HTML | zor |
+
+Çalışmayanlar: Antalya (zaman aşımı), YSK açık veri (bağlantı yok), Küçükçekmece ve Kocaeli (502),
+Beyoğlu/Eyüpsultan (yok), Kayseri ve Marmara Belediyeler Birliği (CKAN değil), Şeffaf Ankara
+(Firebase tabanlı kendi yazılımı), `databook.dataint.net` (Cloudflare), İBB (robots yasak).
+
+**Sıradaki adım:** Manisa ve Sakarya'dan başlanacak — ikisi de tablolu ve Manisa'da 130 veri seti
+ilçe/mahalle/nüfus içerikli. Bu veriler tek şehirlik olduğu için K4 dışıdır; `ozel-analiz-kalibi`
+kapsamında vaka analizi olarak değerlendirilir.
+
 ## Alınmayanlar ve gerekçesi (2026-09-18)
 
 - **NVİ adres (UAVT)**: resmî kaynak captcha arkasında. GitHub'da 1,27 mn sokaklı dökümler var
