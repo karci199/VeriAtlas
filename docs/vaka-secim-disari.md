@@ -57,7 +57,29 @@ Havalimanı kapısında oy veren, çoğunlukla o ilde yaşayan ya da o ile döne
 yurt içi il sonuçlarının kabaca aynısı. İstanbul kapıları başa baş (49,6); Sabiha Gökçen
 Erdoğan'a, İstanbul Havalimanı Kılıçdaroğlu'na yakın.
 
+## 4. Yurt dışı seçmen profili (2026-09-17)
+
+Ham: `C:eri-ham\secim\profil\secmen-yurtdisi-{toplam,ulke,temsilcilik}` (1.662 rapor; 2011 kaynakta
+yok). Okuyucu `scripts/aday_profili.py` (`read`), yurt içiyle aynı. Toplam raporlarında okunamayan
+satır 0; 2023 temsilcilik raporlarında 43 satır (148 ülke toplamı 3.423.191, rapor toplamı 3.423.759).
+
+| Seçim | Seçmen | Kadın % | Ort. yaş | 18-24 % | 65+ % | Eğitimi bilinen % | Yükseköğretim / bilinen % |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 2015 Haziran | 2.866.979 | 46,9 | 40,4 | 15,1 | 7,7 | 15,6 | 18,5 |
+| 2015 Kasım | 2.899.069 | 47,0 | 40,4 | 15,1 | 7,6 | 16,4 | 18,7 |
+| 2018 | 3.044.837 | 46,9 | 41,0 | 14,7 | 7,7 | 19,8 | 23,0 |
+| 2023 | 3.423.759 | 46,7 | 42,0 | 14,3 | 8,3 | 24,9 | 31,6 |
+
+Yurt dışı seçmenin eğitimi çoğunlukla kayıtsız (2023'te %75 "bilinmeyen"); yükseköğretim payı yalnız
+bilinenler içinde ve bilinenler seçkili: eğitimi Türkiye'de kaydedilmiş olanlar. Ülke karşılaştırması
+buna dikkatle okunmalı (Almanya'da bilinen %14, İrlanda'da %86).
+
+2023, ülke (≥10.000 seçmen): Almanya 1.504.406 (ort. yaş 43,6), Fransa 397.711 (39,7), Hollanda 287.192
+(40,8). En genç Polonya 31,1 (kadın %22), İtalya 36,3; en yaşlı Yunanistan 59,2, Avustralya 45,4. Kadın
+payı en düşük Polonya %22, Rusya %24, Azerbaycan %25, Suudi Arabistan %29 — iş göçü. Yükseköğretim
+(bilinen ≥3.000): İrlanda %78, BAE %74, İspanya %66, ABD %57, Birleşik Krallık %51; Almanya %24.
+Temsilcilik: en yaşlı Melburn 45,5, Hamburg 44,6; en genç Milano 36,3, Gazimağusa 38,9.
+
 ## Açık
 
-- Yurt dışı seçmen profili (yaş, cinsiyet) henüz çekilmedi.
 - Kayıtlı seçmen yurt dışı için YSK'dan ayrıca alınmadıkça katılım yok.
