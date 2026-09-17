@@ -25,7 +25,7 @@ Web export: 2026-09-17 tam; 8 dosyanın boş olması hata değil (yalnız ilçe 
 | Kültür Turizm | Bakanlık belgeli 1996-2002, 2004-2010, 2014-2015; belediye belgeli 2000-2014 | düzen farklı ya da iller GENEL TOPLAM'ı tutmuyor; 2007-2008 yalnız PDF | orta |
 | Kültür Turizm | ilçe düzeyi 2017 öncesi | kaynakta ilçeler il toplamını %84'e varan farkla tutmuyor | kaynak hatası |
 | ~~Sağlık yıllığı 2017~~ | 2026-09-17 yüklendi (kelime konumu + 2018 satır sırası); 2011 il tablosu basmıyor | — |
-| Sağlık yıllığı | 2010 | yıllık sayfası açılmadı | bilinmiyor |
+| ~~Sağlık yıllığı~~ | ~~2010~~ | 2026-09-17 kapandı: PDF indi, il tablosu basmıyor (2011 gibi yalnız bölge grafiği) | — |
 | BTK | "Gizli — kurum içi" damgalı sayfalar, pazar payı tabloları, AB karşılaştırmaları | `docs/btk.md` | orta |
 | EPDK | ~~doğalgaz il tüketimi 2025~~ yüklendi 2026-09-17 (2015-2016 zaten vardı); 2014 yalnız il toplamı (kırılımsız, alınmadı); ~~akaryakıt 2012-2014~~ bayiye teslim (ton, il toplamı) yüklendi 2026-09-17; akaryakıt 2010-2011 (Tablo 3.18, ton) ve ürün kırılımı; 2024-2026 aylık kurulu güç | `docs/epdk.md` | orta |
 | KGM | kaza özeti PDF tabloları, Trafik ve Ulaşım Bilgileri | `docs/kgm.md` | zor |

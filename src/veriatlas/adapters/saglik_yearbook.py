@@ -17,7 +17,8 @@ The 2017 text layer has two encoding faults, both regular: digits and the thousa
 as control characters 29 code points below their value, and the Turkish letters ı ğ ş ö Ç as
 other glyphs. `repair` undoes both.
 
-Years not loaded: 2011 prints no provincial tables (regional charts only). 2017 is read by
+Years not loaded: 2010 and 2011 print no provincial tables (regional charts only; 2010 lists
+provinces for ambulance helicopters alone). 2017 is read by
 `tables_2017` (word positions, rows named by 2018's order). 2012-2014 print hospitals with
 the family medicine and 112 columns in one table, and visits with inpatient care in another.
 2016 prints the "i" of "Türkiye" as U+FFFE; 2014 breaks "Kahraman-maraş" over two lines;

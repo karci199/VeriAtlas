@@ -8,7 +8,7 @@ Ham veri `C:\veri-ham\saglik` (8 PDF, ~245 MB; sayfa metinleri `siy<yıl>_text.j
 Adaptör `src/veriatlas/adapters/saglik_yearbook.py`, 20 `moh_*` gösterge, 2012-2016 ve 2018-2024, il + Türkiye.
 
 2011-2016 yıllıkları yalnız www.saglik.gov.tr/TR-84930 listesinde (sbsgm listesi 2017'de başlıyor),
-dosyalar dosyasb.saglik.gov.tr'de. 2010 sayfası açılmadı. 2011 yıllığı il tablosu basmıyor (yalnız
+dosyalar dosyasb.saglik.gov.tr'de. 2010 sayfası (TR-84952) HTML değil, PDF'in kendisini döndürüyor; `C:eri-ham\saglik\siy2010.pdf` olarak indi (172 sayfa) ama il tablosu basmıyor: göstergeler İBBS-1 grafiği, illere göre yalnız ambulans helikopteri. 2011 yıllığı il tablosu basmıyor (yalnız
 İBBS-1 grafikleri).
 
 ## Ne alındı
