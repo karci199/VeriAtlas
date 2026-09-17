@@ -40,7 +40,7 @@ Web export: 2026-09-17 tam; 8 dosyanın boş olması hata değil (yalnız ilçe 
 | ~~Muhasebat~~ | il genel bütçe gelirleri 2004-2025 yüklendi (`budget_revenue_by_province`) | — |
 | ~~BDDK FinTürk~~ | 6 tablo × 7 banka grubu 2007-2025 yüklendi (`bank_group_*`, 545 bin satır) | — |
 | ~~VAP (MKK)~~ | il portföy değeri 2005-2025 yüklendi (`investor_portfolio_value`); yatırımcı sayısı panoda yalnız ilk 10 il, alınmadı | — |
-| Muhasebat | il merkezi yönetim bütçesi (2004-2026) ve mahalli idareler bütçesi (2006-2026); aynı portal API'si, `scripts/fetch_muhasebat.py`'ye slug eklemek yeter | kolay |
+| ~~Muhasebat~~ | il merkezi yönetim bütçe geliri ve gideri 2004-2025, mahalli idare bütçe geliri ve gideri 2006-2025 yüklendi (`central_budget_*_by_province`, `local_budget_*_by_province`, 70 bin satır); gideri ekonomik ve fonksiyonel sınıflandırmayla | — |
 | OECD bölgesel (SDMX) | TL3 = il düzeyinde iklim, arazi örtüsü, hava kirliliği, kentleşme | orta |
 | TEDAŞ | istatistikkitabi.tedas.gov.tr, il elektrik dağıtım | bilinmiyor (zaman aşımı) |
 | TKGM MEGSİS | tapu/kadastro, ham veri diskte, adaptör yok | orta |

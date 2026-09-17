@@ -23,6 +23,8 @@ API = "https://muhasebat.hmb.gov.tr/portal/v2/"
 OUT = Path("C:/veri-ham/muhasebat")
 PAGES = {
     "genel_butce_gelirleri": "genel-butce-gelirlerinin-iller-itibariyle-tahakkuk-ve-tahsilati-2004-2026",
+    "merkezi_yonetim_butcesi": "iller-itibariyle-merkezi-yonetim-butce-istatistikleri-2004-2026",
+    "mahalli_yonetim_butcesi": "iller-itibariyle-mahalli-yonetim-butce-istatistikleri-2006-2026",
 }
 
 

@@ -16,7 +16,7 @@ doğrulanmadı · ✘ otomatik erişime kapalı (tarayıcıyla denenecek) · dep
 | TKGM 3B | 3B bina/kadastro sunumu | bina | — | harita, indirme | ✔ tablo değil |
 | SGK istatistik yıllıkları | sigortalı (4a/4b/4c, cinsiyet, sektör, işyeri büyüklüğü), işyeri, kazanç, aylık/gelir alan, iş kazası, hastalık — 2025 yıllığında 36 il tablosu; ilçe yok | il | 2007-2025 | ZIP (Excel), biçim yıldan yıla değişir | ✔ ham diskte (`C:\veri-ham\sgk\yillik`), Tablo 1.8 il toplamı Toplam satırını tutuyor; adaptör yok |
 | EPDK resmi istatistikler | elektrik, doğalgaz, petrol, LPG piyasası; il kırılımı Excel içinde olabilir | ◐ il | 2010-2026 | xlsx, docx | ✔ liste · Excel bağlantıları JS ile geliyor, httpx boş döner → tarayıcıyla |
-| Hazine ve Maliye (Muhasebat) | genel bütçe gelirlerinin iller itibarıyla tahakkuk ve tahsilatı | il | 2004-2019 (+?) | ◐ | ✘ |
+| Hazine ve Maliye (Muhasebat) | genel bütçe gelirlerinin iller itibarıyla tahakkuk ve tahsilatı (2004-2025); iller itibarıyla merkezi yönetim bütçe geliri ve gideri (2004-2025); mahalli idareler bütçe geliri ve gideri (2006-2025) | il | 2004-2025 | xls, portal API | ✔ yüklendi (`scripts/fetch_muhasebat.py`, `adapters/muhasebat.py`) |
 | GİB | bütçe gelirleri istatistikleri; İstanbul Defterdarlığı ayrıca | il (◐) | ◐ | ◐ | ✘ (IP engeli) |
 | Adalet Bakanlığı Adli Sicil | adalet istatistikleri kitabı, haber bültenleri | il/adliye (◐) | yıllık | PDF | ◐ |
 | UYAP İstatistik | dava/icra istatistikleri; RİP dışı, erişim kısıtlı | ◐ | ◐ | ◐ | ✘ |
@@ -39,7 +39,6 @@ doğrulanmadı · ✘ otomatik erişime kapalı (tarayıcıyla denenecek) · dep
 3. EPDK yıllık Excel'inde il kırılımı var mı bakmak.
 4. İlçe SEGE-2022 değişken tablosunun (56 değişken × 973 ilçe) PDF ekinde mi, Excel'de mi
    olduğunu bulmak — ilçe atlası için en değerli tek kaynak adayı.
-5. Muhasebat il tahsilat serisinin 2020 sonrası devamı.
 
 ## Keşif turu 2026-09-15 (httpx ile 5 dakikalık bakış)
 
