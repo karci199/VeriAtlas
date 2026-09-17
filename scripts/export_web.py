@@ -416,6 +416,11 @@ DATASETS.update(
                 "mgm_",
                 "etkb_",
                 "moh_",
+                "tim_",
+                "iskur_",
+                "ktb_",
+                "gsb_",
+                "afad_",
             )
         )
     }

@@ -5752,6 +5752,60 @@
           "available": true
         },
         {
+          "id": "tobb_foreign_companies",
+          "label": "Kurulan yabancı ortaklı şirketler",
+          "unit": "şirket",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "TOBB Kurulan ve Kapanan Şirket İstatistikleri, Aralık dosyalarının 'Yabancı sermaye ve iller' tablosu, 2010-2025: yıl içinde kurulan, ortakları arasında yabancı bulunan anonim ve limited şirketler. Tabloda yer almayan iller 0 yazıldı. İl toplamları 'Yabancı sermaye genel görünüm' tablosuyla denetlendi; 2018'de anonim şirket 1.127'ye karşı 1.129.",
+          "dims": [
+            "legal_form"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "tobb-foreign-companies.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "tobb_foreign_partner_capital",
+          "label": "Kurulan şirketlerde yabancı sermaye payı",
+          "unit": "TL",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "TOBB 'Yabancı sermaye ve iller' tablosu, 2010-2025: yıl içinde kurulan şirketlerde yabancı ortakların koyduğu sermaye, cari TL, enflasyondan arındırılmamış. Her şirket türü bloğunda iller basılı Toplam satırını tutar; genel görünüm tablosuyla da denetlendi.",
+          "dims": [
+            "legal_form"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "tobb-foreign-partner-capital.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "companies_opened_capital",
           "label": "Kurulan şirketlerin sermayesi",
           "unit": "TL",
@@ -5876,6 +5930,58 @@
           "dataset": "industrial-production-index.csv.gz",
           "levels": [
             "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "tobb_foreign_company_capital",
+          "label": "Yabancı ortaklı kurulan şirketlerin sermayesi",
+          "unit": "TL",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "TOBB 'Yabancı sermaye ve iller' tablosu, 2010-2025: yabancı ortaklı kurulan şirketlerin toplam sermayesi (yerli ve yabancı payı birlikte), cari TL, enflasyondan arındırılmamış. İl toplamları genel görünüm tablosuyla denetlendi.",
+          "dims": [
+            "legal_form"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "tobb-foreign-company-capital.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "tim_exports",
+          "label": "İhracat (TİM, il)",
+          "unit": "bin $",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Türkiye İhracatçılar Meclisi, 'İller bazında ihracat rakamları', her yılın Aralık dosyasındaki on iki ayın toplamı, 2004-2025, bin ABD doları. İl, ihracatçının kayıtlı olduğu ildir, malın üretildiği yer değil: İstanbul merkezli firmanın başka ildeki fabrikasının ihracatı İstanbul'a yazılır. Her yıl il toplamı dosyadaki Türkiye toplamıyla denetlendi (2013-2014 'İller genel' sayfasındaki GENEL TOPLAM); 2004, 2005 ve 2008 dosyalarında Türkiye toplamı yok, orada her ilin ayları kendi yıl toplamı sütunuyla denetlendi. 2004-2009 dosyalarında il bilgisi olmayan ihracat ayrı satırda (2008'de 258 milyon dolar); il değerlerine dahil değil. Listede olmayan iller o yıl ihracat yapmamıştır ve yazılmadı. İndirme scripts/fetch_tim.py, adaptör src/veriatlas/adapters/tim.py.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "tim-exports.csv.gz",
+          "levels": [
+            "province"
           ],
           "parts": {},
           "fine": {},
@@ -7940,6 +8046,174 @@
           ],
           "dataset": "sgk-compulsory-insured.csv.gz",
           "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "iskur_placements",
+          "label": "İŞKUR aracılığıyla işe yerleştirme",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "İŞKUR İstatistik Yıllığı, illere göre genel çalışmalar tablosu, yıl içinde işe yerleştirme, 2003-2025. Yıllık dipnotu: yerleştirme tanımı 2013 Ekim'de genişletildi (SGK kaydıyla eşleşen işe girişler), 2013 öncesiyle karşılaştırma dikkatli yapılmalı. Her ilde erkek + kadın = toplam, iller Türkiye satırıyla denetlendi.",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "iskur-placements.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "iskur_vacancies",
+          "label": "İŞKUR'a bildirilen açık iş",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "İŞKUR İstatistik Yıllığı, illere göre genel çalışmalar tablosu, yıl içinde alınan açık iş, 2003-2025; 2006'dan beri yalnız toplam (cinsiyet kırılımı kaldırıldı). 2006 yıllığında dört ilin açık işi ondalıklı basılı (Kocaeli 7.495,89, Trabzon 1.254,12 gibi), olduğu gibi alındı; il toplamı Türkiye satırını tutar. İller basılı Türkiye satırıyla denetlendi. Yıllığın dipnotuna göre 2006'dan beri açık iş sayısı talep edilen kişi sayısıdır.",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "iskur-vacancies.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "iskur_registered_job_seekers",
+          "label": "İŞKUR'a kayıtlı iş arayan",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "İŞKUR İstatistik Yıllığı 2025, illere göre genel çalışmalar tablosu, kayıtlı iş arayanlar. Kayıtlı işgücü ve kayıtlı işsiz serilerinin yerine geçti; ikisiyle doğrudan karşılaştırılamaz. Her ilde erkek + kadın = toplam, iller Türkiye satırıyla denetlendi.",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "iskur-registered-job-seekers.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "iskur_registered_labour_force",
+          "label": "İŞKUR'a kayıtlı işgücü",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "İŞKUR İstatistik Yıllığı, illere göre genel çalışmalar tablosu, yıl sonu kayıtlı işgücü (işsiz ve çalışan iş arayanlar), 2003-2020; 2003-2008 yıllıklarında 'sonraki yıla devreden işgücü' adıyla. 2021-2024 yıllıklarında yok; 2025'te 'kayıtlı iş arayanlar' ayrı gösterge. Her ilde erkek + kadın = toplam, iller Türkiye satırıyla denetlendi.",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "iskur-registered-labour-force.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "iskur_registered_unemployed",
+          "label": "İŞKUR'a kayıtlı işsiz",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "İŞKUR İstatistik Yıllığı, illere göre genel çalışmalar tablosu, yıl sonu kayıtlı işsiz, 2003-2024; 2003-2008 yıllıklarında 'devreden işgücünden işsizler' adıyla. Anket temelli TÜİK işsizliği değildir: İŞKUR'a kaydolan ve çalışmayan kişiler. 2025 yıllığında yerini 'kayıtlı iş arayanlar' aldı. Her ilde erkek + kadın = toplam, iller Türkiye satırıyla denetlendi.",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "iskur-registered-unemployed.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "iskur_applications",
+          "label": "İŞKUR'a yapılan başvuru",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "İŞKUR İstatistik Yıllığı, illere göre genel çalışmalar tablosu, yıl içinde yapılan başvuru, 2003-2017 (sonraki yıllıklarda yok). Her ilde erkek + kadın = toplam ve iller basılı Türkiye satırıyla denetlendi. İndirme: iskur.gov.tr istatistik yıllıkları; adaptör src/veriatlas/adapters/iskur.py.",
+          "dims": [
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "iskur-applications.csv.gz",
+          "levels": [
+            "country",
             "province"
           ],
           "parts": {},
@@ -13936,6 +14210,36 @@
           "available": true
         },
         {
+          "id": "afad_earthquakes",
+          "label": "Deprem sayısı",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "AFAD deprem kataloğu (deprem.afad.gov.tr API), 1990-2025, merkez üssü AFAD'ın atadığı il ve ilçeye göre yıllık olay sayısı. Denizde ve yurt dışında olanlar sayılmadı. Ağın algılama eşiği yıllar içinde düştü (1990'da 344, 2024'te 32.578 olay): 3'ten küçük depremlerin artışı büyük ölçüde ölçüm ağının genişlemesidir; 4 ve üzeri sınıflar yıllar arasında karşılaştırılabilir. İlçe sayıları il sayılarına eşit. İndirme scripts/fetch_afad_earthquakes.py, adaptör src/veriatlas/adapters/afad.py.",
+          "dims": [
+            "magnitude_class"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "afad-earthquakes.csv.gz",
+          "levels": [
+            "district",
+            "province"
+          ],
+          "parts": {
+            "district": "afad-earthquakes-district.csv.gz"
+          },
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "mgm_record_wind_speed",
           "label": "En hızlı rüzgar rekoru",
           "unit": "m/sn",
@@ -14430,6 +14734,107 @@
           "available": true
         },
         {
+          "id": "gsb_talent_directed",
+          "label": "Spor branşına yönlendirilen öğrenci",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "GSB Sportif Yetenek Taraması ve Spora Yönlendirme Programı, spor branşına yönlendirilen öğrenci, 2022-2024. Yönlendirme aşaması bir sezon geriden gelir (2024 sayfasının notu); 2025 henüz yayımlanmadı. Her yıl iller TOPLAM satırını tutar.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "gsb-talent-directed.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "gsb_sports_clubs",
+          "label": "Spor kulübü sayısı",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Gençlik ve Spor Bakanlığı Spor Hizmetleri Genel Müdürlüğü, 'İllere göre kulüp sayıları 2025'. Yalnız 2025 yayımlanmış. İller basılı genel toplamı (25.626) tutar. Adaptör src/veriatlas/adapters/gsb.py.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": "gsb-sports-clubs.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "gsb_talent_suited",
+          "label": "Spora yatkın bulunan öğrenci",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "GSB Sportif Yetenek Taraması ve Spora Yönlendirme Programı, spora yatkın bulunan öğrenci sayısı, 2022-2025. Her yıl iller TOPLAM satırını tutar.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "gsb-talent-suited.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "gsb_talent_screened",
+          "label": "Sportif yetenek taramasına giren öğrenci",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "GSB Sportif Yetenek Taraması ve Spora Yönlendirme Programı, genel tarama aşaması, 2022-2025, engelli ve engelsiz öğrenci. Her yıl iller TOPLAM satırını tutar.",
+          "dims": [
+            "disability"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "gsb-talent-screened.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "theatre_performances",
           "label": "Tiyatro gösterisi (yerli/yabancı eser)",
           "unit": "adet",
@@ -14750,6 +15155,124 @@
     {
       "topic": "Turizm",
       "indicators": [
+        {
+          "id": "ktb_occupancy",
+          "label": "Konaklama tesisi doluluk oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Kültür ve Turizm Bakanlığı (YİGM) yıllık konaklama istatistikleri, il Toplam satırında basılı yatak doluluk oranı; yabancı ve yerli payları toplamı verir. Yalnız il düzeyi. Yıllar 'Konaklama tesisine geliş' göstergesiyle aynı.",
+          "dims": [
+            "guest",
+            "licence"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "ktb-occupancy.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "ktb_nights",
+          "label": "Konaklama tesisinde geceleme",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Kültür ve Turizm Bakanlığı (YİGM) yıllık il-ilçe konaklama istatistikleri, geceleme sayısı. Kapsam ve denetimler 'Konaklama tesisine geliş' göstergesiyle aynı: Bakanlık belgeli 2003, 2011-2013, 2016-2021; belediye belgeli 2015-2022; ilçe düzeyi Bakanlık 2018-2021, belediye 2017-2022.",
+          "dims": [
+            "guest",
+            "licence"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "ktb-nights.csv.gz",
+          "levels": [
+            "district",
+            "province"
+          ],
+          "parts": {
+            "district": "ktb-nights-district.csv.gz"
+          },
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "ktb_average_stay",
+          "label": "Konaklama tesisinde ortalama kalış",
+          "unit": "gün",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Kültür ve Turizm Bakanlığı (YİGM) yıllık konaklama istatistikleri, il Toplam satırında basılı ortalama kalış (geceleme ÷ geliş). Yalnız il düzeyi. Yıllar 'Konaklama tesisine geliş' göstergesiyle aynı.",
+          "dims": [
+            "guest",
+            "licence"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "ktb-average-stay.csv.gz",
+          "levels": [
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "ktb_arrivals",
+          "label": "Konaklama tesisine geliş",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Kültür ve Turizm Bakanlığı (YİGM) yıllık il-ilçe konaklama istatistikleri. Bakanlık belgeli: 2003, 2011-2013, 2016-2021; belediye belgeli: 2015-2022. İl düzeyi o yıllarda basılı GENEL TOPLAM'ı tutar; diğer yıllarda iller genel toplamı tutmadığı ya da düzen farklı olduğu için yüklenmedi. İlçe düzeyi yalnız ilçelerin il toplamını tuttuğu yıllarda (Bakanlık 2018-2021, belediye 2017-2022); daha eski dosyalarda ilçeler ile Toplamı arasında %84'e varan fark var. İlçe olmayan turizm merkezleri (Alsancak, Büyükada, Uludağ vb.) ilçe düzeyine yazılmadı, il toplamında durur. Adaptör src/veriatlas/adapters/ktb.py.",
+          "dims": [
+            "guest",
+            "licence"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "ktb-arrivals.csv.gz",
+          "levels": [
+            "district",
+            "province"
+          ],
+          "parts": {
+            "district": "ktb-arrivals-district.csv.gz"
+          },
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
         {
           "id": "tourism_revenue",
           "label": "Turizm geliri",
@@ -40635,6 +41158,46 @@
       "values": {
         "primary": "Birinci basamak",
         "secondary_tertiary": "İkinci ve üçüncü basamak"
+      }
+    },
+    "legal_form": {
+      "label": "Şirket türü",
+      "values": {
+        "joint_stock": "Anonim şirket",
+        "limited": "Limited şirket"
+      }
+    },
+    "guest": {
+      "label": "Konuk",
+      "values": {
+        "foreign": "Yabancı",
+        "citizen": "Yerli",
+        "total": "Toplam"
+      }
+    },
+    "licence": {
+      "label": "Belge",
+      "values": {
+        "ministry": "Bakanlık belgeli",
+        "municipal": "Belediye belgeli"
+      }
+    },
+    "disability": {
+      "label": "Engel durumu",
+      "values": {
+        "without": "Engelsiz",
+        "with": "Engelli",
+        "total": "Toplam"
+      }
+    },
+    "magnitude_class": {
+      "label": "Büyüklük",
+      "values": {
+        "under_3": "3'ten küçük",
+        "3_to_3_9": "3-3,9",
+        "4_to_4_9": "4-4,9",
+        "5_plus": "5 ve üzeri",
+        "total": "Toplam"
       }
     }
   },
