@@ -29691,3 +29691,56 @@ additive = false
 dims = ["guest", "licence"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "Kültür ve Turizm Bakanlığı (YİGM) yıllık konaklama istatistikleri, il Toplam satırında basılı yatak doluluk oranı; yabancı ve yerli payları toplamı verir. Yalnız il düzeyi. Yıllar 'Konaklama tesisine geliş' göstergesiyle aynı."
+
+[dim.disability]
+label_tr = "Engel durumu"
+label_en = "Disability"
+
+[dim.disability.values]
+without = "Engelsiz"
+with = "Engelli"
+total = "Toplam"
+
+[indicator.gsb_sports_clubs]
+label_tr = "Spor kulübü sayısı"
+label_en = "Sports clubs"
+topic = "kultur"
+unit = "item"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "Gençlik ve Spor Bakanlığı Spor Hizmetleri Genel Müdürlüğü, 'İllere göre kulüp sayıları 2025'. Yalnız 2025 yayımlanmış. İller basılı genel toplamı (25.626) tutar. Adaptör src/veriatlas/adapters/gsb.py."
+
+[indicator.gsb_talent_screened]
+label_tr = "Sportif yetenek taramasına giren öğrenci"
+label_en = "Pupils screened for sporting talent"
+topic = "kultur"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["disability"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "GSB Sportif Yetenek Taraması ve Spora Yönlendirme Programı, genel tarama aşaması, 2022-2025, engelli ve engelsiz öğrenci. Her yıl iller TOPLAM satırını tutar."
+
+[indicator.gsb_talent_suited]
+label_tr = "Spora yatkın bulunan öğrenci"
+label_en = "Pupils found suited to sport"
+topic = "kultur"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "GSB Sportif Yetenek Taraması ve Spora Yönlendirme Programı, spora yatkın bulunan öğrenci sayısı, 2022-2025. Her yıl iller TOPLAM satırını tutar."
+
+[indicator.gsb_talent_directed]
+label_tr = "Spor branşına yönlendirilen öğrenci"
+label_en = "Pupils directed to a sports branch"
+topic = "kultur"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "GSB Sportif Yetenek Taraması ve Spora Yönlendirme Programı, spor branşına yönlendirilen öğrenci, 2022-2024. Yönlendirme aşaması bir sezon geriden gelir (2024 sayfasının notu); 2025 henüz yayımlanmadı. Her yıl iller TOPLAM satırını tutar."
