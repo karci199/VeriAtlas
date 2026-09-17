@@ -421,6 +421,7 @@ DATASETS.update(
                 "ktb_",
                 "gsb_",
                 "afad_",
+                "eu_",
             )
         )
     }
