@@ -63,6 +63,7 @@ from .tuik_vehicles import VEHICLE_ADAPTERS
 from .tuik_villages import TuikVillagePopulation
 from .tuik_vital import VITAL_ADAPTERS
 from .tuik_vital_district import DISTRICT_VITAL_ADAPTERS
+from .vap import VAP_ADAPTERS
 from .yks import YKS_ADAPTERS
 from .yok_istatistik import YOK_ISTATISTIK_ADAPTERS
 from .yok_national import YOK_NATIONAL_ADAPTERS
@@ -147,6 +148,7 @@ ADAPTERS = {
     **DIYANET_ADAPTERS,
     **TIM_ADAPTERS,
     **MUHASEBAT_ADAPTERS,
+    **VAP_ADAPTERS,
     **TIM_SECTOR_ADAPTERS,
     **TIM_COUNTRY_ADAPTERS,
     **ISKUR_ADAPTERS,

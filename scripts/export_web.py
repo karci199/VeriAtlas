@@ -428,6 +428,7 @@ DATASETS.update(
                 "afad_",
                 "eu_",
                 "budget_",
+                "investor_",
             )
         )
     }

@@ -30355,3 +30355,14 @@ additive = true
 dims = ["budget_measure", "revenue_line"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "Hazine ve Maliye Bakanlığı Muhasebat Genel Müdürlüğü, 'Genel Bütçe Gelirlerinin İller İtibarıyla Tahakkuk ve Tahsilatı', 2004-2025, bin TL, cari fiyat; her il dosyasının Aralık (yıl birikimli) sayfası. Gelir, vergi dairesinin bulunduğu ile yazılır: büyük mükelleflerin vergisi merkezlerinin olduğu ilde (İstanbul, Ankara) toplanır, üretimin yapıldığı ilde değil. Merkezden tahsil edilen gelirler (00-Merkez: gümrük vb.) il değerlerine dahil değil. Tahsilat iadeleri düşülmüş nettir, bu yüzden bir kalem eksi olabilir. Kalemler: toplam, vergi gelirleri, gelir vergisi, kurumlar vergisi, dahilde alınan KDV, ÖTV, motorlu taşıtlar vergisi (2006'dan). Tahakkukta vergi toplamı ve gelir+kurumlar vergisi birbirini aşmıyor olmalı; aşan beş il-yıl kaynakta tutarsız olduğu için alınmadı (Hakkari 2007-2009 ve 2012, Sakarya 2007); 2007 Bitlis dosyasında Aralık yok. Enflasyondan arındırılmamıştır. İndirme scripts/fetch_muhasebat.py (portal API), adaptör src/veriatlas/adapters/muhasebat.py."
+
+[indicator.investor_portfolio_value]
+label_tr = "Yatırımcı portföy değeri (il)"
+label_en = "Investor portfolio value by province"
+topic = "bankacilik"
+unit = "thousand_try"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Merkezi Kayıt Kuruluşu (MKK) Veri Analiz Platformu (VAP), 'İllere Göre Yatırımcı Sayıları' panosu, her yılın Aralık ayı, 2005-2025 (2007 Aralık panoda boş, yazılmadı). Yatırımcının kayıtlı olduğu ile göre portföy değeri: pay senedi, fon (borsa yatırım fonu dahil), devlet ve özel sektör borçlanma araçları, yapılandırılmış ürünler ve diğer menkul kıymetler; Borsa İstanbul kapanış fiyatıyla, cari TL. Kaynakta milyon TL, burada bin TL. Her yıl 81 ilin toplamı panonun Türkiye aylık serisiyle aynı. Yatırımcı sayısı panoda il bazında yalnız ilk 10 il için okunabildiği için alınmadı. İndirme scripts/fetch_vap.py (MicroStrategy REST, herkese açık kullanıcı), adaptör src/veriatlas/adapters/vap.py."
