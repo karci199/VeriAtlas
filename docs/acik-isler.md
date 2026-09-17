@@ -13,7 +13,7 @@ Keşfedilmiş ama hiç başlanmamış kaynaklar `kaynak-envanteri.md`'de.
 | İŞKUR | `iskur_*`: başvuru, açık iş, yerleştirme, kayıtlı işgücü/işsiz/iş arayan | il × cinsiyet, 2003-2025 |
 | Kültür Turizm | `ktb_*`: geliş, geceleme (il+ilçe), ortalama kalış, doluluk | il 2003-2022 (seçili yıllar), ilçe 2017-2022 |
 
-Web export: 2026-09-17 yapıldı (TOBB yabancı, TİM, İŞKUR, KTB, GSB, AFAD, Eurostat). MEDAS girişim ve tarım değerleri henüz değil.
+Web export: 2026-09-17 tam; MEDAS girişim, bitkisel/hayvansal değer ve EPDK bayiye teslim dahil.
 
 ## Yarım kalan çekimler
 
