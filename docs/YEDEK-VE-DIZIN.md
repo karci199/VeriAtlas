@@ -13,7 +13,7 @@ Git **her şeyi tutmuyor**. Aşağıdaki üç yerin üçü de ayrı ayrı kopyal
 |---|---|---|---|---|
 | 1 | **Ham veri deposu** — indirilen Excel, PDF, JSON, MEDAS CSV'leri | `C:\veri-ham\` | **Hayır** | Yeniden indirmek günler sürer; bazı kaynaklar (eski TİM/KTB dosyaları, MEDAS oturumları) bir daha aynı biçimde gelmeyebilir. **En değerli yedek bu.** |
 | 2 | **Kod + belgeler + web** | GitHub `karci199/VeriAtlas` (`main` dalı), yerel `C:\veri\` | Evet | GitHub'dan geri gelir, yine de klasörü kopyala |
-| 3 | **İşlenmiş depo** — `public/fact.parquet` (19,6 mn satır) ve `warehouse.duckdb` | en güncel hali: `C:\veri\.claude\worktrees\veri-cekme-secimler-durum-4771a4\public\` ve aynı klasördeki `warehouse.duckdb` | **Hayır** (`fact.parquet`, `warehouse.duckdb` git dışı) | Ham veriden `scripts/load.py` ile yeniden kurulur (saatler) |
+| 3 | **İşlenmiş depo** — `public/fact.parquet` (19,6 mn satır) ve `warehouse.duckdb` | en güncel hali: `C:\veri\public\` ve `C:\veri\warehouse.duckdb` (2026-09-17, main checkout) | **Hayır** (`fact.parquet`, `warehouse.duckdb` git dışı) | Ham veriden `scripts/load.py` ile yeniden kurulur (saatler) |
 | 4 | **Gizli anahtar** — EVDS API anahtarı | `C:\veri\.env` | **Hayır** (bilerek) | TCMB EVDS'den yeni anahtar alınır. **Yedeği şifreli ya da ayrı tut, paylaşma.** |
 | 5 | Web'e aktarılmış dosyalar (`public/*.csv.gz`, `meta.json`) | worktree `public/` | Evet | `scripts/export_web.py` yeniden üretir |
 
