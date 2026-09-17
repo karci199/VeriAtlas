@@ -20,7 +20,7 @@ from pathlib import Path
 import polars as pl
 
 from ..config import RAW
-from .kgm import fold, province_id
+from .kgm import fold, province_id, provinces
 
 FILES = RAW / "tobb"
 EVENTS = {"kurulan": "established", "tasfiye": "liquidation", "kapanan": "closed"}
@@ -300,3 +300,164 @@ class TobbCapital:
 
 
 TOBB_ADAPTERS["tobb_company_capital"] = TobbCapital
+
+
+LEGAL_FORMS = {"anonimsirketler": "joint_stock", "limitedsirketler": "limited"}
+
+
+def read_foreign(path: Path) -> dict[tuple[str, str, str], float]:
+    """ "YABANCI SERMAYE ve İLLER": companies founded in the year with a foreign partner.
+
+    {(area, legal form, measure): value}. One block per legal form (joint stock, limited),
+    each listing only the provinces that had such a company; the others are written as 0,
+    since the block's total is the sum of its rows. Measures: the number of companies, the
+    capital of those companies and the foreign partners' share of it (TL). The block's
+    printed total covers the foreign share only, and that is what is checked.
+    """
+    import re
+
+    import xlrd
+
+    book = xlrd.open_workbook(path)
+    if "YABANCI SERMAYE ve İLLER" not in book.sheet_names():
+        return {}
+    sheet = book.sheet_by_name("YABANCI SERMAYE ve İLLER")
+    rows = [[str(v).strip() for v in sheet.row_values(r)] for r in range(sheet.nrows)]
+    out: dict[tuple[str, str, str], float] = {}
+    form = None
+    columns: dict[str, int] = {}
+    for r in rows:
+        title = next((fold(c) for c in r if fold(c) in LEGAL_FORMS), None)
+        if title:
+            form, columns = LEGAL_FORMS[title], {}
+            continue
+        if form is None:
+            continue
+        if "İller" in r:
+            columns = {
+                "companies": r.index("Şirket Sayısı"),
+                # 2012: "Şirketlerin Sermayesi", "Yabancı ..."; later "Sermaye Toplamı",
+                # "Ülkenin Sermayesi"
+                "capital": next(
+                    j
+                    for j, c in enumerate(r)
+                    if "Serma" in c and "Ülke" not in c and "Yab" not in c
+                ),
+                "foreign_capital": next(
+                    j for j, c in enumerate(r) if "Ülke" in c or "Yab" in c
+                ),
+                "name": r.index("İller"),
+            }
+            continue
+        if not columns or not any(r):
+            continue
+        if any(fold(c) == "toplam" for c in r):
+            printed = float(r[columns["foreign_capital"]])
+            read = sum(
+                v
+                for (a, f, m), v in out.items()
+                if f == form and m == "foreign_capital"
+            )
+            if abs(read - printed) > 0.5:
+                raise ValueError(
+                    f"TOBB yabancı sermaye {path.name} {form}: iller {read:,.0f}, Toplam {printed:,.0f}"
+                )
+            form, columns = None, {}
+            continue
+        if not re.fullmatch(r"\d+(\.0)?", r[columns["companies"]]):
+            continue
+        area = province_id(r[columns["name"]])
+        for measure in ("companies", "capital", "foreign_capital"):
+            key = (area, form, measure)
+            if key in out:
+                raise ValueError(f"TOBB yabancı sermaye {path.name}: {key} iki kez")
+            out[key] = float(r[columns[measure]] or 0)
+    forms = {f for _, f, _ in out}
+    check_foreign_summary(book, path, out)
+    if forms != set(LEGAL_FORMS.values()):
+        raise ValueError(f"TOBB yabancı sermaye {path.name}: bloklar {forms}")
+    for area in set(provinces().values()):
+        for f in forms:
+            for measure in ("companies", "capital", "foreign_capital"):
+                out.setdefault((area, f, measure), 0.0)
+    return out
+
+
+def check_foreign_summary(
+    book, path: Path, out: dict[tuple[str, str, str], float]
+) -> None:
+    """The provincial blocks against "YABANCI SERMAYE GENEL GÖRÜNÜM", whole-year block.
+
+    The two sheets are not always the same count: 2018's provinces add up to 13,401 companies,
+    the summary prints 13,405 (joint stock 1,127 against 1,129, capital 0.15 % short). Up to five, or 0.5 %, is let
+    through; more stops the load.
+    """
+    if "YABANCI SERMAYE GENEL GÖRÜNÜM" not in book.sheet_names():
+        return
+    sheet = book.sheet_by_name("YABANCI SERMAYE GENEL GÖRÜNÜM")
+    rows = [[str(v).strip() for v in sheet.row_values(r)] for r in range(sheet.nrows)]
+    start = next((i for i, r in enumerate(rows) if any("Ocak" in c for c in r)), None)
+    if start is None:
+        return
+    labels = {"sayi": "companies", "ortakolunansirketlerintoplamser": "capital"}
+    for r in rows[start:]:
+        key = next((fold(c) for c in r if c), "")
+        measure = next((m for k, m in labels.items() if key.startswith(k)), None)
+        if measure is None and "yabanc" in key and "oran" not in key:
+            measure = "foreign_capital"
+        if measure is None:
+            continue
+        numbers = [float(c) for c in r if c.replace(".", "", 1).isdigit()]
+        for form, printed in zip(("joint_stock", "limited"), numbers, strict=False):
+            read = sum(v for (a, f, m), v in out.items() if f == form and m == measure)
+            if abs(read - printed) > max(5.0, printed * 0.005):
+                raise ValueError(
+                    f"TOBB yabancı sermaye {path.name} {form} {measure}: "
+                    f"iller {read:,.0f}, genel görünüm {printed:,.0f}"
+                )
+
+
+class TobbForeign:
+    source_id = "tobb"
+    indicator_id = ""
+    measure = ""
+
+    def fetch(self) -> Path:
+        return FILES
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        records = [
+            {
+                "area_id": area,
+                "period_start": dt.date(int(path.name[:4]), 1, 1),
+                "dims": f"legal_form={form}",
+                "value": value,
+            }
+            for path in sorted(FILES.glob("20??-12.xls*"))
+            for (area, form, measure), value in read_foreign(path).items()
+            if measure == self.measure
+        ]
+        return pl.DataFrame(
+            records, schema_overrides={"value": pl.Float64}
+        ).with_columns(
+            pl.lit(self.indicator_id).alias("indicator_id"),
+            pl.lit("province").alias("area_level"),
+            pl.lit("annual").alias("frequency"),
+            pl.lit("company" if self.measure == "companies" else "try").alias("unit"),
+            pl.lit("measured").alias("quality_flag"),
+            pl.lit("2026-07").alias("vintage"),
+            pl.lit(self.source_id).alias("source_id"),
+            pl.lit(dt.date(2026, 9, 17)).alias("retrieved_at"),
+        )
+
+
+for _indicator, _measure in (
+    ("tobb_foreign_companies", "companies"),
+    ("tobb_foreign_company_capital", "capital"),
+    ("tobb_foreign_partner_capital", "foreign_capital"),
+):
+    TOBB_ADAPTERS[_indicator] = type(
+        f"TobbForeign_{_measure}",
+        (TobbForeign,),
+        {"indicator_id": _indicator, "measure": _measure},
+    )

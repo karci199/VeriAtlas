@@ -29512,3 +29512,44 @@ additive = true
 dims = ["health_profession"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Toplam hekim = uzman + pratisyen + asistan, ayrıca yazılmadı."
+
+[dim.legal_form]
+label_tr = "Şirket türü"
+label_en = "Legal form"
+
+[dim.legal_form.values]
+joint_stock = "Anonim şirket"
+limited = "Limited şirket"
+
+[indicator.tobb_foreign_companies]
+label_tr = "Kurulan yabancı ortaklı şirketler"
+label_en = "Companies established with a foreign partner"
+topic = "reel_kesim"
+unit = "company"
+frequency = "annual"
+additive = true
+dims = ["legal_form"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TOBB Kurulan ve Kapanan Şirket İstatistikleri, Aralık dosyalarının 'Yabancı sermaye ve iller' tablosu, 2010-2025: yıl içinde kurulan, ortakları arasında yabancı bulunan anonim ve limited şirketler. Tabloda yer almayan iller 0 yazıldı. İl toplamları 'Yabancı sermaye genel görünüm' tablosuyla denetlendi; 2018'de anonim şirket 1.127'ye karşı 1.129."
+
+[indicator.tobb_foreign_company_capital]
+label_tr = "Yabancı ortaklı kurulan şirketlerin sermayesi"
+label_en = "Capital of companies established with a foreign partner"
+topic = "reel_kesim"
+unit = "try"
+frequency = "annual"
+additive = true
+dims = ["legal_form"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TOBB 'Yabancı sermaye ve iller' tablosu, 2010-2025: yabancı ortaklı kurulan şirketlerin toplam sermayesi (yerli ve yabancı payı birlikte), cari TL, enflasyondan arındırılmamış. İl toplamları genel görünüm tablosuyla denetlendi."
+
+[indicator.tobb_foreign_partner_capital]
+label_tr = "Kurulan şirketlerde yabancı sermaye payı"
+label_en = "Foreign partners' capital in companies established"
+topic = "reel_kesim"
+unit = "try"
+frequency = "annual"
+additive = true
+dims = ["legal_form"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TOBB 'Yabancı sermaye ve iller' tablosu, 2010-2025: yıl içinde kurulan şirketlerde yabancı ortakların koyduğu sermaye, cari TL, enflasyondan arındırılmamış. Her şirket türü bloğunda iller basılı Toplam satırını tutar; genel görünüm tablosuyla da denetlendi."
