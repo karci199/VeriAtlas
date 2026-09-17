@@ -406,7 +406,12 @@ class GasConsumption(Epdk):
 
 #: Year -> (PDF, page of Tablo 8.3 / 8.2). 2014 prints the province total only.
 #: Year -> (PDF, page, provinces listed). Tunceli has no row in 2015 (no gas used there).
-GAS_CONSUMPTION_PDFS = {2015: ("Jo_r3O_Xi5s_", 65, 80), 2016: ("zd_qHXQpFYw_", 76, 81)}
+GAS_CONSUMPTION_PDFS = {
+    2015: ("Jo_r3O_Xi5s_", 65, 80),
+    2016: ("zd_qHXQpFYw_", 76, 81),
+    # 2025: the Word annex is not published yet, the PDF report is
+    2025: ("fSTHy8vYN_Q_", 69, 81),
+}
 NUMBER = re.compile(r"\d{1,3}(\.\d{3})*,\d+")
 
 
@@ -451,7 +456,7 @@ def pdf_grid(path: Path, first: int, stop: str) -> list[list[str]]:
                     for w in words
                     if w["text"] == "ADANA"
                     and any(
-                        fold(o["text"]) == "boru" and 3 < w["top"] - o["top"] < 30
+                        fold(o["text"]) == "boru" and 3 < w["top"] - o["top"] < 40
                         for o in words
                     )
                 ),
@@ -463,7 +468,8 @@ def pdf_grid(path: Path, first: int, stop: str) -> list[list[str]]:
                 band = [
                     w
                     for w in words
-                    if anchor["top"] - 30 < w["top"] < anchor["top"] - 3
+                    # 2025 sets its two-line header 32 pt above the first row
+                    if anchor["top"] - 40 < w["top"] < anchor["top"] - 3
                     and not NUMBER.fullmatch(w["text"])
                     and w["x0"] > 150
                 ]

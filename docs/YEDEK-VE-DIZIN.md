@@ -123,7 +123,7 @@ Güncel sayıyı her zaman şununla al:
 
 Seri içindeki boşluklar, kolaydan zora:
 
-1. EPDK doğalgaz il tüketimi 2014-2016 (PDF sütunları; 2017 sağlıktaki kelime-konumu yöntemi denenecek)
+1. ~~EPDK doğalgaz il tüketimi~~ 2025 eklendi; 2015-2016 zaten vardı; 2014 yalnız il toplamı
 2. EPDK akaryakıt 2011-2014 (litre biriminde, ayrı gösterge)
 3. Kültür Turizm 2007-2008 (yalnız PDF)
 4. Sağlık yıllığı 2010 (sayfa açılmadı)

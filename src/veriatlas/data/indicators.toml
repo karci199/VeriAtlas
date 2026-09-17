@@ -25297,7 +25297,7 @@ unit = "m3"
 frequency = "annual"
 dims = ["gas_supply"]
 views = ["table", "map", "line", "bar"]
-definition_tr = "EPDK Doğal Gaz Piyasası Gelişim Raporları Tablo 8.3, 2017-2024 (milyon Sm3 olarak basılı). İletim şebekesinde dahili kullanım ve terminal işletme gazı (il yok) dışarıda."
+definition_tr = "EPDK Doğal Gaz Piyasası Gelişim Raporları Tablo 8.3, 2015-2025 (milyon Sm3 olarak basılı; 2017-2024 Word eki, 2015, 2016 ve 2025 PDF raporundan kelime konumlarıyla). İletim şebekesinde dahili kullanım ve terminal işletme gazı (il yok) dışarıda; bu yüzden il toplamı raporun ulusal tüketiminden biraz düşüktür (2025: 58,7 ve 59,1 milyar m3). 2014 raporu yalnız il toplamı basar, temin şekli kırılımı olmadığı için alınmadı."
 
 # endregion
 
