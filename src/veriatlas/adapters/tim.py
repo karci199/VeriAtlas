@@ -19,6 +19,7 @@ Layouts that differ, all handled here:
 Provinces a year does not list exported nothing that year and are not written.
 
 2004-2005 and 2008 print no Türkiye total: those years rest on each row's own TOPLAM column.
+"""
 
 from __future__ import annotations
 
@@ -116,9 +117,7 @@ def read_year(year: int, path: Path) -> dict[str, float]:
         if not any(NUMBER.fullmatch(c) and float(c) for c in cells):
             continue  # 2004 opens with a row of zeros
         value = sum(float(c) for c in cells if NUMBER.fullmatch(c))
-        name = next(
-            (c for c in r[: months[0]] if c and not NUMBER.fullmatch(c)), ""
-        )
+        name = next((c for c in r[: months[0]] if c and not NUMBER.fullmatch(c)), "")
         if name.upper() in ("TOPLAM", "GENEL TOPLAM", "TÜRKİYE"):
             if printed is not None:
                 raise ValueError(f"TİM {path.name}: iki toplam satırı")
@@ -132,10 +131,16 @@ def read_year(year: int, path: Path) -> dict[str, float]:
             raise ValueError(f"TİM {path.name}: tanınmayan satır {name}")
         if area in provinces:
             raise ValueError(f"TİM {path.name}: {name} iki kez")
-        if year_total is not None and year_total < len(r) and NUMBER.fullmatch(r[year_total]):
+        if (
+            year_total is not None
+            and year_total < len(r)
+            and NUMBER.fullmatch(r[year_total])
+        ):
             own = float(r[year_total])
             if abs(own - value) > max(1.0, own * 1e-6):
-                raise ValueError(f"TİM {path.name} {name}: aylar {value:,.0f}, TOPLAM {own:,.0f}")
+                raise ValueError(
+                    f"TİM {path.name} {name}: aylar {value:,.0f}, TOPLAM {own:,.0f}"
+                )
         provinces[area] = value
     named = sum(provinces.values())
     if printed is None and unnamed:
@@ -144,13 +149,17 @@ def read_year(year: int, path: Path) -> dict[str, float]:
         if abs(named + rest - candidate) <= max(1.0, candidate * 1e-4):
             printed, unnamed = candidate, unnamed[:-1]
     if printed is None and unnamed and year_total is None:
-        raise ValueError(f"TİM {path.name}: adsız satırlar toplamla eşleşmiyor {unnamed}")
+        raise ValueError(
+            f"TİM {path.name}: adsız satırlar toplamla eşleşmiyor {unnamed}"
+        )
     if printed is None and year >= 2010:
         printed = summary_total(path, named)
     if printed is not None:
         read = named + sum(unnamed)
         if abs(read - printed) > max(1.0, printed * 1e-4):
-            raise ValueError(f"TİM {path.name}: iller {read:,.0f}, toplam {printed:,.0f}")
+            raise ValueError(
+                f"TİM {path.name}: iller {read:,.0f}, toplam {printed:,.0f}"
+            )
     elif year_total is None:
         raise ValueError(f"TİM {path.name}: ne toplam satırı ne satır toplamı var")
     UNALLOCATED[year] = sum(unnamed)
