@@ -30001,3 +30001,47 @@ additive = true
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "EPDK Petrol Piyasası Sektör Raporu 2014, Tablo 21: 2012-2014 illere göre dağıtıcıların bayilere teslimi, tüm ürünler toplamı, ton. 2015 sonrası 'Akaryakıt satışı' (tüm yurt içi satış) serisiyle aynı ölçü değildir, bu yüzden ayrı gösterge. İstanbul Anadolu ve Avrupa satırları toplandı. İller her yıl Genel Toplam satırını tutar. Ürün kırılımı PDF'te boş hücreler kaybolduğu için alınmadı."
+
+[dim.tim_sector]
+label_tr = "İhracat sektörü (TİM)"
+label_en = "Export sector (TİM)"
+
+[dim.tim_sector.values]
+air_conditioning = "İklimlendirme sanayii"
+apparel = "Hazır giyim ve konfeksiyon"
+automotive = "Otomotiv endüstrisi"
+carpets = "Halı"
+cement_glass_ceramics = "Çimento, cam, seramik ve toprak ürünleri"
+cereals_pulses_oilseeds = "Hububat, bakliyat, yağlı tohumlar ve mamulleri"
+chemicals = "Kimyevi maddeler ve mamulleri"
+dried_fruits = "Kuru meyve ve mamulleri"
+electrical_electronics = "Elektrik ve elektronik"
+ferrous_nonferrous_metals = "Demir ve demir dışı metaller"
+fishery_animal_products = "Su ürünleri ve hayvansal mamuller"
+fresh_fruit_vegetables = "Yaş meyve ve sebze"
+fruit_vegetable_products = "Meyve sebze mamulleri"
+furniture_paper_forestry = "Mobilya, kağıt ve orman ürünleri"
+hazelnuts = "Fındık ve mamulleri"
+jewellery = "Mücevher"
+leather = "Deri ve deri mamulleri"
+machinery = "Makine ve aksamları"
+mining = "Madencilik ürünleri"
+olive_oil = "Zeytin ve zeytinyağı"
+ornamental_plants = "Süs bitkileri ve mamulleri"
+other_industrial = "Diğer sanayi ürünleri"
+ships_yachts = "Gemi, yat ve hizmetleri"
+steel = "Çelik"
+textiles = "Tekstil ve hammaddeleri"
+tobacco = "Tütün"
+unclassified = "Sektörü belirtilmemiş"
+
+[indicator.tim_exports_by_sector]
+label_tr = "İhracat, sektöre göre (TİM, il)"
+label_en = "Exports by province and sector (TİM)"
+topic = "reel_kesim"
+unit = "thousand_usd"
+frequency = "annual"
+additive = true
+dims = ["tim_sector"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Türkiye İhracatçılar Meclisi, 'İller bazında sektör ihracat rakamları', 2013-2025, bin ABD doları; her yılın Aralık dosyasındaki yılbaşından bu yana sütunu. İl, ihracatçının kayıtlı olduğu ildir. TİM'in 26 sektörü; 2015 ve 2021'de değişen adlar tek koda bağlandı (Taşıt Araçları = Otomotiv, Değerli Maden = Mücevher, Ağaç Mamülleri = Mobilya-Kağıt-Orman, Maden ve Metaller = Madencilik). Sektörlerin tutmadığı kalan (yılda %1-4) 'Sektörü belirtilmemiş' olarak yazıldı; böylece sektörler il toplamını verir. Her yıl ve ilde sektör toplamı ayrı il dosyasındaki 'İhracat (TİM, il)' değerini tutar (2017-2018 %2 içinde: Aralık dosyası yok ya da Kasım'ı basıyor, yıl Ocak-Kasım + sonraki Ocak dosyasındaki Aralık ayı). 2012 alınmadı: dosya bazı sektör satırlarını basmıyor (Eskişehir'de %31 eksik). Sonraki yılın 'önceki yıl' sütunu kullanılmadı: firmaları yeni merkezlerine taşıyor (2018: Bursa +%19). Adaptör src/veriatlas/adapters/tim_sectors.py."

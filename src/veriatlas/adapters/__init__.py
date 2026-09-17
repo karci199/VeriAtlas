@@ -35,6 +35,7 @@ from .sgk_national import SGK_NATIONAL_ADAPTERS
 from .sgk_provinces import SGK_ADAPTERS
 from .tbb_provinces import TBB_ADAPTERS
 from .tim import TIM_ADAPTERS
+from .tim_sectors import TIM_SECTOR_ADAPTERS
 from .tobb import TOBB_ADAPTERS
 from .tuik_birth_order import TuikBirthOrder
 from .tuik_child_police import CHILD_POLICE_ADAPTERS
@@ -143,6 +144,7 @@ ADAPTERS = {
     **DHMI_ADAPTERS,
     **DIYANET_ADAPTERS,
     **TIM_ADAPTERS,
+    **TIM_SECTOR_ADAPTERS,
     **ISKUR_ADAPTERS,
     **KTB_ADAPTERS,
     **GSB_ADAPTERS,
