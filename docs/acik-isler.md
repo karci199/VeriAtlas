@@ -1,7 +1,19 @@
-# Açık işler (2026-09-17)
+# Açık işler (2026-09-17, akşam güncel)
 
 Çekilip de alınamayan ya da yarım kalanlar, tahmini zorlukla. Yeni oturumda buradan devam.
 Keşfedilmiş ama hiç başlanmamış kaynaklar `kaynak-envanteri.md`'de.
+
+## Bu oturumda depoya girenler (2026-09-16/17)
+
+| Kaynak | Gösterge | Kapsam |
+|---|---|---|
+| Sağlık Bakanlığı yıllığı | `moh_*` 20 gösterge: hastane, yatak, yoğun bakım, müracaat, ameliyat, doluluk, personel, 112 | il, 2012-2016 + 2018-2024 |
+| TOBB | `tobb_foreign_*`: yabancı ortaklı kurulan şirket, sermaye, yabancı payı | il × anonim/limited, 2010-2025 |
+| TİM | `tim_exports` il ihracatı | il, 2004-2025 |
+| İŞKUR | `iskur_*`: başvuru, açık iş, yerleştirme, kayıtlı işgücü/işsiz/iş arayan | il × cinsiyet, 2003-2025 |
+| Kültür Turizm | `ktb_*`: geliş, geceleme (il+ilçe), ortalama kalış, doluluk | il 2003-2022 (seçili yıllar), ilçe 2017-2022 |
+
+Web export: TOBB yabancı, TİM, İŞKUR, KTB henüz dışa aktarılmadı.
 
 ## Yarım kalan çekimler
 
