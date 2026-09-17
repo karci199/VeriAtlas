@@ -1,44 +1,41 @@
 """Source adapters. One module per source; the contract lives in `base`."""
 
-from .base import Adapter, Manifest, history, ingest
-from .dhmi import DHMI_ADAPTERS
-from .diyanet import DIYANET_ADAPTERS
-from .tim import TIM_ADAPTERS
-from .iskur import ISKUR_ADAPTERS
-from .ktb import KTB_ADAPTERS
-from .gsb import GSB_ADAPTERS
 from .afad import AFAD_ADAPTERS
-from .eurostat_regional import EUROSTAT_REGIONAL_ADAPTERS
-from .saglik_yearbook import SAGLIK_YEARBOOK_ADAPTERS
-from .etkb import ETKB_ADAPTERS
-from .mgm import MGM_ADAPTERS
-from .epdk import EPDK_ADAPTERS
-from .epdk_capacity import EPDK_CAPACITY_ADAPTERS
-from .epdk_history import EPDK_HISTORY_ADAPTERS
-from .epdk_monthly import EPDK_MONTHLY_ADAPTERS
-from .tobb import TOBB_ADAPTERS
-from .yokatlas import YOKATLAS_ADAPTERS
-from .yok_istatistik import YOK_ISTATISTIK_ADAPTERS
-from .yok_national import YOK_NATIONAL_ADAPTERS
-from .yks import YKS_ADAPTERS
+from .base import Adapter, Manifest, history, ingest
 from .btk import BTK_ADAPTERS
-from .btk_province import BTK_PROVINCE_ADAPTERS
-from .btk_summary import BTK_SUMMARY_ADAPTERS
 from .btk_charts import BTK_CHART_ADAPTERS
 from .btk_imei import BTK_IMEI_ADAPTERS
 from .btk_posta import BTK_POSTA_ADAPTERS
 from .btk_prose import BTK_PROSE_ADAPTERS
+from .btk_province import BTK_PROVINCE_ADAPTERS
+from .btk_summary import BTK_SUMMARY_ADAPTERS
 from .btk_tables import BTK_TABLE_ADAPTERS
+from .dhmi import DHMI_ADAPTERS
+from .diyanet import DIYANET_ADAPTERS
+from .epdk import EPDK_ADAPTERS
+from .epdk_capacity import EPDK_CAPACITY_ADAPTERS
+from .epdk_dealer_deliveries import EPDK_DEALER_ADAPTERS
+from .epdk_history import EPDK_HISTORY_ADAPTERS
+from .epdk_monthly import EPDK_MONTHLY_ADAPTERS
+from .etkb import ETKB_ADAPTERS
+from .eurostat_regional import EUROSTAT_REGIONAL_ADAPTERS
 from .evds_archive import EVDS_ARCHIVE_ADAPTERS
 from .evds_housing import EVDS_HOUSING_ADAPTERS
 from .evds_prices import EVDS_PRICE_ADAPTERS
 from .evds_series import EVDS_SERIES_ADAPTERS
 from .evds_tourism import EvdsVisitorsByNationality
+from .gsb import GSB_ADAPTERS
+from .iskur import ISKUR_ADAPTERS
 from .kgm import KGM_ADAPTERS
+from .ktb import KTB_ADAPTERS
+from .mgm import MGM_ADAPTERS
+from .saglik_yearbook import SAGLIK_YEARBOOK_ADAPTERS
 from .sege import SEGE_ADAPTERS
 from .sgk_national import SGK_NATIONAL_ADAPTERS
 from .sgk_provinces import SGK_ADAPTERS
 from .tbb_provinces import TBB_ADAPTERS
+from .tim import TIM_ADAPTERS
+from .tobb import TOBB_ADAPTERS
 from .tuik_birth_order import TuikBirthOrder
 from .tuik_child_police import CHILD_POLICE_ADAPTERS
 from .tuik_crops import CROP_ADAPTERS
@@ -63,6 +60,10 @@ from .tuik_vehicles import VEHICLE_ADAPTERS
 from .tuik_villages import TuikVillagePopulation
 from .tuik_vital import VITAL_ADAPTERS
 from .tuik_vital_district import DISTRICT_VITAL_ADAPTERS
+from .yks import YKS_ADAPTERS
+from .yok_istatistik import YOK_ISTATISTIK_ADAPTERS
+from .yok_national import YOK_NATIONAL_ADAPTERS
+from .yokatlas import YOKATLAS_ADAPTERS
 
 #: Everything that can be ingested, by name. `scripts/load.py` runs these.
 ADAPTERS = {
@@ -128,6 +129,7 @@ ADAPTERS = {
     **EPDK_HISTORY_ADAPTERS,
     **EPDK_CAPACITY_ADAPTERS,
     **EPDK_MONTHLY_ADAPTERS,
+    **EPDK_DEALER_ADAPTERS,
     **TOBB_ADAPTERS,
     **YOKATLAS_ADAPTERS,
     **YOK_ISTATISTIK_ADAPTERS,

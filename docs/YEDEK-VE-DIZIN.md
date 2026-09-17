@@ -124,7 +124,7 @@ Güncel sayıyı her zaman şununla al:
 Seri içindeki boşluklar, kolaydan zora:
 
 1. ~~EPDK doğalgaz il tüketimi~~ 2025 eklendi; 2015-2016 zaten vardı; 2014 yalnız il toplamı
-2. EPDK akaryakıt 2011-2014 (litre biriminde, ayrı gösterge)
+2. ~~EPDK akaryakıt 2012-2014~~ bayiye teslim (ton) olarak eklendi; 2010-2011 Tablo 3.18 kaldı
 3. Kültür Turizm 2007-2008 (yalnız PDF)
 4. Sağlık yıllığı 2010 (sayfa açılmadı)
 5. Kültür Turizm Bakanlık belgeli 1996-2002, 2004-2010, 2014-2015; belediye belgeli 2000-2014

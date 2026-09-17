@@ -27,7 +27,7 @@ Web export: 2026-09-17 yapıldı (TOBB yabancı, TİM, İŞKUR, KTB, GSB, AFAD, 
 | ~~Sağlık yıllığı 2017~~ | 2026-09-17 yüklendi (kelime konumu + 2018 satır sırası); 2011 il tablosu basmıyor | — |
 | Sağlık yıllığı | 2010 | yıllık sayfası açılmadı | bilinmiyor |
 | BTK | "Gizli — kurum içi" damgalı sayfalar, pazar payı tabloları, AB karşılaştırmaları | `docs/btk.md` | orta |
-| EPDK | ~~doğalgaz il tüketimi 2025~~ yüklendi 2026-09-17 (2015-2016 zaten vardı); 2014 yalnız il toplamı (kırılımsız, alınmadı); akaryakıt 2011-2014; 2024-2026 aylık kurulu güç | `docs/epdk.md` | orta |
+| EPDK | ~~doğalgaz il tüketimi 2025~~ yüklendi 2026-09-17 (2015-2016 zaten vardı); 2014 yalnız il toplamı (kırılımsız, alınmadı); ~~akaryakıt 2012-2014~~ bayiye teslim (ton, il toplamı) yüklendi 2026-09-17; akaryakıt 2010-2011 (Tablo 3.18, ton) ve ürün kırılımı; 2024-2026 aylık kurulu güç | `docs/epdk.md` | orta |
 | KGM | kaza özeti PDF tabloları, Trafik ve Ulaşım Bilgileri | `docs/kgm.md` | zor |
 | MGM | ilçe iklim normalleri | sayfa adlandırması farklı | orta |
 | SGK | sınıflama kodlarının Türkçe etiketleri; 2010-2012 eski düzen | `docs/sgk.md` | orta |
