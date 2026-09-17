@@ -1,4 +1,4 @@
-r"""EPDK petroleum: fuel delivered to dealers by province, 2012-2014 (tonnes).
+r"""EPDK petroleum: fuel delivered to dealers by province, 2011-2014 (tonnes).
 
 The 2014 Petroleum Market Sector Report (`C:\veri-ham\epdk\files\petrol_yillik\dlC058Ircrk_.pdf`)
 prints "Tablo 21: 2012, 2013 ve 2014 Yıllarında İllere Göre Bayiye Teslimler (ton)" over pages
@@ -13,7 +13,14 @@ Words are grouped into lines by a 2.5 pt tolerance, not by fixed bins: a fixed b
 three totals onto a line of their own and the year totals came out short by exactly Düzce.
 İstanbul is printed as two rows, Anadolu and Avrupa, and is added up.
 
-Check: the provinces add up to the Genel Toplam row, every year.
+2011 comes from the 2011 report (`WuVmeFaaXBw_.pdf`), "Tablo 3.18 - İllere Göre Akaryakıt
+Satışları (ton)", pages 41-43 (pdfium indexes 51-53). The page before it closes the distributors'
+deliveries to licensed stations, and the table is their province split: the same measure under
+another title (Türkiye 15.8 million tonnes in 2011, 17.0 in 2012). Its text layer keeps every cell,
+so the ten numbers of a row are nine products and the province total; only the total is taken,
+and each row's products must add up to it. The 2010 report prints no provincial table.
+
+Check: the provinces add up to the Genel Toplam row (2011: Ürün Toplamı), every year.
 """
 
 from __future__ import annotations
@@ -33,6 +40,8 @@ PDF = (
     else Path("C:/veri-ham/epdk/files/petrol_yillik/dlC058Ircrk_.pdf")
 )
 PAGES = (68, 70)
+PDF_2011 = PDF.with_name("WuVmeFaaXBw_.pdf")
+PAGES_2011 = (51, 52, 53)
 YEARS = (2012, 2013, 2014)
 NUMBER = re.compile(r"\d{1,3}(\.\d{3})*$")
 
@@ -94,6 +103,40 @@ def read() -> dict[tuple[str, int], float]:
     return rows
 
 
+def read_2011() -> dict[tuple[str, int], float]:
+    import pypdfium2
+
+    doc = pypdfium2.PdfDocument(PDF_2011)
+    text = "\n".join(doc[i].get_textpage().get_text_range() for i in PAGES_2011)
+    out: dict[str, float] = {}
+    grand = None
+    for line in text.splitlines():
+        parts = line.split()
+        cells = [p for p in parts if NUMBER.match(p)]
+        name = " ".join(p for p in parts if not NUMBER.match(p))
+        if len(cells) != 10 or not name:
+            continue
+        values = [float(c.replace(".", "")) for c in cells]
+        if abs(sum(values[:9]) - values[9]) > 9:  # rounded to the tonne per product
+            raise ValueError(
+                f"EPDK bayiye teslim 2011: {name} ürünleri toplamı tutmuyor"
+            )
+        if name.startswith("Ürün Toplamı"):
+            grand = values[9]
+            continue
+        area = "TR-34" if name.startswith("İSTANBUL") else province_id(name)
+        if area in out and area != "TR-34":
+            raise ValueError(f"EPDK bayiye teslim 2011: {name} iki kez")
+        out[area] = out.get(area, 0.0) + values[9]
+    if len(out) != 81 or grand is None:
+        raise ValueError(f"EPDK bayiye teslim 2011: {len(out)} il, toplam {grand}")
+    if abs(sum(out.values()) - grand) > 2:  # tonne rounding
+        raise ValueError(
+            f"EPDK bayiye teslim 2011: iller {sum(out.values()):,.0f}, toplam {grand:,.0f}"
+        )
+    return {**{(a, 2011): v for a, v in out.items()}, ("TR", 2011): grand}
+
+
 class EpdkDealerDeliveries:
     source_id = "epdk"
     indicator_id = "epdk_fuel_dealer_deliveries"
@@ -110,7 +153,7 @@ class EpdkDealerDeliveries:
                 "dims": "",
                 "value": value,
             }
-            for (area, year), value in read().items()
+            for (area, year), value in {**read_2011(), **read()}.items()
         ]
         return pl.DataFrame(
             records, schema_overrides={"value": pl.Float64}

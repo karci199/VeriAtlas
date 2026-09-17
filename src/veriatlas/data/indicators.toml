@@ -30000,7 +30000,7 @@ frequency = "annual"
 additive = true
 dims = []
 views = ["table", "map", "line", "bar"]
-definition_tr = "EPDK Petrol Piyasası Sektör Raporu 2014, Tablo 21: 2012-2014 illere göre dağıtıcıların bayilere teslimi, tüm ürünler toplamı, ton. 2015 sonrası 'Akaryakıt satışı' (tüm yurt içi satış) serisiyle aynı ölçü değildir, bu yüzden ayrı gösterge. İstanbul Anadolu ve Avrupa satırları toplandı. İller her yıl Genel Toplam satırını tutar. Ürün kırılımı PDF'te boş hücreler kaybolduğu için alınmadı."
+definition_tr = "EPDK Petrol Piyasası Sektör Raporu 2014, Tablo 21: 2012-2014 illere göre dağıtıcıların bayilere teslimi, tüm ürünler toplamı, ton. 2011: 2011 raporu Tablo 3.18 'İllere Göre Akaryakıt Satışları' (dağıtıcıların istasyonlara teslimi bölümünün il dağılımı; dokuz ürün il toplamını tutar); 2010 raporu il tablosu basmıyor. 2015 sonrası 'Akaryakıt satışı' (tüm yurt içi satış) serisiyle aynı ölçü değildir, bu yüzden ayrı gösterge. İstanbul Anadolu ve Avrupa satırları toplandı. İller her yıl Genel Toplam satırını tutar. Ürün kırılımı PDF'te boş hücreler kaybolduğu için alınmadı."
 
 [dim.tim_sector]
 label_tr = "İhracat sektörü (TİM)"
