@@ -13,7 +13,7 @@ Keşfedilmiş ama hiç başlanmamış kaynaklar `kaynak-envanteri.md`'de.
 | İŞKUR | `iskur_*`: başvuru, açık iş, yerleştirme, kayıtlı işgücü/işsiz/iş arayan | il × cinsiyet, 2003-2025 |
 | Kültür Turizm | `ktb_*`: geliş, geceleme (il+ilçe), ortalama kalış, doluluk | il 2003-2022 (seçili yıllar), ilçe 2017-2022 |
 
-Web export: TOBB yabancı, TİM, İŞKUR, KTB henüz dışa aktarılmadı.
+Web export: 2026-09-17 yapıldı (TOBB yabancı, TİM, İŞKUR, KTB, GSB, AFAD, Eurostat). MEDAS girişim ve tarım değerleri henüz değil.
 
 ## Yarım kalan çekimler
 
@@ -37,7 +37,7 @@ Web export: TOBB yabancı, TİM, İŞKUR, KTB henüz dışa aktarılmadı.
 
 | Kaynak | Ne | Zorluk |
 |---|---|---|
-| Eurostat API | İBBS-2 işsizlik, istihdam, eğitim düzeyi; İBBS-3 GSYH (avro) | kolay |
+| ~~Eurostat API~~ | 2026-09-17 yüklendi (işgücü, eğitim, Ar-Ge) | — |
 | ~~AFAD deprem API~~ | 2026-09-17 yüklendi | — |
 | ~~GSB~~ | ~~il kulüp, yetenek taraması~~ 2026-09-17 yüklendi (sporcu, antrenör, hakem yalnız Türkiye × federasyon, alınmadı) | — |
 | ~~MEDAS ekonomi~~ | 2026-09-17: girişim sayısı ve tarımsal üretim değerleri (il) yüklendi. Ücretli çalışan yalnız Türkiye aylık (ham `nufus-ekonomi-ucretli-01-aylik-*`, yüklenmedi: il yok, SGK il verisi depoda). İşgücü İBBS-2 Eurostat'tan. Gelir, yoksulluk, kazanç, yıllık sanayi-hizmet yalnız Türkiye/bölge | — |
@@ -47,7 +47,7 @@ Web export: TOBB yabancı, TİM, İŞKUR, KTB henüz dışa aktarılmadı.
 
 ## Kullanıcı kararı bekleyen
 
-- `claude/saglik-yilligi` dalının main'e birleştirilmesi (ileri sarma, çakışma yok).
+- ~~main birleştirme~~ 2026-09-17 yapıldı; dal ve main aynı noktada.
 - EPİAŞ hesabı (il fiilî üretim için), ceza infaz, yaşam memnuniyeti: kararla alınmadı.
 
 ## Bilinçli olarak alınmayanlar
