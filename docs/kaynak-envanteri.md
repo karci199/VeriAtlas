@@ -83,3 +83,17 @@ verisi ayrı bir iş olarak duruyor.
 | Sağlık Bakanlığı (SBSGM) | Sağlık İstatistikleri Yıllığı: il bazında hastane, yatak, hekim, başvuru, aşılama | PDF (e-kütüphane), sayfalar JS ile çiziliyor, Excel yok | orta | ◐ **sıradaki aday.** BTK'da geliştirilen PDF merdiveni burada da işler. Depoda TÜİK/MEDAS'tan gelen 7 sağlık göstergesi var (hastane, yatak, hekim, hekime başvuru), yıllık bunları uzatır ve derinleştirir |
 | İŞKUR | işgücü piyasası, açık iş, işe yerleştirme | sayfa JS; httpx'le bağlantı yok | bilinmiyor | ✘ tarayıcıyla yeniden denenmeli |
 | MEB | örgün eğitim istatistikleri | xls/pdf | ✘ | **alınmadı ve alınmayacak**: robots.txt yapay zekâ ajanlarını engelliyor. Eğitimde depodaki veri TÜİK/MEDAS (ilçe eğitim düzeyi, okuryazarlık) ve YÖK üzerinden geliyor; okul/öğretmen/öğrenci sayıları eksik kalıyor |
+
+## Keşif turu 2026-09-17 (kolay olanlar: Excel ve API)
+
+| Kurum | Ne var | Kapsam | Biçim | Zorluk | Not |
+|---|---|---|---|---|---|
+| TİM | ihracat: il, il × sektör, il × ülke; sektör, ülke, alt mal grubu | il, 2005-2026 aylık (Aralık = yıl) | xls/xlsx, ~1.600 dosya | kolay | `tim.org.tr/tr/ihracat-rakamlari`; bağlantılar sayfa HTML'inde, dosya adları yıldan yıla değişiyor. Depoda il ihracatı yok |
+| İŞKUR | istatistik yıllığı tabloları (başvuru, açık iş, yerleştirme, kayıtlı işsiz, il) | il, 2003-2025 | xlsx/xls, 2004-2011 zip | kolay | `iskur.gov.tr/kurumsal/istatistikler/istatistik-yilliklari/`; 1978-2002 yalnız PDF |
+| Kültür Turizm (YİGM) | turizm işletme belgeli tesis konaklama: il-ilçe | il, ilçe, 1996-2025 | xlsx/xls (2007-2008 PDF) | kolay | `yigm.ktb.gov.tr/TR-208783`; depodaki turizm yalnız Türkiye geneli |
+| BDDK FinTürk | il bazında kredi, mevduat, şube, kişi başı, oranlar; 7 tablo × banka grubu | il, çeyreklik (75 dönem) | jqGrid JSON (form + ajax) | orta-kolay | httpx'te SSL zinciri eksik (verify kapatılmalı ya da tarayıcı); TBB il verisiyle kısmen örtüşür |
+| GSB Spor Hizmetleri | illere göre kulüp sayısı, sporcu, antrenör, hakem, madalya | il (kulüp), Türkiye | xlsx | kolay | `shgm.gsb.gov.tr/Sayfalar/175/105/Istatistikler`; yalnız son yıllar |
+| ETKB/EİGM | Ulusal Enerji Denge Tabloları; enerji yatırımları | Türkiye, 1972-2024; 2003-2025 | xlsx/xls | kolay | `enerji.gov.tr/eigm-raporlari`; il yok |
+| VAP (MKK) | illere göre yatırımcı sayısı ve portföy | il | JS uygulaması | bilinmiyor | httpx'te veri yok; tarayıcıda API aranmalı |
+| Göç İdaresi | ikamet izinleri, uluslararası koruma, düzensiz göç | il (◐) | HTML/grafik | bilinmiyor | sayfalar grafik, tablo indirme görünmüyor |
+| KOSGEB, SPK, TÜRKPATENT, TKGM, Ticaret Bak. | — | — | — | ✘ | Excel ya da il tablosu görünmedi |
