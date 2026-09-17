@@ -29563,7 +29563,7 @@ frequency = "annual"
 additive = true
 dims = []
 views = ["table", "map", "line", "bar"]
-definition_tr = "Türkiye İhracatçılar Meclisi, 'İller bazında ihracat rakamları', her yılın Aralık dosyasındaki on iki ayın toplamı, 2010-2025, bin ABD doları. İl, ihracatçının kayıtlı olduğu ildir, malın üretildiği yer değil: İstanbul merkezli firmanın başka ildeki fabrikasının ihracatı İstanbul'a yazılır. Her yıl il toplamı dosyadaki Türkiye toplamıyla denetlendi (2013-2014 'İller genel' sayfasındaki GENEL TOPLAM). Listede olmayan iller o yıl ihracat yapmamıştır ve yazılmadı. 2004-2009 dosyaları var, henüz okunmadı. İndirme scripts/fetch_tim.py, adaptör src/veriatlas/adapters/tim.py."
+definition_tr = "Türkiye İhracatçılar Meclisi, 'İller bazında ihracat rakamları', her yılın Aralık dosyasındaki on iki ayın toplamı, 2004-2025, bin ABD doları. İl, ihracatçının kayıtlı olduğu ildir, malın üretildiği yer değil: İstanbul merkezli firmanın başka ildeki fabrikasının ihracatı İstanbul'a yazılır. Her yıl il toplamı dosyadaki Türkiye toplamıyla denetlendi (2013-2014 'İller genel' sayfasındaki GENEL TOPLAM); 2004, 2005 ve 2008 dosyalarında Türkiye toplamı yok, orada her ilin ayları kendi yıl toplamı sütunuyla denetlendi. 2004-2009 dosyalarında il bilgisi olmayan ihracat ayrı satırda (2008'de 258 milyon dolar); il değerlerine dahil değil. Listede olmayan iller o yıl ihracat yapmamıştır ve yazılmadı. İndirme scripts/fetch_tim.py, adaptör src/veriatlas/adapters/tim.py."
 
 [indicator.iskur_applications]
 label_tr = "İŞKUR'a yapılan başvuru"

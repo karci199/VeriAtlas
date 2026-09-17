@@ -1,4 +1,4 @@
-r"""TİM (Türkiye İhracatçılar Meclisi) exports by province, 2010-2025.
+r"""TİM (Türkiye İhracatçılar Meclisi) exports by province, 2004-2025.
 
 `scripts/fetch_tim.py` keeps the monthly release workbooks in `C:\veri-ham\tim\<year>\<month>`
 with `index.tsv`. The December "İller Bazında" file of each year holds the twelve months by
@@ -18,9 +18,7 @@ Layouts that differ, all handled here:
 
 Provinces a year does not list exported nothing that year and are not written.
 
-2004-2009 are not loaded yet: their December files carry further unnamed tables under the
-provinces, and the Türkiye total cannot be told apart from them.
-"""
+2004-2005 and 2008 print no Türkiye total: those years rest on each row's own TOPLAM column.
 
 from __future__ import annotations
 
@@ -33,7 +31,9 @@ import polars as pl
 from ..config import RAW
 from .kgm import fold, province_id
 
-FIRST_YEAR = 2010
+FIRST_YEAR = 2004
+#: year -> exports printed without a province (2006-2008), in the file's unit
+UNALLOCATED: dict[int, float] = {}
 FOLDER = RAW / "tim" if (RAW / "tim").exists() else Path("C:/veri-ham/tim")
 NUMBER = re.compile(r"-?\d+(\.\d+)?([eE][+-]?\d+)?")
 ALIASES = {"URFA": "Şanlıurfa"}
@@ -92,43 +92,69 @@ def area_of(name: str) -> str | None:
 
 
 def read_year(year: int, path: Path) -> dict[str, float]:
-    """{province: exports in dollars} for one December file."""
+    """{province: exports in dollars} for one December file.
+
+    Unnamed rows of numbers: the last one is the Türkiye total when the rest add up to it
+    (2006-2010); an earlier one (2006-2008, first row) is exports with no province, counted in
+    the check and not written. 2004-2005 print no total at all: there every row's months must
+    add up to its own TOPLAM column instead, and 2004, 2005 and 2008 print one unnamed row that is
+    not a total but exports without a province (132 million, 5.8 million and 258 million dollars).
+    """
     rows = sheet_rows(path)
     # "OCAK", "ocak", 2011's "SUM(OCAK)"
     head = next(i for i, r in enumerate(rows) if any("ocak" in fold(c) for c in r))
     header = [fold(c) for c in rows[head]]
     months = [next(j for j, c in enumerate(header) if m in c) for m in MONTHS]
+    year_total = next(
+        (j for j, c in enumerate(header) if c in ("toplam", "kumulatif")), None
+    )
     provinces: dict[str, float] = {}
-    others: dict[str, float] = {}
+    unnamed: list[float] = []
     printed = None
     for r in rows[head + 1 :]:
         cells = [r[j] if j < len(r) else "" for j in months]
         if not any(NUMBER.fullmatch(c) and float(c) for c in cells):
             continue  # 2004 opens with a row of zeros
         value = sum(float(c) for c in cells if NUMBER.fullmatch(c))
-        name = next((c for c in r[: months[0]] if c and not NUMBER.fullmatch(c)), "")
-        if not name or name.upper() in ("TOPLAM", "GENEL TOPLAM", "TÜRKİYE"):
+        name = next(
+            (c for c in r[: months[0]] if c and not NUMBER.fullmatch(c)), ""
+        )
+        if name.upper() in ("TOPLAM", "GENEL TOPLAM", "TÜRKİYE"):
             if printed is not None:
                 raise ValueError(f"TİM {path.name}: iki toplam satırı")
             printed = value
             continue
+        if not name:
+            unnamed.append(value)
+            continue
         area = area_of(name)
         if area is None:
-            others[name] = value
-            continue
+            raise ValueError(f"TİM {path.name}: tanınmayan satır {name}")
         if area in provinces:
             raise ValueError(f"TİM {path.name}: {name} iki kez")
+        if year_total is not None and year_total < len(r) and NUMBER.fullmatch(r[year_total]):
+            own = float(r[year_total])
+            if abs(own - value) > max(1.0, own * 1e-6):
+                raise ValueError(f"TİM {path.name} {name}: aylar {value:,.0f}, TOPLAM {own:,.0f}")
         provinces[area] = value
-    if printed is None:
-        printed = summary_total(path, sum(provinces.values()) + sum(others.values()))
-    read = sum(provinces.values()) + sum(others.values())
-    if abs(read - printed) > max(1.0, printed * 1e-4):
-        raise ValueError(
-            f"TİM {path.name}: iller {read:,.0f}, toplam {printed:,.0f}; il dışı {others}"
-        )
-    if others:
-        raise ValueError(f"TİM {path.name}: tanınmayan satırlar {others}")
-    scale = 1.0 if sum(provinces.values()) > 1e10 else 1000.0
+    named = sum(provinces.values())
+    if printed is None and unnamed:
+        candidate = unnamed[-1]
+        rest = sum(unnamed[:-1])
+        if abs(named + rest - candidate) <= max(1.0, candidate * 1e-4):
+            printed, unnamed = candidate, unnamed[:-1]
+    if printed is None and unnamed and year_total is None:
+        raise ValueError(f"TİM {path.name}: adsız satırlar toplamla eşleşmiyor {unnamed}")
+    if printed is None and year >= 2010:
+        printed = summary_total(path, named)
+    if printed is not None:
+        read = named + sum(unnamed)
+        if abs(read - printed) > max(1.0, printed * 1e-4):
+            raise ValueError(f"TİM {path.name}: iller {read:,.0f}, toplam {printed:,.0f}")
+    elif year_total is None:
+        raise ValueError(f"TİM {path.name}: ne toplam satırı ne satır toplamı var")
+    UNALLOCATED[year] = sum(unnamed)
+    scale = 1.0 if named > 1e10 else 1000.0
     return {area: value * scale for area, value in provinces.items()}
 
 

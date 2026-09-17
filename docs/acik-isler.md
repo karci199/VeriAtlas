@@ -8,7 +8,7 @@ Keşfedilmiş ama hiç başlanmamış kaynaklar `kaynak-envanteri.md`'de.
 | Kaynak | Eksik | Neden | Zorluk |
 |---|---|---|---|
 | ~~İŞKUR~~ | ~~2003-2011~~ | 2026-09-17 yüklendi | — |
-| TİM | 2004-2009 il ihracatı | Aralık dosyalarında illerin altında adsız ek tablolar, Türkiye toplamı ayırt edilemiyor | kolay-orta |
+| ~~TİM~~ | ~~2004-2009~~ | 2026-09-17 yüklendi | — |
 | TİM | il × sektör, il × ülke ihracatı | dosyalar `C:\veri-ham\tim`'de, adaptör yazılmadı | orta |
 | Kültür Turizm | Bakanlık belgeli 1996-2002, 2004-2010, 2014-2015; belediye belgeli 2000-2014 | düzen farklı ya da iller GENEL TOPLAM'ı tutmuyor; 2007-2008 yalnız PDF | orta |
 | Kültür Turizm | ilçe düzeyi 2017 öncesi | kaynakta ilçeler il toplamını %84'e varan farkla tutmuyor | kaynak hatası |
