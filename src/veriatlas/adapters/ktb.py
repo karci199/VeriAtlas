@@ -28,8 +28,13 @@ years whose districts add up to their province's Toplam (ministry 2000-2005, 200
 its year's districts out, municipal 2006: Kocasinan); the others have a few provinces whose districts fall
 short, listed in MISMATCHES. 1996-1999 files have a different layout and are not read.
 
-Loaded: ministry-licensed 2000-2021; municipality-licensed 2000, 2002-2006, 2008-2022 (no 2001 and
-2007 file).
+1996-1999 print arrivals and nights only (six cells), read the same way. 1997 is not loaded: its
+province lines are shifted (Trabzon's districts under TEKİRDAĞ, Bilecik under ŞANLIURFA), which
+the grand total alone would not catch. 1998 is 277 thousand citizens short of its GENEL TOPLAM;
+1999 prints no GENEL TOPLAM and loses Ankara's header at a page break.
+
+Loaded: ministry-licensed 1996, 2000-2021; municipality-licensed 2000, 2002-2006, 2008-2022 (no 2001
+and 2007 file).
 """
 
 from __future__ import annotations
@@ -109,11 +114,14 @@ def sheet_tables(path: Path):
     districts {(province, district name): {(block, guest): v}}.
     """
     rows = sheet_rows(path)
-    first_data = None
-    for i, r in enumerate(rows):
-        numbers = [c for c in r if NUMBER.fullmatch(c)]
-        if len(numbers) >= 12:
-            first_data = i
+    # 12 cells (arrivals, nights, average stay, occupancy); 1996-1999 print the first two only
+    first_data, width = None, 12
+    for want in (12, 6):
+        for i, r in enumerate(rows):
+            if len([c for c in r if NUMBER.fullmatch(c)]) >= want:
+                first_data, width = i, want
+                break
+        if first_data is not None:
             break
     if first_data is None:
         raise ValueError(f"KTB {path.name}: veri satırı yok")
@@ -134,6 +142,7 @@ def sheet_tables(path: Path):
         cells = [r[j] if j < len(r) else "" for j in columns]
         if (
             len(numbers) < 12
+            and width == 12
             and len(columns) == 12
             and all(c == "-" or NUMBER.fullmatch(c) for c in cells[:6])
             and all(c in ("-", "") or NUMBER.fullmatch(c) for c in cells[6:])
@@ -149,13 +158,13 @@ def sheet_tables(path: Path):
                 (NAN if j >= 6 else 0.0) if c in ("-", "") else float(c)
                 for j, c in enumerate(cells)
             ]
-        if len(numbers) < 12:
+        if len(numbers) < width:
             if len(texts) == 1 and province_or_none(texts[0]):
                 current = province_or_none(texts[0])
             continue
         values = {
             (block, guest): numbers[b * 3 + g]
-            for b, block in enumerate(BLOCKS)
+            for b, block in enumerate(BLOCKS[: width // 3])
             for g, guest in enumerate(GUESTS)
         }
         label = texts[-1] if texts else ""
