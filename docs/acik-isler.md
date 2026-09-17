@@ -22,7 +22,7 @@ Web export: 2026-09-17 tam; 8 dosyanın boş olması hata değil (yalnız ilçe 
 | ~~İŞKUR~~ | ~~2003-2011~~ | 2026-09-17 yüklendi | — |
 | ~~TİM~~ | ~~2004-2009~~ | 2026-09-17 yüklendi | — |
 | TİM | ~~il × sektör 2013-2025~~, ~~il × ülke 2013-2025~~ yüklendi 2026-09-17 (`tim_exports_by_sector`, `tim_exports_by_country`); kalan: 2004-2012 (farklı sektör sınıflaması, 2012 dosyası eksik satırlı) | `tim_sectors.py`, `tim_countries.py` | büyük |
-| Kültür Turizm | 2026-09-17: '-' ve boş basılı oran satırları okununca Bakanlık belgeli 2000-2006, 2009-2021, belediye 2009-2022 il düzeyi tam; ilçe düzeyi çoğu yılda açıldı (eski '%84 fark' bu okuma hatasıydı). Kalan: Bakanlık 2007-2008 (yalnız PDF), 1996-1999 (farklı düzen); belediye 2000-2006 (sütun düzeni farklı) | `src/veriatlas/adapters/ktb.py` | orta |
+| Kültür Turizm | 2026-09-17 bitti: Bakanlık belgeli 2000-2006, 2009-2021; belediye 2002-2006, 2009-2022 il düzeyi; ilçe düzeyi çoğu yıl. Kalan (küçük): 2007-2008 her iki belge türü yalnız PDF; Bakanlık 1996-1999 farklı düzen; belediye 2000 sıra numaralı düzen, 2001 dosya yok | `src/veriatlas/adapters/ktb.py` | küçük |
 | ~~Kültür Turizm~~ | ~~ilçe düzeyi 2017 öncesi~~ | 2026-09-17: kaynak hatası değil, '-' satırlarını atan okuyucuydu; çoğu yıl açıldı | — |
 | ~~Sağlık yıllığı 2017~~ | 2026-09-17 yüklendi (kelime konumu + 2018 satır sırası); 2011 il tablosu basmıyor | — |
 | ~~Sağlık yıllığı~~ | ~~2010~~ | 2026-09-17 kapandı: PDF indi, il tablosu basmıyor (2011 gibi yalnız bölge grafiği) | — |

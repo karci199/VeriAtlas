@@ -16,14 +16,18 @@ A ratio with nothing to divide (no foreign guests) is printed "-". Such a row is
 the undefined ratio is not written; skipping the row had lost whole provinces (2010: Hakkari,
 exactly the gap to GENEL TOPLAM) and kept ministry 2000-2015 out.
 
-Checks: the provinces add up to GENEL TOPLAM (a year that fails is not loaded: municipal 2000-2006,
-whose columns differ); foreigners + citizens = total on every row. Districts are written only for
+Municipal 2002-2006 print a province's total as "TOPLAM - Total" and under it only "Merkez" and
+"Diğer": provinces are read, no districts written.
+
+Checks: the provinces add up to GENEL TOPLAM (a year that fails is not loaded: municipal 2000, whose
+rows open with a running number, and 2001, no file); foreigners + citizens = total on every row. Districts are written only for
 years whose districts add up to their province's Toplam (ministry 2000-2005, 2009-2011, 2013-2015,
-2018-2021; municipal 2009-2011, 2013-2022); the others have a few provinces whose districts fall
+2018-2021; municipal 2009-2011, 2013-2022; a district row whose foreigners and citizens do not add up keeps
+its year's districts out, municipal 2006: Kocasinan); the others have a few provinces whose districts fall
 short, listed in MISMATCHES. 1996-1999 files have a different layout and are not read.
 
 Loaded: ministry-licensed 2000-2006, 2009-2021 (2007-2008 are PDF only); municipality-licensed
-2009-2022.
+2002-2006, 2009-2022 (2007-2008 PDF only).
 """
 
 from __future__ import annotations
@@ -109,7 +113,7 @@ def read(path: Path):
     grand = None
     current = None
     for r in rows[max(0, first_data - 3) :]:
-        texts = [c for c in r[: min(3, columns[0])] if c and not NUMBER.fullmatch(c)]
+        texts = [c for c in r[: min(4, columns[0])] if c and not NUMBER.fullmatch(c)]
         numbers = [float(c) for c in r if NUMBER.fullmatch(c)]
         cells = [r[j] if j < len(r) else "" for j in columns]
         if (
@@ -147,7 +151,7 @@ def read(path: Path):
             continue
         if current is None:
             raise ValueError(f"KTB {path.name}: il bilinmeden satır {r[:3]}")
-        if fold(label) == "toplam":
+        if fold(label) in ("toplam", "toplamtotal"):  # 2000-2006: "TOPLAM - Total"
             if current in provinces and provinces[current] == values:
                 continue  # municipal 2013 prints Afyonkarahisar's Toplam twice, identical
             if current in provinces:
@@ -189,6 +193,11 @@ def read(path: Path):
                 abs(v[(block, "foreign")] + v[(block, "citizen")] - v[(block, "total")])
                 > 1.0
             ):
+                if where in districts:
+                    # a district row that does not add up keeps that year's districts out,
+                    # not the provinces (municipal 2006: Kocasinan)
+                    MISMATCHES.append((path.name, where, block, "guests", 0.0, 0.0))
+                    continue
                 raise ValueError(
                     f"KTB {path.name} {where} {block}: yabancı+yerli ≠ toplam"
                 )
@@ -260,7 +269,8 @@ def load_all() -> list[dict]:
                             "value": value,
                         }
                     )
-            if not clean:
+            # municipal 2000-2006 print only "Merkez" and "Diğer" under a province: not districts
+            if not clean or (licence == "municipal" and year < 2009):
                 continue
             resolved, unresolved = resolve(districts)
             UNRESOLVED.update((path.name, p, n) for p, n in unresolved)
