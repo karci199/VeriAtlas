@@ -124,7 +124,10 @@ def read(path: Path):
             # A ratio with nothing to divide (no foreign guests) is printed "-" and was
             # skipped, dropping the whole row (2010: Hakkari, exactly the gap to GENEL TOPLAM).
             # Read by column; the undefined ratio is not written.
-            numbers = [NAN if c == "-" else float(c) for c in cells]
+            numbers = [
+                (NAN if j >= 6 else 0.0) if c == "-" else float(c)  # counts: 0
+                for j, c in enumerate(cells)
+            ]
         if len(numbers) < 12:
             if len(texts) == 1 and province_or_none(texts[0]):
                 current = province_or_none(texts[0])
@@ -157,7 +160,7 @@ def read(path: Path):
     for block in ("arrivals", "nights"):
         for guest in GUESTS:
             read_sum = sum(v[(block, guest)] for v in provinces.values())
-            if abs(read_sum - grand[(block, guest)]) > 1.0:
+            if not abs(read_sum - grand[(block, guest)]) <= 1.0:  # NaN fails too
                 raise ValueError(
                     f"KTB {path.name} {block} {guest}: iller {read_sum:,.0f}, GENEL TOPLAM {grand[(block, guest)]:,.0f}"
                 )
