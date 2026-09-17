@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import datetime as dt
 import re
+from collections.abc import Callable
 from pathlib import Path
 
 import polars as pl
@@ -81,11 +82,11 @@ def sector_code(name: str) -> str:
     return code
 
 
-def files() -> dict[tuple[int, int], Path]:
+def files(kind: str = "sektor") -> dict[tuple[int, int], Path]:
     out: dict[tuple[int, int], Path] = {}
     for line in (FOLDER / "index.tsv").read_text(encoding="utf-8").splitlines():
         parts = line.split("\t")
-        if len(parts) < 2 or "sektor" not in parts[1].lower():
+        if len(parts) < 2 or kind not in parts[1].lower():
             continue
         year, month = parts[1].split("/")[:2]
         path = FOLDER / parts[1].strip()
@@ -117,7 +118,9 @@ def columns(rows: list[list[str]], label: re.Pattern) -> tuple[dict[int, int], i
     raise ValueError("TİM sektör: sütun yok")
 
 
-def read(path: Path, label: re.Pattern, year: int) -> Values:
+def read(
+    path: Path, label: re.Pattern, year: int, code: Callable[[str], str] = sector_code
+) -> Values:
     """One year of a file under `label`, checked against its printed totals.
 
     Only the wanted year is checked: the previous-year column of 2012 does not add up.
@@ -165,9 +168,9 @@ def read(path: Path, label: re.Pattern, year: int) -> Values:
             for y, v in values.items():
                 slot[y].append(v)
             continue
-        code = sector_code(sectors[0])
+        name = code(sectors[0])
         for y, v in values.items():
-            key = (code, province)
+            key = (name, province)
             if key in out[y]:
                 raise ValueError(f"TİM sektör {path.name}: {key} iki kez")
             out[y][key] = v
