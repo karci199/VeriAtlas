@@ -97,3 +97,12 @@ verisi ayrı bir iş olarak duruyor.
 | VAP (MKK) | illere göre yatırımcı sayısı ve portföy | il | JS uygulaması | bilinmiyor | httpx'te veri yok; tarayıcıda API aranmalı |
 | Göç İdaresi | ikamet izinleri, uluslararası koruma, düzensiz göç | il (◐) | HTML/grafik | bilinmiyor | sayfalar grafik, tablo indirme görünmüyor |
 | KOSGEB, SPK, TÜRKPATENT, TKGM, Ticaret Bak. | — | — | — | ✘ | Excel ya da il tablosu görünmedi |
+
+## Keşif turu 2026-09-17 akşam (API)
+
+| Kurum | Ne var | Kapsam | Biçim | Zorluk | Not |
+|---|---|---|---|---|---|
+| Eurostat | bölgesel işsizlik ve istihdam oranı (`lfst_r_lfu3rt`, `lfst_r_lfe2emprt`), bölge ve il GSYH avro (`nama_10r_2gdp`, `nama_10r_3gdp`), eğitim düzeyi (`edat_lfse_04`), hastane yatağı (`hlth_rs_bdsrg`), turizm geceleme (`tour_occ_nin2`) | İBBS-2 (26 bölge), GSYH İBBS-3; 1999/2000-2025 | JSON-stat REST, anahtarsız | kolay | MEDAS'ta alınmayan bölgesel işgücünü kapatır. `ilc_li41` (yoksulluk) TR için boş |
+| AFAD deprem | olay bazında deprem: tarih, büyüklük, derinlik, il, ilçe, mahalle | nokta → il/ilçe, yıllık sayım | JSON REST (`deprem.afad.gov.tr/apiv2/event/filter` → servisnet yönlendirmesi), anahtarsız | kolay | tarih aralığıyla parça parça çekilir |
+| OECD Regional | TL2/TL3 bölgesel veritabanı | il/bölge | SDMX REST | orta | Eurostat'la büyük ölçüde örtüşür |
+| SBB, Sanayi (teşvik, sicil), TÜRKPATENT, MAPEG, OSBÜK, ESBİS, Muhasebat, EGM, YSK, OGM | — | — | JS kabuk, 404 ya da bağlantı yok | ✘ | httpx'le veri görünmedi; tarayıcıyla ayrıca bakılabilir |

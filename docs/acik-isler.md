@@ -37,6 +37,8 @@ Web export: TOBB yabancı, TİM, İŞKUR, KTB henüz dışa aktarılmadı.
 
 | Kaynak | Ne | Zorluk |
 |---|---|---|
+| Eurostat API | İBBS-2 işsizlik, istihdam, eğitim düzeyi; İBBS-3 GSYH (avro) | kolay |
+| AFAD deprem API | il/ilçe yıllık deprem sayısı, büyüklük sınıfına göre | kolay |
 | GSB | il kulüp sayısı, sporcu, antrenör, hakem | kolay |
 | MEDAS ekonomi | ücretli çalışan (il), girişim sayısı (il), tarımsal üretim değeri (il), işgücü (İBBS-2), gelir dağılımı ve yoksulluk, kazanç, yıllık sanayi-hizmet | orta (tarayıcı, tek oturum) |
 | BDDK FinTürk | il kredi, mevduat, şube; çeyreklik | orta |
