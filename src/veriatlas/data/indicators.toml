@@ -29744,3 +29744,25 @@ additive = true
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "GSB Sportif Yetenek Taraması ve Spora Yönlendirme Programı, spor branşına yönlendirilen öğrenci, 2022-2024. Yönlendirme aşaması bir sezon geriden gelir (2024 sayfasının notu); 2025 henüz yayımlanmadı. Her yıl iller TOPLAM satırını tutar."
+
+[dim.magnitude_class]
+label_tr = "Büyüklük"
+label_en = "Magnitude"
+
+[dim.magnitude_class.values]
+under_3 = "3'ten küçük"
+3_to_3_9 = "3-3,9"
+4_to_4_9 = "4-4,9"
+5_plus = "5 ve üzeri"
+total = "Toplam"
+
+[indicator.afad_earthquakes]
+label_tr = "Deprem sayısı"
+label_en = "Earthquakes"
+topic = "iklim"
+unit = "item"
+frequency = "annual"
+additive = true
+dims = ["magnitude_class"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "AFAD deprem kataloğu (deprem.afad.gov.tr API), 1990-2025, merkez üssü AFAD'ın atadığı il ve ilçeye göre yıllık olay sayısı. Denizde ve yurt dışında olanlar sayılmadı. Ağın algılama eşiği yıllar içinde düştü (1990'da 344, 2024'te 32.578 olay): 3'ten küçük depremlerin artışı büyük ölçüde ölçüm ağının genişlemesidir; 4 ve üzeri sınıflar yıllar arasında karşılaştırılabilir. İlçe sayıları il sayılarına eşit. İndirme scripts/fetch_afad_earthquakes.py, adaptör src/veriatlas/adapters/afad.py."
