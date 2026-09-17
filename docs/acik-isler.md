@@ -33,23 +33,20 @@ Web export: 2026-09-17 tam; 8 dosyanın boş olması hata değil (yalnız ilçe 
 | SGK | 2026-09-17 yeniden sayıldı: ulusal tablolarda 2013-2025 açık iş yok. Atlanan: 2010-2012 iş kazası × meslek 4 tablo ve 2013 Tablo 3.8 (başlıkta konu satırı yok, meslekler ISCO-88; yalnız Türkiye, üç yıl — değmez, alınmadı); 2019 Tablo 3.1.17 ve 3.1.21 (kaynak kendi toplamını tutmuyor); çalışma süresi 2022+ (kaynak bozuk, bilerek) | `docs/sgk.md` | kapandı |
 | ~~Seçim~~ | ~~yurt dışı seçmen profili~~ | 2026-09-17 kapandı: 1.662 rapor inmişti (çekici 20dfb32'de düzeltilmiş), özet `docs/vaka-secim-disari.md` §4 | — |
 
-## Keşfedildi, başlanmadı
+## Keşfedildi, başlanmadı (2026-09-17 akşam güncel)
 
 | Kaynak | Ne | Zorluk |
 |---|---|---|
-| ~~Eurostat API~~ | 2026-09-17 yüklendi (işgücü, eğitim, Ar-Ge) | — |
-| ~~AFAD deprem API~~ | 2026-09-17 yüklendi | — |
-| ~~GSB~~ | ~~il kulüp, yetenek taraması~~ 2026-09-17 yüklendi (sporcu, antrenör, hakem yalnız Türkiye × federasyon, alınmadı) | — |
-| ~~MEDAS ekonomi~~ | 2026-09-17: girişim sayısı ve tarımsal üretim değerleri (il) yüklendi. Ücretli çalışan yalnız Türkiye aylık (ham `nufus-ekonomi-ucretli-01-aylik-*`, yüklenmedi: il yok, SGK il verisi depoda). İşgücü İBBS-2 Eurostat'tan. Gelir, yoksulluk, kazanç, yıllık sanayi-hizmet yalnız Türkiye/bölge | — |
-| BDDK FinTürk | il kredi, mevduat, şube; çeyreklik | orta |
-| ETKB | ulusal enerji denge 1972-2024 (yalnız Türkiye) | kolay |
-| VAP (MKK) | il yatırımcı sayısı | bilinmiyor |
-
-## Denetim (2026-09-17)
-
-- Ulukışla kişi başı geceleme (2022, kişi başına 12,8 gece) kaynakla birebir; Niğde Toplam'ı tutuyor, 2020'de belediye belgeli tesisle sıçrama (Çiftehan kaplıcaları).
-- pytest: 575 geçti, 368 atlandı (hepsi `raw/ref/makro_ceyreklik.csv` yok: BTK ARPU kur/reel çevrim testleri).
-- ruff: 42 uyarı temizlendi; tek seferlik analiz betiklerine `pyproject.toml`'da dosya bazlı istisna. Değişen adaptörler (YÖK ulusal, EPDK aylık, BTK) depodakiyle satır satır aynı çıktı.
+| ~~Muhasebat~~ | il genel bütçe gelirleri 2004-2025 yüklendi (`budget_revenue_by_province`) | — |
+| ~~BDDK FinTürk~~ | 6 tablo × 7 banka grubu 2007-2025 yüklendi (`bank_group_*`, 545 bin satır) | — |
+| ~~VAP (MKK)~~ | il portföy değeri 2005-2025 yüklendi (`investor_portfolio_value`); yatırımcı sayısı panoda yalnız ilk 10 il, alınmadı | — |
+| Muhasebat | il merkezi yönetim bütçesi (2004-2026) ve mahalli idareler bütçesi (2006-2026); aynı portal API'si, `scripts/fetch_muhasebat.py`'ye slug eklemek yeter | kolay |
+| OECD bölgesel (SDMX) | TL3 = il düzeyinde iklim, arazi örtüsü, hava kirliliği, kentleşme | orta |
+| TEDAŞ | istatistikkitabi.tedas.gov.tr, il elektrik dağıtım | bilinmiyor (zaman aşımı) |
+| TKGM MEGSİS | tapu/kadastro, ham veri diskte, adaptör yok | orta |
+| Adalet Bakanlığı | adalet istatistikleri, il/adliye, PDF | zor |
+| ETKB | ulusal enerji denge 1972-2024 (il yok) | kolay |
+| Erişilemeyen | GİB (IP engeli), MEB ve İBB (robots.txt), TCDD (403), UYAP (kısıtlı), İzmir/Konya açık veri (robots `/api/`), Wikidata SPARQL (robots) | — |
 
 ## Kullanıcı kararı bekleyen
 
