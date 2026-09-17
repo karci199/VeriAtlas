@@ -2,7 +2,8 @@ r"""Ministry of Culture and Tourism accommodation statistics by province and dis
 
 yigm.ktb.gov.tr publishes one workbook a year for establishments licensed by the Ministry
 (1996-2021; 2007-2008 PDF only) and one for those licensed by municipalities (2000-2022, no 2001,
-2007; 2008 PDF). Kept in `C:\veri-ham\ktb` under their own names.
+2007; 2008 PDF). The PDFs are read by `pdf_tables`: counts there carry a space as thousands
+separator, and the digits are grouped by the only split in which foreigners + citizens = total. Kept in `C:\veri-ham\ktb` under their own names.
 
 Each sheet lists districts under their province, then the province's "Toplam" row, and ends with
 GENEL TOPLAM. Columns: arrivals, nights, average length of stay and occupancy rate, each for
@@ -19,15 +20,16 @@ exactly the gap to GENEL TOPLAM) and kept ministry 2000-2015 out.
 Municipal 2002-2006 print a province's total as "TOPLAM - Total" and under it only "Merkez" and
 "Diğer": provinces are read, no districts written.
 
-Checks: the provinces add up to GENEL TOPLAM (a year that fails is not loaded: municipal 2000, whose
-rows open with a running number, and 2001, no file); foreigners + citizens = total on every row. Districts are written only for
+Municipal 2000 numbers its rows before the names; those rows are read by column.
+
+Checks: the provinces add up to GENEL TOPLAM, every year loaded; foreigners + citizens = total on every row. Districts are written only for
 years whose districts add up to their province's Toplam (ministry 2000-2005, 2009-2011, 2013-2015,
 2018-2021; municipal 2009-2011, 2013-2022; a district row whose foreigners and citizens do not add up keeps
 its year's districts out, municipal 2006: Kocasinan); the others have a few provinces whose districts fall
 short, listed in MISMATCHES. 1996-1999 files have a different layout and are not read.
 
-Loaded: ministry-licensed 2000-2006, 2009-2021 (2007-2008 are PDF only); municipality-licensed
-2002-2006, 2009-2022 (2007-2008 PDF only).
+Loaded: ministry-licensed 2000-2021; municipality-licensed 2000, 2002-2006, 2008-2022 (no 2001 and
+2007 file).
 """
 
 from __future__ import annotations
@@ -53,7 +55,7 @@ MISMATCHES: list[tuple] = []
 
 def files(licence: str) -> dict[int, Path]:
     out: dict[int, Path] = {}
-    for path in FOLDER.glob("*.xls*"):
+    for path in [*FOLDER.glob("*.xls*"), *FOLDER.glob("*.pdf")]:
         name = path.name
         match = re.match(r"(\d{4})", name)
         if not match:
@@ -93,6 +95,14 @@ def province_or_none(name: str) -> str | None:
 
 
 def read(path: Path):
+    if path.suffix.lower() == ".pdf":
+        provinces, districts, grand = pdf_tables(path)
+    else:
+        provinces, districts, grand = sheet_tables(path)
+    return check(path, provinces, districts, grand)
+
+
+def sheet_tables(path: Path):
     """Province totals, district rows, the printed grand total and unresolved names.
 
     Returns (provinces, districts, grand, unresolved): provinces {area: {(block, guest): v}},
@@ -115,6 +125,12 @@ def read(path: Path):
     for r in rows[max(0, first_data - 3) :]:
         texts = [c for c in r[: min(4, columns[0])] if c and not NUMBER.fullmatch(c)]
         numbers = [float(c) for c in r if NUMBER.fullmatch(c)]
+        if any(NUMBER.fullmatch(c) for c in r[: columns[0]]):
+            # municipal 2000 numbers its rows (province, district) before the names:
+            # those are not values, the row is read by column
+            numbers = [float(r[j]) if NUMBER.fullmatch(r[j]) else 0.0 for j in columns]
+            if not any(NUMBER.fullmatch(r[j]) for j in columns):
+                numbers = []
         cells = [r[j] if j < len(r) else "" for j in columns]
         if (
             len(numbers) < 12
@@ -162,6 +178,10 @@ def read(path: Path):
         if key in districts:
             raise ValueError(f"KTB {path.name}: {key} iki kez")
         districts[key] = values
+    return provinces, districts, grand
+
+
+def check(path: Path, provinces: dict, districts: dict, grand):
     if grand is None:
         raise ValueError(f"KTB {path.name}: GENEL TOPLAM yok")
     for block in ("arrivals", "nights"):
@@ -201,6 +221,121 @@ def read(path: Path):
                 raise ValueError(
                     f"KTB {path.name} {where} {block}: yabancı+yerli ≠ toplam"
                 )
+    return provinces, districts, grand
+
+
+PDF_GLYPHS = str.maketrans({"Đ": "İ", "đ": "ı"})
+COUNT = re.compile(r"\d{1,3}")
+
+
+def split_counts(tokens: list[str]) -> list[float] | None:
+    """Six counts printed with a space as thousands separator: 8 533 42 032 50 565 ...
+
+    The digits can be grouped more than one way, and a foreign count can be left out
+    altogether (no "-") when there were none. The grouping kept is the only one in which
+    foreigners + citizens = total, for arrivals and for nights; None if not exactly one.
+    """
+    partitions: dict[int, list[list[float]]] = {}
+
+    def walk(i: int, numbers: list[float]) -> None:
+        if len(numbers) > 6:
+            return
+        if i == len(tokens):
+            partitions.setdefault(len(numbers), []).append(numbers)
+            return
+        if tokens[i] == "-":
+            walk(i + 1, [*numbers, 0.0])
+            return
+        if not COUNT.fullmatch(tokens[i]):
+            return
+        text, j = tokens[i], i + 1
+        walk(j, [*numbers, float(text)])
+        while j < len(tokens) and re.fullmatch(r"\d{3}", tokens[j]):
+            text += tokens[j]
+            j += 1
+            walk(j, [*numbers, float(text)])
+
+    walk(0, [])
+    # the fewest missing cells that work: a complete row is never read as a short one
+    for missing in ((), (0,), (3,), (0, 3)):
+        unique = set()
+        for numbers in partitions.get(6 - len(missing), []):
+            full = list(numbers)
+            for position in missing:
+                full.insert(position, 0.0)
+            if full[0] + full[1] == full[2] and full[3] + full[4] == full[5]:
+                unique.add(tuple(full))
+        if unique:
+            return list(unique.pop()) if len(unique) == 1 else None
+    return None
+
+
+def pdf_tables(path: Path):
+    """2007-2008: the same table as a PDF. Province name on its own line, then districts,
+    Toplam, and GENEL TOPLAM at the end; the last six cells of a row are the ratios."""
+    import pypdfium2
+
+    doc = pypdfium2.PdfDocument(path)
+    lines = [
+        line.translate(PDF_GLYPHS).strip()
+        for i in range(len(doc))
+        for line in doc[i].get_textpage().get_text_range().splitlines()
+    ]
+    provinces: dict[str, dict] = {}
+    districts: dict[tuple[str, str], dict] = {}
+    grand = None
+    current = None
+    for line in lines:
+        if re.search(r"\d.*GENEL TOPLAM", line):
+            # municipal 2008 prints the label after the numbers
+            line = "GENEL TOPLAM " + re.sub(r"\s*GENEL TOPLAM.*$", "", line)
+        tokens = line.split()
+        first = next(
+            (k for k, t in enumerate(tokens) if t == "-" or re.fullmatch(r"[\d,]+", t)),
+            len(tokens),
+        )
+        name = " ".join(tokens[:first])
+        cells = tokens[first:]
+        if len(cells) < 12:
+            if name and province_or_none(name):
+                current = province_or_none(name)
+            continue
+        # the last cells are ratios: six, or only the three occupancy rates (2007 Elbistan)
+        tail = 0
+        while tail < len(cells) and re.fullmatch(r"-|\d+,\d+", cells[-1 - tail]):
+            tail += 1
+        # a trailing "-" can be a count; ratios come in threes
+        tail = 6 if tail >= 6 else 3 if tail >= 3 else 0
+        if not tail or sum(1 for t in cells if "," in t) < 3:
+            continue  # a title line with a table number in it
+        ratios = cells[-tail:]
+        if tail == 3:
+            ratios = ["-", "-", "-", *ratios]
+        counts = split_counts(cells[:-tail])
+        if counts is None:
+            raise ValueError(f"KTB {path.name}: sayılar ayrılamadı: {line}")
+        numbers = counts + [
+            NAN if t == "-" else float(t.replace(",", ".")) for t in ratios
+        ]
+        values = {
+            (block, guest): numbers[b * 3 + g]
+            for b, block in enumerate(BLOCKS)
+            for g, guest in enumerate(GUESTS)
+        }
+        if fold(name).startswith("geneltoplam"):
+            grand = values
+            continue
+        if current is None:
+            raise ValueError(f"KTB {path.name}: il bilinmeden satır {line}")
+        if fold(name) == "toplam":
+            if current in provinces:
+                raise ValueError(f"KTB {path.name}: {current} iki Toplam")
+            provinces[current] = values
+            continue
+        key = (current, name)
+        if key in districts:
+            raise ValueError(f"KTB {path.name}: {key} iki kez")
+        districts[key] = values
     return provinces, districts, grand
 
 
