@@ -29553,3 +29553,14 @@ additive = true
 dims = ["legal_form"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "TOBB 'Yabancı sermaye ve iller' tablosu, 2010-2025: yıl içinde kurulan şirketlerde yabancı ortakların koyduğu sermaye, cari TL, enflasyondan arındırılmamış. Her şirket türü bloğunda iller basılı Toplam satırını tutar; genel görünüm tablosuyla da denetlendi."
+
+[indicator.tim_exports]
+label_tr = "İhracat (TİM, il)"
+label_en = "Exports by province (TİM)"
+topic = "reel_kesim"
+unit = "thousand_usd"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Türkiye İhracatçılar Meclisi, 'İller bazında ihracat rakamları', her yılın Aralık dosyasındaki on iki ayın toplamı, 2010-2025, bin ABD doları. İl, ihracatçının kayıtlı olduğu ildir, malın üretildiği yer değil: İstanbul merkezli firmanın başka ildeki fabrikasının ihracatı İstanbul'a yazılır. Her yıl il toplamı dosyadaki Türkiye toplamıyla denetlendi (2013-2014 'İller genel' sayfasındaki GENEL TOPLAM). Listede olmayan iller o yıl ihracat yapmamıştır ve yazılmadı. 2004-2009 dosyaları var, henüz okunmadı. İndirme scripts/fetch_tim.py, adaptör src/veriatlas/adapters/tim.py."
