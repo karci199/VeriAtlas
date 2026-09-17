@@ -13,7 +13,7 @@ Keşfedilmiş ama hiç başlanmamış kaynaklar `kaynak-envanteri.md`'de.
 | İŞKUR | `iskur_*`: başvuru, açık iş, yerleştirme, kayıtlı işgücü/işsiz/iş arayan | il × cinsiyet, 2003-2025 |
 | Kültür Turizm | `ktb_*`: geliş, geceleme (il+ilçe), ortalama kalış, doluluk | il 2003-2022 (seçili yıllar), ilçe 2017-2022 |
 
-Web export: 2026-09-17 tam; MEDAS girişim, bitkisel/hayvansal değer ve EPDK bayiye teslim dahil.
+Web export: 2026-09-17 tam; 8 dosyanın boş olması hata değil (yalnız ilçe düzeyi, satırlar `*-district.csv.gz`'de); MEDAS girişim, bitkisel/hayvansal değer ve EPDK bayiye teslim dahil.
 
 ## Yarım kalan çekimler
 
@@ -30,7 +30,7 @@ Web export: 2026-09-17 tam; MEDAS girişim, bitkisel/hayvansal değer ve EPDK ba
 | EPDK | ~~doğalgaz il tüketimi 2025~~ yüklendi 2026-09-17 (2015-2016 zaten vardı); 2014 yalnız il toplamı (kırılımsız, alınmadı); ~~akaryakıt 2012-2014~~ bayiye teslim (ton, il toplamı) yüklendi 2026-09-17; akaryakıt 2010-2011 (Tablo 3.18, ton) ve ürün kırılımı; 2024-2026 aylık kurulu güç | `docs/epdk.md` | orta |
 | KGM | kaza özeti PDF tabloları, Trafik ve Ulaşım Bilgileri | `docs/kgm.md` | zor |
 | MGM | ilçe iklim normalleri | sayfa adlandırması farklı | orta |
-| SGK | sınıflama kodlarının Türkçe etiketleri; 2010-2012 eski düzen | `docs/sgk.md` | orta |
+| SGK | ~~sınıflama kodlarının Türkçe etiketleri~~ (2026-09-15 yapılmış, `scripts/sgk_national_labels.py`); 2010-2012 eski düzen | `docs/sgk.md` | orta |
 | Seçim | yurt dışı seçmen profili temsilcilik düzeyi (148 ülke) | çekici klasör hatası | orta |
 
 ## Keşfedildi, başlanmadı
