@@ -1,4 +1,4 @@
-r"""Ministry of Health statistics yearbooks, 2012-2016 and 2018-2024: the provincial tables.
+r"""Ministry of Health statistics yearbooks, 2012-2024: the provincial tables.
 
 `scripts/fetch_saglik_yearbooks.py` keeps the PDFs and their text layer in
 `C:\veri-ham\saglik` (`siy<year>_text.json`, one string per page).
@@ -17,8 +17,8 @@ The 2017 text layer has two encoding faults, both regular: digits and the thousa
 as control characters 29 code points below their value, and the Turkish letters ı ğ ş ö Ç as
 other glyphs. `repair` undoes both.
 
-Years not loaded: 2011 prints no provincial tables (regional charts only); 2017's text layer
-breaks rows mid-line and scrambles the names of the staff table. 2012-2014 print hospitals with
+Years not loaded: 2011 prints no provincial tables (regional charts only). 2017 is read by
+`tables_2017` (word positions, rows named by 2018's order). 2012-2014 print hospitals with
 the family medicine and 112 columns in one table, and visits with inpatient care in another.
 2016 prints the "i" of "Türkiye" as U+FFFE; 2014 breaks "Kahraman-maraş" over two lines;
 2012 prints the Türkiye row of the hospital table without its name.
@@ -40,7 +40,7 @@ from ..config import RAW
 from .kgm import province_id
 
 FOLDER = RAW / "saglik" if (RAW / "saglik").exists() else Path("C:/veri-ham/saglik")
-YEARS = (2012, 2013, 2014, 2015, 2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024)
+YEARS = (2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024)
 SKIP = None
 #: table kind -> one entry per printed column: (indicator, dims) or SKIP
 COLUMNS = {
@@ -192,7 +192,9 @@ RATIOS = {
 CELL = r"-|[\d.]+(?:,\d+)?"
 ROW = re.compile(r"^(\S+)((?:\s+(?:" + CELL + r"))+)$")
 TOTAL = re.compile(r"^(?:" + CELL + r")(?:\s+(?:" + CELL + r")){4,}$")
-GLYPHS = str.maketrans({"Ŧ": "ı", "Œ": "ğ", "Ɣ": "ş", "Ƃ": "ö", "\x17": "Ç", "\ufffe": "i"})
+GLYPHS = str.maketrans(
+    {"Ŧ": "ı", "Œ": "ğ", "Ɣ": "ş", "Ƃ": "ö", "\x17": "Ç", "\ufffe": "i"}
+)
 #: names a line break or a lost glyph (U+FFFE, read as "i" above) broke
 NAME_FIXES = {
     "-maraş": "Kahramanmaraş",
@@ -256,12 +258,85 @@ def tables(pages: list[str]) -> list[dict[str, list[str]]]:
     return provincial
 
 
+#: 2017: the provincial table pages, per table in LAYOUTS order
+PAGES_2017 = ((174, 175), (176, 177), (220, 221), (222, 223), (267, 268))
+CID = re.compile(r"\(cid:(\d+)\)")
+
+
+def tables_2017() -> list[dict[str, list[str]]]:
+    """The 2017 tables, read from word positions and named by the 2018 row order.
+
+    pypdfium2's text layer breaks 2017's rows mid-line; pdfplumber's words grouped by their
+    height keep them whole. Digits come as (cid:n) with n = digit code - 29. Province names
+    stay unreadable where the font maps them to private glyphs (Gümüşhane, Balıkesir), so
+    rows are named by position: every yearbook prints the provinces in the same order, taken
+    from 2018's table of the same kind. A row whose name is readable must agree with that
+    order, or the year stops.
+    """
+    import pdfplumber
+
+    reference = tables(
+        json.loads((FOLDER / "siy2018_text.json").read_text(encoding="utf-8"))
+    )[1:]
+    out = []
+    with pdfplumber.open(FOLDER / "siy2017.pdf") as pdf:
+        for (first, second), named in zip(PAGES_2017, reference, strict=True):
+            rows: list[list[str]] = []
+            for number in (first, second):
+                lines: dict[int, list] = {}
+                for word in pdf.pages[number].extract_words(
+                    x_tolerance=1.5, y_tolerance=2
+                ):
+                    lines.setdefault(round(word["top"] / 3), []).append(word)
+                for key in sorted(lines):
+                    words = sorted(lines[key], key=lambda w: w["x0"])
+                    text = " ".join(w["text"] for w in words)
+                    text = CID.sub(
+                        lambda m: (
+                            chr(int(m.group(1)) + 29)
+                            if 17 <= int(m.group(1)) <= 28
+                            else "?"
+                        ),
+                        text,
+                    )
+                    tokens = text.split()
+                    cells = [t for t in tokens if re.fullmatch(CELL, t)]
+                    if len(cells) < 5 or re.fullmatch(CELL, tokens[0]):
+                        continue
+                    rows.append([" ".join(tokens[: len(tokens) - len(cells)]), *cells])
+            order = list(named)
+            if len(rows) != len(order):
+                raise ValueError(
+                    f"Sağlık yıllığı 2017: {len(rows)} satır, 2018 sırası {len(order)}"
+                )
+            table: dict[str, list[str]] = {}
+            for (printed, *cells), name in zip(rows, order, strict=True):
+                if "?" not in printed:
+                    try:
+                        readable = province_id(printed.translate(GLYPHS))
+                    except KeyError:
+                        readable = None
+                    if printed.startswith("Türkiye") or printed.startswith("Tƺrkiye"):
+                        readable = "TR"
+                    expected = "TR" if name == "Türkiye" else province_id(name)
+                    if readable is not None and readable != expected:
+                        raise ValueError(
+                            f"Sağlık yıllığı 2017: '{printed}' sırada {name} olmalı"
+                        )
+                table[name] = cells
+            out.append(table)
+    return out
+
+
 def read_year(year: int) -> dict[Row, float]:
-    path = FOLDER / f"siy{year}_text.json"
-    if not path.exists():
-        raise FileNotFoundError(f"{path} yok (scripts/fetch_saglik_yearbooks.py)")
-    pages = json.loads(path.read_text(encoding="utf-8"))
-    found = tables(pages)
+    if year == 2017:
+        found = [{}, *tables_2017()]
+    else:
+        path = FOLDER / f"siy{year}_text.json"
+        if not path.exists():
+            raise FileNotFoundError(f"{path} yok (scripts/fetch_saglik_yearbooks.py)")
+        pages = json.loads(path.read_text(encoding="utf-8"))
+        found = tables(pages)
     layout = LAYOUTS[year]
     # chapter 1 opens with the demographic table, which is not loaded
     if len(found) != len(layout) + 1:

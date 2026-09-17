@@ -24,7 +24,7 @@ Web export: TOBB yabancı, TİM, İŞKUR, KTB henüz dışa aktarılmadı.
 | TİM | il × sektör, il × ülke ihracatı | dosyalar `C:\veri-ham\tim`'de, adaptör yazılmadı | orta |
 | Kültür Turizm | Bakanlık belgeli 1996-2002, 2004-2010, 2014-2015; belediye belgeli 2000-2014 | düzen farklı ya da iller GENEL TOPLAM'ı tutmuyor; 2007-2008 yalnız PDF | orta |
 | Kültür Turizm | ilçe düzeyi 2017 öncesi | kaynakta ilçeler il toplamını %84'e varan farkla tutmuyor | kaynak hatası |
-| Sağlık yıllığı | 2017; 2011 | 2017 metin katmanı bozuk (görüntüden ~10 sayfa); 2011 il tablosu basmıyor | orta / yok |
+| ~~Sağlık yıllığı 2017~~ | 2026-09-17 yüklendi (kelime konumu + 2018 satır sırası); 2011 il tablosu basmıyor | — |
 | Sağlık yıllığı | 2010 | yıllık sayfası açılmadı | bilinmiyor |
 | BTK | "Gizli — kurum içi" damgalı sayfalar, pazar payı tabloları, AB karşılaştırmaları | `docs/btk.md` | orta |
 | EPDK | doğalgaz 2014-2016, akaryakıt 2011-2014, 2024-2026 aylık kurulu güç | `docs/epdk.md` | orta |
