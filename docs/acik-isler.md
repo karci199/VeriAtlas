@@ -48,10 +48,52 @@ Web export: 2026-09-17 tam; 8 dosyanın boş olması hata değil (yalnız ilçe 
 | ETKB | ulusal enerji denge 1972-2024 (il yok) | kolay |
 | Erişilemeyen | GİB (IP engeli), MEB ve İBB (robots.txt), TCDD (403), UYAP (kısıtlı), İzmir/Konya açık veri (robots `/api/`), Wikidata SPARQL (robots) | — |
 
+## Keşif turu 2026-09-18 gece (açık veri portalları, EPİAŞ, ölçüm verisi)
+
+**EPİAŞ Şeffaflık — hesap açıldı, uç noktalar çözüldü.** Katalog `menu/get-menu-tree` ile
+alındı: 188 veri sayfası. Kural: **uç nokta adı tahmin edilmeyecek**, WAF 403 veriyor; sayfa
+menüden açılır (`a[href]` gerçek adresleri taşır), ağ kaydından adres okunur.
+
+| Ne | Uç nokta | Kırılım | Durum |
+|---|---|---|---|
+| **İl-ilçe serbest tüketici adedi** | `consumption/data/eligible-consumer-count` | **ilçe × profil abone grubu**, aylık (~4.358 satır/ay) | çekilecek — depodaki ilk ilçe düzeyi enerji göstergesi |
+| **Baraj aktif doluluk** | `dams/data/active-fullness` + `dams/data/basin-list` | 87 baraj × havza, günlük, kaynak **DSİ** | çekilecek (yıllık ortalama + yıllık en düşük) |
+| Santral listesi | `generation/data/powerplant-list-for-date-range` | 1.830 santral, **il alanı yok** | il üretimi için EPDK lisans listesiyle eşleştirme gerekir |
+| Gerçek zamanlı üretim | `generation/data/realtime-generation` | ülke geneli × yakıt | il yok |
+
+**Sıklık kararı (kullanıcı, 2026-09-18):** yıllık; gerekirse aylık ortalama. Çok veri varsa
+yıllık. Anlık veri yalnız gerektiğinde tek seferlik.
+
+| Kaynak | Ne | Zorluk | Durum |
+|---|---|---|---|
+| **ULASAV** (`ulasav.csb.gov.tr`) | Çevre Bakanlığı'nın ulusal toplayıcısı, **4.556 veri seti**, belediye verileri tek çatıda (mahalle bağımsız bölüm, cadde-sokak haritaları, hava kalitesi, en kısa yollar) | orta | robots `/api/` kapalı + `Crawl-Delay: 10`; API 403. Sayfa gezilebilir ama 4.556 seti taramak ~12 saat — hedefli arama yapılacak |
+| **Belediye CKAN portalları** | 11 çalışan: Ordu 743, Sakarya 307, İzmir 261, Gaziantep 252, Balıkesir 250, Konya 239, Kadıköy 160, Tuzla 97, Nilüfer 65, Sivas 45, Bursa 49 | kolay | robots hepsinde izinli. Tek şehirlik veri — K4 dışı, `ozel-analiz-kalibi` kapsamı |
+| **Konya mahalle-cadde-sokak** | resmî numarataj listesi, 59.960 kayıt, ilçe × mahalle × CSBM, 2023/2024/2025 | kolay | CKAN'dan tek CSV ile iniyor; Tuzla ve Kadıköy'de de CSBM listesi var |
+| **Ookla Speedtest açık veri** | ölçülmüş sabit/mobil internet hızı, çeyreklik karo (~600 m), S3'te parquet, anahtarsız | kolay | ham depoda 2022Q4 + 2024Q4 (`C:eri-ham\ookla`); BTK'nın *vaat edilen* hızının karşısına *ölçülen* hızı koyar |
+| **OSM Türkiye** | 112 mn öge; sokak adları, arazi örtüsü, POI | orta | ham depoda (`C:eri-ham\osm`, md5 OK). DuckDB spatial pbf'i doğrudan okuyor. **Sayım için kullanılamaz** (kapsama gönüllüye bağlı), pay/uzunluk göstergeleri için uygun |
+| **TÜİK isim portalı** | il × yıl × cinsiyet × ad, ilk 30 ad | kolay | `POST nip.tuik.gov.tr/Home/IlYilToplamIsimForTable`, parametre `ilAdi/cinsiyet/yil`; 2018-2025 |
+| Hava Kalitesi (ÇŞB SİM) | istasyon bazlı PM10/SO2/NO2 | bilinmiyor | `/Services/AirQuality?type=0` düz istekte HTML döndü; tarayıcı gerekir |
+| Göç İdaresi, OGM, TÜRKPATENT, VGM | ikamet izni; orman/yangın; marka-patent; vakıf | bilinmiyor | hepsi JS uygulaması, tarayıcıyla bakılacak |
+
+## Alınmayanlar ve gerekçesi (2026-09-18)
+
+- **NVİ adres (UAVT)**: resmî kaynak captcha arkasında. GitHub'da 1,27 mn sokaklı dökümler var
+  (`melihozkara/il-ilce-mahalle-sokak-veritabani`, 12.04.2026) ama derleyen **captcha çözücü**
+  kullanmış — o yöntem tekrarlanmaz; lisans da yok.
+- **Nişanyan Yeradları** (56.422 güncel + 77.509 eski yer adı): telifli eser, kaynak olarak anılır.
+- **Google/Yandex haritalar**: Yandex robots `/maps/business/`, Google `/maps?` kapalı; resmî
+  API'ler POI içeriğinin saklanmasını yasaklıyor.
+- **TÜİK kütüphanesi** (1965 sayımı ana dil/din ciltleri dahil): `robots.txt` → `Disallow: /`.
+- **HGM Atlas API**: kayıt kapalı ("ticarileştirme süreci devam etmektedir").
+- **turkiyeapi.com**: ticari (Pro 299 TL/ay); ücretsiz `api.turkiyeapi.dev` zaten kullanılıyor.
+- **Veri olmayanlar**: PerkBank (sentetik banka verisi), turkiye-iban (banka kodu, yer boyutu yok),
+  ankageo.com (CBS yazılım satıcısı), otomobil fiyat listesi (tarihsiz), genel "veri seti listesi"
+  yazıları (upGrad, gencbeyinler, binyaprak — Kaggle/UCI türü, Türkiye il verisi yok).
+
 ## Kullanıcı kararı bekleyen
 
 - ~~main birleştirme~~ 2026-09-17 yapıldı; dal ve main aynı noktada.
-- EPİAŞ hesabı (il fiilî üretim için), ceza infaz, yaşam memnuniyeti: kararla alınmadı.
+- ~~EPİAŞ hesabı~~ 2026-09-18 açıldı; uç noktalar yukarıda. Ceza infaz, yaşam memnuniyeti: kararla alınmadı.
 
 ## Bilinçli olarak alınmayanlar
 
