@@ -35,6 +35,28 @@ NUTS2 = re.compile(r"-(TR[0-9A-C]{2})$")
 
 #: dim → Turkish name as MEDAS writes it → stored id.
 NAMES = {
+    # Business register, MEDAS "İş Kayıtları İstatistikleri", 2026-09-17.
+    "enterprise_size": {"0": "0", "1-9": "1_9", "10-49": "10_49", "50-249": "50_249", "250+": "250_plus"},
+    "nace_section": {
+        "A. (Tarım, Ormancılık Ve Balıkçılık)": "a",
+        "B. (Madencilik Ve Taş Ocakçılığı)": "b",
+        "C. (İmalat)": "c",
+        "D. (Elektrik, Gaz, Buhar Ve İklimlendirme Üretimi Ve Dağıtımı)": "d",
+        "E. (Su Temini; Kanalizasyon, Atık Yönetimi Ve İyileştirme Faaliyetleri)": "e",
+        "F. (İnşaat)": "f",
+        "G. (Toptan Ve Perakende Ticaret; Motorlu Kara Taşıtlarının Ve Motosikletlerin Onarımı)": "g",
+        "H. (Ulaştırma Ve Depolama)": "h",
+        "I. (Konaklama Ve Yiyecek Hizmeti Faaliyetleri)": "i",
+        "J. (Bilgi Ve İletişim)": "j",
+        "K. (Finans Ve Sigorta Faaliyetleri)": "k",
+        "L. (Gayrimenkul Faaliyetleri)": "l",
+        "M. (Mesleki, Bilimsel Ve Teknik Faaliyetler)": "m",
+        "N. (İdari Ve Destek Hizmet Faaliyetleri)": "n",
+        "P. (Eğitim)": "p",
+        "Q. (İnsan Sağlığı Ve Sosyal Hizmet Faaliyetleri)": "q",
+        "R. (Kültür, Sanat, Eğlence, Dinlence Ve Spor)": "r",
+        "S. (Diğer Hizmet Faaliyetleri)": "s",
+    },
     # Provincial GDP, MEDAS "Bölgesel Hesaplar" (2009 base), 2026-09-14.
     "gdp_price": {"Cari Fiyatlarla": "current", "Zincirlenmiş Hacim": "chained_volume"},
     "gdp_currency": {"TL": "try", "ABD Doları": "usd"},
@@ -244,6 +266,10 @@ MEASURES = {
     "gsyh-05-k03": ("province_gdp_index_sector", ("gdp_price", "gdp_sector")),
     "gsyh-05-k02": ("province_gdp_index_component", ("gdp_price", "gdp_component")),
     "gsyh-06": ("province_gdp_per_capita", ("gdp_currency", "gdp_price")),
+    "ekonomi-girisim-01": ("enterprises", ("enterprise_size", "nace_section")),
+    "ekonomi-tarimdeger-01": ("crop_production_value", ()),
+    "ekonomi-tarimdeger-03": ("animal_product_value", ()),
+    "ekonomi-tarimdeger-05": ("live_animal_value", ()),
     "saglik-01": ("hospitals", ("hospital_sector",)),
     "saglik-02": ("hospital_beds", ("hospital_sector",)),
     "saglik-03": ("health_staff", ("health_profession", "health_sector")),

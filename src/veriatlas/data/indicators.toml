@@ -29911,3 +29911,82 @@ additive = true
 dims = ["rd_sector", "sex"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "rd_p_persreg, tam zaman eşdeğeri, tüm meslekler, 1990-2024; bazı hücreler Eurostat tahmini ('e'). Eurostat bölgesel veri tabanı (dissemination API, JSON-stat), İBBS-2 bölgeleri ve Türkiye; kaynak TÜİK Hanehalkı İşgücü Anketi, Eurostat uyumlaştırması. MEDAS'ta bölge düzeyinde sunulmuyor. Eurostat 'u' (düşük güvenilirlik, küçük örneklem; çoğunlukla doğu bölgeleri) ve 'b' (seri kırılması: 2014 ve 2021 anket yenilemeleri) bayraklı hücreler yayımlandığı gibi yüklendi. İndirme scripts/fetch_eurostat_regional.py, adaptör src/veriatlas/adapters/eurostat_regional.py."
+
+[dim.enterprise_size]
+label_tr = "Çalışan sayısı büyüklük grubu"
+label_en = "Size class (persons employed)"
+
+[dim.enterprise_size.values]
+"0" = "0 çalışan"
+1_9 = "1-9"
+10_49 = "10-49"
+50_249 = "50-249"
+250_plus = "250 ve üzeri"
+
+[dim.nace_section]
+label_tr = "Ekonomik faaliyet (NACE Rev.2 kısım)"
+label_en = "Economic activity (NACE Rev.2 section)"
+
+[dim.nace_section.values]
+a = "A Tarım, ormancılık ve balıkçılık"
+b = "B Madencilik ve taş ocakçılığı"
+c = "C İmalat"
+d = "D Elektrik, gaz, buhar ve iklimlendirme"
+e = "E Su temini, kanalizasyon, atık yönetimi"
+f = "F İnşaat"
+g = "G Toptan ve perakende ticaret"
+h = "H Ulaştırma ve depolama"
+i = "I Konaklama ve yiyecek hizmeti"
+j = "J Bilgi ve iletişim"
+k = "K Finans ve sigorta"
+l = "L Gayrimenkul"
+m = "M Mesleki, bilimsel ve teknik faaliyetler"
+n = "N İdari ve destek hizmetleri"
+p = "P Eğitim"
+q = "Q İnsan sağlığı ve sosyal hizmet"
+r = "R Kültür, sanat, eğlence ve spor"
+s = "S Diğer hizmet faaliyetleri"
+
+[indicator.enterprises]
+label_tr = "Girişim sayısı"
+label_en = "Enterprises"
+topic = "reel_kesim"
+unit = "item"
+frequency = "annual"
+additive = true
+dims = ["enterprise_size", "nace_section"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK İş Kayıtları İstatistikleri (MEDAS), il × çalışan büyüklük grubu × NACE Rev.2 kısmı, yıllık. Gizlilik nedeniyle basılmayan hücreler (MEDAS -9,98E8) yüklenmedi; bu yüzden küçük illerde bazı kırılımlar boştur ve il toplamları kırılımlardan tam kurulamaz. O (kamu yönetimi) ve T-U kısımları kapsam dışı."
+
+[indicator.crop_production_value]
+label_tr = "Bitkisel üretim değeri"
+label_en = "Crop production value"
+topic = "bitkisel"
+unit = "thousand_try"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK Tarımsal Ürün Fiyatları ve Üretim Değerleri (MEDAS), il, bin TL, cari fiyatlarla (enflasyondan arındırılmamış), 1995 sonrası."
+
+[indicator.animal_product_value]
+label_tr = "Hayvansal ürünler değeri"
+label_en = "Value of animal products"
+topic = "hayvancilik"
+unit = "thousand_try"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK Tarımsal Ürün Fiyatları ve Üretim Değerleri (MEDAS), hayvansal ürünlerin (süt, yumurta, yapağı, bal vb.) değeri, il, bin TL, cari fiyatlarla."
+
+[indicator.live_animal_value]
+label_tr = "Canlı hayvanlar değeri"
+label_en = "Value of live animals"
+topic = "hayvancilik"
+unit = "thousand_try"
+frequency = "annual"
+additive = true
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK Tarımsal Ürün Fiyatları ve Üretim Değerleri (MEDAS), canlı hayvan varlığının değeri, il, bin TL, cari fiyatlarla."
