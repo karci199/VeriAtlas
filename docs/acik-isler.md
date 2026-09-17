@@ -40,7 +40,7 @@ Web export: TOBB yabancı, TİM, İŞKUR, KTB henüz dışa aktarılmadı.
 | Eurostat API | İBBS-2 işsizlik, istihdam, eğitim düzeyi; İBBS-3 GSYH (avro) | kolay |
 | ~~AFAD deprem API~~ | 2026-09-17 yüklendi | — |
 | ~~GSB~~ | ~~il kulüp, yetenek taraması~~ 2026-09-17 yüklendi (sporcu, antrenör, hakem yalnız Türkiye × federasyon, alınmadı) | — |
-| MEDAS ekonomi | ücretli çalışan (il), girişim sayısı (il), tarımsal üretim değeri (il), işgücü (İBBS-2), gelir dağılımı ve yoksulluk, kazanç, yıllık sanayi-hizmet | orta (tarayıcı, tek oturum) |
+| ~~MEDAS ekonomi~~ | 2026-09-17: girişim sayısı ve tarımsal üretim değerleri (il) yüklendi. Ücretli çalışan yalnız Türkiye aylık (ham `nufus-ekonomi-ucretli-01-aylik-*`, yüklenmedi: il yok, SGK il verisi depoda). İşgücü İBBS-2 Eurostat'tan. Gelir, yoksulluk, kazanç, yıllık sanayi-hizmet yalnız Türkiye/bölge | — |
 | BDDK FinTürk | il kredi, mevduat, şube; çeyreklik | orta |
 | ETKB | ulusal enerji denge 1972-2024 (yalnız Türkiye) | kolay |
 | VAP (MKK) | il yatırımcı sayısı | bilinmiyor |

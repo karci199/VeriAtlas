@@ -45,7 +45,13 @@ for arg in sys.argv[1:]:
         only = os.environ.get("OLCULER")
         if only and str(index + 1) not in only.split(","):
             continue
-        if not row.get("years") and not row.get("breakdowns"):
+        # AYLIK=1: the monthly series. The survey reads the year list under "Yıllık", which a
+        # monthly-only measure (ücretli çalışan) leaves empty, so the check is skipped there.
+        if (
+            not row.get("years")
+            and not row.get("breakdowns")
+            and not os.environ.get("AYLIK")
+        ):
             print("ATLANDI (yil yok):", name, label)
             continue
         earlier = [
@@ -121,7 +127,11 @@ if patched == source:
 exec(patched, simple.__dict__)  # noqa: S102
 
 simple.MEASURES.extend(new)
-sys.argv = [sys.argv[0], *[name for name, *_ in new]]
+sys.argv = [
+    sys.argv[0],
+    *[name for name, *_ in new],
+    *(["--aylik"] if os.environ.get("AYLIK") else []),
+]
 simple.main()
 for hint, breakdown in sorted(set(simple.SKIPPED_BREAKDOWNS)):
     print("CAPRAZ ALINAMAYAN KIRILIM:", hint, "|", breakdown)
