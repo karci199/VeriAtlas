@@ -23991,6 +23991,13 @@ label_tr = "Sosyal güvenlik ve kayıtlı istihdam"
 label_en = "Social security and registered employment"
 order = 37
 
+[unit.degree_day]
+label_tr = "derece-gün"
+label_en = "degree days"
+decimals = 0
+additive = false
+per_capita = false
+
 [unit.day]
 label_tr = "gün"
 label_en = "days"
@@ -30355,6 +30362,181 @@ additive = true
 dims = ["budget_measure", "revenue_line"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "Hazine ve Maliye Bakanlığı Muhasebat Genel Müdürlüğü, 'Genel Bütçe Gelirlerinin İller İtibarıyla Tahakkuk ve Tahsilatı', 2004-2025, bin TL, cari fiyat; her il dosyasının Aralık (yıl birikimli) sayfası. Gelir, vergi dairesinin bulunduğu ile yazılır: büyük mükelleflerin vergisi merkezlerinin olduğu ilde (İstanbul, Ankara) toplanır, üretimin yapıldığı ilde değil. Merkezden tahsil edilen gelirler (00-Merkez: gümrük vb.) il değerlerine dahil değil. Tahsilat iadeleri düşülmüş nettir, bu yüzden bir kalem eksi olabilir. Kalemler: toplam, vergi gelirleri, gelir vergisi, kurumlar vergisi, dahilde alınan KDV, ÖTV, motorlu taşıtlar vergisi (2006'dan). Tahakkukta vergi toplamı ve gelir+kurumlar vergisi birbirini aşmıyor olmalı; aşan beş il-yıl kaynakta tutarsız olduğu için alınmadı (Hakkari 2007-2009 ve 2012, Sakarya 2007); 2007 Bitlis dosyasında Aralık yok. Enflasyondan arındırılmamıştır. İndirme scripts/fetch_muhasebat.py (portal API), adaptör src/veriatlas/adapters/muhasebat.py."
+
+[dim.budget_revenue_item]
+label_tr = "Bütçe gelir kalemi"
+label_en = "Budget revenue item"
+
+[dim.budget_revenue_item.values]
+total = "Bütçe gelirleri (toplam)"
+general_budget = "Genel bütçe"
+special_budget = "Özel bütçeli idareler"
+regulatory_budget = "Düzenleyici ve denetleyici kurumlar"
+annexed_budget = "Katma bütçe öz gelirleri"
+tax = "Vergi gelirleri"
+non_tax = "Vergi dışı gelirler"
+enterprise_property = "Teşebbüs ve mülkiyet gelirleri"
+grants = "Alınan bağış ve yardımlar"
+interest_shares_fines = "Faizler, paylar ve cezalar"
+capital_revenue = "Sermaye gelirleri"
+receivables = "Alacaklardan tahsilat"
+
+[dim.budget_classification]
+label_tr = "Sınıflandırma"
+label_en = "Classification"
+
+[dim.budget_classification.values]
+economic = "Ekonomik"
+functional = "Fonksiyonel"
+
+[dim.budget_expenditure_item]
+label_tr = "Bütçe gider kalemi"
+label_en = "Budget expenditure item"
+
+[dim.budget_expenditure_item.values]
+total = "Bütçe giderleri (toplam)"
+personnel = "Personel giderleri"
+social_security = "Sosyal güvenlik kurumuna devlet primi"
+goods_services = "Mal ve hizmet alımları"
+interest = "Faiz harcamaları"
+current_transfers = "Cari transferler"
+capital_expenditure = "Sermaye giderleri"
+capital_transfers = "Sermaye transferleri"
+lending = "Borç verme"
+reserve = "Yedek ödenekler"
+general_public_services = "Genel kamu hizmetleri"
+defence = "Savunma hizmetleri"
+public_order = "Kamu düzeni ve güvenlik hizmetleri"
+economic_affairs = "Ekonomik işler ve hizmetler"
+environmental_protection = "Çevre koruma hizmetleri"
+housing_community = "İskân ve toplum refahı hizmetleri"
+health = "Sağlık hizmetleri"
+recreation_culture_religion = "Dinlenme, kültür ve din hizmetleri"
+education = "Eğitim hizmetleri"
+social_protection = "Sosyal güvenlik ve sosyal yardım hizmetleri"
+
+[indicator.central_budget_revenue_by_province]
+label_tr = "Merkezi yönetim bütçe gelirleri (il)"
+label_en = "Central government budget revenue by province"
+topic = "kamu_maliyesi"
+unit = "thousand_try"
+frequency = "annual"
+additive = true
+dims = ["budget_revenue_item"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Hazine ve Maliye Bakanlığı Muhasebat Genel Müdürlüğü, 'İller İtibarıyla Merkezi Yönetim Bütçe İstatistikleri', 'Merkezi Yönetim Kümülatif Bütçe Gelirleri Tahsilatı' tablosu, 2004-2025, bin TL, cari fiyat; her yıl dosyasının Aralık (yılbaşından beri birikimli) sayfası. Tahsil edilen gelir, dairenin bulunduğu ile yazılır: büyük mükelleflerin vergisi merkezlerinin olduğu ilde (İstanbul, Ankara) görünür, üretimin yapıldığı ilde değil. Merkezden tahsil edilen gelirler (tablonun Merkez satırı: gümrük, merkezi kurumlar vb.) il değerlerine dahil değil, bu yüzden 81 ilin toplamı Türkiye toplamının altındadır. Kalemler yıla göre değişir: 2007-2025 merkezi bütçe = genel bütçe + özel bütçeli idareler + düzenleyici ve denetleyici kurumlar, genel bütçe ise vergi gelirleri, teşebbüs ve mülkiyet gelirleri, alınan bağış ve yardımlar, faizler-paylar-cezalar, sermaye gelirleri ve alacaklardan tahsilat olarak ayrılır; 2006'da vergi dışı gelirler tek kalemdir; 2004-2005'te 5018 öncesi konsolide bütçe basılır (genel bütçe + katma bütçe öz gelirleri). Her il-yılda alt bütçelerin toplamı genel toplamı, ekonomik kalemlerin toplamı da genel bütçeyi tutuyor; tutmayan il-yıl alınmazdı, 2004-2025'te tutmayan yok. 2026 yıl içi olduğu için alınmadı. Enflasyondan arındırılmamıştır. İndirme scripts/fetch_muhasebat.py (portal API), adaptör src/veriatlas/adapters/muhasebat.py."
+
+[indicator.central_budget_expenditure_by_province]
+label_tr = "Merkezi yönetim bütçe giderleri (il)"
+label_en = "Central government budget expenditure by province"
+topic = "kamu_maliyesi"
+unit = "thousand_try"
+frequency = "annual"
+additive = true
+dims = ["budget_classification", "budget_expenditure_item"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Hazine ve Maliye Bakanlığı Muhasebat Genel Müdürlüğü, 'İller İtibarıyla Merkezi Yönetim Bütçe İstatistikleri', 'Merkezi Yönetim Kümülatif Bütçe Giderleri' tablosu, 2004-2025, bin TL, cari fiyat; her yıl dosyasının Aralık (yılbaşından beri birikimli) sayfası. Harcama, ödemeyi yapan muhasebe biriminin bulunduğu ile yazılır: merkezden yapılan ödemeler (tablonun Merkez satırı) bir ile dağıtılmaz ve il değerlerine dahil değildir; faiz harcaması ile cari transferlerin büyük bölümü orada durur, bu yüzden 81 ilin toplamı merkezi yönetim bütçesinin küçük bir parçasıdır. İki sınıflandırma birlikte basılıyor ve ikisi de aynı toplamı veriyor: ekonomik (personel, sosyal güvenlik primi, mal ve hizmet alımı, faiz, cari transfer, sermaye gideri, sermaye transferi, borç verme, yedek ödenek) ve fonksiyonel (genel kamu hizmetleri, savunma, kamu düzeni, ekonomik işler, çevre koruma, iskân ve toplum refahı, sağlık, dinlenme-kültür-din, eğitim, sosyal güvenlik ve sosyal yardım). Her il-yılda iki sınıflandırmanın toplamı da basılı toplamı tutuyor; tutmayan il-yıl alınmazdı, 2004-2025'te tutmayan yok. 2026 yıl içi olduğu için alınmadı. Enflasyondan arındırılmamıştır. İndirme scripts/fetch_muhasebat.py (portal API), adaptör src/veriatlas/adapters/muhasebat.py."
+
+[indicator.local_budget_revenue_by_province]
+label_tr = "Mahalli idareler bütçe gelirleri (il)"
+label_en = "Local government budget revenue by province"
+topic = "kamu_maliyesi"
+unit = "thousand_try"
+frequency = "annual"
+additive = true
+dims = ["budget_revenue_item"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Hazine ve Maliye Bakanlığı Muhasebat Genel Müdürlüğü, 'İller İtibarıyla Mahalli Yönetim Bütçe İstatistikleri', 'Mahalli İdareler Bütçe Gelirleri' tablosu, 2006-2025, bin TL, cari fiyat; her yıl dosyasının Ocak-Aralık (IV.) dönem sayfası. İlin mahalli idarelerinin — Muhasebat'ın mahalli idareler alt sektörü: belediyeler, il özel idareleri, bağlı idareler ve mahalli idare birlikleri; kapsam dosyada yazılı değil — bütçe gelirleri toplamı ve kalemleri: vergi gelirleri, teşebbüs ve mülkiyet gelirleri, alınan bağış ve yardımlar, faizler-paylar-cezalar, sermaye gelirleri, alacaklardan tahsilat (2006'da vergi dışı gelirler tek kalem). Genel bütçe vergi gelirlerinden aktarılan paylar burada 'faizler, paylar ve cezalar' içinde durur ve çoğu ilde gelirin yarısından fazlasıdır. Merkezi yönetim tablolarının aksine Merkez satırı yok, 81 ilin toplamı Türkiye toplamıdır. Her il-yılda kalemlerin toplamı basılı bütçe gelirleri toplamını tutuyor. 2026 yıl içi olduğu için alınmadı. Enflasyondan arındırılmamıştır. İndirme scripts/fetch_muhasebat.py (portal API), adaptör src/veriatlas/adapters/muhasebat.py."
+
+[indicator.local_budget_expenditure_by_province]
+label_tr = "Mahalli idareler bütçe giderleri (il)"
+label_en = "Local government budget expenditure by province"
+topic = "kamu_maliyesi"
+unit = "thousand_try"
+frequency = "annual"
+additive = true
+dims = ["budget_classification", "budget_expenditure_item"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Hazine ve Maliye Bakanlığı Muhasebat Genel Müdürlüğü, 'İller İtibarıyla Mahalli Yönetim Bütçe İstatistikleri', 'Mahalli İdareler Bütçe Giderleri' tablosu, 2006-2025, bin TL, cari fiyat; her yıl dosyasının Ocak-Aralık (IV.) dönem sayfası. İlin mahalli idarelerinin bütçe giderleri, yalnız ekonomik sınıflandırma: personel, sosyal güvenlik kurumuna devlet primi, mal ve hizmet alımları, faiz harcamaları, cari transferler, sermaye giderleri, sermaye transferleri, borç verme (fonksiyonel sınıflandırma bu tabloda basılmıyor). Her il-yılda kalemlerin toplamı basılı toplamı tutuyor. Gider ile gelir arasındaki fark kaynakta 'bütçe dengesi' tablosu olarak da basılıyor, iki göstergenin farkı olduğu için ayrıca alınmadı. 2026 yıl içi olduğu için alınmadı. Enflasyondan arındırılmamıştır. İndirme scripts/fetch_muhasebat.py (portal API), adaptör src/veriatlas/adapters/muhasebat.py."
+
+[dim.climate_day]
+label_tr = "Gün türü"
+label_en = "Type of day"
+
+[dim.climate_day.values]
+hot_days = "Sıcak gün (en yüksek > 30 °C)"
+tropical_nights = "Tropik gece (en düşük > 20 °C)"
+icing_days = "Buzlu gün (en yüksek < 0 °C)"
+extreme_precipitation_days = "Aşırı yağışlı gün"
+
+[dim.degree_day_type]
+label_tr = "Derece-gün türü"
+label_en = "Degree day type"
+
+[dim.degree_day_type.values]
+heating = "Isıtma derece-günü"
+cooling = "Soğutma derece-günü"
+
+[dim.trade_flow]
+label_tr = "Ticaret yönü"
+label_en = "Trade flow"
+
+[dim.trade_flow.values]
+exports = "İhracat"
+imports = "İthalat"
+
+[indicator.oecd_temperature]
+label_tr = "Yıllık ortalama sıcaklık (alansal)"
+label_en = "Annual mean air temperature (areal)"
+topic = "iklim"
+unit = "celsius"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "OECD Bölgesel İstatistikler (sdmx.oecd.org, DSD_REG_CLIM@DF_AIR_TEMP), TL3 = il, 1981-2024. ERA5 yeniden analizinden, ilin tamamının alanı üzerinde ortalanmış 2 metre yıllık ortalama hava sıcaklığı. MGM'nin `mgm_temperature` serisinden farklı bir şey ölçer: o, il merkezi istasyonunun noktasal ölçümüdür. 1991-2020 ortalamasında ikisi aynı yönde hareket ediyor (r = 0,80) ama alansal ortalama ortalama 2,6 °C daha soğuk; fark en çok istasyonu sahilde, arkası dağlık illerde (Rize 8,6, Giresun 7,8, Trabzon 7,1 °C), düz illerde kayboluyor (Zonguldak ve Balıkesir 0,1 °C). İkisi birbirinin yerine geçmez. İndirme scripts/fetch_oecd_tl3.py, adaptör src/veriatlas/adapters/oecd_tl3.py."
+
+[indicator.oecd_precipitation]
+label_tr = "Yıllık toplam yağış (alansal)"
+label_en = "Annual total precipitation (areal)"
+topic = "iklim"
+unit = "mm"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "OECD Bölgesel İstatistikler (DSD_REG_CLIM@DF_PRECIPITATION), TL3 = il, 1981-2024, ERA5 yeniden analizinden ilin alanı üzerinde toplanmış yıllık yağış, mm. MGM'nin `mgm_precipitation` normalleri il merkezi istasyonunun ölçümüdür; bu alansaldır, aynı gerekçeyle ikisi ayrı tutuluyor. İndirme scripts/fetch_oecd_tl3.py, adaptör src/veriatlas/adapters/oecd_tl3.py."
+
+[indicator.oecd_climate_days]
+label_tr = "İklim gün sayıları (alansal)"
+label_en = "Climate day counts (areal)"
+topic = "iklim"
+unit = "day"
+frequency = "annual"
+additive = false
+dims = ["climate_day"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "OECD Bölgesel İstatistikler (DSD_REG_CLIM@DF_AIR_TEMP ve @DF_PRECIPITATION), TL3 = il, 1981-2024, ERA5 yeniden analizi, ilin alanı üzerinde. Sıcak gün: en yüksek sıcaklığın 30 °C'yi aştığı gün; tropik gece: en düşük sıcaklığın 20 °C'nin altına inmediği gece; buzlu gün: en yüksek sıcaklığın 0 °C'nin altında kaldığı gün; aşırı yağışlı gün: yağışın dönemin eşiğini aştığı gün. Türkiye ortalaması tropik gecede 1981-1990'da 9,1 iken 2015-2024'te 20,5 güne çıktı (İstanbul 25,6 → 66,4). İndirme scripts/fetch_oecd_tl3.py, adaptör src/veriatlas/adapters/oecd_tl3.py."
+
+[indicator.oecd_degree_days]
+label_tr = "Derece-gün (ısıtma ve soğutma)"
+label_en = "Heating and cooling degree days"
+topic = "iklim"
+unit = "degree_day"
+frequency = "annual"
+additive = false
+dims = ["degree_day_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "OECD Bölgesel İstatistikler (DSD_REG_CLIM@DF_DEGREE_DAYS), TL3 = il, 1981-2023, ERA5 yeniden analizi. Isıtma derece-günü, günlük ortalama sıcaklığın eşiğin (15 °C) altında kaldığı derecelerin yıl boyunca toplamı; soğutma derece-günü 22 °C eşiğinin üstü için aynısı. Enerji talebini iklimden arındırmakta kullanılır. İç tutarlılık sınandı: 1991-2020 ortalamasında ısıtma derece-günü ile yıllık sıcaklık arasında r = -0,98, soğutma ile r = +0,75; en yüksek ısıtma Ardahan (4.353), Bayburt (4.070), Erzurum (3.951), en yüksek soğutma Şanlıurfa (904), Mardin (799), Diyarbakır (576). İndirme scripts/fetch_oecd_tl3.py, adaptör src/veriatlas/adapters/oecd_tl3.py."
+
+[indicator.foreign_trade_by_province]
+label_tr = "Dış ticaret (il, gümrük)"
+label_en = "Foreign trade by province (customs)"
+topic = "reel_kesim"
+unit = "thousand_usd"
+frequency = "annual"
+additive = true
+dims = ["trade_flow"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "OECD Bölgesel İstatistikler (DSD_REG_ECO@DF_TRAD), TL3 = il, 2002-2023, cari ABD doları; kaynakta milyon dolar, burada bin dolar. OECD'nin kaynağı TÜİK il dış ticaret istatistiğidir: il, gümrük beyanındaki ildir. Bu, `tim_exports` göstergesinden farklı bir tanımdır — orada il, ihracatçının kayıtlı olduğu ildir. İki seri 1.612 il-yılda birlikte hareket ediyor (r = 0,992) ve fark sistematik: 2023'te İstanbul OECD'de 127,7, TİM'de 95,9 milyar dolar; Kocaeli, Bursa ve Manisa'da ters yönde. İthalatın depoda başka karşılığı yok. İle atanamayan ticaret (serbest bölge vb.) kaynakta TRZZZ koduyla ayrı durur ve alınmadı, bu yüzden 81 ilin toplamı Türkiye toplamının altındadır (2023: 321,7 milyar dolar ithalat). Enflasyondan arındırılmamıştır. İndirme scripts/fetch_oecd_tl3.py, adaptör src/veriatlas/adapters/oecd_tl3.py."
 
 [indicator.investor_portfolio_value]
 label_tr = "Yatırımcı portföy değeri (il)"
