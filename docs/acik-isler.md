@@ -50,10 +50,15 @@ Web export: 2026-09-17 tam; 8 dosyanın boş olması hata değil (yalnız ilçe 
 
 ## Sıradaki oturumun ilk işi
 
-1. **Tam yükleme** (`uv run python scripts/load.py`, tam liste): 2026-09-17 akşamı Muhasebat'ın
-   dört ve OECD'nin beş göstergesi eklendi ama warehouse'a yazılmadı — o akşamki koşu bu
-   göstergelerden önce başlamıştı. Web export bilerek yapılmadı (kullanıcı: "şimdilik webe
-   aktarma"), yükleme bitince kullanıcıya sorulacak.
+1. **Tam yükleme** (`uv run python scripts/load.py`, tam liste) — ama **ana kopyada
+   (`C:eri`), worktree'de değil.** 2026-09-17 akşamı Muhasebat'ın dört ve OECD'nin beş
+   göstergesi yazıldı, warehouse'a girmedi. Worktree'de denendi ve 675 adaptörden sonra
+   çöktü: `load.py`'nin son türetme adımı `public/fact.parquet`'i okuyor, o dosya
+   `.gitignore`'da olduğu için worktree'ye gelmiyor (`IOException: No files found that
+   match the pattern ...worktrees\...\publicact.parquet`). Hiçbir şey yazılmadı, veri
+   kaybı yok. Doğru sıra: dalı main'e al, `C:eri`'de tam yüklemeyi çalıştır.
+   Web export bilerek yapılmadı (kullanıcı: "şimdilik webe aktarma"), yükleme bitince
+   kullanıcıya sorulacak.
 2. OECD'nin diskte bekleyen dosyaları için adaptör (yukarıdaki listede).
 
 ## Kullanıcı kararı bekleyen
