@@ -31,7 +31,7 @@ import httpx
 API = "https://sdmx.oecd.org/public/rest/"
 OUT = Path("C:/veri-ham/oecd_tl3")
 AGENCY = "OECD.CFE.EDS"
-PAUSE = 30
+PAUSE = 45
 STRUCTURE = {"Accept": "application/vnd.sdmx.structure+json;version=1.0"}
 
 #: dataflow -> version. Measurements only; DF_CLIM_PROJ and the other projection flows are
@@ -40,10 +40,14 @@ FLOWS = {
     "DSD_REG_CLIM@DF_AIR_TEMP": "2.5",
     "DSD_REG_CLIM@DF_PRECIPITATION": "2.4",
     "DSD_REG_CLIM@DF_DEGREE_DAYS": "2.4",
-    "DSD_REG_CLIM@DF_GHG": "2.4",
-    "DSD_REG_DEMO@DF_LIFE_EXP": "2.4",
     "DSD_REG_ECO@DF_TRAD": "2.4",
     "DSD_REG_DEMO@DF_MIGR_FLOW": "2.4",
+    # Left out on purpose:
+    #   DF_LIFE_EXP — TÜİK already gives province life expectancy (indicator
+    #     `life_expectancy`, 2013, 2014, 2017, 2020, 2023), and that is the source OECD
+    #     itself builds on.
+    #   DF_GHG — OECD's regional greenhouse gas figures are not a measurement: they are
+    #     EDGAR's gridded emission model summed over the region. Left to a decision.
     # Not yet known to hold TL3 rows for Türkiye — the answer settles it.
     "DSD_REG_ENE@DF_ENE_CONSUMPTION": "2.5",
     "DSD_REG_ENE@DF_PROD_ELEC": "2.5",

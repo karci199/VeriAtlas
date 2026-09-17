@@ -23991,6 +23991,13 @@ label_tr = "Sosyal güvenlik ve kayıtlı istihdam"
 label_en = "Social security and registered employment"
 order = 37
 
+[unit.degree_day]
+label_tr = "derece-gün"
+label_en = "degree days"
+decimals = 0
+additive = false
+per_capita = false
+
 [unit.day]
 label_tr = "gün"
 label_en = "days"
@@ -30451,6 +30458,85 @@ additive = true
 dims = ["budget_classification", "budget_expenditure_item"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "Hazine ve Maliye Bakanlığı Muhasebat Genel Müdürlüğü, 'İller İtibarıyla Mahalli Yönetim Bütçe İstatistikleri', 'Mahalli İdareler Bütçe Giderleri' tablosu, 2006-2025, bin TL, cari fiyat; her yıl dosyasının Ocak-Aralık (IV.) dönem sayfası. İlin mahalli idarelerinin bütçe giderleri, yalnız ekonomik sınıflandırma: personel, sosyal güvenlik kurumuna devlet primi, mal ve hizmet alımları, faiz harcamaları, cari transferler, sermaye giderleri, sermaye transferleri, borç verme (fonksiyonel sınıflandırma bu tabloda basılmıyor). Her il-yılda kalemlerin toplamı basılı toplamı tutuyor. Gider ile gelir arasındaki fark kaynakta 'bütçe dengesi' tablosu olarak da basılıyor, iki göstergenin farkı olduğu için ayrıca alınmadı. 2026 yıl içi olduğu için alınmadı. Enflasyondan arındırılmamıştır. İndirme scripts/fetch_muhasebat.py (portal API), adaptör src/veriatlas/adapters/muhasebat.py."
+
+[dim.climate_day]
+label_tr = "Gün türü"
+label_en = "Type of day"
+
+[dim.climate_day.values]
+hot_days = "Sıcak gün (en yüksek > 30 °C)"
+tropical_nights = "Tropik gece (en düşük > 20 °C)"
+icing_days = "Buzlu gün (en yüksek < 0 °C)"
+extreme_precipitation_days = "Aşırı yağışlı gün"
+
+[dim.degree_day_type]
+label_tr = "Derece-gün türü"
+label_en = "Degree day type"
+
+[dim.degree_day_type.values]
+heating = "Isıtma derece-günü"
+cooling = "Soğutma derece-günü"
+
+[dim.trade_flow]
+label_tr = "Ticaret yönü"
+label_en = "Trade flow"
+
+[dim.trade_flow.values]
+exports = "İhracat"
+imports = "İthalat"
+
+[indicator.oecd_temperature]
+label_tr = "Yıllık ortalama sıcaklık (alansal)"
+label_en = "Annual mean air temperature (areal)"
+topic = "iklim"
+unit = "celsius"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "OECD Bölgesel İstatistikler (sdmx.oecd.org, DSD_REG_CLIM@DF_AIR_TEMP), TL3 = il, 1981-2024. ERA5 yeniden analizinden, ilin tamamının alanı üzerinde ortalanmış 2 metre yıllık ortalama hava sıcaklığı. MGM'nin `mgm_temperature` serisinden farklı bir şey ölçer: o, il merkezi istasyonunun noktasal ölçümüdür. 1991-2020 ortalamasında ikisi aynı yönde hareket ediyor (r = 0,80) ama alansal ortalama ortalama 2,6 °C daha soğuk; fark en çok istasyonu sahilde, arkası dağlık illerde (Rize 8,6, Giresun 7,8, Trabzon 7,1 °C), düz illerde kayboluyor (Zonguldak ve Balıkesir 0,1 °C). İkisi birbirinin yerine geçmez. İndirme scripts/fetch_oecd_tl3.py, adaptör src/veriatlas/adapters/oecd_tl3.py."
+
+[indicator.oecd_precipitation]
+label_tr = "Yıllık toplam yağış (alansal)"
+label_en = "Annual total precipitation (areal)"
+topic = "iklim"
+unit = "mm"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "OECD Bölgesel İstatistikler (DSD_REG_CLIM@DF_PRECIPITATION), TL3 = il, 1981-2024, ERA5 yeniden analizinden ilin alanı üzerinde toplanmış yıllık yağış, mm. MGM'nin `mgm_precipitation` normalleri il merkezi istasyonunun ölçümüdür; bu alansaldır, aynı gerekçeyle ikisi ayrı tutuluyor. İndirme scripts/fetch_oecd_tl3.py, adaptör src/veriatlas/adapters/oecd_tl3.py."
+
+[indicator.oecd_climate_days]
+label_tr = "İklim gün sayıları (alansal)"
+label_en = "Climate day counts (areal)"
+topic = "iklim"
+unit = "day"
+frequency = "annual"
+additive = false
+dims = ["climate_day"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "OECD Bölgesel İstatistikler (DSD_REG_CLIM@DF_AIR_TEMP ve @DF_PRECIPITATION), TL3 = il, 1981-2024, ERA5 yeniden analizi, ilin alanı üzerinde. Sıcak gün: en yüksek sıcaklığın 30 °C'yi aştığı gün; tropik gece: en düşük sıcaklığın 20 °C'nin altına inmediği gece; buzlu gün: en yüksek sıcaklığın 0 °C'nin altında kaldığı gün; aşırı yağışlı gün: yağışın dönemin eşiğini aştığı gün. Türkiye ortalaması tropik gecede 1981-1990'da 9,1 iken 2015-2024'te 20,5 güne çıktı (İstanbul 25,6 → 66,4). İndirme scripts/fetch_oecd_tl3.py, adaptör src/veriatlas/adapters/oecd_tl3.py."
+
+[indicator.oecd_degree_days]
+label_tr = "Derece-gün (ısıtma ve soğutma)"
+label_en = "Heating and cooling degree days"
+topic = "iklim"
+unit = "degree_day"
+frequency = "annual"
+additive = false
+dims = ["degree_day_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "OECD Bölgesel İstatistikler (DSD_REG_CLIM@DF_DEGREE_DAYS), TL3 = il, 1981-2023, ERA5 yeniden analizi. Isıtma derece-günü, günlük ortalama sıcaklığın eşiğin (15 °C) altında kaldığı derecelerin yıl boyunca toplamı; soğutma derece-günü 22 °C eşiğinin üstü için aynısı. Enerji talebini iklimden arındırmakta kullanılır. İç tutarlılık sınandı: 1991-2020 ortalamasında ısıtma derece-günü ile yıllık sıcaklık arasında r = -0,98, soğutma ile r = +0,75; en yüksek ısıtma Ardahan (4.353), Bayburt (4.070), Erzurum (3.951), en yüksek soğutma Şanlıurfa (904), Mardin (799), Diyarbakır (576). İndirme scripts/fetch_oecd_tl3.py, adaptör src/veriatlas/adapters/oecd_tl3.py."
+
+[indicator.foreign_trade_by_province]
+label_tr = "Dış ticaret (il, gümrük)"
+label_en = "Foreign trade by province (customs)"
+topic = "reel_kesim"
+unit = "thousand_usd"
+frequency = "annual"
+additive = true
+dims = ["trade_flow"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "OECD Bölgesel İstatistikler (DSD_REG_ECO@DF_TRAD), TL3 = il, 2002-2023, cari ABD doları; kaynakta milyon dolar, burada bin dolar. OECD'nin kaynağı TÜİK il dış ticaret istatistiğidir: il, gümrük beyanındaki ildir. Bu, `tim_exports` göstergesinden farklı bir tanımdır — orada il, ihracatçının kayıtlı olduğu ildir. İki seri 1.612 il-yılda birlikte hareket ediyor (r = 0,992) ve fark sistematik: 2023'te İstanbul OECD'de 127,7, TİM'de 95,9 milyar dolar; Kocaeli, Bursa ve Manisa'da ters yönde. İthalatın depoda başka karşılığı yok. İle atanamayan ticaret (serbest bölge vb.) kaynakta TRZZZ koduyla ayrı durur ve alınmadı, bu yüzden 81 ilin toplamı Türkiye toplamının altındadır (2023: 321,7 milyar dolar ithalat). Enflasyondan arındırılmamıştır. İndirme scripts/fetch_oecd_tl3.py, adaptör src/veriatlas/adapters/oecd_tl3.py."
 
 [indicator.investor_portfolio_value]
 label_tr = "Yatırımcı portföy değeri (il)"
