@@ -29574,7 +29574,7 @@ frequency = "annual"
 additive = true
 dims = ["sex"]
 views = ["table", "map", "line", "bar"]
-definition_tr = "İŞKUR İstatistik Yıllığı, illere göre genel çalışmalar tablosu, yıl içinde yapılan başvuru, 2012-2017 (sonraki yıllıklarda yok). Her ilde erkek + kadın = toplam ve iller basılı Türkiye satırıyla denetlendi. İndirme: iskur.gov.tr istatistik yıllıkları; adaptör src/veriatlas/adapters/iskur.py."
+definition_tr = "İŞKUR İstatistik Yıllığı, illere göre genel çalışmalar tablosu, yıl içinde yapılan başvuru, 2003-2017 (sonraki yıllıklarda yok). Her ilde erkek + kadın = toplam ve iller basılı Türkiye satırıyla denetlendi. İndirme: iskur.gov.tr istatistik yıllıkları; adaptör src/veriatlas/adapters/iskur.py."
 
 [indicator.iskur_vacancies]
 label_tr = "İŞKUR'a bildirilen açık iş"
@@ -29585,7 +29585,7 @@ frequency = "annual"
 additive = true
 dims = ["sex"]
 views = ["table", "map", "line", "bar"]
-definition_tr = "İŞKUR İstatistik Yıllığı, illere göre genel çalışmalar tablosu, yıl içinde alınan açık iş, 2012-2025; yalnız toplam (cinsiyet kırılımı yok). İller basılı Türkiye satırıyla denetlendi. Yıllığın dipnotuna göre 2006'dan beri açık iş sayısı talep edilen kişi sayısıdır."
+definition_tr = "İŞKUR İstatistik Yıllığı, illere göre genel çalışmalar tablosu, yıl içinde alınan açık iş, 2003-2025; 2006'dan beri yalnız toplam (cinsiyet kırılımı kaldırıldı). 2006 yıllığında dört ilin açık işi ondalıklı basılı (Kocaeli 7.495,89, Trabzon 1.254,12 gibi), olduğu gibi alındı; il toplamı Türkiye satırını tutar. İller basılı Türkiye satırıyla denetlendi. Yıllığın dipnotuna göre 2006'dan beri açık iş sayısı talep edilen kişi sayısıdır."
 
 [indicator.iskur_placements]
 label_tr = "İŞKUR aracılığıyla işe yerleştirme"
@@ -29596,7 +29596,7 @@ frequency = "annual"
 additive = true
 dims = ["sex"]
 views = ["table", "map", "line", "bar"]
-definition_tr = "İŞKUR İstatistik Yıllığı, illere göre genel çalışmalar tablosu, yıl içinde işe yerleştirme, 2012-2025. Yıllık dipnotu: yerleştirme tanımı 2013 Ekim'de genişletildi (SGK kaydıyla eşleşen işe girişler), 2013 öncesiyle karşılaştırma dikkatli yapılmalı. Her ilde erkek + kadın = toplam, iller Türkiye satırıyla denetlendi."
+definition_tr = "İŞKUR İstatistik Yıllığı, illere göre genel çalışmalar tablosu, yıl içinde işe yerleştirme, 2003-2025. Yıllık dipnotu: yerleştirme tanımı 2013 Ekim'de genişletildi (SGK kaydıyla eşleşen işe girişler), 2013 öncesiyle karşılaştırma dikkatli yapılmalı. Her ilde erkek + kadın = toplam, iller Türkiye satırıyla denetlendi."
 
 [indicator.iskur_registered_labour_force]
 label_tr = "İŞKUR'a kayıtlı işgücü"
@@ -29607,7 +29607,7 @@ frequency = "annual"
 additive = true
 dims = ["sex"]
 views = ["table", "map", "line", "bar"]
-definition_tr = "İŞKUR İstatistik Yıllığı, illere göre genel çalışmalar tablosu, yıl sonu kayıtlı işgücü (işsiz ve çalışan iş arayanlar), 2012-2020. 2021-2024 yıllıklarında yok; 2025'te 'kayıtlı iş arayanlar' ayrı gösterge. Her ilde erkek + kadın = toplam, iller Türkiye satırıyla denetlendi."
+definition_tr = "İŞKUR İstatistik Yıllığı, illere göre genel çalışmalar tablosu, yıl sonu kayıtlı işgücü (işsiz ve çalışan iş arayanlar), 2003-2020; 2003-2008 yıllıklarında 'sonraki yıla devreden işgücü' adıyla. 2021-2024 yıllıklarında yok; 2025'te 'kayıtlı iş arayanlar' ayrı gösterge. Her ilde erkek + kadın = toplam, iller Türkiye satırıyla denetlendi."
 
 [indicator.iskur_registered_unemployed]
 label_tr = "İŞKUR'a kayıtlı işsiz"
@@ -29618,7 +29618,7 @@ frequency = "annual"
 additive = true
 dims = ["sex"]
 views = ["table", "map", "line", "bar"]
-definition_tr = "İŞKUR İstatistik Yıllığı, illere göre genel çalışmalar tablosu, yıl sonu kayıtlı işsiz, 2012-2024. Anket temelli TÜİK işsizliği değildir: İŞKUR'a kaydolan ve çalışmayan kişiler. 2025 yıllığında yerini 'kayıtlı iş arayanlar' aldı. Her ilde erkek + kadın = toplam, iller Türkiye satırıyla denetlendi."
+definition_tr = "İŞKUR İstatistik Yıllığı, illere göre genel çalışmalar tablosu, yıl sonu kayıtlı işsiz, 2003-2024; 2003-2008 yıllıklarında 'devreden işgücünden işsizler' adıyla. Anket temelli TÜİK işsizliği değildir: İŞKUR'a kaydolan ve çalışmayan kişiler. 2025 yıllığında yerini 'kayıtlı iş arayanlar' aldı. Her ilde erkek + kadın = toplam, iller Türkiye satırıyla denetlendi."
 
 [indicator.iskur_registered_job_seekers]
 label_tr = "İŞKUR'a kayıtlı iş arayan"

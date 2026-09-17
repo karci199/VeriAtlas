@@ -1,7 +1,7 @@
-r"""İŞKUR yearbook tables: general activities by province, 2012-2025.
+r"""İŞKUR yearbook tables: general activities by province, 2003-2025.
 
 The yearbooks' Excel tables are kept in `C:\veri-ham\iskur\<year>-yillik.xlsx|xls` (2004-2011
-are zips of one file per table and are not read yet). Each year has one table of the year's
+are zips of one workbook per table, read from inside the zip). Each year has one table of the year's
 activities by province, under a different number every few years (2012-2016 "Tablo 2: <year>
 yılı illere göre ...", 2020 "Tablo 35", 2025 "Tablo 37": "İllere göre genel çalışmalar"). The
 three-year comparison table beside it is not read.
@@ -29,7 +29,7 @@ from ..config import RAW
 from .kgm import fold, province_id
 
 FOLDER = RAW / "iskur" if (RAW / "iskur").exists() else Path("C:/veri-ham/iskur")
-YEARS = range(2012, 2026)
+YEARS = range(2003, 2026)
 #: folded Turkish header fragment -> indicator (None: read and dropped)
 MEASURES = {
     "basvuru": "iskur_applications",
@@ -38,6 +38,9 @@ MEASURES = {
     "yerlestirme": "iskur_placements",
     "kayitliisgucu": "iskur_registered_labour_force",
     "kayitliissiz": "iskur_registered_unemployed",
+    # 2003-2008: "<year>'e devreden işgücü", "devreden işgücünden işsizler" (işsiz first)
+    "issiz": "iskur_registered_unemployed",
+    "devredenisgucu": "iskur_registered_labour_force",
     "isarayan": "iskur_registered_job_seekers",
     # 2012-2017 split the Turkish names over two rows; the English row has them whole
     # "placement" before "vacanc": 2017 heads the placements column "Placements to Vacancies"
@@ -49,16 +52,36 @@ MEASURES = {
     "laborforce": "iskur_registered_labour_force",
     "unemployed": "iskur_registered_unemployed",
     "jobseeker": "iskur_registered_job_seekers",
+    # 2004-2008 English: "The Manpower Turnover To <year>"; "The Unemployed Among This Manpower"
+    # matches "unemployed" above first
+    "manpower": "iskur_registered_labour_force",
 }
 SEXES = {"erkek": "male", "kadin": "female", "toplam": "total"}
-NUMBER = re.compile(r"-?\d+(\.0+)?")
+#: 2006 prints some vacancies with decimals (1254.120223671): a cell rejected here would drop
+#: silently, provinces and Türkiye row alike, so the check could not catch it
+NUMBER = re.compile(r"-?\d+(\.\d+)?")
 
 
 def workbook_sheets(path: Path):
-    if path.suffix == ".xlsx":
+    if path.suffix == ".zip":
+        import zipfile
+
+        archive = zipfile.ZipFile(path)
+        for member in sorted(archive.namelist()):
+            if not member.lower().endswith((".xls", ".xlsx")):
+                continue
+            yield from sheets_of(archive.read(member), member.lower().endswith(".xlsx"))
+        return
+    yield from sheets_of(path.read_bytes(), path.suffix == ".xlsx")
+
+
+def sheets_of(data: bytes, xlsx: bool):
+    if xlsx:
+        import io
+
         import openpyxl
 
-        book = openpyxl.load_workbook(path, read_only=True, data_only=True)
+        book = openpyxl.load_workbook(io.BytesIO(data), read_only=True, data_only=True)
         for sheet in book.worksheets:
             yield [
                 ["" if c is None else str(c).strip() for c in r]
@@ -67,7 +90,7 @@ def workbook_sheets(path: Path):
     else:
         import xlrd
 
-        book = xlrd.open_workbook(path)
+        book = xlrd.open_workbook(file_contents=data)
         for sheet in book.sheets():
             yield [
                 [str(c).strip() for c in sheet.row_values(i)]
@@ -76,12 +99,21 @@ def workbook_sheets(path: Path):
 
 
 def find_table(year: int) -> list[list[str]]:
-    path = next(FOLDER.glob(f"{year}-yillik.xls*"))
+    path = next(
+        p
+        for p in FOLDER.glob(f"{year}-yillik.*")
+        if p.suffix in (".xls", ".xlsx", ".zip")
+    )
     for rows in workbook_sheets(path):
         title = fold(" ".join(" ".join(r) for r in rows[:2]))
-        if "illeregore" not in title or "son3" in title or "karsilastir" in title:
+        if (
+            "illeregore" not in title
+            or "son3" in title
+            or "karsilastir" in title
+            or "mukayese" in title
+        ):
             continue
-        if "genelcalismalar" in title or f"{year}yiliilleregore" in title:
+        if "genelcalisma" in title or f"{year}yiliilleregore" in title:
             return rows
     raise ValueError(f"İŞKUR {year}: il genel çalışmalar tablosu yok")
 
@@ -95,7 +127,9 @@ def measure_of(text: str) -> str | None | bool:
 
 
 def sex_of(text: str) -> str | None:
-    key = fold(text.split("/")[0].splitlines()[0] if text else "")
+    # "Erkek / Male", "Erkek" and "Male" on two lines, 2003 "Erkek  Male": the first word
+    first = text.split("/")[0].split()[0] if text.split() else ""
+    key = fold(first)
     return SEXES.get(key)
 
 
