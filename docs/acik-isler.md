@@ -21,7 +21,7 @@ Web export: 2026-09-17 tam; 8 dosyanın boş olması hata değil (yalnız ilçe 
 |---|---|---|---|
 | ~~İŞKUR~~ | ~~2003-2011~~ | 2026-09-17 yüklendi | — |
 | ~~TİM~~ | ~~2004-2009~~ | 2026-09-17 yüklendi | — |
-| TİM | ~~il × sektör 2013-2025~~ yüklendi 2026-09-17 (`tim_exports_by_sector`); kalan: il × sektör 2004-2012 (farklı sınıflama, 2012 dosyası eksik satırlı), il × ülke (ülke adları eşlenmeli, serbest bölgeler ayrı satır) | `src/veriatlas/adapters/tim_sectors.py` | büyük |
+| TİM | ~~il × sektör 2013-2025~~, ~~il × ülke 2013-2025~~ yüklendi 2026-09-17 (`tim_exports_by_sector`, `tim_exports_by_country`); kalan: 2004-2012 (farklı sektör sınıflaması, 2012 dosyası eksik satırlı) | `tim_sectors.py`, `tim_countries.py` | büyük |
 | Kültür Turizm | Bakanlık belgeli 1996-2002, 2004-2010, 2014-2015; belediye belgeli 2000-2014 | düzen farklı ya da iller GENEL TOPLAM'ı tutmuyor; 2007-2008 yalnız PDF | orta |
 | Kültür Turizm | ilçe düzeyi 2017 öncesi | kaynakta ilçeler il toplamını %84'e varan farkla tutmuyor | kaynak hatası |
 | ~~Sağlık yıllığı 2017~~ | 2026-09-17 yüklendi (kelime konumu + 2018 satır sırası); 2011 il tablosu basmıyor | — |
