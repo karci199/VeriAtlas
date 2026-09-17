@@ -5,6 +5,7 @@ from .dhmi import DHMI_ADAPTERS
 from .diyanet import DIYANET_ADAPTERS
 from .tim import TIM_ADAPTERS
 from .iskur import ISKUR_ADAPTERS
+from .ktb import KTB_ADAPTERS
 from .saglik_yearbook import SAGLIK_YEARBOOK_ADAPTERS
 from .etkb import ETKB_ADAPTERS
 from .mgm import MGM_ADAPTERS
@@ -138,6 +139,7 @@ ADAPTERS = {
     **DIYANET_ADAPTERS,
     **TIM_ADAPTERS,
     **ISKUR_ADAPTERS,
+    **KTB_ADAPTERS,
     **SAGLIK_YEARBOOK_ADAPTERS,
     **ETKB_ADAPTERS,
     **MGM_ADAPTERS,

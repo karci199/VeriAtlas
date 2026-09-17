@@ -29630,3 +29630,64 @@ additive = true
 dims = ["sex"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "İŞKUR İstatistik Yıllığı 2025, illere göre genel çalışmalar tablosu, kayıtlı iş arayanlar. Kayıtlı işgücü ve kayıtlı işsiz serilerinin yerine geçti; ikisiyle doğrudan karşılaştırılamaz. Her ilde erkek + kadın = toplam, iller Türkiye satırıyla denetlendi."
+
+[dim.guest]
+label_tr = "Konuk"
+label_en = "Guest"
+
+[dim.guest.values]
+foreign = "Yabancı"
+citizen = "Yerli"
+total = "Toplam"
+
+[dim.licence]
+label_tr = "Belge"
+label_en = "Licence"
+
+[dim.licence.values]
+ministry = "Bakanlık belgeli"
+municipal = "Belediye belgeli"
+
+[indicator.ktb_arrivals]
+label_tr = "Konaklama tesisine geliş"
+label_en = "Arrivals at accommodation establishments"
+topic = "turizm"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["guest", "licence"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Kültür ve Turizm Bakanlığı (YİGM) yıllık il-ilçe konaklama istatistikleri. Bakanlık belgeli: 2003, 2011-2013, 2016-2021; belediye belgeli: 2015-2022. İl düzeyi o yıllarda basılı GENEL TOPLAM'ı tutar; diğer yıllarda iller genel toplamı tutmadığı ya da düzen farklı olduğu için yüklenmedi. İlçe düzeyi yalnız ilçelerin il toplamını tuttuğu yıllarda (Bakanlık 2018-2021, belediye 2017-2022); daha eski dosyalarda ilçeler ile Toplamı arasında %84'e varan fark var. İlçe olmayan turizm merkezleri (Alsancak, Büyükada, Uludağ vb.) ilçe düzeyine yazılmadı, il toplamında durur. Adaptör src/veriatlas/adapters/ktb.py."
+
+[indicator.ktb_nights]
+label_tr = "Konaklama tesisinde geceleme"
+label_en = "Nights spent at accommodation establishments"
+topic = "turizm"
+unit = "item"
+frequency = "annual"
+additive = true
+dims = ["guest", "licence"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Kültür ve Turizm Bakanlığı (YİGM) yıllık il-ilçe konaklama istatistikleri, geceleme sayısı. Kapsam ve denetimler 'Konaklama tesisine geliş' göstergesiyle aynı: Bakanlık belgeli 2003, 2011-2013, 2016-2021; belediye belgeli 2015-2022; ilçe düzeyi Bakanlık 2018-2021, belediye 2017-2022."
+
+[indicator.ktb_average_stay]
+label_tr = "Konaklama tesisinde ortalama kalış"
+label_en = "Average length of stay"
+topic = "turizm"
+unit = "day"
+frequency = "annual"
+additive = false
+dims = ["guest", "licence"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Kültür ve Turizm Bakanlığı (YİGM) yıllık konaklama istatistikleri, il Toplam satırında basılı ortalama kalış (geceleme ÷ geliş). Yalnız il düzeyi. Yıllar 'Konaklama tesisine geliş' göstergesiyle aynı."
+
+[indicator.ktb_occupancy]
+label_tr = "Konaklama tesisi doluluk oranı"
+label_en = "Occupancy rate of accommodation establishments"
+topic = "turizm"
+unit = "percent"
+frequency = "annual"
+additive = false
+dims = ["guest", "licence"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Kültür ve Turizm Bakanlığı (YİGM) yıllık konaklama istatistikleri, il Toplam satırında basılı yatak doluluk oranı; yabancı ve yerli payları toplamı verir. Yalnız il düzeyi. Yıllar 'Konaklama tesisine geliş' göstergesiyle aynı."
