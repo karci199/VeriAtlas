@@ -29657,7 +29657,7 @@ frequency = "annual"
 additive = true
 dims = ["guest", "licence"]
 views = ["table", "map", "line", "bar"]
-definition_tr = "Kültür ve Turizm Bakanlığı (YİGM) yıllık il-ilçe konaklama istatistikleri. Bakanlık belgeli: 2000-2006, 2009-2021 (2007-2008 yalnız PDF); belediye belgeli: 2010-2012, 2014-2022. İl düzeyi o yıllarda basılı GENEL TOPLAM'ı tutar; diğer yıllarda iller genel toplamı tutmadığı ya da düzen farklı olduğu için yüklenmedi. İlçe düzeyi yalnız ilçelerin il toplamını tuttuğu yıllarda (Bakanlık 2000 ve 2018-2021, belediye 2017-2022); diğer dosyalarda ilçeler ile Toplamı arasında %84'e varan fark var. İlçe olmayan turizm merkezleri (Alsancak, Büyükada, Uludağ vb.) ilçe düzeyine yazılmadı, il toplamında durur. Adaptör src/veriatlas/adapters/ktb.py."
+definition_tr = "Kültür ve Turizm Bakanlığı (YİGM) yıllık il-ilçe konaklama istatistikleri. Bakanlık belgeli: 2000-2006, 2009-2021 (2007-2008 yalnız PDF); belediye belgeli: 2009-2022. İl düzeyi o yıllarda basılı GENEL TOPLAM'ı tutar; diğer yıllarda iller genel toplamı tutmadığı ya da düzen farklı olduğu için yüklenmedi. İlçe düzeyi yalnız ilçelerin il toplamını tuttuğu yıllarda (Bakanlık 2000-2005, 2009-2011, 2013-2015, 2018-2021; belediye 2009-2011, 2013-2022); diğer yıllarda birkaç ilin ilçeleri il Toplamını tutmuyor. Yabancı misafiri olmayan yerde tanımsız oran '-' ya da boş basılır; bu satırlar sütun konumuyla okunur, tanımsız oran yazılmaz. İlçe olmayan turizm merkezleri (Alsancak, Büyükada, Uludağ vb.) ilçe düzeyine yazılmadı, il toplamında durur. Adaptör src/veriatlas/adapters/ktb.py."
 
 [indicator.ktb_nights]
 label_tr = "Konaklama tesisinde geceleme"
@@ -29668,7 +29668,7 @@ frequency = "annual"
 additive = true
 dims = ["guest", "licence"]
 views = ["table", "map", "line", "bar"]
-definition_tr = "Kültür ve Turizm Bakanlığı (YİGM) yıllık il-ilçe konaklama istatistikleri, geceleme sayısı. Kapsam ve denetimler 'Konaklama tesisine geliş' göstergesiyle aynı: Bakanlık belgeli 2000-2006, 2009-2021; belediye belgeli 2010-2012, 2014-2022; ilçe düzeyi Bakanlık 2000 ve 2018-2021, belediye 2017-2022."
+definition_tr = "Kültür ve Turizm Bakanlığı (YİGM) yıllık il-ilçe konaklama istatistikleri, geceleme sayısı. Kapsam ve denetimler 'Konaklama tesisine geliş' göstergesiyle aynı: Bakanlık belgeli 2000-2006, 2009-2021; belediye belgeli 2009-2022; ilçe düzeyi Bakanlık 2000-2005, 2009-2011, 2013-2015, 2018-2021, belediye 2009-2011, 2013-2022."
 
 [indicator.ktb_average_stay]
 label_tr = "Konaklama tesisinde ortalama kalış"

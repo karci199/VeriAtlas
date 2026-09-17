@@ -17,14 +17,13 @@ the undefined ratio is not written; skipping the row had lost whole provinces (2
 exactly the gap to GENEL TOPLAM) and kept ministry 2000-2015 out.
 
 Checks: the provinces add up to GENEL TOPLAM (a year that fails is not loaded: municipal 2000-2006,
-whose columns differ, 2009, 0.8 % short, and 2013, a province printed twice); foreigners +
-citizens = total on every row. Districts are written only for years whose districts add up to
-their province's Toplam (ministry 2000 and 2018-2021, municipal 2017-2022): in other files the
-districts fall short, by up to 84 %, and the gap is listed in MISMATCHES. 1996-1999 files have
-a different layout and are not read.
+whose columns differ); foreigners + citizens = total on every row. Districts are written only for
+years whose districts add up to their province's Toplam (ministry 2000-2005, 2009-2011, 2013-2015,
+2018-2021; municipal 2009-2011, 2013-2022); the others have a few provinces whose districts fall
+short, listed in MISMATCHES. 1996-1999 files have a different layout and are not read.
 
 Loaded: ministry-licensed 2000-2006, 2009-2021 (2007-2008 are PDF only); municipality-licensed
-2010-2012, 2014-2022.
+2009-2022.
 """
 
 from __future__ import annotations
@@ -116,16 +115,18 @@ def read(path: Path):
         if (
             len(numbers) < 12
             and len(columns) == 12
-            and "-" in cells
-            and all(c == "-" or NUMBER.fullmatch(c) for c in cells)
-            and sum(1 for c in cells if NUMBER.fullmatch(c)) >= 6
+            and all(c == "-" or NUMBER.fullmatch(c) for c in cells[:6])
+            and all(c in ("-", "") or NUMBER.fullmatch(c) for c in cells[6:])
+            and sum(1 for c in cells[:6] if NUMBER.fullmatch(c)) >= 3
             and any(t != "-" for t in texts)
         ):
-            # A ratio with nothing to divide (no foreign guests) is printed "-" and was
-            # skipped, dropping the whole row (2010: Hakkari, exactly the gap to GENEL TOPLAM).
-            # Read by column; the undefined ratio is not written.
+            # A ratio with nothing to divide (no foreign guests) is printed "-" (ministry)
+            # or left empty (municipal 2009), and a zero count can be "-" too. Such rows were
+            # skipped whole (2010: Hakkari; municipal 2009: Hakkari, Yozgat, Batman, exactly
+            # the gaps to GENEL TOPLAM). Read by column: a count "-" is 0, an undefined ratio
+            # is not written.
             numbers = [
-                (NAN if j >= 6 else 0.0) if c == "-" else float(c)  # counts: 0
+                (NAN if j >= 6 else 0.0) if c in ("-", "") else float(c)
                 for j, c in enumerate(cells)
             ]
         if len(numbers) < 12:
@@ -147,6 +148,8 @@ def read(path: Path):
         if current is None:
             raise ValueError(f"KTB {path.name}: il bilinmeden satır {r[:3]}")
         if fold(label) == "toplam":
+            if current in provinces and provinces[current] == values:
+                continue  # municipal 2013 prints Afyonkarahisar's Toplam twice, identical
             if current in provinces:
                 raise ValueError(f"KTB {path.name}: {current} iki Toplam")
             provinces[current] = values
