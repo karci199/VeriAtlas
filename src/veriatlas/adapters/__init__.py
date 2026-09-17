@@ -2,6 +2,7 @@
 
 from .afad import AFAD_ADAPTERS
 from .base import Adapter, Manifest, history, ingest
+from .bddk_finturk import FINTURK_ADAPTERS
 from .btk import BTK_ADAPTERS
 from .btk_charts import BTK_CHART_ADAPTERS
 from .btk_imei import BTK_IMEI_ADAPTERS
@@ -149,6 +150,7 @@ ADAPTERS = {
     **TIM_ADAPTERS,
     **MUHASEBAT_ADAPTERS,
     **VAP_ADAPTERS,
+    **FINTURK_ADAPTERS,
     **TIM_SECTOR_ADAPTERS,
     **TIM_COUNTRY_ADAPTERS,
     **ISKUR_ADAPTERS,

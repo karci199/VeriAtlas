@@ -30366,3 +30366,142 @@ additive = true
 dims = []
 views = ["table", "map", "line", "bar"]
 definition_tr = "Merkezi Kayıt Kuruluşu (MKK) Veri Analiz Platformu (VAP), 'İllere Göre Yatırımcı Sayıları' panosu, her yılın Aralık ayı, 2005-2025 (2007 Aralık panoda boş, yazılmadı). Yatırımcının kayıtlı olduğu ile göre portföy değeri: pay senedi, fon (borsa yatırım fonu dahil), devlet ve özel sektör borçlanma araçları, yapılandırılmış ürünler ve diğer menkul kıymetler; Borsa İstanbul kapanış fiyatıyla, cari TL. Kaynakta milyon TL, burada bin TL. Her yıl 81 ilin toplamı panonun Türkiye aylık serisiyle aynı. Yatırımcı sayısı panoda il bazında yalnız ilk 10 il için okunabildiği için alınmadı. İndirme scripts/fetch_vap.py (MicroStrategy REST, herkese açık kullanıcı), adaptör src/veriatlas/adapters/vap.py."
+
+[dim.bank_group]
+label_tr = "Banka grubu"
+label_en = "Bank group"
+
+[dim.bank_group.values]
+sector = "Sektör (tümü)"
+deposit = "Mevduat bankaları"
+development_investment = "Kalkınma ve yatırım bankaları"
+participation = "Katılım bankaları"
+foreign = "Yabancı sermayeli bankalar"
+state = "Kamu sermayeli bankalar"
+domestic_private = "Yerli özel bankalar"
+
+[dim.finturk_item]
+label_tr = "Kalem"
+label_en = "Item"
+
+[dim.finturk_item.values]
+cash_total = "Toplam nakdi krediler"
+cash_performing = "Nakdi krediler (takip dışı)"
+non_performing = "Takipteki alacaklar"
+non_cash = "Gayrinakdi krediler"
+savings = "Tasarruf mevduatı"
+savings_try = "Tasarruf mevduatı (TL)"
+savings_fx = "Tasarruf mevduatı (döviz)"
+other = "Diğer mevduat"
+other_try = "Diğer mevduat (TL)"
+other_fx = "Diğer mevduat (döviz)"
+total = "Toplam mevduat"
+vehicle = "Taşıt kredisi"
+housing = "Konut kredisi"
+overdraft = "Kredili mevduat hesabı"
+other_consumer = "Diğer tüketici kredileri"
+credit_cards = "Bireysel kredi kartları"
+vehicle_non_performing = "Takipteki taşıt kredisi"
+housing_non_performing = "Takipteki konut kredisi"
+other_consumer_non_performing = "Takipteki diğer tüketici kredileri"
+credit_cards_non_performing = "Takipteki kredi kartları"
+gold_loans = "Altın kredileri"
+gold_deposits_persons = "Altın mevduatı, gerçek kişi"
+gold_deposits_companies = "Altın mevduatı, tüzel kişi"
+gold_deposits = "Toplam altın mevduatı"
+food_beverage_tobacco_cash = "Gıda, meşrubat ve tütün, nakdi"
+food_beverage_tobacco_non_performing = "Gıda, meşrubat ve tütün, takipteki"
+food_beverage_tobacco_non_cash = "Gıda, meşrubat ve tütün, gayrinakdi"
+construction_cash = "İnşaat, nakdi"
+construction_non_performing = "İnşaat, takipteki"
+construction_non_cash = "İnşaat, gayrinakdi"
+metal_mining_cash = "Metal ve işlenmiş maden, nakdi"
+metal_mining_non_performing = "Metal ve işlenmiş maden, takipteki"
+metal_mining_non_cash = "Metal ve işlenmiş maden, gayrinakdi"
+financial_institutions_cash = "Finansal kuruluşlar, nakdi"
+financial_institutions_non_performing = "Finansal kuruluşlar, takipteki"
+financial_institutions_non_cash = "Finansal kuruluşlar, gayrinakdi"
+textiles_cash = "Tekstil, nakdi"
+textiles_non_performing = "Tekstil, takipteki"
+textiles_non_cash = "Tekstil, gayrinakdi"
+wholesale_trade_cash = "Toptan ticaret ve komisyonculuk, nakdi"
+wholesale_trade_non_performing = "Toptan ticaret ve komisyonculuk, takipteki"
+wholesale_trade_non_cash = "Toptan ticaret ve komisyonculuk, gayrinakdi"
+tourism_cash = "Turizm, nakdi"
+tourism_non_performing = "Turizm, takipteki"
+tourism_non_cash = "Turizm, gayrinakdi"
+agriculture_fishing_cash = "Ziraat ve balıkçılık, nakdi"
+agriculture_fishing_non_performing = "Ziraat ve balıkçılık, takipteki"
+agriculture_fishing_non_cash = "Ziraat ve balıkçılık, gayrinakdi"
+energy_cash = "Enerji, nakdi"
+energy_non_performing = "Enerji, takipteki"
+energy_non_cash = "Enerji, gayrinakdi"
+maritime_cash = "Denizcilik, nakdi"
+maritime_non_performing = "Denizcilik, takipteki"
+maritime_non_cash = "Denizcilik, gayrinakdi"
+
+[indicator.bank_group_loans]
+label_tr = "Krediler, banka grubuna göre (il)"
+label_en = "Loans by bank group"
+topic = "bankacilik"
+unit = "thousand_try"
+frequency = "annual"
+additive = true
+dims = ["bank_group", "finturk_item"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "BDDK FinTürk 'Coğrafi dağılım' tabloları, her yılın Aralık dönemi, 2007-2025 (altın 2015'ten), bin TL, cari fiyat; şubenin bulunduğu il. Banka grupları iki türlü böler: türe göre (mevduat + kalkınma ve yatırım + katılım) ve sahipliğe göre (kamu + yerli özel + yabancı); ikisi de her il, yıl ve kalemde 'Sektör' satırını tutar. Yurt dışı şubeler yazılmadı. Genel müdürlüklerin bulunduğu İstanbul ve Ankara'da kurumsal krediler şişkin. İndirme scripts/fetch_bddk_finturk.py, adaptör src/veriatlas/adapters/bddk_finturk.py. Denetim: toplam nakdi = nakdi + takipteki."
+
+[indicator.bank_group_deposits]
+label_tr = "Mevduat, banka grubuna göre (il)"
+label_en = "Deposits by bank group"
+topic = "bankacilik"
+unit = "thousand_try"
+frequency = "annual"
+additive = true
+dims = ["bank_group", "finturk_item"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "BDDK FinTürk 'Coğrafi dağılım' tabloları, her yılın Aralık dönemi, 2007-2025 (altın 2015'ten), bin TL, cari fiyat; şubenin bulunduğu il. Banka grupları iki türlü böler: türe göre (mevduat + kalkınma ve yatırım + katılım) ve sahipliğe göre (kamu + yerli özel + yabancı); ikisi de her il, yıl ve kalemde 'Sektör' satırını tutar. Yurt dışı şubeler yazılmadı. Genel müdürlüklerin bulunduğu İstanbul ve Ankara'da kurumsal krediler şişkin. İndirme scripts/fetch_bddk_finturk.py, adaptör src/veriatlas/adapters/bddk_finturk.py. Denetim: tasarruf = TL + döviz, diğer = TL + döviz, toplam = tasarruf + diğer. Kalkınma ve yatırım bankaları mevduat toplamaz."
+
+[indicator.bank_group_retail_loans]
+label_tr = "Bireysel krediler, banka grubuna göre (il)"
+label_en = "Retail loans by bank group"
+topic = "bankacilik"
+unit = "thousand_try"
+frequency = "annual"
+additive = true
+dims = ["bank_group", "finturk_item"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "BDDK FinTürk 'Coğrafi dağılım' tabloları, her yılın Aralık dönemi, 2007-2025 (altın 2015'ten), bin TL, cari fiyat; şubenin bulunduğu il. Banka grupları iki türlü böler: türe göre (mevduat + kalkınma ve yatırım + katılım) ve sahipliğe göre (kamu + yerli özel + yabancı); ikisi de her il, yıl ve kalemde 'Sektör' satırını tutar. Yurt dışı şubeler yazılmadı. Genel müdürlüklerin bulunduğu İstanbul ve Ankara'da kurumsal krediler şişkin. İndirme scripts/fetch_bddk_finturk.py, adaptör src/veriatlas/adapters/bddk_finturk.py."
+
+[indicator.bank_group_sector_loans]
+label_tr = "Sektörel krediler, banka grubuna göre (il)"
+label_en = "Sectoral loans by bank group"
+topic = "bankacilik"
+unit = "thousand_try"
+frequency = "annual"
+additive = true
+dims = ["bank_group", "finturk_item"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "BDDK FinTürk 'Coğrafi dağılım' tabloları, her yılın Aralık dönemi, 2007-2025 (altın 2015'ten), bin TL, cari fiyat; şubenin bulunduğu il. Banka grupları iki türlü böler: türe göre (mevduat + kalkınma ve yatırım + katılım) ve sahipliğe göre (kamu + yerli özel + yabancı); ikisi de her il, yıl ve kalemde 'Sektör' satırını tutar. Yurt dışı şubeler yazılmadı. Genel müdürlüklerin bulunduğu İstanbul ve Ankara'da kurumsal krediler şişkin. İndirme scripts/fetch_bddk_finturk.py, adaptör src/veriatlas/adapters/bddk_finturk.py. Yalnız BDDK'nın seçtiği on sektör; toplam kredi değildir."
+
+[indicator.bank_group_branches]
+label_tr = "Banka şube sayısı, banka grubuna göre (il)"
+label_en = "Bank branches by bank group"
+topic = "bankacilik"
+unit = "facility"
+frequency = "annual"
+additive = true
+dims = ["bank_group"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "BDDK FinTürk 'Coğrafi dağılım' tabloları, her yılın Aralık dönemi, 2007-2025 (altın 2015'ten), bin TL, cari fiyat; şubenin bulunduğu il. Banka grupları iki türlü böler: türe göre (mevduat + kalkınma ve yatırım + katılım) ve sahipliğe göre (kamu + yerli özel + yabancı); ikisi de her il, yıl ve kalemde 'Sektör' satırını tutar. Yurt dışı şubeler yazılmadı. Genel müdürlüklerin bulunduğu İstanbul ve Ankara'da kurumsal krediler şişkin. İndirme scripts/fetch_bddk_finturk.py, adaptör src/veriatlas/adapters/bddk_finturk.py. Şube başına nüfus ve kişi başı tutarlar diğer tablolardan türetilebildiği için alınmadı."
+
+[indicator.bank_group_gold]
+label_tr = "Altın kredisi ve mevduatı, banka grubuna göre (il)"
+label_en = "Gold loans and deposits by bank group"
+topic = "bankacilik"
+unit = "thousand_try"
+frequency = "annual"
+additive = true
+dims = ["bank_group", "finturk_item"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "BDDK FinTürk 'Coğrafi dağılım' tabloları, her yılın Aralık dönemi, 2007-2025 (altın 2015'ten), bin TL, cari fiyat; şubenin bulunduğu il. Banka grupları iki türlü böler: türe göre (mevduat + kalkınma ve yatırım + katılım) ve sahipliğe göre (kamu + yerli özel + yabancı); ikisi de her il, yıl ve kalemde 'Sektör' satırını tutar. Yurt dışı şubeler yazılmadı. Genel müdürlüklerin bulunduğu İstanbul ve Ankara'da kurumsal krediler şişkin. İndirme scripts/fetch_bddk_finturk.py, adaptör src/veriatlas/adapters/bddk_finturk.py."

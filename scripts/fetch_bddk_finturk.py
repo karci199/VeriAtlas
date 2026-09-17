@@ -4,7 +4,9 @@ www.bddk.org.tr/BultenFinturk answers a form post, `tr/Home/VeriGetir`, with JSO
 and one row per province for a table, a period and a bank group. Seven tables (loans, deposits,
 retail banking, selected sectoral loans, ratios, branches and per-capita figures, gold), seven
 groups (sector total, deposit, development and investment, participation, foreign, state,
-domestic private), periods 2007-12 to 2025-12. Quarterly periods exist; only December is taken.
+domestic private), periods 2007-12 to 2025-12. Quarterly periods exist; only December is taken. Two combinations the
+source does not hold are skipped: gold before 2015, and deposits of development and investment
+banks (they take none).
 
 Writes `C:\veri-ham\bddk\finturk\<table>-<group>-<year>.json`; existing files are kept.
 """
@@ -34,6 +36,10 @@ def main() -> None:
     for table in TABLES:
         for group in GROUPS:
             for year in YEARS:
+                if table == 7 and year < 2015:
+                    continue  # gold is published from 2015
+                if table == 2 and group == 10003:
+                    continue  # development and investment banks take no deposits
                 target = OUT / f"{table}-{group}-{year}.json"
                 if target.exists():
                     continue

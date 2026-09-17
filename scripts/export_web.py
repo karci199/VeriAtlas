@@ -429,6 +429,7 @@ DATASETS.update(
                 "eu_",
                 "budget_",
                 "investor_",
+                "bank_group_",
             )
         )
     }
