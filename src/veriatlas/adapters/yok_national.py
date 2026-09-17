@@ -101,9 +101,9 @@ def family_files(pattern: str) -> list[tuple[int, str, Path]]:
     for row in csv.reader(
         (FOLDER / "index.tsv").open(encoding="utf-8"), delimiter="\t"
     ):
-        if row[0][:4].isdigit() and re.search(pattern, row[1].replace("​", "")):
+        if row[0][:4].isdigit() and re.search(pattern, row[1].replace("\u200b", "")):
             out.append(
-                (int(row[0][:4]), row[1].replace("​", "").strip(), FOLDER / row[2])
+                (int(row[0][:4]), row[1].replace("\u200b", "").strip(), FOLDER / row[2])
             )
     return out
 
@@ -314,7 +314,12 @@ def resolve_tree(path: Path, data, total) -> list[tuple[str, str, dict]]:
         position = 0
         assigned: list[tuple[int, int]] = []
 
-        def take(goal: list[float], depth: int, levels: int = levels) -> bool:
+        def take(
+            goal: list[float],
+            depth: int,
+            levels: int = levels,
+            assigned: list[tuple[int, int]] = assigned,
+        ) -> bool:
             nonlocal position
             acc = [0.0] * len(goal)
             while position < len(vector) and any(

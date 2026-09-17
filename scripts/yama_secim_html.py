@@ -17,7 +17,8 @@ def replace(text: str, old: str, new: str, label: str) -> str:
 
 
 def main() -> None:
-    s = open(PAGE, encoding="utf-8").read()
+    with open(PAGE, encoding="utf-8") as fh:
+        s = fh.read()
 
     s = replace(
         s,
@@ -69,10 +70,10 @@ def main() -> None:
 
     s = replace(
         s,
-        "const mahalleModu = () => state.duzey === \"mahalle\";\nconst kaynak = () => (mahalleModu() ? \"mahalle\" : \"ilce\");",
-        "const mahalleModu = () => state.duzey === \"mahalle\";\n"
-        "const ilModu = () => state.duzey === \"il\";\n"
-        "const kaynak = () => (mahalleModu() ? \"mahalle\" : ilModu() ? \"il\" : \"ilce\");\n"
+        'const mahalleModu = () => state.duzey === "mahalle";\nconst kaynak = () => (mahalleModu() ? "mahalle" : "ilce");',
+        'const mahalleModu = () => state.duzey === "mahalle";\n'
+        'const ilModu = () => state.duzey === "il";\n'
+        'const kaynak = () => (mahalleModu() ? "mahalle" : ilModu() ? "il" : "ilce");\n'
         "\n"
         "/** Province results are the districts added up rather than a table of their own:\n"
         " *  one source of truth, and the two levels can never disagree. */\n"
@@ -119,17 +120,17 @@ def main() -> None:
     s = replace(
         s,
         "  if (mahalleModu()) mahalleKatmaniEkle();\n"
-        "  goster(\"ilce-dolgu\", !mahalleModu());",
+        '  goster("ilce-dolgu", !mahalleModu());',
         "  if (mahalleModu()) mahalleKatmaniEkle();\n"
-        "  goster(\"il-dolgu\", ilModu());\n"
-        "  goster(\"ilce-dolgu\", !mahalleModu() && !ilModu());",
+        '  goster("il-dolgu", ilModu());\n'
+        '  goster("ilce-dolgu", !mahalleModu() && !ilModu());',
         "duzey gorunurluk",
     )
 
     s = replace(
         s,
-        "  goster(\"ilce-kenar\", true);",
-        "  goster(\"ilce-kenar\", !ilModu());\n  goster(\"il-kenar\", true);",
+        '  goster("ilce-kenar", true);',
+        '  goster("ilce-kenar", !ilModu());\n  goster("il-kenar", true);',
         "kenar gorunurluk",
     )
 
@@ -149,7 +150,7 @@ def main() -> None:
     s = replace(
         s,
         '  document.getElementById("oneri").innerHTML =',
-        "  ilTablo = ilTablosu();\n  document.getElementById(\"oneri\").innerHTML =",
+        '  ilTablo = ilTablosu();\n  document.getElementById("oneri").innerHTML =',
         "il tablosu kur",
     )
 
@@ -172,8 +173,8 @@ def main() -> None:
         s,
         "  if (state.il) {\n"
         "    const bounds = new maplibregl.LngLatBounds();\n"
-        "    for (const f of map.querySourceFeatures(\"ilce\", { sourceLayer: \"ilce\" })) {\n"
-        "      if (!(f.properties.id || \"\").startsWith(state.il)) continue;\n"
+        '    for (const f of map.querySourceFeatures("ilce", { sourceLayer: "ilce" })) {\n'
+        '      if (!(f.properties.id || "").startsWith(state.il)) continue;\n'
         "      const walk = (c) => (Array.isArray(c[0]) ? c.forEach(walk) : bounds.extend(c));\n"
         "      walk(f.geometry.coordinates);\n"
         "    }\n"
@@ -188,7 +189,7 @@ def main() -> None:
 
     s = replace(
         s,
-        '  if (!Object.keys(ilAdlari).length) {',
+        "  if (!Object.keys(ilAdlari).length) {",
         '  if (!document.getElementById("oy").options.length) {\n'
         '    const secimler = (await jsonYukle("../public/tiles/secimler.json")) || [];\n'
         '    const kutu = document.getElementById("oy");\n'
@@ -203,10 +204,10 @@ def main() -> None:
         "    }\n"
         "    kutu.value = state.oy;\n"
         "  }\n"
-        '  if (!Object.keys(ilSinir).length) {\n'
+        "  if (!Object.keys(ilSinir).length) {\n"
         '    ilSinir = (await jsonYukle("../public/tiles/il-sinirlar.json")) || {};\n'
         "  }\n"
-        '  if (!Object.keys(ilAdlari).length) {',
+        "  if (!Object.keys(ilAdlari).length) {",
         "secim listesi",
     )
 
@@ -239,14 +240,15 @@ def main() -> None:
 
     s = replace(
         s,
-        "  } else {\n    map.setFilter(\"vurgu\", [\"==\", \"id\", id]);\n  }\n"
+        '  } else {\n    map.setFilter("vurgu", ["==", "id", id]);\n  }\n'
         "  panelAc(id, feature.properties.ad);",
-        "  } else if (!ilModu()) {\n    map.setFilter(\"vurgu\", [\"==\", \"id\", id]);\n  }\n"
+        '  } else if (!ilModu()) {\n    map.setFilter("vurgu", ["==", "id", id]);\n  }\n'
         "  panelAc(id, ilModu() ? ilAdlari[id] || feature.properties.ad : feature.properties.ad);",
         "alan sec",
     )
 
-    open(PAGE, "w", encoding="utf-8", newline="").write(s)
+    with open(PAGE, "w", encoding="utf-8", newline="") as fh:
+        fh.write(s)
     print("secim.html yamalandi")
 
 

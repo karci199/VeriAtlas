@@ -19,6 +19,7 @@ import csv
 import datetime as dt
 import importlib.util
 from pathlib import Path
+from typing import ClassVar
 
 import polars as pl
 
@@ -96,7 +97,7 @@ class FixedBroadband(Btk):
 
     indicator_id = "btk_internet_subscribers"
     unit = "subscriber"
-    COLUMNS = {
+    COLUMNS: ClassVar[dict[str, str]] = {
         "xdsl": "xdsl",
         "kablo": "cable",
         "ftth": "ftth",
@@ -161,7 +162,7 @@ class FixedVoice(Btk):
 
     indicator_id = "btk_fixed_voice_lines"
     unit = "subscriber"
-    COLUMNS = {
+    COLUMNS: ClassVar[dict[str, str]] = {
         "tt_pstn": "turk_telekom_pstn",
         "tt_isdn": "turk_telekom_isdn",
         "tt_ankesor": "turk_telekom_payphone",
@@ -273,7 +274,9 @@ def quarterly_deflators() -> tuple[dict[dt.date, float], dict[dt.date, float]]:
         from read_parquet(?) where indicator_id = ? and dims = '' group by 1
     """
     usd = {q: v for q, v, _ in con.execute(query, [fact, "usd_try_buying"]).fetchall()}
-    cpi = {q: v for q, v, n in con.execute(query, [fact, "cpi_2003"]).fetchall() if n == 3}
+    cpi = {
+        q: v for q, v, n in con.execute(query, [fact, "cpi_2003"]).fetchall() if n == 3
+    }
     return usd, cpi
 
 

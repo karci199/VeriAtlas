@@ -71,7 +71,7 @@ files = sorted(glob.glob("C:/veri-ham/epdk/files/lpg_resmi/*.pdf"))
 for n, f in enumerate(files, 1):
     try:
         doc = pdfium.PdfDocument(f)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001 — a scan must not stop on one file
         print(n, f, "ACILMADI", e, flush=True)
         continue
     rows, total, bad, month, pages, carry = {}, None, [], None, 0, False
@@ -131,9 +131,6 @@ for n, f in enumerate(files, 1):
             {"file": f.split("\\")[-1], "rows": rows, "total": total, "bad": bad}
         )
     print(n, len(files), f.split("\\")[-1], month, pages, len(rows), flush=True)
-json.dump(
-    out,
-    open("C:/veri-ham/epdk/lpg_pdf_scan.json", "w", encoding="utf-8"),
-    ensure_ascii=False,
-)
+with open("C:/veri-ham/epdk/lpg_pdf_scan.json", "w", encoding="utf-8") as fh:
+    json.dump(out, fh, ensure_ascii=False)
 print("BITTI", len(out))

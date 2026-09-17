@@ -43,3 +43,8 @@ dev = [
     "pytest>=9.1.1",
     "ruff>=0.16.2",
 ]
+
+[tool.ruff.lint.per-file-ignores]
+# One-off analysis scripts, kept as they were run; not part of the load/export pipeline.
+"scripts/analiz/*" = ["SIM115", "PERF102", "C408"]
+"scripts/btk_mobile_chart.py" = ["SIM115", "B023"]

@@ -79,13 +79,15 @@ def veri(vote: str) -> tuple[list[dict], list[str]]:
             if gecerli < 100:
                 continue
             cocuk = sum(
-                dem.get(f"Age_{a}_{b}_Total") or 0 for a, b in (("0", "4"), ("5", "9"), ("10", "14"))
+                dem.get(f"Age_{a}_{b}_Total") or 0
+                for a, b in (("0", "4"), ("5", "9"), ("10", "14"))
             )
             paylar = {}
             for ad, parca in ADAY_PARCA.items():
-                paylar[ad] = sum(
-                    v for k, v in oy.get("v", {}).items() if parca in k.upper()
-                ) / gecerli
+                paylar[ad] = (
+                    sum(v for k, v in oy.get("v", {}).items() if parca in k.upper())
+                    / gecerli
+                )
             rows.append(
                 {
                     "ilce": path.stem,
@@ -135,14 +137,19 @@ def ilce_ici(rows: list[dict], alanlar: list[str]) -> list[dict]:
         acc = ortalama[row["ilce"]]
         if acc["w"] < 2000:
             continue
-        out.append({"agirlik": row["agirlik"], **{a: row[a] - acc[a] / acc["w"] for a in alanlar}})
+        out.append(
+            {
+                "agirlik": row["agirlik"],
+                **{a: row[a] - acc[a] / acc["w"] for a in alanlar},
+            }
+        )
     return out
 
 
 def main(argv: list[str]) -> None:
     vote = next((a for a in argv if not a.startswith("--")), "cb2023t1")
     aday = next((a.split("=")[1] for a in argv if a.startswith("--aday=")), "Erdoğan")
-    rows, adaylar = veri(vote)
+    rows, _adaylar = veri(vote)
     print(
         f"{vote} · {aday} payı · {len(rows):,} yerleşim · "
         f"{sum(r['agirlik'] for r in rows):,.0f} geçerli oy"
@@ -179,7 +186,9 @@ def main(argv: list[str]) -> None:
     fark = ilce_ici(rows, [*alanlar, aday])
     wf = np.array([r["agirlik"] for r in fark], dtype=float)
     yf = standartla(np.array([r[aday] for r in fark], dtype=float), wf)
-    Xf = np.column_stack([standartla(np.array([r[alan] for r in fark]), wf) for alan in alanlar])
+    Xf = np.column_stack(
+        [standartla(np.array([r[alan] for r in fark]), wf) for alan in alanlar]
+    )
     beta_f, r2_f = regresyon(Xf, yf, wf)
     for (etiket, _), katsayi in sorted(
         zip(DEGISKENLER, beta_f, strict=False), key=lambda t: -abs(t[1])

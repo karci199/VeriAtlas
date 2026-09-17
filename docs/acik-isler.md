@@ -29,7 +29,7 @@ Web export: 2026-09-17 tam; 8 dosyanın boş olması hata değil (yalnız ilçe 
 | BTK | "Gizli — kurum içi" damgalı sayfalar, pazar payı tabloları, AB karşılaştırmaları | `docs/btk.md` | orta |
 | EPDK | ~~doğalgaz il tüketimi 2025~~ yüklendi 2026-09-17 (2015-2016 zaten vardı); 2014 yalnız il toplamı (kırılımsız, alınmadı); ~~akaryakıt 2012-2014~~ bayiye teslim (ton, il toplamı) yüklendi 2026-09-17; akaryakıt 2010-2011 (Tablo 3.18, ton) ve ürün kırılımı; 2024-2026 aylık kurulu güç | `docs/epdk.md` | orta |
 | KGM | kaza özeti PDF tabloları, Trafik ve Ulaşım Bilgileri | `docs/kgm.md` | zor |
-| MGM | ilçe iklim normalleri | sayfa adlandırması farklı | orta |
+| ~~MGM~~ | ~~ilçe iklim normalleri~~ | 2026-09-17 kapandı: MGM yalnız il merkezi istasyonunu yayımlıyor (10 ad biçimi denendi, hepsi boş); ilçe istasyonları yalnız MEVBİS'te (hesap) | — |
 | SGK | ~~sınıflama kodlarının Türkçe etiketleri~~ (2026-09-15 yapılmış, `scripts/sgk_national_labels.py`); 2010-2012 eski düzen | `docs/sgk.md` | orta |
 | Seçim | yurt dışı seçmen profili temsilcilik düzeyi (148 ülke) | çekici klasör hatası | orta |
 
@@ -44,6 +44,12 @@ Web export: 2026-09-17 tam; 8 dosyanın boş olması hata değil (yalnız ilçe 
 | BDDK FinTürk | il kredi, mevduat, şube; çeyreklik | orta |
 | ETKB | ulusal enerji denge 1972-2024 (yalnız Türkiye) | kolay |
 | VAP (MKK) | il yatırımcı sayısı | bilinmiyor |
+
+## Denetim (2026-09-17)
+
+- Ulukışla kişi başı geceleme (2022, kişi başına 12,8 gece) kaynakla birebir; Niğde Toplam'ı tutuyor, 2020'de belediye belgeli tesisle sıçrama (Çiftehan kaplıcaları).
+- pytest: 575 geçti, 368 atlandı (hepsi `raw/ref/makro_ceyreklik.csv` yok: BTK ARPU kur/reel çevrim testleri).
+- ruff: 42 uyarı temizlendi; tek seferlik analiz betiklerine `pyproject.toml`'da dosya bazlı istisna. Değişen adaptörler (YÖK ulusal, EPDK aylık, BTK) depodakiyle satır satır aynı çıktı.
 
 ## Kullanıcı kararı bekleyen
 

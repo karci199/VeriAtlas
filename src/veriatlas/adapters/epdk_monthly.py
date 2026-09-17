@@ -339,14 +339,17 @@ class LpgSalesMonthly:
             for r in body:
                 share = number_tr(r[8]) if len(r) > 8 else None
                 total = number_tr(r[7]) if len(r) > 7 else None
-                if share is not None and total and share >= 1:
-                    if (
-                        abs(total / national * 100 - share) > 0.06
-                    ):  # shares printed to 1-2 decimals
-                        raise ValueError(
-                            f"LPG aylık {month}: {r[0]} payı {share} ama hesap "
-                            f"{total / national * 100:.2f}"
-                        )
+                # shares printed to 1-2 decimals
+                if (
+                    share is not None
+                    and total
+                    and share >= 1
+                    and abs(total / national * 100 - share) > 0.06
+                ):
+                    raise ValueError(
+                        f"LPG aylık {month}: {r[0]} payı {share} ama hesap "
+                        f"{total / national * 100:.2f}"
+                    )
             if totals and abs((number_tr(totals[0][7]) or 0) - national) > 1:
                 LPG_TOTAL_SLIPS.append(
                     (f"{month:%Y-%m}", number_tr(totals[0][7]), national)

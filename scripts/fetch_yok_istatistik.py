@@ -48,7 +48,7 @@ def main() -> None:
                 continue
             try:
                 name, data = session.excel(label, answer)
-            except Exception as error:  # one broken table must not stop the year
+            except Exception as error:  # noqa: BLE001 — one broken table must not stop the year
                 print("  HATA", label[:60], type(error).__name__, error, flush=True)
                 continue
             folder = OUT / year[:9]
