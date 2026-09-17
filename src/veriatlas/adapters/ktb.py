@@ -12,14 +12,19 @@ the first column of its first district row (newer files).
 Arrivals and nights are counts; average stay and occupancy are printed ratios, kept only at
 province level (the "Toplam" row), since they cannot be added up.
 
-Checks: the provinces add up to GENEL TOPLAM (a year that fails is not loaded: ministry 2000-2002,
-2004-2006, 2009-2010, 2014-2015; municipal 2000-2014, whose layouts also differ); foreigners +
+A ratio with nothing to divide (no foreign guests) is printed "-". Such a row is read by column and
+the undefined ratio is not written; skipping the row had lost whole provinces (2010: Hakkari,
+exactly the gap to GENEL TOPLAM) and kept ministry 2000-2015 out.
+
+Checks: the provinces add up to GENEL TOPLAM (a year that fails is not loaded: municipal 2000-2006,
+whose columns differ, 2009, 0.8 % short, and 2013, a province printed twice); foreigners +
 citizens = total on every row. Districts are written only for years whose districts add up to
-their province's Toplam (ministry 2018-2021, municipal 2017-2022): in earlier files the
+their province's Toplam (ministry 2000 and 2018-2021, municipal 2017-2022): in other files the
 districts fall short, by up to 84 %, and the gap is listed in MISMATCHES. 1996-1999 files have
 a different layout and are not read.
 
-Loaded: ministry-licensed 2003, 2011-2013, 2016-2021; municipality-licensed 2015-2022.
+Loaded: ministry-licensed 2000-2006, 2009-2021 (2007-2008 are PDF only); municipality-licensed
+2010-2012, 2014-2022.
 """
 
 from __future__ import annotations
@@ -36,6 +41,7 @@ from .kgm import district_key, fold, province_id, resolve_district
 FOLDER = RAW / "ktb" if (RAW / "ktb").exists() else Path("C:/veri-ham/ktb")
 NUMBER = re.compile(r"-?\d+(\.\d+)?([eE][+-]?\d+)?")
 GUESTS = ("foreign", "citizen", "total")
+NAN = float("nan")
 #: measure blocks in column order, three columns each
 BLOCKS = ("arrivals", "nights", "average_stay", "occupancy")
 #: (file, province, block, guest, districts, printed Toplam) where the districts fall short
@@ -98,13 +104,27 @@ def read(path: Path):
             break
     if first_data is None:
         raise ValueError(f"KTB {path.name}: veri satırı yok")
+    columns = [j for j, c in enumerate(rows[first_data]) if NUMBER.fullmatch(c)]
     provinces: dict[str, dict] = {}
     districts: dict[tuple[str, str], dict] = {}
     grand = None
     current = None
     for r in rows[max(0, first_data - 3) :]:
-        texts = [c for c in r[:3] if c and not NUMBER.fullmatch(c)]
+        texts = [c for c in r[: min(3, columns[0])] if c and not NUMBER.fullmatch(c)]
         numbers = [float(c) for c in r if NUMBER.fullmatch(c)]
+        cells = [r[j] if j < len(r) else "" for j in columns]
+        if (
+            len(numbers) < 12
+            and len(columns) == 12
+            and "-" in cells
+            and all(c == "-" or NUMBER.fullmatch(c) for c in cells)
+            and sum(1 for c in cells if NUMBER.fullmatch(c)) >= 6
+            and any(t != "-" for t in texts)
+        ):
+            # A ratio with nothing to divide (no foreign guests) is printed "-" and was
+            # skipped, dropping the whole row (2010: Hakkari, exactly the gap to GENEL TOPLAM).
+            # Read by column; the undefined ratio is not written.
+            numbers = [NAN if c == "-" else float(c) for c in cells]
         if len(numbers) < 12:
             if len(texts) == 1 and province_or_none(texts[0]):
                 current = province_or_none(texts[0])
@@ -117,7 +137,8 @@ def read(path: Path):
         label = texts[-1] if texts else ""
         if len(texts) == 2 and province_or_none(texts[0]):
             current = province_or_none(texts[0])
-        if fold(label) == "geneltoplam" or (texts and fold(texts[0]) == "geneltoplam"):
+        # "GENEL TOPLAM", "GENEL TOPLAM - Grand Total" (municipal files), in any of the first cells
+        if any(fold(t).startswith("geneltoplam") for t in r[:3]):
             grand = values
             continue
         if current is None:
@@ -269,6 +290,7 @@ class KtbAccommodation:
             {k: v for k, v in r.items() if k != "block"}
             for r in _CACHE
             if r["block"] == block
+            and r["value"] == r["value"]  # not an undefined ratio
         ]
         return pl.DataFrame(
             records, schema_overrides={"value": pl.Float64}

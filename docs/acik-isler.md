@@ -22,7 +22,7 @@ Web export: 2026-09-17 tam; 8 dosyanın boş olması hata değil (yalnız ilçe 
 | ~~İŞKUR~~ | ~~2003-2011~~ | 2026-09-17 yüklendi | — |
 | ~~TİM~~ | ~~2004-2009~~ | 2026-09-17 yüklendi | — |
 | TİM | ~~il × sektör 2013-2025~~, ~~il × ülke 2013-2025~~ yüklendi 2026-09-17 (`tim_exports_by_sector`, `tim_exports_by_country`); kalan: 2004-2012 (farklı sektör sınıflaması, 2012 dosyası eksik satırlı) | `tim_sectors.py`, `tim_countries.py` | büyük |
-| Kültür Turizm | Bakanlık belgeli 1996-2002, 2004-2010, 2014-2015; belediye belgeli 2000-2014 | düzen farklı ya da iller GENEL TOPLAM'ı tutmuyor; 2007-2008 yalnız PDF | orta |
+| Kültür Turizm | 2026-09-17: "-" basılı oran satırları okununca Bakanlık belgeli 2000-2006 ve 2009-2021 kesintisiz, belediye 2010-2012 ve 2014-2022 yüklendi. Kalan: Bakanlık 2007-2008 (yalnız PDF), 1996-1999 (farklı düzen); belediye 2000-2006 (sütun düzeni farklı), 2009 (%0,8 eksik), 2013 (Afyonkarahisar iki kez) | `src/veriatlas/adapters/ktb.py` | orta |
 | Kültür Turizm | ilçe düzeyi 2017 öncesi | kaynakta ilçeler il toplamını %84'e varan farkla tutmuyor | kaynak hatası |
 | ~~Sağlık yıllığı 2017~~ | 2026-09-17 yüklendi (kelime konumu + 2018 satır sırası); 2011 il tablosu basmıyor | — |
 | ~~Sağlık yıllığı~~ | ~~2010~~ | 2026-09-17 kapandı: PDF indi, il tablosu basmıyor (2011 gibi yalnız bölge grafiği) | — |
