@@ -56,8 +56,17 @@ STOCK = re.compile(
     r"([A-ZÇĞİÖŞÜ][A-ZÇĞİÖŞÜ.\s]+?)\s+(\d[\d.]*)\s+(\d[\d.]*)\s+(\d[\d.]*)\s+[\d,.]+%\s+(\d+)"
 )
 
-FLOW_COLUMNS = ("registrations", "amendments", "deregistrations", "trade_removals")
-STOCK_COLUMNS = ("tradesmen", "workplaces", "chambers")
+#: Column -> the group of its pattern that holds it. Written out rather than zipped over
+#: `match.groups()`: the stock line has a population column we do not keep, and a zip that
+#: runs short drops the last column silently — it stored the population as the chamber
+#: count until a province with 15 million "chambers" gave it away.
+FLOW_COLUMNS = {
+    "registrations": 2,
+    "amendments": 3,
+    "deregistrations": 4,
+    "trade_removals": 5,
+}
+STOCK_COLUMNS = {"tradesmen": 2, "workplaces": 3, "chambers": 5}
 
 
 def count(text: str) -> int:
@@ -79,7 +88,7 @@ def _rows(
             area = province_id(name)
             if area in found:
                 raise ValueError(f"TESK {path.name}: {name} iki kez")
-            found[area] = dict(zip(columns, (count(g) for g in match.groups()[1:])))
+            found[area] = {name: count(match.group(g)) for name, g in columns.items()}
     missing = sorted(set(provinces().values()) - set(found))
     if missing:
         raise ValueError(f"TESK {path.name}: eksik il {missing}")

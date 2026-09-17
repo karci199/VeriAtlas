@@ -30,9 +30,20 @@ def test_karabuk_and_kirklareli_are_read():
 
 
 def test_stock_keeps_counts_not_population():
+    """The row carries a population column we drop; it must not land in another field."""
     match = STOCK.search("ADANA 59266 62953 2283609 2.60% 77")
     assert match is not None
     assert [match.group(i) for i in (2, 3, 5)] == ["59266", "62953", "77"]
+    adana = stock()["TR-01"]
+    assert adana["tradesmen"] > adana["chambers"]
+    assert adana["chambers"] < 200  # chambers per province, not the province population
+
+
+def test_chambers_are_chambers():
+    """A province with more `chambers` than tradesmen means a column slipped."""
+    for area, row in stock().items():
+        assert row["chambers"] < row["tradesmen"] / 10, area
+    assert 2000 < sum(r["chambers"] for r in stock().values()) < 5000
 
 
 def test_short_row_does_not_shift_columns():
