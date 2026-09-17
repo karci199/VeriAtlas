@@ -29766,3 +29766,148 @@ additive = true
 dims = ["magnitude_class"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "AFAD deprem kataloğu (deprem.afad.gov.tr API), 1990-2025, merkez üssü AFAD'ın atadığı il ve ilçeye göre yıllık olay sayısı. Denizde ve yurt dışında olanlar sayılmadı. Ağın algılama eşiği yıllar içinde düştü (1990'da 344, 2024'te 32.578 olay): 3'ten küçük depremlerin artışı büyük ölçüde ölçüm ağının genişlemesidir; 4 ve üzeri sınıflar yıllar arasında karşılaştırılabilir. İlçe sayıları il sayılarına eşit. İndirme scripts/fetch_afad_earthquakes.py, adaptör src/veriatlas/adapters/afad.py."
+
+[dim.eu_age]
+label_tr = "Yaş grubu (Eurostat)"
+label_en = "Age group (Eurostat)"
+
+[dim.eu_age.values]
+y15_24 = "15-24"
+y15_29 = "15-29"
+y15_64 = "15-64"
+y15_74 = "15-74"
+y18_24 = "18-24"
+y18_29 = "18-29"
+y20_24 = "20-24"
+y20_64 = "20-64"
+y25_34 = "25-34"
+y25_64 = "25-64"
+y30_34 = "30-34"
+y35_44 = "35-44"
+y45_54 = "45-54"
+y55_64 = "55-64"
+y_ge15 = "15 ve üzeri"
+y_ge25 = "25 ve üzeri"
+y_ge65 = "65 ve üzeri"
+
+[dim.eu_education]
+label_tr = "Eğitim düzeyi (ISCED)"
+label_en = "Education level (ISCED)"
+
+[dim.eu_education.values]
+ed0_2 = "İlkokul altı, ilkokul, ortaokul (ISCED 0-2)"
+ed34_44 = "Lise, genel program (ISCED 34, 44)"
+ed35_45 = "Lise, mesleki program (ISCED 35, 45)"
+ed3_4 = "Lise ve lise sonrası (ISCED 3-4)"
+ed3_8 = "Lise ve üzeri (ISCED 3-8)"
+ed5_8 = "Yükseköğretim (ISCED 5-8)"
+
+[dim.rd_sector]
+label_tr = "Ar-Ge sektörü"
+label_en = "R&D performing sector"
+
+[dim.rd_sector.values]
+bes = "İş dünyası"
+gov = "Kamu"
+hes = "Yükseköğretim"
+pnp = "Kâr amacı gütmeyen özel"
+total = "Tüm sektörler"
+
+[indicator.eu_unemployment_rate]
+label_tr = "İşsizlik oranı (bölge)"
+label_en = "Unemployment rate (region)"
+topic = "sosyal_guvenlik"
+unit = "percent"
+frequency = "annual"
+additive = false
+dims = ["eu_age", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "lfst_r_lfu3rt, tüm eğitim düzeyleri, 2006-2025. Eurostat bölgesel veri tabanı (dissemination API, JSON-stat), İBBS-2 bölgeleri ve Türkiye; kaynak TÜİK Hanehalkı İşgücü Anketi, Eurostat uyumlaştırması. MEDAS'ta bölge düzeyinde sunulmuyor. Eurostat 'u' (düşük güvenilirlik, küçük örneklem; çoğunlukla doğu bölgeleri) ve 'b' (seri kırılması: 2014 ve 2021 anket yenilemeleri) bayraklı hücreler yayımlandığı gibi yüklendi. İndirme scripts/fetch_eurostat_regional.py, adaptör src/veriatlas/adapters/eurostat_regional.py."
+
+[indicator.eu_employment_rate]
+label_tr = "İstihdam oranı (bölge)"
+label_en = "Employment rate (region)"
+topic = "sosyal_guvenlik"
+unit = "percent"
+frequency = "annual"
+additive = false
+dims = ["eu_age", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "lfst_r_lfe2emprt, 2006-2025. Eurostat bölgesel veri tabanı (dissemination API, JSON-stat), İBBS-2 bölgeleri ve Türkiye; kaynak TÜİK Hanehalkı İşgücü Anketi, Eurostat uyumlaştırması. MEDAS'ta bölge düzeyinde sunulmuyor. Eurostat 'u' (düşük güvenilirlik, küçük örneklem; çoğunlukla doğu bölgeleri) ve 'b' (seri kırılması: 2014 ve 2021 anket yenilemeleri) bayraklı hücreler yayımlandığı gibi yüklendi. İndirme scripts/fetch_eurostat_regional.py, adaptör src/veriatlas/adapters/eurostat_regional.py."
+
+[indicator.eu_activity_rate]
+label_tr = "İşgücüne katılma oranı (bölge)"
+label_en = "Activity rate (region)"
+topic = "sosyal_guvenlik"
+unit = "percent"
+frequency = "annual"
+additive = false
+dims = ["eu_age", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "lfst_r_lfp2actrt, 2006-2025. Eurostat bölgesel veri tabanı (dissemination API, JSON-stat), İBBS-2 bölgeleri ve Türkiye; kaynak TÜİK Hanehalkı İşgücü Anketi, Eurostat uyumlaştırması. MEDAS'ta bölge düzeyinde sunulmuyor. Eurostat 'u' (düşük güvenilirlik, küçük örneklem; çoğunlukla doğu bölgeleri) ve 'b' (seri kırılması: 2014 ve 2021 anket yenilemeleri) bayraklı hücreler yayımlandığı gibi yüklendi. İndirme scripts/fetch_eurostat_regional.py, adaptör src/veriatlas/adapters/eurostat_regional.py."
+
+[indicator.eu_long_term_unemployment_share]
+label_tr = "Uzun süreli işsizlerin payı (bölge)"
+label_en = "Long-term unemployed share (region)"
+topic = "sosyal_guvenlik"
+unit = "percent"
+frequency = "annual"
+additive = false
+dims = ["eu_age", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "lfst_r_lfu2ltu, 12 ay ve üzeri iş arayanların işsizler içindeki payı, 2006-2025. Eurostat bölgesel veri tabanı (dissemination API, JSON-stat), İBBS-2 bölgeleri ve Türkiye; kaynak TÜİK Hanehalkı İşgücü Anketi, Eurostat uyumlaştırması. MEDAS'ta bölge düzeyinde sunulmuyor. Eurostat 'u' (düşük güvenilirlik, küçük örneklem; çoğunlukla doğu bölgeleri) ve 'b' (seri kırılması: 2014 ve 2021 anket yenilemeleri) bayraklı hücreler yayımlandığı gibi yüklendi. İndirme scripts/fetch_eurostat_regional.py, adaptör src/veriatlas/adapters/eurostat_regional.py."
+
+[indicator.eu_neet_rate]
+label_tr = "Ne eğitimde ne istihdamda olan gençler (bölge)"
+label_en = "NEET rate (region)"
+topic = "egitim"
+unit = "percent"
+frequency = "annual"
+additive = false
+dims = ["eu_age", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "edat_lfse_22, 2006-2025. Eurostat bölgesel veri tabanı (dissemination API, JSON-stat), İBBS-2 bölgeleri ve Türkiye; kaynak TÜİK Hanehalkı İşgücü Anketi, Eurostat uyumlaştırması. MEDAS'ta bölge düzeyinde sunulmuyor. Eurostat 'u' (düşük güvenilirlik, küçük örneklem; çoğunlukla doğu bölgeleri) ve 'b' (seri kırılması: 2014 ve 2021 anket yenilemeleri) bayraklı hücreler yayımlandığı gibi yüklendi. İndirme scripts/fetch_eurostat_regional.py, adaptör src/veriatlas/adapters/eurostat_regional.py."
+
+[indicator.eu_early_leavers]
+label_tr = "Eğitimi erken terk eden gençler (bölge)"
+label_en = "Early leavers from education and training (region)"
+topic = "egitim"
+unit = "percent"
+frequency = "annual"
+additive = false
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "edat_lfse_16, 18-24 yaş, 2006-2025. Eurostat bölgesel veri tabanı (dissemination API, JSON-stat), İBBS-2 bölgeleri ve Türkiye; kaynak TÜİK Hanehalkı İşgücü Anketi, Eurostat uyumlaştırması. MEDAS'ta bölge düzeyinde sunulmuyor. Eurostat 'u' (düşük güvenilirlik, küçük örneklem; çoğunlukla doğu bölgeleri) ve 'b' (seri kırılması: 2014 ve 2021 anket yenilemeleri) bayraklı hücreler yayımlandığı gibi yüklendi. İndirme scripts/fetch_eurostat_regional.py, adaptör src/veriatlas/adapters/eurostat_regional.py."
+
+[indicator.eu_educational_attainment]
+label_tr = "Eğitim düzeyi (bölge)"
+label_en = "Educational attainment (region)"
+topic = "egitim"
+unit = "percent"
+frequency = "annual"
+additive = false
+dims = ["eu_age", "eu_education", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "edat_lfse_04, yaş grubundaki nüfusun eğitim düzeyine göre yüzdesi, 2006-2025. Düzeyler iç içe (3-8, 3-4'ü ve 5-8'i kapsar), toplanmaz. Eurostat bölgesel veri tabanı (dissemination API, JSON-stat), İBBS-2 bölgeleri ve Türkiye; kaynak TÜİK Hanehalkı İşgücü Anketi, Eurostat uyumlaştırması. MEDAS'ta bölge düzeyinde sunulmuyor. Eurostat 'u' (düşük güvenilirlik, küçük örneklem; çoğunlukla doğu bölgeleri) ve 'b' (seri kırılması: 2014 ve 2021 anket yenilemeleri) bayraklı hücreler yayımlandığı gibi yüklendi. İndirme scripts/fetch_eurostat_regional.py, adaptör src/veriatlas/adapters/eurostat_regional.py."
+
+[indicator.eu_rd_expenditure_share]
+label_tr = "Ar-Ge harcamasının GSYH'ye oranı (bölge)"
+label_en = "R&D expenditure, % of GDP (region)"
+topic = "egitim"
+unit = "percent"
+frequency = "annual"
+additive = false
+dims = ["rd_sector"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "rd_e_gerdreg, bölge GSYH'sine oran, 1995-2024 (bölge düzeyi daha kısa). Eurostat bölgesel veri tabanı (dissemination API, JSON-stat), İBBS-2 bölgeleri ve Türkiye; kaynak TÜİK Hanehalkı İşgücü Anketi, Eurostat uyumlaştırması. MEDAS'ta bölge düzeyinde sunulmuyor. Eurostat 'u' (düşük güvenilirlik, küçük örneklem; çoğunlukla doğu bölgeleri) ve 'b' (seri kırılması: 2014 ve 2021 anket yenilemeleri) bayraklı hücreler yayımlandığı gibi yüklendi. İndirme scripts/fetch_eurostat_regional.py, adaptör src/veriatlas/adapters/eurostat_regional.py."
+
+[indicator.eu_rd_personnel]
+label_tr = "Ar-Ge personeli, tam zaman eşdeğeri (bölge)"
+label_en = "R&D personnel, FTE (region)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["rd_sector", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "rd_p_persreg, tam zaman eşdeğeri, tüm meslekler, 1990-2024; bazı hücreler Eurostat tahmini ('e'). Eurostat bölgesel veri tabanı (dissemination API, JSON-stat), İBBS-2 bölgeleri ve Türkiye; kaynak TÜİK Hanehalkı İşgücü Anketi, Eurostat uyumlaştırması. MEDAS'ta bölge düzeyinde sunulmuyor. Eurostat 'u' (düşük güvenilirlik, küçük örneklem; çoğunlukla doğu bölgeleri) ve 'b' (seri kırılması: 2014 ve 2021 anket yenilemeleri) bayraklı hücreler yayımlandığı gibi yüklendi. İndirme scripts/fetch_eurostat_regional.py, adaptör src/veriatlas/adapters/eurostat_regional.py."
