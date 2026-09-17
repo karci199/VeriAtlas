@@ -110,12 +110,16 @@ def width(dataflow: str) -> int:
     path = OUT / f"dims_{dsd}.txt"
     if path.exists():
         return int(path.read_text())
-    body = get(
+    response = get(
         API + f"datastructure/{AGENCY}/{dsd}/latest",
         params={"references": "none"},
         headers=STRUCTURE,
-    ).json()
-    dimensions = body["data"]["dataStructures"][0]["dataStructureComponents"]
+    )
+    if response.status_code != 200:
+        # Still refused after the backoff: leave the dataflow for the next run rather than
+        # guessing the key's width.
+        raise TimeoutError(f"{dsd}: yapı alınamadı ({response.status_code})")
+    dimensions = response.json()["data"]["dataStructures"][0]["dataStructureComponents"]
     count = len(dimensions["dimensionList"]["dimensions"])
     path.write_text(str(count))
     time.sleep(5)
@@ -131,7 +135,12 @@ def main() -> None:
         if target.exists():
             print(f"{dataflow:34s} var", flush=True)
             continue
-        key = ".".join(["A", "TL3", areas] + [""] * (width(dataflow) - 3))
+        try:
+            key = ".".join(["A", "TL3", areas] + [""] * (width(dataflow) - 3))
+        except TimeoutError as refused:
+            print(f"{dataflow:34s} {refused}", flush=True)
+            time.sleep(PAUSE)
+            continue
         response = get(
             f"{API}data/{AGENCY},{dataflow},{version}/{key}",
             params={"format": "csvfile"},

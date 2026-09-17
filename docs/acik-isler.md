@@ -41,12 +41,20 @@ Web export: 2026-09-17 tam; 8 dosyanın boş olması hata değil (yalnız ilçe 
 | ~~BDDK FinTürk~~ | 6 tablo × 7 banka grubu 2007-2025 yüklendi (`bank_group_*`, 545 bin satır) | — |
 | ~~VAP (MKK)~~ | il portföy değeri 2005-2025 yüklendi (`investor_portfolio_value`); yatırımcı sayısı panoda yalnız ilk 10 il, alınmadı | — |
 | ~~Muhasebat~~ | il merkezi yönetim bütçe geliri ve gideri 2004-2025, mahalli idare bütçe geliri ve gideri 2006-2025 yüklendi (`central_budget_*_by_province`, `local_budget_*_by_province`, 70 bin satır); gideri ekonomik ve fonksiyonel sınıflandırmayla | — |
-| OECD bölgesel (SDMX) | TL3 = il düzeyinde iklim, arazi örtüsü, hava kirliliği, kentleşme | orta |
+| OECD bölgesel (SDMX) | ~~keşif ve ilk çekim yapıldı~~ 2026-09-17: `scripts/fetch_oecd_tl3.py`, ham veri `C:eri-ham\oecd_tl3`. Yüklendi: dış ticaret (2002-2023, ihracat+ithalat), sıcaklık/yağış/iklim gün sayıları (1981-2024), derece-gün (1981-2023). **Diskte hazır, adaptörü yok:** sağlık hizmeti (hekim/yatak/hemşire/taburcu 2000-2023 — Sağlık Bakanlığı yıllığının 2012 öncesini kapatır), sağlık durumu, sağlık riski (PM2,5 maruziyeti — model, ölçüm değil), patent (PCT 1995-2024), göç akımı (2016-2025), DSD_REG_SOC dosyaları (geniş bant, konut, güvenlik, taşıt, seçmen katılımı — beşi de aynı boyutta indi, aynı üst küme olabilir, ölçüleri ayrıştırılmalı). **TL3'te yok (404):** enerji tüketimi, elektrik üretimi, hava kirliliği, atık, turizm, eğitim, istihdam, gelir, verimlilik, kuraklık, yangın, sel. **Alınmadı:** iklim projeksiyonu ve sera gazı (ilki kullanıcı kararı, ikincisi EDGAR ızgara modeli — ölçüm değil) | — |
 | TEDAŞ | istatistikkitabi.tedas.gov.tr, il elektrik dağıtım | bilinmiyor (zaman aşımı) |
 | TKGM MEGSİS | tapu/kadastro, ham veri diskte, adaptör yok | orta |
 | Adalet Bakanlığı | adalet istatistikleri, il/adliye, PDF | zor |
 | ETKB | ulusal enerji denge 1972-2024 (il yok) | kolay |
 | Erişilemeyen | GİB (IP engeli), MEB ve İBB (robots.txt), TCDD (403), UYAP (kısıtlı), İzmir/Konya açık veri (robots `/api/`), Wikidata SPARQL (robots) | — |
+
+## Sıradaki oturumun ilk işi
+
+1. **Tam yükleme** (`uv run python scripts/load.py`, tam liste): 2026-09-17 akşamı Muhasebat'ın
+   dört ve OECD'nin beş göstergesi eklendi ama warehouse'a yazılmadı — o akşamki koşu bu
+   göstergelerden önce başlamıştı. Web export bilerek yapılmadı (kullanıcı: "şimdilik webe
+   aktarma"), yükleme bitince kullanıcıya sorulacak.
+2. OECD'nin diskte bekleyen dosyaları için adaptör (yukarıdaki listede).
 
 ## Kullanıcı kararı bekleyen
 
