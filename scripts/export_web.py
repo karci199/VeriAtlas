@@ -135,6 +135,11 @@ DATASETS = {
     "electricity_consumption_per_capita": "electricity-consumption-per-capita.csv",
     "electricity_generation": "electricity-generation.csv",
     "installed_capacity": "installed-capacity.csv",
+    # Enterprises and agricultural production values (adapters/tuik_topics).
+    "enterprises": "enterprises.csv",
+    "crop_production_value": "crop-production-value.csv",
+    "animal_product_value": "animal-product-value.csv",
+    "live_animal_value": "live-animal-value.csv",
     # Health and road accidents (adapters/tuik_topics).
     "hospitals": "hospitals.csv",
     "hospital_beds": "hospital-beds.csv",

@@ -1941,7 +1941,7 @@
           "additive": true,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yalnız Sağlık Bakanlığı.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yalnız Sağlık Bakanlığı.",
           "dims": [],
           "views": [
             "table",
@@ -1967,7 +1967,7 @@
           "additive": true,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yalnız Sağlık Bakanlığı.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yalnız Sağlık Bakanlığı.",
           "dims": [],
           "views": [
             "table",
@@ -1993,7 +1993,7 @@
           "additive": false,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. 2019-2024.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. 2019-2024.",
           "dims": [],
           "views": [
             "table",
@@ -2019,7 +2019,7 @@
           "additive": true,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
           "dims": [],
           "views": [
             "table",
@@ -2045,7 +2045,7 @@
           "additive": true,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
           "dims": [],
           "views": [
             "table",
@@ -2097,7 +2097,7 @@
           "additive": true,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
           "dims": [],
           "views": [
             "table",
@@ -2123,7 +2123,7 @@
           "additive": false,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yıllıkta tanımı verilmiyor; 2012-2016, 2018 ve 2019 yıllıklarında basılı.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yıllıkta tanımı verilmiyor; 2012-2019 yıllıklarında basılı.",
           "dims": [],
           "views": [
             "table",
@@ -2177,7 +2177,7 @@
           "additive": true,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
           "dims": [],
           "views": [
             "table",
@@ -2231,7 +2231,7 @@
           "additive": true,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
           "dims": [],
           "views": [
             "table",
@@ -2281,7 +2281,7 @@
           "additive": true,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
           "dims": [
             "care_level"
           ],
@@ -2309,7 +2309,7 @@
           "additive": true,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yıllığın tanımı: 1 veya 2 yataklı, tuvaletli ve duşlu odalardaki yataklar.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yıllığın tanımı: 1 veya 2 yataklı, tuvaletli ve duşlu odalardaki yataklar.",
           "dims": [],
           "views": [
             "table",
@@ -2335,7 +2335,7 @@
           "additive": false,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yıllığın dipnotuna göre yoğun bakım yatakları dahil değil: nitelikli ÷ (toplam − yoğun bakım); 2024 Adana 4.642 ÷ (7.203 − 1.551) = %82,1.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yıllığın dipnotuna göre yoğun bakım yatakları dahil değil: nitelikli ÷ (toplam − yoğun bakım); 2024 Adana 4.642 ÷ (7.203 − 1.551) = %82,1.",
           "dims": [],
           "views": [
             "table",
@@ -2361,7 +2361,7 @@
           "additive": true,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
           "dims": [],
           "views": [
             "table",
@@ -2442,7 +2442,7 @@
           "additive": true,
           "per_capita": true,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Toplam hekim = uzman + pratisyen + asistan, ayrıca yazılmadı.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Toplam hekim = uzman + pratisyen + asistan, ayrıca yazılmadı.",
           "dims": [
             "health_profession"
           ],
@@ -2470,7 +2470,7 @@
           "additive": true,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. İki hasta arasında yatağın boş kaldığı ortalama gün.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. İki hasta arasında yatağın boş kaldığı ortalama gün.",
           "dims": [],
           "views": [
             "table",
@@ -2496,7 +2496,7 @@
           "additive": false,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yatak başına yıllık yatan hasta.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi. Yatak başına yıllık yatan hasta.",
           "dims": [],
           "views": [
             "table",
@@ -2522,7 +2522,7 @@
           "additive": false,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
           "dims": [],
           "views": [
             "table",
@@ -2548,7 +2548,7 @@
           "additive": true,
           "per_capita": true,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
           "dims": [],
           "views": [
             "table",
@@ -2574,7 +2574,7 @@
           "additive": true,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
           "dims": [],
           "views": [
             "table",
@@ -2600,7 +2600,7 @@
           "additive": true,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2016 ve 2018-2024 (saglik.gov.tr; 2011 il tablosu basmıyor, 2017 metni okunamadı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
+          "definition": "Sağlık Bakanlığı Sağlık İstatistikleri Yıllığı 2012-2024 (saglik.gov.tr; 2011 il tablosu basmıyor; 2017 bozuk metin katmanı kelime konumlarından okundu, iller 2018 sırasıyla adlandırıldı), 'İllere Göre Bazı Sağlık Göstergeleri' tabloları; indirme scripts/fetch_saglik_yearbooks.py, adaptör src/veriatlas/adapters/saglik_yearbook.py. Her yıllık önceki yılı verir (2024 yıllığı = 2024). Tüm sektörler (Bakanlık, üniversite, özel). Sayım sütunlarında 81 il basılı Türkiye satırıyla denetlendi.",
           "dims": [],
           "views": [
             "table",
@@ -5863,6 +5863,34 @@
           "dataset": "trade-trucks.csv.gz",
           "levels": [
             "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "enterprises",
+          "label": "Girişim sayısı",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "TÜİK İş Kayıtları İstatistikleri (MEDAS), il × çalışan büyüklük grubu × NACE Rev.2 kısmı, yıllık. Gizlilik nedeniyle basılmayan hücreler (MEDAS -9,98E8) yüklenmedi; bu yüzden küçük illerde bazı kırılımlar boştur ve il toplamları kırılımlardan tam kurulamaz. O (kamu yönetimi) ve T-U kısımları kapsam dışı.",
+          "dims": [
+            "enterprise_size",
+            "nace_section"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "enterprises.csv.gz",
+          "levels": [
+            "province"
           ],
           "parts": {},
           "fine": {},
@@ -12603,6 +12631,32 @@
           "available": true
         },
         {
+          "id": "epdk_fuel_dealer_deliveries",
+          "label": "Bayiye teslim edilen akaryakıt",
+          "unit": "ton",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "EPDK Petrol Piyasası Sektör Raporu 2014, Tablo 21: 2012-2014 illere göre dağıtıcıların bayilere teslimi, tüm ürünler toplamı, ton. 2015 sonrası 'Akaryakıt satışı' (tüm yurt içi satış) serisiyle aynı ölçü değildir, bu yüzden ayrı gösterge. İstanbul Anadolu ve Avrupa satırları toplandı. İller her yıl Genel Toplam satırını tutar. Ürün kırılımı PDF'te boş hücreler kaybolduğu için alınmadı.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "epdk-fuel-dealer-deliveries.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "etkb_added_capacity",
           "label": "Devreye giren kurulu güç",
           "unit": "MW",
@@ -12716,7 +12770,7 @@
           "additive": true,
           "per_capita": false,
           "frequency": "annual",
-          "definition": "EPDK Doğal Gaz Piyasası Gelişim Raporları Tablo 8.3, 2017-2024 (milyon Sm3 olarak basılı). İletim şebekesinde dahili kullanım ve terminal işletme gazı (il yok) dışarıda.",
+          "definition": "EPDK Doğal Gaz Piyasası Gelişim Raporları Tablo 8.3, 2015-2025 (milyon Sm3 olarak basılı; 2017-2024 Word eki, 2015, 2016 ve 2025 PDF raporundan kelime konumlarıyla). İletim şebekesinde dahili kullanım ve terminal işletme gazı (il yok) dışarıda; bu yüzden il toplamı raporun ulusal tüketiminden biraz düşüktür (2025: 58,7 ve 59,1 milyar m3). 2014 raporu yalnız il toplamı basar, temin şekli kırılımı olmadığı için alınmadı.",
           "dims": [
             "gas_supply"
           ],
@@ -15805,6 +15859,32 @@
       "topic": "Bitkisel üretim",
       "indicators": [
         {
+          "id": "crop_production_value",
+          "label": "Bitkisel üretim değeri",
+          "unit": "bin TL",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "TÜİK Tarımsal Ürün Fiyatları ve Üretim Değerleri (MEDAS), il, bin TL, cari fiyatlarla (enflasyondan arındırılmamış), 1995 sonrası.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "crop-production-value.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "irrigation_sown_area",
           "label": "Kuru/sulu, 1./2. ekiliş: ekilen alan",
           "unit": "dekar",
@@ -16716,6 +16796,32 @@
           "available": true
         },
         {
+          "id": "live_animal_value",
+          "label": "Canlı hayvanlar değeri",
+          "unit": "bin TL",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "TÜİK Tarımsal Ürün Fiyatları ve Üretim Değerleri (MEDAS), canlı hayvan varlığının değeri, il, bin TL, cari fiyatlarla.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "live-animal-value.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "other_poultry",
           "label": "Diğer kümes hayvanları",
           "unit": "baş",
@@ -16788,6 +16894,32 @@
             "bar"
           ],
           "dataset": "animal-products-tonnes.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "animal_product_value",
+          "label": "Hayvansal ürünler değeri",
+          "unit": "bin TL",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "TÜİK Tarımsal Ürün Fiyatları ve Üretim Değerleri (MEDAS), hayvansal ürünlerin (süt, yumurta, yapağı, bal vb.) değeri, il, bin TL, cari fiyatlarla.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "animal-product-value.csv.gz",
           "levels": [
             "country",
             "province"
@@ -41501,6 +41633,39 @@
         "hes": "Yükseköğretim",
         "pnp": "Kâr amacı gütmeyen özel",
         "total": "Tüm sektörler"
+      }
+    },
+    "enterprise_size": {
+      "label": "Çalışan sayısı büyüklük grubu",
+      "values": {
+        "0": "0 çalışan",
+        "1_9": "1-9",
+        "10_49": "10-49",
+        "50_249": "50-249",
+        "250_plus": "250 ve üzeri"
+      }
+    },
+    "nace_section": {
+      "label": "Ekonomik faaliyet (NACE Rev.2 kısım)",
+      "values": {
+        "a": "A Tarım, ormancılık ve balıkçılık",
+        "b": "B Madencilik ve taş ocakçılığı",
+        "c": "C İmalat",
+        "d": "D Elektrik, gaz, buhar ve iklimlendirme",
+        "e": "E Su temini, kanalizasyon, atık yönetimi",
+        "f": "F İnşaat",
+        "g": "G Toptan ve perakende ticaret",
+        "h": "H Ulaştırma ve depolama",
+        "i": "I Konaklama ve yiyecek hizmeti",
+        "j": "J Bilgi ve iletişim",
+        "k": "K Finans ve sigorta",
+        "l": "L Gayrimenkul",
+        "m": "M Mesleki, bilimsel ve teknik faaliyetler",
+        "n": "N İdari ve destek hizmetleri",
+        "p": "P Eğitim",
+        "q": "Q İnsan sağlığı ve sosyal hizmet",
+        "r": "R Kültür, sanat, eğlence ve spor",
+        "s": "S Diğer hizmet faaliyetleri"
       }
     }
   },
