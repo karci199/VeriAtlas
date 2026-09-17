@@ -29,6 +29,7 @@ from .iskur import ISKUR_ADAPTERS
 from .kgm import KGM_ADAPTERS
 from .ktb import KTB_ADAPTERS
 from .mgm import MGM_ADAPTERS
+from .muhasebat import MUHASEBAT_ADAPTERS
 from .saglik_yearbook import SAGLIK_YEARBOOK_ADAPTERS
 from .sege import SEGE_ADAPTERS
 from .sgk_national import SGK_NATIONAL_ADAPTERS
@@ -145,6 +146,7 @@ ADAPTERS = {
     **DHMI_ADAPTERS,
     **DIYANET_ADAPTERS,
     **TIM_ADAPTERS,
+    **MUHASEBAT_ADAPTERS,
     **TIM_SECTOR_ADAPTERS,
     **TIM_COUNTRY_ADAPTERS,
     **ISKUR_ADAPTERS,

@@ -427,6 +427,7 @@ DATASETS.update(
                 "gsb_",
                 "afad_",
                 "eu_",
+                "budget_",
             )
         )
     }

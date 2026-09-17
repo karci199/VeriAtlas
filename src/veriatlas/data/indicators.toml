@@ -30318,3 +30318,40 @@ additive = true
 dims = ["export_country"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "Türkiye İhracatçılar Meclisi, 'İller bazında ülke ihracat rakamları', 2013-2025, bin ABD doları; her yılın Aralık dosyasındaki yılbaşından bu yana sütunu (2017-2018: Ocak-Kasım + sonraki Ocak dosyasındaki Aralık ayı). İl, ihracatçının kayıtlı olduğu ildir. Ülke adları 2019'da değişti; eski adlar 2019-2025 adına bağlandı, ayrı basılan parçalar ait oldukları ülkeye eklendi (Dubai, Abu Dabi, Şarja → BAE; Kanarya Adaları, Melilla → İspanya; Havai, Porto Riko → ABD; Kuzey İrlanda → Birleşik Krallık; Çeçenistan, Dağıstan, Tataristan, Yakutistan → Rusya; Zanzibar → Tanzanya; Monako → Fransa). Serbest bölgeler TİM'in bastığı gibi ayrı varış yeridir. Her yıl il satırları Türkiye toplamını, her ilin ülkeleri ayrı il dosyasındaki 'İhracat (TİM, il)' değerini tutar. Adaptör src/veriatlas/adapters/tim_countries.py."
+
+[topic.kamu_maliyesi]
+label_tr = "Kamu maliyesi"
+label_en = "Public finance"
+order = 42
+
+[dim.budget_measure]
+label_tr = "Bütçe ölçüsü"
+label_en = "Budget measure"
+
+[dim.budget_measure.values]
+accrued = "Tahakkuk"
+collected = "Tahsilat"
+
+[dim.revenue_line]
+label_tr = "Gelir kalemi"
+label_en = "Revenue line"
+
+[dim.revenue_line.values]
+total = "Genel bütçe gelirleri (toplam)"
+tax = "Vergi gelirleri"
+income_tax = "Gelir vergisi"
+corporate_tax = "Kurumlar vergisi"
+domestic_vat = "Dahilde alınan KDV"
+special_consumption_tax = "Özel tüketim vergisi (ÖTV)"
+motor_vehicle_tax = "Motorlu taşıtlar vergisi"
+
+[indicator.budget_revenue_by_province]
+label_tr = "Genel bütçe gelirleri (il)"
+label_en = "General budget revenue by province"
+topic = "kamu_maliyesi"
+unit = "thousand_try"
+frequency = "annual"
+additive = true
+dims = ["budget_measure", "revenue_line"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Hazine ve Maliye Bakanlığı Muhasebat Genel Müdürlüğü, 'Genel Bütçe Gelirlerinin İller İtibarıyla Tahakkuk ve Tahsilatı', 2004-2025, bin TL, cari fiyat; her il dosyasının Aralık (yıl birikimli) sayfası. Gelir, vergi dairesinin bulunduğu ile yazılır: büyük mükelleflerin vergisi merkezlerinin olduğu ilde (İstanbul, Ankara) toplanır, üretimin yapıldığı ilde değil. Merkezden tahsil edilen gelirler (00-Merkez: gümrük vb.) il değerlerine dahil değil. Tahsilat iadeleri düşülmüş nettir, bu yüzden bir kalem eksi olabilir. Kalemler: toplam, vergi gelirleri, gelir vergisi, kurumlar vergisi, dahilde alınan KDV, ÖTV, motorlu taşıtlar vergisi (2006'dan). Tahakkukta vergi toplamı ve gelir+kurumlar vergisi birbirini aşmıyor olmalı; aşan beş il-yıl kaynakta tutarsız olduğu için alınmadı (Hakkari 2007-2009 ve 2012, Sakarya 2007); 2007 Bitlis dosyasında Aralık yok. Enflasyondan arındırılmamıştır. İndirme scripts/fetch_muhasebat.py (portal API), adaptör src/veriatlas/adapters/muhasebat.py."
