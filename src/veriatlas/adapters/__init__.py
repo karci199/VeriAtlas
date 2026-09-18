@@ -11,6 +11,7 @@ from .btk_prose import BTK_PROSE_ADAPTERS
 from .btk_province import BTK_PROVINCE_ADAPTERS
 from .btk_summary import BTK_SUMMARY_ADAPTERS
 from .btk_tables import BTK_TABLE_ADAPTERS
+from .chain_stores import CHAIN_STORE_ADAPTERS
 from .dhmi import DHMI_ADAPTERS
 from .diyanet import DIYANET_ADAPTERS
 from .epdk import EPDK_ADAPTERS
@@ -154,6 +155,7 @@ ADAPTERS = {
     **DIYANET_ADAPTERS,
     **TESK_ADAPTERS,
     **TKGM_ADAPTERS,
+    **CHAIN_STORE_ADAPTERS,
     **LABOUR_PROVINCE_ADAPTERS,
     **TUIK_NAMES_ADAPTERS,
     **TIM_ADAPTERS,

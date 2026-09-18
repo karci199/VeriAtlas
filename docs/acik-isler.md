@@ -162,6 +162,20 @@ belli; eksik olan tek şey oturum. Kullanıcı tarayıcıda giriş yaptığında
 3. OECD'nin diskte bekleyen dosyaları için adaptör (yukarıdaki listede).
 4. EPİAŞ ilçe düzeyi serbest tüketici ve baraj doluluk çekicileri.
 
+## 2026-09-18 gecesi eklenenler
+
+| Kaynak | Ne girdi | Not |
+|---|---|---|
+| Zincir mağazalar | `chain_restaurants`: Burger King + McDonald's şube sayısı, ilçe ve il, 18.09.2026 anlık görüntüsü | Yöntem ve bulgular `docs/zincir-magazalar.md`. **Henüz warehouse'a yüklenmedi**, bir sonraki tam yüklemede girer |
+
+**Koordinatı olmayan üç zincir bekliyor.** BİM (13.057), Migros (3.442) ve Starbucks (804)
+ham depoda duruyor ama ilçeleri kaynağın kendi etiketinden geliyor; kayıt defteriyle
+eşleme yapılmadığı için adaptöre girmediler. PTT'nin 3.295 kaydında koordinat var,
+adaptörü yazılabilir.
+
+**TÜİK Veri Portalı dosya indirmesi** 2026-09-18 gecesi kaldığı yerden sürdürüldü
+(`scripts/fetch_tuik_portal_files.py`), 2.093/2.262.
+
 ## Kullanıcı kararı bekleyen
 
 - ~~main birleştirme~~ 2026-09-17 yapıldı; dal ve main aynı noktada.

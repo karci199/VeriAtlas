@@ -30978,3 +30978,21 @@ frequency = "annual"
 dims = ["bound"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "TÜİK Hanehalkı İşgücü Araştırması, il düzeyinde işgücüne katılma oranı, 2022-2025. İşsizlik oranıyla birlikte okunur: iş aramaktan vazgeçen nüfus işsiz sayılmaz, o yüzden düşen işsizlik tek başına iş bulmanın arttığını göstermez. Güven aralığı `bound` kırılımında."
+
+[dim.restaurant_brand]
+label_tr = "Marka"
+label_en = "Brand"
+
+[dim.restaurant_brand.values]
+burger_king = { label_tr = "Burger King", label_en = "Burger King" }
+mcdonalds = { label_tr = "McDonald's", label_en = "McDonald's" }
+
+[indicator.chain_restaurants]
+label_tr = "Zincir restoran sayısı"
+label_en = "Chain restaurants"
+topic = "reel_kesim"
+unit = "item"
+frequency = "annual"
+dims = ["restaurant_brand"]
+views = ["table", "map", "bar"]
+definition_tr = "Burger King ve McDonald's şubelerinin ilçe ve il düzeyinde sayısı, 18.09.2026 anlık görüntüsü. İlçe, şubenin adresinden değil koordinatının düştüğü ilçe sınırından belirlenir; markaların kendi il-ilçe etiketleri pazarlama coğrafyasıdır. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir, geçmişini tutmaz."
