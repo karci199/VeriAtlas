@@ -54,6 +54,7 @@ from .tuik_marital import TuikMarital
 from .tuik_median_age import TuikMedianAge
 from .tuik_migration_matrix import TuikMigrationMatrix
 from .tuik_municipal import MUNICIPAL_ADAPTERS
+from .tuik_names import TUIK_NAMES_ADAPTERS
 from .tuik_neighbourhoods import TuikNeighbourhoodPopulation
 from .tuik_origin_district import ORIGIN_ADAPTERS
 from .tuik_population import TuikPopulationAgeSex
@@ -150,6 +151,7 @@ ADAPTERS = {
     **DHMI_ADAPTERS,
     **DIYANET_ADAPTERS,
     **TESK_ADAPTERS,
+    **TUIK_NAMES_ADAPTERS,
     **TIM_ADAPTERS,
     **MUHASEBAT_ADAPTERS,
     **OECD_TL3_ADAPTERS,
