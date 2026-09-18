@@ -1,27 +1,44 @@
-r"""Burger King and McDonald's restaurants, counted by district.
+r"""Chain branches, counted by district: two burger chains and three çiğ köfte chains.
 
-Neither chain publishes a table. Both were read off their own store finders
-(`scripts/fetch_burgerking.py`, `scripts/fetch_mcdonalds.py`, raw CSVs in
-`C:\veri-ham\burgerking` and `C:\veri-ham\mcdonalds`) and both hand out a coordinate per
-restaurant, so the district is not taken from the address text — it is the district whose
-boundary the point falls in (`public/geo/districts/*.geojson`, the same polygons the atlas
-draws).
+None of them publishes a table. Each was read off its own store finder
+(`scripts/fetch_burgerking.py`, `scripts/fetch_mcdonalds.py`, `scripts/fetch_cigkofte.py`)
+and every one of them hands out a coordinate per branch, so the district is not taken from
+the address text — it is the district whose boundary the point falls in
+(`public/geo/districts/*.geojson`, the same polygons the atlas draws).
 
-Why the point and not the address: Burger King's URL carries a province and district slug,
-but it is the chain's own marketing geography — `istanbul/atasehir` for a branch that sits
-in Ümraniye, and slugs that fold `ç/ş/ı` away so `Çukurova` and `Cukurova` collide.
-McDonald's response has `city` and `town` fields and leaves both empty in every one of the
-335 rows. The coordinate is the only thing both sources agree on.
+Why the point and not the address:
 
-A restaurant whose point falls outside every district polygon is dropped, not guessed at —
-12 of 847 Burger Kings and 1 of 335 McDonald's, all of them on the coastline where the
-boundary runs inland of the shore (marinas, beach clubs, a ferry terminal). The parser
-raises if more than 3% goes missing, so a boundary file that stops matching cannot quietly
-shrink the count.
+* Burger King's URL carries a province and district slug, but it is the chain's own
+  marketing geography — `istanbul/atasehir` for a branch that sits in Ümraniye, and slugs
+  that fold `ç/ş/ı` away so `Çukurova` and `Cukurova` collide.
+* McDonald's response has `city` and `town` fields and leaves both empty in all 335 rows.
+* Ziyafet's dealer list is a Google My Maps export with no province field at all.
+* Komagene writes the same province two ways one row apart — `"ADANA"` and `"Adana"`.
 
-This is a snapshot of the day it was taken (2026-09-18), not a series: the store finders
-show what is open now and neither keeps a history. It is stored under that year and will
-be replaced, not appended to.
+The coordinate is the only thing all five sources agree on.
+
+A branch whose point falls outside every district polygon is dropped, not guessed at.
+There are two reasons a point lands outside, and both are correct to drop:
+
+* the coastline, where the boundary runs inland of the shore — marinas, beach clubs, a
+  ferry terminal (12 of 847 Burger Kings, 1 of 335 McDonald's, 9 of 3.814 Komagenes);
+* branches abroad, which the source files mix in without saying so in a separate field —
+  Oses labels 33 of its 1.670 rows `Yurtdışı`, and their coordinates are in Europe.
+
+Oses therefore loses 2,5% of its rows, close to the 3% the parser tolerates before it
+raises. That threshold is there so a boundary file that stops matching cannot quietly
+shrink the count; if Oses opens more branches abroad it will trip, and the fix then is to
+drop the foreign rows by name before placing them, not to raise the limit.
+
+**The brands are not a sample of anything.** Burger King and McDonald's are the two global
+burger chains here; Oses, Ziyafet and Komagene are three of several çiğ köfte chains, and
+the trade also runs on thousands of independent shops that no list covers. These counts
+answer "how many branches of these brands", never "how many burger or çiğ köfte shops" —
+çiğ köfte has no registry at all, which is why the chains are the only countable part of
+it. Adding the brands together is the caller's decision; the indicator keeps them apart.
+
+Snapshots, not series: store finders show what is open now and none keeps a history. Rows
+are filed under the snapshot's year and replaced, not appended to.
 """
 
 from __future__ import annotations
@@ -45,15 +62,30 @@ RETRIEVED = dt.date(2026, 9, 18)
 SNAPSHOT = dt.date(2026, 9, 18)
 VINTAGE = "2026-09"
 
-#: Brand -> its raw CSV. Both files carry `lat` and `lng` columns and nothing else we need.
+#: Brand -> where its dump lives, as a glob under `RAW`. Every file carries `lat` and
+#: `lng` columns and nothing else this adapter needs. The çiğ köfte dumps are dated in
+#: their name (`scripts/fetch_cigkofte.py` writes one per run) and the newest match wins;
+#: the two burger chains were saved once, under a fixed name.
 BRANDS = {
-    "burger_king": RAW / "burgerking" / "restaurants.csv",
-    "mcdonalds": RAW / "mcdonalds" / "restaurants.csv",
+    "burger_king": "burgerking/restaurants.csv",
+    "mcdonalds": "mcdonalds/restaurants.csv",
+    "oses": "cigkofte/oses_*.csv",
+    "ziyafet": "cigkofte/ziyafet_*.csv",
+    "komagene": "cigkofte/komagene_*.csv",
 }
 
-#: The share of a brand's restaurants allowed to fall outside every polygon. Measured at
-#: 1.4% (Burger King) and 0.3% (McDonald's) on the 2026-09-18 snapshot.
+#: The share of a brand's branches allowed to fall outside every polygon. Measured at
+#: 1,4% (Burger King) and 0,3% (McDonald's) on the 2026-09-18 snapshot.
 MAX_UNPLACED = 0.03
+
+
+def dump(brand: str) -> Path:
+    """The newest saved dump for a brand."""
+    found = sorted(RAW.glob(BRANDS[brand]))
+    if not found:
+        raise FileNotFoundError(f"{brand} dökümü yok: {RAW / BRANDS[brand]}")
+    return found[-1]
+
 
 Ring = list[list[float]]
 
@@ -118,7 +150,7 @@ def counts(brand: str) -> dict[str, int]:
     """District id -> the brand's restaurant count there."""
     # The copy, not the original: it is what the manifest's checksum describes, and it is
     # still there when the brand folder is not.
-    path = cached_copy(BRANDS[brand], FOLDER / f"{brand}.csv")
+    path = cached_copy(dump(brand), FOLDER / f"{brand}.csv")
     placed: dict[str, int] = {}
     total = unplaced = 0
     with path.open(encoding="utf-8", newline="") as handle:
@@ -145,20 +177,20 @@ def counts(brand: str) -> dict[str, int]:
 
 
 class ChainRestaurants:
-    """Restaurants of both brands, as one indicator broken down by brand."""
+    """Every brand's branches, as one indicator broken down by brand."""
 
     indicator_id = "chain_restaurants"
     source_id = SOURCE
 
     def fetch(self) -> Path:
-        """Both brands' dumps, gathered into one folder.
+        """Every brand's dump, gathered into one folder.
 
         `ingest` checksums whatever this returns, and it walks a directory to do it, so
-        returning `RAW` would hash the entire raw store — hundreds of gigabytes for two
-        files of a few hundred kilobytes. The copies are what the manifest describes.
+        returning `RAW` would hash the entire raw store — hundreds of gigabytes for a
+        few hundred kilobytes of CSV. The copies are what the manifest describes.
         """
-        for brand, path in BRANDS.items():
-            cached_copy(path, FOLDER / f"{brand}.csv")
+        for brand in BRANDS:
+            cached_copy(dump(brand), FOLDER / f"{brand}.csv")
         return FOLDER
 
     def parse(self, raw: Path) -> pl.DataFrame:

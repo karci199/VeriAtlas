@@ -67,3 +67,42 @@ Starbucks %45,9 · Burger King %41 · **PTT %0,9**. Kapsama gönüllüye bağlı
   Kocasinan, Haliliye, Diyarbakır Yenişehir, Sancaktepe — her birinde 4-5 BK, hiç
   McDonald's yok). McDonald's'ın tek başına olduğu 8 ilçenin çoğu transit/turist noktası
   (Selçuk 2, Avanos, Pozantı, Aksu). McDonald's merkezde yoğunlaşıyor, BK yayılıyor.
+
+## Çiğ köfte zincirleri (2026-09-18)
+
+Çiğ köftenin **kayıt defteri yok**. TESK esnafı sayıyor, TOBB şirketi; ikisi de çiğköfteciyi
+kuaförden ayırmıyor. Rehberler eksik sayıyor (bulurum Türkiye geneli 3.485 diyor, oysa Oses
+tek başına 1.670). Ama her zincir franchise satmak için kendi şube listesini yayımlıyor —
+yani esnaf sayılamıyor, zincir sayılabiliyor.
+
+| Marka | Şube | Koordinat | Yöntem |
+|---|---|---|---|
+| **Oses** | 1.670 | %100 | Tüm ülke tek sayfada, `gMaps.locations = [...]` JSON dizisi. İlçe, il, adres, telefon, koordinat. Tek istek |
+| **Ziyafet** | 459 | %100 | Bayi haritası **Google My Maps** gömülü; Google robots'u `/maps/d/`'yi açıkça izinli sayıyor, markanın kendi haritası `?mid=<id>&forcekml=1` ile KML iniyor. İl/ilçe alanı yok, koordinat var |
+| **Komagene** | **3.814** | %100 | SPA, `gateway.komagene.com.tr`. İki uç nokta sayfanın kendi XHR'ından okundu: `b2c/site/getwebportalilceler` `{"IlId":n}` ve `b2c/site/getsubebilgileri` `{"IlceId":"n"}`. Tarayıcısız çalışıyor, kimlikler markanın kendi kimlikleri (164 = Adana) |
+
+**Dolaşan rakamlar pazarlama.** Bir yapay zekâ özeti Komagene'yi "~3.050", Ziyafet'i "~700"
+şube diye verdi; Ziyafet'in kendi sayfası "Ağustos 2026 itibarıyla 57 ilde 455 bayi" diyor.
+Depoya yalnızca kendi çektiğimiz girer.
+
+**Bu sayılar markaların sayısıdır, sektörün değil.** `chain_restaurants` göstergesi "kaç
+çiğköfteci var" sorusunun cevabı değildir ve markalar önceden toplanmaz.
+
+### Depoya giren sayılar (2026-09-18 anlık görüntüsü)
+
+İlçe sınırına düşürüldükten sonra `chain_restaurants` göstergesindeki hâlleri:
+
+| Marka | Şube | İlçe |
+|---|---|---|
+| Komagene | 3.805 | 608 |
+| Oses | 1.629 | 416 |
+| Burger King | 835 | 257 |
+| Ziyafet | 459 | 170 |
+| McDonald's | 334 | 134 |
+
+Komagene, iki küresel hamburger zincirinin toplamının üç katı şubeye ve iki katından
+fazla ilçeye ulaşıyor: 973 ilçenin 608'inde Komagene var, 257'sinde Burger King.
+
+Sınır dışına düşen satırlar atılıyor: kıyı şeridi (Komagene 9, BK 12, McDonald's 1) ve
+**yurt dışı şubeler** — Oses 1.670 satırının 33'ünü `Yurtdışı` diye etiketliyor, koordinatları
+Avrupa'da. Oses bu yüzden %2,5 kaybediyor, adaptörün %3'lük eşiğine yakın.

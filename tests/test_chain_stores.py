@@ -9,7 +9,13 @@ from __future__ import annotations
 import polars as pl
 import pytest
 
-from veriatlas.adapters.chain_stores import BRANDS, ChainRestaurants, counts, locate
+from veriatlas.adapters.chain_stores import (
+    BRANDS,
+    ChainRestaurants,
+    counts,
+    dump,
+    locate,
+)
 
 
 @pytest.fixture(scope="module")
@@ -29,7 +35,7 @@ def test_every_brand_places_almost_all_of_its_restaurants():
     """A boundary file that stops matching would shrink the count without erroring."""
     for brand in BRANDS:
         placed = sum(counts(brand).values())
-        with BRANDS[brand].open(encoding="utf-8") as handle:
+        with dump(brand).open(encoding="utf-8") as handle:
             total = sum(1 for _ in handle) - 1
         assert placed / total > 0.95, f"{brand}: {placed}/{total}"
 
@@ -54,10 +60,7 @@ def test_province_rows_equal_their_districts(frame):
 
 
 def test_brands_are_not_added_together(frame):
-    """Both brands are present as separate rows; a caller summing them is doing that
+    """Every brand is a separate row; a caller summing them is doing that
     deliberately, the indicator never pre-sums them into a 'total' row."""
     brands = set(frame["dims"].unique())
-    assert brands == {
-        "restaurant_brand=burger_king",
-        "restaurant_brand=mcdonalds",
-    }
+    assert brands == {f"restaurant_brand={brand}" for brand in BRANDS}
