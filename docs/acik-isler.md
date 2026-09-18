@@ -127,6 +127,26 @@ kapsamında vaka analizi olarak değerlendirilir.
 | OECD TL3 (ikinci tur) | taburcu 2002-2023, kasten öldürme 2001-2024, araç hırsızlığı 2008-2024, PCT patent 1995-2024 (8 teknoloji alanı) | TÜİK'le çakışan altı ölçü bilerek alınmadı, gerekçe `adapters/oecd_tl3.py` başlığında |
 | TÜİK isim portalı | `baby_names`: il × cinsiyet × yıl ilk 30 bebek ismi, 2018-2025, 112 bin satır | tarayıcısız; `POST /Home/IlYilBebekIsimForTable`. Üç bebek eşiği ve ilk 30 kesiği yüzünden toplanmaz |
 | TKGM MEGSİS | parsel tablosu üç göstergeye ayrıldı | ham veri 2026-09-14'ten beri bekliyordu |
+| TKGM MEGSİS (ilçe + yerleşim) | aynı üç gösterge 2026-09-18 akşamı ilçe (973) ve yerleşim düzeyine indi: 43.184 alan, 345 bin satır | aşağıdaki nota bak |
+
+**TKGM yerleşim düzeyi — kadastro birimi mahalle değildir.** MEGSİS'in en alt kırılımı
+"birim", yani kadastro birimi. 50.280 birimin 42.760'ı (%85,0; parselle tartıldığında
+%85,7) kayıt defterindeki bir mahalle ya da köye oturuyor; kalanı ada eşleşmiyor ve bu bir
+okuma hatası değil:
+
+* Kadastro birimi yerleşimin onlarca yıl önce bıraktığı adı taşıyabiliyor — Elazığ Merkez'de
+  `Aşvan`, Keban barajı altında kalmış bir köy.
+* Bir yerleşim birden çok birim tutabiliyor: `İskele/karşıyaka`, `İskele/orta`. Bunlar eğik
+  çizgiden önceki ada toplanıyor, üst üste yazılmıyor.
+* Büyükşehir illerinde 6360 ile kaldırılmış köy kaydına 2026 görüntüsü yazılmıyor: yalnız
+  2013 sonrası görülen köyler eşleştirmeye giriyor.
+* `Elazığ,Merkez,Adedi` satırı kaynağın kendi tek seferlik saçmalaması (463 parsel), sistemli
+  bir ayrıştırma hatası değil.
+
+Eşleşme %75'in altına düşerse adaptör hata veriyor — kayıt defteri değişip sessizce yarım
+yüklenmesin diye. İl satırları artık ilçe dosyasından toplanıyor: il tablosu 14.09, ilçe ve
+birim dökümü 18.09 görüntüsü ve aradaki dört günde kadastro birkaç bin parsel büyümüş; tek
+görüntü tarihi kalsın diye il tablosu yalnız %1 sapma denetimi olarak kullanılıyor.
 
 **EPİAŞ (2026-09-18 sabahı denendi):** `eligible-consumer-count` doğrudan istekte **401**
 döndü — TGT, yani kullanıcının hesabıyla giriş gerekiyor. Uç noktalar ve parametreler
