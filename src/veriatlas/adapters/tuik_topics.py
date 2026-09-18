@@ -36,7 +36,13 @@ NUTS2 = re.compile(r"-(TR[0-9A-C]{2})$")
 #: dim → Turkish name as MEDAS writes it → stored id.
 NAMES = {
     # Business register, MEDAS "İş Kayıtları İstatistikleri", 2026-09-17.
-    "enterprise_size": {"0": "0", "1-9": "1_9", "10-49": "10_49", "50-249": "50_249", "250+": "250_plus"},
+    "enterprise_size": {
+        "0": "0",
+        "1-9": "1_9",
+        "10-49": "10_49",
+        "50-249": "50_249",
+        "250+": "250_plus",
+    },
     "nace_section": {
         "A. (Tarım, Ormancılık Ve Balıkçılık)": "a",
         "B. (Madencilik Ve Taş Ocakçılığı)": "b",

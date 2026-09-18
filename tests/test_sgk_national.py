@@ -6,7 +6,10 @@ HEAD = "title > title en > "
 
 
 def test_days_block_under_same_title_is_not_counted_as_people():
-    header = HEAD + "Geçici İş Göremezlik Süresi (gün) Days of Temporary Incapacity > İş Kazası > Erkek > 2"
+    header = (
+        HEAD
+        + "Geçici İş Göremezlik Süresi (gün) Days of Temporary Incapacity > İş Kazası > Erkek > 2"
+    )
     assert column(header) is None
 
 
@@ -33,7 +36,12 @@ def test_workplace_size_ignores_the_repeated_band_code():
 
 def test_occupation_major_group_needs_number_and_name():
     state = {}
-    labels = ["0-Silahlı kuvvetler", "1-Subaylar", "11-Subaylar | 110-Subaylar", "1-Yöneticiler"]
+    labels = [
+        "0-Silahlı kuvvetler",
+        "1-Subaylar",
+        "11-Subaylar | 110-Subaylar",
+        "1-Yöneticiler",
+    ]
     got = [category("", label, "occupation", state) for label in labels]
     # `1-Subaylar` sits under 0 and is not the managers' major group.
     assert got == ["0", None, None, "1"]

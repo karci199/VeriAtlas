@@ -60,7 +60,9 @@ def main(argv: list[str]) -> None:
     a, b = tablo(onceki), tablo(sonraki)
     ortak = a.keys() & b.keys()
     print(f"{onceki} -> {sonraki}")
-    print(f"ortak yerlesim: {len(ortak):,}  ({onceki}: {len(a):,} · {sonraki}: {len(b):,})")
+    print(
+        f"ortak yerlesim: {len(ortak):,}  ({onceki}: {len(a):,} · {sonraki}: {len(b):,})"
+    )
 
     for parti in partiler:
         rows, atlanan = [], 0
@@ -86,17 +88,23 @@ def main(argv: list[str]) -> None:
             continue
         agirlik = sum(r[5] for r in rows)
         ortalama = sum(r[0] * r[5] for r in rows) / agirlik
-        print(f"\n=== {parti} · {len(rows):,} yerlesim · agirlikli kayma "
-              f"{ortalama:+.1f} puan · aday yok/veri yok {atlanan:,} ===")
+        print(
+            f"\n=== {parti} · {len(rows):,} yerlesim · agirlikli kayma "
+            f"{ortalama:+.1f} puan · aday yok/veri yok {atlanan:,} ==="
+        )
         rows.sort(reverse=True)
         print(f"  en cok ARTAN {n}:")
         for fark, ad, area, p1, p2, g in rows[:n]:
-            print(f"    {ad[:22]:22} {area:16} {p1:5.1f} -> {p2:5.1f}  {fark:+6.1f}  "
-                  f"{int(g):>7,} oy")
+            print(
+                f"    {ad[:22]:22} {area:16} {p1:5.1f} -> {p2:5.1f}  {fark:+6.1f}  "
+                f"{int(g):>7,} oy"
+            )
         print(f"  en cok DUSEN {n}:")
         for fark, ad, area, p1, p2, g in rows[-n:][::-1]:
-            print(f"    {ad[:22]:22} {area:16} {p1:5.1f} -> {p2:5.1f}  {fark:+6.1f}  "
-                  f"{int(g):>7,} oy")
+            print(
+                f"    {ad[:22]:22} {area:16} {p1:5.1f} -> {p2:5.1f}  {fark:+6.1f}  "
+                f"{int(g):>7,} oy"
+            )
 
 
 if __name__ == "__main__":

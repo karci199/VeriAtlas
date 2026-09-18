@@ -41,9 +41,13 @@ def main() -> None:
             name = props.get("name_tr")
             if area_id and name:
                 table[fold(name)] = area_id
-    OUT.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    OUT.write_text(
+        json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8"
+    )
     total = sum(len(v) for v in out.values())
-    print(f"{len(out)} ilce, {total:,} mahalle -> {OUT.name} ({OUT.stat().st_size / 1e6:.1f} MB)")
+    print(
+        f"{len(out)} ilce, {total:,} mahalle -> {OUT.name} ({OUT.stat().st_size / 1e6:.1f} MB)"
+    )
 
 
 if __name__ == "__main__":

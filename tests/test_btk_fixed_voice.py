@@ -15,7 +15,9 @@ import pytest
 
 SPEC = importlib.util.spec_from_file_location(
     "btk_fixed_voice_dataset",
-    pathlib.Path(__file__).resolve().parents[1] / "scripts" / "btk_fixed_voice_dataset.py",
+    pathlib.Path(__file__).resolve().parents[1]
+    / "scripts"
+    / "btk_fixed_voice_dataset.py",
 )
 mod = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(mod)
@@ -65,6 +67,9 @@ def test_payphones_shrink_in_every_quarter_but_the_known_one():
     The single exception is 2020-1, where the count went from 55.113 to 55.779.
     Both figures were read back off the PDFs.
     """
-    rises = [b["donem"] for a, b in itertools.pairwise(ROWS)
-             if b["tt_ankesor"] >= a["tt_ankesor"]]
+    rises = [
+        b["donem"]
+        for a, b in itertools.pairwise(ROWS)
+        if b["tt_ankesor"] >= a["tt_ankesor"]
+    ]
     assert rises == ["2020-1"]

@@ -62,7 +62,9 @@ def main() -> None:
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(out, separators=(",", ":")), encoding="utf-8")
     years = sorted({y for rec in out.values() for y in rec})
-    print(f"{len(out)} ilce · {years[0]}-{years[-1]} · {OUT.stat().st_size / 1e6:.1f} MB")
+    print(
+        f"{len(out)} ilce · {years[0]}-{years[-1]} · {OUT.stat().st_size / 1e6:.1f} MB"
+    )
 
 
 if __name__ == "__main__":

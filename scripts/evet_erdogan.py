@@ -40,7 +40,9 @@ def adlar() -> tuple[dict[str, str], dict[str, str]]:
     }
     ilceler = {
         row["area_id"]: row["name_tr"]
-        for row in csv.DictReader((DATA / "areas_tr_districts.csv").open(encoding="utf-8"))
+        for row in csv.DictReader(
+            (DATA / "areas_tr_districts.csv").open(encoding="utf-8")
+        )
     }
     return iller, ilceler
 
@@ -138,8 +140,14 @@ def main(argv: list[str]) -> None:
                 f"{100 * r['evet']:>9.1f}{100 * r['erdogan']:>9.1f}{100 * r['fark']:>+8.1f}"
             )
 
-    yaz("En çok kazanılan yerler (Erdoğan, Evet'in çok üstünde)", sorted(rows, key=lambda r: -r["fark"]))
-    yaz("En çok kaybedilen yerler (Erdoğan, Evet'in altında)", sorted(rows, key=lambda r: r["fark"]))
+    yaz(
+        "En çok kazanılan yerler (Erdoğan, Evet'in çok üstünde)",
+        sorted(rows, key=lambda r: -r["fark"]),
+    )
+    yaz(
+        "En çok kaybedilen yerler (Erdoğan, Evet'in altında)",
+        sorted(rows, key=lambda r: r["fark"]),
+    )
 
     print("\n=== 2017 Evet düzeyine göre (eşit seçmenli beşte birlik dilimler)")
     sirali = sorted(rows, key=lambda r: r["evet"])
@@ -157,7 +165,9 @@ def main(argv: list[str]) -> None:
         w = sum(r["agirlik"] for r in grup)
         e = sum(r["evet"] * r["agirlik"] for r in grup) / w
         rte = sum(r["erdogan"] * r["agirlik"] for r in grup) / w
-        print(f"{i:<8}{100 * e:>10.1f}{100 * rte:>10.1f}{100 * (rte - e):>+9.1f}{len(grup):>10,}")
+        print(
+            f"{i:<8}{100 * e:>10.1f}{100 * rte:>10.1f}{100 * (rte - e):>+9.1f}{len(grup):>10,}"
+        )
 
     print("\n=== İl bazında (en az 20 yerleşim), farkın uçları")
     il_gruplari: dict[str, list[dict]] = {}
@@ -191,8 +201,14 @@ def main(argv: list[str]) -> None:
 
     gelirli = [r for r in rows if r.get("gelir")]
     if len(gelirli) > 200:
-        print(f"\n=== Farkın demografiyle ilişkisi ({len(gelirli):,} yerleşimde gelir var)")
-        for etiket, alan in [("hane geliri", "gelir"), ("lisans payı", "lisans"), ("65+ payı", "yasli")]:
+        print(
+            f"\n=== Farkın demografiyle ilişkisi ({len(gelirli):,} yerleşimde gelir var)"
+        )
+        for etiket, alan in [
+            ("hane geliri", "gelir"),
+            ("lisans payı", "lisans"),
+            ("65+ payı", "yasli"),
+        ]:
             w = sum(r["agirlik"] for r in gelirli)
             mx = sum(r[alan] * r["agirlik"] for r in gelirli) / w
             my = sum(r["fark"] * r["agirlik"] for r in gelirli) / w

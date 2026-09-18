@@ -53,9 +53,13 @@ def bayrakla(dem: dict) -> list[str]:
 
     kisi = nufus / hane
     erkek = 100 * (dem.get("PopulationMale") or 0) / nufus
-    cocuk = 100 * sum(
-        (dem.get(f"Age_{a}_{b}_Total") or 0) for a, b in ((0, 4), (5, 9), (10, 14))
-    ) / nufus
+    cocuk = (
+        100
+        * sum(
+            (dem.get(f"Age_{a}_{b}_Total") or 0) for a, b in ((0, 4), (5, 9), (10, 14))
+        )
+        / nufus
+    )
     yazlik = 100 * (dem.get("SummerResortCount") or 0) / konut if konut else 0
     yasli = 100 * (dem.get("Age_65_Total") or 0) / nufus
     # Village or town: the same ratio means different things in each, and the source says
@@ -111,8 +115,10 @@ def main(argv: list[str]) -> None:
                         f" ({dem.get('CityName', '')[:10]})"
                     )
 
-    print(f"mahalle: {toplam:,} · isaretli: {len(bayrak):,} "
-          f"(%{100 * len(bayrak) / toplam:.1f})")
+    print(
+        f"mahalle: {toplam:,} · isaretli: {len(bayrak):,} "
+        f"(%{100 * len(bayrak) / toplam:.1f})"
+    )
     for ad, adet in sayac.most_common():
         print(f"\n{ad:11} {adet:6,}  %{100 * adet / toplam:4.1f}")
         print("   " + " · ".join(ornek[ad]))

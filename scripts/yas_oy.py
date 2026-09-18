@@ -32,8 +32,21 @@ HAM = pathlib.Path(os.environ.get("VERIATLAS_HAM", "C:/veri-ham"))
 DEM = HAM / "endeksa" / "demography"
 TILES = ROOT / "public" / "tiles"
 
-BANDS = [(0, 4), (5, 9), (10, 14), (15, 19), (20, 24), (25, 29), (30, 34),
-         (35, 39), (40, 44), (45, 49), (50, 54), (55, 59), (60, 64)]
+BANDS = [
+    (0, 4),
+    (5, 9),
+    (10, 14),
+    (15, 19),
+    (20, 24),
+    (25, 29),
+    (30, 34),
+    (35, 39),
+    (40, 44),
+    (45, 49),
+    (50, 54),
+    (55, 59),
+    (60, 64),
+]
 KEYS = [f"Age_{lo}_{hi}_Total" for lo, hi in BANDS] + ["Age_65_Total"]
 
 ADAYLAR = [
@@ -103,7 +116,11 @@ def pay(row: dict, parca: str) -> float:
     gecerli = row.get("g") or sum(row.get("v", {}).values())
     if not gecerli:
         return 0.0
-    return 100 * sum(v for k, v in row.get("v", {}).items() if parca in k.upper()) / gecerli
+    return (
+        100
+        * sum(v for k, v in row.get("v", {}).items() if parca in k.upper())
+        / gecerli
+    )
 
 
 def dilimler(rows: list[dict], anahtar: str, adet: int) -> list[list[dict]]:
@@ -146,8 +163,10 @@ def main(argv: list[str]) -> None:
             row[etiket] = pay(oy, parca)
         rows.append(row)
 
-    print(f"{vote} · eslesen yerlesim: {len(rows):,} / {len(yaslar):,} Endeksa · "
-          f"gecerli oy: {int(sum(r['gecerli'] for r in rows)):,}")
+    print(
+        f"{vote} · eslesen yerlesim: {len(rows):,} / {len(yaslar):,} Endeksa · "
+        f"gecerli oy: {int(sum(r['gecerli'] for r in rows)):,}"
+    )
     print(f"olcut: {baslik}\n")
     basliklar = " ".join(f"{e:>14}" for e, _ in ADAYLAR)
     print(f"{'dilim':>5} {baslik:>13} {'yerlesim':>9} {'gecerli oy':>12} {basliklar}")
@@ -155,7 +174,8 @@ def main(argv: list[str]) -> None:
         gecerli = sum(r["gecerli"] for r in grup)
         orta = sum(r[anahtar] * r["gecerli"] for r in grup) / gecerli
         paylar = " ".join(
-            f"{sum(r[e] * r['gecerli'] for r in grup) / gecerli:13.1f}%" for e, _ in ADAYLAR
+            f"{sum(r[e] * r['gecerli'] for r in grup) / gecerli:13.1f}%"
+            for e, _ in ADAYLAR
         )
         print(f"{index:5} {orta:13.1f} {len(grup):9,} {int(gecerli):12,} {paylar}")
 

@@ -56,8 +56,12 @@ def indicator_rows() -> list[tuple]:
 
 def area_rows() -> list[tuple]:
     rows: dict[str, tuple] = {}
-    for name in ("areas_tr.csv", "areas_tr_districts.csv", "areas_tr_neighbourhoods.csv",
-                 "areas_tr_villages.csv"):
+    for name in (
+        "areas_tr.csv",
+        "areas_tr_districts.csv",
+        "areas_tr_neighbourhoods.csv",
+        "areas_tr_villages.csv",
+    ):
         path = DATA / name
         if not path.exists():
             continue
@@ -79,7 +83,9 @@ def election_kind(key: str) -> tuple[str, int]:
 
 def election_parquet(con: duckdb.DuckDBPyConnection) -> int:
     """Stream every election file into one parquet, then into the table."""
-    votes = [v["anahtar"] for v in json.loads((TILES / "secimler.json").read_text("utf-8"))]
+    votes = [
+        v["anahtar"] for v in json.loads((TILES / "secimler.json").read_text("utf-8"))
+    ]
     # Cached next to the warehouse: writing it takes minutes, loading it seconds, and a
     # failed SQL step should not cost the whole pass again.
     out = WAREHOUSE.parent / "election-cache.csv"
@@ -88,13 +94,19 @@ def election_parquet(con: duckdb.DuckDBPyConnection) -> int:
     if out.exists() and out.stat().st_mtime > newest:
         print("secim onbellegi kullaniliyor:", out)
         votes = []
-    with (open(out.with_suffix(".tmp"), "w", encoding="utf-8", newline="")
-          if votes else open(__import__("os").devnull, "w")) as handle:
+    with (
+        open(out.with_suffix(".tmp"), "w", encoding="utf-8", newline="")
+        if votes
+        else open(__import__("os").devnull, "w")
+    ) as handle:
         writer = csv.writer(handle)
         for vote in votes:
             kind, year = election_kind(vote)
             files = [(TILES / f"secim-{vote}-ilce.json", "district")]
-            files += [(p, "neighbourhood") for p in sorted(TILES.glob(f"secim-{vote}-mahalle-TR-*.json"))]
+            files += [
+                (p, "neighbourhood")
+                for p in sorted(TILES.glob(f"secim-{vote}-mahalle-TR-*.json"))
+            ]
             for path, level in files:
                 for key, row in json.loads(path.read_text("utf-8")).items():
                     if row.get("eski"):
@@ -102,9 +114,22 @@ def election_parquet(con: duckdb.DuckDBPyConnection) -> int:
                     # An unmatched settlement is keyed `district~name`: kept, no area id.
                     area = None if "~" in key else key
                     for choice, n in (row.get("v") or {}).items():
-                        writer.writerow([vote, kind, year, level, area, key.split("~")[0][:9],
-                                         row.get("ad", ""), row.get("k", 0), row.get("o", 0),
-                                         row.get("g", 0), choice, n])
+                        writer.writerow(
+                            [
+                                vote,
+                                kind,
+                                year,
+                                level,
+                                area,
+                                key.split("~")[0][:9],
+                                row.get("ad", ""),
+                                row.get("k", 0),
+                                row.get("o", 0),
+                                row.get("g", 0),
+                                choice,
+                                n,
+                            ]
+                        )
                         count += 1
     if votes:
         out.with_suffix(".tmp").replace(out)
@@ -170,7 +195,9 @@ def main() -> None:
         " topic_label varchar, unit varchar, unit_label varchar, decimals int,"
         " frequency varchar, dims varchar)"
     )
-    con.executemany("insert into indicator values (?,?,?,?,?,?,?,?,?)", indicator_rows())
+    con.executemany(
+        "insert into indicator values (?,?,?,?,?,?,?,?,?)", indicator_rows()
+    )
     con.execute("drop table if exists area")
     con.execute(
         "create table area (area_id varchar, area_level varchar, name_tr varchar,"
@@ -180,7 +207,9 @@ def main() -> None:
     n = election_parquet(con)
     con.execute(VIEWS)
     for table in ("fact", "indicator", "area", "election"):
-        print(f"{table:10} {con.execute(f'select count(*) from {table}').fetchone()[0]:>12,}")
+        print(
+            f"{table:10} {con.execute(f'select count(*) from {table}').fetchone()[0]:>12,}"
+        )
     print("secim satiri yazildi:", f"{n:,}")
     con.close()
 

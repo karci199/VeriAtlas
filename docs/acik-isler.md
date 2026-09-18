@@ -42,8 +42,8 @@ Web export: 2026-09-17 tam; 8 dosyanın boş olması hata değil (yalnız ilçe 
 | ~~VAP (MKK)~~ | il portföy değeri 2005-2025 yüklendi (`investor_portfolio_value`); yatırımcı sayısı panoda yalnız ilk 10 il, alınmadı | — |
 | ~~Muhasebat~~ | il merkezi yönetim bütçe geliri ve gideri 2004-2025, mahalli idare bütçe geliri ve gideri 2006-2025 yüklendi (`central_budget_*_by_province`, `local_budget_*_by_province`, 70 bin satır); gideri ekonomik ve fonksiyonel sınıflandırmayla | — |
 | OECD bölgesel (SDMX) | ~~keşif ve ilk çekim yapıldı~~ 2026-09-17: `scripts/fetch_oecd_tl3.py`, ham veri `C:eri-ham\oecd_tl3`. Yüklendi: dış ticaret (2002-2023, ihracat+ithalat), sıcaklık/yağış/iklim gün sayıları (1981-2024), derece-gün (1981-2023). **Diskte hazır, adaptörü yok:** sağlık hizmeti (hekim/yatak/hemşire/taburcu 2000-2023 — Sağlık Bakanlığı yıllığının 2012 öncesini kapatır), sağlık durumu, sağlık riski (PM2,5 maruziyeti — model, ölçüm değil), patent (PCT 1995-2024), göç akımı (2016-2025), DSD_REG_SOC dosyaları (geniş bant, konut, güvenlik, taşıt, seçmen katılımı — beşi de aynı boyutta indi, aynı üst küme olabilir, ölçüleri ayrıştırılmalı). **TL3'te yok (404):** enerji tüketimi, elektrik üretimi, hava kirliliği, atık, turizm, eğitim, istihdam, gelir, verimlilik, kuraklık, yangın, sel. **Alınmadı:** iklim projeksiyonu ve sera gazı (ilki kullanıcı kararı, ikincisi EDGAR ızgara modeli — ölçüm değil) | — |
-| TEDAŞ | istatistikkitabi.tedas.gov.tr, il elektrik dağıtım | bilinmiyor (zaman aşımı) |
-| TKGM MEGSİS | tapu/kadastro, ham veri diskte, adaptör yok | orta |
+| TEDAŞ | istatistikkitabi.tedas.gov.tr, il elektrik dağıtım | **üyelik şart** (2026-09-18): kitap listesi bile girişin arkasında, "Kitap Listesini Görmeniz için Lütfen Giriş Yapın". Hesap açmak kullanıcının kararı |
+| ~~TKGM MEGSİS~~ | 2026-09-18 yüklendi: `cadastral_parcels`, `..._by_approval`, `..._by_coordinate` (81 il, 2026-09-14 anlık görüntüsü) | — |
 | Adalet Bakanlığı | adalet istatistikleri, il/adliye, PDF | zor |
 | ETKB | ulusal enerji denge 1972-2024 (il yok) | kolay |
 | Erişilemeyen | GİB (IP engeli), MEB ve İBB (robots.txt), TCDD (403), UYAP (kısıtlı), İzmir/Konya açık veri (robots `/api/`), Wikidata SPARQL (robots) | — |
@@ -119,6 +119,18 @@ kapsamında vaka analizi olarak değerlendirilir.
 - **Veri olmayanlar**: PerkBank (sentetik banka verisi), turkiye-iban (banka kodu, yer boyutu yok),
   ankageo.com (CBS yazılım satıcısı), otomobil fiyat listesi (tarihsiz), genel "veri seti listesi"
   yazıları (upGrad, gencbeyinler, binyaprak — Kaggle/UCI türü, Türkiye il verisi yok).
+
+## 2026-09-18 sabahı eklenenler ve kapananlar
+
+| Kaynak | Ne girdi | Not |
+|---|---|---|
+| OECD TL3 (ikinci tur) | taburcu 2002-2023, kasten öldürme 2001-2024, araç hırsızlığı 2008-2024, PCT patent 1995-2024 (8 teknoloji alanı) | TÜİK'le çakışan altı ölçü bilerek alınmadı, gerekçe `adapters/oecd_tl3.py` başlığında |
+| TÜİK isim portalı | `baby_names`: il × cinsiyet × yıl ilk 30 bebek ismi, 2018-2025, 112 bin satır | tarayıcısız; `POST /Home/IlYilBebekIsimForTable`. Üç bebek eşiği ve ilk 30 kesiği yüzünden toplanmaz |
+| TKGM MEGSİS | parsel tablosu üç göstergeye ayrıldı | ham veri 2026-09-14'ten beri bekliyordu |
+
+**EPİAŞ (2026-09-18 sabahı denendi):** `eligible-consumer-count` doğrudan istekte **401**
+döndü — TGT, yani kullanıcının hesabıyla giriş gerekiyor. Uç noktalar ve parametreler
+belli; eksik olan tek şey oturum. Kullanıcı tarayıcıda giriş yaptığında çekim yapılabilir.
 
 ## Sıradaki oturumun ilk işi
 

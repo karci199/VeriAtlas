@@ -74,7 +74,8 @@ def test_penetration_matches_its_own_inputs(row):
         assert row["nufus"] is None or row["toplam"] is None
         return
     assert row["yaygin_m2m_haric"] == pytest.approx(
-        100 * row["gercek_kullanici"] / row["nufus"], abs=0.05)
+        100 * row["gercek_kullanici"] / row["nufus"], abs=0.05
+    )
 
 
 def test_published_alternative_rate_is_reproduced():

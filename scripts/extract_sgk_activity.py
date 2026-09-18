@@ -137,7 +137,8 @@ def main() -> None:
                         c
                         for r in rows[:8]
                         for c in r
-                        if isinstance(c, str) and re.match(r"\s*tablo", c, re.IGNORECASE)
+                        if isinstance(c, str)
+                        and re.match(r"\s*tablo", c, re.IGNORECASE)
                     ),
                     "",
                 )

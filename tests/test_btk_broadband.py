@@ -12,7 +12,9 @@ import pytest
 
 SPEC = importlib.util.spec_from_file_location(
     "btk_broadband_dataset",
-    pathlib.Path(__file__).resolve().parents[1] / "scripts" / "btk_broadband_dataset.py",
+    pathlib.Path(__file__).resolve().parents[1]
+    / "scripts"
+    / "btk_broadband_dataset.py",
 )
 mod = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(mod)
@@ -22,7 +24,14 @@ ROWS = mod.build()
 
 @pytest.mark.parametrize("row", ROWS, ids=lambda r: r["donem"])
 def test_components_match_reported_total(row):
-    parts = ("xdsl", "kablo", "kablosuz_sabit", "diger", "mobil_bilgisayar", "mobil_cep")
+    parts = (
+        "xdsl",
+        "kablo",
+        "kablosuz_sabit",
+        "diger",
+        "mobil_bilgisayar",
+        "mobil_cep",
+    )
     total = sum(row[k] or 0 for k in parts) + (row["fiber"] or 0)
     assert total == row["toplam"]
 

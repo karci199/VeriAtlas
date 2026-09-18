@@ -43,7 +43,9 @@ def adlar() -> tuple[dict[str, str], dict[str, str]]:
     }
     ilceler = {
         row["area_id"]: row["name_tr"]
-        for row in csv.DictReader((DATA / "areas_tr_districts.csv").open(encoding="utf-8"))
+        for row in csv.DictReader(
+            (DATA / "areas_tr_districts.csv").open(encoding="utf-8")
+        )
     }
     return iller, ilceler
 
@@ -88,7 +90,9 @@ def yaz(baslik: str, rows: list[dict], alan: str, n: int, tersten: bool) -> None
     olan = [r for r in rows if r[alan]]
     olan.sort(key=lambda r: basina(r, alan), reverse=tersten)
     print(f"\n=== {baslik}")
-    print(f"{'İlçe':17}{'İl':13}{'Nüfus':>10}{'Adet':>7}{'Kişi/adet':>11}{'Hane geliri':>13}")
+    print(
+        f"{'İlçe':17}{'İl':13}{'Nüfus':>10}{'Adet':>7}{'Kişi/adet':>11}{'Hane geliri':>13}"
+    )
     for row in olan[:n]:
         print(
             f"{row['ilce'][:16]:17}{row['il'][:12]:13}{row['nufus']:>10,}"
@@ -123,7 +127,10 @@ def main(argv: list[str]) -> None:
             print(f"\n{etiket} hiç görünmeyen ilçeler ({len(yok)}):")
             print(
                 "  "
-                + ", ".join(f"{r['ilce']} ({r['il']})" for r in sorted(yok, key=lambda r: -r["nufus"])[:12])
+                + ", ".join(
+                    f"{r['ilce']} ({r['il']})"
+                    for r in sorted(yok, key=lambda r: -r["nufus"])[:12]
+                )
                 + ("…" if len(yok) > 12 else "")
             )
 
@@ -136,7 +143,8 @@ def main(argv: list[str]) -> None:
         mx = sum(r["gelir"] * r["nufus"] for r in olan) / w
         my = sum((r[alan] / r["nufus"] * 10000) * r["nufus"] for r in olan) / w
         sxy = sum(
-            r["nufus"] * (r["gelir"] - mx) * (r[alan] / r["nufus"] * 10000 - my) for r in olan
+            r["nufus"] * (r["gelir"] - mx) * (r[alan] / r["nufus"] * 10000 - my)
+            for r in olan
         )
         sxx = sum(r["nufus"] * (r["gelir"] - mx) ** 2 for r in olan)
         syy = sum(r["nufus"] * (r[alan] / r["nufus"] * 10000 - my) ** 2 for r in olan)

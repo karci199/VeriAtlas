@@ -20,8 +20,21 @@ import sys
 
 HAM = pathlib.Path("C:/veri-ham/endeksa/demography")
 
-BANDS = [(0, 4), (5, 9), (10, 14), (15, 19), (20, 24), (25, 29), (30, 34),
-         (35, 39), (40, 44), (45, 49), (50, 54), (55, 59), (60, 64)]
+BANDS = [
+    (0, 4),
+    (5, 9),
+    (10, 14),
+    (15, 19),
+    (20, 24),
+    (25, 29),
+    (30, 34),
+    (35, 39),
+    (40, 44),
+    (45, 49),
+    (50, 54),
+    (55, 59),
+    (60, 64),
+]
 KEYS = [f"Age_{lo}_{hi}_Total" for lo, hi in BANDS] + ["Age_65_Total"]
 
 
@@ -60,10 +73,19 @@ def main(argv: list[str]) -> None:
             if age is None:
                 acik_uclu += 1
                 continue
-            rows.append((age, hood.get("name_tr", "?"), dem.get("CountyName", "?"),
-                         dem.get("CityName", "?"), int(total)))
+            rows.append(
+                (
+                    age,
+                    hood.get("name_tr", "?"),
+                    dem.get("CountyName", "?"),
+                    dem.get("CityName", "?"),
+                    int(total),
+                )
+            )
 
-    print(f"mahalle: {len(rows):,} (nufus >= {floor}) · 65+ bandinda kalan: {acik_uclu}")
+    print(
+        f"mahalle: {len(rows):,} (nufus >= {floor}) · 65+ bandinda kalan: {acik_uclu}"
+    )
     print(f"ulke geneli ortanca yas (ayni yontemle): {median_age(country):.1f}")
 
     rows.sort()

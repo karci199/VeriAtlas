@@ -52,16 +52,28 @@ ANNUAL = (
 
 # Bar labels off "Sekil 4-2", in millions, from the 2026-1 report.
 QUARTERLY = (
-    ("2024-1", 9.5), ("2024-2", 9.7), ("2024-3", 10.0), ("2024-4", 10.4),
-    ("2025-1", 10.8), ("2025-2", 11.2), ("2025-3", 11.4), ("2025-4", 11.9),
+    ("2024-1", 9.5),
+    ("2024-2", 9.7),
+    ("2024-3", 10.0),
+    ("2024-4", 10.4),
+    ("2025-1", 10.8),
+    ("2025-2", 11.2),
+    ("2025-3", 11.4),
+    ("2025-4", 11.9),
     ("2026-1", 12.3),
 )
 
 # Mobile-computer internet subscribers, as printed in the same summary tables.
 # Listed only for the years the "kisi" row actually subtracts them (2012-2020).
 MOBILE_COMPUTER = {
-    2012: 1_674_533, 2013: 1_701_014, 2014: 1_354_746, 2015: 1_597_606,
-    2016: 1_237_749, 2017: 828_369, 2018: 655_999, 2019: 723_354,
+    2012: 1_674_533,
+    2013: 1_701_014,
+    2014: 1_354_746,
+    2015: 1_597_606,
+    2016: 1_237_749,
+    2017: 828_369,
+    2018: 655_999,
+    2019: 723_354,
     2020: 490_313,
 }
 
@@ -72,15 +84,30 @@ REAL_USERS_2026Q1 = 85_960_875
 # are absent: no report footnotes them, and no outside figure is substituted, so
 # those two years carry no penetration.
 NUFUS = {
-    2012: 75_627_384, 2013: 76_667_864, 2014: 77_695_904, 2015: 78_741_053,
-    2016: 79_814_871, 2017: 80_810_525, 2019: 83_154_997, 2020: 83_614_362,
-    2021: 84_680_273, 2022: 85_279_553, 2023: 85_372_377, 2024: 85_664_944,
+    2012: 75_627_384,
+    2013: 76_667_864,
+    2014: 77_695_904,
+    2015: 78_741_053,
+    2016: 79_814_871,
+    2017: 80_810_525,
+    2019: 83_154_997,
+    2020: 83_614_362,
+    2021: 84_680_273,
+    2022: 85_279_553,
+    2023: 85_372_377,
+    2024: 85_664_944,
     2025: 86_092_168,
 }
 # Population excluding ages 0-9, the base BTK uses for its alternative rate.
 NUFUS_0_9_HARIC = {
-    2013: 64_190_215, 2015: 66_021_818, 2019: 70_348_822, 2020: 70_966_062,
-    2021: 72_142_462, 2022: 72_980_856, 2023: 73_457_837, 2024: 74_197_473,
+    2013: 64_190_215,
+    2015: 66_021_818,
+    2019: 70_348_822,
+    2020: 70_966_062,
+    2021: 72_142_462,
+    2022: 72_980_856,
+    2023: 73_457_837,
+    2024: 74_197_473,
     2025: 75_079_696,
 }
 
@@ -90,22 +117,33 @@ def build_annual():
     rows = [dict(zip(keys, r)) for r in ANNUAL]
     for row in rows:
         toplam, yil = row["toplam"], row["yil"]
-        row["m2m_pay"] = (None if toplam is None
-                          else round(100 * row["m2m"] / toplam, 2))
-        row["kisi_formulu"] = ("toplam - m2m - mobil_bilgisayar"
-                               if yil in MOBILE_COMPUTER else "toplam - m2m")
+        row["m2m_pay"] = None if toplam is None else round(100 * row["m2m"] / toplam, 2)
+        row["kisi_formulu"] = (
+            "toplam - m2m - mobil_bilgisayar"
+            if yil in MOBILE_COMPUTER
+            else "toplam - m2m"
+        )
         # BTK's own alternative rate divides total-minus-M2M by population; the
         # "kisi" row is not used, since for 2012-2020 it takes out one item more.
         gercek = None if toplam is None else toplam - row["m2m"]
         row["gercek_kullanici"] = gercek
         nufus, nufus9 = NUFUS.get(yil), NUFUS_0_9_HARIC.get(yil)
         row["nufus"] = nufus
-        row["yaygin_m2m_dahil"] = (None if (toplam is None or nufus is None)
-                                   else round(100 * toplam / nufus, 1))
-        row["yaygin_m2m_haric"] = (None if (gercek is None or nufus is None)
-                                   else round(100 * gercek / nufus, 1))
-        row["yaygin_m2m_ve_0_9_haric"] = (None if (gercek is None or nufus9 is None)
-                                          else round(100 * gercek / nufus9, 1))
+        row["yaygin_m2m_dahil"] = (
+            None
+            if (toplam is None or nufus is None)
+            else round(100 * toplam / nufus, 1)
+        )
+        row["yaygin_m2m_haric"] = (
+            None
+            if (gercek is None or nufus is None)
+            else round(100 * gercek / nufus, 1)
+        )
+        row["yaygin_m2m_ve_0_9_haric"] = (
+            None
+            if (gercek is None or nufus9 is None)
+            else round(100 * gercek / nufus9, 1)
+        )
     return rows
 
 
@@ -124,8 +162,22 @@ def write(rows, name, fields):
 
 
 if __name__ == "__main__":
-    write(build_annual(), "m2m_yillik.csv",
-          ("yil", "m2m", "toplam", "gercek_kullanici", "kisi", "nufus", "m2m_pay",
-           "yaygin_m2m_dahil", "yaygin_m2m_haric", "yaygin_m2m_ve_0_9_haric",
-           "kisi_formulu", "kaynak_rapor"))
+    write(
+        build_annual(),
+        "m2m_yillik.csv",
+        (
+            "yil",
+            "m2m",
+            "toplam",
+            "gercek_kullanici",
+            "kisi",
+            "nufus",
+            "m2m_pay",
+            "yaygin_m2m_dahil",
+            "yaygin_m2m_haric",
+            "yaygin_m2m_ve_0_9_haric",
+            "kisi_formulu",
+            "kaynak_rapor",
+        ),
+    )
     write(build_quarterly(), "m2m_ceyreklik.csv", ("donem", "m2m_milyon"))

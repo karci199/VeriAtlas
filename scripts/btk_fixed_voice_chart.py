@@ -9,8 +9,18 @@ RAW = ROOT / "raw" / "btk"
 TEMPLATE = pathlib.Path(__file__).with_name("btk_sabit_ses_template.html")
 DEST = ROOT / "web" / "btk-sabit-ses.html"
 
-NUMERIC = ("tt_pstn", "tt_isdn", "tt_ankesor", "sth_pstn", "sth_isdn", "sth_voip",
-           "tt_toplam", "sth_toplam", "bilesen_toplami", "toplam")
+NUMERIC = (
+    "tt_pstn",
+    "tt_isdn",
+    "tt_ankesor",
+    "sth_pstn",
+    "sth_isdn",
+    "sth_voip",
+    "tt_toplam",
+    "sth_toplam",
+    "bilesen_toplami",
+    "toplam",
+)
 
 
 def load():
@@ -22,8 +32,11 @@ def load():
                 row[key] = int(r[key]) if r[key] else None
             # Difference between the printed total and the cells beside it, so the
             # page can flag the quarters where the report does not add up.
-            row["gap"] = (None if row["bilesen_toplami"] is None
-                          else row["toplam"] - row["bilesen_toplami"])
+            row["gap"] = (
+                None
+                if row["bilesen_toplami"] is None
+                else row["toplam"] - row["bilesen_toplami"]
+            )
             rows.append(row)
     return rows
 

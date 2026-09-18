@@ -21,8 +21,24 @@ What is loaded, and what it is:
   against 95.9 billion dollars, Kocaeli and Bursa the other way round. Imports have no
   counterpart in the repository.
 
+* Hospital discharges (2002-2023), patients leaving hospital in the year. TÜİK publishes
+  beds and staff by province but not discharges, so this has no counterpart here.
+* Homicide (2001-2024, per 100,000 people — OECD publishes no count) and vehicle theft
+  (2008-2024, cases). The first provincial crime series in the repository.
+* PCT patent applications by the inventor's province (1995-2024), whole and split into
+  seven technology fields. Fractional counts: a patent with inventors in two provinces is
+  split between them, so the values are not whole numbers.
+
 The `*_DIFF_1981_2010` measures are differences from the 1981-2010 average and are not
 written: they follow from the level series.
+
+Left out because TÜİK already feeds the same indicator, at the same province level and
+usually over more years: doctors, nurses and beds (`health_staff`, `hospital_beds`,
+2002-2024 against OECD's 2000/2002-2023), migration (`migration_in`/`out`/`net`,
+2008-2025 against 2016-2025), motor vehicles (`vehicles_by_fuel` and the rest, with a
+depth OECD does not have), life expectancy and infant mortality, and voter turnout, which
+the election tables hold at ballot-box level. PM2.5 exposure is left out for a different
+reason: it is a model surface, not a measurement.
 """
 
 from __future__ import annotations
@@ -48,6 +64,17 @@ CLIMATE_DAYS = {
 }
 DEGREE_DAYS = {"HDD": "heating", "CDD": "cooling"}
 TRADE = {"X": "exports", "M": "imports"}
+#: OECD's technology fields for patents; `_T` is every field together
+PATENT_TECHNOLOGY = {
+    "_T": "total",
+    "AI": "ai",
+    "ICT": "ict",
+    "BIOTECH": "biotech",
+    "PHARMA": "pharma",
+    "MEDICAL": "medical",
+    "NANOTECH": "nanotech",
+    "ENV_TECH": "environmental",
+}
 
 
 def provinces() -> dict[str, str]:
@@ -198,10 +225,72 @@ class ForeignTrade(OecdFrame):
         )
 
 
+class HospitalDischarges(OecdFrame):
+    """Patients discharged from hospital in the year."""
+
+    indicator_id = "hospital_discharges"
+    unit = "discharge"
+
+    def rows(self) -> pl.DataFrame:
+        return read(
+            "DSD_REG_HEALTH_DF_CARE", {"H_DISCHARGE_T": ""}, unit="DSC"
+        ).with_columns(pl.lit("").alias("dims"))
+
+
+class HomicideRate(OecdFrame):
+    """Homicides per 100,000 people. OECD publishes the rate only, not the count."""
+
+    indicator_id = "homicide_rate"
+    unit = "per_100k_people"
+
+    def rows(self) -> pl.DataFrame:
+        return read("DSD_REG_SOC_DF_VEH", {"HOMIC": ""}, unit="CS_10P5PS").with_columns(
+            pl.lit("").alias("dims")
+        )
+
+
+class VehicleThefts(OecdFrame):
+    """Stolen vehicles reported in the year, as cases."""
+
+    indicator_id = "vehicle_thefts"
+    unit = "case"
+
+    def rows(self) -> pl.DataFrame:
+        return read("DSD_REG_SOC_DF_VEH", {"VEH_THEFT": ""}, unit="CS").with_columns(
+            pl.lit("").alias("dims")
+        )
+
+
+class PatentApplications(OecdFrame):
+    """PCT applications counted where the inventor lives, by application year.
+
+    Fractional: an application with inventors in two provinces gives half to each, so the
+    province total is not a whole number. The priority-year series stops a year earlier
+    and is left out. `patent_technology=total` is every field, not the sum of the seven
+    named ones, which overlap.
+    """
+
+    indicator_id = "patent_applications"
+    unit = "patent"
+
+    def rows(self) -> pl.DataFrame:
+        frame = read("DSD_REG_INNOV_DF_PAT", {"PCT_PAT": ""}, unit="PATN")
+        return frame.filter(pl.col("DATE_TYPE") == "APPLICATION").with_columns(
+            (
+                "patent_technology="
+                + pl.col("OECD_TECHNOLOGY_PATENT").replace_strict(PATENT_TECHNOLOGY)
+            ).alias("dims")
+        )
+
+
 OECD_TL3_ADAPTERS = {
     "oecd_temperature": Temperature,
     "oecd_precipitation": Precipitation,
     "oecd_climate_days": ClimateDays,
     "oecd_degree_days": DegreeDays,
     "foreign_trade_by_province": ForeignTrade,
+    "hospital_discharges": HospitalDischarges,
+    "homicide_rate": HomicideRate,
+    "vehicle_thefts": VehicleThefts,
+    "patent_applications": PatentApplications,
 }

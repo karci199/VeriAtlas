@@ -21,7 +21,12 @@ BASE_YEAR = 2025
 # Fourth-quarter blended mobile ARPU, lira per month, as reported in each year's
 # executive summary. Years without a clean reading are left out rather than guessed.
 MOBILE_ARPU_Q4 = {
-    2015: 24.5, 2016: 27.13, 2022: 70.4, 2023: 130.6, 2024: 230.2, 2025: 300.2,
+    2015: 24.5,
+    2016: 27.13,
+    2022: 70.4,
+    2023: 130.6,
+    2024: 230.2,
+    2025: 300.2,
 }
 
 
@@ -45,7 +50,10 @@ def main():
     for y in sorted(revenue):
         r = revenue[y]
         row = {"yil": y, "usd_try": fx[y], "tufe": cpi[y], "abd_tufe": uscpi[y]}
-        for src, label in (("buyuk4_gelir_tl", "buyuk4"), ("sektor_gelir_tl", "sektor")):
+        for src, label in (
+            ("buyuk4_gelir_tl", "buyuk4"),
+            ("sektor_gelir_tl", "sektor"),
+        ):
             if not r[src]:
                 continue
             tl = float(r[src])
@@ -55,25 +63,48 @@ def main():
             row[label + "_usd_2025"] = deflate_usd(tl / fx[y], y)
         out.append(row)
 
-    cols = ["yil", "usd_try", "tufe", "abd_tufe",
-            "buyuk4_tl", "buyuk4_usd", "buyuk4_tl_2025", "buyuk4_usd_2025",
-            "sektor_tl", "sektor_usd", "sektor_tl_2025", "sektor_usd_2025"]
+    cols = [
+        "yil",
+        "usd_try",
+        "tufe",
+        "abd_tufe",
+        "buyuk4_tl",
+        "buyuk4_usd",
+        "buyuk4_tl_2025",
+        "buyuk4_usd_2025",
+        "sektor_tl",
+        "sektor_usd",
+        "sektor_tl_2025",
+        "sektor_usd_2025",
+    ]
     dest = RAW / "btk" / "sektor_gelir_reel.csv"
     with open(dest, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=cols)
         w.writeheader()
         for row in out:
-            w.writerow({c: (round(row[c], 4) if isinstance(row.get(c), float) else row.get(c, ""))
-                        for c in cols})
+            w.writerow(
+                {
+                    c: (
+                        round(row[c], 4)
+                        if isinstance(row.get(c), float)
+                        else row.get(c, "")
+                    )
+                    for c in cols
+                }
+            )
 
     def block(title, prefix):
         print(title)
-        print("yil   nominal mlr TL   cari mlr $   2025 fiyat. mlr TL   2025 dolariyla mlr $")
+        print(
+            "yil   nominal mlr TL   cari mlr $   2025 fiyat. mlr TL   2025 dolariyla mlr $"
+        )
         for row in out:
             if prefix + "_tl" not in row:
                 continue
-            print(f"{row['yil']} {row[prefix+'_tl']/1e9:13.1f} {row[prefix+'_usd']/1e9:12.2f}"
-                  f" {row[prefix+'_tl_2025']/1e9:18.1f} {row[prefix+'_usd_2025']/1e9:20.2f}")
+            print(
+                f"{row['yil']} {row[prefix + '_tl'] / 1e9:13.1f} {row[prefix + '_usd'] / 1e9:12.2f}"
+                f" {row[prefix + '_tl_2025'] / 1e9:18.1f} {row[prefix + '_usd_2025'] / 1e9:20.2f}"
+            )
 
     block("BUYUK 4 ISLETMECI GELIRI", "buyuk4")
     print()
@@ -84,16 +115,18 @@ def main():
     prev = None
     for y in sorted(fixed):
         v = int(fixed[y]["sabit_abone"])
-        chg = f"{100*(v/prev-1):+6.1f}%" if prev else "     -"
-        print(f"{y}  {v/1e6:10.2f}   {chg}")
+        chg = f"{100 * (v / prev - 1):+6.1f}%" if prev else "     -"
+        print(f"{y}  {v / 1e6:10.2f}   {chg}")
         prev = v
 
     print("\nMOBIL ARPU (4. ceyrek)")
     print("yil       TL/ay   cari $/ay   2025 TL/ay   2025 dolariyla $/ay")
     for y in sorted(MOBILE_ARPU_Q4):
         a = MOBILE_ARPU_Q4[y]
-        print(f"{y}  {a:9.2f} {a/fx[y]:11.2f} {deflate(a, y):12.2f}"
-              f" {deflate_usd(a/fx[y], y):20.2f}")
+        print(
+            f"{y}  {a:9.2f} {a / fx[y]:11.2f} {deflate(a, y):12.2f}"
+            f" {deflate_usd(a / fx[y], y):20.2f}"
+        )
 
 
 if __name__ == "__main__":

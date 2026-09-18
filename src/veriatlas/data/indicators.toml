@@ -2654,6 +2654,24 @@ label_en = "per 100,000 people"
 decimals = 0
 additive = false
 
+[unit.case]
+label_tr = "olay"
+label_en = "cases"
+decimals = 0
+additive = true
+
+[unit.discharge]
+label_tr = "taburcu"
+label_en = "discharges"
+decimals = 0
+additive = true
+
+[unit.patent]
+label_tr = "patent başvurusu"
+label_en = "patent applications"
+decimals = 1
+additive = true
+
 [unit.per_thousand_people_decimal]
 label_tr = "bin kişide"
 label_en = "per 1,000 people"
@@ -30331,6 +30349,16 @@ label_tr = "Kamu maliyesi"
 label_en = "Public finance"
 order = 42
 
+[topic.guvenlik]
+label_tr = "Güvenlik ve suç"
+label_en = "Safety and crime"
+order = 54
+
+[topic.inovasyon]
+label_tr = "Yenilik ve patent"
+label_en = "Innovation and patents"
+order = 55
+
 [dim.budget_measure]
 label_tr = "Bütçe ölçüsü"
 label_en = "Budget measure"
@@ -30757,3 +30785,158 @@ frequency = "annual"
 dims = []
 views = ["table", "map", "line"]
 definition_tr = "Kaydı duran esnafın bir mesleğinin sicilden silinmesi; Sicil Gazetesi'nde yıl içinde yayımlanan meslek terkin ilanı sayısı. Sicil terkininden farklıdır, esnaf kayıtlı kalır. 2012-2025."
+
+[dim.patent_technology]
+label_tr = "Teknoloji alanı"
+label_en = "Technology field"
+
+[dim.patent_technology.values]
+total = { label_tr = "Tümü", label_en = "All fields" }
+ai = { label_tr = "Yapay zekâ", label_en = "Artificial intelligence" }
+ict = { label_tr = "Bilgi ve iletişim teknolojileri", label_en = "ICT" }
+biotech = { label_tr = "Biyoteknoloji", label_en = "Biotechnology" }
+pharma = { label_tr = "İlaç", label_en = "Pharmaceuticals" }
+medical = { label_tr = "Tıp teknolojisi", label_en = "Medical technology" }
+nanotech = { label_tr = "Nanoteknoloji", label_en = "Nanotechnology" }
+environmental = { label_tr = "Çevre teknolojisi", label_en = "Environmental technology" }
+
+[indicator.hospital_discharges]
+label_tr = "Hastaneden taburcu edilen hasta"
+label_en = "Hospital discharges"
+topic = "saglik"
+unit = "discharge"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Yıl içinde hastaneden taburcu edilen hasta sayısı; OECD'nin Sağlık Bakanlığı verisinden derlediği il serisi."
+
+[indicator.homicide_rate]
+label_tr = "Yüz bin kişide kasten öldürme"
+label_en = "Homicides per 100,000 people"
+topic = "guvenlik"
+unit = "per_100k_people"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Yüz bin kişiye düşen kasten öldürme olayı. OECD yalnız oranı yayımlıyor, olay sayısını değil."
+
+[indicator.vehicle_thefts]
+label_tr = "Araç hırsızlığı"
+label_en = "Vehicle thefts"
+topic = "guvenlik"
+unit = "case"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Yıl içinde bildirilen araç hırsızlığı olayı sayısı."
+
+[indicator.patent_applications]
+label_tr = "PCT patent başvurusu"
+label_en = "PCT patent applications"
+topic = "inovasyon"
+unit = "patent"
+frequency = "annual"
+dims = ["patent_technology"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Mucidin ikamet ettiği ile göre PCT patent başvurusu, başvuru yılı. Kesirli sayılır: iki ilde mucidi olan başvuru iller arasında bölünür. \"Tümü\" bütün alanları kapsar, yedi alanın toplamı değildir (alanlar çakışıyor)."
+
+[dim.given_name]
+label_tr = "İsim"
+label_en = "Given name"
+
+[indicator.baby_names]
+label_tr = "Bebeklere en çok verilen isimler"
+label_en = "Commonest baby names"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+dims = ["given_name", "sex"]
+views = ["table", "bar"]
+definition_tr = "Yıl içinde doğan bebeklere verilen isimler ve kaç bebeğe verildiği. Sayfa 'ilk 30' diyor ama uç nokta eşiğin üstündeki bütün isimleri veriyor (il-yıl başına 18-266 isim). Üçten az bebeğe verilen isim yayımlanmadığı için satırlar yılın doğum sayısına toplanmaz; bir ismin Türkiye sayısı illerin toplamı değildir, Türkiye ayrı çekilir."
+
+[unit.parcel]
+label_tr = "parsel"
+label_en = "parcels"
+decimals = 0
+additive = true
+
+[dim.parcel_register]
+label_tr = "Kayıt"
+label_en = "Register"
+
+[dim.parcel_register.values]
+title_deed = { label_tr = "Tapuda kayıtlı", label_en = "In the title deed" }
+cadastre = { label_tr = "Kadastroda kayıtlı", label_en = "In the cadastre" }
+not_in_title_deed = { label_tr = "Tapuda olmayan", label_en = "Not in the title deed" }
+
+[dim.parcel_approval]
+label_tr = "Onay durumu"
+label_en = "Approval"
+
+[dim.parcel_approval.values]
+approved = { label_tr = "Onaylı", label_en = "Approved" }
+unapproved = { label_tr = "Onaysız", label_en = "Unapproved" }
+
+[dim.coordinate_quality]
+label_tr = "Koordinat niteliği"
+label_en = "Coordinate quality"
+
+[dim.coordinate_quality.values]
+final = { label_tr = "Kesin koordinatlı", label_en = "Final coordinates" }
+provisional = { label_tr = "Geçici koordinatlı", label_en = "Provisional coordinates" }
+improved = { label_tr = "İyileştirilmiş koordinatlı", label_en = "Improved coordinates" }
+
+[indicator.cadastral_parcels]
+label_tr = "Parsel sayısı (kayda göre)"
+label_en = "Parcels by register"
+topic = "gayrimenkul_fiyat"
+unit = "parcel"
+frequency = "annual"
+dims = ["parcel_register"]
+views = ["table", "map", "bar"]
+definition_tr = "TKGM MEGSİS anlık görüntüsü: tapuda kayıtlı, kadastroda kayıtlı ve kadastroda olup tapuda olmayan parsel sayısı. Üçü aynı parselleri farklı kayıttan sayar, toplanmaz."
+
+[indicator.cadastral_parcels_by_approval]
+label_tr = "Parsel sayısı (onay durumuna göre)"
+label_en = "Parcels by approval"
+topic = "gayrimenkul_fiyat"
+unit = "parcel"
+frequency = "annual"
+dims = ["parcel_approval"]
+views = ["table", "map", "bar"]
+definition_tr = "Geometrisi onaylanmış ve onaylanmamış parsel sayısı, TKGM MEGSİS anlık görüntüsü."
+
+[indicator.cadastral_parcels_by_coordinate]
+label_tr = "Parsel sayısı (koordinat niteliğine göre)"
+label_en = "Parcels by coordinate quality"
+topic = "gayrimenkul_fiyat"
+unit = "parcel"
+frequency = "annual"
+dims = ["coordinate_quality"]
+views = ["table", "map", "bar"]
+definition_tr = "Kesin, geçici ve iyileştirilmiş koordinatlı parsel sayısı; kadastronun harita üzerindeki doğruluğunu gösterir."
+
+[dim.surname]
+label_tr = "Soyisim"
+label_en = "Surname"
+
+[indicator.common_names]
+label_tr = "En çok kullanılan isimler"
+label_en = "Commonest given names"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+dims = ["given_name", "sex"]
+views = ["table", "bar"]
+definition_tr = "Yaşayan nüfus içinde en çok kullanılan ilk 30 isim ve kaç kişinin taşıdığı. Bebek isimleri akım, bu stoktur; ikisi aynı şey değildir. İlk 30'un dışı yayımlanmıyor."
+
+[indicator.common_surnames]
+label_tr = "En çok kullanılan soyisimler"
+label_en = "Commonest surnames"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+dims = ["surname"]
+views = ["table", "bar"]
+definition_tr = "İlde en çok kullanılan ilk 30 soyisim ve kaç kişinin taşıdığı. TÜİK bu tabloda cinsiyet kırılımı vermiyor."
+
