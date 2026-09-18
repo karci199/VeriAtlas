@@ -30854,3 +30854,65 @@ dims = ["given_name", "sex"]
 views = ["table", "bar"]
 definition_tr = "Yıl içinde doğan bebeklere en çok verilen ilk 30 isim ve kaç bebeğe verildiği. İlk 30'un dışı yayımlanmıyor, bu yüzden satırlar yılın doğum sayısına toplanmaz ve bir ismin Türkiye sayısı illerin toplamı değildir; Türkiye ayrı çekilir."
 
+[unit.parcel]
+label_tr = "parsel"
+label_en = "parcels"
+decimals = 0
+additive = true
+
+[dim.parcel_register]
+label_tr = "Kayıt"
+label_en = "Register"
+
+[dim.parcel_register.values]
+title_deed = { label_tr = "Tapuda kayıtlı", label_en = "In the title deed" }
+cadastre = { label_tr = "Kadastroda kayıtlı", label_en = "In the cadastre" }
+not_in_title_deed = { label_tr = "Tapuda olmayan", label_en = "Not in the title deed" }
+
+[dim.parcel_approval]
+label_tr = "Onay durumu"
+label_en = "Approval"
+
+[dim.parcel_approval.values]
+approved = { label_tr = "Onaylı", label_en = "Approved" }
+unapproved = { label_tr = "Onaysız", label_en = "Unapproved" }
+
+[dim.coordinate_quality]
+label_tr = "Koordinat niteliği"
+label_en = "Coordinate quality"
+
+[dim.coordinate_quality.values]
+final = { label_tr = "Kesin koordinatlı", label_en = "Final coordinates" }
+provisional = { label_tr = "Geçici koordinatlı", label_en = "Provisional coordinates" }
+improved = { label_tr = "İyileştirilmiş koordinatlı", label_en = "Improved coordinates" }
+
+[indicator.cadastral_parcels]
+label_tr = "Parsel sayısı (kayda göre)"
+label_en = "Parcels by register"
+topic = "gayrimenkul_fiyat"
+unit = "parcel"
+frequency = "annual"
+dims = ["parcel_register"]
+views = ["table", "map", "bar"]
+definition_tr = "TKGM MEGSİS anlık görüntüsü: tapuda kayıtlı, kadastroda kayıtlı ve kadastroda olup tapuda olmayan parsel sayısı. Üçü aynı parselleri farklı kayıttan sayar, toplanmaz."
+
+[indicator.cadastral_parcels_by_approval]
+label_tr = "Parsel sayısı (onay durumuna göre)"
+label_en = "Parcels by approval"
+topic = "gayrimenkul_fiyat"
+unit = "parcel"
+frequency = "annual"
+dims = ["parcel_approval"]
+views = ["table", "map", "bar"]
+definition_tr = "Geometrisi onaylanmış ve onaylanmamış parsel sayısı, TKGM MEGSİS anlık görüntüsü."
+
+[indicator.cadastral_parcels_by_coordinate]
+label_tr = "Parsel sayısı (koordinat niteliğine göre)"
+label_en = "Parcels by coordinate quality"
+topic = "gayrimenkul_fiyat"
+unit = "parcel"
+frequency = "annual"
+dims = ["coordinate_quality"]
+views = ["table", "map", "bar"]
+definition_tr = "Kesin, geçici ve iyileştirilmiş koordinatlı parsel sayısı; kadastronun harita üzerindeki doğruluğunu gösterir."
+

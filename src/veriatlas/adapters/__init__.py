@@ -41,6 +41,7 @@ from .tesk import TESK_ADAPTERS
 from .tim import TIM_ADAPTERS
 from .tim_countries import TIM_COUNTRY_ADAPTERS
 from .tim_sectors import TIM_SECTOR_ADAPTERS
+from .tkgm import TKGM_ADAPTERS
 from .tobb import TOBB_ADAPTERS
 from .tuik_birth_order import TuikBirthOrder
 from .tuik_child_police import CHILD_POLICE_ADAPTERS
@@ -151,6 +152,7 @@ ADAPTERS = {
     **DHMI_ADAPTERS,
     **DIYANET_ADAPTERS,
     **TESK_ADAPTERS,
+    **TKGM_ADAPTERS,
     **TUIK_NAMES_ADAPTERS,
     **TIM_ADAPTERS,
     **MUHASEBAT_ADAPTERS,
