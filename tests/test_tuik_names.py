@@ -9,16 +9,21 @@ from __future__ import annotations
 
 import polars as pl
 
-from veriatlas.adapters.tuik_names import BabyNames, rows
+from veriatlas.adapters.tuik_names import (
+    BabyNames,
+    CommonNames,
+    CommonSurnames,
+    rows,
+)
 
 
-def frame() -> pl.DataFrame:
-    adapter = BabyNames()
+def frame(cls=BabyNames) -> pl.DataFrame:
+    adapter = cls()
     return adapter.parse(adapter.fetch())
 
 
 def test_every_province_and_the_country():
-    data = rows()
+    data = rows("bebek", "Isim", "given_name", "DogumYil")
     provinces = data.filter(pl.col("area_level") == "province")
     assert provinces["area_id"].n_unique() == 81
     assert set(data.filter(pl.col("area_level") == "country")["area_id"]) == {"TR"}
@@ -52,3 +57,31 @@ def test_country_is_not_the_sum_of_provinces():
     country = data.filter(pl.col("area_level") == "country")["value"].sum()
     provinces = data.filter(pl.col("area_level") == "province")["value"].sum()
     assert country < provinces
+
+
+def test_the_three_tables_stay_apart():
+    """One endpoint, three datasets: a folder mix-up would show up as the wrong dims."""
+    assert frame(CommonNames)["dims"].str.contains("sex=").all()
+    surnames = frame(CommonSurnames)
+    assert not surnames["dims"].str.contains("sex=").any()
+    assert surnames["dims"].str.starts_with("surname=").all()
+
+
+def test_the_living_outnumber_the_newborns():
+    """The stock table counts everyone alive, the birth table one year's babies."""
+    year = 2024
+    born = (
+        frame()
+        .filter(
+            (pl.col("area_id") == "TR") & (pl.col("period_start").dt.year() == year)
+        )["value"]
+        .max()
+    )
+    alive = (
+        frame(CommonNames)
+        .filter(
+            (pl.col("area_id") == "TR") & (pl.col("period_start").dt.year() == year)
+        )["value"]
+        .max()
+    )
+    assert alive > born * 20

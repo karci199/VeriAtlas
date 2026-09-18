@@ -30852,7 +30852,7 @@ unit = "person"
 frequency = "annual"
 dims = ["given_name", "sex"]
 views = ["table", "bar"]
-definition_tr = "Yıl içinde doğan bebeklere en çok verilen ilk 30 isim ve kaç bebeğe verildiği. İlk 30'un dışı yayımlanmıyor, bu yüzden satırlar yılın doğum sayısına toplanmaz ve bir ismin Türkiye sayısı illerin toplamı değildir; Türkiye ayrı çekilir."
+definition_tr = "Yıl içinde doğan bebeklere verilen isimler ve kaç bebeğe verildiği. Sayfa 'ilk 30' diyor ama uç nokta eşiğin üstündeki bütün isimleri veriyor (il-yıl başına 18-266 isim). Üçten az bebeğe verilen isim yayımlanmadığı için satırlar yılın doğum sayısına toplanmaz; bir ismin Türkiye sayısı illerin toplamı değildir, Türkiye ayrı çekilir."
 
 [unit.parcel]
 label_tr = "parsel"
@@ -30915,4 +30915,28 @@ frequency = "annual"
 dims = ["coordinate_quality"]
 views = ["table", "map", "bar"]
 definition_tr = "Kesin, geçici ve iyileştirilmiş koordinatlı parsel sayısı; kadastronun harita üzerindeki doğruluğunu gösterir."
+
+[dim.surname]
+label_tr = "Soyisim"
+label_en = "Surname"
+
+[indicator.common_names]
+label_tr = "En çok kullanılan isimler"
+label_en = "Commonest given names"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+dims = ["given_name", "sex"]
+views = ["table", "bar"]
+definition_tr = "Yaşayan nüfus içinde en çok kullanılan ilk 30 isim ve kaç kişinin taşıdığı. Bebek isimleri akım, bu stoktur; ikisi aynı şey değildir. İlk 30'un dışı yayımlanmıyor."
+
+[indicator.common_surnames]
+label_tr = "En çok kullanılan soyisimler"
+label_en = "Commonest surnames"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+dims = ["surname"]
+views = ["table", "bar"]
+definition_tr = "İlde en çok kullanılan ilk 30 soyisim ve kaç kişinin taşıdığı. TÜİK bu tabloda cinsiyet kırılımı vermiyor."
 
