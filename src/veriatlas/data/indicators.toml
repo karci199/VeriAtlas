@@ -30687,3 +30687,73 @@ additive = true
 dims = ["bank_group", "finturk_item"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "BDDK FinTürk 'Coğrafi dağılım' tabloları, her yılın Aralık dönemi, 2007-2025 (altın 2015'ten), bin TL, cari fiyat; şubenin bulunduğu il. Banka grupları iki türlü böler: türe göre (mevduat + kalkınma ve yatırım + katılım) ve sahipliğe göre (kamu + yerli özel + yabancı); ikisi de her il, yıl ve kalemde 'Sektör' satırını tutar. Yurt dışı şubeler yazılmadı. Genel müdürlüklerin bulunduğu İstanbul ve Ankara'da kurumsal krediler şişkin. İndirme scripts/fetch_bddk_finturk.py, adaptör src/veriatlas/adapters/bddk_finturk.py."
+
+[indicator.registered_tradesmen]
+label_tr = "Kayıtlı esnaf sayısı"
+label_en = "Registered tradesmen"
+topic = "reel_kesim"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "TESK esnaf ve sanatkâr sicilinde kayıtlı kişi sayısı, 31.08.2026 durumu. Kişi sayısıdır, işyeri sayısından azdır: bir esnafın birden çok işyeri olabilir. Yıllık tescil sayılarının toplamı değildir — il değiştiren esnaf yeniden tescil edilir."
+
+[indicator.tradesmen_workplaces]
+label_tr = "Esnaf işyeri sayısı"
+label_en = "Tradesmen workplaces"
+topic = "reel_kesim"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "TESK sicilinde kayıtlı esnafın işyeri sayısı, 31.08.2026 durumu."
+
+[indicator.tradesmen_chambers]
+label_tr = "Esnaf odası sayısı"
+label_en = "Tradesmen chambers"
+topic = "reel_kesim"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "İldeki esnaf ve sanatkârlar odası sayısı, 31.08.2026 durumu."
+
+[indicator.tradesmen_registrations]
+label_tr = "Esnaf tescili"
+label_en = "Tradesmen registrations"
+topic = "reel_kesim"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line"]
+definition_tr = "Türkiye Esnaf ve Sanatkârlar Sicil Gazetesi'nde yıl içinde yayımlanan tescil (açılış) ilanı sayısı. 2012-2025; 2005-2011 kaynakta okunamıyor."
+
+[indicator.tradesmen_amendments]
+label_tr = "Esnaf tadil ilanı"
+label_en = "Tradesmen registry amendments"
+topic = "reel_kesim"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line"]
+definition_tr = "Sicil Gazetesi'nde yıl içinde yayımlanan tadil (değişiklik) ilanı sayısı. 2012-2025."
+
+[indicator.tradesmen_deregistrations]
+label_tr = "Esnaf sicil terkini"
+label_en = "Tradesmen deregistrations"
+topic = "reel_kesim"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line"]
+definition_tr = "Sicil Gazetesi'nde yıl içinde yayımlanan sicil terkin (kapanış) ilanı sayısı. 2012-2025."
+
+[indicator.tradesmen_trade_removals]
+label_tr = "Esnaf meslek terkini"
+label_en = "Tradesmen trade removals"
+topic = "reel_kesim"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line"]
+definition_tr = "Kaydı duran esnafın bir mesleğinin sicilden silinmesi; Sicil Gazetesi'nde yıl içinde yayımlanan meslek terkin ilanı sayısı. Sicil terkininden farklıdır, esnaf kayıtlı kalır. 2012-2025."

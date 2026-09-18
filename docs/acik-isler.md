@@ -48,23 +48,92 @@ Web export: 2026-09-17 tam; 8 dosyanın boş olması hata değil (yalnız ilçe 
 | ETKB | ulusal enerji denge 1972-2024 (il yok) | kolay |
 | Erişilemeyen | GİB (IP engeli), MEB ve İBB (robots.txt), TCDD (403), UYAP (kısıtlı), İzmir/Konya açık veri (robots `/api/`), Wikidata SPARQL (robots) | — |
 
+## Keşif turu 2026-09-18 gece (açık veri portalları, EPİAŞ, ölçüm verisi)
+
+**EPİAŞ Şeffaflık — hesap açıldı, uç noktalar çözüldü.** Katalog `menu/get-menu-tree` ile
+alındı: 188 veri sayfası. Kural: **uç nokta adı tahmin edilmeyecek**, WAF 403 veriyor; sayfa
+menüden açılır (`a[href]` gerçek adresleri taşır), ağ kaydından adres okunur.
+
+| Ne | Uç nokta | Kırılım | Durum |
+|---|---|---|---|
+| **İl-ilçe serbest tüketici adedi** | `consumption/data/eligible-consumer-count` | **ilçe × profil abone grubu**, aylık (~4.358 satır/ay) | çekilecek — depodaki ilk ilçe düzeyi enerji göstergesi |
+| **Baraj aktif doluluk** | `dams/data/active-fullness` + `dams/data/basin-list` | 87 baraj × havza, günlük, kaynak **DSİ** | çekilecek (yıllık ortalama + yıllık en düşük) |
+| Santral listesi | `generation/data/powerplant-list-for-date-range` | 1.830 santral, **il alanı yok** | il üretimi için EPDK lisans listesiyle eşleştirme gerekir |
+| Gerçek zamanlı üretim | `generation/data/realtime-generation` | ülke geneli × yakıt | il yok |
+
+**Sıklık kararı (kullanıcı, 2026-09-18):** yıllık; gerekirse aylık ortalama. Çok veri varsa
+yıllık. Anlık veri yalnız gerektiğinde tek seferlik.
+
+| Kaynak | Ne | Zorluk | Durum |
+|---|---|---|---|
+| **ULASAV** (`ulasav.csb.gov.tr`) | Çevre Bakanlığı'nın ulusal toplayıcısı, **4.556 veri seti**, belediye verileri tek çatıda (mahalle bağımsız bölüm, cadde-sokak haritaları, hava kalitesi, en kısa yollar) | orta | robots `/api/` kapalı + `Crawl-Delay: 10`; API 403. Sayfa gezilebilir ama 4.556 seti taramak ~12 saat — hedefli arama yapılacak |
+| **Belediye CKAN portalları** | 11 çalışan: Ordu 743, Sakarya 307, İzmir 261, Gaziantep 252, Balıkesir 250, Konya 239, Kadıköy 160, Tuzla 97, Nilüfer 65, Sivas 45, Bursa 49 | kolay | robots hepsinde izinli. Tek şehirlik veri — K4 dışı, `ozel-analiz-kalibi` kapsamı |
+| **Konya mahalle-cadde-sokak** | resmî numarataj listesi, 59.960 kayıt, ilçe × mahalle × CSBM, 2023/2024/2025 | kolay | CKAN'dan tek CSV ile iniyor; Tuzla ve Kadıköy'de de CSBM listesi var |
+| **Ookla Speedtest açık veri** | ölçülmüş sabit/mobil internet hızı, çeyreklik karo (~600 m), S3'te parquet, anahtarsız | kolay | ham depoda 2022Q4 + 2024Q4 (`C:/veri-ham/ookla`); BTK'nın *vaat edilen* hızının karşısına *ölçülen* hızı koyar |
+| **OSM Türkiye** | 112 mn öge; sokak adları, arazi örtüsü, POI | orta | ham depoda (`C:/veri-ham/osm`, md5 OK). DuckDB spatial pbf'i doğrudan okuyor. **Sayım için kullanılamaz** (kapsama gönüllüye bağlı), pay/uzunluk göstergeleri için uygun |
+| **TÜİK isim portalı** | il × yıl × cinsiyet × ad, ilk 30 ad | kolay | `POST nip.tuik.gov.tr/Home/IlYilToplamIsimForTable`, parametre `ilAdi/cinsiyet/yil`; 2018-2025 |
+| Hava Kalitesi (ÇŞB SİM) | istasyon bazlı PM10/SO2/NO2 | bilinmiyor | `/Services/AirQuality?type=0` düz istekte HTML döndü; tarayıcı gerekir |
+| Göç İdaresi, OGM, TÜRKPATENT, VGM | ikamet izni; orman/yangın; marka-patent; vakıf | bilinmiyor | hepsi JS uygulaması, tarayıcıyla bakılacak |
+
+### Belediye açık veri portalları — 14 çalışan CKAN (2026-09-18 taraması)
+
+İlk 200 veri seti kaynaklarıyla taranarak sıralandı. "Tablolu" = CSV/XLSX/XLS/JSON kaynağı olan
+veri seti sayısı; "ilçe/nüfus" = başlık ya da açıklamasında ilçe, mahalle veya nüfus geçenler.
+
+| Portal | Veri seti | Tablolu | İlçe/nüfus | Baskın biçim | Kolaylık |
+|---|---|---|---|---|---|
+| Sakarya (`veri.sakarya.bel.tr`) | 307 | 200/200 | 30 | XLSX | **en kolay** |
+| Manisa (`acikveri.manisa.bel.tr`) | **1.168** | 180/200 | **130** | XLSX, XLS | **en kolay + en zengin** |
+| Konya (`acikveri.konya.bel.tr`) | 239 | 180/200 | 14 | CSV | kolay |
+| Balıkesir (`acikveri.balikesir.bel.tr`) | 250 | 171/200 | 27 | XLSX | kolay |
+| İzmir (`acikveri.bizizmir.com`) | 261 | 165/200 | 56 | CSV, XLSX | kolay |
+| Kadıköy (`acikveri.kadikoy.bel.tr`) | 160 | 116/160 | 49 | CSV | kolay |
+| Tuzla (`veri.tuzla.bel.tr`) | 97 | 91/91 | 26 | CSV | kolay |
+| Gaziantep (`acikveri.gaziantep.bel.tr`) | 252 | 90/200 | 32 | CSV, PDF | orta |
+| Çanakkale (`acikveri.canakkale.bel.tr`) | 119 | 64/119 | 0 | XLSX, PDF | orta |
+| Nilüfer (`acikveri.nilufer.bel.tr`) | 65 | 44/65 | 12 | XLSX | orta |
+| Ordu (`acikveri.ordu.bel.tr`) | 743 | 58/200 | 114 | **PDF (772)** | zor — içerik zengin ama PDF |
+| Sivas (`acikveri.sivas.bel.tr`) | 45 | 32/45 | 2 | SHP, KML | zor (geometri) |
+| Bursa (`acikyesil.bursa.bel.tr`) | 49 | 20/49 | 2 | GEOJSON | zor (geometri) |
+| B40 (`opendata.b40cities.org`) | 645 | 4/200 | 1 | HTML | zor |
+
+Çalışmayanlar: Antalya (zaman aşımı), YSK açık veri (bağlantı yok), Küçükçekmece ve Kocaeli (502),
+Beyoğlu/Eyüpsultan (yok), Kayseri ve Marmara Belediyeler Birliği (CKAN değil), Şeffaf Ankara
+(Firebase tabanlı kendi yazılımı), `databook.dataint.net` (Cloudflare), İBB (robots yasak).
+
+**Sıradaki adım:** Manisa ve Sakarya'dan başlanacak — ikisi de tablolu ve Manisa'da 130 veri seti
+ilçe/mahalle/nüfus içerikli. Bu veriler tek şehirlik olduğu için K4 dışıdır; `ozel-analiz-kalibi`
+kapsamında vaka analizi olarak değerlendirilir.
+
+## Alınmayanlar ve gerekçesi (2026-09-18)
+
+- **NVİ adres (UAVT)**: resmî kaynak captcha arkasında. GitHub'da 1,27 mn sokaklı dökümler var
+  (`melihozkara/il-ilce-mahalle-sokak-veritabani`, 12.04.2026) ama derleyen **captcha çözücü**
+  kullanmış — o yöntem tekrarlanmaz; lisans da yok.
+- **Nişanyan Yeradları** (56.422 güncel + 77.509 eski yer adı): telifli eser, kaynak olarak anılır.
+- **Google/Yandex haritalar**: Yandex robots `/maps/business/`, Google `/maps?` kapalı; resmî
+  API'ler POI içeriğinin saklanmasını yasaklıyor.
+- **TÜİK kütüphanesi** (1965 sayımı ana dil/din ciltleri dahil): `robots.txt` → `Disallow: /`.
+- **HGM Atlas API**: kayıt kapalı ("ticarileştirme süreci devam etmektedir").
+- **turkiyeapi.com**: ticari (Pro 299 TL/ay); ücretsiz `api.turkiyeapi.dev` zaten kullanılıyor.
+- **Veri olmayanlar**: PerkBank (sentetik banka verisi), turkiye-iban (banka kodu, yer boyutu yok),
+  ankageo.com (CBS yazılım satıcısı), otomobil fiyat listesi (tarihsiz), genel "veri seti listesi"
+  yazıları (upGrad, gencbeyinler, binyaprak — Kaggle/UCI türü, Türkiye il verisi yok).
+
 ## Sıradaki oturumun ilk işi
 
-1. **Tam yükleme** (`uv run python scripts/load.py`, tam liste) — ama **ana kopyada
-   (`C:eri`), worktree'de değil.** 2026-09-17 akşamı Muhasebat'ın dört ve OECD'nin beş
-   göstergesi yazıldı, warehouse'a girmedi. Worktree'de denendi ve 675 adaptörden sonra
-   çöktü: `load.py`'nin son türetme adımı `public/fact.parquet`'i okuyor, o dosya
-   `.gitignore`'da olduğu için worktree'ye gelmiyor (`IOException: No files found that
-   match the pattern ...worktrees\...\publicact.parquet`). Hiçbir şey yazılmadı, veri
-   kaybı yok. Doğru sıra: dalı main'e al, `C:eri`'de tam yüklemeyi çalıştır.
-   Web export bilerek yapılmadı (kullanıcı: "şimdilik webe aktarma"), yükleme bitince
-   kullanıcıya sorulacak.
-2. OECD'nin diskte bekleyen dosyaları için adaptör (yukarıdaki listede).
+1. ~~TESK dalını main'e al~~ 2026-09-18 yapıldı (bu birleştirme).
+2. **Tam yükleme** (`uv run python scripts/load.py`, tam liste) — **ana kopyada
+   (`C:eri`), worktree'de değil.** Worktree'de `load.py`'nin son türetme adımı
+   `public/fact.parquet`'i okuyor, o dosya `.gitignore`'da olduğu için worktree'ye
+   gelmiyor ve 675 adaptörden sonra çöküyor. TESK'in 7 göstergesi bu yüklemeyle girer.
+3. OECD'nin diskte bekleyen dosyaları için adaptör (yukarıdaki listede).
+4. EPİAŞ ilçe düzeyi serbest tüketici ve baraj doluluk çekicileri.
 
 ## Kullanıcı kararı bekleyen
 
 - ~~main birleştirme~~ 2026-09-17 yapıldı; dal ve main aynı noktada.
-- EPİAŞ hesabı (il fiilî üretim için), ceza infaz, yaşam memnuniyeti: kararla alınmadı.
+- ~~EPİAŞ hesabı~~ 2026-09-18 açıldı; uç noktalar yukarıda. Ceza infaz, yaşam memnuniyeti: kararla alınmadı.
 
 ## Bilinçli olarak alınmayanlar
 

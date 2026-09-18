@@ -37,6 +37,7 @@ from .sege import SEGE_ADAPTERS
 from .sgk_national import SGK_NATIONAL_ADAPTERS
 from .sgk_provinces import SGK_ADAPTERS
 from .tbb_provinces import TBB_ADAPTERS
+from .tesk import TESK_ADAPTERS
 from .tim import TIM_ADAPTERS
 from .tim_countries import TIM_COUNTRY_ADAPTERS
 from .tim_sectors import TIM_SECTOR_ADAPTERS
@@ -148,6 +149,7 @@ ADAPTERS = {
     **BTK_CHART_ADAPTERS,
     **DHMI_ADAPTERS,
     **DIYANET_ADAPTERS,
+    **TESK_ADAPTERS,
     **TIM_ADAPTERS,
     **MUHASEBAT_ADAPTERS,
     **OECD_TL3_ADAPTERS,
