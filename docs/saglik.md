@@ -52,3 +52,31 @@ nüfus rakamına bağlı, depodaki sayım ve nüfustan yeniden kurulabilir. Böl
 - 2012 hastane tablosunun Türkiye satırı adsız basılı: aynı sayfada aynı genişlikte adsız sayı
   satırı toplam sayılır, toplam denetimi yanlış eşleşmeyi yakalar.
 - Tablo sayısı yıl başına sabit beklenir; bir tablo kaçarsa yükleme durur.
+
+
+## İlçe düzeyi sağlık: denendi, olmuyor (2026-09-19)
+
+Depodaki 20 `moh_*` göstergesinin hepsi il düzeyinde, çünkü Sağlık İstatistikleri Yıllığı
+ilçe kırılımı basmıyor. İlçeye inmek için üç yol denendi, üçü de kapandı:
+
+**1. İl Sağlık Müdürlüğü siteleri** (`<il>ism.saglik.gov.tr`). 81 ilin tamamı aynı CMS'i
+kullanıyor ve hastanelerini adıyla linkliyor. `scripts/fetch_ism_hospitals.py` keşif turu
+78 ilde 1.031 hastane sayfası buldu — ama sayı **hastane sayısı değil, menü derinliği**:
+Düzce 60, Aydın 49, Konya 43 sayfa çıkarken Çanakkale, Edirne ve Kahramanmaraş 1, üç il
+hiç. 115 sayfa da tekil hastane değil kategori sayfası ("Devlet Hastanelerimiz").
+Her müdürlük ana sayfasını farklı kurduğu için ülke çapında tutarlı sayım vermiyor.
+
+**2. ASM listeleri.** 81 il tarandı: 70 ilin aile hekimliğiyle ilgili sayfası var, ama
+Bolu'daki gibi ilçe sütunlu gerçek liste yayımlayan **8 il** — Adana, Balıkesir, Bolu,
+Edirne, Erzincan, Kahramanmaraş, Mardin, Tekirdağ. Envanter
+`C:eri-ham\ismsm_tarama.csv`. Diğer illerin dosyaları ASM listesi değil (genelge,
+"bebek dostu AHB", emzirme politikası, denetim tarihleri). 8 il K4'ü karşılamaz.
+
+**3. MHRS.** Randevu sisteminin kurum listesi ideal kaynak olurdu — tüm hastaneler, il ve
+ilçesiyle. `robots.txt` **`Disallow: /api/`** diyor, kullanılmadı.
+
+Ayrıca Bakanlığın dosya sunucuları `dosyaism.saglik.gov.tr` ve `dosyamerkez.saglik.gov.tr`
+robots'ta **`Disallow: /`** taşıyor; ekli belgeler otomatik indirilmiyor.
+
+**Karar:** ilçe düzeyi sağlık şimdilik kapalı. Bakanlık ilçe kırılımı yayımlarsa yeniden
+bakılır; yarım kapsamayla gösterge üretilmez.
