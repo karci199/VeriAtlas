@@ -202,3 +202,21 @@ numaraları farklı, önce onların bulunması gerekir. Orta zorluk, başlanmad�
 ## Bilinçli olarak alınmayanlar
 
 MEB (robots.txt), İBB açık veri (robots.txt), TCDD (403), TOBB aylık il tabloları (yıllık depoda).
+
+
+## Sıradaki işler (2026-09-19 gecesi bırakıldığı yer)
+
+| # | İş | Durum | Not |
+|---|---|---|---|
+| 1 | **İl Sağlık Müdürlüğü siteleri** | başlanıyor | `<il>ism.saglik.gov.tr/TR-<id>/saglik-kurumlari.html`. Depodaki 20 `moh_*` göstergesi yalnız il düzeyinde; bu siteler hastaneyi **ilçesiyle** listeliyor. 81 il aynı CMS, sayfa numaraları farklı — önce onlar bulunacak |
+| 2 | **EPDK şarj istasyonu** | kullanıcıda | Sorgu reCAPTCHA arkasında, kullanıcı indiriyor. 34 sayfanın 8'i indi = **3.500 tekil istasyon** (`C:eri-ham\epdk1`). Adres alanı "… Beykoz / İSTANBUL" biçiminde, ilçe oradan okunuyor. Tamamlanınca adaptör yazılacak |
+| 3 | **Domino's** | bekliyor | 26 ilde 311 şube indi, site IP'yi kapattı (429 sürüyor). Ceza geçince `uv run python scripts/fetch_dominos.py --devam` |
+| 4 | **Hakmar Express** | yarım | `/magazalar` gömülü JSON'da ad/adres/il/ilçe/koordinat veriyor ama tek seferde 25 kayıt; site 816 mağaza diyor. Sayfalama çözülmedi |
+| 5 | Zincir taraması | sürüyor | Kolay çekilebilen marka arayışı arka planda |
+
+**Perakende zincirlerinde tur kapandı (2026-09-19).** Denenen yedi marka — Bauhaus, Koçtaş,
+Watsons, Teknosa, Gratis, Tekzen, Mavi/Boyner türü giyim — hiçbiri tam liste vermedi: çoğu
+düz istekte 403, Gratis ve Tekzen erişilebilir ama mağaza listesini sayfaya hiç basmıyor.
+Buna karşılık aynı akşam çözülen dört markanın (Oses, Ziyafet, Komagene, Domino's) hepsi
+yeme-içme. Desen açık: mağaza listesi perakendeci için rakip istihbaratı, franchise satan
+için reklam. Yeni marka denemeden önce bu akılda tutulmalı.
