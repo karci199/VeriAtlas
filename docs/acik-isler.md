@@ -173,8 +173,26 @@ ham depoda duruyor ama ilçeleri kaynağın kendi etiketinden geliyor; kayıt de
 eşleme yapılmadığı için adaptöre girmediler. PTT'nin 3.295 kaydında koordinat var,
 adaptörü yazılabilir.
 
-**TÜİK Veri Portalı dosya indirmesi** 2026-09-18 gecesi kaldığı yerden sürdürüldü
-(`scripts/fetch_tuik_portal_files.py`), 2.093/2.262.
+**TÜİK Veri Portalı dosya indirmesi** 2026-09-18 gecesi bitirildi: 2.247 dosya indi,
+15 dosya kaynakta hatalı; dökümü `veri-ham/tuik_portal/basarisiz.csv`.
+
+**PTT posta kodu** 2026-09-18 çekildi ve `postal_codes` göstergesi olarak depoya girdi:
+973/973 ilçe, 1.272.201 satır, 72.640 mahalle, 2.777 posta kodu. Yöntem
+`scripts/fetch_ptt_postal_codes.py`, doğrulama `docs/semt.md`. Mahalle listesi kayıt
+defteri denetimi için duruyor, henüz kullanılmadı.
+
+**bulurum.com kapsama testi (2026-09-18).** Kapsama **kategoriye göre değişiyor**, sitenin
+genel bir özelliği değil: eczane 27.458 (gerçeğe çok yakın), banka 10.809'a karşılık
+BDDK'nın 31.695 şubesi (%34) — üstelik `/search/` kategori filtresi değil **serbest metin
+araması** olduğu için banka sonuçları nakliyat ve temizlik firmalarıyla kirli. Site birkaç
+yüz istekten sonra **HTTP 200 ile** doğrulama sayfası döndürüyor; sayı arayan bir okuyucu
+bunu sıfır sanır. Kayıt defteri olan kategorilerde kullanılmaz; olmayanlarda (çiğköfteci,
+halı yıkama, kuaför) alt sınır ve oran verir — gösterge değil, vaka analizi malzemesi.
+
+**İl Sağlık Müdürlüğü siteleri** (`<il>ism.saglik.gov.tr/TR-<id>/saglik-kurumlari.html`):
+hastaneler ilçesiyle tek tek listeleniyor. Depodaki `moh_*` göstergeleri yalnız il
+düzeyinde olduğu için bu **ilçe düzeyi sağlık kurumu** verir. 81 il aynı CMS'te ama sayfa
+numaraları farklı, önce onların bulunması gerekir. Orta zorluk, başlanmadı.
 
 ## Kullanıcı kararı bekleyen
 

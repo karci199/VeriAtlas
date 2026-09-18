@@ -187,3 +187,19 @@ doğru); gerisi düz ad uyuşmazlığıdır, en çok Kastamonu, Tokat ve Afyonka
 ittifak payları), `semt_arayuz.html`, `semt_analiz.html` (il/ilçe bazında bölünme
 anatomisi). Köylerin 18± kırılımı kaynakta olmadığı için kır torbalarında çocuk sütunu
 boştur.
+
+## 2026 doğrulaması — kaynağından
+
+2026-09-18'de PTT'nin kendi sorgu ucundan tüm ülke yeniden çekildi
+(`scripts/fetch_ptt_postal_codes.py`, 973/973 ilçe, 1.272.201 satır, 72.640 mahalle,
+2.777 posta kodu). Yukarıdaki dağılım **birebir tekrarlandı**: 325 ilçede tek kod,
+301'inde iki, 132'sinde üç, en fazlası 21. PTT dört yılda numaralandırmayı değiştirmemiş;
+2022'deki 2.771 semt karşısında bugün 2.777 kod var, fark altı.
+
+Bu, semt katmanının dayandığı ölçümün tek bir dosyanın tesadüfü olmadığını gösteriyor.
+İlçe başına posta kodu sayısı artık `postal_codes` göstergesi olarak depoda.
+
+**Sokak sütunu gösterge yapılmadı.** Dosyada 1,27 milyon sokak satırı var ama bunlar
+dağıtım noktası, sokak sayımı değil: 72.640 yerleşimin 39.120'si tek satır taşıyor, çünkü
+köyde PTT sokakları değil köyün kendisini yazıyor. "İlçe başına sokak" göstergesi köyleri
+tek sokaklı gösterirdi.

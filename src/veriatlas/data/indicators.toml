@@ -30996,3 +30996,12 @@ frequency = "annual"
 dims = ["restaurant_brand"]
 views = ["table", "map", "bar"]
 definition_tr = "Burger King ve McDonald's şubelerinin ilçe ve il düzeyinde sayısı, 18.09.2026 anlık görüntüsü. İlçe, şubenin adresinden değil koordinatının düştüğü ilçe sınırından belirlenir; markaların kendi il-ilçe etiketleri pazarlama coğrafyasıdır. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir, geçmişini tutmaz."
+
+[indicator.postal_codes]
+label_tr = "Posta kodu sayısı"
+label_en = "Postal codes"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+views = ["table", "map", "bar"]
+definition_tr = "PTT'nin bir ilçeye verdiği tekil posta kodu sayısı, 18.09.2026 anlık görüntüsü. Semtin ülke çapındaki tek listesi posta kodudur (docs/semt.md): 973 ilçenin hepsinde semt sayısı ile posta kodu sayısı birebir eşittir, o yüzden bu sayı ilçenin kaç semte bölündüğünü gösterir. Seri değil, anlık görüntü — PTT geçmiş numaralandırmayı yayımlamıyor."

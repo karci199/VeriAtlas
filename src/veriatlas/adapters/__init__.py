@@ -33,6 +33,7 @@ from .ktb import KTB_ADAPTERS
 from .mgm import MGM_ADAPTERS
 from .muhasebat import MUHASEBAT_ADAPTERS
 from .oecd_tl3 import OECD_TL3_ADAPTERS
+from .ptt_postal import PTT_POSTAL_ADAPTERS
 from .saglik_yearbook import SAGLIK_YEARBOOK_ADAPTERS
 from .sege import SEGE_ADAPTERS
 from .sgk_national import SGK_NATIONAL_ADAPTERS
@@ -156,6 +157,7 @@ ADAPTERS = {
     **TESK_ADAPTERS,
     **TKGM_ADAPTERS,
     **CHAIN_STORE_ADAPTERS,
+    **PTT_POSTAL_ADAPTERS,
     **LABOUR_PROVINCE_ADAPTERS,
     **TUIK_NAMES_ADAPTERS,
     **TIM_ADAPTERS,
