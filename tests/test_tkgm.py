@@ -11,9 +11,9 @@ import polars as pl
 
 from veriatlas.adapters.tkgm import (
     ParcelApproval,
-    district_table,
     ParcelCoordinates,
     Parcels,
+    district_table,
     snapshot,
     table,
 )
