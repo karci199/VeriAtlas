@@ -24,7 +24,9 @@ FIRST, LAST = 1900, 2025
 
 def main() -> None:
     ROOT.mkdir(parents=True, exist_ok=True)
-    client = httpx.Client(headers={"User-Agent": "Mozilla/5.0"}, timeout=180, verify=False)
+    client = httpx.Client(
+        headers={"User-Agent": "Mozilla/5.0"}, timeout=180, verify=False
+    )
     for year in range(FIRST, LAST + 1):
         target = ROOT / f"deprem-{year}.json"
         if target.exists():

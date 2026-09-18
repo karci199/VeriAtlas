@@ -189,25 +189,42 @@ def build():
                 eur = tl / float(m["eur_try"])
                 usd = tl / float(m["usd_try"])
                 tr, us, ea = (num(m, k) for k in ("tufe_tr", "tufe_abd", "tufe_euro"))
-                rows.append({
-                    "donem": donem, "isletmeci": op, "tip": tip,
-                    "tl": round(tl, 2),
-                    "eur": round(eur, 2),
-                    "usd": round(usd, 2),
-                    # Constant BASE prices, each currency with its own deflator.
-                    "tl_reel": (None if tr is None
-                                else round(tl * float(base["tufe_tr"]) / tr, 2)),
-                    "eur_reel": round(eur * float(base["tufe_euro"]) / ea, 2),
-                    "usd_reel": round(usd * float(base["tufe_abd"]) / us, 2),
-                    "kaynak_rapor": source,
-                })
+                rows.append(
+                    {
+                        "donem": donem,
+                        "isletmeci": op,
+                        "tip": tip,
+                        "tl": round(tl, 2),
+                        "eur": round(eur, 2),
+                        "usd": round(usd, 2),
+                        # Constant BASE prices, each currency with its own deflator.
+                        "tl_reel": (
+                            None
+                            if tr is None
+                            else round(tl * float(base["tufe_tr"]) / tr, 2)
+                        ),
+                        "eur_reel": round(eur * float(base["tufe_euro"]) / ea, 2),
+                        "usd_reel": round(usd * float(base["tufe_abd"]) / us, 2),
+                        "kaynak_rapor": source,
+                    }
+                )
     return rows
 
 
 def write(rows):
     out = RAW / "mobil_arpu_isletmeci.csv"
-    fields = ("donem", "isletmeci", "tip", "tl", "eur", "usd",
-              "tl_reel", "eur_reel", "usd_reel", "kaynak_rapor")
+    fields = (
+        "donem",
+        "isletmeci",
+        "tip",
+        "tl",
+        "eur",
+        "usd",
+        "tl_reel",
+        "eur_reel",
+        "usd_reel",
+        "kaynak_rapor",
+    )
     with open(out, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=fields)
         w.writeheader()

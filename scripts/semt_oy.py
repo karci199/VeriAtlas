@@ -49,7 +49,14 @@ def fold(text: str | None) -> str:
     if not text:
         return ""
     text = text.strip().upper()
-    for a, b in (("İ", "I"), ("Ş", "S"), ("Ğ", "G"), ("Ü", "U"), ("Ö", "O"), ("Ç", "C")):
+    for a, b in (
+        ("İ", "I"),
+        ("Ş", "S"),
+        ("Ğ", "G"),
+        ("Ü", "U"),
+        ("Ö", "O"),
+        ("Ç", "C"),
+    ):
         text = text.replace(a, b)
     text = re.sub(r"\b(MAH|MAHALLESI|MH|KOYU|KOY|BLD|BELDESI)\b\.?", "", text)
     return re.sub(r"[^A-Z0-9]", "", text)
@@ -85,8 +92,13 @@ def main(argv: list[str]) -> None:
 
     semtler = semt_haritasi(fold(il_adi))
     agg = collections.defaultdict(
-        lambda: {"nufus": 0.0, "gecerli": 0.0, "kayitli": 0.0, "mah": 0,
-                 "v": collections.Counter()}
+        lambda: {
+            "nufus": 0.0,
+            "gecerli": 0.0,
+            "kayitli": 0.0,
+            "mah": 0,
+            "v": collections.Counter(),
+        }
     )
     disarida = 0
     for dosya in sorted(DEM.glob(f"{il_kodu}-*.json")):
@@ -110,8 +122,10 @@ def main(argv: list[str]) -> None:
 
     rows = [(v["gecerli"], k, v) for k, v in agg.items() if v["gecerli"] >= floor]
     rows.sort(reverse=True)
-    print(f"{vote} · {il_adi} · semt: {len(rows)} (gecerli oy >= {floor:,}) · "
-          f"ilce adiyla ayni olan ve eslesmeyen: {disarida} mahalle disarida")
+    print(
+        f"{vote} · {il_adi} · semt: {len(rows)} (gecerli oy >= {floor:,}) · "
+        f"ilce adiyla ayni olan ve eslesmeyen: {disarida} mahalle disarida"
+    )
     basliklar = " ".join(f"{ad[:9]:>9}" for ad, _ in PARTILER)
     print(f"\n{'semt':22} {'ilce':14} {'gecerli':>9} {'katilim':>7} {basliklar}")
     for gecerli, (semt, ilce), v in rows[:n]:
@@ -120,7 +134,9 @@ def main(argv: list[str]) -> None:
             f"{100 * sum(s for p, s in v['v'].items() if parca in p) / gecerli:8.1f}%"
             for _, parca in PARTILER
         )
-        print(f"{semt[:22]:22} {ilce[:14]:14} {int(gecerli):9,} {katilim:6.1f}% {paylar}")
+        print(
+            f"{semt[:22]:22} {ilce[:14]:14} {int(gecerli):9,} {katilim:6.1f}% {paylar}"
+        )
 
 
 if __name__ == "__main__":

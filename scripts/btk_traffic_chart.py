@@ -23,14 +23,33 @@ def load(name, label, numeric):
 
 
 def main():
-    annual = load("trafik_yillik.csv", "yil",
-                  ("mobil", "sabit", "toplam", "mobil_pay"))
-    tt = load("tt_trafik_dagilimi.csv", "donem",
-              ("sebeke_ici", "mobil", "sth", "uluslararasi", "rehberlik",
-               "bilesen_toplami", "toplam"))
-    mobile = load("mobil_trafik_isletmeci.csv", "donem",
-                  ("toplam", "turkcell", "vodafone", "ttmobil",
-                   "turkcell_pay", "vodafone_pay", "ttmobil_pay"))
+    annual = load("trafik_yillik.csv", "yil", ("mobil", "sabit", "toplam", "mobil_pay"))
+    tt = load(
+        "tt_trafik_dagilimi.csv",
+        "donem",
+        (
+            "sebeke_ici",
+            "mobil",
+            "sth",
+            "uluslararasi",
+            "rehberlik",
+            "bilesen_toplami",
+            "toplam",
+        ),
+    )
+    mobile = load(
+        "mobil_trafik_isletmeci.csv",
+        "donem",
+        (
+            "toplam",
+            "turkcell",
+            "vodafone",
+            "ttmobil",
+            "turkcell_pay",
+            "vodafone_pay",
+            "ttmobil_pay",
+        ),
+    )
 
     html = TEMPLATE.read_text(encoding="utf-8")
     for token, rows in (("__ANNUAL__", annual), ("__TT__", tt), ("__MOBILE__", mobile)):

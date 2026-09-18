@@ -89,8 +89,9 @@ def main(argv: list[str]) -> None:
 
     uye_toplam = 0
     ulke = collections.Counter()
-    bsb = collections.defaultdict(lambda: {"uye": collections.Counter(),
-                                           "baskan": collections.Counter()})
+    bsb = collections.defaultdict(
+        lambda: {"uye": collections.Counter(), "baskan": collections.Counter()}
+    )
     nufussuz = 0
     for area, row in meclis.items():
         oy = {k: v for k, v in row.get("v", {}).items() if "İTTİFAK" not in k.upper()}
@@ -118,8 +119,10 @@ def main(argv: list[str]) -> None:
                 if temiz:
                     bsb[il]["baskan"][max(temiz, key=temiz.get)] += 1
 
-    print(f"{yil} · ilce belediye meclisi toplam uyelik: {uye_toplam:,} "
-          f"(nufusu bulunamayan {nufussuz} ilce disarida)")
+    print(
+        f"{yil} · ilce belediye meclisi toplam uyelik: {uye_toplam:,} "
+        f"(nufusu bulunamayan {nufussuz} ilce disarida)"
+    )
     print(f"ulke geneli meclis uyeligi (D Hondt, %{baraj:g} baraj):")
     for parti, adet in ulke.most_common(10):
         print(f"   {parti[:24]:24} {adet:6,}  %{100 * adet / sum(ulke.values()):5.1f}")
@@ -133,16 +136,14 @@ def main(argv: list[str]) -> None:
         toplam = veri["uye"] + veri["baskan"]
         genel.update(toplam)
         n = sum(toplam.values())
-        ilk = "  ".join(
-            f"{p.split()[0][:9]} {a}" for p, a in toplam.most_common(4)
+        ilk = "  ".join(f"{p.split()[0][:9]} {a}" for p, a in toplam.most_common(4))
+        print(
+            f"{str(ad)[:14]:14} {n:4} uye  ({sum(veri['uye'].values())} meclisten + "
+            f"{sum(veri['baskan'].values())} baskan)   {ilk}"
         )
-        print(f"{str(ad)[:14]:14} {n:4} uye  ({sum(veri['uye'].values())} meclisten + "
-              f"{sum(veri['baskan'].values())} baskan)   {ilk}")
     print(f"\n30 buyuksehir toplam: {sum(genel.values()):,} uye")
     for parti, adet in genel.most_common(8):
         print(f"   {parti[:24]:24} {adet:5,}  %{100 * adet / sum(genel.values()):5.1f}")
-
-
 
 
 def sapma(yil: str = "2024", baraj: float = 10.0) -> None:
@@ -184,8 +185,11 @@ def sapma(yil: str = "2024", baraj: float = 10.0) -> None:
         il = "-".join(area.split("-")[:2])
         meclis_oy[il].update(oy)
         bsb_oy[il].update(
-            {k: v for k, v in bsb_tab[area].get("v", {}).items()
-             if "İTTİFAK" not in k.upper()}
+            {
+                k: v
+                for k, v in bsb_tab[area].get("v", {}).items()
+                if "İTTİFAK" not in k.upper()
+            }
         )
         n = uye_sayisi(nufus)
         kont = KONTENJAN[n]
@@ -193,8 +197,11 @@ def sapma(yil: str = "2024", baraj: float = 10.0) -> None:
         pay_[max(oy, key=oy.get)] += kont
         for parti, adet in pay_.items():
             sandalye[il][parti] += adet // 5
-        kaz = {k: v for k, v in baskan.get(area, {}).get("v", {}).items()
-               if "İTTİFAK" not in k.upper()}
+        kaz = {
+            k: v
+            for k, v in baskan.get(area, {}).get("v", {}).items()
+            if "İTTİFAK" not in k.upper()
+        }
         if kaz:
             sandalye[il][max(kaz, key=kaz.get)] += 1
 
@@ -202,19 +209,25 @@ def sapma(yil: str = "2024", baraj: float = 10.0) -> None:
         t = sum(c.values())
         return {k: 100 * v / t for k, v in c.items()} if t else {}
 
-    print(f"\n{'il':14} {'uye':>4} {'parti':16} {'sandalye%':>9} {'bsb oy%':>8} "
-          f"{'meclis oy%':>10} {'sapma(bsb)':>10} {'sapma(mec)':>10}")
+    print(
+        f"\n{'il':14} {'uye':>4} {'parti':16} {'sandalye%':>9} {'bsb oy%':>8} "
+        f"{'meclis oy%':>10} {'sapma(bsb)':>10} {'sapma(mec)':>10}"
+    )
     gall = []
     for il in sorted(sandalye, key=lambda i: -sum(sandalye[i].values())):
         s, b, m = yuzde(sandalye[il]), yuzde(bsb_oy[il]), yuzde(meclis_oy[il])
         ad = il_ad.get(il, il)
         ad = ad.get("ad", il) if isinstance(ad, dict) else ad
-        g = math.sqrt(sum((s.get(k, 0) - m.get(k, 0)) ** 2 for k in set(s) | set(m)) / 2)
+        g = math.sqrt(
+            sum((s.get(k, 0) - m.get(k, 0)) ** 2 for k in set(s) | set(m)) / 2
+        )
         gall.append((g, str(ad)))
         for parti in sorted(s, key=lambda k: -s[k])[:3]:
-            print(f"{str(ad)[:14]:14} {sum(sandalye[il].values()):4} {parti[:16]:16} "
-                  f"{s[parti]:8.1f}% {b.get(parti, 0):7.1f}% {m.get(parti, 0):9.1f}% "
-                  f"{s[parti] - b.get(parti, 0):+9.1f} {s[parti] - m.get(parti, 0):+9.1f}")
+            print(
+                f"{str(ad)[:14]:14} {sum(sandalye[il].values()):4} {parti[:16]:16} "
+                f"{s[parti]:8.1f}% {b.get(parti, 0):7.1f}% {m.get(parti, 0):9.1f}% "
+                f"{s[parti] - b.get(parti, 0):+9.1f} {s[parti] - m.get(parti, 0):+9.1f}"
+            )
     gall.sort(reverse=True)
     print("\nGallagher (sandalye vs ilce meclisi oyu) — en orantisiz 8:")
     for g, ad in gall[:8]:

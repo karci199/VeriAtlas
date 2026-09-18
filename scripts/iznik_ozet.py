@@ -27,17 +27,51 @@ KENT = {"centre"}
 KASABA = {"rural_town"}
 
 TOPLANIR = [
-    "PopulationTotal", "PopulationMale", "PopulationFemale", "HouseholdCount",
-    "HousingCount", "PopulationYoung", "PopulationMiddle", "PopulationElder",
-    "MarriedNever", "Married", "Divorced", "Widow",
-    "EduNonLiterated", "EduLiteratedUntutored", "EduPrimarySchool", "EduMiddleSchool",
-    "EduHighSchool", "EduLicenseDegree", "EduGraduate", "EducationTotal",
-    "SesGroupA", "SesGroupB", "SesGroupC", "SesGroupD",
-    "CarCount", "CommercialCount", "PharmacyCount", "AtmCount", "MobileUser",
-    "Age_0_4_Total", "Age_5_9_Total", "Age_10_14_Total", "Age_15_19_Total",
-    "Age_20_24_Total", "Age_25_29_Total", "Age_30_34_Total", "Age_35_39_Total",
-    "Age_40_44_Total", "Age_45_49_Total", "Age_50_54_Total", "Age_55_59_Total",
-    "Age_60_64_Total", "Age_65_Total", "Area", "GSYH",
+    "PopulationTotal",
+    "PopulationMale",
+    "PopulationFemale",
+    "HouseholdCount",
+    "HousingCount",
+    "PopulationYoung",
+    "PopulationMiddle",
+    "PopulationElder",
+    "MarriedNever",
+    "Married",
+    "Divorced",
+    "Widow",
+    "EduNonLiterated",
+    "EduLiteratedUntutored",
+    "EduPrimarySchool",
+    "EduMiddleSchool",
+    "EduHighSchool",
+    "EduLicenseDegree",
+    "EduGraduate",
+    "EducationTotal",
+    "SesGroupA",
+    "SesGroupB",
+    "SesGroupC",
+    "SesGroupD",
+    "CarCount",
+    "CommercialCount",
+    "PharmacyCount",
+    "AtmCount",
+    "MobileUser",
+    "Age_0_4_Total",
+    "Age_5_9_Total",
+    "Age_10_14_Total",
+    "Age_15_19_Total",
+    "Age_20_24_Total",
+    "Age_25_29_Total",
+    "Age_30_34_Total",
+    "Age_35_39_Total",
+    "Age_40_44_Total",
+    "Age_45_49_Total",
+    "Age_50_54_Total",
+    "Age_55_59_Total",
+    "Age_60_64_Total",
+    "Age_65_Total",
+    "Area",
+    "GSYH",
 ]
 AGIRLIKLI = ["HouseIncome", "ExpenseTotal", "SavingTotal"]
 
@@ -53,7 +87,9 @@ def gruplar(district: str) -> dict[str, list[dict]]:
         for f in geo["features"]
     }
     dump = json.loads(
-        (HAM / "endeksa" / "demography" / f"{district}.json").read_text(encoding="utf-8")
+        (HAM / "endeksa" / "demography" / f"{district}.json").read_text(
+            encoding="utf-8"
+        )
     )
 
     out: dict[str, list[dict]] = {"kent": [], "kasaba": [], "koy": []}
@@ -89,7 +125,10 @@ def yuzde(pay: float, toplam: float) -> str:
 
 
 def tablo(basliklar: list[str], satirlar: list[list[str]]) -> None:
-    genis = [max(len(str(s[i])) for s in [basliklar, *satirlar]) for i in range(len(basliklar))]
+    genis = [
+        max(len(str(s[i])) for s in [basliklar, *satirlar])
+        for i in range(len(basliklar))
+    ]
     print(" | ".join(str(b).ljust(genis[i]) for i, b in enumerate(basliklar)))
     print("-+-".join("-" * g for g in genis))
     for satir in satirlar:
@@ -104,8 +143,14 @@ def main(district: str = "TR-16-006") -> None:
     kir = topla(parcalar["kasaba"] + parcalar["koy"])
     hepsi = topla(parcalar["kent"] + parcalar["kasaba"] + parcalar["koy"])
 
-    sutunlar = [("Kent", kent), ("Kır", kir), ("· belde", kasaba), ("· köy", koy),
-                ("Toplam", hepsi)]
+    sutunlar = [
+        ("Kent", kent),
+        ("Kır", kir),
+        ("· belde", kasaba),
+        ("· köy", koy),
+        ("Toplam", hepsi),
+    ]
+
     def fmt(x):
         return f"{round(x):,}".replace(",", ".")
 
@@ -115,78 +160,187 @@ def main(district: str = "TR-16-006") -> None:
         ["Nüfus", *[fmt(c["PopulationTotal"]) for _, c in sutunlar]],
         ["Hane", *[fmt(c["HouseholdCount"]) for _, c in sutunlar]],
         ["Konut", *[fmt(c["HousingCount"]) for _, c in sutunlar]],
-        ["Hane başına kişi",
-         *[f"{c['PopulationTotal'] / c['HouseholdCount']:.2f}" if c["HouseholdCount"] else "—"
-           for _, c in sutunlar]],
+        [
+            "Hane başına kişi",
+            *[
+                f"{c['PopulationTotal'] / c['HouseholdCount']:.2f}"
+                if c["HouseholdCount"]
+                else "—"
+                for _, c in sutunlar
+            ],
+        ],
         ["Yüzölçümü (km²)", *[f"{c['Area']:.0f}" for _, c in sutunlar]],
-        ["Yoğunluk (kişi/km²)",
-         *[f"{c['PopulationTotal'] / c['Area']:.0f}" if c["Area"] else "—" for _, c in sutunlar]],
+        [
+            "Yoğunluk (kişi/km²)",
+            *[
+                f"{c['PopulationTotal'] / c['Area']:.0f}" if c["Area"] else "—"
+                for _, c in sutunlar
+            ],
+        ],
     ]
     tablo(["", *[ad for ad, _ in sutunlar]], satirlar)
 
     print("\n--- Yaş ve cinsiyet")
-    tablo(["", *[ad for ad, _ in sutunlar]], [
-        ["Erkek payı", *[yuzde(c["PopulationMale"], c["PopulationTotal"]) for _, c in sutunlar]],
-        ["0-14 payı", *[yuzde(
-            c["Age_0_4_Total"] + c["Age_5_9_Total"] + c["Age_10_14_Total"],
-            c["PopulationTotal"]) for _, c in sutunlar]],
-        ["15-64 payı", *[yuzde(c["PopulationTotal"] - (
-            c["Age_0_4_Total"] + c["Age_5_9_Total"] + c["Age_10_14_Total"] + c["Age_65_Total"]),
-            c["PopulationTotal"]) for _, c in sutunlar]],
-        ["65+ payı", *[yuzde(c["Age_65_Total"], c["PopulationTotal"]) for _, c in sutunlar]],
-        ["Yaşlı / çocuk", *[
-            f"{c['Age_65_Total'] / (c['Age_0_4_Total'] + c['Age_5_9_Total'] + c['Age_10_14_Total']):.2f}"
-            if (c["Age_0_4_Total"] + c["Age_5_9_Total"] + c["Age_10_14_Total"]) else "—"
-            for _, c in sutunlar]],
-    ])
+    tablo(
+        ["", *[ad for ad, _ in sutunlar]],
+        [
+            [
+                "Erkek payı",
+                *[
+                    yuzde(c["PopulationMale"], c["PopulationTotal"])
+                    for _, c in sutunlar
+                ],
+            ],
+            [
+                "0-14 payı",
+                *[
+                    yuzde(
+                        c["Age_0_4_Total"] + c["Age_5_9_Total"] + c["Age_10_14_Total"],
+                        c["PopulationTotal"],
+                    )
+                    for _, c in sutunlar
+                ],
+            ],
+            [
+                "15-64 payı",
+                *[
+                    yuzde(
+                        c["PopulationTotal"]
+                        - (
+                            c["Age_0_4_Total"]
+                            + c["Age_5_9_Total"]
+                            + c["Age_10_14_Total"]
+                            + c["Age_65_Total"]
+                        ),
+                        c["PopulationTotal"],
+                    )
+                    for _, c in sutunlar
+                ],
+            ],
+            [
+                "65+ payı",
+                *[yuzde(c["Age_65_Total"], c["PopulationTotal"]) for _, c in sutunlar],
+            ],
+            [
+                "Yaşlı / çocuk",
+                *[
+                    f"{c['Age_65_Total'] / (c['Age_0_4_Total'] + c['Age_5_9_Total'] + c['Age_10_14_Total']):.2f}"
+                    if (c["Age_0_4_Total"] + c["Age_5_9_Total"] + c["Age_10_14_Total"])
+                    else "—"
+                    for _, c in sutunlar
+                ],
+            ],
+        ],
+    )
 
     print("\n--- Medeni durum (15+)")
-    tablo(["", *[ad for ad, _ in sutunlar]], [
-        [ad2, *[yuzde(c[alan], c["MarriedNever"] + c["Married"] + c["Divorced"] + c["Widow"])
-                for _, c in sutunlar]]
-        for ad2, alan in [("Hiç evlenmedi", "MarriedNever"), ("Evli", "Married"),
-                          ("Boşandı", "Divorced"), ("Eşi öldü", "Widow")]
-    ])
+    tablo(
+        ["", *[ad for ad, _ in sutunlar]],
+        [
+            [
+                ad2,
+                *[
+                    yuzde(
+                        c[alan],
+                        c["MarriedNever"] + c["Married"] + c["Divorced"] + c["Widow"],
+                    )
+                    for _, c in sutunlar
+                ],
+            ]
+            for ad2, alan in [
+                ("Hiç evlenmedi", "MarriedNever"),
+                ("Evli", "Married"),
+                ("Boşandı", "Divorced"),
+                ("Eşi öldü", "Widow"),
+            ]
+        ],
+    )
 
     print("\n--- Eğitim (15+ bitirilen düzey)")
-    tablo(["", *[ad for ad, _ in sutunlar]], [
-        [ad2, *[yuzde(c[alan], c["EducationTotal"]) for _, c in sutunlar]]
-        for ad2, alan in [("Okuma-yazma yok", "EduNonLiterated"),
-                          ("Okur-yazar, okulsuz", "EduLiteratedUntutored"),
-                          ("İlkokul", "EduPrimarySchool"), ("Ortaokul", "EduMiddleSchool"),
-                          ("Lise", "EduHighSchool"), ("Lisans", "EduLicenseDegree"),
-                          ("Lisansüstü", "EduGraduate")]
-    ])
+    tablo(
+        ["", *[ad for ad, _ in sutunlar]],
+        [
+            [ad2, *[yuzde(c[alan], c["EducationTotal"]) for _, c in sutunlar]]
+            for ad2, alan in [
+                ("Okuma-yazma yok", "EduNonLiterated"),
+                ("Okur-yazar, okulsuz", "EduLiteratedUntutored"),
+                ("İlkokul", "EduPrimarySchool"),
+                ("Ortaokul", "EduMiddleSchool"),
+                ("Lise", "EduHighSchool"),
+                ("Lisans", "EduLicenseDegree"),
+                ("Lisansüstü", "EduGraduate"),
+            ]
+        ],
+    )
 
     print("\n--- Gelir, SES ve varlık")
-    tablo(["", *[ad for ad, _ in sutunlar]], [
-        ["Hane geliri (TL/ay)", *[fmt(c["HouseIncome"]) for _, c in sutunlar]],
-        ["Harcama (TL/ay)", *[fmt(c["ExpenseTotal"]) for _, c in sutunlar]],
-        ["Tasarruf (TL/ay)", *[fmt(c["SavingTotal"]) for _, c in sutunlar]],
-        *[[ad2, *[yuzde(c[alan], c["SesGroupA"] + c["SesGroupB"] + c["SesGroupC"] + c["SesGroupD"])
-                  for _, c in sutunlar]]
-          for ad2, alan in [("SES A", "SesGroupA"), ("SES B", "SesGroupB"),
-                            ("SES C", "SesGroupC"), ("SES D", "SesGroupD")]],
-        ["Hane başına araç",
-         *[f"{c['CarCount'] / c['HouseholdCount']:.2f}" if c["HouseholdCount"] else "—"
-           for _, c in sutunlar]],
-        ["Ticari işletme", *[fmt(c["CommercialCount"]) for _, c in sutunlar]],
-        ["Kişi başına GSYH (TL)",
-         *[fmt(c["GSYH"] / c["PopulationTotal"]) if c["PopulationTotal"] else "—"
-           for _, c in sutunlar]],
-    ])
+    tablo(
+        ["", *[ad for ad, _ in sutunlar]],
+        [
+            ["Hane geliri (TL/ay)", *[fmt(c["HouseIncome"]) for _, c in sutunlar]],
+            ["Harcama (TL/ay)", *[fmt(c["ExpenseTotal"]) for _, c in sutunlar]],
+            ["Tasarruf (TL/ay)", *[fmt(c["SavingTotal"]) for _, c in sutunlar]],
+            *[
+                [
+                    ad2,
+                    *[
+                        yuzde(
+                            c[alan],
+                            c["SesGroupA"]
+                            + c["SesGroupB"]
+                            + c["SesGroupC"]
+                            + c["SesGroupD"],
+                        )
+                        for _, c in sutunlar
+                    ],
+                ]
+                for ad2, alan in [
+                    ("SES A", "SesGroupA"),
+                    ("SES B", "SesGroupB"),
+                    ("SES C", "SesGroupC"),
+                    ("SES D", "SesGroupD"),
+                ]
+            ],
+            [
+                "Hane başına araç",
+                *[
+                    f"{c['CarCount'] / c['HouseholdCount']:.2f}"
+                    if c["HouseholdCount"]
+                    else "—"
+                    for _, c in sutunlar
+                ],
+            ],
+            ["Ticari işletme", *[fmt(c["CommercialCount"]) for _, c in sutunlar]],
+            [
+                "Kişi başına GSYH (TL)",
+                *[
+                    fmt(c["GSYH"] / c["PopulationTotal"])
+                    if c["PopulationTotal"]
+                    else "—"
+                    for _, c in sutunlar
+                ],
+            ],
+        ],
+    )
 
     print("\n--- En büyük beş yerleşim")
     hepsi_liste = sorted(
         parcalar["kent"] + parcalar["kasaba"] + parcalar["koy"],
         key=lambda r: -(r.get("PopulationTotal") or 0),
     )[:5]
-    tablo(["Yerleşim", "Nüfus", "Hane", "65+ payı", "Hane geliri"], [
-        [r["_ad"], fmt(r["PopulationTotal"]), fmt(r["HouseholdCount"] or 0),
-         yuzde(r.get("Age_65_Total") or 0, r["PopulationTotal"]),
-         fmt(r.get("HouseIncome") or 0)]
-        for r in hepsi_liste
-    ])
+    tablo(
+        ["Yerleşim", "Nüfus", "Hane", "65+ payı", "Hane geliri"],
+        [
+            [
+                r["_ad"],
+                fmt(r["PopulationTotal"]),
+                fmt(r["HouseholdCount"] or 0),
+                yuzde(r.get("Age_65_Total") or 0, r["PopulationTotal"]),
+                fmt(r.get("HouseIncome") or 0),
+            ]
+            for r in hepsi_liste
+        ],
+    )
 
 
 if __name__ == "__main__":

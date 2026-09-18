@@ -37,7 +37,9 @@ def adlar() -> tuple[dict[str, str], dict[str, str]]:
     }
     ilceler = {
         row["area_id"]: row["name_tr"]
-        for row in csv.DictReader((DATA / "areas_tr_districts.csv").open(encoding="utf-8"))
+        for row in csv.DictReader(
+            (DATA / "areas_tr_districts.csv").open(encoding="utf-8")
+        )
     }
     return iller, ilceler
 
@@ -80,9 +82,14 @@ def mahalleler() -> list[dict]:
     return out
 
 
-def yaz(baslik: str, rows: list[dict], sutunlar: list[tuple[str, str, str]], n: int) -> None:
+def yaz(
+    baslik: str, rows: list[dict], sutunlar: list[tuple[str, str, str]], n: int
+) -> None:
     print(f"\n=== {baslik}")
-    print(f"{'Mahalle':22}{'İlçe':15}{'İl':11}" + "".join(f"{ad:>14}" for ad, _, _ in sutunlar))
+    print(
+        f"{'Mahalle':22}{'İlçe':15}{'İl':11}"
+        + "".join(f"{ad:>14}" for ad, _, _ in sutunlar)
+    )
     for row in rows[:n]:
         print(
             f"{row['ad'][:21]:22}{row['ilce'][:14]:15}{row['il'][:10]:11}"
@@ -108,8 +115,11 @@ def main(argv: list[str]) -> None:
     for row in kiralik:
         row["carpan"] = row["satis_m2"] / (row["kira_m2"] * 12)
 
-    sut = [("m² satış", "satis_m2", ",.0f"), ("hane geliri", "gelir", ",.0f"),
-           (f"{m2} m² / yıl", "yil", ".1f")]
+    sut = [
+        ("m² satış", "satis_m2", ",.0f"),
+        ("hane geliri", "gelir", ",.0f"),
+        (f"{m2} m² / yıl", "yil", ".1f"),
+    ]
     yaz(
         f"En ulaşılamaz: {m2} m² kaç yıllık hane geliri",
         sorted(fiyatli, key=lambda r: -r["yil"]),
@@ -124,8 +134,11 @@ def main(argv: list[str]) -> None:
     )
 
     if kiralik:
-        sut2 = [("m² satış", "satis_m2", ",.0f"), ("m² kira", "kira_m2", ",.0f"),
-                ("amortisman yıl", "carpan", ".1f")]
+        sut2 = [
+            ("m² satış", "satis_m2", ",.0f"),
+            ("m² kira", "kira_m2", ",.0f"),
+            ("amortisman yıl", "carpan", ".1f"),
+        ]
         yaz(
             "Kira getirisi en yüksek (amortisman süresi en kısa)",
             sorted(kiralik, key=lambda r: r["carpan"]),
@@ -146,8 +159,11 @@ def main(argv: list[str]) -> None:
         yaz(
             "İkinci konut (yazlık) payı en yüksek",
             sorted(yazlikli, key=lambda r: -r["yazlik_pay"]),
-            [("konut", "konut", ",.0f"), ("yazlık", "yazlik", ",.0f"),
-             ("yazlık payı %", "yazlik_pay", ".1f")],
+            [
+                ("konut", "konut", ",.0f"),
+                ("yazlık", "yazlik", ",.0f"),
+                ("yazlık payı %", "yazlik_pay", ".1f"),
+            ],
             n,
         )
 
@@ -164,7 +180,9 @@ def main(argv: list[str]) -> None:
                 gruplar.append(dilim)
                 dilim, birikim = [], 0.0
         gruplar.append(dilim)
-        print(f"{'Dilim':8}{'Hane geliri':>13}{'Ev sahibi %':>13}{'Kiracı %':>11}{'Mahalle':>9}")
+        print(
+            f"{'Dilim':8}{'Hane geliri':>13}{'Ev sahibi %':>13}{'Kiracı %':>11}{'Mahalle':>9}"
+        )
         for i, grup in enumerate(gruplar, 1):
             w = sum(r["hane"] for r in grup)
             gelir = sum(r["gelir"] * r["hane"] for r in grup) / w
@@ -173,8 +191,12 @@ def main(argv: list[str]) -> None:
             print(f"{i:<8}{gelir:>13,.0f}{sahip:>13.1f}{kiraci:>11.1f}{len(grup):>9}")
 
     print("\n=== Fiyatın gelirle ilişkisi (mahalle düzeyi, hane ağırlıklı)")
-    for etiket, alan in [("m² satış", "satis_m2"), ("m² kira", "kira_m2"),
-                         ("arsa m²", "arsa_m2"), ("ev sahipliği", "sahip")]:
+    for etiket, alan in [
+        ("m² satış", "satis_m2"),
+        ("m² kira", "kira_m2"),
+        ("arsa m²", "arsa_m2"),
+        ("ev sahipliği", "sahip"),
+    ]:
         veri = [r for r in rows if r.get(alan)]
         if len(veri) < 30:
             continue

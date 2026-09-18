@@ -38,7 +38,9 @@ def adlar() -> tuple[dict[str, str], dict[str, str]]:
     }
     ilceler = {
         row["area_id"]: row["name_tr"]
-        for row in csv.DictReader((DATA / "areas_tr_districts.csv").open(encoding="utf-8"))
+        for row in csv.DictReader(
+            (DATA / "areas_tr_districts.csv").open(encoding="utf-8")
+        )
     }
     return iller, ilceler
 
@@ -75,7 +77,9 @@ def satirlar(desen: str, en_az_nufus: int, en_az_hane: int) -> list[dict]:
 
 def yaz(baslik: str, rows: list[dict], anahtar: str, n: int) -> None:
     print(f"\n=== {baslik}")
-    print(f"{'Mahalle':26}{'İlçe':16}{'İl':13}{'Hane geliri':>13}{'Kişi başı':>12}{'Hane/kişi':>11}")
+    print(
+        f"{'Mahalle':26}{'İlçe':16}{'İl':13}{'Hane geliri':>13}{'Kişi başı':>12}{'Hane/kişi':>11}"
+    )
     for row in sorted(rows, key=lambda r: -r[anahtar])[:n]:
         print(
             f"{row['ad'][:24]:26}{row['ilce'][:14]:16}{row['il'][:11]:13}"
@@ -86,7 +90,9 @@ def yaz(baslik: str, rows: list[dict], anahtar: str, n: int) -> None:
 def main(argv: list[str]) -> None:
     hedef = next((a for a in argv if a.startswith("TR-")), None)
     n = int(next((a.split("=")[1] for a in argv if a.startswith("--n=")), 15))
-    en_az_nufus = int(next((a.split("=")[1] for a in argv if a.startswith("--min=")), 500))
+    en_az_nufus = int(
+        next((a.split("=")[1] for a in argv if a.startswith("--min=")), 500)
+    )
     en_az_hane = max(50, en_az_nufus // 4)
 
     desen = f"{hedef}.json" if hedef else "TR-*.json"

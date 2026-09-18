@@ -9,8 +9,19 @@ RAW = ROOT / "raw" / "btk"
 TEMPLATE = pathlib.Path(__file__).with_name("btk_genisbant_template.html")
 DEST = ROOT / "web" / "btk-genisbant.html"
 
-NUMERIC = ("xdsl", "kablo", "ftth", "fttb", "fiber", "kablosuz_sabit", "diger",
-           "mobil_bilgisayar", "mobil_cep", "toplam", "sabit_toplam")
+NUMERIC = (
+    "xdsl",
+    "kablo",
+    "ftth",
+    "fttb",
+    "fiber",
+    "kablosuz_sabit",
+    "diger",
+    "mobil_bilgisayar",
+    "mobil_cep",
+    "toplam",
+    "sabit_toplam",
+)
 
 
 def load_subscribers():
@@ -26,12 +37,15 @@ def load_subscribers():
 
 def load_arpu():
     with open(RAW / "sabit_genisbant_arpu.csv", encoding="utf-8") as fh:
-        return [{
-            "yil": int(r["yil"]),
-            "aylik_tl": float(r["aylik_tl"]),
-            "aylik_usd": float(r["aylik_usd"]),
-            "aylik_tl_2025": float(r["aylik_tl_2025"]),
-        } for r in csv.DictReader(fh)]
+        return [
+            {
+                "yil": int(r["yil"]),
+                "aylik_tl": float(r["aylik_tl"]),
+                "aylik_usd": float(r["aylik_usd"]),
+                "aylik_tl_2025": float(r["aylik_tl_2025"]),
+            }
+            for r in csv.DictReader(fh)
+        ]
 
 
 def main():

@@ -181,7 +181,9 @@ def main(argv: list[str]) -> None:
     # Within district: each settlement against its own district's vote-weighted mean.
     ilce_ortalama: dict[str, dict] = {}
     for row in rows:
-        acc = ilce_ortalama.setdefault(row["ilce"], {"w": 0.0, "gelir": 0.0, **{ad: 0.0 for ad, _ in ADAYLAR}})
+        acc = ilce_ortalama.setdefault(
+            row["ilce"], {"w": 0.0, "gelir": 0.0, **{ad: 0.0 for ad, _ in ADAYLAR}}
+        )
         acc["w"] += row["agirlik"]
         acc["gelir"] += row["gelir"] * row["agirlik"]
         for ad, _ in ADAYLAR:
@@ -216,9 +218,15 @@ def main(argv: list[str]) -> None:
         ham = agirlikli_korelasyon(rows, "gelir", ad)
         ic = agirlikli_korelasyon(fark_rows, "gelir", ad)
         print(f"  gelir × {ad:14} ham {ham:+.3f}   ilçe içi {ic:+.3f}")
-    print(f"  gelir × {'katılım':14} ham {agirlikli_korelasyon(rows, 'gelir', 'katilim'):+.3f}")
-    print(f"  gelir × {'65+ payı':14} ham {agirlikli_korelasyon(rows, 'gelir', 'yasli'):+.3f}")
-    print(f"  gelir × {'lisans payı':14} ham {agirlikli_korelasyon(rows, 'gelir', 'lisans'):+.3f}")
+    print(
+        f"  gelir × {'katılım':14} ham {agirlikli_korelasyon(rows, 'gelir', 'katilim'):+.3f}"
+    )
+    print(
+        f"  gelir × {'65+ payı':14} ham {agirlikli_korelasyon(rows, 'gelir', 'yasli'):+.3f}"
+    )
+    print(
+        f"  gelir × {'lisans payı':14} ham {agirlikli_korelasyon(rows, 'gelir', 'lisans'):+.3f}"
+    )
 
 
 if __name__ == "__main__":

@@ -12,13 +12,13 @@ veriyor; bağlantı birkaç yüz raporda bir sıfırlanıyor (`WinError 10054`).
 
 ```python
 missing = None
-for _ in range(rounds):          # rounds yalnız tavan
-    left = sweep(...)            # yalnız eksik olanları dener
+for _ in range(rounds):  # rounds yalnız tavan
+    left = sweep(...)  # yalnız eksik olanları dener
     if not left:
         return
     if missing is not None and left >= missing:
         log("gecis kazanc getirmedi, %d eksik" % left)
-        return                   # ilerleme durdu, sonsuza dönme
+        return  # ilerleme durdu, sonsuza dönme
     missing = left
 ```
 

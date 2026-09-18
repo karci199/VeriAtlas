@@ -79,9 +79,13 @@ def main(argv: list[str]) -> None:
             ilk = "  ".join(f"{p} {100 * s:.0f}%" for p, s in paylar[:2])
             print(f"{ad[:34]:34} {sayi:5.2f}  {int(kayitli):>9,}  {ilk}")
 
-    goster("IL", [(k, k, {"v": v["v"], "k": v["k"]}) for k, v in iller.items()],
-           lambda i: adlar.get(i[0], i[0]) if isinstance(adlar.get(i[0], ""), str)
-           else i[0])
+    goster(
+        "IL",
+        [(k, k, {"v": v["v"], "k": v["k"]}) for k, v in iller.items()],
+        lambda i: (
+            adlar.get(i[0], i[0]) if isinstance(adlar.get(i[0], ""), str) else i[0]
+        ),
+    )
     goster("ILCE", ilce_rows, lambda i: f"{i[0]} ({i[1]})")
     goster("MAHALLE", mahalle_rows, lambda i: f"{i[0]} ({i[1].split('-')[1]})")
 

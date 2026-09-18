@@ -89,10 +89,14 @@ def test_no_duplicate_rows():
 @pytest.mark.parametrize("op", mod.OPERATORS)
 def test_postpaid_is_always_above_prepaid(op, donem):
     """A swapped pair of charts is the easiest mistake to make here."""
-    assert BY_KEY[("faturali", donem, op)]["tl"] > BY_KEY[("on_odemeli", donem, op)]["tl"]
+    assert (
+        BY_KEY[("faturali", donem, op)]["tl"] > BY_KEY[("on_odemeli", donem, op)]["tl"]
+    )
 
 
-@pytest.mark.parametrize("row", ROWS, ids=lambda r: f"{r['tip']}-{r['donem']}-{r['isletmeci']}")
+@pytest.mark.parametrize(
+    "row", ROWS, ids=lambda r: f"{r['tip']}-{r['donem']}-{r['isletmeci']}"
+)
 @needs_macro
 def test_currency_conversions_are_consistent(row):
     """Euro and dollar figures must be the lira figure over that quarter's rate."""

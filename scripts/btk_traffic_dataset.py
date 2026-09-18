@@ -153,13 +153,30 @@ def write(name, rows, fieldnames):
 
 
 def main():
-    write("trafik_yillik.csv", build_annual(),
-          ("yil", "mobil", "sabit", "toplam", "mobil_pay", "kaynak_rapor"))
-    write("tt_trafik_dagilimi.csv", build_tt(),
-          ("donem", *TT_PARTS, "bilesen_toplami", "toplam", "kaynak_rapor"))
-    write("mobil_trafik_isletmeci.csv", build_mobile(),
-          ("donem", "toplam", "turkcell", "vodafone", "ttmobil",
-           "turkcell_pay", "vodafone_pay", "ttmobil_pay"))
+    write(
+        "trafik_yillik.csv",
+        build_annual(),
+        ("yil", "mobil", "sabit", "toplam", "mobil_pay", "kaynak_rapor"),
+    )
+    write(
+        "tt_trafik_dagilimi.csv",
+        build_tt(),
+        ("donem", *TT_PARTS, "bilesen_toplami", "toplam", "kaynak_rapor"),
+    )
+    write(
+        "mobil_trafik_isletmeci.csv",
+        build_mobile(),
+        (
+            "donem",
+            "toplam",
+            "turkcell",
+            "vodafone",
+            "ttmobil",
+            "turkcell_pay",
+            "vodafone_pay",
+            "ttmobil_pay",
+        ),
+    )
 
 
 if __name__ == "__main__":

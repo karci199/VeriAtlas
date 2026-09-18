@@ -38,11 +38,23 @@ PROVINCES = ROOT / "src" / "veriatlas" / "data" / "nuts_tr.csv"
 
 CB = ["cb2023t1", "cb2023t2", "cb2018", "cb2014"]
 HO = ["ho2017", "ho2010", "ho2007", "ho1988", "ho1987", "ho1982"]
-MV = ["mv2023", "mv2018", "mv2015k", "mv2015h", "mv2011", "mv2007", "mv2002", "mv1999",
-      "mv1995", "mv1991"]
-YEREL = [f"yerel_{office}_{year}"
-         for office in ("bsb", "bel", "belmec", "ilgen")
-         for year in ("2024", "2019", "2014", "2009", "2004", "1999", "1994", "1989")]
+MV = [
+    "mv2023",
+    "mv2018",
+    "mv2015k",
+    "mv2015h",
+    "mv2011",
+    "mv2007",
+    "mv2002",
+    "mv1999",
+    "mv1995",
+    "mv1991",
+]
+YEREL = [
+    f"yerel_{office}_{year}"
+    for office in ("bsb", "bel", "belmec", "ilgen")
+    for year in ("2024", "2019", "2014", "2009", "2004", "1999", "1994", "1989")
+]
 
 _lock = threading.Lock()
 
@@ -93,8 +105,15 @@ def lane_medas() -> None:
         run("medas", ["scripts/fetch_medas_simple.py", measure, f"--yil={YEARS}"])
     for province in provinces():
         for measure in ("medeni", "hemsehrilik", "okuma-yazma"):
-            run("medas", ["scripts/fetch_medas_marital_district.py",
-                          f"--olcum={measure}", province, "--all"])
+            run(
+                "medas",
+                [
+                    "scripts/fetch_medas_marital_district.py",
+                    f"--olcum={measure}",
+                    province,
+                    "--all",
+                ],
+            )
     run("medas", ["scripts/fetch_medas_neighbourhoods.py", "--all"])
     run("medas", ["scripts/fetch_medas_neighbourhoods_early.py", "--all"])
 

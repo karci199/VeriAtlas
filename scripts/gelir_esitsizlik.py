@@ -43,7 +43,9 @@ def adlar() -> tuple[dict[str, str], dict[str, str]]:
     }
     ilceler = {
         row["area_id"]: row["name_tr"]
-        for row in csv.DictReader((DATA / "areas_tr_districts.csv").open(encoding="utf-8"))
+        for row in csv.DictReader(
+            (DATA / "areas_tr_districts.csv").open(encoding="utf-8")
+        )
     }
     return iller, ilceler
 
@@ -70,7 +72,11 @@ def mahalleler(district: str) -> list[dict]:
         dump = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return []
-    tur = {k: v for k, v in tur_haritasi(district).items() if v in ("centre", "village", "rural_town")}
+    tur = {
+        k: v
+        for k, v in tur_haritasi(district).items()
+        if v in ("centre", "village", "rural_town")
+    }
     out = []
     for ident, record in dump.items():
         dem = record.get("demography") or {}
@@ -88,13 +94,18 @@ def mahalleler(district: str) -> list[dict]:
                 # for it: a thousand people per km² is roughly where a village stops
                 # looking like one. Where the pilot's own classification exists it wins.
                 "tur": tur.get(ident)
-                or ("centre" if (dem.get("PopulationDensity") or 0) >= 1000 else "village"),
+                or (
+                    "centre"
+                    if (dem.get("PopulationDensity") or 0) >= 1000
+                    else "village"
+                ),
                 "nufus": nufus,
                 "hane": hane,
                 "gelir": gelir,
                 "hane_kisi": nufus / hane,
                 "yasli": (dem.get("Age_65_Total") or 0) / nufus,
-                "lisans": (dem.get("EduLicenseDegree") or 0) / (dem.get("EducationTotal") or 1),
+                "lisans": (dem.get("EduLicenseDegree") or 0)
+                / (dem.get("EducationTotal") or 1),
                 "arac": (dem.get("CarCount") or 0) / hane,
                 "ticari": (dem.get("CommercialCount") or 0) / nufus * 1000,
             }
@@ -191,11 +202,15 @@ def main(argv: list[str]) -> None:
     print("\n=== En türdeş ilçeler (p90 / p10 en düşük)")
     yaz(sorted(ilce_satirlari, key=lambda r: r["makas"])[:n])
 
-    makasli = [r for r in ilce_satirlari if r["kent"] == r["kent"] and r["kir"] == r["kir"]]
+    makasli = [
+        r for r in ilce_satirlari if r["kent"] == r["kent"] and r["kir"] == r["kir"]
+    ]
     print("\n=== Kent–kır makası en büyük ilçeler (kent / kır)")
     yaz(sorted(makasli, key=lambda r: -(r["kent"] / r["kir"] if r["kir"] else 0))[:n])
 
-    print("\n=== Gelirin birlikte hareket ettiği şeyler (mahalle düzeyi, hane ağırlıklı)")
+    print(
+        "\n=== Gelirin birlikte hareket ettiği şeyler (mahalle düzeyi, hane ağırlıklı)"
+    )
     for etiket, alan in [
         ("lisans payı", "lisans"),
         ("hane başına araç", "arac"),

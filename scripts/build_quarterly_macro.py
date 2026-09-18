@@ -43,8 +43,10 @@ def fx_quarters(path):
         q = quarter(y, m)
         eur_try.setdefault(q, []).append(float(try_rate))
         usd_try.setdefault(q, []).append(float(try_rate) / float(usd_rate))
-    return ({q: statistics.fmean(v) for q, v in eur_try.items()},
-            {q: statistics.fmean(v) for q, v in usd_try.items()})
+    return (
+        {q: statistics.fmean(v) for q, v in eur_try.items()},
+        {q: statistics.fmean(v) for q, v in usd_try.items()},
+    )
 
 
 def fred_quarters(path):
@@ -92,14 +94,16 @@ def main(src):
         w = csv.writer(fh)
         w.writerow(("donem", "eur_try", "usd_try", "tufe_tr", "tufe_abd", "tufe_euro"))
         for q in periods:
-            w.writerow((
-                q,
-                round(eur_try[q], 4),
-                round(usd_try[q], 4),
-                round(tr_cpi[q], 3) if q in tr_cpi else "",
-                round(us_cpi[q], 3) if q in us_cpi else "",
-                round(ea_cpi[q], 3) if q in ea_cpi else "",
-            ))
+            w.writerow(
+                (
+                    q,
+                    round(eur_try[q], 4),
+                    round(usd_try[q], 4),
+                    round(tr_cpi[q], 3) if q in tr_cpi else "",
+                    round(us_cpi[q], 3) if q in us_cpi else "",
+                    round(ea_cpi[q], 3) if q in ea_cpi else "",
+                )
+            )
     print(f"{OUT} yazildi ({len(periods)} ceyrek)")
 
 

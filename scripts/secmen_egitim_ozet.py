@@ -68,7 +68,9 @@ def main(year: str = "2023") -> None:
                 continue
             uni = sum(v for k, v in byedu.items() if any(u in k for u in UNI))
             illiterate = sum(
-                v for k, v in byedu.items() if k.startswith("Okuma yazma") and "bilmeyen" in k
+                v
+                for k, v in byedu.items()
+                if k.startswith("Okuma yazma") and "bilmeyen" in k
             )
             rows.append((district, province, total, illiterate, uni))
 
@@ -82,13 +84,17 @@ def main(year: str = "2023") -> None:
     def show(title, key, rows_, count=15):
         print(f"\n=== {title} ===")
         for d, p, t, i, u in sorted(rows_, key=key)[:count]:
-            print(f"{d:22} {p:15} {100 * key.pay(d, p, t, i, u):6.2f}%  {int(key.num(i, u)):>8,} / {int(t):>9,}")
+            print(
+                f"{d:22} {p:15} {100 * key.pay(d, p, t, i, u):6.2f}%  {int(key.num(i, u)):>8,} / {int(t):>9,}"
+            )
 
     for title, pick in (("UNIVERSITE MEZUNU KADIN — EN YUKSEK", 4), ("EN DUSUK", 4)):
         pass  # printed below with explicit loops
 
     uni_sorted = sorted(rows, key=lambda r: -100 * r[4] / r[2])
-    print("\n=== UNIVERSITE MEZUNU KADIN (yuksekokul/fakulte + y.lisans + doktora) — EN YUKSEK 15 ===")
+    print(
+        "\n=== UNIVERSITE MEZUNU KADIN (yuksekokul/fakulte + y.lisans + doktora) — EN YUKSEK 15 ==="
+    )
     for d, p, t, i, u in uni_sorted[:15]:
         print(f"{d:22} {p:15} {100 * u / t:6.2f}%  {int(u):>8,} / {int(t):>9,}")
     print("\n=== EN DUSUK 15 ===")
