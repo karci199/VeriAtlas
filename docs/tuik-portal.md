@@ -62,3 +62,33 @@ il düzeyinde değerli ve hiç girilmemiş olanlar:
 | Bitkisel Ürün Denge Tabloları, Su Ürünleri | tarım tarafında eksik kalan iki başlık |
 
 Kullanıcı kararıyla alınmayanlar bu listede yok: Yaşam Memnuniyeti, Ceza İnfaz Kurumu.
+
+## Dosya indirme (2026-09-18)
+
+`scripts/fetch_tuik_portal_files.py` katalogdaki 2.262 indirme bağlantısını geziyor.
+**1.406 dosya indi (%62), 178 MB** — oturum burada durduruldu, çekici kaldığı yerden
+devam eder (inen dosya atlanıyor).
+
+**Kısıtlama tuzağı:** uç nokta hızlı istekte dosya yerine 200 + küçük HTML döndürüyor.
+İlk tur saniyede beş istekle 2.262'den yalnız 78 dosya aldı ve gerisini "bozuk" saydı;
+aynı jeton tek başına istendiğinde 104 KB'lık Excel geldi. İstek arası 1,2 sn ve HTML
+cevabın artan beklemeyle beş kez denenmesiyle başarı oranı %3,5'ten **%96'ya** çıktı.
+
+Dosyalar eski BIFF `.xls` (openpyxl açamaz, `xlrd` açıyor).
+
+### MEDAS'ta olmayıp buradan çıkanlar
+
+İnen 1.406 dosyanın 143'ü coğrafi kırılımlı (%10). MEDAS'ın 92 veritabanında karşılığı
+olmayanlar:
+
+| Ne | Düzey | Not |
+|---|---|---|
+| **İl düzeyinde işsizlik / istihdam / işgücüne katılma oranı** | 81 il, 2022-2025 | MEDAS'ta en alt İBBS2'ydi; depoda işsizlik Eurostat'tan dolaylı geliyordu. Güven aralıklarıyla |
+| İBBS-3 suç türüne göre ceza infazına giren/çıkan hükümlü | il | suçun işlendiği il **ve** daimi ikametgâh ayrı |
+| Cumhuriyet Başsavcılıkları soruşturma iş durumu | il, 2006-2013 | güncel yıllar yok |
+| Okul, şube, öğrenci, öğretmen, derslik sayısı | İBBS 1-2-3 | MEB robots engelinin kapattığı boşluk |
+| Okullaşma oranı, kurs ve kursiyer sayısı | il | |
+| Bölgesel fiyat düzeyi endeksi ve satınalma gücü paritesi | 26 bölge | gelir karşılaştırmalarını düzeltir |
+| Göç etme **nedenine** göre illerin aldığı/verdiği göç | il | depoda göç var, nedeni yok |
+| Aile Yapısı Araştırması (akraba evliliği, başlık parası, nikah türü) | İBBS1 + üç büyük il | |
+| İllere göre kamu hizmetlerinden memnuniyet, belediye hizmetleri | il | |
