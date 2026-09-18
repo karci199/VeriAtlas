@@ -106,3 +106,31 @@ fazla ilçeye ulaşıyor: 973 ilçenin 608'inde Komagene var, 257'sinde Burger K
 Sınır dışına düşen satırlar atılıyor: kıyı şeridi (Komagene 9, BK 12, McDonald's 1) ve
 **yurt dışı şubeler** — Oses 1.670 satırının 33'ünü `Yurtdışı` diye etiketliyor, koordinatları
 Avrupa'da. Oses bu yüzden %2,5 kaybediyor, adaptörün %3'lük eşiğine yakın.
+
+## Sektör toplamları — kazımanın ölçütü
+
+Ortakalan'ın 265 market zincirini kapsayan "Perakende Raporu 2025"inden (CNBC-e, 20.02.2025):
+organize gıda perakendesinde toplam market sayısı 2024 başında **52.259**, yıl sonunda
+**55.737**; indirim marketleri 40.530 → **42.782**; ulusal ölçekli zincirlerin şube sayısı
+%15 artışla **1.088**.
+
+Bu sayılar depoya **girmez** (rapor ücretli, ikinci elden alıntı) ama kazıdığımız marka
+sayılarının ne kadarını yakaladığını ölçmek için tutulur — BDDK'nın banka şubesi sayısını
+bulurum'un karşısına koyduğumuz gibi. Aynı haberdeki "7 yılda 25 bin yeni market" rakamı
+projeksiyondur, `projeksiyon-alinmaz` kuralı gereği not bile düşülmez, burada yalnızca
+gerçekleşmiş sayılarla karıştırılmasın diye anılıyor.
+
+## 2026-09-19 gecesi bakılan, alınamayanlar
+
+| Marka | Durum |
+|---|---|
+| **Domino's** | Çözüldü, çekici yazıldı (`scripts/fetch_dominos.py`). 26 ilde 311 şube indi, sonra **HTTP 429**; site bir süre IP'yi tümden kapattı. `--devam` ile kaldığı yerden sürer |
+| **Gratis** | İl sayfaları var (`/magazalarimiz/<il>`) ama mağaza listesi ne HTML'de ne hidrasyon sonrası görünüyor; sayfa gövdesi 6.800 karakter ve tamamı menü |
+| **Hakmar Express** | Doğru alan adı `hakmarexpress.com.tr` (hakmar.com.tr başka bir şirket). `/magazalar` sayfası gömülü JSON'da mağaza taşıyor — ad, adres, il, **ilçe**, koordinat — ama tek seferde yalnız 25 kayıt (İstanbul). Sayfalama/şehir filtresi çözülmedi. Sitenin kendi başlığı **816 mağaza** diyor |
+| **Watsons** | Mağaza bulucusu tarayıcıda çalışıyor, düz istekte **403** |
+| **Teknosa** | Doğru adres `/magaza-bul`, tarayıcıda çalışıyor, düz istekte **403** (Cloudflare) |
+
+**Hız sınırı dersi.** Üç sitede üç farklı eşik çıktı: Komagene 0,3 saniyeyle 1.000+ istekte
+hiç şikâyet etmedi, PTT 0,4 saniyeyle 973 istekte 429 vermeye başladı, Domino's 0,3 saniyeyle
+26 ilde IP'yi kapattı. Eşik önceden bilinemiyor, o yüzden **her çekiciye baştan `--devam`
+modu** konuyor: yarıda kalan çekimi baştan almak, sınırı aşmanın en hızlı yolu.
