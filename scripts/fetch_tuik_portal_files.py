@@ -23,11 +23,25 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import re
 import time
 from pathlib import Path
 
 import httpx
+
+#: Seconds between requests. A run at 1.2 s got 1.406 files and then a 403 page
+#: reading "Administrative Quarantine: blocked because of admin action" on every
+#: tuik.gov.tr host — the appliance stopped throttling and blocked the address
+#: outright, which only a new IP cleared. So the wait is settable and the default is
+#: the cautious one; the whole remaining run costs an hour either way.
+PAUSE = float(os.environ.get("TUIK_PAUSE", "4.5"))
+
+#: The waiting-room page and how long it says to wait, plus the number of tries a single
+#: file gets. Five attempts was too few: the page reappeared until the file was built.
+WAITING_ROOM = "tekrar dosya indirebilirsiniz"
+WAIT = 6.0
+ATTEMPTS = 12
 
 OUT = Path("C:/veri-ham/tuik_portal")
 FILES = OUT / "dosya"
@@ -84,11 +98,11 @@ def main() -> None:
                 continue
             answer = None
             suffix = None
-            for attempt in range(5):
+            for attempt in range(ATTEMPTS):
                 try:
                     answer = client.get(BASE + row["url"])
                 except httpx.HTTPError as problem:
-                    if attempt == 4:
+                    if attempt == ATTEMPTS - 1:
                         failures.append([kind, row["title"], type(problem).__name__])
                         answer = None
                         break
@@ -99,17 +113,29 @@ def main() -> None:
                 if suffix is not None and len(answer.content) >= 2000:
                     break
                 suffix = None
-                if attempt == 4:
-                    failures.append([kind, row["title"], header or "boş"])
+                if answer.status_code == 404:
+                    # `Sayfa bulunamadı`: the catalogue's token is dead. Waiting cannot
+                    # bring it back, and 40 s spent per dead token is most of a run.
+                    failures.append([kind, row["title"], "404"])
                     break
-                time.sleep(3 * (attempt + 1))  # throttled, not missing
+                if WAITING_ROOM in answer.text:
+                    # Not a refusal: the page counts five seconds down and then asks for
+                    # the same address again, which is the file being made ready. Some
+                    # take a minute, so this waits rather than calling the row broken.
+                    time.sleep(WAIT)
+                    continue
+                if attempt == ATTEMPTS - 1:
+                    failures.append([kind, row["title"], header or "boş"])
+                    print(f"  vazgecildi ({index}): {row['title'][:60]}", flush=True)
+                    break
+                time.sleep(3 * (attempt + 1))
             if answer is None or suffix is None:
                 continue
             (folder / (stem + suffix)).write_bytes(answer.content)
             saved += 1
-            if saved % 100 == 0:
+            if saved % 10 == 0:
                 print(f"  {saved} dosya ({index}/{len(entries)})", flush=True)
-            time.sleep(1.2)
+            time.sleep(PAUSE)
     if failures:
         with (OUT / "basarisiz.csv").open("w", encoding="utf-8", newline="") as handle:
             writer = csv.writer(handle)

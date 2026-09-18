@@ -129,6 +129,15 @@ label_tr = "Trafik kazaları"
 label_en = "Road accidents"
 order = 48
 
+[dim.bound]
+label_tr = "Tahmin sınırı"
+label_en = "Estimate bound"
+
+[dim.bound.values]
+point = "Tahmin"
+lower_95 = "%95 güven aralığı alt sınır"
+upper_95 = "%95 güven aralığı üst sınır"
+
 [dim.field]
 label_tr = "Eğitim alanı"
 label_en = "Field of education"
@@ -30940,3 +30949,32 @@ dims = ["surname"]
 views = ["table", "bar"]
 definition_tr = "İlde en çok kullanılan ilk 30 soyisim ve kaç kişinin taşıdığı. TÜİK bu tabloda cinsiyet kırılımı vermiyor."
 
+[indicator.unemployment_rate]
+label_tr = "İşsizlik oranı"
+label_en = "Unemployment rate"
+topic = "sosyal_guvenlik"
+unit = "percent"
+frequency = "annual"
+dims = ["bound"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK Hanehalkı İşgücü Araştırması, il düzeyinde işsizlik oranı, 15+ yaş, 2022-2025. MEDAS bu araştırmayı İBBS-2'de (26 bölge) durduruyor; il kırılımı yalnız Veri Portalı tablosunda var. Örneklem araştırması: nokta tahminin yanında %95 güven aralığının alt ve üst sınırı da yükleniyor (`bound`), küçük illerde aralık geniştir."
+
+[indicator.employment_rate]
+label_tr = "İstihdam oranı"
+label_en = "Employment rate"
+topic = "sosyal_guvenlik"
+unit = "percent"
+frequency = "annual"
+dims = ["bound"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK Hanehalkı İşgücü Araştırması, il düzeyinde istihdam oranı (istihdam edilenlerin 15+ yaş nüfusa oranı), 2022-2025. Güven aralığı `bound` kırılımında."
+
+[indicator.labour_force_participation_rate]
+label_tr = "İşgücüne katılma oranı"
+label_en = "Labour force participation rate"
+topic = "sosyal_guvenlik"
+unit = "percent"
+frequency = "annual"
+dims = ["bound"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK Hanehalkı İşgücü Araştırması, il düzeyinde işgücüne katılma oranı, 2022-2025. İşsizlik oranıyla birlikte okunur: iş aramaktan vazgeçen nüfus işsiz sayılmaz, o yüzden düşen işsizlik tek başına iş bulmanın arttığını göstermez. Güven aralığı `bound` kırılımında."

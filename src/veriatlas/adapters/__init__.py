@@ -51,6 +51,7 @@ from .tuik_district_population import TuikDistrictPopulation
 from .tuik_education_district import EDUCATION_DISTRICT_ADAPTERS
 from .tuik_household import TuikHouseholdSize, TuikHouseholdTenure
 from .tuik_housing_monthly import MONTHLY_HOUSING_ADAPTERS
+from .tuik_labour_province import LABOUR_PROVINCE_ADAPTERS
 from .tuik_marital import TuikMarital
 from .tuik_median_age import TuikMedianAge
 from .tuik_migration_matrix import TuikMigrationMatrix
@@ -153,6 +154,7 @@ ADAPTERS = {
     **DIYANET_ADAPTERS,
     **TESK_ADAPTERS,
     **TKGM_ADAPTERS,
+    **LABOUR_PROVINCE_ADAPTERS,
     **TUIK_NAMES_ADAPTERS,
     **TIM_ADAPTERS,
     **MUHASEBAT_ADAPTERS,
