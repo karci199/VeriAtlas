@@ -2507,6 +2507,18 @@ label_en = "years"
 decimals = 1
 additive = false
 
+[unit.mbps]
+label_tr = "Mbit/s"
+label_en = "Mbit/s"
+decimals = 1
+additive = false
+
+[unit.millisecond]
+label_tr = "milisaniye"
+label_en = "milliseconds"
+decimals = 0
+additive = false
+
 [unit.item]
 label_tr = "adet"
 label_en = "items"
@@ -6356,6 +6368,42 @@ frequency = "monthly"
 dims = ["cpi_2025_item"]
 views = ["table", "line"]
 definition_tr = "EVDS bie_tukfiy2025, yalnız Türkiye, aylık. Ana gruplar kalemlerin yanında saklanır; endeks toplanmaz."
+
+[indicator.mobile_download_speed]
+label_tr = "Mobil internet indirme hızı (ölçülen)"
+label_en = "Mobile download speed (measured)"
+topic = "iletisim"
+unit = "mbps"
+frequency = "quarterly"
+views = ["map", "table", "bar"]
+definition_tr = "Ookla Speedtest açık verisi: ~600 m'lik karolarda ölçülen ortalama indirme hızı, test sayısıyla ağırlıklandırılıp ilçeye ve ile toplanmış. Abonelik hızı değil, telefonun gerçekte ölçtüğü hız. Testi çalıştıranlar kendi seçtikleri için düzey yanlıdır; ilçeler arası ve çeyrekler arası karşılaştırma için uygundur. Karo düşmeyen ilçeye satır yazılmaz."
+
+[indicator.mobile_upload_speed]
+label_tr = "Mobil internet yükleme hızı (ölçülen)"
+label_en = "Mobile upload speed (measured)"
+topic = "iletisim"
+unit = "mbps"
+frequency = "quarterly"
+views = ["map", "table", "bar"]
+definition_tr = "Ookla Speedtest açık verisi, indirme hızıyla aynı yöntem: test sayısıyla ağırlıklı ortalama yükleme hızı."
+
+[indicator.mobile_latency]
+label_tr = "Mobil internet gecikmesi (ölçülen)"
+label_en = "Mobile latency (measured)"
+topic = "iletisim"
+unit = "millisecond"
+frequency = "quarterly"
+views = ["map", "table", "bar"]
+definition_tr = "Ookla Speedtest açık verisi: ölçülen ortalama gecikme, milisaniye. Küçük olan iyidir."
+
+[indicator.mobile_speedtests]
+label_tr = "Mobil hız testi sayısı"
+label_en = "Mobile speed tests"
+topic = "iletisim"
+unit = "item"
+frequency = "quarterly"
+views = ["map", "table"]
+definition_tr = "Ookla Speedtest açık verisinde ilçeye düşen test sayısı. Hız göstergelerinin ne kadar sağlam olduğunu gösterir; az testli ilçenin hızı tek bir kullanıcının bağlantısı olabilir."
 
 [dim.cpi_2003_item]
 label_tr = "TÜFE kalemi (2003=100)"

@@ -34,6 +34,7 @@ from .ktb import KTB_ADAPTERS
 from .mgm import MGM_ADAPTERS
 from .muhasebat import MUHASEBAT_ADAPTERS
 from .oecd_tl3 import OECD_TL3_ADAPTERS
+from .ookla_speed import OOKLA_ADAPTERS
 from .ptt_postal import PTT_POSTAL_ADAPTERS
 from .saglik_yearbook import SAGLIK_YEARBOOK_ADAPTERS
 from .sege import SEGE_ADAPTERS
@@ -96,6 +97,7 @@ ADAPTERS = {
     "tuik_registry_population": TuikRegistryPopulation,
     # One class per narrow measure, generated from a table: the contract is one
     # adapter per indicator, and eleven measures share the same parser.
+    **OOKLA_ADAPTERS,
     **NARROW_ADAPTERS,
     # Births and deaths: same download, transposed file, so a parser of their own.
     **VITAL_ADAPTERS,
