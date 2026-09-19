@@ -1,6 +1,7 @@
 """Source adapters. One module per source; the contract lives in `base`."""
 
 from .afad import AFAD_ADAPTERS
+from .ayd_malls import AYD_ADAPTERS
 from .base import Adapter, Manifest, history, ingest
 from .bddk_finturk import FINTURK_ADAPTERS
 from .btk import BTK_ADAPTERS
@@ -41,6 +42,7 @@ from .sege import SEGE_ADAPTERS
 from .sgk_national import SGK_NATIONAL_ADAPTERS
 from .sgk_provinces import SGK_ADAPTERS
 from .tbb_provinces import TBB_ADAPTERS
+from .telecom_operators import TELECOM_ADAPTERS
 from .tesk import TESK_ADAPTERS
 from .tim import TIM_ADAPTERS
 from .tim_countries import TIM_COUNTRY_ADAPTERS
@@ -67,6 +69,7 @@ from .tuik_origin_district import ORIGIN_ADAPTERS
 from .tuik_population import TuikPopulationAgeSex
 from .tuik_province_gdp import PROVINCE_GDP_ADAPTERS
 from .tuik_registry import TuikRegistryPopulation
+from .tuik_retail import RETAIL_ADAPTERS
 from .tuik_simple import NARROW_ADAPTERS
 from .tuik_tfr import TuikTfr
 from .tuik_topics import TOPIC_ADAPTERS
@@ -102,6 +105,9 @@ ADAPTERS = {
     **OOKLA_ADAPTERS,
     **PROVINCE_GDP_ADAPTERS,
     **UAB_ADAPTERS,
+    **AYD_ADAPTERS,
+    **TELECOM_ADAPTERS,
+    **RETAIL_ADAPTERS,
     **NARROW_ADAPTERS,
     # Births and deaths: same download, transposed file, so a parser of their own.
     **VITAL_ADAPTERS,

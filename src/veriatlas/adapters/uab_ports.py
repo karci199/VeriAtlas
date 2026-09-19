@@ -1,4 +1,4 @@
-r"""Cargo handled at Türkiye's ports, by province and year.
+r"""Cargo and containers handled at Türkiye's ports, by province and year.
 
 The Ministry of Transport publishes one workbook per month at
 `denizcilikistatistikleri.uab.gov.tr` (`scripts/fetch_uab_denizcilik.py`), broken down by
@@ -168,9 +168,19 @@ BY_SKELETON.update(
 )
 
 
-def december(year: int) -> Path | None:
+#: The two statistics that come by port authority, and the folder each one sits in.
+#: Containers are counted in TEU, cargo in tonnes; same sheet shape, same traps.
+SUBJECTS = {
+    "port_cargo_handled": ("yuk", "tonne"),
+    "port_containers_handled": ("konteyner", "teu"),
+}
+
+
+def december(year: int, subject: str = "yuk") -> Path | None:
     """The year-to-date file for December, or None for a year still running."""
-    files = sorted(glob.glob(str(FOLDER / f"yuk-{year}" / "liman-baskanliklari*.xls")))
+    files = sorted(
+        glob.glob(str(FOLDER / f"{subject}-{year}" / "liman-baskanliklari*.xls"))
+    )
     return Path(files[-1]) if len(files) == 12 else None
 
 
@@ -204,12 +214,13 @@ class PortCargo:
         return FOLDER
 
     def parse(self, raw: Path) -> pl.DataFrame:
+        subject, unit = SUBJECTS[self.indicator_id]
         records = []
         for year in range(2020, dt.datetime.now(tz=dt.UTC).year + 1):
-            path = december(year)
+            path = december(year, subject)
             if path is None:
                 continue
-            for (province, direction, trade), tonnes in read_year(path).items():
+            for (province, direction, trade), amount in read_year(path).items():
                 records.append(
                     {
                         "indicator_id": self.indicator_id,
@@ -220,8 +231,8 @@ class PortCargo:
                         "dims": format_dims(
                             {"cargo_direction": direction, "trade_type": trade}
                         ),
-                        "value": tonnes,
-                        "unit": "tonne",
+                        "value": amount,
+                        "unit": unit,
                         "quality_flag": "measured",
                         "vintage": VINTAGE,
                         "source_id": self.source_id,
@@ -229,8 +240,18 @@ class PortCargo:
                     }
                 )
         if not records:
-            raise ValueError("liman verisi bulunamadi")
+            raise ValueError(f"{self.indicator_id}: liman verisi bulunamadi")
         return pl.DataFrame(records)
 
 
-UAB_ADAPTERS = {"port_cargo_handled": PortCargo}
+class PortContainers(PortCargo):
+    """Containers, counted in TEU. Same sheet, same ports, a different unit — and never
+    added to the tonnes: a container's weight is already inside the cargo table."""
+
+    indicator_id = "port_containers_handled"
+
+
+UAB_ADAPTERS = {
+    "port_cargo_handled": PortCargo,
+    "port_containers_handled": PortContainers,
+}

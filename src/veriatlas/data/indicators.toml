@@ -2519,6 +2519,12 @@ label_en = "milliseconds"
 decimals = 0
 additive = false
 
+[unit.teu]
+label_tr = "TEU"
+label_en = "TEU"
+decimals = 0
+additive = true
+
 [unit.item]
 label_tr = "adet"
 label_en = "items"
@@ -6369,6 +6375,157 @@ dims = ["cpi_2025_item"]
 views = ["table", "line"]
 definition_tr = "EVDS bie_tukfiy2025, yalnız Türkiye, aylık. Ana gruplar kalemlerin yanında saklanır; endeks toplanmaz."
 
+[dim.retail_sector]
+label_tr = "Perakende grubu"
+label_en = "Retail group"
+
+[dim.retail_sector.values]
+total = "Perakende ticaret (toplam)"
+food = "Gıda, içecek ve tütün"
+non_food = "Gıda dışı (otomotiv yakıtı hariç)"
+computers_books = "Bilgisayar, kitap, iletişim aygıtları"
+household_goods = "Ev eşyası, elektrikli aletler, mobilya"
+textiles_clothing = "Tekstil, giyim ve ayakkabı"
+pharmacy_cosmetics = "Eczacılık ürünleri ve kozmetik"
+mail_internet = "Posta ya da internet üzerinden"
+automotive_fuel = "Otomotiv yakıtı"
+
+[dim.adjustment]
+label_tr = "Arındırma"
+label_en = "Adjustment"
+
+[dim.adjustment.values]
+none = "Arındırılmamış"
+calendar = "Takvim etkisinden arındırılmış"
+seasonal_calendar = "Mevsim ve takvim etkisinden arındırılmış"
+
+[indicator.retail_volume_index]
+label_tr = "Perakende satış hacim endeksi (2015=100)"
+label_en = "Retail sales volume index (2015=100)"
+topic = "perakende"
+unit = "index"
+frequency = "monthly"
+dims = ["retail_sector", "adjustment"]
+views = ["line", "table"]
+definition_tr = "TÜİK perakende satış hacim endeksi, sabit fiyatlarla, 2015=100, aylık. Hacim fiyat artışını taşımaz; ciro endeksiyle birlikte okunur, toplanmaz. Değişim oranları saklanmaz, endeksten hesaplanır."
+
+[indicator.retail_turnover_index]
+label_tr = "Perakende ciro endeksi (2015=100)"
+label_en = "Retail turnover index (2015=100)"
+topic = "perakende"
+unit = "index"
+frequency = "monthly"
+dims = ["retail_sector", "adjustment"]
+views = ["line", "table"]
+definition_tr = "TÜİK perakende ciro endeksi, cari fiyatlarla, 2015=100, aylık. Ciro fiyat artışını içerir; hacim endeksiyle farkı enflasyondur."
+
+[dim.operator]
+label_tr = "Operatör"
+label_en = "Operator"
+
+[dim.operator.values]
+turkcell = "Turkcell"
+turk_telekom = "Türk Telekom"
+
+[indicator.telecom_mobile_subscribers]
+label_tr = "Mobil abone sayısı (operatör)"
+label_en = "Mobile subscribers by operator"
+topic = "iletisim"
+unit = "person"
+frequency = "quarterly"
+dims = ["operator"]
+views = ["line", "table"]
+definition_tr = "Operatörün kendi yatırımcı dosyasından mobil abone sayısı, çeyreklik. Türk Telekom'un toplamı M2M hatlarını içerir, Turkcell M2M'i faturalının içinde ayrı yazar; her operatörün kendi tanımı korunur. Vodafone karşılaştırılabilir dosya yayımlamıyor, bu yüzden pazar toplamı değildir."
+
+[indicator.telecom_postpaid_subscribers]
+label_tr = "Faturalı mobil abone (operatör)"
+label_en = "Postpaid subscribers by operator"
+topic = "iletisim"
+unit = "person"
+frequency = "quarterly"
+dims = ["operator"]
+views = ["line", "table"]
+definition_tr = "Operatörün yatırımcı dosyasından faturalı mobil abone sayısı, çeyreklik."
+
+[indicator.telecom_prepaid_subscribers]
+label_tr = "Ön ödemeli mobil abone (operatör)"
+label_en = "Prepaid subscribers by operator"
+topic = "iletisim"
+unit = "person"
+frequency = "quarterly"
+dims = ["operator"]
+views = ["line", "table"]
+definition_tr = "Operatörün yatırımcı dosyasından ön ödemeli mobil abone sayısı, çeyreklik."
+
+[indicator.telecom_fibre_subscribers]
+label_tr = "Fiber abone (operatör)"
+label_en = "Fibre subscribers by operator"
+topic = "iletisim"
+unit = "person"
+frequency = "quarterly"
+dims = ["operator"]
+views = ["line", "table"]
+definition_tr = "Operatörün kendi altyapısındaki fiber abone sayısı, çeyreklik. Türk Telekom milyon, Turkcell bin olarak yayımlıyor; ikisi de kişiye çevrilmiştir."
+
+[indicator.telecom_broadband_subscribers]
+label_tr = "Genişbant abone (operatör)"
+label_en = "Broadband subscribers by operator"
+topic = "iletisim"
+unit = "person"
+frequency = "quarterly"
+dims = ["operator"]
+views = ["line", "table"]
+definition_tr = "Türk Telekom'un toplam genişbant abone sayısı, çeyreklik. Turkcell sabit genişbantı tek bir toplam olarak yayımlamadığı için yalnız Türk Telekom satırları vardır."
+
+[indicator.telecom_tv_subscribers]
+label_tr = "TV abone (operatör)"
+label_en = "TV subscribers by operator"
+topic = "iletisim"
+unit = "person"
+frequency = "quarterly"
+dims = ["operator"]
+views = ["line", "table"]
+definition_tr = "Operatörün televizyon abone sayısı, çeyreklik: Türk Telekom toplam TV, Turkcell IPTV."
+
+[dim.mall_area]
+label_tr = "AVM bölgesi"
+label_en = "Mall area"
+
+[dim.mall_area.values]
+tr = "Türkiye"
+istanbul = "İstanbul"
+anadolu = "Anadolu (İstanbul dışı)"
+
+[indicator.mall_turnover_index]
+label_tr = "AVM ciro endeksi (m² verimlilik)"
+label_en = "Shopping centre turnover index"
+topic = "perakende"
+unit = "index"
+frequency = "monthly"
+dims = ["mall_area"]
+views = ["line", "table"]
+definition_tr = "AYD ve Akademetre'nin aylık AVM ciro endeksi, kiralanabilir metrekare başına ciro, 2010=100. Nominaldir, enflasyondan arındırılmamıştır. Kaynak Mayıs 2025'i yayımlamadı; o ay satırsızdır."
+
+[indicator.mall_visitor_index]
+label_tr = "AVM ziyaretçi endeksi"
+label_en = "Shopping centre visitor index"
+topic = "perakende"
+unit = "index"
+frequency = "monthly"
+dims = ["mall_area"]
+views = ["line", "table"]
+definition_tr = "AYD ve Akademetre'nin aylık AVM ziyaret sayısı endeksi. Ciro endeksiyle birlikte okunur: ciro artarken ziyaret yatay ise artış fiyattan ve ziyaret başına harcamadan geliyor demektir."
+
+[indicator.mall_turnover_per_sqm]
+label_tr = "AVM'de m² başına ciro"
+label_en = "Mall turnover per square metre"
+topic = "perakende"
+unit = "try_per_square_metre"
+frequency = "monthly"
+dims = ["mall_area"]
+views = ["line", "table"]
+definition_tr = "AYD: kiralanabilir metrekare başına aylık ciro, TL. Türkiye, İstanbul ve Anadolu (İstanbul dışı) kırılımıyla; bunlar derneğin kendi bölge tanımıdır, kayıt defterindeki alanlar değildir, o yüzden boyut olarak saklanır."
+
 [dim.cargo_direction]
 label_tr = "Yön"
 label_en = "Direction"
@@ -6387,6 +6544,16 @@ foreign = "Dış ticaret"
 cabotage = "Kabotaj"
 transit = "Transit"
 total = "Toplam"
+
+[indicator.port_containers_handled]
+label_tr = "Limanlarda elleçlenen konteyner"
+label_en = "Containers handled at ports"
+topic = "ulasim"
+unit = "teu"
+frequency = "annual"
+dims = ["cargo_direction", "trade_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "UAB Denizcilik Genel Müdürlüğü, liman başkanlığı bazında konteyner elleçleme, TEU, yıllık. Yük tablosuyla aynı yapı ve aynı tuzaklar: aylık dosyalar birikimlidir, yalnız aralık okunur; sayfanın kendi genel toplam satırı liman değildir. Konteynerin ağırlığı yük tablosunda zaten sayılıdır, ikisi toplanmaz."
 
 [indicator.port_cargo_handled]
 label_tr = "Limanlarda elleçlenen yük"
@@ -27873,6 +28040,11 @@ definition_tr = "YÖK İstatistik 2015 ÖSYS ... 2025 YKS 'Okul türü ve öğre
 # endregion
 
 # region BTK electronic communications (adapters/btk.py), 2026-09-15.
+
+[topic.perakende]
+label_tr = "Perakende ve tüketim"
+label_en = "Retail and consumption"
+order = 39
 
 [topic.iletisim]
 label_tr = "Elektronik haberleşme"
