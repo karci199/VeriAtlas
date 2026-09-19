@@ -65,6 +65,7 @@ from .tuik_names import TUIK_NAMES_ADAPTERS
 from .tuik_neighbourhoods import TuikNeighbourhoodPopulation
 from .tuik_origin_district import ORIGIN_ADAPTERS
 from .tuik_population import TuikPopulationAgeSex
+from .tuik_province_gdp import PROVINCE_GDP_ADAPTERS
 from .tuik_registry import TuikRegistryPopulation
 from .tuik_simple import NARROW_ADAPTERS
 from .tuik_tfr import TuikTfr
@@ -98,6 +99,7 @@ ADAPTERS = {
     # One class per narrow measure, generated from a table: the contract is one
     # adapter per indicator, and eleven measures share the same parser.
     **OOKLA_ADAPTERS,
+    **PROVINCE_GDP_ADAPTERS,
     **NARROW_ADAPTERS,
     # Births and deaths: same download, transposed file, so a parser of their own.
     **VITAL_ADAPTERS,

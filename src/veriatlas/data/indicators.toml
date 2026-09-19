@@ -24051,6 +24051,29 @@ l = "Gayrimenkul"
 m_n = "Mesleki, bilimsel, teknik, idari ve destek"
 o_q = "Kamu yönetimi, eğitim, sağlık ve sosyal hizmet"
 r_u = "Diğer hizmetler"
+total_sectors = "Sektörler toplamı (katma değer)"
+taxes_subsidies = "Vergi-sübvansiyon"
+gdp = "GSYH (toplam)"
+
+[indicator.province_gdp_current]
+label_tr = "İl GSYH, cari fiyatlarla"
+label_en = "Provincial GDP, current prices"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "annual"
+dims = ["gdp_sector"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK Bölgesel Hesaplar (2009 bazlı), il bazında GSYH ve katma değer, cari fiyatlarla, bin TL, 2000-2024. Depodaki diğer il GSYH göstergeleri pay, endeks ve değişim oranıdır; tutarın kendisi yalnız burada. İmalat (C) sanayinin (B-E) içindedir, sektörler toplanmaz; sektörler toplamı katma değerdir, GSYH bunun üstüne vergi-sübvansiyonu ekler."
+
+[indicator.province_gdp_chained]
+label_tr = "İl GSYH, zincirlenmiş hacim"
+label_en = "Provincial GDP, chained volume"
+topic = "buyume"
+unit = "thousand_try"
+frequency = "annual"
+dims = ["gdp_sector"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK Bölgesel Hesaplar, il bazında zincirlenmiş hacim (2009 referans yılı), bin TL, 2000-2024. Cari seriden farkı fiyat etkisinin ayıklanmış olmasıdır; yıllar arası karşılaştırma bununla yapılır. Aynı tablodaki endeks ve değişim oranı sütunları MEDAS'tan zaten depoda olduğu için okunmaz."
 
 [indicator.province_gdp_sector_share]
 label_tr = "Sektörlerin il GSYH içindeki payı"
