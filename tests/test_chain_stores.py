@@ -6,12 +6,16 @@ fell outside the boundary file, so the checks here are about placement, not tota
 
 from __future__ import annotations
 
+import csv
+
 import polars as pl
 import pytest
 
 from veriatlas.adapters.chain_stores import (
     BRANDS,
+    TURKEY,
     ChainRestaurants,
+    ChainStores,
     counts,
     dump,
     locate,
@@ -64,3 +68,34 @@ def test_brands_are_not_added_together(frame):
     deliberately, the indicator never pre-sums them into a 'total' row."""
     brands = set(frame["dims"].unique())
     assert brands == {f"restaurant_brand={brand}" for brand in BRANDS}
+
+
+def test_retail_is_a_separate_indicator():
+    """A cosmetics shop and a burger branch are not the same count, and the two
+    indicators must not leak into one another's rows."""
+    stores = ChainStores()
+    frame = stores.parse(stores.fetch())
+    assert set(frame["indicator_id"].unique()) == {"chain_stores"}
+    assert all(d.startswith("store_brand=") for d in frame["dims"].unique())
+
+
+def test_stores_abroad_leave_the_count_without_tripping_the_threshold():
+    """Madame Coco lists Moscow, Almaty and Beirut in the same file as Adana.
+
+    Those rows are foreign, not misplaced, so they must not eat into the 3% that guards
+    the boundary file — before the two were separated the brand failed the load outright.
+    The rows are counted with the csv reader, not by lines: an address field carries a
+    newline often enough that `wc -l` overstates the file by fifteen stores.
+    """
+    x0, y0, x1, y1 = TURKEY
+    inside = 0
+    with dump("madame_coco").open(encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            try:
+                lng, lat = float(row["lng"]), float(row["lat"])
+            except ValueError:
+                continue
+            inside += x0 <= lng <= x1 and y0 <= lat <= y1
+    placed = sum(counts("madame_coco").values())
+    assert inside < 719, "yurt dışı mağazalar ayıklanmadı"
+    assert placed / inside > 0.97, f"yurt içi kayıp fazla: {placed}/{inside}"

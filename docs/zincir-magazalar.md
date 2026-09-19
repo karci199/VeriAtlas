@@ -134,3 +134,52 @@ gerçekleşmiş sayılarla karıştırılmasın diye anılıyor.
 hiç şikâyet etmedi, PTT 0,4 saniyeyle 973 istekte 429 vermeye başladı, Domino's 0,3 saniyeyle
 26 ilde IP'yi kapattı. Eşik önceden bilinemiyor, o yüzden **her çekiciye baştan `--devam`
 modu** konuyor: yarıda kalan çekimi baştan almak, sınırı aşmanın en hızlı yolu.
+
+## Perakende zincirleri (2026-09-19)
+
+Tek sayfada tüm listeyi veren sekiz marka bulundu; `scripts/fetch_marketler.py` hepsini
+tek istekle çekiyor. Verinin nerede durduğu her markada farklı, o yüzden marka başına
+ayrı ayrıştırıcı var.
+
+| Marka | Mağaza | Koordinat | Verinin yeri |
+|---|---|---|---|
+| **Gratis** | 899 | 899 | Next.js yükünde **çift kaçışlı** JSON (`\"storeId\"`) |
+| **Madame Coco** | 719 | 709 | `{"count":719,...,"results":[…]}`, ilçe `township.name` |
+| **Rossmann** | 211 | 211 | `var locations = [...]`; ilçe alanının adı `distinct` |
+| Happy Center | 194 | — | kart başlığı `İlçe / Mağaza adı`, **il yok** |
+| Bizim Toptan | 172 | — | `<li data-city="34" data-county="1447" data-search="istanbul, zeytinburnu">` |
+| **Karaca** | 171 | 171 | kart başına JSON; **geçersiz JSON** (`mail` alanında kaçışsız `<a href="…">`), alan alan okunuyor |
+| Onur Market | 154 | — | adres kuyruğunda `İlçe / İl` |
+| **Vatan Bilgisayar** | 150 | 150 | `data-x`/`data-y`, **virgüllü ondalık** (`36,993773`) |
+
+**Gratis'te bir ders var.** Önce "mağaza listesi hiç yüklenmiyor" diye kapatılmıştı: tarayıcıda
+liste görünmüyordu ve ham gövdede `latitude` araması boş dönüyordu. Oysa 2.430 adres
+sayfadaydı — veri, içinde her tırnağı ters bölüyle kaçırılmış bir JSON metniydi. Sayfanın
+*görüntüsüne* bakıp "veri yok" demek yetmiyor; ham gövdede alan adı aranmalı, hem de
+kaçışlı biçimiyle.
+
+### Depoya giren: `chain_stores`
+
+Koordinatı olan beş marka `chain_stores` göstergesine girdi (1.263 satır, ilçe + il):
+
+| Marka | Mağaza | İlçe |
+|---|---|---|
+| Gratis | 897 | 312 |
+| Madame Coco | 660 | 310 |
+| Rossmann | 209 | 101 |
+| Karaca | 167 | 111 |
+| Vatan Bilgisayar | 150 | 113 |
+
+Zincir restoranlardan ayrı bir gösterge: kozmetik mağazası ile hamburgerci farklı sorulara
+cevap verir, toplamı bir şey ifade etmez.
+
+**Yurt dışı mağazalar artık ayrı ayıklanıyor.** Madame Coco Moskova, Almatı, Beyrut,
+Brüksel ve Astana'yı Adana ile aynı dosyada listeliyor — 719 mağazanın 59'u yurt dışı.
+Bunlar hiçbir ilçeye düşmediği için eski kural %3'lük eşiği aştırıp yüklemeyi çökertiyordu.
+Çözüm eşiği yükseltmek değil: Türkiye'nin sınırlayıcı kutusu (`TURKEY`) dışındaki nokta
+**yurt dışı** sayılıp paydadan çıkarılıyor. Eşik, sınır dosyasının bozulmasını yakalamak
+için var; Kazakistan'daki bir mağaza sınır dosyası hakkında hiçbir şey söylemez.
+
+**Koordinatsız üçü alınmadı** (Happy Center, Bizim Toptan, Onur Market). İlçeleri
+kaynağın kendi etiketinden gelir, kayıt defteriyle eşlenmesi ayrı iş; Happy Center ayrıca
+il bilgisi hiç vermiyor. Ham verileri `C:\veri-ham\marketler` altında bekliyor.

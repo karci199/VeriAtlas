@@ -31008,3 +31008,24 @@ unit = "item"
 frequency = "annual"
 views = ["table", "map", "bar"]
 definition_tr = "PTT'nin bir ilçeye verdiği tekil posta kodu sayısı, 18.09.2026 anlık görüntüsü. Semtin ülke çapındaki tek listesi posta kodudur (docs/semt.md): 973 ilçenin hepsinde semt sayısı ile posta kodu sayısı birebir eşittir, o yüzden bu sayı ilçenin kaç semte bölündüğünü gösterir. Seri değil, anlık görüntü — PTT geçmiş numaralandırmayı yayımlamıyor."
+
+[dim.store_brand]
+label_tr = "Marka"
+label_en = "Brand"
+
+[dim.store_brand.values]
+gratis = { label_tr = "Gratis", label_en = "Gratis" }
+madame_coco = { label_tr = "Madame Coco", label_en = "Madame Coco" }
+rossmann = { label_tr = "Rossmann", label_en = "Rossmann" }
+karaca = { label_tr = "Karaca", label_en = "Karaca" }
+vatan = { label_tr = "Vatan Bilgisayar", label_en = "Vatan Bilgisayar" }
+
+[indicator.chain_stores]
+label_tr = "Zincir mağaza sayısı"
+label_en = "Chain stores"
+topic = "reel_kesim"
+unit = "item"
+frequency = "annual"
+dims = ["store_brand"]
+views = ["table", "map", "bar"]
+definition_tr = "Beş perakende zincirinin (Gratis, Madame Coco, Rossmann, Karaca, Vatan Bilgisayar) mağaza sayısı, ilçe ve il düzeyinde, 19.09.2026 anlık görüntüsü. İlçe, mağazanın koordinatının düştüğü ilçe sınırından belirlenir. Zincir restoranlardan (`chain_restaurants`) ayrı tutulur: kozmetik mağazası ile hamburgerci farklı sorulara cevap verir, ikisini toplamak anlamsızdır. Markalar da toplanmaz — bu sayı 'kaç mağaza var' sorusunun değil, 'bu markaların kaç şubesi var' sorusunun cevabıdır. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir."

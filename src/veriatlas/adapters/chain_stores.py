@@ -74,16 +74,37 @@ BRANDS = {
     "komagene": "cigkofte/komagene_*.csv",
 }
 
-#: The share of a brand's branches allowed to fall outside every polygon. Measured at
-#: 1,4% (Burger King) and 0,3% (McDonald's) on the 2026-09-18 snapshot.
+#: Retail chains that publish a coordinate per store, from `scripts/fetch_marketler.py`.
+#: Three more chains are fetched by that script and deliberately left out here — Bizim
+#: Toptan, Onur Market and Happy Center give no coordinate, so their district would come
+#: from the source's own label, and Happy Center names no province at all. Placing them
+#: needs registry matching, which is a different job from this one.
+STORE_BRANDS = {
+    "gratis": "marketler/gratis_*.csv",
+    "madame_coco": "marketler/madame_coco_*.csv",
+    "rossmann": "marketler/rossmann_*.csv",
+    "karaca": "marketler/karaca_*.csv",
+    "vatan": "marketler/vatan_*.csv",
+}
+
+#: The share of a brand's branches allowed to fall outside every polygon *while standing
+#: inside Türkiye*. Measured at 1,4% (Burger King) and 0,3% (McDonald's).
 MAX_UNPLACED = 0.03
+
+#: Türkiye's bounding box, rounded outward. A store outside it is abroad, not misplaced:
+#: Madame Coco lists Moscow, Almaty, Beirut and Brussels in the same file as Adana, and
+#: Oses labels 33 rows `Yurtdışı`. Foreign rows leave the count without counting against
+#: `MAX_UNPLACED` — that threshold is there to catch a boundary file that stopped
+#: matching, and a shop in Kazakhstan says nothing about the boundary file.
+TURKEY = (25.5, 35.5, 45.0, 42.5)
 
 
 def dump(brand: str) -> Path:
-    """The newest saved dump for a brand."""
-    found = sorted(RAW.glob(BRANDS[brand]))
+    """The newest saved dump for a brand, from either family."""
+    pattern = (BRANDS | STORE_BRANDS)[brand]
+    found = sorted(RAW.glob(pattern))
     if not found:
-        raise FileNotFoundError(f"{brand} dökümü yok: {RAW / BRANDS[brand]}")
+        raise FileNotFoundError(f"{brand} dökümü yok: {RAW / pattern}")
     return found[-1]
 
 
@@ -152,15 +173,20 @@ def counts(brand: str) -> dict[str, int]:
     # still there when the brand folder is not.
     path = cached_copy(dump(brand), FOLDER / f"{brand}.csv")
     placed: dict[str, int] = {}
-    total = unplaced = 0
+    total = unplaced = abroad = 0
+    x0, y0, x1, y1 = TURKEY
     with path.open(encoding="utf-8", newline="") as handle:
         for row in csv.DictReader(handle):
-            total += 1
             try:
                 lng, lat = float(row["lng"]), float(row["lat"])
             except ValueError:  # the source left the coordinate blank
+                total += 1
                 unplaced += 1
                 continue
+            if not (x0 <= lng <= x1 and y0 <= lat <= y1):
+                abroad += 1
+                continue
+            total += 1
             area = locate(lng, lat)
             if area is None:
                 unplaced += 1
@@ -171,7 +197,7 @@ def counts(brand: str) -> dict[str, int]:
     if unplaced / total > MAX_UNPLACED:
         raise ValueError(
             f"{brand}: {unplaced}/{total} şube hiçbir ilçeye düşmedi "
-            f"(sınır %{MAX_UNPLACED:.0%})"
+            f"(sınır %{MAX_UNPLACED:.0%}); yurt dışı {abroad}"
         )
     return placed
 
@@ -181,6 +207,9 @@ class ChainRestaurants:
 
     indicator_id = "chain_restaurants"
     source_id = SOURCE
+    #: Subclasses swap these two and inherit everything else.
+    brands = BRANDS
+    dim = "restaurant_brand"
 
     def fetch(self) -> Path:
         """Every brand's dump, gathered into one folder.
@@ -189,7 +218,7 @@ class ChainRestaurants:
         returning `RAW` would hash the entire raw store — hundreds of gigabytes for a
         few hundred kilobytes of CSV. The copies are what the manifest describes.
         """
-        for brand in BRANDS:
+        for brand in self.brands:
             cached_copy(dump(brand), FOLDER / f"{brand}.csv")
         return FOLDER
 
@@ -198,7 +227,7 @@ class ChainRestaurants:
         levels: list[str] = []
         brands: list[str] = []
         values: list[float] = []
-        for brand in BRANDS:
+        for brand in self.brands:
             districts = counts(brand)
             # The province total is written out rather than left to the roll-up: it is an
             # exact sum of a count, not the weighted estimate `aggregate` would mark it as.
@@ -209,7 +238,7 @@ class ChainRestaurants:
                 for area, count in sorted(rows.items()):
                     areas.append(area)
                     levels.append(level)
-                    brands.append(f"restaurant_brand={brand}")
+                    brands.append(f"{self.dim}={brand}")
                     values.append(float(count))
         return pl.DataFrame(
             {
@@ -229,4 +258,24 @@ class ChainRestaurants:
         )
 
 
-CHAIN_STORE_ADAPTERS = {"chain_restaurants": ChainRestaurants}
+
+
+class ChainStores(ChainRestaurants):
+    """Retail chains, counted the same way and kept apart from the restaurants.
+
+    A separate indicator rather than another brand in `chain_restaurants`: a cosmetics
+    shop and a burger branch answer different questions, and a reader summing them would
+    be summing nothing. The machinery is identical — the coordinate decides the district —
+    so only the brand list and the dimension differ.
+    """
+
+    indicator_id = "chain_stores"
+    source_id = "chain_store_finders"
+    brands = STORE_BRANDS
+    dim = "store_brand"
+
+
+CHAIN_STORE_ADAPTERS = {
+    "chain_restaurants": ChainRestaurants,
+    "chain_stores": ChainStores,
+}
