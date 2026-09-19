@@ -69,7 +69,7 @@ def main() -> None:
         "bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni iş' diye",
         "önerildi, üçü de zaten yüklüydü.",
         "",
-        f"Üretim: {dt.date.today():%Y-%m-%d} · {summary['rows'].sum():,} satır".replace(
+        f"Üretim: {dt.datetime.now(tz=dt.UTC).date():%Y-%m-%d} · {summary['rows'].sum():,} satır".replace(
             ",", "."
         ),
         "",
