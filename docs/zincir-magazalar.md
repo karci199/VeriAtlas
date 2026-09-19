@@ -221,3 +221,35 @@ Tek tek bozuk koordinatlar da var — ŞOK ÇANKAYA PARK 83,8 boylamında (Çin)
 düşürülmüyor, koordinatı boşaltılıyor: mağaza gerçek ve sayıma girmeli, yanlış olan yalnız
 koordinatı. Oran %5'i aşarsa çekici hata veriyor — sistematik bir alan takası olsaydı
 *bütün* satırlar dışarı düşerdi.
+
+## robots kararı yol bazında verilir (2026-09-19 düzeltmesi)
+
+Daha önceki bir tarama Teknosa, MediaMarkt, Mavi, Gratis, Vatan ve Watsons'ı **"YASAK"**
+diye işaretlemiş ve altı zincir bu yüzden hiç denenmemişti. Yanlıştı: o tarama robots
+dosyasında `Disallow` satırı görünce siteyi kapalı saymış, oysa o satırlar sepet, hesap ve
+arama yolları için.
+
+Doğrusu `urllib.robotparser` ile **istenecek yol** için sormaktır:
+
+| Zincir | `/magazalarimiz` ClaudeBot | genel kural |
+|---|---|---|
+| Teknosa, MediaMarkt, Mavi, Gratis | izinli | izinli |
+| Koçtaş, Bauhaus, Tekzen, ŞOK | izinli | izinli |
+| Kahve Dünyası, A101 | izinli | izinli |
+
+Gerçekten kapalı olanlar: **FLO** (ClaudeBot adıyla yazılmış, `Disallow: /`) ve robots'a
+erişim bile vermeyen (403) **sahibinden, CarrefourSA, Watsons, Boyner, DeFacto, Decathlon,
+BP**. Bir de **arabam.com**: site açık ama `/ikinci-el/arama*` açıkça yasak, yani ilan
+sayımı yapılamaz.
+
+## Petrol Ofisi (2026-09-19)
+
+2.631 istasyon, 81 il, 756 ilçe — `scripts/fetch_petrol_ofisi.py`, tek istek.
+Sayfa listeyi üç kez taşıyor: `stations` düz liste, `cities` ve `districts` aynı listenin
+açılır kutular için gruplanmışı. Bir alanı sayfa genelinde saymak bu yüzden üçe katlıyor
+(`CityName` 7.893 kez geçiyor, istasyon 2.631). Çekici düz listeyi okuyor ve il
+gruplamasının toplamıyla karşılaştırıyor; tutmazsa duruyor.
+
+**A101'in tam listesi yok.** `/magazalarimiz` 404; çalışan sayfa `/en-yakin-magazalar` ve
+yalnız tarayıcının konumuna en yakın mağazaları veriyor. Tamamı için koordinat ızgarası
+taraması gerekir — ayrı bir iş.
