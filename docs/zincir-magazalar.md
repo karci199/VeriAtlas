@@ -183,3 +183,22 @@ için var; Kazakistan'daki bir mağaza sınır dosyası hakkında hiçbir şey s
 **Koordinatsız üçü alınmadı** (Happy Center, Bizim Toptan, Onur Market). İlçeleri
 kaynağın kendi etiketinden gelir, kayıt defteriyle eşlenmesi ayrı iş; Happy Center ayrıca
 il bilgisi hiç vermiyor. Ham verileri `C:\veri-ham\marketler` altında bekliyor.
+
+## Kahve zincirleri (2026-09-19)
+
+| Marka | Şube | Yurt dışı | Depoya giren | İlçe |
+|---|---|---|---|---|
+| **Starbucks** | 804 | — | 795 | 184 |
+| **EspressoLab** | 421 | **102** | 310 | 119 |
+
+İkisi de Gratis'le aynı kalıbı kullanıyor: Next.js yükünde çift kaçışlı JSON. Starbucks'ta
+ilçe alanının adı `county` ve koordinat bir düzey aşağıda, `"location":{"lon":…,"lat":…}`
+biçiminde — üstelik tırnaksız sayı olarak, diğer bütün alanların aksine.
+
+Starbucks daha önceki bir oturumda "804 kayıt, koordinat yalnız yol tarifi düğmesinde,
+otomatikleştirilemedi" diye bırakılmıştı. Doğru sayfada koordinat hazır duruyor; aynı
+sayı, bu kez tam.
+
+**EspressoLab'ın 421 şubesinin 102'si yurt dışında** — Kazablanka 14, Kahire 12, Amman 6,
+Bavyera 6, Dubai 5. Yurt içi 319 şubenin 310'u ilçeye düştü. Yurt dışı ayıklaması olmasa
+bu marka %26 kayıpla eşiği aşar ve yüklemeyi çökertirdi.

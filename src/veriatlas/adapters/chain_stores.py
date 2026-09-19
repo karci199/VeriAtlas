@@ -72,6 +72,8 @@ BRANDS = {
     "oses": "cigkofte/oses_*.csv",
     "ziyafet": "cigkofte/ziyafet_*.csv",
     "komagene": "cigkofte/komagene_*.csv",
+    "starbucks": "marketler/starbucks_*.csv",
+    "espressolab": "marketler/espressolab_*.csv",
 }
 
 #: Retail chains that publish a coordinate per store, from `scripts/fetch_marketler.py`.

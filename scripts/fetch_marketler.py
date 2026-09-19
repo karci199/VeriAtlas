@@ -49,6 +49,8 @@ URLS = {
     "madame_coco": "https://www.madamecoco.com/magazalar",
     "rossmann": "https://www.rossmann.com.tr/magazalar",
     "karaca": "https://www.karaca.com/magazalarimiz",
+    "starbucks": "https://www.starbucks.com.tr/magazalar",
+    "espressolab": "https://www.espressolab.com/subeler",
 }
 
 COLUMNS = ["name", "province", "district", "address", "lat", "lng"]
@@ -278,6 +280,59 @@ def karaca(page: str) -> list[dict]:
     return rows
 
 
+def _escaped_field(text: str, name: str) -> str:
+    """One field out of a doubly-escaped JSON payload (see `gratis`)."""
+    found = re.search(r'\\"' + name + r'\\":\\"([^\\]*)\\"', text)
+    return clean(found.group(1)) if found else ""
+
+
+def starbucks(page: str) -> list[dict]:
+    """Starbucks ships the same Next.js payload shape Gratis does.
+
+    Its district field is called `county`, and the coordinate is nested one level down as
+    `"location":{"lon":…,"lat":…}` — unquoted numbers, unlike every other field.
+    """
+    records = re.split(r'\\"storeId\\"', page)[1:]
+    if not records:
+        raise ValueError("Starbucks: storeId bulunamadı — sayfa değişmiş olabilir")
+    rows = []
+    for record in records:
+        head = record[:2000]
+        point = re.search(r'\\"lon\\":\s*(-?[\d.]+),\\"lat\\":\s*(-?[\d.]+)', head)
+        rows.append(
+            {
+                "name": _escaped_field(head, "name"),
+                "province": _escaped_field(head, "city"),
+                "district": _escaped_field(head, "county"),
+                "address": "",
+                "lat": point.group(2) if point else "",
+                "lng": point.group(1) if point else "",
+            }
+        )
+    return rows
+
+
+def espressolab(page: str) -> list[dict]:
+    """Same escaped payload again; here the fields are spelled out in full."""
+    records = re.split(r'\\"districtId\\"', page)[1:]
+    if not records:
+        raise ValueError("EspressoLab: districtId bulunamadı — sayfa değişmiş olabilir")
+    rows = []
+    for record in records:
+        head = record[:2500]
+        rows.append(
+            {
+                "name": _escaped_field(head, "name"),
+                "province": _escaped_field(head, "city"),
+                "district": _escaped_field(head, "district"),
+                "address": _escaped_field(head, "address"),
+                "lat": _escaped_field(head, "latitude"),
+                "lng": _escaped_field(head, "longitude"),
+            }
+        )
+    return rows
+
+
 PARSERS = {
     "bizim_toptan": bizim_toptan,
     "vatan": vatan,
@@ -287,6 +342,8 @@ PARSERS = {
     "madame_coco": madame_coco,
     "rossmann": rossmann,
     "karaca": karaca,
+    "starbucks": starbucks,
+    "espressolab": espressolab,
 }
 
 

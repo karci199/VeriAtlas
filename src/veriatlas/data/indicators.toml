@@ -30989,6 +30989,8 @@ mcdonalds = { label_tr = "McDonald's", label_en = "McDonald's" }
 oses = { label_tr = "Oses Çiğköfte", label_en = "Oses Çiğköfte" }
 ziyafet = { label_tr = "Ziyafet Çiğköfte", label_en = "Ziyafet Çiğköfte" }
 komagene = { label_tr = "Komagene", label_en = "Komagene" }
+starbucks = { label_tr = "Starbucks", label_en = "Starbucks" }
+espressolab = { label_tr = "EspressoLab", label_en = "EspressoLab" }
 
 [indicator.chain_restaurants]
 label_tr = "Zincir şube sayısı"
@@ -30998,7 +31000,7 @@ unit = "item"
 frequency = "annual"
 dims = ["restaurant_brand"]
 views = ["table", "map", "bar"]
-definition_tr = "Beş zincirin (Burger King, McDonald's, Oses, Ziyafet, Komagene) şube sayısı, ilçe ve il düzeyinde, 18.09.2026 anlık görüntüsü. İlçe, şubenin adresinden değil koordinatının düştüğü ilçe sınırından belirlenir; markaların kendi il-ilçe etiketleri pazarlama coğrafyasıdır. Markalar toplanmaz: bu sayı 'kaç hamburgerci' ya da 'kaç çiğköfteci' sorusunun cevabı değildir, çiğ köftenin kayıt defteri yoktur ve bağımsız dükkânlar hiçbir listede geçmez. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir, geçmişini tutmaz."
+definition_tr = "Yedi yeme-içme zincirinin (Burger King, McDonald's, Oses, Ziyafet, Komagene, Starbucks, EspressoLab) şube sayısı, ilçe ve il düzeyinde, 18.09.2026 anlık görüntüsü. İlçe, şubenin adresinden değil koordinatının düştüğü ilçe sınırından belirlenir; markaların kendi il-ilçe etiketleri pazarlama coğrafyasıdır. Markalar toplanmaz: bu sayı 'kaç hamburgerci' ya da 'kaç çiğköfteci' sorusunun cevabı değildir, çiğ köftenin kayıt defteri yoktur ve bağımsız dükkânlar hiçbir listede geçmez. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir, geçmişini tutmaz."
 
 [indicator.postal_codes]
 label_tr = "Posta kodu sayısı"

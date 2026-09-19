@@ -35,13 +35,32 @@ def test_known_points_land_in_their_district():
     assert locate(35.0, 35.0) is None  # Mediterranean, off the Syrian coast
 
 
-def test_every_brand_places_almost_all_of_its_restaurants():
+def domestic(brand: str) -> int:
+    """Rows whose coordinate is inside Türkiye — the only fair denominator.
+
+    Several brands list branches abroad in the same file: EspressoLab has 102 (Casablanca,
+    Cairo, Amman, Bavaria, Dubai) of 421, Madame Coco 59 of 719. Counting those as
+    "unplaced" would make a perfectly healthy parse look broken.
+    """
+    x0, y0, x1, y1 = TURKEY
+    inside = 0
+    with dump(brand).open(encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            try:
+                lng, lat = float(row["lng"]), float(row["lat"])
+            except ValueError:
+                inside += 1  # no coordinate at all still counts against the parse
+                continue
+            inside += x0 <= lng <= x1 and y0 <= lat <= y1
+    return inside
+
+
+def test_every_brand_places_almost_all_of_its_domestic_branches():
     """A boundary file that stops matching would shrink the count without erroring."""
     for brand in BRANDS:
         placed = sum(counts(brand).values())
-        with dump(brand).open(encoding="utf-8") as handle:
-            total = sum(1 for _ in handle) - 1
-        assert placed / total > 0.95, f"{brand}: {placed}/{total}"
+        inside = domestic(brand)
+        assert placed / inside > 0.95, f"{brand}: {placed}/{inside}"
 
 
 def test_one_row_per_area_and_brand(frame):
