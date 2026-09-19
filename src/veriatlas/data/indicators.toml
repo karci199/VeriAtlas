@@ -6369,41 +6369,53 @@ dims = ["cpi_2025_item"]
 views = ["table", "line"]
 definition_tr = "EVDS bie_tukfiy2025, yalnız Türkiye, aylık. Ana gruplar kalemlerin yanında saklanır; endeks toplanmaz."
 
-[indicator.mobile_download_speed]
-label_tr = "Mobil internet indirme hızı (ölçülen)"
-label_en = "Mobile download speed (measured)"
+[dim.connection_type]
+label_tr = "Bağlantı türü"
+label_en = "Connection type"
+
+[dim.connection_type.values]
+mobile = "Mobil"
+fixed = "Sabit genişbant"
+
+[indicator.internet_download_speed]
+label_tr = "İnternet indirme hızı (ölçülen)"
+dims = ["connection_type"]
+label_en = "Internet download speed (measured)"
 topic = "iletisim"
 unit = "mbps"
 frequency = "quarterly"
 views = ["map", "table", "bar"]
-definition_tr = "Ookla Speedtest açık verisi: ~600 m'lik karolarda ölçülen ortalama indirme hızı, test sayısıyla ağırlıklandırılıp ilçeye ve ile toplanmış. Abonelik hızı değil, telefonun gerçekte ölçtüğü hız. Testi çalıştıranlar kendi seçtikleri için düzey yanlıdır; ilçeler arası ve çeyrekler arası karşılaştırma için uygundur. Karo düşmeyen ilçeye satır yazılmaz."
+definition_tr = "Ookla Speedtest açık verisi: ~600 m'lik karolarda ölçülen ortalama indirme hızı, test sayısıyla ağırlıklandırılıp ilçeye ve ile toplanmış. Mobil, telefonun dışarıda ölçtüğü; sabit, evdeki ya da işyerindeki hattın ölçtüğü hızdır — ikisi ayrı tutulur, toplanmaz. Abonelik hızı değil ölçülen hızdır. Testi çalıştıranlar kendi seçtikleri için düzey yanlıdır; ilçeler arası ve çeyrekler arası karşılaştırma için uygundur. Karo düşmeyen ilçeye satır yazılmaz."
 
-[indicator.mobile_upload_speed]
-label_tr = "Mobil internet yükleme hızı (ölçülen)"
-label_en = "Mobile upload speed (measured)"
+[indicator.internet_upload_speed]
+label_tr = "İnternet yükleme hızı (ölçülen)"
+dims = ["connection_type"]
+label_en = "Internet upload speed (measured)"
 topic = "iletisim"
 unit = "mbps"
 frequency = "quarterly"
 views = ["map", "table", "bar"]
-definition_tr = "Ookla Speedtest açık verisi, indirme hızıyla aynı yöntem: test sayısıyla ağırlıklı ortalama yükleme hızı."
+definition_tr = "Ookla Speedtest açık verisi, indirme hızıyla aynı yöntem: test sayısıyla ağırlıklı ortalama yükleme hızı, mobil ve sabit ayrı."
 
-[indicator.mobile_latency]
-label_tr = "Mobil internet gecikmesi (ölçülen)"
-label_en = "Mobile latency (measured)"
+[indicator.internet_latency]
+label_tr = "İnternet gecikmesi (ölçülen)"
+dims = ["connection_type"]
+label_en = "Internet latency (measured)"
 topic = "iletisim"
 unit = "millisecond"
 frequency = "quarterly"
 views = ["map", "table", "bar"]
 definition_tr = "Ookla Speedtest açık verisi: ölçülen ortalama gecikme, milisaniye. Küçük olan iyidir."
 
-[indicator.mobile_speedtests]
-label_tr = "Mobil hız testi sayısı"
-label_en = "Mobile speed tests"
+[indicator.internet_speedtests]
+label_tr = "Hız testi sayısı"
+dims = ["connection_type"]
+label_en = "Speed tests"
 topic = "iletisim"
 unit = "item"
 frequency = "quarterly"
 views = ["map", "table"]
-definition_tr = "Ookla Speedtest açık verisinde ilçeye düşen test sayısı. Hız göstergelerinin ne kadar sağlam olduğunu gösterir; az testli ilçenin hızı tek bir kullanıcının bağlantısı olabilir."
+definition_tr = "Ookla Speedtest açık verisinde ilçeye düşen test sayısı, mobil ve sabit ayrı. Hız göstergelerinin ne kadar sağlam olduğunu gösterir; az testli ilçenin hızı tek bir kullanıcının bağlantısı olabilir."
 
 [dim.cpi_2003_item]
 label_tr = "TÜFE kalemi (2003=100)"

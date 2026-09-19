@@ -12,7 +12,9 @@ S3'te parquet. Ham depoda iki çeyrek var:
     C:\veri-ham\ookla\2022q4_mobile.parquet
     C:\veri-ham\ookla\2024q4_mobile.parquet
 
-**Yalnız mobil.** Ookla aynı biçimde sabit genişbant seti de yayımlıyor; henüz indirilmedi.
+Dört dosya: mobil ve sabit genişbant, iki çeyrek. Mobil, telefonun dışarıda ölçtüğü;
+sabit, evdeki ya da işyerindeki hattın ölçtüğü hız. İkisi `connection_type` boyutunda ayrı
+durur — toplanmaz, ortalamaları alınmaz; farklı şeylerin ölçümü.
 
 ## Yöntem
 
@@ -20,7 +22,8 @@ S3'te parquet. Ham depoda iki çeyrek var:
 (`public/geo/districts/*.geojson`, atlasın çizdiği sınırların aynısı), sonra ilçe ve il
 için **test sayısıyla ağırlıklı** ortalama alır. Çıktı tek dosya:
 `C:\veri-ham\ookla\hiz_ilce.csv`. Adaptör (`ookla_speed.py`) bunu dört göstergeye yazar:
-`mobile_download_speed`, `mobile_upload_speed`, `mobile_latency`, `mobile_speedtests`.
+`internet_download_speed`, `internet_upload_speed`, `internet_latency`,
+`internet_speedtests` — her biri mobil ve sabit kırılımıyla.
 
 Dört tuzak, dördü de sessiz:
 
@@ -40,7 +43,17 @@ Testi çalıştıranlar kendilerini seçiyor: bağlantısından şüphelenen ve 
 yerler fazla temsil ediliyor. **Düzey** bu yanlılığı taşır; **ilçeler arası fark** ve
 **aynı ilçenin iki çeyreği** sağlam kullanımlardır.
 
-2024Q4 ilk bakış (en az 300 testli ilçeler): Arnavutköy 207,6 Mbit/s ile açık ara önde —
+Sabit hat mobilden çok daha kalabalık ölçülüyor: 2024Q4'te 1,17 mn sabit teste karşılık
+137 bin mobil test. Türkiye ortalaması (il satırları, test ağırlıklı) sabit hatta 2022Q4'te
+53,1 Mbit/s iken 2024Q4'te 115,4; mobilde 41,5'ten 60,4'e. İki yılda sabit iki kattan fazla
+hızlanmış, mobil %46.
+
+Sabitte ilçeler arası uçurum mobilden büyük: Gazi Osmanpaşa 245,7 ve Buca 217,7 Mbit/s'e
+karşılık Samandağ 19,2, Altınözü 20,2, Türkoğlu 22,4 — on iki kat fark. Alt uçtaki üç
+ilçenin ikisi Hatay'da; 2023 depreminin ardından altyapının hâlâ toparlanmadığı okunuyor,
+ama bunu bu veriyle söylemek değil, sormak doğru olur.
+
+2024Q4 mobil ilk bakış (en az 300 testli ilçeler): Arnavutköy 207,6 Mbit/s ile açık ara önde —
 İstanbul Havalimanı orada ve havalimanı testleri karoları yukarı çekiyor, yani bu bir
 "ilçe hızı" değil bir tesis etkisi. Onu saymazsak Kartal 93,8, Gaziemir 93,6, Üsküdar
 84,3; alt uçta Niğde 36,9, Başiskele 39,1, Antakya 39,7. Aradaki fark iki buçuk kat.

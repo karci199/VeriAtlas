@@ -45,11 +45,14 @@ sys.path.insert(0, "src")
 
 from veriatlas.config import RAW
 
-#: Quarter → the raw file holding it. Mobile only: Ookla publishes a fixed-broadband set
-#: in the same shape, and it is not in the raw store yet.
+#: (connection, quarter) → the raw file holding it. Ookla publishes mobile and fixed
+#: broadband in the same shape: mobile is what a phone measured outdoors, fixed is what a
+#: home or office line measured. They answer different questions and are never mixed.
 QUARTERS = {
-    "2022-Q4": "2022q4_mobile.parquet",
-    "2024-Q4": "2024q4_mobile.parquet",
+    ("mobile", "2022-Q4"): "2022q4_mobile.parquet",
+    ("mobile", "2024-Q4"): "2024q4_mobile.parquet",
+    ("fixed", "2022-Q4"): "2022q4_fixed.parquet",
+    ("fixed", "2024-Q4"): "2024q4_fixed.parquet",
 }
 #: A box around Türkiye, to keep the global file out of memory. It is a cheap first cut,
 #: not the test: the polygons below decide what counts as inside.
@@ -74,7 +77,7 @@ def main() -> None:
         raise SystemExit(f"ilce poligonu 973 olmali, {total} bulundu")
 
     rows = []
-    for period, name in QUARTERS.items():
+    for (connection, period), name in QUARTERS.items():
         source = (RAW / "ookla" / name).as_posix()
         con.execute(
             """CREATE OR REPLACE TABLE tile AS
@@ -103,13 +106,17 @@ def main() -> None:
                        sum(tests) AS tests, sum(devices) AS devices, count(*) AS tiles
                     FROM placed GROUP BY 1"""
             ).fetchall():
-                rows.append((period, level, *row))
-        print(period, con.execute("SELECT count(*), sum(tests) FROM placed").fetchone())
+                rows.append((connection, period, level, *row))
+        print(
+            connection,
+            period,
+            con.execute("SELECT count(*), sum(tests) FROM placed").fetchone(),
+        )
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with OUT.open("w", encoding="utf-8", newline="") as handle:
         handle.write(
-            "period,area_level,area_id,download,upload,latency,tests,devices,tiles\n"
+            "connection,period,area_level,area_id,download,upload,latency,tests,devices,tiles\n"
         )
         for row in rows:
             handle.write(",".join(str(value) for value in row) + "\n")

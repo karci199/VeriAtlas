@@ -5,6 +5,10 @@ script explains. The adapter only files the result, but three decisions live her
 
 * **Four indicators, not one with a unit dimension.** Download and upload are Mbit/s,
   latency is milliseconds and the test count is a count; an indicator carries one unit.
+* **Mobile and fixed are a dimension, not separate indicators.** They are the same
+  measurement of two different connections — a phone outdoors and a line at home — and a
+  reader comparing them is doing something sensible. Adding them is not, and an index
+  cannot be summed anyway.
 * **The test count is stored as well as the speeds.** It is the only thing that says how
   much weight a district's number can take — Tunceli's figure rests on a few dozen tests,
   İstanbul's on tens of thousands — and without it every district looks equally solid.
@@ -24,6 +28,7 @@ from pathlib import Path
 import polars as pl
 
 from ..config import RAW
+from ..schema import format_dims
 
 SOURCE = RAW / "ookla" / "hiz_ilce.csv"
 VINTAGE = "2026-09"
@@ -31,10 +36,10 @@ RETRIEVED = dt.date(2026, 9, 17)
 
 #: indicator id → (column in the built file, unit)
 MEASURES = {
-    "mobile_download_speed": ("download", "mbps"),
-    "mobile_upload_speed": ("upload", "mbps"),
-    "mobile_latency": ("latency", "millisecond"),
-    "mobile_speedtests": ("tests", "item"),
+    "internet_download_speed": ("download", "mbps"),
+    "internet_upload_speed": ("upload", "mbps"),
+    "internet_latency": ("latency", "millisecond"),
+    "internet_speedtests": ("tests", "item"),
 }
 
 
@@ -60,7 +65,10 @@ class OoklaSpeed:
                 "area_level": table["area_level"],
                 "period_start": [quarter_start(p) for p in table["period"]],
                 "frequency": ["quarterly"] * len(table),
-                "dims": [""] * len(table),
+                "dims": [
+                    format_dims({"connection_type": value})
+                    for value in table["connection"]
+                ],
                 "value": table[column].cast(pl.Float64),
                 "unit": [unit] * len(table),
                 "quality_flag": ["measured"] * len(table),
