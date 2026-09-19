@@ -23,8 +23,23 @@ The window is walked a year at a time: one request for 13 years of one district 
 tens of thousands of rows and times out, and a failed long request costs more than four
 short ones.
 
-Run:  uv run python scripts/fetch_opet_fiyat.py [--devam] [--il]
-      --il  yalnız il merkezleri (81 istek yerine ~970)
+Two passes, because the two questions need different resolutions (user's call,
+2026-09-19):
+
+* **the long series** — province centres only, every year back to 2013. 82 districts
+  rather than 970, which turns a twelve-hour crawl into half an hour;
+* **the map** — every district, but one year. Fuel prices are set per province and the
+  districts mostly repeat the same number, so the shape of the map barely moves from year
+  to year; one recent year is enough to see it.
+
+Run:  uv run python scripts/fetch_opet_fiyat.py            # il merkezleri, 2013-
+      uv run python scripts/fetch_opet_fiyat.py --son       # tüm ilçeler, son fiyat
+      uv run python scripts/fetch_opet_fiyat.py --tam 2026  # tüm ilçeler, tek yıl
+      uv run python scripts/fetch_opet_fiyat.py --devam     # yarıda kalanı sürdür
+
+`--son` asks each district for the last 45 days and keeps only its newest price per
+product. That is all the "where is fuel dearest" question needs, and it costs one short
+request per district instead of fourteen long ones.
 Out:  C:\veri-ham\opet\fiyat_<YYYY-MM-DD>.csv
 """
 
@@ -56,19 +71,22 @@ HEADERS = {
 #: The archive's own reach. Queried further back it answers with an empty list, not an
 #: error, so the floor is written down rather than discovered each run.
 FIRST_YEAR = 2013
-DELAY = 0.35
+#: Opet answers 500 under load — measured two failures in five while a background run
+#: and a hand probe were both querying. One request every 1,5 seconds, single-threaded,
+#: kept it clean; the earlier 0,35 did not.
+DELAY = 1.5
 COLUMNS = ["date", "province", "province_code", "district", "district_code", "product",
            "product_code", "price"]
 
 
-def get(url: str, tries: int = 3):
-    """One request, with a short climb.
+def get(url: str, tries: int = 6):
+    """One request, retried hard, because this API fails at random.
 
-    The backoff is deliberately small. The archive answers **500** for a district-year it
-    has nothing for, in the same way it would for a real outage, and there are thousands
-    of those combinations: a first version climbed 4-8-16-32 seconds before giving up and
-    spent a minute per empty district-year, which would have taken days. Two quick retries
-    separate a blip from an empty cell well enough, and an empty cell costs a second.
+    Measured on 2026-09-19: the same URL answered `500, 200, 500, 500, 200` — roughly two
+    requests in five fail for no reason and succeed on a repeat. An earlier version read
+    that 500 as "this district has no data for this year" and moved on, which silently
+    dropped about two fifths of everything it was asked to collect. **A 500 is never
+    evidence of emptiness here.** Emptiness is a 200 with an empty list, and nothing else.
     """
     request = urllib.request.Request(url, headers=HEADERS)
     for attempt in range(tries):
@@ -78,23 +96,46 @@ def get(url: str, tries: int = 3):
         except (urllib.error.URLError, http.client.HTTPException, OSError):
             if attempt == tries - 1:
                 raise
-            time.sleep(1.5 * 2**attempt)
+            time.sleep(2.0 * 1.8**attempt)
     raise AssertionError("unreachable")
 
 
 def provinces() -> list[dict]:
-    return get(f"{API}/provinces")
+    """The province list, retried patiently.
+
+    This is the first request a run makes, and when the API is in one of its moods it is
+    the request that kills the run before anything is written. It gets its own long climb
+    — up to about four minutes — because failing here costs the whole pass.
+    """
+    return get(f"{API}/provinces", tries=8)
 
 
 def districts(province_code) -> list[dict]:
     return get(f"{API}/provinces/{province_code}/districts")
 
 
-def archive(district_code: str, year: int) -> list[dict]:
+def archive(district_code: str, year: int, days: int | None = None) -> list[dict]:
+    """A district's prices for one year, or — with `days` — for the last N days.
+
+    The short window is what `--son` uses: a price board that has not changed in weeks
+    still reports its last change, so 45 days is enough to find the current price
+    everywhere without pulling a year of history for each of 970 districts.
+    """
+    if days:
+        end = dt.datetime.now(tz=dt.UTC)
+        start = end - dt.timedelta(days=days)
+        window = (
+            f"StartDate={start:%Y-%m-%d}T00:00:00.000Z"
+            f"&EndDate={end:%Y-%m-%d}T23:59:59.000Z"
+        )
+    else:
+        window = (
+            f"StartDate={year}-01-01T00:00:00.000Z"
+            f"&EndDate={year}-12-31T23:59:59.000Z"
+        )
     url = (
         f"{API}/prices/archive?DistrictCode={district_code}"
-        f"&StartDate={year}-01-01T00:00:00.000Z"
-        f"&EndDate={year}-12-31T23:59:59.000Z&IncludeAllProducts=true"
+        f"&{window}&IncludeAllProducts=true"
     )
     rows = []
     for day in get(url) or []:
@@ -117,12 +158,22 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     target = OUT / f"fiyat_{dt.datetime.now(tz=dt.UTC).date():%Y-%m-%d}.csv"
     resuming = "--devam" in sys.argv
+    # `--tam <yıl>`: every district, that year only. Without it: province centres, all
+    # years. `isCenter` is the source's own flag for the province's central district.
+    latest = "--son" in sys.argv
+    if latest:
+        target = OUT / f"son_fiyat_{dt.datetime.now(tz=dt.UTC).date():%Y-%m-%d}.csv"
+    full_year = None
+    if "--tam" in sys.argv:
+        full_year = int(sys.argv[sys.argv.index("--tam") + 1])
+        target = OUT / f"fiyat_ilce_{full_year}_{dt.datetime.now(tz=dt.UTC).date():%Y-%m-%d}.csv"
     done: set[str] = set()
     if resuming and target.exists():
         with target.open(encoding="utf-8", newline="") as handle:
             done = {f"{r['district_code']}|{r['date'][:4]}" for r in csv.DictReader(handle)}
     today = dt.datetime.now(tz=dt.UTC).year
-    total = empty = 0
+    total = 0
+    failed: list[str] = []
     with target.open("a" if resuming else "w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=COLUMNS)
         if not resuming:
@@ -136,18 +187,33 @@ def main() -> None:
                 print(f"  ! {name}: {error}", flush=True)
                 continue
             time.sleep(DELAY)
+            if not full_year and not latest:
+                found = [d for d in found if d.get("isCenter")]
             for district in found:
                 dname = district.get("name") or district.get("Name", "")
                 dcode = str(district.get("code") or district.get("Code") or "")
                 if not dcode:
                     continue
-                for year in range(FIRST_YEAR, today + 1):
+                years = [today] if latest else (
+                    [full_year] if full_year else range(FIRST_YEAR, today + 1)
+                )
+                for year in years:
                     if f"{dcode}|{year}" in done:
                         continue
                     try:
-                        rows = archive(dcode, year)
-                    except Exception:  # noqa: BLE001 — an empty district-year answers 500
-                        empty += 1
+                        rows = archive(dcode, year, days=45 if latest else None)
+                        if latest:
+                            # Newest row per product, nothing else.
+                            newest: dict[str, dict] = {}
+                            for row in sorted(rows, key=lambda r: r["date"]):
+                                newest[row["product_code"]] = row
+                            rows = list(newest.values())
+                    except Exception as error:  # noqa: BLE001
+                        # Six tries all failed: a real outage, not an empty cell. Counted
+                        # and named so a run that lost data cannot look like a clean one.
+                        failed.append(f"{dname} {year}")
+                        if len(failed) < 20:
+                            print(f"  ! {name}/{dname} {year}: {error}", flush=True)
                         continue
                     for row in rows:
                         writer.writerow(
