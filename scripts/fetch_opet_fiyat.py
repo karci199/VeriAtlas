@@ -73,13 +73,23 @@ HEADERS = {
 FIRST_YEAR = 2013
 #: Opet answers 500 under load — measured two failures in five while a background run
 #: and a hand probe were both querying. One request every 1,5 seconds, single-threaded,
-#: kept it clean; the earlier 0,35 did not.
-DELAY = 1.5
-COLUMNS = ["date", "province", "province_code", "district", "district_code", "product",
-           "product_code", "price"]
+#: kept it clean; the earlier 0,35 did not. Re-measured on the evening of 2026-09-19:
+#: one request in six succeeded at 2 s spacing, so both the spacing and the retry climb
+#: were raised.
+DELAY = 2.5
+COLUMNS = [
+    "date",
+    "province",
+    "province_code",
+    "district",
+    "district_code",
+    "product",
+    "product_code",
+    "price",
+]
 
 
-def get(url: str, tries: int = 6):
+def get(url: str, tries: int = 10):
     """One request, retried hard, because this API fails at random.
 
     Measured on 2026-09-19: the same URL answered `500, 200, 500, 500, 200` — roughly two
@@ -130,8 +140,7 @@ def archive(district_code: str, year: int, days: int | None = None) -> list[dict
         )
     else:
         window = (
-            f"StartDate={year}-01-01T00:00:00.000Z"
-            f"&EndDate={year}-12-31T23:59:59.000Z"
+            f"StartDate={year}-01-01T00:00:00.000Z&EndDate={year}-12-31T23:59:59.000Z"
         )
     url = (
         f"{API}/prices/archive?DistrictCode={district_code}"
@@ -166,11 +175,16 @@ def main() -> None:
     full_year = None
     if "--tam" in sys.argv:
         full_year = int(sys.argv[sys.argv.index("--tam") + 1])
-        target = OUT / f"fiyat_ilce_{full_year}_{dt.datetime.now(tz=dt.UTC).date():%Y-%m-%d}.csv"
+        target = (
+            OUT
+            / f"fiyat_ilce_{full_year}_{dt.datetime.now(tz=dt.UTC).date():%Y-%m-%d}.csv"
+        )
     done: set[str] = set()
     if resuming and target.exists():
         with target.open(encoding="utf-8", newline="") as handle:
-            done = {f"{r['district_code']}|{r['date'][:4]}" for r in csv.DictReader(handle)}
+            done = {
+                f"{r['district_code']}|{r['date'][:4]}" for r in csv.DictReader(handle)
+            }
     today = dt.datetime.now(tz=dt.UTC).year
     total = 0
     failed: list[str] = []
@@ -194,8 +208,10 @@ def main() -> None:
                 dcode = str(district.get("code") or district.get("Code") or "")
                 if not dcode:
                     continue
-                years = [today] if latest else (
-                    [full_year] if full_year else range(FIRST_YEAR, today + 1)
+                years = (
+                    [today]
+                    if latest
+                    else ([full_year] if full_year else range(FIRST_YEAR, today + 1))
                 )
                 for year in years:
                     if f"{dcode}|{year}" in done:
