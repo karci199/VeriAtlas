@@ -1,4 +1,4 @@
-# Açık işler (2026-09-19, akşam güncel)
+# Açık işler (2026-09-19, gece güncel)
 
 Çekilip de alınamayan ya da yarım kalanlar, tahmini zorlukla. Yeni oturumda buradan devam.
 Keşfedilmiş ama hiç başlanmamış kaynaklar `kaynak-envanteri.md`'de.
@@ -152,32 +152,37 @@ görüntü tarihi kalsın diye il tablosu yalnız %1 sapma denetimi olarak kulla
 döndü — TGT, yani kullanıcının hesabıyla giriş gerekiyor. Uç noktalar ve parametreler
 belli; eksik olan tek şey oturum. Kullanıcı tarayıcıda giriş yaptığında çekim yapılabilir.
 
-## Sıradaki oturumun ilk işi (2026-09-19 akşamı güncel)
+## Sıradaki oturumun ilk işi (2026-09-19 gece güncel)
 
-1. ~~TESK dalını main'e al~~ 2026-09-18 yapıldı.
-2. ~~`claude/cekmelere-devam-51d945` dalını main'e al~~ 2026-09-19 yapıldı: PTT posta
-   kodu, zincir mağaza/restoran, EPDK şarj istasyonu, TÜİK ortalama madde fiyatı —
-   13 commit main'e girdi ve main push'landı (30 commit origin'e gitti).
-3. ~~Tam yükleme~~ 2026-09-19 akşamı ana kopyada (`C:\veri`) çalıştırıldı; worktree'de
-   çalıştırılmıyor, `public/fact.parquet` `.gitignore`'da olduğu için son türetme adımı
-   orada çöküyor.
-4. **Opet akaryakıt fiyatı — durduruldu (kullanıcı kararı, 2026-09-19 akşamı).**
-   `--son` turu (tüm ilçeler, son 45 gün) başlatıldı ve 2,5 saatte yalnız 67 satır
-   yazıp Adana'yı bile bitiremedi: API hız sınırını 500 kılığında veriyor, elle
-   ölçüldüğünde altı istekten biri 200 döndü. Aralık 2,5 sn'ye, deneme sayısı 10'a
-   çıkarıldı — darboğaz aralık değil, sınırın kendisi; bu tempoda 970 ilçe günler
-   sürüyor. Elde kalan: 13 il / 139 ilçe, 1,34 mn satır, 2013-2026
-   (`C:\veri-ham\opet\fiyat_ilce_kismi_2026-09-19.csv`) ve il merkezleri turunun
-   2/82'lik başlangıcı. **Adaptör ve gösterge yok**, ham CSV olarak duruyor. Devam
-   edilecekse makul kapsam 82 il merkezi; fiyat il düzeyinde belirlendiği için ilçe
-   kırılımı az şey ekliyor.
-5. **TÜFE kalemleri 2003-2004 eksik.** Depodaki `cpi_2025_items` 2005-01'de başlıyor
-   (EVDS'in 2025=100 serisi oradan bağlanıyor). Eski sepet — `bie_tukfiy4`, `TP.FG.J*`,
-   57 COICOP serisi, 2003=100, 2003-01 → 2025-12 — **diskte var, adaptörü yok**.
-   2006 sonrası artışlar iki sepette birebir aynı, yani seri uzatılabilir; yazılırsa
-   bütün ana gruplar iki yıl daha geriye gider.
-6. OECD'nin diskte bekleyen dosyaları için adaptör (yukarıdaki listede).
-7. EPİAŞ ilçe düzeyi serbest tüketici ve baraj doluluk çekicileri.
+Bugün depoya giren: `cpi_2003_items` (TÜFE kalemleri 2003'e uzadı), `internet_*` dört
+gösterge (Ookla mobil+sabit hız), `province_gdp_current` ve `province_gdp_chained` (il
+GSYH tutarı), `port_cargo_handled` (liman yükü). Envanter artık depodan üretiliyor:
+[envanter.md](envanter.md), `scripts/build_inventory.py`.
+
+**Adaptörü yazılmamış, ham veri diskte bekleyenler:**
+
+| Ne | Nerede | Not |
+|---|---|---|
+| AVM ciro endeksi (AYD) | `veri-ham\ayd\avm_endeks.csv` | 18 ay (2025-01 - 2026-07), endeks + m² ciro + ziyaretçi. Mayıs 2025 kaynakta 404 |
+| Türk Telekom IR | `veri-ham\telekom\tt_ozet_2c26.xlsx` | 2014Ç1-2026Ç2, abone/ARPU/finansal, 10 sayfa |
+| Turkcell IR | `veri-ham\telekom\2C26-FO-Veri.xlsx` | 2021Ç1-2026Ç2, operasyonel + segment gelir |
+| Denizciliğin kalanı | `veri-ham\uab\` | konteyner, gemi, kruvaziyer, Ro-Ro, boğaz geçişleri, filo, arşiv (2020 öncesi liman) |
+| TÜİK perakende ve ciro endeksleri | `tuik_portal\dosya\tablo` | perakende satış hacmi/cirosu, sanayi-ticaret-inşaat ciro, hizmet üretim endeksi — indirilmiş, okunmamış |
+| Opet akaryakıt | `veri-ham\opet\` | 13 il/139 ilçe kesiti; tur durduruldu |
+
+**Kapanan kapılar (bugün denendi):**
+
+- **DSİ baraj doluluk** — halka açık pano yalnız manşet veriyor (TR geneli üç yıl, dört
+  büyükşehir birer değer), ağ kaydında veri isteği yok, ayrıntılı pano robots'ta kapalı.
+  Günlük seri yalnız EPİAŞ'ta ve hesap istiyor.
+- **marketvisuals.net** — veri kendi Supabase'lerinde, sayfanın anon anahtarıyla geliyor;
+  başkasının arka ucundan toplu çekim yapılmadı. Site keşif listesi olarak kullanıldı,
+  kaynakların aslına gidildi.
+- **MEB okul siteleri** — `robots.txt` ClaudeBot dahil bütün yapay zekâ ve arşiv
+  botlarını ad ad engelliyor (2026-09-19 doğrulandı).
+
+**Sıradaki:** yukarıdaki altı ham veri için adaptör; sonra tam yükleme ve envanteri
+yeniden üret.
 
 ## 2026-09-18 gecesi eklenenler
 
