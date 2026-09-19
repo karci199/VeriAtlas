@@ -6369,6 +6369,35 @@ dims = ["cpi_2025_item"]
 views = ["table", "line"]
 definition_tr = "EVDS bie_tukfiy2025, yalnız Türkiye, aylık. Ana gruplar kalemlerin yanında saklanır; endeks toplanmaz."
 
+[dim.cargo_direction]
+label_tr = "Yön"
+label_en = "Direction"
+
+[dim.cargo_direction.values]
+loading = "Yükleme"
+unloading = "Boşaltma"
+total = "Toplam"
+
+[dim.trade_type]
+label_tr = "Taşıma türü"
+label_en = "Trade type"
+
+[dim.trade_type.values]
+foreign = "Dış ticaret"
+cabotage = "Kabotaj"
+transit = "Transit"
+total = "Toplam"
+
+[indicator.port_cargo_handled]
+label_tr = "Limanlarda elleçlenen yük"
+label_en = "Cargo handled at ports"
+topic = "ulasim"
+unit = "tonne"
+frequency = "annual"
+dims = ["cargo_direction", "trade_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "UAB Denizcilik Genel Müdürlüğü, liman başkanlığı bazında yük elleçleme, ton, yıllık. Limanlar ile eşleştirilip ile toplanır (Ambarlı ve Tuzla İstanbul, Ceyhan Adana gibi). Kaynak aylık dosyaları yıl başından itibaren birikimli yayımlar; yalnız aralık dosyası okunur. Yön ve taşıma türü ayrı boyutlardır; toplam değerler kaynağın kendi toplamıdır, alt kalemlerle birlikte toplanmaz."
+
 [dim.connection_type]
 label_tr = "Bağlantı türü"
 label_en = "Connection type"

@@ -75,6 +75,7 @@ from .tuik_vehicles import VEHICLE_ADAPTERS
 from .tuik_villages import TuikVillagePopulation
 from .tuik_vital import VITAL_ADAPTERS
 from .tuik_vital_district import DISTRICT_VITAL_ADAPTERS
+from .uab_ports import UAB_ADAPTERS
 from .vap import VAP_ADAPTERS
 from .yks import YKS_ADAPTERS
 from .yok_istatistik import YOK_ISTATISTIK_ADAPTERS
@@ -100,6 +101,7 @@ ADAPTERS = {
     # adapter per indicator, and eleven measures share the same parser.
     **OOKLA_ADAPTERS,
     **PROVINCE_GDP_ADAPTERS,
+    **UAB_ADAPTERS,
     **NARROW_ADAPTERS,
     # Births and deaths: same download, transposed file, so a parser of their own.
     **VITAL_ADAPTERS,
