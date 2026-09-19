@@ -1,11 +1,11 @@
-# Envanter — depodaki 873 gösterge
+# Envanter — depodaki 880 gösterge
 
 **Bu dosya elle yazılmaz.** `scripts/build_inventory.py` warehouse'tan üretir;
 burada olmayan gösterge depoda yok demektir. Yeni kaynak önermeden önce buraya
 bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni iş' diye
 önerildi, üçü de zaten yüklüydü.
 
-Üretim: 2026-09-19 · 21.144.601 satır
+Üretim: 2026-09-19 · 21.234.030 satır
 
 ## evds_arsiv (177)
 
@@ -189,7 +189,7 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `archive_yyoibsvt` | Özel Sektör Tarafından Yurt İçinde İhraç Edilen Borçlanma Senetleri Vade Dağılımı (TL. Piyasa Değeri. Orjinal ve Kalan Vade) (Arşiv) | TR | 2015-2021 | 206.820 | cbrt_evds |
 | `archive_yyoibsvu` | Özel Sektör Tarafından Yurt İçinde İhraç Edilen Borçlanma Senetleri Vade Dağılımı (ABD doları. Piyasa Değeri. Orjinal ve Kalan Vade) (Arşiv) | TR | 2015-2021 | 204.270 | cbrt_evds |
 
-## iletisim (92)
+## iletisim (96)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
@@ -284,6 +284,10 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `btk_subscribers_summary` | Sabit. mobil. M2M ve kablo TV abonesi | TR | 2012-2025 | 59 | btk |
 | `btk_subscribers_summary_quarterly` | Sabit. mobil ve M2M abone. çeyreklik | TR | 2015-2026 | 144 | btk |
 | `btk_turk_telekom_traffic` | Türk Telekom sabit ses trafiği. yöne göre | TR | 2014-2026 | 208 | btk |
+| `internet_download_speed` | İnternet indirme hızı (ölçülen) | il. ilçe | 2022-2024 | 4.104 | ookla_open_data |
+| `internet_latency` | İnternet gecikmesi (ölçülen) | il. ilçe | 2022-2024 | 4.104 | ookla_open_data |
+| `internet_speedtests` | Hız testi sayısı | il. ilçe | 2022-2024 | 4.104 | ookla_open_data |
+| `internet_upload_speed` | İnternet yükleme hızı (ölçülen) | il. ilçe | 2022-2024 | 4.104 | ookla_open_data |
 | `postal_codes` | Posta kodu sayısı | il. ilçe | 2026-2026 | 1.054 | ptt_postakodu |
 
 ## sosyal_guvenlik (63)
@@ -354,7 +358,7 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `sgk_workplaces_by_tenure` | 4/a iş yeri. niteliğe göre | il | 2010-2025 | 2.592 | sgk |
 | `unemployment_rate` | İşsizlik oranı | TR. il | 2022-2025 | 984 | tuik_portal |
 
-## buyume (38)
+## buyume (40)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
@@ -387,7 +391,9 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `household_consumption_durability` | Hanehalkı tüketimi. dayanıklılık türüne göre. cari | TR | 2009-2026 | 350 | cbrt_evds |
 | `household_consumption_purpose` | Hanehalkı tüketimi. amaca göre. cari (yıllık) | TR | 2009-2025 | 238 | cbrt_evds |
 | `household_consumption_purpose_index` | Hanehalkı tüketimi. amaca göre. hacim endeksi (yıllık) | TR | 2009-2025 | 238 | cbrt_evds |
+| `province_gdp_chained` | İl GSYH. zincirlenmiş hacim | TR. il | 2000-2024 | 28.700 | tuik_portal |
 | `province_gdp_component_share` | GSYH bileşenlerinin il GSYH içindeki payı | TR. il | 2000-2024 | 6.150 | tuik_medas |
+| `province_gdp_current` | İl GSYH. cari fiyatlarla | TR. il | 2000-2024 | 28.700 | tuik_portal |
 | `province_gdp_growth_component` | İl GSYH reel değişim oranı | TR. il | 2001-2024 | 5.904 | tuik_medas |
 | `province_gdp_growth_sector` | İl GSYH reel değişim oranı. sektöre göre | TR. il | 2001-2024 | 21.648 | tuik_medas |
 | `province_gdp_index_component` | İl GSYH hacim endeksi (2009=100) | TR. il | 2000-2024 | 6.150 | tuik_medas |
@@ -435,42 +441,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `water_treatment_population` | İçme suyu arıtma tesisiyle hizmet verilen nüfus | TR. il | 2001-2022 | 699 | tuik_medas |
 | `water_treatment_population_share` | İçme suyu arıtma tesisiyle hizmet verilen nüfusun oranı | TR. il | 2001-2022 | 699 | tuik_medas |
 
-## kultur (31)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `archaeological_sites` | Ören yeri | TR. il | 2014-2024 | 893 | tuik_medas |
-| `child_theatre_audience` | Çocuk eseri tiyatro seyircisi | TR. il | 2010-2025 | 1.238 | tuik_medas |
-| `child_theatre_performances` | Çocuk eseri tiyatro gösterisi | TR. il | 2010-2025 | 1.238 | tuik_medas |
-| `cinema_audience` | Sinema seyircisi (yerli/yabancı film) | TR. il | 2000-2025 | 4.264 | tuik_medas |
-| `cinema_halls` | Sinema salonu | TR. il | 2000-2025 | 2.132 | tuik_medas |
-| `cinema_seats` | Sinema koltuğu | TR. il | 2000-2025 | 2.132 | tuik_medas |
-| `films_shown` | Gösterilen film (yerli/yabancı) | TR. il | 2000-2025 | 4.258 | tuik_medas |
-| `gsb_sports_clubs` | Spor kulübü sayısı | il | 2025-2025 | 81 | gsb |
-| `gsb_talent_directed` | Spor branşına yönlendirilen öğrenci | il | 2022-2024 | 243 | gsb |
-| `gsb_talent_screened` | Sportif yetenek taramasına giren öğrenci | il | 2022-2025 | 972 | gsb |
-| `gsb_talent_suited` | Spora yatkın bulunan öğrenci | il | 2022-2025 | 324 | gsb |
-| `library_child_loans` | Çocuklara ödünç verilen materyal | TR. il | 2002-2025 | 1.968 | tuik_medas |
-| `library_child_members` | Halk kütüphanesi kayıtlı üye çocuk | TR. il | 2002-2025 | 3.936 | tuik_medas |
-| `library_child_users` | Halk kütüphanesi kullanıcı çocuk | TR. il | 2002-2025 | 3.936 | tuik_medas |
-| `library_loans` | Halk kütüphanelerinden ödünç verilen materyal | TR. il | 1995-2025 | 1.975 | tuik_medas |
-| `library_uses_per_thousand` | Bin kişiye halk kütüphanesi kullanımı | TR. il | 1995-2025 | 1.570 | tuik_medas |
-| `ministry_museum_artefacts` | Bakanlığa bağlı müzelerdeki eser | TR. il | 2012-2024 | 1.066 | tuik_medas |
-| `ministry_museum_visitors` | Bakanlığa bağlı müze ziyaretçisi | TR. il | 2012-2024 | 1.066 | tuik_medas |
-| `ministry_museums` | Bakanlığa bağlı müze | TR. il | 2012-2024 | 1.066 | tuik_medas |
-| `private_museum_artefacts` | Özel müzelerdeki eser | TR. il | 2014-2024 | 902 | tuik_medas |
-| `private_museum_staff` | Özel müze personeli | TR. il | 2014-2024 | 902 | tuik_medas |
-| `private_museum_visitors` | Özel müze ziyaretçisi | TR. il | 2014-2024 | 902 | tuik_medas |
-| `private_museums` | Özel müze | TR. il | 2014-2024 | 902 | tuik_medas |
-| `public_libraries` | Halk kütüphanesi sayısı | TR. il | 1995-2025 | 2.542 | tuik_medas |
-| `public_library_books` | Halk kütüphanelerindeki kitap | TR. il | 1995-2025 | 2.542 | tuik_medas |
-| `public_library_users` | Halk kütüphanesi kullanıcısı | TR. il | 1995-2025 | 2.542 | tuik_medas |
-| `theatre_audience` | Tiyatro seyircisi (yerli/yabancı eser) | TR. il | 2000-2025 | 4.264 | tuik_medas |
-| `theatre_halls` | Tiyatro salonu | TR. il | 2000-2025 | 2.132 | tuik_medas |
-| `theatre_performances` | Tiyatro gösterisi (yerli/yabancı eser) | TR. il | 2000-2025 | 4.264 | tuik_medas |
-| `theatre_seats` | Tiyatro koltuğu | TR. il | 2000-2025 | 2.132 | tuik_medas |
-| `theatre_works` | Sahnelenen eser (yerli/yabancı) | TR. il | 2000-2025 | 4.264 | tuik_medas |
-
 ## cocuk (31)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -506,6 +476,42 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `preschool_gross_enrolment` | Okul öncesi brüt okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
 | `preschool_net_enrolment` | Okul öncesi net okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
 | `single_parent_households_with_children` | Çocuk bulunan tek ebeveynli hane | TR. il | 2014-2025 | 984 | tuik_medas |
+
+## kultur (31)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `archaeological_sites` | Ören yeri | TR. il | 2014-2024 | 893 | tuik_medas |
+| `child_theatre_audience` | Çocuk eseri tiyatro seyircisi | TR. il | 2010-2025 | 1.238 | tuik_medas |
+| `child_theatre_performances` | Çocuk eseri tiyatro gösterisi | TR. il | 2010-2025 | 1.238 | tuik_medas |
+| `cinema_audience` | Sinema seyircisi (yerli/yabancı film) | TR. il | 2000-2025 | 4.264 | tuik_medas |
+| `cinema_halls` | Sinema salonu | TR. il | 2000-2025 | 2.132 | tuik_medas |
+| `cinema_seats` | Sinema koltuğu | TR. il | 2000-2025 | 2.132 | tuik_medas |
+| `films_shown` | Gösterilen film (yerli/yabancı) | TR. il | 2000-2025 | 4.258 | tuik_medas |
+| `gsb_sports_clubs` | Spor kulübü sayısı | il | 2025-2025 | 81 | gsb |
+| `gsb_talent_directed` | Spor branşına yönlendirilen öğrenci | il | 2022-2024 | 243 | gsb |
+| `gsb_talent_screened` | Sportif yetenek taramasına giren öğrenci | il | 2022-2025 | 972 | gsb |
+| `gsb_talent_suited` | Spora yatkın bulunan öğrenci | il | 2022-2025 | 324 | gsb |
+| `library_child_loans` | Çocuklara ödünç verilen materyal | TR. il | 2002-2025 | 1.968 | tuik_medas |
+| `library_child_members` | Halk kütüphanesi kayıtlı üye çocuk | TR. il | 2002-2025 | 3.936 | tuik_medas |
+| `library_child_users` | Halk kütüphanesi kullanıcı çocuk | TR. il | 2002-2025 | 3.936 | tuik_medas |
+| `library_loans` | Halk kütüphanelerinden ödünç verilen materyal | TR. il | 1995-2025 | 1.975 | tuik_medas |
+| `library_uses_per_thousand` | Bin kişiye halk kütüphanesi kullanımı | TR. il | 1995-2025 | 1.570 | tuik_medas |
+| `ministry_museum_artefacts` | Bakanlığa bağlı müzelerdeki eser | TR. il | 2012-2024 | 1.066 | tuik_medas |
+| `ministry_museum_visitors` | Bakanlığa bağlı müze ziyaretçisi | TR. il | 2012-2024 | 1.066 | tuik_medas |
+| `ministry_museums` | Bakanlığa bağlı müze | TR. il | 2012-2024 | 1.066 | tuik_medas |
+| `private_museum_artefacts` | Özel müzelerdeki eser | TR. il | 2014-2024 | 902 | tuik_medas |
+| `private_museum_staff` | Özel müze personeli | TR. il | 2014-2024 | 902 | tuik_medas |
+| `private_museum_visitors` | Özel müze ziyaretçisi | TR. il | 2014-2024 | 902 | tuik_medas |
+| `private_museums` | Özel müze | TR. il | 2014-2024 | 902 | tuik_medas |
+| `public_libraries` | Halk kütüphanesi sayısı | TR. il | 1995-2025 | 2.542 | tuik_medas |
+| `public_library_books` | Halk kütüphanelerindeki kitap | TR. il | 1995-2025 | 2.542 | tuik_medas |
+| `public_library_users` | Halk kütüphanesi kullanıcısı | TR. il | 1995-2025 | 2.542 | tuik_medas |
+| `theatre_audience` | Tiyatro seyircisi (yerli/yabancı eser) | TR. il | 2000-2025 | 4.264 | tuik_medas |
+| `theatre_halls` | Tiyatro salonu | TR. il | 2000-2025 | 2.132 | tuik_medas |
+| `theatre_performances` | Tiyatro gösterisi (yerli/yabancı eser) | TR. il | 2000-2025 | 4.264 | tuik_medas |
+| `theatre_seats` | Tiyatro koltuğu | TR. il | 2000-2025 | 2.132 | tuik_medas |
+| `theatre_works` | Sahnelenen eser (yerli/yabancı) | TR. il | 2000-2025 | 4.264 | tuik_medas |
 
 ## bankacilik (30)
 
@@ -805,7 +811,7 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `permit_other_area` | Yapı ruhsatı — diğer alan (kullanım amacına göre. yıllık) | TR. il. ilçe | 2010-2025 | 86.812 | tuik_medas |
 | `permit_residential_area` | Yapı ruhsatı — konut alanı (kullanım amacına göre. yıllık) | TR. il. ilçe | 2010-2025 | 40.865 | tuik_medas |
 
-## fiyatlar (16)
+## fiyatlar (17)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
@@ -813,6 +819,7 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `agricultural_ppi` | Tarım ürünleri üretici fiyat endeksi | TR | 2020-2026 | 316 | cbrt_evds |
 | `average_item_price` | Ortalama madde fiyatı | TR | 2003-2022 | 84.290 | tuik_portal |
 | `cpi_2003` | Tüketici fiyat endeksi (2003=100) | TR | 2003-2026 | 284 | cbrt_evds |
+| `cpi_2003_items` | Tüketici fiyat endeksi. kalemler (2003=100) | TR | 2003-2026 | 15.613 | cbrt_evds |
 | `cpi_2025_items` | Tüketici fiyat endeksi. kalemler (2025=100) | TR | 2005-2026 | 85.367 | cbrt_evds |
 | `cpi_2025_special` | Özel kapsamlı TÜFE göstergeleri (2025=100) | TR | 2005-2026 | 7.280 | cbrt_evds |
 | `cpi_province_1994` | İl tüketici fiyat endeksi (1994=100) | TR. il | 1995-2004 | 2.400 | cbrt_evds |
@@ -956,18 +963,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `road_injured_per_million_vehicles` | Milyon taşıta yaralanan | TR. il | 1995-2025 | 2.542 | tuik_medas |
 | `vehicles_in_injury_accidents` | Ölümlü yaralanmalı kazaya karışan taşıt (yalnız Türkiye) | TR | 2012-2025 | 126 | tuik_medas |
 
-## medya (7)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `circulation` | Yayınların tirajı (yalnız Türkiye) | TR | 2005-2022 | 108 | tuik_medas |
-| `media_employees` | Basın çalışanı (tür × cinsiyet × unvan) | TR. İBBS-2 | 2005-2022 | 32.260 | tuik_medas |
-| `online_publication_visitors` | İnternet yayını ziyaretçi sayısı | TR. İBBS-2 | 2005-2022 | 1.663 | tuik_medas |
-| `online_publications` | İnternet yayını yapan yayın | TR. İBBS-2 | 2005-2022 | 1.527 | tuik_medas |
-| `press_card_holders` | Sarı basın kartı sahibi personel | TR. İBBS-2 | 2005-2022 | 1.757 | tuik_medas |
-| `print_runs` | Yayınların baskı sayısı (yalnız Türkiye) | TR | 2005-2022 | 72 | tuik_medas |
-| `publications_by_print` | Yayın sayısı (tür × baskı tekniği) | TR. İBBS-2 | 2005-2022 | 1.469 | tuik_medas |
-
 ## olum (7)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -991,6 +986,18 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `marriages_district` | Evlenme sayısı (ilçe) | ilçe | 2014-2025 | 11.659 | tuik_medas |
 | `mean_first_marriage_age` | Ortalama ilk evlenme yaşı | TR. il | 2001-2025 | 4.100 | tuik_medas |
 | `mean_marriage_age` | Ortalama evlenme yaşı | TR. il | 2001-2025 | 6.150 | tuik_medas |
+
+## medya (7)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `circulation` | Yayınların tirajı (yalnız Türkiye) | TR | 2005-2022 | 108 | tuik_medas |
+| `media_employees` | Basın çalışanı (tür × cinsiyet × unvan) | TR. İBBS-2 | 2005-2022 | 32.260 | tuik_medas |
+| `online_publication_visitors` | İnternet yayını ziyaretçi sayısı | TR. İBBS-2 | 2005-2022 | 1.663 | tuik_medas |
+| `online_publications` | İnternet yayını yapan yayın | TR. İBBS-2 | 2005-2022 | 1.527 | tuik_medas |
+| `press_card_holders` | Sarı basın kartı sahibi personel | TR. İBBS-2 | 2005-2022 | 1.757 | tuik_medas |
+| `print_runs` | Yayınların baskı sayısı (yalnız Türkiye) | TR | 2005-2022 | 72 | tuik_medas |
+| `publications_by_print` | Yayın sayısı (tür × baskı tekniği) | TR. İBBS-2 | 2005-2022 | 1.469 | tuik_medas |
 
 ## gelismislik (6)
 
@@ -1023,6 +1030,14 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `housing_sales_foreigners` | Yabancılara konut satışı | TR. il | 2013-2025 | 909 | tuik_medas |
 | `property_sales_monthly` | Konut ve iş yeri satışları (aylık) | il | 2013-2026 | 101.785 | cbrt_evds |
 
+## dogurganlik (3)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
+| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
+| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
+
 ## havacilik (3)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1038,14 +1053,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `combine_harvesters` | Biçerdöver (yaşa göre) | TR. il | 2004-2025 | 5.429 | tuik_medas |
 | `farm_equipment` | Diğer tarım alet ve makineleri | TR. il | 2004-2025 | 119.407 | tuik_medas |
 | `tractors` | Traktör (türe göre) | TR. il | 2004-2025 | 13.779 | tuik_medas |
-
-## dogurganlik (3)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
-| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
-| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
 
 ## guvenlik (2)
 
