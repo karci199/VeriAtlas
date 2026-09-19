@@ -165,11 +165,10 @@ GSYH tutarı), `port_cargo_handled` (liman yükü). Envanter artık depodan üre
 
 | Ne | Nerede | Not |
 |---|---|---|
-| AVM ciro endeksi (AYD) | `veri-ham\ayd\avm_endeks.csv` | 18 ay (2025-01 - 2026-07), endeks + m² ciro + ziyaretçi. Mayıs 2025 kaynakta 404 |
-| Türk Telekom IR | `veri-ham\telekom\tt_ozet_2c26.xlsx` | 2014Ç1-2026Ç2, abone/ARPU/finansal, 10 sayfa |
-| Turkcell IR | `veri-ham\telekom\2C26-FO-Veri.xlsx` | 2021Ç1-2026Ç2, operasyonel + segment gelir |
-| Denizciliğin kalanı | `veri-ham\uab\` | konteyner, gemi, kruvaziyer, Ro-Ro, boğaz geçişleri, filo, arşiv (2020 öncesi liman) |
-| TÜİK perakende ve ciro endeksleri | `tuik_portal\dosya\tablo` | perakende satış hacmi/cirosu, sanayi-ticaret-inşaat ciro, hizmet üretim endeksi — indirilmiş, okunmamış |
+| ~~AVM ciro endeksi~~ | 2026-09-19 akşamı adaptörü yazıldı: `mall_turnover_index`, `mall_visitor_index`, `mall_turnover_per_sqm` | — |
+| ~~Telekom IR~~ | 2026-09-19: `telecom_*` altı gösterge (Turkcell + Türk Telekom, çeyreklik). ARPU alınmadı, biri IAS 29'a göre düzeltilmiş | — |
+| Denizciliğin kalanı | ham veri diskte | yük ve konteyner adaptöre girdi; gemi, kruvaziyer, Ro-Ro, boğaz geçişleri, filo ve 2020 öncesi liman arşivi duruyor |
+| ~~Perakende endeksleri~~ | 2026-09-19: `retail_volume_index`, `retail_turnover_index` (2015=100, 2010-2023). Sanayi, ticaret, inşaat cirosu ve hizmet üretim endeksi hâlâ okunmadı | — |
 | Opet akaryakıt | `veri-ham\opet\` | 13 il/139 ilçe kesiti; tur durduruldu |
 
 **Kapanan kapılar (bugün denendi):**
@@ -183,8 +182,13 @@ GSYH tutarı), `port_cargo_handled` (liman yükü). Envanter artık depodan üre
 - **MEB okul siteleri** — `robots.txt` ClaudeBot dahil bütün yapay zekâ ve arşiv
   botlarını ad ad engelliyor (2026-09-19 doğrulandı).
 
-**Sıradaki:** yukarıdaki altı ham veri için adaptör; sonra tam yükleme ve envanteri
-yeniden üret.
+**Beşinci yükleme yarıda kesildi** (2026-09-19 gece, kullanıcı kararı: tüm işlemler
+durduruldu). Warehouse'ta duran son tam tur dördüncüsü: **880 gösterge, 21,23 mn satır**.
+Akşam yazılan on üç gösterge — AVM üçlüsü, liman konteyneri, telekom altılısı, perakende
+ikilisi ve liman yükü — **henüz warehouse'ta değil**; yeni oturumun ilk işi tam yükleme.
+
+**Sıradaki:** tam yükleme, envanteri yeniden üret, sonra denizciliğin kalan tabloları ve
+TÜİK'in sanayi/ticaret/inşaat ciro endeksleri.
 
 ## 2026-09-18 gecesi eklenenler
 
