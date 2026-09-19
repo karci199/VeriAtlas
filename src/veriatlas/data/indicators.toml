@@ -6385,7 +6385,7 @@ topic = "iletisim"
 unit = "mbps"
 frequency = "quarterly"
 views = ["map", "table", "bar"]
-definition_tr = "Ookla Speedtest açık verisi: ~600 m'lik karolarda ölçülen ortalama indirme hızı, test sayısıyla ağırlıklandırılıp ilçeye ve ile toplanmış. Mobil, telefonun dışarıda ölçtüğü; sabit, evdeki ya da işyerindeki hattın ölçtüğü hızdır — ikisi ayrı tutulur, toplanmaz. Abonelik hızı değil ölçülen hızdır. Testi çalıştıranlar kendi seçtikleri için düzey yanlıdır; ilçeler arası ve çeyrekler arası karşılaştırma için uygundur. Karo düşmeyen ilçeye satır yazılmaz."
+definition_tr = "Ookla Speedtest açık verisi: ~600 m'lik karolarda ölçülen ortalama indirme hızı, test sayısıyla ağırlıklandırılıp ilçeye ve ile toplanmış. Mobil, telefonun dışarıda ölçtüğü; sabit, evdeki ya da işyerindeki hattın ölçtüğü hızdır — ikisi ayrı tutulur, toplanmaz. Abonelik hızı değil ölçülen hızdır. Testi çalıştıranlar kendi seçtikleri için düzey yanlıdır; ilçeler arası ve çeyrekler arası karşılaştırma için uygundur. Karo düşmeyen ilçeye satır yazılmaz. Her değerin arkasındaki test sayısı `internet_speedtests` göstergesindedir: ilçe düzeyinde sabit genişbantta 100 testin altı yetersiz ölçüm sayılır, ilçe düzeyinde mobil kullanılmaz."
 
 [indicator.internet_upload_speed]
 label_tr = "İnternet yükleme hızı (ölçülen)"

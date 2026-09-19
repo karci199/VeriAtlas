@@ -56,6 +56,23 @@ hızlardan daha uygundur ve klasik olarak sağlık hizmetine erişimin gösterge
 Küçük illerde payı birkaç yüz doğum olduğu için yıl yıl zıplar — eğilim için hareketli
 ortalama işe yarar.
 
+## internet_download_speed, internet_upload_speed, internet_latency
+
+Ookla Speedtest açık verisinde ölçülen hız ve gecikme; abonelere satılan hız değildir.
+Güvenilirlik satırdan satıra değişir, çünkü her değerin arkasındaki test sayısı farklıdır
+— okumadan önce `internet_speedtests` aynı alan, dönem ve `connection_type` için
+bakılmalıdır. Kural: **ilçe düzeyinde sabit genişbantta 100 testin altı "yetersiz ölçüm"
+sayılır, ilçe düzeyinde mobil hiç kullanılmaz** (2024Q4'te 930 ilçenin 657'si 100 testin
+altında). İl düzeyi eşiksiz okunabilir. Havalimanı, yerleşke ya da veri merkezi bulunan
+ilçede sayı tesisi ölçer, ilçeyi değil. Ayrıntı ve sayılar `docs/ookla.md`'de.
+
+## internet_speedtests
+
+Bir ilçeye ya da ile düşen Ookla testi sayısı. Kendi başına bir olgu göstergesi değildir
+— ne internet kullanımını ne abone sayısını ölçer; hız göstergelerinin **payda**sıdır ve
+onlarla birlikte okunur. Karo düşmeyen alana sıfır yazılmaz, satır yazılmaz: ölçüm
+yokluğu sıfır ölçüm değildir.
+
 ## marital_status
 
 15 yaşını doldurmuş nüfusun medeni durumu — hiç evlenmedi, evli, boşandı, eşi öldü —
