@@ -31032,3 +31032,12 @@ frequency = "annual"
 dims = ["store_brand"]
 views = ["table", "map", "bar"]
 definition_tr = "Altı perakende zincirinin (ŞOK, Gratis, Madame Coco, Rossmann, Karaca, Vatan Bilgisayar) mağaza sayısı, ilçe ve il düzeyinde, 19.09.2026 anlık görüntüsü. İlçe, mağazanın koordinatının düştüğü ilçe sınırından belirlenir. Zincir restoranlardan (`chain_restaurants`) ayrı tutulur: kozmetik mağazası ile hamburgerci farklı sorulara cevap verir, ikisini toplamak anlamsızdır. Markalar da toplanmaz — bu sayı 'kaç mağaza var' sorusunun değil, 'bu markaların kaç şubesi var' sorusunun cevabıdır. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir."
+
+[indicator.charging_stations]
+label_tr = "Elektrikli araç şarj istasyonu"
+label_en = "EV charging stations"
+topic = "enerji"
+unit = "item"
+frequency = "annual"
+views = ["table", "map", "bar"]
+definition_tr = "EPDK lisans veritabanındaki şarj istasyonu sayısı, ilçe ve il düzeyinde, 19.09.2026 anlık görüntüsü. Kazıma değil lisans kaydıdır: sayım tamdır. İl ve ilçe, kaydın serbest metin adresinin sonundan okunur (… Beykoz / İSTANBUL); 16.376 kaydın 31'inde adres yer adı içermediği için düşürülmüştür. Soket sayısı alınmamıştır — o kapasite ölçüsüdür, varlık ölçüsü değil."

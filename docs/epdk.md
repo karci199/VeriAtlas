@@ -88,3 +88,35 @@ KAHRAMANMAR / sayılar / AŞ üç satıra bölünmüş.
 Alınmayanlar: doğalgaz 2014-2016 il tüketimi (PDF'te boş hücreler kayboluyor, sütun ayrılamıyor;
 2014 Word'de yalnız il toplamı); akaryakıt 2011-2014 (litre, bayi pompa satışı — 2015 sonrası ton
 serisiyle aynı ölçü değil); şarj hizmeti (il kırılımı yok, Türkiye grafikleri).
+
+## Şarj istasyonları (2026-09-19)
+
+`charging_stations` — EPDK lisans veritabanındaki elektrikli araç şarj istasyonu sayısı,
+**728 ilçe ve 81 il**, 16.376 tekil istasyon. Kazıma değil **lisans kaydı**: mağaza
+bulucularından farklı olarak sayım tamdır, eksik kalan bir kayıt görünmez değildir.
+
+**Sorgu reCAPTCHA arkasında.** `lisans.epdk.gov.tr/epvys-web/.../sarjIstasyonuOzetSorgula.xhtml`
+ekranında Sorgula'ya basmak "Ben robot değilim" işaretlemeyi gerektiriyor, o yüzden
+sayfalar elle indirildi: sayfa boyutu 500, her sayfa için Raporla, 34 dosya
+(`C:\veri-ham\epdk\sarj_istasyonu\`).
+
+Üç tuzak:
+
+* **Sayfalar çakışıyor.** `ŞRJ/9055` birden çok dosyada geçiyor; satır saymak yerine
+  istasyon numarasıyla tekilleştiriliyor. İlk sekiz dosyadaki 4.154 satır 3.500 tekil
+  istasyondu.
+* **İl sütunu yok.** İl ve ilçe serbest metin adresin sonunda: `… Beykoz / İSTANBUL`.
+  16.376 kaydın 16.345'i çözülüyor; kalan 31'i adres yer adı söylemeden bitiyor, tahmin
+  edilmiyor.
+* **Her istasyonun altında soket tablosu var**, o yüzden dosyanın satır sayısı istasyon
+  sayısı değil. Soketler alınmadı: kapasite ölçüsü, varlık ölçüsü değil.
+
+Kayıt defterinin tanımadığı ilçe adları il düzeyinde tutuluyor — istasyon gerçek, il kesin,
+yalnız ilçe belirsiz. Bu yüzden il toplamı ilçelerinin toplamından büyük olabilir (16.345'e
+karşı 16.247).
+
+**İlk bulgu:** İstanbul 4.118 istasyonla ülkenin dörtte birini barındırıyor; Ankara 2.065,
+Antalya 928, İzmir 747, Bursa 707. Muğla'nın 469 ile yedinci sırada olması nüfusuyla
+orantısız — turistik kıyı deseni, `chain_restaurants` yoğunluk analizinde de çıkmıştı.
+Depodaki `vehicles-by-fuel` ile birlikte okunursa "araç var ama istasyon yok" sorusu
+cevaplanabilir.

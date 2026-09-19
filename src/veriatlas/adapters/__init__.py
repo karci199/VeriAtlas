@@ -19,6 +19,7 @@ from .epdk_capacity import EPDK_CAPACITY_ADAPTERS
 from .epdk_dealer_deliveries import EPDK_DEALER_ADAPTERS
 from .epdk_history import EPDK_HISTORY_ADAPTERS
 from .epdk_monthly import EPDK_MONTHLY_ADAPTERS
+from .epdk_sarj import EPDK_SARJ_ADAPTERS
 from .etkb import ETKB_ADAPTERS
 from .eurostat_regional import EUROSTAT_REGIONAL_ADAPTERS
 from .evds_archive import EVDS_ARCHIVE_ADAPTERS
@@ -141,6 +142,7 @@ ADAPTERS = {
     **EPDK_HISTORY_ADAPTERS,
     **EPDK_CAPACITY_ADAPTERS,
     **EPDK_MONTHLY_ADAPTERS,
+    **EPDK_SARJ_ADAPTERS,
     **EPDK_DEALER_ADAPTERS,
     **TOBB_ADAPTERS,
     **YOKATLAS_ADAPTERS,
