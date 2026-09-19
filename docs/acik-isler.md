@@ -152,6 +152,8 @@ görüntü tarihi kalsın diye il tablosu yalnız %1 sapma denetimi olarak kulla
 döndü — TGT, yani kullanıcının hesabıyla giriş gerekiyor. Uç noktalar ve parametreler
 belli; eksik olan tek şey oturum. Kullanıcı tarayıcıda giriş yaptığında çekim yapılabilir.
 
+Günün tam dökümü: [oturum-2026-09-19.md](oturum-2026-09-19.md).
+
 ## Sıradaki oturumun ilk işi (2026-09-19 gece güncel)
 
 Bugün depoya giren: `cpi_2003_items` (TÜFE kalemleri 2003'e uzadı), `internet_*` dört
