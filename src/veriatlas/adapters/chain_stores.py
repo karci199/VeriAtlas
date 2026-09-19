@@ -87,6 +87,7 @@ STORE_BRANDS = {
     "rossmann": "marketler/rossmann_*.csv",
     "karaca": "marketler/karaca_*.csv",
     "vatan": "marketler/vatan_*.csv",
+    "sok": "sok/magazalar_*.csv",
 }
 
 #: The share of a brand's branches allowed to fall outside every polygon *while standing

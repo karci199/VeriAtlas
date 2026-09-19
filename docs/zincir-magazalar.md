@@ -202,3 +202,22 @@ sayı, bu kez tam.
 **EspressoLab'ın 421 şubesinin 102'si yurt dışında** — Kazablanka 14, Kahire 12, Amman 6,
 Bavyera 6, Dubai 5. Yurt içi 319 şubenin 310'u ilçeye düştü. Yurt dışı ayıklaması olmasa
 bu marka %26 kayıpla eşiği aşar ve yüklemeyi çökertirdi.
+
+## ŞOK Market (2026-09-19)
+
+11.274 mağaza çekildi, 11.220'si ilçeye düştü — **809 ilçe**, yani Türkiye'nin 973 ilçesinin
+%83'ünde ŞOK var. Depodaki en geniş zincir katmanı.
+
+Önceki bir oturumda "ŞOK'un sitesinde mağaza bulucu sayfası yok" diye kapatılmıştı; o
+bakılan yer alışveriş sitesiydi. Bulucu kurumsal sitede ve iki düz GET ucu var:
+`kurumsal.sokmarket.com.tr/ajax/servis/ilceler?city=…` ve `…/magazalarimiz?city=…&district=…`.
+
+**Koordinat alanlarının adları ters.** Gemlik'teki bir mağaza `"lng":"40,4714","ltd":"29,0999"`
+diye geliyor — 40,47 enlem, 29,10 boylam. Adına güvenilseydi bütün ŞOK'lar Somali açıklarına
+düşer ve nokta-poligon testi hepsini sessizce elerdi. Alanlar konuma göre okunuyor ve çekici
+sonucun Türkiye kutusuna düştüğünü doğruluyor.
+
+Tek tek bozuk koordinatlar da var — ŞOK ÇANKAYA PARK 83,8 boylamında (Çin) kayıtlı. Bunlar
+düşürülmüyor, koordinatı boşaltılıyor: mağaza gerçek ve sayıma girmeli, yanlış olan yalnız
+koordinatı. Oran %5'i aşarsa çekici hata veriyor — sistematik bir alan takası olsaydı
+*bütün* satırlar dışarı düşerdi.
