@@ -92,3 +92,25 @@ Maket (`web/mock-explorer.html`) 2026-08-16'da kaldırıldı. İşini yapmışt�
 veriye dokunmadan tartışılsın diye vardı, gezgin yazıldıktan sonra tartışılacak bir şey
 kalmadı. Sahte sayılarla duran bir sayfanın depoda beklemesi, bir gün birinin ona
 bakmasıyla biter.
+
+## Altlık haritalar (2026-09-19)
+
+Atlas artık sınırların altına üç altlık koyabiliyor: **Sade** (EOX terrain-light),
+**Siyasi** (OpenStreetMap) ve **Uydu** (Sentinel-2 cloudless 2020). Görünüm panelinden
+seçiliyor, yanındaki kaydırıcı altlığı soluklaştırıyor; varsayılan kapalı.
+
+**Karo değil, tek WMS görüntüsü.** Atlas eşdikdörtgen izdüşümde SVG çiziyor; XYZ karoları
+Web Mercator'da olduğu için haritayı yeniden izdüşümlemeden oturmazlar — o da sayfadaki
+her şeklin değişmesi demekti. Bunun yerine görünen alanın kendi sınır kutusu için
+EPSG:4326'da tek bir `GetMap` isteği atılıyor ve piksel piksel örtüşüyor. İstek
+geciktirmeli (220 ms): sürükleme her karede `setView` tetikliyor, saniyede altmış kez
+sorulan WMS hiçbirini cevaplamıyor.
+
+Kaynak `tiles.maps.eox.at` — anahtar istemiyor, üç görünümü de 4326'da veren tek kamuya
+açık servis. Lisanslar atıf istiyor, o yüzden seçili katmanın künyesi haritanın sağ
+altında duruyor.
+
+**Denenip elenenler:** HGM Atlas (`atlas.harita.gov.tr`) Türkiye'nin en iyi altlığını
+veriyor ama karoları sayfanın gömülü `apikey`'iyle geliyor — başkasının anahtarıyla servis
+tüketmek olur. OpenFreeMap ve ESRI World Imagery çalışıyor ama yalnız Web Mercator'da.
+Mikroseçim'in haritasının altlığı yok, düz zemine kendi geometrisini çiziyor.

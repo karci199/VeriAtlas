@@ -23,12 +23,16 @@
 <main class="layout">
   <section class="map-wrap">
     <svg id="map" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Harita">
+      <!-- One WMS image, requested for the current view in EPSG:4326. It sits under
+           everything so the boundaries keep their own colours. -->
+      <image id="basemap" preserveAspectRatio="none" style="display:none"></image>
       <g id="context"></g>
       <g id="areas"></g>
       <g id="outline"></g>
       <g id="labels"></g>
     </svg>
     <svg id="inset" xmlns="http://www.w3.org/2000/svg" aria-label="Konum" role="img"></svg>
+    <div id="basemap-credit" class="basemap-credit"></div>
     <div class="map-hud">
       <button class="icon-btn" id="zoom-in" title="Yakınlaştır">+</button>
       <button class="icon-btn" id="zoom-out" title="Uzaklaştır">−</button>
@@ -39,6 +43,21 @@
   </section>
 
   <aside class="panel" id="look">
+    <div class="setting">
+      <span>Altlık</span>
+      <div class="choices" id="set-basemap">
+        <button data-value="none">Yok</button>
+        <button data-value="sade">Sade</button>
+        <button data-value="siyasi">Siyasi</button>
+        <button data-value="uydu">Uydu</button>
+      </div>
+    </div>
+
+    <div class="setting" id="basemap-dim-row">
+      <span>Altlık soluklaştırma — <b id="set-basemap-dim-value"></b></span>
+      <input type="range" id="set-basemap-dim" min="0" max="90" step="5">
+    </div>
+
     <div class="setting">
       <span>Tema</span>
       <div class="choices" id="set-theme">
@@ -118,6 +137,6 @@
       tekerlek ya da +/− yakınlaştırır · sürükleme ya da ok tuşları kaydırır · 0 sığdırır</p>
   </aside>
 </main>
-<script src="atlas.js?v=13"></script>
+<script src="atlas.js?v=14"></script>
 </body>
 </html>

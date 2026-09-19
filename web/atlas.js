@@ -7,6 +7,12 @@
 //     it: its children, or its grandchildren when the reader asks for the finer one).
 //   - look settings live in localStorage under one key and are applied as CSS custom
 //     properties / data attributes, so the stylesheet does the styling.
+//
+// The basemap under the boundaries is a single WMS image, not tiles. The projection here
+// is equirectangular, so a WMS request in EPSG:4326 for the current view's own bounding
+// box lines up pixel for pixel — no tile grid, no Mercator, one request per view. XYZ
+// tiles would need the map reprojected to Web Mercator first, and that would change
+// every shape on the page.
 "use strict";
 
 const GEO = {
@@ -50,7 +56,23 @@ function rampColours(count) {
 const DEFAULT_LOOK = {
     theme: "dark", fill: "shade", hue: "mavi", stroke: 8, strokeColor: "accent",
     labels: "off", font: 11, hover: "on", context: "on", inset: "on",
+    basemap: "none", basemapDim: 55,
 };
+
+// EOX Maps' WMS, the one public service that answers in EPSG:4326 for all three looks we
+// want. `osm` is OpenStreetMap (ODbL), `terrain-light` is EOX's own shaded relief, and
+// `s2cloudless` is a cloud-free Sentinel-2 mosaic (CC BY 4.0). Attribution is printed on
+// the map whenever a layer is on — the licences require it and the reader deserves it.
+const BASEMAPS = {
+    none: null,
+    sade: { layer: "terrain-light", credit: "Terrain © EOX · Data © OpenStreetMap katılımcıları" },
+    siyasi: { layer: "osm", credit: "© OpenStreetMap katılımcıları · Sunum: EOX" },
+    uydu: { layer: "s2cloudless-2020", credit: "Sentinel-2 cloudless 2020 © EOX (CC BY 4.0)" },
+};
+const WMS = "https://tiles.maps.eox.at/wms";
+//: The widest image we ask for. Beyond this the service slows down and the extra pixels
+//: land under a screen that cannot show them.
+const BASEMAP_PX = 1600;
 const LOOK_KEY = "veriatlas.atlas.look.v4"; // bumped when defaults change, so a saved look does not hide them
 let look = loadLook();
 
@@ -75,7 +97,8 @@ const cache = new Map();
 
 // ---------- look ----------
 const LOOK_CHOICES = [["set-theme", "theme"], ["set-fill", "fill"], ["set-hue", "hue"], ["set-stroke-color", "strokeColor"],
-    ["set-labels", "labels"], ["set-hover", "hover"], ["set-context", "context"], ["set-inset", "inset"]];
+    ["set-labels", "labels"], ["set-hover", "hover"], ["set-context", "context"], ["set-inset", "inset"],
+    ["set-basemap", "basemap"]];
 
 function applyLook() {
     const root = document.documentElement;
@@ -97,7 +120,7 @@ function applyLook() {
 
     localStorage.setItem(LOOK_KEY, JSON.stringify(look));
     syncPanel();
-    if (state.view) { drawAreas(); scaleLabels(); drawInset(); }
+    if (state.view) { drawAreas(); scaleLabels(); drawInset(); drawBasemap(true); }
 }
 
 function syncPanel() {
@@ -106,6 +129,9 @@ function syncPanel() {
     }
     $("#set-stroke").value = look.stroke; $("#set-stroke-value").textContent = (look.stroke / 10).toFixed(1) + " px";
     $("#set-font").value = look.font; $("#set-font-value").textContent = look.font + " px";
+    $("#set-basemap-dim").value = look.basemapDim;
+    $("#set-basemap-dim-value").textContent = "%" + look.basemapDim;
+    $("#basemap-dim-row").style.display = look.basemap === "none" ? "none" : "";
 }
 
 function buildPanel() {
@@ -118,6 +144,7 @@ function buildPanel() {
     }
     $("#set-stroke").oninput = (e) => { look.stroke = +e.target.value; applyLook(); };
     $("#set-font").oninput = (e) => { look.font = +e.target.value; applyLook(); };
+    $("#set-basemap-dim").oninput = (e) => { look.basemapDim = +e.target.value; applyLook(); };
     $("#set-reset").onclick = () => { look = { ...DEFAULT_LOOK }; applyLook(); };
     $("#look-toggle").onclick = () => {
         const p = $("#look"); p.hidden = !p.hidden;
@@ -146,7 +173,12 @@ function projectionFor(features, W) {
     const k = Math.cos(((minY + maxY) / 2) * Math.PI / 180);
     const H = W * ((maxY - minY) / ((maxX - minX) * k));
     const sx = W / ((maxX - minX) * k), sy = H / (maxY - minY);
-    return { W, H, to: ([x, y]) => [(x - minX) * k * sx, (maxY - y) * sy] };
+    return {
+        W, H,
+        to: ([x, y]) => [(x - minX) * k * sx, (maxY - y) * sy],
+        // The inverse, for asking a WMS what is under a piece of the canvas.
+        from: ([X, Y]) => [minX + X / (k * sx), maxY - Y / sy],
+    };
 }
 function pathWith(p, g) {
     const ring = (r) => r.map((c, i) => (i ? "L" : "M") + p.to(c).map((v) => v.toFixed(1)).join(" ")).join("") + "Z";
@@ -213,7 +245,7 @@ async function loadPlace() {
 
     proj = projectionFor(features, 1000);
     setView(fitView());
-    drawAreas(); drawContext(); drawOutline(); drawCrumbs(); drawLayer(); drawInset();
+    drawAreas(); drawContext(); drawOutline(); drawCrumbs(); drawLayer(); drawInset(); drawBasemap(true);
     const count = `${LEVEL_TR[layerLevel()]} düzeyi · ${features.length} alan`;
     $("#count").textContent = state.missing ? `${count} · ${state.missing} birimde alt sınır yok` : count;
     document.title = `VeriAtlas — ${place.name}`;
@@ -369,9 +401,38 @@ async function drawInset() {
 }
 
 // ---------- view ----------
+// The basemap is fetched for the view actually on screen, so zooming in buys detail
+// rather than a bigger blur. The request is debounced: a drag fires setView on every
+// frame, and a WMS asked sixty times a second answers none of them.
+let basemapTimer = null;
+function drawBasemap(now = false) {
+    const img = $("#basemap");
+    const spec = BASEMAPS[look.basemap];
+    if (!spec || !proj || !state.view) { img.removeAttribute("href"); img.style.display = "none"; $("#basemap-credit").textContent = ""; return; }
+    const v = state.view;
+    const [west, north] = proj.from([v.x, v.y]);
+    const [east, south] = proj.from([v.x + v.w, v.y + v.h]);
+    const width = BASEMAP_PX, height = Math.max(1, Math.round(width * v.h / v.w));
+    const url = `${WMS}?service=WMS&version=1.1.1&request=GetMap&styles=`
+        + `&layers=${spec.layer}&srs=EPSG:4326&format=image/jpeg`
+        + `&bbox=${west.toFixed(5)},${south.toFixed(5)},${east.toFixed(5)},${north.toFixed(5)}`
+        + `&width=${width}&height=${height}`;
+    const apply = () => {
+        img.setAttribute("x", v.x); img.setAttribute("y", v.y);
+        img.setAttribute("width", v.w); img.setAttribute("height", v.h);
+        img.setAttribute("href", url);
+        img.style.display = "";
+        img.style.opacity = String(1 - look.basemapDim / 100);
+        $("#basemap-credit").textContent = spec.credit;
+    };
+    clearTimeout(basemapTimer);
+    if (now) apply(); else basemapTimer = setTimeout(apply, 220);
+}
+
 function setView(v) {
     state.view = v;
     $("#map").setAttribute("viewBox", `${v.x} ${v.y} ${v.w} ${v.h}`);
+    drawBasemap();
     scaleLabels();
 }
 function fitView() {
