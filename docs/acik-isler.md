@@ -161,15 +161,23 @@ belli; eksik olan tek şey oturum. Kullanıcı tarayıcıda giriş yaptığında
 3. ~~Tam yükleme~~ 2026-09-19 akşamı ana kopyada (`C:\veri`) çalıştırıldı; worktree'de
    çalıştırılmıyor, `public/fact.parquet` `.gitignore`'da olduğu için son türetme adımı
    orada çöküyor.
-4. **Opet akaryakıt fiyatı** — `--son` turu (tüm ilçeler, son 45 gün) 2026-09-19 akşamı
-   arka planda başlatıldı, `C:\veri-ham\opet\son_fiyat_2026-09-19.csv`. API hâlâ hız
-   sınırını 500 kılığında veriyor: elle ölçüldüğünde altı istekten biri 200 döndü, bu
-   yüzden aralık 2,5 sn'ye ve yeniden deneme sayısı 10'a çıkarıldı. Tur bittiğinde
-   adaptör ve gösterge yazılacak; **henüz ikisi de yok**, ham CSV olarak duruyor.
-   İl merkezleri turu (`--devam`) 2/82 ilde duruyor, ilçe kesiti 13 il/139 ilçe
-   (1,34 mn satır, 2013-2026) — ikisi de tamamlanmadı.
-5. OECD'nin diskte bekleyen dosyaları için adaptör (yukarıdaki listede).
-6. EPİAŞ ilçe düzeyi serbest tüketici ve baraj doluluk çekicileri.
+4. **Opet akaryakıt fiyatı — durduruldu (kullanıcı kararı, 2026-09-19 akşamı).**
+   `--son` turu (tüm ilçeler, son 45 gün) başlatıldı ve 2,5 saatte yalnız 67 satır
+   yazıp Adana'yı bile bitiremedi: API hız sınırını 500 kılığında veriyor, elle
+   ölçüldüğünde altı istekten biri 200 döndü. Aralık 2,5 sn'ye, deneme sayısı 10'a
+   çıkarıldı — darboğaz aralık değil, sınırın kendisi; bu tempoda 970 ilçe günler
+   sürüyor. Elde kalan: 13 il / 139 ilçe, 1,34 mn satır, 2013-2026
+   (`C:\veri-ham\opet\fiyat_ilce_kismi_2026-09-19.csv`) ve il merkezleri turunun
+   2/82'lik başlangıcı. **Adaptör ve gösterge yok**, ham CSV olarak duruyor. Devam
+   edilecekse makul kapsam 82 il merkezi; fiyat il düzeyinde belirlendiği için ilçe
+   kırılımı az şey ekliyor.
+5. **TÜFE kalemleri 2003-2004 eksik.** Depodaki `cpi_2025_items` 2005-01'de başlıyor
+   (EVDS'in 2025=100 serisi oradan bağlanıyor). Eski sepet — `bie_tukfiy4`, `TP.FG.J*`,
+   57 COICOP serisi, 2003=100, 2003-01 → 2025-12 — **diskte var, adaptörü yok**.
+   2006 sonrası artışlar iki sepette birebir aynı, yani seri uzatılabilir; yazılırsa
+   bütün ana gruplar iki yıl daha geriye gider.
+6. OECD'nin diskte bekleyen dosyaları için adaptör (yukarıdaki listede).
+7. EPİAŞ ilçe düzeyi serbest tüketici ve baraj doluluk çekicileri.
 
 ## 2026-09-18 gecesi eklenenler
 

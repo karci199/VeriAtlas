@@ -65,6 +65,10 @@ def item_value(code: str) -> str:
 #: indicator id → (group, dimension)
 INDEX_TREES = {
     "cpi_2025_items": ("bie_tukfiy2025", "cpi_2025_item"),
+    # The basket TÜİK closed when it moved to 2025=100. Kept because the 2025 series
+    # only reaches back to 2005-01, while this one starts with the index itself in
+    # 2003-01. Different bases, so they are stored side by side and never spliced.
+    "cpi_2003_items": ("bie_tukfiy4", "cpi_2003_item"),
     "cpi_2025_special": ("bie_oktug2025", "cpi_2025_special_item"),
     "ppi_domestic": ("bie_tufe1yi", "ppi_domestic_item"),
     "ppi_export": ("bie_ufeyd", "ppi_export_item"),
