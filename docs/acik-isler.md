@@ -162,6 +162,38 @@ belli; eksik olan tek şey oturum. Kullanıcı tarayıcıda giriş yaptığında
 3. OECD'nin diskte bekleyen dosyaları için adaptör (yukarıdaki listede).
 4. EPİAŞ ilçe düzeyi serbest tüketici ve baraj doluluk çekicileri.
 
+## 2026-09-18 gecesi eklenenler
+
+| Kaynak | Ne girdi | Not |
+|---|---|---|
+| Zincir mağazalar | `chain_restaurants`: Burger King + McDonald's şube sayısı, ilçe ve il, 18.09.2026 anlık görüntüsü | Yöntem ve bulgular `docs/zincir-magazalar.md`. **Henüz warehouse'a yüklenmedi**, bir sonraki tam yüklemede girer |
+
+**Koordinatı olmayan üç zincir bekliyor.** BİM (13.057), Migros (3.442) ve Starbucks (804)
+ham depoda duruyor ama ilçeleri kaynağın kendi etiketinden geliyor; kayıt defteriyle
+eşleme yapılmadığı için adaptöre girmediler. PTT'nin 3.295 kaydında koordinat var,
+adaptörü yazılabilir.
+
+**TÜİK Veri Portalı dosya indirmesi** 2026-09-18 gecesi bitirildi: 2.247 dosya indi,
+15 dosya kaynakta hatalı; dökümü `veri-ham/tuik_portal/basarisiz.csv`.
+
+**PTT posta kodu** 2026-09-18 çekildi ve `postal_codes` göstergesi olarak depoya girdi:
+973/973 ilçe, 1.272.201 satır, 72.640 mahalle, 2.777 posta kodu. Yöntem
+`scripts/fetch_ptt_postal_codes.py`, doğrulama `docs/semt.md`. Mahalle listesi kayıt
+defteri denetimi için duruyor, henüz kullanılmadı.
+
+**bulurum.com kapsama testi (2026-09-18).** Kapsama **kategoriye göre değişiyor**, sitenin
+genel bir özelliği değil: eczane 27.458 (gerçeğe çok yakın), banka 10.809'a karşılık
+BDDK'nın 31.695 şubesi (%34) — üstelik `/search/` kategori filtresi değil **serbest metin
+araması** olduğu için banka sonuçları nakliyat ve temizlik firmalarıyla kirli. Site birkaç
+yüz istekten sonra **HTTP 200 ile** doğrulama sayfası döndürüyor; sayı arayan bir okuyucu
+bunu sıfır sanır. Kayıt defteri olan kategorilerde kullanılmaz; olmayanlarda (çiğköfteci,
+halı yıkama, kuaför) alt sınır ve oran verir — gösterge değil, vaka analizi malzemesi.
+
+**İl Sağlık Müdürlüğü siteleri** (`<il>ism.saglik.gov.tr/TR-<id>/saglik-kurumlari.html`):
+hastaneler ilçesiyle tek tek listeleniyor. Depodaki `moh_*` göstergeleri yalnız il
+düzeyinde olduğu için bu **ilçe düzeyi sağlık kurumu** verir. 81 il aynı CMS'te ama sayfa
+numaraları farklı, önce onların bulunması gerekir. Orta zorluk, başlanmadı.
+
 ## Kullanıcı kararı bekleyen
 
 - ~~main birleştirme~~ 2026-09-17 yapıldı; dal ve main aynı noktada.
@@ -170,3 +202,21 @@ belli; eksik olan tek şey oturum. Kullanıcı tarayıcıda giriş yaptığında
 ## Bilinçli olarak alınmayanlar
 
 MEB (robots.txt), İBB açık veri (robots.txt), TCDD (403), TOBB aylık il tabloları (yıllık depoda).
+
+
+## Sıradaki işler (2026-09-19 gecesi bırakıldığı yer)
+
+| # | İş | Durum | Not |
+|---|---|---|---|
+| 1 | **İl Sağlık Müdürlüğü siteleri** | başlanıyor | `<il>ism.saglik.gov.tr/TR-<id>/saglik-kurumlari.html`. Depodaki 20 `moh_*` göstergesi yalnız il düzeyinde; bu siteler hastaneyi **ilçesiyle** listeliyor. 81 il aynı CMS, sayfa numaraları farklı — önce onlar bulunacak |
+| 2 | **EPDK şarj istasyonu** | kullanıcıda | Sorgu reCAPTCHA arkasında, kullanıcı indiriyor. 34 sayfanın 8'i indi = **3.500 tekil istasyon** (`C:eri-ham\epdk1`). Adres alanı "… Beykoz / İSTANBUL" biçiminde, ilçe oradan okunuyor. Tamamlanınca adaptör yazılacak |
+| 3 | **Domino's** | bekliyor | 26 ilde 311 şube indi, site IP'yi kapattı (429 sürüyor). Ceza geçince `uv run python scripts/fetch_dominos.py --devam` |
+| 4 | **Hakmar Express** | yarım | `/magazalar` gömülü JSON'da ad/adres/il/ilçe/koordinat veriyor ama tek seferde 25 kayıt; site 816 mağaza diyor. Sayfalama çözülmedi |
+| 5 | Zincir taraması | sürüyor | Kolay çekilebilen marka arayışı arka planda |
+
+**Perakende zincirlerinde tur kapandı (2026-09-19).** Denenen yedi marka — Bauhaus, Koçtaş,
+Watsons, Teknosa, Gratis, Tekzen, Mavi/Boyner türü giyim — hiçbiri tam liste vermedi: çoğu
+düz istekte 403, Gratis ve Tekzen erişilebilir ama mağaza listesini sayfaya hiç basmıyor.
+Buna karşılık aynı akşam çözülen dört markanın (Oses, Ziyafet, Komagene, Domino's) hepsi
+yeme-içme. Desen açık: mağaza listesi perakendeci için rakip istihbaratı, franchise satan
+için reklam. Yeni marka denemeden önce bu akılda tutulmalı.

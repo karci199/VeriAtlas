@@ -92,3 +92,28 @@ olmayanlar:
 | Göç etme **nedenine** göre illerin aldığı/verdiği göç | il | depoda göç var, nedeni yok |
 | Aile Yapısı Araştırması (akraba evliliği, başlık parası, nikah türü) | İBBS1 + üç büyük il | |
 | İllere göre kamu hizmetlerinden memnuniyet, belediye hizmetleri | il | |
+
+## Ortalama madde fiyatları (2026-09-19)
+
+`average_item_price` — TÜFE madde sepetindeki **409 maddenin Türkiye ortalama fiyatı, TL,
+aylık, 2003-01 ile 2022-04 arası**; 84.290 satır. Endeks değil gerçek fiyat: ekmek 2003
+Ocak'ta 1,03 TL, 2022 Nisan'da 13,74 TL. Kaynak portalın `01839` numaralı dosyası, dün
+gece indirilen 2.247 dosyadan biri — kazıma yok, dosya zaten depoda.
+
+İl kırılımı yok ve olmayacak: TÜİK madde fiyatlarını yalnız Türkiye geneli yayımlıyor.
+
+Üç tuzak, üçü de sessiz:
+
+1. **Yıl sütunu tip değiştiriyor.** 2008 Aralık'a kadar sayı (`2008.0`, üstünde YTL),
+   2009 Ocak'tan sonra metin (`"2009"`, üstünde TL). `isinstance(year, float)` diyen bir
+   okuyucu 2003-2008 ile 2016-2022'yi alıp **aradaki 84 ayı düşürüyor** — ve sonuç sağlıklı
+   görünüyor, çünkü kalan aylar iki uçta da kesintisiz. İlk sürümümüz tam bunu yaptı.
+2. **Aynı satırda iki para birimi.** 2005 başında liradan altı sıfır atıldı; pirinç Aralık
+   2004'te 2.545.872, Ocak 2005'te 2,55. 2005 öncesi milyona bölünüyor, yoksa seri tek ayda
+   milyon kat çöküyor.
+3. **Uzantı yalan söylüyor.** Portal her şeye `.xls` adı veriyor; bu dosya gerçek BIFF, ama
+   kardeşi (`seçilmiş maddelere ait ortalama fiyatlar`) `.xls` adlı bir **xlsx**. Biçim ilk
+   iki bayttan (`PK`) anlaşılmalı, addan değil.
+
+**Otomobil de sepette.** Dizel otomobil Nisan 2022'de ortalama 715.454 TL, benzinli
+523.209 TL — "yıllara göre araba fiyatı" sorusu için Wayback'e gerek yok.

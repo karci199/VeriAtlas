@@ -11,6 +11,7 @@ from .btk_prose import BTK_PROSE_ADAPTERS
 from .btk_province import BTK_PROVINCE_ADAPTERS
 from .btk_summary import BTK_SUMMARY_ADAPTERS
 from .btk_tables import BTK_TABLE_ADAPTERS
+from .chain_stores import CHAIN_STORE_ADAPTERS
 from .dhmi import DHMI_ADAPTERS
 from .diyanet import DIYANET_ADAPTERS
 from .epdk import EPDK_ADAPTERS
@@ -18,6 +19,7 @@ from .epdk_capacity import EPDK_CAPACITY_ADAPTERS
 from .epdk_dealer_deliveries import EPDK_DEALER_ADAPTERS
 from .epdk_history import EPDK_HISTORY_ADAPTERS
 from .epdk_monthly import EPDK_MONTHLY_ADAPTERS
+from .epdk_sarj import EPDK_SARJ_ADAPTERS
 from .etkb import ETKB_ADAPTERS
 from .eurostat_regional import EUROSTAT_REGIONAL_ADAPTERS
 from .evds_archive import EVDS_ARCHIVE_ADAPTERS
@@ -32,6 +34,7 @@ from .ktb import KTB_ADAPTERS
 from .mgm import MGM_ADAPTERS
 from .muhasebat import MUHASEBAT_ADAPTERS
 from .oecd_tl3 import OECD_TL3_ADAPTERS
+from .ptt_postal import PTT_POSTAL_ADAPTERS
 from .saglik_yearbook import SAGLIK_YEARBOOK_ADAPTERS
 from .sege import SEGE_ADAPTERS
 from .sgk_national import SGK_NATIONAL_ADAPTERS
@@ -50,6 +53,7 @@ from .tuik_death_cause import TuikDeathCause
 from .tuik_district_population import TuikDistrictPopulation
 from .tuik_education_district import EDUCATION_DISTRICT_ADAPTERS
 from .tuik_household import TuikHouseholdSize, TuikHouseholdTenure
+from .tuik_item_prices import TUIK_ITEM_PRICE_ADAPTERS
 from .tuik_housing_monthly import MONTHLY_HOUSING_ADAPTERS
 from .tuik_labour_province import LABOUR_PROVINCE_ADAPTERS
 from .tuik_marital import TuikMarital
@@ -139,6 +143,7 @@ ADAPTERS = {
     **EPDK_HISTORY_ADAPTERS,
     **EPDK_CAPACITY_ADAPTERS,
     **EPDK_MONTHLY_ADAPTERS,
+    **EPDK_SARJ_ADAPTERS,
     **EPDK_DEALER_ADAPTERS,
     **TOBB_ADAPTERS,
     **YOKATLAS_ADAPTERS,
@@ -154,8 +159,11 @@ ADAPTERS = {
     **DIYANET_ADAPTERS,
     **TESK_ADAPTERS,
     **TKGM_ADAPTERS,
+    **CHAIN_STORE_ADAPTERS,
+    **PTT_POSTAL_ADAPTERS,
     **LABOUR_PROVINCE_ADAPTERS,
     **TUIK_NAMES_ADAPTERS,
+    **TUIK_ITEM_PRICE_ADAPTERS,
     **TIM_ADAPTERS,
     **MUHASEBAT_ADAPTERS,
     **OECD_TL3_ADAPTERS,

@@ -30978,3 +30978,491 @@ frequency = "annual"
 dims = ["bound"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "TÜİK Hanehalkı İşgücü Araştırması, il düzeyinde işgücüne katılma oranı, 2022-2025. İşsizlik oranıyla birlikte okunur: iş aramaktan vazgeçen nüfus işsiz sayılmaz, o yüzden düşen işsizlik tek başına iş bulmanın arttığını göstermez. Güven aralığı `bound` kırılımında."
+
+[dim.restaurant_brand]
+label_tr = "Marka"
+label_en = "Brand"
+
+[dim.restaurant_brand.values]
+burger_king = { label_tr = "Burger King", label_en = "Burger King" }
+mcdonalds = { label_tr = "McDonald's", label_en = "McDonald's" }
+oses = { label_tr = "Oses Çiğköfte", label_en = "Oses Çiğköfte" }
+ziyafet = { label_tr = "Ziyafet Çiğköfte", label_en = "Ziyafet Çiğköfte" }
+komagene = { label_tr = "Komagene", label_en = "Komagene" }
+starbucks = { label_tr = "Starbucks", label_en = "Starbucks" }
+espressolab = { label_tr = "EspressoLab", label_en = "EspressoLab" }
+
+[indicator.chain_restaurants]
+label_tr = "Zincir şube sayısı"
+label_en = "Chain restaurants"
+topic = "reel_kesim"
+unit = "item"
+frequency = "annual"
+dims = ["restaurant_brand"]
+views = ["table", "map", "bar"]
+definition_tr = "Yedi yeme-içme zincirinin (Burger King, McDonald's, Oses, Ziyafet, Komagene, Starbucks, EspressoLab) şube sayısı, ilçe ve il düzeyinde, 18.09.2026 anlık görüntüsü. İlçe, şubenin adresinden değil koordinatının düştüğü ilçe sınırından belirlenir; markaların kendi il-ilçe etiketleri pazarlama coğrafyasıdır. Markalar toplanmaz: bu sayı 'kaç hamburgerci' ya da 'kaç çiğköfteci' sorusunun cevabı değildir, çiğ köftenin kayıt defteri yoktur ve bağımsız dükkânlar hiçbir listede geçmez. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir, geçmişini tutmaz."
+
+[indicator.postal_codes]
+label_tr = "Posta kodu sayısı"
+label_en = "Postal codes"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+views = ["table", "map", "bar"]
+definition_tr = "PTT'nin bir ilçeye verdiği tekil posta kodu sayısı, 18.09.2026 anlık görüntüsü. Semtin ülke çapındaki tek listesi posta kodudur (docs/semt.md): 973 ilçenin hepsinde semt sayısı ile posta kodu sayısı birebir eşittir, o yüzden bu sayı ilçenin kaç semte bölündüğünü gösterir. Seri değil, anlık görüntü — PTT geçmiş numaralandırmayı yayımlamıyor."
+
+[dim.store_brand]
+label_tr = "Marka"
+label_en = "Brand"
+
+[dim.store_brand.values]
+gratis = { label_tr = "Gratis", label_en = "Gratis" }
+madame_coco = { label_tr = "Madame Coco", label_en = "Madame Coco" }
+rossmann = { label_tr = "Rossmann", label_en = "Rossmann" }
+karaca = { label_tr = "Karaca", label_en = "Karaca" }
+vatan = { label_tr = "Vatan Bilgisayar", label_en = "Vatan Bilgisayar" }
+sok = { label_tr = "ŞOK Market", label_en = "ŞOK Market" }
+
+[indicator.chain_stores]
+label_tr = "Zincir mağaza sayısı"
+label_en = "Chain stores"
+topic = "reel_kesim"
+unit = "item"
+frequency = "annual"
+dims = ["store_brand"]
+views = ["table", "map", "bar"]
+definition_tr = "Altı perakende zincirinin (ŞOK, Gratis, Madame Coco, Rossmann, Karaca, Vatan Bilgisayar) mağaza sayısı, ilçe ve il düzeyinde, 19.09.2026 anlık görüntüsü. İlçe, mağazanın koordinatının düştüğü ilçe sınırından belirlenir. Zincir restoranlardan (`chain_restaurants`) ayrı tutulur: kozmetik mağazası ile hamburgerci farklı sorulara cevap verir, ikisini toplamak anlamsızdır. Markalar da toplanmaz — bu sayı 'kaç mağaza var' sorusunun değil, 'bu markaların kaç şubesi var' sorusunun cevabıdır. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir."
+
+[indicator.charging_stations]
+label_tr = "Elektrikli araç şarj istasyonu"
+label_en = "EV charging stations"
+topic = "enerji"
+unit = "item"
+frequency = "annual"
+views = ["table", "map", "bar"]
+definition_tr = "EPDK lisans veritabanındaki şarj istasyonu sayısı, ilçe ve il düzeyinde, 19.09.2026 anlık görüntüsü. Kazıma değil lisans kaydıdır: sayım tamdır. İl ve ilçe, kaydın serbest metin adresinin sonundan okunur (… Beykoz / İSTANBUL); 16.376 kaydın 31'inde adres yer adı içermediği için düşürülmüştür. Soket sayısı alınmamıştır — o kapasite ölçüsüdür, varlık ölçüsü değil."
+
+[dim.cpi_item]
+label_tr = "TÜFE maddesi"
+label_en = "CPI item"
+
+[dim.cpi_item.values]
+0111101 = { label_tr = "Pirinç", label_en = "Pirinç" }
+0111201 = { label_tr = "Buğday Unu", label_en = "Buğday Unu" }
+0111208 = { label_tr = "Bebek Sütü (Toz Karışım)", label_en = "Bebek Sütü (Toz Karışım)" }
+0111209 = { label_tr = "Bulgur", label_en = "Bulgur" }
+0111301 = { label_tr = "Ekmek", label_en = "Ekmek" }
+0111401 = { label_tr = "Bisküvi", label_en = "Bisküvi" }
+0111402 = { label_tr = "Kraker", label_en = "Kraker" }
+0111404 = { label_tr = "Gofret", label_en = "Gofret" }
+0111405 = { label_tr = "Pasta", label_en = "Pasta" }
+0111408 = { label_tr = "Kek", label_en = "Kek" }
+0111411 = { label_tr = "Baklava", label_en = "Baklava" }
+0111415 = { label_tr = "Ekmek Hamuru (Yufka)", label_en = "Ekmek Hamuru (Yufka)" }
+0111501 = { label_tr = "Makarna", label_en = "Makarna" }
+0111502 = { label_tr = "Şehriye", label_en = "Şehriye" }
+0111602 = { label_tr = "Tahıl Gevreği", label_en = "Tahıl Gevreği" }
+0112201 = { label_tr = "Dana Eti", label_en = "Dana Eti" }
+0112401 = { label_tr = "Kuzu Eti", label_en = "Kuzu Eti" }
+0112501 = { label_tr = "Tavuk Eti", label_en = "Tavuk Eti" }
+0112602 = { label_tr = "Sakatat", label_en = "Sakatat" }
+0112701 = { label_tr = "Sucuk", label_en = "Sucuk" }
+0112702 = { label_tr = "Sosis", label_en = "Sosis" }
+0112703 = { label_tr = "Salam", label_en = "Salam" }
+0112709 = { label_tr = "Hazır Et Yemekleri", label_en = "Hazır Et Yemekleri" }
+0113101 = { label_tr = "Balık", label_en = "Balık" }
+0113301 = { label_tr = "Konserve Balık", label_en = "Konserve Balık" }
+0114101 = { label_tr = "Süt", label_en = "Süt" }
+0114301 = { label_tr = "Yoğurt", label_en = "Yoğurt" }
+0114304 = { label_tr = "Hazır Sütlü Tatlılar", label_en = "Hazır Sütlü Tatlılar" }
+0114401 = { label_tr = "Beyaz Peynir", label_en = "Beyaz Peynir" }
+0114402 = { label_tr = "Kaşar Peyniri", label_en = "Kaşar Peyniri" }
+0114403 = { label_tr = "Tulum Peyniri", label_en = "Tulum Peyniri" }
+0114404 = { label_tr = "Krem Peynir", label_en = "Krem Peynir" }
+0114501 = { label_tr = "Yumurta", label_en = "Yumurta" }
+0115101 = { label_tr = "Tereyağı (Kahvaltılık)", label_en = "Tereyağı (Kahvaltılık)" }
+0115201 = { label_tr = "Margarin", label_en = "Margarin" }
+0115301 = { label_tr = "Zeytinyağı", label_en = "Zeytinyağı" }
+0115302 = { label_tr = "Ayçiçek Yağı", label_en = "Ayçiçek Yağı" }
+0116101 = { label_tr = "Portakal", label_en = "Portakal" }
+0116102 = { label_tr = "Üzüm", label_en = "Üzüm" }
+0116105 = { label_tr = "Armut", label_en = "Armut" }
+0116107 = { label_tr = "Ayva", label_en = "Ayva" }
+0116110 = { label_tr = "Çilek", label_en = "Çilek" }
+0116112 = { label_tr = "Elma", label_en = "Elma" }
+0116121 = { label_tr = "Karpuz", label_en = "Karpuz" }
+0116122 = { label_tr = "Kavun", label_en = "Kavun" }
+0116128 = { label_tr = "Kivi", label_en = "Kivi" }
+0116130 = { label_tr = "Limon", label_en = "Limon" }
+0116131 = { label_tr = "Mandalina", label_en = "Mandalina" }
+0116134 = { label_tr = "Muz", label_en = "Muz" }
+0116135 = { label_tr = "Nar", label_en = "Nar" }
+0116137 = { label_tr = "Şeftali", label_en = "Şeftali" }
+0116201 = { label_tr = "Badem İçi", label_en = "Badem İçi" }
+0116202 = { label_tr = "Ceviz İçi", label_en = "Ceviz İçi" }
+0116203 = { label_tr = "Fındık İçi", label_en = "Fındık İçi" }
+0116204 = { label_tr = "Antep Fıstığı", label_en = "Antep Fıstığı" }
+0116206 = { label_tr = "Yer Fıstığı", label_en = "Yer Fıstığı" }
+0116207 = { label_tr = "Leblebi", label_en = "Leblebi" }
+0116208 = { label_tr = "Ay Çekirdeği", label_en = "Ay Çekirdeği" }
+0116209 = { label_tr = "Kabak Çekirdeği", label_en = "Kabak Çekirdeği" }
+0116210 = { label_tr = "Kuru Üzüm", label_en = "Kuru Üzüm" }
+0116212 = { label_tr = "Kuru Kayısı", label_en = "Kuru Kayısı" }
+0117114 = { label_tr = "Çarliston Biber", label_en = "Çarliston Biber" }
+0117115 = { label_tr = "Dolmalık Biber", label_en = "Dolmalık Biber" }
+0117117 = { label_tr = "Sivri Biber", label_en = "Sivri Biber" }
+0117121 = { label_tr = "Dereotu", label_en = "Dereotu" }
+0117122 = { label_tr = "Domates", label_en = "Domates" }
+0117125 = { label_tr = "Taze Fasulye", label_en = "Taze Fasulye" }
+0117130 = { label_tr = "Havuç", label_en = "Havuç" }
+0117134 = { label_tr = "Ispanak", label_en = "Ispanak" }
+0117135 = { label_tr = "Kabak", label_en = "Kabak" }
+0117139 = { label_tr = "Karnabahar", label_en = "Karnabahar" }
+0117146 = { label_tr = "Kuru Soğan", label_en = "Kuru Soğan" }
+0117148 = { label_tr = "Beyaz Lahana", label_en = "Beyaz Lahana" }
+0117150 = { label_tr = "Kırmızı Lahana", label_en = "Kırmızı Lahana" }
+0117151 = { label_tr = "Mantar", label_en = "Mantar" }
+0117152 = { label_tr = "Kıvırcık", label_en = "Kıvırcık" }
+0117153 = { label_tr = "Maydanoz", label_en = "Maydanoz" }
+0117155 = { label_tr = "Nane", label_en = "Nane" }
+0117158 = { label_tr = "Patlıcan", label_en = "Patlıcan" }
+0117160 = { label_tr = "Pırasa", label_en = "Pırasa" }
+0117161 = { label_tr = "Roka", label_en = "Roka" }
+0117162 = { label_tr = "Salatalık", label_en = "Salatalık" }
+0117164 = { label_tr = "Sarımsak", label_en = "Sarımsak" }
+0117174 = { label_tr = "Kırmızı Turp", label_en = "Kırmızı Turp" }
+0117201 = { label_tr = "Patates", label_en = "Patates" }
+0117401 = { label_tr = "Kuru Fasulye", label_en = "Kuru Fasulye" }
+0117402 = { label_tr = "Nohut", label_en = "Nohut" }
+0117403 = { label_tr = "Mercimek", label_en = "Mercimek" }
+0117501 = { label_tr = "Konserveler", label_en = "Konserveler" }
+0117504 = { label_tr = "Turşu", label_en = "Turşu" }
+0117505 = { label_tr = "Salça", label_en = "Salça" }
+0117506 = { label_tr = "Zeytin", label_en = "Zeytin" }
+0117507 = { label_tr = "Cipsler", label_en = "Cipsler" }
+0118101 = { label_tr = "Toz Şeker", label_en = "Toz Şeker" }
+0118102 = { label_tr = "Kesme Şeker", label_en = "Kesme Şeker" }
+0118201 = { label_tr = "Reçel", label_en = "Reçel" }
+0118203 = { label_tr = "Bal", label_en = "Bal" }
+0118204 = { label_tr = "Pekmez", label_en = "Pekmez" }
+0118205 = { label_tr = "Tahin Helvası", label_en = "Tahin Helvası" }
+0118206 = { label_tr = "Fındık Ezmesi", label_en = "Fındık Ezmesi" }
+0118302 = { label_tr = "Çikolata Tablet", label_en = "Çikolata Tablet" }
+0118303 = { label_tr = "Çikolata Krem", label_en = "Çikolata Krem" }
+0118305 = { label_tr = "Lokum", label_en = "Lokum" }
+0118311 = { label_tr = "Sakız", label_en = "Sakız" }
+0118312 = { label_tr = "Kağıtlı Şeker", label_en = "Kağıtlı Şeker" }
+0118401 = { label_tr = "Dondurma", label_en = "Dondurma" }
+0119001 = { label_tr = "Baharat", label_en = "Baharat" }
+0119002 = { label_tr = "Tuz", label_en = "Tuz" }
+0119004 = { label_tr = "Kabartma Maddeleri", label_en = "Kabartma Maddeleri" }
+0119005 = { label_tr = "Sirke", label_en = "Sirke" }
+0119008 = { label_tr = "Ketçap", label_en = "Ketçap" }
+0119009 = { label_tr = "Mayonez", label_en = "Mayonez" }
+0119012 = { label_tr = "Tahin", label_en = "Tahin" }
+0119014 = { label_tr = "Hazır Çorbalar", label_en = "Hazır Çorbalar" }
+0119015 = { label_tr = "Hazır Pakette Toz Tatlılar (Puding)", label_en = "Hazır Pakette Toz Tatlılar (Puding)" }
+0121101 = { label_tr = "Kahve", label_en = "Kahve" }
+0121102 = { label_tr = "Hazır Kahve", label_en = "Hazır Kahve" }
+0121201 = { label_tr = "Çay", label_en = "Çay" }
+0121202 = { label_tr = "Bitki ve Meyve Çayı (Poşet)", label_en = "Bitki ve Meyve Çayı (Poşet)" }
+0121301 = { label_tr = "Kakao", label_en = "Kakao" }
+0121304 = { label_tr = "Kakaolu Toz İçecekler", label_en = "Kakaolu Toz İçecekler" }
+0122101 = { label_tr = "Su", label_en = "Su" }
+0122102 = { label_tr = "Maden Suyu ve Sodası", label_en = "Maden Suyu ve Sodası" }
+0122202 = { label_tr = "Gazoz Meyveli", label_en = "Gazoz Meyveli" }
+0122203 = { label_tr = "Kola", label_en = "Kola" }
+0122204 = { label_tr = "Soğuk Çay", label_en = "Soğuk Çay" }
+0122205 = { label_tr = "Ayran", label_en = "Ayran" }
+0122301 = { label_tr = "Meyve Suyu", label_en = "Meyve Suyu" }
+0211001 = { label_tr = "Rakı", label_en = "Rakı" }
+0211006 = { label_tr = "Viski", label_en = "Viski" }
+0212101 = { label_tr = "Şarap", label_en = "Şarap" }
+0213001 = { label_tr = "Bira", label_en = "Bira" }
+0220100 = { label_tr = "Sigaralar", label_en = "Sigaralar" }
+0311003 = { label_tr = "Pamuklu Kumaş", label_en = "Pamuklu Kumaş" }
+0312104 = { label_tr = "Kaban (Erkek için)", label_en = "Kaban (Erkek için)" }
+0312106 = { label_tr = "Erkek Mont", label_en = "Erkek Mont" }
+0312108 = { label_tr = "Takım Elbise (Erkek için)", label_en = "Takım Elbise (Erkek için)" }
+0312109 = { label_tr = "Ceket (Erkek için)", label_en = "Ceket (Erkek için)" }
+0312110 = { label_tr = "Pantolon (Erkek için)", label_en = "Pantolon (Erkek için)" }
+0312112 = { label_tr = "Kazak (Erkek için)", label_en = "Kazak (Erkek için)" }
+0312115 = { label_tr = "Gömlek (Erkek için)", label_en = "Gömlek (Erkek için)" }
+0312116 = { label_tr = "Sweatshirt (Erkek için)", label_en = "Sweatshirt (Erkek için)" }
+0312117 = { label_tr = "Tişört (Erkek için)", label_en = "Tişört (Erkek için)" }
+0312120 = { label_tr = "Eşofman (Erkek için)", label_en = "Eşofman (Erkek için)" }
+0312122 = { label_tr = "Pijama (Erkek için)", label_en = "Pijama (Erkek için)" }
+0312125 = { label_tr = "İç Çamaşırı (Erkek için)", label_en = "İç Çamaşırı (Erkek için)" }
+0312130 = { label_tr = "Çorap (Erkek için)", label_en = "Çorap (Erkek için)" }
+0312202 = { label_tr = "Pardösü (Kadın için)", label_en = "Pardösü (Kadın için)" }
+0312204 = { label_tr = "Kaban (Kadın için)", label_en = "Kaban (Kadın için)" }
+0312213 = { label_tr = "Elbise (Kadın için)", label_en = "Elbise (Kadın için)" }
+0312214 = { label_tr = "Ceket (Kadın için)", label_en = "Ceket (Kadın için)" }
+0312215 = { label_tr = "Etek", label_en = "Etek" }
+0312216 = { label_tr = "Pantolon (Kadın için)", label_en = "Pantolon (Kadın için)" }
+0312217 = { label_tr = "Hırka (Kadın için)", label_en = "Hırka (Kadın için)" }
+0312219 = { label_tr = "Kazak (Kadın için)", label_en = "Kazak (Kadın için)" }
+0312222 = { label_tr = "Gömlek (Kadın için)", label_en = "Gömlek (Kadın için)" }
+0312223 = { label_tr = "Sweatshirt (Kadın için)", label_en = "Sweatshirt (Kadın için)" }
+0312224 = { label_tr = "Tişört (Kadın için)", label_en = "Tişört (Kadın için)" }
+0312230 = { label_tr = "Eşofman (Kadın için)", label_en = "Eşofman (Kadın için)" }
+0312235 = { label_tr = "Pijama (Kadın için)", label_en = "Pijama (Kadın için)" }
+0312237 = { label_tr = "İç Çamaşırı (Kadın için)", label_en = "İç Çamaşırı (Kadın için)" }
+0312242 = { label_tr = "Çorap (Kadın için)", label_en = "Çorap (Kadın için)" }
+0312303 = { label_tr = "Kaban Anorak (Çocuk için)", label_en = "Kaban Anorak (Çocuk için)" }
+0312313 = { label_tr = "Elbise (Çocuk için)", label_en = "Elbise (Çocuk için)" }
+0312315 = { label_tr = "Pantolon (Çocuk için)", label_en = "Pantolon (Çocuk için)" }
+0312318 = { label_tr = "Kazak (Çocuk için)", label_en = "Kazak (Çocuk için)" }
+0312321 = { label_tr = "Gömlek (Çocuk için)", label_en = "Gömlek (Çocuk için)" }
+0312322 = { label_tr = "Sweatshirt (Çocuk için)", label_en = "Sweatshirt (Çocuk için)" }
+0312323 = { label_tr = "Tişört (Çocuk için)", label_en = "Tişört (Çocuk için)" }
+0312326 = { label_tr = "Tayt (Çocuk için)", label_en = "Tayt (Çocuk için)" }
+0312328 = { label_tr = "Eşofman (Çocuk için)", label_en = "Eşofman (Çocuk için)" }
+0312329 = { label_tr = "Pijama (Çocuk için)", label_en = "Pijama (Çocuk için)" }
+0312332 = { label_tr = "İç çamaşırı (Çocuk için)", label_en = "İç çamaşırı (Çocuk için)" }
+0312336 = { label_tr = "Çorap (Çocuk için)", label_en = "Çorap (Çocuk için)" }
+0312403 = { label_tr = "Bebek Tulumu", label_en = "Bebek Tulumu" }
+0312409 = { label_tr = "Bebek Pijaması", label_en = "Bebek Pijaması" }
+0312410 = { label_tr = "Bebek İç Çamaşırı", label_en = "Bebek İç Çamaşırı" }
+0313001 = { label_tr = "Örgü Yünü", label_en = "Örgü Yünü" }
+0313006 = { label_tr = "Kravat", label_en = "Kravat" }
+0313012 = { label_tr = "Kemer", label_en = "Kemer" }
+0313014 = { label_tr = "Eşarp", label_en = "Eşarp" }
+0314005 = { label_tr = "Giysi Tamir Ücretleri", label_en = "Giysi Tamir Ücretleri" }
+0314007 = { label_tr = "Kuru Temizleme Ücreti", label_en = "Kuru Temizleme Ücreti" }
+0321101 = { label_tr = "Ayakkabı (Erkek için)", label_en = "Ayakkabı (Erkek için)" }
+0321102 = { label_tr = "Bot (Erkek için)", label_en = "Bot (Erkek için)" }
+0321104 = { label_tr = "Spor Ayakkabısı (Erkek için)", label_en = "Spor Ayakkabısı (Erkek için)" }
+0321201 = { label_tr = "Ayakkabı (Kadın için)", label_en = "Ayakkabı (Kadın için)" }
+0321202 = { label_tr = "Bot (Kadın için)", label_en = "Bot (Kadın için)" }
+0321204 = { label_tr = "Spor Ayakkabısı (Kadın için)", label_en = "Spor Ayakkabısı (Kadın için)" }
+0321206 = { label_tr = "Terlik (Kadın için)", label_en = "Terlik (Kadın için)" }
+0321301 = { label_tr = "Ayakkabı (Çocuk için)", label_en = "Ayakkabı (Çocuk için)" }
+0321302 = { label_tr = "Bot (Çocuk için)", label_en = "Bot (Çocuk için)" }
+0321304 = { label_tr = "Spor Ayakkabısı (Çocuk için)", label_en = "Spor Ayakkabısı (Çocuk için)" }
+0322001 = { label_tr = "Ayakkabı Tamiri (Erkek)", label_en = "Ayakkabı Tamiri (Erkek)" }
+0322002 = { label_tr = "Ayakkabı Tamiri (Kadın)", label_en = "Ayakkabı Tamiri (Kadın)" }
+0411101 = { label_tr = "Kiracı Tarafından Ödenen Gerçek Kira", label_en = "Kiracı Tarafından Ödenen Gerçek Kira" }
+0431001 = { label_tr = "Badana ve Boya Malzemeleri", label_en = "Badana ve Boya Malzemeleri" }
+0431002 = { label_tr = "Yer ve Duvar Döşemesi", label_en = "Yer ve Duvar Döşemesi" }
+0431006 = { label_tr = "Pencere (PVC)", label_en = "Pencere (PVC)" }
+0431008 = { label_tr = "Sıhhi Techizat Malzemeleri", label_en = "Sıhhi Techizat Malzemeleri" }
+0441001 = { label_tr = "Su Faturası", label_en = "Su Faturası" }
+0451001 = { label_tr = "Elektrik Ücreti", label_en = "Elektrik Ücreti" }
+0452101 = { label_tr = "Doğalgaz Ücreti", label_en = "Doğalgaz Ücreti" }
+0452102 = { label_tr = "Doğalgaz Abonman Ücreti", label_en = "Doğalgaz Abonman Ücreti" }
+0452201 = { label_tr = "Tüp Gaz Ücreti", label_en = "Tüp Gaz Ücreti" }
+0454001 = { label_tr = "Kömür Ücreti", label_en = "Kömür Ücreti" }
+0454002 = { label_tr = "Odun Ücreti", label_en = "Odun Ücreti" }
+0511102 = { label_tr = "Tek Masa", label_en = "Tek Masa" }
+0511105 = { label_tr = "Tek Sandalye", label_en = "Tek Sandalye" }
+0511201 = { label_tr = "Yatak Odası Takımı", label_en = "Yatak Odası Takımı" }
+0511204 = { label_tr = "Yatak (Tek Kişilik)", label_en = "Yatak (Tek Kişilik)" }
+0511205 = { label_tr = "Yatak (Çift Kişilik)", label_en = "Yatak (Çift Kişilik)" }
+0511207 = { label_tr = "Yatak Bazası", label_en = "Yatak Bazası" }
+0511208 = { label_tr = "Genç Odası Takımı", label_en = "Genç Odası Takımı" }
+0511301 = { label_tr = "Oturma Odası Takımı", label_en = "Oturma Odası Takımı" }
+0511302 = { label_tr = "Yemek Odası Takımı", label_en = "Yemek Odası Takımı" }
+0511307 = { label_tr = "Sehpa", label_en = "Sehpa" }
+0512001 = { label_tr = "Halı", label_en = "Halı" }
+0520001 = { label_tr = "Perde", label_en = "Perde" }
+0520002 = { label_tr = "Stor Perde", label_en = "Stor Perde" }
+0520003 = { label_tr = "Tül", label_en = "Tül" }
+0520007 = { label_tr = "Yatak Örtüsü", label_en = "Yatak Örtüsü" }
+0520010 = { label_tr = "Yorgan", label_en = "Yorgan" }
+0520012 = { label_tr = "Battaniye", label_en = "Battaniye" }
+0520013 = { label_tr = "Pike Takımı", label_en = "Pike Takımı" }
+0520014 = { label_tr = "Nevresim Takımı", label_en = "Nevresim Takımı" }
+0520015 = { label_tr = "Yastık", label_en = "Yastık" }
+0520025 = { label_tr = "Havlu", label_en = "Havlu" }
+0531102 = { label_tr = "No-Frost Buzdolabı", label_en = "No-Frost Buzdolabı" }
+0531104 = { label_tr = "Derin Dondurucu", label_en = "Derin Dondurucu" }
+0531201 = { label_tr = "Çamaşır Makinesi", label_en = "Çamaşır Makinesi" }
+0531202 = { label_tr = "Bulaşık Makinesi", label_en = "Bulaşık Makinesi" }
+0531301 = { label_tr = "Ankastre Mikrodalga Fırın", label_en = "Ankastre Mikrodalga Fırın" }
+0531302 = { label_tr = "Ankastre Ocak (Set Üstü)", label_en = "Ankastre Ocak (Set Üstü)" }
+0531303 = { label_tr = "Ankastre Fırın", label_en = "Ankastre Fırın" }
+0531401 = { label_tr = "Klima", label_en = "Klima" }
+0531403 = { label_tr = "Soba", label_en = "Soba" }
+0531406 = { label_tr = "Kombi", label_en = "Kombi" }
+0531409 = { label_tr = "Davlumbaz", label_en = "Davlumbaz" }
+0531501 = { label_tr = "Elektrikli Süpürge", label_en = "Elektrikli Süpürge" }
+0532001 = { label_tr = "Elektrikli Kesici Aletler (Blender)", label_en = "Elektrikli Kesici Aletler (Blender)" }
+0532002 = { label_tr = "Elektrikli Küçük Ev Aletleri (Tost Makinası)", label_en = "Elektrikli Küçük Ev Aletleri (Tost Makinası)" }
+0532003 = { label_tr = "Sıcak İçecek Makinaları", label_en = "Sıcak İçecek Makinaları" }
+0532004 = { label_tr = "Ütü", label_en = "Ütü" }
+0533001 = { label_tr = "Ev Aletlerinin Tamiri (Malzeme ve İşçilik)", label_en = "Ev Aletlerinin Tamiri (Malzeme ve İşçilik)" }
+0540102 = { label_tr = "Cam Ev Eşyası", label_en = "Cam Ev Eşyası" }
+0540104 = { label_tr = "Porselen Ev Eşyası", label_en = "Porselen Ev Eşyası" }
+0540201 = { label_tr = "Kaşık, Çatal, Bıçak Takımı (Çelik)", label_en = "Kaşık, Çatal, Bıçak Takımı (Çelik)" }
+0540301 = { label_tr = "Çelik Mutfak Eşyaları", label_en = "Çelik Mutfak Eşyaları" }
+0540302 = { label_tr = "Teflon Mutfak Eşyaları", label_en = "Teflon Mutfak Eşyaları" }
+0540304 = { label_tr = "Plastik Mutfak Eşyaları", label_en = "Plastik Mutfak Eşyaları" }
+0540312 = { label_tr = "Diğer Elektriksiz Ev Aletleri", label_en = "Diğer Elektriksiz Ev Aletleri" }
+0552103 = { label_tr = "Pil", label_en = "Pil" }
+0552104 = { label_tr = "Ampul", label_en = "Ampul" }
+0552203 = { label_tr = "Kapı Aksesuarları (Anahtar, Kilit)", label_en = "Kapı Aksesuarları (Anahtar, Kilit)" }
+0552204 = { label_tr = "Soba Aksesuar ve Malzemeleri", label_en = "Soba Aksesuar ve Malzemeleri" }
+0561101 = { label_tr = "Çamaşır İçin Temizlik ve Bakım Ürünleri", label_en = "Çamaşır İçin Temizlik ve Bakım Ürünleri" }
+0561102 = { label_tr = "Bulaşık İçin Temizlik ve Bakım Ürünleri", label_en = "Bulaşık İçin Temizlik ve Bakım Ürünleri" }
+0561103 = { label_tr = "Hijyenik Zeminler İçin Temizlik ve Bakım Ürünleri", label_en = "Hijyenik Zeminler İçin Temizlik ve Bakım Ürünleri" }
+0561201 = { label_tr = "Her Türlü Ev Temizlik Aletleri", label_en = "Her Türlü Ev Temizlik Aletleri" }
+0561202 = { label_tr = "Bulaşık Bezleri", label_en = "Bulaşık Bezleri" }
+0561203 = { label_tr = "Saklama ve Muhafaza Malzemeleri", label_en = "Saklama ve Muhafaza Malzemeleri" }
+0561204 = { label_tr = "Kağıt Sofra Malzemeleri", label_en = "Kağıt Sofra Malzemeleri" }
+0562104 = { label_tr = "Gündelikçi Ücreti", label_en = "Gündelikçi Ücreti" }
+0562202 = { label_tr = "Halı Temizleme", label_en = "Halı Temizleme" }
+0611001 = { label_tr = "İlaçlar", label_en = "İlaçlar" }
+0612002 = { label_tr = "Diğer Sağlık Ürünleri", label_en = "Diğer Sağlık Ürünleri" }
+0613101 = { label_tr = "Numaralı Gözlük Cam ve Çerçevesi", label_en = "Numaralı Gözlük Cam ve Çerçevesi" }
+0613102 = { label_tr = "Kontakt Lens", label_en = "Kontakt Lens" }
+0613201 = { label_tr = "Sağlık İle İlgili Araç Gereçler (Tansiyon Aleti)", label_en = "Sağlık İle İlgili Araç Gereçler (Tansiyon Aleti)" }
+0621201 = { label_tr = "Uzman Doktor Muayene Ücreti", label_en = "Uzman Doktor Muayene Ücreti" }
+0622001 = { label_tr = "Diş Çekme Ücreti", label_en = "Diş Çekme Ücreti" }
+0622002 = { label_tr = "Diş Dolgu Ücreti", label_en = "Diş Dolgu Ücreti" }
+0623101 = { label_tr = "Röntgen Ücreti", label_en = "Röntgen Ücreti" }
+0623102 = { label_tr = "Ultrason Ücreti", label_en = "Ultrason Ücreti" }
+0623105 = { label_tr = "Emar Ücreti", label_en = "Emar Ücreti" }
+0623108 = { label_tr = "Labaratuvar Tahlil Ücretleri", label_en = "Labaratuvar Tahlil Ücretleri" }
+0630001 = { label_tr = "Hastane Yatak Ücreti", label_en = "Hastane Yatak Ücreti" }
+0630002 = { label_tr = "Ameliyat Ücreti", label_en = "Ameliyat Ücreti" }
+0630003 = { label_tr = "Doğum Ücreti (Normal Doğum)", label_en = "Doğum Ücreti (Normal Doğum)" }
+0630004 = { label_tr = "Doğum Ücreti (Sezaryen)", label_en = "Doğum Ücreti (Sezaryen)" }
+0711101 = { label_tr = "Otomobil (Dizel)", label_en = "Otomobil (Dizel)" }
+0711301 = { label_tr = "Otomobil (Benzinli)", label_en = "Otomobil (Benzinli)" }
+0712001 = { label_tr = "Motorsiklet", label_en = "Motorsiklet" }
+0713001 = { label_tr = "Bisiklet", label_en = "Bisiklet" }
+0721001 = { label_tr = "Araç Yedek Parça ve Ekipmanları", label_en = "Araç Yedek Parça ve Ekipmanları" }
+0721003 = { label_tr = "Araba İle İlgili, Temizlik ve Bakım Ürünleri", label_en = "Araba İle İlgili, Temizlik ve Bakım Ürünleri" }
+0722001 = { label_tr = "Benzin", label_en = "Benzin" }
+0722002 = { label_tr = "LPG (Araba Tüpü Dolum)  Ücreti", label_en = "LPG (Araba Tüpü Dolum)  Ücreti" }
+0722003 = { label_tr = "Motorin", label_en = "Motorin" }
+0722004 = { label_tr = "Motor Yağları", label_en = "Motor Yağları" }
+0723001 = { label_tr = "Araçların  Tamirine ve Bakımına Ödenen Ücretler (Malzeme ve işçilik)", label_en = "Araçların  Tamirine ve Bakımına Ödenen Ücretler (Malzeme ve işçilik)" }
+0723002 = { label_tr = "Araçların  Tamirine ve Bakımına Ödenen Ücretler (işçilik)", label_en = "Araçların  Tamirine ve Bakımına Ödenen Ücretler (işçilik)" }
+0724001 = { label_tr = "Araba Kiralama Ücreti", label_en = "Araba Kiralama Ücreti" }
+0724005 = { label_tr = "Otopark Ücreti", label_en = "Otopark Ücreti" }
+0724006 = { label_tr = "Otoban Geçiş Ücreti", label_en = "Otoban Geçiş Ücreti" }
+0724008 = { label_tr = "Köprü Geçiş Ücreti", label_en = "Köprü Geçiş Ücreti" }
+0724009 = { label_tr = "Sürücü Eğitim Kurs Ücreti", label_en = "Sürücü Eğitim Kurs Ücreti" }
+0731101 = { label_tr = "Tren Ücreti Banliyo", label_en = "Tren Ücreti Banliyo" }
+0731102 = { label_tr = "Metro Ücreti", label_en = "Metro Ücreti" }
+0731104 = { label_tr = "Tramvay Ücreti", label_en = "Tramvay Ücreti" }
+0731201 = { label_tr = "Tren Ücreti (Şehirlerarası)", label_en = "Tren Ücreti (Şehirlerarası)" }
+0732101 = { label_tr = "Belediye Otobüs Ücreti", label_en = "Belediye Otobüs Ücreti" }
+0732104 = { label_tr = "Dolmuş Ücreti", label_en = "Dolmuş Ücreti" }
+0732105 = { label_tr = "Servis Ücreti", label_en = "Servis Ücreti" }
+0732201 = { label_tr = "Taksi Ücreti", label_en = "Taksi Ücreti" }
+0732301 = { label_tr = "Şehirlerarası Otobüs Ücreti", label_en = "Şehirlerarası Otobüs Ücreti" }
+0733001 = { label_tr = "Uçak Bileti Ücreti", label_en = "Uçak Bileti Ücreti" }
+0734001 = { label_tr = "Vapur Bilet Ücreti", label_en = "Vapur Bilet Ücreti" }
+0736002 = { label_tr = "Kargo Gönderme Ücreti", label_en = "Kargo Gönderme Ücreti" }
+0736003 = { label_tr = "Nakliye Ücreti (Şehiriçi)", label_en = "Nakliye Ücreti (Şehiriçi)" }
+0810002 = { label_tr = "Koli Gönderme Ücreti", label_en = "Koli Gönderme Ücreti" }
+0820001 = { label_tr = "Telefon Ekipmanları (Cep Telefonu)", label_en = "Telefon Ekipmanları (Cep Telefonu)" }
+0820002 = { label_tr = "Telefon Yedek Parçaları", label_en = "Telefon Yedek Parçaları" }
+0820003 = { label_tr = "Telefon Onarım Ücreti", label_en = "Telefon Onarım Ücreti" }
+0830001 = { label_tr = "Telefon Görüşme Ücreti", label_en = "Telefon Görüşme Ücreti" }
+0830004 = { label_tr = "Cep Telefonu Görüşme Ücreti", label_en = "Cep Telefonu Görüşme Ücreti" }
+0830008 = { label_tr = "Telefon Aboneliğine İlişkin Hizmetler", label_en = "Telefon Aboneliğine İlişkin Hizmetler" }
+0830009 = { label_tr = "İnternet Ücreti", label_en = "İnternet Ücreti" }
+0911101 = { label_tr = "Televizyon", label_en = "Televizyon" }
+0913001 = { label_tr = "Bilgisayar", label_en = "Bilgisayar" }
+0913008 = { label_tr = "Bilgisayar Ekipmanları", label_en = "Bilgisayar Ekipmanları" }
+0913011 = { label_tr = "Tablet (Bilgisayar)", label_en = "Tablet (Bilgisayar)" }
+0915001 = { label_tr = "Görsel İşitsel Veri İşleme Araçları Tamiri (Malzeme ve İşçilik)", label_en = "Görsel İşitsel Veri İşleme Araçları Tamiri (Malzeme ve İşçilik)" }
+0915002 = { label_tr = "Görsel, İşitsel Veri İşleme Araçları (İşçilik Ücreti)", label_en = "Görsel, İşitsel Veri İşleme Araçları (İşçilik Ücreti)" }
+0922001 = { label_tr = "Müzik Aletleri", label_en = "Müzik Aletleri" }
+0931003 = { label_tr = "Oyuncak", label_en = "Oyuncak" }
+0931006 = { label_tr = "Scooter (Çocuk)", label_en = "Scooter (Çocuk)" }
+0932002 = { label_tr = "Sporla İlgili Aletler (Futbol Topu)", label_en = "Sporla İlgili Aletler (Futbol Topu)" }
+0934002 = { label_tr = "Evcil Hayvanlar İçin Gıda Harcamaları", label_en = "Evcil Hayvanlar İçin Gıda Harcamaları" }
+0935001 = { label_tr = "Veteriner Ücreti", label_en = "Veteriner Ücreti" }
+0941001 = { label_tr = "Spor Müsabakalarına Giriş Ücreti", label_en = "Spor Müsabakalarına Giriş Ücreti" }
+0941002 = { label_tr = "Sportif Faaliyetler İçin Yapılan Ödemeler", label_en = "Sportif Faaliyetler İçin Yapılan Ödemeler" }
+0942105 = { label_tr = "Resim Çektirme Ücreti", label_en = "Resim Çektirme Ücreti" }
+0942203 = { label_tr = "Kablolu- Özel Televizyon Yayın Hizmetleri", label_en = "Kablolu- Özel Televizyon Yayın Hizmetleri" }
+0942204 = { label_tr = "Sinema", label_en = "Sinema" }
+0942205 = { label_tr = "Tiyatro", label_en = "Tiyatro" }
+0942206 = { label_tr = "Diğer Kültürel Faaliyetler", label_en = "Diğer Kültürel Faaliyetler" }
+0943000 = { label_tr = "Şans Oyunları", label_en = "Şans Oyunları" }
+0951002 = { label_tr = "Çocuk Kitapları", label_en = "Çocuk Kitapları" }
+0951003 = { label_tr = "Test Kitapları", label_en = "Test Kitapları" }
+0951004 = { label_tr = "Diğer Kitaplar", label_en = "Diğer Kitaplar" }
+0952001 = { label_tr = "Gazeteler", label_en = "Gazeteler" }
+0952002 = { label_tr = "Magazinler ve Dergiler", label_en = "Magazinler ve Dergiler" }
+0954001 = { label_tr = "Okul Defteri", label_en = "Okul Defteri" }
+0954003 = { label_tr = "Kalem", label_en = "Kalem" }
+0954004 = { label_tr = "Resim Boyaları", label_en = "Resim Boyaları" }
+0954005 = { label_tr = "Yazım ve Çizim Kağıtları", label_en = "Yazım ve Çizim Kağıtları" }
+0954010 = { label_tr = "Diğer Kırtasiye Malzemeleri", label_en = "Diğer Kırtasiye Malzemeleri" }
+0960002 = { label_tr = "Yurtiçi Haftasonu Turları", label_en = "Yurtiçi Haftasonu Turları" }
+0960003 = { label_tr = "Yurtiçi Bir Hafta ve Daha Fazla Süreli Turlar", label_en = "Yurtiçi Bir Hafta ve Daha Fazla Süreli Turlar" }
+0960005 = { label_tr = "Yurt Dışı Bir Hafta ve Daha Fazla Süreli Turlar", label_en = "Yurt Dışı Bir Hafta ve Daha Fazla Süreli Turlar" }
+0960008 = { label_tr = "Hacca Gidiş Ücreti", label_en = "Hacca Gidiş Ücreti" }
+0960009 = { label_tr = "Umreye Gidiş Ücreti", label_en = "Umreye Gidiş Ücreti" }
+1010002 = { label_tr = "Özel İlköğretim Ücreti", label_en = "Özel İlköğretim Ücreti" }
+1020002 = { label_tr = "Özel Lise Ücreti", label_en = "Özel Lise Ücreti" }
+1040001 = { label_tr = "Özel Üniversite Ücreti", label_en = "Özel Üniversite Ücreti" }
+1040002 = { label_tr = "Üniversite Katkı Payı", label_en = "Üniversite Katkı Payı" }
+1050001 = { label_tr = "Düzeyi Belirlenemeyen Eğitim Programları", label_en = "Düzeyi Belirlenemeyen Eğitim Programları" }
+1110101 = { label_tr = "Çorbalar", label_en = "Çorbalar" }
+1110102 = { label_tr = "Hazır Yemekler (Pilav, Kuru Fasulye)", label_en = "Hazır Yemekler (Pilav, Kuru Fasulye)" }
+1110103 = { label_tr = "Kebaplar", label_en = "Kebaplar" }
+1110104 = { label_tr = "Pideler", label_en = "Pideler" }
+1110105 = { label_tr = "Çiğ Köfte", label_en = "Çiğ Köfte" }
+1110106 = { label_tr = "Ekmekarası Yiyecekler (Döner)", label_en = "Ekmekarası Yiyecekler (Döner)" }
+1110108 = { label_tr = "Burgerler", label_en = "Burgerler" }
+1110110 = { label_tr = "Pizzalar", label_en = "Pizzalar" }
+1110113 = { label_tr = "Pastane Ürünleri", label_en = "Pastane Ürünleri" }
+1110115 = { label_tr = "Hamur Tatlıları", label_en = "Hamur Tatlıları" }
+1110201 = { label_tr = "Sıcak İçecekler (Servis edilen)", label_en = "Sıcak İçecekler (Servis edilen)" }
+1110202 = { label_tr = "Soğuk İçecekler (Servis edilen)", label_en = "Soğuk İçecekler (Servis edilen)" }
+1110204 = { label_tr = "Ayran (Servis edilen)", label_en = "Ayran (Servis edilen)" }
+1110206 = { label_tr = "Alkollü İçkiler", label_en = "Alkollü İçkiler" }
+1120101 = { label_tr = "Otel Ücreti", label_en = "Otel Ücreti" }
+1120204 = { label_tr = "Yurt Ücreti", label_en = "Yurt Ücreti" }
+1211101 = { label_tr = "Erkek Berberi", label_en = "Erkek Berberi" }
+1211201 = { label_tr = "Kadın Berberi", label_en = "Kadın Berberi" }
+1211202 = { label_tr = "Kişisel Bakım Hizmetleri (Kadın İçin)", label_en = "Kişisel Bakım Hizmetleri (Kadın İçin)" }
+1212003 = { label_tr = "Elektrikli Saç Bakım Aletleri", label_en = "Elektrikli Saç Bakım Aletleri" }
+1213001 = { label_tr = "Tıraş Malzemeleri", label_en = "Tıraş Malzemeleri" }
+1213002 = { label_tr = "Ağız ve Diş Bakımı Ürünleri", label_en = "Ağız ve Diş Bakımı Ürünleri" }
+1213005 = { label_tr = "Tuvalet ve Güzellik Sabunu", label_en = "Tuvalet ve Güzellik Sabunu" }
+1213006 = { label_tr = "Sabun", label_en = "Sabun" }
+1213007 = { label_tr = "Parfüm", label_en = "Parfüm" }
+1213008 = { label_tr = "Deodorant", label_en = "Deodorant" }
+1213009 = { label_tr = "Kolonya", label_en = "Kolonya" }
+1213010 = { label_tr = "Cilt ve Vücut Ürünleri", label_en = "Cilt ve Vücut Ürünleri" }
+1213011 = { label_tr = "Makyaj Malzemeleri", label_en = "Makyaj Malzemeleri" }
+1213013 = { label_tr = "Saç Bakım Ürünleri", label_en = "Saç Bakım Ürünleri" }
+1213014 = { label_tr = "Tuvalet Kağıdı", label_en = "Tuvalet Kağıdı" }
+1213015 = { label_tr = "Mendil", label_en = "Mendil" }
+1213017 = { label_tr = "Bebek Bezi", label_en = "Bebek Bezi" }
+1213018 = { label_tr = "Hijyenik Kadın Bağı", label_en = "Hijyenik Kadın Bağı" }
+1231001 = { label_tr = "Mücevher (Altın)", label_en = "Mücevher (Altın)" }
+1231005 = { label_tr = "Saat", label_en = "Saat" }
+1232101 = { label_tr = "Seyahat Malzemeleri", label_en = "Seyahat Malzemeleri" }
+1232104 = { label_tr = "Çanta (Kadın İçin)", label_en = "Çanta (Kadın İçin)" }
+1232106 = { label_tr = "Okul Çantası", label_en = "Okul Çantası" }
+1232201 = { label_tr = "Şemsiye", label_en = "Şemsiye" }
+1232203 = { label_tr = "Bebek Arabası", label_en = "Bebek Arabası" }
+1240001 = { label_tr = "Kreş ve Gündüz Bakım Evleri", label_en = "Kreş ve Gündüz Bakım Evleri" }
+1252001 = { label_tr = "Yangın, Hırsızlık ve Diğer Afetler İçin Sigorta", label_en = "Yangın, Hırsızlık ve Diğer Afetler İçin Sigorta" }
+1253002 = { label_tr = "Sağlık Sigortası", label_en = "Sağlık Sigortası" }
+1254001 = { label_tr = "Kasko ve Zorunlu Trafik Sigortası", label_en = "Kasko ve Zorunlu Trafik Sigortası" }
+1262006 = { label_tr = "Banka ile Para Havale Ücreti", label_en = "Banka ile Para Havale Ücreti" }
+1270001 = { label_tr = "Resmi Evraklarla İlgili Hizmet Ücreti", label_en = "Resmi Evraklarla İlgili Hizmet Ücreti" }
+1270002 = { label_tr = "Ulaşım Araçları ile İlgili Hizmet Ücreti", label_en = "Ulaşım Araçları ile İlgili Hizmet Ücreti" }
+1270006 = { label_tr = "Avukatlık Ücreti", label_en = "Avukatlık Ücreti" }
+1270008 = { label_tr = "Dökümantasyon İçin Ödenen Ücretler", label_en = "Dökümantasyon İçin Ödenen Ücretler" }
+
+[indicator.average_item_price]
+label_tr = "Ortalama madde fiyatı"
+label_en = "Average item price"
+topic = "fiyatlar"
+unit = "try"
+frequency = "monthly"
+dims = ["cpi_item"]
+views = ["table", "line"]
+definition_tr = "TÜİK'in TÜFE madde sepetindeki 409 maddenin Türkiye ortalama fiyatı, TL, aylık, 2003-01 ile 2022-04 arası. Endeks değil gerçek fiyattır. 2005 öncesi değerler eski liradır ve milyona bölünerek çevrilmiştir: pirinç Aralık 2004'te 2.545.872, Ocak 2005'te 2,55 TL. İl kırılımı yoktur, TÜİK madde fiyatlarını yalnız Türkiye geneli yayımlar."
