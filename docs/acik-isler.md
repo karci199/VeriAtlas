@@ -1,4 +1,4 @@
-# Açık işler (2026-09-17, akşam güncel)
+# Açık işler (2026-09-19, akşam güncel)
 
 Çekilip de alınamayan ya da yarım kalanlar, tahmini zorlukla. Yeni oturumda buradan devam.
 Keşfedilmiş ama hiç başlanmamış kaynaklar `kaynak-envanteri.md`'de.
@@ -41,7 +41,7 @@ Web export: 2026-09-17 tam; 8 dosyanın boş olması hata değil (yalnız ilçe 
 | ~~BDDK FinTürk~~ | 6 tablo × 7 banka grubu 2007-2025 yüklendi (`bank_group_*`, 545 bin satır) | — |
 | ~~VAP (MKK)~~ | il portföy değeri 2005-2025 yüklendi (`investor_portfolio_value`); yatırımcı sayısı panoda yalnız ilk 10 il, alınmadı | — |
 | ~~Muhasebat~~ | il merkezi yönetim bütçe geliri ve gideri 2004-2025, mahalli idare bütçe geliri ve gideri 2006-2025 yüklendi (`central_budget_*_by_province`, `local_budget_*_by_province`, 70 bin satır); gideri ekonomik ve fonksiyonel sınıflandırmayla | — |
-| OECD bölgesel (SDMX) | ~~keşif ve ilk çekim yapıldı~~ 2026-09-17: `scripts/fetch_oecd_tl3.py`, ham veri `C:eri-ham\oecd_tl3`. Yüklendi: dış ticaret (2002-2023, ihracat+ithalat), sıcaklık/yağış/iklim gün sayıları (1981-2024), derece-gün (1981-2023). **Diskte hazır, adaptörü yok:** sağlık hizmeti (hekim/yatak/hemşire/taburcu 2000-2023 — Sağlık Bakanlığı yıllığının 2012 öncesini kapatır), sağlık durumu, sağlık riski (PM2,5 maruziyeti — model, ölçüm değil), patent (PCT 1995-2024), göç akımı (2016-2025), DSD_REG_SOC dosyaları (geniş bant, konut, güvenlik, taşıt, seçmen katılımı — beşi de aynı boyutta indi, aynı üst küme olabilir, ölçüleri ayrıştırılmalı). **TL3'te yok (404):** enerji tüketimi, elektrik üretimi, hava kirliliği, atık, turizm, eğitim, istihdam, gelir, verimlilik, kuraklık, yangın, sel. **Alınmadı:** iklim projeksiyonu ve sera gazı (ilki kullanıcı kararı, ikincisi EDGAR ızgara modeli — ölçüm değil) | — |
+| OECD bölgesel (SDMX) | ~~keşif ve ilk çekim yapıldı~~ 2026-09-17: `scripts/fetch_oecd_tl3.py`, ham veri `C:\veri-ham\oecd_tl3`. Yüklendi: dış ticaret (2002-2023, ihracat+ithalat), sıcaklık/yağış/iklim gün sayıları (1981-2024), derece-gün (1981-2023). **Diskte hazır, adaptörü yok:** sağlık hizmeti (hekim/yatak/hemşire/taburcu 2000-2023 — Sağlık Bakanlığı yıllığının 2012 öncesini kapatır), sağlık durumu, sağlık riski (PM2,5 maruziyeti — model, ölçüm değil), patent (PCT 1995-2024), göç akımı (2016-2025), DSD_REG_SOC dosyaları (geniş bant, konut, güvenlik, taşıt, seçmen katılımı — beşi de aynı boyutta indi, aynı üst küme olabilir, ölçüleri ayrıştırılmalı). **TL3'te yok (404):** enerji tüketimi, elektrik üretimi, hava kirliliği, atık, turizm, eğitim, istihdam, gelir, verimlilik, kuraklık, yangın, sel. **Alınmadı:** iklim projeksiyonu ve sera gazı (ilki kullanıcı kararı, ikincisi EDGAR ızgara modeli — ölçüm değil) | — |
 | TEDAŞ | istatistikkitabi.tedas.gov.tr, il elektrik dağıtım | **üyelik şart** (2026-09-18): kitap listesi bile girişin arkasında, "Kitap Listesini Görmeniz için Lütfen Giriş Yapın". Hesap açmak kullanıcının kararı |
 | ~~TKGM MEGSİS~~ | 2026-09-18 yüklendi: `cadastral_parcels`, `..._by_approval`, `..._by_coordinate` (81 il, 2026-09-14 anlık görüntüsü) | — |
 | Adalet Bakanlığı | adalet istatistikleri, il/adliye, PDF | zor |
@@ -152,15 +152,24 @@ görüntü tarihi kalsın diye il tablosu yalnız %1 sapma denetimi olarak kulla
 döndü — TGT, yani kullanıcının hesabıyla giriş gerekiyor. Uç noktalar ve parametreler
 belli; eksik olan tek şey oturum. Kullanıcı tarayıcıda giriş yaptığında çekim yapılabilir.
 
-## Sıradaki oturumun ilk işi
+## Sıradaki oturumun ilk işi (2026-09-19 akşamı güncel)
 
-1. ~~TESK dalını main'e al~~ 2026-09-18 yapıldı (bu birleştirme).
-2. **Tam yükleme** (`uv run python scripts/load.py`, tam liste) — **ana kopyada
-   (`C:eri`), worktree'de değil.** Worktree'de `load.py`'nin son türetme adımı
-   `public/fact.parquet`'i okuyor, o dosya `.gitignore`'da olduğu için worktree'ye
-   gelmiyor ve 675 adaptörden sonra çöküyor. TESK'in 7 göstergesi bu yüklemeyle girer.
-3. OECD'nin diskte bekleyen dosyaları için adaptör (yukarıdaki listede).
-4. EPİAŞ ilçe düzeyi serbest tüketici ve baraj doluluk çekicileri.
+1. ~~TESK dalını main'e al~~ 2026-09-18 yapıldı.
+2. ~~`claude/cekmelere-devam-51d945` dalını main'e al~~ 2026-09-19 yapıldı: PTT posta
+   kodu, zincir mağaza/restoran, EPDK şarj istasyonu, TÜİK ortalama madde fiyatı —
+   13 commit main'e girdi ve main push'landı (30 commit origin'e gitti).
+3. ~~Tam yükleme~~ 2026-09-19 akşamı ana kopyada (`C:\veri`) çalıştırıldı; worktree'de
+   çalıştırılmıyor, `public/fact.parquet` `.gitignore`'da olduğu için son türetme adımı
+   orada çöküyor.
+4. **Opet akaryakıt fiyatı** — `--son` turu (tüm ilçeler, son 45 gün) 2026-09-19 akşamı
+   arka planda başlatıldı, `C:\veri-ham\opet\son_fiyat_2026-09-19.csv`. API hâlâ hız
+   sınırını 500 kılığında veriyor: elle ölçüldüğünde altı istekten biri 200 döndü, bu
+   yüzden aralık 2,5 sn'ye ve yeniden deneme sayısı 10'a çıkarıldı. Tur bittiğinde
+   adaptör ve gösterge yazılacak; **henüz ikisi de yok**, ham CSV olarak duruyor.
+   İl merkezleri turu (`--devam`) 2/82 ilde duruyor, ilçe kesiti 13 il/139 ilçe
+   (1,34 mn satır, 2013-2026) — ikisi de tamamlanmadı.
+5. OECD'nin diskte bekleyen dosyaları için adaptör (yukarıdaki listede).
+6. EPİAŞ ilçe düzeyi serbest tüketici ve baraj doluluk çekicileri.
 
 ## 2026-09-18 gecesi eklenenler
 
@@ -209,7 +218,7 @@ MEB (robots.txt), İBB açık veri (robots.txt), TCDD (403), TOBB aylık il tabl
 | # | İş | Durum | Not |
 |---|---|---|---|
 | 1 | **İl Sağlık Müdürlüğü siteleri** | başlanıyor | `<il>ism.saglik.gov.tr/TR-<id>/saglik-kurumlari.html`. Depodaki 20 `moh_*` göstergesi yalnız il düzeyinde; bu siteler hastaneyi **ilçesiyle** listeliyor. 81 il aynı CMS, sayfa numaraları farklı — önce onlar bulunacak |
-| 2 | **EPDK şarj istasyonu** | kullanıcıda | Sorgu reCAPTCHA arkasında, kullanıcı indiriyor. 34 sayfanın 8'i indi = **3.500 tekil istasyon** (`C:eri-ham\epdk1`). Adres alanı "… Beykoz / İSTANBUL" biçiminde, ilçe oradan okunuyor. Tamamlanınca adaptör yazılacak |
+| 2 | **EPDK şarj istasyonu** | kullanıcıda | Sorgu reCAPTCHA arkasında, kullanıcı indiriyor. 34 sayfanın 8'i indi = **3.500 tekil istasyon** (`C:\veri-ham\epdk1`). Adres alanı "… Beykoz / İSTANBUL" biçiminde, ilçe oradan okunuyor. Tamamlanınca adaptör yazılacak |
 | 3 | **Domino's** | bekliyor | 26 ilde 311 şube indi, site IP'yi kapattı (429 sürüyor). Ceza geçince `uv run python scripts/fetch_dominos.py --devam` |
 | 4 | **Hakmar Express** | yarım | `/magazalar` gömülü JSON'da ad/adres/il/ilçe/koordinat veriyor ama tek seferde 25 kayıt; site 816 mağaza diyor. Sayfalama çözülmedi |
 | 5 | Zincir taraması | sürüyor | Kolay çekilebilen marka arayışı arka planda |
