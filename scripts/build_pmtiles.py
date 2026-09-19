@@ -173,11 +173,14 @@ def build(name: str) -> None:
         from shapely.ops import unary_union
 
         gruplar: dict[str, list] = defaultdict(list)
-        adlar: dict[str, str] = {}
+        # The province's name is not in the district file — a district only knows its
+        # parent's id. Taken from the registry instead; the earlier version fell back to
+        # the id and the map called Bursa "TR-16".
+        _, _, ids = ibbs_table()
+        adlar = {area_id: name for name, area_id in ids.items()}
         for props, geom in items:
             parent = props.get("ust") or ""
             gruplar[parent].append(geom)
-            adlar.setdefault(parent, parent)
         items = [
             (
                 {"id": parent, "ad": adlar.get(parent, parent), "ust": "TR"},

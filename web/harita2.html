@@ -98,6 +98,15 @@
   }
   .note:empty { display: none; }
 
+  /* Follows the pointer; never takes it. */
+  .tip {
+    position: fixed; top: 0; left: 0; z-index: 3; pointer-events: none;
+    padding: 6px 10px; border-radius: 9px; font-size: 12px; font-weight: 500;
+    background: rgba(14, 16, 20, 0.94); border: 1px solid var(--panel-line);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.5); will-change: transform;
+  }
+  .tip[hidden] { display: none; }
+
   @media (max-width: 720px) {
     .panel { left: 10px; right: 10px; top: 10px; gap: 12px; padding: 10px 12px; }
     .brand { border-right: 0; padding-right: 0; }
@@ -130,6 +139,8 @@
     <div class="controls"><select id="duzey"></select></div>
   </div>
 </div>
+
+<div class="tip" id="tip" hidden></div>
 
 <div class="note" id="note"></div>
 

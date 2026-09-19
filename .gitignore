@@ -32,3 +32,7 @@ cikti/
 
 # Analysis build cache (scripts/build_analysis.py)
 election-cache.csv
+
+# Harita küpleri: üretilmiş dosyalar, 24 MB ve büyüyor.
+# scripts/build_map_cube.py yeniden üretir.
+public/harita/

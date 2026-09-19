@@ -78,8 +78,10 @@ const map = new maplibregl.Map({
             }),
         ],
     },
-    center: [35.3, 39.0], zoom: 5.1, minZoom: 4.2, maxZoom: 13,
-    maxBounds: [[19.0, 33.0], [51.0, 45.5]],
+    center: [35.3, 39.0], zoom: 5.1, minZoom: 4.0, maxZoom: 14,
+    // Room to breathe around the country: a box drawn tight to the coast stops the drag
+    // the moment a corner touches it, which reads as a stuck map rather than a limit.
+    maxBounds: [[15.0, 30.0], [55.0, 48.0]],
     attributionControl: false,
     dragRotate: false,
 });
@@ -135,9 +137,26 @@ function fitScope() {
 
 let hovered = null;
 function clearHover() {
-    if (!hovered) return;
-    map.setFeatureState(hovered, { hover: false });
-    hovered = null;
+    if (hovered) {
+        map.setFeatureState(hovered, { hover: false });
+        hovered = null;
+    }
+    const tip = document.getElementById("tip");
+    if (tip) tip.hidden = true;
+}
+
+// The name under the cursor. It follows the pointer rather than sitting in a corner: at
+// neighbourhood level the shapes are small, and a fixed panel makes the reader look away
+// from the thing they are pointing at.
+function showTip(event, properties) {
+    const tip = document.getElementById("tip");
+    if (!tip) return;
+    tip.textContent = properties.ad || "—";
+    tip.hidden = false;
+    const box = tip.getBoundingClientRect();
+    tip.style.transform =
+        "translate(" + Math.min(event.point.x + 14, window.innerWidth - box.width - 12) +
+        "px," + Math.min(event.point.y + 14, window.innerHeight - box.height - 12) + "px)";
 }
 
 // ---------- panel ----------
@@ -202,11 +221,15 @@ function wireMap() {
         map.on("mousemove", key + "-dolgu", (event) => {
             if (key !== level || !event.features.length) return;
             const feature = event.features[0];
-            if (hovered && hovered.id === feature.id) return;
+            if (hovered && hovered.id === feature.id) {
+                showTip(event, feature.properties);
+                return;
+            }
             clearHover();
             hovered = { source: LEVELS[key].file, sourceLayer: LEVELS[key].layer, id: feature.id };
             map.setFeatureState(hovered, { hover: true });
             map.getCanvas().style.cursor = "pointer";
+            showTip(event, feature.properties);
         });
         map.on("mouseleave", key + "-dolgu", () => {
             if (key !== level) return;
