@@ -12,8 +12,13 @@ shapely clips, mapbox_vector_tile encodes, pmtiles writes.
 Zoom plan: districts z0-9, neighbourhoods z8-12. Overlapping bands so the neighbourhood
 layer can fade in over the district one.
 
+Levels above the province are dissolved from the same district shapes, through the İBBS
+membership table, so a region's border is always exactly its provinces' outer edge — no
+second geometry that can disagree.
+
 Run:  uv run python scripts/build_pmtiles.py ilce
       uv run python scripts/build_pmtiles.py mahalle
+      uv run python scripts/build_pmtiles.py ibbs1 ibbs2 tr
 """
 
 from __future__ import annotations
@@ -46,6 +51,12 @@ LAYERS = {
         "birlestir": True,
     },
     "ilce": {"dir": GEO / "districts", "min": 0, "max": 9, "layer": "ilce"},
+    # İBBS-1 (12 regions) and İBBS-2 (26) are the provinces grouped; İBBS-3 *is* the
+    # province, so it is not a separate layer. The country outline is the same dissolve
+    # taken one step further.
+    "ibbs2": {"dir": GEO / "districts", "min": 0, "max": 7, "layer": "ibbs2", "ibbs": 2},
+    "ibbs1": {"dir": GEO / "districts", "min": 0, "max": 6, "layer": "ibbs1", "ibbs": 1},
+    "tr": {"dir": GEO / "districts", "min": 0, "max": 6, "layer": "tr", "ibbs": 0},
     # From zoom 5 so the whole country can be seen at neighbourhood level; the low
     # zooms are few tiles, each simplified to about a pixel.
     "mahalle": {"dir": GEO / "neighbourhoods", "min": 5, "max": 12, "layer": "mahalle"},
@@ -92,7 +103,35 @@ def features_of(directory: pathlib.Path):
                 "ad": props.get("name_tr"),
                 "ust": props.get("parent_id"),
             }
+            # Villages and neighbourhoods share a layer and a geometry file; the source's
+            # own flag is the only thing that tells them apart, and a map that offers
+            # "köy" as a level needs it in the tile.
+            if props.get("kind"):
+                keep["tur"] = "koy" if props["kind"] == "village" else "mahalle"
             yield keep, shape(feature["geometry"])
+
+
+def ibbs_table() -> tuple[dict[str, str], dict[str, str], dict[str, str]]:
+    """province name → (İBBS-2 id, İBBS-1 id), plus the regions' own names."""
+    import csv
+
+    table = ROOT / "src" / "veriatlas" / "data" / "nuts_tr.csv"
+    areas = ROOT / "src" / "veriatlas" / "data" / "areas_tr.csv"
+    ids = {}
+    with areas.open(encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            if row["area_level"] == "province":
+                ids[row["name_tr"]] = row["area_id"]
+    province_region, names = {}, {}
+    with table.open(encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            area_id = ids.get(row["province_name"])
+            if not area_id:
+                raise KeyError("İBBS tablosunda tanınmayan il: " + row["province_name"])
+            province_region[area_id] = (row["nuts2_id"], row["nuts1_id"])
+            names[row["nuts2_id"]] = row["nuts2_name"]
+            names[row["nuts1_id"]] = row["nuts1_name"]
+    return province_region, names, ids
 
 
 def build(name: str) -> None:
@@ -103,7 +142,34 @@ def build(name: str) -> None:
     target = OUT / f"{name}.pmtiles.tmp"
 
     items = list(features_of(spec["dir"]))
-    if spec.get("birlestir"):
+    if "ibbs" in spec:
+        from shapely.ops import unary_union
+
+        province_region, names, _ = ibbs_table()
+        level = spec["ibbs"]
+        groups: dict[str, list] = defaultdict(list)
+        for props, geom in items:
+            province = props.get("ust") or ""
+            if level == 0:
+                key = "TR"
+            else:
+                region = province_region.get(province)
+                if region is None:
+                    raise KeyError("İBBS eşleşmeyen il: " + province)
+                key = region[0] if level == 2 else region[1]
+            groups[key].append(geom)
+        items = [
+            (
+                {
+                    "id": key,
+                    "ad": "Türkiye" if key == "TR" else names.get(key, key),
+                    "ust": "TR",
+                },
+                unary_union(geoms).buffer(0),
+            )
+            for key, geoms in groups.items()
+        ]
+    elif spec.get("birlestir"):
         from shapely.ops import unary_union
 
         gruplar: dict[str, list] = defaultdict(list)
