@@ -248,3 +248,29 @@ düz istekte 403, Gratis ve Tekzen erişilebilir ama mağaza listesini sayfaya h
 Buna karşılık aynı akşam çözülen dört markanın (Oses, Ziyafet, Komagene, Domino's) hepsi
 yeme-içme. Desen açık: mağaza listesi perakendeci için rakip istihbaratı, franchise satan
 için reklam. Yeni marka denemeden önce bu akılda tutulmalı.
+
+## BKM sektörel kartlı ödeme (2026-09-20)
+
+Dört gösterge girdi: `card_transactions_by_sector`, `card_spending_by_sector`,
+`ecommerce_transactions_by_sector`, `ecommerce_spending_by_sector` — 26 işyeri grubu,
+aylık, 2017-01'den 2026-07'ye, yalnız Türkiye düzeyi. Çekici `scripts/fetch_bkm.py`,
+adaptör `src/veriatlas/adapters/bkm_sector.py`.
+
+**Aranan şey başkaydı, envanter yönlendirdi.** "İl bazında kart harcaması" diye
+bakılmıştı; BKM il kırılımı hiç yayımlamıyor ve zaten depoda **daha iyisi** var: TBB'den
+il bazında POS (`bank_pos_terminals`), ATM (`bank_atms`) ve üye işyeri (`bank_merchants`),
+2010-2025; EVDS'ten BKM'nin kendi endeksi (`card_payment_index`) ve haftalık harcama
+(`card_spending_weekly`). Depoda olmayan tek şey **sektör kırılımıydı**, alınan o oldu.
+
+Üç tuzak çıktı, üçü de sessizce bozan türden:
+
+1. **İki tablo aynı şekilde değil.** Yurt içi tabloda sektör başına 4 sayı var, internet
+   tablosunda **12** — iki örtüşen blok. İlk okuma araba kiralamaya bir ayda 831 milyar TL
+   yazdı. Artık her sayfa kendi sütunlarını bildiriyor, satır uzunluğu sınanıyor.
+2. **`sektorel_*.csv` deseni internet dosyasını da yakalıyor** ve internet dosyası
+   alfabetik olarak sonda. Yurt içi adaptörü e-ticaret dökümünü okuyordu; desen artık
+   `sektorel_2*.csv`.
+3. **İki `Toplam` sütunu farklı şeylerin toplamı**, ikisi de saklanmıyor; yalnız üç ayrık
+   dilim tutuluyor (yerli kart yurt dışı, yerli kart yurt içi, yabancı kart yurt içi).
+   Yayımlanan `TOPLAM` satırı da sektör sayılmıyor — sektörlerin toplamına karşı
+   sınanıp düşürülüyor.

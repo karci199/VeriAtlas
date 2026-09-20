@@ -31823,3 +31823,92 @@ frequency = "monthly"
 dims = ["cpi_item"]
 views = ["table", "line"]
 definition_tr = "TÜİK'in TÜFE madde sepetindeki 409 maddenin Türkiye ortalama fiyatı, TL, aylık, 2003-01 ile 2022-04 arası. Endeks değil gerçek fiyattır. 2005 öncesi değerler eski liradır ve milyona bölünerek çevrilmiştir: pirinç Aralık 2004'te 2.545.872, Ocak 2005'te 2,55 TL. İl kırılımı yoktur, TÜİK madde fiyatlarını yalnız Türkiye geneli yayımlar."
+
+[dim.merchant_sector]
+label_tr = "İşyeri grubu"
+label_en = "Merchant sector"
+
+[dim.merchant_sector.values]
+car_rental = "Araba kiralama"
+vehicle_trade_and_service = "Araç kiralama-satış/servis/yedek parça"
+fuel_stations = "Benzin ve yakıt istasyonları"
+private_pension = "Bireysel emeklilik"
+direct_marketing = "Doğrudan pazarlama"
+other = "Diğer"
+electronics_and_computers = "Elektrik-elektronik eşya, bilgisayar"
+education_and_stationery = "Eğitim / kırtasiye / ofis malzemeleri"
+clothing_and_accessories = "Giyim ve aksesuar"
+airlines = "Havayolları"
+services = "Hizmet sektörleri"
+public_and_tax_payments = "Kamu / vergi ödemeleri"
+accommodation = "Konaklama"
+clubs_and_associations = "Kulüp / dernek / sosyal hizmetler"
+gambling_and_licensed_premises = "Kumarhane / içkili yerler"
+jewellers = "Kuyumcular"
+markets_and_malls = "Market ve alışveriş merkezleri"
+furniture_and_decoration = "Mobilya ve dekorasyon"
+contracting = "Müteahhit işleri"
+health_and_cosmetics = "Sağlık / sağlık ürünleri / kozmetik"
+travel_and_transport = "Seyahat acenteleri / taşımacılık"
+insurance = "Sigorta"
+telecommunications = "Telekomünikasyon"
+building_materials_and_hardware = "Yapı malzemeleri, hırdavat, nalburiye"
+food_service = "Yemek"
+food_retail = "Çeşitli gıda"
+
+[dim.card_type]
+label_tr = "Kart türü"
+label_en = "Card type"
+
+[dim.card_type.values]
+credit = "Kredi kartı"
+debit = "Banka kartı"
+
+[dim.card_usage]
+label_tr = "Kart ve işyerinin yeri"
+label_en = "Card and merchant location"
+
+[dim.card_usage.values]
+domestic_card_abroad = "Yerli kart, yurt dışı işyeri"
+domestic_card_at_home = "Yerli kart, yurt içi işyeri"
+foreign_card_at_home = "Yabancı kart, yurt içi işyeri"
+
+[indicator.card_transactions_by_sector]
+label_tr = "Kartlı işlem adedi (işyeri grubuna göre)"
+label_en = "Card transactions by merchant sector"
+topic = "bankacilik"
+unit = "item"
+frequency = "monthly"
+dims = ["merchant_sector", "card_type"]
+views = ["table", "line", "bar"]
+definition_tr = "BKM, aylık, yalnız Türkiye. 26 işyeri grubu; kredi ve banka kartı ayrı. Yayımlanan TOPLAM satırı saklanmaz, sektörlerin toplamına karşı sınanır."
+
+[indicator.card_spending_by_sector]
+label_tr = "Kartlı harcama tutarı (işyeri grubuna göre)"
+label_en = "Card spending by merchant sector"
+topic = "bankacilik"
+unit = "try"
+frequency = "monthly"
+dims = ["merchant_sector", "card_type"]
+views = ["table", "line", "bar"]
+definition_tr = "BKM, aylık, yalnız Türkiye. Kaynak milyon TL yayımlar, burada TL'ye çevrilir. Nominal, deflate edilmemiş."
+
+[indicator.ecommerce_transactions_by_sector]
+label_tr = "İnternetten kartlı işlem adedi (işyeri grubuna göre)"
+label_en = "E-commerce card transactions by merchant sector"
+topic = "bankacilik"
+unit = "item"
+frequency = "monthly"
+dims = ["merchant_sector", "card_usage"]
+views = ["table", "line", "bar"]
+definition_tr = "BKM, aylık, yalnız Türkiye. Üç ayrık dilim: yerli kartın yurt dışı, yerli kartın yurt içi, yabancı kartın yurt içi kullanımı. Kaynaktaki iki Toplam sütunu farklı şeylerin toplamı olduğu için saklanmaz."
+
+[indicator.ecommerce_spending_by_sector]
+label_tr = "İnternetten kartlı harcama tutarı (işyeri grubuna göre)"
+label_en = "E-commerce card spending by merchant sector"
+topic = "bankacilik"
+unit = "try"
+frequency = "monthly"
+dims = ["merchant_sector", "card_usage"]
+views = ["table", "line", "bar"]
+definition_tr = "BKM, aylık, yalnız Türkiye. Kaynak milyon TL yayımlar, burada TL'ye çevrilir."

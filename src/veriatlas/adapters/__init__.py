@@ -4,6 +4,7 @@ from .afad import AFAD_ADAPTERS
 from .ayd_malls import AYD_ADAPTERS
 from .base import Adapter, Manifest, history, ingest
 from .bddk_finturk import FINTURK_ADAPTERS
+from .bkm_sector import BKM_ADAPTERS
 from .btk import BTK_ADAPTERS
 from .btk_charts import BTK_CHART_ADAPTERS
 from .btk_imei import BTK_IMEI_ADAPTERS
@@ -106,6 +107,7 @@ ADAPTERS = {
     **PROVINCE_GDP_ADAPTERS,
     **UAB_ADAPTERS,
     **AYD_ADAPTERS,
+    **BKM_ADAPTERS,
     **TELECOM_ADAPTERS,
     **RETAIL_ADAPTERS,
     **NARROW_ADAPTERS,
