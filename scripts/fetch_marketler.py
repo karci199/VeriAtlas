@@ -88,7 +88,7 @@ def bizim_toptan(page: str) -> list[dict]:
             }
         )
     addresses = [
-        clean(a) for a in re.findall(r'store-locator-item-address[^>]*>([^<]*)<', page)
+        clean(a) for a in re.findall(r"store-locator-item-address[^>]*>([^<]*)<", page)
     ]
     for row, address in zip(rows, addresses, strict=False):
         row["address"] = address
@@ -137,16 +137,30 @@ def happy_center(page: str) -> list[dict]:
     return rows
 
 
+#: Onur Market prints the store's market day right after the address, with nothing
+#: between them, so the tail reads `… Osmangazi / Bursa Halk Günü` and the province came
+#: out as "Bursa Halk Günü" — 154 of 154 rows unmatched against the registry. The phrase
+#: is the page's own wording, not part of any province name, so it is cut here rather
+#: than worked around downstream.
+MARKET_DAY = re.compile(r"\s*Halk\s+G[üu]n[üu].*$", re.IGNORECASE)
+
+
+def _province(text: str) -> str:
+    return MARKET_DAY.sub("", text).strip()
+
+
 def onur_market(page: str) -> list[dict]:
     rows = []
     for block in re.split(r'<div class="box c">', page)[1:]:
         text = clean(re.sub(r"<[^>]+>", " ", block.split("</div>")[0]))
         # "… No: 29/4 16180 Emek Osmangazi / Bursa" — the tail is district / province.
-        tail = re.search(r"([A-Za-zÇĞİÖŞÜçğıöşü.\s]+)/\s*([A-Za-zÇĞİÖŞÜçğıöşü\s]+)$", text)
+        tail = re.search(
+            r"([A-Za-zÇĞİÖŞÜçğıöşü.\s]+)/\s*([A-Za-zÇĞİÖŞÜçğıöşü\s]+)$", text
+        )
         rows.append(
             {
                 "name": "",
-                "province": clean(tail.group(2)) if tail else "",
+                "province": _province(clean(tail.group(2))) if tail else "",
                 "district": clean(tail.group(1).split()[-1]) if tail else "",
                 "address": text,
                 "lat": "",
@@ -259,7 +273,9 @@ def karaca(page: str) -> list[dict]:
     repairing a document the source itself broke.
     """
     rows = []
-    for block in re.findall(r'class="store-find-change-map\d+">\{(.*?)\}</div>', page, re.DOTALL):
+    for block in re.findall(
+        r'class="store-find-change-map\d+">\{(.*?)\}</div>', page, re.DOTALL
+    ):
         text = html.unescape(block)
 
         def field(name: str, source: str = text) -> str:
