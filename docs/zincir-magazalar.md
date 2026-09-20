@@ -408,3 +408,32 @@ ClaudeBot'a kapalı.
 Beyaz eşyada tek açık kapı Vestel çıktı. Arçelik ve BSH (Bosch/Siemens/Profilo) grupları
 robots dosyasını bile vermiyor; bayi ağları bu yüzden sayılamıyor ve "bayisi yok" diye
 değil, **bakılamadı** diye kaydediliyor.
+
+## Koçtaş (2026-09-20) — ve iki sahte alan
+
+**134 mağaza, 108 ilçe, 38 il.** 55'i büyük format (`KOCTAS_STORE`), 79'u mahalle
+formatı (`KOCTAS_FIX`). Uç nokta sayfanın formunun kendi hedefi:
+`GET /store-finder/findPOSByCity?addressCity=<plaka>`. Parametrenin adı `city` değil
+`addressCity`; `?city=06` **HTTP 400** veriyor — reddedilmiş istek, boş il değil.
+
+Bu kaynakta bilgi veriyormuş gibi duran ama vermeyen iki alan var:
+
+**`storeContent` kapanış bildirmiyor.** 134 mağazanın 58'inde
+`"Mağazamız geçici olarak kapalıdır."` yazıyor — Ankara Eryaman, Ankamall ve Panora
+dahil, yani zincirin amiral mağazaları. Hepsinde `storeOpenStatus: OPEN`. Cümle bir
+içerik alanına düşmüş kalıp metin; kapanış işareti sayılsaydı zincirin **%43'ü kapalı**
+görünecekti. Okunan alan `storeOpenStatus`.
+
+**`addressTown` ilçeyi yanlış veriyor.** Yenimahalle'deki Ankamall AVM mağazası
+`HAMAMÖZÜ` diye kayıtlı — üstelik ilçe kodu `K0503`, yani Amasya'nın plakası. Çankaya'daki
+Gordion AVM `HAYMANA` yazıyor. Alan dosyaya kaynaktaki hâliyle yazılıyor ama ilçe, her
+zincirde olduğu gibi, koordinattan belirleniyor. Bu tabloyu adres etiketiyle kuran biri
+Hamamözü'ne AVM mağazası açardı.
+
+## MediaMarkt: robots açık, kapı kapalı (2026-09-20)
+
+robots.txt izin veriyor ve mağaza listesini çeken sorgunun adı bile açıkta —
+`query AllStores { stores(states: [ACTIVE, PARTIALLY_ACTIVE]) {...} }`, sayfanın kendi
+`StoreFinder` paketinin içinde yazılı. Ama `/api/v1/graphql` uygulamanın kendi kimliğini
+istiyor: aynı sorgu tarayıcıdan gönderildiğinde de **403**. Sayfa mağazaları sunucuda
+basmıyor, yani HTML'de de yok. Kapalı sayıldı — "mağazası yok" değil, **alınamadı**.
