@@ -369,3 +369,42 @@ Tarım Kredi mağaza sayısında Migros'un altında ama **ilçe sayısında üst
 mağazayla 640 ilçeye giriyor, Migros 3.442 mağazayla 528'e. Kooperatif yapısının kırsala
 yayıldığı, özel zincirin kente yığıldığı buradan okunuyor — ama okunmadan önce mağaza
 başına düşen nüfusa bakılmalı, `docs/gosterge-notlari.md`'deki kayıtlı nüfus uyarısıyla.
+
+## Teknoloji ve beyaz eşya (2026-09-20)
+
+**Vestel girdi: 1.158 satış noktası, 489 ilçe** — `scripts/fetch_vestel.py`. Ayrıca
+**359 yetkili servis (79 il)** ham depoda; mağazayla aynı sayıya katılmıyor, çamaşır
+makinesi satan dükkânla onu tamir eden atölye aynı şey değil.
+
+Vestel'in ağı diğerlerinden farklı: şirketin kendi mağazaları değil, **bayiler**. Tabela
+Vestel, arkadaki şirket yerel — Ankara'daki ilk kayıt `GÖKTAŞLAR İÇ DIŞ TİCARET ...
+KIZLARPINARI` diye geçiyor. Ad kaynağın yazdığı gibi bırakılıyor.
+
+Uç nokta sayfanın kendi `storeAndServices({...})` çağrısında yazılı:
+`POST /lookup/offlinestores` gövde `cityID=<plaka>&districtID=`. Boş ilçe **ilin tamamı**
+demek; "tüm iller" değeri yok, `cityID=0` boş liste veriyor — bu geçerli bir soruya boş
+cevap, hata değil. 81 istek.
+
+### robots kararı yol bazında değil, artık dosya bazında da verilmeli
+
+2026-09-19'daki düzeltme "Teknosa, MediaMarkt, Gratis izinli" demişti. Bugün bakıldığında
+**Teknosa'nın robots.txt'i HTTP 403 veriyor** — dosyanın kendisi okunamıyor. Standart
+gereği okunamayan robots "tamamı yasak" sayılır, o yüzden Teknosa'ya gidilmedi. Mağaza
+bulucusunun adresi de değişmiş: `/magazalarimiz` değil `/magaza-bul`, ve o yol açıkça
+ClaudeBot'a kapalı.
+
+| Marka | robots.txt | Durum |
+|---|---|---|
+| **Vestel** | 200, `/lookup/` serbest | **çekildi: 1.158 nokta + 359 servis** |
+| Koçtaş | 200, serbest | uç nokta bulundu (`/store-finder/findPOSByCity`), çekilmedi |
+| MediaMarkt | 200, serbest | sayfa kabuk, uç nokta aranacak |
+| Bauhaus | 200 ama sayfa 403 | mağaza sayfası Cloudflare'de |
+| Tekzen | 200, serbest | sayfa kabuk, uç nokta aranacak |
+| Teknosa | **403 (okunamıyor)** | kapalı sayıldı |
+| **Arçelik, Beko, Altus** | **403** | üçü de aynı grup, üçü de kapalı |
+| **Bosch, Siemens, Profilo** | **403** | BSH grubunun üçü de kapalı |
+| Watsons | **403** | kapalı |
+
+Beyaz eşyada tek açık kapı Vestel çıktı. Arçelik ve BSH (Bosch/Siemens/Profilo) grupları
+robots dosyasını bile vermiyor; bayi ağları bu yüzden sayılamıyor ve "bayisi yok" diye
+değil, **bakılamadı** diye kaydediliyor.

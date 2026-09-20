@@ -91,6 +91,7 @@ STORE_BRANDS = {
     "vatan": "marketler/vatan_*.csv",
     "sok": "sok/magazalar_*.csv",
     "tarim_kredi": "tarimkredi/magazalar_*.csv",
+    "vestel": "vestel/magazalar_*.csv",
 }
 
 #: Chains that publish a district *count* instead of a list of branches. BİM's finder
