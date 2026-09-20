@@ -253,3 +253,21 @@ gruplamasının toplamıyla karşılaştırıyor; tutmazsa duruyor.
 **A101'in tam listesi yok.** `/magazalarimiz` 404; çalışan sayfa `/en-yakin-magazalar` ve
 yalnız tarayıcının konumuna en yakın mağazaları veriyor. Tamamı için koordinat ızgarası
 taraması gerekir — ayrı bir iş.
+
+
+## A101: konum taraması gerekiyor (kurulmadı)
+
+`/en-yakin-magazalar` sayfası listeyi **tarayıcının konum iznine göre** veriyor. URL'ye
+`?lat=&lng=` yazmak işe yaramıyor: sayfa parametreyi kendi yol durumuna yazıyor ama
+mağazaları yine tarayıcının verdiği konuma göre çiziyor (Üsküdar'dan sorulduğunda hep
+Üsküdar mağazaları geldi). Sunucu tarafında sayfayı çekmek de boş dönüyor — 5,6 KB, tek
+bir adres yok.
+
+Tam listenin tek yolu tarayıcıda konumu sahte konumlandırıp ızgara taraması yapmak:
+973 ilçe merkezinin koordinatıyla (kapsam.json'daki sınır kutularının ortası) tek tek
+sormak, dönen mağazaları kimliğe göre tekilleştirmek. Yaklaşık 13.000 mağaza için
+973 sorgu yeter gibi görünüyor ama kapsama boşluğu kalırsa ızgara sıklaştırılmalı.
+
+Bu iş **kurulmadı**: tarayıcı otomasyonu ve konum sahteleme gerektiriyor, yarım kurulmuş
+bir tarayıcı sessizce eksik veri toplar. Ayrı bir oturumda, doğrulamasıyla birlikte
+yapılmalı — kontrol ölçütü: BİM'in 13.057 mağazasına yakın bir sayı ve 81 ilin tamamı.
