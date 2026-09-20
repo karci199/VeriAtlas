@@ -248,3 +248,24 @@ düz istekte 403, Gratis ve Tekzen erişilebilir ama mağaza listesini sayfaya h
 Buna karşılık aynı akşam çözülen dört markanın (Oses, Ziyafet, Komagene, Domino's) hepsi
 yeme-içme. Desen açık: mağaza listesi perakendeci için rakip istihbaratı, franchise satan
 için reklam. Yeni marka denemeden önce bu akılda tutulmalı.
+
+
+## 2026-09-20: zincir turu ve dorduncu yukleme
+
+**Depo 894 gostergede duruyor. Bu gunun isi henuz icinde degil** — `scripts/load.py`
+bastan calistirilmali (901 adaptor). Girecekler: 32 marka / 56.269 magaza,
+`fuel_stations`, `operator_dealers`, BIM 13.057, Migros 3.442.
+
+`kgm_vehicle_km` her yuklemede ayni yerde 25-90 dakika tutuyor; profillenmeli.
+
+| # | Is | Durum |
+|---|---|---|
+| 1 | **Turkcell PDF temizligi** | 3.619 bayi cikti ama hucre kaydirmasi 65 satirin ilini bozmus (`GUMUSHA N`, `1 HAKKARI`) ve `kind`'de bosluk artigi var (`DSNPlu s`). Ilce eslesmesi %93, `MAX_UNPLACED` %3'u asiyor -> adaptore giremez |
+| 2 | **Akbank ve diger bankalar** | `Ajax.aspx/SearchBranchAtm` calisiyor, yalniz `searchKeyword` ile (`cityName` 400). Yanit `atmList`/`branchList` ayri. Il kodlari bulunursa Garanti/Is/Ziraat icin ayni kalip. Depoda banka bazinda sube/ATM yok |
+| 3 | **KAP** | BIM, Migros, SOK, CarrefourSA, Bizim Toptan borsada — magaza ve calisan sayisi **yillar icinde** oradan alinabilir. Magaza bulucular yalniz bugunu verir. robots 666 donduruyor |
+| 4 | Happy Center, Bizim Toptan | esigi asiyor (20/80 ve 15/172), adaptor disinda; birer cekici duzeltmesi uzakta |
+| 5 | A101, Hakmar, KFC | sirasiyla konum izgarasi, JS sayfalama, yarim cekim |
+
+**Cekilemeyenler:** Watsons, Teknosa, Koton, LC Waikiki, Mado, Popeyes, Bauhaus (403);
+MediaMarkt (robots'ta ClaudeBot kurali); Seyhanlar alindi ama sertifikasi dogrulanmiyor
+(kullanici talimatiyla o tek host icin kapatildi).
