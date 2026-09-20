@@ -539,3 +539,22 @@ yani beklenen 6-7. Gözlem beklentiyle uyuşuyor.
 
 İznik'in tablosu bu gözlemle birlikte: ŞOK 13, **A101 ~6**, BİM 6, Migros 4, Tarım Kredi 3,
 Oses 3, Gratis 1, Komagene 1, Domino's 1 — ve 15 eczane.
+
+### Tarım Kredi sayısının ölçütü (2026-09-20)
+
+Kullanıcı bir arama motorunun yapay zekâ özetini getirdi: *"2026 itibarıyla **2.379 market**
+ve toplam **5.000 satış noktası** (2.500 A tipi market, 1.000 B tipi kooperatif marketi ve
+1.000 Koop Bakkal)"*.
+
+Bizim çektiğimiz **2.348**. Marka sayısıyla uyum iyi (%1,3 fark, üstelik iki ölçüm farklı
+günlere ait). Ama özetin kendisi **kendi içinde tutarsız**: aynı cümlede hem "2.379 market"
+hem "2.500 A tipi market" diyor, üç kalemi topladığında 4.500 ediyor ama "5.000" yazıyor.
+Komagene'de de aynı desen görülmüştü — dolaşan rakam pazarlama ya da özet, ölçüm değil.
+
+**Asıl fark tanımda.** `tkkoop.com.tr`'nin mağaza bulucusu kooperatifin **kendi
+marketlerini** listeliyor; çektiğimiz 2.348 kaydın yalnız birinde "bakkal" geçiyor. "5.000
+satış noktası" ise B tipi kooperatif marketlerini ve Koop Bakkal anlaşmalı bakkalları da
+sayan **başka bir evren** — BİM sayısının FİLE'yi içermesi ya da Migros'un formatları gibi.
+
+Depoya giren, markanın kendi bulucusunda listelediği mağazadır; anlaşmalı bakkal
+listelenmiyorsa sayılamaz ve sayılmış gibi yapılmaz.
