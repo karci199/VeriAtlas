@@ -274,3 +274,20 @@ il bazında POS (`bank_pos_terminals`), ATM (`bank_atms`) ve üye işyeri (`bank
    dilim tutuluyor (yerli kart yurt dışı, yerli kart yurt içi, yabancı kart yurt içi).
    Yayımlanan `TOPLAM` satırı da sektör sayılmıyor — sektörlerin toplamına karşı
    sınanıp düşürülüyor.
+
+## 2026-09-20 tam yükleme
+
+**898 gösterge, 21.280.534 satır.** Envanter yeniden üretildi.
+
+Yükleme iki kez başlatıldı. İlki `btk_mobile_arpu`'da düştü: o adaptör ARPU'yu reelleştirmek
+için **bir önceki yüklemenin ihraç ettiği `public/fact.parquet`'i** okuyor, yeni kurulan bir
+worktree'de o dosya yok. Yani sıfırdan kurulan bir kopyada tam yükleme kendi çıktısına
+ihtiyaç duyuyor. Ana kopyadan getirilerek aşıldı; kalıcı çözüm adaptörün kur serisini
+warehouse'tan (ya da EVDS adaptöründen doğrudan) okuması olurdu.
+
+İkinci ders: `python scripts/load.py > log` çıktıyı tamponlar ve iş saatlerce
+"ilerliyormuş" gibi görünürken aslında ölmüş olabilir. `-u` ile çalıştırılmalı.
+
+Bugün giren göstergeler: `pharmacies` (31.451 eczane, 967 ilçe), `chain_stores`'a BİM,
+Migros, Tarım Kredi, Vestel ve Koçtaş, `chain_restaurants`'a Domino's, BKM'nin dört
+sektörel göstergesi.
