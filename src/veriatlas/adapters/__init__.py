@@ -37,6 +37,7 @@ from .mgm import MGM_ADAPTERS
 from .muhasebat import MUHASEBAT_ADAPTERS
 from .oecd_tl3 import OECD_TL3_ADAPTERS
 from .ookla_speed import OOKLA_ADAPTERS
+from .pharmacies import PHARMACY_ADAPTERS
 from .ptt_postal import PTT_POSTAL_ADAPTERS
 from .saglik_yearbook import SAGLIK_YEARBOOK_ADAPTERS
 from .sege import SEGE_ADAPTERS
@@ -108,6 +109,7 @@ ADAPTERS = {
     **UAB_ADAPTERS,
     **AYD_ADAPTERS,
     **BKM_ADAPTERS,
+    **PHARMACY_ADAPTERS,
     **TELECOM_ADAPTERS,
     **RETAIL_ADAPTERS,
     **NARROW_ADAPTERS,

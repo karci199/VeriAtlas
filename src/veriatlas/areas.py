@@ -15,6 +15,7 @@ need validity ranges and successor links before they can be loaded (open item 3)
 
 from __future__ import annotations
 
+from functools import cache
 from pathlib import Path
 
 import polars as pl
@@ -114,3 +115,80 @@ def resolve(names: list[str], level: str = "province") -> dict[str, str]:
         )
 
     return resolved
+
+
+#: Province names published sources write differently from the registry. Four of them, and
+#: all four are older or shortened names rather than misspellings: `İçel` is what Mersin
+#: was called until 2002, `K.Maraş` and `Afyon` are the short forms, `Agri` is `Ağrı` with
+#: the Turkish letters dropped. They are listed one by one rather than normalised away:
+#: two spellings of one province silently becoming two areas is what `resolve` exists to
+#: prevent, and an alias is a decision, not a transformation.
+PROVINCE_ALIASES = {
+    "Afyon": "Afyonkarahisar",
+    "Agri": "Ağrı",
+    "İçel": "Mersin",
+    "K.Maraş": "Kahramanmaraş",
+}
+
+#: District names the same way. Two kinds: the circumflex the registry keeps and sources
+#: drop (`Kâhta`, `Lâpseki`, `Devrekâni`, `Lâçin`), and the space the registry keeps and
+#: sources close up (`Gazi Osmanpaşa`, `Marmara Ereğlisi`, `Oniki Şubat`, `19 Mayıs`).
+#: Keyed by (province id, source's spelling): a district name is only unique inside its
+#: province.
+#:
+#: Three sources that share nothing else — BİM's store finder, Migros' dropdown and
+#: TİTCK's pharmacy register — produce exactly this list and no other exception between
+#: them, which is why it lives here rather than in any one adapter.
+DISTRICT_ALIASES = {
+    ("TR-02", "Kahta"): "Kâhta",
+    ("TR-16", "MustafaKemalPaşa"): "Mustafakemalpaşa",
+    ("TR-17", "Lapseki"): "Lâpseki",
+    ("TR-19", "Laçin"): "Lâçin",
+    ("TR-34", "Gaziosmanpaşa"): "Gazi Osmanpaşa",
+    ("TR-37", "Devrekani"): "Devrekâni",
+    ("TR-46", "Onikişubat"): "Oniki Şubat",
+    ("TR-55", "19 mayıs"): "19 Mayıs",
+    ("TR-59", "Marmaraereğlisi"): "Marmara Ereğlisi",
+    ("TR-71", "Bahşılı"): "Bahşili",
+}
+
+#: What published sources call the central district of a province that has one. The
+#: registry names it after the province itself — `Bolu`, `Afyonkarahisar` — and never
+#: carries a district called `Merkez`. The rule is safe because the 30 provinces with no
+#: district of their own name are exactly the 30 metropolitan ones, and those have no
+#: `Merkez` either: their whole territory is divided into named districts.
+CENTRE = "Merkez"
+
+
+@cache
+def _district_lookup() -> tuple[dict[str, str], dict[tuple[str, str], str]]:
+    """(province name -> id, (province id, district name) -> id), read once."""
+    registry = load_areas().filter(pl.col("area_level") == "province")
+    provinces = dict(zip(registry["name_tr"], registry["area_id"], strict=True))
+    districts = {
+        (row["parent_id"], row["name_tr"]): row["area_id"]
+        for row in load_districts().iter_rows(named=True)
+    }
+    return provinces, districts
+
+
+def resolve_district(province: str, district: str) -> str:
+    """The area id of a district published as (province name, district name).
+
+    Raises on anything it cannot place. That is the point: a coordinate that falls outside
+    a boundary is a visible failure — something counts it and a threshold trips — but a
+    *name* that fails to match is invisible. The district simply shows no pharmacies, and
+    that reads as a fact about the country rather than a gap in the parsing.
+    """
+    published = province.strip()
+    province_id = _district_lookup()[0].get(PROVINCE_ALIASES.get(published, published))
+    if province_id is None:
+        raise KeyError(f"kayıt defterinde olmayan il: {province!r}")
+    name = district.strip()
+    if name == CENTRE:
+        name = PROVINCE_ALIASES.get(published, published)
+    name = DISTRICT_ALIASES.get((province_id, name), name)
+    area = _district_lookup()[1].get((province_id, name))
+    if area is None:
+        raise KeyError(f"kayıt defterinde olmayan ilçe: {published} / {district!r}")
+    return area

@@ -437,3 +437,32 @@ robots.txt izin veriyor ve mağaza listesini çeken sorgunun adı bile açıkta 
 `StoreFinder` paketinin içinde yazılı. Ama `/api/v1/graphql` uygulamanın kendi kimliğini
 istiyor: aynı sorgu tarayıcıdan gönderildiğinde de **403**. Sayfa mağazaları sunucuda
 basmıyor, yani HTML'de de yok. Kapalı sayıldı — "mağazası yok" değil, **alınamadı**.
+
+## Eczaneler: markanın değil mesleğin sayımı (2026-09-20)
+
+**31.451 eczane, 81 il, 967 ilçe.** Depodaki ilk *sayım* niteliğindeki dükkân göstergesi:
+eczane açmak ruhsat gerektiriyor ve TİTCK ruhsat kaydını tutuyor. Bu yüzden `pharmacies`,
+"bu ilçede kaç eczane var" sorusuna `population`'ın "kaç kişi var"a cevap verdiği gibi
+cevap veriyor; `chain_stores`'daki hiçbir satır böyle okunamaz.
+
+Kaynak TEB değil. TEB'in sitesinde istatistik yok, `tebeczane.net` şifreli bir doküman
+sistemi. Kayıt, ruhsatı veren kurumda: `ebs.titck.gov.tr`, Kendo ızgarası,
+`POST /Ecza/Eczane/grdEczaneListesi_Read`, il zorunlu.
+
+**`pageSize=5000` istendiğinde sunucu `{"Total":0,"Data":[]}` dönüyor.** HTTP 200, hata
+yok. İlk çekim bu yüzden 80 il ve 25.605 eczane yazdı: **İstanbul'un 5.846 eczanesi
+"eczane yok" olarak kaydedilmişti.** `pageSize=1000` ile aynı il sorunsuz cevap veriyor.
+Çekici artık bin bin sayfalıyor ve her ilin sayfaları o ilin kendi `Total`'ine eşit
+değilse duruyor.
+
+**`id` alanı kimlik değil**, ızgaranın sayfa içi satır numarası — dört sayfada okunan bir
+ilde dört tane `1` var. Tekilleştirme yapılmıyor; sayım satır sayısıdır ve eksik/çift
+olmadığının güvencesi `Total` karşılaştırmasıdır.
+
+### Üç kaynak, aynı on istisna
+
+Eczane kaydının ilçe adları, BİM ve Migros'unkiyle **birebir aynı üç sapmayı** gösteriyor:
+`Merkez`, dört il takma adı, on ilçe yazımı. Tek bir yeni istisna çıkmadı. Ortak hiçbir
+yazılımı, ortak hiçbir sağlayıcısı olmayan iki zincir bulucusu ile bir devlet kaydı aynı
+on yerde kayıt defterinden ayrılıyor — bu yüzden eşleme artık adaptörlerde değil, kayıt
+defterinin yanında: `veriatlas.areas.resolve_district`.

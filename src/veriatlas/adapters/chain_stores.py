@@ -52,7 +52,7 @@ from typing import ClassVar
 
 import polars as pl
 
-from ..areas import load_areas, load_districts
+from ..areas import resolve_district
 from ..config import PUBLIC, RAW
 from .base import cached_copy
 
@@ -107,44 +107,10 @@ COUNT_BRANDS = {
     "migros": "migros/district_counts.csv",
 }
 
-#: Province names these two write differently from the registry. Four of them, and all
-#: four are older or shortened names rather than misspellings: `İçel` is what Mersin was
-#: called until 2002, `K.Maraş` and `Afyon` are the short forms, `Agri` is `Ağrı` with the
-#: Turkish letters dropped. They are listed one by one rather than normalised away: two
-#: spellings of one province silently becoming two areas is exactly what `resolve` exists
-#: to prevent, and an alias is a decision, not a transformation.
-PROVINCE_ALIASES = {
-    "Afyon": "Afyonkarahisar",
-    "Agri": "Ağrı",
-    "İçel": "Mersin",
-    "K.Maraş": "Kahramanmaraş",
-}
-
-#: District names the same way. Two kinds: the circumflex the registry keeps and the
-#: sources drop (`Kâhta`, `Lâpseki`, `Devrekâni`, `Lâçin`), and the space the registry
-#: keeps and the sources close up (`Gazi Osmanpaşa`, `Marmara Ereğlisi`, `Oniki Şubat`,
-#: `19 Mayıs`). Keyed by (province id, source's spelling) because a district name is only
-#: unique inside its province.
-DISTRICT_ALIASES = {
-    ("TR-02", "Kahta"): "Kâhta",
-    ("TR-16", "MustafaKemalPaşa"): "Mustafakemalpaşa",
-    ("TR-17", "Lapseki"): "Lâpseki",
-    ("TR-19", "Laçin"): "Lâçin",
-    ("TR-34", "Gaziosmanpaşa"): "Gazi Osmanpaşa",
-    ("TR-37", "Devrekani"): "Devrekâni",
-    ("TR-46", "Onikişubat"): "Oniki Şubat",
-    ("TR-55", "19 mayıs"): "19 Mayıs",
-    ("TR-59", "Marmaraereğlisi"): "Marmara Ereğlisi",
-    ("TR-71", "Bahşılı"): "Bahşili",
-}
-
-#: What both sources call the central district of a province that has one. The registry
-#: names it after the province itself — `Bolu`, `Afyonkarahisar` — and never carries a
-#: district called `Merkez`. The rule is safe because the 30 provinces with no district of
-#: their own name are exactly the 30 metropolitan ones, and those have no `Merkez` either:
-#: their whole territory is divided into named districts.
-CENTRE = "Merkez"
-
+#: The spellings these two use that the registry does not — `Merkez`, four province
+#: aliases and ten district spellings — are not listed here: they are the same list the
+#: pharmacy register produces, so they live with the registry itself, in
+#: `veriatlas.areas.resolve_district`.
 #: The share of a brand's branches allowed to fall outside every polygon *while standing
 #: inside Türkiye*. Measured at 1,4% (Burger King) and 0,3% (McDonald's).
 MAX_UNPLACED = 0.03
@@ -261,23 +227,6 @@ def counts(brand: str) -> dict[str, int]:
 
 
 @cache
-def _registry() -> tuple[dict[str, str], dict[tuple[str, str], str]]:
-    """(province name -> id, (province id, district name) -> id), read once."""
-    areas = load_areas()
-    provinces = {
-        row["name_tr"]: row["area_id"]
-        for row in areas.filter(pl.col("area_level") == "province").iter_rows(
-            named=True
-        )
-    }
-    districts = {
-        (row["parent_id"], row["name_tr"]): row["area_id"]
-        for row in load_districts().iter_rows(named=True)
-    }
-    return provinces, districts
-
-
-@cache
 def label_counts(brand: str) -> dict[str, int]:
     """District id -> the brand's store count, for the two that publish counts by name.
 
@@ -288,28 +237,19 @@ def label_counts(brand: str) -> dict[str, int]:
     district, four province aliases, ten district spellings) are each written out above.
     """
     path = cached_copy(dump(brand), FOLDER / f"{brand}.csv")
-    provinces, districts = _registry()
     placed: dict[str, int] = {}
     unknown: list[str] = []
     with path.open(encoding="utf-8", newline="") as handle:
         for row in csv.DictReader(handle):
-            published = row["il"].strip()
-            province = provinces.get(PROVINCE_ALIASES.get(published, published))
-            if province is None:
-                unknown.append(f"il {published!r}")
-                continue
-            name = row["ilce"].strip()
-            if name == CENTRE:
-                # The registry calls it by the province's own name.
-                name = PROVINCE_ALIASES.get(published, published)
-            name = DISTRICT_ALIASES.get((province, name), name)
-            area = districts.get((province, name))
-            if area is None:
-                unknown.append(f"{published} / {row['ilce']!r}")
-                continue
             count = int(row["magaza_sayisi"])
-            if count:
-                placed[area] = placed.get(area, 0) + count
+            if not count:
+                continue
+            try:
+                area = resolve_district(row["il"], row["ilce"])
+            except KeyError as problem:
+                unknown.append(str(problem))
+                continue
+            placed[area] = placed.get(area, 0) + count
     if unknown:
         raise KeyError(
             f"{brand}: kayıt defterinde olmayan ad(lar): "

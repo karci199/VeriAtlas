@@ -31912,3 +31912,13 @@ frequency = "monthly"
 dims = ["merchant_sector", "card_usage"]
 views = ["table", "line", "bar"]
 definition_tr = "BKM, aylık, yalnız Türkiye. Kaynak milyon TL yayımlar, burada TL'ye çevrilir."
+
+[indicator.pharmacies]
+label_tr = "Eczane sayısı"
+label_en = "Pharmacies"
+topic = "saglik"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["map", "table", "bar"]
+definition_tr = "TİTCK eczane kaydı, 20.09.2026 anlık görüntüsü. Ruhsat kaydı olduğu için markanın değil mesleğin sayımıdır. İlçe kaydın kendi etiketinden, il ilçelerin toplamı. Seri değil: yeniden çekildiğinde satırlar değişir."

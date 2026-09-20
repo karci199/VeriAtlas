@@ -108,7 +108,7 @@ def robots_verdict(client: httpx.Client, host: str) -> tuple[str, str]:
 def main() -> None:
     rows = []
     headers = {"User-Agent": AGENT}
-    with httpx.Client(headers=headers, timeout=25, follow_redirects=True, verify=False) as client:  # noqa: S501
+    with httpx.Client(headers=headers, timeout=25, follow_redirects=True, verify=False) as client:
         for name, host in CHAINS.items():
             status, verdict = robots_verdict(client, host)
             row = {"zincir": name, "alan": host, "robots": status, "karar": verdict,

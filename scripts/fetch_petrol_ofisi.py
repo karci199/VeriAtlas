@@ -70,7 +70,7 @@ def main() -> None:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
         "(KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
     }
-    response = httpx.get(URL, headers=headers, timeout=90, follow_redirects=True, verify=False)  # noqa: S501
+    response = httpx.get(URL, headers=headers, timeout=90, follow_redirects=True, verify=False)
     response.raise_for_status()
 
     rows = []
