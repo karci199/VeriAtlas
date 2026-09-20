@@ -183,9 +183,11 @@ def main() -> None:
             continue
         prov_rows.append(
             (
-                f"{provinces[area]:<14} ortalama fark {statistics.mean(values):5.1f} puan"
-                f"  | {len(values)} seçim | {len(set(pw[area]))} farklı kazanan"
-                f" | en dar {min(values):4.1f}",
+                (
+                    f"{provinces[area]:<14} ortalama fark"
+                    f" {statistics.mean(values):5.1f} puan  | {len(values)} seçim"
+                    f" | {len(set(pw[area]))} farklı kazanan | en dar {min(values):4.1f}"
+                ),
                 statistics.mean(values),
             )
         )
@@ -202,9 +204,12 @@ def main() -> None:
             continue
         dist_rows.append(
             (
-                f"{provinces.get(parent, parent)} {labels[area]:<18}"
-                f" ortalama fark {statistics.mean(values):5.1f} puan | {len(values)} seçim"
-                f" | {len(set(winners[area]))} farklı kazanan",
+                (
+                    f"{provinces.get(parent, parent)} {labels[area]:<18}"
+                    f" ortalama fark {statistics.mean(values):5.1f} puan"
+                    f" | {len(values)} seçim"
+                    f" | {len(set(winners[area]))} farklı kazanan"
+                ),
                 statistics.mean(values),
             )
         )
@@ -214,9 +219,11 @@ def main() -> None:
 
     turnover = [
         (
-            f"{provinces.get(district_parent.get(a), '')} {labels[a]:<18}"
-            f" {len(set(w))} farklı kazanan | {len(gaps[a])} seçim"
-            f" | ortalama fark {statistics.mean(gaps[a]):5.1f}",
+            (
+                f"{provinces.get(district_parent.get(a), '')} {labels[a]:<18}"
+                f" {len(set(w))} farklı kazanan | {len(gaps[a])} seçim"
+                f" | ortalama fark {statistics.mean(gaps[a]):5.1f}"
+            ),
             len(set(w)),
         )
         for a, w in winners.items()
@@ -285,10 +292,13 @@ def neighbourhoods(args, provinces: dict, district_parent: dict) -> None:
         district = area.rsplit("-", 1)[0]
         rows.append(
             (
-                f"{provinces.get(district_parent.get(district), '')} "
-                f"{labels[area]:<26} ortalama fark {statistics.mean(values):5.1f} puan"
-                f" | {len(values)} seçim | {len(set(winners[area]))} farklı kazanan"
-                f" | ort. {statistics.mean(votes_seen[area]):,.0f} oy",
+                (
+                    f"{provinces.get(district_parent.get(district), '')} "
+                    f"{labels[area]:<26} ortalama fark"
+                    f" {statistics.mean(values):5.1f} puan | {len(values)} seçim"
+                    f" | {len(set(winners[area]))} farklı kazanan"
+                    f" | ort. {statistics.mean(votes_seen[area]):,.0f} oy"
+                ),
                 statistics.mean(values),
             )
         )
