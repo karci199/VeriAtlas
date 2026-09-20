@@ -46,13 +46,15 @@ from __future__ import annotations
 import csv
 import datetime as dt
 import json
+import math
+import unicodedata
 from functools import cache
 from pathlib import Path
 from typing import ClassVar
 
 import polars as pl
 
-from ..areas import resolve_district
+from ..areas import load_districts, resolve_district
 from ..config import PUBLIC, RAW
 from .base import cached_copy
 
@@ -116,6 +118,23 @@ COUNT_BRANDS = {
 #: inside Türkiye*. Measured at 1,4% (Burger King) and 0,3% (McDonald's).
 MAX_UNPLACED = 0.03
 
+#: Brands whose dump carries the chain's own province and district beside the coordinate,
+#: and the two columns that hold them. Used only by the correction below.
+LABEL_COLUMNS = {
+    "sok": ("province", "district"),
+    "dominos": ("province", "district"),
+    "gratis": ("province", "district"),
+    "vestel": ("il", "ilce"),
+    "koctas": ("il", "kaynak_ilce"),
+}
+
+#: How far a point may sit from the district its own source names before the record is
+#: treated as broken rather than as a boundary case. Under this, the two disagree because
+#: the shop is near the line and the coordinate is the better answer; over it, one of the
+#: two fields is simply wrong — ŞOK has stores 975 km from the district they are named
+#: after.
+FAR_KM = 10.0
+
 #: Türkiye's bounding box, rounded outward. A store outside it is abroad, not misplaced:
 #: Madame Coco lists Moscow, Almaty, Beirut and Brussels in the same file as Adana, and
 #: Oses labels 33 rows `Yurtdışı`. Foreign rows leave the count without counting against
@@ -163,6 +182,73 @@ def _districts() -> list[tuple[str, list[Ring], tuple[float, float, float, float
     if not out:
         raise FileNotFoundError(f"İlçe sınırları yok: {PUBLIC / 'geo' / 'districts'}")
     return out
+
+
+def fold(text: str) -> str:
+    """Lowercase and strip Turkish letters, for comparing a name against free text.
+
+    `İznik` and `IZNIK` and `iznik` have to meet, and `str.lower()` alone does not bring
+    them together — it turns `I` into `i`, not `ı`.
+    """
+    stripped = unicodedata.normalize("NFD", text)
+    stripped = "".join(c for c in stripped if unicodedata.category(c) != "Mn")
+    table = str.maketrans({"ı": "i", "ş": "s", "ğ": "g", "ç": "c", "ö": "o", "ü": "u"})
+    return stripped.lower().translate(table).replace(" ", "")
+
+
+def _bbox_km(lng: float, lat: float, area: str) -> float | None:
+    """Kilometres from a point to a district's bounding box; 0 inside it."""
+    for candidate, _rings, (x0, y0, x1, y1) in _districts():
+        if candidate != area:
+            continue
+        dx = max(x0 - lng, 0, lng - x1) * 111_320 * math.cos(math.radians(lat))
+        dy = max(y0 - lat, 0, lat - y1) * 111_320
+        return math.hypot(dx, dy) / 1000
+    return None
+
+
+def agreed_area(row: dict, brand: str, by_point: str) -> str:
+    """The district to count this store in, when its source also names one.
+
+    The coordinate decides, except in one case: the source names a district, the point is
+    more than `FAR_KM` from it, **and** that district's name appears in the store's own
+    name or address. Then two independent fields say one thing and a single number says
+    another, and the two win.
+
+    The text is the third source that makes this safe to automate. Without it the rule
+    would have to pick a side and would be wrong half the time in the other direction:
+    `BURSA İZNİK KALE MAĞAZASI`, at a Selçuklu Mah. address in İznik, carries a coordinate
+    35 km away in Gemlik — the label is right. `Koçtaş Ankara Ankamall AVM`, which stands
+    in Yenimahalle, is filed by its own source under `HAMAMÖZÜ`, a district of Amasya —
+    the coordinate is right. Asking whether the label's name appears in the store's own
+    text separates them: it does for İznik, it does not for Hamamözü. Measured over the
+    four labelled brands it accepts 108 corrections and refuses 57, and every Koçtaş case
+    lands on the refusing side.
+    """
+    columns = LABEL_COLUMNS.get(brand)
+    if columns is None or not all(column in row for column in columns):
+        return by_point
+    try:
+        by_label = resolve_district(row[columns[0]], row[columns[1]])
+    except KeyError:
+        return by_point
+    if by_label == by_point:
+        return by_point
+    distance = _bbox_km(float(row["lng"]), float(row["lat"]), by_label)
+    if distance is None or distance <= FAR_KM:
+        return by_point
+    text = fold(
+        f"{row.get('name', '')} {row.get('ad', '')} {row.get('address', '')} {row.get('adres', '')}"
+    )
+    return by_label if fold(_district_name(by_label)) in text else by_point
+
+
+@cache
+def _district_name(area: str) -> str:
+    for row in load_districts().iter_rows(named=True):
+        if row["area_id"] == area:
+            return row["name_tr"]
+    return ""
 
 
 def _in_ring(x: float, y: float, ring: Ring) -> bool:
@@ -216,6 +302,7 @@ def counts(brand: str) -> dict[str, int]:
             if area is None:
                 unplaced += 1
                 continue
+            area = agreed_area(row, brand, area)
             placed[area] = placed.get(area, 0) + 1
     if not total:
         raise ValueError(f"{brand}: döküm boş ({path})")

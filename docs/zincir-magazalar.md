@@ -483,3 +483,41 @@ ham dosya **bilerek göstergeye bağlanmadı**: kendi markasından görünür bi
 sayı, depoda "KFC 75 ilde yok" diye okunur ve bu ülkeye dair bir iddia olur. Boşluğun
 nedeni (kendi sitesi olan bayiler mi, yarım göç mü) bu çekicinin bulabileceği bir şey
 değil; tahmin etmek beklemekten kötüdür.
+
+## Koordinat da yanılıyor: üçüncü kaynak kuralı (2026-09-20)
+
+Kullanıcı "İznik'te ŞOK 12 mi?" diye sordu. Depoda 12 yazıyordu; **doğrusu 13.**
+
+`BURSA İZNİK KALE MAĞAZASI` adında İznik geçiyor, adresi İznik'in Selçuklu Mahallesi'nde,
+ama koordinatı **35 km batıda, Gemlik'te**. Nokta-poligon testi onu sessizce Gemlik'e
+yazmıştı: mağaza kaybolmuyor, komşu ilçeye taşınıyor ve aşağı akışta bunu görebilecek
+hiçbir kontrol yok.
+
+`scripts/dogrula_zincir_etiket.py` bunu ölçüyor. Kendi il/ilçe etiketini de yayımlayan
+markalarda etiketle koordinatı karşılaştırıp noktanın etiketteki ilçeye uzaklığını
+hesaplıyor:
+
+| Marka | Karşılaştırılan | Aynı ilçe | Sınır (<10 km) | **Uzak (>10 km)** |
+|---|---|---|---|---|
+| ŞOK | 11.177 | %96,4 | 209 | **156** |
+| Vestel | 1.158 | %99,4 | 1 | 6 |
+| Koçtaş | 134 | %97,0 | 1 | 3 |
+
+**Düzeltme tek yönlü olamaz, çünkü iki alan da yanılıyor — ve farklı markalarda ters
+yönde.** ŞOK'un etiketleri sağlam, kimi koordinatları bozuk (975 km'ye kadar: Çekmeköy
+adlı mağaza Çamlıhemşin'e düşüyor). Koçtaş'ta tam tersi: Yenimahalle'deki Ankamall
+mağazasını kendi kaydı `HAMAMÖZÜ` (Amasya) diye etiketliyor. "Koordinat uzaksa etikete
+güven" kuralı İznik'i düzeltir, Ankamall'u ülkenin öbür ucuna taşırdı.
+
+**Ayıran şey üçüncü kaynak: mağazanın kendi adı ve adresi.** Kural artık şu — nokta,
+kaynağın adlandırdığı ilçeden 10 km'den uzaksa **ve** o ilçenin adı mağazanın adında ya da
+adresinde geçiyorsa, iki bağımsız alan bir tek sayıyı yener ve etiket kazanır. İznik'te
+geçiyor (ad + adres + etiket = üç), Hamamözü'nde hiçbir yerde geçmiyor.
+
+Sonuç: **110 mağaza yerine oturdu** (ŞOK 103, Vestel 5, Gratis 2), Koçtaş'ın üç hatalı
+etiketinin hiçbiri kabul edilmedi. Toplam sayılar değişmedi, dağılım düzeldi.
+
+Bir de yan kazanç: kayıt defteri eşleyicisi artık **Türkçe büyük/küçük harfe duyarsız**.
+ŞOK `BURSA / İZNİK` diye bağırıyor, TİTCK `Bursa / İznik` yazıyor; ikisi de eşleşiyor.
+Yalnız harf büyüklüğü göz ardı ediliyor — şapka, boşluk ve eski il adı hâlâ tek tek
+yazılan istisnalar, çünkü onlar tek bir dizginin arkasına iki ayrı yeri saklayabilir.

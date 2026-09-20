@@ -155,3 +155,39 @@ def test_central_district_is_the_province_name():
     province's biggest district would go missing and nothing else would complain."""
     counts_by_area = label_counts("bim")
     assert counts_by_area["TR-14-001"] == 36, "Bolu Merkez yerine oturmadı"
+
+
+def test_a_far_coordinate_loses_to_a_label_its_own_text_confirms():
+    """ŞOK's `BURSA İZNİK KALE MAĞAZASI` sits at an İznik address with a coordinate 35 km
+    away in Gemlik. Three fields say İznik and one says Gemlik; the one used to win."""
+    assert counts("sok")["TR-16-006"] == 13
+
+
+def test_a_far_coordinate_still_wins_when_the_text_does_not_confirm_the_label():
+    """The same rule must refuse the opposite case. Koçtaş files Ankamall AVM — which
+    stands in Yenimahalle — under `HAMAMÖZÜ`, a district of Amasya, and nothing in the
+    store's name or address says Hamamözü. A rule that trusted the label whenever the
+    point looked far would move a shop across the country."""
+    placed = counts("koctas")
+    assert placed.get("TR-05-005") is None, "Ankamall Hamamözü'ne taşındı"
+    assert sum(placed.values()) == 134
+
+
+def test_the_correction_needs_all_three_conditions():
+    """Same district, near miss, or unconfirmed text — each on its own leaves the
+    coordinate in charge."""
+    row = {
+        "province": "BURSA",
+        "district": "İZNİK",
+        "name": "BURSA İZNİK KALE MAĞAZASI",
+        "address": "SELÇUKLU MAH.",
+        "lat": "40.4232",
+        "lng": "29.1927",
+    }
+    assert chain_stores.agreed_area(row, "sok", "TR-16-002") == "TR-16-006"
+    assert chain_stores.agreed_area(row, "sok", "TR-16-006") == "TR-16-006"
+    # A brand with no published label is untouched.
+    assert chain_stores.agreed_area(row, "tarim_kredi", "TR-16-002") == "TR-16-002"
+    # The text no longer names the district: the coordinate keeps it.
+    quiet = row | {"name": "KALE MAĞAZASI", "address": "SELÇUKLU MAH."}
+    assert chain_stores.agreed_area(quiet, "sok", "TR-16-002") == "TR-16-002"

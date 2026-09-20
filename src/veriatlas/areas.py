@@ -160,15 +160,30 @@ DISTRICT_ALIASES = {
 CENTRE = "Merkez"
 
 
+def upper_tr(text: str) -> str:
+    """Turkish uppercase. `str.upper()` alone turns `İznik` into `IZNIK` and `ı` into `I`,
+    which is how a source that shouts its labels (`BURSA / İZNİK`) stops matching the
+    registry that does not."""
+    return text.replace("i", "İ").replace("ı", "I").upper()
+
+
 @cache
 def _district_lookup() -> tuple[dict[str, str], dict[tuple[str, str], str]]:
-    """(province name -> id, (province id, district name) -> id), read once."""
+    """(province name -> id, (province id, district name) -> id), read once.
+
+    Both are keyed twice, once as published and once uppercased: ŞOK writes `BURSA`, the
+    pharmacy register writes `Bursa`, and neither spelling is more correct than the other.
+    Case is the one difference folded away here — everything else (a circumflex, a space,
+    an old provincial name) is an explicit alias above, because those can hide two
+    different places behind one string and case cannot.
+    """
     registry = load_areas().filter(pl.col("area_level") == "province")
     provinces = dict(zip(registry["name_tr"], registry["area_id"], strict=True))
-    districts = {
-        (row["parent_id"], row["name_tr"]): row["area_id"]
-        for row in load_districts().iter_rows(named=True)
-    }
+    provinces |= {upper_tr(name): area for name, area in provinces.items()}
+    districts = {}
+    for row in load_districts().iter_rows(named=True):
+        districts[(row["parent_id"], row["name_tr"])] = row["area_id"]
+        districts[(row["parent_id"], upper_tr(row["name_tr"]))] = row["area_id"]
     return provinces, districts
 
 
@@ -181,13 +196,20 @@ def resolve_district(province: str, district: str) -> str:
     that reads as a fact about the country rather than a gap in the parsing.
     """
     published = province.strip()
-    province_id = _district_lookup()[0].get(PROVINCE_ALIASES.get(published, published))
+    lookup = PROVINCE_ALIASES | {
+        upper_tr(k): upper_tr(v) for k, v in PROVINCE_ALIASES.items()
+    }
+    province_id = _district_lookup()[0].get(lookup.get(published, published))
     if province_id is None:
         raise KeyError(f"kayıt defterinde olmayan il: {province!r}")
     name = district.strip()
-    if name == CENTRE:
-        name = PROVINCE_ALIASES.get(published, published)
-    name = DISTRICT_ALIASES.get((province_id, name), name)
+    if name in (CENTRE, upper_tr(CENTRE)):
+        name = lookup.get(published, published)
+    aliases = DISTRICT_ALIASES | {
+        (parent, upper_tr(alias)): upper_tr(real)
+        for (parent, alias), real in DISTRICT_ALIASES.items()
+    }
+    name = aliases.get((province_id, name), name)
     area = _district_lookup()[1].get((province_id, name))
     if area is None:
         raise KeyError(f"kayıt defterinde olmayan ilçe: {published} / {district!r}")
