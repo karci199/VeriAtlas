@@ -96,7 +96,9 @@ def geohash(lat: float, lon: float, precision: int = 9) -> str:
 
 
 def ask(lat: float, lon: float, tries: int = 5) -> list[dict]:
-    data = base64.b64encode(json.dumps({"geoHash": geohash(lat, lon)}).encode()).decode()
+    data = base64.b64encode(
+        json.dumps({"geoHash": geohash(lat, lon)}).encode()
+    ).decode()
     url = (
         f"{ENDPOINT}?__culture=tr-TR&__platform=web"
         f"&data={urllib.parse.quote(data)}&__isbase64=true"
@@ -199,7 +201,7 @@ def sweep(args: argparse.Namespace) -> None:
         time.sleep(args.gecikme)
     log.close()
 
-    stamp = dt.date.today().isoformat()
+    stamp = dt.datetime.now(tz=dt.UTC).date().isoformat()
     csv_path = OUT / f"magazalar_{stamp}.csv"
     with csv_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.writer(handle)
@@ -225,8 +227,12 @@ def sweep(args: argparse.Namespace) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="A101 mağazaları — ızgara taraması")
-    parser.add_argument("--devam", action="store_true", help="yarım kalan taramayı sürdür")
-    parser.add_argument("--gecikme", type=float, default=0.3, help="istekler arası saniye")
+    parser.add_argument(
+        "--devam", action="store_true", help="yarım kalan taramayı sürdür"
+    )
+    parser.add_argument(
+        "--gecikme", type=float, default=0.3, help="istekler arası saniye"
+    )
     sweep(parser.parse_args())
 
 

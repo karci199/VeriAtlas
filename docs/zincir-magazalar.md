@@ -333,3 +333,39 @@ BİM 973 ilçenin **916'sında** var — depodaki en geniş zincir. ŞOK'u 107 i
 
 **BİM sayısı FİLE'yi de içeriyor.** Bulucuda fırın için kutu var, marka için yok; ikisi
 ayrılamıyor ve ayrıldığı iddia edilmiyor.
+
+## Tarım Kredi Kooperatif Marketleri (2026-09-20)
+
+**2.348 mağaza, 640 ilçe**, hepsi koordinatlı ve hepsi Türkiye kutusunda.
+
+Kooperatifin kendi sitesinde (tarimkredi.org.tr) mağaza bulucu yok — orası ana kuruluşun
+sitesi ve yalnız iki genel müdürlük adresi taşıyor. Market zinciri ayrı alan adında ve
+listeyi bütün hâlde veriyor:
+
+    GET tkkoop.com.tr/json/magazalar?sehir=<il adı>
+
+**Boş filtre hata değil, tüm ülke.** Sayfadaki açılır kutu hep tek il sorduğu için adres
+il istiyormuş gibi duruyor; `?sehir=` boş bırakıldığında 2.348 mağazanın tamamı tek
+istekte geliyor. İl yerine plaka yazmak (`?sehir=6`) **HTTP 500** veriyor — bu bozuk
+istektir, "06'da mağaza yok" değil.
+
+İlçe kaynağın etiketinden değil koordinattan alınıyor: ad (`ANKARA - AHİMESUT`) markanın
+kendi etiketi, adres ise serbest metin ve ilçe içine gömülü — art arda iki Ankara satırı
+`ETİMESGUT / ANKARA` ve `KEÇİÖEREN/ ANKARA` yazıyor, ikincisi hem yanlış hem bitişik.
+
+Dolaşan rakam yine eski: bir haber "1.665 mağaza" diyor, çektiğimiz 2.348.
+
+### Zincirlerin ilçe kapsaması (2026-09-20 itibarıyla depoda)
+
+| Marka | Mağaza | İlçe | 973 ilçenin |
+|---|---|---|---|
+| BİM (+FİLE) | 13.057 | 916 | %94 |
+| ŞOK | 11.220 | 809 | %83 |
+| Komagene | 3.805 | 608 | %62 |
+| Migros | 3.442 | 528 | %54 |
+| **Tarım Kredi** | **2.348** | **640** | **%66** |
+
+Tarım Kredi mağaza sayısında Migros'un altında ama **ilçe sayısında üstünde**: 2.348
+mağazayla 640 ilçeye giriyor, Migros 3.442 mağazayla 528'e. Kooperatif yapısının kırsala
+yayıldığı, özel zincirin kente yığıldığı buradan okunuyor — ama okunmadan önce mağaza
+başına düşen nüfusa bakılmalı, `docs/gosterge-notlari.md`'deki kayıtlı nüfus uyarısıyla.
