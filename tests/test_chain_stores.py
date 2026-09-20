@@ -11,6 +11,7 @@ import csv
 import polars as pl
 import pytest
 
+from veriatlas.adapters import chain_stores
 from veriatlas.adapters.chain_stores import (
     BRANDS,
     TURKEY,
@@ -18,6 +19,7 @@ from veriatlas.adapters.chain_stores import (
     ChainStores,
     counts,
     dump,
+    label_counts,
     locate,
 )
 
@@ -118,3 +120,38 @@ def test_stores_abroad_leave_the_count_without_tripping_the_threshold():
     placed = sum(counts("madame_coco").values())
     assert inside < 719, "yurt dışı mağazalar ayıklanmadı"
     assert placed / inside > 0.97, f"yurt içi kayıp fazla: {placed}/{inside}"
+
+
+def test_label_counts_lose_nothing():
+    """BİM and Migros publish a total; every store in it has to reach a district.
+
+    A coordinate that falls outside a boundary is a visible failure — the parse counts it
+    and trips a threshold. A *name* that fails to match is invisible: the district simply
+    shows no BİM, which reads as a fact about the country rather than a gap in the
+    parsing. So the bar here is not 95%, it is all of them.
+    """
+    for brand, expected in (("bim", 13057), ("migros", 3442)):
+        assert sum(label_counts(brand).values()) == expected
+
+
+def test_unknown_district_name_raises_rather_than_dropping_the_row(
+    tmp_path, monkeypatch
+):
+    """The whole point of the alias tables: a name nobody recognised must stop the load."""
+    bad = tmp_path / "district_counts.csv"
+    bad.write_text(
+        "il,ilce,magaza_sayisi\nAnkara,Çankaya,3\nAnkara,Yenimahalleee,4\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setitem(chain_stores.COUNT_BRANDS, "sahte", str(bad))
+    monkeypatch.setattr(chain_stores, "dump", lambda brand: bad)
+    monkeypatch.setattr(chain_stores, "cached_copy", lambda source, target: source)
+    with pytest.raises(KeyError, match="Yenimahalleee"):
+        chain_stores.label_counts.__wrapped__("sahte")
+
+
+def test_central_district_is_the_province_name():
+    """Both sources write `Merkez`; the registry writes `Bolu`. If that rule broke, the
+    province's biggest district would go missing and nothing else would complain."""
+    counts_by_area = label_counts("bim")
+    assert counts_by_area["TR-14-001"] == 36, "Bolu Merkez yerine oturmadı"

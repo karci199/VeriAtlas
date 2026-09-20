@@ -48,9 +48,11 @@ import datetime as dt
 import json
 from functools import cache
 from pathlib import Path
+from typing import ClassVar
 
 import polars as pl
 
+from ..areas import load_areas, load_districts
 from ..config import PUBLIC, RAW
 from .base import cached_copy
 
@@ -90,6 +92,56 @@ STORE_BRANDS = {
     "sok": "sok/magazalar_*.csv",
 }
 
+#: Chains that publish a district *count* instead of a list of branches. BİM's finder
+#: answers per district and never says where a store stands; Migros' dropdown is the same
+#: shape. There is no coordinate to place, so the district has to come from the source's
+#: own label — which is the job the two of them were held back from the adapter for.
+#:
+#: BİM's number covers **BİM and FİLE together**: the finder has one checkbox for bakeries
+#: and none for the brand, so the two cannot be told apart and are not claimed to be.
+COUNT_BRANDS = {
+    "bim": "bim/district_counts.csv",
+    "migros": "migros/district_counts.csv",
+}
+
+#: Province names these two write differently from the registry. Four of them, and all
+#: four are older or shortened names rather than misspellings: `İçel` is what Mersin was
+#: called until 2002, `K.Maraş` and `Afyon` are the short forms, `Agri` is `Ağrı` with the
+#: Turkish letters dropped. They are listed one by one rather than normalised away: two
+#: spellings of one province silently becoming two areas is exactly what `resolve` exists
+#: to prevent, and an alias is a decision, not a transformation.
+PROVINCE_ALIASES = {
+    "Afyon": "Afyonkarahisar",
+    "Agri": "Ağrı",
+    "İçel": "Mersin",
+    "K.Maraş": "Kahramanmaraş",
+}
+
+#: District names the same way. Two kinds: the circumflex the registry keeps and the
+#: sources drop (`Kâhta`, `Lâpseki`, `Devrekâni`, `Lâçin`), and the space the registry
+#: keeps and the sources close up (`Gazi Osmanpaşa`, `Marmara Ereğlisi`, `Oniki Şubat`,
+#: `19 Mayıs`). Keyed by (province id, source's spelling) because a district name is only
+#: unique inside its province.
+DISTRICT_ALIASES = {
+    ("TR-02", "Kahta"): "Kâhta",
+    ("TR-16", "MustafaKemalPaşa"): "Mustafakemalpaşa",
+    ("TR-17", "Lapseki"): "Lâpseki",
+    ("TR-19", "Laçin"): "Lâçin",
+    ("TR-34", "Gaziosmanpaşa"): "Gazi Osmanpaşa",
+    ("TR-37", "Devrekani"): "Devrekâni",
+    ("TR-46", "Onikişubat"): "Oniki Şubat",
+    ("TR-55", "19 mayıs"): "19 Mayıs",
+    ("TR-59", "Marmaraereğlisi"): "Marmara Ereğlisi",
+    ("TR-71", "Bahşılı"): "Bahşili",
+}
+
+#: What both sources call the central district of a province that has one. The registry
+#: names it after the province itself — `Bolu`, `Afyonkarahisar` — and never carries a
+#: district called `Merkez`. The rule is safe because the 30 provinces with no district of
+#: their own name are exactly the 30 metropolitan ones, and those have no `Merkez` either:
+#: their whole territory is divided into named districts.
+CENTRE = "Merkez"
+
 #: The share of a brand's branches allowed to fall outside every polygon *while standing
 #: inside Türkiye*. Measured at 1,4% (Burger King) and 0,3% (McDonald's).
 MAX_UNPLACED = 0.03
@@ -104,7 +156,7 @@ TURKEY = (25.5, 35.5, 45.0, 42.5)
 
 def dump(brand: str) -> Path:
     """The newest saved dump for a brand, from either family."""
-    pattern = (BRANDS | STORE_BRANDS)[brand]
+    pattern = (BRANDS | STORE_BRANDS | COUNT_BRANDS)[brand]
     found = sorted(RAW.glob(pattern))
     if not found:
         raise FileNotFoundError(f"{brand} dökümü yok: {RAW / pattern}")
@@ -205,13 +257,75 @@ def counts(brand: str) -> dict[str, int]:
     return placed
 
 
+@cache
+def _registry() -> tuple[dict[str, str], dict[tuple[str, str], str]]:
+    """(province name -> id, (province id, district name) -> id), read once."""
+    areas = load_areas()
+    provinces = {
+        row["name_tr"]: row["area_id"]
+        for row in areas.filter(pl.col("area_level") == "province").iter_rows(
+            named=True
+        )
+    }
+    districts = {
+        (row["parent_id"], row["name_tr"]): row["area_id"]
+        for row in load_districts().iter_rows(named=True)
+    }
+    return provinces, districts
+
+
+@cache
+def label_counts(brand: str) -> dict[str, int]:
+    """District id -> the brand's store count, for the two that publish counts by name.
+
+    Nothing is guessed and nothing is dropped: a name this cannot place raises, because a
+    count silently falling off the table is invisible in the result — the indicator would
+    simply show a district with no BİM, which is a claim about the country rather than a
+    gap in the parsing. The three ways the sources differ from the registry (the central
+    district, four province aliases, ten district spellings) are each written out above.
+    """
+    path = cached_copy(dump(brand), FOLDER / f"{brand}.csv")
+    provinces, districts = _registry()
+    placed: dict[str, int] = {}
+    unknown: list[str] = []
+    with path.open(encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            published = row["il"].strip()
+            province = provinces.get(PROVINCE_ALIASES.get(published, published))
+            if province is None:
+                unknown.append(f"il {published!r}")
+                continue
+            name = row["ilce"].strip()
+            if name == CENTRE:
+                # The registry calls it by the province's own name.
+                name = PROVINCE_ALIASES.get(published, published)
+            name = DISTRICT_ALIASES.get((province, name), name)
+            area = districts.get((province, name))
+            if area is None:
+                unknown.append(f"{published} / {row['ilce']!r}")
+                continue
+            count = int(row["magaza_sayisi"])
+            if count:
+                placed[area] = placed.get(area, 0) + count
+    if unknown:
+        raise KeyError(
+            f"{brand}: kayıt defterinde olmayan ad(lar): "
+            + ", ".join(sorted(set(unknown)))
+        )
+    if not placed:
+        raise ValueError(f"{brand}: döküm boş ({path})")
+    return placed
+
+
 class ChainRestaurants:
     """Every brand's branches, as one indicator broken down by brand."""
 
     indicator_id = "chain_restaurants"
     source_id = SOURCE
-    #: Subclasses swap these two and inherit everything else.
+    #: Subclasses swap these three and inherit everything else.
     brands = BRANDS
+    #: Brands whose district comes from the source's own label rather than a coordinate.
+    count_brands: ClassVar[dict[str, str]] = {}
     dim = "restaurant_brand"
 
     def fetch(self) -> Path:
@@ -221,7 +335,7 @@ class ChainRestaurants:
         returning `RAW` would hash the entire raw store — hundreds of gigabytes for a
         few hundred kilobytes of CSV. The copies are what the manifest describes.
         """
-        for brand in self.brands:
+        for brand in list(self.brands) + list(self.count_brands):
             cached_copy(dump(brand), FOLDER / f"{brand}.csv")
         return FOLDER
 
@@ -230,8 +344,10 @@ class ChainRestaurants:
         levels: list[str] = []
         brands: list[str] = []
         values: list[float] = []
-        for brand in self.brands:
-            districts = counts(brand)
+        for brand in list(self.brands) + list(self.count_brands):
+            districts = (
+                label_counts(brand) if brand in self.count_brands else counts(brand)
+            )
             # The province total is written out rather than left to the roll-up: it is an
             # exact sum of a count, not the weighted estimate `aggregate` would mark it as.
             provinces: dict[str, int] = {}
@@ -261,8 +377,6 @@ class ChainRestaurants:
         )
 
 
-
-
 class ChainStores(ChainRestaurants):
     """Retail chains, counted the same way and kept apart from the restaurants.
 
@@ -275,6 +389,7 @@ class ChainStores(ChainRestaurants):
     indicator_id = "chain_stores"
     source_id = "chain_store_finders"
     brands = STORE_BRANDS
+    count_brands = COUNT_BRANDS
     dim = "store_brand"
 
 

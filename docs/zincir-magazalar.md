@@ -301,3 +301,35 @@ denenmeden açık sayılmamalı. Tarama bu yüzden 1,5 sn gecikmeyle ve engelde 
 
 Doğrulama ölçütü: BİM 13.057, ŞOK 11.220. A101 bu büyüklüğe ve 81 ile ulaşmazsa çekim
 eksiktir; çekici 81 ilden azını görürse uyarı basar.
+
+## BİM ve Migros depoya girdi (2026-09-20)
+
+İkisi de şube listesi değil **ilçe başına sayı** yayımlıyor, koordinat vermiyor. Bu yüzden
+ilçe kaynağın kendi etiketinden geliyor ve o etiket kayıt defterine üç kuralla bağlanıyor:
+
+1. **`Merkez` → ilin kendi adı.** Kayıt defterinde `Merkez` diye bir ilçe yok; Bolu'nun
+   merkez ilçesi `Bolu`. Kural güvenli, çünkü adıyla aynı ilçesi olmayan 30 il tam olarak
+   30 büyükşehir ve onlarda da `Merkez` geçmiyor.
+2. **Dört il takma adı**: `Afyon`, `Agri`, `İçel` (Mersin'in 2002 öncesi adı), `K.Maraş`.
+3. **On ilçe yazımı**: şapkanın düştüğü dördü (`Kâhta`, `Lâpseki`, `Devrekâni`, `Lâçin`)
+   ve boşluğun kapandığı altısı (`Gazi Osmanpaşa`, `Marmara Ereğlisi`, `Oniki Şubat`,
+   `19 Mayıs`, `Mustafakemalpaşa`, `Bahşili`).
+
+Üçü de tek tek yazıldı, genel bir "aksanı at, küçült, boşlukları sil" normalleştirmesi
+yapılmadı: o yol iki ayrı yeri sessizce birleştirir, oysa buradaki fark kapalı ve sayılı.
+
+**Eşleşmeyen ad yüklemeyi durduruyor.** Koordinat sınıra düşmediğinde görünür bir kayıp
+olur, sayılır ve eşiği aşarsa hata verir; ad tutmadığında ise kayıp **görünmez** — ilçe
+"BİM yok" diye çıkar ve bu ülkeye dair bir bilgi gibi okunur. O yüzden buradaki ölçüt
+%95 değil, **tamamı**: 13.057 BİM ve 3.442 Migros'un hepsi yerine oturuyor.
+
+| Marka | Mağaza | İlçe |
+|---|---|---|
+| BİM (+FİLE) | 13.057 | **916** |
+| ŞOK | 11.220 | 809 |
+| Migros | 3.442 | 528 |
+
+BİM 973 ilçenin **916'sında** var — depodaki en geniş zincir. ŞOK'u 107 ilçede geçiyor.
+
+**BİM sayısı FİLE'yi de içeriyor.** Bulucuda fırın için kutu var, marka için yok; ikisi
+ayrılamıyor ve ayrıldığı iddia edilmiyor.
