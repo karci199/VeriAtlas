@@ -57,7 +57,7 @@ from .base import cached_copy
 #: The copies `ingest` checksums; the brand dumps themselves live one folder up each.
 FOLDER = RAW / "zincir"
 SOURCE = "chain_store_finders"
-RETRIEVED = dt.date(2026, 9, 18)
+RETRIEVED = dt.date(2026, 9, 20)
 #: The snapshot's own date, and the year its rows are filed under.
 SNAPSHOT = dt.date(2026, 9, 18)
 VINTAGE = "2026-09"
@@ -74,7 +74,13 @@ BRANDS = {
     "komagene": "cigkofte/komagene_*.csv",
     "starbucks": "marketler/starbucks_*.csv",
     "espressolab": "marketler/espressolab_*.csv",
+    "dominos": "dominos/subeler_*.csv",
 }
+
+#: KFC is fetched by `scripts/fetch_kfc.py` and deliberately left out: the 2026-09-20 run
+#: returned 41 restaurants across 6 provinces, and the chain has several hundred. A dump
+#: that stops early is not a small chain, and counting it would publish a shortfall as a
+#: measurement. It goes in when the fetcher returns the whole list.
 
 #: Retail chains that publish a coordinate per store, from `scripts/fetch_marketler.py`.
 #: Three more chains are fetched by that script and deliberately left out here — Bizim
@@ -88,6 +94,22 @@ STORE_BRANDS = {
     "karaca": "marketler/karaca_*.csv",
     "vatan": "marketler/vatan_*.csv",
     "sok": "sok/magazalar_*.csv",
+    "koctas": "koctas/magazalar_*.csv",
+    "vestel": "vestel/magazalar_*.csv",
+    "tarim_kredi": "tarimkredi/magazalar_*.csv",
+}
+
+#: Fuel stations, a third family. A filling station is not a shop and not a restaurant:
+#: it serves a road rather than a neighbourhood, so its district count reads as traffic,
+#: not as retail density. Summing it into `chain_stores` would blur both.
+STATION_BRANDS = {
+    "petrol_ofisi": "petrol_ofisi/istasyonlar_*.csv",
+}
+
+#: Brands whose dump names the coordinate columns in Turkish. Everything else writes
+#: `lat` and `lng`, which is what the reader expects.
+COORDINATE_COLUMNS = {
+    "petrol_ofisi": ("boylam", "enlem"),
 }
 
 #: The share of a brand's branches allowed to fall outside every polygon *while standing
@@ -104,7 +126,7 @@ TURKEY = (25.5, 35.5, 45.0, 42.5)
 
 def dump(brand: str) -> Path:
     """The newest saved dump for a brand, from either family."""
-    pattern = (BRANDS | STORE_BRANDS)[brand]
+    pattern = (BRANDS | STORE_BRANDS | STATION_BRANDS)[brand]
     found = sorted(RAW.glob(pattern))
     if not found:
         raise FileNotFoundError(f"{brand} dökümü yok: {RAW / pattern}")
@@ -178,10 +200,11 @@ def counts(brand: str) -> dict[str, int]:
     placed: dict[str, int] = {}
     total = unplaced = abroad = 0
     x0, y0, x1, y1 = TURKEY
+    lng_column, lat_column = COORDINATE_COLUMNS.get(brand, ("lng", "lat"))
     with path.open(encoding="utf-8", newline="") as handle:
         for row in csv.DictReader(handle):
             try:
-                lng, lat = float(row["lng"]), float(row["lat"])
+                lng, lat = float(row[lng_column]), float(row[lat_column])
             except ValueError:  # the source left the coordinate blank
                 total += 1
                 unplaced += 1
@@ -261,6 +284,13 @@ class ChainRestaurants:
         )
 
 
+class FuelStations(ChainRestaurants):
+    """Filling stations of the brands that publish a coordinate per station."""
+
+    indicator_id = "fuel_stations"
+    source_id = "chain_store_finders"
+    brands = STATION_BRANDS
+    dim = "fuel_brand"
 
 
 class ChainStores(ChainRestaurants):
@@ -281,4 +311,5 @@ class ChainStores(ChainRestaurants):
 CHAIN_STORE_ADAPTERS = {
     "chain_restaurants": ChainRestaurants,
     "chain_stores": ChainStores,
+    "fuel_stations": FuelStations,
 }

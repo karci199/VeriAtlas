@@ -31348,6 +31348,7 @@ ziyafet = { label_tr = "Ziyafet Çiğköfte", label_en = "Ziyafet Çiğköfte" }
 komagene = { label_tr = "Komagene", label_en = "Komagene" }
 starbucks = { label_tr = "Starbucks", label_en = "Starbucks" }
 espressolab = { label_tr = "EspressoLab", label_en = "EspressoLab" }
+dominos = { label_tr = "Domino's Pizza", label_en = "Domino's Pizza" }
 
 [indicator.chain_restaurants]
 label_tr = "Zincir şube sayısı"
@@ -31379,6 +31380,9 @@ rossmann = { label_tr = "Rossmann", label_en = "Rossmann" }
 karaca = { label_tr = "Karaca", label_en = "Karaca" }
 vatan = { label_tr = "Vatan Bilgisayar", label_en = "Vatan Bilgisayar" }
 sok = { label_tr = "ŞOK Market", label_en = "ŞOK Market" }
+koctas = { label_tr = "Koçtaş", label_en = "Koçtaş" }
+vestel = { label_tr = "Vestel", label_en = "Vestel" }
+tarim_kredi = { label_tr = "Tarım Kredi Kooperatif Market", label_en = "Tarım Kredi Cooperative Market" }
 
 [indicator.chain_stores]
 label_tr = "Zincir mağaza sayısı"
@@ -31389,6 +31393,23 @@ frequency = "annual"
 dims = ["store_brand"]
 views = ["table", "map", "bar"]
 definition_tr = "Altı perakende zincirinin (ŞOK, Gratis, Madame Coco, Rossmann, Karaca, Vatan Bilgisayar) mağaza sayısı, ilçe ve il düzeyinde, 19.09.2026 anlık görüntüsü. İlçe, mağazanın koordinatının düştüğü ilçe sınırından belirlenir. Zincir restoranlardan (`chain_restaurants`) ayrı tutulur: kozmetik mağazası ile hamburgerci farklı sorulara cevap verir, ikisini toplamak anlamsızdır. Markalar da toplanmaz — bu sayı 'kaç mağaza var' sorusunun değil, 'bu markaların kaç şubesi var' sorusunun cevabıdır. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir."
+
+[dim.fuel_brand]
+label_tr = "Akaryakıt markası"
+label_en = "Fuel brand"
+
+[dim.fuel_brand.values]
+petrol_ofisi = { label_tr = "Petrol Ofisi", label_en = "Petrol Ofisi" }
+
+[indicator.fuel_stations]
+label_tr = "Akaryakıt istasyonu sayısı"
+label_en = "Fuel stations"
+topic = "enerji"
+unit = "item"
+frequency = "annual"
+dims = ["fuel_brand"]
+views = ["table", "map", "bar"]
+definition_tr = "Markanın kendi istasyon bulucusundan sayılan akaryakıt istasyonu, ilçe ve il düzeyinde, 19.09.2026 anlık görüntüsü. İlçe, istasyonun koordinatının düştüğü ilçe sınırından belirlenir. Zincir mağazadan (`chain_stores`) ayrı tutulur: istasyon mahalleye değil yola hizmet eder, ilçe sayısı perakende yoğunluğunu değil trafiği okur. Markalar toplanmaz ve bu sayı ülkedeki toplam istasyon sayısı değildir — yalnız listesini yayımlayan markaları kapsar. Seri değildir: istasyon bulucular yalnız bugün açık olanı gösterir."
 
 [indicator.charging_stations]
 label_tr = "Elektrikli araç şarj istasyonu"
