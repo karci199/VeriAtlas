@@ -17,20 +17,23 @@ Kapsam ölçütü BDDK'nın kendi listesidir (`bddk_banka_listesi.json`, 68 bank
 | İş Bankası | 988 | 5.245 | `isbank_sube_atm.json` | il, adres, koordinat |
 | DenizBank | 850 | 3.022 | `denizbank_sube_atm.json` | adres, koordinat |
 | Yapı Kredi | 718 | 4.978 | `yapikredi_sube_atm.json` | il+ilçe kodu, koordinat |
-| Türkiye Finans | 658 | 429 | `turkiyefinans_sube_atm.json` | adres, koordinat |
+| Türkiye Finans | 658 → **~291** | 429 | `turkiyefinans_sube_atm.json` | adres, koordinat |
 | Akbank | 589 | 4.843 | `akbank_sube_atm.json` | il+ilçe kodu, **mahalle**, koordinat |
 | Kuveyt Türk | 460 | 1.294 (+151 AIO) | `kuveytturk_sube_atm.json` | il+ilçe adı, koordinat |
-| Vakıf Katılım | 422 | (şubeyle birlikte) | `vakifkatilim_sube_atm.json` | il+ilçe adı, koordinat |
+| Vakıf Katılım | 422 → **224** | 198 | `vakifkatilim_sube_atm.json` | il+ilçe adı, koordinat |
 | TEB | 421 | 1.428 | `teb_sube_atm.json` | adres metni, koordinat |
 | Şekerbank | 238 | 269 | `sekerbank_sube_atm.json` | kendi il/ilçe kodu, koordinat |
 | Ziraat Katılım | 235 | — | `ziraatkatilim_sube.json` | adres, koordinat |
 | Albaraka | 224 | 237 | `albaraka_sube_atm.json` | il+ilçe adı, koordinat |
 | Fibabanka | 74 (şube+ATM) | — | `fibabanka_sube_atm.json` | adres, koordinat |
-| Emlak Katılım | 260 (şube+ATM) | — | `emlakkatilim_sube_atm.json` | il adı, koordinat |
+| Emlak Katılım | 260 → **133** | 127 | `emlakkatilim_sube_atm.json` | il adı, koordinat |
 | QNB | — | 3.624 | `qnb_atm.json` | adres, koordinat |
 | ING | 52 | — | `ing_sube.json` | il, adres, koordinat |
 
-Toplam: **10.268 şube, 42.546 ATM**.
+Ham kayıt toplamı 10.268 şube + 42.546 ATM; **şube/ATM karışması ayıklandıktan
+sonra ≈ 9.576 şube, 42.871 ATM** (aşağıdaki denetim notuna bakın). Ölçüt: BDDK
+FinTürk sektör toplamı 10.565 şube (2025-01), bunun ~1.500'ü çekilemeyen
+Garanti/QNB ve hiç bakılmayan küçük bankalarda.
 
 ### Tasarruf finansman ("evim" sistemleri)
 
@@ -87,8 +90,21 @@ Diğer sekiz şirkette adres metni ili taşıyor, 851 kaydın 811'i yerleşti.
 - **Akbank'ın gövde şekli kılı kırk yarıyor.** `city` sayı olmalı, `branchType`
   boş dizge (null değil), `districtName` gönderilmeli. Yanlış tipte 400 dönüyor,
   gövdesi boş — mesaj yok.
-- **Türkiye Finans'ın 658 "branch" kaydı şüpheli yüksek** (bankanın kendi
-  açıklaması ~300 şube). Adaptör yazılırken `ChannelName` ayrıştırılmalı.
+- **`Type` alanı üç bankada şube ile ATM'yi karıştırıyor.** 2026-09-21 denetimi:
+  - **Türkiye Finans**: 658 "branch" kaydının 578'i ATM listesindeki bir kayıtla
+    **aynı koordinatta**; 60'ının adında "LOBİ", 86'sında "Şube" bile geçmiyor
+    (Genel Müdürlük, AR-GE Merkezi, Kredi Kartları, düz adres metinleri).
+    Adı "Şube" olup lobisi ayıklanınca 509 kayıt, **tekil koordinat 291**.
+    Gerçek şube sayısı 291-330 aralığında; 658 kabaca iki katı.
+  - **Vakıf Katılım**: 422 kaydın 198'inin `branchType` alanında "ATM" geçiyor
+    → ~224 şube + 198 ATM.
+  - **Emlak Katılım (banka)**: `BranchType` "4" olan 133 kayıt adlı şube,
+    boş olan 127 kayıt adsız → ATM.
+  Ziraat Katılım temiz (235 kaydın 234'ü "Şube").
+- **Ölçüt BDDK FinTürk'tür.** Depodaki `bank_group_branches` 2025-01 itibarıyla
+  sektör toplamını **10.565 şube** veriyor (katılım bankaları 1.496). Her
+  bankanın adaptörü yazılırken kendi grubunun toplamıyla karşılaştırılmalı;
+  kazınan sayı toplamı aşıyorsa karışma vardır.
 - **Şekerbank'ın `cityid` alanı ilk kayıtta adresle uyuşmuyor** (İstanbul adresi,
   cityid 35). Kendi kodlaması doğrulanmadan il ataması yapılmamalı.
 - **Boş cevabın üç ayrı sebebi çıktı, üçü de "veri yok" değil**: Halkbank ATM'de
