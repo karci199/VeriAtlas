@@ -74,6 +74,7 @@ BRANDS = {
     "oses": "cigkofte/oses_*.csv",
     "ziyafet": "cigkofte/ziyafet_*.csv",
     "komagene": "cigkofte/komagene_*.csv",
+    "dominos": "dominos/subeler_*.csv",
     "starbucks": "marketler/starbucks_*.csv",
     "espressolab": "marketler/espressolab_*.csv",
 }

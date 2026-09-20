@@ -131,11 +131,16 @@ def main() -> None:
     found = [p for p in provinces() if p not in have]
     print(f"{len(found)} il", flush=True)
     total = 0
+    # The header goes on an empty file, not on a run without `--devam`. Those are not the
+    # same thing: a resumed run whose previous attempt died on a different day writes a
+    # *new* dated file, and the old rule left that file headerless — which the chain
+    # adapter reads as a first row of data with the column names missing.
+    started_empty = not target.exists() or target.stat().st_size == 0
     with target.open("a" if resuming else "w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(
             handle, fieldnames=["name", "province", "district", "address", "lat", "lng"]
         )
-        if not resuming:
+        if started_empty or not resuming:
             writer.writeheader()
         for province in found:
             towns = districts(province)

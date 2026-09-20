@@ -466,3 +466,20 @@ Eczane kaydının ilçe adları, BİM ve Migros'unkiyle **birebir aynı üç sap
 yazılımı, ortak hiçbir sağlayıcısı olmayan iki zincir bulucusu ile bir devlet kaydı aynı
 on yerde kayıt defterinden ayrılıyor — bu yüzden eşleme artık adaptörlerde değil, kayıt
 defterinin yanında: `veriatlas.areas.resolve_district`.
+
+## Domino's tamamlandı, KFC yarım kaldı (2026-09-20)
+
+**Domino's: 1.097 şube, 1.092'si ilçeye düştü, 310 ilçe.** 18 Eylül'de 311'de kesilmişti;
+`--devam` ile temiz bir turda tamamı indi. Çekicide bir hata düzeltildi: `--devam` yeni
+tarihli bir dosyaya yazarken **başlık satırını atlıyordu**, çünkü başlığı "devam etmiyorsa"
+koşuluna bağlamıştı. Doğru koşul dosyanın boş olması; ikisi aynı şey değil ve başlıksız
+dosyanın ilk satırı adaptör tarafından veri sanılıyordu.
+
+**KFC: 41 restoran, 6 il — ve bu sitenin tamamı.** Liste sayfanın Next.js yükünde çift
+kaçışlı JSON olarak duruyor (Gratis kalıbı; `initialRestaurants`). Sayfanın kendi il
+kutusu da yalnız o altı ili sayıyor ve farklı `?lat=`/`?city=` aynı 41'i veriyor, yani
+bu bir "en yakın N" kesiti değil. Markanın bilinen büyüklüğü bunun katları olduğu için
+ham dosya **bilerek göstergeye bağlanmadı**: kendi markasından görünür biçimde küçük bir
+sayı, depoda "KFC 75 ilde yok" diye okunur ve bu ülkeye dair bir iddia olur. Boşluğun
+nedeni (kendi sitesi olan bayiler mi, yarım göç mü) bu çekicinin bulabileceği bir şey
+değil; tahmin etmek beklemekten kötüdür.
