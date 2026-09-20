@@ -46,13 +46,15 @@ from __future__ import annotations
 import csv
 import datetime as dt
 import json
+import re
 from functools import cache
 from pathlib import Path
 
 import polars as pl
 
+from ..addresses import district_from_address
 from ..config import PUBLIC, RAW
-from ..labels import district_id
+from ..labels import district_id, province_id
 from .base import cached_copy
 
 #: The copies `ingest` checksums; the brand dumps themselves live one folder up each.
@@ -97,27 +99,63 @@ LABEL_BRANDS = {
     "migros": "migros/district_counts.csv",
 }
 
+#: Chains that publish neither a coordinate nor a clean district — only text. Each entry
+#: names where its dump is and which columns carry what: the province column (or a fixed
+#: province, for a chain that operates in one), the district column when there is one,
+#: and the address to fall back on.
+#:
+#: A district label is resolved by `veriatlas.labels`, an address by
+#: `veriatlas.addresses`. Neither guesses: what cannot be decided is counted as
+#: unplaced, and `MAX_UNPLACED` applies here exactly as it does to a coordinate that
+#: falls outside every polygon.
+TEXT_BRANDS = {
+    "sec_market": ("sec_market/magazalar_*.csv", "province", "district", None, None),
+    "yunus": ("yunus/subeler_*.csv", "province", None, "address", None),
+    "altunbilekler": ("altunbilekler/magazalar_*.csv", None, None, "address", "Ankara"),
+    "gimsa": ("gimsa/magazalar_*.csv", None, None, "address", "Ankara"),
+    "ozpas": ("ozpas/magazalar_*.csv", None, None, "address", "Sakarya"),
+    # Where a dump carries a `kind`, only `magaza` rows are counted: a chain's own
+    # warehouse and head office sit in its store list and are not shops. Altunbilekler
+    # publishes two depots among 41 rows, Özpaş its head office among 28.
+    "onur_market": ("marketler/onur_market_*.csv", "province", "district", None, None),
+}
+
+#: Two more chains are fetched and deliberately left out of the count, because too much
+#: of what they publish cannot be placed and `MAX_UNPLACED` is doing its job:
+#:
+#: * **Happy Center** — 20 of 80 store pages give an address that names no district and
+#:   no province, only a quarter (`Yakacık-Kartal`, `Okmeydanı-İst.`). A quarter of a
+#:   chain missing would make its districts look emptier than they are.
+#: * **Bizim Toptan** — 15 of 172 rows carry no district at all in `data-search`, the
+#:   only field that holds one.
+#:
+#: Both are one fetcher fix away rather than a dead end, and the dumps are on disk.
+
 #: Retail chains that publish a coordinate per store, from `scripts/fetch_marketler.py`.
 #: Three more chains are fetched by that script and deliberately left out here — Bizim
 #: Toptan, Onur Market and Happy Center give no coordinate, so their district would come
 #: from the source's own label, and Happy Center names no province at all. Placing them
 #: needs registry matching, which is a different job from this one.
-STORE_BRANDS = {
-    "gratis": "marketler/gratis_*.csv",
-    "madame_coco": "marketler/madame_coco_*.csv",
-    "rossmann": "marketler/rossmann_*.csv",
-    "karaca": "marketler/karaca_*.csv",
-    "vatan": "marketler/vatan_*.csv",
-    "sok": "sok/magazalar_*.csv",
-    "koctas": "koctas/magazalar_*.csv",
-    "vestel": "vestel/magazalar_*.csv",
-    "tarim_kredi": "tarimkredi/magazalar_*.csv",
-    "mopas": "mopas/magazalar_*.csv",
-    "ekomini": "ekomini/magazalar_*.csv",
-    "furpa": "furpa/magazalar_*.csv",
-    "seyhanlar": "seyhanlar/magazalar_*.csv",
-    "peynircibaba": "peynircibaba/magazalar_*.csv",
-} | LABEL_BRANDS
+STORE_BRANDS = (
+    {
+        "gratis": "marketler/gratis_*.csv",
+        "madame_coco": "marketler/madame_coco_*.csv",
+        "rossmann": "marketler/rossmann_*.csv",
+        "karaca": "marketler/karaca_*.csv",
+        "vatan": "marketler/vatan_*.csv",
+        "sok": "sok/magazalar_*.csv",
+        "koctas": "koctas/magazalar_*.csv",
+        "vestel": "vestel/magazalar_*.csv",
+        "tarim_kredi": "tarimkredi/magazalar_*.csv",
+        "mopas": "mopas/magazalar_*.csv",
+        "ekomini": "ekomini/magazalar_*.csv",
+        "furpa": "furpa/magazalar_*.csv",
+        "seyhanlar": "seyhanlar/magazalar_*.csv",
+        "peynircibaba": "peynircibaba/magazalar_*.csv",
+    }
+    | LABEL_BRANDS
+    | dict.fromkeys(TEXT_BRANDS, "")
+)
 
 #: Mobile operator dealers. Kept out of `chain_stores` for the same reason fuel stations
 #: are: a dealer sells subscriptions, is franchised in its own company's name, and a
@@ -153,9 +191,12 @@ TURKEY = (25.5, 35.5, 45.0, 42.5)
 
 def dump(brand: str) -> Path:
     """The newest saved dump for a brand, from either family."""
-    pattern = (BRANDS | STORE_BRANDS | STATION_BRANDS | DEALER_BRANDS | LABEL_BRANDS)[
-        brand
-    ]
+    if brand in TEXT_BRANDS:
+        pattern = TEXT_BRANDS[brand][0]
+    else:
+        pattern = (
+            BRANDS | STORE_BRANDS | STATION_BRANDS | DEALER_BRANDS | LABEL_BRANDS
+        )[brand]
     found = sorted(RAW.glob(pattern))
     if not found:
         raise FileNotFoundError(f"{brand} dökümü yok: {RAW / pattern}")
@@ -220,6 +261,63 @@ def locate(lng: float, lat: float) -> str | None:
     return None
 
 
+def _province_in(text: str) -> str | None:
+    """The province named somewhere in this text, when exactly one is.
+
+    For a source that prints `… Avcılar İstanbul` and no province column. The windows
+    are tried from the end because a Turkish address puts the province last; a word that
+    is not a province simply does not resolve.
+    """
+    words = re.split(r"[\s/,\-]+", text.strip())
+    for size in (2, 1):
+        for start in range(len(words) - size, -1, -1):
+            found = province_id(" ".join(words[start : start + size]))
+            if found:
+                return found
+    return None
+
+
+@cache
+def text_counts(brand: str) -> dict[str, int]:
+    """District id -> the brand's store count, for sources that publish only text.
+
+    One row is one store here, the same as a coordinate dump — unlike `label_counts`,
+    where a row carries a count. Rows that cannot be placed are counted and checked
+    against `MAX_UNPLACED`, so a source whose addresses stop being readable fails loudly
+    instead of shrinking.
+    """
+    _, province_column, district_column, address_column, fixed = TEXT_BRANDS[brand]
+    path = cached_copy(dump(brand), FOLDER / f"{brand}.csv")
+    placed: dict[str, int] = {}
+    total = unplaced = 0
+    with path.open(encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            if row.get("kind", "magaza") != "magaza":
+                continue
+            total += 1
+            address = (row.get(address_column) or "") if address_column else ""
+            province = fixed or (row.get(province_column) if province_column else None)
+            if province is None and address:
+                province = _province_in(address)
+            area = None
+            if province and district_column:
+                area = district_id(province, row.get(district_column))
+            if area is None and address:
+                area = district_from_address(province, address)
+            if area is None:
+                unplaced += 1
+                continue
+            placed[area] = placed.get(area, 0) + 1
+    if not total:
+        raise ValueError(f"{brand}: döküm boş ({path})")
+    if unplaced / total > MAX_UNPLACED:
+        raise ValueError(
+            f"{brand}: {unplaced}/{total} satır hiçbir ilçeye oturmadı "
+            f"(sınır %{MAX_UNPLACED:.0%})"
+        )
+    return placed
+
+
 @cache
 def label_counts(brand: str) -> dict[str, int]:
     """District id -> the brand's store count, for sources that publish the count.
@@ -257,6 +355,8 @@ def counts(brand: str) -> dict[str, int]:
     """District id -> the brand's restaurant count there."""
     if brand in LABEL_BRANDS:
         return label_counts(brand)
+    if brand in TEXT_BRANDS:
+        return text_counts(brand)
     # The copy, not the original: it is what the manifest's checksum describes, and it is
     # still there when the brand folder is not.
     path = cached_copy(dump(brand), FOLDER / f"{brand}.csv")

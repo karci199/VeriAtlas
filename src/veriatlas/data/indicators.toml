@@ -31386,6 +31386,16 @@ tarim_kredi = { label_tr = "Tarım Kredi Kooperatif Market", label_en = "Tarım 
 mopas = { label_tr = "Mopaş", label_en = "Mopaş" }
 bim = { label_tr = "BİM", label_en = "BİM" }
 migros = { label_tr = "Migros", label_en = "Migros" }
+ekomini = { label_tr = "Ekomini", label_en = "Ekomini" }
+furpa = { label_tr = "Furpa", label_en = "Furpa" }
+seyhanlar = { label_tr = "Seyhanlar", label_en = "Seyhanlar" }
+peynircibaba = { label_tr = "Peynirci Baba", label_en = "Peynirci Baba" }
+sec_market = { label_tr = "Seç Market", label_en = "Seç Market" }
+yunus = { label_tr = "Yunus Market", label_en = "Yunus Market" }
+altunbilekler = { label_tr = "Altunbilekler", label_en = "Altunbilekler" }
+gimsa = { label_tr = "Gimsa", label_en = "Gimsa" }
+ozpas = { label_tr = "Özpaş", label_en = "Özpaş" }
+onur_market = { label_tr = "Onur Market", label_en = "Onur Market" }
 
 [indicator.chain_stores]
 label_tr = "Zincir mağaza sayısı"
