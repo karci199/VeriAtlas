@@ -271,3 +271,33 @@ sormak, dönen mağazaları kimliğe göre tekilleştirmek. Yaklaşık 13.000 ma
 Bu iş **kurulmadı**: tarayıcı otomasyonu ve konum sahteleme gerektiriyor, yarım kurulmuş
 bir tarayıcı sessizce eksik veri toplar. Ayrı bir oturumda, doğrulamasıyla birlikte
 yapılmalı — kontrol ölçütü: BİM'in 13.057 mağazasına yakın bir sayı ve 81 ilin tamamı.
+
+### A101: uç nokta bulundu (2026-09-20)
+
+Yukarıdaki "konum taraması gerekiyor" notu yanlış yere bakıyordu. Sayfa mağazaları kendi
+içinde tutmuyor, ayrı bir konağa soruyor ve **konumu argüman olarak** geçiyor:
+
+    GET rio.a101.com.tr/dbmk89vnr/CALL/StoreContentManager/nearestStores/default
+        ?__culture=tr-TR&__platform=web&__isbase64=true
+        &data=<base64 of {"geoHash":"<9 karakter geohash>"}>
+
+Konum iki kez kodlanmış — önce geohash, sonra base64 — bu yüzden `?lat=&lng=` denemesinde
+görünmüyordu. Tarayıcı konumu sahtelemeye gerek yok; `rio` konağı `www` gibi Cloudflare
+sayfa korumasının arkasında değil. Yanıt tam kayıt veriyor: `id, name, city, townShip,
+plateCode, address, lat, lng, distance`.
+
+**Yarıçap yok, sayfa var: her zaman en yakın 20.** Kırıkkale'nin boş bir noktasından
+sorulduğunda da 20 geliyor, en uzağı 49 km. Yani bir sorgu yalnız 20'nci mağazanın
+mesafesi kadar yeri ispatlar. Çekici (`scripts/fetch_a101.py`) bu yüzden sabit ızgara
+değil **dörtlü ağaç**: hücrenin merkezinden sorar, kanıtlanan yarıçap hücrenin yarı
+köşegenini kapsamıyorsa hücreyi dörde böler. Kadıköy derinleşir, Tunceli derinleşmez —
+ve tarama kendi kapsamasını kendi bildirir.
+
+**Hız sınırı sert.** ~30 sorgudan sonra IP hem tarayıcıda hem Python'da `403`'e düştü;
+Domino's deseninin aynısı. Önceden istenmiş bir geohash kenar önbellekten döndüğü için
+engel bir süre "bazı sorgular çalışıyor" gibi görünüyor — bu yanıltıcı, yeni koordinat
+denenmeden açık sayılmamalı. Tarama bu yüzden 1,5 sn gecikmeyle ve engelde 20 dk bekleyip
+`--devam` ile süren bir sürücüyle çalıştırılıyor.
+
+Doğrulama ölçütü: BİM 13.057, ŞOK 11.220. A101 bu büyüklüğe ve 81 ile ulaşmazsa çekim
+eksiktir; çekici 81 ilden azını görürse uyarı basar.
