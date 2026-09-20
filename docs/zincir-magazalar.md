@@ -521,3 +521,21 @@ Bir de yan kazanç: kayıt defteri eşleyicisi artık **Türkçe büyük/küçü
 ŞOK `BURSA / İZNİK` diye bağırıyor, TİTCK `Bursa / İznik` yazıyor; ikisi de eşleşiyor.
 Yalnız harf büyüklüğü göz ardı ediliyor — şapka, boşluk ve eski il adı hâlâ tek tek
 yazılan istisnalar, çünkü onlar tek bir dizginin arkasına iki ayrı yeri saklayabilir.
+
+### A101 için elle bir ölçüt (2026-09-20)
+
+A101 çekilemedi (uç nokta bulundu, IP'miz o yola yasaklandı). Kullanıcı elle baktı:
+**İznik'te haritada 6 A101 görünüyor** — biri "kapalı" etiketli, beşi açık.
+
+Bu sayı **depoya girmez**: başkasının haritasından okunmuş tek bir gözlem, bizim
+ölçümümüz değil. Ortakalan'ın perakende raporundaki sektör toplamları gibi, yalnız
+**ölçüt** olarak tutulur: A101 taraması yapıldığında İznik'te 6 civarı çıkmalı; çok daha
+azı taramanın eksik olduğunu, çok daha fazlası ilçe sınırının dışını içeri aldığını
+gösterir.
+
+Tutarlılık kontrolü olarak da anlamlı: A101 kendi sitesinde 13.500 mağaza diyor, bu
+ilçe başına ortalama ~14 eder; İznik'in nüfusu (45.510) ilçe ortalamasının yarısı kadar,
+yani beklenen 6-7. Gözlem beklentiyle uyuşuyor.
+
+İznik'in tablosu bu gözlemle birlikte: ŞOK 13, **A101 ~6**, BİM 6, Migros 4, Tarım Kredi 3,
+Oses 3, Gratis 1, Komagene 1, Domino's 1 — ve 15 eczane.
