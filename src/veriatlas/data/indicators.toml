@@ -31383,6 +31383,7 @@ sok = { label_tr = "ŞOK Market", label_en = "ŞOK Market" }
 koctas = { label_tr = "Koçtaş", label_en = "Koçtaş" }
 vestel = { label_tr = "Vestel", label_en = "Vestel" }
 tarim_kredi = { label_tr = "Tarım Kredi Kooperatif Market", label_en = "Tarım Kredi Cooperative Market" }
+mopas = { label_tr = "Mopaş", label_en = "Mopaş" }
 
 [indicator.chain_stores]
 label_tr = "Zincir mağaza sayısı"
@@ -31393,6 +31394,23 @@ frequency = "annual"
 dims = ["store_brand"]
 views = ["table", "map", "bar"]
 definition_tr = "Altı perakende zincirinin (ŞOK, Gratis, Madame Coco, Rossmann, Karaca, Vatan Bilgisayar) mağaza sayısı, ilçe ve il düzeyinde, 19.09.2026 anlık görüntüsü. İlçe, mağazanın koordinatının düştüğü ilçe sınırından belirlenir. Zincir restoranlardan (`chain_restaurants`) ayrı tutulur: kozmetik mağazası ile hamburgerci farklı sorulara cevap verir, ikisini toplamak anlamsızdır. Markalar da toplanmaz — bu sayı 'kaç mağaza var' sorusunun değil, 'bu markaların kaç şubesi var' sorusunun cevabıdır. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir."
+
+[dim.operator_brand]
+label_tr = "Operatör"
+label_en = "Operator"
+
+[dim.operator_brand.values]
+vodafone = { label_tr = "Vodafone", label_en = "Vodafone" }
+
+[indicator.operator_dealers]
+label_tr = "Operatör bayi sayısı"
+label_en = "Mobile operator dealers"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+dims = ["operator_brand"]
+views = ["table", "map", "bar"]
+definition_tr = "Operatörün kendi bayi bulucusundan sayılan bayi, ilçe ve il düzeyinde, 20.09.2026 anlık görüntüsü. İlçe, bayinin koordinatının düştüğü ilçe sınırından belirlenir. Zincir mağazadan (`chain_stores`) ayrı tutulur: bayi abonelik satar, kendi şirket unvanıyla franchise'dır, ve ilçedeki sayısı alışverişin değil operatörün satış ağının yoğunluğunu okur. Markalar toplanmaz ve bu sayı ülkedeki toplam bayi sayısı değildir — yalnız listesini yayımlayan operatörleri kapsar. Seri değildir: bayi bulucular yalnız bugün açık olanı gösterir."
 
 [dim.fuel_brand]
 label_tr = "Akaryakıt markası"

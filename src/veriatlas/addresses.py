@@ -126,15 +126,26 @@ def district_from_address(province: str | None, address: str | None) -> str | No
     if province_id(province) is None or not address:
         return None
 
-    tail = [part.strip() for part in address.split("/")]
-    candidate = tail[-2] if len(tail) >= 2 else ""
+    # `… Mamak / Ankara` puts the district one part before the end, and
+    # `… Bahabey Cd. No: 60/A ÇORUM` puts it at the very end with no separator at all.
+    # Both are read: the second form is how a source writes an address in the provincial
+    # centre, and skipping it lost every such branch — six of Yunus Market's eight
+    # unresolved rows were of this shape.
+    # Every slash-separated part, from the end. The district is usually one before the
+    # last (`… Mamak / Ankara`) or, in a provincial centre, the last one with no
+    # separator at all (`… No: 60/A ÇORUM`). It is occasionally further back still:
+    # `… No: 6BA / 5 ETİMESGUT / BAĞLICA / ANKARA` names the district, then the semt,
+    # then the province. Only a name that is a district *of the named province* is
+    # taken, so walking further back cannot pull in a place from somewhere else.
+    candidates = [part.strip() for part in reversed(address.split("/"))]
 
-    words = candidate.split()
-    for size in (2, 1):
-        if len(words) >= size:
-            found = district_id(province, " ".join(words[-size:]))
-            if found:
-                return found
+    for candidate in candidates:
+        words = candidate.split()
+        for size in (2, 1):
+            if len(words) >= size:
+                found = district_id(province, " ".join(words[-size:]))
+                if found:
+                    return found
 
     for match in NEIGHBOURHOOD.finditer(address):
         for name in _before(address[: match.start()]):
@@ -142,9 +153,10 @@ def district_from_address(province: str | None, address: str | None) -> str | No
             if found:
                 return found
 
-    for word in reversed(words):
-        if fold(word) not in NOT_A_PLACE:
-            found = _as_district(province, word)
-            if found:
-                return found
+    for candidate in candidates:
+        for word in reversed(candidate.split()):
+            if fold(word) not in NOT_A_PLACE:
+                found = _as_district(province, word)
+                if found:
+                    return found
     return None

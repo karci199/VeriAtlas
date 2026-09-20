@@ -97,6 +97,14 @@ STORE_BRANDS = {
     "koctas": "koctas/magazalar_*.csv",
     "vestel": "vestel/magazalar_*.csv",
     "tarim_kredi": "tarimkredi/magazalar_*.csv",
+    "mopas": "mopas/magazalar_*.csv",
+}
+
+#: Mobile operator dealers. Kept out of `chain_stores` for the same reason fuel stations
+#: are: a dealer sells subscriptions, is franchised in its own company's name, and a
+#: district's count reads as where an operator sells rather than where people shop.
+DEALER_BRANDS = {
+    "vodafone": "vodafone/bayiler_*.csv",
 }
 
 #: Fuel stations, a third family. A filling station is not a shop and not a restaurant:
@@ -126,7 +134,7 @@ TURKEY = (25.5, 35.5, 45.0, 42.5)
 
 def dump(brand: str) -> Path:
     """The newest saved dump for a brand, from either family."""
-    pattern = (BRANDS | STORE_BRANDS | STATION_BRANDS)[brand]
+    pattern = (BRANDS | STORE_BRANDS | STATION_BRANDS | DEALER_BRANDS)[brand]
     found = sorted(RAW.glob(pattern))
     if not found:
         raise FileNotFoundError(f"{brand} dökümü yok: {RAW / pattern}")
@@ -284,6 +292,15 @@ class ChainRestaurants:
         )
 
 
+class OperatorDealers(ChainRestaurants):
+    """Mobile operator dealers of the brands that publish a coordinate per dealer."""
+
+    indicator_id = "operator_dealers"
+    source_id = "chain_store_finders"
+    brands = DEALER_BRANDS
+    dim = "operator_brand"
+
+
 class FuelStations(ChainRestaurants):
     """Filling stations of the brands that publish a coordinate per station."""
 
@@ -312,4 +329,5 @@ CHAIN_STORE_ADAPTERS = {
     "chain_restaurants": ChainRestaurants,
     "chain_stores": ChainStores,
     "fuel_stations": FuelStations,
+    "operator_dealers": OperatorDealers,
 }
