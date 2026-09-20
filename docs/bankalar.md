@@ -44,8 +44,16 @@ Toplam: **10.268 şube, 42.546 ATM**.
 | Sinpaş | 124 | `sinpas_sube.json` |
 | Albayrak | 42 | `albayrak_sube.json` |
 | İmece | 12 | `imece_sube.json` (koordinatlı) |
+| Emlak Katılım TF | 120 | `emlakkatilimtfs_sube.json` |
 
-BDDK'nın listesindeki dokuz şirketin dokuzu da çekildi.
+BDDK'nın listesindeki dokuz şirketin dokuzu da çekildi; toplam **971 şube**.
+Dikkat: `emlakkatilim_sube_atm.json` **bankanın** dosyasıdır, tasarruf finansman
+şirketi (`emlakkatilimtfs.com.tr`) ondan ayrıdır ve `emlakkatilimtfs_sube.json`'da
+durur. İkisini toplamak çifte sayım olur.
+
+Emlak Katılım TF'nin adreslerinde il adı geçmiyor (şube adı "Fatih Şube" gibi),
+il ancak ilçe adından türetilebiliyor: 120 kaydın 89'u yerleşti, 31'i açıkta.
+Diğer sekiz şirkette adres metni ili taşıyor, 851 kaydın 811'i yerleşti.
 
 ## Çekim yöntemleri
 
