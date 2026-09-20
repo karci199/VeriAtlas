@@ -52,6 +52,7 @@ from pathlib import Path
 import polars as pl
 
 from ..config import PUBLIC, RAW
+from ..labels import district_id
 from .base import cached_copy
 
 #: The copies `ingest` checksums; the brand dumps themselves live one folder up each.
@@ -82,6 +83,20 @@ BRANDS = {
 #: that stops early is not a small chain, and counting it would publish a shortfall as a
 #: measurement. It goes in when the fetcher returns the whole list.
 
+#: Chains that publish a **count per district** instead of a list of shops. BİM's store
+#: finder and Migros's both answer "how many here" per district and never hand out a
+#: branch, so there is no coordinate to place and nothing to count: the number is the
+#: observation. The district comes from the source's own label, resolved by
+#: `veriatlas.labels`, which is why this family could not be loaded before it existed.
+#:
+#: They are `chain_stores` all the same — the same question, a different shaped answer.
+#: Keeping them in a separate indicator would split "how many BİMs" from "how many
+#: ŞOKs" for no reason a reader would recognise.
+LABEL_BRANDS = {
+    "bim": "bim/district_counts.csv",
+    "migros": "migros/district_counts.csv",
+}
+
 #: Retail chains that publish a coordinate per store, from `scripts/fetch_marketler.py`.
 #: Three more chains are fetched by that script and deliberately left out here — Bizim
 #: Toptan, Onur Market and Happy Center give no coordinate, so their district would come
@@ -98,7 +113,8 @@ STORE_BRANDS = {
     "vestel": "vestel/magazalar_*.csv",
     "tarim_kredi": "tarimkredi/magazalar_*.csv",
     "mopas": "mopas/magazalar_*.csv",
-}
+    "ekomini": "ekomini/magazalar_*.csv",
+} | LABEL_BRANDS
 
 #: Mobile operator dealers. Kept out of `chain_stores` for the same reason fuel stations
 #: are: a dealer sells subscriptions, is franchised in its own company's name, and a
@@ -134,7 +150,9 @@ TURKEY = (25.5, 35.5, 45.0, 42.5)
 
 def dump(brand: str) -> Path:
     """The newest saved dump for a brand, from either family."""
-    pattern = (BRANDS | STORE_BRANDS | STATION_BRANDS | DEALER_BRANDS)[brand]
+    pattern = (BRANDS | STORE_BRANDS | STATION_BRANDS | DEALER_BRANDS | LABEL_BRANDS)[
+        brand
+    ]
     found = sorted(RAW.glob(pattern))
     if not found:
         raise FileNotFoundError(f"{brand} dökümü yok: {RAW / pattern}")
@@ -200,8 +218,42 @@ def locate(lng: float, lat: float) -> str | None:
 
 
 @cache
+def label_counts(brand: str) -> dict[str, int]:
+    """District id -> the brand's store count, for sources that publish the count.
+
+    Every row must resolve. There is no tolerance here of the kind `counts` allows for
+    points falling outside a polygon: an unmatched *name* is not a shop on a beach, it
+    is a district whose whole count would vanish — 13.057 BİM stores sit in 916 rows and
+    one dropped row can be sixty of them.
+    """
+    path = cached_copy(dump(brand), FOLDER / f"{brand}.csv")
+    placed: dict[str, int] = {}
+    unresolved: list[str] = []
+    with path.open(encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            area = district_id(row["il"], row["ilce"])
+            if area is None:
+                unresolved.append(f"{row['il']}/{row['ilce']}")
+                continue
+            placed[area] = placed.get(area, 0) + int(row["magaza_sayisi"])
+    if unresolved:
+        raise ValueError(
+            f"{brand}: {len(unresolved)} ilçe adı kayıt defterine oturmadı: "
+            + ", ".join(sorted(unresolved)[:10])
+        )
+    if not placed:
+        raise ValueError(f"{brand}: döküm boş ({path})")
+    # A district with no store is data, not a gap — Migros names all 973 and puts a zero
+    # against 445 of them. The zeros are dropped here because the indicator counts shops
+    # and a row saying "none" adds nothing the absence does not already say.
+    return {area: count for area, count in placed.items() if count}
+
+
+@cache
 def counts(brand: str) -> dict[str, int]:
     """District id -> the brand's restaurant count there."""
+    if brand in LABEL_BRANDS:
+        return label_counts(brand)
     # The copy, not the original: it is what the manifest's checksum describes, and it is
     # still there when the brand folder is not.
     path = cached_copy(dump(brand), FOLDER / f"{brand}.csv")

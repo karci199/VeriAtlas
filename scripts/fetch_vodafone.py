@@ -49,6 +49,7 @@ BROWSER = (
 )
 COLUMNS = [
     "name",
+    "kind",
     "province",
     "district",
     "source_district",
@@ -57,6 +58,19 @@ COLUMNS = [
     "lat",
     "lng",
 ]
+
+#: `data-category-id` on each store div, named by the page's own "Mağaza türü" filter.
+#: **These are not four kinds of dealer.** A payment point is a shop that takes bill
+#: payments over its counter — a grocer, a stationer — and it sells no subscription; in
+#: Hatay 95 of 139 listings are payment points and only 7 are phone centres. Counting
+#: them together answers no question: it is neither "where can I buy a line" nor "where
+#: can I pay a bill". The kind is carried on every row so the adapter can choose.
+KINDS = {
+    "2": "cep_merkezi",
+    "3": "hizmet_noktasi",
+    "4": "odeme_noktasi",
+    "5": "kurumsal_magaza",
+}
 
 #: Courtesy gap between province pages.
 PAUSE = 1.0
@@ -70,7 +84,8 @@ PROVINCES = 81
 #: lookahead anchored on that silently drops it — 192 of Adana's 193 on the first run.
 SPLIT = re.compile(r'(?=<div class="[^"]*js-store")')
 STORE = re.compile(
-    r'<div class="[^"]*js-store"[^>]*data-lat="([^"]*)"[^>]*data-long="([^"]*)"'
+    r'<div class="[^"]*js-store"[^>]*data-category-id="(\d+)"[^>]*'
+    r'data-lat="([^"]*)"[^>]*data-long="([^"]*)"'
 )
 
 
@@ -133,7 +148,7 @@ def dealers(slug: str) -> list[dict[str, str]]:
         head = STORE.match(block)
         if head is None:
             continue
-        lat, lng = coordinate(head.group(1), head.group(2))
+        lat, lng = coordinate(head.group(2), head.group(3))
         name = NAME.search(block)
         place = PLACE.search(block)
         address = ADDRESS.search(block)
@@ -142,6 +157,7 @@ def dealers(slug: str) -> list[dict[str, str]]:
         rows.append(
             {
                 "name": clean(name.group(1)) if name else "",
+                "kind": KINDS.get(head.group(1), head.group(1)),
                 "province": clean(province),
                 # Left empty on purpose: the district is the adapter's job, decided by
                 # the coordinate. What the page says is kept beside it, not in it.

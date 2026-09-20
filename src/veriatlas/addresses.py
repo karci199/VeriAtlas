@@ -139,13 +139,19 @@ def district_from_address(province: str | None, address: str | None) -> str | No
     # taken, so walking further back cannot pull in a place from somewhere else.
     candidates = [part.strip() for part in reversed(address.split("/"))]
 
+    # Every one- and two-word window in each part, from the end. Not just the final
+    # words: an address that ends `… No: 4/1 Avcılar İstanbul` puts the district second
+    # from last, behind the province, and reading only the tail found `İstanbul`, which
+    # is not a district of İstanbul, and stopped. Windows are tried longest-first at each
+    # position so `Oniki Şubat` is preferred over `Şubat`.
     for candidate in candidates:
         words = candidate.split()
-        for size in (2, 1):
-            if len(words) >= size:
-                found = district_id(province, " ".join(words[-size:]))
-                if found:
-                    return found
+        for start in range(len(words) - 1, -1, -1):
+            for size in (2, 1):
+                if start + size <= len(words):
+                    found = district_id(province, " ".join(words[start : start + size]))
+                    if found:
+                        return found
 
     for match in NEIGHBOURHOOD.finditer(address):
         for name in _before(address[: match.start()]):
