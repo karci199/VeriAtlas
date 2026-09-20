@@ -114,6 +114,7 @@ STORE_BRANDS = {
     "tarim_kredi": "tarimkredi/magazalar_*.csv",
     "mopas": "mopas/magazalar_*.csv",
     "ekomini": "ekomini/magazalar_*.csv",
+    "furpa": "furpa/magazalar_*.csv",
 } | LABEL_BRANDS
 
 #: Mobile operator dealers. Kept out of `chain_stores` for the same reason fuel stations
