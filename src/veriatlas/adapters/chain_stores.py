@@ -107,6 +107,8 @@ STORE_BRANDS = {
     # Malatya-based, 38 stores (Malatya 32, K.Maraş 4, Adıyaman 2), okatalog; its own
     # page draws a JS map only. District read from the address (adres_ilce.py).
     "esenlik": "zincir/esenlik.csv",
+    # Afyon: Söz, own page soz.com.tr/magazalar — 20 named branches, 20 map links.
+    "soz": "zincir/yerel_soz_toplu_tuketim.csv",
 }
 
 #: The share of a brand's branches allowed to fall outside every polygon *while standing
