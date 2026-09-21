@@ -100,6 +100,10 @@ STORE_BRANDS = {
     "seyhanlar": "zincir/seyhanlar.csv",
     "koctas": "zincir/koctas.csv",
     "vestel": "zincir/vestel.csv",
+    # Adana: Groseri from okatalog (its own finder renders client-side only; 24 stores,
+    # Adana 18, Mersin 6), Bravo from its own page (5 stores, no coordinates).
+    "groseri": "zincir/okatalog_groseri-market.csv",
+    "bravo": "zincir/bravo_adana.csv",
 }
 
 #: The share of a brand's branches allowed to fall outside every polygon *while standing
@@ -169,6 +173,11 @@ def _in_ring(x: float, y: float, ring: Ring) -> bool:
     return inside
 
 
+@cache
+def _district_ids() -> frozenset[str]:
+    return frozenset(area_id for area_id, _, _ in _districts())
+
+
 def locate(lng: float, lat: float) -> str | None:
     """The district holding this point, or None when it falls outside all of them."""
     for area_id, rings, (x0, y0, x1, y1) in _districts():
@@ -192,6 +201,15 @@ def counts(brand: str) -> dict[str, int]:
     x0, y0, x1, y1 = TURKEY
     with path.open(encoding="utf-8", newline="") as handle:
         for row in csv.DictReader(handle):
+            # A store the source lists without a coordinate but whose district its
+            # address names outright; the id was set by hand from that address and is
+            # checked against the registry here rather than trusted.
+            if row.get("area_id"):
+                if row["area_id"] not in _district_ids():
+                    raise ValueError(f"{brand}: tanımsız ilçe {row['area_id']}")
+                total += 1
+                placed[row["area_id"]] = placed.get(row["area_id"], 0) + 1
+                continue
             try:
                 lng, lat = float(row["lng"]), float(row["lat"])
             except ValueError:  # the source left the coordinate blank
@@ -271,8 +289,6 @@ class ChainRestaurants:
                 "retrieved_at": RETRIEVED,
             }
         )
-
-
 
 
 class ChainStores(ChainRestaurants):

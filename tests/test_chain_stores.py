@@ -118,3 +118,17 @@ def test_stores_abroad_leave_the_count_without_tripping_the_threshold():
     placed = sum(counts("madame_coco").values())
     assert inside < 719, "yurt dışı mağazalar ayıklanmadı"
     assert placed / inside > 0.97, f"yurt içi kayıp fazla: {placed}/{inside}"
+
+
+def test_hand_placed_row_with_unknown_district_is_refused(tmp_path, monkeypatch):
+    """A district id typed from an address must exist, or the store vanishes silently."""
+    from veriatlas.adapters import chain_stores as cs
+
+    dump_file = tmp_path / "x.csv"
+    dump_file.write_text("address,area_id,lat,lng\na,TR-01-999,,\n", encoding="utf-8")
+    monkeypatch.setattr(cs, "dump", lambda brand: dump_file)
+    monkeypatch.setattr(cs, "cached_copy", lambda src, dst: src)
+    cs.counts.cache_clear()
+    with pytest.raises(ValueError, match="tanımsız ilçe"):
+        cs.counts("sahte")
+    cs.counts.cache_clear()
