@@ -31889,6 +31889,7 @@ mavi = { label_tr = "Mavi", label_en = "Mavi" }
 koton = { label_tr = "Koton", label_en = "Koton" }
 sarar = { label_tr = "Sarar", label_en = "Sarar" }
 zara = { label_tr = "Zara", label_en = "Zara" }
+hm = { label_tr = "H&M", label_en = "H&M" }
 skechers = { label_tr = "Skechers", label_en = "Skechers" }
 
 [indicator.fashion_stores]
@@ -31899,4 +31900,4 @@ unit = "item"
 frequency = "annual"
 dims = ["fashion_brand"]
 views = ["table", "map", "bar"]
-definition_tr = "Yedi giyim/ayakkabı zincirinin mağaza sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. İlçe koordinattan belirlenir. Markalar toplanmaz; bu sayı 'kaç giyim mağazası var' sorusunun değil, 'bu markaların kaç mağazası var' sorusunun cevabıdır. Seri değildir."
+definition_tr = "Sekiz giyim/ayakkabı zincirinin mağaza sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. İlçe koordinattan belirlenir. Markalar toplanmaz; bu sayı 'kaç giyim mağazası var' sorusunun değil, 'bu markaların kaç mağazası var' sorusunun cevabıdır. Seri değildir."

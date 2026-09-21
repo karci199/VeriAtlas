@@ -489,6 +489,14 @@ FASHION: dict[str, Callable[[], Iterator[Point]]] = {
         lambda r: r["longitude"],
         ident=lambda r: r["id"],
     ),
+    # H&M group's own store API, which the finder reads; 45 rows, as the page says.
+    "hm": _stores(
+        "perakende/hm_magaza.json",
+        "magazalar",
+        lambda r: r["latitude"],
+        lambda r: r["longitude"],
+        ident=lambda r: r["storeCode"],
+    ),
     "skechers": _stores(
         "perakende/skechers_magaza.json",
         "magazalar",
