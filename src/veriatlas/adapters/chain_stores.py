@@ -109,6 +109,13 @@ STORE_BRANDS = {
     "esenlik": "zincir/esenlik.csv",
     # Afyon: Söz, own page soz.com.tr/magazalar — 20 named branches, 20 map links.
     "soz": "zincir/yerel_soz_toplu_tuketim.csv",
+    # District tallies, not store rows: BİM's finder prints "Listelenen Mağaza Sayısı" per
+    # district (BİM and FİLE together, 13.057), Migros's per district (3.442). Seç Market
+    # lists stores with a district label; 12 of 2.257 carry a broken one (a postcode, a
+    # "MERKEZ" in a metropolitan province, a district of another province) and are left out.
+    "bim": "zincir/bim_ilce.csv",
+    "migros": "zincir/migros_ilce.csv",
+    "sec_market": "zincir/sec_ilce.csv",
 }
 
 #: The share of a brand's branches allowed to fall outside every polygon *while standing
@@ -212,8 +219,10 @@ def counts(brand: str) -> dict[str, int]:
             if row.get("area_id"):
                 if row["area_id"] not in _district_ids():
                     raise ValueError(f"{brand}: tanımsız ilçe {row['area_id']}")
-                total += 1
-                placed[row["area_id"]] = placed.get(row["area_id"], 0) + 1
+                # `count` when the source publishes a district tally rather than stores.
+                n = int(row.get("count") or 1)
+                total += n
+                placed[row["area_id"]] = placed.get(row["area_id"], 0) + n
                 continue
             try:
                 lng, lat = float(row["lng"]), float(row["lat"])

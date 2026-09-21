@@ -31393,6 +31393,9 @@ groseri = { label_tr = "Groseri", label_en = "Groseri" }
 bravo = { label_tr = "Bravo Süpermarket", label_en = "Bravo Süpermarket" }
 esenlik = { label_tr = "Esenlik", label_en = "Esenlik" }
 soz = { label_tr = "Söz Market", label_en = "Söz Market" }
+bim = { label_tr = "BİM (FİLE dahil)", label_en = "BİM (incl. FİLE)" }
+migros = { label_tr = "Migros", label_en = "Migros" }
+sec_market = { label_tr = "Seç Market", label_en = "Seç Market" }
 
 [indicator.chain_stores]
 label_tr = "Zincir mağaza sayısı"
