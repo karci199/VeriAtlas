@@ -489,6 +489,16 @@ FASHION: dict[str, Callable[[], Iterator[Point]]] = {
         lambda r: r["longitude"],
         ident=lambda r: r["id"],
     ),
+    # Same platform as Koton (`/stores/?format=json`); one row per store across the
+    # group's banners — Superstep, SuperKids, House of Superstep, HeartBeat.
+    "superstep": _stores(
+        "perakende/superstep_magaza.json",
+        "magazalar",
+        lambda r: r["latitude"],
+        lambda r: r["longitude"],
+        lambda r: r["township"]["city"]["name"],
+        lambda r: r["pk"],
+    ),
     # H&M group's own store API, which the finder reads; 45 rows, as the page says.
     "hm": _stores(
         "perakende/hm_magaza.json",

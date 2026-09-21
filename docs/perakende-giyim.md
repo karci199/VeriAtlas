@@ -55,3 +55,17 @@ eklenenler ve markaya özgü tuzaklar var.
 | Tavuk Dünyası, Little Caesars, Pizza Hut | bakılacak |
 
 Domino's zaten depoda (`docs/zincir-magazalar.md`, 311 şube, yarım).
+
+## 2026-09-21 ekleri
+
+- **H&M**: mağaza bulucusu grubun ortak API'sinden besleniyor ve düz istekle cevap veriyor:
+  `api.storelocator.hmgroup.tech/v2/brand/hm/stores/locale/tr_TR/country/TR?_type=json&maxnumberofstores=500`
+  → 45 mağaza, sayfadaki "45 sonuç" ile aynı. Aynı uç diğer grup markalarına (`cos`, `arket`) da açık.
+- **Superstep**: Koton'la aynı altyapı, `/stores/?format=json` tek istekte 196 kayıt (1'i KKTC).
+  Tek satır bir mağaza; SuperKids, House of Superstep ve HeartBeat adları aynı listede.
+  robots.txt ClaudeBot'a açıkça `Allow: /` diyor.
+- **Superstep marka listesi** (`/markalar-landing/`, ham `superstep_markalar.html`): yaklaşık 75
+  marka (Nike, Adidas, Puma, New Balance, Vans, Converse, Asics, Skechers, Timberland,
+  The North Face, Lacoste, Tommy Hilfiger, Crocs, Hoka, On…). Bunlar Superstep içinde satılan
+  markalar, kendi mağazaları değil; kendi mağaza bulucusu olanlar için aday listesi olarak
+  tutuluyor.
