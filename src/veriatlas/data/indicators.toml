@@ -31823,3 +31823,87 @@ frequency = "monthly"
 dims = ["cpi_item"]
 views = ["table", "line"]
 definition_tr = "TÜİK'in TÜFE madde sepetindeki 409 maddenin Türkiye ortalama fiyatı, TL, aylık, 2003-01 ile 2022-04 arası. Endeks değil gerçek fiyattır. 2005 öncesi değerler eski liradır ve milyona bölünerek çevrilmiştir: pirinç Aralık 2004'te 2.545.872, Ocak 2005'te 2,55 TL. İl kırılımı yoktur, TÜİK madde fiyatlarını yalnız Türkiye geneli yayımlar."
+
+[dim.bank]
+label_tr = "Banka"
+label_en = "Bank"
+
+[dim.bank.values]
+ziraat = { label_tr = "Ziraat Bankası", label_en = "Ziraat Bankası" }
+vakifbank = { label_tr = "VakıfBank", label_en = "VakıfBank" }
+halkbank = { label_tr = "Halkbank", label_en = "Halkbank" }
+isbank = { label_tr = "İş Bankası", label_en = "İşbank" }
+denizbank = { label_tr = "DenizBank", label_en = "DenizBank" }
+yapikredi = { label_tr = "Yapı Kredi", label_en = "Yapı Kredi" }
+akbank = { label_tr = "Akbank", label_en = "Akbank" }
+teb = { label_tr = "TEB", label_en = "TEB" }
+qnb = { label_tr = "QNB", label_en = "QNB" }
+sekerbank = { label_tr = "Şekerbank", label_en = "Şekerbank" }
+fibabanka = { label_tr = "Fibabanka", label_en = "Fibabanka" }
+ing = { label_tr = "ING", label_en = "ING" }
+kuveytturk = { label_tr = "Kuveyt Türk", label_en = "Kuveyt Türk" }
+turkiyefinans = { label_tr = "Türkiye Finans", label_en = "Türkiye Finans" }
+vakifkatilim = { label_tr = "Vakıf Katılım", label_en = "Vakıf Katılım" }
+ziraatkatilim = { label_tr = "Ziraat Katılım", label_en = "Ziraat Katılım" }
+albaraka = { label_tr = "Albaraka Türk", label_en = "Albaraka Türk" }
+emlakkatilim = { label_tr = "Emlak Katılım", label_en = "Emlak Katılım" }
+
+[indicator.bank_branch_locations]
+label_tr = "Banka şubesi (konumla)"
+label_en = "Bank branches (located)"
+topic = "finans"
+unit = "item"
+frequency = "annual"
+dims = ["bank"]
+views = ["table", "map", "bar"]
+definition_tr = "On yedi bankanın kendi şube bulucusundan okunan şube sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. İlçe, şubenin koordinatının düştüğü ilçe sınırından belirlenir. Garanti BBVA ve QNB şubeleri alınamadığı için sektör toplamı değildir; sektör toplamı BDDK'nın `bank_group_branches` göstergesindedir. Kamu ve katılım bankalarının toplamı BDDK grup toplamlarının %99'unu tutar. KKTC şubeleri, kapalı şubeler (VakıfBank durum 2) ve adresi olmayan kanallar (DenizBank mobil satış ofisleri) sayılmaz. Seri değildir."
+
+[indicator.bank_atm_locations]
+label_tr = "Banka ATM'si (konumla)"
+label_en = "Bank ATMs (located)"
+topic = "finans"
+unit = "item"
+frequency = "annual"
+dims = ["bank"]
+views = ["table", "map", "bar"]
+definition_tr = "On altı bankanın kendi bulucusundan okunan ATM sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Bir noktadaki her makine ayrı sayılır. Garanti BBVA (yaklaşık 6.400 ATM) alınamadığı için sektör toplamı değildir; sektör toplamı TBB'nin `bank_atms` göstergesindedir. Kuveyt Türk'ün para yatırma-çekme makineleri (AIO) ATM sayılır. Seri değildir."
+
+[dim.operator]
+label_tr = "Operatör"
+label_en = "Operator"
+
+[dim.operator.values]
+turk_telekom = { label_tr = "Türk Telekom", label_en = "Türk Telekom" }
+
+[indicator.telecom_dealers]
+label_tr = "Operatör bayisi"
+label_en = "Telecom operator dealers"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+dims = ["operator"]
+views = ["table", "map", "bar"]
+definition_tr = "Türk Telekom'un bayi bulucusundaki satış noktaları, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Bireysel ve kurumsal listeler aynı bayileri taşır (1.777 kayıt, 893 bayi); bayi kimliğiyle tekilleştirilmiştir. Turkcell listesinde koordinat olmadığı için henüz girmedi. Seri değildir."
+
+[dim.fashion_brand]
+label_tr = "Marka"
+label_en = "Brand"
+
+[dim.fashion_brand.values]
+lcwaikiki = { label_tr = "LC Waikiki", label_en = "LC Waikiki" }
+defacto = { label_tr = "DeFacto", label_en = "DeFacto" }
+mavi = { label_tr = "Mavi", label_en = "Mavi" }
+koton = { label_tr = "Koton", label_en = "Koton" }
+sarar = { label_tr = "Sarar", label_en = "Sarar" }
+zara = { label_tr = "Zara", label_en = "Zara" }
+skechers = { label_tr = "Skechers", label_en = "Skechers" }
+
+[indicator.fashion_stores]
+label_tr = "Giyim zinciri mağazası"
+label_en = "Fashion chain stores"
+topic = "reel_kesim"
+unit = "item"
+frequency = "annual"
+dims = ["fashion_brand"]
+views = ["table", "map", "bar"]
+definition_tr = "Yedi giyim/ayakkabı zincirinin mağaza sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. İlçe koordinattan belirlenir. Markalar toplanmaz; bu sayı 'kaç giyim mağazası var' sorusunun değil, 'bu markaların kaç mağazası var' sorusunun cevabıdır. Seri değildir."

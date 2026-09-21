@@ -34,6 +34,7 @@ from .kgm import KGM_ADAPTERS
 from .ktb import KTB_ADAPTERS
 from .mgm import MGM_ADAPTERS
 from .muhasebat import MUHASEBAT_ADAPTERS
+from .networks import NETWORK_ADAPTERS
 from .oecd_tl3 import OECD_TL3_ADAPTERS
 from .ookla_speed import OOKLA_ADAPTERS
 from .ptt_postal import PTT_POSTAL_ADAPTERS
@@ -172,6 +173,7 @@ ADAPTERS = {
     **TESK_ADAPTERS,
     **TKGM_ADAPTERS,
     **CHAIN_STORE_ADAPTERS,
+    **NETWORK_ADAPTERS,
     **PTT_POSTAL_ADAPTERS,
     **LABOUR_PROVINCE_ADAPTERS,
     **TUIK_NAMES_ADAPTERS,
