@@ -32086,3 +32086,723 @@ frequency = "annual"
 dims = []
 views = ["map", "table", "bar"]
 definition_tr = "TİTCK eczane kaydı, 20.09.2026 anlık görüntüsü. Ruhsat kaydı olduğu için markanın değil mesleğin sayımıdır. İlçe kaydın kendi etiketinden, il ilçelerin toplamı. Seri değil: yeniden çekildiğinde satırlar değişir."
+
+[indicator.net_enrollment_rate]
+label_tr = "Net okullaşma oranı"
+label_en = "Net enrollment rate"
+topic = "nufus"
+unit = "percent"
+frequency = "annual"
+dims = ["sex", "egitim_duzeyi"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+İlgili yaş grubunun okula kayıtlı olan payı, cinsiyet ve eğitim düzeyi kırılımıyla, \
+2007-2024. MEB'in kendi hesapladığı oran — kayıtlı öğrenci sayısının cinsiyet dağılımı \
+değil (bkz. `gender_student_ratio`), yaş grubunun ne kadarının fiilen okula gittiği. \
+Okul Öncesi için yayımlanmıyor. İlkokul ve Ortaokul burada ayrı görünmez: 2012 reformu \
+öncesi ikisi tek kurumdu ("İlköğretim"), o yüzden gösterge hep bu birleşik düzeyi \
+taşır — reform sonrası yıllarda İlkokul ve Ortaokul öğrenci sayısı ağırlıklı \
+ortalamasıyla hesaplanır."""
+
+[dim.egitim_duzeyi]
+label_tr = "Eğitim düzeyi"
+label_en = "Education level"
+
+[dim.egitim_duzeyi.values]
+# Uc duzey, dorden degil. Iki ayri birlestirme burada yasiyor:
+#
+# "Ortaöğretim" kaynakta "Genel Ortaöğretim" + "Mesleki ve Teknik Ortaöğretim"in toplamı
+# olarak da yayımlanıyor (doğrulandı: Adana 2024, 97160+57642=154802) — alt kırılım
+# burada tutulmuyor, çünkü ayrı bir düzey değil aynı düzeyin iki türü; ikisini de saymak
+# toplamı iki katına çıkarır.
+#
+# "İlkokul" ve "Ortaokul" hiç ayrı değer olarak tutulmuyor, ikisi de "İlköğretim"e
+# toplanıyor. 4+4+4 reformundan (2012) önce ikisi tek kurumdu; reform sonrasını ayrı
+# tutmak okuru "İlkokul mu Ortaokul mu, yoksa ikisi birden mi" sorusuyla baş başa
+# bırakırdı, kaynak dosyaların hiçbiri de zaten 2012 öncesine gitmiyor (`net_enrollment_rate`
+# hariç, o ayrıca `İlköğretim` satırını doğrudan taşıyabiliyor). Sayı bazlı göstergelerde
+# (öğrenci/derslik/şube/okul) toplama tam; oran bazlı `net_enrollment_rate`de kaynak
+# doğrudan `İlköğretim` vermediği yıllarda öğrenci sayısı ağırlıklı ortalamayla birleşiyor.
+okul_oncesi = "Okul Öncesi"
+ilkogretim = "İlköğretim"
+ortaogretim = "Ortaöğretim"
+
+[indicator.gender_student_ratio]
+label_tr = "Kadın/Erkek öğrenci oranı"
+label_en = "Female/male student ratio"
+topic = "nufus"
+unit = "percent"
+frequency = "annual"
+dims = ["egitim_duzeyi"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Kayıtlı kadın öğrenci sayısının erkek öğrenci sayısına oranı (%), eğitim düzeyi \
+kırılımıyla, 2012-2024. 100 = eşit sayıda. Net okullaşma oranından farkı: bu, zaten \
+okula kayıtlı olanlar arasındaki dağılımı ölçer, yaş grubunun tamamını değil."""
+
+[indicator.class_size]
+label_tr = "Sınıf mevcudu (öğrenci/derslik)"
+label_en = "Class size (students per classroom)"
+topic = "nufus"
+unit = "student_per_room"
+frequency = "annual"
+dims = ["egitim_duzeyi"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Öğrenci sayısının derslik sayısına oranı, eğitim düzeyi kırılımıyla, 2012-2024. Fiziksel \
+kapasite baskısının doğrudan ölçüsü — şube/derslik oranından (`section_room_ratio`) \
+farkı, idari bölünme değil gerçek yer darlığını yansıtması."""
+
+[indicator.section_size]
+label_tr = "Şube mevcudu (öğrenci/şube)"
+label_en = "Section size (students per class section)"
+topic = "nufus"
+unit = "student_per_section"
+frequency = "annual"
+dims = ["egitim_duzeyi"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Öğrenci sayısının şube (sınıf/idari bölüm) sayısına oranı, 2012-2024. Bir öğretmenin \
+fiilen karşısında gördüğü ortalama öğrenci sayısına en yakın ölçü."""
+
+[indicator.section_room_ratio]
+label_tr = "Şube/Derslik oranı (ikili öğretim baskısı)"
+label_en = "Sections per classroom (double-shift pressure)"
+topic = "nufus"
+unit = "section_per_room"
+frequency = "annual"
+dims = ["egitim_duzeyi"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Şube sayısının derslik sayısına oranı, 2012-2024. 1'in üzerinde olması, derslik başına \
+birden fazla şubenin nöbetleşe (ikili öğretim) kullandığı anlamına gelir — 1'e ne kadar \
+yakınsa okullar o kadar tek vardiyaya dönmüş demektir."""
+
+[indicator.school_size]
+label_tr = "Okul mevcudu (öğrenci/okul)"
+label_en = "School size (students per school)"
+topic = "nufus"
+unit = "student_per_school"
+frequency = "annual"
+dims = ["egitim_duzeyi"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Öğrenci sayısının okul sayısına oranı, 2012-2024. Az sayıda büyük okul mu, çok sayıda \
+küçük okul mu ölçüsü — kırsal illerde düşük, büyükşehirlerde yüksek çıkması beklenir."""
+
+# endregion
+
+# region Bases — a count read against a *slice of another indicator*
+
+# The screen can already divide a count by the area's whole population ("Alan nüfusunun
+# %'si"), which is how the crude rates are drawn without downloading them (K12). But the
+# demographic rates that matter are not over everyone: a fertility rate is over the women
+# who could have the children, and dividing births by the whole population instead answers
+# a different, weaker question — it moves when the age structure moves, which is exactly
+# what the rate is supposed to hold still.
+#
+# So a base names the denominator: which indicator it comes out of, which slice of it, and
+# what the result is called. Declared here rather than in the page for the same reason
+# everything else is (K1, K7): "hangi kadınlar" is a definition, not a rendering detail.
+#
+# `applies_to` is deliberately a list rather than a rule. Births over women 15-49 is the
+# general fertility rate; deaths over the same women is nothing at all, and a screen that
+# offers it because both are counts is offering a number nobody asked a question about.
+
+[indicator.district_urbanization]
+label_tr = "Kentleşme oranı (kayıtlı seçmen)"
+label_en = "Urbanization rate (registered voters)"
+topic = "nufus"
+unit = "percent"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = """
+Kayıtlı seçmenin kentte (mahalle sandığı) yaşayan payı, il ve ilçe düzeyinde. TÜİK'in \
+nüfus verisinde kent/kır kırılımı yok — bu, YSK'nın 2015 sandık dökümünden (AATOPLU) \
+gelen dolaylı bir vekil ölçüdür. Nüfus değil kayıtlı seçmen (18+) sayılıyor, tek bir \
+seçim anına ait, zaman serisi değil. Aydın ilinde ve Siirt'in ilçe kırılımında kaynak \
+eksik, o alanlar boş."""
+
+[indicator.births_by_age]
+label_tr = "Doğum sayısı (annenin yaş grubu)"
+label_en = "Births by mother's age group"
+topic = "dogurganlik"
+unit = "birth"
+frequency = "annual"
+additive = true
+dims = ["age"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Yıl içindeki canlı doğum sayısı, annenin yaş grubuna göre (<15'ten 50+'a), il ve \
+Türkiye düzeyinde, 2009-2025. Toplam doğurganlık hızının bileşenleri — hangi yaş \
+grubunun doğurganlığı değiştiğini gösterir, TFH tek başına göstermez."""
+
+[indicator.births_by_marital]
+label_tr = "Doğum sayısı (annenin medeni durumu)"
+label_en = "Births by mother's marital status"
+topic = "dogurganlik"
+unit = "birth"
+frequency = "annual"
+additive = true
+dims = ["marital"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+Yıl içindeki canlı doğum sayısı, annenin yasal medeni durumuna göre, il ve Türkiye \
+düzeyinde, 2012-2025. "Yasal" resmî nikahı ölçüyor — dini nikahlı fiili evlilikler \
+"hiç evlenmedi" içinde kalıyor, bu bir okuma sınırı."""
+
+[indicator.consanguineous_marriage]
+label_tr = "Akraba evliliği oranı"
+label_en = "Consanguineous marriage rate"
+topic = "evlenme_bosanma"
+unit = "percent"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+O yıl kıyılan evliliklerin yüzde kaçının akraba evliliği olduğu, il ve Türkiye \
+düzeyinde, 2010-2025. TR genelinde yarıya iniyor (%5,9 → %3,0); 81 ilin 80'i düşerken \
+Şanlıurfa tek artan il (%14,5 → %16,9)."""
+
+[indicator.literacy]
+label_tr = "Okuma yazma durumu (15+)"
+label_en = "Literacy status (15+)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["sex", "literacy_status"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+15 yaş ve üzeri nüfusun okuma yazma durumu, cinsiyete göre, il ve Türkiye düzeyinde, \
+2008-2025. Yaş kırılımı için bkz. "Okuma yazma durumu (yaş grubu)" — orası 6+ yaş \
+kapsıyor ve yalnız 2008/2025."""
+
+# Diğer ikisinden farklı popülasyon (6+, 15+ değil) ve farklı kırılım (yaş bandı var).
+# Karıştırılmadı: "15+" tek bandını "6-13" gibi ince bandlarla aynı yaş kırılımına \
+# koymak toplanabilirliği bozardı.
+
+[dim.literacy_status]
+label_tr = "Okuma yazma durumu"
+label_en = "Literacy status"
+
+[dim.literacy_status.values]
+literate = "Okuma yazma bilen"
+illiterate = "Okuma yazma bilmeyen"
+unknown = "Bilinmeyen"
+
+# endregion
+
+# region Groupings — coarser readings of a breakdown, computed not stored
+#
+# A grouping says "these values of this dimension are read together, and the result is
+# called this". It is the same idea as a derivation (K12) but across a breakdown instead
+# of across time: nothing new is stored, the screen sums what the fact table already has.
+#
+# This is where "0-14 / 15-64 / 65+" lives rather than becoming its own indicator. Three
+# reasons. Writing those sums into the fact table would store the same people twice and
+# invite a query that counts them twice. Adding an indicator per grouping would multiply
+# the tree by every way anyone might want to slice an age. And a grouping declared here
+# is one line, checked at load time against the bands that actually exist — so adding a
+# new way to read the data cannot break the old ones.
+#
+# `covers` lists the dimension values that add up into each group. They must be a
+# partition: no value in two groups, or the total stops being the total.
+
+[indicator.literacy_by_age]
+label_tr = "Okuma yazma durumu (yaş grubu)"
+label_en = "Literacy status (by age band)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["sex", "age", "literacy_status"]
+views = ["table", "map", "bar"]
+definition_tr = """
+6 yaş ve üzeri nüfusun okuma yazma durumu, cinsiyet ve yaş bandına göre (6-13'ten \
+65+'a 13 bant), il ve Türkiye düzeyinde. Yalnız 2008 ve 2025 — aradaki yıllar \
+yayımlanmadı."""
+
+# endregion
+
+# region Bases — a count read against a *slice of another indicator*
+
+# The screen can already divide a count by the area's whole population ("Alan nüfusunun
+# %'si"), which is how the crude rates are drawn without downloading them (K12). But the
+# demographic rates that matter are not over everyone: a fertility rate is over the women
+# who could have the children, and dividing births by the whole population instead answers
+# a different, weaker question — it moves when the age structure moves, which is exactly
+# what the rate is supposed to hold still.
+#
+# So a base names the denominator: which indicator it comes out of, which slice of it, and
+# what the result is called. Declared here rather than in the page for the same reason
+# everything else is (K1, K7): "hangi kadınlar" is a definition, not a rendering detail.
+#
+# `applies_to` is deliberately a list rather than a rule. Births over women 15-49 is the
+# general fertility rate; deaths over the same women is nothing at all, and a screen that
+# offers it because both are counts is offering a number nobody asked a question about.
+
+[indicator.education_attainment]
+label_tr = "Öğrenim durumu"
+label_en = "Educational attainment"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["education_level", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+6 yaşını doldurmuş nüfusun bitirdiği en yüksek okul, cinsiyet kırılımıyla. Yaş 6'dan \
+başladığı için toplamı ilin nüfusu değildir. "İlkokul" ile "ilköğretim" ayrı \
+seviyelerdir: ilki beş yıllık eski ilkokul, ikincisi 1997'de gelen sekiz yıllık \
+ilköğretim — ikisinin diploması da hâlâ taşınıyor."""
+
+[indicator.household_by_building_age]
+label_tr = "Binanın inşa dönemine göre hane sayısı"
+label_en = "Households by building construction period"
+topic = "nufus"
+unit = "household"
+frequency = "annual"
+additive = true
+dims = ["building_period"]
+views = ["table", "map", "bar"]
+definition_tr = """
+Hanenin oturduğu binanın ne zaman yapıldığı. Binayı değil haneyi sayar: aynı binadaki \
+üç daire üç hanedir. **Tek yıl**: yalnızca 2021 için yayımlandı."""
+
+[dim.building_period]
+label_tr = "Binanın inşa dönemi"
+label_en = "Building construction period"
+
+# The bands are the source's, and they are not equal in length: twenty years, twenty
+# years, and everything since. The last one is open, so its share grows with time for
+# reasons that have nothing to do with building.
+
+[dim.building_period.values]
+pre_1981 = "1980 ve öncesi"
+between_1981_2000 = "1981-2000"
+post_2000 = "2001 ve sonrası"
+unknown = "Bilinmeyen"
+
+[unit.student_per_room]
+label_tr = "öğrenci/derslik"
+label_en = "students per classroom"
+decimals = 1
+additive = false
+
+[unit.student_per_section]
+label_tr = "öğrenci/şube"
+label_en = "students per class section"
+decimals = 1
+additive = false
+
+[unit.section_per_room]
+label_tr = "şube/derslik"
+label_en = "sections per classroom"
+decimals = 2
+additive = false
+
+[unit.student_per_school]
+label_tr = "öğrenci/okul"
+label_en = "students per school"
+decimals = 0
+additive = false
+
+[indicator.education_level]
+label_tr = "Eğitim düzeyi"
+label_en = "Education level"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["education"]
+views = ["table", "map", "bar"]
+definition_tr = "6 yaş ve üzeri nüfusun bitirdiği en yüksek eğitim düzeyi. Toplamı 6+ nüfustur, ilçe nüfusu değil."
+
+[dim.education]
+label_tr = "Eğitim düzeyi"
+label_en = "Education level"
+
+[dim.education.values]
+illiterate = "Okuma yazma bilmeyen"
+literate_no_school = "Okuma yazma bilen, okul bitirmemiş"
+primary_school = "İlkokul"
+primary_education = "İlköğretim"
+middle_school = "Ortaokul"
+high_school = "Lise"
+bachelor = "Lisans"
+master = "Yüksek lisans"
+doctorate = "Doktora"
+unknown = "Bilinmeyen"
+
+[indicator.area]
+label_tr = "Yüzölçümü"
+label_en = "Area"
+topic = "nufus"
+unit = "km2"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "Mahalle sınırının alanı, Endeksa geometrisinden."
+
+[unit.km2]
+label_tr = "km²"
+label_en = "km²"
+decimals = 2
+additive = true
+
+[indicator.dwelling_stock]
+label_tr = "Konut ve işyeri stoğu"
+label_en = "Dwelling and commercial stock"
+topic = "konut"
+unit = "unit_count"
+frequency = "annual"
+additive = true
+dims = ["dwelling_type"]
+views = ["table", "map", "bar"]
+definition_tr = "Bağımsız birim sayısı: konut, yazlık, ticari."
+
+[dim.dwelling_type]
+label_tr = "Birim türü"
+label_en = "Unit type"
+
+[dim.dwelling_type.values]
+dwelling = "Konut"
+summer_house = "Yazlık"
+commercial = "Ticari birim"
+
+[unit.unit_count]
+label_tr = "birim"
+label_en = "units"
+decimals = 0
+additive = true
+
+[indicator.ses_group]
+label_tr = "Sosyo-ekonomik statü"
+label_en = "Socio-economic status"
+topic = "sosyoekonomik"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["ses"]
+views = ["table", "map", "bar"]
+definition_tr = "Endeksa'nın A+ … D ölçeğinde kişi sayısı. Sayım değil modeldir; ekranda 'tahmin' rozetiyle durur."
+
+[dim.ses]
+label_tr = "SES grubu"
+label_en = "SES group"
+
+[dim.ses.values]
+a_plus = "A+"
+a = "A"
+b = "B"
+c = "C"
+d = "D"
+
+[topic.sosyoekonomik]
+label_tr = "Sosyo-ekonomik"
+label_en = "Socio-economic"
+order = 40
+
+[indicator.household_income]
+label_tr = "Hane geliri"
+label_en = "Household income"
+topic = "sosyoekonomik"
+unit = "lira_per_month"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "Aylık ortalama hane geliri, Endeksa modeli."
+
+[unit.lira_per_month]
+label_tr = "₺/ay"
+label_en = "TRY per month"
+decimals = 0
+additive = false
+
+[indicator.income_per_capita]
+label_tr = "Kişi başı gelir"
+label_en = "Income per capita"
+topic = "sosyoekonomik"
+unit = "lira_per_month"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "Aylık kişi başı gelir, Endeksa modeli."
+
+[indicator.household_saving]
+label_tr = "Hane tasarrufu"
+label_en = "Household saving"
+topic = "sosyoekonomik"
+unit = "lira_per_month"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "Aylık hane tasarrufu, Endeksa modeli."
+
+[indicator.household_expense]
+label_tr = "Hane harcaması"
+label_en = "Household expense"
+topic = "sosyoekonomik"
+unit = "lira_per_month"
+frequency = "annual"
+additive = true
+dims = ["expense_item"]
+views = ["table", "bar"]
+definition_tr = "Aylık hane harcaması, on iki kalem; Endeksa modeli."
+
+[dim.expense_item]
+label_tr = "Harcama kalemi"
+label_en = "Expense item"
+
+[dim.expense_item.values]
+food = "Gıda"
+alcohol_tobacco = "Alkol ve tütün"
+clothing = "Giyim"
+housing = "Barınma"
+furnishing = "Mobilya ve ev eşyası"
+health = "Sağlık"
+transport = "Ulaşım"
+communication = "İletişim"
+recreation = "Eğlence ve kültür"
+education = "Eğitim"
+restaurants = "Lokanta ve otel"
+other = "Diğer"
+
+[indicator.housing_tenure]
+label_tr = "Konut mülkiyeti"
+label_en = "Housing tenure"
+topic = "konut"
+unit = "percent"
+frequency = "annual"
+dims = ["tenure"]
+views = ["table", "map", "bar"]
+definition_tr = "Hanelerin mülk sahibi ve kiracı payı (%). İkisi yüze tamamlanmaz: lojman vb. ayrıca verilmiyor. Endeksa modeli."
+
+[indicator.vehicle_count]
+label_tr = "Araç sayısı"
+label_en = "Vehicles"
+topic = "sosyoekonomik"
+unit = "vehicle"
+frequency = "annual"
+dims = []
+views = ["table", "map", "bar"]
+definition_tr = "Mahalledeki otomobil sayısı, Endeksa tahmini."
+
+[indicator.property_sales]
+label_tr = "Konut satışı"
+label_en = "Dwelling sales"
+topic = "konut"
+unit = "sale"
+frequency = "annual"
+additive = true
+dims = ["property_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Tapuda yıl içinde satılan konut sayısı, 2012'den itibaren. 2024 kısmi."
+
+[unit.sale]
+label_tr = "satış"
+label_en = "sales"
+decimals = 0
+additive = true
+
+[indicator.property_sales_land]
+label_tr = "Arsa ve tarla satışı"
+label_en = "Land sales"
+topic = "konut"
+unit = "sale"
+frequency = "annual"
+additive = true
+dims = ["property_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Tapuda yıl içinde satılan arsa ve tarla sayısı, 2012'den itibaren."
+
+[indicator.property_listings]
+label_tr = "Emlak ilanı"
+label_en = "Property listings"
+topic = "konut"
+unit = "listing"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Yıl içinde verilen satılık/kiralık ilan sayısı, 2014'ten itibaren."
+
+[unit.listing]
+label_tr = "ilan"
+label_en = "listings"
+decimals = 0
+additive = true
+
+[indicator.votes]
+label_tr = "Oy"
+label_en = "Votes"
+topic = "secim"
+unit = "vote"
+frequency = "annual"
+additive = true
+dims = ["election", "option"]
+views = ["table", "map", "bar"]
+definition_tr = "Seçenek başına geçerli oy. Kaynak küçük partileri 'Diğer' altında toplar; pay geçerli oya bölünerek hesaplanır (kaynağın kendi oran alanı hatalı)."
+
+[dim.election]
+label_tr = "Seçim"
+label_en = "Election"
+
+[dim.election.values]
+general_2011 = "2011 Genel"
+local_2014 = "2014 Yerel"
+president_2014 = "2014 Cumhurbaşkanı"
+general_2015_06 = "2015 Haziran Genel"
+general_2015_11 = "2015 Kasım Genel"
+referendum_2017 = "2017 Referandum"
+president_2018 = "2018 Cumhurbaşkanı"
+general_2018 = "2018 Genel"
+local_2019_district = "2019 Yerel — İlçe Belediye"
+local_2019_council = "2019 Yerel — Belediye Meclisi"
+local_2019_metro = "2019 Yerel — Büyükşehir"
+local_2019_provincial = "2019 Yerel — İl Genel Meclisi"
+general_2023 = "2023 Genel"
+president_2023_r1 = "2023 Cumhurbaşkanı 1. tur"
+president_2023_r2 = "2023 Cumhurbaşkanı 2. tur"
+local_2024_district = "2024 Yerel — İlçe Belediye"
+local_2024_council = "2024 Yerel — Belediye Meclisi"
+local_2024_metro = "2024 Yerel — Büyükşehir"
+
+# A party, a candidate, evet/hayır, or the source's own "Diğer". Ids are slugs of the
+# label as Endeksa writes it; only the ones that need a readable form are listed.
+
+[dim.option]
+label_tr = "Seçenek"
+label_en = "Option"
+
+[dim.option.values]
+ak_parti = "AK Parti"
+chp = "CHP"
+mhp = "MHP"
+iyi = "İYİ Parti"
+yrp = "Yeniden Refah"
+dem = "DEM Parti"
+hdp = "HDP"
+saadet = "Saadet"
+zafer = "Zafer"
+diger = "Diğer"
+bagimsiz = "Bağımsız"
+
+# Province of civil registry (nüfusa kayıtlı il); values are province ids (TR-34).
+
+[unit.vote]
+label_tr = "oy"
+label_en = "votes"
+decimals = 0
+additive = true
+
+[topic.secim]
+label_tr = "Seçim"
+label_en = "Elections"
+order = 50
+
+# endregion
+
+# region Dimensions — the breakdown keys and what their stored values are called
+#
+# Values are ids in the fact table (`sex=female`), so the Turkish the reader sees lives
+# here, next to everything else that is a label (K1). A dimension with no `values` table
+# carries values that are already readable — age bands print as "25-29" in any language.
+
+[indicator.electorate]
+label_tr = "Kayıtlı seçmen"
+label_en = "Registered voters"
+topic = "secim"
+unit = "voter"
+frequency = "annual"
+additive = true
+dims = ["election"]
+views = ["table", "map", "bar"]
+definition_tr = "Seçmen kütüğündeki kayıtlı seçmen sayısı."
+
+[unit.voter]
+label_tr = "seçmen"
+label_en = "voters"
+decimals = 0
+additive = true
+
+[indicator.votes_cast]
+label_tr = "Kullanılan oy"
+label_en = "Votes cast"
+topic = "secim"
+unit = "vote"
+frequency = "annual"
+additive = true
+dims = ["election"]
+views = ["table", "map", "bar"]
+definition_tr = "Sandığa atılan oy; katılım = kullanılan / kayıtlı."
+
+[indicator.valid_votes]
+label_tr = "Geçerli oy"
+label_en = "Valid votes"
+topic = "secim"
+unit = "vote"
+frequency = "annual"
+additive = true
+dims = ["election"]
+views = ["table", "map", "bar"]
+definition_tr = "Geçerli sayılan oy; parti paylarının paydası."
+
+[indicator.invalid_votes]
+label_tr = "Geçersiz oy"
+label_en = "Invalid votes"
+topic = "secim"
+unit = "vote"
+frequency = "annual"
+additive = true
+dims = ["election"]
+views = ["table", "map", "bar"]
+definition_tr = "Geçersiz sayılan oy. Bazı seçimlerde kaynak 0 veriyor (eksik)."
+
+[indicator.ballot_boxes]
+label_tr = "Sandık sayısı"
+label_en = "Ballot boxes"
+topic = "secim"
+unit = "ballot_box"
+frequency = "annual"
+additive = true
+dims = ["election"]
+views = ["table", "bar"]
+definition_tr = "Mahalledeki sandık sayısı. Bazı seçimlerde kaynak 0 veriyor (eksik)."
+
+[unit.ballot_box]
+label_tr = "sandık"
+label_en = "ballot boxes"
+decimals = 0
+additive = true
+
+[indicator.registry_origin]
+label_tr = "Nüfusa kayıtlı il"
+label_en = "Province of registry"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["origin"]
+views = ["table", "bar"]
+definition_tr = "Mahallede yaşayanların nüfus kütüğündeki il — yalnız ilk on il; toplamı nüfusun tamamı değildir."
+
+# endregion
+
+# region Bases — a count read against a *slice of another indicator*
+
+# The screen can already divide a count by the area's whole population ("Alan nüfusunun
+# %'si"), which is how the crude rates are drawn without downloading them (K12). But the
+# demographic rates that matter are not over everyone: a fertility rate is over the women
+# who could have the children, and dividing births by the whole population instead answers
+# a different, weaker question — it moves when the age structure moves, which is exactly
+# what the rate is supposed to hold still.
+#
+# So a base names the denominator: which indicator it comes out of, which slice of it, and
+# what the result is called. Declared here rather than in the page for the same reason
+# everything else is (K1, K7): "hangi kadınlar" is a definition, not a rendering detail.
+#
+# `applies_to` is deliberately a list rather than a rule. Births over women 15-49 is the
+# general fertility rate; deaths over the same women is nothing at all, and a screen that
+# offers it because both are counts is offering a number nobody asked a question about.

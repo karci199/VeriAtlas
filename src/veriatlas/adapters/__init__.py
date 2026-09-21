@@ -34,6 +34,7 @@ from .gsb import GSB_ADAPTERS
 from .iskur import ISKUR_ADAPTERS
 from .kgm import KGM_ADAPTERS
 from .ktb import KTB_ADAPTERS
+from .meb_education import MEB_ADAPTERS
 from .mgm import MGM_ADAPTERS
 from .muhasebat import MUHASEBAT_ADAPTERS
 from .networks import NETWORK_ADAPTERS
@@ -54,15 +55,21 @@ from .tim_sectors import TIM_SECTOR_ADAPTERS
 from .tkgm import TKGM_ADAPTERS
 from .tobb import TOBB_ADAPTERS
 from .tuik_birth_order import TuikBirthOrder
+from .tuik_births_by_age import TuikBirthsByAge
+from .tuik_births_marital import TuikBirthsMarital
 from .tuik_child_police import CHILD_POLICE_ADAPTERS
+from .tuik_consanguineous_marriage import TuikConsanguineousMarriage
 from .tuik_crops import CROP_ADAPTERS
 from .tuik_death_cause import TuikDeathCause
 from .tuik_district_population import TuikDistrictPopulation
 from .tuik_education_district import EDUCATION_DISTRICT_ADAPTERS
 from .tuik_household import TuikHouseholdSize, TuikHouseholdTenure
+from .tuik_household_excel import TuikEducationAttainment
 from .tuik_housing_monthly import MONTHLY_HOUSING_ADAPTERS
 from .tuik_item_prices import TUIK_ITEM_PRICE_ADAPTERS
 from .tuik_labour_province import LABOUR_PROVINCE_ADAPTERS
+from .tuik_literacy import TuikLiteracy
+from .tuik_literacy_age import TuikLiteracyAge
 from .tuik_marital import TuikMarital
 from .tuik_median_age import TuikMedianAge
 from .tuik_migration_matrix import TuikMigrationMatrix
@@ -88,6 +95,7 @@ from .yks import YKS_ADAPTERS
 from .yok_istatistik import YOK_ISTATISTIK_ADAPTERS
 from .yok_national import YOK_NATIONAL_ADAPTERS
 from .yokatlas import YOKATLAS_ADAPTERS
+from .ysk_urbanization import YskUrbanization2015
 
 #: Everything that can be ingested, by name. `scripts/load.py` runs these.
 ADAPTERS = {
@@ -110,6 +118,15 @@ ADAPTERS = {
     **PROVINCE_GDP_ADAPTERS,
     **UAB_ADAPTERS,
     **AYD_ADAPTERS,
+    # Rescued 2026-09-22 from branches that never reached main (docs/dal-temizligi.md).
+    "tuik_literacy": TuikLiteracy,
+    "tuik_literacy_age": TuikLiteracyAge,
+    "tuik_births_by_age": TuikBirthsByAge,
+    "tuik_births_marital": TuikBirthsMarital,
+    "tuik_consanguineous_marriage": TuikConsanguineousMarriage,
+    "tuik_education_attainment": TuikEducationAttainment,
+    "ysk_urbanization_2015": YskUrbanization2015,
+    **{"meb_" + key: cls for key, cls in MEB_ADAPTERS.items()},
     **BKM_ADAPTERS,
     **PHARMACY_ADAPTERS,
     **TELECOM_ADAPTERS,

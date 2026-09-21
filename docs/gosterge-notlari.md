@@ -192,3 +192,24 @@ yalnızca il düzeyinde yayımlıyor, ilçe kırılımı yok.
 Bin canlı doğum başına, beşinci yaş gününü görmeden ölen çocuk sayısı. Bebek ölüm hızını
 **içerir**, onun yanına eklenmez: aradaki fark bir ile beş yaş arasındaki ölümlerdir.
 Türkiye'de bu fark küçüktür, yani iki seri birbirine yakın seyreder.
+
+## `ne-durumdayiz-b7162a` dalından kurtarılan notlar (2026-09-22)
+
+Dal ana dala girmemişti; bölümler orada yazıldı. Çelişen yerde bu dosyanın üst kısmı geçerlidir.
+
+### internet_download_speed, internet_upload_speed, internet_latency
+
+Ookla Speedtest açık verisinde ölçülen hız ve gecikme; abonelere satılan hız değildir.
+Güvenilirlik satırdan satıra değişir, çünkü her değerin arkasındaki test sayısı farklıdır
+— okumadan önce `internet_speedtests` aynı alan, dönem ve `connection_type` için
+bakılmalıdır. Kural: **ilçe düzeyinde sabit genişbantta 100 testin altı "yetersiz ölçüm"
+sayılır, ilçe düzeyinde mobil hiç kullanılmaz** (2024Q4'te 930 ilçenin 657'si 100 testin
+altında). İl düzeyi eşiksiz okunabilir. Havalimanı, yerleşke ya da veri merkezi bulunan
+ilçede sayı tesisi ölçer, ilçeyi değil. Ayrıntı ve sayılar `docs/ookla.md`'de.
+
+### internet_speedtests
+
+Bir ilçeye ya da ile düşen Ookla testi sayısı. Kendi başına bir olgu göstergesi değildir
+— ne internet kullanımını ne abone sayısını ölçer; hız göstergelerinin **payda**sıdır ve
+onlarla birlikte okunur. Karo düşmeyen alana sıfır yazılmaz, satır yazılmaz: ölçüm
+yokluğu sıfır ölçüm değildir.

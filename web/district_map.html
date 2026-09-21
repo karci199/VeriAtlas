@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="tr" data-theme="dark"><head><meta charset="utf-8"><title>İlçe haritası</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F8FC;--panel:#FFFFFF;--line:#D9E0EC;--text:#0F1A2E;--muted:#5B6B85;--fill:#C9D6F0;--fill2:#9DB3E6;--hover:#7E9BE0;--accent:#2F5597;--accent2:#1F3864;--hl:#F58220;--other:#E3E9F4;--lake:#D6E9F8;--ramp0:#DCE6F7;--ramp1:#1F3864}
+[data-theme="dark"]{--bg:#0B1220;--panel:#111A2E;--line:#26324D;--text:#E8EEF9;--muted:#8A96AD;--fill:#1C2A48;--fill2:#2B3D66;--hover:#3A5090;--accent:#6C8CFF;--accent2:#9FB6FF;--hl:#F5A142;--other:#172139;--lake:#0E1A33;--ramp0:#1C2A48;--ramp1:#9FB6FF}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;transition:background .2s,color .2s}
+header{display:flex;align-items:center;gap:18px;padding:12px 22px;border-bottom:1px solid var(--line);background:var(--panel)}
+header h1{font-size:17px;font-weight:700;margin:0;letter-spacing:.02em}header .crumb{color:var(--muted);font-size:13px}header .crumb b{color:var(--text);font-weight:600}
+.bar{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap;align-items:center}.bar .sep{width:1px;height:22px;background:var(--line);margin:0 6px}
+.bar button{background:transparent;border:1px solid var(--line);color:var(--muted);padding:6px 12px;border-radius:7px;font-size:12px;cursor:pointer;font-family:inherit}
+.bar button.on{color:#fff;border-color:var(--accent);background:var(--accent)}.bar button:hover:not(.on){border-color:var(--accent)}
+main{display:grid;grid-template-columns:1fr 320px;height:calc(100% - 53px)}
+.map{position:relative;overflow:hidden;cursor:grab}.map.drag{cursor:grabbing}svg{width:100%;height:100%;display:block}
+aside{border-left:1px solid var(--line);padding:20px;background:var(--panel);overflow:auto}
+aside h2{margin:0 0 2px;font-size:22px;font-weight:700}aside .k{color:var(--muted);font-size:12px;margin-bottom:16px;line-height:1.5}
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px}.kpi div{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px}
+.kpi small{display:block;color:var(--muted);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}.kpi b{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.hint{color:var(--muted);font-size:12px;margin-top:18px;line-height:1.55}.badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-size:10.5px;color:var(--muted);margin:10px 4px 0 0}
+path.q{fill:var(--fill);stroke:var(--bg);stroke-width:.9;cursor:pointer;transition:fill .15s,stroke .15s}path.q.c{fill:var(--fill2)}
+path.q:hover{fill:var(--hover)}path.q.sel{fill:var(--hl)!important;stroke:var(--text);stroke-width:1.4}
+path.d{fill:var(--other);stroke:var(--bg);stroke-width:.9;cursor:pointer}path.d.me{fill:var(--accent)}path.d:hover{fill:var(--hover)}
+path.o{fill:none;stroke:var(--accent2);stroke-width:1.8;pointer-events:none;stroke-linejoin:round}path.lake{fill:var(--lake);pointer-events:none}
+text.lbl{font-size:10px;fill:var(--text);text-anchor:middle;pointer-events:none;paint-order:stroke;stroke:var(--bg);stroke-width:3px;font-weight:500}
+text.lbl.s{font-size:9px;fill:var(--muted);font-weight:400}text.lbl.big{font-size:13px;font-weight:700}
+.mode-outline path.q,.mode-outline path.d{fill:none!important;stroke:var(--accent2);stroke-width:.8}.mode-outline path.lake{display:none}.mode-outline text{display:none}
+.legend{position:absolute;left:14px;bottom:12px;color:var(--muted);font-size:11px;background:var(--panel);padding:8px 10px;border-radius:8px;border:1px solid var(--line);display:flex;gap:12px;align-items:center}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.ramp{display:inline-block;width:90px;height:8px;background:linear-gradient(90deg,var(--ramp0),var(--ramp1));vertical-align:middle;margin:0 6px;border-radius:4px}
+.zoom{position:absolute;right:14px;top:12px;display:flex;flex-direction:column;gap:4px}.zoom button{width:30px;height:30px;border-radius:7px;border:1px solid var(--line);background:var(--panel);color:var(--text);cursor:pointer;font-size:16px}
+.src{position:absolute;right:14px;bottom:12px;color:var(--muted);font-size:10.5px}
+@media (max-width:800px){main{grid-template-columns:1fr;grid-template-rows:1fr auto}aside{border-left:0;border-top:1px solid var(--line)}}
+</style></head><body>
+<header><h1>VERİATLAS</h1><span class="crumb" id="crumb"></span>
+<div class="bar">
+ <button data-view="prov">İl içinde</button><button data-view="dist" class="on">Mahalleler</button><span class="sep"></span>
+ <button data-mode="fill" class="on">Dolgu</button><button data-mode="outline">Sadece sınır</button><button data-mode="label">Etiket</button><button data-mode="dens">Yoğunluk</button><span class="sep"></span>
+ <button id="theme" title="Açık / koyu">☾</button>
+</div></header>
+<main><div class="map" id="map"><svg id="svg"><g id="g"></g></svg>
+ <div class="zoom"><button id="zin">+</button><button id="zout">−</button><button id="zfit" title="Sığdır">⌂</button></div>
+ <div class="legend" id="legend"></div><div class="src" id="src"></div></div>
+<aside id="panel"><h2 id="pname">—</h2><div class="k" id="pkind">Bir mahalleye tıkla; il görünümünde ilçeye.</div><div class="kpi" id="pkpi"></div>
+<div id="badges"></div>
+<div class="hint">Koyu dolgu: kır (2014 öncesi köy ve belde) · açık dolgu: merkez mahalleleri · turuncu: seçili. Tekerlek ile yakınlaş, sürükleyerek kaydır.</div></aside></main>
+<script>
+const D=__DATA__;
+const svg=document.getElementById('svg'),G=document.getElementById('g'),map=document.getElementById('map');
+let view='dist',mode='fill',sel=null,T={k:1,x:0,y:0};
+function bbox(geoms){let minx=1e9,maxx=-1e9,miny=1e9,maxy=-1e9;for(const g of geoms)for(const r of g.coordinates)for(const c of r){if(c[0]<minx)minx=c[0];if(c[0]>maxx)maxx=c[0];if(c[1]<miny)miny=c[1];if(c[1]>maxy)maxy=c[1]}return{minx,maxx,miny,maxy}}
+function proj(geoms){const b=bbox(geoms);const kx=Math.cos((b.miny+b.maxy)/2*Math.PI/180);const W=1000,H=700,pad=36;const s=Math.min((W-2*pad)/((b.maxx-b.minx)*kx),(H-2*pad)/(b.maxy-b.miny));
+ const ox=(W-(b.maxx-b.minx)*kx*s)/2,oy=(H-(b.maxy-b.miny)*s)/2;return{W,H,P:c=>[(c[0]-b.minx)*kx*s+ox,(b.maxy-c[1])*s+oy]}}
+function path(g,P){return g.coordinates.map(r=>'M'+r.map(c=>P(c).map(v=>v.toFixed(1)).join(',')).join('L')+'Z').join(' ')}
+function centroid(g,P){const r=g.coordinates[0];let A=0,cx=0,cy=0;for(let i=0;i<r.length-1;i++){const [x1,y1]=r[i],[x2,y2]=r[i+1];const cr=x1*y2-x2*y1;A+=cr;cx+=(x1+x2)*cr;cy+=(y1+y2)*cr}return A?P([cx/(3*A),cy/(3*A)]):P(r[0])}
+function fmt(n){return n==null?'—':Math.round(n).toLocaleString('tr-TR')}
+function dens(q){return q.pop&&q.area?q.pop/q.area:null}
+function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
+function hex(h){h=h.replace('#','');return [0,2,4].map(i=>parseInt(h.substr(i,2),16))}
+function color(v,max){const t=Math.min(1,Math.log10(1+v)/Math.log10(1+max));const a=hex(css('--ramp0')),b=hex(css('--ramp1'));return `rgb(${a.map((x,i)=>Math.round(x+(b[i]-x)*t)).join(',')})`}
+function el(t,a,txt){const e=document.createElementNS('http://www.w3.org/2000/svg',t);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;return e}
+function apply(){G.setAttribute('transform',`translate(${T.x},${T.y}) scale(${T.k})`)}
+function fit(){T={k:1,x:0,y:0};apply()}
+function render(){G.innerHTML='';svg.setAttribute('class',mode==='outline'?'mode-outline':'');document.getElementById('crumb').innerHTML=`Türkiye › ${D.district.province} › <b>${D.district.name}</b>`;
+ document.getElementById('src').textContent='Sınırlar: Endeksa 2024 (mahalle), VeriAtlas (ilçe) · Nüfus: TÜİK ADNKS 2024';
+ if(view==='prov'){const {W,H,P}=proj(D.districts.map(d=>d.geometry));svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  D.districts.forEach(d=>{const p=el('path',{d:path(d.geometry,P),class:'d'+(d.id===D.district.id?' me':'')});p.innerHTML=`<title>${d.name}</title>`;p.onclick=()=>{if(!dragged)showDistrict(d)};G.appendChild(p)});
+  if(mode!=='outline')D.districts.forEach(d=>{const [x,y]=centroid(d.geometry,P);G.appendChild(el('text',{x,y,class:'lbl'+(d.id===D.district.id?' big':'')},d.name))});
+  document.getElementById('legend').innerHTML=`<span><i style="background:${css('--accent')}"></i>${D.district.name}</span><span><i style="background:${css('--other')}"></i>${D.district.province} ilçeleri</span>`;return}
+ const {W,H,P}=proj(D.quarters.map(q=>q.geometry));svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+ if(D.district.outline)G.appendChild(el('path',{d:path(D.district.outline,P),class:'lake'}));
+ const maxd=Math.max(...D.quarters.map(q=>dens(q)||0));
+ D.quarters.forEach(q=>{const p=el('path',{d:path(q.geometry,P),class:'q'+(q.kind==='merkez'?' c':'')+(sel===q.eid?' sel':'')});
+  if(mode==='dens'&&dens(q)!=null)p.style.fill=color(dens(q),maxd);p.innerHTML=`<title>${q.name} · ${fmt(q.pop)} kişi</title>`;p.onclick=()=>{if(dragged)return;sel=q.eid;show(q);render()};G.appendChild(p)});
+ if(D.district.outline)G.appendChild(el('path',{d:path(D.district.outline,P),class:'o'}));
+ if(mode==='label'||mode==='dens')D.quarters.filter(q=>q.kind!=='merkez').forEach(q=>{const [x,y]=centroid(q.geometry,P);G.appendChild(el('text',{x,y,class:'lbl'},q.name));if(mode==='label')G.appendChild(el('text',{x,y:y+11,class:'lbl s'},fmt(q.pop)))});
+ document.getElementById('legend').innerHTML=mode==='dens'?`<span>kişi/km² <span class="ramp"></span> düşük → yüksek (log)</span>`:`<span><i style="background:${css('--fill2')}"></i>merkez</span><span><i style="background:${css('--fill')}"></i>kır</span><span><i style="background:none;border:1px solid ${css('--accent2')}"></i>ilçe sınırı</span><span><i style="background:${css('--lake')}"></i>göl</span>`}
+function show(q){document.getElementById('pname').textContent=q.name;document.getElementById('pkind').textContent=(q.kind==='merkez'?'Merkez mahallesi':'Kır mahallesi — 2014 öncesi köy/belde')+' · '+(q.id||'kimlik yok');
+ const d=dens(q);document.getElementById('pkpi').innerHTML=[['Nüfus 2024',fmt(q.pop)],['Yüzölçümü',q.area?q.area.toFixed(2)+' km²':'—'],['Yoğunluk',d?fmt(d)+' /km²':'—'],['Hane',fmt(q.hh)]].map(([k,v])=>`<div><small>${k}</small><b>${v}</b></div>`).join('');
+ document.getElementById('badges').innerHTML='<span class="badge">TÜİK 2024 · ölçüm</span><span class="badge">Endeksa · geometri</span>'+(q.hh?'':'<span class="badge">Endeksa demografisi yok</span>')}
+function showDistrict(d){document.getElementById('pname').textContent=d.name;document.getElementById('pkind').textContent=D.district.province+' ilçesi · '+d.id;document.getElementById('pkpi').innerHTML='';document.getElementById('badges').innerHTML='<span class="badge">VeriAtlas · sınır</span>'}
+let dragging=false,dragged=false,sx=0,sy=0;
+map.addEventListener('wheel',e=>{e.preventDefault();const r=svg.getBoundingClientRect();const vb=svg.viewBox.baseVal;const mx=(e.clientX-r.left)/r.width*vb.width,my=(e.clientY-r.top)/r.height*vb.height;const f=e.deltaY<0?1.2:1/1.2;const k=Math.min(12,Math.max(.5,T.k*f));const ratio=k/T.k;T.x=mx-(mx-T.x)*ratio;T.y=my-(my-T.y)*ratio;T.k=k;apply()},{passive:false});
+map.addEventListener('mousedown',e=>{dragging=true;dragged=false;sx=e.clientX;sy=e.clientY;map.classList.add('drag')});
+window.addEventListener('mousemove',e=>{if(!dragging)return;const r=svg.getBoundingClientRect();const vb=svg.viewBox.baseVal;const dx=(e.clientX-sx)/r.width*vb.width,dy=(e.clientY-sy)/r.height*vb.height;if(Math.abs(e.clientX-sx)+Math.abs(e.clientY-sy)>3)dragged=true;T.x+=dx;T.y+=dy;sx=e.clientX;sy=e.clientY;apply()});
+window.addEventListener('mouseup',()=>{dragging=false;map.classList.remove('drag');setTimeout(()=>dragged=false,0)});
+document.getElementById('zin').onclick=()=>{T.k=Math.min(12,T.k*1.3);apply()};document.getElementById('zout').onclick=()=>{T.k=Math.max(.5,T.k/1.3);apply()};document.getElementById('zfit').onclick=fit;
+document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{view=b.dataset.view;document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('on',x===b));fit();render()});
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('on',x===b));render()});
+document.getElementById('theme').onclick=()=>{const h=document.documentElement;h.dataset.theme=h.dataset.theme==='dark'?'light':'dark';document.getElementById('theme').textContent=h.dataset.theme==='dark'?'☾':'☀';render()};
+render();
+</script></body></html>

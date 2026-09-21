@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="tr" data-tema="win">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VeriAtlas — Demografi Raporu</title>
+  <link rel="stylesheet" href="rapor.css">
+</head>
+<body>
+  <nav class="ust">
+    <div class="ust-ic">
+      <span class="marka">VeriAtlas</span>
+      <select id="alan-secim" aria-label="Alan seç"></select>
+      <div class="sag">
+        <button class="dugme" id="tema-dugme" type="button" aria-pressed="false">Kehribar</button>
+        <button class="dugme" id="koyu-dugme" type="button" aria-pressed="false">Koyu</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="duzen">
+    <nav class="ray" id="ray" aria-label="Bölümler"></nav>
+    <main id="govde"></main>
+  </div>
+
+  <script src="rapor.js"></script>
+  <script>
+    // Theme choice is the reader's and survives a reload; the page never asks the
+    // operating system, because the amber theme is a deliberate look rather than a dark
+    // variant of the Windows one.
+    const kok = document.documentElement;
+    const temaDugme = document.getElementById("tema-dugme");
+    const koyuDugme = document.getElementById("koyu-dugme");
+
+    function temaUygula(tema, koyu) {
+      kok.dataset.tema = tema;
+      if (koyu && tema === "win") kok.dataset.koyu = "1";
+      else delete kok.dataset.koyu;
+      temaDugme.setAttribute("aria-pressed", String(tema === "kehribar"));
+      temaDugme.textContent = tema === "kehribar" ? "Windows" : "Kehribar";
+      koyuDugme.hidden = tema !== "win";
+      koyuDugme.setAttribute("aria-pressed", String(Boolean(koyu)));
+      localStorage.setItem("veriatlas-tema", tema);
+      localStorage.setItem("veriatlas-koyu", koyu ? "1" : "");
+    }
+
+    temaUygula(localStorage.getItem("veriatlas-tema") || "win",
+               localStorage.getItem("veriatlas-koyu") === "1");
+    temaDugme.addEventListener("click", () =>
+      temaUygula(kok.dataset.tema === "win" ? "kehribar" : "win",
+                 localStorage.getItem("veriatlas-koyu") === "1"));
+    koyuDugme.addEventListener("click", () =>
+      temaUygula("win", kok.dataset.koyu !== "1"));
+
+    // The area menu is built from the payloads that exist, not from the registry: a menu
+    // naming a thousand areas would offer nine hundred pages nobody has written.
+    const ETIKET = {country: "", province: "il", region: "bölge", nuts1: "İBBS-1"};
+    window.addEventListener("veriatlas-dizin", (olay) => {
+        const dizin = olay.detail || [];
+        const secim = document.getElementById("alan-secim");
+        if (!dizin.length) { secim.hidden = true; return; }
+        for (const {area_id, ad, duzey} of dizin) {
+          const etiket = ETIKET[duzey] ?? duzey;
+          secim.append(new Option(etiket ? `${ad} · ${etiket}` : ad, area_id));
+        }
+        const eslesme = /a=([A-Z0-9-]+)/.exec(location.hash);
+        secim.value = eslesme ? eslesme[1] : "TR";
+        secim.addEventListener("change", () => { location.hash = "a=" + secim.value; });
+        window.addEventListener("hashchange", () => {
+          const simdiki = /a=([A-Z0-9-]+)/.exec(location.hash);
+          if (simdiki) secim.value = simdiki[1];
+        });
+    });
+  </script>
+</body>
+</html>

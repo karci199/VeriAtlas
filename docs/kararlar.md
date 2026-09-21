@@ -1046,3 +1046,151 @@ bir dosya. Sözleşme hem onu hem REST API'yi bükülmeden taşıyabiliyorsa do�
 - Yabancı uyruklu nüfus: henüz çekilmedi
 
 Ayrıntı: [oturum-2026-08-13.md](oturum-2026-08-13.md)
+
+## `wikipedia-kirsal-mahalle-f32c46` dalından kurtarılan notlar (2026-09-22)
+
+Dal ana dala girmemişti; bölümler orada yazıldı. Çelişen yerde bu dosyanın üst kısmı geçerlidir.
+
+### K26 — Kent-kır iki sütun, tek cevap değil (2026-08-15)
+
+`urban_rural` bugünü söyler (TÜİK DEGURBA 2025, yoğunluk), `koken` geçmişi (7H 2015,
+6360 öncesi idari statü). Birleştirilmiyorlar, çünkü aynı soruyu sormuyorlar: Bahçeşehir
+birinde "yoğun kent", ötekinde "belde" ve ikisi de doğru.
+
+Tek bir "doğru" sütun aranıp bulunamadı. Denenen dört ölçünün her biri farklı bir yerde
+çöküyor: idari statü 6360'ta çöktü (kır payı 2012'de %22,7, 2013'te %8,7 — kimse taşınmadı,
+kanun değişti); yoğunluk kasaba erirken çöküyor (Kalecik'in tamamı kır, ilçe merkezi
+dahil); kayıt numarası birleşmelerde çöküyor (Fatih'in 20 tarihî mahallesi "eski köy"
+çıkıyor, sebep Eminönü'nün 2009'da katılması); yerleşim türü büyükşehirde tümden çöküyor.
+
+Nüfus eşiği de kurtarmıyor: Altınoluk 7.148 kişi ve kent, İçeriçumra 6.387 kişi ve kır.
+
+Sınıf `dims` değeri değil, alanın niteliği — bir mahalle kısmen kırsal değildir. Bu yüzden
+kayıtta duruyor, `settlement-classes.csv.gz` ile dışa veriliyor, ve bir ilin bölünmesi
+kendi satırından değil altındaki yerleşimler toplanarak kuruluyor (`area_split`).
+
+**Kapsam sütunu bu kararın parçası.** Yaş kırılımı köyde yayımlanmadığı için 51 ilde kır
+tarafı eksik görünüyor — Ağrı'da kırın %6'sı. Bölmenin yayımlanan nüfusun yüzde kaçını
+kapsadığı aynı satırda yazıyor. Bu oturumda tam olarak o hata yapıldı: Amasya'nın
+kırsalının %20'si üzerinden "yetişkin payı %88,7" raporlandı.
+
+Ayrıntı: [oturum-2026-08-15.md](oturum-2026-08-15.md)
+
+## `death-birth-counts-by-district-05fdca` dalından kurtarılan notlar (2026-09-22)
+
+Dal ana dala girmemişti; bölümler orada yazıldı. Çelişen yerde bu dosyanın üst kısmı geçerlidir.
+
+### K26 — İlçe doğum ve ölümü ayrı ölçüdür; doğumda cinsiyet toplanır (2026-08-15)
+
+İlçe düzeyi, il ölçüsünün ince hâli değil. MEDAS dördünü ayrı ölçü olarak yayımlıyor ve
+düzey listeleri hiç kesişmiyor:
+
+| Ölçü | Düzey | Yıllar | Gösterge |
+|---|---|---|---|
+| İkametgah yerine göre doğum sayısı | Türkiye · İBBS1 · İBBS2 · İl | 2009-2025 | 12 (ay) |
+| **İlçelere göre doğum sayısı** | **yalnız İlçe** | **2014-2025** | 2 (cinsiyet) |
+| İkametgah yerine göre ölüm sayısı | Türkiye · İBBS1 · İBBS2 · İl | 2009-2025 | 24 (cinsiyet × ay) |
+| **İlçelere göre ölüm sayısı (İkametgah yeri)** | **yalnız İlçe** | **2009-2025** | 2 (cinsiyet) |
+
+Yani ilçe verisi ikinci bir indirme (`scripts/fetch_medas_vital_districts.py`) ve ikinci
+bir okuyucu (`adapters/tuik_district_vital.py`); il akışına bir kutu daha işaretlemek
+değil. İkisi de ikametgah yerine göre — doğumun olay yeri serisi zaten yalnız il düzeyinde
+ve 2008'de bitiyor. **Doğum ilçede 2014'ten önce yayımlanmıyor**, eksik değil yok.
+
+Boy tutuyor: 2 × ~975 ilçe × 17 yıl = 33.150 hücre, 50.000 sınırının altında, her ölçü tek
+sorguda geliyor.
+
+**Cinsiyet ikisinde de zorunlu ama ikisi farklı davranıyor** — ve ikisi de sessiz. Ölümde
+tick hazır geliyor (tıklamak *kapatır*), doğumda kapalı geliyor ve işaretlenmeden `Tamam`
+çalışmıyor. İlk çekimde doğum bu yüzden 1 göstergeyle döndü, hiçbir yerde hata yok. Kural
+yine K15'in kuralı: tıklamadan önce `is_ticked` sor.
+
+Depoda ne durduğu ölçüye göre ayrılıyor:
+
+* **Ölüm cinsiyet kırılımını tutuyor** — il serisi zaten `sex` taşıyor (K19), aynı şekil.
+* **Doğum yıla toplanıyor.** İl ölçüsünün cinsiyet kırılımı yok. Kırılımı yalnız ilçede
+  saklamak, göstergeye bir düzeyde olup ötekinde olmayan bir kırılım verirdi: okuyucu
+  "Erkek" seçtiği anda 81 il ekrandan silinirdi. K16 en inceyi saklamayı söylüyor, ama
+  "en ince" bir düzeyde tanımlı olamaz — ham dosya bölmeyi koruyor, il tarafı cinsiyet
+  kazanırsa bu yeniden indirme değil yeniden ayrıştırma olur (K8).
+
+**Eşleşme MEDAS kodu *ve yıl* üzerinden.** Dönem içinde iki ilçe adını değiştirdi (Kazan →
+Kahramankazan 2017, Eyüp → Eyüpsultan 2018) ve kayıt ikisini de ayrı alan olarak, aynı
+kodla ve geçerlilik aralığıyla tutuyor. Yalnız kodla eşleştirmek serinin tamamını ikisinden
+birine yazar, öteki haritada boş ilçe olarak durur.
+
+Doğrulama: ilçeler ile toplanınca **972 il-yılın ve 1.377 il-yılın hepsinde** yayımlanan il
+sayısıyla birebir; ölümde cinsiyet ayrı ayrı da (2.754 il-yıl-cinsiyet) birebir. İlçe
+sayısı yıla göre değişiyor (ölümde 2009'da 957, 2025'te 973) — bu K11'in "gözlemden gelen
+idari harita"sının bir başka kaydı.
+
+**Excel: `scripts/build_vital_excel.py`, iki dosya.** `cikti/ilce-dogum-olum.xlsx` her iki
+sayının bütün yıllarını (Özet · İlçeler 2025 · İller 2025 · Doğum · Ölüm · Ölüm (cinsiyet) ·
+Doğal artış · Nüfus · Notlar), `cikti/ilce-dogal-artis-2014-2025.xlsx` iki ucu yan yana.
+Sayfa ilçe düzeyini henüz sunmuyor (`OFFERED_LEVELS`), üstelik "973 ilçeyi doğal artışa göre
+sırala" zaten tablo sorusudur.
+
+İkisinde de ‰ sütunları **bizim bölmemiz**: olay ÷ yıl **sonu** nüfusu × 1000. TÜİK kendi
+kaba hızlarında yıl ortası nüfusu kullanıyor, il düzeyinde ölçülen fark 0,05-0,10 binde
+(K19) — dosyalar bunu yazıyor, resmi sayı gibi sunmuyor.
+
+Doğal artışta **yüzde sütunu yok**, bilerek: tabanı eksi olan yüzde işareti ters çevirir
+(K21/2). Yerine kişi farkı ve ‰ farkı var, ikisi de her tabanda doğru.
+
+Karşılaştırma dosyasında ad değişikliği **katlanıyor**: Kazan/Kahramankazan ve
+Eyüp/Eyüpsultan tek satır, bugünkü adıyla. Depoda ayrı durmaları doğru — sayı o yılın adıyla
+eşleşmek zorunda — ama tabloda iki yarım satır kendisiyle karşılaştırılamaz. 2014'ten sonra
+kurulan üç ilçe listede duruyor, 2014 sütunları boş ve `durum` "karşılaştırılamaz" diyor.
+
+Sayılar: 2014'te 959.997 kişi (12,36‰), 2025'te 403.690 (4,69‰). 311 ilçe artıdan eksiye
+döndü, 160'ı iki yılda da eksi, 3'ü eksiden artıya. Hızı en çok düşen ilçe Ağrı/Hamur
+(32,12 → 12,56‰).
+
+**Yan etki: dışa aktarımda bulunan bir hata.** Ağır düzeyleri ayrı dosyaya bölen kod yalnız
+kırılımlı göstergeler için yazılmıştı, oysa sözlük *her* göstergeye lazy düzey başına bir
+parça dosyası vaat ediyor. Doğum ve doğal artış ilçe kazanır kazanmaz `meta.json`
+`births-district.csv.gz` diyordu, onu kimse yazmıyordu, ilçe satırları da herkesin indirdiği
+temel dosyanın içindeydi (K14'ün tam tersi). Okuyucu İlçe'yi seçtiğinde sayfa 404 alacaktı.
+
+### K27 — Excel biçim kodu Excel'in yazımıyla; ekranda iki ondalık (2026-08-15)
+
+**Bir sayı biçimi kodu okuyucunun diliyle değil, Excel'in kendi yazımıyla yazılır:** kodun
+içinde nokta ondalık ayracı, virgül binlik ayracıdır — makine sonra ne gösterirse
+göstersin. `0,00` yazınca kod "bir hane, binde bir ölçekli" demek oluyor ve %19,63 hücrede
+`0019` olarak çiziliyordu. Doğrusu `0.00`, `0.00%`, `#,##0`; ekranda görünen ayracı zaten
+okuyucunun yereli veriyor. `build_settlement_excel.py` ve `build_vital_excel.py`, ikisinde
+de düzeltildi.
+
+Bu hatanın sinsiliği, Türkçe bir dosya için Türkçe görünen bir kodun *daha doğru* durması.
+
+**Ekranda ondalık: iki, mümkün olan her yerde.** İki değişiklik:
+
+- Sözlükte ondalığı ikinin altında olan **oran birimleri** ikiye çıktı: `person_per_km2`
+  (0), `year_of_age` (1), `index` (1), `per_thousand_live_births` (1). Sayım birimleri
+  (kişi, hane, doğum, ölüm, evlenme, boşanma, bina, daire) sıfırda kaldı —
+  "86.092.168,00 kişi" iki basamak kesinlik değil, iki basamak gürültüdür.
+- Biçimlendirici artık **dolduruyor**. Önce "en fazla" idi (44,5), gerekçesi de yazılıydı:
+  sondaki sıfır, değerin taşımadığı bir basamağı iddia eder. İstek üzerine ters çevrildi —
+  sütun aşağı doğru da okunuyor ve 44,5 ile 28,07'nin virgülleri hizalanmıyordu.
+  Yuvarlama iki durumda da aynı; değişen yalnız dolgu.
+
+### K28 — İlçe düzeyi ekranda açıldı; kök adres gezgine gidiyor (2026-08-15)
+
+`OFFERED_LEVELS` ilçeyi tutuyordu. Gerekçe "il düzeyi otururken, test edilmemiş bir
+düzeydeki boşluk sayfadaki boşluktan ayırt edilemez" idi; ilçe için bu gerekçe tükendi:
+nüfus, doğum, ölüm ve doğal artış ilçe taşıyor, boyut menüleri zaten her düzeyin kendi
+satırlarından süzülüyor (`effectiveLevel`, `valuesAtLevel`), harita ilçe sınırlarını K11'den
+beri çiziyor. Düzey kutusunda **İlçe** var, seçim yerinde kalıyor (K18), haritada bir ile
+tıklayınca ilçeleri açılıyor.
+
+**Mahalle ve köy hâlâ kapalı**, ama başka bir sebeple: mahalle yalnız 0-17/18+ taşıyor ve
+ülkenin %95'ini kapsıyor (Ardahan'ın %47'si), köy 51 ilde var 30 ilde yok. İkisi de boş
+alanın olağan olduğu düzeyler ve sayfanın "burada kapsam yok" diyecek bir dili henüz yok —
+"veri yok" ile aynı görünürler.
+
+İlçe satırı olmayan gösterge zaten düzeyi sunmuyor: `levelsInData` göstergenin ilan ettiğini
+okuyor, yani TFH (yalnız il) bu listeden etkilenmiyor.
+
+**Ayrıca `scripts/serve.py` kökü gezgine yönlendiriyor.** Depo kökü bir sayfa değil; sayfa
+diye sunulunca `docs`, `src`, `scripts` listesi çıkıyor ve bu, hiçbir şey sunamamış bir
+sunucuya birebir benziyor. `/` artık `/web/explorer.html`.

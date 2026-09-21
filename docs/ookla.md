@@ -57,3 +57,43 @@ ama bunu bu veriyle söylemek değil, sormak doğru olur.
 İstanbul Havalimanı orada ve havalimanı testleri karoları yukarı çekiyor, yani bu bir
 "ilçe hızı" değil bir tesis etkisi. Onu saymazsak Kartal 93,8, Gaziemir 93,6, Üsküdar
 84,3; alt uçta Niğde 36,9, Başiskele 39,1, Antakya 39,7. Aradaki fark iki buçuk kat.
+
+## `ne-durumdayiz-b7162a` dalından kurtarılan notlar (2026-09-22)
+
+Dal ana dala girmemişti; bölümler orada yazıldı. Çelişen yerde bu dosyanın üst kısmı geçerlidir.
+
+### Kullanım kuralı — kaç teste dayanıyor
+
+Bu kaynakta güvenilirlik göstergeden göstergeye değil, **satırdan satıra** değişir. Aynı
+çeyrekte bir ilçenin hızı 7.176 teste, komşusununki 1 teste dayanabiliyor; ikisi tabloda
+yan yana ve aynı görünüyor. Bu yüzden hız okunmadan önce `internet_speedtests` bakılır —
+aynı alan, aynı dönem, aynı `connection_type` ile.
+
+2024Q4'te ilçe başına test sayısı:
+
+| Kırılım | Ölçüm alan ilçe | 100 testin altında | Medyan test |
+|---|---|---|---|
+| Sabit genişbant | 959 | 445 | 126 |
+| Mobil | 930 | 657 | 30 |
+
+Kural:
+
+1. **İlçe düzeyi sabit hat: 100 testin altı gösterilmez.** Değer silinmez, "yetersiz
+   ölçüm" diye işaretlenir — yokluğu da bilgidir.
+2. **İlçe düzeyi mobil kullanılmaz.** İlçelerin üçte ikisi eşiğin altında; kalan üçte
+   birle çizilen harita Türkiye haritası değil, kalabalık ilçeler haritasıdır. Mobil
+   yalnız il düzeyinde okunur.
+3. **Sıralama tek başına yayımlanmaz**; hızın yanında test sayısı da durur. 2024Q4 sabit
+   hattın tepesindeki Kocaköy'ün (439 Mbit/s) arkasında **bir** test var, Güce'nin (359)
+   arkasında dört.
+4. **İl düzeyi eşiksiz kullanılabilir** — sabit hatta en küçük ilde bile binlerce test
+   var. Tek istisna mobilde Tunceli (52) ve Bayburt (53), 2024Q4; bu iki hücre ilçe
+   kuralına tabidir.
+5. **Tesis etkisine dikkat.** Havalimanı, üniversite yerleşkesi ya da veri merkezi olan
+   ilçede karolar yukarı çekilir; Arnavutköy'ün mobilde açık ara önde olması İstanbul
+   Havalimanı'dır, ilçenin hızı değildir. Yüksek testli ama tek noktada yığılmış ilçe,
+   az testli ilçe kadar yanıltır.
+
+Eşik, kaynağın kendi yanlılığını çözmez: testi çalıştıran kendini seçiyor. Eşiğin
+çözdüğü, **az sayıda ölçümün gürültüsüdür**. Düzey yanlılığı için hâlâ "ilçeler arası
+fark" ve "aynı yerin iki çeyreği" kullanılır.

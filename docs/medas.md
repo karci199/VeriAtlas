@@ -114,3 +114,22 @@ alınmıyor. Hedef: nüfus piramidi ve harita için gereken temel.
 Elde hazır bir dosya da var (`Desktop/demografi/demografi2/il tek yaş ve cinsiyete göre
 nüfus.xls`, 2007-2023, tek yaş × cinsiyet) ama 2024-2025 eksik; MEDAS'tan çekmek hem
 güncel veriyi hem tekrarlanabilir bir yolu getiriyor.
+
+## `death-birth-counts-by-district-05fdca` dalından kurtarılan notlar (2026-09-22)
+
+Dal ana dala girmemişti; bölümler orada yazıldı. Çelişen yerde bu dosyanın üst kısmı geçerlidir.
+
+### İlçe doğum / ölüm akışı (2026-08-15)
+
+Ölçüler `İlçelere göre doğum sayısı` ve `İlçelere göre ölüm sayısı (İkametgah yeri)`, ayrı
+konularda (Doğum / Ölüm İstatistikleri). İkisinin de düzey kutusunda **yalnız İlçe Düzeyi**
+var — Türkiye ve İl, aynı konudaki *öteki* ölçünün işidir. Yani düzey kutusuna bakıp "ilçe
+yok" demek yanlış sonuç verir; ölçü listesine bakmak gerekiyor.
+
+Kırılım tek: cinsiyet, 2 gösterge. **Ölümde işaretli gelir, doğumda gelmez.** Doğumda
+işaretlenmeden `Tamam` etkin olmuyor ve akış sessizce 1 göstergeyle ilerliyor.
+
+Düzey sekmesi ilçe nüfusundakiyle aynı: İlçe Düzeyi → il `HEPSİ` → liste başlığından
+tümünü seç. Sayaç yine iş sürerken tırmanıyor, üç okuma aynı olana kadar bekleniyor.
+
+Boy: 2 × 990 × 17 = 33.660, sınırın altında; her ölçü tek sorgu, tek dosya.

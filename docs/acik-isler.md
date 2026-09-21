@@ -248,3 +248,75 @@ düz istekte 403, Gratis ve Tekzen erişilebilir ama mağaza listesini sayfaya h
 Buna karşılık aynı akşam çözülen dört markanın (Oses, Ziyafet, Komagene, Domino's) hepsi
 yeme-içme. Desen açık: mağaza listesi perakendeci için rakip istihbaratı, franchise satan
 için reklam. Yeni marka denemeden önce bu akılda tutulmalı.
+
+## `a101-background-pull` dalından kurtarılan notlar (2026-09-22)
+
+Bu dal ana dala hiç girmemişti; aşağıdaki bölümler o dalda yazıldı, burada yoktu.
+Aynı markaların bir kısmı ana dalda başka yöntemle yazıldı; çelişen yerde ana dalın kodu geçerlidir.
+
+### BKM sektörel kartlı ödeme (2026-09-20)
+
+Dört gösterge girdi: `card_transactions_by_sector`, `card_spending_by_sector`,
+`ecommerce_transactions_by_sector`, `ecommerce_spending_by_sector` — 26 işyeri grubu,
+aylık, 2017-01'den 2026-07'ye, yalnız Türkiye düzeyi. Çekici `scripts/fetch_bkm.py`,
+adaptör `src/veriatlas/adapters/bkm_sector.py`.
+
+**Aranan şey başkaydı, envanter yönlendirdi.** "İl bazında kart harcaması" diye
+bakılmıştı; BKM il kırılımı hiç yayımlamıyor ve zaten depoda **daha iyisi** var: TBB'den
+il bazında POS (`bank_pos_terminals`), ATM (`bank_atms`) ve üye işyeri (`bank_merchants`),
+2010-2025; EVDS'ten BKM'nin kendi endeksi (`card_payment_index`) ve haftalık harcama
+(`card_spending_weekly`). Depoda olmayan tek şey **sektör kırılımıydı**, alınan o oldu.
+
+Üç tuzak çıktı, üçü de sessizce bozan türden:
+
+1. **İki tablo aynı şekilde değil.** Yurt içi tabloda sektör başına 4 sayı var, internet
+   tablosunda **12** — iki örtüşen blok. İlk okuma araba kiralamaya bir ayda 831 milyar TL
+   yazdı. Artık her sayfa kendi sütunlarını bildiriyor, satır uzunluğu sınanıyor.
+2. **`sektorel_*.csv` deseni internet dosyasını da yakalıyor** ve internet dosyası
+   alfabetik olarak sonda. Yurt içi adaptörü e-ticaret dökümünü okuyordu; desen artık
+   `sektorel_2*.csv`.
+3. **İki `Toplam` sütunu farklı şeylerin toplamı**, ikisi de saklanmıyor; yalnız üç ayrık
+   dilim tutuluyor (yerli kart yurt dışı, yerli kart yurt içi, yabancı kart yurt içi).
+   Yayımlanan `TOPLAM` satırı da sektör sayılmıyor — sektörlerin toplamına karşı
+   sınanıp düşürülüyor.
+
+### 2026-09-20 tam yükleme
+
+**898 gösterge, 21.280.534 satır.** Envanter yeniden üretildi.
+
+Yükleme iki kez başlatıldı. İlki `btk_mobile_arpu`'da düştü: o adaptör ARPU'yu reelleştirmek
+için **bir önceki yüklemenin ihraç ettiği `public/fact.parquet`'i** okuyor, yeni kurulan bir
+worktree'de o dosya yok. Yani sıfırdan kurulan bir kopyada tam yükleme kendi çıktısına
+ihtiyaç duyuyor. Ana kopyadan getirilerek aşıldı; kalıcı çözüm adaptörün kur serisini
+warehouse'tan (ya da EVDS adaptöründen doğrudan) okuması olurdu.
+
+İkinci ders: `python scripts/load.py > log` çıktıyı tamponlar ve iş saatlerce
+"ilerliyormuş" gibi görünürken aslında ölmüş olabilir. `-u` ile çalıştırılmalı.
+
+Bugün giren göstergeler: `pharmacies` (31.451 eczane, 967 ilçe), `chain_stores`'a BİM,
+Migros, Tarım Kredi, Vestel ve Koçtaş, `chain_restaurants`'a Domino's, BKM'nin dört
+sektörel göstergesi.
+
+## `last-session-status-e987f0` dalından kurtarılan notlar (2026-09-22)
+
+Dal ana dala girmemişti; bölümler orada yazıldı. Çelişen yerde bu dosyanın üst kısmı geçerlidir.
+
+### 2026-09-20: zincir turu ve dorduncu yukleme
+
+**Depo 894 gostergede duruyor. Bu gunun isi henuz icinde degil** — `scripts/load.py`
+bastan calistirilmali (901 adaptor). Girecekler: 32 marka / 56.269 magaza,
+`fuel_stations`, `operator_dealers`, BIM 13.057, Migros 3.442.
+
+`kgm_vehicle_km` her yuklemede ayni yerde 25-90 dakika tutuyor; profillenmeli.
+
+| # | Is | Durum |
+|---|---|---|
+| 1 | **Turkcell PDF temizligi** | 3.619 bayi cikti ama hucre kaydirmasi 65 satirin ilini bozmus (`GUMUSHA N`, `1 HAKKARI`) ve `kind`'de bosluk artigi var (`DSNPlu s`). Ilce eslesmesi %93, `MAX_UNPLACED` %3'u asiyor -> adaptore giremez |
+| 2 | **Akbank ve diger bankalar** | `Ajax.aspx/SearchBranchAtm` calisiyor, yalniz `searchKeyword` ile (`cityName` 400). Yanit `atmList`/`branchList` ayri. Il kodlari bulunursa Garanti/Is/Ziraat icin ayni kalip. Depoda banka bazinda sube/ATM yok |
+| 3 | **KAP** | BIM, Migros, SOK, CarrefourSA, Bizim Toptan borsada — magaza ve calisan sayisi **yillar icinde** oradan alinabilir. Magaza bulucular yalniz bugunu verir. robots 666 donduruyor |
+| 4 | Happy Center, Bizim Toptan | esigi asiyor (20/80 ve 15/172), adaptor disinda; birer cekici duzeltmesi uzakta |
+| 5 | A101, Hakmar, KFC | sirasiyla konum izgarasi, JS sayfalama, yarim cekim |
+
+**Cekilemeyenler:** Watsons, Teknosa, Koton, LC Waikiki, Mado, Popeyes, Bauhaus (403);
+MediaMarkt (robots'ta ClaudeBot kurali); Seyhanlar alindi ama sertifikasi dogrulanmiyor
+(kullanici talimatiyla o tek host icin kapatildi).

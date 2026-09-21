@@ -292,3 +292,265 @@ tara, `id` ile tekilleştir; ölçüt ~13.000 mağaza ve 81 il.
 0,4 sn aralıklı) 12 çağrıdan sonra **403** ile kesildi; bilinen Üsküdar sorgusu da artık 403.
 IP düzeyinde engel — aşılmaya çalışılmaz. Uç ayrıca 50 km yarıçap sınırı koyuyor (denizde 16 sonuç,
 en uzak 49,8 km). A101 kapandı; yalnız kurumun kendi yayımladığı sayılarla kalınır.
+
+## `a101-background-pull` dalından kurtarılan notlar (2026-09-22)
+
+Bu dal ana dala hiç girmemişti; aşağıdaki bölümler o dalda yazıldı, burada yoktu.
+Aynı markaların bir kısmı ana dalda başka yöntemle yazıldı; çelişen yerde ana dalın kodu geçerlidir.
+
+### BİM ve Migros depoya girdi (2026-09-20)
+
+İkisi de şube listesi değil **ilçe başına sayı** yayımlıyor, koordinat vermiyor. Bu yüzden
+ilçe kaynağın kendi etiketinden geliyor ve o etiket kayıt defterine üç kuralla bağlanıyor:
+
+1. **`Merkez` → ilin kendi adı.** Kayıt defterinde `Merkez` diye bir ilçe yok; Bolu'nun
+   merkez ilçesi `Bolu`. Kural güvenli, çünkü adıyla aynı ilçesi olmayan 30 il tam olarak
+   30 büyükşehir ve onlarda da `Merkez` geçmiyor.
+2. **Dört il takma adı**: `Afyon`, `Agri`, `İçel` (Mersin'in 2002 öncesi adı), `K.Maraş`.
+3. **On ilçe yazımı**: şapkanın düştüğü dördü (`Kâhta`, `Lâpseki`, `Devrekâni`, `Lâçin`)
+   ve boşluğun kapandığı altısı (`Gazi Osmanpaşa`, `Marmara Ereğlisi`, `Oniki Şubat`,
+   `19 Mayıs`, `Mustafakemalpaşa`, `Bahşili`).
+
+Üçü de tek tek yazıldı, genel bir "aksanı at, küçült, boşlukları sil" normalleştirmesi
+yapılmadı: o yol iki ayrı yeri sessizce birleştirir, oysa buradaki fark kapalı ve sayılı.
+
+**Eşleşmeyen ad yüklemeyi durduruyor.** Koordinat sınıra düşmediğinde görünür bir kayıp
+olur, sayılır ve eşiği aşarsa hata verir; ad tutmadığında ise kayıp **görünmez** — ilçe
+"BİM yok" diye çıkar ve bu ülkeye dair bir bilgi gibi okunur. O yüzden buradaki ölçüt
+%95 değil, **tamamı**: 13.057 BİM ve 3.442 Migros'un hepsi yerine oturuyor.
+
+| Marka | Mağaza | İlçe |
+|---|---|---|
+| BİM (+FİLE) | 13.057 | **916** |
+| ŞOK | 11.220 | 809 |
+| Migros | 3.442 | 528 |
+
+BİM 973 ilçenin **916'sında** var — depodaki en geniş zincir. ŞOK'u 107 ilçede geçiyor.
+
+**BİM sayısı FİLE'yi de içeriyor.** Bulucuda fırın için kutu var, marka için yok; ikisi
+ayrılamıyor ve ayrıldığı iddia edilmiyor.
+
+### Tarım Kredi Kooperatif Marketleri (2026-09-20)
+
+**2.348 mağaza, 640 ilçe**, hepsi koordinatlı ve hepsi Türkiye kutusunda.
+
+Kooperatifin kendi sitesinde (tarimkredi.org.tr) mağaza bulucu yok — orası ana kuruluşun
+sitesi ve yalnız iki genel müdürlük adresi taşıyor. Market zinciri ayrı alan adında ve
+listeyi bütün hâlde veriyor:
+
+    GET tkkoop.com.tr/json/magazalar?sehir=<il adı>
+
+**Boş filtre hata değil, tüm ülke.** Sayfadaki açılır kutu hep tek il sorduğu için adres
+il istiyormuş gibi duruyor; `?sehir=` boş bırakıldığında 2.348 mağazanın tamamı tek
+istekte geliyor. İl yerine plaka yazmak (`?sehir=6`) **HTTP 500** veriyor — bu bozuk
+istektir, "06'da mağaza yok" değil.
+
+İlçe kaynağın etiketinden değil koordinattan alınıyor: ad (`ANKARA - AHİMESUT`) markanın
+kendi etiketi, adres ise serbest metin ve ilçe içine gömülü — art arda iki Ankara satırı
+`ETİMESGUT / ANKARA` ve `KEÇİÖEREN/ ANKARA` yazıyor, ikincisi hem yanlış hem bitişik.
+
+Dolaşan rakam yine eski: bir haber "1.665 mağaza" diyor, çektiğimiz 2.348.
+
+### Zincirlerin ilçe kapsaması (2026-09-20 itibarıyla depoda)
+
+| Marka | Mağaza | İlçe | 973 ilçenin |
+|---|---|---|---|
+| BİM (+FİLE) | 13.057 | 916 | %94 |
+| ŞOK | 11.220 | 809 | %83 |
+| Komagene | 3.805 | 608 | %62 |
+| Migros | 3.442 | 528 | %54 |
+| **Tarım Kredi** | **2.348** | **640** | **%66** |
+
+Tarım Kredi mağaza sayısında Migros'un altında ama **ilçe sayısında üstünde**: 2.348
+mağazayla 640 ilçeye giriyor, Migros 3.442 mağazayla 528'e. Kooperatif yapısının kırsala
+yayıldığı, özel zincirin kente yığıldığı buradan okunuyor — ama okunmadan önce mağaza
+başına düşen nüfusa bakılmalı, `docs/gosterge-notlari.md`'deki kayıtlı nüfus uyarısıyla.
+
+### Teknoloji ve beyaz eşya (2026-09-20)
+
+**Vestel girdi: 1.158 satış noktası, 489 ilçe** — `scripts/fetch_vestel.py`. Ayrıca
+**359 yetkili servis (79 il)** ham depoda; mağazayla aynı sayıya katılmıyor, çamaşır
+makinesi satan dükkânla onu tamir eden atölye aynı şey değil.
+
+Vestel'in ağı diğerlerinden farklı: şirketin kendi mağazaları değil, **bayiler**. Tabela
+Vestel, arkadaki şirket yerel — Ankara'daki ilk kayıt `GÖKTAŞLAR İÇ DIŞ TİCARET ...
+KIZLARPINARI` diye geçiyor. Ad kaynağın yazdığı gibi bırakılıyor.
+
+Uç nokta sayfanın kendi `storeAndServices({...})` çağrısında yazılı:
+`POST /lookup/offlinestores` gövde `cityID=<plaka>&districtID=`. Boş ilçe **ilin tamamı**
+demek; "tüm iller" değeri yok, `cityID=0` boş liste veriyor — bu geçerli bir soruya boş
+cevap, hata değil. 81 istek.
+
+### robots kararı yol bazında değil, artık dosya bazında da verilmeli
+
+2026-09-19'daki düzeltme "Teknosa, MediaMarkt, Gratis izinli" demişti. Bugün bakıldığında
+**Teknosa'nın robots.txt'i HTTP 403 veriyor** — dosyanın kendisi okunamıyor. Standart
+gereği okunamayan robots "tamamı yasak" sayılır, o yüzden Teknosa'ya gidilmedi. Mağaza
+bulucusunun adresi de değişmiş: `/magazalarimiz` değil `/magaza-bul`, ve o yol açıkça
+ClaudeBot'a kapalı.
+
+| Marka | robots.txt | Durum |
+|---|---|---|
+| **Vestel** | 200, `/lookup/` serbest | **çekildi: 1.158 nokta + 359 servis** |
+| Koçtaş | 200, serbest | uç nokta bulundu (`/store-finder/findPOSByCity`), çekilmedi |
+| MediaMarkt | 200, serbest | sayfa kabuk, uç nokta aranacak |
+| Bauhaus | 200 ama sayfa 403 | mağaza sayfası Cloudflare'de |
+| Tekzen | 200, serbest | sayfa kabuk, uç nokta aranacak |
+| Teknosa | **403 (okunamıyor)** | kapalı sayıldı |
+| **Arçelik, Beko, Altus** | **403** | üçü de aynı grup, üçü de kapalı |
+| **Bosch, Siemens, Profilo** | **403** | BSH grubunun üçü de kapalı |
+| Watsons | **403** | kapalı |
+
+Beyaz eşyada tek açık kapı Vestel çıktı. Arçelik ve BSH (Bosch/Siemens/Profilo) grupları
+robots dosyasını bile vermiyor; bayi ağları bu yüzden sayılamıyor ve "bayisi yok" diye
+değil, **bakılamadı** diye kaydediliyor.
+
+### Koçtaş (2026-09-20) — ve iki sahte alan
+
+**134 mağaza, 108 ilçe, 38 il.** 55'i büyük format (`KOCTAS_STORE`), 79'u mahalle
+formatı (`KOCTAS_FIX`). Uç nokta sayfanın formunun kendi hedefi:
+`GET /store-finder/findPOSByCity?addressCity=<plaka>`. Parametrenin adı `city` değil
+`addressCity`; `?city=06` **HTTP 400** veriyor — reddedilmiş istek, boş il değil.
+
+Bu kaynakta bilgi veriyormuş gibi duran ama vermeyen iki alan var:
+
+**`storeContent` kapanış bildirmiyor.** 134 mağazanın 58'inde
+`"Mağazamız geçici olarak kapalıdır."` yazıyor — Ankara Eryaman, Ankamall ve Panora
+dahil, yani zincirin amiral mağazaları. Hepsinde `storeOpenStatus: OPEN`. Cümle bir
+içerik alanına düşmüş kalıp metin; kapanış işareti sayılsaydı zincirin **%43'ü kapalı**
+görünecekti. Okunan alan `storeOpenStatus`.
+
+**`addressTown` ilçeyi yanlış veriyor.** Yenimahalle'deki Ankamall AVM mağazası
+`HAMAMÖZÜ` diye kayıtlı — üstelik ilçe kodu `K0503`, yani Amasya'nın plakası. Çankaya'daki
+Gordion AVM `HAYMANA` yazıyor. Alan dosyaya kaynaktaki hâliyle yazılıyor ama ilçe, her
+zincirde olduğu gibi, koordinattan belirleniyor. Bu tabloyu adres etiketiyle kuran biri
+Hamamözü'ne AVM mağazası açardı.
+
+### MediaMarkt: robots açık, kapı kapalı (2026-09-20)
+
+robots.txt izin veriyor ve mağaza listesini çeken sorgunun adı bile açıkta —
+`query AllStores { stores(states: [ACTIVE, PARTIALLY_ACTIVE]) {...} }`, sayfanın kendi
+`StoreFinder` paketinin içinde yazılı. Ama `/api/v1/graphql` uygulamanın kendi kimliğini
+istiyor: aynı sorgu tarayıcıdan gönderildiğinde de **403**. Sayfa mağazaları sunucuda
+basmıyor, yani HTML'de de yok. Kapalı sayıldı — "mağazası yok" değil, **alınamadı**.
+
+### Eczaneler: markanın değil mesleğin sayımı (2026-09-20)
+
+**31.451 eczane, 81 il, 967 ilçe.** Depodaki ilk *sayım* niteliğindeki dükkân göstergesi:
+eczane açmak ruhsat gerektiriyor ve TİTCK ruhsat kaydını tutuyor. Bu yüzden `pharmacies`,
+"bu ilçede kaç eczane var" sorusuna `population`'ın "kaç kişi var"a cevap verdiği gibi
+cevap veriyor; `chain_stores`'daki hiçbir satır böyle okunamaz.
+
+Kaynak TEB değil. TEB'in sitesinde istatistik yok, `tebeczane.net` şifreli bir doküman
+sistemi. Kayıt, ruhsatı veren kurumda: `ebs.titck.gov.tr`, Kendo ızgarası,
+`POST /Ecza/Eczane/grdEczaneListesi_Read`, il zorunlu.
+
+**`pageSize=5000` istendiğinde sunucu `{"Total":0,"Data":[]}` dönüyor.** HTTP 200, hata
+yok. İlk çekim bu yüzden 80 il ve 25.605 eczane yazdı: **İstanbul'un 5.846 eczanesi
+"eczane yok" olarak kaydedilmişti.** `pageSize=1000` ile aynı il sorunsuz cevap veriyor.
+Çekici artık bin bin sayfalıyor ve her ilin sayfaları o ilin kendi `Total`'ine eşit
+değilse duruyor.
+
+**`id` alanı kimlik değil**, ızgaranın sayfa içi satır numarası — dört sayfada okunan bir
+ilde dört tane `1` var. Tekilleştirme yapılmıyor; sayım satır sayısıdır ve eksik/çift
+olmadığının güvencesi `Total` karşılaştırmasıdır.
+
+### Üç kaynak, aynı on istisna
+
+Eczane kaydının ilçe adları, BİM ve Migros'unkiyle **birebir aynı üç sapmayı** gösteriyor:
+`Merkez`, dört il takma adı, on ilçe yazımı. Tek bir yeni istisna çıkmadı. Ortak hiçbir
+yazılımı, ortak hiçbir sağlayıcısı olmayan iki zincir bulucusu ile bir devlet kaydı aynı
+on yerde kayıt defterinden ayrılıyor — bu yüzden eşleme artık adaptörlerde değil, kayıt
+defterinin yanında: `veriatlas.areas.resolve_district`.
+
+### Domino's tamamlandı, KFC yarım kaldı (2026-09-20)
+
+**Domino's: 1.097 şube, 1.092'si ilçeye düştü, 310 ilçe.** 18 Eylül'de 311'de kesilmişti;
+`--devam` ile temiz bir turda tamamı indi. Çekicide bir hata düzeltildi: `--devam` yeni
+tarihli bir dosyaya yazarken **başlık satırını atlıyordu**, çünkü başlığı "devam etmiyorsa"
+koşuluna bağlamıştı. Doğru koşul dosyanın boş olması; ikisi aynı şey değil ve başlıksız
+dosyanın ilk satırı adaptör tarafından veri sanılıyordu.
+
+**KFC: 41 restoran, 6 il — ve bu sitenin tamamı.** Liste sayfanın Next.js yükünde çift
+kaçışlı JSON olarak duruyor (Gratis kalıbı; `initialRestaurants`). Sayfanın kendi il
+kutusu da yalnız o altı ili sayıyor ve farklı `?lat=`/`?city=` aynı 41'i veriyor, yani
+bu bir "en yakın N" kesiti değil. Markanın bilinen büyüklüğü bunun katları olduğu için
+ham dosya **bilerek göstergeye bağlanmadı**: kendi markasından görünür biçimde küçük bir
+sayı, depoda "KFC 75 ilde yok" diye okunur ve bu ülkeye dair bir iddia olur. Boşluğun
+nedeni (kendi sitesi olan bayiler mi, yarım göç mü) bu çekicinin bulabileceği bir şey
+değil; tahmin etmek beklemekten kötüdür.
+
+### Koordinat da yanılıyor: üçüncü kaynak kuralı (2026-09-20)
+
+Kullanıcı "İznik'te ŞOK 12 mi?" diye sordu. Depoda 12 yazıyordu; **doğrusu 13.**
+
+`BURSA İZNİK KALE MAĞAZASI` adında İznik geçiyor, adresi İznik'in Selçuklu Mahallesi'nde,
+ama koordinatı **35 km batıda, Gemlik'te**. Nokta-poligon testi onu sessizce Gemlik'e
+yazmıştı: mağaza kaybolmuyor, komşu ilçeye taşınıyor ve aşağı akışta bunu görebilecek
+hiçbir kontrol yok.
+
+`scripts/dogrula_zincir_etiket.py` bunu ölçüyor. Kendi il/ilçe etiketini de yayımlayan
+markalarda etiketle koordinatı karşılaştırıp noktanın etiketteki ilçeye uzaklığını
+hesaplıyor:
+
+| Marka | Karşılaştırılan | Aynı ilçe | Sınır (<10 km) | **Uzak (>10 km)** |
+|---|---|---|---|---|
+| ŞOK | 11.177 | %96,4 | 209 | **156** |
+| Vestel | 1.158 | %99,4 | 1 | 6 |
+| Koçtaş | 134 | %97,0 | 1 | 3 |
+
+**Düzeltme tek yönlü olamaz, çünkü iki alan da yanılıyor — ve farklı markalarda ters
+yönde.** ŞOK'un etiketleri sağlam, kimi koordinatları bozuk (975 km'ye kadar: Çekmeköy
+adlı mağaza Çamlıhemşin'e düşüyor). Koçtaş'ta tam tersi: Yenimahalle'deki Ankamall
+mağazasını kendi kaydı `HAMAMÖZÜ` (Amasya) diye etiketliyor. "Koordinat uzaksa etikete
+güven" kuralı İznik'i düzeltir, Ankamall'u ülkenin öbür ucuna taşırdı.
+
+**Ayıran şey üçüncü kaynak: mağazanın kendi adı ve adresi.** Kural artık şu — nokta,
+kaynağın adlandırdığı ilçeden 10 km'den uzaksa **ve** o ilçenin adı mağazanın adında ya da
+adresinde geçiyorsa, iki bağımsız alan bir tek sayıyı yener ve etiket kazanır. İznik'te
+geçiyor (ad + adres + etiket = üç), Hamamözü'nde hiçbir yerde geçmiyor.
+
+Sonuç: **110 mağaza yerine oturdu** (ŞOK 103, Vestel 5, Gratis 2), Koçtaş'ın üç hatalı
+etiketinin hiçbiri kabul edilmedi. Toplam sayılar değişmedi, dağılım düzeldi.
+
+Bir de yan kazanç: kayıt defteri eşleyicisi artık **Türkçe büyük/küçük harfe duyarsız**.
+ŞOK `BURSA / İZNİK` diye bağırıyor, TİTCK `Bursa / İznik` yazıyor; ikisi de eşleşiyor.
+Yalnız harf büyüklüğü göz ardı ediliyor — şapka, boşluk ve eski il adı hâlâ tek tek
+yazılan istisnalar, çünkü onlar tek bir dizginin arkasına iki ayrı yeri saklayabilir.
+
+### A101 için elle bir ölçüt (2026-09-20)
+
+A101 çekilemedi (uç nokta bulundu, IP'miz o yola yasaklandı). Kullanıcı elle baktı:
+**İznik'te haritada 6 A101 görünüyor** — biri "kapalı" etiketli, beşi açık.
+
+Bu sayı **depoya girmez**: başkasının haritasından okunmuş tek bir gözlem, bizim
+ölçümümüz değil. Ortakalan'ın perakende raporundaki sektör toplamları gibi, yalnız
+**ölçüt** olarak tutulur: A101 taraması yapıldığında İznik'te 6 civarı çıkmalı; çok daha
+azı taramanın eksik olduğunu, çok daha fazlası ilçe sınırının dışını içeri aldığını
+gösterir.
+
+Tutarlılık kontrolü olarak da anlamlı: A101 kendi sitesinde 13.500 mağaza diyor, bu
+ilçe başına ortalama ~14 eder; İznik'in nüfusu (45.510) ilçe ortalamasının yarısı kadar,
+yani beklenen 6-7. Gözlem beklentiyle uyuşuyor.
+
+İznik'in tablosu bu gözlemle birlikte: ŞOK 13, **A101 ~6**, BİM 6, Migros 4, Tarım Kredi 3,
+Oses 3, Gratis 1, Komagene 1, Domino's 1 — ve 15 eczane.
+
+### Tarım Kredi sayısının ölçütü (2026-09-20)
+
+Kullanıcı bir arama motorunun yapay zekâ özetini getirdi: *"2026 itibarıyla **2.379 market**
+ve toplam **5.000 satış noktası** (2.500 A tipi market, 1.000 B tipi kooperatif marketi ve
+1.000 Koop Bakkal)"*.
+
+Bizim çektiğimiz **2.348**. Marka sayısıyla uyum iyi (%1,3 fark, üstelik iki ölçüm farklı
+günlere ait). Ama özetin kendisi **kendi içinde tutarsız**: aynı cümlede hem "2.379 market"
+hem "2.500 A tipi market" diyor, üç kalemi topladığında 4.500 ediyor ama "5.000" yazıyor.
+Komagene'de de aynı desen görülmüştü — dolaşan rakam pazarlama ya da özet, ölçüm değil.
+
+**Asıl fark tanımda.** `tkkoop.com.tr`'nin mağaza bulucusu kooperatifin **kendi
+marketlerini** listeliyor; çektiğimiz 2.348 kaydın yalnız birinde "bakkal" geçiyor. "5.000
+satış noktası" ise B tipi kooperatif marketlerini ve Koop Bakkal anlaşmalı bakkalları da
+sayan **başka bir evren** — BİM sayısının FİLE'yi içermesi ya da Migros'un formatları gibi.
+
+Depoya giren, markanın kendi bulucusunda listelediği mağazadır; anlaşmalı bakkal
+listelenmiyorsa sayılamaz ve sayılmış gibi yapılmaz.

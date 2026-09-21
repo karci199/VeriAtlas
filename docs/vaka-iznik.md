@@ -124,3 +124,36 @@ SAY/DİL/EA kısaltmalarında var.
   denendi, hepsi başarılı.
 - Bursa dışı illerin ilçe-bazlı YKS karşılaştırması yapılmadı (yalnız
   81 il listesi çıkarıldı, il-içi ilçe kırılımı yalnız Bursa için).
+
+## `nerdeyiz-en-son-c7d5b8` dalından kurtarılan notlar (2026-09-22)
+
+Dal ana dala girmemişti; bölümler orada yazıldı. Çelişen yerde bu dosyanın üst kısmı geçerlidir.
+
+### Ana bulgular
+
+- Sur içi nüfus payı 1980 öncesi ~%100'den 2025'te **%48,9**'a düşmüş.
+- Sur dışı nüfus 2007-2025 arası **4,2 kat** artmış (3.386 → 14.298 kişi).
+- En hızlı büyüyen mahalleler Eşrefzade ve Yeşil Camii (Topkapı bölgesi, kuzeydoğu),
+  aynı zamanda en genç nüfuslu; Mahmut Çelebi en yaşlı ve küçülen mahalle.
+- Kır, kent'ten iki kat hızlı yaşlanıyor (+8,9 yıl vs +4,4 yıl, 2007-2024).
+- İlçe genelinde 65+ nüfus %66 artmış, 0-14 nüfus %26 azalmış (2007-2025).
+- Ortalama hanehalkı büyüklüğü 3,32'den 2,94'e düşmüş (2014-2025).
+
+### Yöntem — kısaca
+
+Beyler ve Mahmut Çelebi mahalleleri tamamen sur içinde. Diğer 5 mahallenin sur içi
+alan payı uydu görüntüsünden elle ölçüldü (m²). Beyler+Mahmut Çelebi'nin o yılki
+gerçek yoğunluğu (nüfus/sabit alan), diğer mahallelerin ölçülen sur-içi alanına
+uygulanarak sur-içi nüfus tahmin edildi. Toplam sur-içi alan (1,4185 km²) elle
+tahmin edilen sur alanıyla (1,41 km²) örtüştü — iç tutarlılık kontrolü.
+
+**1980-2007 arası sur içi/dışı sayıları ölçüm değil**, iki sabit noktadan (1980'de
+~0, 1990'da ~300 kişi sur dışı) üstel enterpolasyonla üretilmiş bir model.
+
+Ayrıntılı yöntem ve bilinen zayıf noktalar için xlsx'in "Yöntem ve kaynaklar" sayfası.
+
+### Kaynak dosyalar (masaüstü `demografi/` klasörü)
+
+`iznik.xls`, `iznik_18.xls`, `iznik_kent_kir.xlsx`, `iznikfull.xls`,
+`hanehalkı tipleri iznik.xls` — hiçbiri `raw/`e taşınmadı, bu tek seferlik bir
+oturum analizi.
