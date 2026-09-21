@@ -271,3 +271,19 @@ sormak, dönen mağazaları kimliğe göre tekilleştirmek. Yaklaşık 13.000 ma
 Bu iş **kurulmadı**: tarayıcı otomasyonu ve konum sahteleme gerektiriyor, yarım kurulmuş
 bir tarayıcı sessizce eksik veri toplar. Ayrı bir oturumda, doğrulamasıyla birlikte
 yapılmalı — kontrol ölçütü: BİM'in 13.057 mağazasına yakın bir sayı ve 81 ilin tamamı.
+
+## A101: uç bulundu, robots okunamıyor (2026-09-21)
+
+`/en-yakin-magazalar` sayfası mağazaları şu uçtan alıyor (tarayıcının ağ kaydından):
+
+    https://rio.a101.com.tr/dbmk89vnr/CALL/StoreContentManager/nearestStores/default
+        ?__culture=tr-TR&__platform=web&__isbase64=true&data=<base64({"geoHash":"sxk9kvr65"})>
+
+Düz istekle 200 dönüyor (ana site Cloudflare'le 403 verirken). Çağrı başına en yakın 20
+mağaza: `id`, `name`, `address`, `city`, `townShip`, `plateCode`, `lat`, `lng`, `distance`.
+Konum URL'ye değil bu geohash'e yazılıyor — önceki "?lat=&lng= işe yaramıyor" notunun sebebi.
+
+**Çekilmedi:** `rio.a101.com.tr/robots.txt` üç denemede de **500** döndü. RFC 9309 5xx'i
+"tamamen yasak" sayar; `hata-veri-degildir` kuralı da hatayı izin saymaz. Robots 200 dönerse
+yöntem hazır: Türkiye'yi geohash ızgarasıyla (en yakın 20 mağaza, ~2 km yarıçap → sık ızgara)
+tara, `id` ile tekilleştir; ölçüt ~13.000 mağaza ve 81 il.
