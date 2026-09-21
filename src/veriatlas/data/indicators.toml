@@ -31396,6 +31396,8 @@ soz = { label_tr = "Söz Market", label_en = "Söz Market" }
 bim = { label_tr = "BİM (FİLE dahil)", label_en = "BİM (incl. FİLE)" }
 migros = { label_tr = "Migros", label_en = "Migros" }
 sec_market = { label_tr = "Seç Market", label_en = "Seç Market" }
+yunus = { label_tr = "Yunus Market", label_en = "Yunus Market" }
+nurtas = { label_tr = "Nurtaş Market", label_en = "Nurtaş Market" }
 
 [indicator.chain_stores]
 label_tr = "Zincir mağaza sayısı"

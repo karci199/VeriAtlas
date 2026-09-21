@@ -116,6 +116,11 @@ STORE_BRANDS = {
     "bim": "zincir/bim_ilce.csv",
     "migros": "zincir/migros_ilce.csv",
     "sec_market": "zincir/sec_ilce.csv",
+    # Ankara-based Yunus (92 stores, 7 provinces; site lists the same 92) and Amasya's
+    # Nurtaş (10, own page). District from the address; Yunus writes Ankara semts
+    # (Balgat, Batıkent, Eryaman...) instead of districts — the table is yunus_semt_ilce.json.
+    "yunus": "zincir/yunus_ilce.csv",
+    "nurtas": "zincir/nurtas_ilce.csv",
 }
 
 #: The share of a brand's branches allowed to fall outside every polygon *while standing
