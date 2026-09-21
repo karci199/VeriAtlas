@@ -31851,7 +31851,7 @@ emlakkatilim = { label_tr = "Emlak Katılım", label_en = "Emlak Katılım" }
 [indicator.bank_branch_locations]
 label_tr = "Banka şubesi (konumla)"
 label_en = "Bank branches (located)"
-topic = "finans"
+topic = "bankacilik"
 unit = "item"
 frequency = "annual"
 dims = ["bank"]
@@ -31861,19 +31861,12 @@ definition_tr = "On yedi bankanın kendi şube bulucusundan okunan şube sayıs�
 [indicator.bank_atm_locations]
 label_tr = "Banka ATM'si (konumla)"
 label_en = "Bank ATMs (located)"
-topic = "finans"
+topic = "bankacilik"
 unit = "item"
 frequency = "annual"
 dims = ["bank"]
 views = ["table", "map", "bar"]
 definition_tr = "On altı bankanın kendi bulucusundan okunan ATM sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Bir noktadaki her makine ayrı sayılır. Garanti BBVA (yaklaşık 6.400 ATM) alınamadığı için sektör toplamı değildir; sektör toplamı TBB'nin `bank_atms` göstergesindedir. Kuveyt Türk'ün para yatırma-çekme makineleri (AIO) ATM sayılır. Seri değildir."
-
-[dim.operator]
-label_tr = "Operatör"
-label_en = "Operator"
-
-[dim.operator.values]
-turk_telekom = { label_tr = "Türk Telekom", label_en = "Türk Telekom" }
 
 [indicator.telecom_dealers]
 label_tr = "Operatör bayisi"
