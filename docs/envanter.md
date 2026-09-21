@@ -1,11 +1,11 @@
-# Envanter — depodaki 880 gösterge
+# Envanter — depodaki 897 gösterge
 
 **Bu dosya elle yazılmaz.** `scripts/build_inventory.py` warehouse'tan üretir;
 burada olmayan gösterge depoda yok demektir. Yeni kaynak önermeden önce buraya
 bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni iş' diye
 önerildi, üçü de zaten yüklüydü.
 
-Üretim: 2026-09-19 · 21.234.030 satır
+Üretim: 2026-09-21 · 21.263.858 satır
 
 ## evds_arsiv (177)
 
@@ -189,7 +189,7 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `archive_yyoibsvt` | Özel Sektör Tarafından Yurt İçinde İhraç Edilen Borçlanma Senetleri Vade Dağılımı (TL. Piyasa Değeri. Orjinal ve Kalan Vade) (Arşiv) | TR | 2015-2021 | 206.820 | cbrt_evds |
 | `archive_yyoibsvu` | Özel Sektör Tarafından Yurt İçinde İhraç Edilen Borçlanma Senetleri Vade Dağılımı (ABD doları. Piyasa Değeri. Orjinal ve Kalan Vade) (Arşiv) | TR | 2015-2021 | 204.270 | cbrt_evds |
 
-## iletisim (96)
+## iletisim (103)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
@@ -289,6 +289,13 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `internet_speedtests` | Hız testi sayısı | il. ilçe | 2022-2024 | 4.104 | ookla_open_data |
 | `internet_upload_speed` | İnternet yükleme hızı (ölçülen) | il. ilçe | 2022-2024 | 4.104 | ookla_open_data |
 | `postal_codes` | Posta kodu sayısı | il. ilçe | 2026-2026 | 1.054 | ptt_postakodu |
+| `telecom_broadband_subscribers` | Genişbant abone (operatör) | TR | 2014-2026 | 50 | operator_ir |
+| `telecom_dealers` | Operatör bayisi | il. ilçe | 2026-2026 | 1.278 | branch_finders |
+| `telecom_fibre_subscribers` | Fiber abone (operatör) | TR | 2014-2026 | 68 | operator_ir |
+| `telecom_mobile_subscribers` | Mobil abone sayısı (operatör) | TR | 2014-2026 | 68 | operator_ir |
+| `telecom_postpaid_subscribers` | Faturalı mobil abone (operatör) | TR | 2014-2026 | 68 | operator_ir |
+| `telecom_prepaid_subscribers` | Ön ödemeli mobil abone (operatör) | TR | 2014-2026 | 68 | operator_ir |
+| `telecom_tv_subscribers` | TV abone (operatör) | TR | 2014-2026 | 68 | operator_ir |
 
 ## sosyal_guvenlik (63)
 
@@ -441,6 +448,43 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `water_treatment_population` | İçme suyu arıtma tesisiyle hizmet verilen nüfus | TR. il | 2001-2022 | 699 | tuik_medas |
 | `water_treatment_population_share` | İçme suyu arıtma tesisiyle hizmet verilen nüfusun oranı | TR. il | 2001-2022 | 699 | tuik_medas |
 
+## bankacilik (32)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `bank_atm_locations` | Banka ATM'si (konumla) | il. ilçe | 2026-2026 | 7.073 | branch_finders |
+| `bank_atms` | ATM sayısı | il | 2010-2025 | 1.296 | tbb |
+| `bank_branch_locations` | Banka şubesi (konumla) | il. ilçe | 2026-2026 | 5.608 | branch_finders |
+| `bank_credit_volume` | Yurt içi kredi hacmi | TR | 2007-2026 | 7.232 | cbrt_evds |
+| `bank_credit_volume_weekly` | Kredi hacmi (haftalık) | TR | 2024-2026 | 6.900 | cbrt_evds |
+| `bank_deposit_accounts` | Mevduat hesap sayısı | il | 2010-2025 | 9.069 | tbb |
+| `bank_deposits` | Banka mevduatı | il | 1988-2025 | 19.484 | tbb |
+| `bank_employees` | Banka çalışanı | il | 2007-2025 | 1.539 | tbb |
+| `bank_group_branches` | Banka şube sayısı. banka grubuna göre (il) | il | 2007-2025 | 10.773 | bddk |
+| `bank_group_deposits` | Mevduat. banka grubuna göre (il) | il | 2007-2025 | 63.945 | bddk |
+| `bank_group_gold` | Altın kredisi ve mevduatı. banka grubuna göre (il) | il | 2015-2025 | 21.388 | bddk |
+| `bank_group_loans` | Krediler. banka grubuna göre (il) | il | 2007-2025 | 41.772 | bddk |
+| `bank_group_retail_loans` | Bireysel krediler. banka grubuna göre (il) | il | 2007-2025 | 83.544 | bddk |
+| `bank_group_sector_loans` | Sektörel krediler. banka grubuna göre (il) | il | 2007-2025 | 323.733 | bddk |
+| `bank_loans` | Banka kredileri | il | 1988-2025 | 16.115 | tbb |
+| `bank_merchants` | Kartla ödeme alan üye işyeri | il | 2010-2025 | 1.296 | tbb |
+| `bank_pos_terminals` | POS sayısı | il | 2010-2025 | 1.296 | tbb |
+| `bills_collected_amount` | Tahsile alınan ticari senet tutarı | TR | 2007-2026 | 230 | cbrt_evds |
+| `bills_collected_count` | Tahsile alınan ticari senet adedi | TR | 2007-2026 | 228 | cbrt_evds |
+| `card_payment_index` | Kartlı ödeme endeksi (BKM) | TR | 2015-2026 | 544 | cbrt_evds |
+| `card_spending_weekly` | Kartlı harcama tutarı (haftalık) | TR | 2014-2026 | 18.833 | cbrt_evds |
+| `card_transactions_weekly` | Kartlı işlem adedi (haftalık) | TR | 2014-2026 | 18.833 | cbrt_evds |
+| `cheques_amount` | Takas odasında ibraz edilen çek tutarı | TR | 1998-2026 | 792 | cbrt_evds |
+| `cheques_count` | Takas odasında ibraz edilen çek adedi | TR | 1998-2026 | 792 | cbrt_evds |
+| `credit_deposit_banks` | Mevduat bankaları kredileri | TR | 1986-2026 | 12.060 | cbrt_evds |
+| `credit_development_banks` | Kalkınma ve yatırım bankaları kredileri | TR | 1986-2026 | 11.090 | cbrt_evds |
+| `credit_participation_banks` | Katılım bankaları kredileri | TR | 2005-2026 | 6.161 | cbrt_evds |
+| `deposit_interest_rates` | Mevduat faiz oranları (stok) | TR | 2000-2026 | 5.652 | cbrt_evds |
+| `investor_portfolio_value` | Yatırımcı portföy değeri (il) | il | 2005-2025 | 1.620 | vap |
+| `loan_interest_rates` | Kredi faiz oranları (stok) | TR | 2012-2026 | 1.690 | cbrt_evds |
+| `loan_interest_rates_weekly` | Kredi faiz oranları (akım. haftalık) | TR | 2002-2026 | 11.209 | cbrt_evds |
+| `loan_profit_share_rates` | Kredi kâr payı oranları (stok) | TR | 2018-2026 | 1.030 | cbrt_evds |
+
 ## cocuk (31)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -513,52 +557,18 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `theatre_seats` | Tiyatro koltuğu | TR. il | 2000-2025 | 2.132 | tuik_medas |
 | `theatre_works` | Sahnelenen eser (yerli/yabancı) | TR. il | 2000-2025 | 4.264 | tuik_medas |
 
-## bankacilik (30)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `bank_atms` | ATM sayısı | il | 2010-2025 | 1.296 | tbb |
-| `bank_credit_volume` | Yurt içi kredi hacmi | TR | 2007-2026 | 7.232 | cbrt_evds |
-| `bank_credit_volume_weekly` | Kredi hacmi (haftalık) | TR | 2024-2026 | 6.900 | cbrt_evds |
-| `bank_deposit_accounts` | Mevduat hesap sayısı | il | 2010-2025 | 9.069 | tbb |
-| `bank_deposits` | Banka mevduatı | il | 1988-2025 | 19.484 | tbb |
-| `bank_employees` | Banka çalışanı | il | 2007-2025 | 1.539 | tbb |
-| `bank_group_branches` | Banka şube sayısı. banka grubuna göre (il) | il | 2007-2025 | 10.773 | bddk |
-| `bank_group_deposits` | Mevduat. banka grubuna göre (il) | il | 2007-2025 | 63.945 | bddk |
-| `bank_group_gold` | Altın kredisi ve mevduatı. banka grubuna göre (il) | il | 2015-2025 | 21.388 | bddk |
-| `bank_group_loans` | Krediler. banka grubuna göre (il) | il | 2007-2025 | 41.772 | bddk |
-| `bank_group_retail_loans` | Bireysel krediler. banka grubuna göre (il) | il | 2007-2025 | 83.544 | bddk |
-| `bank_group_sector_loans` | Sektörel krediler. banka grubuna göre (il) | il | 2007-2025 | 323.733 | bddk |
-| `bank_loans` | Banka kredileri | il | 1988-2025 | 16.115 | tbb |
-| `bank_merchants` | Kartla ödeme alan üye işyeri | il | 2010-2025 | 1.296 | tbb |
-| `bank_pos_terminals` | POS sayısı | il | 2010-2025 | 1.296 | tbb |
-| `bills_collected_amount` | Tahsile alınan ticari senet tutarı | TR | 2007-2026 | 230 | cbrt_evds |
-| `bills_collected_count` | Tahsile alınan ticari senet adedi | TR | 2007-2026 | 228 | cbrt_evds |
-| `card_payment_index` | Kartlı ödeme endeksi (BKM) | TR | 2015-2026 | 544 | cbrt_evds |
-| `card_spending_weekly` | Kartlı harcama tutarı (haftalık) | TR | 2014-2026 | 18.833 | cbrt_evds |
-| `card_transactions_weekly` | Kartlı işlem adedi (haftalık) | TR | 2014-2026 | 18.833 | cbrt_evds |
-| `cheques_amount` | Takas odasında ibraz edilen çek tutarı | TR | 1998-2026 | 792 | cbrt_evds |
-| `cheques_count` | Takas odasında ibraz edilen çek adedi | TR | 1998-2026 | 792 | cbrt_evds |
-| `credit_deposit_banks` | Mevduat bankaları kredileri | TR | 1986-2026 | 12.060 | cbrt_evds |
-| `credit_development_banks` | Kalkınma ve yatırım bankaları kredileri | TR | 1986-2026 | 11.090 | cbrt_evds |
-| `credit_participation_banks` | Katılım bankaları kredileri | TR | 2005-2026 | 6.161 | cbrt_evds |
-| `deposit_interest_rates` | Mevduat faiz oranları (stok) | TR | 2000-2026 | 5.652 | cbrt_evds |
-| `investor_portfolio_value` | Yatırımcı portföy değeri (il) | il | 2005-2025 | 1.620 | vap |
-| `loan_interest_rates` | Kredi faiz oranları (stok) | TR | 2012-2026 | 1.690 | cbrt_evds |
-| `loan_interest_rates_weekly` | Kredi faiz oranları (akım. haftalık) | TR | 2002-2026 | 11.209 | cbrt_evds |
-| `loan_profit_share_rates` | Kredi kâr payı oranları (stok) | TR | 2018-2026 | 1.030 | cbrt_evds |
-
-## reel_kesim (29)
+## reel_kesim (30)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
 | `capacity_utilisation` | İmalat sanayi kapasite kullanım oranı | TR | 2007-2026 | 7.932 | cbrt_evds |
 | `chain_restaurants` | Zincir şube sayısı | il. ilçe | 2026-2026 | 2.341 | chain_store_finders |
-| `chain_stores` | Zincir mağaza sayısı | il. ilçe | 2026-2026 | 2.152 | chain_store_finders |
+| `chain_stores` | Zincir mağaza sayısı | il. ilçe | 2026-2026 | 4.459 | chain_store_finders |
 | `companies_opened_capital` | Kurulan şirketlerin sermayesi | TR | 2010-2026 | 756 | cbrt_evds |
 | `companies_opened_closed` | Kurulan ve kapanan şirket sayısı | TR | 2010-2026 | 1.993 | cbrt_evds |
 | `economic_tendency_survey` | İktisadi yönelim anketi | TR | 2007-2026 | 15.892 | cbrt_evds |
 | `enterprises` | Girişim sayısı | il | 2009-2024 | 81.550 | tuik_medas |
+| `fashion_stores` | Giyim zinciri mağazası | il. ilçe | 2026-2026 | 1.437 | branch_finders |
 | `foreign_trade_by_province` | Dış ticaret (il. gümrük) | il | 2002-2023 | 3.548 | oecd_regional |
 | `industrial_production_index` | Sanayi üretim endeksi | TR | 1986-2026 | 82.257 | cbrt_evds |
 | `real_sector_confidence` | Reel kesim güven endeksi | TR | 2007-2026 | 2.124 | cbrt_evds |
@@ -739,6 +749,32 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `registered_by_residence_province` | İlçeye kayıtlı nüfus (ikamet edilen ile göre) | ilçe | 2008-2025 | 234.900 | tuik_medas |
 | `registry_population` | Kütük nüfusu | il | 2007-2025 | 3.078 | tuik_medas |
 
+## ulasim (21)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `car_km_by_fuel` | Otomobil taşıt-kilometresi (yakıta göre) | TR | 2015-2024 | 50 | tuik_veri_portali |
+| `car_mean_annual_km_by_fuel` | Otomobil başına yıllık ortalama km (yakıta göre) | TR | 2015-2024 | 50 | tuik_veri_portali |
+| `cars_per_thousand` | Bin kişi başına otomobil | TR. il | 2007-2025 | 1.558 | tuik_medas |
+| `port_cargo_handled` | Limanlarda elleçlenen yük | il | 2021-2025 | 1.416 | uab_denizcilik |
+| `port_containers_handled` | Limanlarda elleçlenen konteyner | il | 2020-2025 | 1.176 | uab_denizcilik |
+| `transferred_vehicle_mean_age` | Devri yapılan taşıtların ortalama yaşı | TR. il | 2020-2025 | 3.934 | tuik_medas |
+| `vehicle_km` | Taşıt-kilometre (taşıt türüne göre) | TR | 2015-2024 | 80 | tuik_veri_portali |
+| `vehicle_km_by_age` | Taşıt-kilometre (tür × taşıt yaşı) | TR | 2015-2024 | 560 | tuik_veri_portali |
+| `vehicle_mean_age` | Trafiğe kayıtlı taşıtların ortalama yaşı | TR. il | 2020-2025 | 3.936 | tuik_medas |
+| `vehicle_mean_annual_km` | Taşıt başına yıllık ortalama km | TR | 2015-2024 | 80 | tuik_veri_portali |
+| `vehicle_production` | Motorlu taşıt üretimi | TR | 1974-2026 | 5.046 | cbrt_evds |
+| `vehicle_registrations` | Kaydı yapılan ve silinen taşıt | TR. il | 1994-2025 | 14.759 | tuik_medas |
+| `vehicles_by_age` | Trafiğe kayıtlı taşıt (taşıt yaşına göre) | TR. il | 2020-2025 | 2.460 | tuik_medas |
+| `vehicles_by_brand` | Trafiğe kayıtlı taşıt (markaya göre) | TR. il | 2004-2024 | 200.377 | tuik_medas |
+| `vehicles_by_fuel` | Trafiğe kayıtlı taşıt (yakıt türüne göre) | TR. il | 2020-2025 | 2.942 | tuik_medas |
+| `vehicles_newly_registered` | Trafiğe kaydı yapılan taşıt (marka ve türe göre) | TR. il | 2004-2025 | 196.064 | tuik_medas |
+| `vehicles_newly_registered_by_colour` | Trafiğe kaydı yapılan taşıt (renge göre) | TR. il | 2020-2025 | 5.573 | tuik_medas |
+| `vehicles_newly_registered_by_engine` | Trafiğe kaydı yapılan taşıt (silindir hacmine göre) | TR. il | 2020-2025 | 10.627 | tuik_medas |
+| `vehicles_newly_registered_by_fuel` | Trafiğe kaydı yapılan taşıt (yakıt türüne göre) | TR. il | 2020-2025 | 2.482 | tuik_medas |
+| `vehicles_transferred` | Devri yapılan taşıt (marka ve türe göre) | TR. il | 2010-2025 | 257.830 | tuik_medas |
+| `vehicles_transferred_by_age` | Devri yapılan taşıt (taşıt yaşına göre) | TR. il | 2020-2025 | 2.460 | tuik_medas |
+
 ## enerji (20)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -763,30 +799,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `etkb_added_capacity` | Devreye giren kurulu güç | il | 2003-2025 | 1.663 | etkb |
 | `etkb_added_plants` | Devreye giren santral sayısı | il | 2003-2025 | 1.663 | etkb |
 | `installed_capacity` | Kurulu güç (yalnız Türkiye) | TR | 1975-2024 | 50 | tuik_medas |
-
-## ulasim (19)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `car_km_by_fuel` | Otomobil taşıt-kilometresi (yakıta göre) | TR | 2015-2024 | 50 | tuik_veri_portali |
-| `car_mean_annual_km_by_fuel` | Otomobil başına yıllık ortalama km (yakıta göre) | TR | 2015-2024 | 50 | tuik_veri_portali |
-| `cars_per_thousand` | Bin kişi başına otomobil | TR. il | 2007-2025 | 1.558 | tuik_medas |
-| `transferred_vehicle_mean_age` | Devri yapılan taşıtların ortalama yaşı | TR. il | 2020-2025 | 3.934 | tuik_medas |
-| `vehicle_km` | Taşıt-kilometre (taşıt türüne göre) | TR | 2015-2024 | 80 | tuik_veri_portali |
-| `vehicle_km_by_age` | Taşıt-kilometre (tür × taşıt yaşı) | TR | 2015-2024 | 560 | tuik_veri_portali |
-| `vehicle_mean_age` | Trafiğe kayıtlı taşıtların ortalama yaşı | TR. il | 2020-2025 | 3.936 | tuik_medas |
-| `vehicle_mean_annual_km` | Taşıt başına yıllık ortalama km | TR | 2015-2024 | 80 | tuik_veri_portali |
-| `vehicle_production` | Motorlu taşıt üretimi | TR | 1974-2026 | 5.046 | cbrt_evds |
-| `vehicle_registrations` | Kaydı yapılan ve silinen taşıt | TR. il | 1994-2025 | 14.759 | tuik_medas |
-| `vehicles_by_age` | Trafiğe kayıtlı taşıt (taşıt yaşına göre) | TR. il | 2020-2025 | 2.460 | tuik_medas |
-| `vehicles_by_brand` | Trafiğe kayıtlı taşıt (markaya göre) | TR. il | 2004-2024 | 200.377 | tuik_medas |
-| `vehicles_by_fuel` | Trafiğe kayıtlı taşıt (yakıt türüne göre) | TR. il | 2020-2025 | 2.942 | tuik_medas |
-| `vehicles_newly_registered` | Trafiğe kaydı yapılan taşıt (marka ve türe göre) | TR. il | 2004-2025 | 196.064 | tuik_medas |
-| `vehicles_newly_registered_by_colour` | Trafiğe kaydı yapılan taşıt (renge göre) | TR. il | 2020-2025 | 5.573 | tuik_medas |
-| `vehicles_newly_registered_by_engine` | Trafiğe kaydı yapılan taşıt (silindir hacmine göre) | TR. il | 2020-2025 | 10.627 | tuik_medas |
-| `vehicles_newly_registered_by_fuel` | Trafiğe kaydı yapılan taşıt (yakıt türüne göre) | TR. il | 2020-2025 | 2.482 | tuik_medas |
-| `vehicles_transferred` | Devri yapılan taşıt (marka ve türe göre) | TR. il | 2010-2025 | 257.830 | tuik_medas |
-| `vehicles_transferred_by_age` | Devri yapılan taşıt (taşıt yaşına göre) | TR. il | 2020-2025 | 2.460 | tuik_medas |
 
 ## yapi_ruhsati (18)
 
@@ -892,24 +904,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `tourism_expenditure` | Turizm gideri (yurt dışına giden vatandaş) | TR | 2012-2025 | 112 | tuik_medas |
 | `tourism_revenue` | Turizm geliri | TR | 2012-2025 | 19 | tuik_medas |
 
-## iklim (13)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `afad_earthquakes` | Deprem sayısı | il. ilçe | 1990-2025 | 53.671 | afad |
-| `mgm_measurement_period` | İstasyonun ölçüm dönemi | il | 2025-2025 | 162 | mgm |
-| `mgm_precipitation` | Aylık toplam yağış ortalaması | il | 2020-2025 | 1.920 | mgm |
-| `mgm_rainy_days` | Aylık ortalama yağışlı gün sayısı | il | 2020-2025 | 1.908 | mgm |
-| `mgm_record_daily_precipitation` | Günlük en yüksek yağış rekoru | il | 1929-2024 | 81 | mgm |
-| `mgm_record_snow_depth` | En yüksek kar kalınlığı rekoru | il | 1929-2022 | 80 | mgm |
-| `mgm_record_wind_speed` | En hızlı rüzgar rekoru | il | 1963-2025 | 81 | mgm |
-| `mgm_sunshine` | Aylık ortalama günlük güneşlenme süresi | il | 2020-2025 | 1.920 | mgm |
-| `mgm_temperature` | Aylık sıcaklık normalleri | il | 2020-2025 | 7.704 | mgm |
-| `oecd_climate_days` | İklim gün sayıları (alansal) | il | 1981-2024 | 14.256 | oecd_regional |
-| `oecd_degree_days` | Derece-gün (ısıtma ve soğutma) | il | 1981-2023 | 6.966 | oecd_regional |
-| `oecd_precipitation` | Yıllık toplam yağış (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
-| `oecd_temperature` | Yıllık ortalama sıcaklık (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
-
 ## din (13)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -945,6 +939,24 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `mean_building_floors` | Oturulan binanın ortalama kat sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
 | `mean_rooms` | Konutların ortalama oda sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
 | `rooms_per_person` | Konutta kişi başına oda (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
+
+## iklim (13)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `afad_earthquakes` | Deprem sayısı | il. ilçe | 1990-2025 | 53.671 | afad |
+| `mgm_measurement_period` | İstasyonun ölçüm dönemi | il | 2025-2025 | 162 | mgm |
+| `mgm_precipitation` | Aylık toplam yağış ortalaması | il | 2020-2025 | 1.920 | mgm |
+| `mgm_rainy_days` | Aylık ortalama yağışlı gün sayısı | il | 2020-2025 | 1.908 | mgm |
+| `mgm_record_daily_precipitation` | Günlük en yüksek yağış rekoru | il | 1929-2024 | 81 | mgm |
+| `mgm_record_snow_depth` | En yüksek kar kalınlığı rekoru | il | 1929-2022 | 80 | mgm |
+| `mgm_record_wind_speed` | En hızlı rüzgar rekoru | il | 1963-2025 | 81 | mgm |
+| `mgm_sunshine` | Aylık ortalama günlük güneşlenme süresi | il | 2020-2025 | 1.920 | mgm |
+| `mgm_temperature` | Aylık sıcaklık normalleri | il | 2020-2025 | 7.704 | mgm |
+| `oecd_climate_days` | İklim gün sayıları (alansal) | il | 1981-2024 | 14.256 | oecd_regional |
+| `oecd_degree_days` | Derece-gün (ısıtma ve soğutma) | il | 1981-2023 | 6.966 | oecd_regional |
+| `oecd_precipitation` | Yıllık toplam yağış (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
+| `oecd_temperature` | Yıllık ortalama sıcaklık (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
 
 ## trafik_kaza (12)
 
@@ -1030,13 +1042,15 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `housing_sales_foreigners` | Yabancılara konut satışı | TR. il | 2013-2025 | 909 | tuik_medas |
 | `property_sales_monthly` | Konut ve iş yeri satışları (aylık) | il | 2013-2026 | 101.785 | cbrt_evds |
 
-## dogurganlik (3)
+## perakende (5)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
-| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
-| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
+| `mall_turnover_index` | AVM ciro endeksi (m² verimlilik) | TR | 2025-2026 | 18 | ayd_akademetre |
+| `mall_turnover_per_sqm` | AVM'de m² başına ciro | TR | 2025-2026 | 51 | ayd_akademetre |
+| `mall_visitor_index` | AVM ziyaretçi endeksi | TR | 2025-2025 | 2 | ayd_akademetre |
+| `retail_turnover_index` | Perakende ciro endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
+| `retail_volume_index` | Perakende satış hacim endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
 
 ## havacilik (3)
 
@@ -1053,6 +1067,14 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `combine_harvesters` | Biçerdöver (yaşa göre) | TR. il | 2004-2025 | 5.429 | tuik_medas |
 | `farm_equipment` | Diğer tarım alet ve makineleri | TR. il | 2004-2025 | 119.407 | tuik_medas |
 | `tractors` | Traktör (türe göre) | TR. il | 2004-2025 | 13.779 | tuik_medas |
+
+## dogurganlik (3)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
+| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
+| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
 
 ## guvenlik (2)
 
