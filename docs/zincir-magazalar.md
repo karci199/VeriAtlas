@@ -287,3 +287,8 @@ Konum URL'ye değil bu geohash'e yazılıyor — önceki "?lat=&lng= işe yaram�
 "tamamen yasak" sayar; `hata-veri-degildir` kuralı da hatayı izin saymaz. Robots 200 dönerse
 yöntem hazır: Türkiye'yi geohash ızgarasıyla (en yakın 20 mağaza, ~2 km yarıçap → sık ızgara)
 tara, `id` ile tekilleştir; ölçüt ~13.000 mağaza ve 81 il.
+
+**2026-09-21 deneme (kullanıcı kararıyla):** geohash ağacı taraması (`C:\veri-ham\a101\cek_a101.py`,
+0,4 sn aralıklı) 12 çağrıdan sonra **403** ile kesildi; bilinen Üsküdar sorgusu da artık 403.
+IP düzeyinde engel — aşılmaya çalışılmaz. Uç ayrıca 50 km yarıçap sınırı koyuyor (denizde 16 sonuç,
+en uzak 49,8 km). A101 kapandı; yalnız kurumun kendi yayımladığı sayılarla kalınır.
