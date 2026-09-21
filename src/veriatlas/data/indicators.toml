@@ -31927,38 +31927,38 @@ label_tr = "Akaryakıt dağıtıcısı"
 label_en = "Fuel distributor"
 
 [dim.fuel_distributor.values]
-7kita_petrolculuk_dagitim_ve_pazarlama = { label_tr = "7Kita Petrolcülük Dağitim Ve Pazarlama", label_en = "7Kita Petrolcülük Dağitim Ve Pazarlama" }
-akpet_akaryakit_dagitim = { label_tr = "Akpet Akaryakit Dağitim", label_en = "Akpet Akaryakit Dağitim" }
-altinbas_petrol_ve_ticaret = { label_tr = "Altinbaş Petrol Ve Ti̇caret", label_en = "Altinbaş Petrol Ve Ti̇caret" }
-aytemiz_akaryakit_dagitim = { label_tr = "Aytemi̇z Akaryakit Dağitim", label_en = "Aytemi̇z Akaryakit Dağitim" }
-bas_akaryakit_dagitim_pazarlama_sanayi_ve_ticaret = { label_tr = "Baş Akaryakit Dağitim Pazarlama Sanayi̇ Ve Ti̇caret", label_en = "Baş Akaryakit Dağitim Pazarlama Sanayi̇ Ve Ti̇caret" }
-enerji_petrol_urunleri_pazarlama = { label_tr = "Enerji̇ Petrol Ürünleri̇ Pazarlama", label_en = "Enerji̇ Petrol Ürünleri̇ Pazarlama" }
-ergaz_akaryakit_lpg_lng_cng_dagitim_sanayi_ve_ticaret = { label_tr = "Ergaz Akaryakit Lpg Lng Cng Dağitim Sanayi̇ Ve Ti̇caret", label_en = "Ergaz Akaryakit Lpg Lng Cng Dağitim Sanayi̇ Ve Ti̇caret" }
-es_es_akaryakit_dagitim = { label_tr = "Es Es Akaryakit Dağitim", label_en = "Es Es Akaryakit Dağitim" }
-euroil_enerji_dagitim = { label_tr = "Euroi̇l Enerji̇ Dağitim", label_en = "Euroi̇l Enerji̇ Dağitim" }
+7kita_petrolculuk_dagitim_ve_pazarlama = { label_tr = "7Kita Petrolcülük Dağıtım Ve Pazarlama", label_en = "7Kita Petrolcülük Dağıtım Ve Pazarlama" }
+akpet_akaryakit_dagitim = { label_tr = "Akpet Akaryakıt Dağıtım", label_en = "Akpet Akaryakıt Dağıtım" }
+altinbas_petrol_ve_ticaret = { label_tr = "Altınbaş Petrol Ve Ticaret", label_en = "Altınbaş Petrol Ve Ticaret" }
+aytemiz_akaryakit_dagitim = { label_tr = "Aytemiz Akaryakıt Dağıtım", label_en = "Aytemiz Akaryakıt Dağıtım" }
+bas_akaryakit_dagitim_pazarlama_sanayi_ve_ticaret = { label_tr = "Baş Akaryakıt Dağıtım Pazarlama Sanayi Ve Ticaret", label_en = "Baş Akaryakıt Dağıtım Pazarlama Sanayi Ve Ticaret" }
+enerji_petrol_urunleri_pazarlama = { label_tr = "Enerji Petrol Ürünleri Pazarlama", label_en = "Enerji Petrol Ürünleri Pazarlama" }
+ergaz_akaryakit_lpg_lng_cng_dagitim_sanayi_ve_ticaret = { label_tr = "Ergaz Akaryakıt Lpg Lng Cng Dağıtım Sanayi Ve Ticaret", label_en = "Ergaz Akaryakıt Lpg Lng Cng Dağıtım Sanayi Ve Ticaret" }
+es_es_akaryakit_dagitim = { label_tr = "Es Es Akaryakıt Dağıtım", label_en = "Es Es Akaryakıt Dağıtım" }
+euroil_enerji_dagitim = { label_tr = "Euroil Enerji Dağıtım", label_en = "Euroil Enerji Dağıtım" }
 fox_petrolculuk = { label_tr = "Fox Petrolcülük", label_en = "Fox Petrolcülük" }
-guzel_enerji_akaryakit = { label_tr = "Güzel Enerji̇ Akaryakit", label_en = "Güzel Enerji̇ Akaryakit" }
+guzel_enerji_akaryakit = { label_tr = "Güzel Enerji Akaryakıt", label_en = "Güzel Enerji Akaryakıt" }
 hypco_petrolculuk = { label_tr = "Hypco Petrolcülük", label_en = "Hypco Petrolcülük" }
-kadooglu_petrolculuk_tasimacilik_ticaret_sanayi_ithalat_ve_ihracat = { label_tr = "Kadooğlu Petrolcülük Taşimacilik Ti̇caret Sanayi̇ İthalat Ve İhracat", label_en = "Kadooğlu Petrolcülük Taşimacilik Ti̇caret Sanayi̇ İthalat Ve İhracat" }
-kaleli_best_oil_petrolculuk_ticaret = { label_tr = "Kaleli̇ Best Oi̇l Petrolcülük Ti̇caret", label_en = "Kaleli̇ Best Oi̇l Petrolcülük Ti̇caret" }
-lpgas_enerji = { label_tr = "Lpgas Enerji̇", label_en = "Lpgas Enerji̇" }
-norm_gaz_petrol_urunleri_sanayi_ticaret = { label_tr = "Norm Gaz Petrol Ürünleri̇ Sanayi̇ Ti̇caret", label_en = "Norm Gaz Petrol Ürünleri̇ Sanayi̇ Ti̇caret" }
+kadooglu_petrolculuk_tasimacilik_ticaret_sanayi_ithalat_ve_ihracat = { label_tr = "Kadooğlu Petrolcülük Taşımacılık Ticaret Sanayi İthalat Ve İhracat", label_en = "Kadooğlu Petrolcülük Taşimacilik Ticaret Sanayi İthalat Ve İhracat" }
+kaleli_best_oil_petrolculuk_ticaret = { label_tr = "Kaleli Best Oil Petrolcülük Ticaret", label_en = "Kaleli Best Oil Petrolcülük Ticaret" }
+lpgas_enerji = { label_tr = "Lpgas Enerji", label_en = "Lpgas Enerji" }
+norm_gaz_petrol_urunleri_sanayi_ticaret = { label_tr = "Norm Gaz Petrol Ürünleri Sanayi Ticaret", label_en = "Norm Gaz Petrol Ürünleri Sanayi Ticaret" }
 opet_petrolculuk = { label_tr = "Opet Petrolcülük", label_en = "Opet Petrolcülük" }
-pet_line_petrol_urunleri_ticaret = { label_tr = "Pet-Li̇ne Petrol Ürünleri̇ Ti̇caret", label_en = "Pet-Li̇ne Petrol Ürünleri̇ Ti̇caret" }
-petrol_ofisi = { label_tr = "Petrol Ofi̇si̇", label_en = "Petrol Ofi̇si̇" }
+pet_line_petrol_urunleri_ticaret = { label_tr = "Pet-Line Petrol Ürünleri Ticaret", label_en = "Pet-Line Petrol Ürünleri Ticaret" }
+petrol_ofisi = { label_tr = "Petrol Ofisi", label_en = "Petrol Ofisi" }
 rpet_petrolculuk = { label_tr = "Rpet Petrolcülük", label_en = "Rpet Petrolcülük" }
 shell_turcas_petrol = { label_tr = "Shell & Turcas Petrol", label_en = "Shell & Turcas Petrol" }
-socar_turkey_petrol_ticaret = { label_tr = "Socar Turkey Petrol Ti̇caret", label_en = "Socar Turkey Petrol Ti̇caret" }
-siyam_petrolculuk_sanayi_ve_ticaret = { label_tr = "Si̇yam Petrolcülük Sanayi̇ Ve Ti̇caret", label_en = "Si̇yam Petrolcülük Sanayi̇ Ve Ti̇caret" }
-teco_petrolculuk_sanayi_ve_ticaret = { label_tr = "Teco Petrolcülük Sanayi̇ Ve Ti̇caret", label_en = "Teco Petrolcülük Sanayi̇ Ve Ti̇caret" }
-termopet_akaryakit = { label_tr = "Termopet Akaryakit", label_en = "Termopet Akaryakit" }
-tp_petrol_dagitim = { label_tr = "Tp Petrol Dağitim", label_en = "Tp Petrol Dağitim" }
-turgut_dagitim_enerji = { label_tr = "Turgut Dağitim Enerji̇", label_en = "Turgut Dağitim Enerji̇" }
-turkey_akaryakit_dagitim = { label_tr = "Turkey Akaryakit Dağitim", label_en = "Turkey Akaryakit Dağitim" }
-turkish_oil_akaryakit_dagitim = { label_tr = "Turkish Oil Akaryakit Dagitim", label_en = "Turkish Oil Akaryakit Dagitim" }
-uzun_grubu_sanayi_ve_ticaret = { label_tr = "Uzun Grubu Sanayi̇ Ve Ti̇caret", label_en = "Uzun Grubu Sanayi̇ Ve Ti̇caret" }
-vtm_akaryakit_petrol_urunleri_dagitim_sanayi_ve_ticaret = { label_tr = "Vtm Akaryakit Petrol Ürünleri̇ Dağitim Sanayi̇ Ve Ti̇caret", label_en = "Vtm Akaryakit Petrol Ürünleri̇ Dağitim Sanayi̇ Ve Ti̇caret" }
-ipra_enerji = { label_tr = "İpra Enerji̇", label_en = "İpra Enerji̇" }
+socar_turkey_petrol_ticaret = { label_tr = "Socar Turkey Petrol Ticaret", label_en = "Socar Turkey Petrol Ticaret" }
+siyam_petrolculuk_sanayi_ve_ticaret = { label_tr = "Siyam Petrolcülük Sanayi Ve Ticaret", label_en = "Siyam Petrolcülük Sanayi Ve Ticaret" }
+teco_petrolculuk_sanayi_ve_ticaret = { label_tr = "Teco Petrolcülük Sanayi Ve Ticaret", label_en = "Teco Petrolcülük Sanayi Ve Ticaret" }
+termopet_akaryakit = { label_tr = "Termopet Akaryakıt", label_en = "Termopet Akaryakıt" }
+tp_petrol_dagitim = { label_tr = "TP Petrol Dağıtım", label_en = "TP Petrol Dağıtım" }
+turgut_dagitim_enerji = { label_tr = "Turgut Dağıtım Enerji", label_en = "Turgut Dağıtım Enerji" }
+turkey_akaryakit_dagitim = { label_tr = "Turkey Akaryakıt Dağıtım", label_en = "Turkey Akaryakıt Dağıtım" }
+turkish_oil_akaryakit_dagitim = { label_tr = "Turkish Oil Akaryakıt Dagitim", label_en = "Turkish Oil Akaryakıt Dagitim" }
+uzun_grubu_sanayi_ve_ticaret = { label_tr = "Uzun Grubu Sanayi Ve Ticaret", label_en = "Uzun Grubu Sanayi Ve Ticaret" }
+vtm_akaryakit_petrol_urunleri_dagitim_sanayi_ve_ticaret = { label_tr = "Vtm Akaryakıt Petrol Ürünleri Dağıtım Sanayi Ve Ticaret", label_en = "Vtm Akaryakıt Petrol Ürünleri Dağıtım Sanayi Ve Ticaret" }
+ipra_enerji = { label_tr = "İpra Enerji", label_en = "İpra Enerji" }
 
 [indicator.fuel_stations]
 label_tr = "Akaryakıt istasyonu"
