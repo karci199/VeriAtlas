@@ -31904,6 +31904,7 @@ label_en = "Cargo company"
 
 [dim.cargo_company.values]
 aras = "Aras Kargo"
+dhl_ecommerce = "DHL eCommerce (MNG)"
 
 [indicator.cargo_branches]
 label_tr = "Kargo şubesi"
@@ -31913,7 +31914,7 @@ unit = "item"
 frequency = "annual"
 dims = ["cargo_company"]
 views = ["table", "map", "bar"]
-definition_tr = "Kargo şirketlerinin kendi şube bulucusundan okunan şube sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Aras: birim türü 4 (şube), 790 şube; birim kimliği tekil değil, şube adıyla tekilleştirildi. Yurtiçi taraması sürüyor; DHL eCommerce (eski MNG) ve Sürat'ın şube ucu bulunamadı. Seri değildir."
+definition_tr = "Kargo şirketlerinin kendi şube bulucusundan okunan şube sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Aras: birim türü 4 (şube), 790 şube; birim kimliği tekil değil, şube adıyla tekilleştirildi. DHL eCommerce (eski MNG): bulucu yalnız ilçeye en yakın şubeleri verdiği için her ilçe soruldu ve şube koduyla birleştirildi, 823 şube. Seri değildir."
 
 [dim.fashion_brand]
 label_tr = "Marka"

@@ -405,6 +405,21 @@ def aras() -> Iterator[Point]:
         yield Point(r["Name"], "store", _num(r["YCoor"]), _num(r["XCoor"]))
 
 
+def dhl() -> Iterator[Point]:
+    """DHL eCommerce (formerly MNG). The finder only answers "nearest branches" for a
+    district, so every district was asked and the answers were merged on BranchCode;
+    coordinates use a decimal comma. A leading zero, then the plate: 01100200 is Bilecik (11)."""
+    d = _load("kargo/dhl_subeler.json")
+    for r in d["branches"]:
+        yield Point(
+            r["BranchCode"],
+            "store",
+            _num(r["Latitude"]),
+            _num(r["Longitude"]),
+            province(int(r["BranchCode"][1:3])),
+        )
+
+
 def _stores(
     relative: str,
     key: str,
@@ -770,7 +785,7 @@ class CargoBranches(_Network):
     indicator_id = "cargo_branches"
     dim = "cargo_company"
     kind = "store"
-    brands: ClassVar = {"aras": aras}
+    brands: ClassVar = {"aras": aras, "dhl_ecommerce": dhl}
 
 
 class FashionStores(_Network):
