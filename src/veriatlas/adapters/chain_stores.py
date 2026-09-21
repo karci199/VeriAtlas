@@ -88,6 +88,8 @@ STORE_BRANDS = {
     "karaca": "marketler/karaca_*.csv",
     "vatan": "marketler/vatan_*.csv",
     "sok": "sok/magazalar_*.csv",
+    # api.hakmarexpress.com.tr/api/home/stores, paged by `PageNumber`; 816 stores.
+    "hakmar": "zincir/hakmar_*.csv",
 }
 
 #: The share of a brand's branches allowed to fall outside every polygon *while standing

@@ -31379,6 +31379,7 @@ rossmann = { label_tr = "Rossmann", label_en = "Rossmann" }
 karaca = { label_tr = "Karaca", label_en = "Karaca" }
 vatan = { label_tr = "Vatan Bilgisayar", label_en = "Vatan Bilgisayar" }
 sok = { label_tr = "ŞOK Market", label_en = "ŞOK Market" }
+hakmar = { label_tr = "Hakmar Express", label_en = "Hakmar Express" }
 
 [indicator.chain_stores]
 label_tr = "Zincir mağaza sayısı"
@@ -31388,7 +31389,7 @@ unit = "item"
 frequency = "annual"
 dims = ["store_brand"]
 views = ["table", "map", "bar"]
-definition_tr = "Altı perakende zincirinin (ŞOK, Gratis, Madame Coco, Rossmann, Karaca, Vatan Bilgisayar) mağaza sayısı, ilçe ve il düzeyinde, 19.09.2026 anlık görüntüsü. İlçe, mağazanın koordinatının düştüğü ilçe sınırından belirlenir. Zincir restoranlardan (`chain_restaurants`) ayrı tutulur: kozmetik mağazası ile hamburgerci farklı sorulara cevap verir, ikisini toplamak anlamsızdır. Markalar da toplanmaz — bu sayı 'kaç mağaza var' sorusunun değil, 'bu markaların kaç şubesi var' sorusunun cevabıdır. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir."
+definition_tr = "Yedi perakende zincirinin (ŞOK, Hakmar Express, Gratis, Madame Coco, Rossmann, Karaca, Vatan Bilgisayar) mağaza sayısı, ilçe ve il düzeyinde, 19.09.2026 anlık görüntüsü. İlçe, mağazanın koordinatının düştüğü ilçe sınırından belirlenir. Zincir restoranlardan (`chain_restaurants`) ayrı tutulur: kozmetik mağazası ile hamburgerci farklı sorulara cevap verir, ikisini toplamak anlamsızdır. Markalar da toplanmaz — bu sayı 'kaç mağaza var' sorusunun değil, 'bu markaların kaç şubesi var' sorusunun cevabıdır. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir."
 
 [indicator.charging_stations]
 label_tr = "Elektrikli araç şarj istasyonu"
