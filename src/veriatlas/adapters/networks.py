@@ -383,6 +383,18 @@ def turktelekom() -> Iterator[Point]:
         )
 
 
+def vodafone() -> Iterator[Point]:
+    """Vodafone's finder, one row per sales point of every kind (shop, dealer, kiosk)."""
+    import csv
+
+    copy = cached_copy(RAW / "zincir/vodafone.csv", FOLDER / "zincir__vodafone.csv")
+    with copy.open(encoding="utf-8", newline="") as handle:
+        for i, r in enumerate(csv.DictReader(handle)):
+            yield Point(
+                f"{i}", "store", _num(r["lat"]), _num(r["lng"]), province(r["province"])
+            )
+
+
 def _stores(
     relative: str,
     key: str,
@@ -741,7 +753,7 @@ class TelecomDealers(_Network):
     indicator_id = "telecom_dealers"
     dim = "operator"
     kind = "store"
-    brands: ClassVar = {"turk_telekom": turktelekom}
+    brands: ClassVar = {"turk_telekom": turktelekom, "vodafone": vodafone}
 
 
 class FashionStores(_Network):

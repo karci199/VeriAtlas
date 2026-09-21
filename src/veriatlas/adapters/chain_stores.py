@@ -90,6 +90,16 @@ STORE_BRANDS = {
     "sok": "sok/magazalar_*.csv",
     # api.hakmarexpress.com.tr/api/home/stores, paged by `PageNumber`; 816 stores.
     "hakmar": "zincir/hakmar_*.csv",
+    # Regional grocers and two national networks, each fetched from its own finder
+    # (docs/zincir-magazalar.md); every one ships a coordinate per store.
+    "ekomini": "zincir/ekomini.csv",
+    "tarim_kredi": "zincir/tarim_kredi.csv",
+    "peynircibaba": "zincir/peynircibaba.csv",
+    "mopas": "zincir/mopas.csv",
+    "furpa": "zincir/furpa.csv",
+    "seyhanlar": "zincir/seyhanlar.csv",
+    "koctas": "zincir/koctas.csv",
+    "vestel": "zincir/vestel.csv",
 }
 
 #: The share of a brand's branches allowed to fall outside every polygon *while standing
