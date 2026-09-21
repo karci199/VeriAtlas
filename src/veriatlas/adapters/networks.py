@@ -395,6 +395,16 @@ def vodafone() -> Iterator[Point]:
             )
 
 
+def aras() -> Iterator[Point]:
+    """Aras units of type 4 (branch). UnitId is not unique: 70 ids carry two branches
+    with different names and points (GÖKSUN CEP and AFŞİN share one), so the name is
+    the key. The dump lost its Turkish letters, so the address cannot give a province."""
+    d = _load("kargo/aras_subeler.json")
+    for r in d["data"]["Responses"]:
+        # XCoor is the longitude, YCoor the latitude.
+        yield Point(r["Name"], "store", _num(r["YCoor"]), _num(r["XCoor"]))
+
+
 def _stores(
     relative: str,
     key: str,
@@ -756,6 +766,13 @@ class TelecomDealers(_Network):
     brands: ClassVar = {"turk_telekom": turktelekom, "vodafone": vodafone}
 
 
+class CargoBranches(_Network):
+    indicator_id = "cargo_branches"
+    dim = "cargo_company"
+    kind = "store"
+    brands: ClassVar = {"aras": aras}
+
+
 class FashionStores(_Network):
     indicator_id = "fashion_stores"
     dim = "fashion_brand"
@@ -765,5 +782,11 @@ class FashionStores(_Network):
 
 NETWORK_ADAPTERS = {
     a.indicator_id: a
-    for a in (BankBranchLocations, BankAtmLocations, TelecomDealers, FashionStores)
+    for a in (
+        BankBranchLocations,
+        BankAtmLocations,
+        TelecomDealers,
+        FashionStores,
+        CargoBranches,
+    )
 }

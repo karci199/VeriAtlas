@@ -55,8 +55,7 @@ def snapshot() -> Path:
     files = sorted(FOLDER.glob("postakodu_*.csv"))
     if not files:
         raise FileNotFoundError(
-            f"PTT posta kodu dökümü yok: {FOLDER} "
-            "(scripts/fetch_ptt_postal_codes.py)"
+            f"PTT posta kodu dökümü yok: {FOLDER} (scripts/fetch_ptt_postal_codes.py)"
         )
     return files[-1]
 
@@ -67,9 +66,7 @@ def _registry() -> dict[int, str]:
     frame = load_districts().filter(pl.col("medas_code").is_not_null())
     return {
         int(code): area
-        for code, area in zip(
-            frame["medas_code"], frame["area_id"], strict=True
-        )
+        for code, area in zip(frame["medas_code"], frame["area_id"], strict=True)
     }
 
 

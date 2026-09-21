@@ -18,6 +18,7 @@ from .diyanet import DIYANET_ADAPTERS
 from .epdk import EPDK_ADAPTERS
 from .epdk_capacity import EPDK_CAPACITY_ADAPTERS
 from .epdk_dealer_deliveries import EPDK_DEALER_ADAPTERS
+from .epdk_fuel_stations import EPDK_FUEL_STATION_ADAPTERS
 from .epdk_history import EPDK_HISTORY_ADAPTERS
 from .epdk_monthly import EPDK_MONTHLY_ADAPTERS
 from .epdk_sarj import EPDK_SARJ_ADAPTERS
@@ -35,7 +36,6 @@ from .ktb import KTB_ADAPTERS
 from .mgm import MGM_ADAPTERS
 from .muhasebat import MUHASEBAT_ADAPTERS
 from .networks import NETWORK_ADAPTERS
-from .epdk_fuel_stations import EPDK_FUEL_STATION_ADAPTERS
 from .oecd_tl3 import OECD_TL3_ADAPTERS
 from .ookla_speed import OOKLA_ADAPTERS
 from .ptt_postal import PTT_POSTAL_ADAPTERS

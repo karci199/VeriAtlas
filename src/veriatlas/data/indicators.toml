@@ -31897,6 +31897,23 @@ dims = ["operator"]
 views = ["table", "map", "bar"]
 definition_tr = "Türk Telekom ve Vodafone bulucularındaki satış noktaları, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Bireysel ve kurumsal listeler aynı bayileri taşır (1.777 kayıt, 893 bayi); bayi kimliğiyle tekilleştirilmiştir. Turkcell listesinde koordinat olmadığı için henüz girmedi. Seri değildir."
 
+[dim.cargo_company]
+label_tr = "Kargo şirketi"
+label_en = "Cargo company"
+
+[dim.cargo_company.values]
+aras = "Aras Kargo"
+
+[indicator.cargo_branches]
+label_tr = "Kargo şubesi"
+label_en = "Cargo company branches"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+dims = ["cargo_company"]
+views = ["table", "map", "bar"]
+definition_tr = "Kargo şirketlerinin kendi şube bulucusundan okunan şube sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Aras: birim türü 4 (şube), 790 şube; birim kimliği tekil değil, şube adıyla tekilleştirildi. Yurtiçi taraması sürüyor; DHL eCommerce (eski MNG) ve Sürat'ın şube ucu bulunamadı. Seri değildir."
+
 [dim.fashion_brand]
 label_tr = "Marka"
 label_en = "Brand"
