@@ -31349,6 +31349,7 @@ ziyafet = { label_tr = "Ziyafet Çiğköfte", label_en = "Ziyafet Çiğköfte" }
 komagene = { label_tr = "Komagene", label_en = "Komagene" }
 starbucks = { label_tr = "Starbucks", label_en = "Starbucks" }
 espressolab = { label_tr = "EspressoLab", label_en = "EspressoLab" }
+dominos = { label_tr = "Domino's Pizza", label_en = "Domino's Pizza" }
 
 [indicator.chain_restaurants]
 label_tr = "Zincir şube sayısı"
@@ -31986,3 +31987,102 @@ frequency = "annual"
 dims = ["fuel_distributor"]
 views = ["table", "map", "bar"]
 definition_tr = "EPDK bayilik lisans kaydındaki yürürlükte istasyonlu akaryakıt bayileri, dağıtıcı şirkete göre, il ve ilçe düzeyinde, 21.09.2026 dökümü. Kazıma değil lisans kaydıdır: bütün markalar eksiksizdir. İl toplamı kaydın il sütunundan tamdır (12.629); ilçe satırları istasyonların %98,5'ini kapsar — 191 istasyonun adresi ilçeyi belirlemiyor (büyükşehirde 2012 öncesinin MERKEZ ilçesi). Deniz yakıt istasyonları (ihrakiye) dahil değildir. Dağıtıcı markayla aynı değildir: Güzel Enerji M Oil markasının şirketidir. Seri değildir."
+
+[dim.merchant_sector]
+label_tr = "İşyeri grubu"
+label_en = "Merchant sector"
+
+[dim.merchant_sector.values]
+car_rental = "Araba kiralama"
+vehicle_trade_and_service = "Araç kiralama-satış/servis/yedek parça"
+fuel_stations = "Benzin ve yakıt istasyonları"
+private_pension = "Bireysel emeklilik"
+direct_marketing = "Doğrudan pazarlama"
+other = "Diğer"
+electronics_and_computers = "Elektrik-elektronik eşya, bilgisayar"
+education_and_stationery = "Eğitim / kırtasiye / ofis malzemeleri"
+clothing_and_accessories = "Giyim ve aksesuar"
+airlines = "Havayolları"
+services = "Hizmet sektörleri"
+public_and_tax_payments = "Kamu / vergi ödemeleri"
+accommodation = "Konaklama"
+clubs_and_associations = "Kulüp / dernek / sosyal hizmetler"
+gambling_and_licensed_premises = "Kumarhane / içkili yerler"
+jewellers = "Kuyumcular"
+markets_and_malls = "Market ve alışveriş merkezleri"
+furniture_and_decoration = "Mobilya ve dekorasyon"
+contracting = "Müteahhit işleri"
+health_and_cosmetics = "Sağlık / sağlık ürünleri / kozmetik"
+travel_and_transport = "Seyahat acenteleri / taşımacılık"
+insurance = "Sigorta"
+telecommunications = "Telekomünikasyon"
+building_materials_and_hardware = "Yapı malzemeleri, hırdavat, nalburiye"
+food_service = "Yemek"
+food_retail = "Çeşitli gıda"
+
+[dim.card_type]
+label_tr = "Kart türü"
+label_en = "Card type"
+
+[dim.card_type.values]
+credit = "Kredi kartı"
+debit = "Banka kartı"
+
+[dim.card_usage]
+label_tr = "Kart ve işyerinin yeri"
+label_en = "Card and merchant location"
+
+[dim.card_usage.values]
+domestic_card_abroad = "Yerli kart, yurt dışı işyeri"
+domestic_card_at_home = "Yerli kart, yurt içi işyeri"
+foreign_card_at_home = "Yabancı kart, yurt içi işyeri"
+
+[indicator.card_transactions_by_sector]
+label_tr = "Kartlı işlem adedi (işyeri grubuna göre)"
+label_en = "Card transactions by merchant sector"
+topic = "bankacilik"
+unit = "item"
+frequency = "monthly"
+dims = ["merchant_sector", "card_type"]
+views = ["table", "line", "bar"]
+definition_tr = "BKM, aylık, yalnız Türkiye. 26 işyeri grubu; kredi ve banka kartı ayrı. Yayımlanan TOPLAM satırı saklanmaz, sektörlerin toplamına karşı sınanır."
+
+[indicator.card_spending_by_sector]
+label_tr = "Kartlı harcama tutarı (işyeri grubuna göre)"
+label_en = "Card spending by merchant sector"
+topic = "bankacilik"
+unit = "try"
+frequency = "monthly"
+dims = ["merchant_sector", "card_type"]
+views = ["table", "line", "bar"]
+definition_tr = "BKM, aylık, yalnız Türkiye. Kaynak milyon TL yayımlar, burada TL'ye çevrilir. Nominal, deflate edilmemiş."
+
+[indicator.ecommerce_transactions_by_sector]
+label_tr = "İnternetten kartlı işlem adedi (işyeri grubuna göre)"
+label_en = "E-commerce card transactions by merchant sector"
+topic = "bankacilik"
+unit = "item"
+frequency = "monthly"
+dims = ["merchant_sector", "card_usage"]
+views = ["table", "line", "bar"]
+definition_tr = "BKM, aylık, yalnız Türkiye. Üç ayrık dilim: yerli kartın yurt dışı, yerli kartın yurt içi, yabancı kartın yurt içi kullanımı. Kaynaktaki iki Toplam sütunu farklı şeylerin toplamı olduğu için saklanmaz."
+
+[indicator.ecommerce_spending_by_sector]
+label_tr = "İnternetten kartlı harcama tutarı (işyeri grubuna göre)"
+label_en = "E-commerce card spending by merchant sector"
+topic = "bankacilik"
+unit = "try"
+frequency = "monthly"
+dims = ["merchant_sector", "card_usage"]
+views = ["table", "line", "bar"]
+definition_tr = "BKM, aylık, yalnız Türkiye. Kaynak milyon TL yayımlar, burada TL'ye çevrilir."
+
+[indicator.pharmacies]
+label_tr = "Eczane sayısı"
+label_en = "Pharmacies"
+topic = "saglik"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["map", "table", "bar"]
+definition_tr = "TİTCK eczane kaydı, 20.09.2026 anlık görüntüsü. Ruhsat kaydı olduğu için markanın değil mesleğin sayımıdır. İlçe kaydın kendi etiketinden, il ilçelerin toplamı. Seri değil: yeniden çekildiğinde satırlar değişir."

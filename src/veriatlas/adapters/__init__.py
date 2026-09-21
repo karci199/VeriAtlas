@@ -4,6 +4,7 @@ from .afad import AFAD_ADAPTERS
 from .ayd_malls import AYD_ADAPTERS
 from .base import Adapter, Manifest, history, ingest
 from .bddk_finturk import FINTURK_ADAPTERS
+from .bkm_sector import BKM_ADAPTERS
 from .btk import BTK_ADAPTERS
 from .btk_charts import BTK_CHART_ADAPTERS
 from .btk_imei import BTK_IMEI_ADAPTERS
@@ -38,6 +39,7 @@ from .muhasebat import MUHASEBAT_ADAPTERS
 from .networks import NETWORK_ADAPTERS
 from .oecd_tl3 import OECD_TL3_ADAPTERS
 from .ookla_speed import OOKLA_ADAPTERS
+from .pharmacies import PHARMACY_ADAPTERS
 from .ptt_postal import PTT_POSTAL_ADAPTERS
 from .saglik_yearbook import SAGLIK_YEARBOOK_ADAPTERS
 from .sege import SEGE_ADAPTERS
@@ -108,6 +110,8 @@ ADAPTERS = {
     **PROVINCE_GDP_ADAPTERS,
     **UAB_ADAPTERS,
     **AYD_ADAPTERS,
+    **BKM_ADAPTERS,
+    **PHARMACY_ADAPTERS,
     **TELECOM_ADAPTERS,
     **RETAIL_ADAPTERS,
     **NARROW_ADAPTERS,
