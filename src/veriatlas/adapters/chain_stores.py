@@ -104,6 +104,9 @@ STORE_BRANDS = {
     # Adana 18, Mersin 6), Bravo from its own page (5 stores, no coordinates).
     "groseri": "zincir/okatalog_groseri-market.csv",
     "bravo": "zincir/bravo_adana.csv",
+    # Malatya-based, 38 stores (Malatya 32, K.Maraş 4, Adıyaman 2), okatalog; its own
+    # page draws a JS map only. District read from the address (adres_ilce.py).
+    "esenlik": "zincir/esenlik.csv",
 }
 
 #: The share of a brand's branches allowed to fall outside every polygon *while standing

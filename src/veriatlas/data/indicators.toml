@@ -31391,6 +31391,7 @@ koctas = { label_tr = "Koçtaş", label_en = "Koçtaş" }
 vestel = { label_tr = "Vestel", label_en = "Vestel" }
 groseri = { label_tr = "Groseri", label_en = "Groseri" }
 bravo = { label_tr = "Bravo Süpermarket", label_en = "Bravo Süpermarket" }
+esenlik = { label_tr = "Esenlik", label_en = "Esenlik" }
 
 [indicator.chain_stores]
 label_tr = "Zincir mağaza sayısı"
