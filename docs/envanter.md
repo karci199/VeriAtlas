@@ -5,7 +5,7 @@ burada olmayan gösterge depoda yok demektir. Yeni kaynak önermeden önce buray
 bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni iş' diye
 önerildi, üçü de zaten yüklüydü.
 
-Üretim: 2026-09-22 · 21.401.126 satır
+Üretim: 2026-09-22 · 21.401.283 satır
 
 ## evds_arsiv (177)
 
@@ -600,6 +600,41 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `preschool_net_enrolment` | Okul öncesi net okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
 | `single_parent_households_with_children` | Çocuk bulunan tek ebeveynli hane | TR. il | 2014-2025 | 984 | tuik_medas |
 
+## reel_kesim (30)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `capacity_utilisation` | İmalat sanayi kapasite kullanım oranı | TR | 2007-2026 | 7.932 | cbrt_evds |
+| `chain_restaurants` | Zincir şube sayısı | il. ilçe | 2026-2026 | 2.729 | chain_store_finders |
+| `chain_stores` | Zincir mağaza sayısı | il. ilçe | 2026-2026 | 7.004 | chain_store_finders |
+| `companies_opened_capital` | Kurulan şirketlerin sermayesi | TR | 2010-2026 | 756 | cbrt_evds |
+| `companies_opened_closed` | Kurulan ve kapanan şirket sayısı | TR | 2010-2026 | 1.993 | cbrt_evds |
+| `economic_tendency_survey` | İktisadi yönelim anketi | TR | 2007-2026 | 15.892 | cbrt_evds |
+| `enterprises` | Girişim sayısı | il | 2009-2024 | 81.550 | tuik_medas |
+| `fashion_stores` | Giyim zinciri mağazası | il. ilçe | 2026-2026 | 1.437 | branch_finders |
+| `foreign_trade_by_province` | Dış ticaret (il. gümrük) | il | 2002-2023 | 3.548 | oecd_regional |
+| `industrial_production_index` | Sanayi üretim endeksi | TR | 1986-2026 | 82.257 | cbrt_evds |
+| `real_sector_confidence` | Reel kesim güven endeksi | TR | 2007-2026 | 2.124 | cbrt_evds |
+| `registered_tradesmen` | Kayıtlı esnaf sayısı | il | 2026-2026 | 81 | tesk |
+| `tendency_survey_large_firms` | İktisadi yönelim anketi — 500 ve üzeri çalışanlı firmalar | TR | 2007-2026 | 15.891 | cbrt_evds |
+| `tendency_survey_medium_firms` | İktisadi yönelim anketi — 250-499 çalışanlı firmalar | TR | 2007-2026 | 15.890 | cbrt_evds |
+| `tendency_survey_small_firms` | İktisadi yönelim anketi — 250'den az çalışanlı firmalar | TR | 2007-2026 | 15.892 | cbrt_evds |
+| `tim_exports` | İhracat (TİM. il) | il | 2004-2025 | 1.775 | tim |
+| `tim_exports_by_country` | İhracat. ülkeye göre (TİM. il) | il | 2013-2025 | 102.967 | tim |
+| `tim_exports_by_sector` | İhracat. sektöre göre (TİM. il) | il | 2013-2025 | 22.391 | tim |
+| `tobb_companies` | Kurulan. tasfiyeye giren ve kapanan şirketler | il | 2009-2025 | 11.016 | tobb |
+| `tobb_company_capital` | Kurulan şirketlerin sermayesi | il | 2015-2025 | 891 | tobb |
+| `tobb_foreign_companies` | Kurulan yabancı ortaklı şirketler | il | 2010-2025 | 2.592 | tobb |
+| `tobb_foreign_company_capital` | Yabancı ortaklı kurulan şirketlerin sermayesi | il | 2010-2025 | 2.592 | tobb |
+| `tobb_foreign_partner_capital` | Kurulan şirketlerde yabancı sermaye payı | il | 2010-2025 | 2.592 | tobb |
+| `trade_trucks` | Dış ticarette kara ve Ro-Ro araçları | TR | 2021-2026 | 816 | cbrt_evds |
+| `tradesmen_amendments` | Esnaf tadil ilanı | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_chambers` | Esnaf odası sayısı | il | 2026-2026 | 81 | tesk |
+| `tradesmen_deregistrations` | Esnaf sicil terkini | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_registrations` | Esnaf tescili | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_trade_removals` | Esnaf meslek terkini | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_workplaces` | Esnaf işyeri sayısı | il | 2026-2026 | 81 | tesk |
+
 ## egitim (30)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -634,41 +669,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `yok_students_archive` | Yükseköğretim öğrenci sayısı. Türkiye (1983-2012) | TR | 1983-2012 | 426 | yok_istatistik |
 | `yok_students_by_age` | Yükseköğretim öğrenci sayısı. yaşa göre | TR | 2013-2025 | 14.034 | yok_istatistik |
 | `yok_students_by_field` | Öğrenci ve yeni kayıt. eğitim alanına göre | TR | 2015-2025 | 21.094 | yok_istatistik |
-
-## reel_kesim (30)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `capacity_utilisation` | İmalat sanayi kapasite kullanım oranı | TR | 2007-2026 | 7.932 | cbrt_evds |
-| `chain_restaurants` | Zincir şube sayısı | il. ilçe | 2026-2026 | 2.729 | chain_store_finders |
-| `chain_stores` | Zincir mağaza sayısı | il. ilçe | 2026-2026 | 6.847 | chain_store_finders |
-| `companies_opened_capital` | Kurulan şirketlerin sermayesi | TR | 2010-2026 | 756 | cbrt_evds |
-| `companies_opened_closed` | Kurulan ve kapanan şirket sayısı | TR | 2010-2026 | 1.993 | cbrt_evds |
-| `economic_tendency_survey` | İktisadi yönelim anketi | TR | 2007-2026 | 15.892 | cbrt_evds |
-| `enterprises` | Girişim sayısı | il | 2009-2024 | 81.550 | tuik_medas |
-| `fashion_stores` | Giyim zinciri mağazası | il. ilçe | 2026-2026 | 1.437 | branch_finders |
-| `foreign_trade_by_province` | Dış ticaret (il. gümrük) | il | 2002-2023 | 3.548 | oecd_regional |
-| `industrial_production_index` | Sanayi üretim endeksi | TR | 1986-2026 | 82.257 | cbrt_evds |
-| `real_sector_confidence` | Reel kesim güven endeksi | TR | 2007-2026 | 2.124 | cbrt_evds |
-| `registered_tradesmen` | Kayıtlı esnaf sayısı | il | 2026-2026 | 81 | tesk |
-| `tendency_survey_large_firms` | İktisadi yönelim anketi — 500 ve üzeri çalışanlı firmalar | TR | 2007-2026 | 15.891 | cbrt_evds |
-| `tendency_survey_medium_firms` | İktisadi yönelim anketi — 250-499 çalışanlı firmalar | TR | 2007-2026 | 15.890 | cbrt_evds |
-| `tendency_survey_small_firms` | İktisadi yönelim anketi — 250'den az çalışanlı firmalar | TR | 2007-2026 | 15.892 | cbrt_evds |
-| `tim_exports` | İhracat (TİM. il) | il | 2004-2025 | 1.775 | tim |
-| `tim_exports_by_country` | İhracat. ülkeye göre (TİM. il) | il | 2013-2025 | 102.967 | tim |
-| `tim_exports_by_sector` | İhracat. sektöre göre (TİM. il) | il | 2013-2025 | 22.391 | tim |
-| `tobb_companies` | Kurulan. tasfiyeye giren ve kapanan şirketler | il | 2009-2025 | 11.016 | tobb |
-| `tobb_company_capital` | Kurulan şirketlerin sermayesi | il | 2015-2025 | 891 | tobb |
-| `tobb_foreign_companies` | Kurulan yabancı ortaklı şirketler | il | 2010-2025 | 2.592 | tobb |
-| `tobb_foreign_company_capital` | Yabancı ortaklı kurulan şirketlerin sermayesi | il | 2010-2025 | 2.592 | tobb |
-| `tobb_foreign_partner_capital` | Kurulan şirketlerde yabancı sermaye payı | il | 2010-2025 | 2.592 | tobb |
-| `trade_trucks` | Dış ticarette kara ve Ro-Ro araçları | TR | 2021-2026 | 816 | cbrt_evds |
-| `tradesmen_amendments` | Esnaf tadil ilanı | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_chambers` | Esnaf odası sayısı | il | 2026-2026 | 81 | tesk |
-| `tradesmen_deregistrations` | Esnaf sicil terkini | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_registrations` | Esnaf tescili | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_trade_removals` | Esnaf meslek terkini | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_workplaces` | Esnaf işyeri sayısı | il | 2026-2026 | 81 | tesk |
 
 ## saglik (29)
 
@@ -766,32 +766,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `vegetable_production` | Sebze üretimi | TR. il | 2004-2025 | 57.350 | tuik_medas |
 | `vegetable_sown_area` | Sebze ekilen alan | TR. il | 2004-2025 | 56.958 | tuik_medas |
 
-## ulasim (21)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `car_km_by_fuel` | Otomobil taşıt-kilometresi (yakıta göre) | TR | 2015-2024 | 50 | tuik_veri_portali |
-| `car_mean_annual_km_by_fuel` | Otomobil başına yıllık ortalama km (yakıta göre) | TR | 2015-2024 | 50 | tuik_veri_portali |
-| `cars_per_thousand` | Bin kişi başına otomobil | TR. il | 2007-2025 | 1.558 | tuik_medas |
-| `port_cargo_handled` | Limanlarda elleçlenen yük | il | 2021-2025 | 1.416 | uab_denizcilik |
-| `port_containers_handled` | Limanlarda elleçlenen konteyner | il | 2020-2025 | 1.176 | uab_denizcilik |
-| `transferred_vehicle_mean_age` | Devri yapılan taşıtların ortalama yaşı | TR. il | 2020-2025 | 3.934 | tuik_medas |
-| `vehicle_km` | Taşıt-kilometre (taşıt türüne göre) | TR | 2015-2024 | 80 | tuik_veri_portali |
-| `vehicle_km_by_age` | Taşıt-kilometre (tür × taşıt yaşı) | TR | 2015-2024 | 560 | tuik_veri_portali |
-| `vehicle_mean_age` | Trafiğe kayıtlı taşıtların ortalama yaşı | TR. il | 2020-2025 | 3.936 | tuik_medas |
-| `vehicle_mean_annual_km` | Taşıt başına yıllık ortalama km | TR | 2015-2024 | 80 | tuik_veri_portali |
-| `vehicle_production` | Motorlu taşıt üretimi | TR | 1974-2026 | 5.046 | cbrt_evds |
-| `vehicle_registrations` | Kaydı yapılan ve silinen taşıt | TR. il | 1994-2025 | 14.759 | tuik_medas |
-| `vehicles_by_age` | Trafiğe kayıtlı taşıt (taşıt yaşına göre) | TR. il | 2020-2025 | 2.460 | tuik_medas |
-| `vehicles_by_brand` | Trafiğe kayıtlı taşıt (markaya göre) | TR. il | 2004-2024 | 200.377 | tuik_medas |
-| `vehicles_by_fuel` | Trafiğe kayıtlı taşıt (yakıt türüne göre) | TR. il | 2020-2025 | 2.942 | tuik_medas |
-| `vehicles_newly_registered` | Trafiğe kaydı yapılan taşıt (marka ve türe göre) | TR. il | 2004-2025 | 196.064 | tuik_medas |
-| `vehicles_newly_registered_by_colour` | Trafiğe kaydı yapılan taşıt (renge göre) | TR. il | 2020-2025 | 5.573 | tuik_medas |
-| `vehicles_newly_registered_by_engine` | Trafiğe kaydı yapılan taşıt (silindir hacmine göre) | TR. il | 2020-2025 | 10.627 | tuik_medas |
-| `vehicles_newly_registered_by_fuel` | Trafiğe kaydı yapılan taşıt (yakıt türüne göre) | TR. il | 2020-2025 | 2.482 | tuik_medas |
-| `vehicles_transferred` | Devri yapılan taşıt (marka ve türe göre) | TR. il | 2010-2025 | 257.830 | tuik_medas |
-| `vehicles_transferred_by_age` | Devri yapılan taşıt (taşıt yaşına göre) | TR. il | 2020-2025 | 2.460 | tuik_medas |
-
 ## enerji (21)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -817,6 +791,32 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `etkb_added_plants` | Devreye giren santral sayısı | il | 2003-2025 | 1.663 | etkb |
 | `fuel_stations` | Akaryakıt istasyonu | il. ilçe | 2026-2026 | 7.696 | epdk_lisans |
 | `installed_capacity` | Kurulu güç (yalnız Türkiye) | TR | 1975-2024 | 50 | tuik_medas |
+
+## ulasim (21)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `car_km_by_fuel` | Otomobil taşıt-kilometresi (yakıta göre) | TR | 2015-2024 | 50 | tuik_veri_portali |
+| `car_mean_annual_km_by_fuel` | Otomobil başına yıllık ortalama km (yakıta göre) | TR | 2015-2024 | 50 | tuik_veri_portali |
+| `cars_per_thousand` | Bin kişi başına otomobil | TR. il | 2007-2025 | 1.558 | tuik_medas |
+| `port_cargo_handled` | Limanlarda elleçlenen yük | il | 2021-2025 | 1.416 | uab_denizcilik |
+| `port_containers_handled` | Limanlarda elleçlenen konteyner | il | 2020-2025 | 1.176 | uab_denizcilik |
+| `transferred_vehicle_mean_age` | Devri yapılan taşıtların ortalama yaşı | TR. il | 2020-2025 | 3.934 | tuik_medas |
+| `vehicle_km` | Taşıt-kilometre (taşıt türüne göre) | TR | 2015-2024 | 80 | tuik_veri_portali |
+| `vehicle_km_by_age` | Taşıt-kilometre (tür × taşıt yaşı) | TR | 2015-2024 | 560 | tuik_veri_portali |
+| `vehicle_mean_age` | Trafiğe kayıtlı taşıtların ortalama yaşı | TR. il | 2020-2025 | 3.936 | tuik_medas |
+| `vehicle_mean_annual_km` | Taşıt başına yıllık ortalama km | TR | 2015-2024 | 80 | tuik_veri_portali |
+| `vehicle_production` | Motorlu taşıt üretimi | TR | 1974-2026 | 5.046 | cbrt_evds |
+| `vehicle_registrations` | Kaydı yapılan ve silinen taşıt | TR. il | 1994-2025 | 14.759 | tuik_medas |
+| `vehicles_by_age` | Trafiğe kayıtlı taşıt (taşıt yaşına göre) | TR. il | 2020-2025 | 2.460 | tuik_medas |
+| `vehicles_by_brand` | Trafiğe kayıtlı taşıt (markaya göre) | TR. il | 2004-2024 | 200.377 | tuik_medas |
+| `vehicles_by_fuel` | Trafiğe kayıtlı taşıt (yakıt türüne göre) | TR. il | 2020-2025 | 2.942 | tuik_medas |
+| `vehicles_newly_registered` | Trafiğe kaydı yapılan taşıt (marka ve türe göre) | TR. il | 2004-2025 | 196.064 | tuik_medas |
+| `vehicles_newly_registered_by_colour` | Trafiğe kaydı yapılan taşıt (renge göre) | TR. il | 2020-2025 | 5.573 | tuik_medas |
+| `vehicles_newly_registered_by_engine` | Trafiğe kaydı yapılan taşıt (silindir hacmine göre) | TR. il | 2020-2025 | 10.627 | tuik_medas |
+| `vehicles_newly_registered_by_fuel` | Trafiğe kaydı yapılan taşıt (yakıt türüne göre) | TR. il | 2020-2025 | 2.482 | tuik_medas |
+| `vehicles_transferred` | Devri yapılan taşıt (marka ve türe göre) | TR. il | 2010-2025 | 257.830 | tuik_medas |
+| `vehicles_transferred_by_age` | Devri yapılan taşıt (taşıt yaşına göre) | TR. il | 2020-2025 | 2.460 | tuik_medas |
 
 ## yapi_ruhsati (18)
 
@@ -863,26 +863,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `services_ppi` | Hizmet üretici fiyat endeksi | TR | 2017-2026 | 5.865 | cbrt_evds |
 | `usd_try_buying` | ABD doları alış kuru | TR | 1970-2026 | 14.292 | cbrt_evds |
 
-## karayolu (15)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `bridge_length` | Büyük köprü uzunluğu | TR | 2002-2024 | 138 | kgm |
-| `bridges` | Büyük köprü sayısı | TR | 2002-2024 | 138 | kgm |
-| `divided_road_length` | Bölünmüş yol uzunluğu | il | 2009-2025 | 1.620 | kgm |
-| `divided_road_length_province` | Bölünmüş yol uzunluğu. il (yıllar) | il | 2009-2025 | 729 | kgm |
-| `kgm_passenger_km` | KGM yollarında yolcu-km. il | il | 2012-2025 | 2.592 | kgm |
-| `kgm_tonne_km` | KGM yollarında ton-km. il | il | 2012-2025 | 2.592 | kgm |
-| `kgm_vehicle_km` | KGM yollarında taşıt-km. il | il | 2012-2025 | 2.592 | kgm |
-| `motorway_length` | Otoyol uzunluğu | il | 2000-2025 | 728 | kgm |
-| `road_distance_between_districts` | İlçeler arası karayolu mesafesi | il. ilçe | 2026-2026 | 1.005.006 | kgm |
-| `road_distance_between_provinces` | İller arası karayolu mesafesi | il | 2010-2026 | 64.800 | kgm |
-| `road_length_by_surface` | Devlet ve il yolu uzunluğu (kaplama türüne göre) | il | 2009-2025 | 9.720 | kgm |
-| `road_length_by_surface_province` | Devlet ve il yolu uzunluğu. il ve kaplama türüne göre (yıllar) | il | 2009-2025 | 4.374 | kgm |
-| `road_length_history` | Devlet ve il yolu uzunluğu. 1967'den | TR | 1967-2025 | 354 | kgm |
-| `traffic_accidents_total` | Trafik kazası sayısı (maddi hasarlı dahil) | TR | 2006-2016 | 22 | kgm |
-| `traffic_casualties` | Trafik kazasında ölen ve yaralanan | TR | 2006-2016 | 24 | kgm |
-
 ## gayrimenkul_fiyat (15)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -903,6 +883,26 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `shop_price_index` | Dükkân fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
 | `shop_unit_price` | Dükkân birim fiyatı | TR. il | 2015-2025 | 869 | cbrt_evds |
 
+## karayolu (15)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `bridge_length` | Büyük köprü uzunluğu | TR | 2002-2024 | 138 | kgm |
+| `bridges` | Büyük köprü sayısı | TR | 2002-2024 | 138 | kgm |
+| `divided_road_length` | Bölünmüş yol uzunluğu | il | 2009-2025 | 1.620 | kgm |
+| `divided_road_length_province` | Bölünmüş yol uzunluğu. il (yıllar) | il | 2009-2025 | 729 | kgm |
+| `kgm_passenger_km` | KGM yollarında yolcu-km. il | il | 2012-2025 | 2.592 | kgm |
+| `kgm_tonne_km` | KGM yollarında ton-km. il | il | 2012-2025 | 2.592 | kgm |
+| `kgm_vehicle_km` | KGM yollarında taşıt-km. il | il | 2012-2025 | 2.592 | kgm |
+| `motorway_length` | Otoyol uzunluğu | il | 2000-2025 | 728 | kgm |
+| `road_distance_between_districts` | İlçeler arası karayolu mesafesi | il. ilçe | 2026-2026 | 1.005.006 | kgm |
+| `road_distance_between_provinces` | İller arası karayolu mesafesi | il | 2010-2026 | 64.800 | kgm |
+| `road_length_by_surface` | Devlet ve il yolu uzunluğu (kaplama türüne göre) | il | 2009-2025 | 9.720 | kgm |
+| `road_length_by_surface_province` | Devlet ve il yolu uzunluğu. il ve kaplama türüne göre (yıllar) | il | 2009-2025 | 4.374 | kgm |
+| `road_length_history` | Devlet ve il yolu uzunluğu. 1967'den | TR | 1967-2025 | 354 | kgm |
+| `traffic_accidents_total` | Trafik kazası sayısı (maddi hasarlı dahil) | TR | 2006-2016 | 22 | kgm |
+| `traffic_casualties` | Trafik kazasında ölen ve yaralanan | TR | 2006-2016 | 24 | kgm |
+
 ## turizm (14)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -922,23 +922,23 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `tourism_expenditure` | Turizm gideri (yurt dışına giden vatandaş) | TR | 2012-2025 | 112 | tuik_medas |
 | `tourism_revenue` | Turizm geliri | TR | 2012-2025 | 19 | tuik_medas |
 
-## din (13)
+## iklim (13)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `diyanet_budget` | Diyanet bütçe harcaması | TR | 2022-2023 | 10 | diyanet |
-| `diyanet_converts` | İhtida edenler (önceki inanç) | TR | 2023-2023 | 15 | diyanet |
-| `diyanet_converts_age` | İhtida edenler (yaş) | TR | 2023-2023 | 18 | diyanet |
-| `diyanet_converts_reason` | İhtida edenler (sebep) | TR | 2023-2023 | 12 | diyanet |
-| `diyanet_mosques` | Cami sayısı | TR. il | 2013-2023 | 92 | diyanet |
-| `diyanet_personnel` | Diyanet personeli | TR. il | 2013-2023 | 762 | diyanet |
-| `diyanet_pilgrims` | Hacca ve umreye gidenler | TR | 2023-2023 | 60 | diyanet |
-| `diyanet_quran_attendance` | Kur'an kursu kursiyeri | il | 2023-2023 | 81 | diyanet |
-| `diyanet_quran_courses` | Kur'an kursu sayısı | il | 2023-2023 | 81 | diyanet |
-| `diyanet_quran_graduates` | Kur'an kursunu bitiren | il | 2023-2023 | 243 | diyanet |
-| `diyanet_quran_graduates_age` | Kur'an kursunu bitiren (yaş) | il | 2023-2023 | 405 | diyanet |
-| `diyanet_quran_graduates_education` | Kur'an kursunu bitiren (eğitim durumu) | il | 2023-2023 | 567 | diyanet |
-| `diyanet_quran_hafiz` | Hafızlık kursiyeri | il | 2023-2023 | 243 | diyanet |
+| `afad_earthquakes` | Deprem sayısı | il. ilçe | 1990-2025 | 53.671 | afad |
+| `mgm_measurement_period` | İstasyonun ölçüm dönemi | il | 2025-2025 | 162 | mgm |
+| `mgm_precipitation` | Aylık toplam yağış ortalaması | il | 2020-2025 | 1.920 | mgm |
+| `mgm_rainy_days` | Aylık ortalama yağışlı gün sayısı | il | 2020-2025 | 1.908 | mgm |
+| `mgm_record_daily_precipitation` | Günlük en yüksek yağış rekoru | il | 1929-2024 | 81 | mgm |
+| `mgm_record_snow_depth` | En yüksek kar kalınlığı rekoru | il | 1929-2022 | 80 | mgm |
+| `mgm_record_wind_speed` | En hızlı rüzgar rekoru | il | 1963-2025 | 81 | mgm |
+| `mgm_sunshine` | Aylık ortalama günlük güneşlenme süresi | il | 2020-2025 | 1.920 | mgm |
+| `mgm_temperature` | Aylık sıcaklık normalleri | il | 2020-2025 | 7.704 | mgm |
+| `oecd_climate_days` | İklim gün sayıları (alansal) | il | 1981-2024 | 14.256 | oecd_regional |
+| `oecd_degree_days` | Derece-gün (ısıtma ve soğutma) | il | 1981-2023 | 6.966 | oecd_regional |
+| `oecd_precipitation` | Yıllık toplam yağış (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
+| `oecd_temperature` | Yıllık ortalama sıcaklık (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
 
 ## konut_nitelik (13)
 
@@ -958,23 +958,23 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `mean_rooms` | Konutların ortalama oda sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
 | `rooms_per_person` | Konutta kişi başına oda (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
 
-## iklim (13)
+## din (13)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `afad_earthquakes` | Deprem sayısı | il. ilçe | 1990-2025 | 53.671 | afad |
-| `mgm_measurement_period` | İstasyonun ölçüm dönemi | il | 2025-2025 | 162 | mgm |
-| `mgm_precipitation` | Aylık toplam yağış ortalaması | il | 2020-2025 | 1.920 | mgm |
-| `mgm_rainy_days` | Aylık ortalama yağışlı gün sayısı | il | 2020-2025 | 1.908 | mgm |
-| `mgm_record_daily_precipitation` | Günlük en yüksek yağış rekoru | il | 1929-2024 | 81 | mgm |
-| `mgm_record_snow_depth` | En yüksek kar kalınlığı rekoru | il | 1929-2022 | 80 | mgm |
-| `mgm_record_wind_speed` | En hızlı rüzgar rekoru | il | 1963-2025 | 81 | mgm |
-| `mgm_sunshine` | Aylık ortalama günlük güneşlenme süresi | il | 2020-2025 | 1.920 | mgm |
-| `mgm_temperature` | Aylık sıcaklık normalleri | il | 2020-2025 | 7.704 | mgm |
-| `oecd_climate_days` | İklim gün sayıları (alansal) | il | 1981-2024 | 14.256 | oecd_regional |
-| `oecd_degree_days` | Derece-gün (ısıtma ve soğutma) | il | 1981-2023 | 6.966 | oecd_regional |
-| `oecd_precipitation` | Yıllık toplam yağış (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
-| `oecd_temperature` | Yıllık ortalama sıcaklık (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
+| `diyanet_budget` | Diyanet bütçe harcaması | TR | 2022-2023 | 10 | diyanet |
+| `diyanet_converts` | İhtida edenler (önceki inanç) | TR | 2023-2023 | 15 | diyanet |
+| `diyanet_converts_age` | İhtida edenler (yaş) | TR | 2023-2023 | 18 | diyanet |
+| `diyanet_converts_reason` | İhtida edenler (sebep) | TR | 2023-2023 | 12 | diyanet |
+| `diyanet_mosques` | Cami sayısı | TR. il | 2013-2023 | 92 | diyanet |
+| `diyanet_personnel` | Diyanet personeli | TR. il | 2013-2023 | 762 | diyanet |
+| `diyanet_pilgrims` | Hacca ve umreye gidenler | TR | 2023-2023 | 60 | diyanet |
+| `diyanet_quran_attendance` | Kur'an kursu kursiyeri | il | 2023-2023 | 81 | diyanet |
+| `diyanet_quran_courses` | Kur'an kursu sayısı | il | 2023-2023 | 81 | diyanet |
+| `diyanet_quran_graduates` | Kur'an kursunu bitiren | il | 2023-2023 | 243 | diyanet |
+| `diyanet_quran_graduates_age` | Kur'an kursunu bitiren (yaş) | il | 2023-2023 | 405 | diyanet |
+| `diyanet_quran_graduates_education` | Kur'an kursunu bitiren (eğitim durumu) | il | 2023-2023 | 567 | diyanet |
+| `diyanet_quran_hafiz` | Hafızlık kursiyeri | il | 2023-2023 | 243 | diyanet |
 
 ## trafik_kaza (12)
 
@@ -1062,16 +1062,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `local_budget_expenditure_by_province` | Mahalli idareler bütçe giderleri (il) | il | 2006-2025 | 13.867 | muhasebat |
 | `local_budget_revenue_by_province` | Mahalli idareler bütçe gelirleri (il) | il | 2006-2025 | 10.377 | muhasebat |
 
-## dogurganlik (5)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
-| `births_by_age` | Doğum sayısı (annenin yaş grubu) | TR. il | 2009-2025 | 14.290 | tuik_medas |
-| `births_by_marital` | Doğum sayısı (annenin medeni durumu) | TR. il | 2012-2025 | 5.669 | tuik_medas |
-| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
-| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
-
 ## konut (5)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1081,6 +1071,16 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `housing_sales_district` | Konut satış sayısı (ilçe) | ilçe | 2013-2025 | 11.909 | tuik_medas |
 | `housing_sales_foreigners` | Yabancılara konut satışı | TR. il | 2013-2025 | 909 | tuik_medas |
 | `property_sales_monthly` | Konut ve iş yeri satışları (aylık) | il | 2013-2026 | 101.785 | cbrt_evds |
+
+## dogurganlik (5)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
+| `births_by_age` | Doğum sayısı (annenin yaş grubu) | TR. il | 2009-2025 | 14.290 | tuik_medas |
+| `births_by_marital` | Doğum sayısı (annenin medeni durumu) | TR. il | 2012-2025 | 5.669 | tuik_medas |
+| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
+| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
 
 ## havacilik (3)
 
