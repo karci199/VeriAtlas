@@ -1,11 +1,11 @@
-# Envanter — depodaki 917 gösterge
+# Envanter — depodaki 919 gösterge
 
 **Bu dosya elle yazılmaz.** `scripts/build_inventory.py` warehouse'tan üretir;
 burada olmayan gösterge depoda yok demektir. Yeni kaynak önermeden önce buraya
 bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni iş' diye
 önerildi, üçü de zaten yüklüydü.
 
-Üretim: 2026-09-21 · 21.396.807 satır
+Üretim: 2026-09-22 · 21.401.126 satır
 
 ## evds_arsiv (177)
 
@@ -189,7 +189,7 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `archive_yyoibsvt` | Özel Sektör Tarafından Yurt İçinde İhraç Edilen Borçlanma Senetleri Vade Dağılımı (TL. Piyasa Değeri. Orjinal ve Kalan Vade) (Arşiv) | TR | 2015-2021 | 206.820 | cbrt_evds |
 | `archive_yyoibsvu` | Özel Sektör Tarafından Yurt İçinde İhraç Edilen Borçlanma Senetleri Vade Dağılımı (ABD doları. Piyasa Değeri. Orjinal ve Kalan Vade) (Arşiv) | TR | 2015-2021 | 204.270 | cbrt_evds |
 
-## iletisim (104)
+## iletisim (105)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
@@ -284,11 +284,12 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `btk_subscribers_summary` | Sabit. mobil. M2M ve kablo TV abonesi | TR | 2012-2025 | 59 | btk |
 | `btk_subscribers_summary_quarterly` | Sabit. mobil ve M2M abone. çeyreklik | TR | 2015-2026 | 144 | btk |
 | `btk_turk_telekom_traffic` | Türk Telekom sabit ses trafiği. yöne göre | TR | 2014-2026 | 208 | btk |
-| `cargo_branches` | Kargo şubesi | il. ilçe | 2026-2026 | 919 | branch_finders |
+| `cargo_branches` | Kargo şubesi | il. ilçe | 2026-2026 | 1.734 | branch_finders |
 | `internet_download_speed` | İnternet indirme hızı (ölçülen) | il. ilçe | 2022-2024 | 4.104 | ookla_open_data |
 | `internet_latency` | İnternet gecikmesi (ölçülen) | il. ilçe | 2022-2024 | 4.104 | ookla_open_data |
 | `internet_speedtests` | Hız testi sayısı | il. ilçe | 2022-2024 | 4.104 | ookla_open_data |
 | `internet_upload_speed` | İnternet yükleme hızı (ölçülen) | il. ilçe | 2022-2024 | 4.104 | ookla_open_data |
+| `post_offices` | PTT iş yeri | il. ilçe | 2026-2026 | 1.828 | branch_finders |
 | `postal_codes` | Posta kodu sayısı | il. ilçe | 2026-2026 | 1.054 | ptt_postakodu |
 | `telecom_broadband_subscribers` | Genişbant abone (operatör) | TR | 2014-2026 | 50 | operator_ir |
 | `telecom_dealers` | Operatör bayisi | il. ilçe | 2026-2026 | 1.278 | branch_finders |
@@ -599,41 +600,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `preschool_net_enrolment` | Okul öncesi net okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
 | `single_parent_households_with_children` | Çocuk bulunan tek ebeveynli hane | TR. il | 2014-2025 | 984 | tuik_medas |
 
-## reel_kesim (30)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `capacity_utilisation` | İmalat sanayi kapasite kullanım oranı | TR | 2007-2026 | 7.932 | cbrt_evds |
-| `chain_restaurants` | Zincir şube sayısı | il. ilçe | 2026-2026 | 2.729 | chain_store_finders |
-| `chain_stores` | Zincir mağaza sayısı | il. ilçe | 2026-2026 | 6.847 | chain_store_finders |
-| `companies_opened_capital` | Kurulan şirketlerin sermayesi | TR | 2010-2026 | 756 | cbrt_evds |
-| `companies_opened_closed` | Kurulan ve kapanan şirket sayısı | TR | 2010-2026 | 1.993 | cbrt_evds |
-| `economic_tendency_survey` | İktisadi yönelim anketi | TR | 2007-2026 | 15.892 | cbrt_evds |
-| `enterprises` | Girişim sayısı | il | 2009-2024 | 81.550 | tuik_medas |
-| `fashion_stores` | Giyim zinciri mağazası | il. ilçe | 2026-2026 | 1.437 | branch_finders |
-| `foreign_trade_by_province` | Dış ticaret (il. gümrük) | il | 2002-2023 | 3.548 | oecd_regional |
-| `industrial_production_index` | Sanayi üretim endeksi | TR | 1986-2026 | 82.257 | cbrt_evds |
-| `real_sector_confidence` | Reel kesim güven endeksi | TR | 2007-2026 | 2.124 | cbrt_evds |
-| `registered_tradesmen` | Kayıtlı esnaf sayısı | il | 2026-2026 | 81 | tesk |
-| `tendency_survey_large_firms` | İktisadi yönelim anketi — 500 ve üzeri çalışanlı firmalar | TR | 2007-2026 | 15.891 | cbrt_evds |
-| `tendency_survey_medium_firms` | İktisadi yönelim anketi — 250-499 çalışanlı firmalar | TR | 2007-2026 | 15.890 | cbrt_evds |
-| `tendency_survey_small_firms` | İktisadi yönelim anketi — 250'den az çalışanlı firmalar | TR | 2007-2026 | 15.892 | cbrt_evds |
-| `tim_exports` | İhracat (TİM. il) | il | 2004-2025 | 1.775 | tim |
-| `tim_exports_by_country` | İhracat. ülkeye göre (TİM. il) | il | 2013-2025 | 102.967 | tim |
-| `tim_exports_by_sector` | İhracat. sektöre göre (TİM. il) | il | 2013-2025 | 22.391 | tim |
-| `tobb_companies` | Kurulan. tasfiyeye giren ve kapanan şirketler | il | 2009-2025 | 11.016 | tobb |
-| `tobb_company_capital` | Kurulan şirketlerin sermayesi | il | 2015-2025 | 891 | tobb |
-| `tobb_foreign_companies` | Kurulan yabancı ortaklı şirketler | il | 2010-2025 | 2.592 | tobb |
-| `tobb_foreign_company_capital` | Yabancı ortaklı kurulan şirketlerin sermayesi | il | 2010-2025 | 2.592 | tobb |
-| `tobb_foreign_partner_capital` | Kurulan şirketlerde yabancı sermaye payı | il | 2010-2025 | 2.592 | tobb |
-| `trade_trucks` | Dış ticarette kara ve Ro-Ro araçları | TR | 2021-2026 | 816 | cbrt_evds |
-| `tradesmen_amendments` | Esnaf tadil ilanı | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_chambers` | Esnaf odası sayısı | il | 2026-2026 | 81 | tesk |
-| `tradesmen_deregistrations` | Esnaf sicil terkini | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_registrations` | Esnaf tescili | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_trade_removals` | Esnaf meslek terkini | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_workplaces` | Esnaf işyeri sayısı | il | 2026-2026 | 81 | tesk |
-
 ## egitim (30)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -668,6 +634,41 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `yok_students_archive` | Yükseköğretim öğrenci sayısı. Türkiye (1983-2012) | TR | 1983-2012 | 426 | yok_istatistik |
 | `yok_students_by_age` | Yükseköğretim öğrenci sayısı. yaşa göre | TR | 2013-2025 | 14.034 | yok_istatistik |
 | `yok_students_by_field` | Öğrenci ve yeni kayıt. eğitim alanına göre | TR | 2015-2025 | 21.094 | yok_istatistik |
+
+## reel_kesim (30)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `capacity_utilisation` | İmalat sanayi kapasite kullanım oranı | TR | 2007-2026 | 7.932 | cbrt_evds |
+| `chain_restaurants` | Zincir şube sayısı | il. ilçe | 2026-2026 | 2.729 | chain_store_finders |
+| `chain_stores` | Zincir mağaza sayısı | il. ilçe | 2026-2026 | 6.847 | chain_store_finders |
+| `companies_opened_capital` | Kurulan şirketlerin sermayesi | TR | 2010-2026 | 756 | cbrt_evds |
+| `companies_opened_closed` | Kurulan ve kapanan şirket sayısı | TR | 2010-2026 | 1.993 | cbrt_evds |
+| `economic_tendency_survey` | İktisadi yönelim anketi | TR | 2007-2026 | 15.892 | cbrt_evds |
+| `enterprises` | Girişim sayısı | il | 2009-2024 | 81.550 | tuik_medas |
+| `fashion_stores` | Giyim zinciri mağazası | il. ilçe | 2026-2026 | 1.437 | branch_finders |
+| `foreign_trade_by_province` | Dış ticaret (il. gümrük) | il | 2002-2023 | 3.548 | oecd_regional |
+| `industrial_production_index` | Sanayi üretim endeksi | TR | 1986-2026 | 82.257 | cbrt_evds |
+| `real_sector_confidence` | Reel kesim güven endeksi | TR | 2007-2026 | 2.124 | cbrt_evds |
+| `registered_tradesmen` | Kayıtlı esnaf sayısı | il | 2026-2026 | 81 | tesk |
+| `tendency_survey_large_firms` | İktisadi yönelim anketi — 500 ve üzeri çalışanlı firmalar | TR | 2007-2026 | 15.891 | cbrt_evds |
+| `tendency_survey_medium_firms` | İktisadi yönelim anketi — 250-499 çalışanlı firmalar | TR | 2007-2026 | 15.890 | cbrt_evds |
+| `tendency_survey_small_firms` | İktisadi yönelim anketi — 250'den az çalışanlı firmalar | TR | 2007-2026 | 15.892 | cbrt_evds |
+| `tim_exports` | İhracat (TİM. il) | il | 2004-2025 | 1.775 | tim |
+| `tim_exports_by_country` | İhracat. ülkeye göre (TİM. il) | il | 2013-2025 | 102.967 | tim |
+| `tim_exports_by_sector` | İhracat. sektöre göre (TİM. il) | il | 2013-2025 | 22.391 | tim |
+| `tobb_companies` | Kurulan. tasfiyeye giren ve kapanan şirketler | il | 2009-2025 | 11.016 | tobb |
+| `tobb_company_capital` | Kurulan şirketlerin sermayesi | il | 2015-2025 | 891 | tobb |
+| `tobb_foreign_companies` | Kurulan yabancı ortaklı şirketler | il | 2010-2025 | 2.592 | tobb |
+| `tobb_foreign_company_capital` | Yabancı ortaklı kurulan şirketlerin sermayesi | il | 2010-2025 | 2.592 | tobb |
+| `tobb_foreign_partner_capital` | Kurulan şirketlerde yabancı sermaye payı | il | 2010-2025 | 2.592 | tobb |
+| `trade_trucks` | Dış ticarette kara ve Ro-Ro araçları | TR | 2021-2026 | 816 | cbrt_evds |
+| `tradesmen_amendments` | Esnaf tadil ilanı | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_chambers` | Esnaf odası sayısı | il | 2026-2026 | 81 | tesk |
+| `tradesmen_deregistrations` | Esnaf sicil terkini | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_registrations` | Esnaf tescili | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_trade_removals` | Esnaf meslek terkini | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_workplaces` | Esnaf işyeri sayısı | il | 2026-2026 | 81 | tesk |
 
 ## saglik (29)
 
@@ -765,32 +766,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `vegetable_production` | Sebze üretimi | TR. il | 2004-2025 | 57.350 | tuik_medas |
 | `vegetable_sown_area` | Sebze ekilen alan | TR. il | 2004-2025 | 56.958 | tuik_medas |
 
-## enerji (21)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `charging_stations` | Elektrikli araç şarj istasyonu | il. ilçe | 2026-2026 | 809 | epdk_lisans |
-| `electricity_consumption` | Elektrik tüketimi (tüketici grubuna göre) | TR. il | 2000-2024 | 10.250 | tuik_medas |
-| `electricity_consumption_per_capita` | Kişi başı elektrik tüketimi | TR. il | 2000-2024 | 4.100 | tuik_medas |
-| `electricity_generation` | Elektrik üretimi (kaynağa göre. yalnız Türkiye) | TR | 1970-2024 | 260 | tuik_medas |
-| `epdk_electricity_consumers` | Elektrik tüketici (abone) sayısı | il | 2021-2025 | 2.025 | epdk |
-| `epdk_electricity_consumption` | Faturalanan elektrik tüketimi (EPDK) | il | 2016-2025 | 4.050 | epdk |
-| `epdk_fuel_dealer_deliveries` | Bayiye teslim edilen akaryakıt | TR. il | 2011-2014 | 328 | epdk |
-| `epdk_fuel_sales` | Akaryakıt yurt içi satışı. ürüne göre | il | 2015-2025 | 6.156 | epdk |
-| `epdk_fuel_sales_monthly` | Akaryakıt yurt içi satışı. ürüne göre (aylık) | il | 2016-2025 | 66.339 | epdk |
-| `epdk_licensed_capacity` | Lisanslı elektrik kurulu gücü | il | 2017-2024 | 640 | epdk |
-| `epdk_lpg_sales` | LPG satışı. türe göre | il | 2006-2025 | 4.860 | epdk |
-| `epdk_lpg_sales_monthly` | LPG satışı. türe göre (aylık) | il | 2011-2025 | 38.394 | epdk |
-| `epdk_natural_gas_consumption` | Doğal gaz tüketimi. temin şekline göre | il | 2015-2025 | 4.127 | epdk |
-| `epdk_natural_gas_consumption_monthly` | Doğal gaz tüketimi. temin şekline göre (aylık) | il | 2015-2025 | 49.593 | epdk |
-| `epdk_natural_gas_sales` | Doğal gaz satışı. sektöre göre | il | 2015-2025 | 6.230 | epdk |
-| `epdk_natural_gas_subscribers` | Doğal gaz abone ve serbest tüketici sayısı | il | 2015-2025 | 1.734 | epdk |
-| `epdk_unlicensed_capacity` | Lisanssız elektrik kurulu gücü. kaynağa göre | il | 2016-2025 | 3.947 | epdk |
-| `etkb_added_capacity` | Devreye giren kurulu güç | il | 2003-2025 | 1.663 | etkb |
-| `etkb_added_plants` | Devreye giren santral sayısı | il | 2003-2025 | 1.663 | etkb |
-| `fuel_stations` | Akaryakıt istasyonu | il. ilçe | 2026-2026 | 7.696 | epdk_lisans |
-| `installed_capacity` | Kurulu güç (yalnız Türkiye) | TR | 1975-2024 | 50 | tuik_medas |
-
 ## ulasim (21)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -816,6 +791,32 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `vehicles_newly_registered_by_fuel` | Trafiğe kaydı yapılan taşıt (yakıt türüne göre) | TR. il | 2020-2025 | 2.482 | tuik_medas |
 | `vehicles_transferred` | Devri yapılan taşıt (marka ve türe göre) | TR. il | 2010-2025 | 257.830 | tuik_medas |
 | `vehicles_transferred_by_age` | Devri yapılan taşıt (taşıt yaşına göre) | TR. il | 2020-2025 | 2.460 | tuik_medas |
+
+## enerji (21)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `charging_stations` | Elektrikli araç şarj istasyonu | il. ilçe | 2026-2026 | 809 | epdk_lisans |
+| `electricity_consumption` | Elektrik tüketimi (tüketici grubuna göre) | TR. il | 2000-2024 | 10.250 | tuik_medas |
+| `electricity_consumption_per_capita` | Kişi başı elektrik tüketimi | TR. il | 2000-2024 | 4.100 | tuik_medas |
+| `electricity_generation` | Elektrik üretimi (kaynağa göre. yalnız Türkiye) | TR | 1970-2024 | 260 | tuik_medas |
+| `epdk_electricity_consumers` | Elektrik tüketici (abone) sayısı | il | 2021-2025 | 2.025 | epdk |
+| `epdk_electricity_consumption` | Faturalanan elektrik tüketimi (EPDK) | il | 2016-2025 | 4.050 | epdk |
+| `epdk_fuel_dealer_deliveries` | Bayiye teslim edilen akaryakıt | TR. il | 2011-2014 | 328 | epdk |
+| `epdk_fuel_sales` | Akaryakıt yurt içi satışı. ürüne göre | il | 2015-2025 | 6.156 | epdk |
+| `epdk_fuel_sales_monthly` | Akaryakıt yurt içi satışı. ürüne göre (aylık) | il | 2016-2025 | 66.339 | epdk |
+| `epdk_licensed_capacity` | Lisanslı elektrik kurulu gücü | il | 2017-2024 | 640 | epdk |
+| `epdk_lpg_sales` | LPG satışı. türe göre | il | 2006-2025 | 4.860 | epdk |
+| `epdk_lpg_sales_monthly` | LPG satışı. türe göre (aylık) | il | 2011-2025 | 38.394 | epdk |
+| `epdk_natural_gas_consumption` | Doğal gaz tüketimi. temin şekline göre | il | 2015-2025 | 4.127 | epdk |
+| `epdk_natural_gas_consumption_monthly` | Doğal gaz tüketimi. temin şekline göre (aylık) | il | 2015-2025 | 49.593 | epdk |
+| `epdk_natural_gas_sales` | Doğal gaz satışı. sektöre göre | il | 2015-2025 | 6.230 | epdk |
+| `epdk_natural_gas_subscribers` | Doğal gaz abone ve serbest tüketici sayısı | il | 2015-2025 | 1.734 | epdk |
+| `epdk_unlicensed_capacity` | Lisanssız elektrik kurulu gücü. kaynağa göre | il | 2016-2025 | 3.947 | epdk |
+| `etkb_added_capacity` | Devreye giren kurulu güç | il | 2003-2025 | 1.663 | etkb |
+| `etkb_added_plants` | Devreye giren santral sayısı | il | 2003-2025 | 1.663 | etkb |
+| `fuel_stations` | Akaryakıt istasyonu | il. ilçe | 2026-2026 | 7.696 | epdk_lisans |
+| `installed_capacity` | Kurulu güç (yalnız Türkiye) | TR | 1975-2024 | 50 | tuik_medas |
 
 ## yapi_ruhsati (18)
 
@@ -921,24 +922,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `tourism_expenditure` | Turizm gideri (yurt dışına giden vatandaş) | TR | 2012-2025 | 112 | tuik_medas |
 | `tourism_revenue` | Turizm geliri | TR | 2012-2025 | 19 | tuik_medas |
 
-## konut_nitelik (13)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `households_by_bathroom` | Hane. banyonun bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
-| `households_by_build_period` | Hane. binanın inşa yılına göre (2021) | il | 2021-2021 | 324 | tuik_medas |
-| `households_by_elevator` | Hane. kat sayısı ve asansöre göre (2021. yalnız Türkiye) | TR | 2021-2021 | 14 | tuik_medas |
-| `households_by_floors` | Hane. oturduğu binanın kat sayısına göre (2021) | il | 2021-2021 | 486 | tuik_medas |
-| `households_by_heating` | Hane. ısıtma sistemine göre (2021) | il | 2021-2021 | 405 | tuik_medas |
-| `households_by_main_fuel` | Hane. ana yakıt türüne göre (2021) | il | 2021-2021 | 324 | tuik_medas |
-| `households_by_parking` | Hane. binada otopark durumuna göre (2021) | il | 2021-2021 | 162 | tuik_medas |
-| `households_by_piped_water` | Hane. borulu suyun bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
-| `households_by_rooms` | Hane. oda sayısına göre (2021) | il | 2021-2021 | 324 | tuik_medas |
-| `households_by_toilet` | Hane. tuvaletin bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
-| `mean_building_floors` | Oturulan binanın ortalama kat sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
-| `mean_rooms` | Konutların ortalama oda sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
-| `rooms_per_person` | Konutta kişi başına oda (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
-
 ## din (13)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -956,6 +939,24 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `diyanet_quran_graduates_age` | Kur'an kursunu bitiren (yaş) | il | 2023-2023 | 405 | diyanet |
 | `diyanet_quran_graduates_education` | Kur'an kursunu bitiren (eğitim durumu) | il | 2023-2023 | 567 | diyanet |
 | `diyanet_quran_hafiz` | Hafızlık kursiyeri | il | 2023-2023 | 243 | diyanet |
+
+## konut_nitelik (13)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `households_by_bathroom` | Hane. banyonun bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
+| `households_by_build_period` | Hane. binanın inşa yılına göre (2021) | il | 2021-2021 | 324 | tuik_medas |
+| `households_by_elevator` | Hane. kat sayısı ve asansöre göre (2021. yalnız Türkiye) | TR | 2021-2021 | 14 | tuik_medas |
+| `households_by_floors` | Hane. oturduğu binanın kat sayısına göre (2021) | il | 2021-2021 | 486 | tuik_medas |
+| `households_by_heating` | Hane. ısıtma sistemine göre (2021) | il | 2021-2021 | 405 | tuik_medas |
+| `households_by_main_fuel` | Hane. ana yakıt türüne göre (2021) | il | 2021-2021 | 324 | tuik_medas |
+| `households_by_parking` | Hane. binada otopark durumuna göre (2021) | il | 2021-2021 | 162 | tuik_medas |
+| `households_by_piped_water` | Hane. borulu suyun bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
+| `households_by_rooms` | Hane. oda sayısına göre (2021) | il | 2021-2021 | 324 | tuik_medas |
+| `households_by_toilet` | Hane. tuvaletin bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
+| `mean_building_floors` | Oturulan binanın ortalama kat sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
+| `mean_rooms` | Konutların ortalama oda sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
+| `rooms_per_person` | Konutta kişi başına oda (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
 
 ## iklim (13)
 
@@ -1005,18 +1006,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `mean_first_marriage_age` | Ortalama ilk evlenme yaşı | TR. il | 2001-2025 | 4.100 | tuik_medas |
 | `mean_marriage_age` | Ortalama evlenme yaşı | TR. il | 2001-2025 | 6.150 | tuik_medas |
 
-## olum (7)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `deaths` | Ölüm sayısı | TR. il. ilçe | 2009-2025 | 79.593 | tuik_medas |
-| `deaths_by_cause` | Ölüm sayısı (nedene göre) | TR. il | 2022-2025 | 2.814 | tuik |
-| `deaths_single_age` | Ölüm sayısı (tek yaş) | TR | 2009-2025 | 3.375 | tuik_medas |
-| `infant_mortality` | Bebek ölüm hızı | TR. il | 2009-2025 | 1.394 | tuik_medas |
-| `life_expectancy` | Doğuşta beklenen yaşam süresi | TR. il | 2013-2023 | 820 | tuik_medas |
-| `suicide_rate` | Kaba intihar hızı | TR. il | 2002-2025 | 1.960 | tuik_medas |
-| `under5_mortality` | Beş yaş altı ölüm hızı | TR. il | 2009-2025 | 1.394 | tuik_medas |
-
 ## medya (7)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1029,6 +1018,18 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `print_runs` | Yayınların baskı sayısı (yalnız Türkiye) | TR | 2005-2022 | 72 | tuik_medas |
 | `publications_by_print` | Yayın sayısı (tür × baskı tekniği) | TR. İBBS-2 | 2005-2022 | 1.469 | tuik_medas |
 
+## olum (7)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `deaths` | Ölüm sayısı | TR. il. ilçe | 2009-2025 | 79.593 | tuik_medas |
+| `deaths_by_cause` | Ölüm sayısı (nedene göre) | TR. il | 2022-2025 | 2.814 | tuik |
+| `deaths_single_age` | Ölüm sayısı (tek yaş) | TR | 2009-2025 | 3.375 | tuik_medas |
+| `infant_mortality` | Bebek ölüm hızı | TR. il | 2009-2025 | 1.394 | tuik_medas |
+| `life_expectancy` | Doğuşta beklenen yaşam süresi | TR. il | 2013-2023 | 820 | tuik_medas |
+| `suicide_rate` | Kaba intihar hızı | TR. il | 2002-2025 | 1.960 | tuik_medas |
+| `under5_mortality` | Beş yaş altı ölüm hızı | TR. il | 2009-2025 | 1.394 | tuik_medas |
+
 ## gelismislik (6)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1040,25 +1041,16 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `sege_province_rank` | İl SEGE sıralaması | il | 2017-2017 | 81 | sanayi_sege |
 | `sege_province_score` | İl SEGE skoru | il | 2017-2017 | 81 | sanayi_sege |
 
-## konut (5)
+## perakende (6)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `housing_sales` | Konut satış sayısı | TR. il | 2013-2025 | 4.264 | tuik_medas |
-| `housing_sales_by_nationality` | Yabancılara konut satışı (uyruğa göre. yalnız Türkiye) | TR | 2013-2025 | 1.702 | tuik_medas |
-| `housing_sales_district` | Konut satış sayısı (ilçe) | ilçe | 2013-2025 | 11.909 | tuik_medas |
-| `housing_sales_foreigners` | Yabancılara konut satışı | TR. il | 2013-2025 | 909 | tuik_medas |
-| `property_sales_monthly` | Konut ve iş yeri satışları (aylık) | il | 2013-2026 | 101.785 | cbrt_evds |
-
-## dogurganlik (5)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
-| `births_by_age` | Doğum sayısı (annenin yaş grubu) | TR. il | 2009-2025 | 14.290 | tuik_medas |
-| `births_by_marital` | Doğum sayısı (annenin medeni durumu) | TR. il | 2012-2025 | 5.669 | tuik_medas |
-| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
-| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
+| `furniture_stores` | Mobilya mağazası | il. ilçe | 2026-2026 | 1.676 | branch_finders |
+| `mall_turnover_index` | AVM ciro endeksi (m² verimlilik) | TR | 2025-2026 | 18 | ayd_akademetre |
+| `mall_turnover_per_sqm` | AVM'de m² başına ciro | TR | 2025-2026 | 51 | ayd_akademetre |
+| `mall_visitor_index` | AVM ziyaretçi endeksi | TR | 2025-2025 | 2 | ayd_akademetre |
+| `retail_turnover_index` | Perakende ciro endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
+| `retail_volume_index` | Perakende satış hacim endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
 
 ## kamu_maliyesi (5)
 
@@ -1070,23 +1062,25 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `local_budget_expenditure_by_province` | Mahalli idareler bütçe giderleri (il) | il | 2006-2025 | 13.867 | muhasebat |
 | `local_budget_revenue_by_province` | Mahalli idareler bütçe gelirleri (il) | il | 2006-2025 | 10.377 | muhasebat |
 
-## perakende (5)
+## dogurganlik (5)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `mall_turnover_index` | AVM ciro endeksi (m² verimlilik) | TR | 2025-2026 | 18 | ayd_akademetre |
-| `mall_turnover_per_sqm` | AVM'de m² başına ciro | TR | 2025-2026 | 51 | ayd_akademetre |
-| `mall_visitor_index` | AVM ziyaretçi endeksi | TR | 2025-2025 | 2 | ayd_akademetre |
-| `retail_turnover_index` | Perakende ciro endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
-| `retail_volume_index` | Perakende satış hacim endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
+| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
+| `births_by_age` | Doğum sayısı (annenin yaş grubu) | TR. il | 2009-2025 | 14.290 | tuik_medas |
+| `births_by_marital` | Doğum sayısı (annenin medeni durumu) | TR. il | 2012-2025 | 5.669 | tuik_medas |
+| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
+| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
 
-## tarim_alet (3)
+## konut (5)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `combine_harvesters` | Biçerdöver (yaşa göre) | TR. il | 2004-2025 | 5.429 | tuik_medas |
-| `farm_equipment` | Diğer tarım alet ve makineleri | TR. il | 2004-2025 | 119.407 | tuik_medas |
-| `tractors` | Traktör (türe göre) | TR. il | 2004-2025 | 13.779 | tuik_medas |
+| `housing_sales` | Konut satış sayısı | TR. il | 2013-2025 | 4.264 | tuik_medas |
+| `housing_sales_by_nationality` | Yabancılara konut satışı (uyruğa göre. yalnız Türkiye) | TR | 2013-2025 | 1.702 | tuik_medas |
+| `housing_sales_district` | Konut satış sayısı (ilçe) | ilçe | 2013-2025 | 11.909 | tuik_medas |
+| `housing_sales_foreigners` | Yabancılara konut satışı | TR. il | 2013-2025 | 909 | tuik_medas |
+| `property_sales_monthly` | Konut ve iş yeri satışları (aylık) | il | 2013-2026 | 101.785 | cbrt_evds |
 
 ## havacilik (3)
 
@@ -1095,6 +1089,14 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `dhmi_air_freight` | Havayolu yük ve kargo | il | 2008-2026 | 27.345 | dhmi |
 | `dhmi_air_passengers` | Havayolu yolcu sayısı | il | 2008-2026 | 21.314 | dhmi |
 | `dhmi_air_traffic` | Uçak trafiği | il | 2008-2026 | 41.750 | dhmi |
+
+## tarim_alet (3)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `combine_harvesters` | Biçerdöver (yaşa göre) | TR. il | 2004-2025 | 5.429 | tuik_medas |
+| `farm_equipment` | Diğer tarım alet ve makineleri | TR. il | 2004-2025 | 119.407 | tuik_medas |
+| `tractors` | Traktör (türe göre) | TR. il | 2004-2025 | 13.779 | tuik_medas |
 
 ## guvenlik (2)
 
