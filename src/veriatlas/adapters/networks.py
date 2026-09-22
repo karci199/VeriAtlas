@@ -445,6 +445,49 @@ def _last_word_province(address: str) -> str | None:
     return None if isinstance(found, Unknown) else found
 
 
+def _ptt(kind: str) -> Callable[[], Iterator[Point]]:
+    """PTT's own finder (enyakinptt.ptt.gov.tr/api/Isyerleri, base64 JSON, asked per
+    plate), one extractor per workplace type: MERKEZ (the district's main office),
+    ŞUBE (a branch under it) and ACENTELİK (run under contract by a shopkeeper,
+    mostly in villages). The plate in `il_id` is the stated province."""
+
+    def extract() -> Iterator[Point]:
+        import csv
+
+        copy = cached_copy(RAW / "ptt/isyerleri.csv", FOLDER / "ptt__isyerleri.csv")
+        with copy.open(encoding="utf-8", newline="") as handle:
+            for r in csv.DictReader(handle):
+                if r["Cins"] == kind:
+                    yield Point(
+                        r["Sira"],
+                        "store",
+                        _num(r["Lat"]),
+                        _num(r["Lon"]),
+                        province(int(r["il_id"])),
+                    )
+
+    return extract
+
+
+def surat() -> Iterator[Point]:
+    """Sürat's delivery-point finder, asked per district by name; only type 3 (branch)
+    is taken. The finder answers with nearby points, so districts overlap and the name
+    plus the point is the key. "Acente" in the name marks a contracted agency (388 of
+    818). Van/Başkale and Van/Edremit answered with a server error page, not a list."""
+    copy = cached_copy(
+        RAW / "kargo/surat_noktalar.jsonl", FOLDER / "kargo__surat.jsonl"
+    )
+    for line in copy.read_text(encoding="utf-8").splitlines():
+        for r in json.loads(line)["rows"]:
+            if r["TeslimatNoktasiTipi"] == 3:
+                yield Point(
+                    f"{r['Adi']}|{r['Enlem']}|{r['Boylam']}",
+                    "store",
+                    _num(r["Enlem"]),
+                    _num(r["Boylam"]),
+                )
+
+
 def _stores(
     relative: str,
     key: str,
@@ -583,6 +626,8 @@ NOT_PHYSICAL = {
     # 75 "MOBİL SATIŞ OFİSİ" plus PAYCELL, SMS, IVR, KIOSK, E-DENİZBANK and head-office
     # desks: channels with a branch code but no premises.
     "denizbank": 109,
+    # Sürat lists 33 branches with a zero coordinate; they are counted nowhere.
+    "surat": 33,
 }
 #: Duplicate record keys measured on 2026-09-21; the TT lists overlap by design.
 MAX_DUPLICATES = {
@@ -591,6 +636,8 @@ MAX_DUPLICATES = {
     "denizbank": 169,
     # Seven branch codes with two different points each; the first is kept.
     "halkbank": 7,
+    # Asked district by district: three branches answer for two neighbouring districts.
+    "surat": 3,
     "default": 0,
 }
 #: Northern Cyprus: Ziraat, Halkbank and Şekerbank list their branches there. Outside
@@ -810,7 +857,23 @@ class CargoBranches(_Network):
     indicator_id = "cargo_branches"
     dim = "cargo_company"
     kind = "store"
-    brands: ClassVar = {"aras": aras, "dhl_ecommerce": dhl, "yurtici": yurtici}
+    brands: ClassVar = {
+        "aras": aras,
+        "dhl_ecommerce": dhl,
+        "yurtici": yurtici,
+        "surat": surat,
+    }
+
+
+class PostOffices(_Network):
+    indicator_id = "post_offices"
+    dim = "post_office_type"
+    kind = "store"
+    brands: ClassVar = {
+        "main": _ptt("MERKEZ"),
+        "branch": _ptt("ŞUBE"),
+        "agency": _ptt("ACENTELİK"),
+    }
 
 
 class FashionStores(_Network):
@@ -828,5 +891,6 @@ NETWORK_ADAPTERS = {
         TelecomDealers,
         FashionStores,
         CargoBranches,
+        PostOffices,
     )
 }

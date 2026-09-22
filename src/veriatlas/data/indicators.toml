@@ -31898,6 +31898,25 @@ dims = ["operator"]
 views = ["table", "map", "bar"]
 definition_tr = "Türk Telekom ve Vodafone bulucularındaki satış noktaları, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Bireysel ve kurumsal listeler aynı bayileri taşır (1.777 kayıt, 893 bayi); bayi kimliğiyle tekilleştirilmiştir. Turkcell listesinde koordinat olmadığı için henüz girmedi. Seri değildir."
 
+[dim.post_office_type]
+label_tr = "İş yeri türü"
+label_en = "Workplace type"
+
+[dim.post_office_type.values]
+main = { label_tr = "Merkez (müdürlük)", label_en = "Main office" }
+branch = { label_tr = "Şube", label_en = "Branch" }
+agency = { label_tr = "Acentelik", label_en = "Agency" }
+
+[indicator.post_offices]
+label_tr = "PTT iş yeri"
+label_en = "Post offices"
+topic = "iletisim"
+unit = "item"
+frequency = "annual"
+dims = ["post_office_type"]
+views = ["table", "map", "bar"]
+definition_tr = "PTT'nin en yakın PTT bulucusundan (enyakinptt.ptt.gov.tr) okunan iş yerleri, ilçe ve il düzeyinde, 18.09.2026 anlık görüntüsü; 3.295 iş yeri (PTT'nin son açıkladığı 3.576'nın yaklaşık %92'si). Merkez: ilçenin ana iş yeri; şube: merkeze bağlı ek iş yeri; acentelik: PTT adına sözleşmeyle bir esnafın işlettiği, çoğu köy ve beldedeki nokta. Yoğunluk karşılaştırmasında acentelik ayrı okunmalıdır. ATM alanı kaynakta boş olduğu için alınmadı. Seri değildir."
+
 [dim.cargo_company]
 label_tr = "Kargo şirketi"
 label_en = "Cargo company"
@@ -31906,6 +31925,7 @@ label_en = "Cargo company"
 aras = "Aras Kargo"
 dhl_ecommerce = "DHL eCommerce (MNG)"
 yurtici = "Yurtiçi Kargo"
+surat = "Sürat Kargo"
 
 [indicator.cargo_branches]
 label_tr = "Kargo şubesi"
@@ -31915,7 +31935,7 @@ unit = "item"
 frequency = "annual"
 dims = ["cargo_company"]
 views = ["table", "map", "bar"]
-definition_tr = "Kargo şirketlerinin kendi şube bulucusundan okunan şube sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Aras: birim türü 4 (şube), 790 şube; birim kimliği tekil değil, şube adıyla tekilleştirildi. DHL eCommerce (eski MNG): bulucu yalnız ilçeye en yakın şubeleri verdiği için her ilçe soruldu ve şube koduyla birleştirildi, 823 şube. Yurtiçi: şube kimliği 1-8000 tek tek soruldu, 873 şube. Seri değildir."
+definition_tr = "Kargo şirketlerinin kendi şube bulucusundan okunan şube sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Aras: birim türü 4 (şube), 790 şube; birim kimliği tekil değil, şube adıyla tekilleştirildi. DHL eCommerce (eski MNG): bulucu yalnız ilçeye en yakın şubeleri verdiği için her ilçe soruldu ve şube koduyla birleştirildi, 823 şube. Yurtiçi: şube kimliği 1-8000 tek tek soruldu, 873 şube. Sürat: teslim noktası bulucusu ilçe ilçe soruldu, yalnız şubeler alındı (818; 388'i adında \"Acente\" taşıyan sözleşmeli acente, 33'ünün koordinatı yok). Kargo dolabı, esnaf noktası ve easypoint alınmadı. Seri değildir."
 
 [dim.fashion_brand]
 label_tr = "Marka"
