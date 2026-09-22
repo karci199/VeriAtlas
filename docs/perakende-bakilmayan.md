@@ -59,3 +59,18 @@ Değer sütunu: ilçe düzeyinde neyi ölçtüğü.
 **Öncelik önerisi:** Önce resmî ve tam listeler (Noterler Birliği, MEB özel öğretim
 kayıtları; robots kontrolüyle), çünkü marka seçme sorunu yok. Sonra mobilya ve oto
 servis, çünkü ilçe düzeyinde başka bir göstergenin vermediği şeyi ölçüyorlar.
+
+## Sonuç (2026-09-22 gündüz)
+
+| Tür | Sonuç |
+| --- | --- |
+| Mobilya | **depoda** `furniture_stores`: İstikbal, Bellona, Mondi, Doğtaş, Kelebek — 2.082 ([mobilya.md](mobilya.md)) |
+| Spor salonu | **depoda** `chain_stores` / `macfit`: 171 kulüp, ilçe sitenin kendi URL etiketinden (`/kulupler/<il>/<ilçe>/`); Çorlu'daki bir kulüp sitede Süleymanpaşa'ya yazılı |
+| Optik | **depoda** `chain_stores` / `opmar`: 70 mağaza, Ticimax `api/Store/GetStoriesLite`. Atasun: bağlantı kurulamadı |
+| Noter | **alınamadı**: Noterler Birliği Noter Bul reCAPTCHA arkasında |
+| Oto servis / lastik | **alınamadı**: Petlas bayi arama reCAPTCHA; Lassa bayi sayfası 404; Bosch Car Service yönlendirmesi izlenmedi |
+| Evcil hayvan | **alınamadı**: Petzz'e bağlantı kurulamadı (hata veri değildir; yeniden denenebilir) |
+| Spor giyim | FLO robots.txt'si `ClaudeBot` ve `Claude-User`'ı engelliyor — alınmaz. Decathlon yalnız `Claude-SearchBot`'u sınırlıyor, denenmedi |
+| Kitap / kuyum / oto kiralama / beyaz eşya (kalan) | denenmedi |
+
+**Ticimax notu:** Opmar'ın ucu platformun ortak ucudur (`/api/Store/GetStoriesLite?CountryID=-1&PageSize=1000`); aynı altyapıdaki başka zincirlerde de aynı adresle çalışır.

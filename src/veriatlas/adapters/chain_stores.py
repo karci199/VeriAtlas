@@ -122,6 +122,13 @@ STORE_BRANDS = {
     # (Balgat, Batıkent, Eryaman...) instead of districts — the table is yunus_semt_ilce.json.
     "yunus": "zincir/yunus_ilce.csv",
     "nurtas": "zincir/nurtas_ilce.csv",
+    # Gym chain, not a shop: macfit.com/kulupler links every club as /kulupler/<il>/<ilçe>/,
+    # and that label is the district (171 clubs). One label is wrong on the site itself:
+    # "Çorlu Metropol Rezidans" is filed under Süleymanpaşa.
+    "macfit": "spor/macfit_ilce.csv",
+    # Optician: opmar.com.tr/api/Store/GetStoriesLite (Ticimax platform), 70 stores, each
+    # with a coordinate and the chain's own province and district.
+    "opmar": "optik/opmar_magazalar.csv",
 }
 
 #: The share of a brand's branches allowed to fall outside every polygon *while standing

@@ -31399,6 +31399,8 @@ migros = { label_tr = "Migros", label_en = "Migros" }
 sec_market = { label_tr = "Seç Market", label_en = "Seç Market" }
 yunus = { label_tr = "Yunus Market", label_en = "Yunus Market" }
 nurtas = { label_tr = "Nurtaş Market", label_en = "Nurtaş Market" }
+macfit = { label_tr = "MACFit (spor salonu)", label_en = "MACFit (gym)" }
+opmar = { label_tr = "Opmar Optik", label_en = "Opmar Optik" }
 
 [indicator.chain_stores]
 label_tr = "Zincir mağaza sayısı"
