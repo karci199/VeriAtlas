@@ -237,9 +237,28 @@ Sıhhiye (Eti) → Maltepe; Ümitköy (Mutlukent) → Bilkent; Siteler (Önder) 
 Hamamönü (Hacettepe) → Samanpazarı; Çakırlar (Turgut Özal) → Batıkent. Gündelik semt
 posta kutusunda büyük komşusuna katılmış.
 
-**Sınırı.** İş yeri semti bir noktada yakalar, sınırını vermez; Sıhhiye'nin Eti
-mahallesinde olduğu bilinir, hangi mahalleleri kapsadığı bilinmez. Aday listesi elle
-gözden geçirilmeden katmana girmez: kişi adları (Turan Güneş, Necip Fazıl) ve sözlüğün
-kaçırdığı kurumlar hâlâ içinde olabilir. Ulusal tutarlılık da zayıf: adı bir posta
-semtine denk gelen 620 iş yerinin yalnız 271'inde kendi mahallesinin posta semti aynı
-ad (Ankara'da 32'de 27) — taşrada ad eşleşmesi çoğu zaman beldedir.
+**Ayıklama (2026-09-22).** 399 aday ve 57 kısmi eşleşme (456) tek tek karara bağlandı; karar ve
+gerekçe dosyada `karar` / `gerekce` sütunlarında, elle değiştirilenler "(elle)" işaretli:
+
+| karar | adet | örnek |
+| --- | ---: | --- |
+| **semt** | **124** | Sıhhiye, Ümitköy, Siteler, Dudullu, Samandıra, Cağaloğlu, Barakfakı, Orcaner |
+| köy / belde | 129 | Isparta Barla, Afyon Nuh — taşrada ya da acentelik |
+| kişi, tarih, anma adı | 55 | Turan Güneş, 100. Yıl, 15 Temmuz Şehitler |
+| il / ilçe merkezi | 44 | ilin adı, "Bafra Merkezi", farklı yazılmış Mihalıççık |
+| genel yer tarifi | 37 | Çarşı, Meydan, İskele, Gar |
+| ticari alan | 29 | Perpa, İstoç, Gimat, Buttim, AVM'ler |
+| konut sitesi | 18 | TOKİ, lojman, "… Evleri" |
+| kurum | 17 | tugay, kampüs, adliye |
+| sınır kapısı | 3 | Kapıkule, Habur |
+
+124 semt 25 ilde; İstanbul 29, Ankara 22, Bursa ve İzmir 8'er, Adana 7. 121'inin adres
+mahallesi ve o mahallenin posta semti çözüldü. Sınıflama bir kural kümesi artı açık
+listelerdir; sınır durumları (Haliç bir semt mi, bölge mi) semt sayıldı.
+
+**Sınırı.** İş yeri semti bir noktada yakalar, sınırını vermez: Sıhhiye'nin Eti
+mahallesinde olduğu bilinir, hangi mahalleleri kapsadığı bilinmez. Bu yüzden semt
+katmanına poligon değil **nokta + adres mahallesi** olarak girer. Ulusal tutarlılık da
+zayıftır: adı bir posta semtine denk gelen 620 iş yerinin yalnız 271'inde kendi
+mahallesinin posta semti aynı ad (Ankara'da 32'de 27) — taşrada ad eşleşmesi çoğu zaman
+beldedir.
