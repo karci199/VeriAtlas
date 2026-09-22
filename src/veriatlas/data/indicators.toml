@@ -31898,6 +31898,27 @@ dims = ["operator"]
 views = ["table", "map", "bar"]
 definition_tr = "Türk Telekom ve Vodafone bulucularındaki satış noktaları, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Bireysel ve kurumsal listeler aynı bayileri taşır (1.777 kayıt, 893 bayi); bayi kimliğiyle tekilleştirilmiştir. Turkcell listesinde koordinat olmadığı için henüz girmedi. Seri değildir."
 
+[dim.furniture_brand]
+label_tr = "Mobilya markası"
+label_en = "Furniture brand"
+
+[dim.furniture_brand.values]
+istikbal = "İstikbal"
+bellona = "Bellona"
+mondi = "Mondi"
+dogtas = "Doğtaş"
+kelebek = "Kelebek"
+
+[indicator.furniture_stores]
+label_tr = "Mobilya mağazası"
+label_en = "Furniture stores"
+topic = "perakende"
+unit = "item"
+frequency = "annual"
+dims = ["furniture_brand"]
+views = ["table", "map", "bar"]
+definition_tr = "Beş mobilya markasının kendi mağaza bulucusundan okunan mağaza sayısı, ilçe ve il düzeyinde, 22.09.2026 anlık görüntüsü. İstikbal, Bellona ve Mondi (Boydak grubu) istikbal.com.tr'nin arkasındaki marka API'sinden il il; Doğtaş ve Kelebek ortak mağaza panelinden. Bayi, firmanın kendi perakende mağazası ve outlet birlikte sayılır; Doğtaş'ın 248 mağazasının 217'si, Kelebek'in 235'inin 203'ü bayidir. Seri değildir."
+
 [dim.post_office_type]
 label_tr = "İş yeri türü"
 label_en = "Workplace type"

@@ -49,6 +49,7 @@ from typing import ClassVar
 
 import polars as pl
 
+from ..areas import resolve_district
 from ..config import PUBLIC, RAW
 from .base import cached_copy
 from .chain_stores import TURKEY, locate
@@ -77,6 +78,8 @@ class Point:
     lat: float | None
     lng: float | None
     province: str | None = None  # "TR-xx" as the source states it, when it does
+    # The district the source names, used only when there is no coordinate at all.
+    named_district: str | None = None
 
 
 def _num(value) -> float | None:
@@ -488,6 +491,68 @@ def surat() -> Iterator[Point]:
                 )
 
 
+def _dmg(mark: str) -> Callable[[], Iterator[Point]]:
+    """Doğtaş and Kelebek share one panel (services.dmgpanel.com/ajax/new-shops?mark=).
+    Every shop carries `shop_type_name` (Bayi / Perakende / Outlet); the coordinate is
+    the text "lat, lng" in `google_maps_link`. The province is the panel's own city,
+    which splits İstanbul into "İstanbul - Avrupa" and "- Anadolu"."""
+
+    def extract() -> Iterator[Point]:
+        d = _load(f"mobilya/{mark}_magazalar.json")
+        for r in d["shops"]:
+            lat = lng = None
+            parts = (r.get("google_maps_link") or "").split(",")
+            if len(parts) == 2:
+                lat, lng = _num(parts[0]), _num(parts[1])
+            city = (r.get("city") or {}).get("name") or ""
+            named = None
+            if lat is None or lng is None:
+                # 15 Kelebek shops give a short link, an address or nothing; the
+                # panel's own district then places them.
+                prov = city.split(" - ")[0]
+                dist = (r.get("district") or {}).get("name") or ""
+                if dist == f"{prov} Merkez":  # the panel writes "Artvin Merkez"
+                    dist = "Merkez"
+                try:
+                    named = resolve_district(prov, dist)
+                except KeyError:
+                    # "Van Merkez" filed under Yenimahalle, a district Van does not
+                    # have: a wrong label is left unplaced, not guessed.
+                    named = None
+            yield Point(str(r["id"]), "store", lat, lng, province(city), named)
+
+    return extract
+
+
+def _erciyes(brand: str) -> Callable[[], Iterator[Point]]:
+    """Boydak group brands from brandapi.erciyes.com (the API behind istikbal.com.tr's
+    store page), asked per plate. `FirmNumber` identifies the store; `ProvinceCode`
+    is the plate the brand files it under."""
+
+    def extract() -> Iterator[Point]:
+        copy = cached_copy(
+            RAW / "mobilya/erciyes_magazalar.jsonl", FOLDER / "mobilya__erciyes.jsonl"
+        )
+        for line in copy.read_text(encoding="utf-8").splitlines():
+            q = json.loads(line)
+            if q["brand"] != brand:
+                continue
+            if q["rows"] is None:
+                raise ValueError(
+                    f"{brand} plaka {q['plate']}: sorgu hata döndü ({q['error']})"
+                )
+            for r in q["rows"]:
+                yield Point(
+                    r["FirmNumber"],
+                    "store",
+                    _num(r.get("Latitude")),
+                    _num(r.get("Longitude")),
+                    province(r.get("ProvinceCode")),
+                )
+
+    return extract
+
+
 def _stores(
     relative: str,
     key: str,
@@ -664,6 +729,7 @@ class Report:
     stated: int = 0
     agree: int = 0
     unknown_names: int = 0
+    by_name: int = 0  # placed by the source's district name, having no coordinate
 
     @property
     def placed(self) -> int:
@@ -696,6 +762,10 @@ def points(
             rep.duplicates += 1
             continue
         seen.add((point.kind, point.key))
+        if (point.lat is None or point.lng is None) and point.named_district:
+            rep.by_name += 1
+            out.append((point.kind, point.named_district))
+            continue
         if point.lat is None or point.lng is None:
             if brand in NOT_PHYSICAL:
                 rep.not_physical += 1
@@ -876,6 +946,19 @@ class PostOffices(_Network):
     }
 
 
+class FurnitureStores(_Network):
+    indicator_id = "furniture_stores"
+    dim = "furniture_brand"
+    kind = "store"
+    brands: ClassVar = {
+        "istikbal": _erciyes("İSTİKBAL"),
+        "bellona": _erciyes("BELLONA"),
+        "mondi": _erciyes("MONDİ"),
+        "dogtas": _dmg("dogtas"),
+        "kelebek": _dmg("kelebek"),
+    }
+
+
 class FashionStores(_Network):
     indicator_id = "fashion_stores"
     dim = "fashion_brand"
@@ -892,5 +975,6 @@ NETWORK_ADAPTERS = {
         FashionStores,
         CargoBranches,
         PostOffices,
+        FurnitureStores,
     )
 }
