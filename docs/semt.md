@@ -203,3 +203,43 @@ Bu, semt katmanının dayandığı ölçümün tek bir dosyanın tesadüfü olma
 dağıtım noktası, sokak sayımı değil: 72.640 yerleşimin 39.120'si tek satır taşıyor, çünkü
 köyde PTT sokakları değil köyün kendisini yazıyor. "İlçe başına sokak" göstergesi köyleri
 tek sokaklı gösterirdi.
+
+## İkinci kaynak: PTT iş yeri adları (2026-09-22)
+
+Yukarıdaki sınamada semtin posta kodu dışında kaynağı yoktu. PTT'nin **iş yerlerine
+verdiği adlar** bağımsız bir ikinci kaynak: 3.295 iş yeri (en yakın PTT bulucusu,
+`raw/ptt/isyerleri.csv`), her biri koordinatlı ve adresli. Merkez iş yeri ilçenin, şube
+çoğu zaman bulunduğu yerin gündelik adını taşır — posta kodu kutusunun değil.
+
+Yöntem (`raw/ptt/semt_isyeri_adlari.csv`, satır başına bir iş yeri): addan "ŞUBESİ",
+"MÜDÜRLÜĞÜ", "ACENTELİĞİ", "ŞUBE ŞEFLİĞİ" gibi ekler soyulur; kök sırayla operasyon
+birimi (dağıtım, işleme), kurum (adliye, bakanlık, hastane, OSB, AVM, Danıştay, TRT…),
+cadde, ilçe adı, 2022 posta semti ve mahalle adıyla karşılaştırılır. Hiçbirine uymayan
+**semt adayıdır**. Mahalle adresten okunur, o mahallenin posta semti yanına yazılır.
+
+| sınıf | adet |
+| --- | ---: |
+| ilçe adı | 885 |
+| mahalle adı | 771 |
+| posta semti adı | 620 |
+| **semt adayı** | **399** |
+| kurum | 352 |
+| operasyon | 196 |
+| kısmi (bir kelimesi mahalle/semt) | 57 |
+| cadde | 15 |
+
+**Adaylar büyükşehirde semt, taşrada köy.** İstanbul 43, Ankara 27, İzmir 13 aday
+gerçekten konuşulan semt adları; Isparta, Afyon, Kütahya adayları ise köy ve belde
+acentelikleri. Aday listesi taşrada semt değildir.
+
+**Posta kutusunun kaba olduğunun kanıtı** — Ankara'dan, adres mahallesi → posta semti:
+Sıhhiye (Eti) → Maltepe; Ümitköy (Mutlukent) → Bilkent; Siteler (Önder) → Ulubey;
+Hamamönü (Hacettepe) → Samanpazarı; Çakırlar (Turgut Özal) → Batıkent. Gündelik semt
+posta kutusunda büyük komşusuna katılmış.
+
+**Sınırı.** İş yeri semti bir noktada yakalar, sınırını vermez; Sıhhiye'nin Eti
+mahallesinde olduğu bilinir, hangi mahalleleri kapsadığı bilinmez. Aday listesi elle
+gözden geçirilmeden katmana girmez: kişi adları (Turan Güneş, Necip Fazıl) ve sözlüğün
+kaçırdığı kurumlar hâlâ içinde olabilir. Ulusal tutarlılık da zayıf: adı bir posta
+semtine denk gelen 620 iş yerinin yalnız 271'inde kendi mahallesinin posta semti aynı
+ad (Ankara'da 32'de 27) — taşrada ad eşleşmesi çoğu zaman beldedir.
