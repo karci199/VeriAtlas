@@ -420,6 +420,31 @@ def dhl() -> Iterator[Point]:
         )
 
 
+def yurtici() -> Iterator[Point]:
+    """Yurtiçi's branch endpoint answers one id at a time; ids 1-8000 were walked (the
+    live ones sit between 1002 and 7150). The address is free text that usually ends in
+    the province ("Merkez / Bilecik") but sometimes in a district or "İst."; only a last
+    word that is a province counts as stated, the rest is left to the coordinate."""
+    copy = cached_copy(
+        RAW / "kargo/yurtici_subeler.jsonl", FOLDER / "kargo__yurtici.jsonl"
+    )
+    for line in copy.read_text(encoding="utf-8").splitlines():
+        r = json.loads(line)
+        yield Point(
+            str(r["Id"]),
+            "store",
+            _num(r.get("Latitude")),
+            _num(r.get("Longitude")),
+            _last_word_province(r["Address"]),
+        )
+
+
+def _last_word_province(address: str) -> str | None:
+    words = address.replace("/", " ").split()
+    found = province(words[-1]) if words else None
+    return None if isinstance(found, Unknown) else found
+
+
 def _stores(
     relative: str,
     key: str,
@@ -785,7 +810,7 @@ class CargoBranches(_Network):
     indicator_id = "cargo_branches"
     dim = "cargo_company"
     kind = "store"
-    brands: ClassVar = {"aras": aras, "dhl_ecommerce": dhl}
+    brands: ClassVar = {"aras": aras, "dhl_ecommerce": dhl, "yurtici": yurtici}
 
 
 class FashionStores(_Network):
