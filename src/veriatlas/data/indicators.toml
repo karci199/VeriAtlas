@@ -32874,22 +32874,3 @@ definition_tr = "Mahallede yaşayanların nüfus kütüğündeki il — yalnız 
 # `applies_to` is deliberately a list rather than a rule. Births over women 15-49 is the
 # general fertility rate; deaths over the same women is nothing at all, and a screen that
 # offers it because both are counts is offering a number nobody asked a question about.
-
-[dim.notary_class]
-label_tr = "Noterlik sınıfı"
-label_en = "Notary office class"
-
-[dim.notary_class.values]
-first = { label_tr = "Birinci sınıf", label_en = "First class" }
-second = { label_tr = "İkinci sınıf", label_en = "Second class" }
-third = { label_tr = "Üçüncü sınıf", label_en = "Third class" }
-
-[indicator.notaries]
-label_tr = "Noterlik"
-label_en = "Notary offices"
-topic = "adalet"
-unit = "item"
-frequency = "annual"
-dims = ["notary_class"]
-views = ["table", "map", "bar"]
-definition_tr = "Türkiye Noterler Birliği kaydındaki noterlikler, sınıfına göre, ilçe ve il düzeyinde, 23.09.2026 anlık görüntüsü. Resmî ve tam liste (2.386 noterlik). Noterlik sınıfı iş hacmine göre belirlenir: birinci sınıf en yoğun noterliklerdir. İlçe, noterliğin kendi harita koordinatından, yoksa adresin sonundaki ilçe/il etiketinden belirlenir. Seri değildir."
