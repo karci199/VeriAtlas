@@ -62,7 +62,7 @@ menüden açılır (`a[href]` gerçek adresleri taşır), ağ kaydından adres o
 | Gerçek zamanlı üretim | `generation/data/realtime-generation` | ülke geneli × yakıt | il yok |
 
 **Serbest tüketici örneği (2026-09-23, Ağustos 2026):** Tarayıcıda oturum açıkken sayfanın
-"Dışa Aktar → CSV" düğmesi ayın tamamını tek dosyada veriyor (`C:\veri-ham\epias\eligible_consumer\Il_Ilce_ST_Adedi-082026.csv`,
+"Dışa Aktar → CSV" düğmesi ayın tamamını tek dosyada veriyor (`C:\veri-ham\epias\eligible_consumer\Il_Ilce_ST_Adedi-082026.csv`,
 4.358 satır). Sütunlar: dönem, il, ilçe, profil abone grubu (mesken, ticarethane, sanayi, tarımsal sulama,
 aydınlatma, diğer), serbest tüketici **sayaç sayısı** (tüketim miktarı değil). Mahalle yok.
 - **Kapsam:** Ocak 2010'dan başlıyor (2009 ve öncesi boş, girdi değeri okunarak doğrulandı). Ocak 2010 547 satır,
