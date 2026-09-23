@@ -76,6 +76,23 @@ aydınlatma, diğer), serbest tüketici **sayaç sayısı** (tüketim miktarı d
 - **Okuma:** konut serbest tüketicisi en çok Antalya ilçelerinde (Kaş 1000 kişiye 86); 190 ilçede konut sıfır —
   bölgesel perakende şirketinin kampanyası gibi görünüyor, refah göstergesi olarak okunmamalı (SEGE ile ρ 0,27).
 
+**EPİAŞ tam tarama (2026-09-23):** menüde 180 veri sayfası; teknik belgedeki istek tiplerinden
+bölge alanı olanlar ayıklandı. `region` alanı her yerde yalnız "TR1" (teklif bölgesi, tüm Türkiye) — il değil.
+- **Kesinti (plansız + planlı), yeni:** `consumption/data/unplanned-power-outage-info`, istek `period` (tek gün)
+  + opsiyonel `provinceId`/`distributionCompanyId`; aralık yok → yıl = 365 sorgu. Satır: il, ilçe, mahalle metni,
+  başlangıç/bitiş saati, neden, etkilenen abone, saatlik yük. Başlangıç 2018 sonu–2019 başı (15.01.2018 boş,
+  15.01.2019 1.654 kayıt). Örnek `C:eri-ham\epias\outage\Plansiz_Kesinti_Bilgisi-22092026.csv`: 2.424 kesinti,
+  **yalnız 9 dağıtım şirketi / 33 il** (Uludağ, Başkent, Toroslar, Meram, CK Akdeniz/Boğaziçi/Çamlıbel, AYEDAŞ,
+  AKEDAŞ) — kalan 12 şirket bildirmiyor, kapsam il bazında eksik; ortanca 46 dk, %15'i ≤3 dk (manevra), neden
+  metni şirkete göre farklı yazılıyor.
+- **Tüketici sayısı / tüketim miktarı (il, aylık):** depoda EPDK + TÜİK karşılığı var; son aylar eksik bildirilmiş
+  (Ağustos 2026 konut 10 mn abone, Ocak 2025 37,4 mn). Yüzdesel tüketim sayfası Ağustos 2026'da 16 il.
+- **Lisanslı santral yatırımları (il):** `etkb_added_plants` ile aynı kaynak (EİGM), depoda.
+- **Barajlar:** istek tiplerinde tarih alanı yok — yalnız **bugünün** görüntüsü; geçmiş seri bu uçtan alınamaz.
+  85 baraj aktif doluluk, 116 baraj debi/kurulu güç + bulunduğu il. Yalnız HES barajları.
+- **ENTSO-W / UEVÇB (`provinceId` ile):** yalnız organizasyon kodu ve adı döner, üretim miktarı yok.
+- Kalan ~170 sayfa piyasa fiyatı, işlem, YEKDEM, doğal gaz iletimi — ülke geneli.
+
 **Sıklık kararı (kullanıcı, 2026-09-18):** yıllık; gerekirse aylık ortalama. Çok veri varsa
 yıllık. Anlık veri yalnız gerektiğinde tek seferlik.
 
