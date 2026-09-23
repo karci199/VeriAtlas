@@ -386,16 +386,40 @@ def turktelekom() -> Iterator[Point]:
         )
 
 
-def vodafone() -> Iterator[Point]:
-    """Vodafone's finder, one row per sales point of every kind (shop, dealer, kiosk)."""
-    import csv
+def _vodafone(*kinds: str) -> Callable[[], Iterator[Point]]:
+    """Vodafone's finder lists every kind of point in one file, and the kinds are not
+    alike: `cep_merkezi` and `kurumsal_magaza` are Vodafone-branded shops, `hizmet_noktasi`
+    a dealer selling lines, `odeme_noktasi` a shop that only takes bill payments (3.440 of
+    5.891 — counted together they made Vodafone look six times Türk Telekom's size)."""
 
-    copy = cached_copy(RAW / "zincir/vodafone.csv", FOLDER / "zincir__vodafone.csv")
-    with copy.open(encoding="utf-8", newline="") as handle:
-        for i, r in enumerate(csv.DictReader(handle)):
-            yield Point(
-                f"{i}", "store", _num(r["lat"]), _num(r["lng"]), province(r["province"])
-            )
+    def extract() -> Iterator[Point]:
+        import csv
+
+        copy = cached_copy(RAW / "zincir/vodafone.csv", FOLDER / "zincir__vodafone.csv")
+        with copy.open(encoding="utf-8", newline="") as handle:
+            for i, r in enumerate(csv.DictReader(handle)):
+                if r["kind"] in kinds:
+                    yield Point(
+                        f"{i}",
+                        "store",
+                        _num(r["lat"]),
+                        _num(r["lng"]),
+                        province(r["province"]),
+                    )
+
+    return extract
+
+
+def turkcell() -> Iterator[Point]:
+    """Turkcell's own list of digital sales dealers (DSN, DSNPlus, DSNPlus Extra), a
+    195-page PDF saved by hand on 2026-09-23 (turkcell.com.tr → Turkcell Mağazaları →
+    "Dijital Satış Noktaları Listesi"). No coordinates: the province comes from the list's
+    order, checked against the PDF's own per-province summary (81 provinces, 3.516
+    dealers, and its per-type totals), and the district from each row's district label
+    through the registry (`scripts/convert_turkcell_pdf.py`). Turkcell has no separate
+    branded-shop tier: its store finder shows these same dealers (48 of Adana's 74)."""
+    for r in _load("turkcell/elle/turkcelldijital_satirlar.json"):
+        yield Point(str(r["no"]), "store", None, None, r["il"], r["ilce"])
 
 
 def aras() -> Iterator[Point]:
@@ -717,7 +741,7 @@ NOT_PHYSICAL = {
 }
 #: Duplicate record keys measured on 2026-09-21; the TT lists overlap by design.
 MAX_DUPLICATES = {
-    "turk_telekom": 884,
+    "turk_telekom_office": 884,
     # The same branch code and point printed two or three times.
     "denizbank": 169,
     # Seven branch codes with two different points each; the first is kept.
@@ -939,9 +963,15 @@ class BankAtmLocations(_Network):
 
 class TelecomDealers(_Network):
     indicator_id = "telecom_dealers"
-    dim = "operator"
+    dim = "telecom_outlet"
     kind = "store"
-    brands: ClassVar = {"turk_telekom": turktelekom, "vodafone": vodafone}
+    brands: ClassVar = {
+        "turk_telekom_office": turktelekom,
+        "vodafone_shop": _vodafone("cep_merkezi", "kurumsal_magaza"),
+        "vodafone_dealer": _vodafone("hizmet_noktasi"),
+        "vodafone_payment": _vodafone("odeme_noktasi"),
+        "turkcell_dealer": turkcell,
+    }
 
 
 class CargoBranches(_Network):

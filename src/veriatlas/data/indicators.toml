@@ -31901,15 +31901,26 @@ dims = ["bank"]
 views = ["table", "map", "bar"]
 definition_tr = "On altı bankanın kendi bulucusundan okunan ATM sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Bir noktadaki her makine ayrı sayılır. Garanti BBVA (yaklaşık 6.400 ATM) alınamadığı için sektör toplamı değildir; sektör toplamı TBB'nin `bank_atms` göstergesindedir. Kuveyt Türk'ün para yatırma-çekme makineleri (AIO) ATM sayılır. Seri değildir."
 
+[dim.telecom_outlet]
+label_tr = "Satış noktası türü"
+label_en = "Outlet type"
+
+[dim.telecom_outlet.values]
+turk_telekom_office = { label_tr = "Türk Telekom ofis ve mağazası", label_en = "Türk Telekom office and shop" }
+vodafone_shop = { label_tr = "Vodafone Cep Merkezi ve kurumsal mağaza", label_en = "Vodafone branded shop" }
+vodafone_dealer = { label_tr = "Vodafone hizmet noktası (bayi)", label_en = "Vodafone dealer" }
+vodafone_payment = { label_tr = "Vodafone ödeme noktası", label_en = "Vodafone bill-payment point" }
+turkcell_dealer = { label_tr = "Turkcell dijital satış bayisi", label_en = "Turkcell digital sales dealer" }
+
 [indicator.telecom_dealers]
-label_tr = "Operatör bayisi"
-label_en = "Telecom operator dealers"
+label_tr = "Operatör satış noktası"
+label_en = "Telecom operator outlets"
 topic = "iletisim"
 unit = "item"
 frequency = "annual"
-dims = ["operator"]
+dims = ["telecom_outlet"]
 views = ["table", "map", "bar"]
-definition_tr = "Türk Telekom ve Vodafone bulucularındaki satış noktaları, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Bireysel ve kurumsal listeler aynı bayileri taşır (1.777 kayıt, 893 bayi); bayi kimliğiyle tekilleştirilmiştir. Turkcell listesinde koordinat olmadığı için henüz girmedi. Seri değildir."
+definition_tr = "Üç operatörün satış noktaları, türüne göre ayrı, ilçe ve il düzeyinde, 21-23.09.2026 anlık görüntüsü. Türler karşılaştırılabilir değildir ve toplanmamalıdır: Türk Telekom listesi yalnız markalı ofis ve mağazaları (871), Vodafone bulucusu mağaza, bayi ve yalnız fatura ödenen noktaları birlikte verir (burada üçe bölündü), Turkcell'de ayrı bir markalı mağaza kademesi yoktur — mağaza bulucusu da aynı bayileri gösterir — ve dijital satış bayi listesi (PDF, 3.516) alınmıştır. Türk Telekom'un bayi ağı elde değildir. Seri değildir."
 
 [dim.furniture_brand]
 label_tr = "Mobilya markası"
