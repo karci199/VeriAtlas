@@ -81,7 +81,7 @@ bölge alanı olanlar ayıklandı. `region` alanı her yerde yalnız "TR1" (tekl
 - **Kesinti (plansız + planlı), yeni:** `consumption/data/unplanned-power-outage-info`, istek `period` (tek gün)
   + opsiyonel `provinceId`/`distributionCompanyId`; aralık yok → yıl = 365 sorgu. Satır: il, ilçe, mahalle metni,
   başlangıç/bitiş saati, neden, etkilenen abone, saatlik yük. Başlangıç 2018 sonu–2019 başı (15.01.2018 boş,
-  15.01.2019 1.654 kayıt). Örnek `C:eri-ham\epias\outage\Plansiz_Kesinti_Bilgisi-22092026.csv`: 2.424 kesinti,
+  15.01.2019 1.654 kayıt). Örnek `C:\veri-ham\epias\outage\Plansiz_Kesinti_Bilgisi-22092026.csv`: 2.424 kesinti,
   **yalnız 9 dağıtım şirketi / 33 il** (Uludağ, Başkent, Toroslar, Meram, CK Akdeniz/Boğaziçi/Çamlıbel, AYEDAŞ,
   AKEDAŞ) — kalan 12 şirket bildirmiyor, kapsam il bazında eksik; ortanca 46 dk, %15'i ≤3 dk (manevra), neden
   metni şirkete göre farklı yazılıyor.
