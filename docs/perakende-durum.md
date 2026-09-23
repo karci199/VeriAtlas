@@ -77,8 +77,8 @@
 | Mondi | Mobilya | 329 | 74 | 232 | bayi paneli |  |
 | Doğtaş | Mobilya | 246 | 72 | 184 | bayi paneli |  |
 | Kelebek | Mobilya | 234 | 69 | 170 | bayi paneli |  |
-| Vodafone | Operatör | 5.836 | 81 | 837 | bayi bulucu | mağaza, bayi ve kiosk birlikte |
-| Türk Telekom | Operatör | 892 | 81 | 279 | bayi bulucu |  |
+| Vodafone | Operatör | 5.836 | 81 | 837 | bayi bulucu | türler karışık: ödeme noktası 3.440, hizmet noktası 1.677, Cep Merkezi 756, kurumsal 18; kademelere bölünecek |
+| Türk Telekom | Operatör | 892 | 81 | 279 | bayi bulucu | 871 markalı ofis ve mağaza (TTM Şube, TT Ofis, Mini Ofis); kurumsal liste aynı ortaklar |
 | Opmar Optik | Optik | 69 | 24 | 48 | Ticimax ortak ucu |  |
 | MACFit (spor salonu) | Spor | 171 | 18 | 67 | mağaza bulucu |  |
 | Intersport | Spor | 25 | 9 | 23 | Akinon ortak ucu |  |
@@ -96,7 +96,7 @@
 | HD İskender | Yeme-içme | 95 | 22 | 57 | mağaza bulucu |  |
 | Şarj istasyonları | Şarj | 16.345 | 81 | 728 | EPDK lisans kaydı | resmî ve tam liste |
 
-## Ham veri var, bekliyor (12)
+## Ham veri var, bekliyor (14)
 
 | Marka | Tür | Mağaza | İl | İlçe | Yöntem | Not |
 |---|---|---|---|---|---|---|
@@ -108,17 +108,20 @@
 | Happy Center | Market | 194 |  |  | mağaza bulucu | il yok, yalnız adres |
 | Bizim Toptan | Market | 172 |  |  | mağaza bulucu | il ve ilçe etiketi var |
 | Onur Market | Market | 154 |  |  | mağaza bulucu | il ve ilçe etiketi var, ilk satır bozuk |
+| Turkcell dijital satış bayileri | Operatör | 3.516 |  |  | Turkcell'in PDF listesi | 23.09 sürümü 81 il; il özeti var; eski sürümde ilçe eşleşmesi %96,7 |
+| Turkcell Ev Müşteri Merkezleri | Operatör | 38 |  |  | Turkcell'in PDF listesi | 25 il, yalnız Superbox |
 | Toyzz Shop | Oyuncak | 263 |  |  | mağaza bulucu | yalnız serbest adres |
 | Kahve Dünyası | Yeme-içme | 355 |  |  | mağaza bulucu | adresten il ve ilçe çıkarılacak |
 | KFC | Yeme-içme | 43 |  |  | mağaza bulucu | yarım kaldı |
 | Usta Dönerci | Yeme-içme |  |  |  | mağaza bulucu | yalnız il sayıları |
 
-## Kısmi, tamamlanmalı (3)
+## Kısmi, tamamlanmalı (4)
 
 | Marka | Tür | Mağaza | İl | İlçe | Yöntem | Not |
 |---|---|---|---|---|---|---|
 | Arçelik | Beyaz eşya | 1.000 |  |  | elle kaydedilen sayfa | sayfa 500 bayi sınırı; A-E ve S-Z var, F-R yok; il il kayıt gerek |
 | Beko | Beyaz eşya | 991 |  |  | elle kaydedilen sayfa | sayfa 500 sınırı; A-G ve O-Z var, H-N yok; il il kayıt gerek |
+| Turkcell mağaza sayfası | Operatör | 74 |  |  | elle kaydedilen sayfa | yalnız Adana; ad ve telefon, ilçe yok; 48'i DSN listesinde |
 | Tekzen | Yapı market | 1 |  |  | Ticimax ortak ucu | uç yalnız 1 mağaza döndürdü |
 
 ## Kayıt boş, yeniden kaydet (1)
@@ -127,7 +130,7 @@
 |---|---|---|---|---|---|---|
 | MediaMarkt | Elektronik |  |  |  | elle kaydedilen sayfa | liste yüklenmeden kaydedildi; arama yapıp kaydet |
 
-## Alınamadı (23)
+## Alınamadı (22)
 
 | Marka | Tür | Mağaza | İl | İlçe | Yöntem | Not |
 |---|---|---|---|---|---|---|
@@ -143,7 +146,6 @@
 | Pandora | Kuyum |  |  |  |  | robots 403 |
 | A101 | Market |  |  |  | mağaza ucu bulundu | IP 403, robots 500; kendi açıklaması ~13.500 |
 | CarrefourSA | Market |  |  |  |  | robots 403 |
-| Turkcell | Operatör |  |  |  | bayi listesi | koordinat yok |
 | Atasun Optik | Optik |  |  |  |  | bağlantı kurulamadı |
 | Avis | Oto kiralama |  |  |  |  | robots 403 |
 | Budget | Oto kiralama |  |  |  |  | robots 403 |
