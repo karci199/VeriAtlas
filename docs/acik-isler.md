@@ -56,10 +56,25 @@ menüden açılır (`a[href]` gerçek adresleri taşır), ağ kaydından adres o
 
 | Ne | Uç nokta | Kırılım | Durum |
 |---|---|---|---|
-| **İl-ilçe serbest tüketici adedi** | `consumption/data/eligible-consumer-count` | **ilçe × profil abone grubu**, aylık (~4.358 satır/ay) | çekici hazır (`scripts/fetch_epias_eligible_consumer.py`, 2026-09-23 sahipsiz çalışma kopyasından kurtarıldı); `.env`e EPIAS_USERNAME/EPIAS_PASSWORD girilince çalışır — depodaki ilk ilçe düzeyi enerji göstergesi |
+| **İl-ilçe serbest tüketici adedi** | `consumption/data/eligible-consumer-count` | **ilçe × profil abone grubu**, aylık (~4.358 satır/ay) | **2026-09-23 örnek alındı** (aşağıda) |
 | **Baraj aktif doluluk** | `dams/data/active-fullness` + `dams/data/basin-list` | 87 baraj × havza, günlük, kaynak **DSİ** | çekilecek (yıllık ortalama + yıllık en düşük) |
 | Santral listesi | `generation/data/powerplant-list-for-date-range` | 1.830 santral, **il alanı yok** | il üretimi için EPDK lisans listesiyle eşleştirme gerekir |
 | Gerçek zamanlı üretim | `generation/data/realtime-generation` | ülke geneli × yakıt | il yok |
+
+**Serbest tüketici örneği (2026-09-23, Ağustos 2026):** Tarayıcıda oturum açıkken sayfanın
+"Dışa Aktar → CSV" düğmesi ayın tamamını tek dosyada veriyor (`C:eri-ham\epias\eligible_consumer\Il_Ilce_ST_Adedi-082026.csv`,
+4.358 satır). Sütunlar: dönem, il, ilçe, profil abone grubu (mesken, ticarethane, sanayi, tarımsal sulama,
+aydınlatma, diğer), serbest tüketici **sayaç sayısı** (tüketim miktarı değil). Mahalle yok.
+- **Kapsam:** Ocak 2010'dan başlıyor (2009 ve öncesi boş, girdi değeri okunarak doğrulandı). Ocak 2010 547 satır,
+  Ocak 2012 6.857, Ocak 2015 7.493 — eski yıllarda ilçe sütununa kişi ve mağaza adları girilmiş, satır fazlası bu kirden.
+- **Tuzaklar:** sayılar binlik noktalı ("14.080"); İstanbul iki "il" (İSTANBUL-AVRUPA/ANADOLU); ilçe "Edremit / Van",
+  "Artuklu / Merkez" biçiminde; 10 büyükşehirde eski "X Merkez" adı (Aydın, Balıkesir, Denizli, K.Maraş, Malatya,
+  Manisa, Ordu, Tekirdağ, Trabzon, Van) — sayaçların %1,5'i, yalnız il toplamına yazılabilir, o illerin merkez
+  ilçeleri eksik görünür. Türkçe büyük harf il adı `title()` ile küçültülmez.
+- **Tarih kutusu:** yazarak girilebiliyor ama geçersiz bir tarihten sonra takılıyor; her sorgu yenilenmiş sayfada yapılır,
+  sonuç tablo satırındaki dönemden doğrulanır.
+- **Okuma:** konut serbest tüketicisi en çok Antalya ilçelerinde (Kaş 1000 kişiye 86); 190 ilçede konut sıfır —
+  bölgesel perakende şirketinin kampanyası gibi görünüyor, refah göstergesi olarak okunmamalı (SEGE ile ρ 0,27).
 
 **Sıklık kararı (kullanıcı, 2026-09-18):** yıllık; gerekirse aylık ortalama. Çok veri varsa
 yıllık. Anlık veri yalnız gerektiğinde tek seferlik.
