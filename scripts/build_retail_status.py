@@ -77,7 +77,8 @@ NOTES = {
     ("cargo_branches", "yurtici"): ("şube kimliği taraması", "1-12000 tarandı; doğu 8010-8499"),
     ("cargo_branches", "kolay_gelsin"): ("teslimat noktası haritası", "yalnız DN/DM birimleri; ~990 anlaşmalı nokta ham veride"),
     ("cargo_branches", "surat"): ("ilçe ilçe sorgu", "388'i acente; 33 koordinatsız dışarıda"),
-    ("telecom_dealers", "vodafone"): ("bayi bulucu", "mağaza, bayi ve kiosk birlikte"),
+    ("telecom_dealers", "vodafone"): ("bayi bulucu", "türler karışık: ödeme noktası 3.440, hizmet noktası 1.677, Cep Merkezi 756, kurumsal 18; kademelere bölünecek"),
+    ("telecom_dealers", "turk_telekom"): ("bayi bulucu", "871 markalı ofis ve mağaza (TTM Şube, TT Ofis, Mini Ofis); kurumsal liste aynı ortaklar"),
 }  # fmt: skip
 
 #: Everything not in the warehouse: (brand, category, status, stores or "", method, note).
@@ -93,6 +94,9 @@ OFF_WAREHOUSE = [
     ("Happy Center", "Market", HAM, 194, "mağaza bulucu", "il yok, yalnız adres"),
     ("Usta Dönerci", "Yeme-içme", HAM, "", "mağaza bulucu", "yalnız il sayıları"),
     ("KFC", "Yeme-içme", HAM, 43, "mağaza bulucu", "yarım kaldı"),
+    ("Turkcell dijital satış bayileri", "Operatör", HAM, 3516, "Turkcell'in PDF listesi", "23.09 sürümü 81 il; il özeti var; eski sürümde ilçe eşleşmesi %96,7"),
+    ("Turkcell Ev Müşteri Merkezleri", "Operatör", HAM, 38, "Turkcell'in PDF listesi", "25 il, yalnız Superbox"),
+    ("Turkcell mağaza sayfası", "Operatör", KISMI, 74, "elle kaydedilen sayfa", "yalnız Adana; ad ve telefon, ilçe yok; 48'i DSN listesinde"),
     ("Yerel marketler (22 zincir)", "Market", HAM, 327, "kendi siteleri", "3-44 mağazalık bölge zincirleri; Söz depoda"),
     # partial
     ("Arçelik", "Beyaz eşya", KISMI, 1000, "elle kaydedilen sayfa", "sayfa 500 bayi sınırı; A-E ve S-Z var, F-R yok; il il kayıt gerek"),
@@ -118,7 +122,6 @@ OFF_WAREHOUSE = [
     ("Bosch Car Service", "Oto servis", KAPALI, "", "", "yönlendirme izlenmedi"),
     ("Petzz", "Evcil hayvan", KAPALI, "", "", "bağlantı kurulamadı"),
     ("Atasun Optik", "Optik", KAPALI, "", "", "bağlantı kurulamadı"),
-    ("Turkcell", "Operatör", KAPALI, "", "bayi listesi", "koordinat yok"),
     ("Noter", "Kamu", KAPALI, "", "", "Noterler Birliği reCAPTCHA"),
     ("HepsiJet", "Kargo", KAPALI, "", "", "robots 403"),
     ("UPS", "Kargo", KAPALI, "", "", "Access Denied"),
