@@ -75,6 +75,12 @@ BRANDS = {
     "starbucks": "marketler/starbucks_*.csv",
     "espressolab": "marketler/espressolab_*.csv",
     "dominos": "dominos/subeler_*.csv",
+    # scripts/convert_chain_dumps.py. Köfteci Yusuf's page answers a bot check in an
+    # automated browser; it was saved by hand from an ordinary one (308 branches, 43
+    # provinces, the page's own totals).
+    "kofteci_yusuf": "perakende/kofteciyusuf/kofteciyusuf.csv",
+    "simit_sarayi": "perakende/simitsarayi_magaza.csv",
+    "hd_iskender": "perakende/hdiskender_restoran.csv",
 }
 
 #: Retail chains that publish a coordinate per store, from `scripts/fetch_marketler.py`.
@@ -129,6 +135,16 @@ STORE_BRANDS = {
     # Optician: opmar.com.tr/api/Store/GetStoriesLite (Ticimax platform), 70 stores, each
     # with a coordinate and the chain's own province and district.
     "opmar": "optik/opmar_magazalar.csv",
+    # Two shared shop platforms, one endpoint each for every chain on them
+    # (scripts/convert_chain_dumps.py): Akinon `/address/stores/` and Ticimax
+    # `/api/Store/GetStoriesLite`. Shops abroad are dropped by country before this.
+    "atasay": "perakende/akinon/atasay.csv",
+    "flormar": "perakende/akinon/flormar.csv",
+    "mudo": "perakende/akinon/mudo.csv",
+    "intersport": "perakende/akinon/intersport.csv",
+    "chakra": "perakende/akinon/chakra.csv",
+    "englishhome": "perakende/ticimax/englishhome.csv",
+    "avva": "perakende/ticimax/avva.csv",
 }
 
 #: The share of a brand's branches allowed to fall outside every polygon *while standing

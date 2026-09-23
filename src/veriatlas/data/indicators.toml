@@ -31350,6 +31350,9 @@ komagene = { label_tr = "Komagene", label_en = "Komagene" }
 starbucks = { label_tr = "Starbucks", label_en = "Starbucks" }
 espressolab = { label_tr = "EspressoLab", label_en = "EspressoLab" }
 dominos = { label_tr = "Domino's Pizza", label_en = "Domino's Pizza" }
+kofteci_yusuf = { label_tr = "Köfteci Yusuf", label_en = "Köfteci Yusuf" }
+simit_sarayi = { label_tr = "Simit Sarayı", label_en = "Simit Sarayı" }
+hd_iskender = { label_tr = "HD İskender", label_en = "HD İskender" }
 
 [indicator.chain_restaurants]
 label_tr = "Zincir şube sayısı"
@@ -31359,7 +31362,7 @@ unit = "item"
 frequency = "annual"
 dims = ["restaurant_brand"]
 views = ["table", "map", "bar"]
-definition_tr = "Yedi yeme-içme zincirinin (Burger King, McDonald's, Oses, Ziyafet, Komagene, Starbucks, EspressoLab) şube sayısı, ilçe ve il düzeyinde, 18.09.2026 anlık görüntüsü. İlçe, şubenin adresinden değil koordinatının düştüğü ilçe sınırından belirlenir; markaların kendi il-ilçe etiketleri pazarlama coğrafyasıdır. Markalar toplanmaz: bu sayı 'kaç hamburgerci' ya da 'kaç çiğköfteci' sorusunun cevabı değildir, çiğ köftenin kayıt defteri yoktur ve bağımsız dükkânlar hiçbir listede geçmez. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir, geçmişini tutmaz."
+definition_tr = "Yeme-içme zincirlerinin (Burger King, McDonald's, Domino's, Oses, Ziyafet, Komagene, Starbucks, EspressoLab, Köfteci Yusuf, Simit Sarayı, HD İskender) şube sayısı, ilçe ve il düzeyinde, 18-23.09.2026 anlık görüntüsü. İlçe, şubenin adresinden değil koordinatının düştüğü ilçe sınırından belirlenir; markaların kendi il-ilçe etiketleri pazarlama coğrafyasıdır. Markalar toplanmaz: bu sayı 'kaç hamburgerci' ya da 'kaç çiğköfteci' sorusunun cevabı değildir, çiğ köftenin kayıt defteri yoktur ve bağımsız dükkânlar hiçbir listede geçmez. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir, geçmişini tutmaz."
 
 [indicator.postal_codes]
 label_tr = "Posta kodu sayısı"
@@ -31401,6 +31404,13 @@ yunus = { label_tr = "Yunus Market", label_en = "Yunus Market" }
 nurtas = { label_tr = "Nurtaş Market", label_en = "Nurtaş Market" }
 macfit = { label_tr = "MACFit (spor salonu)", label_en = "MACFit (gym)" }
 opmar = { label_tr = "Opmar Optik", label_en = "Opmar Optik" }
+atasay = { label_tr = "Atasay (kuyum)", label_en = "Atasay (jewellery)" }
+flormar = { label_tr = "Flormar", label_en = "Flormar" }
+mudo = { label_tr = "Mudo", label_en = "Mudo" }
+intersport = { label_tr = "Intersport", label_en = "Intersport" }
+chakra = { label_tr = "Chakra", label_en = "Chakra" }
+englishhome = { label_tr = "English Home", label_en = "English Home" }
+avva = { label_tr = "Avva", label_en = "Avva" }
 
 [indicator.chain_stores]
 label_tr = "Zincir mağaza sayısı"
@@ -31410,7 +31420,7 @@ unit = "item"
 frequency = "annual"
 dims = ["store_brand"]
 views = ["table", "map", "bar"]
-definition_tr = "On beş perakende zincirinin (ŞOK, Hakmar Express, Tarım Kredi, Ekomini, Peynirci Baba, Mopaş, Furpa, Seyhanlar, Koçtaş, Vestel, Gratis, Madame Coco, Rossmann, Karaca, Vatan Bilgisayar) mağaza sayısı, ilçe ve il düzeyinde, 19.09.2026 anlık görüntüsü. İlçe, mağazanın koordinatının düştüğü ilçe sınırından belirlenir. Zincir restoranlardan (`chain_restaurants`) ayrı tutulur: kozmetik mağazası ile hamburgerci farklı sorulara cevap verir, ikisini toplamak anlamsızdır. Markalar da toplanmaz — bu sayı 'kaç mağaza var' sorusunun değil, 'bu markaların kaç şubesi var' sorusunun cevabıdır. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir."
+definition_tr = "Perakende zincirlerinin (marketler, kozmetik, ev, elektronik, giyim, kuyum, spor ve optik; tam liste marka kırılımında) mağaza sayısı, ilçe ve il düzeyinde, 19-23.09.2026 anlık görüntüsü. İlçe, mağazanın koordinatının düştüğü ilçe sınırından belirlenir. Zincir restoranlardan (`chain_restaurants`) ayrı tutulur: kozmetik mağazası ile hamburgerci farklı sorulara cevap verir, ikisini toplamak anlamsızdır. Markalar da toplanmaz — bu sayı 'kaç mağaza var' sorusunun değil, 'bu markaların kaç şubesi var' sorusunun cevabıdır. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir."
 
 [indicator.charging_stations]
 label_tr = "Elektrikli araç şarj istasyonu"
