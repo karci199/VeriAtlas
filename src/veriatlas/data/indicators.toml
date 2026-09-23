@@ -31949,6 +31949,7 @@ aras = "Aras Kargo"
 dhl_ecommerce = "DHL eCommerce (MNG)"
 yurtici = "Yurtiçi Kargo"
 surat = "Sürat Kargo"
+kolay_gelsin = "Kolay Gelsin"
 
 [indicator.cargo_branches]
 label_tr = "Kargo şubesi"

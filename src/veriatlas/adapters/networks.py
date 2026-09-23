@@ -491,6 +491,25 @@ def surat() -> Iterator[Point]:
                 )
 
 
+def kolay_gelsin() -> Iterator[Point]:
+    """Kolay Gelsin's delivery-point map (/api/dealers?branchType=0, GeoJSON). Its own
+    units are named "<district> DN" (205) plus one "MERSİN DM"; the ~990 other points
+    are contracted shops (Aygaz dealers, markets, stationers) and are left out, as
+    Sürat's are. CityName is the stated province."""
+    d = _load("kargo/kolaygelsin/dealers_bt0_false.json")
+    for f in d["result"]["Branches"]["features"]:
+        r = f["properties"]
+        if r["BranchName"].split()[-1] not in {"DN", "DM"}:
+            continue
+        yield Point(
+            r["BranchName"],
+            "store",
+            _num(r["Latitude"]),
+            _num(r["Longitude"]),
+            province(r["CityName"]),
+        )
+
+
 def _dmg(mark: str) -> Callable[[], Iterator[Point]]:
     """Doğtaş and Kelebek share one panel (services.dmgpanel.com/ajax/new-shops?mark=).
     Every shop carries `shop_type_name` (Bayi / Perakende / Outlet); the coordinate is
@@ -932,6 +951,7 @@ class CargoBranches(_Network):
         "dhl_ecommerce": dhl,
         "yurtici": yurtici,
         "surat": surat,
+        "kolay_gelsin": kolay_gelsin,
     }
 
 
