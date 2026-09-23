@@ -792,6 +792,9 @@ MAX_DUPLICATES = {
     "halkbank": 7,
     # Asked district by district: three branches answer for two neighbouring districts.
     "surat": 3,
+    # Notaries: three first-class offices (Gaziantep 17, Gölbaşı 1, İzmir 14) list the
+    # late notary ("Vefat Etmiştir") beside the successor; the office counts once.
+    "first": 3,
     "default": 0,
 }
 #: Northern Cyprus: Ziraat, Halkbank and Şekerbank list their branches there. Outside
