@@ -536,6 +536,50 @@ def kolay_gelsin() -> Iterator[Point]:
         )
 
 
+def _tr_title(name: str) -> str:
+    """Turkish-aware title case; `str.title` turns 'IĞDIR' into 'Iğdir'."""
+    words = name.strip().replace("I", "ı").replace("İ", "i").lower().split()
+    return " ".join(
+        w[:1].replace("i", "İ").replace("ı", "I").upper() + w[1:] for w in words
+    )
+
+
+def _notaries(notary_class: str) -> Callable[[], Iterator[Point]]:
+    """Türkiye Noterler Birliği's own register (portal.tnb.org.tr/Sayfalar/Noterbul.aspx,
+    robots allows `/Sayfalar/`): an empty search lists every notary office, 2.386 on
+    2026-09-23, 25 to a page. Each row gives the office ("ANTALYA 9"), its class (1, 2 or
+    3 — set by the office's business volume), the notary and whether they sit in person
+    (A) or as a substitute (V), and a map link carrying the point and the address ending
+    in "DISTRICT/PROVINCE". The point places the office; that ending is the fallback and
+    the stated province."""
+
+    def extract() -> Iterator[Point]:
+        from urllib.parse import parse_qs, unquote, urlparse
+
+        for r in _load("noter/noterler_2026-09-23.json"):
+            office, _, office_class, *_ = r["cells"]
+            if office_class != notary_class:
+                continue
+            query = parse_qs(urlparse(unquote(r["map"] or "")).query)
+            where = (query.get("address") or [""])[0].rsplit(" ", 1)[-1]
+            district, _, prov = where.partition("/")
+            named = None
+            try:
+                named = resolve_district(_tr_title(prov), _tr_title(district))
+            except (KeyError, ValueError):
+                named = None
+            yield Point(
+                office,
+                "store",
+                _num((query.get("lat") or [""])[0].strip()),
+                _num((query.get("lon") or [""])[0].strip()),
+                province(prov) if prov else None,
+                named,
+            )
+
+    return extract
+
+
 def _dmg(mark: str) -> Callable[[], Iterator[Point]]:
     """Doğtaş and Kelebek share one panel (services.dmgpanel.com/ajax/new-shops?mark=).
     Every shop carries `shop_type_name` (Bayi / Perakende / Outlet); the coordinate is
@@ -987,6 +1031,17 @@ class CargoBranches(_Network):
     }
 
 
+class Notaries(_Network):
+    indicator_id = "notaries"
+    dim = "notary_class"
+    kind = "store"
+    brands: ClassVar = {
+        "first": _notaries("1"),
+        "second": _notaries("2"),
+        "third": _notaries("3"),
+    }
+
+
 class PostOffices(_Network):
     indicator_id = "post_offices"
     dim = "post_office_type"
@@ -1027,6 +1082,7 @@ NETWORK_ADAPTERS = {
         FashionStores,
         CargoBranches,
         PostOffices,
+        Notaries,
         FurnitureStores,
     )
 }
