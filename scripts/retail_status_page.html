@@ -1,0 +1,225 @@
+<title>Perakende Ağ Takibi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ground: #f4f6f4;
+    --surface: #ffffff;
+    --ink: #18211e;
+    --muted: #5c6a65;
+    --line: #d6ddd9;
+    --accent: #0e6b60;
+    --accent-soft: #e2efec;
+    --s-depo: #2f7d4f;   --s-depo-bg: #e3f1e8;
+    --s-ham: #9a6412;    --s-ham-bg: #f8ecd6;
+    --s-kismi: #b3501f;  --s-kismi-bg: #f9e3d8;
+    --s-bos: #7a4fa0;    --s-bos-bg: #eee5f6;
+    --s-kapali: #b42318; --s-kapali-bg: #f8e0dd;
+    --s-den: #4c5f82;    --s-den-bg: #e3e8f1;
+    --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --ground: #111614; --surface: #19201d; --ink: #e4ebe8; --muted: #9aa8a2;
+      --line: #2c3632; --accent: #5cc3b3; --accent-soft: #1d3430;
+      --s-depo: #7dcf98; --s-depo-bg: #1b3325;
+      --s-ham: #e7b665;  --s-ham-bg: #3a2e17;
+      --s-kismi: #f0996a; --s-kismi-bg: #3d2519;
+      --s-bos: #c7a4e6;  --s-bos-bg: #2f2340;
+      --s-kapali: #f08a80; --s-kapali-bg: #3e1f1c;
+      --s-den: #a4b5d6;  --s-den-bg: #232b3b;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ground: #111614; --surface: #19201d; --ink: #e4ebe8; --muted: #9aa8a2;
+    --line: #2c3632; --accent: #5cc3b3; --accent-soft: #1d3430;
+    --s-depo: #7dcf98; --s-depo-bg: #1b3325;
+    --s-ham: #e7b665;  --s-ham-bg: #3a2e17;
+    --s-kismi: #f0996a; --s-kismi-bg: #3d2519;
+    --s-bos: #c7a4e6;  --s-bos-bg: #2f2340;
+    --s-kapali: #f08a80; --s-kapali-bg: #3e1f1c;
+    --s-den: #a4b5d6;  --s-den-bg: #232b3b;
+  }
+  body { background: var(--ground); color: var(--ink); font-family: var(--sans); font-size: 14px; line-height: 1.45; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding-inline: 16px; padding-block: 28px 48px; display: grid; gap: 20px; }
+  header { display: grid; gap: 6px; }
+  h1 { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.01em; text-wrap: balance; }
+  .sub { margin: 0; color: var(--muted); max-width: 70ch; }
+  .sub code { font-family: var(--mono); font-size: 12.5px; }
+
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .tile { all: unset; cursor: pointer; display: grid; gap: 4px; padding: 12px 14px; border-radius: 10px;
+          background: var(--surface); border: 1px solid var(--line); }
+  .tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .tile .n { font-family: var(--mono); font-size: 24px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--c); }
+  .tile .l { font-size: 12.5px; color: var(--muted); }
+  .tile[aria-pressed="true"] { background: var(--cbg); border-color: var(--c); }
+  .tile[aria-pressed="true"] .l { color: var(--ink); }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .controls input, .controls select {
+    font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line);
+    border-radius: 8px; padding: 8px 10px; min-width: 0; }
+  .controls input { flex: 1 1 260px; }
+  .controls select { flex: 0 1 200px; }
+  .controls input:focus-visible, .controls select:focus-visible, .reset:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .reset { font: inherit; color: var(--accent); background: none; border: 0; cursor: pointer; padding: 8px 4px; }
+  .count { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  .table-box { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; min-width: 900px; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { position: sticky; top: env(safe-area-inset-top, 0px); background: var(--surface); z-index: 1;
+             font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  thead th button { all: unset; cursor: pointer; display: inline-flex; gap: 4px; align-items: center; }
+  thead th button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  thead th .arrow { font-family: var(--mono); color: var(--accent); min-width: 1ch; }
+  tbody tr:hover { background: var(--accent-soft); }
+  td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+  th.num { text-align: right; }
+  td.brand { font-weight: 600; }
+  td.note { color: var(--muted); max-width: 42ch; }
+  td.method { white-space: nowrap; font-size: 13px; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600;
+          color: var(--c); background: var(--cbg); white-space: nowrap; }
+  .empty { padding: 28px; text-align: center; color: var(--muted); }
+  footer { color: var(--muted); font-size: 12.5px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Perakende Ağ Takibi</h1>
+    <p class="sub">Her zincir için tek satır: depoda mı, ham verisi mi bekliyor, yarım mı, alınamadı mı. Depodaki sayılar ambardan sayılır; üst kutucuklar süzgeçtir, sütun başlıkları sıralar.</p>
+  </header>
+
+  <div class="tiles" id="tiles"></div>
+
+  <div class="controls">
+    <input id="q" type="search" placeholder="Marka, tür, yöntem ya da notta ara" aria-label="Ara">
+    <select id="cat" aria-label="Tür"></select>
+    <button class="reset" id="reset" type="button">Süzgeci temizle</button>
+    <span class="count" id="count"></span>
+  </div>
+
+  <div class="table-box">
+    <table>
+      <thead><tr id="head"></tr></thead>
+      <tbody id="body"></tbody>
+    </table>
+    <div class="empty" id="empty" hidden>Bu süzgeçle eşleşen zincir yok.</div>
+  </div>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const DATA = /*DATA*/null;
+const STATUS_VAR = {
+  "Depoda": "depo", "Ham veri var, bekliyor": "ham", "Kısmi, tamamlanmalı": "kismi",
+  "Kayıt boş, yeniden kaydet": "bos", "Alınamadı": "kapali", "Denenmedi": "den"
+};
+const COLS = [
+  { key: "brand", label: "Marka" },
+  { key: "category", label: "Tür" },
+  { key: "status", label: "Durum" },
+  { key: "stores", label: "Mağaza", num: true },
+  { key: "provinces", label: "İl", num: true },
+  { key: "districts", label: "İlçe", num: true },
+  { key: "method", label: "Yöntem" },
+  { key: "note", label: "Not / eksik" },
+];
+const fmt = n => n == null ? "" : n.toLocaleString("tr-TR");
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let state = { statuses: [], cat: "", q: "", sort: "status", dir: 1 };
+try { Object.assign(state, JSON.parse(localStorage.getItem("perakende-takip") || "{}")); } catch (e) {}
+const save = () => { try { localStorage.setItem("perakende-takip", JSON.stringify(state)); } catch (e) {} };
+
+function colorVars(status) {
+  const v = STATUS_VAR[status] || "den";
+  return `--c:var(--s-${v});--cbg:var(--s-${v}-bg)`;
+}
+
+function drawTiles() {
+  const box = document.getElementById("tiles");
+  box.innerHTML = DATA.statuses.map(s => {
+    const n = DATA.rows.filter(r => r.status === s).length;
+    const on = state.statuses.includes(s);
+    return `<button class="tile" type="button" data-s="${esc(s)}" aria-pressed="${on}" style="${colorVars(s)}">
+      <span class="n">${n}</span><span class="l">${esc(s)}</span></button>`;
+  }).join("");
+  box.querySelectorAll(".tile").forEach(b => b.addEventListener("click", () => {
+    const s = b.dataset.s;
+    state.statuses = state.statuses.includes(s) ? state.statuses.filter(x => x !== s) : [...state.statuses, s];
+    save(); render();
+  }));
+}
+
+function drawHead() {
+  document.getElementById("head").innerHTML = COLS.map(c => {
+    const arrow = state.sort === c.key ? (state.dir > 0 ? "↑" : "↓") : "";
+    const aria = state.sort === c.key ? (state.dir > 0 ? "ascending" : "descending") : "none";
+    return `<th class="${c.num ? "num" : ""}" aria-sort="${aria}"><button type="button" data-k="${c.key}">${c.label}<span class="arrow">${arrow}</span></button></th>`;
+  }).join("");
+  document.querySelectorAll("#head button").forEach(b => b.addEventListener("click", () => {
+    const k = b.dataset.k;
+    const num = COLS.find(c => c.key === k).num;
+    if (state.sort === k) state.dir = -state.dir; else { state.sort = k; state.dir = num ? -1 : 1; }
+    save(); render();
+  }));
+}
+
+function rowsNow() {
+  const q = state.q.trim().toLocaleLowerCase("tr");
+  let rows = DATA.rows.filter(r =>
+    (!state.statuses.length || state.statuses.includes(r.status)) &&
+    (!state.cat || r.category === state.cat) &&
+    (!q || [r.brand, r.category, r.method, r.note, r.status].join(" ").toLocaleLowerCase("tr").includes(q)));
+  const k = state.sort, d = state.dir;
+  const order = s => DATA.statuses.indexOf(s);
+  rows.sort((a, b) => {
+    let x = a[k], y = b[k];
+    if (k === "status") { x = order(x); y = order(y); }
+    if (x == null || x === "") return 1;
+    if (y == null || y === "") return -1;
+    if (typeof x === "number") return (x - y) * d || (b.stores || 0) - (a.stores || 0);
+    return String(x).localeCompare(String(y), "tr") * d || (b.stores || 0) - (a.stores || 0);
+  });
+  return rows;
+}
+
+function render() {
+  drawTiles(); drawHead();
+  const rows = rowsNow();
+  document.getElementById("body").innerHTML = rows.map(r => `<tr>
+    <td class="brand">${esc(r.brand)}</td>
+    <td>${esc(r.category)}</td>
+    <td><span class="pill" style="${colorVars(r.status)}">${esc(r.status)}</span></td>
+    <td class="num">${fmt(r.stores)}</td>
+    <td class="num">${fmt(r.provinces)}</td>
+    <td class="num">${fmt(r.districts)}</td>
+    <td class="method">${esc(r.method)}</td>
+    <td class="note">${esc(r.note)}</td></tr>`).join("");
+  document.getElementById("empty").hidden = rows.length > 0;
+  document.getElementById("count").textContent = `${rows.length} / ${DATA.rows.length} zincir`;
+  document.getElementById("q").value = state.q;
+  document.getElementById("cat").value = state.cat;
+}
+
+function init() {
+  const cats = [...new Set(DATA.rows.map(r => r.category))].sort((a, b) => a.localeCompare(b, "tr"));
+  document.getElementById("cat").innerHTML = `<option value="">Bütün türler</option>` + cats.map(c => `<option>${esc(c)}</option>`).join("");
+  if (!cats.includes(state.cat)) state.cat = "";
+  document.getElementById("q").addEventListener("input", e => { state.q = e.target.value; save(); render(); });
+  document.getElementById("cat").addEventListener("change", e => { state.cat = e.target.value; save(); render(); });
+  document.getElementById("reset").addEventListener("click", () => { state = { statuses: [], cat: "", q: "", sort: "status", dir: 1 }; save(); render(); });
+  const inStore = DATA.rows.filter(r => r.status === "Depoda").reduce((s, r) => s + (r.stores || 0), 0);
+  document.getElementById("foot").textContent = `Güncelleme ${DATA.today} · depodaki ${DATA.rows.filter(r => r.status === "Depoda").length} satırda ${inStore.toLocaleString("tr-TR")} nokta · kaynak: scripts/build_retail_status.py`;
+  render();
+}
+init();
+</script>
