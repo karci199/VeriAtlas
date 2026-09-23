@@ -99,7 +99,7 @@
 | HD İskender | Yeme-içme | 95 | 22 | 57 | mağaza bulucu |  |
 | Şarj istasyonları | Şarj | 16.345 | 81 | 728 | EPDK lisans kaydı | resmî ve tam liste |
 
-## Ham veri var, bekliyor (13)
+## Ham veri var, bekliyor (17)
 
 | Marka | Tür | Mağaza | İl | İlçe | Yöntem | Not |
 |---|---|---|---|---|---|---|
@@ -112,6 +112,10 @@
 | Bizim Toptan | Market | 172 |  |  | mağaza bulucu | il ve ilçe etiketi var |
 | Onur Market | Market | 154 |  |  | mağaza bulucu | il ve ilçe etiketi var, ilk satır bozuk |
 | Turkcell Ev Müşteri Merkezleri | Operatör | 38 |  |  | Turkcell'in PDF listesi | 25 il, yalnız Superbox |
+| Zeplin Car | Oto kiralama | 115 |  |  | elle kaydedilen sayfa | ofis adları, koordinat yok |
+| Garenta | Oto kiralama | 110 |  |  | elle kaydedilen sayfa | şube adları, koordinat yok |
+| Avis | Oto kiralama | 94 |  |  | elle kaydedilen sayfa | şehir 55, havalimanı 35, Avis Yanında 4; çoğu koordinatlı |
+| Budget | Oto kiralama | 67 |  |  | elle kaydedilen sayfa | şehir 33, havalimanı 26, İstediğin Yerde 8; çoğu koordinatlı |
 | Toyzz Shop | Oyuncak | 263 |  |  | mağaza bulucu | yalnız serbest adres |
 | Kahve Dünyası | Yeme-içme | 355 |  |  | mağaza bulucu | adresten il ve ilçe çıkarılacak |
 | KFC | Yeme-içme | 43 |  |  | mağaza bulucu | yarım kaldı |
@@ -132,7 +136,7 @@
 |---|---|---|---|---|---|---|
 | MediaMarkt | Elektronik |  |  |  | elle kaydedilen sayfa | liste yüklenmeden kaydedildi; arama yapıp kaydet |
 
-## Alınamadı (22)
+## Alınamadı (19)
 
 | Marka | Tür | Mağaza | İl | İlçe | Yöntem | Not |
 |---|---|---|---|---|---|---|
@@ -149,9 +153,6 @@
 | A101 | Market |  |  |  | mağaza ucu bulundu | IP 403, robots 500; kendi açıklaması ~13.500 |
 | CarrefourSA | Market |  |  |  |  | robots 403 |
 | Atasun Optik | Optik |  |  |  |  | bağlantı kurulamadı |
-| Avis | Oto kiralama |  |  |  |  | robots 403 |
-| Budget | Oto kiralama |  |  |  |  | robots 403 |
-| Garenta | Oto kiralama |  |  |  |  | ofis listesi sayfası yok |
 | Petlas | Oto servis |  |  |  |  | bayi arama reCAPTCHA |
 | Lassa | Oto servis |  |  |  |  | bayi sayfası 404 |
 | Bosch Car Service | Oto servis |  |  |  |  | yönlendirme izlenmedi |
@@ -159,7 +160,7 @@
 | Bauhaus | Yapı market |  |  |  |  | mağaza sayfası Cloudflare |
 | Mado | Yeme-içme |  |  |  |  | 403 |
 
-## Denenmedi (30)
+## Denenmedi (37)
 
 | Marka | Tür | Mağaza | İl | İlçe | Yöntem | Not |
 |---|---|---|---|---|---|---|
@@ -180,6 +181,13 @@
 | Altınbaş | Kuyum |  |  |  | /magazalar |  |
 | Metro Grossmarket | Market |  |  |  |  |  |
 | Carrefour Express | Market |  |  |  |  | CarrefourSA robots 403 |
+| Enterprise, National, Alamo | Oto kiralama |  |  |  |  |  |
+| Europcar | Oto kiralama |  |  |  |  |  |
+| Sixt | Oto kiralama |  |  |  |  |  |
+| Hertz, Thrifty, Dollar | Oto kiralama |  |  |  |  |  |
+| Green Motion | Oto kiralama |  |  |  |  |  |
+| Rent Go | Oto kiralama |  |  |  |  |  |
+| Çizgi Rent a Car | Oto kiralama |  |  |  |  |  |
 | Otomobil bayileri | Otomotiv |  |  |  |  | Renault, Fiat, Toyota… |
 | Tchibo | Yeme-içme |  |  |  | /service/storefinder/ |  |
 | Gloria Jeans | Yeme-içme |  |  |  | /store-finder |  |
