@@ -145,6 +145,9 @@ STORE_BRANDS = {
     "chakra": "perakende/akinon/chakra.csv",
     "englishhome": "perakende/ticimax/englishhome.csv",
     "avva": "perakende/ticimax/avva.csv",
+    # Behind Cloudflare with a 403 robots.txt; its finder page saved by hand from an
+    # ordinary browser (136 stores, the page's own total).
+    "teknosa": "perakende/teknosa/teknosa.csv",
 }
 
 #: The share of a brand's branches allowed to fall outside every polygon *while standing

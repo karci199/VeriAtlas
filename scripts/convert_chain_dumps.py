@@ -124,6 +124,27 @@ def kofteci_yusuf() -> None:
     _write(folder / "kofteciyusuf.csv", rows)
 
 
+def teknosa() -> None:
+    """Teknosa's finder (`/magaza-bul`) sits behind Cloudflare and its robots.txt answers
+    403, so it was never fetched; the page was saved by hand from an ordinary browser on
+    2026-09-23. It says "136 mağaza bulundu" and holds 136 cards: name, address, phone,
+    hours, then a Google Maps link with the point."""
+    folder = PERAKENDE / "teknosa"
+    text = (folder / "magaza_bul_2026-09-23.htm").read_text("utf-8", errors="replace")
+    text = re.sub(r"<(script|style)\b.*?</\1>", "", text, flags=re.DOTALL)
+    text = re.sub(r'<a[^>]*destination=([^"&]+)[^>]*>', r"<x>@@\1@@<x>", text)
+    tokens = [html.unescape(t).strip() for t in re.split(r"<[^>]*>", text)]
+    tokens = [t for t in tokens if t]
+    rows = []
+    for i, token in enumerate(tokens):
+        if token.startswith("@@"):
+            lat, lng = token.strip("@").split(",")
+            rows.append({"name": tokens[i - 4], "lat": lat, "lng": lng, "area_id": ""})
+    if len(rows) != 136:
+        raise SystemExit(f"Teknosa: {len(rows)} mağaza, sayfa 136 diyor")
+    _write(folder / "teknosa.csv", rows)
+
+
 def main() -> None:
     for brand in AKINON:
         akinon(brand)
@@ -132,6 +153,7 @@ def main() -> None:
     simple("simitsarayi_magaza", "magazalar", "latitude", "longitude", "name")
     simple("hdiskender_restoran", "restoranlar", "lat", "lng", "ad")
     kofteci_yusuf()
+    teknosa()
 
 
 if __name__ == "__main__":

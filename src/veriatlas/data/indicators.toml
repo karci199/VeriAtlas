@@ -31411,6 +31411,7 @@ intersport = { label_tr = "Intersport", label_en = "Intersport" }
 chakra = { label_tr = "Chakra", label_en = "Chakra" }
 englishhome = { label_tr = "English Home", label_en = "English Home" }
 avva = { label_tr = "Avva", label_en = "Avva" }
+teknosa = { label_tr = "Teknosa", label_en = "Teknosa" }
 
 [indicator.chain_stores]
 label_tr = "Zincir mağaza sayısı"
