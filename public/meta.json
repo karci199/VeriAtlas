@@ -32,6 +32,54 @@
           "available": true
         },
         {
+          "id": "baby_names",
+          "label": "Bebeklere en çok verilen isimler",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Yıl içinde doğan bebeklere verilen isimler ve kaç bebeğe verildiği. Sayfa 'ilk 30' diyor ama uç nokta eşiğin üstündeki bütün isimleri veriyor (il-yıl başına 18-266 isim). Üçten az bebeğe verilen isim yayımlanmadığı için satırlar yılın doğum sayısına toplanmaz; bir ismin Türkiye sayısı illerin toplamı değildir, Türkiye ayrı çekilir.",
+          "dims": [
+            "given_name",
+            "sex"
+          ],
+          "views": [
+            "table",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "household_by_building_age",
+          "label": "Binanın inşa dönemine göre hane sayısı",
+          "unit": "hane",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Hanenin oturduğu binanın ne zaman yapıldığı. Binayı değil haneyi sayar: aynı binadaki üç daire üç hanedir. **Tek yıl**: yalnızca 2021 için yayımlandı.",
+          "dims": [
+            "building_period"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
           "id": "migration_between_regions",
           "label": "Bölgeler arası göç",
           "unit": "kişi",
@@ -82,6 +130,53 @@
           "parts": {
             "district": "natural-increase-district.csv.gz"
           },
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "common_names",
+          "label": "En çok kullanılan isimler",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Yaşayan nüfus içinde en çok kullanılan ilk 30 isim ve kaç kişinin taşıdığı. Bebek isimleri akım, bu stoktur; ikisi aynı şey değildir. İlk 30'un dışı yayımlanmıyor.",
+          "dims": [
+            "given_name",
+            "sex"
+          ],
+          "views": [
+            "table",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "common_surnames",
+          "label": "En çok kullanılan soyisimler",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "İlde en çok kullanılan ilk 30 soyisim ve kaç kişinin taşıdığı. TÜİK bu tabloda cinsiyet kırılımı vermiyor.",
+          "dims": [
+            "surname"
+          ],
+          "views": [
+            "table",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
           "fine": {},
           "summary": null,
           "available": true
@@ -200,6 +295,53 @@
           "available": true
         },
         {
+          "id": "gender_student_ratio",
+          "label": "Kadın/Erkek öğrenci oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Kayıtlı kadın öğrenci sayısının erkek öğrenci sayısına oranı (%), eğitim düzeyi kırılımıyla, 2012-2024. 100 = eşit sayıda. Net okullaşma oranından farkı: bu, zaten okula kayıtlı olanlar arasındaki dağılımı ölçer, yaş grubunun tamamını değil.",
+          "dims": [
+            "egitim_duzeyi"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "district_urbanization",
+          "label": "Kentleşme oranı (kayıtlı seçmen)",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Kayıtlı seçmenin kentte (mahalle sandığı) yaşayan payı, il ve ilçe düzeyinde. TÜİK'in nüfus verisinde kent/kır kırılımı yok — bu, YSK'nın 2015 sandık dökümünden (AATOPLU) gelen dolaylı bir vekil ölçüdür. Nüfus değil kayıtlı seçmen (18+) sayılıyor, tek bir seçim anına ait, zaman serisi değil. Aydın ilinde ve Siirt'in ilçe kırılımında kaynak eksik, o alanlar boş.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "registry_population",
           "label": "Kütük nüfusu",
           "unit": "kişi",
@@ -289,6 +431,32 @@
           "available": true
         },
         {
+          "id": "net_enrollment_rate",
+          "label": "Net okullaşma oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "İlgili yaş grubunun okula kayıtlı olan payı, cinsiyet ve eğitim düzeyi kırılımıyla, 2007-2024. MEB'in kendi hesapladığı oran — kayıtlı öğrenci sayısının cinsiyet dağılımı değil (bkz. `gender_student_ratio`), yaş grubunun ne kadarının fiilen okula gittiği. Okul Öncesi için yayımlanmıyor. İlkokul ve Ortaokul burada ayrı görünmez: 2012 reformu öncesi ikisi tek kurumdu (\"İlköğretim\"), o yüzden gösterge hep bu birleşik düzeyi taşır — reform sonrası yıllarda İlkokul ve Ortaokul öğrenci sayısı ağırlıklı ortalamasıyla hesaplanır.",
+          "dims": [
+            "sex",
+            "egitim_duzeyi"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "population",
           "label": "Nüfus",
           "unit": "kişi",
@@ -360,6 +528,54 @@
           "available": true
         },
         {
+          "id": "registry_origin",
+          "label": "Nüfusa kayıtlı il",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Mahallede yaşayanların nüfus kütüğündeki il — yalnız ilk on il; toplamı nüfusun tamamı değildir.",
+          "dims": [
+            "origin"
+          ],
+          "views": [
+            "table",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
+          "id": "school_size",
+          "label": "Okul mevcudu (öğrenci/okul)",
+          "unit": "öğrenci/okul",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Öğrenci sayısının okul sayısına oranı, 2012-2024. Az sayıda büyük okul mu, çok sayıda küçük okul mu ölçüsü — kırsal illerde düşük, büyükşehirlerde yüksek çıkması beklenir.",
+          "dims": [
+            "egitim_duzeyi"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "household_size",
           "label": "Ortalama hanehalkı büyüklüğü",
           "unit": "kişi/hane",
@@ -411,6 +627,31 @@
             "country",
             "province"
           ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "class_size",
+          "label": "Sınıf mevcudu (öğrenci/derslik)",
+          "unit": "öğrenci/derslik",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Öğrenci sayısının derslik sayısına oranı, eğitim düzeyi kırılımıyla, 2012-2024. Fiziksel kapasite baskısının doğrudan ölçüsü — şube/derslik oranından (`section_room_ratio`) farkı, idari bölünme değil gerçek yer darlığını yansıtması.",
+          "dims": [
+            "egitim_duzeyi"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -549,6 +790,54 @@
           "available": true
         },
         {
+          "id": "area",
+          "label": "Yüzölçümü",
+          "unit": "km²",
+          "decimals": 2,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Mahalle sınırının alanı, Endeksa geometrisinden.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
+          "id": "education_attainment",
+          "label": "Öğrenim durumu",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "6 yaşını doldurmuş nüfusun bitirdiği en yüksek okul, cinsiyet kırılımıyla. Yaş 6'dan başladığı için toplamı ilin nüfusu değildir. \"İlkokul\" ile \"ilköğretim\" ayrı seviyelerdir: ilki beş yıllık eski ilkokul, ikincisi 1997'de gelen sekiz yıllık ilköğretim — ikisinin diploması da hâlâ taşınıyor.",
+          "dims": [
+            "education_level",
+            "sex"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "population_by_birth_province",
           "label": "İlçe nüfusu (doğum yerine göre)",
           "unit": "kişi",
@@ -616,6 +905,56 @@
           "fine": {},
           "summary": "origin-district-summary.csv.gz",
           "available": false
+        },
+        {
+          "id": "section_size",
+          "label": "Şube mevcudu (öğrenci/şube)",
+          "unit": "öğrenci/şube",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Öğrenci sayısının şube (sınıf/idari bölüm) sayısına oranı, 2012-2024. Bir öğretmenin fiilen karşısında gördüğü ortalama öğrenci sayısına en yakın ölçü.",
+          "dims": [
+            "egitim_duzeyi"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "section_room_ratio",
+          "label": "Şube/Derslik oranı (ikili öğretim baskısı)",
+          "unit": "şube/derslik",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Şube sayısının derslik sayısına oranı, 2012-2024. 1'in üzerinde olması, derslik başına birden fazla şubenin nöbetleşe (ikili öğretim) kullandığı anlamına gelir — 1'e ne kadar yakınsa okullar o kadar tek vardiyaya dönmüş demektir.",
+          "dims": [
+            "egitim_duzeyi"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
         }
       ]
     },
@@ -649,6 +988,56 @@
           "parts": {
             "district": "births-district.csv.gz"
           },
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "births_by_marital",
+          "label": "Doğum sayısı (annenin medeni durumu)",
+          "unit": "doğum",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Yıl içindeki canlı doğum sayısı, annenin yasal medeni durumuna göre, il ve Türkiye düzeyinde, 2012-2025. \"Yasal\" resmî nikahı ölçüyor — dini nikahlı fiili evlilikler \"hiç evlenmedi\" içinde kalıyor, bu bir okuma sınırı.",
+          "dims": [
+            "marital"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "births_by_age",
+          "label": "Doğum sayısı (annenin yaş grubu)",
+          "unit": "doğum",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Yıl içindeki canlı doğum sayısı, annenin yaş grubuna göre (<15'ten 50+'a), il ve Türkiye düzeyinde, 2009-2025. Toplam doğurganlık hızının bileşenleri — hangi yaş grubunun doğurganlığı değiştiğini gösterir, TFH tek başına göstermez.",
+          "dims": [
+            "age"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
           "fine": {},
           "summary": null,
           "available": true
@@ -714,6 +1103,29 @@
     {
       "topic": "Evlenme ve boşanma",
       "indicators": [
+        {
+          "id": "consanguineous_marriage",
+          "label": "Akraba evliliği oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "O yıl kıyılan evliliklerin yüzde kaçının akraba evliliği olduğu, il ve Türkiye düzeyinde, 2010-2025. TR genelinde yarıya iniyor (%5,9 → %3,0); 81 ilin 80'i düşerken Şanlıurfa tek artan il (%14,5 → %16,9).",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
         {
           "id": "divorces",
           "label": "Boşanma sayısı",
@@ -1204,6 +1616,30 @@
           "available": true
         },
         {
+          "id": "education_level",
+          "label": "Eğitim düzeyi",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "6 yaş ve üzeri nüfusun bitirdiği en yüksek eğitim düzeyi. Toplamı 6+ nüfustur, ilçe nüfusu değil.",
+          "dims": [
+            "education"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
           "id": "eu_educational_attainment",
           "label": "Eğitim düzeyi (bölge)",
           "unit": "%",
@@ -1320,6 +1756,32 @@
           "available": true
         },
         {
+          "id": "literacy",
+          "label": "Okuma yazma durumu (15+)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "15 yaş ve üzeri nüfusun okuma yazma durumu, cinsiyete göre, il ve Türkiye düzeyinde, 2008-2025. Yaş kırılımı için bkz. \"Okuma yazma durumu (yaş grubu)\" — orası 6+ yaş kapsıyor ve yalnız 2008/2025.",
+          "dims": [
+            "sex",
+            "literacy_status"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "literacy_district",
           "label": "Okuma yazma durumu (ilçe)",
           "unit": "kişi",
@@ -1346,6 +1808,32 @@
           "parts": {
             "district": "literacy-by-district-district.csv.gz"
           },
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "literacy_by_age",
+          "label": "Okuma yazma durumu (yaş grubu)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "6 yaş ve üzeri nüfusun okuma yazma durumu, cinsiyet ve yaş bandına göre (6-13'ten 65+'a 13 bant), il ve Türkiye düzeyinde. Yalnız 2008 ve 2025 — aradaki yıllar yayımlanmadı.",
+          "dims": [
+            "sex",
+            "age",
+            "literacy_status"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
           "fine": {},
           "summary": null,
           "available": true
@@ -2116,6 +2604,28 @@
           "available": true
         },
         {
+          "id": "pharmacies",
+          "label": "Eczane sayısı",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "TİTCK eczane kaydı, 20.09.2026 anlık görüntüsü. Ruhsat kaydı olduğu için markanın değil mesleğin sayımıdır. İlçe kaydın kendi etiketinden, il ilçelerin toplamı. Seri değil: yeniden çekildiğinde satırlar değişir.",
+          "dims": [],
+          "views": [
+            "map",
+            "table",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "moh_hospital_crude_death_rate",
           "label": "Hastane kaba ölüm hızı",
           "unit": "kaynak birimi (kalem adında)",
@@ -2244,6 +2754,29 @@
             "country",
             "province"
           ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "hospital_discharges",
+          "label": "Hastaneden taburcu edilen hasta",
+          "unit": "taburcu",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Yıl içinde hastaneden taburcu edilen hasta sayısı; OECD'nin Sağlık Bakanlığı verisinden derlediği il serisi.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4067,6 +4600,78 @@
       "topic": "Konut satış",
       "indicators": [
         {
+          "id": "property_sales_land",
+          "label": "Arsa ve tarla satışı",
+          "unit": "satış",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Tapuda yıl içinde satılan arsa ve tarla sayısı, 2012'den itibaren.",
+          "dims": [
+            "property_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
+          "id": "property_listings",
+          "label": "Emlak ilanı",
+          "unit": "ilan",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Yıl içinde verilen satılık/kiralık ilan sayısı, 2014'ten itibaren.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
+          "id": "housing_tenure",
+          "label": "Konut mülkiyeti",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Hanelerin mülk sahibi ve kiracı payı (%). İkisi yüze tamamlanmaz: lojman vb. ayrıca verilmiyor. Endeksa modeli.",
+          "dims": [
+            "tenure"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
           "id": "housing_sales",
           "label": "Konut satış sayısı",
           "unit": "konut",
@@ -4123,6 +4728,31 @@
           "available": true
         },
         {
+          "id": "property_sales",
+          "label": "Konut satışı",
+          "unit": "satış",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Tapuda yıl içinde satılan konut sayısı, 2012'den itibaren. 2024 kısmi.",
+          "dims": [
+            "property_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
           "id": "property_sales_monthly",
           "label": "Konut ve iş yeri satışları (aylık)",
           "unit": "satış",
@@ -4149,6 +4779,30 @@
           "fine": {},
           "summary": null,
           "available": true
+        },
+        {
+          "id": "dwelling_stock",
+          "label": "Konut ve işyeri stoğu",
+          "unit": "birim",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Bağımsız birim sayısı: konut, yazlık, ticari.",
+          "dims": [
+            "dwelling_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
         },
         {
           "id": "housing_sales_foreigners",
@@ -4404,6 +5058,78 @@
             "country",
             "nuts2"
           ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "cadastral_parcels",
+          "label": "Parsel sayısı (kayda göre)",
+          "unit": "parsel",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "TKGM MEGSİS anlık görüntüsü: tapuda kayıtlı, kadastroda kayıtlı ve kadastroda olup tapuda olmayan parsel sayısı. Üçü aynı parselleri farklı kayıttan sayar, toplanmaz.",
+          "dims": [
+            "parcel_register"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "cadastral_parcels_by_coordinate",
+          "label": "Parsel sayısı (koordinat niteliğine göre)",
+          "unit": "parsel",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Kesin, geçici ve iyileştirilmiş koordinatlı parsel sayısı; kadastronun harita üzerindeki doğruluğunu gösterir.",
+          "dims": [
+            "coordinate_quality"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "cadastral_parcels_by_approval",
+          "label": "Parsel sayısı (onay durumuna göre)",
+          "unit": "parsel",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Geometrisi onaylanmış ve onaylanmamış parsel sayısı, TKGM MEGSİS anlık görüntüsü.",
+          "dims": [
+            "parcel_approval"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -4917,6 +5643,35 @@
           "available": true
         },
         {
+          "id": "bank_atm_locations",
+          "label": "Banka ATM'si (konumla)",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "On altı bankanın kendi bulucusundan okunan ATM sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Bir noktadaki her makine ayrı sayılır. Garanti BBVA (yaklaşık 6.400 ATM) alınamadığı için sektör toplamı değildir; sektör toplamı TBB'nin `bank_atms` göstergesindedir. Kuveyt Türk'ün para yatırma-çekme makineleri (AIO) ATM sayılır. Seri değildir.",
+          "dims": [
+            "bank"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": "bank-atm-locations.csv.gz",
+          "levels": [
+            "district",
+            "province"
+          ],
+          "parts": {
+            "district": "bank-atm-locations-district.csv.gz"
+          },
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "bank_loans",
           "label": "Banka kredileri",
           "unit": "TL",
@@ -5018,6 +5773,35 @@
             "province"
           ],
           "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "bank_branch_locations",
+          "label": "Banka şubesi (konumla)",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "On yedi bankanın kendi şube bulucusundan okunan şube sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. İlçe, şubenin koordinatının düştüğü ilçe sınırından belirlenir. Garanti BBVA ve QNB şubeleri alınamadığı için sektör toplamı değildir; sektör toplamı BDDK'nın `bank_group_branches` göstergesindedir. Kamu ve katılım bankalarının toplamı BDDK grup toplamlarının %99'unu tutar. KKTC şubeleri, kapalı şubeler (VakıfBank durum 2) ve adresi olmayan kanallar (DenizBank mobil satış ofisleri) sayılmaz. Seri değildir.",
+          "dims": [
+            "bank"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": "bank-branch-locations.csv.gz",
+          "levels": [
+            "district",
+            "province"
+          ],
+          "parts": {
+            "district": "bank-branch-locations-district.csv.gz"
+          },
           "fine": {},
           "summary": null,
           "available": true
@@ -5128,6 +5912,31 @@
           "available": true
         },
         {
+          "id": "card_spending_by_sector",
+          "label": "Kartlı harcama tutarı (işyeri grubuna göre)",
+          "unit": "TL",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "monthly",
+          "definition": "BKM, aylık, yalnız Türkiye. Kaynak milyon TL yayımlar, burada TL'ye çevrilir. Nominal, deflate edilmemiş.",
+          "dims": [
+            "merchant_sector",
+            "card_type"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "card_transactions_weekly",
           "label": "Kartlı işlem adedi (haftalık)",
           "unit": "adet",
@@ -5148,6 +5957,31 @@
           "levels": [
             "country"
           ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "card_transactions_by_sector",
+          "label": "Kartlı işlem adedi (işyeri grubuna göre)",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "monthly",
+          "definition": "BKM, aylık, yalnız Türkiye. 26 işyeri grubu; kredi ve banka kartı ayrı. Yayımlanan TOPLAM satırı saklanmaz, sektörlerin toplamına karşı sınanır.",
+          "dims": [
+            "merchant_sector",
+            "card_type"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -5651,6 +6485,56 @@
           "fine": {},
           "summary": null,
           "available": true
+        },
+        {
+          "id": "ecommerce_spending_by_sector",
+          "label": "İnternetten kartlı harcama tutarı (işyeri grubuna göre)",
+          "unit": "TL",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "monthly",
+          "definition": "BKM, aylık, yalnız Türkiye. Kaynak milyon TL yayımlar, burada TL'ye çevrilir.",
+          "dims": [
+            "merchant_sector",
+            "card_usage"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "ecommerce_transactions_by_sector",
+          "label": "İnternetten kartlı işlem adedi (işyeri grubuna göre)",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "monthly",
+          "definition": "BKM, aylık, yalnız Türkiye. Üç ayrık dilim: yerli kartın yurt dışı, yerli kartın yurt içi, yabancı kartın yurt içi kullanımı. Kaynaktaki iki Toplam sütunu farklı şeylerin toplamı olduğu için saklanmaz.",
+          "dims": [
+            "merchant_sector",
+            "card_usage"
+          ],
+          "views": [
+            "table",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
         }
       ]
     },
@@ -5751,6 +6635,29 @@
           "levels": [
             "country"
           ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "average_item_price",
+          "label": "Ortalama madde fiyatı",
+          "unit": "TL",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "monthly",
+          "definition": "TÜİK'in TÜFE madde sepetindeki 409 maddenin Türkiye ortalama fiyatı, TL, aylık, 2003-01 ile 2022-04 arası. Endeks değil gerçek fiyattır. 2005 öncesi değerler eski liradır ve milyona bölünerek çevrilmiştir: pirinç Aralık 2004'te 2.545.872, Ocak 2005'te 2,55 TL. İl kırılımı yoktur, TÜİK madde fiyatlarını yalnız Türkiye geneli yayımlar.",
+          "dims": [
+            "cpi_item"
+          ],
+          "views": [
+            "table",
+            "line"
+          ],
+          "dataset": null,
+          "levels": [],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -5873,6 +6780,31 @@
             "line"
           ],
           "dataset": "cpi-2003.csv.gz",
+          "levels": [
+            "country"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "cpi_2003_items",
+          "label": "Tüketici fiyat endeksi, kalemler (2003=100)",
+          "unit": "endeks",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "monthly",
+          "definition": "EVDS bie_tukfiy4 (arşiv), yalnız Türkiye, aylık, 2003-01 - 2025-12. TÜİK'in 2025 sepetine geçmesiyle kapanan seri; ana gruplar ve alt gruplar birlikte saklanır, endeks toplanmaz. cpi_2025_items 2005-01'de başladığı için 2003-2004 yalnız burada var; iki seri farklı bazdır, uç uca eklenmez.",
+          "dims": [
+            "cpi_2003_item"
+          ],
+          "views": [
+            "table",
+            "line"
+          ],
+          "dataset": "cpi-2003-items.csv.gz",
           "levels": [
             "country"
           ],
@@ -6087,6 +7019,138 @@
           "available": true
         },
         {
+          "id": "tradesmen_workplaces",
+          "label": "Esnaf işyeri sayısı",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "TESK sicilinde kayıtlı esnafın işyeri sayısı, 31.08.2026 durumu.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "tradesmen_trade_removals",
+          "label": "Esnaf meslek terkini",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Kaydı duran esnafın bir mesleğinin sicilden silinmesi; Sicil Gazetesi'nde yıl içinde yayımlanan meslek terkin ilanı sayısı. Sicil terkininden farklıdır, esnaf kayıtlı kalır. 2012-2025.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "tradesmen_chambers",
+          "label": "Esnaf odası sayısı",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "İldeki esnaf ve sanatkârlar odası sayısı, 31.08.2026 durumu.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "tradesmen_deregistrations",
+          "label": "Esnaf sicil terkini",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Sicil Gazetesi'nde yıl içinde yayımlanan sicil terkin (kapanış) ilanı sayısı. 2012-2025.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "tradesmen_amendments",
+          "label": "Esnaf tadil ilanı",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Sicil Gazetesi'nde yıl içinde yayımlanan tadil (değişiklik) ilanı sayısı. 2012-2025.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "tradesmen_registrations",
+          "label": "Esnaf tescili",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Türkiye Esnaf ve Sanatkârlar Sicil Gazetesi'nde yıl içinde yayımlanan tescil (açılış) ilanı sayısı. 2012-2025; 2005-2011 kaynakta okunamıyor.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "enterprises",
           "label": "Girişim sayısı",
           "unit": "adet",
@@ -6109,6 +7173,52 @@
           "levels": [
             "province"
           ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "fashion_stores",
+          "label": "Giyim zinciri mağazası",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Dokuz giyim/ayakkabı zincirinin mağaza sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. İlçe koordinattan belirlenir. Markalar toplanmaz; bu sayı 'kaç giyim mağazası var' sorusunun değil, 'bu markaların kaç mağazası var' sorusunun cevabıdır. Seri değildir.",
+          "dims": [
+            "fashion_brand"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "registered_tradesmen",
+          "label": "Kayıtlı esnaf sayısı",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "TESK esnaf ve sanatkâr sicilinde kayıtlı kişi sayısı, 31.08.2026 durumu. Kişi sayısıdır, işyeri sayısından azdır: bir esnafın birden çok işyeri olabilir. Yıllık tescil sayılarının toplamı değildir — il değiştiren esnaf yeniden tescil edilir.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -6347,6 +7457,54 @@
           "levels": [
             "province"
           ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "chain_stores",
+          "label": "Zincir mağaza sayısı",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "On beş perakende zincirinin (ŞOK, Hakmar Express, Tarım Kredi, Ekomini, Peynirci Baba, Mopaş, Furpa, Seyhanlar, Koçtaş, Vestel, Gratis, Madame Coco, Rossmann, Karaca, Vatan Bilgisayar) mağaza sayısı, ilçe ve il düzeyinde, 19.09.2026 anlık görüntüsü. İlçe, mağazanın koordinatının düştüğü ilçe sınırından belirlenir. Zincir restoranlardan (`chain_restaurants`) ayrı tutulur: kozmetik mağazası ile hamburgerci farklı sorulara cevap verir, ikisini toplamak anlamsızdır. Markalar da toplanmaz — bu sayı 'kaç mağaza var' sorusunun değil, 'bu markaların kaç şubesi var' sorusunun cevabıdır. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir.",
+          "dims": [
+            "store_brand"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "chain_restaurants",
+          "label": "Zincir şube sayısı",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Yedi yeme-içme zincirinin (Burger King, McDonald's, Oses, Ziyafet, Komagene, Starbucks, EspressoLab) şube sayısı, ilçe ve il düzeyinde, 18.09.2026 anlık görüntüsü. İlçe, şubenin adresinden değil koordinatının düştüğü ilçe sınırından belirlenir; markaların kendi il-ilçe etiketleri pazarlama coğrafyasıdır. Markalar toplanmaz: bu sayı 'kaç hamburgerci' ya da 'kaç çiğköfteci' sorusunun cevabı değildir, çiğ köftenin kayıt defteri yoktur ve bağımsız dükkânlar hiçbir listede geçmez. Seri değildir: mağaza bulucular yalnız bugün açık olanı gösterir, geçmişini tutmaz.",
+          "dims": [
+            "restaurant_brand"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -7522,6 +8680,62 @@
           "available": true
         },
         {
+          "id": "province_gdp_current",
+          "label": "İl GSYH, cari fiyatlarla",
+          "unit": "bin TL",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "TÜİK Bölgesel Hesaplar (2009 bazlı), il bazında GSYH ve katma değer, cari fiyatlarla, bin TL, 2000-2024. Depodaki diğer il GSYH göstergeleri pay, endeks ve değişim oranıdır; tutarın kendisi yalnız burada. İmalat (C) sanayinin (B-E) içindedir, sektörler toplanmaz; sektörler toplamı katma değerdir, GSYH bunun üstüne vergi-sübvansiyonu ekler.",
+          "dims": [
+            "gdp_sector"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "province-gdp-current.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "province_gdp_chained",
+          "label": "İl GSYH, zincirlenmiş hacim",
+          "unit": "bin TL",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "TÜİK Bölgesel Hesaplar, il bazında zincirlenmiş hacim (2009 referans yılı), bin TL, 2000-2024. Cari seriden farkı fiyat etkisinin ayıklanmış olmasıdır; yıllar arası karşılaştırma bununla yapılır. Aynı tablodaki endeks ve değişim oranı sütunları MEDAS'tan zaten depoda olduğu için okunmaz.",
+          "dims": [
+            "gdp_sector"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": "province-gdp-chained.csv.gz",
+          "levels": [
+            "country",
+            "province"
+          ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "province_gdp_regional_share_component",
           "label": "İlin Türkiye GSYH'sındaki payı",
           "unit": "%",
@@ -8526,6 +9740,31 @@
           "available": true
         },
         {
+          "id": "employment_rate",
+          "label": "İstihdam oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "TÜİK Hanehalkı İşgücü Araştırması, il düzeyinde istihdam oranı (istihdam edilenlerin 15+ yaş nüfusa oranı), 2022-2025. Güven aralığı `bound` kırılımında.",
+          "dims": [
+            "bound"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "eu_employment_rate",
           "label": "İstihdam oranı (bölge)",
           "unit": "%",
@@ -9380,6 +10619,31 @@
           "available": true
         },
         {
+          "id": "labour_force_participation_rate",
+          "label": "İşgücüne katılma oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "TÜİK Hanehalkı İşgücü Araştırması, il düzeyinde işgücüne katılma oranı, 2022-2025. İşsizlik oranıyla birlikte okunur: iş aramaktan vazgeçen nüfus işsiz sayılmaz, o yüzden düşen işsizlik tek başına iş bulmanın arttığını göstermez. Güven aralığı `bound` kırılımında.",
+          "dims": [
+            "bound"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "eu_activity_rate",
           "label": "İşgücüne katılma oranı (bölge)",
           "unit": "%",
@@ -9409,6 +10673,31 @@
           "available": true
         },
         {
+          "id": "unemployment_rate",
+          "label": "İşsizlik oranı",
+          "unit": "%",
+          "decimals": 2,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "TÜİK Hanehalkı İşgücü Araştırması, il düzeyinde işsizlik oranı, 15+ yaş, 2022-2025. MEDAS bu araştırmayı İBBS-2'de (26 bölge) durduruyor; il kırılımı yalnız Veri Portalı tablosunda var. Örneklem araştırması: nokta tahminin yanında %95 güven aralığının alt ve üst sınırı da yükleniyor (`bound`), küçük illerde aralık geniştir.",
+          "dims": [
+            "bound"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "eu_unemployment_rate",
           "label": "İşsizlik oranı (bölge)",
           "unit": "%",
@@ -9432,6 +10721,152 @@
             "country",
             "nuts2"
           ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
+    },
+    {
+      "topic": "Perakende ve tüketim",
+      "indicators": [
+        {
+          "id": "mall_turnover_index",
+          "label": "AVM ciro endeksi (m² verimlilik)",
+          "unit": "endeks",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "monthly",
+          "definition": "AYD ve Akademetre'nin aylık AVM ciro endeksi, kiralanabilir metrekare başına ciro, 2010=100. Nominaldir, enflasyondan arındırılmamıştır. Kaynak Mayıs 2025'i yayımlamadı; o ay satırsızdır.",
+          "dims": [
+            "mall_area"
+          ],
+          "views": [
+            "line",
+            "table"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "mall_visitor_index",
+          "label": "AVM ziyaretçi endeksi",
+          "unit": "endeks",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "monthly",
+          "definition": "AYD ve Akademetre'nin aylık AVM ziyaret sayısı endeksi. Ciro endeksiyle birlikte okunur: ciro artarken ziyaret yatay ise artış fiyattan ve ziyaret başına harcamadan geliyor demektir.",
+          "dims": [
+            "mall_area"
+          ],
+          "views": [
+            "line",
+            "table"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "mall_turnover_per_sqm",
+          "label": "AVM'de m² başına ciro",
+          "unit": "TL/m²",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "monthly",
+          "definition": "AYD: kiralanabilir metrekare başına aylık ciro, TL. Türkiye, İstanbul ve Anadolu (İstanbul dışı) kırılımıyla; bunlar derneğin kendi bölge tanımıdır, kayıt defterindeki alanlar değildir, o yüzden boyut olarak saklanır.",
+          "dims": [
+            "mall_area"
+          ],
+          "views": [
+            "line",
+            "table"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "furniture_stores",
+          "label": "Mobilya mağazası",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Beş mobilya markasının kendi mağaza bulucusundan okunan mağaza sayısı, ilçe ve il düzeyinde, 22.09.2026 anlık görüntüsü. İstikbal, Bellona ve Mondi (Boydak grubu) istikbal.com.tr'nin arkasındaki marka API'sinden il il; Doğtaş ve Kelebek ortak mağaza panelinden. Bayi, firmanın kendi perakende mağazası ve outlet birlikte sayılır; Doğtaş'ın 248 mağazasının 217'si, Kelebek'in 235'inin 203'ü bayidir. Seri değildir.",
+          "dims": [
+            "furniture_brand"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "retail_turnover_index",
+          "label": "Perakende ciro endeksi (2015=100)",
+          "unit": "endeks",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "monthly",
+          "definition": "TÜİK perakende ciro endeksi, cari fiyatlarla, 2015=100, aylık. Ciro fiyat artışını içerir; hacim endeksiyle farkı enflasyondur.",
+          "dims": [
+            "retail_sector",
+            "adjustment"
+          ],
+          "views": [
+            "line",
+            "table"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "retail_volume_index",
+          "label": "Perakende satış hacim endeksi (2015=100)",
+          "unit": "endeks",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "monthly",
+          "definition": "TÜİK perakende satış hacim endeksi, sabit fiyatlarla, 2015=100, aylık. Hacim fiyat artışını taşımaz; ciro endeksiyle birlikte okunur, toplanmaz. Değişim oranları saklanmaz, endeksten hesaplanır.",
+          "dims": [
+            "retail_sector",
+            "adjustment"
+          ],
+          "views": [
+            "line",
+            "table"
+          ],
+          "dataset": null,
+          "levels": [],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -10873,6 +12308,52 @@
           "available": true
         },
         {
+          "id": "telecom_postpaid_subscribers",
+          "label": "Faturalı mobil abone (operatör)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "quarterly",
+          "definition": "Operatörün yatırımcı dosyasından faturalı mobil abone sayısı, çeyreklik.",
+          "dims": [
+            "operator"
+          ],
+          "views": [
+            "line",
+            "table"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "telecom_fibre_subscribers",
+          "label": "Fiber abone (operatör)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "quarterly",
+          "definition": "Operatörün kendi altyapısındaki fiber abone sayısı, çeyreklik. Türk Telekom milyon, Turkcell bin olarak yayımlıyor; ikisi de kişiye çevrilmiştir.",
+          "dims": [
+            "operator"
+          ],
+          "views": [
+            "line",
+            "table"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "btk_province_fiber_km",
           "label": "Fiber optik kablo uzunluğu (il)",
           "unit": "km",
@@ -10958,6 +12439,29 @@
             "table",
             "line",
             "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "telecom_broadband_subscribers",
+          "label": "Genişbant abone (operatör)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "quarterly",
+          "definition": "Türk Telekom'un toplam genişbant abone sayısı, çeyreklik. Turkcell sabit genişbantı tek bir toplam olarak yayımlamadığı için yalnız Türk Telekom satırları vardır.",
+          "dims": [
+            "operator"
+          ],
+          "views": [
+            "line",
+            "table"
           ],
           "dataset": null,
           "levels": [],
@@ -11134,6 +12638,29 @@
           "available": true
         },
         {
+          "id": "internet_speedtests",
+          "label": "Hız testi sayısı",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "quarterly",
+          "definition": "Ookla Speedtest açık verisinde ilçeye düşen test sayısı, mobil ve sabit ayrı. Hız göstergelerinin ne kadar sağlam olduğunu gösterir; az testli ilçenin hızı tek bir kullanıcının bağlantısı olabilir.",
+          "dims": [
+            "connection_type"
+          ],
+          "views": [
+            "map",
+            "table"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "btk_province_cable_tv",
           "label": "Kablo TV abonesi (il)",
           "unit": "abone",
@@ -11173,6 +12700,30 @@
           "views": [
             "table",
             "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "cargo_branches",
+          "label": "Kargo şubesi",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Kargo şirketlerinin kendi şube bulucusundan okunan şube sayısı, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Aras: birim türü 4 (şube), 790 şube; birim kimliği tekil değil, şube adıyla tekilleştirildi. DHL eCommerce (eski MNG): bulucu yalnız ilçeye en yakın şubeleri verdiği için her ilçe soruldu ve şube koduyla birleştirildi, 823 şube. Yurtiçi: şube kimliği 1-8000 tek tek soruldu, 873 şube. Sürat: teslim noktası bulucusu ilçe ilçe soruldu, yalnız şubeler alındı (818; 388'i adında \"Acente\" taşıyan sözleşmeli acente, 33'ünün koordinatı yok). Kargo dolabı, esnaf noktası ve easypoint alınmadı. Seri değildir.",
+          "dims": [
+            "cargo_company"
+          ],
+          "views": [
+            "table",
+            "map",
             "bar"
           ],
           "dataset": null,
@@ -11343,6 +12894,29 @@
           "views": [
             "table",
             "line"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "telecom_mobile_subscribers",
+          "label": "Mobil abone sayısı (operatör)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "quarterly",
+          "definition": "Operatörün kendi yatırımcı dosyasından mobil abone sayısı, çeyreklik. Türk Telekom'un toplamı M2M hatlarını içerir, Turkcell M2M'i faturalının içinde ayrı yazar; her operatörün kendi tanımı korunur. Vodafone karşılaştırılabilir dosya yayımlamıyor, bu yüzden pazar toplamı değildir.",
+          "dims": [
+            "operator"
+          ],
+          "views": [
+            "line",
+            "table"
           ],
           "dataset": null,
           "levels": [],
@@ -11659,6 +13233,30 @@
           "available": true
         },
         {
+          "id": "telecom_dealers",
+          "label": "Operatör bayisi",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Türk Telekom ve Vodafone bulucularındaki satış noktaları, ilçe ve il düzeyinde, 21.09.2026 anlık görüntüsü. Bireysel ve kurumsal listeler aynı bayileri taşır (1.777 kayıt, 893 bayi); bayi kimliğiyle tekilleştirilmiştir. Turkcell listesinde koordinat olmadığı için henüz girmedi. Seri değildir.",
+          "dims": [
+            "operator"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "btk_pamr",
           "label": "Ortak kullanımlı telsiz (OKTH) abone ve kullanıcı",
           "unit": "abone",
@@ -11673,6 +13271,52 @@
           "views": [
             "table",
             "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "post_offices",
+          "label": "PTT iş yeri",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "PTT'nin en yakın PTT bulucusundan (enyakinptt.ptt.gov.tr) okunan iş yerleri, ilçe ve il düzeyinde, 18.09.2026 anlık görüntüsü; 3.295 iş yeri (PTT'nin son açıkladığı 3.576'nın yaklaşık %92'si). Merkez: ilçenin ana iş yeri; şube: merkeze bağlı ek iş yeri; acentelik: PTT adına sözleşmeyle bir esnafın işlettiği, çoğu köy ve beldedeki nokta. Yoğunluk karşılaştırmasında acentelik ayrı okunmalıdır. ATM alanı kaynakta boş olduğu için alınmadı. Seri değildir.",
+          "dims": [
+            "post_office_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "postal_codes",
+          "label": "Posta kodu sayısı",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "PTT'nin bir ilçeye verdiği tekil posta kodu sayısı, 18.09.2026 anlık görüntüsü. Semtin ülke çapındaki tek listesi posta kodudur (docs/semt.md): 973 ilçenin hepsinde semt sayısı ile posta kodu sayısı birebir eşittir, o yüzden bu sayı ilçenin kaç semte bölündüğünü gösterir. Seri değil, anlık görüntü — PTT geçmiş numaralandırmayı yayımlamıyor.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
             "bar"
           ],
           "dataset": null,
@@ -12122,6 +13766,29 @@
           "available": true
         },
         {
+          "id": "telecom_tv_subscribers",
+          "label": "TV abone (operatör)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "quarterly",
+          "definition": "Operatörün televizyon abone sayısı, çeyreklik: Türk Telekom toplam TV, Turkcell IPTV.",
+          "dims": [
+            "operator"
+          ],
+          "views": [
+            "line",
+            "table"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "btk_consumer_complaints",
           "label": "Tüketici şikâyeti, sektöre göre",
           "unit": "adet",
@@ -12340,6 +14007,29 @@
           "available": true
         },
         {
+          "id": "telecom_prepaid_subscribers",
+          "label": "Ön ödemeli mobil abone (operatör)",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "quarterly",
+          "definition": "Operatörün yatırımcı dosyasından ön ödemeli mobil abone sayısı, çeyreklik.",
+          "dims": [
+            "operator"
+          ],
+          "views": [
+            "line",
+            "table"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "btk_imei_manufacture",
           "label": "İmalatla kayda alınan IMEI",
           "unit": "adet",
@@ -12380,6 +14070,78 @@
           "views": [
             "table",
             "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "internet_latency",
+          "label": "İnternet gecikmesi (ölçülen)",
+          "unit": "milisaniye",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "quarterly",
+          "definition": "Ookla Speedtest açık verisi: ölçülen ortalama gecikme, milisaniye. Küçük olan iyidir.",
+          "dims": [
+            "connection_type"
+          ],
+          "views": [
+            "map",
+            "table",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "internet_download_speed",
+          "label": "İnternet indirme hızı (ölçülen)",
+          "unit": "Mbit/s",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "quarterly",
+          "definition": "Ookla Speedtest açık verisi: ~600 m'lik karolarda ölçülen ortalama indirme hızı, test sayısıyla ağırlıklandırılıp ilçeye ve ile toplanmış. Mobil, telefonun dışarıda ölçtüğü; sabit, evdeki ya da işyerindeki hattın ölçtüğü hızdır — ikisi ayrı tutulur, toplanmaz. Abonelik hızı değil ölçülen hızdır. Testi çalıştıranlar kendi seçtikleri için düzey yanlıdır; ilçeler arası ve çeyrekler arası karşılaştırma için uygundur. Karo düşmeyen ilçeye satır yazılmaz.",
+          "dims": [
+            "connection_type"
+          ],
+          "views": [
+            "map",
+            "table",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "internet_upload_speed",
+          "label": "İnternet yükleme hızı (ölçülen)",
+          "unit": "Mbit/s",
+          "decimals": 1,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "quarterly",
+          "definition": "Ookla Speedtest açık verisi, indirme hızıyla aynı yöntem: test sayısıyla ağırlıklı ortalama yükleme hızı, mobil ve sabit ayrı.",
+          "dims": [
+            "connection_type"
+          ],
+          "views": [
+            "map",
+            "table",
             "bar"
           ],
           "dataset": null,
@@ -12485,6 +14247,146 @@
           "fine": {},
           "summary": null,
           "available": true
+        }
+      ]
+    },
+    {
+      "topic": "Sosyo-ekonomik",
+      "indicators": [
+        {
+          "id": "vehicle_count",
+          "label": "Araç sayısı",
+          "unit": "taşıt",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Mahalledeki otomobil sayısı, Endeksa tahmini.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
+          "id": "household_income",
+          "label": "Hane geliri",
+          "unit": "₺/ay",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Aylık ortalama hane geliri, Endeksa modeli.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
+          "id": "household_expense",
+          "label": "Hane harcaması",
+          "unit": "₺/ay",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Aylık hane harcaması, on iki kalem; Endeksa modeli.",
+          "dims": [
+            "expense_item"
+          ],
+          "views": [
+            "table",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
+          "id": "household_saving",
+          "label": "Hane tasarrufu",
+          "unit": "₺/ay",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Aylık hane tasarrufu, Endeksa modeli.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
+          "id": "income_per_capita",
+          "label": "Kişi başı gelir",
+          "unit": "₺/ay",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Aylık kişi başı gelir, Endeksa modeli.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
+          "id": "ses_group",
+          "label": "Sosyo-ekonomik statü",
+          "unit": "kişi",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": true,
+          "frequency": "annual",
+          "definition": "Endeksa'nın A+ … D ölçeğinde kişi sayısı. Sayım değil modeldir; ekranda 'tahmin' rozetiyle durur.",
+          "dims": [
+            "ses"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
         }
       ]
     },
@@ -12984,6 +14886,30 @@
       "topic": "Enerji",
       "indicators": [
         {
+          "id": "fuel_stations",
+          "label": "Akaryakıt istasyonu",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "EPDK bayilik lisans kaydındaki yürürlükte istasyonlu akaryakıt bayileri, dağıtıcı şirkete göre, il ve ilçe düzeyinde, 21.09.2026 dökümü. Kazıma değil lisans kaydıdır: bütün markalar eksiksizdir. İl toplamı kaydın il sütunundan tamdır (12.629); ilçe satırları istasyonların %98,5'ini kapsar — 191 istasyonun adresi ilçeyi belirlemiyor (büyükşehirde 2012 öncesinin MERKEZ ilçesi). Deniz yakıt istasyonları (ihrakiye) dahil değildir. Dağıtıcı markayla aynı değildir: Güzel Enerji M Oil markasının şirketidir. Seri değildir.",
+          "dims": [
+            "fuel_distributor"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
           "id": "epdk_fuel_sales",
           "label": "Akaryakıt yurt içi satışı, ürüne göre",
           "unit": "ton",
@@ -13297,6 +15223,28 @@
           "levels": [
             "country"
           ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "charging_stations",
+          "label": "Elektrikli araç şarj istasyonu",
+          "unit": "adet",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "EPDK lisans veritabanındaki şarj istasyonu sayısı, ilçe ve il düzeyinde, 19.09.2026 anlık görüntüsü. Kazıma değil lisans kaydıdır: sayım tamdır. İl ve ilçe, kaydın serbest metin adresinin sonundan okunur (… Beykoz / İSTANBUL); 16.376 kaydın 31'inde adres yer adı içermediği için düşürülmüştür. Soket sayısı alınmamıştır — o kapasite ölçüsüdür, varlık ölçüsü değil.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -13625,6 +15573,58 @@
             "country",
             "province"
           ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "port_containers_handled",
+          "label": "Limanlarda elleçlenen konteyner",
+          "unit": "TEU",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "UAB Denizcilik Genel Müdürlüğü, liman başkanlığı bazında konteyner elleçleme, TEU, yıllık. Yük tablosuyla aynı yapı ve aynı tuzaklar: aylık dosyalar birikimlidir, yalnız aralık okunur; sayfanın kendi genel toplam satırı liman değildir. Konteynerin ağırlığı yük tablosunda zaten sayılıdır, ikisi toplanmaz.",
+          "dims": [
+            "cargo_direction",
+            "trade_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "port_cargo_handled",
+          "label": "Limanlarda elleçlenen yük",
+          "unit": "ton",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "UAB Denizcilik Genel Müdürlüğü, liman başkanlığı bazında yük elleçleme, ton, yıllık. Limanlar ile eşleştirilip ile toplanır (Ambarlı ve Tuzla İstanbul, Ceyhan Adana gibi). Kaynak aylık dosyaları yıl başından itibaren birikimli yayımlar; yalnız aralık dosyası okunur. Yön ve taşıma türü ayrı boyutlardır; toplam değerler kaynağın kendi toplamıdır, alt kalemlerle birlikte toplanmaz.",
+          "dims": [
+            "cargo_direction",
+            "trade_type"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -15969,6 +17969,155 @@
       ]
     },
     {
+      "topic": "Seçim",
+      "indicators": [
+        {
+          "id": "valid_votes",
+          "label": "Geçerli oy",
+          "unit": "oy",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Geçerli sayılan oy; parti paylarının paydası.",
+          "dims": [
+            "election"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
+          "id": "invalid_votes",
+          "label": "Geçersiz oy",
+          "unit": "oy",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Geçersiz sayılan oy. Bazı seçimlerde kaynak 0 veriyor (eksik).",
+          "dims": [
+            "election"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
+          "id": "electorate",
+          "label": "Kayıtlı seçmen",
+          "unit": "seçmen",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Seçmen kütüğündeki kayıtlı seçmen sayısı.",
+          "dims": [
+            "election"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
+          "id": "votes_cast",
+          "label": "Kullanılan oy",
+          "unit": "oy",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Sandığa atılan oy; katılım = kullanılan / kayıtlı.",
+          "dims": [
+            "election"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
+          "id": "votes",
+          "label": "Oy",
+          "unit": "oy",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Seçenek başına geçerli oy. Kaynak küçük partileri 'Diğer' altında toplar; pay geçerli oya bölünerek hesaplanır (kaynağın kendi oran alanı hatalı).",
+          "dims": [
+            "election",
+            "option"
+          ],
+          "views": [
+            "table",
+            "map",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        },
+        {
+          "id": "ballot_boxes",
+          "label": "Sandık sayısı",
+          "unit": "sandık",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Mahalledeki sandık sayısı. Bazı seçimlerde kaynak 0 veriyor (eksik).",
+          "dims": [
+            "election"
+          ],
+          "views": [
+            "table",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": false
+        }
+      ]
+    },
+    {
       "topic": "Turizm",
       "indicators": [
         {
@@ -18094,6 +20243,87 @@
             "country",
             "nuts2"
           ],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
+    },
+    {
+      "topic": "Güvenlik ve suç",
+      "indicators": [
+        {
+          "id": "vehicle_thefts",
+          "label": "Araç hırsızlığı",
+          "unit": "olay",
+          "decimals": 0,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Yıl içinde bildirilen araç hırsızlığı olayı sayısı.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        },
+        {
+          "id": "homicide_rate",
+          "label": "Yüz bin kişide kasten öldürme",
+          "unit": "yüz bin kişide",
+          "decimals": 0,
+          "additive": false,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Yüz bin kişiye düşen kasten öldürme olayı. OECD yalnız oranı yayımlıyor, olay sayısını değil.",
+          "dims": [],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
+          "parts": {},
+          "fine": {},
+          "summary": null,
+          "available": true
+        }
+      ]
+    },
+    {
+      "topic": "Yenilik ve patent",
+      "indicators": [
+        {
+          "id": "patent_applications",
+          "label": "PCT patent başvurusu",
+          "unit": "patent başvurusu",
+          "decimals": 1,
+          "additive": true,
+          "per_capita": false,
+          "frequency": "annual",
+          "definition": "Mucidin ikamet ettiği ile göre PCT patent başvurusu, başvuru yılı. Kesirli sayılır: iki ilde mucidi olan başvuru iller arasında bölünür. \"Tümü\" bütün alanları kapsar, yedi alanın toplamı değildir (alanlar çakışıyor).",
+          "dims": [
+            "patent_technology"
+          ],
+          "views": [
+            "table",
+            "map",
+            "line",
+            "bar"
+          ],
+          "dataset": null,
+          "levels": [],
           "parts": {},
           "fine": {},
           "summary": null,
@@ -22189,6 +24419,14 @@
     }
   ],
   "dimensions": {
+    "bound": {
+      "label": "Tahmin sınırı",
+      "values": {
+        "point": "Tahmin",
+        "lower_95": "%95 güven aralığı alt sınır",
+        "upper_95": "%95 güven aralığı üst sınır"
+      }
+    },
     "field": {
       "label": "Eğitim alanı",
       "values": {}
@@ -24484,6 +26722,130 @@
         "tukfiy2025_1390": "1390. Diğer Hizmetler",
         "tukfiy2025_13902": "13902. Dini Hizmetler",
         "tukfiy2025_13909": "13909. Başka Yerde Sınıflandırılmamış Diğer Hizmetler"
+      }
+    },
+    "retail_sector": {
+      "label": "Perakende grubu",
+      "values": {
+        "total": "Perakende ticaret (toplam)",
+        "food": "Gıda, içecek ve tütün",
+        "non_food": "Gıda dışı (otomotiv yakıtı hariç)",
+        "computers_books": "Bilgisayar, kitap, iletişim aygıtları",
+        "household_goods": "Ev eşyası, elektrikli aletler, mobilya",
+        "textiles_clothing": "Tekstil, giyim ve ayakkabı",
+        "pharmacy_cosmetics": "Eczacılık ürünleri ve kozmetik",
+        "mail_internet": "Posta ya da internet üzerinden",
+        "automotive_fuel": "Otomotiv yakıtı"
+      }
+    },
+    "adjustment": {
+      "label": "Arındırma",
+      "values": {
+        "none": "Arındırılmamış",
+        "calendar": "Takvim etkisinden arındırılmış",
+        "seasonal_calendar": "Mevsim ve takvim etkisinden arındırılmış"
+      }
+    },
+    "operator": {
+      "label": "Operatör",
+      "values": {
+        "turkcell": "Turkcell",
+        "turk_telekom": "Türk Telekom",
+        "vodafone": "Vodafone"
+      }
+    },
+    "mall_area": {
+      "label": "AVM bölgesi",
+      "values": {
+        "tr": "Türkiye",
+        "istanbul": "İstanbul",
+        "anadolu": "Anadolu (İstanbul dışı)"
+      }
+    },
+    "cargo_direction": {
+      "label": "Yön",
+      "values": {
+        "loading": "Yükleme",
+        "unloading": "Boşaltma",
+        "total": "Toplam"
+      }
+    },
+    "trade_type": {
+      "label": "Taşıma türü",
+      "values": {
+        "foreign": "Dış ticaret",
+        "cabotage": "Kabotaj",
+        "transit": "Transit",
+        "total": "Toplam"
+      }
+    },
+    "connection_type": {
+      "label": "Bağlantı türü",
+      "values": {
+        "mobile": "Mobil",
+        "fixed": "Sabit genişbant"
+      }
+    },
+    "cpi_2003_item": {
+      "label": "TÜFE kalemi (2003=100)",
+      "values": {
+        "fg_j0": "GENEL (Tüketici)",
+        "fg_j01": "1.GIDA VE ALKOLSÜZ İÇECEKLER",
+        "fg_j011": "1.1.GIDA",
+        "fg_j012": "1.2.ALKOLSÜZ İÇECEKLER",
+        "fg_j02": "2.ALKOLLÜ İÇECEKLER VE TÜTÜN",
+        "fg_j021": "2.1.ALKOLLÜ İÇECEKLER",
+        "fg_j022": "2.2.TÜTÜN",
+        "fg_j03": "3.GİYİM VE AYAKKABI",
+        "fg_j031": "3.1.GİYİM",
+        "fg_j032": "3.2.AYAKKABI",
+        "fg_j04": "4.KONUT, SU, ELEKTRİK, GAZ VE DİĞER YAKITLAR",
+        "fg_j041": "4.1.GERÇEK KİRA",
+        "fg_j043": "4.3.KONUTUN BAKIM VE ONARIMI",
+        "fg_j044": "4.4.SU (SEBEKE SUYU) VE KONUTLA İLGİLİ ÇESİTLİ HİZMETLER",
+        "fg_j045": "4.5.ELEKTRIK, GAZ VE DİĞER YAKITLAR",
+        "fg_j05": "5.MOBİLYA, EV ALETLERİ VE EV BAKIM HİZMETLERİ",
+        "fg_j051": "5.1.MOBİLYA, MEFRUŞAT, HALI VE DİĞER YER DÖŞEMELERİ",
+        "fg_j052": "5.2.EV İÇİ TEKSTİL",
+        "fg_j053": "5.3.EV ALETLERİ",
+        "fg_j054": "5.4.ZUCCACİYE, YEMEK TAKIMI VE HANEHALKI ALETLERİ",
+        "fg_j055": "5.5.EV VE BAHÇE ARAÇ GERECLERİ",
+        "fg_j056": "5.6.EV BAKIM İÇİN MAL VE HİZMETLER",
+        "fg_j06": "6.SAĞLIK",
+        "fg_j061": "6.1.TIBBİ ÜRÜNLER, ALETLER VE MALZEMELER",
+        "fg_j062": "6.2.AYAKTA TEDAVİ HİZMETLERİ",
+        "fg_j063": "6.3.YATAKLI TEDAVİ HİZMETLERİ",
+        "fg_j07": "7.ULAŞTIRMA",
+        "fg_j071": "7.1.ARAÇ SATIN ALIMI",
+        "fg_j072": "7.2.KİŞİSEL ULAŞTIRMA ARAÇLARININ İŞLETİMİ",
+        "fg_j073": "7.3.ULAŞTIRMA HİZMETLERİ",
+        "fg_j08": "8.HABERLEŞME",
+        "fg_j081": "8.1.POSTA HİZMETLERİ",
+        "fg_j082": "8.2.TELEFON VE TELEFAKS EKİPMANI",
+        "fg_j083": "8.3.TELEFON VE TELEFAKS HİZMETLERİ",
+        "fg_j09": "9.EĞLENCE VE KÜLTÜR",
+        "fg_j091": "9.1.GÖRSEL-İŞİTSEL SİSTEMLE (AUDIO-VISUAL), FOTOGRAFLA VE VERİ İŞLEMLE İLE İLGİLİ EKİPMAN",
+        "fg_j092": "9.2.DİĞER TEMEL DAYANIKLI EĞLENCE VE KÜLTÜR ARACLARI",
+        "fg_j093": "9.3.DİĞER EĞLENCE ARAÇLARI VE MALZEMELERİ, BAHÇE VE EVCİL HAYVANLARA İLİŞKİN ÜRÜNLER, HİZMETLER",
+        "fg_j094": "9.4.EĞLENCE VE KÜLTÜR HİZMETLERİ",
+        "fg_j095": "9.5.GAZETE, KİTAP VE KIRTASİYE",
+        "fg_j096": "9.6.PAKET TURLAR",
+        "fg_j10": "10.EĞİTİM",
+        "fg_j101": "10.1.OKUL ÖNCESİ EĞİTİM VE İLKÖĞRETİM",
+        "fg_j102": "10.2.ORTA ÖĞRETİM",
+        "fg_j103": "10.3.ORTA ÖĞRETİM SONRASI VE ÜNİVERSİTE ÖNCESİ EĞİTİM",
+        "fg_j104": "10.4.ÜNİVERSİTE EĞİTİMİ",
+        "fg_j105": "10.5.DÜZEYİ BELİRLENEMEYEN EĞİTİM PROGRAMLARI",
+        "fg_j11": "11.LOKANTA VE OTELLER",
+        "fg_j111": "11.1.YEMEK HİZMETLERİ",
+        "fg_j112": "11.2.KONAKLAMA HİZMETLERİ",
+        "fg_j12": "12.ÇEŞİTLİ MAL VE HİZMETLER",
+        "fg_j121": "12.1.KİŞİSEL BAKIM",
+        "fg_j123": "12.3.BAŞKA YERDE SINIFLANDIRILAMAYAN KİŞİSEL BAKIM ÜRÜNLERİ",
+        "fg_j124": "12.4.SOSYAL HİZMETLER",
+        "fg_j125": "12.5.SİGORTA",
+        "fg_j126": "12.6.BAŞKA YERDE SINIFLANDIRILMAYAN MALİ HİZMETLER",
+        "fg_j127": "12.7.BAŞKA YERDE SINIFLANDIRILMAYAN DİĞER HİZMETLER"
       }
     },
     "cpi_2025_special_item": {
@@ -39224,7 +41586,10 @@
         "l": "Gayrimenkul",
         "m_n": "Mesleki, bilimsel, teknik, idari ve destek",
         "o_q": "Kamu yönetimi, eğitim, sağlık ve sosyal hizmet",
-        "r_u": "Diğer hizmetler"
+        "r_u": "Diğer hizmetler",
+        "total_sectors": "Sektörler toplamı (katma değer)",
+        "taxes_subsidies": "Vergi-sübvansiyon",
+        "gdp": "GSYH (toplam)"
       }
     },
     "scheme": {
@@ -42623,6 +44988,2333 @@
         "maritime_cash": "Denizcilik, nakdi",
         "maritime_non_performing": "Denizcilik, takipteki",
         "maritime_non_cash": "Denizcilik, gayrinakdi"
+      }
+    },
+    "patent_technology": {
+      "label": "Teknoloji alanı",
+      "values": {
+        "total": {
+          "label_tr": "Tümü",
+          "label_en": "All fields"
+        },
+        "ai": {
+          "label_tr": "Yapay zekâ",
+          "label_en": "Artificial intelligence"
+        },
+        "ict": {
+          "label_tr": "Bilgi ve iletişim teknolojileri",
+          "label_en": "ICT"
+        },
+        "biotech": {
+          "label_tr": "Biyoteknoloji",
+          "label_en": "Biotechnology"
+        },
+        "pharma": {
+          "label_tr": "İlaç",
+          "label_en": "Pharmaceuticals"
+        },
+        "medical": {
+          "label_tr": "Tıp teknolojisi",
+          "label_en": "Medical technology"
+        },
+        "nanotech": {
+          "label_tr": "Nanoteknoloji",
+          "label_en": "Nanotechnology"
+        },
+        "environmental": {
+          "label_tr": "Çevre teknolojisi",
+          "label_en": "Environmental technology"
+        }
+      }
+    },
+    "given_name": {
+      "label": "İsim",
+      "values": {}
+    },
+    "parcel_register": {
+      "label": "Kayıt",
+      "values": {
+        "title_deed": {
+          "label_tr": "Tapuda kayıtlı",
+          "label_en": "In the title deed"
+        },
+        "cadastre": {
+          "label_tr": "Kadastroda kayıtlı",
+          "label_en": "In the cadastre"
+        },
+        "not_in_title_deed": {
+          "label_tr": "Tapuda olmayan",
+          "label_en": "Not in the title deed"
+        }
+      }
+    },
+    "parcel_approval": {
+      "label": "Onay durumu",
+      "values": {
+        "approved": {
+          "label_tr": "Onaylı",
+          "label_en": "Approved"
+        },
+        "unapproved": {
+          "label_tr": "Onaysız",
+          "label_en": "Unapproved"
+        }
+      }
+    },
+    "coordinate_quality": {
+      "label": "Koordinat niteliği",
+      "values": {
+        "final": {
+          "label_tr": "Kesin koordinatlı",
+          "label_en": "Final coordinates"
+        },
+        "provisional": {
+          "label_tr": "Geçici koordinatlı",
+          "label_en": "Provisional coordinates"
+        },
+        "improved": {
+          "label_tr": "İyileştirilmiş koordinatlı",
+          "label_en": "Improved coordinates"
+        }
+      }
+    },
+    "surname": {
+      "label": "Soyisim",
+      "values": {}
+    },
+    "restaurant_brand": {
+      "label": "Marka",
+      "values": {
+        "burger_king": {
+          "label_tr": "Burger King",
+          "label_en": "Burger King"
+        },
+        "mcdonalds": {
+          "label_tr": "McDonald's",
+          "label_en": "McDonald's"
+        },
+        "oses": {
+          "label_tr": "Oses Çiğköfte",
+          "label_en": "Oses Çiğköfte"
+        },
+        "ziyafet": {
+          "label_tr": "Ziyafet Çiğköfte",
+          "label_en": "Ziyafet Çiğköfte"
+        },
+        "komagene": {
+          "label_tr": "Komagene",
+          "label_en": "Komagene"
+        },
+        "starbucks": {
+          "label_tr": "Starbucks",
+          "label_en": "Starbucks"
+        },
+        "espressolab": {
+          "label_tr": "EspressoLab",
+          "label_en": "EspressoLab"
+        },
+        "dominos": {
+          "label_tr": "Domino's Pizza",
+          "label_en": "Domino's Pizza"
+        }
+      }
+    },
+    "store_brand": {
+      "label": "Marka",
+      "values": {
+        "gratis": {
+          "label_tr": "Gratis",
+          "label_en": "Gratis"
+        },
+        "madame_coco": {
+          "label_tr": "Madame Coco",
+          "label_en": "Madame Coco"
+        },
+        "rossmann": {
+          "label_tr": "Rossmann",
+          "label_en": "Rossmann"
+        },
+        "karaca": {
+          "label_tr": "Karaca",
+          "label_en": "Karaca"
+        },
+        "vatan": {
+          "label_tr": "Vatan Bilgisayar",
+          "label_en": "Vatan Bilgisayar"
+        },
+        "sok": {
+          "label_tr": "ŞOK Market",
+          "label_en": "ŞOK Market"
+        },
+        "hakmar": {
+          "label_tr": "Hakmar Express",
+          "label_en": "Hakmar Express"
+        },
+        "ekomini": {
+          "label_tr": "Ekomini",
+          "label_en": "Ekomini"
+        },
+        "tarim_kredi": {
+          "label_tr": "Tarım Kredi Kooperatif Market",
+          "label_en": "Tarım Kredi Kooperatif Market"
+        },
+        "peynircibaba": {
+          "label_tr": "Peynirci Baba",
+          "label_en": "Peynirci Baba"
+        },
+        "mopas": {
+          "label_tr": "Mopaş",
+          "label_en": "Mopaş"
+        },
+        "furpa": {
+          "label_tr": "Furpa",
+          "label_en": "Furpa"
+        },
+        "seyhanlar": {
+          "label_tr": "Seyhanlar",
+          "label_en": "Seyhanlar"
+        },
+        "koctas": {
+          "label_tr": "Koçtaş",
+          "label_en": "Koçtaş"
+        },
+        "vestel": {
+          "label_tr": "Vestel",
+          "label_en": "Vestel"
+        },
+        "groseri": {
+          "label_tr": "Groseri",
+          "label_en": "Groseri"
+        },
+        "bravo": {
+          "label_tr": "Bravo Süpermarket",
+          "label_en": "Bravo Süpermarket"
+        },
+        "esenlik": {
+          "label_tr": "Esenlik",
+          "label_en": "Esenlik"
+        },
+        "soz": {
+          "label_tr": "Söz Market",
+          "label_en": "Söz Market"
+        },
+        "bim": {
+          "label_tr": "BİM (FİLE dahil)",
+          "label_en": "BİM (incl. FİLE)"
+        },
+        "migros": {
+          "label_tr": "Migros",
+          "label_en": "Migros"
+        },
+        "sec_market": {
+          "label_tr": "Seç Market",
+          "label_en": "Seç Market"
+        },
+        "yunus": {
+          "label_tr": "Yunus Market",
+          "label_en": "Yunus Market"
+        },
+        "nurtas": {
+          "label_tr": "Nurtaş Market",
+          "label_en": "Nurtaş Market"
+        },
+        "macfit": {
+          "label_tr": "MACFit (spor salonu)",
+          "label_en": "MACFit (gym)"
+        },
+        "opmar": {
+          "label_tr": "Opmar Optik",
+          "label_en": "Opmar Optik"
+        }
+      }
+    },
+    "cpi_item": {
+      "label": "TÜFE maddesi",
+      "values": {
+        "0111101": {
+          "label_tr": "Pirinç",
+          "label_en": "Pirinç"
+        },
+        "0111201": {
+          "label_tr": "Buğday Unu",
+          "label_en": "Buğday Unu"
+        },
+        "0111208": {
+          "label_tr": "Bebek Sütü (Toz Karışım)",
+          "label_en": "Bebek Sütü (Toz Karışım)"
+        },
+        "0111209": {
+          "label_tr": "Bulgur",
+          "label_en": "Bulgur"
+        },
+        "0111301": {
+          "label_tr": "Ekmek",
+          "label_en": "Ekmek"
+        },
+        "0111401": {
+          "label_tr": "Bisküvi",
+          "label_en": "Bisküvi"
+        },
+        "0111402": {
+          "label_tr": "Kraker",
+          "label_en": "Kraker"
+        },
+        "0111404": {
+          "label_tr": "Gofret",
+          "label_en": "Gofret"
+        },
+        "0111405": {
+          "label_tr": "Pasta",
+          "label_en": "Pasta"
+        },
+        "0111408": {
+          "label_tr": "Kek",
+          "label_en": "Kek"
+        },
+        "0111411": {
+          "label_tr": "Baklava",
+          "label_en": "Baklava"
+        },
+        "0111415": {
+          "label_tr": "Ekmek Hamuru (Yufka)",
+          "label_en": "Ekmek Hamuru (Yufka)"
+        },
+        "0111501": {
+          "label_tr": "Makarna",
+          "label_en": "Makarna"
+        },
+        "0111502": {
+          "label_tr": "Şehriye",
+          "label_en": "Şehriye"
+        },
+        "0111602": {
+          "label_tr": "Tahıl Gevreği",
+          "label_en": "Tahıl Gevreği"
+        },
+        "0112201": {
+          "label_tr": "Dana Eti",
+          "label_en": "Dana Eti"
+        },
+        "0112401": {
+          "label_tr": "Kuzu Eti",
+          "label_en": "Kuzu Eti"
+        },
+        "0112501": {
+          "label_tr": "Tavuk Eti",
+          "label_en": "Tavuk Eti"
+        },
+        "0112602": {
+          "label_tr": "Sakatat",
+          "label_en": "Sakatat"
+        },
+        "0112701": {
+          "label_tr": "Sucuk",
+          "label_en": "Sucuk"
+        },
+        "0112702": {
+          "label_tr": "Sosis",
+          "label_en": "Sosis"
+        },
+        "0112703": {
+          "label_tr": "Salam",
+          "label_en": "Salam"
+        },
+        "0112709": {
+          "label_tr": "Hazır Et Yemekleri",
+          "label_en": "Hazır Et Yemekleri"
+        },
+        "0113101": {
+          "label_tr": "Balık",
+          "label_en": "Balık"
+        },
+        "0113301": {
+          "label_tr": "Konserve Balık",
+          "label_en": "Konserve Balık"
+        },
+        "0114101": {
+          "label_tr": "Süt",
+          "label_en": "Süt"
+        },
+        "0114301": {
+          "label_tr": "Yoğurt",
+          "label_en": "Yoğurt"
+        },
+        "0114304": {
+          "label_tr": "Hazır Sütlü Tatlılar",
+          "label_en": "Hazır Sütlü Tatlılar"
+        },
+        "0114401": {
+          "label_tr": "Beyaz Peynir",
+          "label_en": "Beyaz Peynir"
+        },
+        "0114402": {
+          "label_tr": "Kaşar Peyniri",
+          "label_en": "Kaşar Peyniri"
+        },
+        "0114403": {
+          "label_tr": "Tulum Peyniri",
+          "label_en": "Tulum Peyniri"
+        },
+        "0114404": {
+          "label_tr": "Krem Peynir",
+          "label_en": "Krem Peynir"
+        },
+        "0114501": {
+          "label_tr": "Yumurta",
+          "label_en": "Yumurta"
+        },
+        "0115101": {
+          "label_tr": "Tereyağı (Kahvaltılık)",
+          "label_en": "Tereyağı (Kahvaltılık)"
+        },
+        "0115201": {
+          "label_tr": "Margarin",
+          "label_en": "Margarin"
+        },
+        "0115301": {
+          "label_tr": "Zeytinyağı",
+          "label_en": "Zeytinyağı"
+        },
+        "0115302": {
+          "label_tr": "Ayçiçek Yağı",
+          "label_en": "Ayçiçek Yağı"
+        },
+        "0116101": {
+          "label_tr": "Portakal",
+          "label_en": "Portakal"
+        },
+        "0116102": {
+          "label_tr": "Üzüm",
+          "label_en": "Üzüm"
+        },
+        "0116105": {
+          "label_tr": "Armut",
+          "label_en": "Armut"
+        },
+        "0116107": {
+          "label_tr": "Ayva",
+          "label_en": "Ayva"
+        },
+        "0116110": {
+          "label_tr": "Çilek",
+          "label_en": "Çilek"
+        },
+        "0116112": {
+          "label_tr": "Elma",
+          "label_en": "Elma"
+        },
+        "0116121": {
+          "label_tr": "Karpuz",
+          "label_en": "Karpuz"
+        },
+        "0116122": {
+          "label_tr": "Kavun",
+          "label_en": "Kavun"
+        },
+        "0116128": {
+          "label_tr": "Kivi",
+          "label_en": "Kivi"
+        },
+        "0116130": {
+          "label_tr": "Limon",
+          "label_en": "Limon"
+        },
+        "0116131": {
+          "label_tr": "Mandalina",
+          "label_en": "Mandalina"
+        },
+        "0116134": {
+          "label_tr": "Muz",
+          "label_en": "Muz"
+        },
+        "0116135": {
+          "label_tr": "Nar",
+          "label_en": "Nar"
+        },
+        "0116137": {
+          "label_tr": "Şeftali",
+          "label_en": "Şeftali"
+        },
+        "0116201": {
+          "label_tr": "Badem İçi",
+          "label_en": "Badem İçi"
+        },
+        "0116202": {
+          "label_tr": "Ceviz İçi",
+          "label_en": "Ceviz İçi"
+        },
+        "0116203": {
+          "label_tr": "Fındık İçi",
+          "label_en": "Fındık İçi"
+        },
+        "0116204": {
+          "label_tr": "Antep Fıstığı",
+          "label_en": "Antep Fıstığı"
+        },
+        "0116206": {
+          "label_tr": "Yer Fıstığı",
+          "label_en": "Yer Fıstığı"
+        },
+        "0116207": {
+          "label_tr": "Leblebi",
+          "label_en": "Leblebi"
+        },
+        "0116208": {
+          "label_tr": "Ay Çekirdeği",
+          "label_en": "Ay Çekirdeği"
+        },
+        "0116209": {
+          "label_tr": "Kabak Çekirdeği",
+          "label_en": "Kabak Çekirdeği"
+        },
+        "0116210": {
+          "label_tr": "Kuru Üzüm",
+          "label_en": "Kuru Üzüm"
+        },
+        "0116212": {
+          "label_tr": "Kuru Kayısı",
+          "label_en": "Kuru Kayısı"
+        },
+        "0117114": {
+          "label_tr": "Çarliston Biber",
+          "label_en": "Çarliston Biber"
+        },
+        "0117115": {
+          "label_tr": "Dolmalık Biber",
+          "label_en": "Dolmalık Biber"
+        },
+        "0117117": {
+          "label_tr": "Sivri Biber",
+          "label_en": "Sivri Biber"
+        },
+        "0117121": {
+          "label_tr": "Dereotu",
+          "label_en": "Dereotu"
+        },
+        "0117122": {
+          "label_tr": "Domates",
+          "label_en": "Domates"
+        },
+        "0117125": {
+          "label_tr": "Taze Fasulye",
+          "label_en": "Taze Fasulye"
+        },
+        "0117130": {
+          "label_tr": "Havuç",
+          "label_en": "Havuç"
+        },
+        "0117134": {
+          "label_tr": "Ispanak",
+          "label_en": "Ispanak"
+        },
+        "0117135": {
+          "label_tr": "Kabak",
+          "label_en": "Kabak"
+        },
+        "0117139": {
+          "label_tr": "Karnabahar",
+          "label_en": "Karnabahar"
+        },
+        "0117146": {
+          "label_tr": "Kuru Soğan",
+          "label_en": "Kuru Soğan"
+        },
+        "0117148": {
+          "label_tr": "Beyaz Lahana",
+          "label_en": "Beyaz Lahana"
+        },
+        "0117150": {
+          "label_tr": "Kırmızı Lahana",
+          "label_en": "Kırmızı Lahana"
+        },
+        "0117151": {
+          "label_tr": "Mantar",
+          "label_en": "Mantar"
+        },
+        "0117152": {
+          "label_tr": "Kıvırcık",
+          "label_en": "Kıvırcık"
+        },
+        "0117153": {
+          "label_tr": "Maydanoz",
+          "label_en": "Maydanoz"
+        },
+        "0117155": {
+          "label_tr": "Nane",
+          "label_en": "Nane"
+        },
+        "0117158": {
+          "label_tr": "Patlıcan",
+          "label_en": "Patlıcan"
+        },
+        "0117160": {
+          "label_tr": "Pırasa",
+          "label_en": "Pırasa"
+        },
+        "0117161": {
+          "label_tr": "Roka",
+          "label_en": "Roka"
+        },
+        "0117162": {
+          "label_tr": "Salatalık",
+          "label_en": "Salatalık"
+        },
+        "0117164": {
+          "label_tr": "Sarımsak",
+          "label_en": "Sarımsak"
+        },
+        "0117174": {
+          "label_tr": "Kırmızı Turp",
+          "label_en": "Kırmızı Turp"
+        },
+        "0117201": {
+          "label_tr": "Patates",
+          "label_en": "Patates"
+        },
+        "0117401": {
+          "label_tr": "Kuru Fasulye",
+          "label_en": "Kuru Fasulye"
+        },
+        "0117402": {
+          "label_tr": "Nohut",
+          "label_en": "Nohut"
+        },
+        "0117403": {
+          "label_tr": "Mercimek",
+          "label_en": "Mercimek"
+        },
+        "0117501": {
+          "label_tr": "Konserveler",
+          "label_en": "Konserveler"
+        },
+        "0117504": {
+          "label_tr": "Turşu",
+          "label_en": "Turşu"
+        },
+        "0117505": {
+          "label_tr": "Salça",
+          "label_en": "Salça"
+        },
+        "0117506": {
+          "label_tr": "Zeytin",
+          "label_en": "Zeytin"
+        },
+        "0117507": {
+          "label_tr": "Cipsler",
+          "label_en": "Cipsler"
+        },
+        "0118101": {
+          "label_tr": "Toz Şeker",
+          "label_en": "Toz Şeker"
+        },
+        "0118102": {
+          "label_tr": "Kesme Şeker",
+          "label_en": "Kesme Şeker"
+        },
+        "0118201": {
+          "label_tr": "Reçel",
+          "label_en": "Reçel"
+        },
+        "0118203": {
+          "label_tr": "Bal",
+          "label_en": "Bal"
+        },
+        "0118204": {
+          "label_tr": "Pekmez",
+          "label_en": "Pekmez"
+        },
+        "0118205": {
+          "label_tr": "Tahin Helvası",
+          "label_en": "Tahin Helvası"
+        },
+        "0118206": {
+          "label_tr": "Fındık Ezmesi",
+          "label_en": "Fındık Ezmesi"
+        },
+        "0118302": {
+          "label_tr": "Çikolata Tablet",
+          "label_en": "Çikolata Tablet"
+        },
+        "0118303": {
+          "label_tr": "Çikolata Krem",
+          "label_en": "Çikolata Krem"
+        },
+        "0118305": {
+          "label_tr": "Lokum",
+          "label_en": "Lokum"
+        },
+        "0118311": {
+          "label_tr": "Sakız",
+          "label_en": "Sakız"
+        },
+        "0118312": {
+          "label_tr": "Kağıtlı Şeker",
+          "label_en": "Kağıtlı Şeker"
+        },
+        "0118401": {
+          "label_tr": "Dondurma",
+          "label_en": "Dondurma"
+        },
+        "0119001": {
+          "label_tr": "Baharat",
+          "label_en": "Baharat"
+        },
+        "0119002": {
+          "label_tr": "Tuz",
+          "label_en": "Tuz"
+        },
+        "0119004": {
+          "label_tr": "Kabartma Maddeleri",
+          "label_en": "Kabartma Maddeleri"
+        },
+        "0119005": {
+          "label_tr": "Sirke",
+          "label_en": "Sirke"
+        },
+        "0119008": {
+          "label_tr": "Ketçap",
+          "label_en": "Ketçap"
+        },
+        "0119009": {
+          "label_tr": "Mayonez",
+          "label_en": "Mayonez"
+        },
+        "0119012": {
+          "label_tr": "Tahin",
+          "label_en": "Tahin"
+        },
+        "0119014": {
+          "label_tr": "Hazır Çorbalar",
+          "label_en": "Hazır Çorbalar"
+        },
+        "0119015": {
+          "label_tr": "Hazır Pakette Toz Tatlılar (Puding)",
+          "label_en": "Hazır Pakette Toz Tatlılar (Puding)"
+        },
+        "0121101": {
+          "label_tr": "Kahve",
+          "label_en": "Kahve"
+        },
+        "0121102": {
+          "label_tr": "Hazır Kahve",
+          "label_en": "Hazır Kahve"
+        },
+        "0121201": {
+          "label_tr": "Çay",
+          "label_en": "Çay"
+        },
+        "0121202": {
+          "label_tr": "Bitki ve Meyve Çayı (Poşet)",
+          "label_en": "Bitki ve Meyve Çayı (Poşet)"
+        },
+        "0121301": {
+          "label_tr": "Kakao",
+          "label_en": "Kakao"
+        },
+        "0121304": {
+          "label_tr": "Kakaolu Toz İçecekler",
+          "label_en": "Kakaolu Toz İçecekler"
+        },
+        "0122101": {
+          "label_tr": "Su",
+          "label_en": "Su"
+        },
+        "0122102": {
+          "label_tr": "Maden Suyu ve Sodası",
+          "label_en": "Maden Suyu ve Sodası"
+        },
+        "0122202": {
+          "label_tr": "Gazoz Meyveli",
+          "label_en": "Gazoz Meyveli"
+        },
+        "0122203": {
+          "label_tr": "Kola",
+          "label_en": "Kola"
+        },
+        "0122204": {
+          "label_tr": "Soğuk Çay",
+          "label_en": "Soğuk Çay"
+        },
+        "0122205": {
+          "label_tr": "Ayran",
+          "label_en": "Ayran"
+        },
+        "0122301": {
+          "label_tr": "Meyve Suyu",
+          "label_en": "Meyve Suyu"
+        },
+        "0211001": {
+          "label_tr": "Rakı",
+          "label_en": "Rakı"
+        },
+        "0211006": {
+          "label_tr": "Viski",
+          "label_en": "Viski"
+        },
+        "0212101": {
+          "label_tr": "Şarap",
+          "label_en": "Şarap"
+        },
+        "0213001": {
+          "label_tr": "Bira",
+          "label_en": "Bira"
+        },
+        "0220100": {
+          "label_tr": "Sigaralar",
+          "label_en": "Sigaralar"
+        },
+        "0311003": {
+          "label_tr": "Pamuklu Kumaş",
+          "label_en": "Pamuklu Kumaş"
+        },
+        "0312104": {
+          "label_tr": "Kaban (Erkek için)",
+          "label_en": "Kaban (Erkek için)"
+        },
+        "0312106": {
+          "label_tr": "Erkek Mont",
+          "label_en": "Erkek Mont"
+        },
+        "0312108": {
+          "label_tr": "Takım Elbise (Erkek için)",
+          "label_en": "Takım Elbise (Erkek için)"
+        },
+        "0312109": {
+          "label_tr": "Ceket (Erkek için)",
+          "label_en": "Ceket (Erkek için)"
+        },
+        "0312110": {
+          "label_tr": "Pantolon (Erkek için)",
+          "label_en": "Pantolon (Erkek için)"
+        },
+        "0312112": {
+          "label_tr": "Kazak (Erkek için)",
+          "label_en": "Kazak (Erkek için)"
+        },
+        "0312115": {
+          "label_tr": "Gömlek (Erkek için)",
+          "label_en": "Gömlek (Erkek için)"
+        },
+        "0312116": {
+          "label_tr": "Sweatshirt (Erkek için)",
+          "label_en": "Sweatshirt (Erkek için)"
+        },
+        "0312117": {
+          "label_tr": "Tişört (Erkek için)",
+          "label_en": "Tişört (Erkek için)"
+        },
+        "0312120": {
+          "label_tr": "Eşofman (Erkek için)",
+          "label_en": "Eşofman (Erkek için)"
+        },
+        "0312122": {
+          "label_tr": "Pijama (Erkek için)",
+          "label_en": "Pijama (Erkek için)"
+        },
+        "0312125": {
+          "label_tr": "İç Çamaşırı (Erkek için)",
+          "label_en": "İç Çamaşırı (Erkek için)"
+        },
+        "0312130": {
+          "label_tr": "Çorap (Erkek için)",
+          "label_en": "Çorap (Erkek için)"
+        },
+        "0312202": {
+          "label_tr": "Pardösü (Kadın için)",
+          "label_en": "Pardösü (Kadın için)"
+        },
+        "0312204": {
+          "label_tr": "Kaban (Kadın için)",
+          "label_en": "Kaban (Kadın için)"
+        },
+        "0312213": {
+          "label_tr": "Elbise (Kadın için)",
+          "label_en": "Elbise (Kadın için)"
+        },
+        "0312214": {
+          "label_tr": "Ceket (Kadın için)",
+          "label_en": "Ceket (Kadın için)"
+        },
+        "0312215": {
+          "label_tr": "Etek",
+          "label_en": "Etek"
+        },
+        "0312216": {
+          "label_tr": "Pantolon (Kadın için)",
+          "label_en": "Pantolon (Kadın için)"
+        },
+        "0312217": {
+          "label_tr": "Hırka (Kadın için)",
+          "label_en": "Hırka (Kadın için)"
+        },
+        "0312219": {
+          "label_tr": "Kazak (Kadın için)",
+          "label_en": "Kazak (Kadın için)"
+        },
+        "0312222": {
+          "label_tr": "Gömlek (Kadın için)",
+          "label_en": "Gömlek (Kadın için)"
+        },
+        "0312223": {
+          "label_tr": "Sweatshirt (Kadın için)",
+          "label_en": "Sweatshirt (Kadın için)"
+        },
+        "0312224": {
+          "label_tr": "Tişört (Kadın için)",
+          "label_en": "Tişört (Kadın için)"
+        },
+        "0312230": {
+          "label_tr": "Eşofman (Kadın için)",
+          "label_en": "Eşofman (Kadın için)"
+        },
+        "0312235": {
+          "label_tr": "Pijama (Kadın için)",
+          "label_en": "Pijama (Kadın için)"
+        },
+        "0312237": {
+          "label_tr": "İç Çamaşırı (Kadın için)",
+          "label_en": "İç Çamaşırı (Kadın için)"
+        },
+        "0312242": {
+          "label_tr": "Çorap (Kadın için)",
+          "label_en": "Çorap (Kadın için)"
+        },
+        "0312303": {
+          "label_tr": "Kaban Anorak (Çocuk için)",
+          "label_en": "Kaban Anorak (Çocuk için)"
+        },
+        "0312313": {
+          "label_tr": "Elbise (Çocuk için)",
+          "label_en": "Elbise (Çocuk için)"
+        },
+        "0312315": {
+          "label_tr": "Pantolon (Çocuk için)",
+          "label_en": "Pantolon (Çocuk için)"
+        },
+        "0312318": {
+          "label_tr": "Kazak (Çocuk için)",
+          "label_en": "Kazak (Çocuk için)"
+        },
+        "0312321": {
+          "label_tr": "Gömlek (Çocuk için)",
+          "label_en": "Gömlek (Çocuk için)"
+        },
+        "0312322": {
+          "label_tr": "Sweatshirt (Çocuk için)",
+          "label_en": "Sweatshirt (Çocuk için)"
+        },
+        "0312323": {
+          "label_tr": "Tişört (Çocuk için)",
+          "label_en": "Tişört (Çocuk için)"
+        },
+        "0312326": {
+          "label_tr": "Tayt (Çocuk için)",
+          "label_en": "Tayt (Çocuk için)"
+        },
+        "0312328": {
+          "label_tr": "Eşofman (Çocuk için)",
+          "label_en": "Eşofman (Çocuk için)"
+        },
+        "0312329": {
+          "label_tr": "Pijama (Çocuk için)",
+          "label_en": "Pijama (Çocuk için)"
+        },
+        "0312332": {
+          "label_tr": "İç çamaşırı (Çocuk için)",
+          "label_en": "İç çamaşırı (Çocuk için)"
+        },
+        "0312336": {
+          "label_tr": "Çorap (Çocuk için)",
+          "label_en": "Çorap (Çocuk için)"
+        },
+        "0312403": {
+          "label_tr": "Bebek Tulumu",
+          "label_en": "Bebek Tulumu"
+        },
+        "0312409": {
+          "label_tr": "Bebek Pijaması",
+          "label_en": "Bebek Pijaması"
+        },
+        "0312410": {
+          "label_tr": "Bebek İç Çamaşırı",
+          "label_en": "Bebek İç Çamaşırı"
+        },
+        "0313001": {
+          "label_tr": "Örgü Yünü",
+          "label_en": "Örgü Yünü"
+        },
+        "0313006": {
+          "label_tr": "Kravat",
+          "label_en": "Kravat"
+        },
+        "0313012": {
+          "label_tr": "Kemer",
+          "label_en": "Kemer"
+        },
+        "0313014": {
+          "label_tr": "Eşarp",
+          "label_en": "Eşarp"
+        },
+        "0314005": {
+          "label_tr": "Giysi Tamir Ücretleri",
+          "label_en": "Giysi Tamir Ücretleri"
+        },
+        "0314007": {
+          "label_tr": "Kuru Temizleme Ücreti",
+          "label_en": "Kuru Temizleme Ücreti"
+        },
+        "0321101": {
+          "label_tr": "Ayakkabı (Erkek için)",
+          "label_en": "Ayakkabı (Erkek için)"
+        },
+        "0321102": {
+          "label_tr": "Bot (Erkek için)",
+          "label_en": "Bot (Erkek için)"
+        },
+        "0321104": {
+          "label_tr": "Spor Ayakkabısı (Erkek için)",
+          "label_en": "Spor Ayakkabısı (Erkek için)"
+        },
+        "0321201": {
+          "label_tr": "Ayakkabı (Kadın için)",
+          "label_en": "Ayakkabı (Kadın için)"
+        },
+        "0321202": {
+          "label_tr": "Bot (Kadın için)",
+          "label_en": "Bot (Kadın için)"
+        },
+        "0321204": {
+          "label_tr": "Spor Ayakkabısı (Kadın için)",
+          "label_en": "Spor Ayakkabısı (Kadın için)"
+        },
+        "0321206": {
+          "label_tr": "Terlik (Kadın için)",
+          "label_en": "Terlik (Kadın için)"
+        },
+        "0321301": {
+          "label_tr": "Ayakkabı (Çocuk için)",
+          "label_en": "Ayakkabı (Çocuk için)"
+        },
+        "0321302": {
+          "label_tr": "Bot (Çocuk için)",
+          "label_en": "Bot (Çocuk için)"
+        },
+        "0321304": {
+          "label_tr": "Spor Ayakkabısı (Çocuk için)",
+          "label_en": "Spor Ayakkabısı (Çocuk için)"
+        },
+        "0322001": {
+          "label_tr": "Ayakkabı Tamiri (Erkek)",
+          "label_en": "Ayakkabı Tamiri (Erkek)"
+        },
+        "0322002": {
+          "label_tr": "Ayakkabı Tamiri (Kadın)",
+          "label_en": "Ayakkabı Tamiri (Kadın)"
+        },
+        "0411101": {
+          "label_tr": "Kiracı Tarafından Ödenen Gerçek Kira",
+          "label_en": "Kiracı Tarafından Ödenen Gerçek Kira"
+        },
+        "0431001": {
+          "label_tr": "Badana ve Boya Malzemeleri",
+          "label_en": "Badana ve Boya Malzemeleri"
+        },
+        "0431002": {
+          "label_tr": "Yer ve Duvar Döşemesi",
+          "label_en": "Yer ve Duvar Döşemesi"
+        },
+        "0431006": {
+          "label_tr": "Pencere (PVC)",
+          "label_en": "Pencere (PVC)"
+        },
+        "0431008": {
+          "label_tr": "Sıhhi Techizat Malzemeleri",
+          "label_en": "Sıhhi Techizat Malzemeleri"
+        },
+        "0441001": {
+          "label_tr": "Su Faturası",
+          "label_en": "Su Faturası"
+        },
+        "0451001": {
+          "label_tr": "Elektrik Ücreti",
+          "label_en": "Elektrik Ücreti"
+        },
+        "0452101": {
+          "label_tr": "Doğalgaz Ücreti",
+          "label_en": "Doğalgaz Ücreti"
+        },
+        "0452102": {
+          "label_tr": "Doğalgaz Abonman Ücreti",
+          "label_en": "Doğalgaz Abonman Ücreti"
+        },
+        "0452201": {
+          "label_tr": "Tüp Gaz Ücreti",
+          "label_en": "Tüp Gaz Ücreti"
+        },
+        "0454001": {
+          "label_tr": "Kömür Ücreti",
+          "label_en": "Kömür Ücreti"
+        },
+        "0454002": {
+          "label_tr": "Odun Ücreti",
+          "label_en": "Odun Ücreti"
+        },
+        "0511102": {
+          "label_tr": "Tek Masa",
+          "label_en": "Tek Masa"
+        },
+        "0511105": {
+          "label_tr": "Tek Sandalye",
+          "label_en": "Tek Sandalye"
+        },
+        "0511201": {
+          "label_tr": "Yatak Odası Takımı",
+          "label_en": "Yatak Odası Takımı"
+        },
+        "0511204": {
+          "label_tr": "Yatak (Tek Kişilik)",
+          "label_en": "Yatak (Tek Kişilik)"
+        },
+        "0511205": {
+          "label_tr": "Yatak (Çift Kişilik)",
+          "label_en": "Yatak (Çift Kişilik)"
+        },
+        "0511207": {
+          "label_tr": "Yatak Bazası",
+          "label_en": "Yatak Bazası"
+        },
+        "0511208": {
+          "label_tr": "Genç Odası Takımı",
+          "label_en": "Genç Odası Takımı"
+        },
+        "0511301": {
+          "label_tr": "Oturma Odası Takımı",
+          "label_en": "Oturma Odası Takımı"
+        },
+        "0511302": {
+          "label_tr": "Yemek Odası Takımı",
+          "label_en": "Yemek Odası Takımı"
+        },
+        "0511307": {
+          "label_tr": "Sehpa",
+          "label_en": "Sehpa"
+        },
+        "0512001": {
+          "label_tr": "Halı",
+          "label_en": "Halı"
+        },
+        "0520001": {
+          "label_tr": "Perde",
+          "label_en": "Perde"
+        },
+        "0520002": {
+          "label_tr": "Stor Perde",
+          "label_en": "Stor Perde"
+        },
+        "0520003": {
+          "label_tr": "Tül",
+          "label_en": "Tül"
+        },
+        "0520007": {
+          "label_tr": "Yatak Örtüsü",
+          "label_en": "Yatak Örtüsü"
+        },
+        "0520010": {
+          "label_tr": "Yorgan",
+          "label_en": "Yorgan"
+        },
+        "0520012": {
+          "label_tr": "Battaniye",
+          "label_en": "Battaniye"
+        },
+        "0520013": {
+          "label_tr": "Pike Takımı",
+          "label_en": "Pike Takımı"
+        },
+        "0520014": {
+          "label_tr": "Nevresim Takımı",
+          "label_en": "Nevresim Takımı"
+        },
+        "0520015": {
+          "label_tr": "Yastık",
+          "label_en": "Yastık"
+        },
+        "0520025": {
+          "label_tr": "Havlu",
+          "label_en": "Havlu"
+        },
+        "0531102": {
+          "label_tr": "No-Frost Buzdolabı",
+          "label_en": "No-Frost Buzdolabı"
+        },
+        "0531104": {
+          "label_tr": "Derin Dondurucu",
+          "label_en": "Derin Dondurucu"
+        },
+        "0531201": {
+          "label_tr": "Çamaşır Makinesi",
+          "label_en": "Çamaşır Makinesi"
+        },
+        "0531202": {
+          "label_tr": "Bulaşık Makinesi",
+          "label_en": "Bulaşık Makinesi"
+        },
+        "0531301": {
+          "label_tr": "Ankastre Mikrodalga Fırın",
+          "label_en": "Ankastre Mikrodalga Fırın"
+        },
+        "0531302": {
+          "label_tr": "Ankastre Ocak (Set Üstü)",
+          "label_en": "Ankastre Ocak (Set Üstü)"
+        },
+        "0531303": {
+          "label_tr": "Ankastre Fırın",
+          "label_en": "Ankastre Fırın"
+        },
+        "0531401": {
+          "label_tr": "Klima",
+          "label_en": "Klima"
+        },
+        "0531403": {
+          "label_tr": "Soba",
+          "label_en": "Soba"
+        },
+        "0531406": {
+          "label_tr": "Kombi",
+          "label_en": "Kombi"
+        },
+        "0531409": {
+          "label_tr": "Davlumbaz",
+          "label_en": "Davlumbaz"
+        },
+        "0531501": {
+          "label_tr": "Elektrikli Süpürge",
+          "label_en": "Elektrikli Süpürge"
+        },
+        "0532001": {
+          "label_tr": "Elektrikli Kesici Aletler (Blender)",
+          "label_en": "Elektrikli Kesici Aletler (Blender)"
+        },
+        "0532002": {
+          "label_tr": "Elektrikli Küçük Ev Aletleri (Tost Makinası)",
+          "label_en": "Elektrikli Küçük Ev Aletleri (Tost Makinası)"
+        },
+        "0532003": {
+          "label_tr": "Sıcak İçecek Makinaları",
+          "label_en": "Sıcak İçecek Makinaları"
+        },
+        "0532004": {
+          "label_tr": "Ütü",
+          "label_en": "Ütü"
+        },
+        "0533001": {
+          "label_tr": "Ev Aletlerinin Tamiri (Malzeme ve İşçilik)",
+          "label_en": "Ev Aletlerinin Tamiri (Malzeme ve İşçilik)"
+        },
+        "0540102": {
+          "label_tr": "Cam Ev Eşyası",
+          "label_en": "Cam Ev Eşyası"
+        },
+        "0540104": {
+          "label_tr": "Porselen Ev Eşyası",
+          "label_en": "Porselen Ev Eşyası"
+        },
+        "0540201": {
+          "label_tr": "Kaşık, Çatal, Bıçak Takımı (Çelik)",
+          "label_en": "Kaşık, Çatal, Bıçak Takımı (Çelik)"
+        },
+        "0540301": {
+          "label_tr": "Çelik Mutfak Eşyaları",
+          "label_en": "Çelik Mutfak Eşyaları"
+        },
+        "0540302": {
+          "label_tr": "Teflon Mutfak Eşyaları",
+          "label_en": "Teflon Mutfak Eşyaları"
+        },
+        "0540304": {
+          "label_tr": "Plastik Mutfak Eşyaları",
+          "label_en": "Plastik Mutfak Eşyaları"
+        },
+        "0540312": {
+          "label_tr": "Diğer Elektriksiz Ev Aletleri",
+          "label_en": "Diğer Elektriksiz Ev Aletleri"
+        },
+        "0552103": {
+          "label_tr": "Pil",
+          "label_en": "Pil"
+        },
+        "0552104": {
+          "label_tr": "Ampul",
+          "label_en": "Ampul"
+        },
+        "0552203": {
+          "label_tr": "Kapı Aksesuarları (Anahtar, Kilit)",
+          "label_en": "Kapı Aksesuarları (Anahtar, Kilit)"
+        },
+        "0552204": {
+          "label_tr": "Soba Aksesuar ve Malzemeleri",
+          "label_en": "Soba Aksesuar ve Malzemeleri"
+        },
+        "0561101": {
+          "label_tr": "Çamaşır İçin Temizlik ve Bakım Ürünleri",
+          "label_en": "Çamaşır İçin Temizlik ve Bakım Ürünleri"
+        },
+        "0561102": {
+          "label_tr": "Bulaşık İçin Temizlik ve Bakım Ürünleri",
+          "label_en": "Bulaşık İçin Temizlik ve Bakım Ürünleri"
+        },
+        "0561103": {
+          "label_tr": "Hijyenik Zeminler İçin Temizlik ve Bakım Ürünleri",
+          "label_en": "Hijyenik Zeminler İçin Temizlik ve Bakım Ürünleri"
+        },
+        "0561201": {
+          "label_tr": "Her Türlü Ev Temizlik Aletleri",
+          "label_en": "Her Türlü Ev Temizlik Aletleri"
+        },
+        "0561202": {
+          "label_tr": "Bulaşık Bezleri",
+          "label_en": "Bulaşık Bezleri"
+        },
+        "0561203": {
+          "label_tr": "Saklama ve Muhafaza Malzemeleri",
+          "label_en": "Saklama ve Muhafaza Malzemeleri"
+        },
+        "0561204": {
+          "label_tr": "Kağıt Sofra Malzemeleri",
+          "label_en": "Kağıt Sofra Malzemeleri"
+        },
+        "0562104": {
+          "label_tr": "Gündelikçi Ücreti",
+          "label_en": "Gündelikçi Ücreti"
+        },
+        "0562202": {
+          "label_tr": "Halı Temizleme",
+          "label_en": "Halı Temizleme"
+        },
+        "0611001": {
+          "label_tr": "İlaçlar",
+          "label_en": "İlaçlar"
+        },
+        "0612002": {
+          "label_tr": "Diğer Sağlık Ürünleri",
+          "label_en": "Diğer Sağlık Ürünleri"
+        },
+        "0613101": {
+          "label_tr": "Numaralı Gözlük Cam ve Çerçevesi",
+          "label_en": "Numaralı Gözlük Cam ve Çerçevesi"
+        },
+        "0613102": {
+          "label_tr": "Kontakt Lens",
+          "label_en": "Kontakt Lens"
+        },
+        "0613201": {
+          "label_tr": "Sağlık İle İlgili Araç Gereçler (Tansiyon Aleti)",
+          "label_en": "Sağlık İle İlgili Araç Gereçler (Tansiyon Aleti)"
+        },
+        "0621201": {
+          "label_tr": "Uzman Doktor Muayene Ücreti",
+          "label_en": "Uzman Doktor Muayene Ücreti"
+        },
+        "0622001": {
+          "label_tr": "Diş Çekme Ücreti",
+          "label_en": "Diş Çekme Ücreti"
+        },
+        "0622002": {
+          "label_tr": "Diş Dolgu Ücreti",
+          "label_en": "Diş Dolgu Ücreti"
+        },
+        "0623101": {
+          "label_tr": "Röntgen Ücreti",
+          "label_en": "Röntgen Ücreti"
+        },
+        "0623102": {
+          "label_tr": "Ultrason Ücreti",
+          "label_en": "Ultrason Ücreti"
+        },
+        "0623105": {
+          "label_tr": "Emar Ücreti",
+          "label_en": "Emar Ücreti"
+        },
+        "0623108": {
+          "label_tr": "Labaratuvar Tahlil Ücretleri",
+          "label_en": "Labaratuvar Tahlil Ücretleri"
+        },
+        "0630001": {
+          "label_tr": "Hastane Yatak Ücreti",
+          "label_en": "Hastane Yatak Ücreti"
+        },
+        "0630002": {
+          "label_tr": "Ameliyat Ücreti",
+          "label_en": "Ameliyat Ücreti"
+        },
+        "0630003": {
+          "label_tr": "Doğum Ücreti (Normal Doğum)",
+          "label_en": "Doğum Ücreti (Normal Doğum)"
+        },
+        "0630004": {
+          "label_tr": "Doğum Ücreti (Sezaryen)",
+          "label_en": "Doğum Ücreti (Sezaryen)"
+        },
+        "0711101": {
+          "label_tr": "Otomobil (Dizel)",
+          "label_en": "Otomobil (Dizel)"
+        },
+        "0711301": {
+          "label_tr": "Otomobil (Benzinli)",
+          "label_en": "Otomobil (Benzinli)"
+        },
+        "0712001": {
+          "label_tr": "Motorsiklet",
+          "label_en": "Motorsiklet"
+        },
+        "0713001": {
+          "label_tr": "Bisiklet",
+          "label_en": "Bisiklet"
+        },
+        "0721001": {
+          "label_tr": "Araç Yedek Parça ve Ekipmanları",
+          "label_en": "Araç Yedek Parça ve Ekipmanları"
+        },
+        "0721003": {
+          "label_tr": "Araba İle İlgili, Temizlik ve Bakım Ürünleri",
+          "label_en": "Araba İle İlgili, Temizlik ve Bakım Ürünleri"
+        },
+        "0722001": {
+          "label_tr": "Benzin",
+          "label_en": "Benzin"
+        },
+        "0722002": {
+          "label_tr": "LPG (Araba Tüpü Dolum)  Ücreti",
+          "label_en": "LPG (Araba Tüpü Dolum)  Ücreti"
+        },
+        "0722003": {
+          "label_tr": "Motorin",
+          "label_en": "Motorin"
+        },
+        "0722004": {
+          "label_tr": "Motor Yağları",
+          "label_en": "Motor Yağları"
+        },
+        "0723001": {
+          "label_tr": "Araçların  Tamirine ve Bakımına Ödenen Ücretler (Malzeme ve işçilik)",
+          "label_en": "Araçların  Tamirine ve Bakımına Ödenen Ücretler (Malzeme ve işçilik)"
+        },
+        "0723002": {
+          "label_tr": "Araçların  Tamirine ve Bakımına Ödenen Ücretler (işçilik)",
+          "label_en": "Araçların  Tamirine ve Bakımına Ödenen Ücretler (işçilik)"
+        },
+        "0724001": {
+          "label_tr": "Araba Kiralama Ücreti",
+          "label_en": "Araba Kiralama Ücreti"
+        },
+        "0724005": {
+          "label_tr": "Otopark Ücreti",
+          "label_en": "Otopark Ücreti"
+        },
+        "0724006": {
+          "label_tr": "Otoban Geçiş Ücreti",
+          "label_en": "Otoban Geçiş Ücreti"
+        },
+        "0724008": {
+          "label_tr": "Köprü Geçiş Ücreti",
+          "label_en": "Köprü Geçiş Ücreti"
+        },
+        "0724009": {
+          "label_tr": "Sürücü Eğitim Kurs Ücreti",
+          "label_en": "Sürücü Eğitim Kurs Ücreti"
+        },
+        "0731101": {
+          "label_tr": "Tren Ücreti Banliyo",
+          "label_en": "Tren Ücreti Banliyo"
+        },
+        "0731102": {
+          "label_tr": "Metro Ücreti",
+          "label_en": "Metro Ücreti"
+        },
+        "0731104": {
+          "label_tr": "Tramvay Ücreti",
+          "label_en": "Tramvay Ücreti"
+        },
+        "0731201": {
+          "label_tr": "Tren Ücreti (Şehirlerarası)",
+          "label_en": "Tren Ücreti (Şehirlerarası)"
+        },
+        "0732101": {
+          "label_tr": "Belediye Otobüs Ücreti",
+          "label_en": "Belediye Otobüs Ücreti"
+        },
+        "0732104": {
+          "label_tr": "Dolmuş Ücreti",
+          "label_en": "Dolmuş Ücreti"
+        },
+        "0732105": {
+          "label_tr": "Servis Ücreti",
+          "label_en": "Servis Ücreti"
+        },
+        "0732201": {
+          "label_tr": "Taksi Ücreti",
+          "label_en": "Taksi Ücreti"
+        },
+        "0732301": {
+          "label_tr": "Şehirlerarası Otobüs Ücreti",
+          "label_en": "Şehirlerarası Otobüs Ücreti"
+        },
+        "0733001": {
+          "label_tr": "Uçak Bileti Ücreti",
+          "label_en": "Uçak Bileti Ücreti"
+        },
+        "0734001": {
+          "label_tr": "Vapur Bilet Ücreti",
+          "label_en": "Vapur Bilet Ücreti"
+        },
+        "0736002": {
+          "label_tr": "Kargo Gönderme Ücreti",
+          "label_en": "Kargo Gönderme Ücreti"
+        },
+        "0736003": {
+          "label_tr": "Nakliye Ücreti (Şehiriçi)",
+          "label_en": "Nakliye Ücreti (Şehiriçi)"
+        },
+        "0810002": {
+          "label_tr": "Koli Gönderme Ücreti",
+          "label_en": "Koli Gönderme Ücreti"
+        },
+        "0820001": {
+          "label_tr": "Telefon Ekipmanları (Cep Telefonu)",
+          "label_en": "Telefon Ekipmanları (Cep Telefonu)"
+        },
+        "0820002": {
+          "label_tr": "Telefon Yedek Parçaları",
+          "label_en": "Telefon Yedek Parçaları"
+        },
+        "0820003": {
+          "label_tr": "Telefon Onarım Ücreti",
+          "label_en": "Telefon Onarım Ücreti"
+        },
+        "0830001": {
+          "label_tr": "Telefon Görüşme Ücreti",
+          "label_en": "Telefon Görüşme Ücreti"
+        },
+        "0830004": {
+          "label_tr": "Cep Telefonu Görüşme Ücreti",
+          "label_en": "Cep Telefonu Görüşme Ücreti"
+        },
+        "0830008": {
+          "label_tr": "Telefon Aboneliğine İlişkin Hizmetler",
+          "label_en": "Telefon Aboneliğine İlişkin Hizmetler"
+        },
+        "0830009": {
+          "label_tr": "İnternet Ücreti",
+          "label_en": "İnternet Ücreti"
+        },
+        "0911101": {
+          "label_tr": "Televizyon",
+          "label_en": "Televizyon"
+        },
+        "0913001": {
+          "label_tr": "Bilgisayar",
+          "label_en": "Bilgisayar"
+        },
+        "0913008": {
+          "label_tr": "Bilgisayar Ekipmanları",
+          "label_en": "Bilgisayar Ekipmanları"
+        },
+        "0913011": {
+          "label_tr": "Tablet (Bilgisayar)",
+          "label_en": "Tablet (Bilgisayar)"
+        },
+        "0915001": {
+          "label_tr": "Görsel İşitsel Veri İşleme Araçları Tamiri (Malzeme ve İşçilik)",
+          "label_en": "Görsel İşitsel Veri İşleme Araçları Tamiri (Malzeme ve İşçilik)"
+        },
+        "0915002": {
+          "label_tr": "Görsel, İşitsel Veri İşleme Araçları (İşçilik Ücreti)",
+          "label_en": "Görsel, İşitsel Veri İşleme Araçları (İşçilik Ücreti)"
+        },
+        "0922001": {
+          "label_tr": "Müzik Aletleri",
+          "label_en": "Müzik Aletleri"
+        },
+        "0931003": {
+          "label_tr": "Oyuncak",
+          "label_en": "Oyuncak"
+        },
+        "0931006": {
+          "label_tr": "Scooter (Çocuk)",
+          "label_en": "Scooter (Çocuk)"
+        },
+        "0932002": {
+          "label_tr": "Sporla İlgili Aletler (Futbol Topu)",
+          "label_en": "Sporla İlgili Aletler (Futbol Topu)"
+        },
+        "0934002": {
+          "label_tr": "Evcil Hayvanlar İçin Gıda Harcamaları",
+          "label_en": "Evcil Hayvanlar İçin Gıda Harcamaları"
+        },
+        "0935001": {
+          "label_tr": "Veteriner Ücreti",
+          "label_en": "Veteriner Ücreti"
+        },
+        "0941001": {
+          "label_tr": "Spor Müsabakalarına Giriş Ücreti",
+          "label_en": "Spor Müsabakalarına Giriş Ücreti"
+        },
+        "0941002": {
+          "label_tr": "Sportif Faaliyetler İçin Yapılan Ödemeler",
+          "label_en": "Sportif Faaliyetler İçin Yapılan Ödemeler"
+        },
+        "0942105": {
+          "label_tr": "Resim Çektirme Ücreti",
+          "label_en": "Resim Çektirme Ücreti"
+        },
+        "0942203": {
+          "label_tr": "Kablolu- Özel Televizyon Yayın Hizmetleri",
+          "label_en": "Kablolu- Özel Televizyon Yayın Hizmetleri"
+        },
+        "0942204": {
+          "label_tr": "Sinema",
+          "label_en": "Sinema"
+        },
+        "0942205": {
+          "label_tr": "Tiyatro",
+          "label_en": "Tiyatro"
+        },
+        "0942206": {
+          "label_tr": "Diğer Kültürel Faaliyetler",
+          "label_en": "Diğer Kültürel Faaliyetler"
+        },
+        "0943000": {
+          "label_tr": "Şans Oyunları",
+          "label_en": "Şans Oyunları"
+        },
+        "0951002": {
+          "label_tr": "Çocuk Kitapları",
+          "label_en": "Çocuk Kitapları"
+        },
+        "0951003": {
+          "label_tr": "Test Kitapları",
+          "label_en": "Test Kitapları"
+        },
+        "0951004": {
+          "label_tr": "Diğer Kitaplar",
+          "label_en": "Diğer Kitaplar"
+        },
+        "0952001": {
+          "label_tr": "Gazeteler",
+          "label_en": "Gazeteler"
+        },
+        "0952002": {
+          "label_tr": "Magazinler ve Dergiler",
+          "label_en": "Magazinler ve Dergiler"
+        },
+        "0954001": {
+          "label_tr": "Okul Defteri",
+          "label_en": "Okul Defteri"
+        },
+        "0954003": {
+          "label_tr": "Kalem",
+          "label_en": "Kalem"
+        },
+        "0954004": {
+          "label_tr": "Resim Boyaları",
+          "label_en": "Resim Boyaları"
+        },
+        "0954005": {
+          "label_tr": "Yazım ve Çizim Kağıtları",
+          "label_en": "Yazım ve Çizim Kağıtları"
+        },
+        "0954010": {
+          "label_tr": "Diğer Kırtasiye Malzemeleri",
+          "label_en": "Diğer Kırtasiye Malzemeleri"
+        },
+        "0960002": {
+          "label_tr": "Yurtiçi Haftasonu Turları",
+          "label_en": "Yurtiçi Haftasonu Turları"
+        },
+        "0960003": {
+          "label_tr": "Yurtiçi Bir Hafta ve Daha Fazla Süreli Turlar",
+          "label_en": "Yurtiçi Bir Hafta ve Daha Fazla Süreli Turlar"
+        },
+        "0960005": {
+          "label_tr": "Yurt Dışı Bir Hafta ve Daha Fazla Süreli Turlar",
+          "label_en": "Yurt Dışı Bir Hafta ve Daha Fazla Süreli Turlar"
+        },
+        "0960008": {
+          "label_tr": "Hacca Gidiş Ücreti",
+          "label_en": "Hacca Gidiş Ücreti"
+        },
+        "0960009": {
+          "label_tr": "Umreye Gidiş Ücreti",
+          "label_en": "Umreye Gidiş Ücreti"
+        },
+        "1010002": {
+          "label_tr": "Özel İlköğretim Ücreti",
+          "label_en": "Özel İlköğretim Ücreti"
+        },
+        "1020002": {
+          "label_tr": "Özel Lise Ücreti",
+          "label_en": "Özel Lise Ücreti"
+        },
+        "1040001": {
+          "label_tr": "Özel Üniversite Ücreti",
+          "label_en": "Özel Üniversite Ücreti"
+        },
+        "1040002": {
+          "label_tr": "Üniversite Katkı Payı",
+          "label_en": "Üniversite Katkı Payı"
+        },
+        "1050001": {
+          "label_tr": "Düzeyi Belirlenemeyen Eğitim Programları",
+          "label_en": "Düzeyi Belirlenemeyen Eğitim Programları"
+        },
+        "1110101": {
+          "label_tr": "Çorbalar",
+          "label_en": "Çorbalar"
+        },
+        "1110102": {
+          "label_tr": "Hazır Yemekler (Pilav, Kuru Fasulye)",
+          "label_en": "Hazır Yemekler (Pilav, Kuru Fasulye)"
+        },
+        "1110103": {
+          "label_tr": "Kebaplar",
+          "label_en": "Kebaplar"
+        },
+        "1110104": {
+          "label_tr": "Pideler",
+          "label_en": "Pideler"
+        },
+        "1110105": {
+          "label_tr": "Çiğ Köfte",
+          "label_en": "Çiğ Köfte"
+        },
+        "1110106": {
+          "label_tr": "Ekmekarası Yiyecekler (Döner)",
+          "label_en": "Ekmekarası Yiyecekler (Döner)"
+        },
+        "1110108": {
+          "label_tr": "Burgerler",
+          "label_en": "Burgerler"
+        },
+        "1110110": {
+          "label_tr": "Pizzalar",
+          "label_en": "Pizzalar"
+        },
+        "1110113": {
+          "label_tr": "Pastane Ürünleri",
+          "label_en": "Pastane Ürünleri"
+        },
+        "1110115": {
+          "label_tr": "Hamur Tatlıları",
+          "label_en": "Hamur Tatlıları"
+        },
+        "1110201": {
+          "label_tr": "Sıcak İçecekler (Servis edilen)",
+          "label_en": "Sıcak İçecekler (Servis edilen)"
+        },
+        "1110202": {
+          "label_tr": "Soğuk İçecekler (Servis edilen)",
+          "label_en": "Soğuk İçecekler (Servis edilen)"
+        },
+        "1110204": {
+          "label_tr": "Ayran (Servis edilen)",
+          "label_en": "Ayran (Servis edilen)"
+        },
+        "1110206": {
+          "label_tr": "Alkollü İçkiler",
+          "label_en": "Alkollü İçkiler"
+        },
+        "1120101": {
+          "label_tr": "Otel Ücreti",
+          "label_en": "Otel Ücreti"
+        },
+        "1120204": {
+          "label_tr": "Yurt Ücreti",
+          "label_en": "Yurt Ücreti"
+        },
+        "1211101": {
+          "label_tr": "Erkek Berberi",
+          "label_en": "Erkek Berberi"
+        },
+        "1211201": {
+          "label_tr": "Kadın Berberi",
+          "label_en": "Kadın Berberi"
+        },
+        "1211202": {
+          "label_tr": "Kişisel Bakım Hizmetleri (Kadın İçin)",
+          "label_en": "Kişisel Bakım Hizmetleri (Kadın İçin)"
+        },
+        "1212003": {
+          "label_tr": "Elektrikli Saç Bakım Aletleri",
+          "label_en": "Elektrikli Saç Bakım Aletleri"
+        },
+        "1213001": {
+          "label_tr": "Tıraş Malzemeleri",
+          "label_en": "Tıraş Malzemeleri"
+        },
+        "1213002": {
+          "label_tr": "Ağız ve Diş Bakımı Ürünleri",
+          "label_en": "Ağız ve Diş Bakımı Ürünleri"
+        },
+        "1213005": {
+          "label_tr": "Tuvalet ve Güzellik Sabunu",
+          "label_en": "Tuvalet ve Güzellik Sabunu"
+        },
+        "1213006": {
+          "label_tr": "Sabun",
+          "label_en": "Sabun"
+        },
+        "1213007": {
+          "label_tr": "Parfüm",
+          "label_en": "Parfüm"
+        },
+        "1213008": {
+          "label_tr": "Deodorant",
+          "label_en": "Deodorant"
+        },
+        "1213009": {
+          "label_tr": "Kolonya",
+          "label_en": "Kolonya"
+        },
+        "1213010": {
+          "label_tr": "Cilt ve Vücut Ürünleri",
+          "label_en": "Cilt ve Vücut Ürünleri"
+        },
+        "1213011": {
+          "label_tr": "Makyaj Malzemeleri",
+          "label_en": "Makyaj Malzemeleri"
+        },
+        "1213013": {
+          "label_tr": "Saç Bakım Ürünleri",
+          "label_en": "Saç Bakım Ürünleri"
+        },
+        "1213014": {
+          "label_tr": "Tuvalet Kağıdı",
+          "label_en": "Tuvalet Kağıdı"
+        },
+        "1213015": {
+          "label_tr": "Mendil",
+          "label_en": "Mendil"
+        },
+        "1213017": {
+          "label_tr": "Bebek Bezi",
+          "label_en": "Bebek Bezi"
+        },
+        "1213018": {
+          "label_tr": "Hijyenik Kadın Bağı",
+          "label_en": "Hijyenik Kadın Bağı"
+        },
+        "1231001": {
+          "label_tr": "Mücevher (Altın)",
+          "label_en": "Mücevher (Altın)"
+        },
+        "1231005": {
+          "label_tr": "Saat",
+          "label_en": "Saat"
+        },
+        "1232101": {
+          "label_tr": "Seyahat Malzemeleri",
+          "label_en": "Seyahat Malzemeleri"
+        },
+        "1232104": {
+          "label_tr": "Çanta (Kadın İçin)",
+          "label_en": "Çanta (Kadın İçin)"
+        },
+        "1232106": {
+          "label_tr": "Okul Çantası",
+          "label_en": "Okul Çantası"
+        },
+        "1232201": {
+          "label_tr": "Şemsiye",
+          "label_en": "Şemsiye"
+        },
+        "1232203": {
+          "label_tr": "Bebek Arabası",
+          "label_en": "Bebek Arabası"
+        },
+        "1240001": {
+          "label_tr": "Kreş ve Gündüz Bakım Evleri",
+          "label_en": "Kreş ve Gündüz Bakım Evleri"
+        },
+        "1252001": {
+          "label_tr": "Yangın, Hırsızlık ve Diğer Afetler İçin Sigorta",
+          "label_en": "Yangın, Hırsızlık ve Diğer Afetler İçin Sigorta"
+        },
+        "1253002": {
+          "label_tr": "Sağlık Sigortası",
+          "label_en": "Sağlık Sigortası"
+        },
+        "1254001": {
+          "label_tr": "Kasko ve Zorunlu Trafik Sigortası",
+          "label_en": "Kasko ve Zorunlu Trafik Sigortası"
+        },
+        "1262006": {
+          "label_tr": "Banka ile Para Havale Ücreti",
+          "label_en": "Banka ile Para Havale Ücreti"
+        },
+        "1270001": {
+          "label_tr": "Resmi Evraklarla İlgili Hizmet Ücreti",
+          "label_en": "Resmi Evraklarla İlgili Hizmet Ücreti"
+        },
+        "1270002": {
+          "label_tr": "Ulaşım Araçları ile İlgili Hizmet Ücreti",
+          "label_en": "Ulaşım Araçları ile İlgili Hizmet Ücreti"
+        },
+        "1270006": {
+          "label_tr": "Avukatlık Ücreti",
+          "label_en": "Avukatlık Ücreti"
+        },
+        "1270008": {
+          "label_tr": "Dökümantasyon İçin Ödenen Ücretler",
+          "label_en": "Dökümantasyon İçin Ödenen Ücretler"
+        }
+      }
+    },
+    "bank": {
+      "label": "Banka",
+      "values": {
+        "ziraat": {
+          "label_tr": "Ziraat Bankası",
+          "label_en": "Ziraat Bankası"
+        },
+        "vakifbank": {
+          "label_tr": "VakıfBank",
+          "label_en": "VakıfBank"
+        },
+        "halkbank": {
+          "label_tr": "Halkbank",
+          "label_en": "Halkbank"
+        },
+        "isbank": {
+          "label_tr": "İş Bankası",
+          "label_en": "İşbank"
+        },
+        "denizbank": {
+          "label_tr": "DenizBank",
+          "label_en": "DenizBank"
+        },
+        "yapikredi": {
+          "label_tr": "Yapı Kredi",
+          "label_en": "Yapı Kredi"
+        },
+        "akbank": {
+          "label_tr": "Akbank",
+          "label_en": "Akbank"
+        },
+        "teb": {
+          "label_tr": "TEB",
+          "label_en": "TEB"
+        },
+        "qnb": {
+          "label_tr": "QNB",
+          "label_en": "QNB"
+        },
+        "sekerbank": {
+          "label_tr": "Şekerbank",
+          "label_en": "Şekerbank"
+        },
+        "fibabanka": {
+          "label_tr": "Fibabanka",
+          "label_en": "Fibabanka"
+        },
+        "ing": {
+          "label_tr": "ING",
+          "label_en": "ING"
+        },
+        "kuveytturk": {
+          "label_tr": "Kuveyt Türk",
+          "label_en": "Kuveyt Türk"
+        },
+        "turkiyefinans": {
+          "label_tr": "Türkiye Finans",
+          "label_en": "Türkiye Finans"
+        },
+        "vakifkatilim": {
+          "label_tr": "Vakıf Katılım",
+          "label_en": "Vakıf Katılım"
+        },
+        "ziraatkatilim": {
+          "label_tr": "Ziraat Katılım",
+          "label_en": "Ziraat Katılım"
+        },
+        "albaraka": {
+          "label_tr": "Albaraka Türk",
+          "label_en": "Albaraka Türk"
+        },
+        "emlakkatilim": {
+          "label_tr": "Emlak Katılım",
+          "label_en": "Emlak Katılım"
+        }
+      }
+    },
+    "furniture_brand": {
+      "label": "Mobilya markası",
+      "values": {
+        "istikbal": "İstikbal",
+        "bellona": "Bellona",
+        "mondi": "Mondi",
+        "dogtas": "Doğtaş",
+        "kelebek": "Kelebek"
+      }
+    },
+    "post_office_type": {
+      "label": "İş yeri türü",
+      "values": {
+        "main": {
+          "label_tr": "Merkez (müdürlük)",
+          "label_en": "Main office"
+        },
+        "branch": {
+          "label_tr": "Şube",
+          "label_en": "Branch"
+        },
+        "agency": {
+          "label_tr": "Acentelik",
+          "label_en": "Agency"
+        }
+      }
+    },
+    "cargo_company": {
+      "label": "Kargo şirketi",
+      "values": {
+        "aras": "Aras Kargo",
+        "dhl_ecommerce": "DHL eCommerce (MNG)",
+        "yurtici": "Yurtiçi Kargo",
+        "surat": "Sürat Kargo",
+        "kolay_gelsin": "Kolay Gelsin"
+      }
+    },
+    "fashion_brand": {
+      "label": "Marka",
+      "values": {
+        "lcwaikiki": {
+          "label_tr": "LC Waikiki",
+          "label_en": "LC Waikiki"
+        },
+        "defacto": {
+          "label_tr": "DeFacto",
+          "label_en": "DeFacto"
+        },
+        "mavi": {
+          "label_tr": "Mavi",
+          "label_en": "Mavi"
+        },
+        "koton": {
+          "label_tr": "Koton",
+          "label_en": "Koton"
+        },
+        "sarar": {
+          "label_tr": "Sarar",
+          "label_en": "Sarar"
+        },
+        "zara": {
+          "label_tr": "Zara",
+          "label_en": "Zara"
+        },
+        "hm": {
+          "label_tr": "H&M",
+          "label_en": "H&M"
+        },
+        "superstep": {
+          "label_tr": "Superstep",
+          "label_en": "Superstep"
+        },
+        "skechers": {
+          "label_tr": "Skechers",
+          "label_en": "Skechers"
+        }
+      }
+    },
+    "fuel_distributor": {
+      "label": "Akaryakıt dağıtıcısı",
+      "values": {
+        "7kita_petrolculuk_dagitim_ve_pazarlama": {
+          "label_tr": "7Kita Petrolcülük Dağıtım Ve Pazarlama",
+          "label_en": "7Kita Petrolcülük Dağıtım Ve Pazarlama"
+        },
+        "akpet_akaryakit_dagitim": {
+          "label_tr": "Akpet Akaryakıt Dağıtım",
+          "label_en": "Akpet Akaryakıt Dağıtım"
+        },
+        "altinbas_petrol_ve_ticaret": {
+          "label_tr": "Altınbaş Petrol Ve Ticaret",
+          "label_en": "Altınbaş Petrol Ve Ticaret"
+        },
+        "aytemiz_akaryakit_dagitim": {
+          "label_tr": "Aytemiz Akaryakıt Dağıtım",
+          "label_en": "Aytemiz Akaryakıt Dağıtım"
+        },
+        "bas_akaryakit_dagitim_pazarlama_sanayi_ve_ticaret": {
+          "label_tr": "Baş Akaryakıt Dağıtım Pazarlama Sanayi Ve Ticaret",
+          "label_en": "Baş Akaryakıt Dağıtım Pazarlama Sanayi Ve Ticaret"
+        },
+        "enerji_petrol_urunleri_pazarlama": {
+          "label_tr": "Enerji Petrol Ürünleri Pazarlama",
+          "label_en": "Enerji Petrol Ürünleri Pazarlama"
+        },
+        "ergaz_akaryakit_lpg_lng_cng_dagitim_sanayi_ve_ticaret": {
+          "label_tr": "Ergaz Akaryakıt Lpg Lng Cng Dağıtım Sanayi Ve Ticaret",
+          "label_en": "Ergaz Akaryakıt Lpg Lng Cng Dağıtım Sanayi Ve Ticaret"
+        },
+        "es_es_akaryakit_dagitim": {
+          "label_tr": "Es Es Akaryakıt Dağıtım",
+          "label_en": "Es Es Akaryakıt Dağıtım"
+        },
+        "euroil_enerji_dagitim": {
+          "label_tr": "Euroil Enerji Dağıtım",
+          "label_en": "Euroil Enerji Dağıtım"
+        },
+        "fox_petrolculuk": {
+          "label_tr": "Fox Petrolcülük",
+          "label_en": "Fox Petrolcülük"
+        },
+        "guzel_enerji_akaryakit": {
+          "label_tr": "Güzel Enerji Akaryakıt",
+          "label_en": "Güzel Enerji Akaryakıt"
+        },
+        "hypco_petrolculuk": {
+          "label_tr": "Hypco Petrolcülük",
+          "label_en": "Hypco Petrolcülük"
+        },
+        "kadooglu_petrolculuk_tasimacilik_ticaret_sanayi_ithalat_ve_ihracat": {
+          "label_tr": "Kadooğlu Petrolcülük Taşımacılık Ticaret Sanayi İthalat Ve İhracat",
+          "label_en": "Kadooğlu Petrolcülük Taşimacilik Ticaret Sanayi İthalat Ve İhracat"
+        },
+        "kaleli_best_oil_petrolculuk_ticaret": {
+          "label_tr": "Kaleli Best Oil Petrolcülük Ticaret",
+          "label_en": "Kaleli Best Oil Petrolcülük Ticaret"
+        },
+        "lpgas_enerji": {
+          "label_tr": "Lpgas Enerji",
+          "label_en": "Lpgas Enerji"
+        },
+        "norm_gaz_petrol_urunleri_sanayi_ticaret": {
+          "label_tr": "Norm Gaz Petrol Ürünleri Sanayi Ticaret",
+          "label_en": "Norm Gaz Petrol Ürünleri Sanayi Ticaret"
+        },
+        "opet_petrolculuk": {
+          "label_tr": "Opet Petrolcülük",
+          "label_en": "Opet Petrolcülük"
+        },
+        "pet_line_petrol_urunleri_ticaret": {
+          "label_tr": "Pet-Line Petrol Ürünleri Ticaret",
+          "label_en": "Pet-Line Petrol Ürünleri Ticaret"
+        },
+        "petrol_ofisi": {
+          "label_tr": "Petrol Ofisi",
+          "label_en": "Petrol Ofisi"
+        },
+        "rpet_petrolculuk": {
+          "label_tr": "Rpet Petrolcülük",
+          "label_en": "Rpet Petrolcülük"
+        },
+        "shell_turcas_petrol": {
+          "label_tr": "Shell & Turcas Petrol",
+          "label_en": "Shell & Turcas Petrol"
+        },
+        "socar_turkey_petrol_ticaret": {
+          "label_tr": "Socar Turkey Petrol Ticaret",
+          "label_en": "Socar Turkey Petrol Ticaret"
+        },
+        "siyam_petrolculuk_sanayi_ve_ticaret": {
+          "label_tr": "Siyam Petrolcülük Sanayi Ve Ticaret",
+          "label_en": "Siyam Petrolcülük Sanayi Ve Ticaret"
+        },
+        "teco_petrolculuk_sanayi_ve_ticaret": {
+          "label_tr": "Teco Petrolcülük Sanayi Ve Ticaret",
+          "label_en": "Teco Petrolcülük Sanayi Ve Ticaret"
+        },
+        "termopet_akaryakit": {
+          "label_tr": "Termopet Akaryakıt",
+          "label_en": "Termopet Akaryakıt"
+        },
+        "tp_petrol_dagitim": {
+          "label_tr": "TP Petrol Dağıtım",
+          "label_en": "TP Petrol Dağıtım"
+        },
+        "turgut_dagitim_enerji": {
+          "label_tr": "Turgut Dağıtım Enerji",
+          "label_en": "Turgut Dağıtım Enerji"
+        },
+        "turkey_akaryakit_dagitim": {
+          "label_tr": "Turkey Akaryakıt Dağıtım",
+          "label_en": "Turkey Akaryakıt Dağıtım"
+        },
+        "turkish_oil_akaryakit_dagitim": {
+          "label_tr": "Turkish Oil Akaryakıt Dagitim",
+          "label_en": "Turkish Oil Akaryakıt Dagitim"
+        },
+        "uzun_grubu_sanayi_ve_ticaret": {
+          "label_tr": "Uzun Grubu Sanayi Ve Ticaret",
+          "label_en": "Uzun Grubu Sanayi Ve Ticaret"
+        },
+        "vtm_akaryakit_petrol_urunleri_dagitim_sanayi_ve_ticaret": {
+          "label_tr": "Vtm Akaryakıt Petrol Ürünleri Dağıtım Sanayi Ve Ticaret",
+          "label_en": "Vtm Akaryakıt Petrol Ürünleri Dağıtım Sanayi Ve Ticaret"
+        },
+        "ipra_enerji": {
+          "label_tr": "İpra Enerji",
+          "label_en": "İpra Enerji"
+        }
+      }
+    },
+    "merchant_sector": {
+      "label": "İşyeri grubu",
+      "values": {
+        "car_rental": "Araba kiralama",
+        "vehicle_trade_and_service": "Araç kiralama-satış/servis/yedek parça",
+        "fuel_stations": "Benzin ve yakıt istasyonları",
+        "private_pension": "Bireysel emeklilik",
+        "direct_marketing": "Doğrudan pazarlama",
+        "other": "Diğer",
+        "electronics_and_computers": "Elektrik-elektronik eşya, bilgisayar",
+        "education_and_stationery": "Eğitim / kırtasiye / ofis malzemeleri",
+        "clothing_and_accessories": "Giyim ve aksesuar",
+        "airlines": "Havayolları",
+        "services": "Hizmet sektörleri",
+        "public_and_tax_payments": "Kamu / vergi ödemeleri",
+        "accommodation": "Konaklama",
+        "clubs_and_associations": "Kulüp / dernek / sosyal hizmetler",
+        "gambling_and_licensed_premises": "Kumarhane / içkili yerler",
+        "jewellers": "Kuyumcular",
+        "markets_and_malls": "Market ve alışveriş merkezleri",
+        "furniture_and_decoration": "Mobilya ve dekorasyon",
+        "contracting": "Müteahhit işleri",
+        "health_and_cosmetics": "Sağlık / sağlık ürünleri / kozmetik",
+        "travel_and_transport": "Seyahat acenteleri / taşımacılık",
+        "insurance": "Sigorta",
+        "telecommunications": "Telekomünikasyon",
+        "building_materials_and_hardware": "Yapı malzemeleri, hırdavat, nalburiye",
+        "food_service": "Yemek",
+        "food_retail": "Çeşitli gıda"
+      }
+    },
+    "card_type": {
+      "label": "Kart türü",
+      "values": {
+        "credit": "Kredi kartı",
+        "debit": "Banka kartı"
+      }
+    },
+    "card_usage": {
+      "label": "Kart ve işyerinin yeri",
+      "values": {
+        "domestic_card_abroad": "Yerli kart, yurt dışı işyeri",
+        "domestic_card_at_home": "Yerli kart, yurt içi işyeri",
+        "foreign_card_at_home": "Yabancı kart, yurt içi işyeri"
+      }
+    },
+    "egitim_duzeyi": {
+      "label": "Eğitim düzeyi",
+      "values": {
+        "okul_oncesi": "Okul Öncesi",
+        "ilkogretim": "İlköğretim",
+        "ortaogretim": "Ortaöğretim"
+      }
+    },
+    "literacy_status": {
+      "label": "Okuma yazma durumu",
+      "values": {
+        "literate": "Okuma yazma bilen",
+        "illiterate": "Okuma yazma bilmeyen",
+        "unknown": "Bilinmeyen"
+      }
+    },
+    "building_period": {
+      "label": "Binanın inşa dönemi",
+      "values": {
+        "pre_1981": "1980 ve öncesi",
+        "between_1981_2000": "1981-2000",
+        "post_2000": "2001 ve sonrası",
+        "unknown": "Bilinmeyen"
+      }
+    },
+    "education": {
+      "label": "Eğitim düzeyi",
+      "values": {
+        "illiterate": "Okuma yazma bilmeyen",
+        "literate_no_school": "Okuma yazma bilen, okul bitirmemiş",
+        "primary_school": "İlkokul",
+        "primary_education": "İlköğretim",
+        "middle_school": "Ortaokul",
+        "high_school": "Lise",
+        "bachelor": "Lisans",
+        "master": "Yüksek lisans",
+        "doctorate": "Doktora",
+        "unknown": "Bilinmeyen"
+      }
+    },
+    "dwelling_type": {
+      "label": "Birim türü",
+      "values": {
+        "dwelling": "Konut",
+        "summer_house": "Yazlık",
+        "commercial": "Ticari birim"
+      }
+    },
+    "ses": {
+      "label": "SES grubu",
+      "values": {
+        "a_plus": "A+",
+        "a": "A",
+        "b": "B",
+        "c": "C",
+        "d": "D"
+      }
+    },
+    "expense_item": {
+      "label": "Harcama kalemi",
+      "values": {
+        "food": "Gıda",
+        "alcohol_tobacco": "Alkol ve tütün",
+        "clothing": "Giyim",
+        "housing": "Barınma",
+        "furnishing": "Mobilya ve ev eşyası",
+        "health": "Sağlık",
+        "transport": "Ulaşım",
+        "communication": "İletişim",
+        "recreation": "Eğlence ve kültür",
+        "education": "Eğitim",
+        "restaurants": "Lokanta ve otel",
+        "other": "Diğer"
+      }
+    },
+    "election": {
+      "label": "Seçim",
+      "values": {
+        "general_2011": "2011 Genel",
+        "local_2014": "2014 Yerel",
+        "president_2014": "2014 Cumhurbaşkanı",
+        "general_2015_06": "2015 Haziran Genel",
+        "general_2015_11": "2015 Kasım Genel",
+        "referendum_2017": "2017 Referandum",
+        "president_2018": "2018 Cumhurbaşkanı",
+        "general_2018": "2018 Genel",
+        "local_2019_district": "2019 Yerel — İlçe Belediye",
+        "local_2019_council": "2019 Yerel — Belediye Meclisi",
+        "local_2019_metro": "2019 Yerel — Büyükşehir",
+        "local_2019_provincial": "2019 Yerel — İl Genel Meclisi",
+        "general_2023": "2023 Genel",
+        "president_2023_r1": "2023 Cumhurbaşkanı 1. tur",
+        "president_2023_r2": "2023 Cumhurbaşkanı 2. tur",
+        "local_2024_district": "2024 Yerel — İlçe Belediye",
+        "local_2024_council": "2024 Yerel — Belediye Meclisi",
+        "local_2024_metro": "2024 Yerel — Büyükşehir"
+      }
+    },
+    "option": {
+      "label": "Seçenek",
+      "values": {
+        "ak_parti": "AK Parti",
+        "chp": "CHP",
+        "mhp": "MHP",
+        "iyi": "İYİ Parti",
+        "yrp": "Yeniden Refah",
+        "dem": "DEM Parti",
+        "hdp": "HDP",
+        "saadet": "Saadet",
+        "zafer": "Zafer",
+        "diger": "Diğer",
+        "bagimsiz": "Bağımsız"
       }
     }
   },
