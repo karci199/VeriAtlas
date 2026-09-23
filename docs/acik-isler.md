@@ -56,7 +56,7 @@ menüden açılır (`a[href]` gerçek adresleri taşır), ağ kaydından adres o
 
 | Ne | Uç nokta | Kırılım | Durum |
 |---|---|---|---|
-| **İl-ilçe serbest tüketici adedi** | `consumption/data/eligible-consumer-count` | **ilçe × profil abone grubu**, aylık (~4.358 satır/ay) | çekilecek — depodaki ilk ilçe düzeyi enerji göstergesi |
+| **İl-ilçe serbest tüketici adedi** | `consumption/data/eligible-consumer-count` | **ilçe × profil abone grubu**, aylık (~4.358 satır/ay) | çekici hazır (`scripts/fetch_epias_eligible_consumer.py`, 2026-09-23 sahipsiz çalışma kopyasından kurtarıldı); `.env`e EPIAS_USERNAME/EPIAS_PASSWORD girilince çalışır — depodaki ilk ilçe düzeyi enerji göstergesi |
 | **Baraj aktif doluluk** | `dams/data/active-fullness` + `dams/data/basin-list` | 87 baraj × havza, günlük, kaynak **DSİ** | çekilecek (yıllık ortalama + yıllık en düşük) |
 | Santral listesi | `generation/data/powerplant-list-for-date-range` | 1.830 santral, **il alanı yok** | il üretimi için EPDK lisans listesiyle eşleştirme gerekir |
 | Gerçek zamanlı üretim | `generation/data/realtime-generation` | ülke geneli × yakıt | il yok |

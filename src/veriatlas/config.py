@@ -38,6 +38,10 @@ class Settings(BaseSettings):
     )
 
     evds_api_key: str = ""
+    #: EPIAS Seffaflik hesabi. Her istek bir TGT bileti istiyor; bilet bu ikisiyle
+    #: aliniyor (scripts/fetch_epias_eligible_consumer.py).
+    epias_username: str = ""
+    epias_password: str = ""
 
     @property
     def evds_ready(self) -> bool:
