@@ -244,15 +244,20 @@ def warehouse_rows() -> list[dict]:
         ("charging_stations", "Şarj istasyonları", "Şarj", "EPDK lisans kaydı", "resmî ve tam liste"),
     ]:  # fmt: skip
         dims = next(d for (i, d) in by if i == ind)
-        prov = by[(ind, dims)].get("province")
         total = sum(v["province"]["stores"] for (i, _), v in by.items() if i == ind)
         r = row(ind, dims, brand, category, method, note, stores=total)
-        r["provinces"] = prov["areas"] if prov else None
-        r["districts"] = sum(
-            v.get("district", {}).get("areas", 0)
-            for (i, _), v in by.items()
-            if i == ind
-        )
+        # Several brands in one row: count the areas any of them reaches, once each.
+        for level, column in (("province", "provinces"), ("district", "districts")):
+            r[column] = (
+                fact.filter(
+                    (pl.col("indicator_id") == ind)
+                    & (pl.col("area_level") == level)
+                    & (pl.col("value") > 0)
+                )
+                .select(pl.col("area_id").n_unique())
+                .collect()
+                .item()
+            )
         rows.append(r)
     return rows
 
