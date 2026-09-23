@@ -6,7 +6,7 @@
 
 | Marka | Tür | Mağaza | İl | İlçe | Yöntem | Not |
 |---|---|---|---|---|---|---|
-| Akaryakıt istasyonları | Akaryakıt | 12.629 | 25 | 6087 | EPDK lisans kaydı | 32 dağıtıcı birlikte |
+| Akaryakıt istasyonları | Akaryakıt | 12.629 | 81 | 959 | EPDK lisans kaydı | 32 dağıtıcı birlikte |
 | Ziraat Bankası | Banka | 1.733 | 81 | 959 | şube ve ATM bulucu | ATM 7.848 |
 | Halkbank | Banka | 1.103 | 81 | 591 | şube ve ATM bulucu | ATM 4.962 |
 | İş Bankası | Banka | 988 | 81 | 437 | şube ve ATM bulucu | ATM 5.227 |
