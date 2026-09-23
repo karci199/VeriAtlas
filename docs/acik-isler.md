@@ -67,7 +67,7 @@ menüden açılır (`a[href]` gerçek adresleri taşır), ağ kaydından adres o
 aydınlatma, diğer), serbest tüketici **sayaç sayısı** (tüketim miktarı değil). Mahalle yok.
 - **Kapsam:** Ocak 2010'dan başlıyor (2009 ve öncesi boş, girdi değeri okunarak doğrulandı). Ocak 2010 547 satır,
   Ocak 2012 6.857, Ocak 2015 7.493 — eski yıllarda ilçe sütununa kişi ve mağaza adları girilmiş, satır fazlası bu kirden.
-- **Tuzaklar:** sayılar binlik noktalı ("14.080"); İstanbul iki "il" (İSTANBUL-AVRUPA/ANADOLU); ilçe "Edremit / Van",
+- **Tuzaklar:** sayılar binlik noktalı ("14.080"); İstanbul iki "il" (İSTANBUL ve İSTANBUL-ASYA); ilçe "Edremit / Van",
   "Artuklu / Merkez" biçiminde; 10 büyükşehirde eski "X Merkez" adı (Aydın, Balıkesir, Denizli, K.Maraş, Malatya,
   Manisa, Ordu, Tekirdağ, Trabzon, Van) — sayaçların %1,5'i, yalnız il toplamına yazılabilir, o illerin merkez
   ilçeleri eksik görünür. Türkçe büyük harf il adı `title()` ile küçültülmez.
