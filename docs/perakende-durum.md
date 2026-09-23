@@ -2,7 +2,7 @@
 
 **Bu dosya elle yazılmaz.** `scripts/build_retail_status.py` üretir (23.09.2026). Depodaki satırlar `fact.parquet`'ten sayılır; depo dışındakiler betikteki `OFF_WAREHOUSE` listesindedir. Sıralanabilir sürüm: `perakende-durum.html`.
 
-## Depoda (89)
+## Depoda (92)
 
 | Marka | Tür | Mağaza | İl | İlçe | Yöntem | Not |
 |---|---|---|---|---|---|---|
@@ -77,8 +77,11 @@
 | Mondi | Mobilya | 329 | 74 | 232 | bayi paneli |  |
 | Doğtaş | Mobilya | 246 | 72 | 184 | bayi paneli |  |
 | Kelebek | Mobilya | 234 | 69 | 170 | bayi paneli |  |
-| Vodafone | Operatör | 5.836 | 81 | 837 | bayi bulucu | türler karışık: ödeme noktası 3.440, hizmet noktası 1.677, Cep Merkezi 756, kurumsal 18; kademelere bölünecek |
-| Türk Telekom | Operatör | 892 | 81 | 279 | bayi bulucu | 871 markalı ofis ve mağaza (TTM Şube, TT Ofis, Mini Ofis); kurumsal liste aynı ortaklar |
+| Turkcell dijital satış bayisi | Operatör | 3.485 | 81 | 782 | Turkcell'in PDF listesi | elle kaydedilen PDF, 3.516 bayi; 31'i ilçesiz |
+| Vodafone ödeme noktası | Operatör | 3.401 | 81 | 757 | bayi bulucu | yalnız fatura ödeme; mağaza değil |
+| Vodafone hizmet noktası (bayi) | Operatör | 1.663 | 81 | 612 | bayi bulucu | hat satan bayi (hizmet noktası) |
+| Türk Telekom ofis ve mağazası | Operatör | 892 | 81 | 279 | bayi bulucu | yalnız markalı ofis ve mağaza; bayi ağı elde yok |
+| Vodafone Cep Merkezi ve kurumsal mağaza | Operatör | 772 | 81 | 300 | bayi bulucu | Cep Merkezi ve kurumsal mağaza |
 | Opmar Optik | Optik | 69 | 24 | 48 | Ticimax ortak ucu |  |
 | MACFit (spor salonu) | Spor | 171 | 18 | 67 | mağaza bulucu |  |
 | Intersport | Spor | 25 | 9 | 23 | Akinon ortak ucu |  |
@@ -96,7 +99,7 @@
 | HD İskender | Yeme-içme | 95 | 22 | 57 | mağaza bulucu |  |
 | Şarj istasyonları | Şarj | 16.345 | 81 | 728 | EPDK lisans kaydı | resmî ve tam liste |
 
-## Ham veri var, bekliyor (14)
+## Ham veri var, bekliyor (13)
 
 | Marka | Tür | Mağaza | İl | İlçe | Yöntem | Not |
 |---|---|---|---|---|---|---|
@@ -108,7 +111,6 @@
 | Happy Center | Market | 194 |  |  | mağaza bulucu | il yok, yalnız adres |
 | Bizim Toptan | Market | 172 |  |  | mağaza bulucu | il ve ilçe etiketi var |
 | Onur Market | Market | 154 |  |  | mağaza bulucu | il ve ilçe etiketi var, ilk satır bozuk |
-| Turkcell dijital satış bayileri | Operatör | 3.516 |  |  | Turkcell'in PDF listesi | 23.09 sürümü 81 il; il özeti var; eski sürümde ilçe eşleşmesi %96,7 |
 | Turkcell Ev Müşteri Merkezleri | Operatör | 38 |  |  | Turkcell'in PDF listesi | 25 il, yalnız Superbox |
 | Toyzz Shop | Oyuncak | 263 |  |  | mağaza bulucu | yalnız serbest adres |
 | Kahve Dünyası | Yeme-içme | 355 |  |  | mağaza bulucu | adresten il ve ilçe çıkarılacak |
