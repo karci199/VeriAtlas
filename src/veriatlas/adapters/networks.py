@@ -424,8 +424,10 @@ def dhl() -> Iterator[Point]:
 
 
 def yurtici() -> Iterator[Point]:
-    """Yurtiçi's branch endpoint answers one id at a time; ids 1-8000 were walked (the
-    live ones sit between 1002 and 7150). The address is free text that usually ends in
+    """Yurtiçi's branch endpoint answers one id at a time; ids 1-12000 were walked. Ids
+    come in regional blocks of a thousand: 1002-7150, then 8010-8499 (the east and
+    south-east — a first walk that stopped at 8000 left 17 provinces empty) and
+    9000-9231 (more İstanbul); nothing above. The address is free text that usually ends in
     the province ("Merkez / Bilecik") but sometimes in a district or "İst."; only a last
     word that is a province counts as stated, the rest is left to the coordinate."""
     copy = cached_copy(
