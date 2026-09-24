@@ -5,7 +5,7 @@ burada olmayan gösterge depoda yok demektir. Yeni kaynak önermeden önce buray
 bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni iş' diye
 önerildi, üçü de zaten yüklüydü.
 
-Üretim: 2026-09-24 · 21.413.504 satır
+Üretim: 2026-09-24 · 21.413.609 satır
 
 ## evds_arsiv (177)
 
@@ -528,42 +528,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `section_room_ratio` | Şube/Derslik oranı (ikili öğretim baskısı) | il | 2012-2024 | 3.159 | meb_egitim |
 | `section_size` | Şube mevcudu (öğrenci/şube) | il | 2012-2024 | 3.159 | meb_egitim |
 
-## kultur (31)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `archaeological_sites` | Ören yeri | TR. il | 2014-2024 | 893 | tuik_medas |
-| `child_theatre_audience` | Çocuk eseri tiyatro seyircisi | TR. il | 2010-2025 | 1.238 | tuik_medas |
-| `child_theatre_performances` | Çocuk eseri tiyatro gösterisi | TR. il | 2010-2025 | 1.238 | tuik_medas |
-| `cinema_audience` | Sinema seyircisi (yerli/yabancı film) | TR. il | 2000-2025 | 4.264 | tuik_medas |
-| `cinema_halls` | Sinema salonu | TR. il | 2000-2025 | 2.132 | tuik_medas |
-| `cinema_seats` | Sinema koltuğu | TR. il | 2000-2025 | 2.132 | tuik_medas |
-| `films_shown` | Gösterilen film (yerli/yabancı) | TR. il | 2000-2025 | 4.258 | tuik_medas |
-| `gsb_sports_clubs` | Spor kulübü sayısı | il | 2025-2025 | 81 | gsb |
-| `gsb_talent_directed` | Spor branşına yönlendirilen öğrenci | il | 2022-2024 | 243 | gsb |
-| `gsb_talent_screened` | Sportif yetenek taramasına giren öğrenci | il | 2022-2025 | 972 | gsb |
-| `gsb_talent_suited` | Spora yatkın bulunan öğrenci | il | 2022-2025 | 324 | gsb |
-| `library_child_loans` | Çocuklara ödünç verilen materyal | TR. il | 2002-2025 | 1.968 | tuik_medas |
-| `library_child_members` | Halk kütüphanesi kayıtlı üye çocuk | TR. il | 2002-2025 | 3.936 | tuik_medas |
-| `library_child_users` | Halk kütüphanesi kullanıcı çocuk | TR. il | 2002-2025 | 3.936 | tuik_medas |
-| `library_loans` | Halk kütüphanelerinden ödünç verilen materyal | TR. il | 1995-2025 | 1.975 | tuik_medas |
-| `library_uses_per_thousand` | Bin kişiye halk kütüphanesi kullanımı | TR. il | 1995-2025 | 1.570 | tuik_medas |
-| `ministry_museum_artefacts` | Bakanlığa bağlı müzelerdeki eser | TR. il | 2012-2024 | 1.066 | tuik_medas |
-| `ministry_museum_visitors` | Bakanlığa bağlı müze ziyaretçisi | TR. il | 2012-2024 | 1.066 | tuik_medas |
-| `ministry_museums` | Bakanlığa bağlı müze | TR. il | 2012-2024 | 1.066 | tuik_medas |
-| `private_museum_artefacts` | Özel müzelerdeki eser | TR. il | 2014-2024 | 902 | tuik_medas |
-| `private_museum_staff` | Özel müze personeli | TR. il | 2014-2024 | 902 | tuik_medas |
-| `private_museum_visitors` | Özel müze ziyaretçisi | TR. il | 2014-2024 | 902 | tuik_medas |
-| `private_museums` | Özel müze | TR. il | 2014-2024 | 902 | tuik_medas |
-| `public_libraries` | Halk kütüphanesi sayısı | TR. il | 1995-2025 | 2.542 | tuik_medas |
-| `public_library_books` | Halk kütüphanelerindeki kitap | TR. il | 1995-2025 | 2.542 | tuik_medas |
-| `public_library_users` | Halk kütüphanesi kullanıcısı | TR. il | 1995-2025 | 2.542 | tuik_medas |
-| `theatre_audience` | Tiyatro seyircisi (yerli/yabancı eser) | TR. il | 2000-2025 | 4.264 | tuik_medas |
-| `theatre_halls` | Tiyatro salonu | TR. il | 2000-2025 | 2.132 | tuik_medas |
-| `theatre_performances` | Tiyatro gösterisi (yerli/yabancı eser) | TR. il | 2000-2025 | 4.264 | tuik_medas |
-| `theatre_seats` | Tiyatro koltuğu | TR. il | 2000-2025 | 2.132 | tuik_medas |
-| `theatre_works` | Sahnelenen eser (yerli/yabancı) | TR. il | 2000-2025 | 4.264 | tuik_medas |
-
 ## cocuk (31)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -599,6 +563,42 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `preschool_gross_enrolment` | Okul öncesi brüt okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
 | `preschool_net_enrolment` | Okul öncesi net okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
 | `single_parent_households_with_children` | Çocuk bulunan tek ebeveynli hane | TR. il | 2014-2025 | 984 | tuik_medas |
+
+## kultur (31)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `archaeological_sites` | Ören yeri | TR. il | 2014-2024 | 893 | tuik_medas |
+| `child_theatre_audience` | Çocuk eseri tiyatro seyircisi | TR. il | 2010-2025 | 1.238 | tuik_medas |
+| `child_theatre_performances` | Çocuk eseri tiyatro gösterisi | TR. il | 2010-2025 | 1.238 | tuik_medas |
+| `cinema_audience` | Sinema seyircisi (yerli/yabancı film) | TR. il | 2000-2025 | 4.264 | tuik_medas |
+| `cinema_halls` | Sinema salonu | TR. il | 2000-2025 | 2.132 | tuik_medas |
+| `cinema_seats` | Sinema koltuğu | TR. il | 2000-2025 | 2.132 | tuik_medas |
+| `films_shown` | Gösterilen film (yerli/yabancı) | TR. il | 2000-2025 | 4.258 | tuik_medas |
+| `gsb_sports_clubs` | Spor kulübü sayısı | il | 2025-2025 | 81 | gsb |
+| `gsb_talent_directed` | Spor branşına yönlendirilen öğrenci | il | 2022-2024 | 243 | gsb |
+| `gsb_talent_screened` | Sportif yetenek taramasına giren öğrenci | il | 2022-2025 | 972 | gsb |
+| `gsb_talent_suited` | Spora yatkın bulunan öğrenci | il | 2022-2025 | 324 | gsb |
+| `library_child_loans` | Çocuklara ödünç verilen materyal | TR. il | 2002-2025 | 1.968 | tuik_medas |
+| `library_child_members` | Halk kütüphanesi kayıtlı üye çocuk | TR. il | 2002-2025 | 3.936 | tuik_medas |
+| `library_child_users` | Halk kütüphanesi kullanıcı çocuk | TR. il | 2002-2025 | 3.936 | tuik_medas |
+| `library_loans` | Halk kütüphanelerinden ödünç verilen materyal | TR. il | 1995-2025 | 1.975 | tuik_medas |
+| `library_uses_per_thousand` | Bin kişiye halk kütüphanesi kullanımı | TR. il | 1995-2025 | 1.570 | tuik_medas |
+| `ministry_museum_artefacts` | Bakanlığa bağlı müzelerdeki eser | TR. il | 2012-2024 | 1.066 | tuik_medas |
+| `ministry_museum_visitors` | Bakanlığa bağlı müze ziyaretçisi | TR. il | 2012-2024 | 1.066 | tuik_medas |
+| `ministry_museums` | Bakanlığa bağlı müze | TR. il | 2012-2024 | 1.066 | tuik_medas |
+| `private_museum_artefacts` | Özel müzelerdeki eser | TR. il | 2014-2024 | 902 | tuik_medas |
+| `private_museum_staff` | Özel müze personeli | TR. il | 2014-2024 | 902 | tuik_medas |
+| `private_museum_visitors` | Özel müze ziyaretçisi | TR. il | 2014-2024 | 902 | tuik_medas |
+| `private_museums` | Özel müze | TR. il | 2014-2024 | 902 | tuik_medas |
+| `public_libraries` | Halk kütüphanesi sayısı | TR. il | 1995-2025 | 2.542 | tuik_medas |
+| `public_library_books` | Halk kütüphanelerindeki kitap | TR. il | 1995-2025 | 2.542 | tuik_medas |
+| `public_library_users` | Halk kütüphanesi kullanıcısı | TR. il | 1995-2025 | 2.542 | tuik_medas |
+| `theatre_audience` | Tiyatro seyircisi (yerli/yabancı eser) | TR. il | 2000-2025 | 4.264 | tuik_medas |
+| `theatre_halls` | Tiyatro salonu | TR. il | 2000-2025 | 2.132 | tuik_medas |
+| `theatre_performances` | Tiyatro gösterisi (yerli/yabancı eser) | TR. il | 2000-2025 | 4.264 | tuik_medas |
+| `theatre_seats` | Tiyatro koltuğu | TR. il | 2000-2025 | 2.132 | tuik_medas |
+| `theatre_works` | Sahnelenen eser (yerli/yabancı) | TR. il | 2000-2025 | 4.264 | tuik_medas |
 
 ## egitim (30)
 
@@ -863,26 +863,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `services_ppi` | Hizmet üretici fiyat endeksi | TR | 2017-2026 | 5.865 | cbrt_evds |
 | `usd_try_buying` | ABD doları alış kuru | TR | 1970-2026 | 14.292 | cbrt_evds |
 
-## gayrimenkul_fiyat (15)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `cadastral_parcels` | Parsel sayısı (kayda göre) | il. ilçe. mahalle. köy | 2026-2026 | 129.552 | tkgm_megsis |
-| `cadastral_parcels_by_approval` | Parsel sayısı (onay durumuna göre) | il. ilçe. mahalle. köy | 2026-2026 | 86.368 | tkgm_megsis |
-| `cadastral_parcels_by_coordinate` | Parsel sayısı (koordinat niteliğine göre) | il. ilçe. mahalle. köy | 2026-2026 | 129.552 | tkgm_megsis |
-| `commercial_property_price_index` | Ticari gayrimenkul fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
-| `existing_house_price_index` | Yeni olmayan konutlar fiyat endeksi | TR | 2010-2026 | 199 | cbrt_evds |
-| `house_price_index` | Konut fiyat endeksi | TR. İBBS-1. İBBS-2 | 2010-2026 | 3.980 | cbrt_evds |
-| `house_price_index_2017` | Konut fiyat endeksi. 26 bölge (2017=100. arşiv) | TR. İBBS-2 | 2010-2024 | 4.671 | cbrt_evds |
-| `housing_unit_price` | Konut birim fiyatı | TR. il | 2010-2026 | 4.562 | cbrt_evds |
-| `housing_unit_rent` | Konut birim kirası | TR. il | 2018-2026 | 2.418 | cbrt_evds |
-| `new_house_price_index` | Yeni konutlar fiyat endeksi | TR | 2010-2026 | 199 | cbrt_evds |
-| `new_tenant_rent_index` | Yeni kiracı kira endeksi | TR. İBBS-1. İBBS-2 | 2018-2026 | 2.060 | cbrt_evds |
-| `office_price_index` | Ofis fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
-| `office_unit_price` | Ofis birim fiyatı | TR. il | 2015-2025 | 341 | cbrt_evds |
-| `shop_price_index` | Dükkân fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
-| `shop_unit_price` | Dükkân birim fiyatı | TR. il | 2015-2025 | 869 | cbrt_evds |
-
 ## karayolu (15)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -903,6 +883,26 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `traffic_accidents_total` | Trafik kazası sayısı (maddi hasarlı dahil) | TR | 2006-2016 | 22 | kgm |
 | `traffic_casualties` | Trafik kazasında ölen ve yaralanan | TR | 2006-2016 | 24 | kgm |
 
+## gayrimenkul_fiyat (15)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `cadastral_parcels` | Parsel sayısı (kayda göre) | il. ilçe. mahalle. köy | 2026-2026 | 129.552 | tkgm_megsis |
+| `cadastral_parcels_by_approval` | Parsel sayısı (onay durumuna göre) | il. ilçe. mahalle. köy | 2026-2026 | 86.368 | tkgm_megsis |
+| `cadastral_parcels_by_coordinate` | Parsel sayısı (koordinat niteliğine göre) | il. ilçe. mahalle. köy | 2026-2026 | 129.552 | tkgm_megsis |
+| `commercial_property_price_index` | Ticari gayrimenkul fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
+| `existing_house_price_index` | Yeni olmayan konutlar fiyat endeksi | TR | 2010-2026 | 199 | cbrt_evds |
+| `house_price_index` | Konut fiyat endeksi | TR. İBBS-1. İBBS-2 | 2010-2026 | 3.980 | cbrt_evds |
+| `house_price_index_2017` | Konut fiyat endeksi. 26 bölge (2017=100. arşiv) | TR. İBBS-2 | 2010-2024 | 4.671 | cbrt_evds |
+| `housing_unit_price` | Konut birim fiyatı | TR. il | 2010-2026 | 4.562 | cbrt_evds |
+| `housing_unit_rent` | Konut birim kirası | TR. il | 2018-2026 | 2.418 | cbrt_evds |
+| `new_house_price_index` | Yeni konutlar fiyat endeksi | TR | 2010-2026 | 199 | cbrt_evds |
+| `new_tenant_rent_index` | Yeni kiracı kira endeksi | TR. İBBS-1. İBBS-2 | 2018-2026 | 2.060 | cbrt_evds |
+| `office_price_index` | Ofis fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
+| `office_unit_price` | Ofis birim fiyatı | TR. il | 2015-2025 | 341 | cbrt_evds |
+| `shop_price_index` | Dükkân fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
+| `shop_unit_price` | Dükkân birim fiyatı | TR. il | 2015-2025 | 869 | cbrt_evds |
+
 ## turizm (14)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -922,23 +922,23 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `tourism_expenditure` | Turizm gideri (yurt dışına giden vatandaş) | TR | 2012-2025 | 112 | tuik_medas |
 | `tourism_revenue` | Turizm geliri | TR | 2012-2025 | 19 | tuik_medas |
 
-## iklim (13)
+## konut_nitelik (13)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `afad_earthquakes` | Deprem sayısı | il. ilçe | 1990-2025 | 53.671 | afad |
-| `mgm_measurement_period` | İstasyonun ölçüm dönemi | il | 2025-2025 | 162 | mgm |
-| `mgm_precipitation` | Aylık toplam yağış ortalaması | il | 2020-2025 | 1.920 | mgm |
-| `mgm_rainy_days` | Aylık ortalama yağışlı gün sayısı | il | 2020-2025 | 1.908 | mgm |
-| `mgm_record_daily_precipitation` | Günlük en yüksek yağış rekoru | il | 1929-2024 | 81 | mgm |
-| `mgm_record_snow_depth` | En yüksek kar kalınlığı rekoru | il | 1929-2022 | 80 | mgm |
-| `mgm_record_wind_speed` | En hızlı rüzgar rekoru | il | 1963-2025 | 81 | mgm |
-| `mgm_sunshine` | Aylık ortalama günlük güneşlenme süresi | il | 2020-2025 | 1.920 | mgm |
-| `mgm_temperature` | Aylık sıcaklık normalleri | il | 2020-2025 | 7.704 | mgm |
-| `oecd_climate_days` | İklim gün sayıları (alansal) | il | 1981-2024 | 14.256 | oecd_regional |
-| `oecd_degree_days` | Derece-gün (ısıtma ve soğutma) | il | 1981-2023 | 6.966 | oecd_regional |
-| `oecd_precipitation` | Yıllık toplam yağış (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
-| `oecd_temperature` | Yıllık ortalama sıcaklık (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
+| `households_by_bathroom` | Hane. banyonun bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
+| `households_by_build_period` | Hane. binanın inşa yılına göre (2021) | il | 2021-2021 | 324 | tuik_medas |
+| `households_by_elevator` | Hane. kat sayısı ve asansöre göre (2021. yalnız Türkiye) | TR | 2021-2021 | 14 | tuik_medas |
+| `households_by_floors` | Hane. oturduğu binanın kat sayısına göre (2021) | il | 2021-2021 | 486 | tuik_medas |
+| `households_by_heating` | Hane. ısıtma sistemine göre (2021) | il | 2021-2021 | 405 | tuik_medas |
+| `households_by_main_fuel` | Hane. ana yakıt türüne göre (2021) | il | 2021-2021 | 324 | tuik_medas |
+| `households_by_parking` | Hane. binada otopark durumuna göre (2021) | il | 2021-2021 | 162 | tuik_medas |
+| `households_by_piped_water` | Hane. borulu suyun bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
+| `households_by_rooms` | Hane. oda sayısına göre (2021) | il | 2021-2021 | 324 | tuik_medas |
+| `households_by_toilet` | Hane. tuvaletin bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
+| `mean_building_floors` | Oturulan binanın ortalama kat sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
+| `mean_rooms` | Konutların ortalama oda sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
+| `rooms_per_person` | Konutta kişi başına oda (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
 
 ## din (13)
 
@@ -958,23 +958,23 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `diyanet_quran_graduates_education` | Kur'an kursunu bitiren (eğitim durumu) | il | 2023-2023 | 567 | diyanet |
 | `diyanet_quran_hafiz` | Hafızlık kursiyeri | il | 2023-2023 | 243 | diyanet |
 
-## konut_nitelik (13)
+## iklim (13)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `households_by_bathroom` | Hane. banyonun bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
-| `households_by_build_period` | Hane. binanın inşa yılına göre (2021) | il | 2021-2021 | 324 | tuik_medas |
-| `households_by_elevator` | Hane. kat sayısı ve asansöre göre (2021. yalnız Türkiye) | TR | 2021-2021 | 14 | tuik_medas |
-| `households_by_floors` | Hane. oturduğu binanın kat sayısına göre (2021) | il | 2021-2021 | 486 | tuik_medas |
-| `households_by_heating` | Hane. ısıtma sistemine göre (2021) | il | 2021-2021 | 405 | tuik_medas |
-| `households_by_main_fuel` | Hane. ana yakıt türüne göre (2021) | il | 2021-2021 | 324 | tuik_medas |
-| `households_by_parking` | Hane. binada otopark durumuna göre (2021) | il | 2021-2021 | 162 | tuik_medas |
-| `households_by_piped_water` | Hane. borulu suyun bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
-| `households_by_rooms` | Hane. oda sayısına göre (2021) | il | 2021-2021 | 324 | tuik_medas |
-| `households_by_toilet` | Hane. tuvaletin bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
-| `mean_building_floors` | Oturulan binanın ortalama kat sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
-| `mean_rooms` | Konutların ortalama oda sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
-| `rooms_per_person` | Konutta kişi başına oda (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
+| `afad_earthquakes` | Deprem sayısı | il. ilçe | 1990-2025 | 53.671 | afad |
+| `mgm_measurement_period` | İstasyonun ölçüm dönemi | il | 2025-2025 | 162 | mgm |
+| `mgm_precipitation` | Aylık toplam yağış ortalaması | il | 2020-2025 | 1.920 | mgm |
+| `mgm_rainy_days` | Aylık ortalama yağışlı gün sayısı | il | 2020-2025 | 1.908 | mgm |
+| `mgm_record_daily_precipitation` | Günlük en yüksek yağış rekoru | il | 1929-2024 | 81 | mgm |
+| `mgm_record_snow_depth` | En yüksek kar kalınlığı rekoru | il | 1929-2022 | 80 | mgm |
+| `mgm_record_wind_speed` | En hızlı rüzgar rekoru | il | 1963-2025 | 81 | mgm |
+| `mgm_sunshine` | Aylık ortalama günlük güneşlenme süresi | il | 2020-2025 | 1.920 | mgm |
+| `mgm_temperature` | Aylık sıcaklık normalleri | il | 2020-2025 | 7.704 | mgm |
+| `oecd_climate_days` | İklim gün sayıları (alansal) | il | 1981-2024 | 14.256 | oecd_regional |
+| `oecd_degree_days` | Derece-gün (ısıtma ve soğutma) | il | 1981-2023 | 6.966 | oecd_regional |
+| `oecd_precipitation` | Yıllık toplam yağış (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
+| `oecd_temperature` | Yıllık ortalama sıcaklık (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
 
 ## trafik_kaza (12)
 
@@ -1012,12 +1012,12 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 |---|---|---|---|---|---|
 | `average_wage_by_sector` | Ortalama ücret ve maaşlar (kamu. özel. memur) | TR | 2000-2017 | 140 | sbb |
 | `civil_servant_family_allowance` | Memur aile yardımı ödeneği | TR | 1978-2025 | 1.053 | hmb_bumko |
-| `civil_servant_pay_coefficient` | Memur maaş katsayıları | TR | 1970-2025 | 1.712 | hmb_bumko |
+| `civil_servant_pay_coefficient` | Memur maaş katsayıları | TR | 1970-2026 | 1.757 | hmb_bumko |
 | `civil_servant_salary` | Kamu görevlisi maaşı (unvana göre) | TR | 2014-2026 | 1.244 | memurlar_net |
-| `contract_staff_pay_ceiling` | Sözleşmeli personel ücret tavanı | TR | 1995-2025 | 1.098 | hmb_bumko |
-| `highest_civil_servant_salary` | En yüksek devlet memuru aylığı | TR | 1970-2025 | 664 | hmb_bumko |
+| `contract_staff_pay_ceiling` | Sözleşmeli personel ücret tavanı | TR | 1995-2026 | 1.128 | hmb_bumko |
+| `highest_civil_servant_salary` | En yüksek devlet memuru aylığı | TR | 1970-2026 | 679 | hmb_bumko |
 | `minimum_wage` | Asgari ücret | TR | 1996-2026 | 1.086 | csgb |
-| `severance_pay_ceiling` | Kıdem tazminatı tavanı | TR | 1980-2025 | 538 | hmb_bumko |
+| `severance_pay_ceiling` | Kıdem tazminatı tavanı | TR | 1980-2026 | 553 | hmb_bumko |
 
 ## medya (7)
 
@@ -1065,16 +1065,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `sege_province_rank` | İl SEGE sıralaması | il | 2017-2017 | 81 | sanayi_sege |
 | `sege_province_score` | İl SEGE skoru | il | 2017-2017 | 81 | sanayi_sege |
 
-## dogurganlik (5)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
-| `births_by_age` | Doğum sayısı (annenin yaş grubu) | TR. il | 2009-2025 | 14.290 | tuik_medas |
-| `births_by_marital` | Doğum sayısı (annenin medeni durumu) | TR. il | 2012-2025 | 5.669 | tuik_medas |
-| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
-| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
-
 ## kamu_maliyesi (5)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1084,6 +1074,16 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `central_budget_revenue_by_province` | Merkezi yönetim bütçe gelirleri (il) | il | 2004-2025 | 13.954 | muhasebat |
 | `local_budget_expenditure_by_province` | Mahalli idareler bütçe giderleri (il) | il | 2006-2025 | 13.867 | muhasebat |
 | `local_budget_revenue_by_province` | Mahalli idareler bütçe gelirleri (il) | il | 2006-2025 | 10.377 | muhasebat |
+
+## dogurganlik (5)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
+| `births_by_age` | Doğum sayısı (annenin yaş grubu) | TR. il | 2009-2025 | 14.290 | tuik_medas |
+| `births_by_marital` | Doğum sayısı (annenin medeni durumu) | TR. il | 2012-2025 | 5.669 | tuik_medas |
+| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
+| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
 
 ## konut (5)
 
@@ -1095,14 +1095,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `housing_sales_foreigners` | Yabancılara konut satışı | TR. il | 2013-2025 | 909 | tuik_medas |
 | `property_sales_monthly` | Konut ve iş yeri satışları (aylık) | il | 2013-2026 | 101.785 | cbrt_evds |
 
-## havacilik (3)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `dhmi_air_freight` | Havayolu yük ve kargo | il | 2008-2026 | 27.345 | dhmi |
-| `dhmi_air_passengers` | Havayolu yolcu sayısı | il | 2008-2026 | 21.314 | dhmi |
-| `dhmi_air_traffic` | Uçak trafiği | il | 2008-2026 | 41.750 | dhmi |
-
 ## tarim_alet (3)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1110,6 +1102,14 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `combine_harvesters` | Biçerdöver (yaşa göre) | TR. il | 2004-2025 | 5.429 | tuik_medas |
 | `farm_equipment` | Diğer tarım alet ve makineleri | TR. il | 2004-2025 | 119.407 | tuik_medas |
 | `tractors` | Traktör (türe göre) | TR. il | 2004-2025 | 13.779 | tuik_medas |
+
+## havacilik (3)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `dhmi_air_freight` | Havayolu yük ve kargo | il | 2008-2026 | 27.345 | dhmi |
+| `dhmi_air_passengers` | Havayolu yolcu sayısı | il | 2008-2026 | 21.314 | dhmi |
+| `dhmi_air_traffic` | Uçak trafiği | il | 2008-2026 | 41.750 | dhmi |
 
 ## guvenlik (2)
 
