@@ -7,8 +7,11 @@ February and August, so the January/July transition items (e.g. "14 günlük maa
 stay out. robots.txt allows /maas/.
 
 Profiles are fixed so every period is comparable: single, no children, not a union
-member, no private pension, Ankara. "entry" is the usual first post (9/1 for university,
-13/1 for high-school graduates, 0 years); "senior" is 1/4 with 25 years.
+member, no private pension, Ankara. "entry" is the lowest grade the robot holds for the
+title (9/1 for most university posts, 8/1 for engineers, doctors and vets, 10/1 for the
+technical and security services, 13/1 for high-school posts; 0 years); "senior" is 1/4
+with 25 years. The robot only knows a title's own grade range: asking 9/1 of an engineer
+answers "henüz programa girilmemiştir" for every period.
 
 Raw pages go to C:/veri-ham/ucret/memur/memurlarnet/pages (gzip), parsed rows to
 salaries.jsonl. Re-running only asks for what is missing (sweep until gain stops,
@@ -54,20 +57,19 @@ PROFILES = [
     ),
     ("hemsire", "hemsire", "Lisans Mezunu - Sağlık Bakanlığı", UNI, 1, 0),
     ("ebe", "ebe", None, UNI, 1, 0),
-    ("tabip_pratisyen", "tabip", "Pratisyen", UNI, 1, 0),
-    ("muhendis", "muhendis", None, UNI, 1, 0),
+    ("tabip_pratisyen_8", "tabip", "Pratisyen", 8, 1, 0),
+    ("muhendis_8", "muhendis", None, 8, 1, 0),
     ("avukat", "avukat", None, UNI, 1, 0),
     ("imam", "imam-hatip", "Önlisans veya Lisans Mezunu", UNI, 1, 0),
-    ("hakim", "hakim", "4 Yıllık Yüksek Öğrenim Mezunu", UNI, 1, 0),
-    ("arastirma_gorevlisi", "arastirma-gorevlisi", None, UNI, 1, 0),
-    ("veteriner", "veteriner-hekim", None, UNI, 1, 0),
+    ("arastirma_gorevlisi_8", "arastirma-gorevlisi", None, 8, 1, 0),
+    ("veteriner_8", "veteriner-hekim", None, 8, 1, 0),
     ("eczaci", "eczaci", None, UNI, 1, 0),
-    ("zabita", "zabita", None, HIGH, 1, 0),
-    ("itfaiyeci", "itfaiyeci", None, HIGH, 1, 0),
-    ("infaz_koruma", "infaz-ve-koruma-memuru", None, HIGH, 1, 0),
+    ("zabita_10", "zabita", None, 10, 1, 0),
+    ("itfaiyeci_10", "itfaiyeci", None, 10, 1, 0),
+    ("infaz_koruma_10", "infaz-ve-koruma-memuru", None, 10, 1, 0),
     ("hizmetli", "hizmetli", None, HIGH, 1, 0),
-    ("sofor", "sofor", None, HIGH, 1, 0),
-    ("teknisyen", "teknisyen", None, HIGH, 1, 0),
+    ("sofor_10", "sofor", None, 10, 1, 0),
+    ("teknisyen_10", "teknisyen", None, 10, 1, 0),
     # senior
     ("memur_kidemli", "memur", "Önlisans veya Lisans Mezunu", 1, 4, 25),
     ("ogretmen_kidemli", "ogretmen", "1 - Lisans Mezunu", 1, 4, 25),
