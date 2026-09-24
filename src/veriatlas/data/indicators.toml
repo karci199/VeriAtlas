@@ -30726,6 +30726,89 @@ label_tr = "Yenilik ve patent"
 label_en = "Innovation and patents"
 order = 55
 
+[topic.ucretler]
+label_tr = "Ücretler ve maaşlar"
+label_en = "Wages and salaries"
+order = 57
+
+[dim.wage_measure]
+label_tr = "Tutar"
+label_en = "Wage measure"
+
+[dim.wage_measure.values]
+net = { label_tr = "Net", label_en = "Net" }
+gross = { label_tr = "Brüt", label_en = "Gross" }
+employer_cost = { label_tr = "İşverene maliyet", label_en = "Cost to employer" }
+
+[indicator.minimum_wage]
+label_tr = "Asgari ücret"
+label_en = "Minimum wage"
+topic = "ucretler"
+unit = "try_per_month"
+frequency = "monthly"
+dims = ["wage_measure"]
+views = ["table", "line"]
+definition_tr = "Çalışma ve Sosyal Güvenlik Bakanlığı'nın 'Yıllar itibarıyla net ve brüt asgari ücretler' tablosu, 16 yaş ve üstü, Ağustos 1996'dan; ayın 15'inde yürürlükte olan tutar. 2005 öncesi eski TL 1.000.000'a bölünerek TL'ye çevrildi. İşverene maliyet bakanlığın tablosundaki gibi (2016 sonrası imalat, SGK prim indirimli). Yalnız Türkiye. Toplanamaz."
+
+[dim.civil_servant_profile]
+label_tr = "Unvan ve kadro"
+label_en = "Title and grade"
+
+[dim.civil_servant_profile.values]
+memur = "Memur, lisans, 9/1"
+memur_lise = "Memur, lise, 13/1"
+ogretmen = "Öğretmen, 9/1"
+polis = "Polis, lisans, 9/1"
+hemsire = "Hemşire, lisans, 9/1"
+ebe = "Ebe, 9/1"
+tabip_pratisyen = "Pratisyen hekim, 9/1"
+muhendis = "Mühendis, 9/1"
+avukat = "Avukat, 9/1"
+imam = "İmam-hatip, lisans, 9/1"
+hakim = "Hâkim, 9/1"
+arastirma_gorevlisi = "Araştırma görevlisi, 9/1"
+veteriner = "Veteriner hekim, 9/1"
+eczaci = "Eczacı, 9/1"
+zabita = "Zabıta, 13/1"
+itfaiyeci = "İtfaiyeci, 13/1"
+infaz_koruma = "İnfaz ve koruma memuru, 13/1"
+hizmetli = "Hizmetli, 13/1"
+sofor = "Şoför, 13/1"
+teknisyen = "Teknisyen, 13/1"
+memur_kidemli = "Memur, 1/4, 25 yıl"
+ogretmen_kidemli = "Öğretmen, 1/4, 25 yıl"
+polis_kidemli = "Polis, 1/4, 25 yıl"
+hemsire_kidemli = "Hemşire, 1/4, 25 yıl"
+tabip_uzman_kidemli = "Uzman hekim, 1/4, 25 yıl"
+muhendis_kidemli = "Mühendis, 1/4, 25 yıl"
+imam_kidemli = "İmam-hatip, 1/4, 25 yıl"
+sube_muduru_kidemli = "Şube müdürü, 1/4, 25 yıl"
+profesor_kidemli = "Profesör, 1/4, 25 yıl"
+hakim_kidemli = "Hâkim, 1. sınıf, 1/4, 25 yıl"
+
+[dim.salary_item]
+label_tr = "Tutar"
+label_en = "Salary item"
+
+[dim.salary_item.values]
+net = { label_tr = "Net (2021'e kadar AGİ dahil)", label_en = "Net (incl. AGİ to 2021)" }
+gross = { label_tr = "Brüt (istihkaklar toplamı)", label_en = "Gross entitlements" }
+
+[indicator.civil_servant_salary]
+label_tr = "Kamu görevlisi maaşı (unvana göre)"
+label_en = "Civil-servant salary by title"
+topic = "ucretler"
+unit = "try_per_month"
+frequency = "semiannual"
+dims = ["civil_servant_profile", "salary_item"]
+views = ["table", "line"]
+definition_tr = "memurlar.net maaş robotunun resmî katsayılarla hesapladığı bordro, 2014'ten; her yarıyıl için Şubat ve Ağustos maaşı (Temmuz'daki tek seferlik geçiş kalemleri dışarıda). Bekâr, çocuksuz, sendikasız, BES yok, Ankara. 2014–2021 AGİ net maaşa eklendi. Ek ders, nöbet, döner sermaye, toplu sözleşme ikramiyesi ve aile yardımı dahil değil. Robotta verisi olmayan unvan ve dönemler boştur (mühendis, hekim, hâkim vb. giriş kadroları hiç; hemşire, ebe, avukat 2024'ten). Üçüncü taraf hesabıdır, resmî yayın değildir. Yalnız Türkiye."
+
+[topic.adalet]
+label_tr = "Adalet ve hukuk hizmetleri"
+label_en = "Justice and legal services"
+order = 56
+
 [dim.budget_measure]
 label_tr = "Bütçe ölçüsü"
 label_en = "Budget measure"
@@ -31961,6 +32044,25 @@ frequency = "annual"
 dims = ["post_office_type"]
 views = ["table", "map", "bar"]
 definition_tr = "PTT'nin en yakın PTT bulucusundan (enyakinptt.ptt.gov.tr) okunan iş yerleri, ilçe ve il düzeyinde, 18.09.2026 anlık görüntüsü; 3.295 iş yeri (PTT'nin son açıkladığı 3.576'nın yaklaşık %92'si). Merkez: ilçenin ana iş yeri; şube: merkeze bağlı ek iş yeri; acentelik: PTT adına sözleşmeyle bir esnafın işlettiği, çoğu köy ve beldedeki nokta. Yoğunluk karşılaştırmasında acentelik ayrı okunmalıdır. ATM alanı kaynakta boş olduğu için alınmadı. Seri değildir."
+
+[dim.notary_class]
+label_tr = "Noterlik sınıfı"
+label_en = "Notary office class"
+
+[dim.notary_class.values]
+first = { label_tr = "Birinci sınıf", label_en = "First class" }
+second = { label_tr = "İkinci sınıf", label_en = "Second class" }
+third = { label_tr = "Üçüncü sınıf", label_en = "Third class" }
+
+[indicator.notaries]
+label_tr = "Noterlik"
+label_en = "Notary offices"
+topic = "adalet"
+unit = "item"
+frequency = "annual"
+dims = ["notary_class"]
+views = ["table", "map", "bar"]
+definition_tr = "Türkiye Noterler Birliği kaydındaki noterlikler (portal.tnb.org.tr Noter Bul), sınıfına göre, ilçe ve il düzeyinde, 23.09.2026 anlık görüntüsü. Kayıtta 2.386 satır var; vefat eden noterin halefiyle yan yana listelendiği üç noterlik bir kez sayılır, üçü koordinatsız kaldığı için 2.380 noterlik yerleşir. Noterlik sınıfı iş hacmine göre belirlenir: birinci sınıf en yoğun noterliklerdir. İlçe, noterliğin harita koordinatından belirlenir. Seri değildir."
 
 [dim.cargo_company]
 label_tr = "Kargo şirketi"

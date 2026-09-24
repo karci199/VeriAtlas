@@ -1085,7 +1085,7 @@ NETWORK_ADAPTERS = {
         FashionStores,
         CargoBranches,
         PostOffices,
-        # Notaries: indicators.toml entry still to be added (see oturum_2026_09_23).
+        Notaries,
         FurnitureStores,
     )
 }

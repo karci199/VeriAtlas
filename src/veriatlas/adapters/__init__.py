@@ -91,6 +91,7 @@ from .tuik_vital import VITAL_ADAPTERS
 from .tuik_vital_district import DISTRICT_VITAL_ADAPTERS
 from .uab_ports import UAB_ADAPTERS
 from .vap import VAP_ADAPTERS
+from .wages import WAGE_ADAPTERS
 from .yks import YKS_ADAPTERS
 from .yok_istatistik import YOK_ISTATISTIK_ADAPTERS
 from .yok_national import YOK_NATIONAL_ADAPTERS
@@ -193,6 +194,7 @@ ADAPTERS = {
     **DHMI_ADAPTERS,
     **DIYANET_ADAPTERS,
     **TESK_ADAPTERS,
+    **WAGE_ADAPTERS,
     **TKGM_ADAPTERS,
     **CHAIN_STORE_ADAPTERS,
     **NETWORK_ADAPTERS,
