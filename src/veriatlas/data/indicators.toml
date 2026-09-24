@@ -30803,6 +30803,114 @@ dims = ["civil_servant_profile", "salary_item"]
 views = ["table", "line"]
 definition_tr = "memurlar.net maaş robotunun resmî katsayılarla hesapladığı bordro, 2014'ten; her yarıyıl için Şubat ve Ağustos maaşı (Temmuz'daki tek seferlik geçiş kalemleri dışarıda). Bekâr, çocuksuz, sendikasız, BES yok, Ankara. 2014–2021 AGİ net maaşa eklendi. Ek ders, nöbet, döner sermaye, toplu sözleşme ikramiyesi ve aile yardımı dahil değil. Her unvan robotun tuttuğu en düşük kadrodan alınır (çoğu lisans 9/1; mühendis, hekim, veteriner 8/1; teknik ve güvenlik hizmetleri 10/1; lise 13/1). Robotta verisi olmayan dönemler boştur (hemşire, ebe, avukat 2024'ten; hâkimin giriş kadrosu hiç yok). Üçüncü taraf hesabıdır, resmî yayın değildir. Yalnız Türkiye."
 
+[unit.coefficient]
+label_tr = "katsayı"
+label_en = "coefficient"
+decimals = 6
+additive = false
+per_capita = false
+
+[unit.try_per_service_year]
+label_tr = "TL/hizmet yılı"
+label_en = "TRY per year of service"
+decimals = 2
+additive = false
+per_capita = false
+
+[dim.pay_coefficient]
+label_tr = "Katsayı"
+label_en = "Pay coefficient"
+
+[dim.pay_coefficient.values]
+monthly = { label_tr = "Aylık katsayısı", label_en = "Monthly coefficient" }
+side_payment = { label_tr = "Yan ödeme katsayısı", label_en = "Side-payment coefficient" }
+base_salary = { label_tr = "Taban aylık katsayısı", label_en = "Base-salary coefficient" }
+
+[indicator.civil_servant_pay_coefficient]
+label_tr = "Memur maaş katsayıları"
+label_en = "Civil-servant pay coefficients"
+topic = "ucretler"
+unit = "coefficient"
+frequency = "monthly"
+dims = ["pay_coefficient"]
+views = ["table", "line"]
+definition_tr = "Hazine ve Maliye Bakanlığı Bütçe ve Mali Kontrol Genel Müdürlüğü (BÜMKO), 'Memur maaş hesaplamalarında kullanılan katsayılar', Mart 1970 – Haziran 2025; ayın 15'inde yürürlükte olan katsayı. Aylık katsayısı gösterge ve ek göstergeyle, yan ödeme katsayısı yan ödeme puanıyla, taban aylık katsayısı (1989'dan) taban aylık göstergesiyle çarpılır. 2005 öncesi eski TL katsayıları 1.000.000'a bölünerek yeni TL'ye çevrildi. Temmuz 2025 ve sonrası kararlar dosyada yok. Yalnız Türkiye."
+
+[indicator.highest_civil_servant_salary]
+label_tr = "En yüksek devlet memuru aylığı"
+label_en = "Highest civil-servant salary"
+topic = "ucretler"
+unit = "try_per_month"
+frequency = "monthly"
+views = ["table", "line"]
+definition_tr = "HMB BÜMKO, 'En yüksek devlet memuru aylığı', Mart 1970 – Haziran 2025: aylık katsayısı × (gösterge + ek gösterge). Kıdem tazminatı tavanı, sözleşmeli ücretleri ve pek çok ödeme buna bağlıdır; bir memurun eline geçen maaş değildir. 2005 öncesi eski TL 1.000.000'a bölündü; ayın 15'inde yürürlükteki tutar. Yalnız Türkiye."
+
+[dim.family_member]
+label_tr = "Aile üyesi"
+label_en = "Family member"
+
+[dim.family_member.values]
+spouse = { label_tr = "Eş", label_en = "Spouse" }
+child = { label_tr = "Çocuk (bir çocuk)", label_en = "Child (one)" }
+
+[indicator.civil_servant_family_allowance]
+label_tr = "Memur aile yardımı ödeneği"
+label_en = "Civil-servant family allowance"
+topic = "ucretler"
+unit = "try_per_month"
+frequency = "monthly"
+dims = ["family_member"]
+views = ["table", "line"]
+definition_tr = "HMB BÜMKO, 'Aile yardımı ödeneği': çalışmayan eş için Ekim 1978'den, bir çocuk için Temmuz 1984'ten, Haziran 2025'e; ayın 15'inde yürürlükteki tutar. 1984 öncesi çocuk yardımı çocuğun okuluna göre değişiyordu; o kırılım alınmadı. 15 Ocak 2005'ten beri 0-6 yaş çocuk için iki katı ödenir, buradaki tutar tek kattır. 2005 öncesi eski TL 1.000.000'a bölündü. Yalnız Türkiye."
+
+[indicator.severance_pay_ceiling]
+label_tr = "Kıdem tazminatı tavanı"
+label_en = "Severance-pay ceiling"
+topic = "ucretler"
+unit = "try_per_service_year"
+frequency = "monthly"
+views = ["table", "line"]
+definition_tr = "HMB BÜMKO, 'Yıllar itibarıyla kıdem tazminatı tavanları', Eylül 1980 – Haziran 2025: işçiye bir hizmet yılı için ödenebilecek en yüksek kıdem tazminatı; en yüksek devlet memurunun bir hizmet yılı için alacağı emeklilik ikramiyesine eşittir. 2005 öncesi eski TL 1.000.000'a bölündü; ayın 15'inde yürürlükteki tutar. Yalnız Türkiye."
+
+[dim.contract_staff_type]
+label_tr = "Sözleşmeli personel türü"
+label_en = "Contract staff type"
+
+[dim.contract_staff_type.values]
+soe_decree_399 = { label_tr = "KİT sözleşmeli (399 sayılı KHK)", label_en = "State enterprise contract staff (Decree 399)" }
+decree_7_15754 = { label_tr = "7/15754 sayılı BKK sözleşmeli", label_en = "Contract staff under Decree 7/15754" }
+position_based = { label_tr = "Kadro karşılığı sözleşmeli", label_en = "Position-based contract staff" }
+
+[indicator.contract_staff_pay_ceiling]
+label_tr = "Sözleşmeli personel ücret tavanı"
+label_en = "Contract staff pay ceiling"
+topic = "ucretler"
+unit = "try_per_month"
+frequency = "monthly"
+dims = ["contract_staff_type"]
+views = ["table", "line"]
+definition_tr = "HMB BÜMKO, 'Sözleşmeli personel ücret tavanları', Ocak 1995 – Haziran 2025: üç sözleşmeli personel türü için brüt aylık ücret tavanı (bütçe kanunu, BKK ve Bakanlık genelgeleri). Tavandır, ortalama ücret değildir. Aynı döneme iki karar düştüğünde (1997 gibi) tablodaki sonraki karar geçerli sayıldı. 2005 öncesi eski TL 1.000.000'a bölündü; ayın 15'inde yürürlükteki tutar. Yalnız Türkiye."
+
+[dim.employee_group]
+label_tr = "Çalışan grubu"
+label_en = "Employee group"
+
+[dim.employee_group.values]
+public_worker = { label_tr = "Kamu kesimi işçisi", label_en = "Public-sector worker" }
+private_worker = { label_tr = "Özel kesim işçisi", label_en = "Private-sector worker" }
+civil_servant = { label_tr = "Memur", label_en = "Civil servant" }
+minimum_wage = { label_tr = "Asgari ücretli", label_en = "Minimum-wage earner" }
+
+[indicator.average_wage_by_sector]
+label_tr = "Ortalama ücret ve maaşlar (kamu, özel, memur)"
+label_en = "Average wages and salaries by sector"
+topic = "ucretler"
+unit = "try_per_month"
+frequency = "annual"
+dims = ["wage_measure", "employee_group"]
+views = ["table", "line"]
+definition_tr = "Strateji ve Bütçe Başkanlığı, Ekonomik ve Sosyal Göstergeler Tablo 8.6 'Ortalama maaş ve ücretlerdeki gelişmeler', 2000–2017, aylık ortalama TL (kaynakta bin eski TL; 1.000'e bölündü). İşverene maliyet (işgücü maliyeti) ve net. Kaynak: Kalkınma Bakanlığı, kamu işveren sendikaları, TİSK, Maliye Bakanlığı. 2008'den beri net tutarlara bekâr çalışanın asgari geçim indirimi dahil. Özel kesim işçi ücreti TİSK ve kamu işveren sendikalarının toplu sözleşme verisinden hesaplanır, 2016'dan beri yok. Asgari ücret 16 yaş üstü yıllık ortalamadır. Yalnız Türkiye."
+
 [topic.adalet]
 label_tr = "Adalet ve hukuk hizmetleri"
 label_en = "Justice and legal services"
