@@ -30861,7 +30861,7 @@ unit = "try_per_month"
 frequency = "monthly"
 dims = ["family_member"]
 views = ["table", "line"]
-definition_tr = "HMB BÜMKO, 'Aile yardımı ödeneği' (Haziran 2025'e kadar; sonraki göstergeler bütçe kanununda, doğrulanmadı): çalışmayan eş için Ekim 1978'den, bir çocuk için Temmuz 1984'ten, Haziran 2025'e; ayın 15'inde yürürlükteki tutar. 1984 öncesi çocuk yardımı çocuğun okuluna göre değişiyordu; o kırılım alınmadı. 15 Ocak 2005'ten beri 0-6 yaş çocuk için iki katı ödenir, buradaki tutar tek kattır. 2005 öncesi eski TL 1.000.000'a bölündü. Yalnız Türkiye."
+definition_tr = "HMB BÜMKO, 'Aile yardımı ödeneği': çalışmayan eş için Ekim 1978'den, bir çocuk için Temmuz 1984'ten, Eylül 2026'ya; Temmuz 2025'ten itibaren Mali ve Sosyal Haklar genelgelerindeki aylık katsayısı × tablonun son göstergesi (eş 2.273, çocuk 250; 2025/1 Hakem Kurulu kararı göstergeyi değiştirmedi, Ocak 2026'da ödenen 3.154,63 / 346,97 TL ile tutuyor); ayın 15'inde yürürlükteki tutar. 1984 öncesi çocuk yardımı çocuğun okuluna göre değişiyordu; o kırılım alınmadı. 15 Ocak 2005'ten beri 0-6 yaş çocuk için iki katı ödenir, buradaki tutar tek kattır. 2005 öncesi eski TL 1.000.000'a bölündü. Yalnız Türkiye."
 
 [indicator.severance_pay_ceiling]
 label_tr = "Kıdem tazminatı tavanı"

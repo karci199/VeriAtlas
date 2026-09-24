@@ -346,6 +346,11 @@ class FamilyAllowance(_HmbPay):
     higher, other); that split is not kept, so the child series starts when a single
     amount does. The amount is the last filled cell: early spouse rows hold the amount
     alone, later rows coefficient, index and amount.
+
+    The circulars do not state the allowance. It is the monthly coefficient times the
+    index (2273 spouse, 250 child since 2020), which the sheet's own last row carries and
+    is checked against; the amounts this gives for January 2026 (3.154,63 and 346,97)
+    are the ones paid.
     """
 
     indicator_id = "civil_servant_family_allowance"
@@ -364,7 +369,15 @@ class FamilyAllowance(_HmbPay):
                 if key == "child" and len(filled) != 3:
                     raise ValueError(f"çocuk yardımı: {day} satırı beklenmedik {row}")
                 changes.append((day, _lira(day, filled[-1])))
-            series[f"family_member={key}"] = _in_force(changes, f"aile yardımı {key}")
+            coefficient, index_, amount = filled
+            if abs(coefficient * index_ - amount) > 0.01:
+                raise ValueError(
+                    f"aile yardımı {key}: son satır katsayı × gösterge değil"
+                )
+            changes = _extended(changes, "monthly", index_)
+            series[f"family_member={key}"] = _in_force(
+                changes, f"aile yardımı {key}", CIRCULAR_LAST_MONTH
+            )
         return _monthly_rows(self.indicator_id, series, "try_per_month", self.source_id)
 
 
