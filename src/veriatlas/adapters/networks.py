@@ -1036,6 +1036,7 @@ class CargoBranches(_Network):
 
 class Notaries(_Network):
     indicator_id = "notaries"
+    source_id = "tnb"  # the notaries' own union register, not a company branch finder
     dim = "notary_class"
     kind = "store"
     brands: ClassVar = {

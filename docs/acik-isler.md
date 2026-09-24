@@ -1,4 +1,24 @@
-# Açık işler (2026-09-19, gece güncel)
+# Açık işler (2026-09-24 güncel)
+
+## 2026-09-24: depoya girenler ve açık kalanlar
+
+| Gösterge | Kaynak | Kapsam |
+|---|---|---|
+| `notaries` | TNB Noter Bul (yeni konu: `adalet`) | il, ilçe × sınıf, 2026 anlık |
+| `minimum_wage` | ÇSGB tablosu (`scripts/fetch_minimum_wage.py`) | TR, aylık 1996-08 – 2026-09, net/brüt/işverene maliyet |
+| `civil_servant_salary` | memurlar.net maaş robotu (`scripts/fetch_memurlarnet_salary.py`), `estimated` | TR, 6 aylık 2014–2026, 27 unvan profili, net/brüt |
+
+Açık:
+- Üç yeni gösterge web export'ta yok (kullanıcı kararı: şimdilik eklenmeyecek).
+- HMB BÜMKO maaş dosyaları (katsayılar 1970–2026, aile yardımı, sözleşmeli tavanları 1995–2025) ve SBB Tablo 8.6
+  (ortalama memur maaşı 2000–2017) `C:\veri-ham\ucret\memur\` altında; adaptör yok.
+- Memur robotunda olmayanlar: hâkim giriş kadrosu; hemşire, ebe, avukat 2024 öncesi. Resmî parametrelerle
+  kendi hesaplayıcı gerekir (zor).
+- 2022-04 sonrası madde fiyatları TÜFE alt endeksiyle tahmin; marketfiyati.org.tr ile doğrulanmadı.
+- Endeksa mahalle demografisi (972 ilçe dosyası, tüm TR) ham klasörde; lisans kararı yok, depoya alınmadı.
+- Analiz betikleri `scripts/analiz/ucret_2026_09_24/`.
+
+## Önceki durum (2026-09-19, gece)
 
 Çekilip de alınamayan ya da yarım kalanlar, tahmini zorlukla. Yeni oturumda buradan devam.
 Keşfedilmiş ama hiç başlanmamış kaynaklar `kaynak-envanteri.md`'de.
