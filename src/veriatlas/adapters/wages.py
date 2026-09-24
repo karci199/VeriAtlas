@@ -11,10 +11,11 @@ memurlar.net's salary robot computes the itemised payslip from the official coef
 for any month from 2014 (`scripts/fetch_memurlarnet_salary.py`); one payslip per half-year
 (February, August — July carries one-off transition items) is filed under the half-year's
 first day. Profiles are fixed: single, no children, not a union member. Until 2021 the
-minimum living allowance (AGİ) was paid on top of the net and the robot prints it below
-the net line; it is added back so the series does not break when AGİ became a tax
-exemption in 2022. Overtime, extra lessons, revolving-fund pay and family allowance are
-not in it. This is a calculation from official parameters by a third party, so the rows
+robot prints the minimum living allowance (AGİ) below the net line, but its income tax
+line is already net of it (2014-02 memur: 15 % of 1.032,45 is 154,87, less AGİ 80,33
+gives the 74,54 printed), so the printed net includes AGİ and is taken as it is; adding
+the line again counted AGİ twice. Overtime, extra lessons, revolving-fund pay and family
+allowance are not in it. This is a calculation from official parameters by a third party, so the rows
 are flagged `estimated`.
 
 **Pay parameters** — the Ministry of Treasury and Finance's budget office (HMB BÜMKO,
@@ -175,7 +176,17 @@ class CivilServantSalary:
             if (r["profile"], half) in seen:
                 raise ValueError(f"memur maaşı: {r['profile']} {half} iki kez")
             seen.add((r["profile"], half))
-            net = r["net"] + (items.get("Asgari Geçim İndirimi") or 0)
+            net = r["net"]
+            tax = -(items.get("Gelir Vergisi") or 0)
+            base = items.get("Gelir Vergisi Matrahı")
+            agi = items.get("Asgari Geçim İndirimi") or 0
+            # The tax line must be the bracket tax less AGİ, or the net would not hold it.
+            if agi and base and abs(tax + agi - base * 0.15) > 1 and tax > 0:
+                rate = (tax + agi) / base
+                if not 0.149 < rate < 0.36:
+                    raise ValueError(
+                        f"memur maaşı: {r['profile']} {pay} AGİ vergide değil"
+                    )
             gross = items["İstihaklar Toplamı"]
             for item, value in (("net", net), ("gross", gross)):
                 periods.append(half)

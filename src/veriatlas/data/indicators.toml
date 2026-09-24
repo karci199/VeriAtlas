@@ -30790,7 +30790,7 @@ label_tr = "Tutar"
 label_en = "Salary item"
 
 [dim.salary_item.values]
-net = { label_tr = "Net (2021'e kadar AGİ dahil)", label_en = "Net (incl. AGİ to 2021)" }
+net = { label_tr = "Net (AGİ dahil)", label_en = "Net (incl. AGİ)" }
 gross = { label_tr = "Brüt (istihkaklar toplamı)", label_en = "Gross entitlements" }
 
 [indicator.civil_servant_salary]
@@ -30801,7 +30801,7 @@ unit = "try_per_month"
 frequency = "semiannual"
 dims = ["civil_servant_profile", "salary_item"]
 views = ["table", "line"]
-definition_tr = "memurlar.net maaş robotunun resmî katsayılarla hesapladığı bordro, 2014'ten; her yarıyıl için Şubat ve Ağustos maaşı (Temmuz'daki tek seferlik geçiş kalemleri dışarıda). Bekâr, çocuksuz, sendikasız, BES yok, Ankara. 2014–2021 AGİ net maaşa eklendi. Ek ders, nöbet, döner sermaye, toplu sözleşme ikramiyesi ve aile yardımı dahil değil. Her unvan robotun tuttuğu en düşük kadrodan alınır (çoğu lisans 9/1; mühendis, hekim, veteriner 8/1; teknik ve güvenlik hizmetleri 10/1; lise 13/1). Robotta verisi olmayan dönemler boştur (hemşire, ebe, avukat 2024'ten; hâkimin giriş kadrosu hiç yok). Üçüncü taraf hesabıdır, resmî yayın değildir. Yalnız Türkiye."
+definition_tr = "memurlar.net maaş robotunun resmî katsayılarla hesapladığı bordro, 2014'ten; her yarıyıl için Şubat ve Ağustos maaşı (Temmuz'daki tek seferlik geçiş kalemleri dışarıda). Bekâr, çocuksuz, sendikasız, BES yok, Ankara. 2014–2021 net, robotun yazdığı gibi asgari geçim indirimini içerir (robot AGİ'yi gelir vergisinden düşmüş). Ek ders, nöbet, döner sermaye, toplu sözleşme ikramiyesi ve aile yardımı dahil değil. Her unvan robotun tuttuğu en düşük kadrodan alınır (çoğu lisans 9/1; mühendis, hekim, veteriner 8/1; teknik ve güvenlik hizmetleri 10/1; lise 13/1). Robotta verisi olmayan dönemler boştur (hemşire, ebe, avukat 2024'ten; hâkimin giriş kadrosu hiç yok). Üçüncü taraf hesabıdır, resmî yayın değildir. Yalnız Türkiye."
 
 [unit.coefficient]
 label_tr = "katsayı"
