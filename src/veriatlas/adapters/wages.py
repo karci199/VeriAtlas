@@ -49,9 +49,16 @@ from ..config import RAW
 WAGE_FILE = RAW / "ucret" / "asgari" / "asgari_ucret_donemler.json"
 SALARY_FILE = RAW / "ucret" / "memur" / "memurlarnet" / "salaries.jsonl"
 PAY_DIR = RAW / "ucret" / "memur"
-#: The HMB files were downloaded in 2026-09 but stop at the January 2025 decision; the
-#: values of that decision are filed until the half-year ends, no further.
+#: The HMB statistics files were downloaded in 2026-09 but stop at the January 2025
+#: decision; a series that nothing later extends is filed until that half-year ends.
 PAY_LAST_MONTH = dt.date(2025, 6, 1)
+#: The decisions after it come from the half-yearly 'Mali ve Sosyal Haklar' circulars,
+#: scanned PDFs read by hand into this file with their URLs. They run to the current
+#: month, like the minimum wage.
+CIRCULAR_FILE = RAW / "ucret" / "memur" / "genelge" / "genelge_degerleri.json"
+CIRCULAR_LAST_MONTH = dt.date(2026, 9, 1)
+#: Index of the highest civil-servant salary: 1500 + 8000 additional (Law 657, art. 43).
+HIGHEST_SALARY_INDEX = 9500
 REDENOMINATION = dt.date(2005, 1, 1)
 REVISED_WITHIN_MONTH = {dt.date(2012, 1, 1)}
 TR_MONTHS = {
@@ -210,7 +217,9 @@ def _lira(day: dt.date, value: float) -> float:
     return value / 1e6 if day < REDENOMINATION else value
 
 
-def _in_force(changes: list[tuple[dt.date, float]], name: str) -> dict[dt.date, float]:
+def _in_force(
+    changes: list[tuple[dt.date, float]], name: str, last: dt.date = PAY_LAST_MONTH
+) -> dict[dt.date, float]:
     """Effective-date list → the value in force on the 15th of every month.
 
     Dates out of order, or two rows for one date, mean the sheet was read wrong and are
@@ -222,7 +231,7 @@ def _in_force(changes: list[tuple[dt.date, float]], name: str) -> dict[dt.date, 
         if d2 < d1 or (d2 == d1 and v1 != v2 and d1 not in REVISED_WITHIN_MONTH):
             raise ValueError(f"{name}: tarih sırası bozuk {d1} {d2}")
     out = {}
-    for month in _months(changes[0][0], PAY_LAST_MONTH):
+    for month in _months(changes[0][0], last):
         day = month.replace(day=15)
         current = [v for d, v in changes if d <= day]
         if current:
@@ -252,6 +261,24 @@ def _dated_rows(sheet, datemode, first_row: int):
         ):
             continue
         yield _cell_date(row[0], datemode), row
+
+
+def _circulars() -> list[dict]:
+    return json.loads(CIRCULAR_FILE.read_text(encoding="utf-8"))["circulars"]
+
+
+def _extended(changes, key: str, scale: float = 1.0):
+    """The HMB sheet's changes followed by the circulars' values for `key`.
+
+    A circular dated on or before the sheet's last change would mean the sheet was newer
+    than assumed; that is raised, not merged.
+    """
+    added = [
+        (dt.date.fromisoformat(c["effective"]), c[key] * scale) for c in _circulars()
+    ]
+    if added[0][0] <= changes[-1][0]:
+        raise ValueError(f"{key}: genelge {added[0][0]} tablodan yeni değil")
+    return changes + added
 
 
 def _monthly_rows(indicator_id, series: dict[str, dict[dt.date, float]], unit, source):
@@ -292,7 +319,9 @@ class CivilServantPayCoefficient(_HmbPay):
                 for day, row in _dated_rows(sheet, datemode, 2)
                 if row[col] != ""
             ]
-            series[f"pay_coefficient={key}"] = _in_force(changes, f"katsayı {key}")
+            series[f"pay_coefficient={key}"] = _in_force(
+                _extended(changes, key), f"katsayı {key}", CIRCULAR_LAST_MONTH
+            )
         return _monthly_rows(self.indicator_id, series, "coefficient", self.source_id)
 
 
@@ -303,7 +332,10 @@ class HighestCivilServantSalary(_HmbPay):
     def parse(self, raw: Path) -> pl.DataFrame:
         sheet, datemode = _sheet(raw.name)
         changes = [(d, _lira(d, row[4])) for d, row in _dated_rows(sheet, datemode, 2)]
-        series = {"": _in_force(changes, "en yüksek memur aylığı")}
+        # The circulars give the coefficient, not this amount; it is the coefficient
+        # times the index, which the sheet itself does for every row.
+        changes = _extended(changes, "monthly", HIGHEST_SALARY_INDEX)
+        series = {"": _in_force(changes, "en yüksek memur aylığı", CIRCULAR_LAST_MONTH)}
         return _monthly_rows(self.indicator_id, series, "try_per_month", self.source_id)
 
 
@@ -343,7 +375,8 @@ class SeverancePayCeiling(_HmbPay):
     def parse(self, raw: Path) -> pl.DataFrame:
         sheet, datemode = _sheet(raw.name)
         changes = [(d, _lira(d, row[1])) for d, row in _dated_rows(sheet, datemode, 2)]
-        series = {"": _in_force(changes, "kıdem tazminatı tavanı")}
+        changes = _extended(changes, "severance_pay_ceiling")
+        series = {"": _in_force(changes, "kıdem tazminatı tavanı", CIRCULAR_LAST_MONTH)}
         return _monthly_rows(
             self.indicator_id, series, "try_per_service_year", self.source_id
         )
@@ -375,6 +408,15 @@ class ContractStaffPayCeiling(_HmbPay):
                 for month in _months(start, end):
                     if start <= month.replace(day=15) <= end:
                         months[month] = _lira(start, row[2])
+            # The circulars name the ceiling of two of the three types; the third
+            # (position-based) is only raised by a percentage, so it stops with the sheet.
+            for c in _circulars() if key in _circulars()[0] else []:
+                start = dt.date.fromisoformat(c["effective"])
+                end = min(dt.date.fromisoformat(c["end"]), CIRCULAR_LAST_MONTH)
+                if start <= max(months):
+                    raise ValueError(f"sözleşmeli tavanı {key}: genelge tablodan eski")
+                for month in _months(start, end):
+                    months[month] = c[key]
             gap = [m for m in _months(min(months), max(months)) if m not in months]
             if gap:
                 raise ValueError(f"sözleşmeli tavanı {key}: boş aylar {gap[:5]}")

@@ -30834,7 +30834,7 @@ unit = "coefficient"
 frequency = "monthly"
 dims = ["pay_coefficient"]
 views = ["table", "line"]
-definition_tr = "Hazine ve Maliye Bakanlığı Bütçe ve Mali Kontrol Genel Müdürlüğü (BÜMKO), 'Memur maaş hesaplamalarında kullanılan katsayılar', Mart 1970 – Haziran 2025; ayın 15'inde yürürlükte olan katsayı. Aylık katsayısı gösterge ve ek göstergeyle, yan ödeme katsayısı yan ödeme puanıyla, taban aylık katsayısı (1989'dan) taban aylık göstergesiyle çarpılır. 2005 öncesi eski TL katsayıları 1.000.000'a bölünerek yeni TL'ye çevrildi. Temmuz 2025 ve sonrası kararlar dosyada yok. Yalnız Türkiye."
+definition_tr = "Hazine ve Maliye Bakanlığı Bütçe ve Mali Kontrol Genel Müdürlüğü (BÜMKO), 'Memur maaş hesaplamalarında kullanılan katsayılar', Mart 1970 – Eylül 2026; ayın 15'inde yürürlükte olan katsayı. Temmuz 2025, Ocak 2026 ve Temmuz 2026 değerleri HMB'nin 'Mali ve Sosyal Haklar' genelgelerinden (taranmış PDF, elle okundu). Aylık katsayısı gösterge ve ek göstergeyle, yan ödeme katsayısı yan ödeme puanıyla, taban aylık katsayısı (1989'dan) taban aylık göstergesiyle çarpılır. 2005 öncesi eski TL katsayıları 1.000.000'a bölünerek yeni TL'ye çevrildi. Yalnız Türkiye."
 
 [indicator.highest_civil_servant_salary]
 label_tr = "En yüksek devlet memuru aylığı"
@@ -30843,7 +30843,7 @@ topic = "ucretler"
 unit = "try_per_month"
 frequency = "monthly"
 views = ["table", "line"]
-definition_tr = "HMB BÜMKO, 'En yüksek devlet memuru aylığı', Mart 1970 – Haziran 2025: aylık katsayısı × (gösterge + ek gösterge). Kıdem tazminatı tavanı, sözleşmeli ücretleri ve pek çok ödeme buna bağlıdır; bir memurun eline geçen maaş değildir. 2005 öncesi eski TL 1.000.000'a bölündü; ayın 15'inde yürürlükteki tutar. Yalnız Türkiye."
+definition_tr = "HMB BÜMKO, 'En yüksek devlet memuru aylığı', Mart 1970 – Eylül 2026: aylık katsayısı × (gösterge + ek gösterge). Temmuz 2025'ten itibaren genelgelerdeki aylık katsayısı × 9.500 olarak hesaplandı (tablonun kendi formülü). Kıdem tazminatı tavanı, sözleşmeli ücretleri ve pek çok ödeme buna bağlıdır; bir memurun eline geçen maaş değildir. 2005 öncesi eski TL 1.000.000'a bölündü; ayın 15'inde yürürlükteki tutar. Yalnız Türkiye."
 
 [dim.family_member]
 label_tr = "Aile üyesi"
@@ -30861,7 +30861,7 @@ unit = "try_per_month"
 frequency = "monthly"
 dims = ["family_member"]
 views = ["table", "line"]
-definition_tr = "HMB BÜMKO, 'Aile yardımı ödeneği': çalışmayan eş için Ekim 1978'den, bir çocuk için Temmuz 1984'ten, Haziran 2025'e; ayın 15'inde yürürlükteki tutar. 1984 öncesi çocuk yardımı çocuğun okuluna göre değişiyordu; o kırılım alınmadı. 15 Ocak 2005'ten beri 0-6 yaş çocuk için iki katı ödenir, buradaki tutar tek kattır. 2005 öncesi eski TL 1.000.000'a bölündü. Yalnız Türkiye."
+definition_tr = "HMB BÜMKO, 'Aile yardımı ödeneği' (Haziran 2025'e kadar; sonraki göstergeler bütçe kanununda, doğrulanmadı): çalışmayan eş için Ekim 1978'den, bir çocuk için Temmuz 1984'ten, Haziran 2025'e; ayın 15'inde yürürlükteki tutar. 1984 öncesi çocuk yardımı çocuğun okuluna göre değişiyordu; o kırılım alınmadı. 15 Ocak 2005'ten beri 0-6 yaş çocuk için iki katı ödenir, buradaki tutar tek kattır. 2005 öncesi eski TL 1.000.000'a bölündü. Yalnız Türkiye."
 
 [indicator.severance_pay_ceiling]
 label_tr = "Kıdem tazminatı tavanı"
@@ -30870,7 +30870,7 @@ topic = "ucretler"
 unit = "try_per_service_year"
 frequency = "monthly"
 views = ["table", "line"]
-definition_tr = "HMB BÜMKO, 'Yıllar itibarıyla kıdem tazminatı tavanları', Eylül 1980 – Haziran 2025: işçiye bir hizmet yılı için ödenebilecek en yüksek kıdem tazminatı; en yüksek devlet memurunun bir hizmet yılı için alacağı emeklilik ikramiyesine eşittir. 2005 öncesi eski TL 1.000.000'a bölündü; ayın 15'inde yürürlükteki tutar. Yalnız Türkiye."
+definition_tr = "HMB BÜMKO, 'Yıllar itibarıyla kıdem tazminatı tavanları', Eylül 1980 – Eylül 2026 (Temmuz 2025'ten itibaren genelgelerden): işçiye bir hizmet yılı için ödenebilecek en yüksek kıdem tazminatı; en yüksek devlet memurunun bir hizmet yılı için alacağı emeklilik ikramiyesine eşittir. 2005 öncesi eski TL 1.000.000'a bölündü; ayın 15'inde yürürlükteki tutar. Yalnız Türkiye."
 
 [dim.contract_staff_type]
 label_tr = "Sözleşmeli personel türü"
@@ -30889,7 +30889,7 @@ unit = "try_per_month"
 frequency = "monthly"
 dims = ["contract_staff_type"]
 views = ["table", "line"]
-definition_tr = "HMB BÜMKO, 'Sözleşmeli personel ücret tavanları', Ocak 1995 – Haziran 2025: üç sözleşmeli personel türü için brüt aylık ücret tavanı (bütçe kanunu, BKK ve Bakanlık genelgeleri). Tavandır, ortalama ücret değildir. Aynı döneme iki karar düştüğünde (1997 gibi) tablodaki sonraki karar geçerli sayıldı. 2005 öncesi eski TL 1.000.000'a bölündü; ayın 15'inde yürürlükteki tutar. Yalnız Türkiye."
+definition_tr = "HMB BÜMKO, 'Sözleşmeli personel ücret tavanları', Ocak 1995 – Eylül 2026 (Temmuz 2025'ten itibaren genelgelerden; kadro karşılığı sözleşmelide genelge tutar değil yalnız artış oranı verdiği için seri Haziran 2025'te biter): üç sözleşmeli personel türü için brüt aylık ücret tavanı (bütçe kanunu, BKK ve Bakanlık genelgeleri). Tavandır, ortalama ücret değildir. Aynı döneme iki karar düştüğünde (1997 gibi) tablodaki sonraki karar geçerli sayıldı. 2005 öncesi eski TL 1.000.000'a bölündü; ayın 15'inde yürürlükteki tutar. Yalnız Türkiye."
 
 [dim.employee_group]
 label_tr = "Çalışan grubu"
