@@ -10,10 +10,18 @@
 
 Açık:
 - Üç yeni gösterge web export'ta yok (kullanıcı kararı: şimdilik eklenmeyecek).
-- HMB BÜMKO maaş dosyaları (katsayılar 1970–2026, aile yardımı, sözleşmeli tavanları 1995–2025) ve SBB Tablo 8.6
-  (ortalama memur maaşı 2000–2017) `C:\veri-ham\ucret\memur\` altında; adaptör yok.
-- Memur robotunda olmayanlar: hâkim giriş kadrosu; hemşire, ebe, avukat 2024 öncesi. Resmî parametrelerle
-  kendi hesaplayıcı gerekir (zor).
+- ~~HMB BÜMKO ve SBB Tablo 8.6~~ 2026-09-24 akşam depoya girdi (altı gösterge, `src/veriatlas/adapters/wages.py`).
+  Temmuz 2025–Eylül 2026 değerleri HMB "Mali ve Sosyal Haklar" genelgelerinden, elle okunup
+  `C:\veri-ham\ucret\memur\genelge\genelge_degerleri.json`'a yazıldı. Her yeni genelgede (Ocak/Temmuz) bu dosyaya
+  bir satır eklenip beş gösterge yeniden yüklenmeli. Kadro karşılığı sözleşmeli tavanı 2025/06'da bitiyor (genelge
+  tutar değil yalnız artış oranı veriyor).
+- `civil_servant_salary` 2014–2021 AGİ çift sayımı 2026-09-24 düzeltildi ve yeniden yüklendi.
+- Memur robotunda olmayanlar: hâkim giriş kadrosu; hemşire, ebe, avukat 2024 öncesi. Hemşire için resmî
+  parametrelerden bordro modeli kuruldu (2024–26 robotla kuruşuna tutuyor) ama betik kalıcı değil; 2014–2018 ek
+  ödeme %100 varsayımı doğrulanmadı.
+- 2026-09-24 gece yapılan hemşehri × seçim, yerlilik, yaş × parti, kütük 2007/2015/2025 analizleri yalnız geçici
+  klasörde; `scripts/analiz/` altına alınmadı.
+- TEDAŞ genel aydınlatma: 301 dosya `C:\veri-ham\tedas_aydinlatma` altında indi; adaptör yok (kullanıcı ertelendi).
 - 2022-04 sonrası madde fiyatları TÜFE alt endeksiyle tahmin; marketfiyati.org.tr ile doğrulanmadı.
 - Endeksa mahalle demografisi (972 ilçe dosyası, tüm TR) ham klasörde; lisans kararı yok, depoya alınmadı.
 - Analiz betikleri `scripts/analiz/ucret_2026_09_24/`.
