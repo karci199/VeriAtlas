@@ -32572,8 +32572,10 @@ frequency = "annual"
 dims = ["school_level", "sex"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
-MEB örgün eğitim öğrenci sayısı, il × kademe × cinsiyet, 2012-2024 (TÜİK MEDAS). Açık \
-öğretim dahil değil."""
+MEB örgün eğitim öğrenci sayısı, il × kademe × cinsiyet, 2012-2024 (TÜİK MEDAS). Ortaokul \
+ve ortaöğretimde açıköğretim DAHİL (MEB portalıyla il il doğrulandı; tek istisna 2019 \
+ortaokul, orada hariç). Açık lise öğrencilerinin ~%76-92'si genel, kalanı mesleki \
+ortaöğretime yazılıdır. Okul öncesi = anaokulu + anasınıfı."""
 
 [indicator.teachers]
 label_tr = "Öğretmen sayısı"
