@@ -9,7 +9,7 @@ nothing, but every file carries its own description in the first two rows:
     2024-2025 > Okul Öncesi > Anaokulu
 
 This moves each file to `RAW/meb_portal/<measure>/<year>_<level>_<type>.xlsx`. Two files
-that describe the same table are compared: identical ones are dropped, different ones stop
+that describe the same table are compared cell by cell: identical ones are dropped, different ones stop
 the run, because one of them is not what its title says.
 
 Run:  uv run python scripts/organize_meb_portal.py "C:\Users\katan\OneDrive\Desktop\Şube"
@@ -62,7 +62,14 @@ def describe(path: Path) -> tuple[str, str]:
 
 
 def digest(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    """Hash of the cell values. The bytes differ between two downloads of the same table:
+    the export stamps its own creation time into the file."""
+    book = openpyxl.load_workbook(path, read_only=True)
+    try:
+        cells = repr(list(book.active.iter_rows(values_only=True)))
+    finally:
+        book.close()
+    return hashlib.sha256(cells.encode("utf-8")).hexdigest()
 
 
 def main() -> None:
