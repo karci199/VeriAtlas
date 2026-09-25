@@ -5,7 +5,7 @@ burada olmayan gösterge depoda yok demektir. Yeni kaynak önermeden önce buray
 bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni iş' diye
 önerildi, üçü de zaten yüklüydü.
 
-Üretim: 2026-09-25 · 21.577.046 satır
+Üretim: 2026-09-25 · 21.577.090 satır
 
 ## evds_arsiv (177)
 
@@ -367,51 +367,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `sgk_workplaces_by_tenure` | 4/a iş yeri. niteliğe göre | il | 2010-2025 | 2.592 | sgk |
 | `unemployment_rate` | İşsizlik oranı | TR. il | 2022-2025 | 984 | tuik_portal |
 
-## egitim (40)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `class_sections` | Şube sayısı | il | 2012-2024 | 5.265 | tuik_medas |
-| `classrooms` | Derslik sayısı | il | 2012-2024 | 5.265 | tuik_medas |
-| `classrooms_by_type` | Derslik sayısı (tür ve resmî/özel) | il | 2002-2024 | 17.820 | meb_portal |
-| `education_level_district` | Bitirilen eğitim düzeyi (ilçe) | ilçe | 2008-2025 | 3.541.216 | tuik_medas |
-| `eu_early_leavers` | Eğitimi erken terk eden gençler (bölge) | TR. İBBS-2 | 2006-2025 | 1.619 | eurostat |
-| `eu_educational_attainment` | Eğitim düzeyi (bölge) | TR. İBBS-2 | 2006-2025 | 32.554 | eurostat |
-| `eu_neet_rate` | Ne eğitimde ne istihdamda olan gençler (bölge) | TR. İBBS-2 | 2006-2025 | 6.480 | eurostat |
-| `eu_rd_expenditure_share` | Ar-Ge harcamasının GSYH'ye oranı (bölge) | TR. İBBS-2 | 1995-2024 | 541 | eurostat |
-| `eu_rd_personnel` | Ar-Ge personeli. tam zaman eşdeğeri (bölge) | TR. İBBS-2 | 1990-2024 | 433 | eurostat |
-| `literacy` | Okuma yazma durumu (15+) | TR. il | 2008-2025 | 8.856 | tuik_medas |
-| `literacy_by_age` | Okuma yazma durumu (yaş grubu) | il | 2008-2025 | 12.399 | tuik_medas |
-| `literacy_district` | Okuma yazma durumu (ilçe) | ilçe | 2008-2025 | 1.215.089 | tuik_medas |
-| `mean_years_of_schooling` | Ortalama eğitim süresi | TR. il | 2011-2025 | 1.230 | tuik_medas |
-| `schools` | Okul sayısı | il | 2012-2024 | 5.265 | tuik_medas |
-| `schools_2017` | Okul sayısı (2017. ilçe) | il. ilçe | 2017-2017 | 8.027 | skrs |
-| `schools_by_type` | Okul sayısı (tür ve resmî/özel) | il | 2002-2024 | 17.820 | meb_portal |
-| `students` | Öğrenci sayısı (örgün eğitim) | il | 2012-2024 | 10.530 | tuik_medas |
-| `students_by_type` | Öğrenci sayısı (tür. resmî/özel. cinsiyet) | il | 2012-2024 | 42.120 | meb_portal |
-| `teachers` | Öğretmen sayısı | il | 2012-2024 | 10.530 | tuik_medas |
-| `teachers_by_type` | Öğretmen sayısı (tür. resmî/özel. cinsiyet) | il | 2012-2024 | 33.564 | meb_portal |
-| `university_programs` | Üniversite program sayısı (YKS tercih kılavuzu) | il | 2026-2026 | 187 | yok_atlas |
-| `university_quota` | Üniversite kontenjanı (YKS tercih kılavuzu) | il | 2026-2026 | 187 | yok_atlas |
-| `yks_applicants_by_school` | Üniversiteye başvuran ve yerleşen aday. okul türü ve aday durumuna göre | TR | 2015-2025 | 5.654 | yok_istatistik |
-| `yks_applicants_placed` | Üniversiteye başvuran ve yerleşen aday. Türkiye (1980-2025) | TR | 1980-2025 | 92 | yok_istatistik |
-| `yok_academic_staff` | Öğretim elemanı sayısı. unvana göre | il | 2013-2025 | 13.496 | yok_istatistik |
-| `yok_academic_staff_by_field` | Öğretim elemanı. eğitim alanına ve unvana göre | TR | 2015-2025 | 28.971 | yok_istatistik |
-| `yok_foreign_academic_staff` | Yabancı uyruklu öğretim elemanı. uyruğa ve unvana göre | TR | 2015-2025 | 4.996 | yok_istatistik |
-| `yok_graduates` | Yükseköğretim mezun sayısı (öğrenim görülen il/ilçe) | il. ilçe | 2013-2025 | 64.305 | yok_istatistik |
-| `yok_graduates_archive` | Yükseköğretim mezun sayısı. Türkiye (1982-2011) | TR | 1982-2011 | 408 | yok_istatistik |
-| `yok_graduates_by_age` | Yükseköğretim mezun sayısı. yaşa göre | TR | 2013-2025 | 13.449 | yok_istatistik |
-| `yok_graduates_by_field` | Mezun. eğitim alanına göre | TR | 2015-2025 | 9.521 | yok_istatistik |
-| `yok_international_graduates` | Uluslararası mezun sayısı. uyruğa göre | TR | 2013-2024 | 6.851 | yok_istatistik |
-| `yok_international_students` | Uluslararası öğrenci sayısı. uyruğa göre | TR | 2013-2024 | 21.745 | yok_istatistik |
-| `yok_new_students` | Yükseköğretime yeni kayıt olan öğrenci sayısı (öğrenim görülen il/ilçe) | il. ilçe | 2014-2025 | 57.948 | yok_istatistik |
-| `yok_new_students_archive` | Yükseköğretime yeni kayıt. Türkiye (1983-2012) | TR | 1983-2012 | 426 | yok_istatistik |
-| `yok_new_students_by_age` | Yükseköğretime yeni kayıt. yaşa göre | TR | 2013-2025 | 13.259 | yok_istatistik |
-| `yok_students` | Yükseköğretim öğrenci sayısı (öğrenim görülen il/ilçe) | il. ilçe | 2014-2025 | 65.164 | yok_istatistik |
-| `yok_students_archive` | Yükseköğretim öğrenci sayısı. Türkiye (1983-2012) | TR | 1983-2012 | 426 | yok_istatistik |
-| `yok_students_by_age` | Yükseköğretim öğrenci sayısı. yaşa göre | TR | 2013-2025 | 14.034 | yok_istatistik |
-| `yok_students_by_field` | Öğrenci ve yeni kayıt. eğitim alanına göre | TR | 2015-2025 | 21.094 | yok_istatistik |
-
 ## buyume (40)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -457,6 +412,51 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `province_gdp_regional_share_sector` | İlin Türkiye sektör katma değerindeki payı | TR. il | 2000-2024 | 22.550 | tuik_medas |
 | `province_gdp_sector_share` | Sektörlerin il GSYH içindeki payı | TR. il | 2000-2024 | 22.550 | tuik_medas |
 
+## egitim (40)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `class_sections` | Şube sayısı | il | 2012-2024 | 5.265 | tuik_medas |
+| `classrooms` | Derslik sayısı | il | 2012-2024 | 5.265 | tuik_medas |
+| `classrooms_by_type` | Derslik sayısı (tür ve resmî/özel) | il | 2002-2024 | 17.820 | meb_portal |
+| `education_level_district` | Bitirilen eğitim düzeyi (ilçe) | ilçe | 2008-2025 | 3.541.216 | tuik_medas |
+| `eu_early_leavers` | Eğitimi erken terk eden gençler (bölge) | TR. İBBS-2 | 2006-2025 | 1.619 | eurostat |
+| `eu_educational_attainment` | Eğitim düzeyi (bölge) | TR. İBBS-2 | 2006-2025 | 32.554 | eurostat |
+| `eu_neet_rate` | Ne eğitimde ne istihdamda olan gençler (bölge) | TR. İBBS-2 | 2006-2025 | 6.480 | eurostat |
+| `eu_rd_expenditure_share` | Ar-Ge harcamasının GSYH'ye oranı (bölge) | TR. İBBS-2 | 1995-2024 | 541 | eurostat |
+| `eu_rd_personnel` | Ar-Ge personeli. tam zaman eşdeğeri (bölge) | TR. İBBS-2 | 1990-2024 | 433 | eurostat |
+| `literacy` | Okuma yazma durumu (15+) | TR. il | 2008-2025 | 8.856 | tuik_medas |
+| `literacy_by_age` | Okuma yazma durumu (yaş grubu) | il | 2008-2025 | 12.399 | tuik_medas |
+| `literacy_district` | Okuma yazma durumu (ilçe) | ilçe | 2008-2025 | 1.215.089 | tuik_medas |
+| `mean_years_of_schooling` | Ortalama eğitim süresi | TR. il | 2011-2025 | 1.230 | tuik_medas |
+| `schools` | Okul sayısı | il | 2012-2024 | 5.265 | tuik_medas |
+| `schools_2017` | Okul sayısı (2017. ilçe) | il. ilçe | 2017-2017 | 8.027 | skrs |
+| `schools_by_type` | Okul sayısı (tür ve resmî/özel) | il | 2002-2024 | 17.820 | meb_portal |
+| `students` | Öğrenci sayısı (örgün eğitim) | il | 2012-2024 | 10.530 | tuik_medas |
+| `students_by_type` | Öğrenci sayısı (tür. resmî/özel. cinsiyet) | il | 2012-2024 | 42.120 | meb_portal |
+| `teachers` | Öğretmen sayısı | il | 2012-2024 | 10.530 | tuik_medas |
+| `teachers_by_type` | Öğretmen sayısı (tür. resmî/özel. cinsiyet) | il | 2012-2024 | 33.608 | meb_portal |
+| `university_programs` | Üniversite program sayısı (YKS tercih kılavuzu) | il | 2026-2026 | 187 | yok_atlas |
+| `university_quota` | Üniversite kontenjanı (YKS tercih kılavuzu) | il | 2026-2026 | 187 | yok_atlas |
+| `yks_applicants_by_school` | Üniversiteye başvuran ve yerleşen aday. okul türü ve aday durumuna göre | TR | 2015-2025 | 5.654 | yok_istatistik |
+| `yks_applicants_placed` | Üniversiteye başvuran ve yerleşen aday. Türkiye (1980-2025) | TR | 1980-2025 | 92 | yok_istatistik |
+| `yok_academic_staff` | Öğretim elemanı sayısı. unvana göre | il | 2013-2025 | 13.496 | yok_istatistik |
+| `yok_academic_staff_by_field` | Öğretim elemanı. eğitim alanına ve unvana göre | TR | 2015-2025 | 28.971 | yok_istatistik |
+| `yok_foreign_academic_staff` | Yabancı uyruklu öğretim elemanı. uyruğa ve unvana göre | TR | 2015-2025 | 4.996 | yok_istatistik |
+| `yok_graduates` | Yükseköğretim mezun sayısı (öğrenim görülen il/ilçe) | il. ilçe | 2013-2025 | 64.305 | yok_istatistik |
+| `yok_graduates_archive` | Yükseköğretim mezun sayısı. Türkiye (1982-2011) | TR | 1982-2011 | 408 | yok_istatistik |
+| `yok_graduates_by_age` | Yükseköğretim mezun sayısı. yaşa göre | TR | 2013-2025 | 13.449 | yok_istatistik |
+| `yok_graduates_by_field` | Mezun. eğitim alanına göre | TR | 2015-2025 | 9.521 | yok_istatistik |
+| `yok_international_graduates` | Uluslararası mezun sayısı. uyruğa göre | TR | 2013-2024 | 6.851 | yok_istatistik |
+| `yok_international_students` | Uluslararası öğrenci sayısı. uyruğa göre | TR | 2013-2024 | 21.745 | yok_istatistik |
+| `yok_new_students` | Yükseköğretime yeni kayıt olan öğrenci sayısı (öğrenim görülen il/ilçe) | il. ilçe | 2014-2025 | 57.948 | yok_istatistik |
+| `yok_new_students_archive` | Yükseköğretime yeni kayıt. Türkiye (1983-2012) | TR | 1983-2012 | 426 | yok_istatistik |
+| `yok_new_students_by_age` | Yükseköğretime yeni kayıt. yaşa göre | TR | 2013-2025 | 13.259 | yok_istatistik |
+| `yok_students` | Yükseköğretim öğrenci sayısı (öğrenim görülen il/ilçe) | il. ilçe | 2014-2025 | 65.164 | yok_istatistik |
+| `yok_students_archive` | Yükseköğretim öğrenci sayısı. Türkiye (1983-2012) | TR | 1983-2012 | 426 | yok_istatistik |
+| `yok_students_by_age` | Yükseköğretim öğrenci sayısı. yaşa göre | TR | 2013-2025 | 14.034 | yok_istatistik |
+| `yok_students_by_field` | Öğrenci ve yeni kayıt. eğitim alanına göre | TR | 2015-2025 | 21.094 | yok_istatistik |
+
 ## bankacilik (36)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -498,44 +498,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `loan_interest_rates_weekly` | Kredi faiz oranları (akım. haftalık) | TR | 2002-2026 | 11.209 | cbrt_evds |
 | `loan_profit_share_rates` | Kredi kâr payı oranları (stok) | TR | 2018-2026 | 1.030 | cbrt_evds |
 
-## nufus (33)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `baby_names` | Bebeklere en çok verilen isimler | TR. il | 2018-2025 | 112.000 | tuik_nip |
-| `class_size` | Sınıf mevcudu (öğrenci/derslik) | il | 2012-2024 | 2.106 | meb_egitim |
-| `common_names` | En çok kullanılan isimler | TR. il | 2018-2025 | 39.904 | tuik_nip |
-| `common_surnames` | En çok kullanılan soyisimler | TR. il | 2018-2025 | 19.801 | tuik_nip |
-| `district_urbanization` | Kentleşme oranı (kayıtlı seçmen) | il. ilçe | 2015-2015 | 1.023 | ysk_aatoplu |
-| `education_attainment` | Öğrenim durumu | il | 2008-2025 | 26.244 | tuik_nip |
-| `foreign_population` | Yabancı uyruklu nüfus | TR. il | 2008-2025 | 2.952 | tuik_medas |
-| `gender_student_ratio` | Kadın/Erkek öğrenci oranı | il | 2012-2024 | 3.159 | meb_egitim |
-| `household_by_size` | Hanehalkı sayısı (büyüklüğe göre) | il | 2012-2025 | 11.340 | tuik |
-| `household_by_tenure` | Hanehalkı sayısı (mülkiyet durumuna göre) | il | 2021-2021 | 324 | tuik |
-| `household_by_type` | Hanehalkı tipine göre hane sayısı | TR. il. ilçe | 2014-2025 | 50.600 | tuik_medas |
-| `household_count` | Hanehalkı sayısı | TR. il. ilçe | 2012-2025 | 14.741 | tuik_medas |
-| `household_size` | Ortalama hanehalkı büyüklüğü | TR. il. ilçe | 2008-2025 | 18.897 | tuik_medas |
-| `marital_status` | Medeni durum | TR. il. ilçe | 2008-2025 | 2.181.235 | tuik_medas |
-| `median_age` | Ortanca yaş | TR. il | 2007-2025 | 4.674 | tuik_medas |
-| `migration_between_regions` | Bölgeler arası göç | İBBS-2 | 2008-2025 | 12.168 | tuik_medas |
-| `migration_from_abroad` | Yurt dışından gelen göç | TR. il | 2016-2025 | 820 | tuik_medas |
-| `migration_in` | Aldığı göç | il | 2008-2025 | 40.824 | tuik_medas |
-| `migration_net` | Net göç | il | 2008-2025 | 1.458 | tuik_medas |
-| `migration_out` | Verdiği göç | il | 2008-2025 | 40.824 | tuik_medas |
-| `migration_to_abroad` | Yurt dışına giden göç | TR. il | 2016-2025 | 820 | tuik_medas |
-| `natural_increase` | Doğal nüfus artışı | TR. il. ilçe | 2009-2025 | 13.060 | tuik_medas |
-| `net_enrollment_rate` | Net okullaşma oranı | il | 2007-2024 | 5.022 | meb_egitim |
-| `population` | Nüfus | TR. il. ilçe. mahalle. köy | 2007-2025 | 2.403.579 | tuik_medas |
-| `population_by_birth_province` | İlçe nüfusu (doğum yerine göre) | ilçe | 2014-2025 | 217.452 | tuik_medas |
-| `population_by_registry_province` | İlçe nüfusu (nüfusa kayıtlı olunan ile göre) | ilçe | 2007-2025 | 232.146 | tuik_medas |
-| `population_density` | Nüfus yoğunluğu | TR. il | 2007-2025 | 1.558 | tuik_medas |
-| `registered_by_residence_province` | İlçeye kayıtlı nüfus (ikamet edilen ile göre) | ilçe | 2008-2025 | 234.900 | tuik_medas |
-| `registry_population` | Kütük nüfusu | il | 2007-2025 | 3.078 | tuik_medas |
-| `school_size` | Okul mevcudu (öğrenci/okul) | il | 2012-2024 | 2.106 | meb_egitim |
-| `section_room_ratio` | Şube/Derslik oranı (ikili öğretim baskısı) | il | 2012-2024 | 2.106 | meb_egitim |
-| `section_size` | Şube mevcudu (öğrenci/şube) | il | 2012-2024 | 3.159 | meb_egitim |
-| `temporary_protection_syrians` | Geçici koruma altındaki Suriyeliler | TR. il | 2026-2026 | 82 | goc_idaresi |
-
 ## belediye_hizmetleri (33)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -574,41 +536,43 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `water_treatment_population` | İçme suyu arıtma tesisiyle hizmet verilen nüfus | TR. il | 2001-2022 | 699 | tuik_medas |
 | `water_treatment_population_share` | İçme suyu arıtma tesisiyle hizmet verilen nüfusun oranı | TR. il | 2001-2022 | 699 | tuik_medas |
 
-## cocuk (31)
+## nufus (33)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `adolescent_birth_share` | Adölesan doğum oranı | TR. il | 2009-2025 | 1.394 | tuik_medas |
-| `births_to_child_mothers` | Çocuk annelerin doğumu | TR | 2009-2025 | 17 | tuik_medas |
-| `caesarean_share` | Sezaryen doğum oranı | TR | 2008-2024 | 17 | tuik_medas |
-| `child_crime_victims` | Suç mağduru çocuk | TR | 2015-2025 | 572 | tuik_medas |
-| `child_dependency_ratio` | Çocuk bağımlılık oranı (0-14) | TR. il | 2007-2025 | 1.558 | tuik_medas |
-| `child_incident_victims` | Takibi gereken olay mağduru çocuk | TR | 2015-2025 | 22 | tuik_medas |
-| `child_marriage_share` | 16-17 yaşında evlenenlerin evlenmeler içindeki oranı | TR. il | 2002-2025 | 3.850 | tuik_medas |
-| `child_marriages` | 16-17 yaşında evlenen çocuk | TR. il | 2002-2025 | 3.850 | tuik_medas |
-| `child_misdemeanour_victims` | Kabahat mağduru çocuk | TR | 2015-2025 | 22 | tuik_medas |
-| `child_police_referrals` | Güvenlik birimine gelen veya getirilen çocuk | TR | 2015-2025 | 528 | tuik_medas |
-| `child_population_growth` | Yıllık çocuk nüfus artış hızı | TR. il | 2008-2025 | 2.952 | tuik_medas |
-| `child_population_share` | Çocuk nüfus oranı (0-17) | TR. il | 2007-2025 | 3.116 | tuik_medas |
-| `child_sex_ratio` | Çocuk cinsiyet oranı | TR. il | 2007-2025 | 1.558 | tuik_medas |
-| `child_suicide_rate` | Çocuk intihar hızı (100.000) | TR | 2002-2025 | 48 | tuik_medas |
-| `children_cared_at_home` | Evde bakılan çocuk | TR | 2015-2025 | 11 | tuik_medas |
-| `children_in_after_school_care` | Zorunlu eğitim dışında bakım merkezine giden çocuk | TR | 2015-2025 | 11 | tuik_medas |
-| `children_in_custody_cases` | Velayete verilen çocuk | TR | 2010-2025 | 16 | tuik_medas |
-| `children_in_daycare` | Kreşe giden çocuk | TR | 2015-2025 | 11 | tuik_medas |
-| `children_in_single_parent_households` | Tek ebeveynli hanede yaşayan çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
-| `children_pushed_into_crime` | Suça sürüklenen çocuk | TR | 2015-2025 | 572 | tuik_medas |
-| `dtap3_vaccination` | Beşli karma aşı 3. doz aşılama hızı | TR | 2008-2024 | 17 | tuik_medas |
-| `facility_birth_share` | Sağlık kuruluşunda gerçekleşen doğum oranı | TR | 2009-2024 | 16 | tuik_medas |
-| `foreign_born_children` | Doğum yeri yurt dışı olan çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
-| `foreign_national_children` | Yabancı uyruklu çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
-| `households_with_children` | Çocuk bulunan hanehalkı | TR. il | 2014-2025 | 984 | tuik_medas |
-| `maternal_mortality` | Anne ölüm oranı (100.000 canlı doğumda) | TR | 2007-2024 | 18 | tuik_medas |
-| `neonatal_mortality` | Neonatal ölüm hızı | TR | 2009-2025 | 34 | tuik_medas |
-| `postneonatal_mortality` | Postneonatal ölüm hızı | TR | 2009-2025 | 34 | tuik_medas |
-| `preschool_gross_enrolment` | Okul öncesi brüt okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
-| `preschool_net_enrolment` | Okul öncesi net okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
-| `single_parent_households_with_children` | Çocuk bulunan tek ebeveynli hane | TR. il | 2014-2025 | 984 | tuik_medas |
+| `baby_names` | Bebeklere en çok verilen isimler | TR. il | 2018-2025 | 112.000 | tuik_nip |
+| `class_size` | Sınıf mevcudu (öğrenci/derslik) | il | 2012-2024 | 2.106 | meb_egitim |
+| `common_names` | En çok kullanılan isimler | TR. il | 2018-2025 | 39.904 | tuik_nip |
+| `common_surnames` | En çok kullanılan soyisimler | TR. il | 2018-2025 | 19.801 | tuik_nip |
+| `district_urbanization` | Kentleşme oranı (kayıtlı seçmen) | il. ilçe | 2015-2015 | 1.023 | ysk_aatoplu |
+| `education_attainment` | Öğrenim durumu | il | 2008-2025 | 26.244 | tuik_nip |
+| `foreign_population` | Yabancı uyruklu nüfus | TR. il | 2008-2025 | 2.952 | tuik_medas |
+| `gender_student_ratio` | Kadın/Erkek öğrenci oranı | il | 2012-2024 | 3.159 | meb_egitim |
+| `household_by_size` | Hanehalkı sayısı (büyüklüğe göre) | il | 2012-2025 | 11.340 | tuik |
+| `household_by_tenure` | Hanehalkı sayısı (mülkiyet durumuna göre) | il | 2021-2021 | 324 | tuik |
+| `household_by_type` | Hanehalkı tipine göre hane sayısı | TR. il. ilçe | 2014-2025 | 50.600 | tuik_medas |
+| `household_count` | Hanehalkı sayısı | TR. il. ilçe | 2012-2025 | 14.741 | tuik_medas |
+| `household_size` | Ortalama hanehalkı büyüklüğü | TR. il. ilçe | 2008-2025 | 18.897 | tuik_medas |
+| `marital_status` | Medeni durum | TR. il. ilçe | 2008-2025 | 2.181.235 | tuik_medas |
+| `median_age` | Ortanca yaş | TR. il | 2007-2025 | 4.674 | tuik_medas |
+| `migration_between_regions` | Bölgeler arası göç | İBBS-2 | 2008-2025 | 12.168 | tuik_medas |
+| `migration_from_abroad` | Yurt dışından gelen göç | TR. il | 2016-2025 | 820 | tuik_medas |
+| `migration_in` | Aldığı göç | il | 2008-2025 | 40.824 | tuik_medas |
+| `migration_net` | Net göç | il | 2008-2025 | 1.458 | tuik_medas |
+| `migration_out` | Verdiği göç | il | 2008-2025 | 40.824 | tuik_medas |
+| `migration_to_abroad` | Yurt dışına giden göç | TR. il | 2016-2025 | 820 | tuik_medas |
+| `natural_increase` | Doğal nüfus artışı | TR. il. ilçe | 2009-2025 | 13.060 | tuik_medas |
+| `net_enrollment_rate` | Net okullaşma oranı | il | 2007-2024 | 5.022 | meb_egitim |
+| `population` | Nüfus | TR. il. ilçe. mahalle. köy | 2007-2025 | 2.403.579 | tuik_medas |
+| `population_by_birth_province` | İlçe nüfusu (doğum yerine göre) | ilçe | 2014-2025 | 217.452 | tuik_medas |
+| `population_by_registry_province` | İlçe nüfusu (nüfusa kayıtlı olunan ile göre) | ilçe | 2007-2025 | 232.146 | tuik_medas |
+| `population_density` | Nüfus yoğunluğu | TR. il | 2007-2025 | 1.558 | tuik_medas |
+| `registered_by_residence_province` | İlçeye kayıtlı nüfus (ikamet edilen ile göre) | ilçe | 2008-2025 | 234.900 | tuik_medas |
+| `registry_population` | Kütük nüfusu | il | 2007-2025 | 3.078 | tuik_medas |
+| `school_size` | Okul mevcudu (öğrenci/okul) | il | 2012-2024 | 2.106 | meb_egitim |
+| `section_room_ratio` | Şube/Derslik oranı (ikili öğretim baskısı) | il | 2012-2024 | 2.106 | meb_egitim |
+| `section_size` | Şube mevcudu (öğrenci/şube) | il | 2012-2024 | 3.159 | meb_egitim |
+| `temporary_protection_syrians` | Geçici koruma altındaki Suriyeliler | TR. il | 2026-2026 | 82 | goc_idaresi |
 
 ## kultur (31)
 
@@ -645,6 +609,42 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `theatre_performances` | Tiyatro gösterisi (yerli/yabancı eser) | TR. il | 2000-2025 | 4.264 | tuik_medas |
 | `theatre_seats` | Tiyatro koltuğu | TR. il | 2000-2025 | 2.132 | tuik_medas |
 | `theatre_works` | Sahnelenen eser (yerli/yabancı) | TR. il | 2000-2025 | 4.264 | tuik_medas |
+
+## cocuk (31)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `adolescent_birth_share` | Adölesan doğum oranı | TR. il | 2009-2025 | 1.394 | tuik_medas |
+| `births_to_child_mothers` | Çocuk annelerin doğumu | TR | 2009-2025 | 17 | tuik_medas |
+| `caesarean_share` | Sezaryen doğum oranı | TR | 2008-2024 | 17 | tuik_medas |
+| `child_crime_victims` | Suç mağduru çocuk | TR | 2015-2025 | 572 | tuik_medas |
+| `child_dependency_ratio` | Çocuk bağımlılık oranı (0-14) | TR. il | 2007-2025 | 1.558 | tuik_medas |
+| `child_incident_victims` | Takibi gereken olay mağduru çocuk | TR | 2015-2025 | 22 | tuik_medas |
+| `child_marriage_share` | 16-17 yaşında evlenenlerin evlenmeler içindeki oranı | TR. il | 2002-2025 | 3.850 | tuik_medas |
+| `child_marriages` | 16-17 yaşında evlenen çocuk | TR. il | 2002-2025 | 3.850 | tuik_medas |
+| `child_misdemeanour_victims` | Kabahat mağduru çocuk | TR | 2015-2025 | 22 | tuik_medas |
+| `child_police_referrals` | Güvenlik birimine gelen veya getirilen çocuk | TR | 2015-2025 | 528 | tuik_medas |
+| `child_population_growth` | Yıllık çocuk nüfus artış hızı | TR. il | 2008-2025 | 2.952 | tuik_medas |
+| `child_population_share` | Çocuk nüfus oranı (0-17) | TR. il | 2007-2025 | 3.116 | tuik_medas |
+| `child_sex_ratio` | Çocuk cinsiyet oranı | TR. il | 2007-2025 | 1.558 | tuik_medas |
+| `child_suicide_rate` | Çocuk intihar hızı (100.000) | TR | 2002-2025 | 48 | tuik_medas |
+| `children_cared_at_home` | Evde bakılan çocuk | TR | 2015-2025 | 11 | tuik_medas |
+| `children_in_after_school_care` | Zorunlu eğitim dışında bakım merkezine giden çocuk | TR | 2015-2025 | 11 | tuik_medas |
+| `children_in_custody_cases` | Velayete verilen çocuk | TR | 2010-2025 | 16 | tuik_medas |
+| `children_in_daycare` | Kreşe giden çocuk | TR | 2015-2025 | 11 | tuik_medas |
+| `children_in_single_parent_households` | Tek ebeveynli hanede yaşayan çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
+| `children_pushed_into_crime` | Suça sürüklenen çocuk | TR | 2015-2025 | 572 | tuik_medas |
+| `dtap3_vaccination` | Beşli karma aşı 3. doz aşılama hızı | TR | 2008-2024 | 17 | tuik_medas |
+| `facility_birth_share` | Sağlık kuruluşunda gerçekleşen doğum oranı | TR | 2009-2024 | 16 | tuik_medas |
+| `foreign_born_children` | Doğum yeri yurt dışı olan çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
+| `foreign_national_children` | Yabancı uyruklu çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
+| `households_with_children` | Çocuk bulunan hanehalkı | TR. il | 2014-2025 | 984 | tuik_medas |
+| `maternal_mortality` | Anne ölüm oranı (100.000 canlı doğumda) | TR | 2007-2024 | 18 | tuik_medas |
+| `neonatal_mortality` | Neonatal ölüm hızı | TR | 2009-2025 | 34 | tuik_medas |
+| `postneonatal_mortality` | Postneonatal ölüm hızı | TR | 2009-2025 | 34 | tuik_medas |
+| `preschool_gross_enrolment` | Okul öncesi brüt okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
+| `preschool_net_enrolment` | Okul öncesi net okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
+| `single_parent_households_with_children` | Çocuk bulunan tek ebeveynli hane | TR. il | 2014-2025 | 984 | tuik_medas |
 
 ## reel_kesim (30)
 
@@ -1031,18 +1031,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `mean_first_marriage_age` | Ortalama ilk evlenme yaşı | TR. il | 2001-2025 | 4.100 | tuik_medas |
 | `mean_marriage_age` | Ortalama evlenme yaşı | TR. il | 2001-2025 | 6.150 | tuik_medas |
 
-## medya (7)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `circulation` | Yayınların tirajı (yalnız Türkiye) | TR | 2005-2022 | 108 | tuik_medas |
-| `media_employees` | Basın çalışanı (tür × cinsiyet × unvan) | TR. İBBS-2 | 2005-2022 | 32.260 | tuik_medas |
-| `online_publication_visitors` | İnternet yayını ziyaretçi sayısı | TR. İBBS-2 | 2005-2022 | 1.663 | tuik_medas |
-| `online_publications` | İnternet yayını yapan yayın | TR. İBBS-2 | 2005-2022 | 1.527 | tuik_medas |
-| `press_card_holders` | Sarı basın kartı sahibi personel | TR. İBBS-2 | 2005-2022 | 1.757 | tuik_medas |
-| `print_runs` | Yayınların baskı sayısı (yalnız Türkiye) | TR | 2005-2022 | 72 | tuik_medas |
-| `publications_by_print` | Yayın sayısı (tür × baskı tekniği) | TR. İBBS-2 | 2005-2022 | 1.469 | tuik_medas |
-
 ## olum (7)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1055,16 +1043,17 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `suicide_rate` | Kaba intihar hızı | TR. il | 2002-2025 | 1.960 | tuik_medas |
 | `under5_mortality` | Beş yaş altı ölüm hızı | TR. il | 2009-2025 | 1.394 | tuik_medas |
 
-## gelismislik (6)
+## medya (7)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `sege_district_level` | İlçe SEGE kademesi | ilçe | 2017-2022 | 1.941 | sanayi_sege |
-| `sege_district_rank` | İlçe SEGE sıralaması | ilçe | 2017-2022 | 1.943 | sanayi_sege |
-| `sege_district_score` | İlçe SEGE skoru | ilçe | 2017-2022 | 1.943 | sanayi_sege |
-| `sege_province_level` | İl SEGE kademesi | il | 2017-2017 | 81 | sanayi_sege |
-| `sege_province_rank` | İl SEGE sıralaması | il | 2017-2017 | 81 | sanayi_sege |
-| `sege_province_score` | İl SEGE skoru | il | 2017-2017 | 81 | sanayi_sege |
+| `circulation` | Yayınların tirajı (yalnız Türkiye) | TR | 2005-2022 | 108 | tuik_medas |
+| `media_employees` | Basın çalışanı (tür × cinsiyet × unvan) | TR. İBBS-2 | 2005-2022 | 32.260 | tuik_medas |
+| `online_publication_visitors` | İnternet yayını ziyaretçi sayısı | TR. İBBS-2 | 2005-2022 | 1.663 | tuik_medas |
+| `online_publications` | İnternet yayını yapan yayın | TR. İBBS-2 | 2005-2022 | 1.527 | tuik_medas |
+| `press_card_holders` | Sarı basın kartı sahibi personel | TR. İBBS-2 | 2005-2022 | 1.757 | tuik_medas |
+| `print_runs` | Yayınların baskı sayısı (yalnız Türkiye) | TR | 2005-2022 | 72 | tuik_medas |
+| `publications_by_print` | Yayın sayısı (tür × baskı tekniği) | TR. İBBS-2 | 2005-2022 | 1.469 | tuik_medas |
 
 ## perakende (6)
 
@@ -1076,6 +1065,27 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `mall_visitor_index` | AVM ziyaretçi endeksi | TR | 2025-2025 | 2 | ayd_akademetre |
 | `retail_turnover_index` | Perakende ciro endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
 | `retail_volume_index` | Perakende satış hacim endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
+
+## gelismislik (6)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `sege_district_level` | İlçe SEGE kademesi | ilçe | 2017-2022 | 1.941 | sanayi_sege |
+| `sege_district_rank` | İlçe SEGE sıralaması | ilçe | 2017-2022 | 1.943 | sanayi_sege |
+| `sege_district_score` | İlçe SEGE skoru | ilçe | 2017-2022 | 1.943 | sanayi_sege |
+| `sege_province_level` | İl SEGE kademesi | il | 2017-2017 | 81 | sanayi_sege |
+| `sege_province_rank` | İl SEGE sıralaması | il | 2017-2017 | 81 | sanayi_sege |
+| `sege_province_score` | İl SEGE skoru | il | 2017-2017 | 81 | sanayi_sege |
+
+## dogurganlik (5)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
+| `births_by_age` | Doğum sayısı (annenin yaş grubu) | TR. il | 2009-2025 | 14.290 | tuik_medas |
+| `births_by_marital` | Doğum sayısı (annenin medeni durumu) | TR. il | 2012-2025 | 5.669 | tuik_medas |
+| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
+| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
 
 ## konut (5)
 
@@ -1096,16 +1106,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `central_budget_revenue_by_province` | Merkezi yönetim bütçe gelirleri (il) | il | 2004-2025 | 13.954 | muhasebat |
 | `local_budget_expenditure_by_province` | Mahalli idareler bütçe giderleri (il) | il | 2006-2025 | 13.867 | muhasebat |
 | `local_budget_revenue_by_province` | Mahalli idareler bütçe gelirleri (il) | il | 2006-2025 | 10.377 | muhasebat |
-
-## dogurganlik (5)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
-| `births_by_age` | Doğum sayısı (annenin yaş grubu) | TR. il | 2009-2025 | 14.290 | tuik_medas |
-| `births_by_marital` | Doğum sayısı (annenin medeni durumu) | TR. il | 2012-2025 | 5.669 | tuik_medas |
-| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
-| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
 
 ## havacilik (3)
 
