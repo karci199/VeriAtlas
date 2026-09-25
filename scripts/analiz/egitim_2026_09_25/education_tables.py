@@ -476,13 +476,13 @@ def main() -> None:
     )
     ys2 = sorted(tr_rooms["year"].unique().to_list())
     rows = []
-    for kind in TYPE_TR:
+    for kind, type_label in TYPE_TR.items():
         by = {
             r["year"]: r["r"]
             for r in tr_rooms.filter(pl.col("type") == kind).iter_rows(named=True)
         }
         if by:
-            rows.append([label, *[by.get(y) for y in ys2]])
+            rows.append([type_label, *[by.get(y) for y in ys2]])
     write_sheet(
         book,
         "TR_derslik_basina_tur",
