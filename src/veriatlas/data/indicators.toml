@@ -32560,8 +32560,9 @@ dims = ["school_level"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 MEB örgün eğitim okul sayısı, il × kademe, 2012-2024 (TÜİK MEDAS "Örgün Eğitim \
-İstatistikleri"). Resmî + özel. Aynı binada iki kademe varsa iki okul sayılır. İlçe düzeyi \
-yayımlanmıyor; ilçe için schools_2017'ye bakın."""
+İstatistikleri"). Resmî + özel. Aynı binada iki kademe varsa iki okul sayılır. Okul öncesi \
+yalnız bağımsız anaokulu: ilkokul içindeki anasınıfları sayılmaz (2024: 17.640 anaokulu + \
+21.930 anasınıfı). İlçe düzeyi yayımlanmıyor; ilçe için schools_2017'ye bakın."""
 
 [indicator.students]
 label_tr = "Öğrenci sayısı (örgün eğitim)"
@@ -32597,7 +32598,7 @@ unit = "item"
 frequency = "annual"
 dims = ["school_level"]
 views = ["table", "map", "line", "bar"]
-definition_tr = "MEB örgün eğitim derslik sayısı, il × kademe, 2012-2024 (TÜİK MEDAS)."
+definition_tr = "MEB örgün eğitim derslik sayısı, il × kademe, 2012-2024 (TÜİK MEDAS). Okul öncesi yalnız anaokulu derslikleri; anasınıfı derslikleri sayılmaz (2024: 63.318 + 34.573)."
 
 [indicator.class_sections]
 label_tr = "Şube sayısı"

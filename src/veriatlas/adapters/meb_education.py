@@ -313,6 +313,10 @@ def _load_counts(key: str) -> pl.DataFrame:
     )
 
 
+#: Count workbooks whose pre-school row covers anaokulu only (see `_ratio_indicator`).
+PRESCHOOL_PARTIAL = {"okul", "derslik"}
+
+
 def _ratio_indicator(indicator_id: str, numerator_key: str, denominator_key: str):
     class _Ratio(_MebAdapter):
         pass
@@ -332,6 +336,13 @@ def _ratio_indicator(indicator_id: str, numerator_key: str, denominator_key: str
         joined = num.join(
             den, on=["area_id", "area_level", "egitim_duzeyi", "yil"], how="inner"
         )
+        # MEDAS counts only independent kindergartens (anaokulu) as pre-school schools and
+        # classrooms, but pre-school students include the kindergarten classes inside
+        # primary schools (anasınıfı). A ratio over "okul" or "derslik" therefore divides
+        # both kinds of pupil by one kind of room: Muş 2024 read 49.9 pupils per room
+        # against ~17 real. Checked against istatistik.meb.gov.tr (2026-09-25).
+        if denominator_key in PRESCHOOL_PARTIAL:
+            joined = joined.filter(pl.col("egitim_duzeyi") != "okul_oncesi")
         joined = joined.filter(pl.col("den") > 0).with_columns(
             (pl.col("num") / pl.col("den")).alias("value"),
             pl.struct("egitim_duzeyi")
