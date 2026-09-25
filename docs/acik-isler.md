@@ -8,10 +8,10 @@ Depoya girenler (940 gösterge): `health_facility_register` (SKRS, il+ilçe, 202
 resmî/özel, elle indirilen Excel'ler, `scripts/organize_meb_portal.py`), `temporary_protection_syrians`
 (Göç İdaresi, 17.09.2026, ekrandan aktarıldı). Okul öncesi oranları (sınıf/okul mevcudu, şube/derslik)
 MEDAS anasınıfını okul/derslik/öğretmende saymadığı için kaldırıldı. Tablolar
-`scripts/analiz/egitim_2026_09_25/education_tables.py` → `C:eri-hamnaliz6_09_25\`.
+`scripts/analiz/egitim_2026_09_25/education_tables.py` → `C:/veri-ham/analiz/2026_09_25/`.
 
 Açık:
-- ÖSYM arşivi haritalandı, çekilmedi (`C:eri-ham\osym\sayfa_belge_dizini.json`): program düzeyi
+- ÖSYM arşivi haritalandı, çekilmedi (`C:/veri-ham/osym/sayfa_belge_dizini.json`): program düzeyi
   Tablo-3/4 2010-2025 (hedef il kontenjan/yerleşen/doluluk), 2003-2007 il bazlı ÖSS tabloları.
 - MEB portalı: 2002-03 öğrenci/öğretmen yok; şube portaldan alınmadı; okul öncesi doğru oranlar depoda
   gösterge olarak yok (yalnız Excel'de).
