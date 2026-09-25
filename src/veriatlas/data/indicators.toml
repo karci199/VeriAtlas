@@ -32534,6 +32534,80 @@ label_en = "Ownership"
 public = "Resmî"
 private = "Özel"
 
+# MEB portal (istatistik.meb.gov.tr), adapters/meb_portal.py: per school type and ownership.
+[dim.meb_school_type]
+label_tr = "Okul türü"
+label_en = "School type"
+
+[dim.meb_school_type.values]
+# Toplamlar saklanmaz, türler bütünü bölüşür. 2002-03'te ilkokul+ortaokul tek "ilköğretim",
+# imam hatip lisesi mesleki içinde.
+kindergarten = "Anaokulu"
+kindergarten_class = "Anasınıfı (ilkokul içinde)"
+primary = "İlkokul"
+basic_education = "İlköğretim (2002-03)"
+lower_secondary = "Ortaokul"
+imam_hatip_lower_secondary = "İmam hatip ortaokulu"
+open_lower_secondary = "Açık ortaokul"
+upper_secondary_general = "Genel lise"
+upper_secondary_vocational = "Mesleki ve teknik lise"
+imam_hatip_upper_secondary = "İmam hatip lisesi (din öğretimi)"
+open_upper_secondary = "Açık lise"
+
+[indicator.schools_by_type]
+label_tr = "Okul sayısı (tür ve resmî/özel)"
+label_en = "Schools by type and ownership"
+topic = "egitim"
+unit = "item"
+frequency = "annual"
+dims = ["meb_school_type", "school_ownership"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+MEB istatistik portalı, il × okul türü × resmî/özel, 2002-03 ve 2012-13…2024-25 (yıl = öğretim \
+yılının başı). Portal robots.txt ile bizi engellediği için kullanıcı Excel'leri elle indirdi. \
+MEDAS il toplamlarıyla 81/81 il tutar; MEDAS'tan farkı anasınıfını ayrıca sayması. Açık \
+ortaokul/lise okulları bu dosyalarda yok (Ankara'daki 1-3 okulluk farklar)."""
+
+[indicator.students_by_type]
+label_tr = "Öğrenci sayısı (tür, resmî/özel, cinsiyet)"
+label_en = "Students by type, ownership and sex"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["meb_school_type", "school_ownership", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+MEB istatistik portalı, il × okul türü × resmî/özel × cinsiyet, 2012-13…2024-25. Açıköğretim \
+ayrı tür. MEDAS il × kademe × cinsiyet toplamlarıyla 81/81 il tutar. 2014-15 okul öncesinde \
+portal anaokulu değerlerini alfabetik il sırasına göre yanlış illere yazmış; düzeltilmiş kopya \
+kullanıldı."""
+
+[indicator.teachers_by_type]
+label_tr = "Öğretmen sayısı (tür, resmî/özel, cinsiyet)"
+label_en = "Teachers by type, ownership and sex"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["meb_school_type", "school_ownership", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+MEB istatistik portalı, il × okul türü × resmî/özel × cinsiyet, 2012-13…2024-25. Anasınıfı \
+öğretmenleri ayrı tür; MEB'in açıkladığı toplama ve MEDAS'a dahil değiller. 2013-14 ve \
+2014-15 lisede türleri il toplamını tutmayan illerin (portal satır kaydırması) tür kırılımı \
+atlandı."""
+
+[indicator.classrooms_by_type]
+label_tr = "Derslik sayısı (tür ve resmî/özel)"
+label_en = "Classrooms by type and ownership"
+topic = "egitim"
+unit = "item"
+frequency = "annual"
+dims = ["meb_school_type", "school_ownership"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+MEB istatistik portalı, il × okul türü × resmî/özel, 2002-03 ve 2012-13…2024-25. Anasınıfı \
+derslikleri ayrı tür; MEDAS okul öncesinde yalnız anaokulu dersliğini sayar."""
+
 [indicator.schools_2017]
 label_tr = "Okul sayısı (2017, ilçe)"
 label_en = "Schools (2017, district)"

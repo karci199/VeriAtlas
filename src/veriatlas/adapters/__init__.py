@@ -36,6 +36,7 @@ from .kgm import KGM_ADAPTERS
 from .ktb import KTB_ADAPTERS
 from .meb_counts import MEB_COUNT_ADAPTERS
 from .meb_education import MEB_ADAPTERS
+from .meb_portal import MEB_PORTAL_ADAPTERS
 from .mgm import MGM_ADAPTERS
 from .muhasebat import MUHASEBAT_ADAPTERS
 from .networks import NETWORK_ADAPTERS
@@ -134,6 +135,7 @@ ADAPTERS = {
     **BKM_ADAPTERS,
     **PHARMACY_ADAPTERS,
     **MEB_COUNT_ADAPTERS,
+    **MEB_PORTAL_ADAPTERS,
     **SKRS_ADAPTERS,
     **SKRS_SCHOOL_ADAPTERS,
     **TELECOM_ADAPTERS,

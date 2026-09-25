@@ -74,3 +74,50 @@ def test_upper_secondary_total_must_equal_its_parts():
 def test_unknown_school_level_is_refused():
     with pytest.raises(ValueError):
         checked([_row("Yeni Kademe", 1)], [], "test")
+
+
+def _portal_sheet(
+    tmp_path, rows, header=("#", "Şehir", "Okul Türü", "Resmi", "Özel", "Toplam")
+):
+    import openpyxl
+
+    from veriatlas.adapters.meb_portal import province_index
+
+    book = openpyxl.Workbook()
+    sheet = book.active
+    sheet.append(["Milli Eğitim İstatistikleri - Kurum Sayısı"])
+    sheet.append(["2020-2021 > Ortaokul"])
+    sheet.append(list(header))
+    names = sorted(province_index())
+    for index, name in enumerate(names):
+        for row in rows(name):
+            sheet.append([index, name, *row])
+    path = tmp_path / "2020-2021_ortaokul.xlsx"
+    book.save(path)
+    return path, province_index()
+
+
+def test_portal_unknown_type_is_refused(tmp_path):
+    from veriatlas.adapters.meb_portal import type_rows
+
+    path, provinces = _portal_sheet(tmp_path, lambda name: [("Yeni Tür", 1, 0, 1)])
+    with pytest.raises(ValueError):
+        type_rows(path, "ortaokul", False, provinces)
+
+
+def test_portal_unbalanced_province_is_dropped_not_kept(tmp_path):
+    from veriatlas.adapters.meb_portal import type_rows
+
+    def rows(name):
+        total = 11 if name == "ADANA" else 10
+        return [
+            ("Ortaokul", 6, 0, 6),
+            ("İHO ve İHL bünyesindeki İHO", 4, 0, 4),
+            ("Ortaokul Toplam", total, 0, total),
+        ]
+
+    path, provinces = _portal_sheet(tmp_path, rows)
+    found, dropped = type_rows(path, "ortaokul", False, provinces)
+    assert dropped == 1
+    assert {row["area_id"] for row in found} == set(provinces.values()) - {"TR-01"}
+    assert all("Toplam" not in str(row["dims"]) for row in found)
