@@ -3341,6 +3341,20 @@ views = ["table", "map", "line", "bar"]
 definition_tr = """
 Yıl içinde ilden yurt dışına taşınan kişi sayısı."""
 
+[indicator.temporary_protection_syrians]
+label_tr = "Geçici koruma altındaki Suriyeliler"
+label_en = "Syrians under temporary protection"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["map", "table", "bar"]
+definition_tr = """
+Göç İdaresi Başkanlığı, kayıtlı Suriyeli sayısı, il, 17.09.2026 anlık görüntüsü. ADNKS bu \
+kişileri saymaz; il nüfusuna eklenince ildeki toplam yaşayan kişi çıkar. Tablo sayfada görsel \
+olarak yayımlandığı için elle aktarıldı; sayfa toplamı, satır toplamları ve ADNKS 2025 il \
+nüfusuyla 81/81 doğrulandı. Seri değil."""
+
 [indicator.foreign_population]
 label_tr = "Yabancı uyruklu nüfus"
 label_en = "Foreign national population"

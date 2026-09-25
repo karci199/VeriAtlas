@@ -457,6 +457,221 @@ def main() -> None:
         "MEDAS'ta olup portal dosyalarında olmayanlar: şube ve net okullaşma. Oranlar il ortalaması (ağırlıksız).",
     )
 
+    # 6. Students per classroom by type (formal only), national and province x year.
+    rooms = (
+        data.filter(
+            (pl.col("year") >= 2012)
+            & ~pl.col("open")
+            & pl.col("measure").is_in(["Öğrenci", "Derslik"])
+        )
+        .group_by("area_id", "year", "type", "measure")
+        .agg(pl.col("value").sum())
+        .pivot(on="measure", index=["area_id", "year", "type"], values="value")
+        .filter(pl.col("Derslik") > 0)
+    )
+    tr_rooms = (
+        rooms.group_by("year", "type")
+        .agg(pl.col("Öğrenci").sum(), pl.col("Derslik").sum())
+        .with_columns((pl.col("Öğrenci") / pl.col("Derslik")).alias("r"))
+    )
+    ys2 = sorted(tr_rooms["year"].unique().to_list())
+    rows = []
+    for kind in TYPE_TR:
+        by = {
+            r["year"]: r["r"]
+            for r in tr_rooms.filter(pl.col("type") == kind).iter_rows(named=True)
+        }
+        if by:
+            rows.append([label, *[by.get(y) for y in ys2]])
+    write_sheet(
+        book,
+        "TR_derslik_basina_tur",
+        ["Okul türü", *[f"{y}-{str(y + 1)[2:]}" for y in ys2]],
+        rows,
+        "Derslik başına örgün öğrenci, tür × yıl. 2012-14 ortaokul: ilkokul binası paylaşımı nedeniyle yüksek; ilk+orta birlikte okunmalı.",
+    )
+    by_il = rooms.with_columns((pl.col("Öğrenci") / pl.col("Derslik")).alias("r"))
+    rows = [
+        [
+            names[r["area_id"]],
+            r["year"],
+            f"{r['year']}-{str(r['year'] + 1)[2:]}",
+            TYPE_TR[r["type"]],
+            r["Öğrenci"],
+            r["Derslik"],
+            r["r"],
+        ]
+        for r in by_il.sort("r", descending=True).iter_rows(named=True)
+    ]
+    write_sheet(
+        book,
+        "İl_derslik_tur_uzun",
+        [
+            "İl",
+            "Yıl",
+            "Öğretim yılı",
+            "Okul türü",
+            "Öğrenci",
+            "Derslik",
+            "Derslik başına",
+        ],
+        rows,
+        "İl × yıl × tür, en kalabalıktan seyreğe. Küçük paydalı (az derslikli) satırlar oynaktır.",
+    )
+
+    # 7. Enrolment against school-age (6-17) population and deviation from Türkiye.
+    k12 = [
+        "primary",
+        "lower_secondary",
+        "imam_hatip_lower_secondary",
+        "upper_secondary_general",
+        "upper_secondary_vocational",
+        "imam_hatip_upper_secondary",
+    ]
+    enrol = (
+        data.filter((pl.col("measure") == "Öğrenci") & pl.col("type").is_in(k12))
+        .group_by("area_id", "year")
+        .agg(pl.col("value").sum().alias("ogr"))
+    )
+    age = pl.from_arrow(
+        con.execute(
+            """select area_id, year(period_start) - 1 as year, sum(value) as cocuk from fact
+           where indicator_id = 'population' and area_level = 'province'
+             and try_cast(regexp_extract(dims, 'age=([0-9]+);', 1) as int) between 6 and 17 group by 1, 2"""
+        ).arrow()
+    )
+    enrol = enrol.join(age, on=["area_id", "year"])
+    tr_rate = enrol.group_by("year").agg(
+        (100 * pl.col("ogr").sum() / pl.col("cocuk").sum()).alias("tr")
+    )
+    enrol = (
+        enrol.join(tr_rate, on="year")
+        .with_columns((100 * pl.col("ogr") / pl.col("cocuk")).alias("oran"))
+        .with_columns((pl.col("oran") - pl.col("tr")).alias("sapma"))
+    )
+    ys3 = sorted(enrol["year"].unique().to_list())
+    wide = enrol.pivot(on="year", index="area_id", values="sapma")
+    rows = [
+        [names[r["area_id"]], *[r.get(str(y)) for y in ys3]]
+        for r in wide.iter_rows(named=True)
+    ]
+    rows.sort(key=lambda row: -(row[-1] or 0))
+    trs = dict(tr_rate.iter_rows())
+    rows.insert(0, ["TÜRKİYE oranı %", *[trs.get(y) for y in ys3]])
+    write_sheet(
+        book,
+        "İl_okullasma_sapma",
+        ["İl", *[f"{y}-{str(y + 1)[2:]}" for y in ys3]],
+        rows,
+        "İlkokul+ortaokul+örgün lise öğrencisi / 6-17 yaş ADNKS nüfusu; ilk satır Türkiye oranı, diğerleri ilin Türkiye'den puan farkı.",
+    )
+
+    # 8. Comparison with Syrians under temporary protection (snapshot).
+    tp = pl.from_arrow(
+        con.execute(
+            "select area_id, value as suriyeli from fact where indicator_id = 'temporary_protection_syrians' and area_level = 'province'"
+        ).arrow()
+    )
+    if tp.height:
+        last = (
+            enrol.filter(pl.col("year") == max(ys3))
+            .join(tp, on="area_id")
+            .join(
+                pop.filter(pl.col("year") == max(ys3)).select("area_id", "nufus"),
+                on="area_id",
+            )
+        )
+        share_5_17 = 773094 / 2210644
+        last = last.with_columns(
+            (100 * pl.col("suriyeli") / pl.col("nufus")).alias("pay"),
+            (pl.col("ogr") - pl.col("tr") / 100 * pl.col("cocuk")).alias("fazla"),
+            (pl.col("suriyeli") * share_5_17).alias("suriyeli_cocuk"),
+        )
+        rows = [
+            [
+                names[r["area_id"]],
+                r["ogr"],
+                r["cocuk"],
+                r["oran"],
+                r["sapma"],
+                r["suriyeli"],
+                r["pay"],
+                r["fazla"],
+                r["suriyeli_cocuk"],
+            ]
+            for r in last.sort("pay", descending=True).iter_rows(named=True)
+        ]
+        write_sheet(
+            book,
+            "Göç_Suriyeli_karsilastirma",
+            [
+                "İl",
+                "Öğrenci (K12 örgün)",
+                "6-17 yaş ADNKS",
+                "Oran %",
+                "Sapma (puan)",
+                "Geçici koruma Suriyeli",
+                "Suriyeli / ADNKS %",
+                "TR oranına göre fazla öğrenci",
+                "Tahmini 5-17 yaş Suriyeli",
+            ],
+            rows,
+            "2024-25 öğrenci vs Göç İdaresi 17.09.2026. 5-17 yaş Suriyeli = il toplamı × ülke payı (773.094/2.210.644). 81 ilde korelasyon 0,90.",
+        )
+
+    # 9. Upper-secondary composition by province, latest year.
+    lise = [
+        "upper_secondary_general",
+        "upper_secondary_vocational",
+        "imam_hatip_upper_secondary",
+        "open_upper_secondary",
+    ]
+    comp = (
+        data.filter(
+            (pl.col("measure") == "Öğrenci")
+            & (pl.col("year") == max(ys3))
+            & pl.col("type").is_in(lise)
+        )
+        .group_by("area_id", "type")
+        .agg(pl.col("value").sum())
+        .pivot(on="type", index="area_id", values="value")
+    )
+    comp = comp.with_columns(pl.sum_horizontal(lise).alias("top"))
+    rows = []
+    for r in comp.iter_rows(named=True):
+        shares = [100 * r[k] / r["top"] for k in lise]
+        rows.append(
+            [
+                names[r["area_id"]],
+                *[r[k] for k in lise],
+                r["top"],
+                *shares,
+                100
+                * r["imam_hatip_upper_secondary"]
+                / (r["top"] - r["open_upper_secondary"]),
+            ]
+        )
+    rows.sort(key=lambda row: -row[8])
+    write_sheet(
+        book,
+        "İl_lise_bilesimi",
+        [
+            "İl",
+            "Genel",
+            "Mesleki",
+            "İmam hatip",
+            "Açık",
+            "Toplam",
+            "Genel %",
+            "Mesleki %",
+            "İmam hatip %",
+            "Açık %",
+            "İmam hatip % (örgün içinde)",
+        ],
+        rows,
+        f"{max(ys3)}-{str(max(ys3) + 1)[2:]} lise öğrencisi, tür payları (açık dahil toplam içinde); imam hatip payına göre sıralı.",
+    )
+
     notes = [
         [
             "Kaynak",

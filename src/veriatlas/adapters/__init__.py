@@ -30,6 +30,7 @@ from .evds_housing import EVDS_HOUSING_ADAPTERS
 from .evds_prices import EVDS_PRICE_ADAPTERS
 from .evds_series import EVDS_SERIES_ADAPTERS
 from .evds_tourism import EvdsVisitorsByNationality
+from .goc_temporary_protection import GOC_ADAPTERS
 from .gsb import GSB_ADAPTERS
 from .iskur import ISKUR_ADAPTERS
 from .kgm import KGM_ADAPTERS
@@ -138,6 +139,7 @@ ADAPTERS = {
     **MEB_PORTAL_ADAPTERS,
     **SKRS_ADAPTERS,
     **SKRS_SCHOOL_ADAPTERS,
+    **GOC_ADAPTERS,
     **TELECOM_ADAPTERS,
     **RETAIL_ADAPTERS,
     **NARROW_ADAPTERS,
