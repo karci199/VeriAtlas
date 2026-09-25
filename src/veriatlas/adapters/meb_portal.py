@@ -54,6 +54,13 @@ MAX_UNBALANCED = 12
 #: Files whose "Toplam" row is the faulty side: their types matched MEDAS in 81 of 81
 #: provinces on 2026-09-25 while the portal's own total is off (by 6.010 nationally).
 TOTAL_ROW_WRONG = {("ogrenci-sayisi", 2015, "ortaogretim")}
+#: Files where the portal swapped two type labels in every province. 2022-23 lower-
+#: secondary classrooms read 26.379 "Ortaokul" and 172.263 imam-hatip, where the years
+#: either side read ~172.000 and ~26.000; the swap holds in 81 of 81 provinces and the
+#: level total still matches MEDAS.
+LABELS_SWAPPED = {
+    ("derslik-sayisi", 2022, "ortaokul"): ("Ortaokul", "İHO ve İHL bünyesindeki İHO"),
+}
 
 TYPES = {
     "Anaokulu": "kindergarten",
@@ -124,9 +131,16 @@ def type_rows(
     by_sex: bool,
     provinces: dict[str, str],
     check_totals: bool = True,
+    swapped: tuple[str, str] | None = None,
 ) -> tuple[list[dict], int]:
     """Long rows from one "Okul Türüne Göre" table, and how many provinces were dropped."""
     rows = [row for row in read(path)[3:] if row[1]]
+    if swapped:
+        first, second = swapped
+        flip = {first: second, second: first}
+        rows = [
+            (*row[:2], flip.get(str(row[2]).strip(), row[2]), *row[3:]) for row in rows
+        ]
     header = [str(cell) for cell in read(path)[2]]
     per_province: dict[str, dict[str, tuple]] = {}
     for row in rows:
@@ -227,7 +241,10 @@ class MebPortalMeasure:
         years_with_primary: set[int] = set()
         for year, level, path in files(folder):
             trusted = (folder, year, level) in TOTAL_ROW_WRONG
-            found, dropped = type_rows(path, level, by_sex, provinces, not trusted)
+            swapped = LABELS_SWAPPED.get((folder, year, level))
+            found, dropped = type_rows(
+                path, level, by_sex, provinces, not trusted, swapped
+            )
             if dropped > MAX_UNBALANCED:
                 raise ValueError(f"{path.name}: {dropped} ilde türler toplamı tutmuyor")
             if dropped:

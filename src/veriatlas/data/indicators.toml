@@ -32606,7 +32606,7 @@ dims = ["meb_school_type", "school_ownership"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 MEB istatistik portalı, il × okul türü × resmî/özel, 2002-03 ve 2012-13…2024-25. Anasınıfı \
-derslikleri ayrı tür; MEDAS okul öncesinde yalnız anaokulu dersliğini sayar."""
+derslikleri ayrı tür; MEDAS okul öncesinde yalnız anaokulu dersliğini sayar. 2022-23 ortaokulda \nportal normal ortaokul ile imam hatip ortaokulu etiketlerini 81 ilde ters yazmış; düzeltildi. \n2012-14 ortaokul dersliği düşük: 4+4+4 sonrası ortaokullar ilkokul binasını paylaşıyordu, \nilkokul+ortaokul birlikte okunmalı."""
 
 [indicator.schools_2017]
 label_tr = "Okul sayısı (2017, ilçe)"
