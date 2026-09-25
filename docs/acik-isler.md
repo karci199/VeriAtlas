@@ -1,4 +1,24 @@
-# Açık işler (2026-09-24 güncel)
+# Açık işler (2026-09-26 güncel)
+
+## 2026-09-25/26: eğitim, sağlık kurumu, geçici koruma
+
+Depoya girenler (940 gösterge): `health_facility_register` (SKRS, il+ilçe, 2026), `schools_2017` (SKRS),
+`schools/students/teachers/classrooms/class_sections` (MEDAS, il × kademe 2012-2024),
+`schools_by_type/students_by_type/teachers_by_type/classrooms_by_type` (MEB portalı, il × okul türü ×
+resmî/özel, elle indirilen Excel'ler, `scripts/organize_meb_portal.py`), `temporary_protection_syrians`
+(Göç İdaresi, 17.09.2026, ekrandan aktarıldı). Okul öncesi oranları (sınıf/okul mevcudu, şube/derslik)
+MEDAS anasınıfını okul/derslik/öğretmende saymadığı için kaldırıldı. Tablolar
+`scripts/analiz/egitim_2026_09_25/education_tables.py` → `C:eri-hamnaliz6_09_25\`.
+
+Açık:
+- ÖSYM arşivi haritalandı, çekilmedi (`C:eri-ham\osym\sayfa_belge_dizini.json`): program düzeyi
+  Tablo-3/4 2010-2025 (hedef il kontenjan/yerleşen/doluluk), 2003-2007 il bazlı ÖSS tabloları.
+- MEB portalı: 2002-03 öğrenci/öğretmen yok; şube portaldan alınmadı; okul öncesi doğru oranlar depoda
+  gösterge olarak yok (yalnız Excel'de).
+- SKRS sağlık: İstanbul özel hastane −33 (TÜİK'e göre) açıklanamadı.
+- Portal hataları adaptörde: 2014-15 okul öncesi öğrenci (düzeltilmiş kopya), 2022-23 ortaokul derslik
+  etiket ters, 2013-15 lise öğretmen satır kayması (`*_unallocated`).
+
 
 ## 2026-09-24: depoya girenler ve açık kalanlar
 
