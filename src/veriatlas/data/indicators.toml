@@ -32588,7 +32588,10 @@ dims = ["school_level", "sex"]
 views = ["table", "map", "line", "bar"]
 definition_tr = """
 MEB örgün eğitim öğretmen sayısı, il × kademe × cinsiyet, 2012-2024 (TÜİK MEDAS). Resmî + \
-özel okullar; norm kadro değil, görevdeki öğretmen."""
+özel okullar; norm kadro değil, görevdeki öğretmen. Okul öncesi yalnız anaokulu öğretmeni: \
+MEB portalı ayrıca 47.218 anasınıfı öğretmeni veriyor (2024), MEB'in açıkladığı 1.187.409 \
+toplamına onlar dahil değil. Okul öncesi öğrenci (anaokulu + anasınıfı) bu sayıya \
+bölünmemeli."""
 
 [indicator.classrooms]
 label_tr = "Derslik sayısı"
