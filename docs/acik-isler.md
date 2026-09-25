@@ -17,10 +17,10 @@ Açık:
   tutar değil yalnız artış oranı veriyor).
 - `civil_servant_salary` 2014–2021 AGİ çift sayımı 2026-09-24 düzeltildi ve yeniden yüklendi.
 - Memur robotunda olmayanlar: hâkim giriş kadrosu; hemşire, ebe, avukat 2024 öncesi. Hemşire için resmî
-  parametrelerden bordro modeli kuruldu (2024–26 robotla kuruşuna tutuyor) ama betik kalıcı değil; 2014–2018 ek
+  parametrelerden bordro modeli kuruldu (2024–26 robotla kuruşuna tutuyor) betik `scripts/analiz/ucret_2026_09_24/nurse_payslip_model.py`; 2014–2018 ek
   ödeme %100 varsayımı doğrulanmadı.
-- 2026-09-24 gece yapılan hemşehri × seçim, yerlilik, yaş × parti, kütük 2007/2015/2025 analizleri yalnız geçici
-  klasörde; `scripts/analiz/` altına alınmadı.
+- 2026-09-24 gece analizleri `scripts/analiz/{hemsehri,secim_yas,istihdam_dogurganlik,tedas}_2026_09_24/` ve
+  `ucret_2026_09_24/`'e alındı (commit 2e82304); ara dosyalar `C:/veri-ham/analiz/2026_09_24`, ana checkout kökünden çalışır.
 - TEDAŞ genel aydınlatma: 301 dosya `C:\veri-ham\tedas_aydinlatma` altında indi; adaptör yok (kullanıcı ertelendi).
 - 2022-04 sonrası madde fiyatları TÜFE alt endeksiyle tahmin; marketfiyati.org.tr ile doğrulanmadı.
 - Endeksa mahalle demografisi (972 ilçe dosyası, tüm TR) ham klasörde; lisans kararı yok, depoya alınmadı.
