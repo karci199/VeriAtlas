@@ -32567,6 +32567,9 @@ upper_secondary_general = "Genel lise"
 upper_secondary_vocational = "Mesleki ve teknik lise"
 imam_hatip_upper_secondary = "İmam hatip lisesi (din öğretimi)"
 open_upper_secondary = "Açık lise"
+preschool_unallocated = "Okul öncesi, türü ayrılamayan"
+lower_secondary_unallocated = "Ortaokul, türü ayrılamayan"
+upper_secondary_unallocated = "Lise, türü ayrılamayan (portal satır kayması)"
 
 [indicator.schools_by_type]
 label_tr = "Okul sayısı (tür ve resmî/özel)"
@@ -32607,8 +32610,8 @@ views = ["table", "map", "line", "bar"]
 definition_tr = """
 MEB istatistik portalı, il × okul türü × resmî/özel × cinsiyet, 2012-13…2024-25. Anasınıfı \
 öğretmenleri ayrı tür; MEB'in açıkladığı toplama ve MEDAS'a dahil değiller. 2013-14 ve \
-2014-15 lisede türleri il toplamını tutmayan illerin (portal satır kaydırması) tür kırılımı \
-atlandı."""
+2014-15 lisede türleri il toplamını tutmayan illerin (portal satır kaydırması) toplamı \
+"lise, türü ayrılamayan" olarak saklandı; il toplamları tamdır."""
 
 [indicator.classrooms_by_type]
 label_tr = "Derslik sayısı (tür ve resmî/özel)"

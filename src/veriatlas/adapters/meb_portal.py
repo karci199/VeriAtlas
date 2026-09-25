@@ -17,9 +17,9 @@ open education in lower- and upper-secondary *students*.
 **Totals are not stored.** Each table carries "... Toplam" rows next to the types; they
 are used as a check and dropped. Where a province's types do not add up to its own total
 the portal has shuffled rows between provinces (teachers, upper secondary, 2013-14:
-Karabük and Kilis trade 22; 2014-15: nine provinces). The type rows of that province and
-file are dropped and counted, never guessed; `MAX_UNBALANCED` stops the run if a file
-has more than a handful.
+Karabük and Kilis trade 22; 2014-15: nine provinces). That province's total is kept
+under `*_unallocated` and its type rows dropped, so level sums stay whole and nothing is
+guessed; `MAX_UNBALANCED` stops the run if a file has more than a handful.
 
 **2014-15 pre-school students** are read from `..._duzeltilmis.xlsx`: the portal prints
 province names in plate order but the kindergarten values in alphabetical order (the row
@@ -80,6 +80,12 @@ SOLE_TYPES = {"İlkokul Toplam", "İlköğretim Toplam"}
 LEVEL_OF_OPEN = {
     "ortaokul": "open_lower_secondary",
     "ortaogretim": "open_upper_secondary",
+}
+#: Where a province's types do not add up to its total, the total is stored under this.
+UNALLOCATED = {
+    "okul-oncesi": "preschool_unallocated",
+    "ortaokul": "lower_secondary_unallocated",
+    "ortaogretim": "upper_secondary_unallocated",
 }
 
 MEASURES = {
@@ -177,10 +183,13 @@ def type_rows(
             # leaves open education out, in all 81 provinces (MEDAS follows it). The
             # types are still right; only the label of the check row is.
             if (grand[last] or 0) not in (everything, closed):
+                # The types are shuffled across provinces, but the province total is
+                # right (it matches MEDAS). Keep the total under its own type rather
+                # than drop it, so sums over types stay whole and nothing is guessed.
                 dropped += 1
-                continue
+                parts = {UNALLOCATED[level]: grand}
         for source_type, row in parts.items():
-            kind = TYPES[source_type]
+            kind = TYPES.get(source_type, source_type)
             if kind == "open_education":
                 kind = LEVEL_OF_OPEN[level]
             if sexed:
@@ -249,7 +258,7 @@ class MebPortalMeasure:
                 raise ValueError(f"{path.name}: {dropped} ilde türler toplamı tutmuyor")
             if dropped:
                 print(
-                    f"  {path.name}: {dropped} ilin tür kırılımı atlandı (toplam tutmuyor)"
+                    f"  {path.name}: {dropped} ilin toplamı türü ayrılamayan olarak yazıldı"
                 )
             if level == "ilkokul":
                 years_with_primary.add(year)

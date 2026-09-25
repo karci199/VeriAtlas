@@ -105,7 +105,7 @@ def test_portal_unknown_type_is_refused(tmp_path):
         type_rows(path, "ortaokul", False, provinces)
 
 
-def test_portal_unbalanced_province_is_dropped_not_kept(tmp_path):
+def test_portal_unbalanced_province_keeps_total_not_types(tmp_path):
     from veriatlas.adapters.meb_portal import type_rows
 
     def rows(name):
@@ -119,5 +119,9 @@ def test_portal_unbalanced_province_is_dropped_not_kept(tmp_path):
     path, provinces = _portal_sheet(tmp_path, rows)
     found, dropped = type_rows(path, "ortaokul", False, provinces)
     assert dropped == 1
-    assert {row["area_id"] for row in found} == set(provinces.values()) - {"TR-01"}
+    adana = [row for row in found if row["area_id"] == "TR-01"]
+    assert {row["dims"]["meb_school_type"] for row in adana} == {
+        "lower_secondary_unallocated"
+    }
+    assert sum(row["value"] for row in adana) == 11
     assert all("Toplam" not in str(row["dims"]) for row in found)

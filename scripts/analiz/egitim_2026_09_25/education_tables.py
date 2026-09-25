@@ -47,6 +47,9 @@ LEVEL = {
     "upper_secondary_vocational": "Lise",
     "imam_hatip_upper_secondary": "Lise",
     "open_upper_secondary": "Lise",
+    "preschool_unallocated": "Okul öncesi",
+    "lower_secondary_unallocated": "Ortaokul",
+    "upper_secondary_unallocated": "Lise",
 }
 TYPE_TR = {
     "kindergarten": "Anaokulu",
@@ -60,6 +63,9 @@ TYPE_TR = {
     "upper_secondary_vocational": "Mesleki lise",
     "imam_hatip_upper_secondary": "İmam hatip lisesi",
     "open_upper_secondary": "Açık lise",
+    "preschool_unallocated": "Okul öncesi (türü ayrılamayan)",
+    "lower_secondary_unallocated": "Ortaokul (türü ayrılamayan)",
+    "upper_secondary_unallocated": "Lise (türü ayrılamayan)",
 }
 OPEN = {"open_lower_secondary", "open_upper_secondary"}
 MEASURE_TR = {
