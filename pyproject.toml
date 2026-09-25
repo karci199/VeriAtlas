@@ -47,4 +47,9 @@ dev = [
 [tool.ruff.lint.per-file-ignores]
 # One-off analysis scripts, kept as they were run; not part of the load/export pipeline.
 "scripts/analiz/*" = ["SIM115", "PERF102", "C408"]
+# 2026-09-24 session scripts: some exec() a sibling script and use the names it defines
+# (F821, S102); lambdas built in loops are called inside the same iteration (B023).
+"scripts/analiz/{hemsehri,secim_yas,istihdam_dogurganlik,tedas}_2026_09_24/*" = ["F821", "S102", "B023", "PLC0206", "PLW1510", "RUF007", "RUF015"]
+"scripts/analiz/ucret_2026_09_24/{nurse_payslip_model,police_nurse_real_pay,real_pay_changes,teacher_real_pay,three_professions_real,wage_table}.py" = ["B023", "PLC0206", "RUF015"]
+"scripts/analiz/mahalle_2026_09_24/price_income.py" = ["B023"]
 "scripts/btk_mobile_chart.py" = ["SIM115", "B023"]
