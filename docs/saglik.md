@@ -80,3 +80,24 @@ robots'ta **`Disallow: /`** taşıyor; ekli belgeler otomatik indirilmiyor.
 
 **Karar:** ilçe düzeyi sağlık şimdilik kapalı. Bakanlık ilçe kırılımı yayımlarsa yeniden
 bakılır; yarım kapsamayla gösterge üretilmez.
+
+## İlçe düzeyi sağlık: SKRS ile açıldı (2026-09-25)
+
+Yukarıdaki üç yolun dördüncüsü çıktı: Sağlık Bakanlığı'nın kod sunucusu SKRS
+(`skrs.saglik.gov.tr`, robots.txt boş) aktif kurum kaydını il başına tek POST'la veriyor —
+ad, kurum kodu, il, ilçe, tür. `scripts/fetch_skrs_institutions.py`, ham
+`C:\veri-ham\skrs\`, adaptör `src/veriatlas/adapters/skrs_facilities.py`, gösterge
+`health_facility_register` (il + ilçe, 25.09.2026 anlık görüntüsü, seri değil).
+
+- Uç nokta `/Anasayfa/KurumIslemleriDetay/482` arayüzde bağlı değil; okul listesinin
+  (`EgitimKurumIslemleriDetay`, arayüzde bağlı) adından tahminle bulundu.
+- 147.616 aktif kayıt. Hastaneler TÜİK 2024 sektör sayılarıyla: Bakanlık 930/941,
+  üniversite 72/69, özel 510/552; illerin 59'unda Bakanlık ve özel birebir. Özel farkın
+  33'ü İstanbul'da, açıklanamadı.
+- Şehir hastanesi yerleşkesindeki ayrı kodlu binalar (`EĞİTİM HASTANESİ`) ve diş
+  hastaneleri hastane sayılmaz; SUAM'ların diş uygulama merkezleri de.
+- Aile hekimliği birimi (31.221) = aile hekimi kadrosu, dolu ya da boş; ASM (8.406)
+  birimleri barındıran bina, eski "sağlık ocağı". Ülke ortalaması ASM başına 3,7 birim.
+- Muayenehane kayıtları kişi adı taşır; depoya yalnız sayı girer.
+- Aynı sunucudaki MEB okul listesi 2017 anlık görüntüsü → `schools_2017`
+  (`skrs_schools.py`); okul öncesinde kapsama %51.

@@ -32354,6 +32354,47 @@ dims = ["merchant_sector", "card_usage"]
 views = ["table", "line", "bar"]
 definition_tr = "BKM, aylık, yalnız Türkiye. Kaynak milyon TL yayımlar, burada TL'ye çevrilir."
 
+[dim.health_facility_kind]
+label_tr = "Kurum türü"
+label_en = "Facility kind"
+
+[dim.health_facility_kind.values]
+hospital_ministry = "Hastane — Sağlık Bakanlığı"
+hospital_university = "Hastane — üniversite"
+hospital_private = "Hastane — özel"
+hospital_other = "Hastane — diğer (belediye)"
+family_health_centre = "Aile sağlığı merkezi (ASM)"
+family_medicine_unit = "Aile hekimliği birimi (≈ aile hekimi kadrosu)"
+health_post = "Sağlık evi"
+community_health_centre = "Toplum sağlığı merkezi"
+emergency_station = "112 acil istasyonu"
+dialysis_centre = "Diyaliz merkezi"
+oral_health_centre = "Ağız ve diş sağlığı merkezi/hastanesi"
+medical_centre = "Tıp merkezi"
+polyclinic = "Poliklinik"
+migrant_health_centre = "Göçmen sağlığı merkezi"
+healthy_life_centre = "Sağlıklı hayat merkezi"
+laboratory = "Tıbbi laboratuvar"
+private_practice = "Muayenehane"
+optician = "Optisyenlik"
+
+[indicator.health_facility_register]
+label_tr = "Sağlık kurumu (SKRS kaydı)"
+label_en = "Health facilities (SKRS register)"
+topic = "saglik"
+unit = "facility"
+frequency = "annual"
+dims = ["health_facility_kind"]
+views = ["map", "table", "bar"]
+definition_tr = """
+Sağlık Bakanlığı Sağlık Kodlama Referans Sunucusu (SKRS) kurum kaydı, 25.09.2026 anlık \
+görüntüsü, il ve ilçe. Yalnız aktif kurumlar; kayıt geçmiş tutmadığı için seri değil. Aile \
+hekimliği birimi = bir aile hekimi kadrosu (dolu ya da boş); ASM birkaç birimi barındıran \
+bina. Hastaneler işletene göre; şehir hastanesi yerleşkesindeki ayrı kodlu binalar ve diş \
+hastaneleri hastane sayılmaz. TÜİK 2024 ile: Bakanlık 930/941, üniversite 72/69, özel 510/552 (illerin 59'unda \
+Bakanlık ve özel birebir; özel farkın 33'ü İstanbul'da, açıklanamadı). \
+İlçesi olmayan il müdürlüğü birimleri yalnız il toplamında."""
+
 [indicator.pharmacies]
 label_tr = "Eczane sayısı"
 label_en = "Pharmacies"
@@ -32466,6 +32507,107 @@ views = ["table", "map", "line", "bar"]
 definition_tr = """
 Öğrenci sayısının okul sayısına oranı, 2012-2024. Az sayıda büyük okul mu, çok sayıda \
 küçük okul mu ölçüsü — kırsal illerde düşük, büyükşehirlerde yüksek çıkması beklenir."""
+
+# Raw counts behind the ratios above, from MEDAS "Örgün Eğitim İstatistikleri"
+# (adapters/meb_counts.py). Levels kept apart, unlike egitim_duzeyi.
+[dim.school_level]
+label_tr = "Okul kademesi"
+label_en = "School level"
+
+[dim.school_level.values]
+# Beşi bütünü bölüşür. "Ortaöğretim" toplamı kaynakta ayrı satır olarak da var ama genel +
+# mesleki toplamıdır; saklanmaz, her il-yılda eşitliği adaptör denetler.
+# SKRS 2017 okul listesi (schools_2017) iki değer daha kullanır: özel eğitim ve yaygın eğitim.
+preschool = "Okul öncesi"
+primary = "İlkokul"
+lower_secondary = "Ortaokul"
+upper_secondary_general = "Genel ortaöğretim"
+upper_secondary_vocational = "Mesleki ve teknik ortaöğretim"
+special_education = "Özel eğitim"
+non_formal = "Yaygın eğitim"
+
+[dim.school_ownership]
+label_tr = "Okul türü"
+label_en = "Ownership"
+
+[dim.school_ownership.values]
+public = "Resmî"
+private = "Özel"
+
+[indicator.schools_2017]
+label_tr = "Okul sayısı (2017, ilçe)"
+label_en = "Schools (2017, district)"
+topic = "egitim"
+unit = "item"
+frequency = "annual"
+dims = ["school_level", "school_ownership"]
+views = ["map", "table", "bar"]
+definition_tr = """
+Sağlık Bakanlığı SKRS'deki MEB okul listesi; 2017'de bir kez yüklenmiş, güncellenmemiş \
+(tüm kayıtlar 01.01.2017). Yalnız 2017 kesiti: sonradan açılan okullar yok, kapananlar \
+aktif görünür. Tek ilçe düzeyi okul sayısı; il ve güncel yıllar için schools. İmam hatip \
+liseleri MEB istatistiğindeki gibi mesleki ortaöğretimde; "Özel Eğitim" okulları resmî. \
+Kapsama, aynı yılın MEDAS sayısına göre: ilkokul tam, ortaokul %91, lise %86, okul öncesi \
+yalnız %51 — okul öncesi karşılaştırmada kullanılmamalı."""
+
+[indicator.schools]
+label_tr = "Okul sayısı"
+label_en = "Schools"
+topic = "egitim"
+unit = "item"
+frequency = "annual"
+dims = ["school_level"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+MEB örgün eğitim okul sayısı, il × kademe, 2012-2024 (TÜİK MEDAS "Örgün Eğitim \
+İstatistikleri"). Resmî + özel. Aynı binada iki kademe varsa iki okul sayılır. İlçe düzeyi \
+yayımlanmıyor; ilçe için schools_2017'ye bakın."""
+
+[indicator.students]
+label_tr = "Öğrenci sayısı (örgün eğitim)"
+label_en = "Students (formal education)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["school_level", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+MEB örgün eğitim öğrenci sayısı, il × kademe × cinsiyet, 2012-2024 (TÜİK MEDAS). Açık \
+öğretim dahil değil."""
+
+[indicator.teachers]
+label_tr = "Öğretmen sayısı"
+label_en = "Teachers"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["school_level", "sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+MEB örgün eğitim öğretmen sayısı, il × kademe × cinsiyet, 2012-2024 (TÜİK MEDAS). Resmî + \
+özel okullar; norm kadro değil, görevdeki öğretmen."""
+
+[indicator.classrooms]
+label_tr = "Derslik sayısı"
+label_en = "Classrooms"
+topic = "egitim"
+unit = "item"
+frequency = "annual"
+dims = ["school_level"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "MEB örgün eğitim derslik sayısı, il × kademe, 2012-2024 (TÜİK MEDAS)."
+
+[indicator.class_sections]
+label_tr = "Şube sayısı"
+label_en = "Class sections"
+topic = "egitim"
+unit = "item"
+frequency = "annual"
+dims = ["school_level"]
+views = ["table", "map", "line", "bar"]
+definition_tr = """
+MEB örgün eğitim şube (sınıf grubu) sayısı, il × kademe, 2012-2024 (TÜİK MEDAS). Şube \
+sayısı derslik sayısını aşıyorsa ikili öğretim var demektir (section_room_ratio)."""
 
 # endregion
 

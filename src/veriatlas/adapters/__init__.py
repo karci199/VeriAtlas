@@ -34,6 +34,7 @@ from .gsb import GSB_ADAPTERS
 from .iskur import ISKUR_ADAPTERS
 from .kgm import KGM_ADAPTERS
 from .ktb import KTB_ADAPTERS
+from .meb_counts import MEB_COUNT_ADAPTERS
 from .meb_education import MEB_ADAPTERS
 from .mgm import MGM_ADAPTERS
 from .muhasebat import MUHASEBAT_ADAPTERS
@@ -46,6 +47,8 @@ from .saglik_yearbook import SAGLIK_YEARBOOK_ADAPTERS
 from .sege import SEGE_ADAPTERS
 from .sgk_national import SGK_NATIONAL_ADAPTERS
 from .sgk_provinces import SGK_ADAPTERS
+from .skrs_facilities import SKRS_ADAPTERS
+from .skrs_schools import SKRS_SCHOOL_ADAPTERS
 from .tbb_provinces import TBB_ADAPTERS
 from .telecom_operators import TELECOM_ADAPTERS
 from .tesk import TESK_ADAPTERS
@@ -130,6 +133,9 @@ ADAPTERS = {
     **{"meb_" + key: cls for key, cls in MEB_ADAPTERS.items()},
     **BKM_ADAPTERS,
     **PHARMACY_ADAPTERS,
+    **MEB_COUNT_ADAPTERS,
+    **SKRS_ADAPTERS,
+    **SKRS_SCHOOL_ADAPTERS,
     **TELECOM_ADAPTERS,
     **RETAIL_ADAPTERS,
     **NARROW_ADAPTERS,
