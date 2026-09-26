@@ -27314,6 +27314,17 @@ dims = ["job_tenure", "incapacity_days", "outcome", "scheme", "sex"]
 views = ["table", "line", "bar"]
 definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
 
+[indicator.sgk_pensions_granted]
+label_tr = "Yıl içinde aylık bağlananlar (tek yaş)"
+label_en = "Pensions granted in the year, by age"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["age", "benefit", "recipient", "scheme"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllıkları 2014-2025, 'Yıl İçinde Aylık Bağlananların Yaş(lar)a ve Aylık Türüne Göre Dağılımı': 4/a, 4/b ve (2019'dan) 4/c; tek yaş, aylık türü (malullük, yaşlılık, ölüm) ve alan (malullük/yaşlılıkta cinsiyet, ölüm aylığında eş, çocuk, ana, baba). 4/b iki parça basılır (2014-2018 1479/2926, 2020'den tarım dışı/tarım), toplandı; 4/c adi ve vazife malullüğü malullükte toplandı. 'N ve üzeri' / 'N+' satırı yalnız tek yaşlar orada bitiyorsa açık uç bant sayıldı, değilse ara toplamdır. Her sütunun yaşları basılı Toplam'ı, erkek+kadın Toplam sütununu tutmalı. Türkiye geneli. Adaptör src/veriatlas/adapters/sgk_pensions_granted.py."
+
 [indicator.sgk_active_passive_ratio]
 label_tr = "Aktif/pasif oranı (sigortalı başına aylık alan)"
 label_en = "Active-to-passive ratio"
