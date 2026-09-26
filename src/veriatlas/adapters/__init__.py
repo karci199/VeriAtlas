@@ -14,6 +14,7 @@ from .btk_province import BTK_PROVINCE_ADAPTERS
 from .btk_summary import BTK_SUMMARY_ADAPTERS
 from .btk_tables import BTK_TABLE_ADAPTERS
 from .chain_stores import CHAIN_STORE_ADAPTERS
+from .crop_balance import CROP_BALANCE_ADAPTERS
 from .dhmi import DHMI_ADAPTERS
 from .diyanet import DIYANET_ADAPTERS
 from .drdatastats import DRDATASTATS_ADAPTERS
@@ -246,6 +247,7 @@ ADAPTERS = {
     **GIB_ADAPTERS,
     **MERSIS_ADAPTERS,
     **PRODCOM_ADAPTERS,
+    **CROP_BALANCE_ADAPTERS,
     **VAP_ADAPTERS,
     **FINTURK_ADAPTERS,
     **TIM_SECTOR_ADAPTERS,

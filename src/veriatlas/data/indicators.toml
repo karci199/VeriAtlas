@@ -2116,6 +2116,111 @@ label_en = "Nationality"
 "825" = "Palau"
 
 # Crops (adapters/tuik_crops.py). crop values are TÜİK product codes; names are labels.
+[dim.balance_product]
+label_tr = "Ürün"
+label_en = "Product"
+
+[dim.balance_product.values]
+cereals_total = "Tahıl (toplam)"
+barley = "Arpa"
+wheat_total = "Buğday (toplam)"
+wheat_other = "Buğday (diğer)"
+wheat_durum = "Buğday (durum)"
+maize = "Mısır"
+oats = "Yulaf"
+rye = "Çavdar"
+other_cereals = "Diğer tahıllar"
+rice = "Pirinç"
+potato = "Patates"
+dried_pulses_total = "Kuru baklagil (toplam)"
+dry_bean = "Kuru fasulye"
+red_lentil = "Kırmızı mercimek"
+chickpea = "Nohut"
+green_lentil = "Yeşil mercimek"
+sunflower = "Ayçiçeği"
+hemp = "Kenevir"
+flax = "Keten"
+rapeseed = "Kolza"
+cotton_seed = "Pamuk (çiğit)"
+soybean = "Soya"
+sugar = "Şeker"
+sugar_beet = "Şeker pancarı"
+vegetables_total = "Sebze (toplam)"
+green_broad_bean = "Bakla (taze)"
+okra = "Bamya"
+green_pea = "Bezelye (taze)"
+pepper = "Biber"
+tomato = "Domates"
+green_bean = "Fasulye (taze)"
+carrot = "Havuç"
+cucumber = "Hıyar"
+spinach = "Ispanak"
+squash = "Kabak (sakız)"
+watermelon = "Karpuz"
+melon = "Kavun"
+cabbage = "Lahana"
+lettuce = "Marul"
+eggplant = "Patlıcan"
+leek = "Pırasa"
+garlic_dry = "Sarımsak (kuru)"
+purslane = "Semizotu"
+onion_dry = "Soğan (kuru)"
+onion_green = "Soğan (taze)"
+radish = "Turp"
+
+[dim.balance_item]
+label_tr = "Denge kalemi"
+label_en = "Balance item"
+
+[dim.balance_item.values]
+production = "Üretim"
+harvest_losses = "Hasat kaybı"
+supply = "Arz (= kullanım)"
+usable_production = "Kullanılabilir üretim"
+imports = "İthalat"
+imports_eu = "İthalat, AB"
+domestic_use = "Yurt içi kullanım"
+human_consumption = "İnsan tüketimi"
+seed_use = "Tohumluk kullanım"
+feed_use = "Yemlik kullanım"
+processing = "İşlenen kısım"
+industrial_use = "Endüstriyel kullanım"
+losses = "Kayıplar"
+exports = "İhracat"
+exports_eu = "İhracat, AB"
+stock_change = "Stok değişimi"
+
+[indicator.crop_balance]
+label_tr = "Bitkisel ürün denge tablosu"
+label_en = "Crop product balance"
+topic = "bitkisel"
+unit = "tonne"
+frequency = "annual"
+additive = false
+dims = ["balance_item", "balance_product"]
+views = ["table", "line", "bar"]
+definition_tr = "Üretimden ihracata denge kalemleri, ton. TÜİK Bitkisel Ürün Denge Tabloları (tahıllar ve diğer bitkisel ürünler: 24 ürün; sebzeler: 22 ürün), piyasa yılı 2000/01-2024/25, yılın başladığı yıla yazıldı (2024/25 → 2024). Türkiye geneli. Hasat kaybı üretimin sabit payıdır; sebzelerde insan tüketimi yurt içi kullanımın sabit payıdır (2014'e kadar %90, 2015'ten %85): tüketim ölçülmez, kalan olarak çıkar. Dış ticaret 2018/19'dan genel ticaret sistemine göre. Özdeşlikler (arz, yurt içi kullanım, yeterlilik) her ürün-yılda denetlendi; tahıl toplamında 2008-2012 yurt içi kullanım kaynakta tutmuyor, olduğu gibi bırakıldı. Toplam satırları (tahıl, buğday, kuru baklagil, sebze) alt ürünlerle toplanmaz. Adaptör src/veriatlas/adapters/crop_balance.py."
+
+[indicator.crop_consumption_per_capita]
+label_tr = "Kişi başı tüketim (denge tablosu)"
+label_en = "Human consumption per person (balance)"
+topic = "bitkisel"
+unit = "kg_per_person_year"
+frequency = "annual"
+dims = ["balance_product"]
+views = ["table", "line", "bar"]
+definition_tr = "İnsan tüketimi ÷ nüfus, kg/kişi-yıl, TÜİK hesabı. TÜİK Bitkisel Ürün Denge Tabloları (tahıllar ve diğer bitkisel ürünler: 24 ürün; sebzeler: 22 ürün), piyasa yılı 2000/01-2024/25, yılın başladığı yıla yazıldı (2024/25 → 2024). Türkiye geneli. Hasat kaybı üretimin sabit payıdır; sebzelerde insan tüketimi yurt içi kullanımın sabit payıdır (2014'e kadar %90, 2015'ten %85): tüketim ölçülmez, kalan olarak çıkar. Dış ticaret 2018/19'dan genel ticaret sistemine göre. Özdeşlikler (arz, yurt içi kullanım, yeterlilik) her ürün-yılda denetlendi; tahıl toplamında 2008-2012 yurt içi kullanım kaynakta tutmuyor, olduğu gibi bırakıldı. Toplam satırları (tahıl, buğday, kuru baklagil, sebze) alt ürünlerle toplanmaz. Adaptör src/veriatlas/adapters/crop_balance.py."
+
+[indicator.crop_self_sufficiency]
+label_tr = "Yeterlilik derecesi"
+label_en = "Degree of self-sufficiency"
+topic = "bitkisel"
+unit = "percent"
+frequency = "annual"
+dims = ["balance_product"]
+views = ["table", "line", "bar"]
+definition_tr = "Kullanılabilir üretim ÷ yurt içi kullanım × 100. TÜİK Bitkisel Ürün Denge Tabloları (tahıllar ve diğer bitkisel ürünler: 24 ürün; sebzeler: 22 ürün), piyasa yılı 2000/01-2024/25, yılın başladığı yıla yazıldı (2024/25 → 2024). Türkiye geneli. Hasat kaybı üretimin sabit payıdır; sebzelerde insan tüketimi yurt içi kullanımın sabit payıdır (2014'e kadar %90, 2015'ten %85): tüketim ölçülmez, kalan olarak çıkar. Dış ticaret 2018/19'dan genel ticaret sistemine göre. Özdeşlikler (arz, yurt içi kullanım, yeterlilik) her ürün-yılda denetlendi; tahıl toplamında 2008-2012 yurt içi kullanım kaynakta tutmuyor, olduğu gibi bırakıldı. Toplam satırları (tahıl, buğday, kuru baklagil, sebze) alt ürünlerle toplanmaz. Adaptör src/veriatlas/adapters/crop_balance.py."
+
 [dim.crop]
 label_tr = "Ürün"
 label_en = "Crop"
@@ -3535,6 +3640,12 @@ additive = true
 label_tr = "kg/kişi-gün"
 label_en = "kg per person per day"
 decimals = 2
+additive = false
+
+[unit.kg_per_person_year]
+label_tr = "kg/kişi-yıl"
+label_en = "kg per person per year"
+decimals = 1
 additive = false
 
 [unit.facility]
