@@ -72,7 +72,7 @@ def invoke(client: httpx.Client, method: str, params: dict):
 
 
 def main() -> None:
-    with httpx.Client(timeout=120, headers={"User-Agent": "Mozilla/5.0"}) as client:
+    with httpx.Client(timeout=300, headers={"User-Agent": "Mozilla/5.0"}) as client:
         provinces = [-1] + sorted(
             p["id"] for p in cached_get(client, "api/ils?size=2000", "iller.json")
         )
