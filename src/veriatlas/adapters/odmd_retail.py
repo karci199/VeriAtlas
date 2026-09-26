@@ -7,7 +7,8 @@ production and imports. Pulled 2026-09-26 into `odmd/perakende/<primary_id>.<ext
 the list page's titles in `liste.json`. The download answers an empty page unless the list
 page was fetched first in the same session (ASP.NET session cookie).
 
-Workbooks run from 2014 (and 2007); 2004-2013 are PDFs and are not read here. Two
+Workbooks run from 2014 (and 2007); 2004-2013 are PDFs, read by word position where
+the total check passes (`UNREADABLE_PDFS` lists the rest). Two
 indicators: the monthly files, and the full-year files. A running total for an unfinished
 year ("2026 Yılı (Ocak-Ağustos)") is neither and is skipped.
 
@@ -61,6 +62,7 @@ LEAVES = {
 ALIASES = {
     "ASTON MARTİN": "ASTON MARTIN",
     "HONQI": "HONGQI",
+    "LANDROVER": "LAND ROVER",
     "KG MOBILITY – SSANGYONG": "SSANGYONG",
 }
 ESTIMATED = {"tesla"}
@@ -140,6 +142,81 @@ def parse_file(path: Path, title: str) -> list[tuple[str, list[float]]]:
     return brands
 
 
+#: 2004-2013 PDFs whose brand rows cannot be placed in columns from the text: blank cells
+#: are simply missing (2010-2012) or the table runs past what the text layer holds. Any
+#: other PDF that fails the total check stops the load.
+UNREADABLE_PDFS = frozenset(
+    [
+        "640",
+        "546",
+        "545",
+        "524",
+        "517",
+        "475",
+        "427",
+        "444",
+        "347",
+        "348",
+        "349",
+        "350",
+        "351",
+        "352",
+        "353",
+        "354",
+        "355",
+        "356",
+        "357",
+        "358",
+        "359",
+        "360",
+        "366",
+    ]
+)
+NUMBER = re.compile(r"^\d{1,3}(?:\.\d{3})*$")
+
+
+def parse_pdf(path: Path, title: str) -> list[tuple[str, list[float]]]:
+    """A 2004-2013 PDF: numbers are put in the column whose header they sit under."""
+    import pdfplumber
+
+    lines: dict[tuple, list] = {}
+    with pdfplumber.open(path) as pdf:
+        for page_no, page in enumerate(pdf.pages):
+            for w in page.extract_words():
+                lines.setdefault((page_no, round(w["top"] / 3)), []).append(w)
+    rows = [sorted(v, key=lambda w: w["x0"]) for _, v in sorted(lines.items())]
+    heads = ("YERLİ", "YERLI", "İTHAL", "ITHAL", "TOPLAM")
+    header = max(rows, key=lambda r: sum(w["text"].upper() in heads for w in r))
+    columns = [(w["x0"] + w["x1"]) / 2 for w in header if w["text"].upper() in heads]
+    if len(columns) != 9:
+        raise ValueError(f"odmd: {len(columns)} sutun, 9 bekleniyordu: {title}")
+    brands, total = [], None
+    for row in rows:
+        numbers = [w for w in row if NUMBER.match(w["text"])]
+        name = " ".join(
+            w["text"]
+            for w in row
+            if not NUMBER.match(w["text"]) and w["x1"] < columns[0] - 5
+        ).strip()
+        if not numbers or not name:
+            continue
+        values = [0.0] * 9
+        for w in numbers:
+            centre = (w["x0"] + w["x1"]) / 2
+            i = min(range(9), key=lambda k: abs(columns[k] - centre))
+            values[i] += float(w["text"].replace(".", ""))
+        if name.upper().startswith("TOPLAM"):
+            total = values
+        else:
+            brands.append((name, values))
+    if total is None:
+        raise ValueError("odmd: TOPLAM satiri yok: " + title)
+    sums = [sum(v[i] for _, v in brands) for i in range(9)]
+    if any(abs(s - t) > 0.5 for s, t in zip(sums, total, strict=True)):
+        raise ValueError(f"odmd: markalar toplami tutmuyor: {title} {sums} {total}")
+    return brands
+
+
 class OdmdRetailBase:
     source_id = "odmd"
     vintage = "2026-09"
@@ -158,13 +235,15 @@ class OdmdRetailBase:
         records = []
         for pid, title in titles.items():
             files = [p for p in raw.glob(pid + ".*") if p.suffix in (".xlsx", ".xls")]
-            if not files:
-                continue  # 2004-2013 PDFs
+            pdf = raw / (pid + ".pdf")
+            if not files and (pid in UNREADABLE_PDFS or not pdf.exists()):
+                continue
             year, month, complete = period(title)
             if self.annual != (month is None) or not complete:
                 continue
             start = dt.date(year, month or 1, 1)
-            for name, values in parse_file(files[0], title):
+            brands = parse_file(files[0], title) if files else parse_pdf(pdf, title)
+            for name, values in brands:
                 code = brand_code(name)
                 if code not in known:
                     raise KeyError("odmd: sozlukte olmayan marka: " + name)

@@ -14,8 +14,8 @@ yönlenir; çerezsiz aynı adres boş HTML döndürür (hata değil, boş). List
 
 | Gösterge | Kaynak | Kapsam |
 |---|---|---|
-| `odmd_retail_sales` | Perakende Satışlar (type 36) Excel | aylık 2014-01 → 2026-08 (+2012-04) |
-| `odmd_retail_sales_annual` | aynı, yıllık dosyalar | 2007, 2014-2025 |
+| `odmd_retail_sales` | Perakende Satışlar (type 36) Excel + PDF | aylık 2014-01 → 2026-08; 2012-13 kısmi |
+| `odmd_retail_sales_annual` | aynı, yıllık dosyalar | 2005-2009, 2013-2025 |
 | `odmd_car_sales_by_segment_body` | Pazar Değerlendirme (type 35) PDF, Ek 4 | 2020-2025 |
 | `odmd_car_sales_by_powertrain` | Ek 5 | 2020-2025 |
 | `odmd_car_sales_by_co2` | Ek 7 | 2019-2025 |
@@ -36,9 +36,17 @@ ile birebir.
 
 ## Alınmayanlar
 
-- Perakende 2004-2013: PDF (44 dosya), henüz ayrıştırılmadı.
+- Perakende PDF'lerinden 23'ü (2010-2012 çoğu, 2013 Mayıs, 2004): boş hücreler yazılmamış ya da
+  tablo metin katmanında eksik; sütuna yerleştirilemiyor (`UNREADABLE_PDFS`). Kalan 21 PDF
+  sözcük konumuyla okunur ve toplam denetiminden geçer.
 - Pazar raporları 2006-2019: tablo yok, yalnız yazı. Aylık Ek tabloları: raporların
   yarısında bir kısmı resim; aylık seri kurulmadı.
 - Ek 6 motor hacmi: bantlar ÖTV dilimine göre yıldan yıla değişiyor.
 - Avrupa/dünya pazarı (ACEA), kredi, sigorta, sahibinden "enleri" raporları.
 - Model kırılımı ODMD'de yok.
+
+## Kullanım kaydı
+
+Her perakende dosyasının altında: bilgiler haksız rekabete yol açacak şekilde kullanılamaz;
+ODMD kaynak gösterilerek Rekabet Kanunu'na aykırı yorum, sıralama ve açıklama yapılamaz.
+Depoda tutmak sorun değil; sitede marka sıralaması yayımlanmadan önce bu kayıt gözetilmeli.

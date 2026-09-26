@@ -1,5 +1,23 @@
 # Açık işler (2026-09-26 güncel)
 
+## 2026-09-26 oturumu (taşıt, ODMD, Endeksa kalitesi)
+
+Depoya girenler: `vehicles_by_type` (TÜİK SDMX, il × tür yıl sonu stok 2005-2025),
+`odmd_retail_sales` / `_annual` (marka × sınıf × yerli/ithal), altı `odmd_*` pazar yapısı
+göstergesi (2019-2025). Yöntem `docs/odmd.md`, `docs/ulasim-notlari.md`.
+
+Açık:
+- sahibinden.com vasıta raporları ("Otomobil Piyasası Görünümü", 2023-): robots.txt Claude'u
+  engelliyor; kullanıcı rapor sayfasını HTML kaydedince image5 bağlantılarından indirilecek.
+  Ortalama ilan fiyatı, sınıf/yaş fiyatları, ilanda kalma süresi cümle kalıbından çekilecek.
+- TÜİK SDMX'te adaptörü olmayan: otomobil yakıt cinsi, kullanım amacı, model yılı,
+  devir (ikinci el) akışları — `C:eri-ham	uik_sdmx`.
+- ODMD aylık pazar Ek tabloları: raporların yarısında bir kısmı resim; OCR olmadan aylık seri yok.
+- Endeksa: tüm TR dökümü için adaptör; `CarCount`/`VehicleCount` plaka 55-81 dolgu, gelir
+  alanları küçük yerleşimde kademe (docs/endeksa.md). Lisans kararı hâlâ açık.
+- Aylık taşıt stoku (TÜİK il × tür, 2005-01 →) yalnız yıl sonu alındı; aylık istenirse ayrı gösterge.
+
+
 ## 2026-09-25/26: eğitim, sağlık kurumu, geçici koruma
 
 Depoya girenler (940 gösterge): `health_facility_register` (SKRS, il+ilçe, 2026), `schools_2017` (SKRS),

@@ -514,6 +514,8 @@ label_tr = "Marka"
 label_en = "Vehicle brand"
 
 [dim.vehicle_brand.values]
+ikco = "IKCO"
+rover = "ROVER"
 alfa_romeo = "ALFA ROMEO"
 alpine = "ALPINE"
 askam = "ASKAM"
