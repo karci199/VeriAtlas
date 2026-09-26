@@ -41,6 +41,7 @@ from .meb_portal import MEB_PORTAL_ADAPTERS
 from .mgm import MGM_ADAPTERS
 from .muhasebat import MUHASEBAT_ADAPTERS
 from .networks import NETWORK_ADAPTERS
+from .odmd_market import ODMD_MARKET_ADAPTERS
 from .odmd_retail import ODMD_ADAPTERS
 from .oecd_tl3 import OECD_TL3_ADAPTERS
 from .ookla_speed import OOKLA_ADAPTERS
@@ -166,6 +167,7 @@ ADAPTERS = {
     **VEHICLE_KM_ADAPTERS,
     "tuik_vehicle_stock": TuikVehicleStock,
     **ODMD_ADAPTERS,
+    **ODMD_MARKET_ADAPTERS,
     # District education level and literacy.
     **EDUCATION_DISTRICT_ADAPTERS,
     # Children referred to police units (Türkiye).

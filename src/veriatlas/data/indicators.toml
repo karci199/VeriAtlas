@@ -610,6 +610,70 @@ label_en = "Domestic production or import"
 domestic = "Yerli üretim"
 imported = "İthal"
 
+# ODMD market structure (adapters/odmd_market.py), 2026-09-26.
+[dim.body_type]
+label_tr = "Gövde tipi"
+label_en = "Body type"
+
+[dim.body_type.values]
+sedan = "Sedan"
+hatchback = "Hatchback"
+station_wagon = "Station wagon"
+mpv = "Çok amaçlı araç (MPV)"
+cdv = "Binek tipli küçük van (CDV)"
+sport = "Spor"
+suv = "SUV / arazi"
+
+[dim.car_segment]
+label_tr = "Segment"
+label_en = "Car segment"
+
+[dim.car_segment.values]
+a = "A (mini)"
+b = "B (küçük)"
+c = "C (kompakt)"
+d = "D (orta)"
+e = "E (lüks)"
+f = "F (üst lüks)"
+
+[dim.powertrain]
+label_tr = "Motor tipi"
+label_en = "Powertrain"
+
+[dim.powertrain.values]
+petrol = "Benzin"
+diesel = "Dizel"
+lpg = "Otogaz"
+hybrid = "Hibrit (alt türe ayrılmamış)"
+full_hybrid = "Tam hibrit"
+plug_in_hybrid = "Plug-in hibrit"
+mild_hybrid = "Mild hibrit"
+electric = "Elektrik (alt türe ayrılmamış)"
+battery_electric = "Tam elektrikli"
+range_extender = "Menzil uzatıcılı elektrikli"
+
+[dim.co2_band]
+label_tr = "CO2 salımı (g/km)"
+label_en = "CO2 emissions band (g/km)"
+
+[dim.co2_band.values]
+lt100 = "100'ün altı"
+100_120 = "100-120"
+120_140 = "120-140"
+140_160 = "140-160"
+ge160 = "160 ve üstü"
+
+[dim.lcv_body_type]
+label_tr = "Hafif ticari gövde tipi"
+label_en = "Light commercial body type"
+
+[dim.lcv_body_type.values]
+van = "Van"
+light_truck = "Kamyonet"
+minibus = "Minibüs"
+pickup = "Pickup"
+camper = "Karavan"
+
 # Housing and construction (adapters/tuik_topics.py).
 [dim.sale_financing]
 label_tr = "Satış şekli"
@@ -5584,6 +5648,66 @@ frequency = "annual"
 dims = ["vehicle_type"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "Yıl sonunda (Aralık) trafiğe kayıtlı taşıt sayısı (stok), taşıt türüne göre. Kaynak TÜİK SDMX akışı DF_MOTORLU_KARA_TASIT_ILLER_V3."
+
+[indicator.odmd_car_sales_by_segment_body]
+label_tr = "Otomobil satışı (segment ve gövde tipine göre)"
+label_en = "Car sales by segment and body type"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["car_segment", "body_type"]
+views = ["table", "line", "bar"]
+definition_tr = "Yıl içinde satılan otomobil. Kaynak ODMD aylık pazar raporları, Aralık raporunun Ocak-Aralık bölümü."
+
+[indicator.odmd_car_sales_by_powertrain]
+label_tr = "Otomobil satışı (motor tipine göre)"
+label_en = "Car sales by powertrain"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["powertrain"]
+views = ["table", "line", "bar"]
+definition_tr = "Yıl içinde satılan otomobil; hibrit ve elektrik 2023 öncesi alt türe ayrılmıyor. Kaynak ODMD aylık pazar raporları, Aralık raporunun Ocak-Aralık bölümü."
+
+[indicator.odmd_car_sales_by_co2]
+label_tr = "Otomobil satışı (CO2 salımına göre)"
+label_en = "Car sales by CO2 band"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["co2_band"]
+views = ["table", "line", "bar"]
+definition_tr = "Yıl içinde satılan otomobil, ortalama CO2 salımı sınıfına göre. Kaynak ODMD aylık pazar raporları, Aralık raporunun Ocak-Aralık bölümü."
+
+[indicator.odmd_car_sales_automatic]
+label_tr = "Otomatik vitesli otomobil satışı (segmente göre)"
+label_en = "Automatic-transmission car sales by segment"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["car_segment"]
+views = ["table", "line", "bar"]
+definition_tr = "Yıl içinde satılan otomatik şanzımanlı otomobil; payı toplam otomobil satışına bölünerek bulunur. Kaynak ODMD aylık pazar raporları, Aralık raporunun Ocak-Aralık bölümü."
+
+[indicator.odmd_lcv_sales_by_body]
+label_tr = "Hafif ticari araç satışı (gövde tipine göre)"
+label_en = "Light commercial vehicle sales by body type"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["lcv_body_type"]
+views = ["table", "line", "bar"]
+definition_tr = "Yıl içinde satılan hafif ticari araç. Kaynak ODMD aylık pazar raporları, Aralık raporunun Ocak-Aralık bölümü."
+
+[indicator.odmd_lcv_sales_by_powertrain]
+label_tr = "Hafif ticari araç satışı (motor tipine göre)"
+label_en = "Light commercial vehicle sales by powertrain"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["powertrain"]
+views = ["table", "line", "bar"]
+definition_tr = "Yıl içinde satılan hafif ticari araç. Kaynak ODMD aylık pazar raporları, Aralık raporunun Ocak-Aralık bölümü."
 
 [indicator.odmd_retail_sales]
 label_tr = "Otomobil ve hafif ticari araç perakende satışı (marka, aylık)"
