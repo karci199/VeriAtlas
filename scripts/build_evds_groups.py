@@ -16,7 +16,9 @@ Left out on purpose:
 - "Uluslararası İstatistikler" (IMF, BIS, OECD): other countries' series, and the
   warehouse only has Türkiye and its regions as areas;
 - `bie_pydibs`: benchmark values of 4,158 individual government bonds;
-- groups never downloaded (about 36 daily and weekly ones, see docs/oturum-2026-09-14.md).
+- groups not on disk. The 36 daily and weekly groups the 2026-09-14 pull skipped were
+  downloaded on 2026-09-26 (daily ones as monthly values, each series by its EVDS default
+  aggregation; `scripts/fetch_evds_housing.py` with EVDS_AYLIK=1).
 
 Writes `src/veriatlas/data/evds_groups.json` and the block between the
 `# BEGIN evds_groups` / `# END evds_groups` markers in `indicators.toml`.
@@ -214,9 +216,15 @@ def main() -> None:
                 + q(
                     f"EVDS {code} ({title}); kaynak {group.get('DATASOURCE', '')}; grubun birimi: "
                     f"{unit}. Seri seri birim ve baz yılı kalem adındadır; kalemler toplanmaz. "
-                    f"Yalnız Türkiye. İndirme 2026-09-14"
+                    f"Yalnız Türkiye. İndirme "
+                    + ("2026-09-26" if "aggregation" in payload else "2026-09-14")
                     + (
-                        ", günlük seri aylık ortalama olarak"
+                        (
+                            ", günlük seri aylığa her serinin EVDS varsayılan birleştirmesiyle "
+                            "çevrildi (akım toplam, stok ay sonu, oran ortalama)"
+                            if "aggregation" in payload
+                            else ", günlük seri aylık ortalama olarak"
+                        )
                         if path == monthly_file
                         and group["FREQUENCY_STR"] in ("GÜNLÜK", "İŞ GÜNÜ")
                         else ""

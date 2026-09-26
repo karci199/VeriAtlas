@@ -54,9 +54,12 @@ BATCH = 20
 #: Rows (periods) EVDS returns per request at most.
 ROW_LIMIT = 1000
 
-#: EVDS_AYLIK=1: ask EVDS for monthly averages of daily and business-day series. Twenty
+#: EVDS_AYLIK=1: ask EVDS for monthly values of daily and business-day series. Twenty
 #: times fewer rows, and the only way the market groups finish (one daily group ran 2.5 h).
-#: Saved as `<group>-aylik.json` so a daily download is never overwritten by an average.
+#: Saved as `<group>-aylik.json` so a daily download is never overwritten.
+#: Each series is aggregated by its own EVDS default (`DEFAULT_AGG_METHOD`: sum for flows
+#: such as EFT volume, last for stocks, avg for rates). Files downloaded before 2026-09-26
+#: used avg for every series; those carry no "aggregation" key.
 MONTHLY = bool(os.environ.get("EVDS_AYLIK"))
 #: One aggregation per series, dash-joined: a single `avg` for several series is refused
 #: with 400, and the chunk then fell back to one request per series (bond yields: 4,158).
@@ -89,6 +92,12 @@ def fetch_group(client, out, group: str, start: int) -> None:
     series = client.get(f"/serieList/type=json&code={group}")
     series.raise_for_status()
     codes = [s["SERIE_CODE"] for s in series.json()]
+    method = {
+        s["SERIE_CODE"]: s.get("DEFAULT_AGG_METHOD")
+        if s.get("DEFAULT_AGG_METHOD") in ("avg", "sum", "last", "first", "min", "max")
+        else "avg"
+        for s in series.json()
+    }
     by_period: dict[str, dict] = {}
     refused: list[str] = []
     chunks = [
@@ -99,7 +108,11 @@ def fetch_group(client, out, group: str, start: int) -> None:
         r = client.get(
             f"/series={'-'.join(chunk)}&startDate=01-01-{first}"
             f"&endDate=31-12-{last}&type=json"
-            + (MONTHLY_QUERY.format("-".join(["avg"] * len(chunk))) if MONTHLY else "")
+            + (
+                MONTHLY_QUERY.format("-".join(method[c] for c in chunk))
+                if MONTHLY
+                else ""
+            )
         )
         if r.status_code == 400:
             # One series EVDS lists but will not serve fails the whole chunk:
@@ -130,6 +143,8 @@ def fetch_group(client, out, group: str, start: int) -> None:
         "refused": refused,
         "items": items,
     }
+    if MONTHLY:
+        payload["aggregation"] = method
     target.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     print(group, len(codes), "seri", len(items), "donem", "reddedilen:", refused)
 
