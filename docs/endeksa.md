@@ -68,6 +68,17 @@ Jeton kullanıcının kimlik bilgisi; makineden çıkarılmıyor. Bunun yerine i
   alanları alınmaz. Hatay, Adıyaman, Gaziantep'te toplam TÜİK'in %80–90'ı —
   2024 nüfus kaybıyla aynı oranda (deprem sonrası nüfusla dağıtılmış olabilir). Niğde %83,
   açıklanamadı.
+- **Tekrarlanan değer taraması, tüm alanlar (2026-09-26).** Kural: dolu mahallelerde, ilçe
+  içinde ≥3 mahallede aynı değer (|değer| ≥ 50). `*Ratio` alanları tam sayı yüzdesi olduğu
+  için doğal olarak tekrarlıyor, sayılmaz. Gerçek bulgular:
+  - `CarCount`/`VehicleCount`: plaka 55–81 dolgu (yukarıda).
+  - `HouseIncomeTotal`: satırların %38'i tekrarlı; bunlar küçük yerleşimler (nüfus medyanı
+    146, tekrarsızlarda 853). Model küçük yerlerde sabit kademeye düşüyor (ör. 23.540);
+    mahalleler arası karşılaştırmada ayırt edici değil.
+  - `OwnerShare`/`RentedShare`: tam sayı yüzde, %74'ü tekrarlı — kaba model çıktısı.
+  - Şanlıurfa (63): `HouseIncome` ve harcama kalemleri köylerde taban değerde (Siverek'te
+    2.496); aynı şey Aksaray, Kilis, Ağrı, Karaman'da harcama kalemlerinde kısmen.
+  - Nüfus, yaş, eğitim, medeni hal sayımlarında tekrar yok — TÜİK kökenliler temiz.
 
 ## Döküm durumu
 
