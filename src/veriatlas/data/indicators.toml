@@ -27314,6 +27314,17 @@ dims = ["job_tenure", "incapacity_days", "outcome", "scheme", "sex"]
 views = ["table", "line", "bar"]
 definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
 
+[indicator.sgk_active_passive_ratio]
+label_tr = "Aktif/pasif oranı (sigortalı başına aylık alan)"
+label_en = "Active-to-passive ratio"
+topic = "sosyal_guvenlik"
+unit = "index"
+frequency = "annual"
+additive = false
+dims = ["scheme"]
+views = ["table", "line"]
+definition_tr = "SGK istatistik yıllıkları 2012-2018, Tablo 1.5 'Sosyal Güvenlik Kurumu Aktif Pasif Oranı': aktif sigortalı sayısının aylık alan (pasif) sayısına oranı, genel ve 4/a, 4/b, 4/c, 2004-2018. Tablo 2018 yıllığıyla bitti. Her yıl onu basan en son yıllıktan alındı; yıllıklar arası tek fark 4/b 2016 (1,16 → 1,11). Türkiye geneli. Adaptör src/veriatlas/adapters/sgk_active_passive.py."
+
 [indicator.sgk_work_accidents_by_age]
 label_tr = "İş kazası ve meslek hastalığı, yaşa göre"
 label_en = "Work accidents and occupational disease by age"
