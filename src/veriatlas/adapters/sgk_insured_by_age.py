@@ -105,6 +105,7 @@ def read_all() -> dict[tuple[int, str, str, str, str], float]:
                         f"{year} {scheme} {sex}: gruplar {got}, Toplam {want}"
                     )
     _CACHE.update(raw_4c())
+    _CACHE.update(read_4a())
     return _CACHE
 
 
@@ -195,6 +196,71 @@ def raw_4c() -> dict[tuple[int, str, str, str, str], float]:
         for (year, sex, age), value in per.items():
             if sex != "total":
                 out[(year, "4c", "compulsory", sex, age)] = value
+    return out
+
+
+def read_4a() -> dict[tuple[int, str, str, str, str], float]:
+    """4/a from "Zorunlu Sigortalıların Yaş, Cinsiyet, Birikimli Prim Ödeme Gün Sayısı ve
+    Sigortalılık Süresine Göre Dağılımı": only the insured-person columns are read (the
+    other two are days and years). The youngest row is "14 ve altı"."""
+    cells = pl.scan_parquet(CELLS).collect()
+    wanted = [
+        t
+        for t in cells.select("title").unique()["title"].to_list()
+        # 2012 on ("zorunlu sigortalıların"); 2007-2011 print unknown ages and an 81+ band overlapping 81
+        if re.search(r"prim odeme gun", plain(t))
+        and re.search(r"zorunlu sigortali", plain(t))
+    ]
+    out: dict[tuple[int, str, str, str, str], float] = {}
+    for (year, title), table in cells.filter(pl.col("title").is_in(wanted)).group_by(
+        "year", "title"
+    ):
+        oldest = (
+            table.filter(pl.col("code").str.contains(r"^\d+$"))["code"].cast(int).max()
+        )
+        ages: dict[tuple[str, str], float] = defaultdict(float)
+        printed: dict[str, float] = {}
+        for code, label, header, value in table.select(
+            "code", "label", "header", "value"
+        ).iter_rows():
+            parts = [plain(x) for x in header.split(" > ")]
+            if (
+                value is None
+                or len(parts) < 2
+                or not re.match(r"sigortali ", parts[-1])
+            ):
+                continue
+            sex = next(
+                (s for s, pattern in SEXES if re.search(pattern, parts[-2])), None
+            )
+            if sex is None:
+                raise ValueError(f"4a {year}: tanınmayan sütun {header}")
+            text = plain(label)
+            top = re.match(r"(\d+) ?(\+|ve uzeri)", text)
+            low = re.match(r"(\d+) ve alti", text)
+            if str(code).isdigit():
+                ages[(sex, str(int(code)))] += value
+            elif top and (oldest is None or oldest < int(top.group(1))):
+                ages[(sex, top.group(1) + "+")] += value
+            elif low:
+                ages[(sex, low.group(1) + "-")] += value
+            elif text.startswith("toplam"):
+                printed[sex] = value
+        for sex, total in printed.items():
+            got = sum(v for (s, _a), v in ages.items() if s == sex)
+            if abs(got - total) > max(1.0, total * 0.001):
+                raise ValueError(f"4a {year} {sex}: yaşlar {got}, Toplam {total}")
+        for sex in ("male", "female"):
+            both = sum(v for (s, _a), v in ages.items() if s in ("male", "female"))
+            if "total" in printed and abs(both - printed["total"]) > max(
+                1.0, printed["total"] * 0.001
+            ):
+                raise ValueError(
+                    f"4a {year}: erkek+kadın {both}, genel toplam {printed['total']}"
+                )
+        for (sex, age), value in ages.items():
+            if sex != "total":
+                out[(year, "4a", "compulsory", sex, age)] = value
     return out
 
 
