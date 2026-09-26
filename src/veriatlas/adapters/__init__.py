@@ -31,6 +31,7 @@ from .evds_housing import EVDS_HOUSING_ADAPTERS
 from .evds_prices import EVDS_PRICE_ADAPTERS
 from .evds_series import EVDS_SERIES_ADAPTERS
 from .evds_tourism import EvdsVisitorsByNationality
+from .gib import GIB_ADAPTERS
 from .goc_temporary_protection import GOC_ADAPTERS
 from .gsb import GSB_ADAPTERS
 from .iskur import ISKUR_ADAPTERS
@@ -238,6 +239,7 @@ ADAPTERS = {
     **TIM_ADAPTERS,
     **MUHASEBAT_ADAPTERS,
     **OECD_TL3_ADAPTERS,
+    **GIB_ADAPTERS,
     **VAP_ADAPTERS,
     **FINTURK_ADAPTERS,
     **TIM_SECTOR_ADAPTERS,

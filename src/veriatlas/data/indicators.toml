@@ -8795,6 +8795,12 @@ label_en = "companies"
 decimals = 0
 additive = true
 
+[unit.taxpayer]
+label_tr = "mükellef"
+label_en = "taxpayers"
+decimals = 0
+additive = true
+
 [unit.thousand_try]
 label_tr = "bin TL"
 label_en = "thousand TRY"
@@ -32643,6 +32649,28 @@ additive = true
 dims = ["budget_revenue_item"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "Hazine ve Maliye Bakanlığı Muhasebat Genel Müdürlüğü, 'İller İtibarıyla Mahalli Yönetim Bütçe İstatistikleri', 'Mahalli İdareler Bütçe Gelirleri' tablosu, 2006-2025, bin TL, cari fiyat; her yıl dosyasının Ocak-Aralık (IV.) dönem sayfası. İlin mahalli idarelerinin — Muhasebat'ın mahalli idareler alt sektörü: belediyeler, il özel idareleri, bağlı idareler ve mahalli idare birlikleri; kapsam dosyada yazılı değil — bütçe gelirleri toplamı ve kalemleri: vergi gelirleri, teşebbüs ve mülkiyet gelirleri, alınan bağış ve yardımlar, faizler-paylar-cezalar, sermaye gelirleri, alacaklardan tahsilat (2006'da vergi dışı gelirler tek kalem). Genel bütçe vergi gelirlerinden aktarılan paylar burada 'faizler, paylar ve cezalar' içinde durur ve çoğu ilde gelirin yarısından fazlasıdır. Merkezi yönetim tablolarının aksine Merkez satırı yok, 81 ilin toplamı Türkiye toplamıdır. Her il-yılda kalemlerin toplamı basılı bütçe gelirleri toplamını tutuyor. 2026 yıl içi olduğu için alınmadı. Enflasyondan arındırılmamıştır. İndirme scripts/fetch_muhasebat.py (portal API), adaptör src/veriatlas/adapters/muhasebat.py."
+
+[dim.tax_type]
+label_tr = "Vergi türü"
+label_en = "Tax type"
+
+[dim.tax_type.values]
+income_tax = "Gelir vergisi"
+income_withholding = "Gelir stopaj vergisi"
+rental_income = "Gayrimenkul sermaye iradı (kira geliri)"
+simple_method = "Basit usulde gelir vergisi"
+corporate_tax = "Kurumlar vergisi"
+vat = "Katma değer vergisi"
+
+[indicator.active_taxpayers]
+label_tr = "Faal mükellef sayısı (il)"
+label_en = "Active taxpayers by province"
+topic = "kamu_maliyesi"
+unit = "taxpayer"
+frequency = "monthly"
+dims = ["tax_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Gelir İdaresi Başkanlığı, 'Aylar itibariyle mükellef sayıları', vergi türüne göre faal mükelleflerin illere dağılımı, ay sonu, Ocak 2002 – Ağustos 2026. Aynı kişi ya da kurum birden çok vergi türünde mükellef olabilir; türler toplanmaz. Gelir vergisi ticari, zirai ve serbest meslek kazancı için gerçek usulde yükümlü olanlardır; basit usul ayrı satırdır. Mükellef, vergi dairesinin bulunduğu ile yazılır. Her ay il satırlarının toplamı tablonun TOPLAM satırıyla denetlendi (2026 Haziran kurumlar vergisinde TOPLAM boş, yalnız süreklilik denetimi). İller arasında kaymış sütunlar alınmadı: 2025 Temmuz kira geliri ve 2026 Temmuz'da gelir vergisi dışındaki beş tür (toplam doğru, değerler başka illerin satırında). Gerçek kırılmalar korunur: kira gelirinde her Mart beyan dönemi sıçraması, 2025 Aralık'ta büyükşehirlerde basit usulün düşüşü (2026'dan itibaren büyükşehirlerde basit usul kaldırıldı). İndirme scripts/fetch_gib.py, adaptör src/veriatlas/adapters/gib.py."
 
 [indicator.local_budget_expenditure_by_province]
 label_tr = "Mahalli idareler bütçe giderleri (il)"
