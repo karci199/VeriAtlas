@@ -6,7 +6,11 @@ score type, general quota and the number placed. From 2017 each comes as a workb
 the list of documents is `osym/tablo/liste.json` (built from the ÖSYM archive index), the
 main placement workbooks are `osym/tablo/<year>_tablo<3|4>.xlsx`. Pulled 2026-09-26.
 Only the general quota is read; the school-first, earthquake and other quota columns and
-the additional placements are left out.
+the additional placements are left out. 2011-2016 come from the bachelor Tablo-4 PDFs
+(`<year>_tablo4.pdf`, text layer); associate degrees before 2017 are not read, because
+most were then filled by exam-free transfer (Tablo-3A) and do not compare with later years.
+Foundation universities are told apart by the guide or by "VAKIF" in the name; before 2021
+the tables do not say, so an unmatched foundation university of those years counts as state.
 
 Programmes are placed in a province and a programme group by, in order:
 
@@ -58,7 +62,7 @@ def base_name(program: str) -> str:
     Before 2021 a programme that is a whole faculty is written by the faculty's name
     ("…/Tıp Fakültesi"), which would otherwise be a group of its own.
     """
-    name = re.split(r"\s+\(", program.strip(), maxsplit=1)[0]
+    name = re.split(r"\s*\(", program.strip(), maxsplit=1)[0]
     name = re.sub(r"\s+", " ", name).strip()
     return re.sub(r"\s+Fakültesi$", "", name)
 
@@ -131,6 +135,81 @@ def read_table(path: Path) -> list[dict]:
     return out
 
 
+PT = r"(?:MF|TM|TS|DİL|DIL|YGS|SAY|SÖZ|EA)[-‐]\d"
+ROW = re.compile(
+    rf"^(\d{{7,9}})\s+(.+?)\s+({PT})\s+(\d+)(?:\s+(\d+|-+))?\s*(\d+[.,]\d+|-+)?"
+)
+ROW_BARE = re.compile(
+    rf"^(\d{{7,9}})\s+({PT})\s+(\d+)(?:\s+(\d+|-+))?\s*(\d+[.,]\d+|-+)?"
+)
+CODE = re.compile(r"^\d{7,9}\s")
+
+
+def read_pdf_table(path: Path) -> list[dict]:
+    """A 2011-2016 bachelor Tablo-4 PDF, read from its text layer.
+
+    2011-2014 print the university and faculty as heading lines above the programme rows;
+    2015-2016 write "UNIVERSITY (CITY)/Faculty/Programme" in the row, and a long one is
+    broken: its first half on the line above the code, the rest on the line below. A row
+    whose "placed" cell is blank placed no one.
+    """
+    import pdfplumber
+
+    year = int(re.search(r"(\d{4})_tablo", path.name).group(1))
+    with pdfplumber.open(path) as pdf:
+        lines = [
+            x.strip()
+            for page in pdf.pages
+            for x in (page.extract_text() or "").splitlines()
+        ]
+    out, uni = [], ""
+    for i, line in enumerate(lines):
+        m = ROW.match(line)
+        bare = None if m else ROW_BARE.match(line)
+        if (
+            bare
+            and 0 < i < len(lines) - 1
+            and not CODE.match(lines[i - 1])
+            and not CODE.match(lines[i + 1])
+        ):
+            code, pt, quota, placed, score = bare.groups()
+            name = lines[i - 1] + " " + lines[i + 1]
+        elif m:
+            code, name, pt, quota, placed, score = m.groups()
+        else:
+            if not CODE.match(line) and re.search(
+                r"(ÜNİVERSİTESİ|ENSTİTÜSÜ|AKADEMİSİ)( \([^)]*\))?$", line
+            ):
+                uni = line
+            continue
+        head = name.split("/", 2)
+        if len(head) >= 2 and re.search(r"ÜNİVERSİTESİ|ENSTİTÜSÜ|AKADEMİSİ", head[0]):
+            parts = head
+        else:
+            parts = [name]
+        cities = re.findall(r"\(([^()]+)\)", parts[0] if len(parts) > 1 else uni)
+        city = cities[-1] if cities else ""
+        out.append(
+            {
+                "year": year,
+                "level": "bachelor",
+                "code": code,
+                "uni": (parts[0] if len(parts) > 1 else uni).strip(),
+                "city": city.strip(),
+                "utype_raw": turkish_upper(parts[0] if len(parts) > 1 else uni),
+                "program": parts[-1].strip(),
+                "quota": float(quota),
+                "placed": float(placed) if placed and placed.isdigit() else 0.0,
+                "min_score": float(score.replace(",", "."))
+                if score and score[0].isdigit()
+                else None,
+                # the line above, for a programme name broken over two lines (2011-2014)
+                "prev": lines[i - 1] if i and not CODE.match(lines[i - 1]) else "",
+            }
+        )
+    return out
+
+
 def placed_programmes(raw: Path) -> pl.DataFrame:
     guide = pl.DataFrame(
         json.loads(GUIDE.read_text(encoding="utf-8"))["content"],
@@ -163,10 +242,18 @@ def placed_programmes(raw: Path) -> pl.DataFrame:
         for a, n in provinces.select("area_id", "name_tr").iter_rows()
     }
     plate_of["AFYON"] = 3
+    # Institutions renamed since: their old names match nothing in the 2026 guide.
+    renamed = {"GEBZE YÜKSEK TEKNOLOJİ ENSTİTÜSÜ": 41}
 
     rows, missing = [], []
-    for path in sorted(raw.glob("20*_tablo*.xlsx")):
-        for p in read_table(path):
+    tables = [(p, read_table) for p in sorted(raw.glob("20*_tablo*.xlsx"))]
+    tables += [
+        (p, read_pdf_table)
+        for p in sorted(raw.glob("20*_tablo4.pdf"))
+        if 2011 <= int(p.name[:4]) <= 2016
+    ]
+    for path, reader in tables:
+        for p in reader(path):
             if ABROAD.search(p["utype_raw"]) or ABROAD.search(turkish_upper(p["city"])):
                 continue
             hit = by_code.get(p["code"])
@@ -174,14 +261,31 @@ def placed_programmes(raw: Path) -> pl.DataFrame:
             if hit:
                 plate, group, gtype = hit
             else:
-                plate = uni_province.get(key) or plate_of.get(turkish_upper(p["city"]))
+                plate = (
+                    uni_province.get(key)
+                    or renamed.get(key)
+                    or plate_of.get(turkish_upper(p["city"]))
+                )
                 if plate is None:
                     plate = next(
                         (v for n, v in plate_of.items() if re.search(rf"\b{n}\b", key)),
                         None,
                     )
-                base = base_name(p["program"])
-                group = group_of.get(base) or group_of.get(base.casefold()) or base
+                base = base_name(p["program"]) or base_name(p.get("prev", ""))
+                joined = (
+                    base_name(p.get("prev", "") + " " + p["program"])
+                    if p.get("prev")
+                    else ""
+                )
+                group = (
+                    group_of.get(base)
+                    or group_of.get(base.casefold())
+                    or (
+                        joined
+                        and (group_of.get(joined) or group_of.get(joined.casefold()))
+                    )
+                    or base
+                )
                 gtype = uni_type.get(key, "")
             if plate is None:
                 missing.append(p["uni"])
