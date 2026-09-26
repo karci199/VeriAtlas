@@ -276,6 +276,18 @@ def offered_years(page, tries: int = 6) -> list[int]:
     return []
 
 
+def click_year(element) -> None:
+    """Tick a year row. The oldest year sits at the bottom of the Zaman list, outside the
+    visible area: a plain click waited 60 s and timed out, and 2004 never came down
+    (Bursa fruit, 2026-09-26). Scrolled into view, then a real click with `force` — not a
+    dispatched event, which ZK accepts without registering the tick."""
+    try:
+        element.scroll_into_view_if_needed(timeout=5000)
+    except PlaywrightError:
+        pass
+    element.click(force=True)
+
+
 def fetch_year(page, year: int, breakdown: bool = False) -> bool:
     """Walk the whole flow for one year and save the CSV. True if a file was written.
 
@@ -370,7 +382,7 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
         for label in YEAR_SET:
             row = page.locator(".z-listitem", has_text=str(label)).first
             box = row.locator(".z-listitem-checkbox")
-            (box if box.count() else row).click()
+            click_year(box if box.count() else row)
             settle(page)
     elif ALL_YEARS:
         # One province at a time costs little: 81 indicators x ~15 districts x 19 years is
@@ -379,7 +391,7 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
         for label in offered_years(page):
             row = page.locator(".z-listitem", has_text=str(label)).first
             box = row.locator(".z-listitem-checkbox")
-            (box if box.count() else row).click()
+            click_year(box if box.count() else row)
             settle(page)
     else:
         # The Zaman tab renders asynchronously -- offered_years() already retries for
@@ -395,7 +407,7 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
             print("  ", year, "listede yok; sunulan:", offered_years(page)[:25])
             return False
         box = year_row.locator(".z-listitem-checkbox")
-        (box if box.count() else year_row).click()
+        click_year(box if box.count() else year_row)
         settle(page)
 
     # Düzey: as deep as this measure goes, every province, every unit
