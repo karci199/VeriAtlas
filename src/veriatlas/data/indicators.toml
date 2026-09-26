@@ -2718,6 +2718,7 @@ label_tr = "Tür"
 label_en = "Species"
 
 [dim.fish_species.values]
+"720" = "Hamsi (Balık Unu ve Yağ Fabrikası)"
 "101" = "Alabalık (İçsu)"
 "102" = "Aynalı Sazan (İçsu)"
 "103" = "Alabalık(Deniz)"
@@ -5655,6 +5656,161 @@ unit = "item"
 frequency = "annual"
 dims = ["farm_machine"]
 views = ["table", "map", "line", "bar"]
+
+[unit.try_per_kg]
+label_tr = "TL/kg"
+label_en = "TRY per kg"
+decimals = 2
+additive = false
+
+[dim.fishery_expense]
+label_tr = "Gider kalemi"
+label_en = "Fishery expense"
+
+[dim.fishery_expense.values]
+"501" = "Balıkçılıkta Kullanılan Motorlu Araçların Akaryakıt Ve Yağ Giderleri"
+"502" = "Çalışanların Balık Tutma Anında Giydikleri Özel Giyim İçin Yapılan Giderler (Yağmurluk, Çizme, Eldiven V.B)"
+"503" = "Araç, Ağ Ve Benzeri Küçük Tamir Ve Bakım Giderleri"
+"504" = "Nakliye Giderleri (Nakliye, Hamaliye, Harç Ve Rüsum)"
+"505" = "Kumanya Giderleri (Her Türlü Yiyecek Ve İçecek) Dahil"
+"506" = "Haberleşme Giderleri (Posta,Telefon, Telgraf Vb.)"
+"507" = "Elektrik Giderleri"
+"508" = "Su Giderleri"
+"509" = "Kira Giderleri (Büro, Depo, Buzhane, Barınma, Ağ Ve Motor V.B)"
+"510" = "Faiz Giderleri"
+"511" = "İşgücü Ödemeleri"
+"512" = "Hamaliye Giderleri"
+"513" = "Diğer Giderler (Sabit Sermaye Niteliğinde Olmayan Cari Giderler)"
+"514" = "Muhasebe Giderleri"
+"515" = "Kasa, Buz Giderleri"
+"516" = "Elektrik, Telefon, Telsiz, Ruhsat Ve Kullanma Suyu"
+"517" = "Kayıplar (Gemi, Ağ Vb.)"
+"520" = "Tamir Ve Bakım Masrafları"
+"521" = "Nakliye Giderleri"
+
+[dim.fishery_asset_flow]
+label_tr = "Sermaye hareketi"
+label_en = "Capital flow"
+
+[dim.fishery_asset_flow.values]
+"601" = "İthal Edilen (Yeni-Eski)"
+"602" = "Yurt İçinden Yeni Olarak Satın Alınanlar"
+"603" = "Yurt İçinden Eski Olarak Satın Alınanlar"
+"604" = "Büyük Tamir Ve Bakım Masrafları"
+"605" = "Satılanlar"
+
+[dim.fishery_asset]
+label_tr = "Varlık türü"
+label_en = "Fishery asset"
+
+[dim.fishery_asset.values]
+"620" = "Motor"
+"621" = "Gemi"
+"622" = "Ağ"
+"623" = "Teknik Donanım"
+"624" = "Diğer"
+
+[dim.hatchery_item]
+label_tr = "Kuluçkahane kalemi"
+label_en = "Hatchery item"
+
+[dim.hatchery_item.values]
+"1" = "Kuluçkahane Gelişim Makinelerinin Toplam Kurulu Kapasitesi (Adet)"
+"2" = "501 - 10 000 Kapasite Aralığındaki Kuluçkahane Gelişim Makinesi Sayısı (Adet)"
+"3" = "10 001 - 20 000 Kapasite Aralığındaki Kuluçkahane Gelişim Makinesi Sayısı (Adet)"
+"4" = "20 001 - 50 000 Kapasite Aralığındaki Kuluçkahane Gelişim Makinesi Sayısı (Adet)"
+"5" = "50 001 - 100 000 Kapasite Aralığındaki Kuluçkahane Gelişim Makinesi Sayısı (Adet)"
+"6" = "100 001 - 200 000 Kapasite Aralığındaki Kuluçkahane Gelişim Makinesi Sayısı (Adet)"
+"7" = "200 001 - 500 000 Kapasite Aralığındaki Kuluçkahane Gelişim Makinesi Sayısı (Adet)"
+"8" = "500 001'Den Fazla Kapasite Aralığındaki Kuluçkahane Gelişim Makinesi Sayısı (Adet)"
+
+[indicator.sea_fish_price]
+label_tr = "Avlanan deniz ürünleri fiyatı"
+label_en = "Marine catch price"
+topic = "hayvancilik"
+unit = "try_per_kg"
+frequency = "annual"
+additive = false
+dims = ["fish_species"]
+views = ["table", "line", "bar"]
+definition_tr = "Türe göre ortalama fiyat, TL/kg. TÜİK MEDAS Su Ürünleri İstatistikleri, Türkiye, 2000-2025. 2004 ve öncesi MEDAS'ta eski TL ile yazılı; 1.000.000'a bölünerek yeni TL'ye çevrildi (2004→2005 geçişi her seride denetlendi). Enflasyondan arındırılmamıştır."
+
+[indicator.inland_fish_price]
+label_tr = "Avlanan içsu ürünleri fiyatı"
+label_en = "Inland catch price"
+topic = "hayvancilik"
+unit = "try_per_kg"
+frequency = "annual"
+additive = false
+dims = ["fish_species"]
+views = ["table", "line", "bar"]
+definition_tr = "Türe göre ortalama fiyat, TL/kg. TÜİK MEDAS Su Ürünleri İstatistikleri, Türkiye, 2000-2025. 2004 ve öncesi MEDAS'ta eski TL ile yazılı; 1.000.000'a bölünerek yeni TL'ye çevrildi (2004→2005 geçişi her seride denetlendi). Enflasyondan arındırılmamıştır."
+
+[indicator.aquaculture_price]
+label_tr = "Yetiştiricilik ürünleri fiyatı"
+label_en = "Aquaculture price"
+topic = "hayvancilik"
+unit = "try_per_kg"
+frequency = "annual"
+additive = false
+dims = ["fish_species"]
+views = ["table", "line", "bar"]
+definition_tr = "Türe göre ortalama fiyat, TL/kg. TÜİK MEDAS Su Ürünleri İstatistikleri, Türkiye, 2000-2025. 2004 ve öncesi MEDAS'ta eski TL ile yazılı; 1.000.000'a bölünerek yeni TL'ye çevrildi (2004→2005 geçişi her seride denetlendi). Enflasyondan arındırılmamıştır."
+
+[indicator.fishery_expenses]
+label_tr = "Balıkçılık faaliyet giderleri"
+label_en = "Fishery operating expenses"
+topic = "hayvancilik"
+unit = "try"
+frequency = "annual"
+additive = true
+dims = ["fishery_expense"]
+views = ["table", "line", "bar"]
+definition_tr = "Gider kalemine göre, TL, cari fiyat. TÜİK MEDAS Su Ürünleri İstatistikleri, Türkiye, 2000-2025."
+
+[indicator.fishery_capital]
+label_tr = "Balıkçılıkta sabit sermaye yatırımı ve satışlar"
+label_en = "Fishery capital investment and sales"
+topic = "hayvancilik"
+unit = "try"
+frequency = "annual"
+additive = true
+dims = ["fishery_asset_flow", "fishery_asset"]
+views = ["table", "line", "bar"]
+definition_tr = "İthal, yurt içinden yeni ya da eski alınan, büyük tamir-bakım ve satılan; motor, gemi, ağ, teknik donanım. TL, cari fiyat. TÜİK MEDAS Su Ürünleri İstatistikleri, Türkiye, 2000-2025."
+
+[indicator.chicken_hatcheries]
+label_tr = "Tavuk kuluçkahaneleri"
+label_en = "Chicken hatcheries"
+topic = "hayvancilik"
+unit = "item"
+frequency = "annual"
+additive = true
+dims = ["hatchery_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK MEDAS Kümes Hayvancılığı, kapasitelerine göre kuluçkahanelerin yapısı, Türkiye. Kalem 1 toplam kurulu kapasite (adet yumurta yeri), 2-8 kapasite aralığına göre gelişim makinesi sayısı; ikisi toplanmaz. 2013-2025."
+
+[indicator.turkey_hatcheries]
+label_tr = "Hindi kuluçkahaneleri"
+label_en = "Turkey hatcheries"
+topic = "hayvancilik"
+unit = "item"
+frequency = "annual"
+additive = true
+dims = ["hatchery_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK MEDAS Kümes Hayvancılığı, kapasitelerine göre kuluçkahanelerin yapısı, Türkiye. Kalem 1 toplam kurulu kapasite (adet yumurta yeri), 2-8 kapasite aralığına göre gelişim makinesi sayısı; ikisi toplanmaz. 2013-2025."
+
+[indicator.quail_hatcheries]
+label_tr = "Bıldırcın kuluçkahaneleri"
+label_en = "Quail hatcheries"
+topic = "hayvancilik"
+unit = "item"
+frequency = "annual"
+additive = true
+dims = ["hatchery_item"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK MEDAS Kümes Hayvancılığı, kapasitelerine göre kuluçkahanelerin yapısı, Türkiye. Kalem 1 toplam kurulu kapasite (adet yumurta yeri), 2-8 kapasite aralığına göre gelişim makinesi sayısı; ikisi toplanmaz. 2014-2025."
 
 [indicator.sea_catch]
 label_tr = "Avlanan deniz ürünleri (yalnız Türkiye)"

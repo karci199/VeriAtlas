@@ -392,6 +392,15 @@ MEASURES = {
     "su-urunleri-05": ("aquaculture_production", ("fish_species",)),
     "su-urunleri-08": ("fishing_vessels", ("vessel_length", "sea_region")),
     "su-urunleri-09": ("fishery_workers", ("fishery_worker", "sea_region")),
+    # Prices before 2005 are old lira (Akya 2004: 7.500.000; 2005: 9,0), see OLD_LIRA.
+    "su-urunleri-02": ("sea_fish_price", ("fish_species",)),
+    "su-urunleri-04": ("inland_fish_price", ("fish_species",)),
+    "su-urunleri-06": ("aquaculture_price", ("fish_species",)),
+    "su-urunleri-07": ("fishery_expenses", ("fishery_expense",)),
+    "su-urunleri-10": ("fishery_capital", ("fishery_asset_flow", "fishery_asset")),
+    "kumes-04": ("chicken_hatcheries", ("hatchery_item",)),
+    "kumes-05": ("turkey_hatcheries", ("hatchery_item",)),
+    "kumes-06": ("quail_hatcheries", ("hatchery_item",)),
     "kirmizi-et-01": ("red_meat_production", ("meat_type",)),
     "hayvan-01": ("livestock", ("livestock",)),
     "hayvan-02#ton": ("animal_products_tonnes", ("animal_product",), "Ton"),
@@ -467,6 +476,10 @@ CODE_DIMS = {
     "fish_species",
     "vessel_length",
     "fishery_worker",
+    "fishery_expense",
+    "fishery_asset_flow",
+    "fishery_asset",
+    "hatchery_item",
 }
 PRODUCT = re.compile(r"^([\d.]+?)\.?\s*\((.*)\)$")
 
@@ -619,6 +632,38 @@ def read_export(
     return rows
 
 
+#: Prices MEDAS writes in old lira up to 2004: divided by 1.000.000 (the 2005
+#: redenomination). Expenses in the same topic are already in new lira.
+OLD_LIRA = {"sea_fish_price", "inland_fish_price", "aquaculture_price"}
+
+
+def old_lira_to_new(frame: pl.DataFrame, indicator_id: str) -> pl.DataFrame:
+    """Divide 2004 and earlier by a million, and check the step into 2005 is ordinary.
+
+    A series already in new lira before 2005 would come out a million times too small;
+    the 2004 → 2005 ratio of every series that has both years must stay within 0,2-5.
+    """
+    frame = frame.with_columns(
+        pl.when(pl.col("year") < 2005)
+        .then(pl.col("value") / 1_000_000)
+        .otherwise(pl.col("value"))
+        .alias("value")
+    )
+    edge = frame.filter(pl.col("year").is_in([2004, 2005])).pivot(
+        on="year", index=["area_id", "dims"], values="value"
+    )
+    if {"2004", "2005"} <= set(edge.columns):
+        bad = edge.filter(
+            (pl.col("2004") > 0)
+            & ~((pl.col("2005") / pl.col("2004")).is_between(0.2, 5.0))
+        )
+        if bad.height:
+            raise ValueError(
+                indicator_id + ": eski TL donusumu tutmuyor: " + str(bad.head(3).rows())
+            )
+    return frame
+
+
 class TopicMeasure:
     source_id = "tuik_medas"
     vintage = "2026-09"
@@ -674,6 +719,8 @@ class TopicMeasure:
                 .filter(pl.col("value") == 0)["year"]
             )
             frame = frame.filter(~(later & pl.col("year").is_in(empty.implode())))
+        if indicator_id in OLD_LIRA:
+            frame = old_lira_to_new(frame, indicator_id)
         if frame.select("area_id", "year", "dims").is_duplicated().any():
             raise ValueError(indicator_id + ": ayni alan-yil-kirilim iki kez")
 
