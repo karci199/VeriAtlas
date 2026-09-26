@@ -77,7 +77,7 @@ Jeton kullanıcının kimlik bilgisi; makineden çıkarılmıyor. Bunun yerine i
     mahalleler arası karşılaştırmada ayırt edici değil.
   - `OwnerShare`/`RentedShare`: tam sayı yüzde, %74'ü tekrarlı — kaba model çıktısı.
   - Şanlıurfa (63): `HouseIncome` ve harcama kalemleri köylerde taban değerde (Siverek'te
-    2.496); aynı şey Aksaray, Kilis, Ağrı, Karaman'da harcama kalemlerinde kısmen.
+    2.496); sağlık/eğitim harcamasında Ağrı, Muş, Şırnak, Kastamonu, Sinop, Bayburt'ta kısmen.
   - Nüfus, yaş, eğitim, medeni hal sayımlarında tekrar yok — TÜİK kökenliler temiz.
 
 ## Döküm durumu
