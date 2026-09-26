@@ -52,6 +52,7 @@ TOPICS = {
     "dogum": "Doğum İstatistikleri",
     "evlenme": "Evlenme İstatistikleri",
     "bosanma": "Boşanma İstatistikleri",
+    "bitkisel": "Bitkisel Üretim İstatistikleri",
 }
 
 #: Enough of the measure's row text to pick it out of the list. Overridden by `--olcum`.
@@ -180,6 +181,10 @@ SLICE: tuple[str, ...] = ()
 PROVINCE_INDEX = 0
 #: Set by `--tum-yillar`: tick every year the Zaman tab offers, not one.
 ALL_YEARS = False
+#: Set by VERIATLAS_YILLAR="2004,2005,...": tick exactly these years in one query and name
+#: the file by their range. Between one year and all of them: a province's districts for a
+#: few years at once, sized by uzun_bitkisel_ilce.py to stay under the 50.000-cell cap.
+YEAR_SET: tuple[int, ...] = ()
 
 
 def tick_by_name(page, names: tuple[str, ...]) -> int:
@@ -239,7 +244,8 @@ def indicator_count(page) -> int:
 
 
 def target_path(year: int, breakdown: bool):
-    return OUT / (STEM + ("kirilim-" if breakdown else "") + str(year) + ".csv")
+    label = f"{min(YEAR_SET)}-{max(YEAR_SET)}" if YEAR_SET else str(year)
+    return OUT / (STEM + ("kirilim-" if breakdown else "") + label + ".csv")
 
 
 def offered_years(page, tries: int = 6) -> list[int]:
@@ -353,7 +359,18 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
 
     # Zaman
     click_exact(page, "İleri")
-    if ALL_YEARS:
+    if YEAR_SET:
+        offered = offered_years(page)
+        missing = [y for y in YEAR_SET if y not in offered]
+        if missing:
+            print("  ", year, "listede olmayan yil:", missing, "sunulan:", offered[:25])
+            return False
+        for label in YEAR_SET:
+            row = page.locator(".z-listitem", has_text=str(label)).first
+            box = row.locator(".z-listitem-checkbox")
+            (box if box.count() else row).click()
+            settle(page)
+    elif ALL_YEARS:
         # One province at a time costs little: 81 indicators x ~15 districts x 19 years is
         # 23.000, well inside the 50.000 cap, so the whole series comes in one query
         # instead of one per year. Nineteen times fewer trips through the flow.
@@ -436,6 +453,16 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
 
     footer = page.inner_text("body")[-260:].replace("\n", " ")
     print("   ·", " ".join(footer.split())[-90:])
+    # "gösterge adedi: 405 X Seçilen düzey adedi: 17 X Seçilen zaman adedi: 6": over the
+    # cap MEDAS writes no file, silently. Said here, by name, so the caller can split.
+    counts = [int(n) for n in re.findall(r"adedi:\s*(\d+)", footer)]
+    if len(counts) == 3 and counts[0] * counts[1] * counts[2] > 50000:
+        print("   LIMIT_ASILDI", counts[0], "x", counts[1], "x", counts[2])
+        return False
+    if len(counts) == 3 and counts[1] < 2:
+        # Level or province selection did not take: the report would be Türkiye only.
+        print("   DUZEY_TUTMADI", counts)
+        return False
 
     # Rapor
     if not click_exact(page, "Rapor Oluştur"):
@@ -492,6 +519,9 @@ def main() -> None:
     # named after its own index.
     global PROVINCE_INDEX
     PROVINCE_INDEX = int(os.environ.get("VERIATLAS_IL_NO", "0") or 0)
+    global YEAR_SET
+    if os.environ.get("VERIATLAS_YILLAR"):
+        YEAR_SET = tuple(sorted(int(y) for y in os.environ["VERIATLAS_YILLAR"].split(",")))
     if "--tum-yillar" in sys.argv:
         global ALL_YEARS
         ALL_YEARS = True
@@ -543,7 +573,7 @@ def main() -> None:
             years = [y for y in offered_years(page) if y >= FIRST_YEAR]
             print("yillar:", years)
         else:
-            years = [int(y) for y in wanted] or [2023]
+            years = [min(YEAR_SET)] if YEAR_SET else ([int(y) for y in wanted] or [2023])
 
         for year in years:
             if target_path(year, breakdown).exists():
