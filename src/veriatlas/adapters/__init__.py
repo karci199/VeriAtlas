@@ -16,6 +16,7 @@ from .btk_tables import BTK_TABLE_ADAPTERS
 from .chain_stores import CHAIN_STORE_ADAPTERS
 from .dhmi import DHMI_ADAPTERS
 from .diyanet import DIYANET_ADAPTERS
+from .drdatastats import DRDATASTATS_ADAPTERS
 from .epdk import EPDK_ADAPTERS
 from .epdk_capacity import EPDK_CAPACITY_ADAPTERS
 from .epdk_dealer_deliveries import EPDK_DEALER_ADAPTERS
@@ -35,13 +36,13 @@ from .gsb import GSB_ADAPTERS
 from .iskur import ISKUR_ADAPTERS
 from .kgm import KGM_ADAPTERS
 from .ktb import KTB_ADAPTERS
+from .ktb_heritage import KtbHeritage
 from .meb_counts import MEB_COUNT_ADAPTERS
 from .meb_education import MEB_ADAPTERS
 from .meb_portal import MEB_PORTAL_ADAPTERS
 from .mgm import MGM_ADAPTERS
 from .muhasebat import MUHASEBAT_ADAPTERS
 from .networks import NETWORK_ADAPTERS
-from .drdatastats import DRDATASTATS_ADAPTERS
 from .odmd_market import ODMD_MARKET_ADAPTERS
 from .odmd_retail import ODMD_ADAPTERS
 from .oecd_tl3 import OECD_TL3_ADAPTERS
@@ -55,6 +56,7 @@ from .sgk_national import SGK_NATIONAL_ADAPTERS
 from .sgk_provinces import SGK_ADAPTERS
 from .skrs_facilities import SKRS_ADAPTERS
 from .skrs_schools import SKRS_SCHOOL_ADAPTERS
+from .tbb_lawyers import TbbLawyers
 from .tbb_provinces import TBB_ADAPTERS
 from .telecom_operators import TELECOM_ADAPTERS
 from .tesk import TESK_ADAPTERS
@@ -173,6 +175,8 @@ ADAPTERS = {
     **ODMD_ADAPTERS,
     **ODMD_MARKET_ADAPTERS,
     **DRDATASTATS_ADAPTERS,
+    "ktb_heritage": KtbHeritage,
+    "tbb_lawyers": TbbLawyers,
     **TURKPATENT_ADAPTERS,
     **OSYM_ADAPTERS,
     "yokatlas_min_rank": YokAtlasMinRank,

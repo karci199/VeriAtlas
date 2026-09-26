@@ -1516,6 +1516,24 @@ martyrs_veterans = "Şehit yakını ve gazi"
 hometown = "Hemşehri"
 womens_rights = "Kadın hakları (alanlarından biri)"
 
+# KTB Kültür Varlıkları ve Müzeler GM (adapters/ktb_heritage.py), 2026-09-26.
+[dim.heritage_type]
+label_tr = "Kültür varlığı türü"
+label_en = "Cultural asset type"
+
+[dim.heritage_type.values]
+protected_streets = "Korunmaya alınan sokak"
+monuments = "Anıt ve abide"
+administrative = "İdari yapı"
+cultural = "Kültürel yapı"
+martyrs_cemeteries = "Şehitlik"
+military = "Askeri yapı"
+industrial_commercial = "Endüstriyel ve ticari yapı"
+religious = "Dinsel yapı"
+cemeteries = "Mezarlık"
+civil_architecture = "Sivil mimarlık örneği"
+ruins = "Kalıntı"
+
 # Housing and construction (adapters/tuik_topics.py).
 [dim.sale_financing]
 label_tr = "Satış şekli"
@@ -6743,7 +6761,7 @@ unit = "item"
 frequency = "annual"
 dims = []
 views = ["table", "map", "line", "bar"]
-definition_tr = "Ticaret Bakanlığı; drdatastats.com derlemesi."
+definition_tr = "Semtlerde haftanın belli günleri açık alanda kurulan halk pazarı ve üretici pazarı. Ticaret Bakanlığı hal kayıt sistemi; yalnız kaydı olan iller (2024: 43 il), toplam eksik kalır. drdatastats.com derlemesi."
 
 [indicator.wholesale_produce_markets]
 label_tr = "Toptancı hali sayısı"
@@ -6794,6 +6812,26 @@ frequency = "annual"
 dims = ["scheme"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "SGK; 4/a işçi, 4/b esnaf, 4/c memur sigortalıları ve bakmakla yükümlü oldukları kişilerin il nüfusuna oranı; drdatastats.com derlemesi."
+
+[indicator.immovable_cultural_assets]
+label_tr = "Korunması gerekli taşınmaz kültür varlığı"
+label_en = "Immovable cultural assets under protection"
+topic = "kultur"
+unit = "item"
+frequency = "annual"
+dims = ["heritage_type"]
+views = ["table", "map", "bar"]
+definition_tr = "Kültür ve Turizm Bakanlığı Kültür Varlıkları ve Müzeler GM tescil istatistiği, yıl sonu. Bakanlık yalnız güncel yılı yayımlar."
+
+[indicator.lawyers]
+label_tr = "Baroya kayıtlı avukat"
+label_en = "Registered lawyers"
+topic = "adalet"
+unit = "person"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Türkiye Barolar Birliği, 31 Aralık itibarıyla barolara kayıtlı avukat; aynı ildeki barolar toplanır. 2000, 2001, 2011, 2013-2015 yok."
 
 [indicator.odmd_retail_sales]
 label_tr = "Otomobil ve hafif ticari araç perakende satışı (marka, aylık)"
