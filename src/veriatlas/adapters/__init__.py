@@ -27,7 +27,6 @@ from .epdk_monthly import EPDK_MONTHLY_ADAPTERS
 from .epdk_sarj import EPDK_SARJ_ADAPTERS
 from .etkb import ETKB_ADAPTERS
 from .etkb_balance import ETKB_BALANCE_ADAPTERS
-from .sgk_active_passive import SGK_ACTIVE_PASSIVE_ADAPTERS
 from .eurostat_regional import EUROSTAT_REGIONAL_ADAPTERS
 from .evds_archive import EVDS_ARCHIVE_ADAPTERS
 from .evds_groups import EVDS_GROUP_ADAPTERS
@@ -59,7 +58,9 @@ from .prodcom import PRODCOM_ADAPTERS
 from .ptt_postal import PTT_POSTAL_ADAPTERS
 from .saglik_yearbook import SAGLIK_YEARBOOK_ADAPTERS
 from .sege import SEGE_ADAPTERS
+from .sgk_active_passive import SGK_ACTIVE_PASSIVE_ADAPTERS
 from .sgk_national import SGK_NATIONAL_ADAPTERS
+from .sgk_pensions_granted import SGK_PENSIONS_GRANTED_ADAPTERS
 from .sgk_provinces import SGK_ADAPTERS
 from .skrs_facilities import SKRS_ADAPTERS
 from .skrs_schools import SKRS_SCHOOL_ADAPTERS
@@ -263,6 +264,7 @@ ADAPTERS = {
     **ETKB_ADAPTERS,
     **ETKB_BALANCE_ADAPTERS,
     **SGK_ACTIVE_PASSIVE_ADAPTERS,
+    **SGK_PENSIONS_GRANTED_ADAPTERS,
     **MGM_ADAPTERS,
     **BTK_TABLE_ADAPTERS,
     **BTK_POSTA_ADAPTERS,
