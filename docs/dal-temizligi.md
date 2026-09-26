@@ -50,3 +50,20 @@ Bu dal 2026-09-20'de tam yükleme yapmış (898 gösterge), sonra ana dala hiç
 birleştirilmemişti. Aynı gün ana dal BİM, Migros, Tarım Kredi, Vestel ve Koçtaş'ı başka
 yöntemle yeniden yazdı; eczane ve BKM ise sonraki yüklemelerde depodan düştü. Oturum
 sonunda dal ana dala alınmadıysa iş depoda görünür ama yarın yoktur.
+
+## İkinci tur (2026-09-26)
+
+Kalan 12 dal ve 11 worktree kaldırıldı; artık yalnız `main` ve o günün çalışma dalı var.
+Her dalın ucu `arsiv/<dal>` etiketiyle duruyor ve etiketler GitHub'a da gönderildi
+(`git push origin 'refs/tags/arsiv/*'`); geri almak için `git branch <dal> arsiv/<dal>`.
+
+Worktree'lerde git dışı kalan her şey silinmeden önce kopyalandı ve `cmp` ile birebir
+doğrulandı: `C:\veri-ham\arsiv\worktree-2026-09-26\<worktree>\`. Orada:
+
+- `HEAD.txt` — dal adı ve commit.
+- `uncommitted.patch` — commit edilmemiş değişiklik (cekme-islemleri-rapor, muhasebat-merkezi,
+  veri-cekme-devami); muhasebat'ta ayrıca kayıtsız `scripts/fetch_epias_eligible_consumer.py`.
+- Eski `public/fact.parquet` + `warehouse.duckdb` kopyaları (üç worktree), `yokatlas_nets` /
+  `yokatlas_programs.parquet`, `election-cache.csv` (719 MB), `docs/analizler/`.
+
+`.venv` klasörleri kopyalanmadı (`uv sync` yeniden kurar).
