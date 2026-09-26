@@ -220,6 +220,15 @@ dense_urban = "Yoğun kent"
 semi_dense_urban = "Orta yoğun kent"
 rural = "Kır"
 
+[dim.settlement]
+label_tr = "Yerleşim türü (yasal)"
+label_en = "Settlement type (legal)"
+
+[dim.settlement.values]
+town = "İl/ilçe merkezi (şehir)"
+village = "Belde ve köy"
+urban_rural_legal_no_village_category = "Köy statüsü kalktı (büyükşehir, 2013+)"
+
 [dim.age]
 label_tr = "Yaş grubu"
 label_en = "Age group"
@@ -2260,6 +2269,28 @@ additive = true
 dims = ["degurba"]
 views = ["table", "map", "bar"]
 definition_tr = "TÜİK ADNKS 31.12.2025, 'Kent-Kır Sınıflaması': her mahalle ve köy için Avrupa İstatistik Ofisi'nin Kentleşme Derecesi (DEGURBA) yöntemiyle yoğun kent / orta yoğun kent / kır sınıflaması, 1 km²'lik nüfus yoğunluğu gridlerine (MAKS+ADNKS) dayanır. Mahalle/köy kayıt numarasıyla nüfusa bağlanır (isimle değil — aynı ad birçok ilçede tekrarlanıyor); ikisi de Türkiye genelinde tekil. Büyükşehirleri de kapsayan ilk sınıflama: 2012 sonrası yasal tanım büyükşehirlerin tamamını 'şehir' sayıyordu, DEGURBA'ya göre 30 büyükşehrin ortalama %12,5'i kır (Ordu %41, Şanlıurfa %33). Türkiye toplamı: yoğun kent %67,5, orta yoğun kent %15,8, kır %16,7. Kaynağın kendi dosyasında bir mahalle (Adana/Aladağ/Akören, 872 kişi) sınıflamada eksik, tolere edildi. İl düzeyi; ilçe/mahalle düzeyi ham dosyada var, henüz ayrıştırılmadı. **Bilinen sınır:** DEGURBA'da 'orta yoğun kent' sayılmak için bitişik gridlerin toplam nüfusu en az 5.000 olmalı. Kalecik'te bu eşik nüfusça geçiliyor (2014 öncesi kasaba mahalleleri, düşük mahalle kayıt no'lu 20 mahalle, toplam 7.536 kişi — 178xxx ile başlayan yüksek no'lu 37 mahalle 2014'te köyden çevrildi) ama yine de tamamı 'kır': demek ki takılan nüfus değil yoğunluk kriteri (grid başına ≥300 kişi/km²) — nehir kıyısı kasabalarında bahçeli/dağınık doku bunu düşürebilir. Ham grid verisi elimizde olmadığı için TÜİK'in sonucu doğrulanamıyor, düzeltilemiyor; mahalle kayıt no'ları eski kasaba/yeni köy ayrımını okumak için kullanılabilir (düşük no = 2014 öncesi mahalle, ~178000+ ve çift sıra = 2014'te köyden dönüşen). Adaptör src/veriatlas/adapters/tuik_urban_rural_degurba.py."
+
+[indicator.urban_rural_legal]
+label_tr = "Kent-kır nüfusu (yasal tanım)"
+label_en = "Urban-rural population (legal definition)"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = false
+dims = ["settlement"]
+views = ["table", "line", "bar"]
+definition_tr = "TÜİK ADNKS 2007-2025, il/ilçe merkezi (şehir) ile belde+köy (köy) nüfusu — DEGURBA'dan önceki, idari (yoğunluk değil, hukuki statü) tanım. 6360 sayılı kanun büyükşehirlerde belde/köy statüsünü Mart 2014'te kaldırdı: 2013'ten itibaren büyükşehir illerinde 'köy' hücresi boş — sıfır değil, kategori artık yok (dims=urban_rural_legal_no_village_category), o ilin tüm nüfusu 'şehir' sayılır. 2012→2013 arası Türkiye kent nüfusundaki 11,6 milyonluk sıçrama kentleşme değil bu yasadır. 2007-2012 arası (ve büyükşehir olmayan illerde her yıl) gerçek kent-kır ayrımını verir; 2013+ büyükşehirlerde anlamsızdır. İlçe düzeyi `urban_rural_legal_district`'te, MEDAS koduyla (yılın kodu o yılı tutan ilçeye çözülür). Adaptör src/veriatlas/adapters/tuik_urban_rural_legal.py."
+
+[indicator.urban_rural_legal_district]
+label_tr = "Kent-kır nüfusu, ilçe (yasal tanım)"
+label_en = "Urban-rural population by district (legal definition)"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = false
+dims = ["settlement"]
+views = ["table", "line", "bar"]
+definition_tr = "urban_rural_legal ile aynı kaynak ve tanım, ilçe düzeyinde. Bazı merkez ilçelerde (Çankaya, Etimesgut, Yenimahalle gibi) 2013'ten önce de köy hücresi boştur — bu 2013 yasasından değil, o ilçenin zaten tamamen kentleşmiş olmasından; gerçek sıfır olarak (settlement=village, value=0) yazıldı, kategori kalktı bayrağından ayrı tutuldu."
 
 [indicator.crop_balance]
 label_tr = "Bitkisel ürün denge tablosu"

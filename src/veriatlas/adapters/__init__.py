@@ -106,6 +106,7 @@ from .tuik_tfr import TuikTfr
 from .tuik_topics import TOPIC_ADAPTERS
 from .tuik_turnover import TURNOVER_ADAPTERS
 from .tuik_urban_rural_degurba import URBAN_RURAL_DEGURBA_ADAPTERS
+from .tuik_urban_rural_legal import URBAN_RURAL_LEGAL_ADAPTERS
 from .tuik_vehicle_km import VEHICLE_KM_ADAPTERS
 from .tuik_vehicle_sdmx import VEHICLE_SDMX_ADAPTERS
 from .tuik_vehicle_stock import TuikVehicleStock
@@ -165,6 +166,7 @@ ADAPTERS = {
     **RETAIL_ADAPTERS,
     **TURNOVER_ADAPTERS,
     **URBAN_RURAL_DEGURBA_ADAPTERS,
+    **URBAN_RURAL_LEGAL_ADAPTERS,
     **NARROW_ADAPTERS,
     # Births and deaths: same download, transposed file, so a parser of their own.
     **VITAL_ADAPTERS,
