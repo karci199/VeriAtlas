@@ -26303,6 +26303,14 @@ label_en = "TRY per day"
 decimals = 2
 additive = false
 
+[dim.insurance_type]
+label_tr = "Sigortalılık türü"
+label_en = "Insurance type"
+
+[dim.insurance_type.values]
+compulsory = "Zorunlu"
+voluntary = "İsteğe bağlı"
+
 [dim.scheme]
 label_tr = "Sigortalılık kapsamı"
 label_en = "Scheme"
@@ -27313,6 +27321,17 @@ frequency = "annual"
 dims = ["job_tenure", "incapacity_days", "outcome", "scheme", "sex"]
 views = ["table", "line", "bar"]
 definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
+
+[indicator.sgk_active_insured_by_age]
+label_tr = "Aktif sigortalı 4/b ve 4/c (tek yaş)"
+label_en = "Active insured 4/b and 4/c, by age"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["age", "insurance_type", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllıkları 2012-2025, 'Aktif Sigortalıların Yaş ve Cinsiyete Göre Dağılımı', 4/b ve 4/c, tek yaş (18'den; en yaşlılar '65+' ya da '80 ve üzeri'). 4/b'nin tarım dışı, tarım ve muhtar grupları toplandı; isteğe bağlı sigortalılar ayrı basıldığı yıllarda insurance_type=voluntary. 4/c tabloları her yıllıkta birkaç yılı yan yana basar: yıl başlığıyla ham sayfadan okundu, her yıl onu basan en son yıllıktan. Her sütunun yaşları basılı Toplam'ı, gruplar Toplam grubunu tutmalı. 4/a'nın yaş dağılımı yalnız prim günü ve sigortalılık süresiyle çapraz basılır, burada yok. Türkiye geneli. Adaptör src/veriatlas/adapters/sgk_insured_by_age.py."
 
 [indicator.sgk_pensioners_by_age]
 label_tr = "Aylık alanlar (tek yaş, yıl sonu)"

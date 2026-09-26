@@ -59,6 +59,7 @@ from .ptt_postal import PTT_POSTAL_ADAPTERS
 from .saglik_yearbook import SAGLIK_YEARBOOK_ADAPTERS
 from .sege import SEGE_ADAPTERS
 from .sgk_active_passive import SGK_ACTIVE_PASSIVE_ADAPTERS
+from .sgk_insured_by_age import SGK_INSURED_BY_AGE_ADAPTERS
 from .sgk_national import SGK_NATIONAL_ADAPTERS
 from .sgk_pensions_granted import SGK_PENSIONS_GRANTED_ADAPTERS
 from .sgk_provinces import SGK_ADAPTERS
@@ -264,6 +265,7 @@ ADAPTERS = {
     **ETKB_ADAPTERS,
     **ETKB_BALANCE_ADAPTERS,
     **SGK_ACTIVE_PASSIVE_ADAPTERS,
+    **SGK_INSURED_BY_AGE_ADAPTERS,
     **SGK_PENSIONS_GRANTED_ADAPTERS,
     **MGM_ADAPTERS,
     **BTK_TABLE_ADAPTERS,
