@@ -65,6 +65,8 @@ LATER = (
 PROVINCES = 81
 CELLS = 45000
 GUESS_DISTRICTS = 20
+#: Districts in the country, for sizing a whole-country query.
+ALL_DISTRICTS = 973
 DISTRICT_COLUMN = re.compile(r"\([^|]*\)-\d+")
 
 
@@ -189,9 +191,24 @@ def main() -> None:
     for topic, key, row in jobs():
         indicators = row["indicators"]
         years = sorted(row["years"], reverse=True)
-        first = max(1, min(len(years), CELLS // (indicators * GUESS_DISTRICTS)))
-        log("==", key, indicators, "gosterge,", len(years), "yil, ilk grup", first)
-        for province in range(1, PROVINCES + 1):
+        # A narrow measure takes the whole country at once (province 0 = "HEPSİ"): one
+        # indicator x 973 districts x 22 years is 21.000 cells, and asking it province by
+        # province cost 81 queries where one or two do.
+        whole = indicators * ALL_DISTRICTS <= CELLS
+        provinces = [0] if whole else list(range(1, PROVINCES + 1))
+        spread = ALL_DISTRICTS if whole else GUESS_DISTRICTS
+        first = max(1, min(len(years), CELLS // (indicators * spread)))
+        log(
+            "==",
+            key,
+            indicators,
+            "gosterge,",
+            len(years),
+            "yil, ilk grup",
+            first,
+            "| butun ulke tek sorguda" if whole else "| il il",
+        )
+        for province in provinces:
             size = state.get(f"{key}:{province}", first)
             left = list(years)
             while left:
