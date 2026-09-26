@@ -96,6 +96,7 @@ from .tuik_simple import NARROW_ADAPTERS
 from .tuik_tfr import TuikTfr
 from .tuik_topics import TOPIC_ADAPTERS
 from .tuik_vehicle_km import VEHICLE_KM_ADAPTERS
+from .tuik_vehicle_sdmx import VEHICLE_SDMX_ADAPTERS
 from .tuik_vehicle_stock import TuikVehicleStock
 from .tuik_vehicles import VEHICLE_ADAPTERS
 from .tuik_villages import TuikVillagePopulation
@@ -172,6 +173,7 @@ ADAPTERS = {
     # Vehicle-kilometres, TÜİK Veri Portalı.
     **VEHICLE_KM_ADAPTERS,
     "tuik_vehicle_stock": TuikVehicleStock,
+    **VEHICLE_SDMX_ADAPTERS,
     **ODMD_ADAPTERS,
     **ODMD_MARKET_ADAPTERS,
     **DRDATASTATS_ADAPTERS,

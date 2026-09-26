@@ -2901,6 +2901,23 @@ driver = "Sürücü"
 passenger = "Yolcu"
 pedestrian = "Yaya"
 
+[dim.vehicle_use]
+label_tr = "Kullanım amacı"
+label_en = "Use"
+
+[dim.vehicle_use.values]
+private = "Hususi"
+commercial = "Ticari"
+official = "Resmî"
+
+# TÜİK's oldest band, "1983 and earlier"; other values are the model year itself.
+[dim.model_year]
+label_tr = "Model yılı"
+label_en = "Model year"
+
+[dim.model_year.values]
+"-1983" = "1983 ve öncesi"
+
 [dim.registration]
 label_tr = "Kayıt durumu"
 label_en = "Registration status"
@@ -6614,6 +6631,36 @@ frequency = "annual"
 dims = ["vehicle_type"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "Yıl sonunda (Aralık) trafiğe kayıtlı taşıt sayısı (stok), taşıt türüne göre. Kaynak TÜİK SDMX akışı DF_MOTORLU_KARA_TASIT_ILLER_V3."
+
+[indicator.vehicles_by_use]
+label_tr = "Trafiğe kayıtlı taşıt (kullanım amacına göre)"
+label_en = "Registered vehicles by use"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["vehicle_type", "vehicle_use"]
+views = ["table", "line", "bar"]
+definition_tr = "Yıl sonunda trafiğe kayıtlı taşıt (stok), tür × hususi/ticari/resmî. Yalnız Türkiye. Kaynak TÜİK SDMX akışı DF_MOTORLU_KARA_TASIT_KULLANIM_AMAC_V2."
+
+[indicator.vehicles_by_model_year]
+label_tr = "Trafiğe kayıtlı taşıt (model yılına göre)"
+label_en = "Registered vehicles by model year"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["vehicle_type", "model_year"]
+views = ["table", "line", "bar"]
+definition_tr = "Yıl sonunda trafiğe kayıtlı taşıt (stok), tür × model yılı; en eski dilim 1983 ve öncesi. Yalnız Türkiye. Kaynak TÜİK SDMX akışı DF_MOTORLU_KARA_TASIT_MODEL_YIL_V2."
+
+[indicator.cars_by_fuel]
+label_tr = "Trafiğe kayıtlı otomobil (yakıt türüne göre)"
+label_en = "Registered cars by fuel"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["fuel"]
+views = ["table", "line", "bar"]
+definition_tr = "Aralık sonunda trafiğe kayıtlı otomobil (stok), yakıt türüne göre; yalnız otomobil, yalnız Türkiye. Elektrik 2011, hibrit 2012'den itibaren. Kaynak TÜİK SDMX akışı DF_MOTORLU_KARA_TASIT_YAKIT_CINSI_V4."
 
 [indicator.ip_applications_by_province]
 label_tr = "Yerli sınai mülkiyet başvurusu (il)"
