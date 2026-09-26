@@ -52,6 +52,7 @@ from .oecd_tl3 import OECD_TL3_ADAPTERS
 from .ookla_speed import OOKLA_ADAPTERS
 from .osym_programs import OSYM_ADAPTERS
 from .pharmacies import PHARMACY_ADAPTERS
+from .prodcom import PRODCOM_ADAPTERS
 from .ptt_postal import PTT_POSTAL_ADAPTERS
 from .saglik_yearbook import SAGLIK_YEARBOOK_ADAPTERS
 from .sege import SEGE_ADAPTERS
@@ -244,6 +245,7 @@ ADAPTERS = {
     **OECD_TL3_ADAPTERS,
     **GIB_ADAPTERS,
     **MERSIS_ADAPTERS,
+    **PRODCOM_ADAPTERS,
     **VAP_ADAPTERS,
     **FINTURK_ADAPTERS,
     **TIM_SECTOR_ADAPTERS,
