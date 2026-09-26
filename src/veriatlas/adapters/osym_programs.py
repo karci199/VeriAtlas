@@ -125,6 +125,7 @@ def read_table(path: Path) -> list[dict]:
                 "program": program.strip(),
                 "quota": number(r[quota]) or 0.0,
                 "placed": number(r[quota + 1]) or 0.0,
+                "min_score": number(r[quota + 2]),
             }
         )
     return out
@@ -140,13 +141,13 @@ def placed_programmes(raw: Path) -> pl.DataFrame:
         for c, i, g, t in guide.select(
             "kilavuzKodu", "ilKodu", "birimGrupAdi", "universiteTuru"
         ).iter_rows()
-        if i is not None
+        if i is not None and 1 <= int(i) <= 81
     }
     uni_province, uni_type = {}, {}
     for name, il, t in guide.select(
         "universiteAdi", "uniIlKodu", "universiteTuru"
     ).iter_rows():
-        if il is not None:
+        if il is not None and 1 <= int(il) <= 81:
             uni_province.setdefault(uni_key(name), int(il))
         uni_type.setdefault(uni_key(name), t)
     group_of = {}
@@ -229,10 +230,14 @@ class OsymBase:
                 + ", ".join(sorted(unknown)[:20])
             )
         keys = ["year", "gcode", "level", "utype"]
-        prov = df.group_by(["area_id", *keys]).agg(
-            pl.col(self.measure).sum().alias("value")
-        )
-        tr = df.group_by(keys).agg(pl.col(self.measure).sum().alias("value"))
+        if self.measure == "min_score":
+            # A score cannot be summed: the median of the programmes' lowest placed score.
+            df = df.filter(pl.col("min_score").is_not_null() & (pl.col("placed") > 0))
+            agg = pl.col("min_score").median().alias("value")
+        else:
+            agg = pl.col(self.measure).sum().alias("value")
+        prov = df.group_by(["area_id", *keys]).agg(agg)
+        tr = df.group_by(keys).agg(agg)
         tr = tr.with_columns(pl.lit("TR").alias("area_id"))
         both = pl.concat([prov, tr.select(prov.columns)])
         indicator = get(self.indicator_id)
@@ -287,4 +292,13 @@ class OsymPlaced(OsymBase):
     measure = "placed"
 
 
-OSYM_ADAPTERS = {"osym_program_quota": OsymQuota, "osym_program_placed": OsymPlaced}
+class OsymMinScore(OsymBase):
+    indicator_id = "osym_program_min_score"
+    measure = "min_score"
+
+
+OSYM_ADAPTERS = {
+    "osym_program_quota": OsymQuota,
+    "osym_program_placed": OsymPlaced,
+    "osym_program_min_score": OsymMinScore,
+}

@@ -1,11 +1,11 @@
-# Envanter — depodaki 953 gösterge
+# Envanter — depodaki 955 gösterge
 
 **Bu dosya elle yazılmaz.** `scripts/build_inventory.py` warehouse'tan üretir;
 burada olmayan gösterge depoda yok demektir. Yeni kaynak önermeden önce buraya
 bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni iş' diye
 önerildi, üçü de zaten yüklüydü.
 
-Üretim: 2026-09-26 · 21.826.096 satır
+Üretim: 2026-09-26 · 21.951.757 satır
 
 ## evds_arsiv (177)
 
@@ -367,7 +367,7 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `sgk_workplaces_by_tenure` | 4/a iş yeri. niteliğe göre | il | 2010-2025 | 2.592 | sgk |
 | `unemployment_rate` | İşsizlik oranı | TR. il | 2022-2025 | 984 | tuik_portal |
 
-## egitim (42)
+## egitim (44)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
@@ -384,8 +384,9 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `literacy_by_age` | Okuma yazma durumu (yaş grubu) | il | 2008-2025 | 12.399 | tuik_medas |
 | `literacy_district` | Okuma yazma durumu (ilçe) | ilçe | 2008-2025 | 1.215.089 | tuik_medas |
 | `mean_years_of_schooling` | Ortalama eğitim süresi | TR. il | 2011-2025 | 1.230 | tuik_medas |
-| `osym_program_placed` | Üniversiteye yerleşen (bölüm. yıllık) | TR. il | 2017-2025 | 87.012 | osym |
-| `osym_program_quota` | Üniversite genel kontenjanı (bölüm. yıllık) | TR. il | 2017-2025 | 87.012 | osym |
+| `osym_program_min_score` | Üniversite taban puanı (bölüm. programların medyanı) | TR. il | 2017-2025 | 86.421 | osym |
+| `osym_program_placed` | Üniversiteye yerleşen (bölüm. yıllık) | TR. il | 2017-2025 | 86.848 | osym |
+| `osym_program_quota` | Üniversite genel kontenjanı (bölüm. yıllık) | TR. il | 2017-2025 | 86.848 | osym |
 | `schools` | Okul sayısı | il | 2012-2024 | 5.265 | tuik_medas |
 | `schools_2017` | Okul sayısı (2017. ilçe) | il. ilçe | 2017-2017 | 8.027 | skrs |
 | `schools_by_type` | Okul sayısı (tür ve resmî/özel) | il | 2002-2024 | 17.820 | meb_portal |
@@ -393,6 +394,7 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `students_by_type` | Öğrenci sayısı (tür. resmî/özel. cinsiyet) | il | 2012-2024 | 42.120 | meb_portal |
 | `teachers` | Öğretmen sayısı | il | 2012-2024 | 10.530 | tuik_medas |
 | `teachers_by_type` | Öğretmen sayısı (tür. resmî/özel. cinsiyet) | il | 2012-2024 | 33.608 | meb_portal |
+| `university_min_rank` | Üniversite taban başarı sırası (bölüm. programların medyanı) | TR. il | 2022-2025 | 39.568 | yok_atlas |
 | `university_programs` | Üniversite program sayısı (YKS tercih kılavuzu) | il | 2026-2026 | 187 | yok_atlas |
 | `university_quota` | Üniversite kontenjanı (YKS tercih kılavuzu) | il | 2026-2026 | 187 | yok_atlas |
 | `yks_applicants_by_school` | Üniversiteye başvuran ve yerleşen aday. okul türü ve aday durumuna göre | TR | 2015-2025 | 5.654 | yok_istatistik |
@@ -576,42 +578,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `section_size` | Şube mevcudu (öğrenci/şube) | il | 2012-2024 | 3.159 | meb_egitim |
 | `temporary_protection_syrians` | Geçici koruma altındaki Suriyeliler | TR. il | 2026-2026 | 82 | goc_idaresi |
 
-## cocuk (31)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `adolescent_birth_share` | Adölesan doğum oranı | TR. il | 2009-2025 | 1.394 | tuik_medas |
-| `births_to_child_mothers` | Çocuk annelerin doğumu | TR | 2009-2025 | 17 | tuik_medas |
-| `caesarean_share` | Sezaryen doğum oranı | TR | 2008-2024 | 17 | tuik_medas |
-| `child_crime_victims` | Suç mağduru çocuk | TR | 2015-2025 | 572 | tuik_medas |
-| `child_dependency_ratio` | Çocuk bağımlılık oranı (0-14) | TR. il | 2007-2025 | 1.558 | tuik_medas |
-| `child_incident_victims` | Takibi gereken olay mağduru çocuk | TR | 2015-2025 | 22 | tuik_medas |
-| `child_marriage_share` | 16-17 yaşında evlenenlerin evlenmeler içindeki oranı | TR. il | 2002-2025 | 3.850 | tuik_medas |
-| `child_marriages` | 16-17 yaşında evlenen çocuk | TR. il | 2002-2025 | 3.850 | tuik_medas |
-| `child_misdemeanour_victims` | Kabahat mağduru çocuk | TR | 2015-2025 | 22 | tuik_medas |
-| `child_police_referrals` | Güvenlik birimine gelen veya getirilen çocuk | TR | 2015-2025 | 528 | tuik_medas |
-| `child_population_growth` | Yıllık çocuk nüfus artış hızı | TR. il | 2008-2025 | 2.952 | tuik_medas |
-| `child_population_share` | Çocuk nüfus oranı (0-17) | TR. il | 2007-2025 | 3.116 | tuik_medas |
-| `child_sex_ratio` | Çocuk cinsiyet oranı | TR. il | 2007-2025 | 1.558 | tuik_medas |
-| `child_suicide_rate` | Çocuk intihar hızı (100.000) | TR | 2002-2025 | 48 | tuik_medas |
-| `children_cared_at_home` | Evde bakılan çocuk | TR | 2015-2025 | 11 | tuik_medas |
-| `children_in_after_school_care` | Zorunlu eğitim dışında bakım merkezine giden çocuk | TR | 2015-2025 | 11 | tuik_medas |
-| `children_in_custody_cases` | Velayete verilen çocuk | TR | 2010-2025 | 16 | tuik_medas |
-| `children_in_daycare` | Kreşe giden çocuk | TR | 2015-2025 | 11 | tuik_medas |
-| `children_in_single_parent_households` | Tek ebeveynli hanede yaşayan çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
-| `children_pushed_into_crime` | Suça sürüklenen çocuk | TR | 2015-2025 | 572 | tuik_medas |
-| `dtap3_vaccination` | Beşli karma aşı 3. doz aşılama hızı | TR | 2008-2024 | 17 | tuik_medas |
-| `facility_birth_share` | Sağlık kuruluşunda gerçekleşen doğum oranı | TR | 2009-2024 | 16 | tuik_medas |
-| `foreign_born_children` | Doğum yeri yurt dışı olan çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
-| `foreign_national_children` | Yabancı uyruklu çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
-| `households_with_children` | Çocuk bulunan hanehalkı | TR. il | 2014-2025 | 984 | tuik_medas |
-| `maternal_mortality` | Anne ölüm oranı (100.000 canlı doğumda) | TR | 2007-2024 | 18 | tuik_medas |
-| `neonatal_mortality` | Neonatal ölüm hızı | TR | 2009-2025 | 34 | tuik_medas |
-| `postneonatal_mortality` | Postneonatal ölüm hızı | TR | 2009-2025 | 34 | tuik_medas |
-| `preschool_gross_enrolment` | Okul öncesi brüt okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
-| `preschool_net_enrolment` | Okul öncesi net okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
-| `single_parent_households_with_children` | Çocuk bulunan tek ebeveynli hane | TR. il | 2014-2025 | 984 | tuik_medas |
-
 ## kultur (31)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -647,6 +613,42 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `theatre_performances` | Tiyatro gösterisi (yerli/yabancı eser) | TR. il | 2000-2025 | 4.264 | tuik_medas |
 | `theatre_seats` | Tiyatro koltuğu | TR. il | 2000-2025 | 2.132 | tuik_medas |
 | `theatre_works` | Sahnelenen eser (yerli/yabancı) | TR. il | 2000-2025 | 4.264 | tuik_medas |
+
+## cocuk (31)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `adolescent_birth_share` | Adölesan doğum oranı | TR. il | 2009-2025 | 1.394 | tuik_medas |
+| `births_to_child_mothers` | Çocuk annelerin doğumu | TR | 2009-2025 | 17 | tuik_medas |
+| `caesarean_share` | Sezaryen doğum oranı | TR | 2008-2024 | 17 | tuik_medas |
+| `child_crime_victims` | Suç mağduru çocuk | TR | 2015-2025 | 572 | tuik_medas |
+| `child_dependency_ratio` | Çocuk bağımlılık oranı (0-14) | TR. il | 2007-2025 | 1.558 | tuik_medas |
+| `child_incident_victims` | Takibi gereken olay mağduru çocuk | TR | 2015-2025 | 22 | tuik_medas |
+| `child_marriage_share` | 16-17 yaşında evlenenlerin evlenmeler içindeki oranı | TR. il | 2002-2025 | 3.850 | tuik_medas |
+| `child_marriages` | 16-17 yaşında evlenen çocuk | TR. il | 2002-2025 | 3.850 | tuik_medas |
+| `child_misdemeanour_victims` | Kabahat mağduru çocuk | TR | 2015-2025 | 22 | tuik_medas |
+| `child_police_referrals` | Güvenlik birimine gelen veya getirilen çocuk | TR | 2015-2025 | 528 | tuik_medas |
+| `child_population_growth` | Yıllık çocuk nüfus artış hızı | TR. il | 2008-2025 | 2.952 | tuik_medas |
+| `child_population_share` | Çocuk nüfus oranı (0-17) | TR. il | 2007-2025 | 3.116 | tuik_medas |
+| `child_sex_ratio` | Çocuk cinsiyet oranı | TR. il | 2007-2025 | 1.558 | tuik_medas |
+| `child_suicide_rate` | Çocuk intihar hızı (100.000) | TR | 2002-2025 | 48 | tuik_medas |
+| `children_cared_at_home` | Evde bakılan çocuk | TR | 2015-2025 | 11 | tuik_medas |
+| `children_in_after_school_care` | Zorunlu eğitim dışında bakım merkezine giden çocuk | TR | 2015-2025 | 11 | tuik_medas |
+| `children_in_custody_cases` | Velayete verilen çocuk | TR | 2010-2025 | 16 | tuik_medas |
+| `children_in_daycare` | Kreşe giden çocuk | TR | 2015-2025 | 11 | tuik_medas |
+| `children_in_single_parent_households` | Tek ebeveynli hanede yaşayan çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
+| `children_pushed_into_crime` | Suça sürüklenen çocuk | TR | 2015-2025 | 572 | tuik_medas |
+| `dtap3_vaccination` | Beşli karma aşı 3. doz aşılama hızı | TR | 2008-2024 | 17 | tuik_medas |
+| `facility_birth_share` | Sağlık kuruluşunda gerçekleşen doğum oranı | TR | 2009-2024 | 16 | tuik_medas |
+| `foreign_born_children` | Doğum yeri yurt dışı olan çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
+| `foreign_national_children` | Yabancı uyruklu çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
+| `households_with_children` | Çocuk bulunan hanehalkı | TR. il | 2014-2025 | 984 | tuik_medas |
+| `maternal_mortality` | Anne ölüm oranı (100.000 canlı doğumda) | TR | 2007-2024 | 18 | tuik_medas |
+| `neonatal_mortality` | Neonatal ölüm hızı | TR | 2009-2025 | 34 | tuik_medas |
+| `postneonatal_mortality` | Postneonatal ölüm hızı | TR | 2009-2025 | 34 | tuik_medas |
+| `preschool_gross_enrolment` | Okul öncesi brüt okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
+| `preschool_net_enrolment` | Okul öncesi net okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
+| `single_parent_households_with_children` | Çocuk bulunan tek ebeveynli hane | TR. il | 2014-2025 | 984 | tuik_medas |
 
 ## saglik (30)
 
@@ -886,26 +888,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `services_ppi` | Hizmet üretici fiyat endeksi | TR | 2017-2026 | 5.865 | cbrt_evds |
 | `usd_try_buying` | ABD doları alış kuru | TR | 1970-2026 | 14.292 | cbrt_evds |
 
-## karayolu (15)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `bridge_length` | Büyük köprü uzunluğu | TR | 2002-2024 | 138 | kgm |
-| `bridges` | Büyük köprü sayısı | TR | 2002-2024 | 138 | kgm |
-| `divided_road_length` | Bölünmüş yol uzunluğu | il | 2009-2025 | 1.620 | kgm |
-| `divided_road_length_province` | Bölünmüş yol uzunluğu. il (yıllar) | il | 2009-2025 | 729 | kgm |
-| `kgm_passenger_km` | KGM yollarında yolcu-km. il | il | 2012-2025 | 2.592 | kgm |
-| `kgm_tonne_km` | KGM yollarında ton-km. il | il | 2012-2025 | 2.592 | kgm |
-| `kgm_vehicle_km` | KGM yollarında taşıt-km. il | il | 2012-2025 | 2.592 | kgm |
-| `motorway_length` | Otoyol uzunluğu | il | 2000-2025 | 728 | kgm |
-| `road_distance_between_districts` | İlçeler arası karayolu mesafesi | il. ilçe | 2026-2026 | 1.005.006 | kgm |
-| `road_distance_between_provinces` | İller arası karayolu mesafesi | il | 2010-2026 | 64.800 | kgm |
-| `road_length_by_surface` | Devlet ve il yolu uzunluğu (kaplama türüne göre) | il | 2009-2025 | 9.720 | kgm |
-| `road_length_by_surface_province` | Devlet ve il yolu uzunluğu. il ve kaplama türüne göre (yıllar) | il | 2009-2025 | 4.374 | kgm |
-| `road_length_history` | Devlet ve il yolu uzunluğu. 1967'den | TR | 1967-2025 | 354 | kgm |
-| `traffic_accidents_total` | Trafik kazası sayısı (maddi hasarlı dahil) | TR | 2006-2016 | 22 | kgm |
-| `traffic_casualties` | Trafik kazasında ölen ve yaralanan | TR | 2006-2016 | 24 | kgm |
-
 ## gayrimenkul_fiyat (15)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -925,6 +907,26 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `office_unit_price` | Ofis birim fiyatı | TR. il | 2015-2025 | 341 | cbrt_evds |
 | `shop_price_index` | Dükkân fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
 | `shop_unit_price` | Dükkân birim fiyatı | TR. il | 2015-2025 | 869 | cbrt_evds |
+
+## karayolu (15)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `bridge_length` | Büyük köprü uzunluğu | TR | 2002-2024 | 138 | kgm |
+| `bridges` | Büyük köprü sayısı | TR | 2002-2024 | 138 | kgm |
+| `divided_road_length` | Bölünmüş yol uzunluğu | il | 2009-2025 | 1.620 | kgm |
+| `divided_road_length_province` | Bölünmüş yol uzunluğu. il (yıllar) | il | 2009-2025 | 729 | kgm |
+| `kgm_passenger_km` | KGM yollarında yolcu-km. il | il | 2012-2025 | 2.592 | kgm |
+| `kgm_tonne_km` | KGM yollarında ton-km. il | il | 2012-2025 | 2.592 | kgm |
+| `kgm_vehicle_km` | KGM yollarında taşıt-km. il | il | 2012-2025 | 2.592 | kgm |
+| `motorway_length` | Otoyol uzunluğu | il | 2000-2025 | 728 | kgm |
+| `road_distance_between_districts` | İlçeler arası karayolu mesafesi | il. ilçe | 2026-2026 | 1.005.006 | kgm |
+| `road_distance_between_provinces` | İller arası karayolu mesafesi | il | 2010-2026 | 64.800 | kgm |
+| `road_length_by_surface` | Devlet ve il yolu uzunluğu (kaplama türüne göre) | il | 2009-2025 | 9.720 | kgm |
+| `road_length_by_surface_province` | Devlet ve il yolu uzunluğu. il ve kaplama türüne göre (yıllar) | il | 2009-2025 | 4.374 | kgm |
+| `road_length_history` | Devlet ve il yolu uzunluğu. 1967'den | TR | 1967-2025 | 354 | kgm |
+| `traffic_accidents_total` | Trafik kazası sayısı (maddi hasarlı dahil) | TR | 2006-2016 | 22 | kgm |
+| `traffic_casualties` | Trafik kazasında ölen ve yaralanan | TR | 2006-2016 | 24 | kgm |
 
 ## turizm (14)
 
@@ -1016,19 +1018,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `road_injured_per_million_vehicles` | Milyon taşıta yaralanan | TR. il | 1995-2025 | 2.542 | tuik_medas |
 | `vehicles_in_injury_accidents` | Ölümlü yaralanmalı kazaya karışan taşıt (yalnız Türkiye) | TR | 2012-2025 | 126 | tuik_medas |
 
-## evlenme_bosanma (8)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `consanguineous_marriage` | Akraba evliliği oranı | TR. il | 2010-2025 | 1.312 | tuik_medas |
-| `divorces` | Boşanma sayısı | TR. il | 2001-2025 | 2.050 | tuik_medas |
-| `divorces_district` | Boşanma sayısı (ilçe) | ilçe | 2014-2025 | 11.642 | tuik_medas |
-| `marriages` | Evlenme sayısı | TR. il | 2001-2025 | 2.050 | tuik_medas |
-| `marriages_by_age` | Evlenme sayısı (kadın ve erkeğin yaş grubuyla) | TR. il | 2001-2025 | 144.468 | tuik_medas |
-| `marriages_district` | Evlenme sayısı (ilçe) | ilçe | 2014-2025 | 11.659 | tuik_medas |
-| `mean_first_marriage_age` | Ortalama ilk evlenme yaşı | TR. il | 2001-2025 | 4.100 | tuik_medas |
-| `mean_marriage_age` | Ortalama evlenme yaşı | TR. il | 2001-2025 | 6.150 | tuik_medas |
-
 ## ucretler (8)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1042,17 +1031,18 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `minimum_wage` | Asgari ücret | TR | 1996-2026 | 1.086 | csgb |
 | `severance_pay_ceiling` | Kıdem tazminatı tavanı | TR | 1980-2026 | 553 | hmb_bumko |
 
-## medya (7)
+## evlenme_bosanma (8)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `circulation` | Yayınların tirajı (yalnız Türkiye) | TR | 2005-2022 | 108 | tuik_medas |
-| `media_employees` | Basın çalışanı (tür × cinsiyet × unvan) | TR. İBBS-2 | 2005-2022 | 32.260 | tuik_medas |
-| `online_publication_visitors` | İnternet yayını ziyaretçi sayısı | TR. İBBS-2 | 2005-2022 | 1.663 | tuik_medas |
-| `online_publications` | İnternet yayını yapan yayın | TR. İBBS-2 | 2005-2022 | 1.527 | tuik_medas |
-| `press_card_holders` | Sarı basın kartı sahibi personel | TR. İBBS-2 | 2005-2022 | 1.757 | tuik_medas |
-| `print_runs` | Yayınların baskı sayısı (yalnız Türkiye) | TR | 2005-2022 | 72 | tuik_medas |
-| `publications_by_print` | Yayın sayısı (tür × baskı tekniği) | TR. İBBS-2 | 2005-2022 | 1.469 | tuik_medas |
+| `consanguineous_marriage` | Akraba evliliği oranı | TR. il | 2010-2025 | 1.312 | tuik_medas |
+| `divorces` | Boşanma sayısı | TR. il | 2001-2025 | 2.050 | tuik_medas |
+| `divorces_district` | Boşanma sayısı (ilçe) | ilçe | 2014-2025 | 11.642 | tuik_medas |
+| `marriages` | Evlenme sayısı | TR. il | 2001-2025 | 2.050 | tuik_medas |
+| `marriages_by_age` | Evlenme sayısı (kadın ve erkeğin yaş grubuyla) | TR. il | 2001-2025 | 144.468 | tuik_medas |
+| `marriages_district` | Evlenme sayısı (ilçe) | ilçe | 2014-2025 | 11.659 | tuik_medas |
+| `mean_first_marriage_age` | Ortalama ilk evlenme yaşı | TR. il | 2001-2025 | 4.100 | tuik_medas |
+| `mean_marriage_age` | Ortalama evlenme yaşı | TR. il | 2001-2025 | 6.150 | tuik_medas |
 
 ## olum (7)
 
@@ -1066,16 +1056,17 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `suicide_rate` | Kaba intihar hızı | TR. il | 2002-2025 | 1.960 | tuik_medas |
 | `under5_mortality` | Beş yaş altı ölüm hızı | TR. il | 2009-2025 | 1.394 | tuik_medas |
 
-## perakende (6)
+## medya (7)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `furniture_stores` | Mobilya mağazası | il. ilçe | 2026-2026 | 1.676 | branch_finders |
-| `mall_turnover_index` | AVM ciro endeksi (m² verimlilik) | TR | 2025-2026 | 18 | ayd_akademetre |
-| `mall_turnover_per_sqm` | AVM'de m² başına ciro | TR | 2025-2026 | 51 | ayd_akademetre |
-| `mall_visitor_index` | AVM ziyaretçi endeksi | TR | 2025-2025 | 2 | ayd_akademetre |
-| `retail_turnover_index` | Perakende ciro endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
-| `retail_volume_index` | Perakende satış hacim endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
+| `circulation` | Yayınların tirajı (yalnız Türkiye) | TR | 2005-2022 | 108 | tuik_medas |
+| `media_employees` | Basın çalışanı (tür × cinsiyet × unvan) | TR. İBBS-2 | 2005-2022 | 32.260 | tuik_medas |
+| `online_publication_visitors` | İnternet yayını ziyaretçi sayısı | TR. İBBS-2 | 2005-2022 | 1.663 | tuik_medas |
+| `online_publications` | İnternet yayını yapan yayın | TR. İBBS-2 | 2005-2022 | 1.527 | tuik_medas |
+| `press_card_holders` | Sarı basın kartı sahibi personel | TR. İBBS-2 | 2005-2022 | 1.757 | tuik_medas |
+| `print_runs` | Yayınların baskı sayısı (yalnız Türkiye) | TR | 2005-2022 | 72 | tuik_medas |
+| `publications_by_print` | Yayın sayısı (tür × baskı tekniği) | TR. İBBS-2 | 2005-2022 | 1.469 | tuik_medas |
 
 ## gelismislik (6)
 
@@ -1087,6 +1078,17 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `sege_province_level` | İl SEGE kademesi | il | 2017-2017 | 81 | sanayi_sege |
 | `sege_province_rank` | İl SEGE sıralaması | il | 2017-2017 | 81 | sanayi_sege |
 | `sege_province_score` | İl SEGE skoru | il | 2017-2017 | 81 | sanayi_sege |
+
+## perakende (6)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `furniture_stores` | Mobilya mağazası | il. ilçe | 2026-2026 | 1.676 | branch_finders |
+| `mall_turnover_index` | AVM ciro endeksi (m² verimlilik) | TR | 2025-2026 | 18 | ayd_akademetre |
+| `mall_turnover_per_sqm` | AVM'de m² başına ciro | TR | 2025-2026 | 51 | ayd_akademetre |
+| `mall_visitor_index` | AVM ziyaretçi endeksi | TR | 2025-2025 | 2 | ayd_akademetre |
+| `retail_turnover_index` | Perakende ciro endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
+| `retail_volume_index` | Perakende satış hacim endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
 
 ## dogurganlik (5)
 
@@ -1118,14 +1120,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `housing_sales_foreigners` | Yabancılara konut satışı | TR. il | 2013-2025 | 909 | tuik_medas |
 | `property_sales_monthly` | Konut ve iş yeri satışları (aylık) | il | 2013-2026 | 101.785 | cbrt_evds |
 
-## inovasyon (3)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `ip_applications_by_province` | Yerli sınai mülkiyet başvurusu (il) | TR. il | 1995-2025 | 12.710 | turkpatent |
-| `ip_registrations_by_province` | Yerli sınai mülkiyet tescili (il) | TR. il | 1995-2025 | 12.546 | turkpatent |
-| `patent_applications` | PCT patent başvurusu | il | 1995-2024 | 2.881 | oecd_regional |
-
 ## havacilik (3)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1141,6 +1135,14 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `combine_harvesters` | Biçerdöver (yaşa göre) | TR. il | 2004-2025 | 5.429 | tuik_medas |
 | `farm_equipment` | Diğer tarım alet ve makineleri | TR. il | 2004-2025 | 119.407 | tuik_medas |
 | `tractors` | Traktör (türe göre) | TR. il | 2004-2025 | 13.779 | tuik_medas |
+
+## inovasyon (3)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `ip_applications_by_province` | Yerli sınai mülkiyet başvurusu (il) | TR. il | 1995-2025 | 12.710 | turkpatent |
+| `ip_registrations_by_province` | Yerli sınai mülkiyet tescili (il) | TR. il | 1995-2025 | 12.546 | turkpatent |
+| `patent_applications` | PCT patent başvurusu | il | 1995-2024 | 2.881 | oecd_regional |
 
 ## guvenlik (2)
 

@@ -43,10 +43,9 @@ from .muhasebat import MUHASEBAT_ADAPTERS
 from .networks import NETWORK_ADAPTERS
 from .odmd_market import ODMD_MARKET_ADAPTERS
 from .odmd_retail import ODMD_ADAPTERS
-from .osym_programs import OSYM_ADAPTERS
-from .turkpatent import TURKPATENT_ADAPTERS
 from .oecd_tl3 import OECD_TL3_ADAPTERS
 from .ookla_speed import OOKLA_ADAPTERS
+from .osym_programs import OSYM_ADAPTERS
 from .pharmacies import PHARMACY_ADAPTERS
 from .ptt_postal import PTT_POSTAL_ADAPTERS
 from .saglik_yearbook import SAGLIK_YEARBOOK_ADAPTERS
@@ -99,6 +98,7 @@ from .tuik_vehicles import VEHICLE_ADAPTERS
 from .tuik_villages import TuikVillagePopulation
 from .tuik_vital import VITAL_ADAPTERS
 from .tuik_vital_district import DISTRICT_VITAL_ADAPTERS
+from .turkpatent import TURKPATENT_ADAPTERS
 from .uab_ports import UAB_ADAPTERS
 from .vap import VAP_ADAPTERS
 from .wages import WAGE_ADAPTERS
@@ -106,6 +106,7 @@ from .yks import YKS_ADAPTERS
 from .yok_istatistik import YOK_ISTATISTIK_ADAPTERS
 from .yok_national import YOK_NATIONAL_ADAPTERS
 from .yokatlas import YOKATLAS_ADAPTERS
+from .yokatlas_ranks import YokAtlasMinRank
 from .ysk_urbanization import YskUrbanization2015
 
 #: Everything that can be ingested, by name. `scripts/load.py` runs these.
@@ -172,6 +173,7 @@ ADAPTERS = {
     **ODMD_MARKET_ADAPTERS,
     **TURKPATENT_ADAPTERS,
     **OSYM_ADAPTERS,
+    "yokatlas_min_rank": YokAtlasMinRank,
     # District education level and literacy.
     **EDUCATION_DISTRICT_ADAPTERS,
     # Children referred to police units (Türkiye).
