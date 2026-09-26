@@ -27314,6 +27314,17 @@ dims = ["job_tenure", "incapacity_days", "outcome", "scheme", "sex"]
 views = ["table", "line", "bar"]
 definition_tr = "SGK istatistik yıllığı, Türkiye geneli, 4/a ve 4/b. Kaza sayısı. Basılı toplamdan eksik kalan kısım 'unallocated' değeriyle saklanır (satırlar toplamı tutsun diye). Bkz. docs/sgk.md."
 
+[indicator.sgk_pensioners_by_age]
+label_tr = "Aylık alanlar (tek yaş, yıl sonu)"
+label_en = "Pensioners by age, year end"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["age", "benefit", "recipient", "scheme"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllıkları 2014-2025, 'Aylık Alanların Yaş(lar)a, Cinsiyet ve Aylık Türüne Göre Dağılımı': 4/a ve 4/b, yıl sonu stok; tek yaş, aylık türü (malullük, yaşlılık, ölüm) ve alan. Okuma ve denetim 'Yıl içinde aylık bağlananlar' ile aynı (adaptör aynı). 4/c aylık alanların tek yaş tablosu bu biçimde basılmıyor. 2016 4/b'de 120 yaş satırı kaynakta 2+0=0 basılı; tek yaş satırında 2 kişiye kadar fark kabul edildi. Türkiye geneli. Adaptör src/veriatlas/adapters/sgk_pensions_granted.py."
+
 [indicator.sgk_pensions_granted]
 label_tr = "Yıl içinde aylık bağlananlar (tek yaş)"
 label_en = "Pensions granted in the year, by age"

@@ -70,26 +70,32 @@ def column(header: str) -> tuple[str, str] | None:
     return kind, who
 
 
-def tables() -> pl.DataFrame:
+#: family -> title words: pensions granted in the year, and pensioners at year end
+FAMILIES = {"granted": r"aylik baglananlar", "stock": r"aylik alanlar"}
+
+
+def tables(family: str = "granted") -> pl.DataFrame:
     cells = pl.scan_parquet(CELLS).collect()
     titles = cells.select("title").unique()["title"].to_list()
     wanted = [
         t
         for t in titles
-        if re.search(r"aylik baglananlar", plain(t))
+        if re.search(FAMILIES[family], plain(t))
         and re.search(r"tur", plain(t))
-        and not re.search(r"olen|gelir baglanan", plain(t))
+        and re.search(r"\byas", plain(t))
+        and not re.search(r"olen|gelir (baglanan|alan)", plain(t))
     ]
     return cells.filter(pl.col("title").is_in(wanted))
 
 
-_CACHE: dict[tuple[int, str, str, str, str], float] = {}
+_CACHES: dict[str, dict[tuple[int, str, str, str, str], float]] = {}
 
 
-def read_all() -> dict[tuple[int, str, str, str, str], float]:
-    if _CACHE:
-        return _CACHE
-    for (year, title), cells in tables().group_by("year", "title"):
+def read_all(family: str = "granted") -> dict[tuple[int, str, str, str, str], float]:
+    if family in _CACHES:
+        return _CACHES[family]
+    _CACHE = _CACHES[family] = {}
+    for (year, title), cells in tables(family).group_by("year", "title"):
         scheme = scheme_of(title)
         ages: dict[tuple[str, str, str, str], float] = defaultdict(float)
         printed: dict[tuple[str, str, str], float] = {}
@@ -137,7 +143,8 @@ def read_all() -> dict[tuple[int, str, str, str, str], float]:
                 for (b, k, w, a), v in ages.items()
                 if (b, k, a) == (branch, kind, age) and w != "total"
             )
-            if abs(parts - total) > 0.5:
+            # 2016 4/b prints age 120 as 2 + 0 = 0: a slip of a person or two
+            if abs(parts - total) > 2:
                 raise ValueError(
                     f"{year} {scheme} {kind} yaş {age}: parçalar {parts}, Toplam {total}"
                 )
@@ -147,6 +154,7 @@ def read_all() -> dict[tuple[int, str, str, str, str], float]:
 class SgkPensionsGranted:
     source_id = "sgk"
     indicator_id = "sgk_pensions_granted"
+    family = "granted"
 
     def fetch(self) -> Path:
         return CELLS
@@ -158,7 +166,7 @@ class SgkPensionsGranted:
                 "dims": f"age={age};benefit={kind};recipient={who};scheme={scheme}",
                 "value": value,
             }
-            for (year, scheme, kind, who, age), value in read_all().items()
+            for (year, scheme, kind, who, age), value in read_all(self.family).items()
             if value
         ]
         return pl.DataFrame(
@@ -176,4 +184,12 @@ class SgkPensionsGranted:
         )
 
 
-SGK_PENSIONS_GRANTED_ADAPTERS = {"sgk_pensions_granted": SgkPensionsGranted}
+class SgkPensionersByAge(SgkPensionsGranted):
+    indicator_id = "sgk_pensioners_by_age"
+    family = "stock"
+
+
+SGK_PENSIONS_GRANTED_ADAPTERS = {
+    "sgk_pensions_granted": SgkPensionsGranted,
+    "sgk_pensioners_by_age": SgkPensionersByAge,
+}
