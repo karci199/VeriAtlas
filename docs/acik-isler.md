@@ -95,6 +95,36 @@ Claude'da olanların toplamı kabaca 25-30 saat.
 - `kgm_vehicle_km` her yüklemede 25-90 dakika sürüyor; profillenmeli.
 - `scripts/analiz/*` betiklerinin çoğu ana checkout kökünden çalışıyor ve ara dosyaları `C:\veri-ham\analiz` altına yazıyor.
 
+### 6. Büyük resim: hiç kapsanmayan alanlar (2026-09-26, 986 gösterge)
+
+Envanter anahtar kelimeyle tarandı; aşağıdakiler için depoda **hiçbir gösterge yok**.
+Kaynak sütunu bilinen yayıncıdır, çoğunun indirme yolu henüz doğrulanmadı (◐).
+
+| Alan | Eksik | Muhtemel kaynak | Düzey |
+|---|---|---|---|
+| Gelir ve yoksulluk | Gini, göreli yoksulluk oranı, eşdeğer hanehalkı geliri, maddi yoksunluk | TÜİK Gelir ve Yaşam Koşulları (MEDAS) | İBBS-2, 2006→ |
+| Sosyal yardım | sosyal yardım alan hane, engelli ve 65 yaş aylığı, huzurevi, kreş; yeşil kart 2011 sonrası | Aile ve Sosyal Hizmetler Bak. faaliyet raporları, SGK | il ◐ |
+| Çevre | hava kalitesi (PM10, SO2), sera gazı, orman alanı, arazi örtüsü | ÇŞB SİM (havaizleme), TÜİK çevre, OGM, CORINE | istasyon/il |
+| Suç ve adalet | hükümlü (suç türü, il; MEDAS 1990-2020, çekici hazır — ertelendi), dava ve icra dosyası | TÜİK MEDAS, Adalet Bak. adli istatistik PDF | il/adliye |
+| Göç | il × il göç matrisi (yalnız İBBS-2 matrisi var), göç nedeni, ikamet izni, uluslararası koruma, geçici koruma geçmişi | TÜİK MEDAS, Göç İdaresi | il |
+| Kamu | kamu personeli sayısı, belediye borcu ve personeli, İller Bankası payları | DPB kamu personel istatistikleri, HMB, İLBANK | il ◐ |
+| Yatırım | yatırım teşvik belgeleri, sanayi kapasite raporları | Sanayi ve Teknoloji Bak., TOBB Sanayi Veritabanı | il ◐ |
+| Sigorta ve afet | sigorta prim üretimi, DASK poliçe/kapsama oranı, afet olayları (sel, heyelan) | TSB, DASK, AFAD | il ◐ |
+| Finansal sıkıntı | karşılıksız çek, protestolu senet | TCMB (EVDS'te il kırılımı olabilir) | il ◐ |
+| Demiryolu | istasyon/hat yolcu ve yük | TCDD (403) | istasyon |
+| Dijital | hanehalkı BT kullanımı, internet erişimi | TÜİK BT kullanım araştırması | İBBS-2 |
+| Konut arzı | TOKİ konutu, kentsel dönüşüm | TOKİ | il ◐ |
+| Sendika | sendika üye sayısı (il kırılımı belirsiz) | ÇSGB | ◐ |
+
+Türkiye geneli makro seriler de eksik ya da arşivde kalmış: güncel ödemeler dengesi
+(arşiv 2021'de biter), aylık dış ticaret (arşiv 2019'da biter), merkezi yönetim bütçesi
+(arşiv 2005'te biter), kamu borç stoku, rezervler, para arzı, aylık işsizlik
+(`unemployment_rate` yalnız 2022-2025 yıllık). Hepsi EVDS'te; mevcut adaptörle
+toplu bir "EVDS ana makro paketi" olarak alınabilir.
+
+Zayıf kalanlar: işgücü il düzeyinde 2022'den başlıyor; turizm konaklama 2022'de bitiyor;
+iletişim (105 gösterge) neredeyse tamamı Türkiye geneli; il × ilçe iklim yalnız il.
+
 ---
 
 # Geçmiş notlar
