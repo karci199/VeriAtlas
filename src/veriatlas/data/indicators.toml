@@ -7942,6 +7942,54 @@ dims = ["retail_sector", "adjustment"]
 views = ["line", "table"]
 definition_tr = "TÜİK perakende ciro endeksi, cari fiyatlarla, 2015=100, aylık. Ciro fiyat artışını içerir; hacim endeksiyle farkı enflasyondur."
 
+[indicator.industry_turnover_index]
+label_tr = "Sanayi ciro endeksi (2015=100)"
+label_en = "Industrial turnover index (2015=100)"
+topic = "reel_kesim"
+unit = "index"
+frequency = "monthly"
+dims = ["turnover_activity", "adjustment"]
+views = ["line", "table"]
+definition_tr = "TÜİK toplam sanayi ciro endeksi, cari fiyatlarla, 2015=100, aylık, 2005-2023 (2024'te 2021=100 bazına geçildi, eski baz kapandı). Sanayi (B-C), madencilik ve imalatın 2 haneli bölümleri ile ana sanayi grupları yan yana; toplanmaz."
+
+[indicator.construction_turnover_index]
+label_tr = "İnşaat ciro endeksi (2015=100)"
+label_en = "Construction turnover index (2015=100)"
+topic = "reel_kesim"
+unit = "index"
+frequency = "monthly"
+dims = ["turnover_activity", "adjustment"]
+views = ["line", "table"]
+definition_tr = "TÜİK inşaat ciro endeksi, cari fiyatlarla, 2015=100, aylık, 2009-2023 (eski baz). İnşaat (F) ve bölümleri: bina, bina dışı yapı, özel inşaat faaliyetleri."
+
+[indicator.trade_turnover_index]
+label_tr = "Ticaret ciro endeksi (2015=100)"
+label_en = "Trade turnover index (2015=100)"
+topic = "reel_kesim"
+unit = "index"
+frequency = "monthly"
+dims = ["turnover_activity", "adjustment"]
+views = ["line", "table"]
+definition_tr = "TÜİK ticaret ciro endeksi, cari fiyatlarla, 2015=100, aylık, 2009-2023 (eski baz). Ticaret (G) ve bölümleri: taşıt ticareti (45), toptan (46), perakende (47). Perakendenin ayrıntısı retail_turnover_index'te."
+
+# Activities in the turnover indices (adapters/tuik_turnover.py): NACE sections, their
+# divisions and the main industrial groupings side by side. An index does not sum.
+[dim.turnover_activity]
+label_tr = "Faaliyet"
+label_en = "Activity"
+
+[dim.turnover_activity.values]
+b_c = "Sanayi (B-C)"
+b = "B Madencilik ve taşocakçılığı"
+c = "C İmalat sanayi"
+f = "F İnşaat"
+g = "G Toptan ve perakende ticaret"
+mig_intermediate = "Ara malı"
+mig_durable_consumer = "Dayanıklı tüketim malı"
+mig_nondurable_consumer = "Dayanıksız tüketim malı"
+mig_energy = "Enerji"
+mig_capital = "Sermaye malı"
+
 [dim.operator]
 label_tr = "Operatör"
 label_en = "Operator"

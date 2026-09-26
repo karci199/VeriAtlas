@@ -95,6 +95,7 @@ from .tuik_retail import RETAIL_ADAPTERS
 from .tuik_simple import NARROW_ADAPTERS
 from .tuik_tfr import TuikTfr
 from .tuik_topics import TOPIC_ADAPTERS
+from .tuik_turnover import TURNOVER_ADAPTERS
 from .tuik_vehicle_km import VEHICLE_KM_ADAPTERS
 from .tuik_vehicle_sdmx import VEHICLE_SDMX_ADAPTERS
 from .tuik_vehicle_stock import TuikVehicleStock
@@ -152,6 +153,7 @@ ADAPTERS = {
     **GOC_ADAPTERS,
     **TELECOM_ADAPTERS,
     **RETAIL_ADAPTERS,
+    **TURNOVER_ADAPTERS,
     **NARROW_ADAPTERS,
     # Births and deaths: same download, transposed file, so a parser of their own.
     **VITAL_ADAPTERS,

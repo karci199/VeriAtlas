@@ -5,6 +5,32 @@ Tek liste, 2026-09-26 gecesi derlendi: bu dosyanın eski bölümleri, oturum not
 (kargo, Turkcell bayileri, şarj istasyonu, ilçe sağlık kurumu, noter, eczane kapandı).
 Tarihli ayrıntı aşağıdaki "Geçmiş notlar"da; çelişen yerde bu liste geçerlidir.
 
+### Kalan iş ve tahmini süre (2026-09-26)
+
+Kullanıcı kararı: liste sonraya bırakıldı. Sıra önerisi yukarıdan aşağı.
+
+| # | İş | Kimde | Tahmini süre |
+|---|---|---|---|
+| 1 | Seçim: Afyon Sincanlı eşleşmesi, 1995/1999 "Cezaevi" satırları, Kocaeli 2002 +100.000 farkı | Claude | 30 dk |
+| 2 | ETKB ulusal enerji dengesi | Claude | 30 dk |
+| 3 | OECD TL3 kalanlar (sağlık durumu/riski, göç akımı, sosyal tablolar) | Claude | 1,5 sa |
+| 4 | Denizciliğin kalanı (gemi, kruvaziyer, Ro-Ro, boğaz, filo) | Claude | 1,5-2 sa |
+| 5 | SGK Türkiye geneli tablolar | Claude | 1-2 sa |
+| 6 | Zincirleri bağlama (FLO, Watsons, Boyner, kiralama, Petlas, Lassa ...) | Claude | 2-3 sa |
+| 7 | Türk Telekom satış noktaları | Claude | 1 sa |
+| 8 | Eksik bankalar (Garanti, ING, QNB, Halkbank ATM ...) | Claude, siteye bağlı | 2-4 sa |
+| 9 | Opet kesitini tamamlama | Claude | 1 sa |
+| 10 | İnceleme: SGK çalışma süresi, SKRS İstanbul −33, madde fiyatı zincirleme doğrulaması | Claude | 2 sa |
+| 11 | ÖSYM 2003-2007 il tabloları | Claude | 1-2 sa |
+| 12 | TİM 2004-2012 sektör ihracatı | Claude | 2-3 sa |
+| 13 | KGM Trafik ve Ulaşım Bilgileri, kaza özeti PDF | Claude | 3-4 sa |
+| 14 | Kod borcu: seçim betiği adları, ARPU bağımlılığı, kgm_vehicle_km hızı | Claude | 2 sa |
+| 15 | EPİAŞ serbest tüketici 2010→ ve kesinti | kullanıcının tarayıcı oturumu | 2-3 sa |
+| 16 | sahibinden, Endeksa lisansı, web export, TEDAŞ üyeliği | kullanıcı kararı | — |
+| 17 | ODMD aylık (OCR), KAP, belediye portalları, ULASAV, adalet istatistikleri | keşif | her biri 2+ sa |
+
+Claude'da olanların toplamı kabaca 25-30 saat.
+
 ### 1. Veri hatası ve doğrulama (önce bunlar)
 
 | İş | Durum | Nerede |
@@ -24,13 +50,14 @@ Tarihli ayrıntı aşağıdaki "Geçmiş notlar"da; çelişen yerde bu liste ge�
 | Endeksa mahalle demografisi, tüm TR (972 ilçe) | `C:\veri-ham\endeksa\demography` | **lisans kararı bekliyor**; adaptör kayıt dışı, ham düzen değişmiş |
 | PTT sokak listesi (1,27 mn satır) | `C:\veri-ham\ptt\postakodu_2026-09-18.csv` | yalnız posta kodu sayısı gösterge oldu; sokak sayımı değil, dağıtım noktası |
 | Denizciliğin kalanı: gemi, kruvaziyer, Ro-Ro, boğaz geçişi, filo, 2020 öncesi liman arşivi | `C:\veri-ham\uab` | yük ve konteyner depoda |
-| TÜİK sanayi, ticaret, inşaat ciro endeksleri; hizmet üretim endeksi | `C:\veri-ham\tuik_portal` | portal dosyaları inik |
+| ~~TÜİK sanayi, ticaret, inşaat ciro endeksleri~~ | 2026-09-26 depoya girdi | `industry/construction/trade_turnover_index`, 2015=100, 2023'te biter (eski baz); 2021=100 yeni baz ayrı gösterge olur. Hizmet üretim endeksinin ham dosyası diskte yok |
 | OECD TL3: sağlık durumu/riski, göç akımı, `DSD_REG_SOC` (geniş bant, konut, güvenlik, seçmen katılımı) | `C:\veri-ham\oecd_tl3` | ölçüler ayrıştırılmalı |
 | SGK yıllıkları Türkiye geneli tabloları | `C:\veri-ham\sgk` | il tabloları depoda |
 | TEDAŞ genel aydınlatma, 301 dosya | `C:\veri-ham\tedas_aydinlatma` | kullanıcı erteledi |
 | EPİAŞ il-ilçe serbest tüketici sayısı (Ocak 2010 →, aylık) ve plansız kesinti | `C:\veri-ham\epias` | yalnız Ağustos 2026 örneği indi; seri tarayıcıda oturumla çekilecek |
 | Zincirler, bağlanmayı bekleyen: FLO, Watsons, Boyner, Sephora, araç kiralama (8 marka), Petlas, Lassa, Kahve Dünyası, Toyzz, Bizim Toptan, Onur, 22 yerel zincir | `C:\veri-ham\perakende`, masaüstü `Şube` klasörü | Arçelik/Beko il il elle kayıt gerekiyor |
 | Bankalar, eksik kalanlar: Garanti BBVA, ING, QNB, Emlak Katılım, Halkbank ATM | `C:\veri-ham\bankalar` | `docs/bankalar.md` |
+| **Türk Telekom satış noktaları** (`ttsatisdagitim.com.tr`) | çekilmedi | `telecom_dealers`'a eklenecek; Turkcell, Vodafone bayileri ve Türk Telekom ofisleri depoda, TT satış-dağıtım bayileri yok. Önce robots ve uç nokta sayfadan okunacak |
 | Opet akaryakıt kesiti (13 il, 139 ilçe) | `C:\veri-ham\opet` | tur durdurulmuştu |
 | TÜİK SDMX aylık taşıt stoku (il × tür) | `C:\veri-ham\tuik_sdmx` | yalnız yıl sonu alındı; aylık istenirse |
 | OSM Türkiye, Türkçe isim sözlüğü | `C:\veri-ham\osm`, `isimler` | sayım için değil, pay ve uzunluk için |
