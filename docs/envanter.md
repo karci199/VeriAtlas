@@ -1,11 +1,11 @@
-# Envanter — depodaki 986 gösterge
+# Envanter — depodaki 1307 gösterge
 
 **Bu dosya elle yazılmaz.** `scripts/build_inventory.py` warehouse'tan üretir;
 burada olmayan gösterge depoda yok demektir. Yeni kaynak önermeden önce buraya
 bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni iş' diye
 önerildi, üçü de zaten yüklüydü.
 
-Üretim: 2026-09-26 · 22.210.028 satır
+Üretim: 2026-09-26 · 24.556.544 satır
 
 ## evds_arsiv (177)
 
@@ -189,6 +189,131 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `archive_yyoibsvt` | Özel Sektör Tarafından Yurt İçinde İhraç Edilen Borçlanma Senetleri Vade Dağılımı (TL. Piyasa Değeri. Orjinal ve Kalan Vade) (Arşiv) | TR | 2015-2021 | 206.820 | cbrt_evds |
 | `archive_yyoibsvu` | Özel Sektör Tarafından Yurt İçinde İhraç Edilen Borçlanma Senetleri Vade Dağılımı (ABD doları. Piyasa Değeri. Orjinal ve Kalan Vade) (Arşiv) | TR | 2015-2021 | 204.270 | cbrt_evds |
 
+## evds_monetary (120)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `evds_dibspiydeg` | DİBS. Piyasa Değeri | TR | 2020-2026 | 6.573 | cbrt_evds |
+| `evds_dibsvade` | DİBS. Vade Dağılımı | TR | 2020-2026 | 31.300 | cbrt_evds |
+| `evds_dibsyazdeg` | DİBS. Yazılı Değer | TR | 2020-2026 | 6.573 | cbrt_evds |
+| `evds_disyukvd` | Dış Yükümlülükler Vade Ayrımı ve Ödenmiş Sermaye - Bankacılık Sektörü | TR | 2012-2026 | 4.629 | cbrt_evds |
+| `evds_finhestnks1` | S.1 Toplam Ekonomi (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.192 | cbrt_evds |
+| `evds_finhestnks11` | S.11 Finansal Olmayan Kuruluşlar (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.204 | cbrt_evds |
+| `evds_finhestnks12` | S.12 Finansal Kuruluşlar (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.192 | cbrt_evds |
+| `evds_finhestnks121` | S.121 TCMB (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.174 | cbrt_evds |
+| `evds_finhestnks122` | S.122 Mevduat Kabul Eden Kuruluşlar (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.191 | cbrt_evds |
+| `evds_finhestnks123` | S.123 Para Piyasası Fonları (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.145 | cbrt_evds |
+| `evds_finhestnks124` | S.124 Para Piyasası Fonları Dışındaki Yatırım Fonları (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.200 | cbrt_evds |
+| `evds_finhestnks125` | S.125 Diğer Finansal Aracılar (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.205 | cbrt_evds |
+| `evds_finhestnks126` | S.126 Finansal Yardımcılar (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.205 | cbrt_evds |
+| `evds_finhestnks127` | S.128 + S.129 Sigorta Şirketleri ve Emeklilik Fonları (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.175 | cbrt_evds |
+| `evds_finhestnks128` | S.128 Sigorta Şirketleri (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.170 | cbrt_evds |
+| `evds_finhestnks129` | S.129 Emeklilik Fonları (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.176 | cbrt_evds |
+| `evds_finhestnks12t` | S.121 + S.122 + S.123 Parasal ve Finansal Kuruluşlar (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.191 | cbrt_evds |
+| `evds_finhestnks13` | S.13 Genel Yönetim (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.208 | cbrt_evds |
+| `evds_finhestnks1311` | S.1311 Merkezi Yönetim (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.208 | cbrt_evds |
+| `evds_finhestnks1313` | S.1313 Yerel Yönetimler (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.208 | cbrt_evds |
+| `evds_finhestnks1314` | S.1314 Sosyal Güvenlik Kuruluşları (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.208 | cbrt_evds |
+| `evds_finhestnks14` | S.14 Hanehalkı (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.208 | cbrt_evds |
+| `evds_finhestnks15` | S.15 Hanehalkına Hizmet Veren Kar Amacı Olmayan Kuruluşlar (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.193 | cbrt_evds |
+| `evds_finhestnks2` | S.2 Dünyanın Geri Kalanı (Konsolide Olmayan. Stok) | TR | 2010-2026 | 2.173 | cbrt_evds |
+| `evds_finhestnks6101` | S.1 Toplam Ekonomi (Konsolide Akım) | TR | 2010-2026 | 2.150 | cbrt_evds |
+| `evds_finhestnks61011` | S.11 Finansal Olmayan Kuruluşlar (Konsolide Akım) | TR | 2010-2026 | 2.181 | cbrt_evds |
+| `evds_finhestnks61012` | S.12 Finansal Kuruluşlar (Konsolide Akım) | TR | 2010-2026 | 2.160 | cbrt_evds |
+| `evds_finhestnks610121` | S.121 TCMB (Konsolide Akım) | TR | 2010-2026 | 2.159 | cbrt_evds |
+| `evds_finhestnks610122` | S.122 Mevduat Kabul Eden Kuruluşlar (Konsolide Akım) | TR | 2010-2026 | 2.161 | cbrt_evds |
+| `evds_finhestnks610123` | S.123 Para Piyasası Fonları (Konsolide Akım) | TR | 2010-2026 | 2.144 | cbrt_evds |
+| `evds_finhestnks610124` | S.124 Para Piyasası Fonları Dışındaki Yatırım Fonları (Konsolide Akım) | TR | 2010-2026 | 2.158 | cbrt_evds |
+| `evds_finhestnks610125` | S.125 Diğer Finansal Aracılar (Konsolide Akım) | TR | 2010-2026 | 2.157 | cbrt_evds |
+| `evds_finhestnks610126` | S.126 Finansal Yardımcılar (Konsolide Akım) | TR | 2010-2026 | 2.137 | cbrt_evds |
+| `evds_finhestnks610127` | S.128 + S.129 Sigorta Şirketleri ve Emeklilik Fonları (Konsolide Akım) | TR | 2010-2026 | 2.158 | cbrt_evds |
+| `evds_finhestnks610128` | S.128 Sigorta Şirketleri (Konsolide Akım) | TR | 2010-2026 | 2.158 | cbrt_evds |
+| `evds_finhestnks610129` | S.129 Emeklilik Fonları (Konsolide Akım) | TR | 2010-2026 | 2.152 | cbrt_evds |
+| `evds_finhestnks61012t` | S.121 + S.122 + S.123 Parasal ve Finansal Kuruluşlar (Konsolide Akım) | TR | 2010-2026 | 2.162 | cbrt_evds |
+| `evds_finhestnks61013` | S.13 Genel Yönetim (Konsolide Akım) | TR | 2010-2026 | 2.200 | cbrt_evds |
+| `evds_finhestnks6101311` | S.1311 Merkezi Yönetim (Konsolide Akım) | TR | 2010-2026 | 2.200 | cbrt_evds |
+| `evds_finhestnks6101313` | S.1313 Yerel Yönetimler (Konsolide Akım) | TR | 2010-2026 | 2.200 | cbrt_evds |
+| `evds_finhestnks6101314` | S.1314 Sosyal Güvenlik Kuruluşları (Konsolide Akım) | TR | 2010-2026 | 2.200 | cbrt_evds |
+| `evds_finhestnks61014` | S.14 Hanehalkı (Konsolide Akım) | TR | 2010-2026 | 2.188 | cbrt_evds |
+| `evds_finhestnks61015` | S.15 Hanehalkına Hizmet Veren Kar Amacı Olmayan Kuruluşlar (Konsolide Akım) | TR | 2010-2026 | 2.177 | cbrt_evds |
+| `evds_finhestnks6102` | S.2 Dünyanın Geri Kalanı (Konsolide Akım) | TR | 2010-2026 | 2.142 | cbrt_evds |
+| `evds_finhestnks6201` | S.1 Toplam Ekonomi (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.110 | cbrt_evds |
+| `evds_finhestnks62011` | S.11 Finansal Olmayan Kuruluşlar (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.142 | cbrt_evds |
+| `evds_finhestnks62012` | S.12 Finansal Kuruluşlar (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.128 | cbrt_evds |
+| `evds_finhestnks620121` | S.121 TCMB (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.124 | cbrt_evds |
+| `evds_finhestnks620122` | S.122 Mevduat Kabul Eden Kuruluşlar (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.133 | cbrt_evds |
+| `evds_finhestnks620123` | S.123 Para Piyasası Fonları (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.113 | cbrt_evds |
+| `evds_finhestnks620124` | S.124 Para Piyasası Fonları Dışındaki Yatırım Fonları (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.135 | cbrt_evds |
+| `evds_finhestnks620125` | S.125 Diğer Finansal Aracılar (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.146 | cbrt_evds |
+| `evds_finhestnks620126` | S.126 Finansal Yardımcılar (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.140 | cbrt_evds |
+| `evds_finhestnks620127` | S.128 + S.129 Sigorta Şirketleri ve Emeklilik Fonları (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.158 | cbrt_evds |
+| `evds_finhestnks620128` | S.128 Sigorta Şirketleri (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.156 | cbrt_evds |
+| `evds_finhestnks620129` | S.129 Emeklilik Fonları (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.152 | cbrt_evds |
+| `evds_finhestnks62012t` | S.121 + S.122 + S.123 Parasal ve Finansal Kuruluşlar (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.132 | cbrt_evds |
+| `evds_finhestnks62013` | S.13 Genel Yönetim (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.200 | cbrt_evds |
+| `evds_finhestnks6201311` | S.1311 Merkezi Yönetim (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.200 | cbrt_evds |
+| `evds_finhestnks6201313` | S.1313 Yerel Yönetimler (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.200 | cbrt_evds |
+| `evds_finhestnks6201314` | S.1314 Sosyal Güvenlik Kuruluşları (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.200 | cbrt_evds |
+| `evds_finhestnks62014` | S.14 Hanehalkı (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.188 | cbrt_evds |
+| `evds_finhestnks62015` | S.15 Hanehalkına Hizmet Veren Kar Amacı Olmayan Kuruluşlar (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.150 | cbrt_evds |
+| `evds_finhestnks6202` | S.2 Dünyanın Geri Kalanı (Konsolide Olmayan. Akım) | TR | 2010-2026 | 2.075 | cbrt_evds |
+| `evds_finhestnks7101` | S.1 Toplam Ekonomi (Konsolide Stok) | TR | 2010-2026 | 2.190 | cbrt_evds |
+| `evds_finhestnks71011` | S.11 Finansal Olmayan Kuruluşlar (Konsolide Stok) | TR | 2010-2026 | 2.197 | cbrt_evds |
+| `evds_finhestnks71012` | S.12 Finansal Kuruluşlar (Konsolide Stok) | TR | 2010-2026 | 2.190 | cbrt_evds |
+| `evds_finhestnks710121` | S.121 TCMB (Konsolide Stok) | TR | 2010-2026 | 2.177 | cbrt_evds |
+| `evds_finhestnks710122` | S.122 Mevduat Kabul Eden Kuruluşlar (Konsolide Stok) | TR | 2010-2026 | 2.187 | cbrt_evds |
+| `evds_finhestnks710123` | S.123 Para Piyasası Fonları (Konsolide Stok) | TR | 2010-2026 | 2.165 | cbrt_evds |
+| `evds_finhestnks710124` | S.124 Para Piyasası Fonları Dışındaki Yatırım Fonları (Konsolide Stok) | TR | 2010-2026 | 2.189 | cbrt_evds |
+| `evds_finhestnks710125` | S.125 Diğer Finansal Aracılar (Konsolide Stok) | TR | 2010-2026 | 2.197 | cbrt_evds |
+| `evds_finhestnks710126` | S.126 Finansal Yardımcılar (Konsolide Stok) | TR | 2010-2026 | 2.191 | cbrt_evds |
+| `evds_finhestnks710127` | S.128 + S.129 Sigorta Şirketleri ve Emeklilik Fonları (Konsolide Stok) | TR | 2010-2026 | 2.160 | cbrt_evds |
+| `evds_finhestnks710128` | S.128 Sigorta Şirketleri (Konsolide Stok) | TR | 2010-2026 | 2.166 | cbrt_evds |
+| `evds_finhestnks710129` | S.129 Emeklilik Fonları (Konsolide Stok) | TR | 2010-2026 | 2.157 | cbrt_evds |
+| `evds_finhestnks71012t` | S.121 + S.122 + S.123 Parasal ve Finansal Kuruluşlar (Konsolide Stok) | TR | 2010-2026 | 2.186 | cbrt_evds |
+| `evds_finhestnks71013` | S.13 Genel Yönetim (Konsolide Stok) | TR | 2010-2026 | 2.200 | cbrt_evds |
+| `evds_finhestnks7101311` | S.1311 Merkezi Yönetim (Konsolide Stok) | TR | 2010-2026 | 2.200 | cbrt_evds |
+| `evds_finhestnks7101313` | S.1313 Yerel Yönetimler (Konsolide Stok) | TR | 2010-2026 | 2.200 | cbrt_evds |
+| `evds_finhestnks7101314` | S.1314 Sosyal Güvenlik Kuruluşları (Konsolide Stok) | TR | 2010-2026 | 2.200 | cbrt_evds |
+| `evds_finhestnks71014` | S.14 Hanehalkı (Konsolide Stok) | TR | 2010-2026 | 2.200 | cbrt_evds |
+| `evds_finhestnks71015` | S.15 Hanehalkına Hizmet Veren Kar Amacı Olmayan Kuruluşlar (Konsolide Stok) | TR | 2010-2026 | 2.191 | cbrt_evds |
+| `evds_finhestnks7102` | S.2 Dünyanın Geri Kalanı (Konsolide Stok) | TR | 2010-2026 | 2.184 | cbrt_evds |
+| `evds_finsveri1` | Banka Dışı Finansal Kuruluşlar Sektörel Bilançosu | TR | 2010-2026 | 4.583 | cbrt_evds |
+| `evds_finsveri2` | Sigorta Şirketleri ve Emeklilik Fonları Sektörel Bilançosu | TR | 2010-2026 | 3.706 | cbrt_evds |
+| `evds_finsveri3` | Finansal Aracılar Sektörel Bilançosu | TR | 2010-2026 | 3.835 | cbrt_evds |
+| `evds_finsveri4` | Finansal Yardımcılar Sektörel Bilançosu | TR | 2018-2026 | 1.815 | cbrt_evds |
+| `evds_fs101a` | Finansman Şirketleri Kredi Faiz Oranları (Stok) | TR | 2013-2026 | 304 | cbrt_evds |
+| `evds_istirakbs` | İştirakler - Bankacılık Sektörü | TR | 2007-2026 | 8.814 | cbrt_evds |
+| `evds_kbdvdy` | Dış Varlık Yükümlülükler - Katılım Bankaları | TR | 2005-2026 | 9.132 | cbrt_evds |
+| `evds_kkm` | Kur Korumalı Mevduat ve Katılma Hesapları (Stok) | TR | 2021-2026 | 224 | cbrt_evds |
+| `evds_kmbscz` | Menkul Değerler - Bankacılık Sektörü | TR | 1986-2026 | 16.854 | cbrt_evds |
+| `evds_kmkbksmv` | Toplanan Fonlar (Kurumsal Sektörlere Göre) - Katılım Bankaları | TR | 2005-2026 | 27.710 | cbrt_evds |
+| `evds_kmkbtrmv` | Toplanan Fonlar (Türlerine Göre) - Katılım Bankaları | TR | 2005-2026 | 7.418 | cbrt_evds |
+| `evds_kmkbvdmv` | Toplanan Fonlar (Vade Gruplarına Göre) - Katılım Bankaları | TR | 2005-2026 | 11.656 | cbrt_evds |
+| `evds_kmmbgmv` | Mevduat (Vade Gruplarına Göre) - Mevduat Bankaları | TR | 1986-2026 | 26.769 | cbrt_evds |
+| `evds_kmmbkcz` | Menkul Değerler (Kurumsal Sektörlere Göre) - Mevduat Bankaları | TR | 1986-2026 | 26.988 | cbrt_evds |
+| `evds_kmmbkmv` | Mevduat (Kurumsal Sektörlere Göre) - Mevduat Bankaları | TR | 1986-2026 | 43.170 | cbrt_evds |
+| `evds_kmmbtmv` | Mevduat (Türlerine Göre) - Mevduat Bankaları | TR | 1986-2026 | 16.843 | cbrt_evds |
+| `evds_kt200h` | Kredi Kâr Oranları (Akım) | TR | 2018-2026 | 4.530 | cbrt_evds |
+| `evds_kt210aisl` | Bankalarca İşletme Kredilerine Fiilen Uygulanan Azami Faiz Oranları | TR | 2012-2026 | 169 | cbrt_evds |
+| `evds_kydvdy` | Dış Varlık Yükümlülükler - Kalkınma ve Yatırım Bankaları | TR | 1986-2026 | 16.172 | cbrt_evds |
+| `evds_mbdvdy` | Dış Varlık Yükümlülükler - Mevduat Bankaları | TR | 1986-2026 | 21.003 | cbrt_evds |
+| `evds_mt100h` | Mevduat Faiz Oranları (Akım) | TR | 2002-2026 | 49.738 | cbrt_evds |
+| `evds_mt200h` | Katılma Hesabı Kâr Oranları (Akım) | TR | 2018-2026 | 8.154 | cbrt_evds |
+| `evds_mt210ak` | Kamu Bankalarınca Mevduatlara Fiilen Uygulanan Azami Faiz Oranları | TR | 2000-2026 | 4.224 | cbrt_evds |
+| `evds_mt210as` | Bankalarca Mevduatlara Fiilen Uygulanan Azami Faiz Oranları | TR | 2011-2026 | 2.640 | cbrt_evds |
+| `evds_pbpanal1` | Parasal Durum | TR | 1986-2026 | 27.412 | cbrt_evds |
+| `evds_pbpanal2` | Para Arzı ve Karşılık Kalemleri | TR | 1986-2026 | 20.404 | cbrt_evds |
+| `evds_pbtablo2` | Mevduat Bankaları Bilançosu | TR | 1986-2026 | 31.599 | cbrt_evds |
+| `evds_pbtablo3` | Kalkınma ve Yatırım Bankaları Bilançosu | TR | 1986-2026 | 31.486 | cbrt_evds |
+| `evds_pbtablo5` | Mevduat Bankaları Sektörel Bilançosu | TR | 1986-2026 | 40.206 | cbrt_evds |
+| `evds_pbtablo6` | Kalkınma ve Yatırım Bankaları Sektörel Bilançosu | TR | 1986-2026 | 35.675 | cbrt_evds |
+| `evds_pbtablo7` | Katılım Bankaları Bilançosu | TR | 2005-2026 | 15.765 | cbrt_evds |
+| `evds_pbtablo8` | Katılım Bankaları Sektörel Bilançosu | TR | 2005-2026 | 17.959 | cbrt_evds |
+| `evds_pbtop` | Bankacılık Sektörü Bilançosu | TR | 1986-2026 | 31.641 | cbrt_evds |
+| `evds_ppblik` | Para Piyasası Fonları Sektörel Bilançosu | TR | 2005-2026 | 2.904 | cbrt_evds |
+| `evds_ydesgyazdeg` | ÇSY. Yurt Dışı İhraçlar | TR | 2023-2026 | 12.640 | cbrt_evds |
+| `evds_yiesgyazdeg` | ÇSY. Yurt İçi İhraçlar | TR | 2023-2026 | 12.640 | cbrt_evds |
+
 ## iletisim (105)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -299,6 +424,94 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `telecom_prepaid_subscribers` | Ön ödemeli mobil abone (operatör) | TR | 2014-2026 | 68 | operator_ir |
 | `telecom_tv_subscribers` | TV abone (operatör) | TR | 2014-2026 | 68 | operator_ir |
 
+## evds_real_sector (83)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `evds_fdvy` | Finansal Kesim Dışındaki Firmaların Döviz Varlık ve Yükümlülükleri | TR | 2002-2026 | 11.882 | cbrt_evds |
+| `evds_kkoisma` | İmalat Sanayi Kapasite Kullanım Oranı - Mevsimsellikten Arındırılmış | TR | 2007-2026 | 236 | cbrt_evds |
+| `evds_sekbil1001` | Bilanço - Dönen Varlıklar. | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbil1057` | Bilanço - Duran Varlıklar. | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbil1122` | Bilanço - Aktif (Varlıklar). | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbil3001` | Bilanço - Kısa Vadeli Yabancı Kaynaklar. | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbil3051` | Bilanço - Uzun Vadeli Yabancı Kaynaklar. | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbil3086` | Bilanço - Öz Kaynaklar. | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbil3111` | Bilanço - Pasif (Kaynaklar). | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbil5001` | Gelir Tablosu - Brüt Satışlar. | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbil5009` | Gelir Tablosu - Net Satışlar. | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbil5010` | Gelir Tablosu - Satışların Maliyeti. | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbil5015` | Gelir Tablosu - Brüt Satış Karı Veya Zararı. | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbil5016` | Gelir Tablosu - Faaliyet Giderleri. | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbil5020` | Gelir Tablosu - Faaliyet Karı Veya Zararı. | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbil5039` | Gelir Tablosu - Finansman Giderleri. | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbil5050` | Gelir Tablosu - Dönem Kar Veya Zararı. | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbil5051` | Gelir Tablosu - Dönem Karı. Vergi ve Diğer Yasal Yükümlülük Karşılıkları. | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbila01a` | Likidite Oranları - Cari Oran. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbila02a` | Likidite Oranları - Likidite (Asit Test) Oranı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbila03a` | Likidite Oranları - Nakit Oranı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbila1001` | Bilanço - Dönen Varlıklar | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbila1057` | Bilanço - Duran Varlıklar | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbila1122` | Bilanço - Aktif (Varlıklar) | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbila3001` | Bilanço - Kısa Vadeli Yabancı Kaynaklar | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbila3051` | Bilanço - Uzun Vadeli Yabancı Kaynaklar | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbila3086` | Bilanço - Öz Kaynaklar | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbila3111` | Bilanço - Pasif (Kaynaklar) | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbila5001` | Gelir Tablosu - Brüt Satışlar | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbila5009` | Gelir Tablosu - Net Satışlar | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbila5010` | Gelir Tablosu - Satışların Maliyeti | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbila5015` | Gelir Tablosu - Brüt Satış Karı Veya Zararı | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbila5016` | Gelir Tablosu - Faaliyet Giderleri | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbila5020` | Gelir Tablosu - Faaliyet Karı Veya Zararı | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbila5039` | Gelir Tablosu - Finansman Giderleri | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbila5050` | Gelir Tablosu - Dönem Kar Veya Zararı | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbila5051` | Gelir Tablosu - Dönem Karı. Vergi ve Diğer Yasal Yükümlülük Karşılıkları | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbilaa01a` | Likidite Oranları - Cari Oran | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilaa02a` | Likidite Oranları - Likidite (Asit Test) Oranı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilaa03a` | Likidite Oranları - Nakit Oranı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilab01a` | Finansal Yapı Oranları - Yabancı Kaynaklar Toplamı / Aktif Topl. Oranı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilab02a` | Finansal Yapı Oranları - Öz Kaynaklar / Aktif Toplamı Oranı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilab13a` | Finansal Yapı Oranları - Kısa Vad. Banka Kredileri /Kısa Vad. Yabancı Kaynakl.Oranı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilab14a` | Finansal Yapı Oranları - Banka Kredileri / Yabancı Kaynaklar Toplamı Oranı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilab15a` | Finansal Yapı Oranları - Dönen Varlıklar / Aktif Toplamı Oranı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilab16a` | Finansal Yapı Oranları - Maddi Duran Varlıklar (Net) / Aktif Toplamı Oranı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilac02a` | Devir Hızları - Alacak Devir Hızı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilac03a` | Devir Hızları - Dönen Varlıklar Devir Hızı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilad01d` | Karlılık Oranları - Net Kar (Zarar) / Aktif Toplamı Oranı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilad02a` | Karlılık Oranları - Faaliyet Karı (Zararı) / Net Satışlar Oranı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilad02b` | Karlılık Oranları - Brüt Satış Karı (Zararı) / Net Satışlar Oranı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilad02c` | Karlılık Oranları - Net Kar (Zarar) / Net Satışlar Oranı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilad02e` | Karlılık Oranları - Faaliyet Giderleri / Net Satışlar Oranı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilad02f` | Karlılık Oranları - Finansman Giderleri / Net Satışlar Oranı | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilatga` | Sektör Riski - Tasfiye Olunacak Kredi | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilatpgn` | Sektör Riski - Gayri Nakdi (TL) | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbilatpn` | Sektör Riski - Nakdi (TL) | TR | 2023-2024 | 186 | cbrt_evds |
+| `evds_sekbilay01a` | Devir Hızları - Borç Devir Hızı | TR | 2024-2024 | 91 | cbrt_evds |
+| `evds_sekbilaypgn` | Sektör Riski - Gayri Nakdi (YP) | TR | 2023-2024 | 182 | cbrt_evds |
+| `evds_sekbilaypn` | Sektör Riski - Nakdi (YP) | TR | 2023-2024 | 183 | cbrt_evds |
+| `evds_sekbilb01a` | Finansal Yapı Oranları - Yabancı Kaynaklar Toplamı / Aktif Topl. Oranı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbilb02a` | Finansal Yapı Oranları - Öz Kaynaklar / Aktif Toplamı Oranı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbilb13a` | Finansal Yapı Oranları - Kısa Vad. Banka Kredileri /Kısa Vad. Yabancı Kaynakl.Oranı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbilb14a` | Finansal Yapı Oranları - Banka Kredileri / Yabancı Kaynaklar Toplamı Oranı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbilb15a` | Finansal Yapı Oranları - Dönen Varlıklar / Aktif Toplamı Oranı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbilb16a` | Finansal Yapı Oranları - Maddi Duran Varlıklar (Net) / Aktif Toplamı Oranı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbilc02a` | Devir Hızları - Alacak Devir Hızı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbilc03a` | Devir Hızları - Çalışma Sermayesi Devir Hızı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbild01d` | Karlılık Oranları - Net Kar (Zarar) / Aktif Toplamı Oranı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbild02a` | Karlılık Oranları - Faaliyet Karı (Zararı) / Net Satışlar Oranı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbild02b` | Karlılık Oranları - Brüt Satış Karı (Zararı) / Net Satışlar Oranı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbild02c` | Karlılık Oranları - Net Kar (Zarar) / Net Satışlar Oranı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbild02e` | Karlılık Oranları - Faaliyet Giderleri / Net Satışlar Oranı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbild02f` | Karlılık Oranları - Faiz Giderleri / Net Satışlar Oranı. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbiltga` | Sektör Riski - Tasfiye Olunacak Kredi. | TR | 2009-2023 | 1.365 | cbrt_evds |
+| `evds_sekbiltpgn` | Sektör Riski - Gayri Nakdi (TL). | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbiltpn` | Sektör Riski - Nakdi (TL). | TR | 2009-2023 | 1.395 | cbrt_evds |
+| `evds_sekbilypgn` | Sektör Riski - Gayri Nakdi (YP). | TR | 2009-2023 | 1.382 | cbrt_evds |
+| `evds_sekbilypn` | Sektör Riski - Nakdi (YP). | TR | 2009-2023 | 1.341 | cbrt_evds |
+| `evds_tsanaymt2021` | Sanayi Üretim Endeksi - Mevsim ve Takvim Etkisinden Arındırılmış (TÜİK) | TR | 1986-2026 | 66.076 | cbrt_evds |
+| `evds_tsanaytkvm2021` | Sanayi Üretim Endeksi - Takvim Etkisinden Arındırılmış (TÜİK) | TR | 1986-2026 | 66.076 | cbrt_evds |
+| `evds_urkisi21` | Üretim Endeksi - Çalışan Kişi Başına | TR | 2009-2026 | 2.590 | cbrt_evds |
+| `evds_ursaat21` | Üretim Endeksi - Çalışılan Saat Başına | TR | 2009-2026 | 2.590 | cbrt_evds |
+
 ## sosyal_guvenlik (64)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -367,6 +580,73 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `sgk_workplaces_by_tenure` | 4/a iş yeri. niteliğe göre | il | 2010-2025 | 2.592 | sgk |
 | `social_security_family_share` | Nüfusun sigorta koluna göre payı (sigortalı ve bakmakla yükümlü olunanlar) | il | 2020-2023 | 474 | drdatastats |
 | `unemployment_rate` | İşsizlik oranı | TR. il | 2022-2025 | 984 | tuik_portal |
+
+## evds_external (62)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `evds_abreserv` | Toplam Uluslararası Rezervler | TR | 1981-2026 | 2.730 | cbrt_evds |
+| `evds_auihrulke` | Parasal Olmayan Altın İhracatı - Ülke Dağılımı | TR | 2017-2026 | 29.885 | cbrt_evds |
+| `evds_auithulke` | Parasal Olmayan Altın İthalatı - Ülke Dağılımı | TR | 2017-2026 | 29.885 | cbrt_evds |
+| `evds_brutdbalacaklitp` | Brüt Dış Borç - Tüm Sektörler - Alacaklı Dağılımı | TR | 1989-2026 | 3.969 | cbrt_evds |
+| `evds_brutdbalckamu` | Brüt Dış Borç - Kamu Sektörü - Alacaklı Dağılımı | TR | 1989-2026 | 3.969 | cbrt_evds |
+| `evds_brutdbalcozel` | Brüt Dış Borç - Özel Sektör - Alacaklı Dağılımı | TR | 1989-2026 | 3.822 | cbrt_evds |
+| `evds_brutdbalctcmb` | Brüt Dış Borç - TCMB - Alacaklı Dağılımı | TR | 1989-2026 | 3.822 | cbrt_evds |
+| `evds_brutdbborclu` | Brüt Dış Borç - Tüm Sektörler - Borçlu Dağılımı | TR | 1989-2026 | 7.938 | cbrt_evds |
+| `evds_brutdbdovkomp` | Brüt Dış Borç - Döviz Dağılımı | TR | 2000-2026 | 2.163 | cbrt_evds |
+| `evds_brutdborcozel` | Özel Sektörün Yurt Dışından Sağladığı Kredi ve Borç Senetleri Yükümlülükleri - Borçlu Dağılımı | TR | 2002-2026 | 4.018 | cbrt_evds |
+| `evds_brutdbsdds` | Brüt Dış Borç - Tüm Sektörler - Enstrüman Dağılımı | TR | 2005-2026 | 3.390 | cbrt_evds |
+| `evds_dtihfb10` | Dış Ticaret İhracat Birim Değer Endeksi-BEC Sınıflamasına Göre (2015=100) | TR | 2013-2026 | 3.078 | cbrt_evds |
+| `evds_dtihmb10` | Dış Ticaret İhracat Miktar Endeksi-BEC Sınıflamasına Göre (2015=100) | TR | 2013-2026 | 3.078 | cbrt_evds |
+| `evds_dtitfb10` | Dış Ticaret İthalat Birim Değer Endeksi-BEC Sınıflamasına Göre (2015=100) | TR | 2013-2026 | 3.240 | cbrt_evds |
+| `evds_dtitmb10` | Dış Ticaret İthalat Miktar Endeksi-BEC Sınıflamasına Göre (2015=100) | TR | 2013-2026 | 3.240 | cbrt_evds |
+| `evds_hariccariacik` | Cari İşlemler Hesabı. Parasal Olmayan Altın ve Enerji Dış Ticareti | TR | 1996-2026 | 3.670 | cbrt_evds |
+| `evds_ihracatbec` | Genel Ticaret Sistemine Göre Dış Ticaret Geniş Ekonomik Grupların Sınıflamasına (BEC) Göre İhracat | TR | 2013-2026 | 3.912 | cbrt_evds |
+| `evds_ihrisicrev4` | Genel Ticaret Sistemine Göre Dış Ticaret Ekonomik Faaliyetlere (ISIC. Rev. 4) Göre İhracat | TR | 2013-2026 | 8.032 | cbrt_evds |
+| `evds_ithalatbec` | Genel Ticaret Sistemine Göre Dış Ticaret Geniş Ekonomik Grupların Sınıflamasına (BEC) Göre İthalat | TR | 2013-2026 | 3.911 | cbrt_evds |
+| `evds_ithisicrev4` | Genel Ticaret Sistemine Göre Dış Ticaret Ekonomik Faaliyetlere (ISIC. Rev. 4) Göre İthalat | TR | 2013-2026 | 7.862 | cbrt_evds |
+| `evds_kalanvade` | Kalan Vadeye Göre Borç | TR | 2011-2026 | 3.779 | cbrt_evds |
+| `evds_kalvadbg` | Kalan Vadeye Göre Borç-Borçlu Bazında | TR | 2011-2026 | 3.237 | cbrt_evds |
+| `evds_kisavadeborc` | Borçluya Göre Dağılım | TR | 2002-2026 | 5.292 | cbrt_evds |
+| `evds_kvadealacakli` | Alacaklıya Göre Dağılım | TR | 2002-2026 | 511 | cbrt_evds |
+| `evds_kvadedovkomp` | Döviz Kompozisyonu | TR | 2005-2026 | 1.118 | cbrt_evds |
+| `evds_kvdbs` | Kısa Vadeli Borç Stoku | TR | 1989-2026 | 5.316 | cbrt_evds |
+| `evds_metalihr` | 71.Fasıl İhracatı | TR | 2013-2026 | 1.140 | cbrt_evds |
+| `evds_metalith` | 71.Fasıl İthalatı | TR | 2013-2026 | 1.167 | cbrt_evds |
+| `evds_netdisborc` | Net Dış Borç Stoku | TR | 2005-2026 | 3.320 | cbrt_evds |
+| `evds_odana6` | Ödemeler Dengesi-Analitik Sunum | TR | 1975-2026 | 15.854 | cbrt_evds |
+| `evds_odeayrsunum6` | Ödemeler Dengesi-Ayrıntılı Sunum | TR | 1984-2026 | 86.628 | cbrt_evds |
+| `evds_oderoll` | Dış Borç Çevirme Oranları | TR | 2006-2026 | 968 | cbrt_evds |
+| `evds_odeydiebs` | Yurt Dışında İhraç Edilen Borçlanma Senetleri | TR | 2010-2026 | 2.910 | cbrt_evds |
+| `evds_pyamevd` | Yurt Dışı Yerleşik Kişilerin Mevduat Hesapları | TR | 1984-2026 | 1.169 | cbrt_evds |
+| `evds_pyascog` | Portföy Varlıkları-Coğrafi Dağılım | TR | 2001-2026 | 820 | cbrt_evds |
+| `evds_pyasens` | Portföy Varlıkları-Enstrüman Dağılımı | TR | 2001-2026 | 1.314 | cbrt_evds |
+| `evds_rkdrk` | Reeskont Kredilerinin Döviz Rezervlerine Katkısı | TR | 2009-2026 | 210 | cbrt_evds |
+| `evds_sgegi` | Seyahat Gelirleri ve Giderleri | TR | 2003-2026 | 2.436 | cbrt_evds |
+| `evds_tevdsuv` | Uzun Vadeli Kredi Kullanımları-Borçluya Göre | TR | 1984-2026 | 2.847 | cbrt_evds |
+| `evds_todeapara` | Kredi Geri Ödemeleri - Anapara | TR | 1998-2026 | 4.280 | cbrt_evds |
+| `evds_todedfaiz` | Kredi Geri Ödemeleri - Faiz | TR | 1998-2026 | 7.794 | cbrt_evds |
+| `evds_turizmgelgit` | Turizm Gelir ve Giderleri | TR | 2012-2026 | 339 | cbrt_evds |
+| `evds_turizmyzs` | Çıkış Yapan Ziyaretçiler | TR | 2012-2026 | 336 | cbrt_evds |
+| `evds_turizmyzsy` | Çıkış Yapan Ziyaretçi Sayısı – Ülke Dağılımı | TR | 2012-2025 | 1.759 | cbrt_evds |
+| `evds_turizmzyvs` | Giriş Yapan Vatandaşlar | TR | 2012-2026 | 336 | cbrt_evds |
+| `evds_ulusdovlkd` | Uluslararası Rezervler ve Döviz Likiditesi Tablosu | TR | 2000-2026 | 34.567 | cbrt_evds |
+| `evds_undnakliyetbg` | Araç ve Treyler Takip Sistemi - Türk Araçlar Boş Giriş | TR | 2012-2026 | 11.616 | cbrt_evds |
+| `evds_undnakliyetih` | Araç ve Treyler Takip Sistemi - Türk Araçlar İhracat | TR | 2012-2026 | 12.320 | cbrt_evds |
+| `evds_undnakliyetit` | Araç ve Treyler Takip Sistemi - Türk Araçlar İthalat | TR | 2012-2026 | 12.672 | cbrt_evds |
+| `evds_undnakliyeybg` | Araç ve Treyler Takip Sistemi - Yabancı Araçlar Boş Giriş | TR | 2012-2026 | 11.616 | cbrt_evds |
+| `evds_undnakliyeyih` | Araç ve Treyler Takip Sistemi - Yabancı Araçlar İhracat | TR | 2012-2026 | 11.968 | cbrt_evds |
+| `evds_undnakliyeyit` | Araç ve Treyler Takip Sistemi - Yabancı Araçlar İthalat | TR | 2012-2026 | 11.616 | cbrt_evds |
+| `evds_uypucay` | Uluslararası Yatırım Pozisyonu | TR | 1996-2026 | 7.993 | cbrt_evds |
+| `evds_ydydyse` | Yurt İçine Yapılan Yatırımlar (Akım)-Sektörel Dağılım | TR | 2002-2026 | 11.266 | cbrt_evds |
+| `evds_ydydysektor` | Türkiye'ye Yapılan Yatırımlar (Stok)-Sektörel Dağılım | TR | 2000-2025 | 1.017 | cbrt_evds |
+| `evds_ydydyul` | Yurt İçine Yapılan Yatırımlar (Akım)-Ülke Dağılımı | TR | 2002-2026 | 41.396 | cbrt_evds |
+| `evds_ydydyulke` | Türkiye'ye Yapılan Yatırımlar (Stok)-Ülke Dağılımı | TR | 2000-2025 | 4.170 | cbrt_evds |
+| `evds_ydydyulkenihai` | Türkiye'ye Yapılan Yatırımlar (Stok)-Ülke Dağılımı-Nihai Yatırımcı | TR | 2022-2025 | 648 | cbrt_evds |
+| `evds_yiydyse` | Yurt Dışına Yapılan Yatırımlar (Akım)-Sektörel Dağılım | TR | 2002-2026 | 11.266 | cbrt_evds |
+| `evds_yiydysektor` | Yurt Dışına Yapılan Yatırımlar (Stok)-Sektörel Dağılım | TR | 2001-2025 | 791 | cbrt_evds |
+| `evds_yiydyul` | Yurt Dışına Yapılan Yatırımlar (Akım)-Ülke Dağılımı | TR | 2002-2026 | 41.396 | cbrt_evds |
+| `evds_yiydyulke` | Yurt Dışına Yapılan Yatırımlar (Stok)-Ülke Dağılımı | TR | 2001-2025 | 2.640 | cbrt_evds |
 
 ## egitim (46)
 
@@ -464,47 +744,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `province_gdp_regional_share_sector` | İlin Türkiye sektör katma değerindeki payı | TR. il | 2000-2024 | 22.550 | tuik_medas |
 | `province_gdp_sector_share` | Sektörlerin il GSYH içindeki payı | TR. il | 2000-2024 | 22.550 | tuik_medas |
 
-## reel_kesim (36)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `capacity_utilisation` | İmalat sanayi kapasite kullanım oranı | TR | 2007-2026 | 7.932 | cbrt_evds |
-| `chain_restaurants` | Zincir şube sayısı | il. ilçe | 2026-2026 | 3.103 | chain_store_finders |
-| `chain_stores` | Zincir mağaza sayısı | il. ilçe | 2026-2026 | 7.963 | chain_store_finders |
-| `companies_opened_capital` | Kurulan şirketlerin sermayesi | TR | 2010-2026 | 756 | cbrt_evds |
-| `companies_opened_closed` | Kurulan ve kapanan şirket sayısı | TR | 2010-2026 | 1.993 | cbrt_evds |
-| `construction_turnover_index` | İnşaat ciro endeksi (2015=100) | TR | 2009-2023 | 2.160 | tuik_portal |
-| `economic_tendency_survey` | İktisadi yönelim anketi | TR | 2007-2026 | 15.892 | cbrt_evds |
-| `enterprises` | Girişim sayısı | il | 2009-2024 | 81.550 | tuik_medas |
-| `fashion_stores` | Giyim zinciri mağazası | il. ilçe | 2026-2026 | 1.437 | branch_finders |
-| `foreign_trade_by_province` | Dış ticaret (il. gümrük) | il | 2002-2023 | 3.548 | oecd_regional |
-| `industrial_production_index` | Sanayi üretim endeksi | TR | 1986-2026 | 82.257 | cbrt_evds |
-| `industry_turnover_index` | Sanayi ciro endeksi (2015=100) | TR | 2005-2023 | 24.624 | tuik_portal |
-| `mersis_active_businesses` | Aktif ticari işletme sayısı (MERSİS) | TR | 2024-2026 | 168 | mersis |
-| `mersis_business_flows` | Kurulan ve kapanan ticari işletmeler (MERSİS) | TR | 2024-2026 | 336 | mersis |
-| `organized_industrial_zones` | Faal organize sanayi bölgesi sayısı | TR. il | 2021-2024 | 158 | drdatastats |
-| `real_sector_confidence` | Reel kesim güven endeksi | TR | 2007-2026 | 2.124 | cbrt_evds |
-| `registered_tradesmen` | Kayıtlı esnaf sayısı | il | 2026-2026 | 81 | tesk |
-| `tendency_survey_large_firms` | İktisadi yönelim anketi — 500 ve üzeri çalışanlı firmalar | TR | 2007-2026 | 15.891 | cbrt_evds |
-| `tendency_survey_medium_firms` | İktisadi yönelim anketi — 250-499 çalışanlı firmalar | TR | 2007-2026 | 15.890 | cbrt_evds |
-| `tendency_survey_small_firms` | İktisadi yönelim anketi — 250'den az çalışanlı firmalar | TR | 2007-2026 | 15.892 | cbrt_evds |
-| `tim_exports` | İhracat (TİM. il) | il | 2004-2025 | 1.775 | tim |
-| `tim_exports_by_country` | İhracat. ülkeye göre (TİM. il) | il | 2013-2025 | 102.967 | tim |
-| `tim_exports_by_sector` | İhracat. sektöre göre (TİM. il) | il | 2013-2025 | 22.391 | tim |
-| `tobb_companies` | Kurulan. tasfiyeye giren ve kapanan şirketler | il | 2009-2025 | 11.016 | tobb |
-| `tobb_company_capital` | Kurulan şirketlerin sermayesi | il | 2015-2025 | 891 | tobb |
-| `tobb_foreign_companies` | Kurulan yabancı ortaklı şirketler | il | 2010-2025 | 2.592 | tobb |
-| `tobb_foreign_company_capital` | Yabancı ortaklı kurulan şirketlerin sermayesi | il | 2010-2025 | 2.592 | tobb |
-| `tobb_foreign_partner_capital` | Kurulan şirketlerde yabancı sermaye payı | il | 2010-2025 | 2.592 | tobb |
-| `trade_trucks` | Dış ticarette kara ve Ro-Ro araçları | TR | 2021-2026 | 816 | cbrt_evds |
-| `trade_turnover_index` | Ticaret ciro endeksi (2015=100) | TR | 2009-2023 | 2.160 | tuik_portal |
-| `tradesmen_amendments` | Esnaf tadil ilanı | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_chambers` | Esnaf odası sayısı | il | 2026-2026 | 81 | tesk |
-| `tradesmen_deregistrations` | Esnaf sicil terkini | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_registrations` | Esnaf tescili | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_trade_removals` | Esnaf meslek terkini | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_workplaces` | Esnaf işyeri sayısı | il | 2026-2026 | 81 | tesk |
-
 ## bankacilik (36)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -546,6 +785,47 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `loan_interest_rates_weekly` | Kredi faiz oranları (akım. haftalık) | TR | 2002-2026 | 11.209 | cbrt_evds |
 | `loan_profit_share_rates` | Kredi kâr payı oranları (stok) | TR | 2018-2026 | 1.030 | cbrt_evds |
 
+## reel_kesim (36)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `capacity_utilisation` | İmalat sanayi kapasite kullanım oranı | TR | 2007-2026 | 7.932 | cbrt_evds |
+| `chain_restaurants` | Zincir şube sayısı | il. ilçe | 2026-2026 | 3.103 | chain_store_finders |
+| `chain_stores` | Zincir mağaza sayısı | il. ilçe | 2026-2026 | 7.963 | chain_store_finders |
+| `companies_opened_capital` | Kurulan şirketlerin sermayesi | TR | 2010-2026 | 756 | cbrt_evds |
+| `companies_opened_closed` | Kurulan ve kapanan şirket sayısı | TR | 2010-2026 | 1.993 | cbrt_evds |
+| `construction_turnover_index` | İnşaat ciro endeksi (2015=100) | TR | 2009-2023 | 2.160 | tuik_portal |
+| `economic_tendency_survey` | İktisadi yönelim anketi | TR | 2007-2026 | 15.892 | cbrt_evds |
+| `enterprises` | Girişim sayısı | il | 2009-2024 | 81.550 | tuik_medas |
+| `fashion_stores` | Giyim zinciri mağazası | il. ilçe | 2026-2026 | 1.437 | branch_finders |
+| `foreign_trade_by_province` | Dış ticaret (il. gümrük) | il | 2002-2023 | 3.548 | oecd_regional |
+| `industrial_production_index` | Sanayi üretim endeksi | TR | 1986-2026 | 82.257 | cbrt_evds |
+| `industry_turnover_index` | Sanayi ciro endeksi (2015=100) | TR | 2005-2023 | 24.624 | tuik_portal |
+| `mersis_active_businesses` | Aktif ticari işletme sayısı (MERSİS) | TR | 2024-2026 | 168 | mersis |
+| `mersis_business_flows` | Kurulan ve kapanan ticari işletmeler (MERSİS) | TR | 2024-2026 | 336 | mersis |
+| `organized_industrial_zones` | Faal organize sanayi bölgesi sayısı | TR. il | 2021-2024 | 158 | drdatastats |
+| `real_sector_confidence` | Reel kesim güven endeksi | TR | 2007-2026 | 2.124 | cbrt_evds |
+| `registered_tradesmen` | Kayıtlı esnaf sayısı | il | 2026-2026 | 81 | tesk |
+| `tendency_survey_large_firms` | İktisadi yönelim anketi — 500 ve üzeri çalışanlı firmalar | TR | 2007-2026 | 15.891 | cbrt_evds |
+| `tendency_survey_medium_firms` | İktisadi yönelim anketi — 250-499 çalışanlı firmalar | TR | 2007-2026 | 15.890 | cbrt_evds |
+| `tendency_survey_small_firms` | İktisadi yönelim anketi — 250'den az çalışanlı firmalar | TR | 2007-2026 | 15.892 | cbrt_evds |
+| `tim_exports` | İhracat (TİM. il) | il | 2004-2025 | 1.775 | tim |
+| `tim_exports_by_country` | İhracat. ülkeye göre (TİM. il) | il | 2013-2025 | 102.967 | tim |
+| `tim_exports_by_sector` | İhracat. sektöre göre (TİM. il) | il | 2013-2025 | 22.391 | tim |
+| `tobb_companies` | Kurulan. tasfiyeye giren ve kapanan şirketler | il | 2009-2025 | 11.016 | tobb |
+| `tobb_company_capital` | Kurulan şirketlerin sermayesi | il | 2015-2025 | 891 | tobb |
+| `tobb_foreign_companies` | Kurulan yabancı ortaklı şirketler | il | 2010-2025 | 2.592 | tobb |
+| `tobb_foreign_company_capital` | Yabancı ortaklı kurulan şirketlerin sermayesi | il | 2010-2025 | 2.592 | tobb |
+| `tobb_foreign_partner_capital` | Kurulan şirketlerde yabancı sermaye payı | il | 2010-2025 | 2.592 | tobb |
+| `trade_trucks` | Dış ticarette kara ve Ro-Ro araçları | TR | 2021-2026 | 816 | cbrt_evds |
+| `trade_turnover_index` | Ticaret ciro endeksi (2015=100) | TR | 2009-2023 | 2.160 | tuik_portal |
+| `tradesmen_amendments` | Esnaf tadil ilanı | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_chambers` | Esnaf odası sayısı | il | 2026-2026 | 81 | tesk |
+| `tradesmen_deregistrations` | Esnaf sicil terkini | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_registrations` | Esnaf tescili | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_trade_removals` | Esnaf meslek terkini | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_workplaces` | Esnaf işyeri sayısı | il | 2026-2026 | 81 | tesk |
+
 ## belediye_hizmetleri (34)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -585,43 +865,43 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `water_treatment_population` | İçme suyu arıtma tesisiyle hizmet verilen nüfus | TR. il | 2001-2022 | 699 | tuik_medas |
 | `water_treatment_population_share` | İçme suyu arıtma tesisiyle hizmet verilen nüfusun oranı | TR. il | 2001-2022 | 699 | tuik_medas |
 
-## cocuk (33)
+## nufus (33)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `adolescent_birth_share` | Adölesan doğum oranı | TR. il | 2009-2025 | 1.394 | tuik_medas |
-| `births_to_child_mothers` | Çocuk annelerin doğumu | TR | 2009-2025 | 17 | tuik_medas |
-| `caesarean_share` | Sezaryen doğum oranı | TR | 2008-2024 | 17 | tuik_medas |
-| `child_crime_victims` | Suç mağduru çocuk | TR | 2015-2025 | 572 | tuik_medas |
-| `child_dependency_ratio` | Çocuk bağımlılık oranı (0-14) | TR. il | 2007-2025 | 1.558 | tuik_medas |
-| `child_incident_victims` | Takibi gereken olay mağduru çocuk | TR | 2015-2025 | 22 | tuik_medas |
-| `child_marriage_share` | 16-17 yaşında evlenenlerin evlenmeler içindeki oranı | TR. il | 2002-2025 | 3.850 | tuik_medas |
-| `child_marriages` | 16-17 yaşında evlenen çocuk | TR. il | 2002-2025 | 3.850 | tuik_medas |
-| `child_misdemeanour_victims` | Kabahat mağduru çocuk | TR | 2015-2025 | 22 | tuik_medas |
-| `child_police_referrals` | Güvenlik birimine gelen veya getirilen çocuk | TR | 2015-2025 | 528 | tuik_medas |
-| `child_population_growth` | Yıllık çocuk nüfus artış hızı | TR. il | 2008-2025 | 2.952 | tuik_medas |
-| `child_population_share` | Çocuk nüfus oranı (0-17) | TR. il | 2007-2025 | 3.116 | tuik_medas |
-| `child_sex_ratio` | Çocuk cinsiyet oranı | TR. il | 2007-2025 | 1.558 | tuik_medas |
-| `child_suicide_rate` | Çocuk intihar hızı (100.000) | TR | 2002-2025 | 48 | tuik_medas |
-| `children_cared_at_home` | Evde bakılan çocuk | TR | 2015-2025 | 11 | tuik_medas |
-| `children_in_after_school_care` | Zorunlu eğitim dışında bakım merkezine giden çocuk | TR | 2015-2025 | 11 | tuik_medas |
-| `children_in_custody_cases` | Velayete verilen çocuk | TR | 2010-2025 | 16 | tuik_medas |
-| `children_in_daycare` | Kreşe giden çocuk | TR | 2015-2025 | 11 | tuik_medas |
-| `children_in_foster_care` | Koruyucu aile yanındaki çocuk | il | 2018-2019 | 162 | drdatastats |
-| `children_in_single_parent_households` | Tek ebeveynli hanede yaşayan çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
-| `children_pushed_into_crime` | Suça sürüklenen çocuk | TR | 2015-2025 | 572 | tuik_medas |
-| `dtap3_vaccination` | Beşli karma aşı 3. doz aşılama hızı | TR | 2008-2024 | 17 | tuik_medas |
-| `facility_birth_share` | Sağlık kuruluşunda gerçekleşen doğum oranı | TR | 2009-2024 | 16 | tuik_medas |
-| `foreign_born_children` | Doğum yeri yurt dışı olan çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
-| `foreign_national_children` | Yabancı uyruklu çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
-| `foster_families` | Koruyucu aile sayısı | il | 2018-2019 | 162 | drdatastats |
-| `households_with_children` | Çocuk bulunan hanehalkı | TR. il | 2014-2025 | 984 | tuik_medas |
-| `maternal_mortality` | Anne ölüm oranı (100.000 canlı doğumda) | TR | 2007-2024 | 18 | tuik_medas |
-| `neonatal_mortality` | Neonatal ölüm hızı | TR | 2009-2025 | 34 | tuik_medas |
-| `postneonatal_mortality` | Postneonatal ölüm hızı | TR | 2009-2025 | 34 | tuik_medas |
-| `preschool_gross_enrolment` | Okul öncesi brüt okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
-| `preschool_net_enrolment` | Okul öncesi net okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
-| `single_parent_households_with_children` | Çocuk bulunan tek ebeveynli hane | TR. il | 2014-2025 | 984 | tuik_medas |
+| `baby_names` | Bebeklere en çok verilen isimler | TR. il | 2018-2025 | 112.000 | tuik_nip |
+| `class_size` | Sınıf mevcudu (öğrenci/derslik) | il | 2012-2024 | 2.106 | meb_egitim |
+| `common_names` | En çok kullanılan isimler | TR. il | 2018-2025 | 39.904 | tuik_nip |
+| `common_surnames` | En çok kullanılan soyisimler | TR. il | 2018-2025 | 19.801 | tuik_nip |
+| `district_urbanization` | Kentleşme oranı (kayıtlı seçmen) | il. ilçe | 2015-2015 | 1.023 | ysk_aatoplu |
+| `education_attainment` | Öğrenim durumu | il | 2008-2025 | 26.244 | tuik_nip |
+| `foreign_population` | Yabancı uyruklu nüfus | TR. il | 2008-2025 | 2.952 | tuik_medas |
+| `gender_student_ratio` | Kadın/Erkek öğrenci oranı | il | 2012-2024 | 3.159 | meb_egitim |
+| `household_by_size` | Hanehalkı sayısı (büyüklüğe göre) | il | 2012-2025 | 11.340 | tuik |
+| `household_by_tenure` | Hanehalkı sayısı (mülkiyet durumuna göre) | il | 2021-2021 | 324 | tuik |
+| `household_by_type` | Hanehalkı tipine göre hane sayısı | TR. il. ilçe | 2014-2025 | 50.600 | tuik_medas |
+| `household_count` | Hanehalkı sayısı | TR. il. ilçe | 2012-2025 | 14.741 | tuik_medas |
+| `household_size` | Ortalama hanehalkı büyüklüğü | TR. il. ilçe | 2008-2025 | 18.897 | tuik_medas |
+| `marital_status` | Medeni durum | TR. il. ilçe | 2008-2025 | 2.181.235 | tuik_medas |
+| `median_age` | Ortanca yaş | TR. il | 2007-2025 | 4.674 | tuik_medas |
+| `migration_between_regions` | Bölgeler arası göç | İBBS-2 | 2008-2025 | 12.168 | tuik_medas |
+| `migration_from_abroad` | Yurt dışından gelen göç | TR. il | 2016-2025 | 820 | tuik_medas |
+| `migration_in` | Aldığı göç | il | 2008-2025 | 40.824 | tuik_medas |
+| `migration_net` | Net göç | il | 2008-2025 | 1.458 | tuik_medas |
+| `migration_out` | Verdiği göç | il | 2008-2025 | 40.824 | tuik_medas |
+| `migration_to_abroad` | Yurt dışına giden göç | TR. il | 2016-2025 | 820 | tuik_medas |
+| `natural_increase` | Doğal nüfus artışı | TR. il. ilçe | 2009-2025 | 13.060 | tuik_medas |
+| `net_enrollment_rate` | Net okullaşma oranı | il | 2007-2024 | 5.022 | meb_egitim |
+| `population` | Nüfus | TR. il. ilçe. mahalle. köy | 2007-2025 | 2.403.579 | tuik_medas |
+| `population_by_birth_province` | İlçe nüfusu (doğum yerine göre) | ilçe | 2014-2025 | 217.452 | tuik_medas |
+| `population_by_registry_province` | İlçe nüfusu (nüfusa kayıtlı olunan ile göre) | ilçe | 2007-2025 | 232.146 | tuik_medas |
+| `population_density` | Nüfus yoğunluğu | TR. il | 2007-2025 | 1.558 | tuik_medas |
+| `registered_by_residence_province` | İlçeye kayıtlı nüfus (ikamet edilen ile göre) | ilçe | 2008-2025 | 234.900 | tuik_medas |
+| `registry_population` | Kütük nüfusu | il | 2007-2025 | 3.078 | tuik_medas |
+| `school_size` | Okul mevcudu (öğrenci/okul) | il | 2012-2024 | 2.106 | meb_egitim |
+| `section_room_ratio` | Şube/Derslik oranı (ikili öğretim baskısı) | il | 2012-2024 | 2.106 | meb_egitim |
+| `section_size` | Şube mevcudu (öğrenci/şube) | il | 2012-2024 | 3.159 | meb_egitim |
+| `temporary_protection_syrians` | Geçici koruma altındaki Suriyeliler | TR. il | 2026-2026 | 82 | goc_idaresi |
 
 ## ulasim (33)
 
@@ -661,43 +941,43 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `vehicles_transferred` | Devri yapılan taşıt (marka ve türe göre) | TR. il | 2010-2025 | 257.830 | tuik_medas |
 | `vehicles_transferred_by_age` | Devri yapılan taşıt (taşıt yaşına göre) | TR. il | 2020-2025 | 2.460 | tuik_medas |
 
-## nufus (33)
+## cocuk (33)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `baby_names` | Bebeklere en çok verilen isimler | TR. il | 2018-2025 | 112.000 | tuik_nip |
-| `class_size` | Sınıf mevcudu (öğrenci/derslik) | il | 2012-2024 | 2.106 | meb_egitim |
-| `common_names` | En çok kullanılan isimler | TR. il | 2018-2025 | 39.904 | tuik_nip |
-| `common_surnames` | En çok kullanılan soyisimler | TR. il | 2018-2025 | 19.801 | tuik_nip |
-| `district_urbanization` | Kentleşme oranı (kayıtlı seçmen) | il. ilçe | 2015-2015 | 1.023 | ysk_aatoplu |
-| `education_attainment` | Öğrenim durumu | il | 2008-2025 | 26.244 | tuik_nip |
-| `foreign_population` | Yabancı uyruklu nüfus | TR. il | 2008-2025 | 2.952 | tuik_medas |
-| `gender_student_ratio` | Kadın/Erkek öğrenci oranı | il | 2012-2024 | 3.159 | meb_egitim |
-| `household_by_size` | Hanehalkı sayısı (büyüklüğe göre) | il | 2012-2025 | 11.340 | tuik |
-| `household_by_tenure` | Hanehalkı sayısı (mülkiyet durumuna göre) | il | 2021-2021 | 324 | tuik |
-| `household_by_type` | Hanehalkı tipine göre hane sayısı | TR. il. ilçe | 2014-2025 | 50.600 | tuik_medas |
-| `household_count` | Hanehalkı sayısı | TR. il. ilçe | 2012-2025 | 14.741 | tuik_medas |
-| `household_size` | Ortalama hanehalkı büyüklüğü | TR. il. ilçe | 2008-2025 | 18.897 | tuik_medas |
-| `marital_status` | Medeni durum | TR. il. ilçe | 2008-2025 | 2.181.235 | tuik_medas |
-| `median_age` | Ortanca yaş | TR. il | 2007-2025 | 4.674 | tuik_medas |
-| `migration_between_regions` | Bölgeler arası göç | İBBS-2 | 2008-2025 | 12.168 | tuik_medas |
-| `migration_from_abroad` | Yurt dışından gelen göç | TR. il | 2016-2025 | 820 | tuik_medas |
-| `migration_in` | Aldığı göç | il | 2008-2025 | 40.824 | tuik_medas |
-| `migration_net` | Net göç | il | 2008-2025 | 1.458 | tuik_medas |
-| `migration_out` | Verdiği göç | il | 2008-2025 | 40.824 | tuik_medas |
-| `migration_to_abroad` | Yurt dışına giden göç | TR. il | 2016-2025 | 820 | tuik_medas |
-| `natural_increase` | Doğal nüfus artışı | TR. il. ilçe | 2009-2025 | 13.060 | tuik_medas |
-| `net_enrollment_rate` | Net okullaşma oranı | il | 2007-2024 | 5.022 | meb_egitim |
-| `population` | Nüfus | TR. il. ilçe. mahalle. köy | 2007-2025 | 2.403.579 | tuik_medas |
-| `population_by_birth_province` | İlçe nüfusu (doğum yerine göre) | ilçe | 2014-2025 | 217.452 | tuik_medas |
-| `population_by_registry_province` | İlçe nüfusu (nüfusa kayıtlı olunan ile göre) | ilçe | 2007-2025 | 232.146 | tuik_medas |
-| `population_density` | Nüfus yoğunluğu | TR. il | 2007-2025 | 1.558 | tuik_medas |
-| `registered_by_residence_province` | İlçeye kayıtlı nüfus (ikamet edilen ile göre) | ilçe | 2008-2025 | 234.900 | tuik_medas |
-| `registry_population` | Kütük nüfusu | il | 2007-2025 | 3.078 | tuik_medas |
-| `school_size` | Okul mevcudu (öğrenci/okul) | il | 2012-2024 | 2.106 | meb_egitim |
-| `section_room_ratio` | Şube/Derslik oranı (ikili öğretim baskısı) | il | 2012-2024 | 2.106 | meb_egitim |
-| `section_size` | Şube mevcudu (öğrenci/şube) | il | 2012-2024 | 3.159 | meb_egitim |
-| `temporary_protection_syrians` | Geçici koruma altındaki Suriyeliler | TR. il | 2026-2026 | 82 | goc_idaresi |
+| `adolescent_birth_share` | Adölesan doğum oranı | TR. il | 2009-2025 | 1.394 | tuik_medas |
+| `births_to_child_mothers` | Çocuk annelerin doğumu | TR | 2009-2025 | 17 | tuik_medas |
+| `caesarean_share` | Sezaryen doğum oranı | TR | 2008-2024 | 17 | tuik_medas |
+| `child_crime_victims` | Suç mağduru çocuk | TR | 2015-2025 | 572 | tuik_medas |
+| `child_dependency_ratio` | Çocuk bağımlılık oranı (0-14) | TR. il | 2007-2025 | 1.558 | tuik_medas |
+| `child_incident_victims` | Takibi gereken olay mağduru çocuk | TR | 2015-2025 | 22 | tuik_medas |
+| `child_marriage_share` | 16-17 yaşında evlenenlerin evlenmeler içindeki oranı | TR. il | 2002-2025 | 3.850 | tuik_medas |
+| `child_marriages` | 16-17 yaşında evlenen çocuk | TR. il | 2002-2025 | 3.850 | tuik_medas |
+| `child_misdemeanour_victims` | Kabahat mağduru çocuk | TR | 2015-2025 | 22 | tuik_medas |
+| `child_police_referrals` | Güvenlik birimine gelen veya getirilen çocuk | TR | 2015-2025 | 528 | tuik_medas |
+| `child_population_growth` | Yıllık çocuk nüfus artış hızı | TR. il | 2008-2025 | 2.952 | tuik_medas |
+| `child_population_share` | Çocuk nüfus oranı (0-17) | TR. il | 2007-2025 | 3.116 | tuik_medas |
+| `child_sex_ratio` | Çocuk cinsiyet oranı | TR. il | 2007-2025 | 1.558 | tuik_medas |
+| `child_suicide_rate` | Çocuk intihar hızı (100.000) | TR | 2002-2025 | 48 | tuik_medas |
+| `children_cared_at_home` | Evde bakılan çocuk | TR | 2015-2025 | 11 | tuik_medas |
+| `children_in_after_school_care` | Zorunlu eğitim dışında bakım merkezine giden çocuk | TR | 2015-2025 | 11 | tuik_medas |
+| `children_in_custody_cases` | Velayete verilen çocuk | TR | 2010-2025 | 16 | tuik_medas |
+| `children_in_daycare` | Kreşe giden çocuk | TR | 2015-2025 | 11 | tuik_medas |
+| `children_in_foster_care` | Koruyucu aile yanındaki çocuk | il | 2018-2019 | 162 | drdatastats |
+| `children_in_single_parent_households` | Tek ebeveynli hanede yaşayan çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
+| `children_pushed_into_crime` | Suça sürüklenen çocuk | TR | 2015-2025 | 572 | tuik_medas |
+| `dtap3_vaccination` | Beşli karma aşı 3. doz aşılama hızı | TR | 2008-2024 | 17 | tuik_medas |
+| `facility_birth_share` | Sağlık kuruluşunda gerçekleşen doğum oranı | TR | 2009-2024 | 16 | tuik_medas |
+| `foreign_born_children` | Doğum yeri yurt dışı olan çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
+| `foreign_national_children` | Yabancı uyruklu çocuk | TR. il | 2014-2025 | 1.968 | tuik_medas |
+| `foster_families` | Koruyucu aile sayısı | il | 2018-2019 | 162 | drdatastats |
+| `households_with_children` | Çocuk bulunan hanehalkı | TR. il | 2014-2025 | 984 | tuik_medas |
+| `maternal_mortality` | Anne ölüm oranı (100.000 canlı doğumda) | TR | 2007-2024 | 18 | tuik_medas |
+| `neonatal_mortality` | Neonatal ölüm hızı | TR | 2009-2025 | 34 | tuik_medas |
+| `postneonatal_mortality` | Postneonatal ölüm hızı | TR | 2009-2025 | 34 | tuik_medas |
+| `preschool_gross_enrolment` | Okul öncesi brüt okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
+| `preschool_net_enrolment` | Okul öncesi net okullaşma (3-5 yaş) | TR. il | 2013-2024 | 1.968 | tuik_medas |
+| `single_parent_households_with_children` | Çocuk bulunan tek ebeveynli hane | TR. il | 2014-2025 | 984 | tuik_medas |
 
 ## kultur (32)
 
@@ -859,6 +1139,30 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `fuel_stations` | Akaryakıt istasyonu | il. ilçe | 2026-2026 | 7.696 | epdk_lisans |
 | `installed_capacity` | Kurulu güç (yalnız Türkiye) | TR | 1975-2024 | 50 | tuik_medas |
 
+## evds_surveys (19)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `evds_bekodtufeyeni` | Tüketici Enflasyonu Beklentilerinin Olasılık Dağılımları | TR | 2022-2026 | 5.700 | cbrt_evds |
+| `evds_bkea` | Banka Kredileri Eğilim Anketi | TR | 2005-2026 | 10.186 | cbrt_evds |
+| `evds_cdur2` | Dayanıklı Tüketim Malları | TR | 2007-2026 | 21.186 | cbrt_evds |
+| `evds_cndu2` | Dayanıksız Tüketim Malları | TR | 2007-2026 | 21.316 | cbrt_evds |
+| `evds_cons2` | Tüketim Malları | TR | 2007-2026 | 21.317 | cbrt_evds |
+| `evds_enfbek` | Sektörel Enflasyon Beklentileri | TR | 2015-2026 | 436 | cbrt_evds |
+| `evds_fhany` | Finansal Hizmetler İstatistikleri | TR | 2012-2026 | 4.974 | cbrt_evds |
+| `evds_fhge` | Finansal Hizmetler Güven Endeksi | TR | 2012-2026 | 2.332 | cbrt_evds |
+| `evds_fobe2` | Gıda ve İçecekler | TR | 2007-2026 | 21.317 | cbrt_evds |
+| `evds_hanebek` | Hanehalkı Beklenti İstatistikleri | TR | 2026-2026 | 264 | cbrt_evds |
+| `evds_hanebekdag` | Hanehalkı Enflasyon Beklentilerinin Dağılımları | TR | 2026-2026 | 88 | cbrt_evds |
+| `evds_hanebekdemog` | Demografik Kırılımda Sonuçlar | TR | 2026-2026 | 2.688 | cbrt_evds |
+| `evds_intm2` | Ara Malları | TR | 2007-2026 | 21.317 | cbrt_evds |
+| `evds_inve2` | Yatırım Malları | TR | 2007-2026 | 21.317 | cbrt_evds |
+| `evds_iyama` | İktisadi Yönelim İstatistikleri Mevsimsellikten Arındırılmış | TR | 2007-2026 | 5.036 | cbrt_evds |
+| `evds_mbgven2` | Tüketici Güven Endeksi ve Tüketici Eğilim Endeksleri | TR | 2012-2026 | 3.344 | cbrt_evds |
+| `evds_pkauo` | Uygun Ortalamalar | TR | 2013-2026 | 3.186 | cbrt_evds |
+| `evds_rkgema` | Reel Kesim Güven Endeksi Mevsimsellikten Arındırılmış | TR | 2007-2026 | 2.124 | cbrt_evds |
+| `evds_urbek` | Tanımsal İstatistikler | TR | 2013-2026 | 34.808 | cbrt_evds |
+
 ## yapi_ruhsati (18)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -882,28 +1186,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `permit_other_area` | Yapı ruhsatı — diğer alan (kullanım amacına göre. yıllık) | TR. il. ilçe | 2010-2025 | 86.812 | tuik_medas |
 | `permit_residential_area` | Yapı ruhsatı — konut alanı (kullanım amacına göre. yıllık) | TR. il. ilçe | 2010-2025 | 40.865 | tuik_medas |
 
-## fiyatlar (17)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `agricultural_input_pi` | Tarımsal girdi fiyat endeksi | TR | 2015-2026 | 1.776 | cbrt_evds |
-| `agricultural_ppi` | Tarım ürünleri üretici fiyat endeksi | TR | 2020-2026 | 316 | cbrt_evds |
-| `average_item_price` | Ortalama madde fiyatı | TR | 2003-2022 | 84.290 | tuik_portal |
-| `cpi_2003` | Tüketici fiyat endeksi (2003=100) | TR | 2003-2026 | 284 | cbrt_evds |
-| `cpi_2003_items` | Tüketici fiyat endeksi. kalemler (2003=100) | TR | 2003-2026 | 15.613 | cbrt_evds |
-| `cpi_2025_items` | Tüketici fiyat endeksi. kalemler (2025=100) | TR | 2005-2026 | 85.367 | cbrt_evds |
-| `cpi_2025_special` | Özel kapsamlı TÜFE göstergeleri (2025=100) | TR | 2005-2026 | 7.280 | cbrt_evds |
-| `cpi_province_1994` | İl tüketici fiyat endeksi (1994=100) | TR. il | 1995-2004 | 2.400 | cbrt_evds |
-| `cpi_region_2003` | Bölgesel tüketici fiyat endeksi (2003=100) | TR. İBBS-2 | 2003-2023 | 6.273 | cbrt_evds |
-| `foreign_visitors_by_nationality` | Gelen yabancı ziyaretçi (uyruğa göre) | TR | 2008-2026 | 21.408 | cbrt_evds |
-| `istanbul_cpi_ito` | İstanbul tüketici fiyat endeksi (İTO. 2023=100) | TR | 2024-2026 | 416 | cbrt_evds |
-| `ppi_domestic` | Yurt içi üretici fiyat endeksi | TR | 1982-2026 | 46.956 | cbrt_evds |
-| `ppi_export` | Yurt dışı üretici fiyat endeksi | TR | 2010-2026 | 5.489 | cbrt_evds |
-| `real_effective_exchange_rate_cpi` | Reel efektif kur (TÜFE bazlı) | TR | 1994-2026 | 1.176 | cbrt_evds |
-| `real_effective_exchange_rate_ppi` | Reel efektif kur (Yİ-ÜFE bazlı) | TR | 1994-2026 | 392 | cbrt_evds |
-| `services_ppi` | Hizmet üretici fiyat endeksi | TR | 2017-2026 | 5.865 | cbrt_evds |
-| `usd_try_buying` | ABD doları alış kuru | TR | 1970-2026 | 14.292 | cbrt_evds |
-
 ## din (17)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -925,6 +1207,28 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `quran_course_students` | Kuran kursu kursiyer sayısı | il | 2019-2021 | 463 | drdatastats |
 | `quran_courses` | Kuran kursu sayısı | il | 2019-2021 | 243 | drdatastats |
 | `synagogues` | Sinagog sayısı | TR. il | 2022-2022 | 12 | drdatastats |
+
+## fiyatlar (17)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `agricultural_input_pi` | Tarımsal girdi fiyat endeksi | TR | 2015-2026 | 1.776 | cbrt_evds |
+| `agricultural_ppi` | Tarım ürünleri üretici fiyat endeksi | TR | 2020-2026 | 316 | cbrt_evds |
+| `average_item_price` | Ortalama madde fiyatı | TR | 2003-2022 | 84.290 | tuik_portal |
+| `cpi_2003` | Tüketici fiyat endeksi (2003=100) | TR | 2003-2026 | 284 | cbrt_evds |
+| `cpi_2003_items` | Tüketici fiyat endeksi. kalemler (2003=100) | TR | 2003-2026 | 15.613 | cbrt_evds |
+| `cpi_2025_items` | Tüketici fiyat endeksi. kalemler (2025=100) | TR | 2005-2026 | 85.367 | cbrt_evds |
+| `cpi_2025_special` | Özel kapsamlı TÜFE göstergeleri (2025=100) | TR | 2005-2026 | 7.280 | cbrt_evds |
+| `cpi_province_1994` | İl tüketici fiyat endeksi (1994=100) | TR. il | 1995-2004 | 2.400 | cbrt_evds |
+| `cpi_region_2003` | Bölgesel tüketici fiyat endeksi (2003=100) | TR. İBBS-2 | 2003-2023 | 6.273 | cbrt_evds |
+| `foreign_visitors_by_nationality` | Gelen yabancı ziyaretçi (uyruğa göre) | TR | 2008-2026 | 21.408 | cbrt_evds |
+| `istanbul_cpi_ito` | İstanbul tüketici fiyat endeksi (İTO. 2023=100) | TR | 2024-2026 | 416 | cbrt_evds |
+| `ppi_domestic` | Yurt içi üretici fiyat endeksi | TR | 1982-2026 | 46.956 | cbrt_evds |
+| `ppi_export` | Yurt dışı üretici fiyat endeksi | TR | 2010-2026 | 5.489 | cbrt_evds |
+| `real_effective_exchange_rate_cpi` | Reel efektif kur (TÜFE bazlı) | TR | 1994-2026 | 1.176 | cbrt_evds |
+| `real_effective_exchange_rate_ppi` | Reel efektif kur (Yİ-ÜFE bazlı) | TR | 1994-2026 | 392 | cbrt_evds |
+| `services_ppi` | Hizmet üretici fiyat endeksi | TR | 2017-2026 | 5.865 | cbrt_evds |
+| `usd_try_buying` | ABD doları alış kuru | TR | 1970-2026 | 14.292 | cbrt_evds |
 
 ## gayrimenkul_fiyat (15)
 
@@ -1021,6 +1325,24 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `oecd_precipitation` | Yıllık toplam yağış (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
 | `oecd_temperature` | Yıllık ortalama sıcaklık (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
 
+## evds_fx_metals (13)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `evds_altinadt` | Altın Para Basımı. Cumhuriyet ve Reşad Altını. Adet (HMB Darphane) | TR | 2010-2026 | 2.757 | cbrt_evds |
+| `evds_altinbistbul` | Altın Piyasası (BİST) | TR | 2018-2026 | 22.872 | cbrt_evds |
+| `evds_altingr` | Altın Para Basımı. Cumhuriyet ve Reşad Altını. Gram (HMB Darphane) | TR | 2010-2026 | 2.756 | cbrt_evds |
+| `evds_brentpetrol` | Avrupa Brent Petrol Fiyatı | TR | 1987-2026 | 473 | cbrt_evds |
+| `evds_dkefkytl` | Efektif Kurlar | TR | 1990-2026 | 18.244 | cbrt_evds |
+| `evds_dkkurbil` | Konvertibl Olmayan Döviz Kurları | TR | 2009-2026 | 8.361 | cbrt_evds |
+| `evds_goldimprt` | Altın İthalatı (BİST) | TR | 1995-2026 | 371 | cbrt_evds |
+| `evds_gumusbistbul` | Gümüş Piyasası (BİST) | TR | 2018-2026 | 1.253 | cbrt_evds |
+| `evds_mkaltytl` | Altın Fiyatları (Ankara Kuyumcular ve Saatçiler Odası) | TR | 1970-2026 | 2.251 | cbrt_evds |
+| `evds_paladiumbistbul` | Paladyum Piyasası (BİST) | TR | 2018-2026 | 85 | cbrt_evds |
+| `evds_platinbistbul` | Platin Piyasası (BİST) | TR | 2018-2026 | 255 | cbrt_evds |
+| `evds_redkurigm` | Reel Efektif Döviz Kuru-Birim İş Gücü Maliyeti Bazlı | TR | 2003-2025 | 69 | cbrt_evds |
+| `evds_uraltin` | Altın Cevheri Üretimi. Maden Firmaları (BİST) | TR | 2008-2026 | 222 | cbrt_evds |
+
 ## trafik_kaza (12)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1038,6 +1360,20 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `road_injured_per_million_vehicles` | Milyon taşıta yaralanan | TR. il | 1995-2025 | 2.542 | tuik_medas |
 | `vehicles_in_injury_accidents` | Ölümlü yaralanmalı kazaya karışan taşıt (yalnız Türkiye) | TR | 2012-2025 | 126 | tuik_medas |
 
+## evds_central_bank (9)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `evds_abanlbil` | Merkez Bankası Analitik Bilanço | TR | 1980-2026 | 261.584 | cbrt_evds |
+| `evds_abstc2` | Merkez Bankası Bilançosu - Stand By (Cari) | TR | 2002-2026 | 40.686 | cbrt_evds |
+| `evds_apifon` | TCMB Net Fonlaması ve TCMB Ağırlıklı Ortalama Fonlama Maliyeti | TR | 2011-2026 | 1.877 | cbrt_evds |
+| `evds_bisttlref` | Türk Lirası Gecelik Referans Faiz Oranı (BIST-TLREF) | TR | 2018-2026 | 358 | cbrt_evds |
+| `evds_mbblnca` | Merkez Bankası Bilançosu (Yeni) | TR | 2013-2026 | 21.656 | cbrt_evds |
+| `evds_mbblnch` | Merkez Bankası Haftalık Vaziyeti (Yeni) | TR | 2011-2026 | 94.822 | cbrt_evds |
+| `evds_mkbrgn` | Borsa İstanbul Endeksi ve Günlük İşlem Hacmi | TR | 1986-2026 | 5.147 | cbrt_evds |
+| `evds_onrepofbap` | Borsa İstanbul Gecelik Repo Faiz Oranları | TR | 2018-2026 | 188 | cbrt_evds |
+| `evds_pyrepo` | Açık Piyasa Repo ve Ters Repo İşlemleri | TR | 1987-2026 | 2.759 | cbrt_evds |
+
 ## ucretler (8)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1050,6 +1386,19 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `highest_civil_servant_salary` | En yüksek devlet memuru aylığı | TR | 1970-2026 | 679 | hmb_bumko |
 | `minimum_wage` | Asgari ücret | TR | 1996-2026 | 1.086 | csgb |
 | `severance_pay_ceiling` | Kıdem tazminatı tavanı | TR | 1980-2026 | 553 | hmb_bumko |
+
+## perakende (8)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `furniture_stores` | Mobilya mağazası | il. ilçe | 2026-2026 | 1.676 | branch_finders |
+| `mall_turnover_index` | AVM ciro endeksi (m² verimlilik) | TR | 2025-2026 | 18 | ayd_akademetre |
+| `mall_turnover_per_sqm` | AVM'de m² başına ciro | TR | 2025-2026 | 51 | ayd_akademetre |
+| `mall_visitor_index` | AVM ziyaretçi endeksi | TR | 2025-2025 | 2 | ayd_akademetre |
+| `retail_turnover_index` | Perakende ciro endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
+| `retail_volume_index` | Perakende satış hacim endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
+| `street_markets` | Semt ve üretici pazarı sayısı | il | 2019-2024 | 84 | drdatastats |
+| `wholesale_produce_markets` | Toptancı hali sayısı | il | 2016-2024 | 137 | drdatastats |
 
 ## evlenme_bosanma (8)
 
@@ -1064,18 +1413,18 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `mean_first_marriage_age` | Ortalama ilk evlenme yaşı | TR. il | 2001-2025 | 4.100 | tuik_medas |
 | `mean_marriage_age` | Ortalama evlenme yaşı | TR. il | 2001-2025 | 6.150 | tuik_medas |
 
-## perakende (8)
+## evds_growth_public (8)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `furniture_stores` | Mobilya mağazası | il. ilçe | 2026-2026 | 1.676 | branch_finders |
-| `mall_turnover_index` | AVM ciro endeksi (m² verimlilik) | TR | 2025-2026 | 18 | ayd_akademetre |
-| `mall_turnover_per_sqm` | AVM'de m² başına ciro | TR | 2025-2026 | 51 | ayd_akademetre |
-| `mall_visitor_index` | AVM ziyaretçi endeksi | TR | 2025-2025 | 2 | ayd_akademetre |
-| `retail_turnover_index` | Perakende ciro endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
-| `retail_volume_index` | Perakende satış hacim endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
-| `street_markets` | Semt ve üretici pazarı sayısı | il | 2019-2024 | 84 | drdatastats |
-| `wholesale_produce_markets` | Toptancı hali sayısı | il | 2016-2024 | 137 | drdatastats |
+| `evds_cli2` | Bileşik Öncü Göstergeler Endeksi | TR | 1987-2026 | 1.383 | cbrt_evds |
+| `evds_kbgen` | Genel Bütçe Dengesi ve Finansmanı | TR | 2006-2026 | 14.733 | cbrt_evds |
+| `evds_kbicborc` | İç Borç Stoku | TR | 1979-2026 | 4.149 | cbrt_evds |
+| `evds_kbmgel` | Merkezi Yönetim Bütçe Gelirleri-Yeni Tanım | TR | 2006-2026 | 24.403 | cbrt_evds |
+| `evds_kbmgid` | Merkezi Yönetim Bütçe Harcamaları-Yeni Tanım | TR | 2006-2026 | 33.695 | cbrt_evds |
+| `evds_kbozgel` | Özelleştirmeden Elde Edilen Gelirler | TR | 1986-2025 | 410 | cbrt_evds |
+| `evds_tisguc` | Temel İşgücü Göstergeleri (Mevsimsellikten Arındırılmış) | TR | 2005-2026 | 2.072 | cbrt_evds |
+| `evds_yisgucu2` | Temel İşgücü Göstergeleri | TR | 2005-2026 | 2.072 | cbrt_evds |
 
 ## medya (7)
 
@@ -1101,6 +1450,17 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `suicide_rate` | Kaba intihar hızı | TR. il | 2002-2025 | 1.960 | tuik_medas |
 | `under5_mortality` | Beş yaş altı ölüm hızı | TR. il | 2009-2025 | 1.394 | tuik_medas |
 
+## gelismislik (6)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `sege_district_level` | İlçe SEGE kademesi | ilçe | 2017-2022 | 1.941 | sanayi_sege |
+| `sege_district_rank` | İlçe SEGE sıralaması | ilçe | 2017-2022 | 1.943 | sanayi_sege |
+| `sege_district_score` | İlçe SEGE skoru | ilçe | 2017-2022 | 1.943 | sanayi_sege |
+| `sege_province_level` | İl SEGE kademesi | il | 2017-2017 | 81 | sanayi_sege |
+| `sege_province_rank` | İl SEGE sıralaması | il | 2017-2017 | 81 | sanayi_sege |
+| `sege_province_score` | İl SEGE skoru | il | 2017-2017 | 81 | sanayi_sege |
+
 ## kamu_maliyesi (6)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1112,16 +1472,15 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `local_budget_expenditure_by_province` | Mahalli idareler bütçe giderleri (il) | il | 2006-2025 | 13.867 | muhasebat |
 | `local_budget_revenue_by_province` | Mahalli idareler bütçe gelirleri (il) | il | 2006-2025 | 10.377 | muhasebat |
 
-## gelismislik (6)
+## evds_prices (5)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `sege_district_level` | İlçe SEGE kademesi | ilçe | 2017-2022 | 1.941 | sanayi_sege |
-| `sege_district_rank` | İlçe SEGE sıralaması | ilçe | 2017-2022 | 1.943 | sanayi_sege |
-| `sege_district_score` | İlçe SEGE skoru | ilçe | 2017-2022 | 1.943 | sanayi_sege |
-| `sege_province_level` | İl SEGE kademesi | il | 2017-2017 | 81 | sanayi_sege |
-| `sege_province_rank` | İl SEGE sıralaması | il | 2017-2017 | 81 | sanayi_sege |
-| `sege_province_score` | İl SEGE skoru | il | 2017-2017 | 81 | sanayi_sege |
+| `evds_ito68` | Geçinme Endeksi (Ücretliler) (1968=100) | TR | 1978-2026 | 3.504 | cbrt_evds |
+| `evds_ito95` | Geçinme Endeksi (Ücretliler) | TR | 1996-2026 | 3.312 | cbrt_evds |
+| `evds_itotefe` | Toptan Eşya Fiyat Endeksi | TR | 1970-2026 | 5.440 | cbrt_evds |
+| `evds_itoteuc` | İstanbul Toptan Eşya Fiyat ve Ücretliler Geçinme Endeksleri (Tüm Seriler) | TR | 1970-2026 | 3.564 | cbrt_evds |
+| `evds_itouge85` | İstanbul Geçinme Endeksi (Ücretliler) | TR | 1987-2026 | 4.284 | cbrt_evds |
 
 ## konut (5)
 
@@ -1152,14 +1511,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `fuel_wood_production` | Yakacak odun üretimi | il | 2012-2022 | 838 | drdatastats |
 | `industrial_wood_production` | Endüstriyel odun üretimi | il | 2012-2022 | 765 | drdatastats |
 
-## havacilik (3)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `dhmi_air_freight` | Havayolu yük ve kargo | il | 2008-2026 | 27.345 | dhmi |
-| `dhmi_air_passengers` | Havayolu yolcu sayısı | il | 2008-2026 | 21.314 | dhmi |
-| `dhmi_air_traffic` | Uçak trafiği | il | 2008-2026 | 41.750 | dhmi |
-
 ## tarim_alet (3)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1184,12 +1535,20 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `ip_registrations_by_province` | Yerli sınai mülkiyet tescili (il) | TR. il | 1995-2025 | 12.546 | turkpatent |
 | `patent_applications` | PCT patent başvurusu | il | 1995-2024 | 2.881 | oecd_regional |
 
-## guvenlik (2)
+## havacilik (3)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `homicide_rate` | Yüz bin kişide kasten öldürme | il | 2001-2024 | 1.944 | oecd_regional |
-| `vehicle_thefts` | Araç hırsızlığı | il | 2008-2024 | 1.377 | oecd_regional |
+| `dhmi_air_freight` | Havayolu yük ve kargo | il | 2008-2026 | 27.345 | dhmi |
+| `dhmi_air_passengers` | Havayolu yolcu sayısı | il | 2008-2026 | 21.314 | dhmi |
+| `dhmi_air_traffic` | Uçak trafiği | il | 2008-2026 | 41.750 | dhmi |
+
+## evds_payments (2)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `evds_tedavuladt` | Tedavüldeki Banknotların Kupür Dağılımı (Adet) | TR | 2009-2026 | 1.696 | cbrt_evds |
+| `evds_tedavultut` | Tedavüldeki Banknotların Kupür Dağılımı (Tutar TL) | TR | 2009-2026 | 1.696 | cbrt_evds |
 
 ## adalet (2)
 
@@ -1197,3 +1556,10 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 |---|---|---|---|---|---|
 | `lawyers` | Baroya kayıtlı avukat | TR. il | 1999-2024 | 3.164 | tbb_baro |
 | `notaries` | Noterlik | il. ilçe | 2026-2026 | 1.153 | tnb |
+
+## guvenlik (2)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `homicide_rate` | Yüz bin kişide kasten öldürme | il | 2001-2024 | 1.944 | oecd_regional |
+| `vehicle_thefts` | Araç hırsızlığı | il | 2008-2024 | 1.377 | oecd_regional |
