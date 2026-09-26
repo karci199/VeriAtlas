@@ -333,6 +333,57 @@ industrial = "Sanayi"
 agricultural = "Tarımsal faaliyetler"
 lighting = "Aydınlatma"
 
+[dim.energy_flow]
+label_tr = "Denge kalemi"
+label_en = "Energy balance flow"
+
+[dim.energy_flow.values]
+production = "Yerli üretim"
+imports = "İthalat"
+exports = "İhracat"
+bunkers = "İhrakiye"
+stock_change = "Stok değişimi"
+statistical_difference = "İstatistiksel fark"
+primary_supply = "Birincil enerji arzı"
+transformation = "Çevrim ve enerji sektörü"
+power_plants = "Elektrik santralleri"
+refineries = "Petrol rafinerileri"
+own_use_losses = "İç tüketim ve kayıp"
+final_consumption = "Nihai enerji tüketimi"
+sectors_total = "Sektörler toplamı"
+industry = "Sanayi"
+iron_steel = "Demir-çelik"
+cement = "Çimento"
+transport = "Ulaştırma"
+rail = "Demiryolu"
+sea = "Denizyolu"
+air = "Havayolu"
+road = "Karayolu"
+pipeline = "Boru hattı"
+other_sectors = "Diğer sektörler"
+residential_services = "Konut ve hizmetler"
+residential = "Konut"
+commercial_services = "Ticaret ve hizmetler"
+agriculture = "Tarım"
+non_energy = "Enerji dışı kullanım"
+
+[dim.energy_product]
+label_tr = "Enerji ürünü"
+label_en = "Energy product"
+
+[dim.energy_product.values]
+total = "Toplam"
+coal = "Kömür ve türevleri"
+oil = "Petrol ve ürünleri"
+natural_gas = "Doğal gaz"
+hydro = "Hidrolik"
+wind = "Rüzgâr"
+solar = "Güneş"
+geothermal = "Jeotermal"
+bioenergy_waste = "Odun, artık ve biyoyakıt"
+electricity = "Elektrik"
+heat = "Isı"
+
 [dim.energy_source]
 label_tr = "Kaynak"
 label_en = "Energy source"
@@ -3861,6 +3912,12 @@ additive = true
 [unit.night]
 label_tr = "geceleme"
 label_en = "nights"
+decimals = 0
+additive = true
+
+[unit.thousand_toe]
+label_tr = "bin TEP"
+label_en = "thousand toe"
 decimals = 0
 additive = true
 
@@ -31453,6 +31510,17 @@ dims = ["energy_source"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "Enerji ve Tabii Kaynaklar Bakanlığı, Enerji İşleri Genel Müdürlüğü yıllık enerji yatırımları tabloları (enerji.gov.tr/eigm-raporlari), 2003-2025; indirme scripts/fetch_etkb.py, adaptör src/veriatlas/adapters/etkb.py. Her satır o yıl geçici kabulü yapılan bir santral; il, kaynak ve eklenen güç basılı. Her dosyanın sonundaki yıl toplamı okumanın denetimi; iki il adıyla yazılan santraller ilk ile yazıldı. Tabloda o yıl geçici kabulü yapılan satır sayısı."
 
+
+[indicator.energy_balance]
+label_tr = "Ulusal enerji dengesi"
+label_en = "National energy balance"
+topic = "enerji"
+unit = "thousand_toe"
+frequency = "annual"
+additive = false
+dims = ["energy_flow", "energy_product"]
+views = ["table", "line", "bar"]
+definition_tr = "Enerji ve Tabii Kaynaklar Bakanlığı, EİGM Ulusal Enerji Denge Tabloları (enerji.gov.tr/eigm-raporlari), 1972-2024, bin ton eşdeğer petrol (TEP); 2021-2024 revize (R1). Türkiye geneli. Yakıt sütunları on gruba toplandı; ara toplam sütunları (türetilmiş gazlar, petrol ürünleri, biyoenerji, katı yakıt toplamı) parçaları yanında basılıyken atıldı. Her satırda grupların toplamı basılı TOPLAM'ı tutmalı (%0,5). 2015'ten konut ile ticaret-hizmet ayrı basılır; 'Konut ve hizmetler' orada ikisinin toplamı. İhracat, ihrakiye ve çevrim girdileri tablodaki işaretiyle. Kalemler birbirine eklenmez. Sanayi alt dallarından yalnız demir-çelik ve çimento alındı. Adaptör src/veriatlas/adapters/etkb_balance.py."
 [topic.din]
 label_tr = "Din hizmetleri"
 label_en = "Religious services"

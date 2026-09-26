@@ -26,6 +26,7 @@ from .epdk_history import EPDK_HISTORY_ADAPTERS
 from .epdk_monthly import EPDK_MONTHLY_ADAPTERS
 from .epdk_sarj import EPDK_SARJ_ADAPTERS
 from .etkb import ETKB_ADAPTERS
+from .etkb_balance import ETKB_BALANCE_ADAPTERS
 from .eurostat_regional import EUROSTAT_REGIONAL_ADAPTERS
 from .evds_archive import EVDS_ARCHIVE_ADAPTERS
 from .evds_groups import EVDS_GROUP_ADAPTERS
@@ -259,6 +260,7 @@ ADAPTERS = {
     **EUROSTAT_REGIONAL_ADAPTERS,
     **SAGLIK_YEARBOOK_ADAPTERS,
     **ETKB_ADAPTERS,
+    **ETKB_BALANCE_ADAPTERS,
     **MGM_ADAPTERS,
     **BTK_TABLE_ADAPTERS,
     **BTK_POSTA_ADAPTERS,
