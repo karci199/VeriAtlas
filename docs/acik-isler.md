@@ -104,7 +104,13 @@ günlükler seri başına EVDS varsayılan birleştirmesiyle aylığa), PRODCOM 
 tüketim), su ürünleri fiyat/gider/yatırım (2005 öncesi eski TL düzeltildi), kuluçkahaneler.
 Notlar: [bist.md](bist.md) (BIST alınmadı), bu dosyanın §6'sı (boşluk listesi).
 
-**Süren uzun iş (ayrık süreç):** MEDAS ilçe düzeyi — 8 bitkisel + 10 hayvancılık + 3 tarım
+**DURDURULDU 2026-09-26 21:43, kullanıcı isteğiyle, bir sorgu bittikten hemen sonra** (yarım
+dosya yok). 32 dosya: meyvede il01-il06 tam, il07 Ankara 2022-2025 indi (grup boyu 2, durum
+dosyasında). Yeniden başlatma (PowerShell, C:\veri'den; inenleri atlar):
+`Start-Process -WindowStyle Hidden -WorkingDirectory 'C:\veri' -FilePath 'C:\veri\.venv\Scripts\python.exe' -ArgumentList '-u','scripts\uzun_bitkisel_ilce.py' -RedirectStandardOutput 'C:\veri-ham\medas\uzun\bitkisel-ilce.log' -RedirectStandardError 'C:\veri-ham\medas\uzun\bitkisel-ilce.err'`
+(önce eski günlüğü `bitkisel-ilce-2.log` diye kopyala; çıktı yönlendirmesi üzerine yazar).
+
+**Uzun iş (ayrık süreç):** MEDAS ilçe düzeyi — 8 bitkisel + 10 hayvancılık + 3 tarım
 aleti ölçüsü, 81 il × 2004-2025, ~1.540 sorgu, ~24 saat. `scripts/uzun_bitkisel_ilce.py`,
 günlük `C:\veri-ham\medas\uzun\bitkisel-ilce.log`, nabız `bitkisel-ilce-nabiz.txt`.
 Durursa C:\veri'den aynı komutla yeniden başlatılır, inenleri atlar. İl numarası MEDAS
