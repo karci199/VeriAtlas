@@ -59,6 +59,15 @@ Jeton kullanıcının kimlik bilgisi; makineden çıkarılmıyor. Bunun yerine i
 - Yaş bantları toplamı mahalle nüfusunu tutmayabiliyor (Bursa + Ankara dökümünde 2.511
   mahallenin 407'sinde); kullanmadan önce ayıklanmalı.
 - Alan doluluğu eşit değil: eğitim %97, SES %99, gelir %60, yaş ve hane %58.
+- **Taşıt (2026-09-26, tüm TR dökümü, TÜİK il stoku ile).** `CarCount` = TÜİK **2022 sonu**
+  otomobil stoku; plaka 01–54 illerinin çoğunda il toplamı %1 içinde tutuyor. `VehicleCount`
+  toplam taşıt **değil**, otomobil dışı taşıt (toplam − otomobil); toplam = ikisinin toplamı.
+  Plaka 55–81'de (ve 48'de az) `CarCount` dolgu: aynı ilçede birçok mahalle aynı sayıyı
+  taşıyor (Kilis'te 720, Arsin'de 1.168), nüfustan fazla otomobil çıkıyor; il toplamı TÜİK'in
+  2–9 katı. 5.803 mahalle. Tanı: ilçe içinde ≥3 mahallede aynı değer (≥50). Bu illerde taşıt
+  alanları alınmaz. Hatay, Adıyaman, Gaziantep'te toplam TÜİK'in %80–90'ı —
+  2024 nüfus kaybıyla aynı oranda (deprem sonrası nüfusla dağıtılmış olabilir). Niğde %83,
+  açıklanamadı.
 
 ## Döküm durumu
 
