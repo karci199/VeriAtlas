@@ -676,6 +676,18 @@ minibus = "Minibüs"
 pickup = "Pickup"
 camper = "Karavan"
 
+# TÜRKPATENT (adapters/turkpatent.py), 2026-09-26.
+[dim.ip_right]
+label_tr = "Sınai mülkiyet hakkı"
+label_en = "Industrial property right"
+
+[dim.ip_right.values]
+patent = "Patent"
+utility_model = "Faydalı model"
+trademark = "Marka"
+design = "Tasarım (dosya)"
+design_items = "Tasarım (tasarım sayısı)"
+
 # Housing and construction (adapters/tuik_topics.py).
 [dim.sale_financing]
 label_tr = "Satış şekli"
@@ -5650,6 +5662,26 @@ frequency = "annual"
 dims = ["vehicle_type"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "Yıl sonunda (Aralık) trafiğe kayıtlı taşıt sayısı (stok), taşıt türüne göre. Kaynak TÜİK SDMX akışı DF_MOTORLU_KARA_TASIT_ILLER_V3."
+
+[indicator.ip_applications_by_province]
+label_tr = "Yerli sınai mülkiyet başvurusu (il)"
+label_en = "Domestic industrial property applications by province"
+topic = "inovasyon"
+unit = "item"
+frequency = "annual"
+dims = ["ip_right"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜRKPATENT'e yapılan yerli başvuru; il ilk başvuru sahibinin adresi. Tasarımda dosya ve tasarım sayısı ayrı değerdir, toplanmaz."
+
+[indicator.ip_registrations_by_province]
+label_tr = "Yerli sınai mülkiyet tescili (il)"
+label_en = "Domestic industrial property registrations by province"
+topic = "inovasyon"
+unit = "item"
+frequency = "annual"
+dims = ["ip_right"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜRKPATENT'in verdiği yerli tescil, tescil tarihine göre. Tasarımda dosya ve tasarım sayısı ayrı değerdir, toplanmaz."
 
 [indicator.odmd_car_sales_by_segment_body]
 label_tr = "Otomobil satışı (segment ve gövde tipine göre)"

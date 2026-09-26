@@ -43,6 +43,7 @@ from .muhasebat import MUHASEBAT_ADAPTERS
 from .networks import NETWORK_ADAPTERS
 from .odmd_market import ODMD_MARKET_ADAPTERS
 from .odmd_retail import ODMD_ADAPTERS
+from .turkpatent import TURKPATENT_ADAPTERS
 from .oecd_tl3 import OECD_TL3_ADAPTERS
 from .ookla_speed import OOKLA_ADAPTERS
 from .pharmacies import PHARMACY_ADAPTERS
@@ -168,6 +169,7 @@ ADAPTERS = {
     "tuik_vehicle_stock": TuikVehicleStock,
     **ODMD_ADAPTERS,
     **ODMD_MARKET_ADAPTERS,
+    **TURKPATENT_ADAPTERS,
     # District education level and literacy.
     **EDUCATION_DISTRICT_ADAPTERS,
     # Children referred to police units (Türkiye).
