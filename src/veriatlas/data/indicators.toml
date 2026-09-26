@@ -8801,6 +8801,12 @@ label_en = "taxpayers"
 decimals = 0
 additive = true
 
+[unit.business]
+label_tr = "işletme"
+label_en = "businesses"
+decimals = 0
+additive = true
+
 [unit.thousand_try]
 label_tr = "bin TL"
 label_en = "thousand TRY"
@@ -28984,6 +28990,40 @@ frequency = "annual"
 dims = ["company_event", "company_type"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "TOBB Kurulan ve Kapanan Şirket İstatistikleri, Aralık dosyalarının 'İller (birikimli)' tablosu, 2009-2025. Kaynak Türkiye Ticaret Sicili Gazetesi. Bir yıl iki dosyada varsa (sonraki yılın dosyasındaki önceki yıl sütunu) yeni dosyadaki sayı alındı. Gerçek kişi ticari işletmelerin tasfiye sütunu yok."
+
+[dim.business_type]
+label_tr = "İşletme türü"
+label_en = "Business type"
+
+[dim.business_type.values]
+joint_stock = "Anonim şirket"
+limited = "Limited şirket"
+collective = "Kollektif şirket"
+commandite = "Komandit şirket"
+cooperative = "Kooperatif"
+sole_trader = "Ticari işletme (gerçek kişi)"
+branch = "Şube"
+joint_shipowning = "Donatma iştiraki"
+
+[indicator.mersis_active_businesses]
+label_tr = "Aktif ticari işletme sayısı (MERSİS)"
+label_en = "Active businesses (MERSİS)"
+topic = "reel_kesim"
+unit = "business"
+frequency = "monthly"
+dims = ["business_type"]
+views = ["line", "table", "bar"]
+definition_tr = "Ay sonunda kayıtlı aktif ticari işletmeler, türe göre. Ticaret Bakanlığı, 'MERSİS Verileri' (Merkezi Sicil Kayıt Sistemi), Türkiye geneli, aylık. Dosya her çeyrek aynı adreste yenileniyor ve yalnız içinde bulunulan ile önceki yılı tutuyor; Ocak-Mart 2024 bu adresin Wayback kopyasından (2024-06-09), Ocak 2025 – Haziran 2026 2026-09-26 indirmesinden. Nisan-Aralık 2024 hiçbir kopyada yok. 2025-05-21 ve 2025-11-25 kopyaları dikey yazıldığı için okunamadı; kapsadıkları aylar yeni dosyada var. Her sütunda türlerin toplamı TOPLAM satırını tutuyor. Ticari işletme gerçek kişi tacirdir (şahıs işletmesi); şube ayrı kayıttır. TOBB şirket istatistiklerinden farkı: il kırılımı yok, ama aktif işletme stoku var. Adaptör src/veriatlas/adapters/mersis.py."
+
+[indicator.mersis_business_flows]
+label_tr = "Kurulan ve kapanan ticari işletmeler (MERSİS)"
+label_en = "Businesses opened and closed (MERSİS)"
+topic = "reel_kesim"
+unit = "business"
+frequency = "monthly"
+dims = ["business_type", "company_event"]
+views = ["line", "table", "bar"]
+definition_tr = "Ay içinde kurulan ve kapanan ticari işletmeler, türe göre; yıl toplam sütunu ayların toplamıyla denetlendi. Ticaret Bakanlığı, 'MERSİS Verileri' (Merkezi Sicil Kayıt Sistemi), Türkiye geneli, aylık. Dosya her çeyrek aynı adreste yenileniyor ve yalnız içinde bulunulan ile önceki yılı tutuyor; Ocak-Mart 2024 bu adresin Wayback kopyasından (2024-06-09), Ocak 2025 – Haziran 2026 2026-09-26 indirmesinden. Nisan-Aralık 2024 hiçbir kopyada yok. 2025-05-21 ve 2025-11-25 kopyaları dikey yazıldığı için okunamadı; kapsadıkları aylar yeni dosyada var. Her sütunda türlerin toplamı TOPLAM satırını tutuyor. Ticari işletme gerçek kişi tacirdir (şahıs işletmesi); şube ayrı kayıttır. TOBB şirket istatistiklerinden farkı: il kırılımı yok, ama aktif işletme stoku var. Adaptör src/veriatlas/adapters/mersis.py."
 
 # endregion
 

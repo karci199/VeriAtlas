@@ -41,6 +41,7 @@ from .ktb_heritage import KtbHeritage
 from .meb_counts import MEB_COUNT_ADAPTERS
 from .meb_education import MEB_ADAPTERS
 from .meb_portal import MEB_PORTAL_ADAPTERS
+from .mersis import MERSIS_ADAPTERS
 from .mgm import MGM_ADAPTERS
 from .muhasebat import MUHASEBAT_ADAPTERS
 from .networks import NETWORK_ADAPTERS
@@ -240,6 +241,7 @@ ADAPTERS = {
     **MUHASEBAT_ADAPTERS,
     **OECD_TL3_ADAPTERS,
     **GIB_ADAPTERS,
+    **MERSIS_ADAPTERS,
     **VAP_ADAPTERS,
     **FINTURK_ADAPTERS,
     **TIM_SECTOR_ADAPTERS,
