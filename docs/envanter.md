@@ -1,11 +1,11 @@
-# Envanter — depodaki 941 gösterge
+# Envanter — depodaki 943 gösterge
 
 **Bu dosya elle yazılmaz.** `scripts/build_inventory.py` warehouse'tan üretir;
 burada olmayan gösterge depoda yok demektir. Yeni kaynak önermeden önce buraya
 bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni iş' diye
 önerildi, üçü de zaten yüklüydü.
 
-Üretim: 2026-09-26 · 21.590.866 satır
+Üretim: 2026-09-26 · 21.622.162 satır
 
 ## evds_arsiv (177)
 
@@ -778,13 +778,15 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `vegetable_production` | Sebze üretimi | TR. il | 2004-2025 | 57.350 | tuik_medas |
 | `vegetable_sown_area` | Sebze ekilen alan | TR. il | 2004-2025 | 56.958 | tuik_medas |
 
-## ulasim (22)
+## ulasim (24)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
 | `car_km_by_fuel` | Otomobil taşıt-kilometresi (yakıta göre) | TR | 2015-2024 | 50 | tuik_veri_portali |
 | `car_mean_annual_km_by_fuel` | Otomobil başına yıllık ortalama km (yakıta göre) | TR | 2015-2024 | 50 | tuik_veri_portali |
 | `cars_per_thousand` | Bin kişi başına otomobil | TR. il | 2007-2025 | 1.558 | tuik_medas |
+| `odmd_retail_sales` | Otomobil ve hafif ticari araç perakende satışı (marka. aylık) | TR | 2012-2026 | 28.824 | odmd |
+| `odmd_retail_sales_annual` | Otomobil ve hafif ticari araç perakende satışı (marka. yıllık) | TR | 2007-2025 | 2.472 | odmd |
 | `port_cargo_handled` | Limanlarda elleçlenen yük | il | 2021-2025 | 1.416 | uab_denizcilik |
 | `port_containers_handled` | Limanlarda elleçlenen konteyner | il | 2020-2025 | 1.176 | uab_denizcilik |
 | `transferred_vehicle_mean_age` | Devri yapılan taşıtların ortalama yaşı | TR. il | 2020-2025 | 3.934 | tuik_medas |
@@ -876,26 +878,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `services_ppi` | Hizmet üretici fiyat endeksi | TR | 2017-2026 | 5.865 | cbrt_evds |
 | `usd_try_buying` | ABD doları alış kuru | TR | 1970-2026 | 14.292 | cbrt_evds |
 
-## gayrimenkul_fiyat (15)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `cadastral_parcels` | Parsel sayısı (kayda göre) | il. ilçe. mahalle. köy | 2026-2026 | 129.552 | tkgm_megsis |
-| `cadastral_parcels_by_approval` | Parsel sayısı (onay durumuna göre) | il. ilçe. mahalle. köy | 2026-2026 | 86.368 | tkgm_megsis |
-| `cadastral_parcels_by_coordinate` | Parsel sayısı (koordinat niteliğine göre) | il. ilçe. mahalle. köy | 2026-2026 | 129.552 | tkgm_megsis |
-| `commercial_property_price_index` | Ticari gayrimenkul fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
-| `existing_house_price_index` | Yeni olmayan konutlar fiyat endeksi | TR | 2010-2026 | 199 | cbrt_evds |
-| `house_price_index` | Konut fiyat endeksi | TR. İBBS-1. İBBS-2 | 2010-2026 | 3.980 | cbrt_evds |
-| `house_price_index_2017` | Konut fiyat endeksi. 26 bölge (2017=100. arşiv) | TR. İBBS-2 | 2010-2024 | 4.671 | cbrt_evds |
-| `housing_unit_price` | Konut birim fiyatı | TR. il | 2010-2026 | 4.562 | cbrt_evds |
-| `housing_unit_rent` | Konut birim kirası | TR. il | 2018-2026 | 2.418 | cbrt_evds |
-| `new_house_price_index` | Yeni konutlar fiyat endeksi | TR | 2010-2026 | 199 | cbrt_evds |
-| `new_tenant_rent_index` | Yeni kiracı kira endeksi | TR. İBBS-1. İBBS-2 | 2018-2026 | 2.060 | cbrt_evds |
-| `office_price_index` | Ofis fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
-| `office_unit_price` | Ofis birim fiyatı | TR. il | 2015-2025 | 341 | cbrt_evds |
-| `shop_price_index` | Dükkân fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
-| `shop_unit_price` | Dükkân birim fiyatı | TR. il | 2015-2025 | 869 | cbrt_evds |
-
 ## karayolu (15)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -916,6 +898,26 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `traffic_accidents_total` | Trafik kazası sayısı (maddi hasarlı dahil) | TR | 2006-2016 | 22 | kgm |
 | `traffic_casualties` | Trafik kazasında ölen ve yaralanan | TR | 2006-2016 | 24 | kgm |
 
+## gayrimenkul_fiyat (15)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `cadastral_parcels` | Parsel sayısı (kayda göre) | il. ilçe. mahalle. köy | 2026-2026 | 129.552 | tkgm_megsis |
+| `cadastral_parcels_by_approval` | Parsel sayısı (onay durumuna göre) | il. ilçe. mahalle. köy | 2026-2026 | 86.368 | tkgm_megsis |
+| `cadastral_parcels_by_coordinate` | Parsel sayısı (koordinat niteliğine göre) | il. ilçe. mahalle. köy | 2026-2026 | 129.552 | tkgm_megsis |
+| `commercial_property_price_index` | Ticari gayrimenkul fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
+| `existing_house_price_index` | Yeni olmayan konutlar fiyat endeksi | TR | 2010-2026 | 199 | cbrt_evds |
+| `house_price_index` | Konut fiyat endeksi | TR. İBBS-1. İBBS-2 | 2010-2026 | 3.980 | cbrt_evds |
+| `house_price_index_2017` | Konut fiyat endeksi. 26 bölge (2017=100. arşiv) | TR. İBBS-2 | 2010-2024 | 4.671 | cbrt_evds |
+| `housing_unit_price` | Konut birim fiyatı | TR. il | 2010-2026 | 4.562 | cbrt_evds |
+| `housing_unit_rent` | Konut birim kirası | TR. il | 2018-2026 | 2.418 | cbrt_evds |
+| `new_house_price_index` | Yeni konutlar fiyat endeksi | TR | 2010-2026 | 199 | cbrt_evds |
+| `new_tenant_rent_index` | Yeni kiracı kira endeksi | TR. İBBS-1. İBBS-2 | 2018-2026 | 2.060 | cbrt_evds |
+| `office_price_index` | Ofis fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
+| `office_unit_price` | Ofis birim fiyatı | TR. il | 2015-2025 | 341 | cbrt_evds |
+| `shop_price_index` | Dükkân fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
+| `shop_unit_price` | Dükkân birim fiyatı | TR. il | 2015-2025 | 869 | cbrt_evds |
+
 ## turizm (14)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -935,24 +937,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `tourism_expenditure` | Turizm gideri (yurt dışına giden vatandaş) | TR | 2012-2025 | 112 | tuik_medas |
 | `tourism_revenue` | Turizm geliri | TR | 2012-2025 | 19 | tuik_medas |
 
-## iklim (13)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `afad_earthquakes` | Deprem sayısı | il. ilçe | 1990-2025 | 53.671 | afad |
-| `mgm_measurement_period` | İstasyonun ölçüm dönemi | il | 2025-2025 | 162 | mgm |
-| `mgm_precipitation` | Aylık toplam yağış ortalaması | il | 2020-2025 | 1.920 | mgm |
-| `mgm_rainy_days` | Aylık ortalama yağışlı gün sayısı | il | 2020-2025 | 1.908 | mgm |
-| `mgm_record_daily_precipitation` | Günlük en yüksek yağış rekoru | il | 1929-2024 | 81 | mgm |
-| `mgm_record_snow_depth` | En yüksek kar kalınlığı rekoru | il | 1929-2022 | 80 | mgm |
-| `mgm_record_wind_speed` | En hızlı rüzgar rekoru | il | 1963-2025 | 81 | mgm |
-| `mgm_sunshine` | Aylık ortalama günlük güneşlenme süresi | il | 2020-2025 | 1.920 | mgm |
-| `mgm_temperature` | Aylık sıcaklık normalleri | il | 2020-2025 | 7.704 | mgm |
-| `oecd_climate_days` | İklim gün sayıları (alansal) | il | 1981-2024 | 14.256 | oecd_regional |
-| `oecd_degree_days` | Derece-gün (ısıtma ve soğutma) | il | 1981-2023 | 6.966 | oecd_regional |
-| `oecd_precipitation` | Yıllık toplam yağış (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
-| `oecd_temperature` | Yıllık ortalama sıcaklık (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
-
 ## din (13)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -970,6 +954,24 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `diyanet_quran_graduates_age` | Kur'an kursunu bitiren (yaş) | il | 2023-2023 | 405 | diyanet |
 | `diyanet_quran_graduates_education` | Kur'an kursunu bitiren (eğitim durumu) | il | 2023-2023 | 567 | diyanet |
 | `diyanet_quran_hafiz` | Hafızlık kursiyeri | il | 2023-2023 | 243 | diyanet |
+
+## iklim (13)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `afad_earthquakes` | Deprem sayısı | il. ilçe | 1990-2025 | 53.671 | afad |
+| `mgm_measurement_period` | İstasyonun ölçüm dönemi | il | 2025-2025 | 162 | mgm |
+| `mgm_precipitation` | Aylık toplam yağış ortalaması | il | 2020-2025 | 1.920 | mgm |
+| `mgm_rainy_days` | Aylık ortalama yağışlı gün sayısı | il | 2020-2025 | 1.908 | mgm |
+| `mgm_record_daily_precipitation` | Günlük en yüksek yağış rekoru | il | 1929-2024 | 81 | mgm |
+| `mgm_record_snow_depth` | En yüksek kar kalınlığı rekoru | il | 1929-2022 | 80 | mgm |
+| `mgm_record_wind_speed` | En hızlı rüzgar rekoru | il | 1963-2025 | 81 | mgm |
+| `mgm_sunshine` | Aylık ortalama günlük güneşlenme süresi | il | 2020-2025 | 1.920 | mgm |
+| `mgm_temperature` | Aylık sıcaklık normalleri | il | 2020-2025 | 7.704 | mgm |
+| `oecd_climate_days` | İklim gün sayıları (alansal) | il | 1981-2024 | 14.256 | oecd_regional |
+| `oecd_degree_days` | Derece-gün (ısıtma ve soğutma) | il | 1981-2023 | 6.966 | oecd_regional |
+| `oecd_precipitation` | Yıllık toplam yağış (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
+| `oecd_temperature` | Yıllık ortalama sıcaklık (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
 
 ## konut_nitelik (13)
 
@@ -1056,6 +1058,17 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `suicide_rate` | Kaba intihar hızı | TR. il | 2002-2025 | 1.960 | tuik_medas |
 | `under5_mortality` | Beş yaş altı ölüm hızı | TR. il | 2009-2025 | 1.394 | tuik_medas |
 
+## perakende (6)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `furniture_stores` | Mobilya mağazası | il. ilçe | 2026-2026 | 1.676 | branch_finders |
+| `mall_turnover_index` | AVM ciro endeksi (m² verimlilik) | TR | 2025-2026 | 18 | ayd_akademetre |
+| `mall_turnover_per_sqm` | AVM'de m² başına ciro | TR | 2025-2026 | 51 | ayd_akademetre |
+| `mall_visitor_index` | AVM ziyaretçi endeksi | TR | 2025-2025 | 2 | ayd_akademetre |
+| `retail_turnover_index` | Perakende ciro endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
+| `retail_volume_index` | Perakende satış hacim endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
+
 ## gelismislik (6)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1067,16 +1080,15 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `sege_province_rank` | İl SEGE sıralaması | il | 2017-2017 | 81 | sanayi_sege |
 | `sege_province_score` | İl SEGE skoru | il | 2017-2017 | 81 | sanayi_sege |
 
-## perakende (6)
+## dogurganlik (5)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `furniture_stores` | Mobilya mağazası | il. ilçe | 2026-2026 | 1.676 | branch_finders |
-| `mall_turnover_index` | AVM ciro endeksi (m² verimlilik) | TR | 2025-2026 | 18 | ayd_akademetre |
-| `mall_turnover_per_sqm` | AVM'de m² başına ciro | TR | 2025-2026 | 51 | ayd_akademetre |
-| `mall_visitor_index` | AVM ziyaretçi endeksi | TR | 2025-2025 | 2 | ayd_akademetre |
-| `retail_turnover_index` | Perakende ciro endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
-| `retail_volume_index` | Perakende satış hacim endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
+| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
+| `births_by_age` | Doğum sayısı (annenin yaş grubu) | TR. il | 2009-2025 | 14.290 | tuik_medas |
+| `births_by_marital` | Doğum sayısı (annenin medeni durumu) | TR. il | 2012-2025 | 5.669 | tuik_medas |
+| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
+| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
 
 ## konut (5)
 
@@ -1097,16 +1109,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `central_budget_revenue_by_province` | Merkezi yönetim bütçe gelirleri (il) | il | 2004-2025 | 13.954 | muhasebat |
 | `local_budget_expenditure_by_province` | Mahalli idareler bütçe giderleri (il) | il | 2006-2025 | 13.867 | muhasebat |
 | `local_budget_revenue_by_province` | Mahalli idareler bütçe gelirleri (il) | il | 2006-2025 | 10.377 | muhasebat |
-
-## dogurganlik (5)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
-| `births_by_age` | Doğum sayısı (annenin yaş grubu) | TR. il | 2009-2025 | 14.290 | tuik_medas |
-| `births_by_marital` | Doğum sayısı (annenin medeni durumu) | TR. il | 2012-2025 | 5.669 | tuik_medas |
-| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
-| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
 
 ## tarim_alet (3)
 

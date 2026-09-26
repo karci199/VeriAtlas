@@ -508,6 +508,108 @@ label_en = "Domestic or foreign"
 domestic = "Yerli"
 foreign = "Yabancı"
 
+# ODMD retail sales (adapters/odmd_retail.py), 2026-09-26.
+[dim.vehicle_brand]
+label_tr = "Marka"
+label_en = "Vehicle brand"
+
+[dim.vehicle_brand.values]
+alfa_romeo = "ALFA ROMEO"
+alpine = "ALPINE"
+askam = "ASKAM"
+aston_martin = "ASTON MARTIN"
+audi = "AUDI"
+bentley = "BENTLEY"
+bmc = "BMC"
+bmw = "BMW"
+byd = "BYD"
+cadillac = "CADILLAC"
+chery = "CHERY"
+chevrolet = "CHEVROLET"
+chrysler = "CHRYSLER"
+citroen = "CITROEN"
+cupra = "CUPRA"
+dacia = "DACIA"
+daihatsu = "DAIHATSU"
+dfm = "DFM"
+dfsk = "DFSK"
+dodge = "DODGE"
+ds = "DS"
+farizon = "FARIZON"
+ferrari = "FERRARI"
+fiat = "FIAT"
+ford = "FORD"
+foton = "FOTON"
+gaz = "GAZ"
+geely = "GEELY"
+gmc = "GMC"
+honda = "HONDA"
+hongqi = "HONGQI"
+hyundai = "HYUNDAI"
+infiniti = "INFINITI"
+isuzu = "ISUZU"
+iveco = "IVECO"
+jaecoo = "JAECOO"
+jaguar = "JAGUAR"
+jeep = "JEEP"
+karsan = "KARSAN"
+kia = "KIA"
+lada = "LADA"
+lamborghini = "LAMBORGHINI"
+lancia = "LANCIA"
+land_rover = "LAND ROVER"
+leapmotor = "LEAPMOTOR"
+lexus = "LEXUS"
+mahindra = "MAHINDRA"
+maserati = "MASERATI"
+maxus = "MAXUS"
+mazda = "MAZDA"
+mercedes_benz = "MERCEDES-BENZ"
+mg = "MG"
+mini = "MINI"
+mitsubishi = "MITSUBISHI"
+neta = "NETA"
+nissan = "NISSAN"
+omoda_and_jaecoo = "OMODA & JAECOO"
+opel = "OPEL"
+otokar = "OTOKAR"
+peugeot = "PEUGEOT"
+porsche = "PORSCHE"
+proton = "PROTON"
+renault = "RENAULT"
+saab = "SAAB"
+seat = "SEAT"
+seres = "SERES"
+skoda = "SKODA"
+skywell = "SKYWELL"
+smart = "SMART"
+ssangyong = "SSANGYONG (KG MOBILITY)"
+subaru = "SUBARU"
+suzuki = "SUZUKI"
+tata = "TATA"
+tenax = "TENAX"
+tesla = "TESLA"
+togg = "TOGG"
+toyota = "TOYOTA"
+volkswagen = "VOLKSWAGEN"
+volvo = "VOLVO"
+
+[dim.vehicle_class]
+label_tr = "Araç sınıfı"
+label_en = "Vehicle class"
+
+[dim.vehicle_class.values]
+car = "Otomobil"
+light_commercial = "Hafif ticari araç"
+
+[dim.production_origin]
+label_tr = "Üretim yeri"
+label_en = "Domestic production or import"
+
+[dim.production_origin.values]
+domestic = "Yerli üretim"
+imported = "İthal"
+
 # Housing and construction (adapters/tuik_topics.py).
 [dim.sale_financing]
 label_tr = "Satış şekli"
@@ -5482,6 +5584,26 @@ frequency = "annual"
 dims = ["vehicle_type"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "Yıl sonunda (Aralık) trafiğe kayıtlı taşıt sayısı (stok), taşıt türüne göre. Kaynak TÜİK SDMX akışı DF_MOTORLU_KARA_TASIT_ILLER_V3."
+
+[indicator.odmd_retail_sales]
+label_tr = "Otomobil ve hafif ticari araç perakende satışı (marka, aylık)"
+label_en = "Car and light commercial vehicle retail sales by brand, monthly"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "monthly"
+dims = ["vehicle_brand", "vehicle_class", "production_origin"]
+views = ["table", "line", "bar"]
+definition_tr = "Distribütörlerin bildirdiği perakende satış adedi, markaya, araç sınıfına ve yerli üretim/ithal ayrımına göre. Kaynak ODMD; Tesla ODMD tahmini."
+
+[indicator.odmd_retail_sales_annual]
+label_tr = "Otomobil ve hafif ticari araç perakende satışı (marka, yıllık)"
+label_en = "Car and light commercial vehicle retail sales by brand, annual"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["vehicle_brand", "vehicle_class", "production_origin"]
+views = ["table", "line", "bar"]
+definition_tr = "ODMD yıllık perakende satış dosyaları (tamamlanmış yıllar). Kaynak ODMD; Tesla ODMD tahmini."
 
 [indicator.vehicles_newly_registered]
 label_tr = "Trafiğe kaydı yapılan taşıt (marka ve türe göre)"
