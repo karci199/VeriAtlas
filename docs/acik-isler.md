@@ -95,6 +95,37 @@ Claude'da olanların toplamı kabaca 25-30 saat.
 - `kgm_vehicle_km` her yüklemede 25-90 dakika sürüyor; profillenmeli.
 - `scripts/analiz/*` betiklerinin çoğu ana checkout kökünden çalışıyor ve ara dosyaları `C:\veri-ham\analiz` altına yazıyor.
 
+### 5b. 2026-09-26 akşam: yapılanlar ve süren uzun iş
+
+Depoya girenler (986 → ~1.360 gösterge): GİB faal mükellef (il × vergi türü, aylık 2002-2026),
+MERSİS aktif işletme ve kurulan/kapanan (TR), 357 EVDS grubu (`scripts/build_evds_groups.py`,
+günlükler seri başına EVDS varsayılan birleştirmesiyle aylığa), PRODCOM sanayi ürünleri
+(9.099 ürün, 2005-2025), bitkisel ürün denge tabloları (46 ürün, yeterlilik ve kişi başı
+tüketim), su ürünleri fiyat/gider/yatırım (2005 öncesi eski TL düzeltildi), kuluçkahaneler.
+Notlar: [bist.md](bist.md) (BIST alınmadı), bu dosyanın §6'sı (boşluk listesi).
+
+**Süren uzun iş (ayrık süreç):** MEDAS ilçe düzeyi — 8 bitkisel + 10 hayvancılık + 3 tarım
+aleti ölçüsü, 81 il × 2004-2025, ~1.540 sorgu, ~24 saat. `scripts/uzun_bitkisel_ilce.py`,
+günlük `C:\veri-ham\medas\uzun\bitkisel-ilce.log`, nabız `bitkisel-ilce-nabiz.txt`.
+Durursa C:\veri'den aynı komutla yeniden başlatılır, inenleri atlar. İl numarası MEDAS
+listesindeki **alfabetik sıra** (21 Bursa), `il00` = bütün ülke tek sorguda (dar ölçüler).
+Bitince: `tuik_crops` adaptörü ilçe dosyalarını zaten okuyor (ilçe toplamı = il değeri
+denetimi); hayvancılık/alet ilçe dosyaları için `tuik_topics` eşlemesi gerekecek; sonra
+tam yükleme + envanter.
+
+Çekicide düzeltilen tuzaklar: yıl satırı "içinde yıl geçen" diye seçiliyordu — 405 meyve
+göstergesinin gizli kodunda "-O32004" geçtiği için 2004 hiç inmiyordu (artık tam metin);
+hücre sınırı rapordan önce okunur (`LIMIT_ASILDI`), düzey tutmazsa `DUZEY_TUTMADI`.
+
+İlçe verisinde kaynak davranışı: tek yıllık sıçramalar (Seyhan narenciyesi 2011'de ÷2,
+2016'da ×6; Adana 2023 +%68 Yüreğir/Karataş'ta) il toplamı tutarken oluyor — TÜİK'in
+ilçeye dağıtımı. Eğilim il düzeyinden okunur, ilçe yoğunlaşma için kullanılır.
+
+Sırada: (1) uzun iş bitince MEDAS 38 konu taraması (`C:\veri-ham\medas\_taranacak_2026-09-26.txt`,
+`_tara.sh`; ilk konu bitti), (2) taranan konulardan depoda olmayanların çekimi (sanayi
+ürün il kırılımı varsa öncelikli), (3) aylık dosyalar (kümes, süt, ücretli çalışan) için
+`tuik_topics` aylık okuma.
+
 ### 6. Büyük resim: hiç kapsanmayan alanlar (2026-09-26, 986 gösterge)
 
 Envanter anahtar kelimeyle tarandı; aşağıdakiler için depoda **hiçbir gösterge yok**.
