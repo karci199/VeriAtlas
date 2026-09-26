@@ -276,6 +276,19 @@ def offered_years(page, tries: int = 6) -> list[int]:
     return []
 
 
+def year_item(page, year: int):
+    """The Zaman row for `year`: the row whose whole text is the year.
+
+    Matching rows that merely contain it picked hidden indicator rows instead: every one
+    of the 405 fruit indicators carries a code ending "-O32004", so the first ".z-listitem"
+    containing "2004" was never the year (Bursa, 2026-09-26). Other years only worked
+    because no code happened to contain them.
+    """
+    return page.locator(".z-listitem").filter(
+        has_text=re.compile(r"^\s*" + str(year) + r"\s*$")
+    ).first
+
+
 def click_year(element) -> None:
     """Tick a year row, bringing it into view first.
 
@@ -392,7 +405,7 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
             print("  ", year, "listede olmayan yil:", missing, "sunulan:", offered[:25])
             return False
         for label in YEAR_SET:
-            row = page.locator(".z-listitem", has_text=str(label)).first
+            row = year_item(page, label)
             box = row.locator(".z-listitem-checkbox")
             click_year(box if box.count() else row)
             settle(page)
@@ -401,7 +414,7 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
         # 23.000, well inside the 50.000 cap, so the whole series comes in one query
         # instead of one per year. Nineteen times fewer trips through the flow.
         for label in offered_years(page):
-            row = page.locator(".z-listitem", has_text=str(label)).first
+            row = year_item(page, label)
             box = row.locator(".z-listitem-checkbox")
             click_year(box if box.count() else row)
             settle(page)
@@ -414,7 +427,7 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
         if not offered_years(page):
             print("  ", year, "yil listesi hic dolmadi")
             return False
-        year_row = page.locator(".z-listitem", has_text=str(year)).first
+        year_row = year_item(page, year)
         if not year_row.count():
             print("  ", year, "listede yok; sunulan:", offered_years(page)[:25])
             return False
