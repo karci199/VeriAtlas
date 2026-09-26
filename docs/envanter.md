@@ -1,11 +1,11 @@
-# Envanter — depodaki 984 gösterge
+# Envanter — depodaki 986 gösterge
 
 **Bu dosya elle yazılmaz.** `scripts/build_inventory.py` warehouse'tan üretir;
 burada olmayan gösterge depoda yok demektir. Yeni kaynak önermeden önce buraya
 bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni iş' diye
 önerildi, üçü de zaten yüklüydü.
 
-Üretim: 2026-09-26 · 22.209.524 satır
+Üretim: 2026-09-26 · 22.210.028 satır
 
 ## evds_arsiv (177)
 
@@ -464,6 +464,47 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `province_gdp_regional_share_sector` | İlin Türkiye sektör katma değerindeki payı | TR. il | 2000-2024 | 22.550 | tuik_medas |
 | `province_gdp_sector_share` | Sektörlerin il GSYH içindeki payı | TR. il | 2000-2024 | 22.550 | tuik_medas |
 
+## reel_kesim (36)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `capacity_utilisation` | İmalat sanayi kapasite kullanım oranı | TR | 2007-2026 | 7.932 | cbrt_evds |
+| `chain_restaurants` | Zincir şube sayısı | il. ilçe | 2026-2026 | 3.103 | chain_store_finders |
+| `chain_stores` | Zincir mağaza sayısı | il. ilçe | 2026-2026 | 7.963 | chain_store_finders |
+| `companies_opened_capital` | Kurulan şirketlerin sermayesi | TR | 2010-2026 | 756 | cbrt_evds |
+| `companies_opened_closed` | Kurulan ve kapanan şirket sayısı | TR | 2010-2026 | 1.993 | cbrt_evds |
+| `construction_turnover_index` | İnşaat ciro endeksi (2015=100) | TR | 2009-2023 | 2.160 | tuik_portal |
+| `economic_tendency_survey` | İktisadi yönelim anketi | TR | 2007-2026 | 15.892 | cbrt_evds |
+| `enterprises` | Girişim sayısı | il | 2009-2024 | 81.550 | tuik_medas |
+| `fashion_stores` | Giyim zinciri mağazası | il. ilçe | 2026-2026 | 1.437 | branch_finders |
+| `foreign_trade_by_province` | Dış ticaret (il. gümrük) | il | 2002-2023 | 3.548 | oecd_regional |
+| `industrial_production_index` | Sanayi üretim endeksi | TR | 1986-2026 | 82.257 | cbrt_evds |
+| `industry_turnover_index` | Sanayi ciro endeksi (2015=100) | TR | 2005-2023 | 24.624 | tuik_portal |
+| `mersis_active_businesses` | Aktif ticari işletme sayısı (MERSİS) | TR | 2024-2026 | 168 | mersis |
+| `mersis_business_flows` | Kurulan ve kapanan ticari işletmeler (MERSİS) | TR | 2024-2026 | 336 | mersis |
+| `organized_industrial_zones` | Faal organize sanayi bölgesi sayısı | TR. il | 2021-2024 | 158 | drdatastats |
+| `real_sector_confidence` | Reel kesim güven endeksi | TR | 2007-2026 | 2.124 | cbrt_evds |
+| `registered_tradesmen` | Kayıtlı esnaf sayısı | il | 2026-2026 | 81 | tesk |
+| `tendency_survey_large_firms` | İktisadi yönelim anketi — 500 ve üzeri çalışanlı firmalar | TR | 2007-2026 | 15.891 | cbrt_evds |
+| `tendency_survey_medium_firms` | İktisadi yönelim anketi — 250-499 çalışanlı firmalar | TR | 2007-2026 | 15.890 | cbrt_evds |
+| `tendency_survey_small_firms` | İktisadi yönelim anketi — 250'den az çalışanlı firmalar | TR | 2007-2026 | 15.892 | cbrt_evds |
+| `tim_exports` | İhracat (TİM. il) | il | 2004-2025 | 1.775 | tim |
+| `tim_exports_by_country` | İhracat. ülkeye göre (TİM. il) | il | 2013-2025 | 102.967 | tim |
+| `tim_exports_by_sector` | İhracat. sektöre göre (TİM. il) | il | 2013-2025 | 22.391 | tim |
+| `tobb_companies` | Kurulan. tasfiyeye giren ve kapanan şirketler | il | 2009-2025 | 11.016 | tobb |
+| `tobb_company_capital` | Kurulan şirketlerin sermayesi | il | 2015-2025 | 891 | tobb |
+| `tobb_foreign_companies` | Kurulan yabancı ortaklı şirketler | il | 2010-2025 | 2.592 | tobb |
+| `tobb_foreign_company_capital` | Yabancı ortaklı kurulan şirketlerin sermayesi | il | 2010-2025 | 2.592 | tobb |
+| `tobb_foreign_partner_capital` | Kurulan şirketlerde yabancı sermaye payı | il | 2010-2025 | 2.592 | tobb |
+| `trade_trucks` | Dış ticarette kara ve Ro-Ro araçları | TR | 2021-2026 | 816 | cbrt_evds |
+| `trade_turnover_index` | Ticaret ciro endeksi (2015=100) | TR | 2009-2023 | 2.160 | tuik_portal |
+| `tradesmen_amendments` | Esnaf tadil ilanı | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_chambers` | Esnaf odası sayısı | il | 2026-2026 | 81 | tesk |
+| `tradesmen_deregistrations` | Esnaf sicil terkini | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_registrations` | Esnaf tescili | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_trade_removals` | Esnaf meslek terkini | il | 2012-2025 | 1.134 | tesk |
+| `tradesmen_workplaces` | Esnaf işyeri sayısı | il | 2026-2026 | 81 | tesk |
+
 ## bankacilik (36)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -544,83 +585,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `water_treatment_population` | İçme suyu arıtma tesisiyle hizmet verilen nüfus | TR. il | 2001-2022 | 699 | tuik_medas |
 | `water_treatment_population_share` | İçme suyu arıtma tesisiyle hizmet verilen nüfusun oranı | TR. il | 2001-2022 | 699 | tuik_medas |
 
-## reel_kesim (34)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `capacity_utilisation` | İmalat sanayi kapasite kullanım oranı | TR | 2007-2026 | 7.932 | cbrt_evds |
-| `chain_restaurants` | Zincir şube sayısı | il. ilçe | 2026-2026 | 3.103 | chain_store_finders |
-| `chain_stores` | Zincir mağaza sayısı | il. ilçe | 2026-2026 | 7.963 | chain_store_finders |
-| `companies_opened_capital` | Kurulan şirketlerin sermayesi | TR | 2010-2026 | 756 | cbrt_evds |
-| `companies_opened_closed` | Kurulan ve kapanan şirket sayısı | TR | 2010-2026 | 1.993 | cbrt_evds |
-| `construction_turnover_index` | İnşaat ciro endeksi (2015=100) | TR | 2009-2023 | 2.160 | tuik_portal |
-| `economic_tendency_survey` | İktisadi yönelim anketi | TR | 2007-2026 | 15.892 | cbrt_evds |
-| `enterprises` | Girişim sayısı | il | 2009-2024 | 81.550 | tuik_medas |
-| `fashion_stores` | Giyim zinciri mağazası | il. ilçe | 2026-2026 | 1.437 | branch_finders |
-| `foreign_trade_by_province` | Dış ticaret (il. gümrük) | il | 2002-2023 | 3.548 | oecd_regional |
-| `industrial_production_index` | Sanayi üretim endeksi | TR | 1986-2026 | 82.257 | cbrt_evds |
-| `industry_turnover_index` | Sanayi ciro endeksi (2015=100) | TR | 2005-2023 | 24.624 | tuik_portal |
-| `organized_industrial_zones` | Faal organize sanayi bölgesi sayısı | TR. il | 2021-2024 | 158 | drdatastats |
-| `real_sector_confidence` | Reel kesim güven endeksi | TR | 2007-2026 | 2.124 | cbrt_evds |
-| `registered_tradesmen` | Kayıtlı esnaf sayısı | il | 2026-2026 | 81 | tesk |
-| `tendency_survey_large_firms` | İktisadi yönelim anketi — 500 ve üzeri çalışanlı firmalar | TR | 2007-2026 | 15.891 | cbrt_evds |
-| `tendency_survey_medium_firms` | İktisadi yönelim anketi — 250-499 çalışanlı firmalar | TR | 2007-2026 | 15.890 | cbrt_evds |
-| `tendency_survey_small_firms` | İktisadi yönelim anketi — 250'den az çalışanlı firmalar | TR | 2007-2026 | 15.892 | cbrt_evds |
-| `tim_exports` | İhracat (TİM. il) | il | 2004-2025 | 1.775 | tim |
-| `tim_exports_by_country` | İhracat. ülkeye göre (TİM. il) | il | 2013-2025 | 102.967 | tim |
-| `tim_exports_by_sector` | İhracat. sektöre göre (TİM. il) | il | 2013-2025 | 22.391 | tim |
-| `tobb_companies` | Kurulan. tasfiyeye giren ve kapanan şirketler | il | 2009-2025 | 11.016 | tobb |
-| `tobb_company_capital` | Kurulan şirketlerin sermayesi | il | 2015-2025 | 891 | tobb |
-| `tobb_foreign_companies` | Kurulan yabancı ortaklı şirketler | il | 2010-2025 | 2.592 | tobb |
-| `tobb_foreign_company_capital` | Yabancı ortaklı kurulan şirketlerin sermayesi | il | 2010-2025 | 2.592 | tobb |
-| `tobb_foreign_partner_capital` | Kurulan şirketlerde yabancı sermaye payı | il | 2010-2025 | 2.592 | tobb |
-| `trade_trucks` | Dış ticarette kara ve Ro-Ro araçları | TR | 2021-2026 | 816 | cbrt_evds |
-| `trade_turnover_index` | Ticaret ciro endeksi (2015=100) | TR | 2009-2023 | 2.160 | tuik_portal |
-| `tradesmen_amendments` | Esnaf tadil ilanı | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_chambers` | Esnaf odası sayısı | il | 2026-2026 | 81 | tesk |
-| `tradesmen_deregistrations` | Esnaf sicil terkini | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_registrations` | Esnaf tescili | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_trade_removals` | Esnaf meslek terkini | il | 2012-2025 | 1.134 | tesk |
-| `tradesmen_workplaces` | Esnaf işyeri sayısı | il | 2026-2026 | 81 | tesk |
-
-## nufus (33)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `baby_names` | Bebeklere en çok verilen isimler | TR. il | 2018-2025 | 112.000 | tuik_nip |
-| `class_size` | Sınıf mevcudu (öğrenci/derslik) | il | 2012-2024 | 2.106 | meb_egitim |
-| `common_names` | En çok kullanılan isimler | TR. il | 2018-2025 | 39.904 | tuik_nip |
-| `common_surnames` | En çok kullanılan soyisimler | TR. il | 2018-2025 | 19.801 | tuik_nip |
-| `district_urbanization` | Kentleşme oranı (kayıtlı seçmen) | il. ilçe | 2015-2015 | 1.023 | ysk_aatoplu |
-| `education_attainment` | Öğrenim durumu | il | 2008-2025 | 26.244 | tuik_nip |
-| `foreign_population` | Yabancı uyruklu nüfus | TR. il | 2008-2025 | 2.952 | tuik_medas |
-| `gender_student_ratio` | Kadın/Erkek öğrenci oranı | il | 2012-2024 | 3.159 | meb_egitim |
-| `household_by_size` | Hanehalkı sayısı (büyüklüğe göre) | il | 2012-2025 | 11.340 | tuik |
-| `household_by_tenure` | Hanehalkı sayısı (mülkiyet durumuna göre) | il | 2021-2021 | 324 | tuik |
-| `household_by_type` | Hanehalkı tipine göre hane sayısı | TR. il. ilçe | 2014-2025 | 50.600 | tuik_medas |
-| `household_count` | Hanehalkı sayısı | TR. il. ilçe | 2012-2025 | 14.741 | tuik_medas |
-| `household_size` | Ortalama hanehalkı büyüklüğü | TR. il. ilçe | 2008-2025 | 18.897 | tuik_medas |
-| `marital_status` | Medeni durum | TR. il. ilçe | 2008-2025 | 2.181.235 | tuik_medas |
-| `median_age` | Ortanca yaş | TR. il | 2007-2025 | 4.674 | tuik_medas |
-| `migration_between_regions` | Bölgeler arası göç | İBBS-2 | 2008-2025 | 12.168 | tuik_medas |
-| `migration_from_abroad` | Yurt dışından gelen göç | TR. il | 2016-2025 | 820 | tuik_medas |
-| `migration_in` | Aldığı göç | il | 2008-2025 | 40.824 | tuik_medas |
-| `migration_net` | Net göç | il | 2008-2025 | 1.458 | tuik_medas |
-| `migration_out` | Verdiği göç | il | 2008-2025 | 40.824 | tuik_medas |
-| `migration_to_abroad` | Yurt dışına giden göç | TR. il | 2016-2025 | 820 | tuik_medas |
-| `natural_increase` | Doğal nüfus artışı | TR. il. ilçe | 2009-2025 | 13.060 | tuik_medas |
-| `net_enrollment_rate` | Net okullaşma oranı | il | 2007-2024 | 5.022 | meb_egitim |
-| `population` | Nüfus | TR. il. ilçe. mahalle. köy | 2007-2025 | 2.403.579 | tuik_medas |
-| `population_by_birth_province` | İlçe nüfusu (doğum yerine göre) | ilçe | 2014-2025 | 217.452 | tuik_medas |
-| `population_by_registry_province` | İlçe nüfusu (nüfusa kayıtlı olunan ile göre) | ilçe | 2007-2025 | 232.146 | tuik_medas |
-| `population_density` | Nüfus yoğunluğu | TR. il | 2007-2025 | 1.558 | tuik_medas |
-| `registered_by_residence_province` | İlçeye kayıtlı nüfus (ikamet edilen ile göre) | ilçe | 2008-2025 | 234.900 | tuik_medas |
-| `registry_population` | Kütük nüfusu | il | 2007-2025 | 3.078 | tuik_medas |
-| `school_size` | Okul mevcudu (öğrenci/okul) | il | 2012-2024 | 2.106 | meb_egitim |
-| `section_room_ratio` | Şube/Derslik oranı (ikili öğretim baskısı) | il | 2012-2024 | 2.106 | meb_egitim |
-| `section_size` | Şube mevcudu (öğrenci/şube) | il | 2012-2024 | 3.159 | meb_egitim |
-| `temporary_protection_syrians` | Geçici koruma altındaki Suriyeliler | TR. il | 2026-2026 | 82 | goc_idaresi |
-
 ## cocuk (33)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -696,6 +660,44 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `vehicles_newly_registered_by_fuel` | Trafiğe kaydı yapılan taşıt (yakıt türüne göre) | TR. il | 2020-2025 | 2.482 | tuik_medas |
 | `vehicles_transferred` | Devri yapılan taşıt (marka ve türe göre) | TR. il | 2010-2025 | 257.830 | tuik_medas |
 | `vehicles_transferred_by_age` | Devri yapılan taşıt (taşıt yaşına göre) | TR. il | 2020-2025 | 2.460 | tuik_medas |
+
+## nufus (33)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `baby_names` | Bebeklere en çok verilen isimler | TR. il | 2018-2025 | 112.000 | tuik_nip |
+| `class_size` | Sınıf mevcudu (öğrenci/derslik) | il | 2012-2024 | 2.106 | meb_egitim |
+| `common_names` | En çok kullanılan isimler | TR. il | 2018-2025 | 39.904 | tuik_nip |
+| `common_surnames` | En çok kullanılan soyisimler | TR. il | 2018-2025 | 19.801 | tuik_nip |
+| `district_urbanization` | Kentleşme oranı (kayıtlı seçmen) | il. ilçe | 2015-2015 | 1.023 | ysk_aatoplu |
+| `education_attainment` | Öğrenim durumu | il | 2008-2025 | 26.244 | tuik_nip |
+| `foreign_population` | Yabancı uyruklu nüfus | TR. il | 2008-2025 | 2.952 | tuik_medas |
+| `gender_student_ratio` | Kadın/Erkek öğrenci oranı | il | 2012-2024 | 3.159 | meb_egitim |
+| `household_by_size` | Hanehalkı sayısı (büyüklüğe göre) | il | 2012-2025 | 11.340 | tuik |
+| `household_by_tenure` | Hanehalkı sayısı (mülkiyet durumuna göre) | il | 2021-2021 | 324 | tuik |
+| `household_by_type` | Hanehalkı tipine göre hane sayısı | TR. il. ilçe | 2014-2025 | 50.600 | tuik_medas |
+| `household_count` | Hanehalkı sayısı | TR. il. ilçe | 2012-2025 | 14.741 | tuik_medas |
+| `household_size` | Ortalama hanehalkı büyüklüğü | TR. il. ilçe | 2008-2025 | 18.897 | tuik_medas |
+| `marital_status` | Medeni durum | TR. il. ilçe | 2008-2025 | 2.181.235 | tuik_medas |
+| `median_age` | Ortanca yaş | TR. il | 2007-2025 | 4.674 | tuik_medas |
+| `migration_between_regions` | Bölgeler arası göç | İBBS-2 | 2008-2025 | 12.168 | tuik_medas |
+| `migration_from_abroad` | Yurt dışından gelen göç | TR. il | 2016-2025 | 820 | tuik_medas |
+| `migration_in` | Aldığı göç | il | 2008-2025 | 40.824 | tuik_medas |
+| `migration_net` | Net göç | il | 2008-2025 | 1.458 | tuik_medas |
+| `migration_out` | Verdiği göç | il | 2008-2025 | 40.824 | tuik_medas |
+| `migration_to_abroad` | Yurt dışına giden göç | TR. il | 2016-2025 | 820 | tuik_medas |
+| `natural_increase` | Doğal nüfus artışı | TR. il. ilçe | 2009-2025 | 13.060 | tuik_medas |
+| `net_enrollment_rate` | Net okullaşma oranı | il | 2007-2024 | 5.022 | meb_egitim |
+| `population` | Nüfus | TR. il. ilçe. mahalle. köy | 2007-2025 | 2.403.579 | tuik_medas |
+| `population_by_birth_province` | İlçe nüfusu (doğum yerine göre) | ilçe | 2014-2025 | 217.452 | tuik_medas |
+| `population_by_registry_province` | İlçe nüfusu (nüfusa kayıtlı olunan ile göre) | ilçe | 2007-2025 | 232.146 | tuik_medas |
+| `population_density` | Nüfus yoğunluğu | TR. il | 2007-2025 | 1.558 | tuik_medas |
+| `registered_by_residence_province` | İlçeye kayıtlı nüfus (ikamet edilen ile göre) | ilçe | 2008-2025 | 234.900 | tuik_medas |
+| `registry_population` | Kütük nüfusu | il | 2007-2025 | 3.078 | tuik_medas |
+| `school_size` | Okul mevcudu (öğrenci/okul) | il | 2012-2024 | 2.106 | meb_egitim |
+| `section_room_ratio` | Şube/Derslik oranı (ikili öğretim baskısı) | il | 2012-2024 | 2.106 | meb_egitim |
+| `section_size` | Şube mevcudu (öğrenci/şube) | il | 2012-2024 | 3.159 | meb_egitim |
+| `temporary_protection_syrians` | Geçici koruma altındaki Suriyeliler | TR. il | 2026-2026 | 82 | goc_idaresi |
 
 ## kultur (32)
 
@@ -983,24 +985,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `tourism_expenditure` | Turizm gideri (yurt dışına giden vatandaş) | TR | 2012-2025 | 112 | tuik_medas |
 | `tourism_revenue` | Turizm geliri | TR | 2012-2025 | 19 | tuik_medas |
 
-## iklim (13)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `afad_earthquakes` | Deprem sayısı | il. ilçe | 1990-2025 | 53.671 | afad |
-| `mgm_measurement_period` | İstasyonun ölçüm dönemi | il | 2025-2025 | 162 | mgm |
-| `mgm_precipitation` | Aylık toplam yağış ortalaması | il | 2020-2025 | 1.920 | mgm |
-| `mgm_rainy_days` | Aylık ortalama yağışlı gün sayısı | il | 2020-2025 | 1.908 | mgm |
-| `mgm_record_daily_precipitation` | Günlük en yüksek yağış rekoru | il | 1929-2024 | 81 | mgm |
-| `mgm_record_snow_depth` | En yüksek kar kalınlığı rekoru | il | 1929-2022 | 80 | mgm |
-| `mgm_record_wind_speed` | En hızlı rüzgar rekoru | il | 1963-2025 | 81 | mgm |
-| `mgm_sunshine` | Aylık ortalama günlük güneşlenme süresi | il | 2020-2025 | 1.920 | mgm |
-| `mgm_temperature` | Aylık sıcaklık normalleri | il | 2020-2025 | 7.704 | mgm |
-| `oecd_climate_days` | İklim gün sayıları (alansal) | il | 1981-2024 | 14.256 | oecd_regional |
-| `oecd_degree_days` | Derece-gün (ısıtma ve soğutma) | il | 1981-2023 | 6.966 | oecd_regional |
-| `oecd_precipitation` | Yıllık toplam yağış (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
-| `oecd_temperature` | Yıllık ortalama sıcaklık (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
-
 ## konut_nitelik (13)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1018,6 +1002,24 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `mean_building_floors` | Oturulan binanın ortalama kat sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
 | `mean_rooms` | Konutların ortalama oda sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
 | `rooms_per_person` | Konutta kişi başına oda (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
+
+## iklim (13)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `afad_earthquakes` | Deprem sayısı | il. ilçe | 1990-2025 | 53.671 | afad |
+| `mgm_measurement_period` | İstasyonun ölçüm dönemi | il | 2025-2025 | 162 | mgm |
+| `mgm_precipitation` | Aylık toplam yağış ortalaması | il | 2020-2025 | 1.920 | mgm |
+| `mgm_rainy_days` | Aylık ortalama yağışlı gün sayısı | il | 2020-2025 | 1.908 | mgm |
+| `mgm_record_daily_precipitation` | Günlük en yüksek yağış rekoru | il | 1929-2024 | 81 | mgm |
+| `mgm_record_snow_depth` | En yüksek kar kalınlığı rekoru | il | 1929-2022 | 80 | mgm |
+| `mgm_record_wind_speed` | En hızlı rüzgar rekoru | il | 1963-2025 | 81 | mgm |
+| `mgm_sunshine` | Aylık ortalama günlük güneşlenme süresi | il | 2020-2025 | 1.920 | mgm |
+| `mgm_temperature` | Aylık sıcaklık normalleri | il | 2020-2025 | 7.704 | mgm |
+| `oecd_climate_days` | İklim gün sayıları (alansal) | il | 1981-2024 | 14.256 | oecd_regional |
+| `oecd_degree_days` | Derece-gün (ısıtma ve soğutma) | il | 1981-2023 | 6.966 | oecd_regional |
+| `oecd_precipitation` | Yıllık toplam yağış (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
+| `oecd_temperature` | Yıllık ortalama sıcaklık (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
 
 ## trafik_kaza (12)
 
@@ -1049,19 +1051,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `minimum_wage` | Asgari ücret | TR | 1996-2026 | 1.086 | csgb |
 | `severance_pay_ceiling` | Kıdem tazminatı tavanı | TR | 1980-2026 | 553 | hmb_bumko |
 
-## perakende (8)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `furniture_stores` | Mobilya mağazası | il. ilçe | 2026-2026 | 1.676 | branch_finders |
-| `mall_turnover_index` | AVM ciro endeksi (m² verimlilik) | TR | 2025-2026 | 18 | ayd_akademetre |
-| `mall_turnover_per_sqm` | AVM'de m² başına ciro | TR | 2025-2026 | 51 | ayd_akademetre |
-| `mall_visitor_index` | AVM ziyaretçi endeksi | TR | 2025-2025 | 2 | ayd_akademetre |
-| `retail_turnover_index` | Perakende ciro endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
-| `retail_volume_index` | Perakende satış hacim endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
-| `street_markets` | Semt ve üretici pazarı sayısı | il | 2019-2024 | 84 | drdatastats |
-| `wholesale_produce_markets` | Toptancı hali sayısı | il | 2016-2024 | 137 | drdatastats |
-
 ## evlenme_bosanma (8)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1074,6 +1063,19 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `marriages_district` | Evlenme sayısı (ilçe) | ilçe | 2014-2025 | 11.659 | tuik_medas |
 | `mean_first_marriage_age` | Ortalama ilk evlenme yaşı | TR. il | 2001-2025 | 4.100 | tuik_medas |
 | `mean_marriage_age` | Ortalama evlenme yaşı | TR. il | 2001-2025 | 6.150 | tuik_medas |
+
+## perakende (8)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `furniture_stores` | Mobilya mağazası | il. ilçe | 2026-2026 | 1.676 | branch_finders |
+| `mall_turnover_index` | AVM ciro endeksi (m² verimlilik) | TR | 2025-2026 | 18 | ayd_akademetre |
+| `mall_turnover_per_sqm` | AVM'de m² başına ciro | TR | 2025-2026 | 51 | ayd_akademetre |
+| `mall_visitor_index` | AVM ziyaretçi endeksi | TR | 2025-2025 | 2 | ayd_akademetre |
+| `retail_turnover_index` | Perakende ciro endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
+| `retail_volume_index` | Perakende satış hacim endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
+| `street_markets` | Semt ve üretici pazarı sayısı | il | 2019-2024 | 84 | drdatastats |
+| `wholesale_produce_markets` | Toptancı hali sayısı | il | 2016-2024 | 137 | drdatastats |
 
 ## medya (7)
 
@@ -1150,14 +1152,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `fuel_wood_production` | Yakacak odun üretimi | il | 2012-2022 | 838 | drdatastats |
 | `industrial_wood_production` | Endüstriyel odun üretimi | il | 2012-2022 | 765 | drdatastats |
 
-## inovasyon (3)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `ip_applications_by_province` | Yerli sınai mülkiyet başvurusu (il) | TR. il | 1995-2025 | 12.710 | turkpatent |
-| `ip_registrations_by_province` | Yerli sınai mülkiyet tescili (il) | TR. il | 1995-2025 | 12.546 | turkpatent |
-| `patent_applications` | PCT patent başvurusu | il | 1995-2024 | 2.881 | oecd_regional |
-
 ## havacilik (3)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1181,6 +1175,14 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `association_members` | Dernek üye sayısı | il | 2019-2019 | 162 | drdatastats |
 | `associations` | Faal dernek sayısı | il | 2000-2025 | 810 | drdatastats |
 | `associations_by_activity` | Dernek sayısı (seçilmiş faaliyet alanları) | il | 2020-2021 | 1.211 | drdatastats |
+
+## inovasyon (3)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `ip_applications_by_province` | Yerli sınai mülkiyet başvurusu (il) | TR. il | 1995-2025 | 12.710 | turkpatent |
+| `ip_registrations_by_province` | Yerli sınai mülkiyet tescili (il) | TR. il | 1995-2025 | 12.546 | turkpatent |
+| `patent_applications` | PCT patent başvurusu | il | 1995-2024 | 2.881 | oecd_regional |
 
 ## guvenlik (2)
 
