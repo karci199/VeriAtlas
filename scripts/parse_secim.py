@@ -498,6 +498,16 @@ def match_district(districts: dict, province_id: str, name: str) -> str | None:
 #: province id -> folded province name, filled by area_index.
 PROVINCE_NAME: dict[str, str] = {}
 
+#: File names that shorten the province. The 1995-2007 reports print no province line,
+#: so the file name is the only source: `k_maras__afsin` and `afyon__bolvadin` matched no
+#: province and every district in them was dropped (Kahramanmaraş 0 voters in 2002).
+PROVINCE_STEM = {"afyon": "afyonkarahisar", "kmaras": "kahramanmaras"}
+
+
+def province_from_stem(provinces: dict, stem: str) -> str | None:
+    key = fold(re.sub(r"_\d+$", "", stem))
+    return provinces.get(PROVINCE_STEM.get(key, key))
+
 
 def successors() -> dict[str, list[str]]:
     """Map districts for a district that no longer exists (`TR-07-x1138`, Antalya Merkez).
@@ -646,10 +656,25 @@ def main(argv: list[str]) -> None:
             # name says which, so the id comes from there and the districts inside it are
             # matched instead of the whole file being dropped.
             stem = path.stem.split("__")[0]
-            province_id = provinces.get(fold(re.sub(r"_\d+$", "", stem)))
+            province_id = province_from_stem(provinces, stem)
             file_total = None
             matched_here = False
-            for record in read_report(path):
+            records = read_report(path)
+            # Those same reports print the province total as their first row, at the
+            # district's depth and under the bare province name ("Tokat"). Since 2013 the
+            # central district carries that name too, so the province total landed on it
+            # and every later file of the province overwrote the real figure: Tokat
+            # Merkez read 425.030 voters, the whole province, in 2002.
+            if (
+                records
+                and province_id
+                and not any(r["level"] == "il" for r in records)
+                and records[0]["level"] == "ilce"
+                and fold(records[0]["name"]) == PROVINCE_NAME.get(province_id)
+                and sum(r["level"] == "ilce" for r in records) > 1
+            ):
+                records[0] = {**records[0], "level": "il"}
+            for record in records:
                 values = record["values"]
                 base = {
                     "k": values.get("kayitli", 0),
@@ -671,7 +696,7 @@ def main(argv: list[str]) -> None:
                             ),
                             None,
                         )
-                        or provinces.get(fold(re.sub(r"_\d+$", "", stem)))
+                        or province_from_stem(provinces, stem)
                     )
                     file_total = base
                 elif record["level"] == "ilce" and province_id:

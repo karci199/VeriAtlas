@@ -11,7 +11,7 @@ Kullanıcı kararı: liste sonraya bırakıldı. Sıra önerisi yukarıdan aşa�
 
 | # | İş | Kimde | Tahmini süre |
 |---|---|---|---|
-| 1 | Seçim: Afyon Sincanlı eşleşmesi, 1995/1999 "Cezaevi" satırları, Kocaeli 2002 +100.000 farkı | Claude | 30 dk |
+| 1 | Seçim 2002 il toplamı farkları: Afyon −%8 (Sincanlı eşleşmiyor), Bursa −%4, Kırıkkale +%2,5, Kocaeli +100.000 (kaynakta olabilir); 1995/1999 "Cezaevi" satırları; `tile_denetim.py` uyarıları (önceden de vardı): yerel_bsb_2009 34 ilçe, yerel_ilgen_2024 36 ilçe, yerel_bsb_1999 9 ilçe parti toplamı geçerli oyu tutmuyor | Claude | 30-45 dk |
 | 2 | ETKB ulusal enerji dengesi | Claude | 30 dk |
 | 3 | OECD TL3 kalanlar (sağlık durumu/riski, göç akımı, sosyal tablolar) | Claude | 1,5 sa |
 | 4 | Denizciliğin kalanı (gemi, kruvaziyer, Ro-Ro, boğaz, filo) | Claude | 1,5-2 sa |
@@ -36,6 +36,7 @@ Claude'da olanların toplamı kabaca 25-30 saat.
 | İş | Durum | Nerede |
 |---|---|---|
 | Seçim ilçe dosyaları 1995-2007: dosya adından il bulunamayınca (Afyon, K.Maraş) ilçeler düşüyordu | 2026-09-26 düzeltildi, yeniden üretildi | `scripts/parse_secim.py` `PROVINCE_STEM` |
+| Seçim ilçe dosyaları 1991-2007 ve ho2007: il toplamı satırı merkez ilçeye yazılıyordu (Tokat Merkez = tüm Tokat; ho2007 toplamı 48,6 → 42,6 mn) | 2026-09-26 düzeltildi | `parse_secim.py`, ilk satır il adıysa il sayılır |
 | Seçim ilçe dosyaları: bölünen eski ilçenin sonucu ardıllarına `eski` işaretiyle kopyalanıyor; toplayan her kod bu satırları atlamalı (atlanmazsa Antalya 2002 ×3,3) | kural; toplayan betikler denetlenmeli | `public/tiles/secim-*-ilce.json` |
 | Seçim 1995/1999 raporlarında "Cezaevi", "Bucak ve köyler toplamı" satırları eşleşmeyen ilçe diye raporlanıyor | incelenmedi | `C:\veri-ham\secim\eslesme-raporu.json` |
 | 2022-04 sonrası madde fiyatları TÜFE alt endeksiyle zincirleniyor; gerçek fiyatla doğrulanmadı | açık | `scripts/analiz/alim_gucu_2026_09_26/` |
