@@ -33,12 +33,16 @@ class EvdsArchive:
     vintage = "2026-09"
     retrieved_at = dt.date(2026, 9, 14)
     indicator_id = ""
+    #: Group specs by indicator id; `evds_groups.py` reuses the class with its own list.
+    groups = GROUPS
 
     def fetch(self) -> Path:
-        return DOWNLOADS / (GROUPS[self.indicator_id]["group"] + ".json")
+        spec = self.groups[self.indicator_id]
+        # Daily groups were downloaded as monthly averages, `<group>-aylik.json`.
+        return DOWNLOADS / spec.get("file", spec["group"] + ".json")
 
     def parse(self, raw: Path) -> pl.DataFrame:
-        spec = GROUPS[self.indicator_id]
+        spec = self.groups[self.indicator_id]
         payload = json.loads(raw.read_text(encoding="utf-8"))
         kept = set(spec["codes"])
         present = {s["SERIE_CODE"] for s in payload["series"]}

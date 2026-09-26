@@ -27,6 +27,7 @@ from .epdk_sarj import EPDK_SARJ_ADAPTERS
 from .etkb import ETKB_ADAPTERS
 from .eurostat_regional import EUROSTAT_REGIONAL_ADAPTERS
 from .evds_archive import EVDS_ARCHIVE_ADAPTERS
+from .evds_groups import EVDS_GROUP_ADAPTERS
 from .evds_housing import EVDS_HOUSING_ADAPTERS
 from .evds_prices import EVDS_PRICE_ADAPTERS
 from .evds_series import EVDS_SERIES_ADAPTERS
@@ -200,6 +201,7 @@ ADAPTERS = {
     **EVDS_SERIES_ADAPTERS,
     # EVDS archive groups, one indicator per retired table.
     **EVDS_ARCHIVE_ADAPTERS,
+    **EVDS_GROUP_ADAPTERS,
     "evds_foreign_visitors_by_nationality": EvdsVisitorsByNationality,
     # SGK yearbooks: insured, workplaces, pensions, work accidents by province.
     **SGK_ADAPTERS,
