@@ -277,15 +277,27 @@ def offered_years(page, tries: int = 6) -> list[int]:
 
 
 def click_year(element) -> None:
-    """Tick a year row. The oldest year sits at the bottom of the Zaman list, outside the
-    visible area: a plain click waited 60 s and timed out, and 2004 never came down
-    (Bursa fruit, 2026-09-26). Scrolled into view, then a real click with `force` — not a
-    dispatched event, which ZK accepts without registering the tick."""
-    try:
-        element.scroll_into_view_if_needed(timeout=5000)
-    except PlaywrightError:
-        pass
-    element.click(force=True)
+    """Tick a year row, bringing it into view first.
+
+    The Zaman list is a ZK listbox that draws only the rows in its visible window: the
+    oldest year sits below it and is "not visible" — a plain click waited 60 s and timed
+    out, `force` failed with "Element is not visible", and 2004 never came down (Bursa
+    fruit, 2026-09-26). So the listbox body itself is scrolled — to the row, and failing
+    that to the bottom — and the click waits for the row to be visible. Never a dispatched
+    event: ZK accepts it without registering the tick.
+    """
+    element.evaluate(
+        """el => {
+            el.scrollIntoView({block: 'center'});
+            const body = el.closest('.z-listbox-body');
+            if (body) {
+                const top = el.offsetTop - body.clientHeight / 2;
+                body.scrollTop = top > 0 ? top : body.scrollHeight;
+            }
+        }"""
+    )
+    element.wait_for(state="visible", timeout=15000)
+    element.click()
 
 
 def fetch_year(page, year: int, breakdown: bool = False) -> bool:
