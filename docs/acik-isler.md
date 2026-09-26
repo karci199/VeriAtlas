@@ -16,6 +16,9 @@ Açık:
 - Endeksa: tüm TR dökümü için adaptör; `CarCount`/`VehicleCount` plaka 55-81 dolgu, gelir
   alanları küçük yerleşimde kademe (docs/endeksa.md). Lisans kararı hâlâ açık.
 - Aylık taşıt stoku (TÜİK il × tür, 2005-01 →) yalnız yıl sonu alındı; aylık istenirse ayrı gösterge.
+- drdatastats.com incelendi: 1.116 sayfalık ikincil derleme (TÜİK, ODMD, Diyanet, Forbes). Veri oradan
+  alınmaz (izlenebilirlik); depoda olmayan konular birincil kaynaktan çekilmeli: il dernek/STK sayıları
+  (İçişleri Dernekler Dairesi), il avukat/baro (TBB), orman yangını (OGM), korunan alanlar, Kuran kursu (Diyanet).
 
 
 ## 2026-09-25/26: eğitim, sağlık kurumu, geçici koruma
