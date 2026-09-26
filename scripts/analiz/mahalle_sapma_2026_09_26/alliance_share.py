@@ -40,6 +40,7 @@ def main() -> None:
             rows.append(
                 {
                     "plate": parts[1],
+                    "county": parts[2],
                     "id": parts[3],
                     "tile_name": v.get("ad"),
                     "reg": v["k"],
@@ -59,20 +60,25 @@ def main() -> None:
     names = pl.read_parquet(NAMES).select(
         pl.col("id").cast(pl.Utf8), "province", "district", "neighbourhood", "pop"
     )
-    t = (
-        pl.DataFrame(rows)
-        .join(names, on="id", how="left")
-        .with_columns(
-            pl.format(
-                "{} / {} / {}",
-                "province",
-                "district",
-                pl.coalesce("neighbourhood", "tile_name"),
-            ).alias("place"),
-            (pl.col("voted") > pl.col("reg") * 1.02).alias("inst"),
-        )
-        .filter((pl.col("valid") >= MIN_VALID) & ~pl.col("inst"))
+    raw = pl.DataFrame(rows).join(names, on="id", how="left")
+    # Villages missing from the Endeksa dump have no names; take them from their district.
+    raw = raw.with_columns(
+        pl.col("province").fill_null(
+            pl.col("province").drop_nulls().first().over("plate")
+        ),
+        pl.col("district").fill_null(
+            pl.col("district").drop_nulls().first().over("plate", "county")
+        ),
+    ).with_columns(
+        pl.format(
+            "{} / {} / {}",
+            "province",
+            "district",
+            pl.coalesce("neighbourhood", "tile_name"),
+        ).alias("place"),
+        (pl.col("voted") > pl.col("reg") * 1.02).alias("inst"),
     )
+    t = raw.filter((pl.col("valid") >= MIN_VALID) & ~pl.col("inst"))
     pct = lambda a, b: (pl.col(a) / pl.col(b) * 100).round(1)
 
     c = t.filter(
@@ -148,23 +154,40 @@ def main() -> None:
             .head(15)
             .select("place", "valid", "chp_in_millet", "iyi_in_millet", "millet_pct")
         )
-        by_district = ["province", "district"]
-        print("\nDistricts (>= 3000 alliance votes): AKP share of Cumhur, lowest")
-        print(
-            c.group_by(by_district)
-            .agg(pl.col("akp", "mhp", "cumhur").sum())
-            .filter(pl.col("cumhur") >= 3000)
-            .with_columns(pct("akp", "cumhur").alias("akp_in"), pct("mhp", "cumhur").alias("mhp_in"))
-            .sort("akp_in").head(12)
-        )  # fmt: skip
-        print("\nDistricts (>= 3000 alliance votes): CHP share of Millet, lowest")
-        print(
-            m.group_by(by_district)
-            .agg(pl.col("chp", "iyi", "millet").sum())
-            .filter(pl.col("millet") >= 3000)
-            .with_columns(pct("chp", "millet").alias("chp_in"))
-            .sort("chp_in").head(12)
-        )  # fmt: skip
+        # Province and district: every ballot box, no size threshold, so small villages
+        # count; only provinces where a member party did not stand are left out.
+        for level in (["province"], ["province", "district"]):
+            name = (
+                "Provinces" if len(level) == 1 else "Districts (>= 3000 alliance votes)"
+            )
+            cu = (
+                raw.filter(~pl.col("plate").is_in(NO_CUMHUR))
+                .group_by(level)
+                .agg(pl.col("akp", "mhp", "yrp", "bbp", "cumhur").sum())
+                .filter(pl.col("cumhur") >= 3000)
+                .with_columns(
+                    pct("akp", "cumhur").alias("akp_in"),
+                    pct("mhp", "cumhur").alias("mhp_in"),
+                    pct("yrp", "cumhur").alias("yrp_in"),
+                    pct("bbp", "cumhur").alias("bbp_in"),
+                )
+                .sort("akp_in")
+            )
+            mi = (
+                raw.filter(~pl.col("plate").is_in(NO_MILLET))
+                .group_by(level)
+                .agg(pl.col("chp", "iyi", "millet").sum())
+                .filter(pl.col("millet") >= 3000)
+                .with_columns(
+                    pct("chp", "millet").alias("chp_in"),
+                    pct("iyi", "millet").alias("iyi_in"),
+                )
+                .sort("chp_in")
+            )
+            print(f"\n{name}: AKP share of Cumhur, lowest")
+            print(cu.head(15).drop("akp", "mhp", "yrp", "bbp"))
+            print(f"\n{name}: CHP share of Millet, lowest")
+            print(mi.head(15).drop("chp", "iyi"))
 
 
 if __name__ == "__main__":
