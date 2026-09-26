@@ -211,6 +211,15 @@ male = "Erkek"
 # summed into being.
 total = "Toplam"
 
+[dim.degurba]
+label_tr = "Kentleşme derecesi (DEGURBA)"
+label_en = "Degree of urbanisation (DEGURBA)"
+
+[dim.degurba.values]
+dense_urban = "Yoğun kent"
+semi_dense_urban = "Orta yoğun kent"
+rural = "Kır"
+
 [dim.age]
 label_tr = "Yaş grubu"
 label_en = "Age group"
@@ -2240,6 +2249,17 @@ losses = "Kayıplar"
 exports = "İhracat"
 exports_eu = "İhracat, AB"
 stock_change = "Stok değişimi"
+
+[indicator.urban_rural_degurba]
+label_tr = "Kent-kır nüfusu (DEGURBA)"
+label_en = "Urban-rural population (DEGURBA)"
+topic = "nufus"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["degurba"]
+views = ["table", "map", "bar"]
+definition_tr = "TÜİK ADNKS 31.12.2025, 'Kent-Kır Sınıflaması': her mahalle ve köy için Avrupa İstatistik Ofisi'nin Kentleşme Derecesi (DEGURBA) yöntemiyle yoğun kent / orta yoğun kent / kır sınıflaması, 1 km²'lik nüfus yoğunluğu gridlerine (MAKS+ADNKS) dayanır. Mahalle/köy kayıt numarasıyla nüfusa bağlanır (isimle değil — aynı ad birçok ilçede tekrarlanıyor); ikisi de Türkiye genelinde tekil. Büyükşehirleri de kapsayan ilk sınıflama: 2012 sonrası yasal tanım büyükşehirlerin tamamını 'şehir' sayıyordu, DEGURBA'ya göre 30 büyükşehrin ortalama %12,5'i kır (Ordu %41, Şanlıurfa %33). Türkiye toplamı: yoğun kent %67,5, orta yoğun kent %15,8, kır %16,7. Kaynağın kendi dosyasında bir mahalle (Adana/Aladağ/Akören, 872 kişi) sınıflamada eksik, tolere edildi. İl düzeyi; ilçe/mahalle düzeyi ham dosyada var, henüz ayrıştırılmadı. **Bilinen sınır:** DEGURBA'da 'orta yoğun kent' sayılmak için bitişik gridlerin toplam nüfusu en az 5.000 olmalı. Kalecik'te bu eşik nüfusça geçiliyor (2014 öncesi kasaba mahalleleri, düşük mahalle kayıt no'lu 20 mahalle, toplam 7.536 kişi — 178xxx ile başlayan yüksek no'lu 37 mahalle 2014'te köyden çevrildi) ama yine de tamamı 'kır': demek ki takılan nüfus değil yoğunluk kriteri (grid başına ≥300 kişi/km²) — nehir kıyısı kasabalarında bahçeli/dağınık doku bunu düşürebilir. Ham grid verisi elimizde olmadığı için TÜİK'in sonucu doğrulanamıyor, düzeltilemiyor; mahalle kayıt no'ları eski kasaba/yeni köy ayrımını okumak için kullanılabilir (düşük no = 2014 öncesi mahalle, ~178000+ ve çift sıra = 2014'te köyden dönüşen). Adaptör src/veriatlas/adapters/tuik_urban_rural_degurba.py."
 
 [indicator.crop_balance]
 label_tr = "Bitkisel ürün denge tablosu"
