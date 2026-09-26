@@ -10,8 +10,9 @@ Açık:
 - sahibinden.com vasıta raporları ("Otomobil Piyasası Görünümü", 2023-): robots.txt Claude'u
   engelliyor; kullanıcı rapor sayfasını HTML kaydedince image5 bağlantılarından indirilecek.
   Ortalama ilan fiyatı, sınıf/yaş fiyatları, ilanda kalma süresi cümle kalıbından çekilecek.
-- TÜİK SDMX'te adaptörü olmayan: otomobil yakıt cinsi, kullanım amacı, model yılı,
-  devir (ikinci el) akışları — `C:eri-ham	uik_sdmx`.
+- ~~TÜİK SDMX yakıt cinsi, kullanım amacı, model yılı~~ 2026-09-26 depoya girdi
+  (`cars_by_fuel`, `vehicles_by_use`, `vehicles_by_model_year`; ham `C:\veri-ham\tuik_sdmx`).
+  Devir akışı MEDAS'tan `vehicles_transferred` olarak zaten depoda.
 - ODMD aylık pazar Ek tabloları: raporların yarısında bir kısmı resim; OCR olmadan aylık seri yok.
 - Endeksa: tüm TR dökümü için adaptör; `CarCount`/`VehicleCount` plaka 55-81 dolgu, gelir
   alanları küçük yerleşimde kademe (docs/endeksa.md). Lisans kararı hâlâ açık.

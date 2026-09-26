@@ -80,5 +80,15 @@ Akış aylık (2005-01 → 2026-08); yalnız Aralık alındı. Aralık değerler
 `DF_MOTORLU_KARA_TASIT_YIL_V3` ile birebir, 2025 toplamı `vehicles_by_fuel` ile aynı (33.612.650).
 "Bin kişi başına otomobil × nüfus" ile yapılan eski yeniden kurma artık gerekmiyor.
 
-Aynı klasörde henüz adaptörü olmayan akışlar: otomobil yakıt cinsi (`..._YAKIT_CINSI_V4`),
-kullanım amacı (`..._KULLANIM_AMAC_V2`), model yılı (`..._MODEL_YIL_V2`).
+Aynı klasördeki diğer üç akış 2026-09-26'da `adapters/tuik_vehicle_sdmx.py` ile girdi, üçü de
+yalnız Türkiye:
+
+- `vehicles_by_use` — tür × hususi/ticari/resmî, 2005-2025 (`..._KULLANIM_AMAC_V2`).
+- `vehicles_by_model_year` — tür × model yılı, 2020-2025; en eski dilim `-1983` (1983 ve öncesi)
+  (`..._MODEL_YIL_V2`).
+- `cars_by_fuel` — **yalnız otomobil**, yakıt türüne göre, Aralık stoku 2005-2025
+  (`..._YAKIT_CINSI_V4`, aylık akıştan). `vehicles_by_fuel` bütün taşıt türleridir ve 2020'de
+  başlar; ikisi karıştırılmamalı: 2025 elektrikli otomobil 370.591, elektrikli taşıt 1.200.660.
+  Elektrik 2011, hibrit 2012'den önce hücre yok (sıfır değil).
+
+Her akışın kendi toplam satırı parçaların toplamıyla sınanır, saklanmaz.
