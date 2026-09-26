@@ -1,4 +1,75 @@
-# Açık işler (2026-09-26 güncel)
+# Açık işler
+
+Tek liste, 2026-09-26 gecesi derlendi: bu dosyanın eski bölümleri, oturum notları ve
+[envanter.md](envanter.md) karşılaştırılarak. Depoda göstergesi olan iş listeye alınmadı
+(kargo, Turkcell bayileri, şarj istasyonu, ilçe sağlık kurumu, noter, eczane kapandı).
+Tarihli ayrıntı aşağıdaki "Geçmiş notlar"da; çelişen yerde bu liste geçerlidir.
+
+### 1. Veri hatası ve doğrulama (önce bunlar)
+
+| İş | Durum | Nerede |
+|---|---|---|
+| Seçim ilçe dosyaları 1995-2007: dosya adından il bulunamayınca (Afyon, K.Maraş) ilçeler düşüyordu | 2026-09-26 düzeltildi, yeniden üretildi | `scripts/parse_secim.py` `PROVINCE_STEM` |
+| Seçim ilçe dosyaları: bölünen eski ilçenin sonucu ardıllarına `eski` işaretiyle kopyalanıyor; toplayan her kod bu satırları atlamalı (atlanmazsa Antalya 2002 ×3,3) | kural; toplayan betikler denetlenmeli | `public/tiles/secim-*-ilce.json` |
+| Seçim 1995/1999 raporlarında "Cezaevi", "Bucak ve köyler toplamı" satırları eşleşmeyen ilçe diye raporlanıyor | incelenmedi | `C:\veri-ham\secim\eslesme-raporu.json` |
+| 2022-04 sonrası madde fiyatları TÜFE alt endeksiyle zincirleniyor; gerçek fiyatla doğrulanmadı | açık | `scripts/analiz/alim_gucu_2026_09_26/` |
+| SKRS: İstanbul özel hastane TÜİK'ten 33 eksik | açıklanamadı | `docs/saglik.md` |
+| SGK `job_tenure` ölüm dağılımı şüpheli (hepsi 10 yıl üstü); SGK kod etiketleri | açık | `docs/sgk.md` |
+| Endeksa yaş bantları nüfusu tutmuyor (Bursa+Ankara'da 2.511 mahallenin 407'si; tüm TR'de büyük mahallelerde sağlam, küçük köylerde bozuk); taşıt alanları plaka 55-81'de dolgu | belgelendi | `docs/endeksa.md` |
+
+### 2. Ham veri diskte, adaptörü yok
+
+| Ne | Ham | Not |
+|---|---|---|
+| Endeksa mahalle demografisi, tüm TR (972 ilçe) | `C:\veri-ham\endeksa\demography` | **lisans kararı bekliyor**; adaptör kayıt dışı, ham düzen değişmiş |
+| PTT sokak listesi (1,27 mn satır) | `C:\veri-ham\ptt\postakodu_2026-09-18.csv` | yalnız posta kodu sayısı gösterge oldu; sokak sayımı değil, dağıtım noktası |
+| Denizciliğin kalanı: gemi, kruvaziyer, Ro-Ro, boğaz geçişi, filo, 2020 öncesi liman arşivi | `C:\veri-ham\uab` | yük ve konteyner depoda |
+| TÜİK sanayi, ticaret, inşaat ciro endeksleri; hizmet üretim endeksi | `C:\veri-ham\tuik_portal` | portal dosyaları inik |
+| OECD TL3: sağlık durumu/riski, göç akımı, `DSD_REG_SOC` (geniş bant, konut, güvenlik, seçmen katılımı) | `C:\veri-ham\oecd_tl3` | ölçüler ayrıştırılmalı |
+| SGK yıllıkları Türkiye geneli tabloları | `C:\veri-ham\sgk` | il tabloları depoda |
+| TEDAŞ genel aydınlatma, 301 dosya | `C:\veri-ham\tedas_aydinlatma` | kullanıcı erteledi |
+| EPİAŞ il-ilçe serbest tüketici sayısı (Ocak 2010 →, aylık) ve plansız kesinti | `C:\veri-ham\epias` | yalnız Ağustos 2026 örneği indi; seri tarayıcıda oturumla çekilecek |
+| Zincirler, bağlanmayı bekleyen: FLO, Watsons, Boyner, Sephora, araç kiralama (8 marka), Petlas, Lassa, Kahve Dünyası, Toyzz, Bizim Toptan, Onur, 22 yerel zincir | `C:\veri-ham\perakende`, masaüstü `Şube` klasörü | Arçelik/Beko il il elle kayıt gerekiyor |
+| Bankalar, eksik kalanlar: Garanti BBVA, ING, QNB, Emlak Katılım, Halkbank ATM | `C:\veri-ham\bankalar` | `docs/bankalar.md` |
+| Opet akaryakıt kesiti (13 il, 139 ilçe) | `C:\veri-ham\opet` | tur durdurulmuştu |
+| TÜİK SDMX aylık taşıt stoku (il × tür) | `C:\veri-ham\tuik_sdmx` | yalnız yıl sonu alındı; aylık istenirse |
+| OSM Türkiye, Türkçe isim sözlüğü | `C:\veri-ham\osm`, `isimler` | sayım için değil, pay ve uzunluk için |
+
+### 3. Kullanıcı eylemi ya da kararı bekleyen
+
+- **sahibinden.com vasıta raporları:** robots Claude'u engelliyor; rapor sayfası HTML olarak kaydedilince okunur.
+- **Endeksa lisansı:** yayımlanıp yayımlanmayacağı; karar verilene kadar yalnız araştırma kopyası.
+- **Web export:** `notaries`, `minimum_wage`, `civil_servant_salary` ve 2026-09-26'da girenler sitede yok (kullanıcı kararı: şimdilik eklenmeyecek).
+- **TEDAŞ istatistik kitabı:** üyelik istiyor; hesap açmak kullanıcının kararı.
+- **UAVT (bina/daire adresi):** kapandı, alınmaz. NVİ ve DASK captcha arkasında; Quick Sigorta DASK sorgusu ilçe seçilince reCAPTCHA açıyor (2026-09-26 denendi). Sokak düzeyi PTT dökümünde var.
+- **Memur maaş genelgesi:** her Ocak ve Temmuz `genelge_degerleri.json`'a bir satır eklenip beş gösterge yeniden yüklenmeli.
+
+### 4. Keşfedildi, başlanmadı
+
+| Kaynak | Ne | Zorluk |
+|---|---|---|
+| ÖSYM arşivi | 2003-2007 il bazlı ÖSS tabloları; önlisans 2011-16 (sınavsız geçiş, karşılaştırılamaz) | orta |
+| TİM | il × sektör ihracat 2004-2012 (farklı sınıflama) | büyük |
+| KGM | Trafik ve Ulaşım Bilgileri 2004-2025 (otoyol kesim trafiği, sınır kapıları), kaza özeti PDF'leri | zor |
+| KAP | borsadaki zincirlerin yıllar içinde mağaza ve çalışan sayısı | orta |
+| ODMD | aylık pazar Ek tabloları; bir kısmı resim, OCR gerekir | zor |
+| Belediye CKAN | Manisa (1.168 set), Sakarya; Konya numarataj listesi | kolay, tek şehir (K4 dışı, vaka analizi) |
+| ULASAV | Çevre Bakanlığı toplayıcısı, 4.556 set | hedefli arama |
+| Adalet Bakanlığı | adalet istatistikleri, il/adliye, PDF | zor |
+| ETKB | ulusal enerji dengesi 1972-2024 | kolay |
+| Hava kalitesi (ÇŞB SİM), Göç İdaresi, OGM, VGM | JS uygulamaları, tarayıcıyla bakılacak | bilinmiyor |
+| DSİ/EPİAŞ baraj doluluğu | yalnız bugünün görüntüsü, seri yok | — |
+
+### 5. Kod borcu
+
+- `scripts/elections/` ve `scripts/parse_secim.py`, `tile_denetim.py` gibi seçim betiklerinde Türkçe adlar (K1 kuralına aykırı).
+- `btk_mobile_arpu` kur serisini önceki yüklemenin `public/fact.parquet`'inden okuyor: sıfırdan kurulan kopyada tam yükleme kendi çıktısına muhtaç.
+- `kgm_vehicle_km` her yüklemede 25-90 dakika sürüyor; profillenmeli.
+- `scripts/analiz/*` betiklerinin çoğu ana checkout kökünden çalışıyor ve ara dosyaları `C:\veri-ham\analiz` altına yazıyor.
+
+---
+
+# Geçmiş notlar
 
 ## 2026-09-26 oturumu (taşıt, ODMD, Endeksa kalitesi)
 
