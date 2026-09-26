@@ -41,6 +41,7 @@ from .meb_portal import MEB_PORTAL_ADAPTERS
 from .mgm import MGM_ADAPTERS
 from .muhasebat import MUHASEBAT_ADAPTERS
 from .networks import NETWORK_ADAPTERS
+from .drdatastats import DRDATASTATS_ADAPTERS
 from .odmd_market import ODMD_MARKET_ADAPTERS
 from .odmd_retail import ODMD_ADAPTERS
 from .oecd_tl3 import OECD_TL3_ADAPTERS
@@ -171,6 +172,7 @@ ADAPTERS = {
     "tuik_vehicle_stock": TuikVehicleStock,
     **ODMD_ADAPTERS,
     **ODMD_MARKET_ADAPTERS,
+    **DRDATASTATS_ADAPTERS,
     **TURKPATENT_ADAPTERS,
     **OSYM_ADAPTERS,
     "yokatlas_min_rank": YokAtlasMinRank,

@@ -1501,6 +1501,21 @@ zeytincilik_ve_zeytin_isleme_teknolojisi = "Zeytincilik ve Zeytin İşleme Tekno
 ziraat_muhendisligi_programlari = "Ziraat Mühendisliği Programları"
 zootekni = "Zootekni"
 
+# drdatastats (adapters/drdatastats.py), 2026-09-26.
+[dim.association_activity]
+label_tr = "Dernek faaliyet alanı"
+label_en = "Association field of activity"
+
+[dim.association_activity.values]
+diaspora_turks = "Dış Türklerle dayanışma"
+religious_services = "Dini hizmetler"
+education_research = "Eğitim ve araştırma"
+disability = "Engelli"
+humanitarian_aid = "İnsani yardım"
+martyrs_veterans = "Şehit yakını ve gazi"
+hometown = "Hemşehri"
+womens_rights = "Kadın hakları (alanlarından biri)"
+
 # Housing and construction (adapters/tuik_topics.py).
 [dim.sale_financing]
 label_tr = "Satış şekli"
@@ -3523,6 +3538,24 @@ label_tr = "puan"
 label_en = "points"
 decimals = 2
 additive = false
+
+[unit.hectare]
+label_tr = "hektar"
+label_en = "hectares"
+decimals = 1
+additive = true
+
+[unit.cubic_metre]
+label_tr = "m³"
+label_en = "cubic metres"
+decimals = 0
+additive = true
+
+[unit.stere]
+label_tr = "ster"
+label_en = "steres"
+decimals = 0
+additive = true
 
 [unit.item]
 label_tr = "adet"
@@ -6561,6 +6594,206 @@ frequency = "annual"
 dims = ["powertrain"]
 views = ["table", "line", "bar"]
 definition_tr = "Yıl içinde satılan hafif ticari araç. Kaynak ODMD aylık pazar raporları, Aralık raporunun Ocak-Aralık bölümü."
+
+[indicator.associations]
+label_tr = "Faal dernek sayısı"
+label_en = "Active associations"
+topic = "sivil_toplum"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "İçişleri Bakanlığı Sivil Toplumla İlişkiler GM (STİGM, DERBİS); drdatastats.com derlemesi."
+
+[indicator.association_members]
+label_tr = "Dernek üye sayısı"
+label_en = "Association members"
+topic = "sivil_toplum"
+unit = "person"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "STİGM; drdatastats.com derlemesi. Bir kişi birden çok derneğe üye olabilir."
+
+[indicator.associations_by_activity]
+label_tr = "Dernek sayısı (seçilmiş faaliyet alanları)"
+label_en = "Associations by field of activity"
+topic = "sivil_toplum"
+unit = "item"
+frequency = "annual"
+dims = ["association_activity"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "STİGM; drdatastats.com derlemesi. Alanlar seçilmiştir ve toplanmaz."
+
+[indicator.mukhtars]
+label_tr = "Muhtar sayısı (4/b sigortalı)"
+label_en = "Mukhtars (4/b insured)"
+topic = "belediye_hizmetleri"
+unit = "person"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "SGK 4/1-b kapsamındaki muhtarlar; drdatastats.com derlemesi."
+
+[indicator.quran_courses]
+label_tr = "Kuran kursu sayısı"
+label_en = "Quran courses"
+topic = "din"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Diyanet İşleri Başkanlığı; drdatastats.com derlemesi."
+
+[indicator.quran_course_students]
+label_tr = "Kuran kursu kursiyer sayısı"
+label_en = "Quran course students"
+topic = "din"
+unit = "person"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Diyanet İşleri Başkanlığı; drdatastats.com derlemesi."
+
+[indicator.kyk_dormitories]
+label_tr = "KYK yurt sayısı"
+label_en = "State student dormitories (KYK)"
+topic = "egitim"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "MEB Örgün Eğitim istatistikleri (KYK); drdatastats.com derlemesi. Yıl eğitim yılının başıdır."
+
+[indicator.kyk_dormitory_capacity]
+label_tr = "KYK yurt kontenjanı"
+label_en = "State student dormitory capacity (KYK)"
+topic = "egitim"
+unit = "person"
+frequency = "annual"
+dims = ["sex"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "MEB Örgün Eğitim istatistikleri (KYK); drdatastats.com derlemesi. Yıl eğitim yılının başıdır."
+
+[indicator.forest_fires]
+label_tr = "Orman yangını sayısı"
+label_en = "Forest fires"
+topic = "orman"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Orman Genel Müdürlüğü; drdatastats.com derlemesi."
+
+[indicator.forest_fire_area]
+label_tr = "Yanan orman alanı"
+label_en = "Burnt forest area"
+topic = "orman"
+unit = "hectare"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Orman Genel Müdürlüğü; drdatastats.com derlemesi."
+
+[indicator.industrial_wood_production]
+label_tr = "Endüstriyel odun üretimi"
+label_en = "Industrial roundwood production"
+topic = "orman"
+unit = "cubic_metre"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Orman Genel Müdürlüğü; drdatastats.com derlemesi. Bayburt-Gümüşhane birleşik değeri alınmadı."
+
+[indicator.fuel_wood_production]
+label_tr = "Yakacak odun üretimi"
+label_en = "Fuelwood production"
+topic = "orman"
+unit = "stere"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Orman Genel Müdürlüğü; drdatastats.com derlemesi. Bayburt-Gümüşhane birleşik değeri alınmadı."
+
+[indicator.foster_families]
+label_tr = "Koruyucu aile sayısı"
+label_en = "Foster families"
+topic = "cocuk"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK (Aile ve Sosyal Hizmetler Bakanlığı); drdatastats.com derlemesi."
+
+[indicator.children_in_foster_care]
+label_tr = "Koruyucu aile yanındaki çocuk"
+label_en = "Children in foster care"
+topic = "cocuk"
+unit = "person"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "TÜİK (Aile ve Sosyal Hizmetler Bakanlığı); drdatastats.com derlemesi."
+
+[indicator.street_markets]
+label_tr = "Semt ve üretici pazarı sayısı"
+label_en = "Street and producer markets"
+topic = "perakende"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Ticaret Bakanlığı; drdatastats.com derlemesi."
+
+[indicator.wholesale_produce_markets]
+label_tr = "Toptancı hali sayısı"
+label_en = "Wholesale produce markets"
+topic = "perakende"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Ticaret Bakanlığı; drdatastats.com derlemesi."
+
+[indicator.organized_industrial_zones]
+label_tr = "Faal organize sanayi bölgesi sayısı"
+label_en = "Active organized industrial zones"
+topic = "reel_kesim"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "OSBÜK; drdatastats.com derlemesi."
+
+[indicator.churches]
+label_tr = "Tescilli kilise sayısı"
+label_en = "Registered churches"
+topic = "din"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "Kültür ve Turizm Bakanlığı; drdatastats.com derlemesi."
+
+[indicator.synagogues]
+label_tr = "Sinagog sayısı"
+label_en = "Synagogues"
+topic = "din"
+unit = "item"
+frequency = "annual"
+dims = []
+views = ["table", "map", "line", "bar"]
+definition_tr = "drdatastats.com derlemesi (kaynak belirtilmemiş); yalnız sinagog bulunan iller."
+
+[indicator.social_security_family_share]
+label_tr = "Nüfusun sigorta koluna göre payı (sigortalı ve bakmakla yükümlü olunanlar)"
+label_en = "Population share by social security scheme incl. dependants"
+topic = "sosyal_guvenlik"
+unit = "percent"
+frequency = "annual"
+dims = ["scheme"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "SGK; 4/a işçi, 4/b esnaf, 4/c memur sigortalıları ve bakmakla yükümlü oldukları kişilerin il nüfusuna oranı; drdatastats.com derlemesi."
 
 [indicator.odmd_retail_sales]
 label_tr = "Otomobil ve hafif ticari araç perakende satışı (marka, aylık)"
@@ -34361,6 +34594,16 @@ label_tr = "oy"
 label_en = "votes"
 decimals = 0
 additive = true
+
+[topic.sivil_toplum]
+label_tr = "Sivil toplum"
+label_en = "Civil society"
+order = 72
+
+[topic.orman]
+label_tr = "Orman"
+label_en = "Forestry"
+order = 73
 
 [topic.secim]
 label_tr = "Seçim"
