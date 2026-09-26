@@ -11,6 +11,14 @@ unit is not the one declared here stops the load rather than being summed across
 
 Not every crop grows in every province, and greenhouse fruit or dry/irrigated second
 sowings exist in a handful: a province with no row is not an error here.
+
+District level comes from the long job `scripts/uzun_bitkisel_ilce.py`
+(`raw/medas/ilce/bitkisel-<measure>-il<NN>-ilce-kirilim-<y1>-<y2>.csv`, 2026-09-26→):
+the same labels, with MEDAS district codes as columns, resolved per year to the district
+that held the code (a file spans several years). Whatever has come down is loaded; a
+province not yet fetched simply has no district rows. For the additive variables
+(production, areas, tree counts) the districts of a province must add up to the
+province value MEDAS publishes, per crop and year; otherwise the load stops.
 """
 
 from __future__ import annotations
@@ -26,9 +34,30 @@ from ..indicators import get, load
 from ..schema import format_dims
 from .tuik_median_age import single_province_regions
 from .tuik_simple import read_text
+from .tuik_topics import district_columns
 from .tuik_vital import header_of
+from .tuik_vital_district import area_at, districts_by_code
 
 DOWNLOADS = RAW / "medas" / "basit"
+DISTRICT_DOWNLOADS = RAW / "medas" / "ilce"
+#: measure number → file key of the district job
+DISTRICT_KEYS = {
+    "02": "tahil",
+    "03": "sebze",
+    "04": "meyve",
+    "05": "sus",
+    "06": "ortu-sebze",
+    "07": "ortu-meyve",
+    "08": "ortu-sus",
+    "10": "kuru-sulu",
+}
+#: Variables that are not sums over districts (yields): no district-to-province check.
+NOT_ADDITIVE = {
+    "field_crop_yield",
+    "fruit_yield_per_decare",
+    "fruit_yield_per_tree",
+    "irrigation_yield",
+}
 
 LABEL = re.compile(
     r"^(?P<pre>(?:.*? ve )?)(?P<code>\d{2}(?:\.\d{2})+)\.\s*\((?P<name>.*)\)\s*-\s*(?P<unit>.+)$"
@@ -101,13 +130,34 @@ def files_of(raw: Path, number: str) -> list[Path]:
     return out
 
 
-def read_export(path: Path, number: str, single: dict[str, str]) -> list[dict]:
+def district_files(number: str) -> list[Path]:
+    key = DISTRICT_KEYS.get(number)
+    if key is None or not DISTRICT_DOWNLOADS.exists():
+        return []
+    # il<NN> only: the one-province trial files (`-bursa-`) would count Bursa twice.
+    return sorted(
+        p
+        for p in DISTRICT_DOWNLOADS.glob(f"bitkisel-{key}-il*-ilce-kirilim-*.csv")
+        if re.fullmatch(rf"bitkisel-{key}-il\d\d-ilce-kirilim-\d{{4}}-\d{{4}}", p.stem)
+    )
+
+
+def read_export(
+    path: Path,
+    number: str,
+    single: dict[str, str],
+    codes: dict[str, list[dict]] | None = None,
+) -> list[dict]:
     lines = read_text(path).splitlines()
-    header = header_of(lines, single)
+    if codes is not None:
+        header = {i: (c, "district") for i, c in district_columns(lines).items()}
+    else:
+        header = header_of(lines, single)
     if not header:
         raise KeyError("bitkisel-" + number + ": alan sutunu yok: " + path.name)
     crops = load().dimensions["crop"].values_tr
     rows, unknown, label = [], set(), ""
+    orphans: set[str] = set()
     for line in lines:
         cells = line.split("|")
         if len(cells) < 4 or not re.fullmatch(r"\d{4}", cells[2].strip()):
@@ -139,6 +189,12 @@ def read_export(path: Path, number: str, single: dict[str, str]) -> list[dict]:
                 value = float(cell)
                 if value <= -9e8:
                     continue
+                if codes is not None:
+                    resolved = area_at(codes.get(area_id, []), int(cells[2]))
+                    if resolved is None:
+                        orphans.add(area_id + "@" + cells[2].strip())
+                        continue
+                    area_id = resolved
                 rows.append(
                     {
                         "indicator_id": indicator_id,
@@ -158,7 +214,42 @@ def read_export(path: Path, number: str, single: dict[str, str]) -> list[dict]:
             + "): "
             + ", ".join(sorted(unknown)[:5])
         )
+    if orphans:
+        raise KeyError(
+            "bitkisel-"
+            + number
+            + ": kayitta karsiligi olmayan ilce kodu: "
+            + ", ".join(sorted(orphans)[:10])
+        )
     return rows
+
+
+def check_districts(frame: pl.DataFrame, indicator_id: str) -> None:
+    """Districts of a province add up to the province, per crop and year."""
+    districts = frame.filter(pl.col("area_level") == "district")
+    if not districts.height or indicator_id in NOT_ADDITIVE:
+        return
+    summed = districts.group_by(
+        pl.col("area_id").str.slice(0, 5).alias("area_id"), "year", "dims"
+    ).agg(pl.col("value").sum().alias("districts"))
+    joined = summed.join(
+        frame.filter(pl.col("area_level") == "province").select(
+            "area_id", "year", "dims", pl.col("value").alias("province")
+        ),
+        on=["area_id", "year", "dims"],
+    )
+    bad = joined.filter(
+        (pl.col("districts") - pl.col("province")).abs()
+        > pl.max_horizontal(pl.lit(1.0), pl.col("province").abs() * 0.001)
+    )
+    if bad.height:
+        raise ValueError(
+            indicator_id
+            + ": ilceler il toplamini tutmuyor ("
+            + str(bad.height)
+            + "): "
+            + str(bad.head(5).rows())
+        )
 
 
 class CropMeasure:
@@ -179,9 +270,19 @@ class CropMeasure:
             for row in read_export(path, self.number, single)
             if row["indicator_id"] == self.indicator_id
         ]
+        district = district_files(self.number)
+        if district:
+            codes = districts_by_code()
+            records += [
+                row
+                for path in district
+                for row in read_export(path, self.number, single, codes)
+                if row["indicator_id"] == self.indicator_id
+            ]
         if not records:
             raise ValueError("dosya bulunamadi ya da bos: " + self.indicator_id)
         frame = pl.DataFrame(records)
+        check_districts(frame, self.indicator_id)
         if frame.select("area_id", "year", "dims").is_duplicated().any():
             raise ValueError(self.indicator_id + ": ayni alan-yil-kirilim iki kez")
         indicator = get(self.indicator_id)
