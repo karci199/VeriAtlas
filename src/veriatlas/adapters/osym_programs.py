@@ -172,10 +172,10 @@ def read_pdf_table(path: Path) -> list[dict]:
             and not CODE.match(lines[i - 1])
             and not CODE.match(lines[i + 1])
         ):
-            code, pt, quota, placed, score = bare.groups()
+            code, _pt, quota, placed, score = bare.groups()
             name = lines[i - 1] + " " + lines[i + 1]
         elif m:
-            code, name, pt, quota, placed, score = m.groups()
+            code, name, _pt, quota, placed, score = m.groups()
         else:
             if not CODE.match(line) and re.search(
                 r"(ÜNİVERSİTESİ|ENSTİTÜSÜ|AKADEMİSİ)( \([^)]*\))?$", line
