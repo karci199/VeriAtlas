@@ -70,3 +70,15 @@ Muş, ehliyetli başına trafik ölüsünde İstanbul'dan sonra en düşük ikin
 olduğu için değil, kimse araba kullanmadığı için. **En güvenli görünen yer çoğu zaman en az
 hareket eden yerdir** — trafik güvenliği ölçüsü maruziyetle düzeltilmeden okunamaz, ve
 gerçek maruziyet (araç-km) TÜİK'te yok.
+
+## Türe göre taşıt stoku (2026-09-26)
+
+`vehicles_by_type` — yıl sonu (Aralık) trafiğe kayıtlı taşıt, 8 tür, 81 il + TR, 2005–2025.
+MEDAS'ta yok (orada türe göre sorgu kayıt/silme akımı döner); kaynak TÜİK SDMX akışı
+`DF_MOTORLU_KARA_TASIT_ILLER_V3` (`adapters/tuik_vehicle_stock.py`, ham `C:\veri-ham\tuik_sdmx`).
+Akış aylık (2005-01 → 2026-08); yalnız Aralık alındı. Aralık değerleri yıllık akış
+`DF_MOTORLU_KARA_TASIT_YIL_V3` ile birebir, 2025 toplamı `vehicles_by_fuel` ile aynı (33.612.650).
+"Bin kişi başına otomobil × nüfus" ile yapılan eski yeniden kurma artık gerekmiyor.
+
+Aynı klasörde henüz adaptörü olmayan akışlar: otomobil yakıt cinsi (`..._YAKIT_CINSI_V4`),
+kullanım amacı (`..._KULLANIM_AMAC_V2`), model yılı (`..._MODEL_YIL_V2`).

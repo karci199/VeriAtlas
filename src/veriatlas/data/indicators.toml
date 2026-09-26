@@ -5473,6 +5473,16 @@ dims = ["fuel"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "Yıl sonunda trafiğe kayıtlı taşıt sayısı (stok)."
 
+[indicator.vehicles_by_type]
+label_tr = "Trafiğe kayıtlı taşıt (türe göre)"
+label_en = "Registered vehicles by type"
+topic = "ulasim"
+unit = "vehicle"
+frequency = "annual"
+dims = ["vehicle_type"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Yıl sonunda (Aralık) trafiğe kayıtlı taşıt sayısı (stok), taşıt türüne göre. Kaynak TÜİK SDMX akışı DF_MOTORLU_KARA_TASIT_ILLER_V3."
+
 [indicator.vehicles_newly_registered]
 label_tr = "Trafiğe kaydı yapılan taşıt (marka ve türe göre)"
 label_en = "Newly registered vehicles by brand and type"
