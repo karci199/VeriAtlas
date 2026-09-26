@@ -53,6 +53,8 @@ TOPICS = {
     "evlenme": "Evlenme İstatistikleri",
     "bosanma": "Boşanma İstatistikleri",
     "bitkisel": "Bitkisel Üretim İstatistikleri",
+    "hayvan": "Hayvancılık İstatistikleri",
+    "alet": "Tarımsal Alet ve Makine İstatistikleri",
 }
 
 #: Enough of the measure's row text to pick it out of the list. Overridden by `--olcum`.

@@ -43,10 +43,10 @@ OUT = RAW / "medas" / "ilce"
 WORK = RAW / "medas" / "uzun"
 STATE = WORK / "bitkisel-ilce-durum.json"
 PULSE = WORK / "bitkisel-ilce-nabiz.txt"
-SURVEY = RAW / "medas" / "kesif" / "bitkisel-retim-statistikleri.json"
+KESIF = RAW / "medas" / "kesif"
 
 #: (file key, measure label as MEDAS lists it), in the order they are fetched.
-MEASURES = (
+CROPS = (
     ("meyve", "Meyveler içecek ve baharat bitkileri"),
     ("ortu-meyve", "Örtüaltı meyveler"),
     ("sebze", "Sebzeler"),
@@ -55,6 +55,12 @@ MEASURES = (
     ("kuru-sulu", "(Kuru / Sulu) - (1. Ekiliş / 2. Ekiliş) ürünleri"),
     ("sus", "Süs bitkileri"),
     ("ortu-sus", "Örtüaltı süs bitkileri"),
+)
+#: After the crops, every measure of these topics that reaches district level, in the
+#: survey's order: (fetcher topic key, file prefix, survey file).
+LATER = (
+    ("hayvan", "hayvan", "hayvanc-l-k-statistikleri.json"),
+    ("alet", "alet", "tar-msal-alet-ve-makine-statistikleri.json"),
 )
 PROVINCES = 81
 CELLS = 45000
@@ -97,10 +103,34 @@ def valid(path: Path, years: list[int]) -> bool:
     return set(years) <= found
 
 
-def run(key: str, label: str, province: int, years: list[int]) -> str:
-    """One query. Returns "ok", "limit" or "fail"."""
-    stem = f"bitkisel-{key}-il{province:02d}"
-    target = OUT / f"{stem}-ilce-kirilim-{min(years)}-{max(years)}.csv"
+def jobs() -> list[tuple[str, str, dict]]:
+    """(fetcher topic key, file key, survey row) for every measure, in order."""
+    crops = {
+        r["measure"]: r
+        for r in json.loads(
+            (KESIF / "bitkisel-retim-statistikleri.json").read_text(encoding="utf-8")
+        )
+    }
+    out = [("bitkisel", "bitkisel-" + key, crops[label]) for key, label in CROPS]
+    for topic, prefix, name in LATER:
+        rows = json.loads((KESIF / name).read_text(encoding="utf-8"))
+        for number, row in enumerate(rows, start=1):
+            if any("İlçe" in level for level in row.get("levels") or []):
+                out.append((topic, f"{prefix}-{number:02d}", row))
+    return out
+
+
+def run(topic: str, key: str, row: dict, province: int, years: list[int]) -> str:
+    """One query. Returns "ok", "limit" or "fail".
+
+    A measure with no breakdown is asked without one: the fetcher reads a breakdown
+    query that comes back with a single indicator as one whose ticks did not take.
+    """
+    label = row["measure"]
+    breakdown = bool(row["breakdowns"])
+    stem = f"{key}-il{province:02d}"
+    middle = "-ilce-kirilim-" if breakdown else "-ilce-"
+    target = OUT / f"{stem}{middle}{min(years)}-{max(years)}.csv"
     if valid(target, years):
         return "ok"
     target.unlink(missing_ok=True)
@@ -116,12 +146,10 @@ def run(key: str, label: str, province: int, years: list[int]) -> str:
         "-u",
         "scripts/fetch_medas_districts.py",
         "--konu",
-        "bitkisel",
+        topic,
         "--olcum",
         label,
-        "--kirilim",
-        "--kirilim-adi",
-        "*",
+        *(["--kirilim", "--kirilim-adi", "*"] if breakdown else []),
         "--ad",
         stem,
     ]
@@ -153,16 +181,12 @@ def run(key: str, label: str, province: int, years: list[int]) -> str:
 
 def main() -> None:
     WORK.mkdir(parents=True, exist_ok=True)
-    survey = {
-        row["measure"]: row for row in json.loads(SURVEY.read_text(encoding="utf-8"))
-    }
     state = json.loads(STATE.read_text(encoding="utf-8")) if STATE.exists() else {}
     failed: list[str] = []
     while other_fetch_running():
         log("baska bir MEDAS ilce cekimi suruyor, bekleniyor")
         time.sleep(120)
-    for key, label in MEASURES:
-        row = survey[label]
+    for topic, key, row in jobs():
         indicators = row["indicators"]
         years = sorted(row["years"], reverse=True)
         first = max(1, min(len(years), CELLS // (indicators * GUESS_DISTRICTS)))
@@ -177,7 +201,7 @@ def main() -> None:
                     f"{min(group)}-{max(group)}\n",
                     encoding="utf-8",
                 )
-                outcome = run(key, label, province, group)
+                outcome = run(topic, key, row, province, group)
                 if outcome == "limit" and size > 1:
                     size = max(1, size // 2)
                     state[f"{key}:{province}"] = size
@@ -185,7 +209,7 @@ def main() -> None:
                     log("   sinir asildi, grup", size, "yila indi:", key, province)
                     continue
                 if outcome == "fail":
-                    outcome = run(key, label, province, group)
+                    outcome = run(topic, key, row, province, group)
                 if outcome != "ok":
                     failed.append(f"{key} il{province:02d} {min(group)}-{max(group)}")
                 left = left[len(group) :]
