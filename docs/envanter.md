@@ -1,11 +1,11 @@
-# Envanter — depodaki 951 gösterge
+# Envanter — depodaki 953 gösterge
 
 **Bu dosya elle yazılmaz.** `scripts/build_inventory.py` warehouse'tan üretir;
 burada olmayan gösterge depoda yok demektir. Yeni kaynak önermeden önce buraya
 bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni iş' diye
 önerildi, üçü de zaten yüklüydü.
 
-Üretim: 2026-09-26 · 21.652.072 satır
+Üretim: 2026-09-26 · 21.826.096 satır
 
 ## evds_arsiv (177)
 
@@ -367,7 +367,7 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `sgk_workplaces_by_tenure` | 4/a iş yeri. niteliğe göre | il | 2010-2025 | 2.592 | sgk |
 | `unemployment_rate` | İşsizlik oranı | TR. il | 2022-2025 | 984 | tuik_portal |
 
-## egitim (40)
+## egitim (42)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
@@ -384,6 +384,8 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `literacy_by_age` | Okuma yazma durumu (yaş grubu) | il | 2008-2025 | 12.399 | tuik_medas |
 | `literacy_district` | Okuma yazma durumu (ilçe) | ilçe | 2008-2025 | 1.215.089 | tuik_medas |
 | `mean_years_of_schooling` | Ortalama eğitim süresi | TR. il | 2011-2025 | 1.230 | tuik_medas |
+| `osym_program_placed` | Üniversiteye yerleşen (bölüm. yıllık) | TR. il | 2017-2025 | 87.012 | osym |
+| `osym_program_quota` | Üniversite genel kontenjanı (bölüm. yıllık) | TR. il | 2017-2025 | 87.012 | osym |
 | `schools` | Okul sayısı | il | 2012-2024 | 5.265 | tuik_medas |
 | `schools_2017` | Okul sayısı (2017. ilçe) | il. ilçe | 2017-2017 | 8.027 | skrs |
 | `schools_by_type` | Okul sayısı (tür ve resmî/özel) | il | 2002-2024 | 17.820 | meb_portal |
@@ -498,44 +500,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `loan_interest_rates_weekly` | Kredi faiz oranları (akım. haftalık) | TR | 2002-2026 | 11.209 | cbrt_evds |
 | `loan_profit_share_rates` | Kredi kâr payı oranları (stok) | TR | 2018-2026 | 1.030 | cbrt_evds |
 
-## nufus (33)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `baby_names` | Bebeklere en çok verilen isimler | TR. il | 2018-2025 | 112.000 | tuik_nip |
-| `class_size` | Sınıf mevcudu (öğrenci/derslik) | il | 2012-2024 | 2.106 | meb_egitim |
-| `common_names` | En çok kullanılan isimler | TR. il | 2018-2025 | 39.904 | tuik_nip |
-| `common_surnames` | En çok kullanılan soyisimler | TR. il | 2018-2025 | 19.801 | tuik_nip |
-| `district_urbanization` | Kentleşme oranı (kayıtlı seçmen) | il. ilçe | 2015-2015 | 1.023 | ysk_aatoplu |
-| `education_attainment` | Öğrenim durumu | il | 2008-2025 | 26.244 | tuik_nip |
-| `foreign_population` | Yabancı uyruklu nüfus | TR. il | 2008-2025 | 2.952 | tuik_medas |
-| `gender_student_ratio` | Kadın/Erkek öğrenci oranı | il | 2012-2024 | 3.159 | meb_egitim |
-| `household_by_size` | Hanehalkı sayısı (büyüklüğe göre) | il | 2012-2025 | 11.340 | tuik |
-| `household_by_tenure` | Hanehalkı sayısı (mülkiyet durumuna göre) | il | 2021-2021 | 324 | tuik |
-| `household_by_type` | Hanehalkı tipine göre hane sayısı | TR. il. ilçe | 2014-2025 | 50.600 | tuik_medas |
-| `household_count` | Hanehalkı sayısı | TR. il. ilçe | 2012-2025 | 14.741 | tuik_medas |
-| `household_size` | Ortalama hanehalkı büyüklüğü | TR. il. ilçe | 2008-2025 | 18.897 | tuik_medas |
-| `marital_status` | Medeni durum | TR. il. ilçe | 2008-2025 | 2.181.235 | tuik_medas |
-| `median_age` | Ortanca yaş | TR. il | 2007-2025 | 4.674 | tuik_medas |
-| `migration_between_regions` | Bölgeler arası göç | İBBS-2 | 2008-2025 | 12.168 | tuik_medas |
-| `migration_from_abroad` | Yurt dışından gelen göç | TR. il | 2016-2025 | 820 | tuik_medas |
-| `migration_in` | Aldığı göç | il | 2008-2025 | 40.824 | tuik_medas |
-| `migration_net` | Net göç | il | 2008-2025 | 1.458 | tuik_medas |
-| `migration_out` | Verdiği göç | il | 2008-2025 | 40.824 | tuik_medas |
-| `migration_to_abroad` | Yurt dışına giden göç | TR. il | 2016-2025 | 820 | tuik_medas |
-| `natural_increase` | Doğal nüfus artışı | TR. il. ilçe | 2009-2025 | 13.060 | tuik_medas |
-| `net_enrollment_rate` | Net okullaşma oranı | il | 2007-2024 | 5.022 | meb_egitim |
-| `population` | Nüfus | TR. il. ilçe. mahalle. köy | 2007-2025 | 2.403.579 | tuik_medas |
-| `population_by_birth_province` | İlçe nüfusu (doğum yerine göre) | ilçe | 2014-2025 | 217.452 | tuik_medas |
-| `population_by_registry_province` | İlçe nüfusu (nüfusa kayıtlı olunan ile göre) | ilçe | 2007-2025 | 232.146 | tuik_medas |
-| `population_density` | Nüfus yoğunluğu | TR. il | 2007-2025 | 1.558 | tuik_medas |
-| `registered_by_residence_province` | İlçeye kayıtlı nüfus (ikamet edilen ile göre) | ilçe | 2008-2025 | 234.900 | tuik_medas |
-| `registry_population` | Kütük nüfusu | il | 2007-2025 | 3.078 | tuik_medas |
-| `school_size` | Okul mevcudu (öğrenci/okul) | il | 2012-2024 | 2.106 | meb_egitim |
-| `section_room_ratio` | Şube/Derslik oranı (ikili öğretim baskısı) | il | 2012-2024 | 2.106 | meb_egitim |
-| `section_size` | Şube mevcudu (öğrenci/şube) | il | 2012-2024 | 3.159 | meb_egitim |
-| `temporary_protection_syrians` | Geçici koruma altındaki Suriyeliler | TR. il | 2026-2026 | 82 | goc_idaresi |
-
 ## belediye_hizmetleri (33)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -573,6 +537,44 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `water_treatment_plants` | İçme suyu arıtma tesisi sayısı | TR. il | 2001-2022 | 1.174 | tuik_medas |
 | `water_treatment_population` | İçme suyu arıtma tesisiyle hizmet verilen nüfus | TR. il | 2001-2022 | 699 | tuik_medas |
 | `water_treatment_population_share` | İçme suyu arıtma tesisiyle hizmet verilen nüfusun oranı | TR. il | 2001-2022 | 699 | tuik_medas |
+
+## nufus (33)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `baby_names` | Bebeklere en çok verilen isimler | TR. il | 2018-2025 | 112.000 | tuik_nip |
+| `class_size` | Sınıf mevcudu (öğrenci/derslik) | il | 2012-2024 | 2.106 | meb_egitim |
+| `common_names` | En çok kullanılan isimler | TR. il | 2018-2025 | 39.904 | tuik_nip |
+| `common_surnames` | En çok kullanılan soyisimler | TR. il | 2018-2025 | 19.801 | tuik_nip |
+| `district_urbanization` | Kentleşme oranı (kayıtlı seçmen) | il. ilçe | 2015-2015 | 1.023 | ysk_aatoplu |
+| `education_attainment` | Öğrenim durumu | il | 2008-2025 | 26.244 | tuik_nip |
+| `foreign_population` | Yabancı uyruklu nüfus | TR. il | 2008-2025 | 2.952 | tuik_medas |
+| `gender_student_ratio` | Kadın/Erkek öğrenci oranı | il | 2012-2024 | 3.159 | meb_egitim |
+| `household_by_size` | Hanehalkı sayısı (büyüklüğe göre) | il | 2012-2025 | 11.340 | tuik |
+| `household_by_tenure` | Hanehalkı sayısı (mülkiyet durumuna göre) | il | 2021-2021 | 324 | tuik |
+| `household_by_type` | Hanehalkı tipine göre hane sayısı | TR. il. ilçe | 2014-2025 | 50.600 | tuik_medas |
+| `household_count` | Hanehalkı sayısı | TR. il. ilçe | 2012-2025 | 14.741 | tuik_medas |
+| `household_size` | Ortalama hanehalkı büyüklüğü | TR. il. ilçe | 2008-2025 | 18.897 | tuik_medas |
+| `marital_status` | Medeni durum | TR. il. ilçe | 2008-2025 | 2.181.235 | tuik_medas |
+| `median_age` | Ortanca yaş | TR. il | 2007-2025 | 4.674 | tuik_medas |
+| `migration_between_regions` | Bölgeler arası göç | İBBS-2 | 2008-2025 | 12.168 | tuik_medas |
+| `migration_from_abroad` | Yurt dışından gelen göç | TR. il | 2016-2025 | 820 | tuik_medas |
+| `migration_in` | Aldığı göç | il | 2008-2025 | 40.824 | tuik_medas |
+| `migration_net` | Net göç | il | 2008-2025 | 1.458 | tuik_medas |
+| `migration_out` | Verdiği göç | il | 2008-2025 | 40.824 | tuik_medas |
+| `migration_to_abroad` | Yurt dışına giden göç | TR. il | 2016-2025 | 820 | tuik_medas |
+| `natural_increase` | Doğal nüfus artışı | TR. il. ilçe | 2009-2025 | 13.060 | tuik_medas |
+| `net_enrollment_rate` | Net okullaşma oranı | il | 2007-2024 | 5.022 | meb_egitim |
+| `population` | Nüfus | TR. il. ilçe. mahalle. köy | 2007-2025 | 2.403.579 | tuik_medas |
+| `population_by_birth_province` | İlçe nüfusu (doğum yerine göre) | ilçe | 2014-2025 | 217.452 | tuik_medas |
+| `population_by_registry_province` | İlçe nüfusu (nüfusa kayıtlı olunan ile göre) | ilçe | 2007-2025 | 232.146 | tuik_medas |
+| `population_density` | Nüfus yoğunluğu | TR. il | 2007-2025 | 1.558 | tuik_medas |
+| `registered_by_residence_province` | İlçeye kayıtlı nüfus (ikamet edilen ile göre) | ilçe | 2008-2025 | 234.900 | tuik_medas |
+| `registry_population` | Kütük nüfusu | il | 2007-2025 | 3.078 | tuik_medas |
+| `school_size` | Okul mevcudu (öğrenci/okul) | il | 2012-2024 | 2.106 | meb_egitim |
+| `section_room_ratio` | Şube/Derslik oranı (ikili öğretim baskısı) | il | 2012-2024 | 2.106 | meb_egitim |
+| `section_size` | Şube mevcudu (öğrenci/şube) | il | 2012-2024 | 3.159 | meb_egitim |
+| `temporary_protection_syrians` | Geçici koruma altındaki Suriyeliler | TR. il | 2026-2026 | 82 | goc_idaresi |
 
 ## cocuk (31)
 
@@ -943,23 +945,23 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `tourism_expenditure` | Turizm gideri (yurt dışına giden vatandaş) | TR | 2012-2025 | 112 | tuik_medas |
 | `tourism_revenue` | Turizm geliri | TR | 2012-2025 | 19 | tuik_medas |
 
-## iklim (13)
+## din (13)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `afad_earthquakes` | Deprem sayısı | il. ilçe | 1990-2025 | 53.671 | afad |
-| `mgm_measurement_period` | İstasyonun ölçüm dönemi | il | 2025-2025 | 162 | mgm |
-| `mgm_precipitation` | Aylık toplam yağış ortalaması | il | 2020-2025 | 1.920 | mgm |
-| `mgm_rainy_days` | Aylık ortalama yağışlı gün sayısı | il | 2020-2025 | 1.908 | mgm |
-| `mgm_record_daily_precipitation` | Günlük en yüksek yağış rekoru | il | 1929-2024 | 81 | mgm |
-| `mgm_record_snow_depth` | En yüksek kar kalınlığı rekoru | il | 1929-2022 | 80 | mgm |
-| `mgm_record_wind_speed` | En hızlı rüzgar rekoru | il | 1963-2025 | 81 | mgm |
-| `mgm_sunshine` | Aylık ortalama günlük güneşlenme süresi | il | 2020-2025 | 1.920 | mgm |
-| `mgm_temperature` | Aylık sıcaklık normalleri | il | 2020-2025 | 7.704 | mgm |
-| `oecd_climate_days` | İklim gün sayıları (alansal) | il | 1981-2024 | 14.256 | oecd_regional |
-| `oecd_degree_days` | Derece-gün (ısıtma ve soğutma) | il | 1981-2023 | 6.966 | oecd_regional |
-| `oecd_precipitation` | Yıllık toplam yağış (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
-| `oecd_temperature` | Yıllık ortalama sıcaklık (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
+| `diyanet_budget` | Diyanet bütçe harcaması | TR | 2022-2023 | 10 | diyanet |
+| `diyanet_converts` | İhtida edenler (önceki inanç) | TR | 2023-2023 | 15 | diyanet |
+| `diyanet_converts_age` | İhtida edenler (yaş) | TR | 2023-2023 | 18 | diyanet |
+| `diyanet_converts_reason` | İhtida edenler (sebep) | TR | 2023-2023 | 12 | diyanet |
+| `diyanet_mosques` | Cami sayısı | TR. il | 2013-2023 | 92 | diyanet |
+| `diyanet_personnel` | Diyanet personeli | TR. il | 2013-2023 | 762 | diyanet |
+| `diyanet_pilgrims` | Hacca ve umreye gidenler | TR | 2023-2023 | 60 | diyanet |
+| `diyanet_quran_attendance` | Kur'an kursu kursiyeri | il | 2023-2023 | 81 | diyanet |
+| `diyanet_quran_courses` | Kur'an kursu sayısı | il | 2023-2023 | 81 | diyanet |
+| `diyanet_quran_graduates` | Kur'an kursunu bitiren | il | 2023-2023 | 243 | diyanet |
+| `diyanet_quran_graduates_age` | Kur'an kursunu bitiren (yaş) | il | 2023-2023 | 405 | diyanet |
+| `diyanet_quran_graduates_education` | Kur'an kursunu bitiren (eğitim durumu) | il | 2023-2023 | 567 | diyanet |
+| `diyanet_quran_hafiz` | Hafızlık kursiyeri | il | 2023-2023 | 243 | diyanet |
 
 ## konut_nitelik (13)
 
@@ -979,23 +981,23 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `mean_rooms` | Konutların ortalama oda sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
 | `rooms_per_person` | Konutta kişi başına oda (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
 
-## din (13)
+## iklim (13)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `diyanet_budget` | Diyanet bütçe harcaması | TR | 2022-2023 | 10 | diyanet |
-| `diyanet_converts` | İhtida edenler (önceki inanç) | TR | 2023-2023 | 15 | diyanet |
-| `diyanet_converts_age` | İhtida edenler (yaş) | TR | 2023-2023 | 18 | diyanet |
-| `diyanet_converts_reason` | İhtida edenler (sebep) | TR | 2023-2023 | 12 | diyanet |
-| `diyanet_mosques` | Cami sayısı | TR. il | 2013-2023 | 92 | diyanet |
-| `diyanet_personnel` | Diyanet personeli | TR. il | 2013-2023 | 762 | diyanet |
-| `diyanet_pilgrims` | Hacca ve umreye gidenler | TR | 2023-2023 | 60 | diyanet |
-| `diyanet_quran_attendance` | Kur'an kursu kursiyeri | il | 2023-2023 | 81 | diyanet |
-| `diyanet_quran_courses` | Kur'an kursu sayısı | il | 2023-2023 | 81 | diyanet |
-| `diyanet_quran_graduates` | Kur'an kursunu bitiren | il | 2023-2023 | 243 | diyanet |
-| `diyanet_quran_graduates_age` | Kur'an kursunu bitiren (yaş) | il | 2023-2023 | 405 | diyanet |
-| `diyanet_quran_graduates_education` | Kur'an kursunu bitiren (eğitim durumu) | il | 2023-2023 | 567 | diyanet |
-| `diyanet_quran_hafiz` | Hafızlık kursiyeri | il | 2023-2023 | 243 | diyanet |
+| `afad_earthquakes` | Deprem sayısı | il. ilçe | 1990-2025 | 53.671 | afad |
+| `mgm_measurement_period` | İstasyonun ölçüm dönemi | il | 2025-2025 | 162 | mgm |
+| `mgm_precipitation` | Aylık toplam yağış ortalaması | il | 2020-2025 | 1.920 | mgm |
+| `mgm_rainy_days` | Aylık ortalama yağışlı gün sayısı | il | 2020-2025 | 1.908 | mgm |
+| `mgm_record_daily_precipitation` | Günlük en yüksek yağış rekoru | il | 1929-2024 | 81 | mgm |
+| `mgm_record_snow_depth` | En yüksek kar kalınlığı rekoru | il | 1929-2022 | 80 | mgm |
+| `mgm_record_wind_speed` | En hızlı rüzgar rekoru | il | 1963-2025 | 81 | mgm |
+| `mgm_sunshine` | Aylık ortalama günlük güneşlenme süresi | il | 2020-2025 | 1.920 | mgm |
+| `mgm_temperature` | Aylık sıcaklık normalleri | il | 2020-2025 | 7.704 | mgm |
+| `oecd_climate_days` | İklim gün sayıları (alansal) | il | 1981-2024 | 14.256 | oecd_regional |
+| `oecd_degree_days` | Derece-gün (ısıtma ve soğutma) | il | 1981-2023 | 6.966 | oecd_regional |
+| `oecd_precipitation` | Yıllık toplam yağış (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
+| `oecd_temperature` | Yıllık ortalama sıcaklık (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
 
 ## trafik_kaza (12)
 
@@ -1040,18 +1042,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `minimum_wage` | Asgari ücret | TR | 1996-2026 | 1.086 | csgb |
 | `severance_pay_ceiling` | Kıdem tazminatı tavanı | TR | 1980-2026 | 553 | hmb_bumko |
 
-## olum (7)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `deaths` | Ölüm sayısı | TR. il. ilçe | 2009-2025 | 79.593 | tuik_medas |
-| `deaths_by_cause` | Ölüm sayısı (nedene göre) | TR. il | 2022-2025 | 2.814 | tuik |
-| `deaths_single_age` | Ölüm sayısı (tek yaş) | TR | 2009-2025 | 3.375 | tuik_medas |
-| `infant_mortality` | Bebek ölüm hızı | TR. il | 2009-2025 | 1.394 | tuik_medas |
-| `life_expectancy` | Doğuşta beklenen yaşam süresi | TR. il | 2013-2023 | 820 | tuik_medas |
-| `suicide_rate` | Kaba intihar hızı | TR. il | 2002-2025 | 1.960 | tuik_medas |
-| `under5_mortality` | Beş yaş altı ölüm hızı | TR. il | 2009-2025 | 1.394 | tuik_medas |
-
 ## medya (7)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1064,16 +1054,17 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `print_runs` | Yayınların baskı sayısı (yalnız Türkiye) | TR | 2005-2022 | 72 | tuik_medas |
 | `publications_by_print` | Yayın sayısı (tür × baskı tekniği) | TR. İBBS-2 | 2005-2022 | 1.469 | tuik_medas |
 
-## gelismislik (6)
+## olum (7)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `sege_district_level` | İlçe SEGE kademesi | ilçe | 2017-2022 | 1.941 | sanayi_sege |
-| `sege_district_rank` | İlçe SEGE sıralaması | ilçe | 2017-2022 | 1.943 | sanayi_sege |
-| `sege_district_score` | İlçe SEGE skoru | ilçe | 2017-2022 | 1.943 | sanayi_sege |
-| `sege_province_level` | İl SEGE kademesi | il | 2017-2017 | 81 | sanayi_sege |
-| `sege_province_rank` | İl SEGE sıralaması | il | 2017-2017 | 81 | sanayi_sege |
-| `sege_province_score` | İl SEGE skoru | il | 2017-2017 | 81 | sanayi_sege |
+| `deaths` | Ölüm sayısı | TR. il. ilçe | 2009-2025 | 79.593 | tuik_medas |
+| `deaths_by_cause` | Ölüm sayısı (nedene göre) | TR. il | 2022-2025 | 2.814 | tuik |
+| `deaths_single_age` | Ölüm sayısı (tek yaş) | TR | 2009-2025 | 3.375 | tuik_medas |
+| `infant_mortality` | Bebek ölüm hızı | TR. il | 2009-2025 | 1.394 | tuik_medas |
+| `life_expectancy` | Doğuşta beklenen yaşam süresi | TR. il | 2013-2023 | 820 | tuik_medas |
+| `suicide_rate` | Kaba intihar hızı | TR. il | 2002-2025 | 1.960 | tuik_medas |
+| `under5_mortality` | Beş yaş altı ölüm hızı | TR. il | 2009-2025 | 1.394 | tuik_medas |
 
 ## perakende (6)
 
@@ -1085,6 +1076,17 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `mall_visitor_index` | AVM ziyaretçi endeksi | TR | 2025-2025 | 2 | ayd_akademetre |
 | `retail_turnover_index` | Perakende ciro endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
 | `retail_volume_index` | Perakende satış hacim endeksi (2015=100) | TR | 2010-2023 | 4.536 | tuik_portal |
+
+## gelismislik (6)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `sege_district_level` | İlçe SEGE kademesi | ilçe | 2017-2022 | 1.941 | sanayi_sege |
+| `sege_district_rank` | İlçe SEGE sıralaması | ilçe | 2017-2022 | 1.943 | sanayi_sege |
+| `sege_district_score` | İlçe SEGE skoru | ilçe | 2017-2022 | 1.943 | sanayi_sege |
+| `sege_province_level` | İl SEGE kademesi | il | 2017-2017 | 81 | sanayi_sege |
+| `sege_province_rank` | İl SEGE sıralaması | il | 2017-2017 | 81 | sanayi_sege |
+| `sege_province_score` | İl SEGE skoru | il | 2017-2017 | 81 | sanayi_sege |
 
 ## dogurganlik (5)
 
@@ -1116,14 +1118,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `housing_sales_foreigners` | Yabancılara konut satışı | TR. il | 2013-2025 | 909 | tuik_medas |
 | `property_sales_monthly` | Konut ve iş yeri satışları (aylık) | il | 2013-2026 | 101.785 | cbrt_evds |
 
-## havacilik (3)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `dhmi_air_freight` | Havayolu yük ve kargo | il | 2008-2026 | 27.345 | dhmi |
-| `dhmi_air_passengers` | Havayolu yolcu sayısı | il | 2008-2026 | 21.314 | dhmi |
-| `dhmi_air_traffic` | Uçak trafiği | il | 2008-2026 | 41.750 | dhmi |
-
 ## inovasyon (3)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1131,6 +1125,14 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `ip_applications_by_province` | Yerli sınai mülkiyet başvurusu (il) | TR. il | 1995-2025 | 12.710 | turkpatent |
 | `ip_registrations_by_province` | Yerli sınai mülkiyet tescili (il) | TR. il | 1995-2025 | 12.546 | turkpatent |
 | `patent_applications` | PCT patent başvurusu | il | 1995-2024 | 2.881 | oecd_regional |
+
+## havacilik (3)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `dhmi_air_freight` | Havayolu yük ve kargo | il | 2008-2026 | 27.345 | dhmi |
+| `dhmi_air_passengers` | Havayolu yolcu sayısı | il | 2008-2026 | 21.314 | dhmi |
+| `dhmi_air_traffic` | Uçak trafiği | il | 2008-2026 | 41.750 | dhmi |
 
 ## tarim_alet (3)
 
