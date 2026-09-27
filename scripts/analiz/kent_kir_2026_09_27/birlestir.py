@@ -71,8 +71,9 @@ nb = nb.with_columns(pl.struct("district", "name").map_elements(
     lambda s: hmap.get((fold(s["district"]), fold(s["name"])), "yok"), return_dtype=pl.Utf8).alias("haritatr"))
 
 
-# (6) TKGM parcels and (7) PTT streets: people per parcel and per street, share of named
-# streets. Informative columns and a check on the building rule; they do not decide.
+# (6) TKGM parcels and (7) PTT streets: people per parcel and per street. Informative
+# columns and a check on the building rule; they do not decide. (PTT lists street codes in
+# most towns and names only in some villages, so "named street" share is not usable.)
 # TKGM names differ from ADNKS ("Yenimahalle", "Yeşilcami", "Boyalıca/kılıç"): match on the
 # folded name, then on the name with "mahalle" stripped, then on the part before "/",
 # summed over the pieces.
@@ -92,14 +93,13 @@ def ext(s):
     d, n = fold(s["district"]), fold(s["name"])
     keys = (n, n.removesuffix("mahalle").removesuffix("mah"), n + "koyu", n.removesuffix("koyu"))
     tkv = next((TK[(d, k)] for k in keys if (d, k) in TK), [None, None])
-    ptv = next((PT[(d, k)] for k in keys if (d, k) in PT), (None, None))
-    return {"parsel": tkv[0], "kesin_koord": tkv[1], "sokak": None if ptv[0] is None else int(ptv[0]), "adli_sokak": None if ptv[1] is None else int(ptv[1])}
+    ptv = next((PT[(d, k)] for k in keys if (d, k) in PT), None)
+    return {"parsel": tkv[0], "kesin_koord": tkv[1], "sokak": ptv}
 
 
-nb = nb.with_columns(pl.struct("district", "name").map_elements(ext, return_dtype=pl.Struct({"parsel": pl.Float64, "kesin_koord": pl.Float64, "sokak": pl.Int64, "adli_sokak": pl.Int64})).alias("_x")).unnest("_x")
+nb = nb.with_columns(pl.struct("district", "name").map_elements(ext, return_dtype=pl.Struct({"parsel": pl.Float64, "kesin_koord": pl.Float64, "sokak": pl.Int64})).alias("_x")).unnest("_x")
 nb = nb.with_columns((pl.col("pop").cast(pl.Float64) / pl.col("parsel")).round(2).alias("kisi_parsel"),
-                     (pl.col("pop").cast(pl.Float64) / pl.col("sokak")).round(1).alias("kisi_sokak"),
-                     (pl.col("adli_sokak") / pl.col("sokak") * 100).round(0).alias("adli_sokak_pct"))
+                     (pl.col("pop").cast(pl.Float64) / pl.col("sokak")).round(1).alias("kisi_sokak"))
 print("tapu eşleşen", nb.filter(pl.col("parsel").is_not_null()).height, "| sokak eşleşen", nb.filter(pl.col("sokak").is_not_null()).height, "/", nb.height)
 
 
