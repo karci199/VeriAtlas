@@ -59,6 +59,20 @@ NOT_ADDITIVE = {
     "irrigation_yield",
 }
 
+#: (province, year, crop) whose published district split does not add up to the province
+#: (2026-09-27 check). The district rows of these cells are dropped, the province kept.
+#: Hazelnut 2020: districts exceed the province by 0.1-2.6 % in trees, orchard area and
+#: production. Sakarya 2015: districts hold a third to nine tenths of the sown area of
+#: table cucumber and table tomato.
+DISTRICT_MISMATCH = {
+    ("TR-08", 2020, "crop=01.25.33.00.00"),
+    ("TR-14", 2020, "crop=01.25.33.00.00"),
+    ("TR-29", 2020, "crop=01.25.33.00.00"),
+    ("TR-55", 2020, "crop=01.25.33.00.00"),
+    ("TR-54", 2015, "crop=01.13.32.00.01"),
+    ("TR-54", 2015, "crop=01.13.34.00.01"),
+}
+
 LABEL = re.compile(
     r"^(?P<pre>(?:.*? ve )?)(?P<code>\d{2}(?:\.\d{2})+)\.\s*\((?P<name>.*)\)\s*-\s*(?P<unit>.+)$"
 )
@@ -282,6 +296,18 @@ class CropMeasure:
         if not records:
             raise ValueError("dosya bulunamadi ya da bos: " + self.indicator_id)
         frame = pl.DataFrame(records)
+        frame = frame.filter(
+            ~(
+                (pl.col("area_level") == "district")
+                & pl.concat_list(
+                    pl.col("area_id").str.slice(0, 5),
+                    pl.col("year").cast(pl.String),
+                    "dims",
+                )
+                .list.join("|")
+                .is_in([f"{a}|{y}|{d}" for a, y, d in DISTRICT_MISMATCH])
+            )
+        )
         check_districts(frame, self.indicator_id)
         if frame.select("area_id", "year", "dims").is_duplicated().any():
             raise ValueError(self.indicator_id + ": ayni alan-yil-kirilim iki kez")
