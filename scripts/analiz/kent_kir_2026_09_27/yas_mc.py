@@ -238,12 +238,14 @@ print(h.group_by("kent_kir", "boy").agg(pl.len(), pl.col("hata").mean().round(2)
 
 # sensitivity
 KK2 = np.array([("kır" if k == "kent" else "kent") if a in ARADA else k for a, k in zip(IDS, KK)])
+KURUM = set(nb.filter(pl.col("kurum") == "1")["area_id"]) if "kurum" in nb.columns else set()
+KK3 = np.array(["kurum" if a in KURUM else k for a, k in zip(IDS, KK)])  # institutions left out
 sens = []
 for did in list(DIST) + [IL_UP]:
     dm = np.ones(len(IDS), bool) if did == IL_UP else DID == did
     r = dict(ilce=IL_UP if did == IL_UP else NAME[IDS[np.where(dm)[0][0]]])
     for cls in ("kent", "kır"):
-        for lab, arr in (("", KK), ("_ters", KK2)):
+        for lab, arr in (("", KK), ("_ters", KK2), ("_kurumsuz", KK3)):
             m = dm & (arr == cls)
             r[f"{cls}{lab}"] = float(medians(X0[m].sum(0, keepdims=True))[0]) if m.any() else None
     sens.append(r)

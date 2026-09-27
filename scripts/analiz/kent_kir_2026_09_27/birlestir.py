@@ -61,8 +61,21 @@ nb = nb.with_columns(pl.struct("area_id", "name").map_elements(
 BEL = {}
 for r in reg.iter_rows(named=True):
     BEL.setdefault(r["parent_id"], {})[fold(r["municipality"].removesuffix(" Bel."))] = r["municipality"].removesuffix(" Bel.")
+# districts split after 2012 (Manisa Merkez -> Yunusemre/Şehzadeler): the belde sat under
+# the old district, so the province-wide belde list is the second try
+# only beldes whose old district no longer exists (split or renamed) may match across
+# districts; otherwise a same-named belde elsewhere would be taken (Gemlik Kurşunlu / İnegöl Kurşunlu)
+CUR = set(pl.read_csv(ROOT / "src/veriatlas/data/areas_tr_districts.csv", infer_schema_length=0)
+          .filter((pl.col("parent_id") == f"TR-{PLATE}") & (pl.col("valid_to").is_null() | (pl.col("valid_to") == "")))["area_id"])
+BEL_IL = {}
+for did, d in BEL.items():
+    if did not in CUR:
+        BEL_IL.update(d)
+DNAME = {fold(r["name_tr"]) for r in pl.read_csv(ROOT / "src/veriatlas/data/areas_tr_districts.csv", infer_schema_length=0)
+         .filter(pl.col("parent_id") == f"TR-{PLATE}").iter_rows(named=True)}
 nb = nb.with_columns(pl.struct("area_id", "name", "eski_statu").map_elements(
-    lambda s: s["eski_statu"] if s["eski_statu"] != "yok" else BEL.get(s["area_id"].rsplit("-", 1)[0], {}).get(fold(s["name"]), "yok"),
+    lambda s: s["eski_statu"] if s["eski_statu"] != "yok" else BEL.get(s["area_id"].rsplit("-", 1)[0], {}).get(fold(s["name"]))
+    or (BEL_IL.get(fold(s["name"])) if fold(s["name"]) not in DNAME and fold(s["name"]) != SLUG else None) or "yok",
     return_dtype=pl.Utf8).alias("eski_statu"))
 # a municipality other than the district's own (or metropolitan Bursa) was a belde
 nb = nb.with_columns(pl.struct("district", "eski_statu").map_elements(
@@ -99,7 +112,12 @@ PT = {(fold(r["ilce"]), fold(r["mahalle"].split("(")[0]).removesuffix("mah")): i
 def ext(s):
     d, n = fold(s["district"]), fold(s["name"])
     keys = (n, n.removesuffix("mahalle").removesuffix("mah"), n + "koyu", n.removesuffix("koyu"))
-    tkv = next((TK[(d, k)] for k in keys if (d, k) in TK), [None, None])
+    tkv = next((TK[(d, k)] for k in keys if (d, k) in TK), None)
+    if tkv is None:  # spelling differences (Pirebeyler / Piribeyler): closest name in the district
+        import difflib
+        cands = [k for (dd, k) in TK if dd == d]
+        best = [] if "osb" in n else difflib.get_close_matches(n, cands, n=1, cutoff=0.86)
+        tkv = TK[(d, best[0])] if best else [None, None]
     ptv = next((PT[(d, k)] for k in keys if (d, k) in PT), None)
     return {"parsel": tkv[0], "kesin_koord": tkv[1], "sokak": ptv}
 

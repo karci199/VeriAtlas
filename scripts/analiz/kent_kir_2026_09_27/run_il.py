@@ -24,7 +24,7 @@ draws = sys.argv[sys.argv.index("--draws") + 1] if "--draws" in sys.argv else "2
 HERE = Path(__file__).parent
 PY = "C:/veri/.venv/Scripts/python.exe"
 steps = ([] if skip_b else [("kent_il", [])]) + [("birlestir", []), ("ikili", []), ("semt", []), ("semt_profil", []), ("secim_kentkir", []),
-                                                 ("secmen_oran", []), ("secmen_iliski", []), ("tarihsel", []), ("secim_tek_parti", []), ("yas_mc", [draws])]
+                                                 ("secmen_oran", []), ("secmen_iliski", []), ("kurum_isaret", []), ("tarihsel", []), ("secim_tek_parti", []), ("yas_mc", [draws])]
 t0 = time.time()
 for name, extra in steps:
     t1 = time.time()
