@@ -78,6 +78,7 @@ from .tim_sectors import TIM_SECTOR_ADAPTERS
 from .tkgm import TKGM_ADAPTERS
 from .tobb import TOBB_ADAPTERS
 from .tobb_capacity import TOBB_CAPACITY_ADAPTERS
+from .csb_village_roads import CSB_VILLAGE_ROADS_ADAPTERS
 from .tuik_birth_order import TuikBirthOrder
 from .tuik_births_by_age import TuikBirthsByAge
 from .tuik_births_marital import TuikBirthsMarital
@@ -233,6 +234,7 @@ ADAPTERS = {
     **EPDK_DEALER_ADAPTERS,
     **TOBB_ADAPTERS,
     **TOBB_CAPACITY_ADAPTERS,
+    **CSB_VILLAGE_ROADS_ADAPTERS,
     **YOKATLAS_ADAPTERS,
     **YOK_ISTATISTIK_ADAPTERS,
     **YOK_NATIONAL_ADAPTERS,

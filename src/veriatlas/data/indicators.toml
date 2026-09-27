@@ -27023,6 +27023,10 @@ surface_treatment = "Sathi kaplama"
 stone_block = "Parke"
 stabilized = "Stabilize"
 earth = "Toprak"
+graded = "Tesviye"
+concrete = "Beton (klasik)"
+roller_compacted_concrete = "Silindirle sıkıştırılmış beton (SSB)"
+total = "Toplam"
 primitive = "Geçit vermez"
 
 [dim.bridge_material]
@@ -76953,3 +76957,23 @@ views = ["table", "map", "bar"]
 definition_tr = "İlçe başına yabancı sermayeli üretici sayısı, tüm faaliyetler ('total') ve sektör sektör. Yalnız ilçesi kayıtlı üreticiler; büyükşehirlerde 'MERKEZ' ve 'BELİRTİLMEMİŞ' dışarıda. Sektörler toplanmaz. TOBB Sanayi Bilgi Sistemi (sanayi.org.tr), odaların verdiği kapasite raporlarının kaydı, 2026-09-27 anlık görüntüsü; yıllık seri değil, 2026 yılına yazıldı. Kimliği belli olmayan il (BİLİNMEYEN) dışarıda. Personel sütunları alınmadı: aynı üreticinin personeli her ürün ve sektör satırında tekrar ediyor (Türkiye toplamı 41,5 milyon). Adaptör src/veriatlas/adapters/tobb_capacity.py."
 
 # END tobb_capacity
+
+[dim.village_road_class]
+label_tr = "Köy yolu sınıfı"
+label_en = "Village road class"
+
+[dim.village_road_class.values]
+first_degree = "1. derece köy yolu"
+second_degree = "2. derece köy yolu"
+village_inner = "Köy içi yol"
+
+[indicator.village_road_length]
+label_tr = "Köy yolu uzunluğu"
+label_en = "Village road length"
+topic = "ulasim"
+unit = "km"
+frequency = "annual"
+additive = true
+dims = ["village_road_class", "surface"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "İl özel idarelerinin sorumluluğundaki köy yolları, km: 1. ve 2. derece köy yolu ile köy içi yol, kaplama türüne göre (ham yol, tesviye, stabilize, sathi asfalt, asfalt betonu/BSK, parke, klasik beton, SSB). Yalnız büyükşehir olmayan 51 il; büyükşehirlerde köy yolları büyükşehir belediyesine geçtiği için seride yok. 'total' kaynaktaki satır toplamı. Kaynak ÇŞB Yerel Yönetimler Genel Müdürlüğü, Köy Yolları Resmi İstatistikleri 2020-2025. Adaptör src/veriatlas/adapters/csb_village_roads.py."
