@@ -294,10 +294,23 @@ def safe(name: str) -> str:
     return re.sub(r"[^A-Za-z0-9-]", "", name.translate(table)).lower()
 
 
-def open_census(year: int, tab: int) -> Census:
-    census = Census(year, tab)
-    census.provinces_map = census.provinces()
-    return census
+def open_census(year: int, tab: int, village: bool = False) -> Census:
+    """A fresh session, retried with a growing pause: the server now and then resets a
+    connection (WinError 10054) or times out, and one reset must not end a day-long run."""
+    for attempt in range(1, 9):
+        try:
+            census = Census(year, tab)
+            if village:
+                census.village_start()
+            else:
+                census.provinces_map = census.provinces()
+            return census
+        except LookupError:
+            raise
+        except Exception as error:  # noqa: BLE001
+            log(f"   oturum acilamadi ({attempt}/8): {error}")
+            time.sleep(min(600, 30 * attempt * attempt))
+    raise RuntimeError(f"{year} sekme {tab}: oturum acilamadi")
 
 
 def fetch(year: int, tab: int, wanted: list[str], details: list[str]) -> None:
@@ -365,8 +378,7 @@ def fetch(year: int, tab: int, wanted: list[str], details: list[str]) -> None:
 
 def fetch_villages(year: int, variables: list[str]) -> None:
     """Town and village level: one report per (province, district, bucak, variable)."""
-    census = Census(year, 1)
-    census.village_start()
+    census = open_census(year, 1, village=True)
     provinces = list(census.v_provinces)
     log("== koy", year, len(provinces), "il,", variables)
     done = 0
@@ -402,8 +414,7 @@ def fetch_villages(year: int, variables: list[str]) -> None:
                                 f"   HATA koy {year} {province}/{district}/{bucak} {variable} deneme {attempt}: {error}"
                             )
                             time.sleep(10 * attempt)
-                            census = Census(year, 1)
-                            census.village_start()
+                            census = open_census(year, 1, village=True)
                     time.sleep(1.5)
     log("== koy", year, "bitti,", done, "yeni rapor")
 
@@ -471,10 +482,18 @@ def run_queue() -> None:
     for n, (label, kind, years, tab, variables, details) in enumerate(QUEUE, 1):
         log(f"#### [{n}/{len(QUEUE)}] {label}")
         for year in years:
-            if kind == "koy":
-                fetch_villages(year, variables)
-            else:
-                fetch(year, tab, variables, details)
+            # a failure outside the per-report retries restarts the same step; files
+            # already on disk are skipped, so a restart costs only the session
+            for attempt in range(1, 6):
+                try:
+                    if kind == "koy":
+                        fetch_villages(year, variables)
+                    else:
+                        fetch(year, tab, variables, details)
+                    break
+                except Exception as error:  # noqa: BLE001
+                    log(f"   ADIM HATASI {label} {year} ({attempt}/5): {error}")
+                    time.sleep(120 * attempt)
     log("#### KUYRUK BITTI")
 
 
