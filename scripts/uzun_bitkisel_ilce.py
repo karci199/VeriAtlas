@@ -188,7 +188,9 @@ def run(topic: str, key: str, row: dict, province: int, years: list[int]) -> str
     if valid(target, years, (key, province) in SPARSE):
         log("   indi", target.name, note, target.stat().st_size, "bayt")
         return "ok"
-    target.unlink(missing_ok=True)
+    if target.exists():
+        # kept for a look: a refused file is evidence, not rubbish
+        target.replace(target.with_suffix(".reddedildi"))
     log("   BASARISIZ", target.name, note, "|", " ".join(output.split())[-220:])
     return "fail"
 

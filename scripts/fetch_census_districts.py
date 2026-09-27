@@ -270,7 +270,9 @@ def check_report(data: bytes) -> tuple[bool, str]:
     # Tables whose header ends with exactly Toplam | Erkek | Kadın (settlements, single
     # age). Empty cells are dropped when rows are read, so only rows as wide as the
     # header are compared: age 73 printed as "1 | 1 | (empty)" would read as 73 = 1 + 1.
-    widths = {len(r) for r in rows if tuple(r[-3:]) == SEX}
+    # (a label column first, so at least four wide: a bare "Toplam | Erkek | Kadın" row
+    # is a sub-header and would admit three-cell rows with a dropped empty cell)
+    widths = {len(r) for r in rows if tuple(r[-3:]) == SEX and len(r) >= 4}
     if widths:
         for r in (r for r in numeric if len(r) in widths):
             tail = [number(c) for c in r[-3:]]
