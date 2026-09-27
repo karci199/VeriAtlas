@@ -43,6 +43,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 import zk_client as z
 
 RAW = Path(os.environ.get("VERIATLAS_RAW") or "C:/veri-ham")
+#: seconds between reports; the MEDAS jobs share the server, so the pace is gentle
+PAUSE = float(os.environ.get("SAYIM_BEKLE", "6"))
 OUT = RAW / "tuik_sayim"
 APPS = {
     2000: ("nufusapp", "idari.zul"),
@@ -370,9 +372,9 @@ def fetch(year: int, tab: int, wanted: list[str], details: list[str]) -> None:
                         log(
                             f"   HATA {year} {province} {variable} {detail} deneme {attempt}: {error}"
                         )
-                        time.sleep(10 * attempt)
+                        time.sleep(30 * attempt)
                         census = open_census(year, tab)
-                time.sleep(1.5)
+                time.sleep(PAUSE)
     log("==", year, TABS[tab] or "sosyal", "bitti,", done, "yeni rapor")
 
 
@@ -413,9 +415,9 @@ def fetch_villages(year: int, variables: list[str]) -> None:
                             log(
                                 f"   HATA koy {year} {province}/{district}/{bucak} {variable} deneme {attempt}: {error}"
                             )
-                            time.sleep(10 * attempt)
+                            time.sleep(30 * attempt)
                             census = open_census(year, 1, village=True)
-                    time.sleep(1.5)
+                    time.sleep(PAUSE)
     log("== koy", year, "bitti,", done, "yeni rapor")
 
 
