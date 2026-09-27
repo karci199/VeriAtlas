@@ -34,7 +34,7 @@ for e in EL:
 pct = lambda *k: (round(tot[k][0] / tot[k][1] * 100, 1) if k in tot and tot[k][1] else None)
 els = sorted({k[0] for k in tot}, key=EL.index)
 a = pl.DataFrame([dict(secim=e, kent=pct(e, "kent_kir", "kent"), kir=pct(e, "kent_kir", "kır"),
-                       **{s: pct(e, "sinif", s) for s in ("merkez", "kentsel_belde", "kasaba", "kirsal_belde", "kir")}) for e in els])
+                       **{("koy" if s == "kir" else s): pct(e, "sinif", s) for s in ("merkez", "kentsel_belde", "kasaba", "kirsal_belde", "kir")}) for e in els])
 a = a.with_columns((pl.col("kir") - pl.col("kent")).round(1).alias("fark"))
 a.write_csv(D / f"secim_tek_parti_{PLATE}.csv")
 il = sorted({k[2].split("|")[0] for k in tot if k[1] == "ilce"})

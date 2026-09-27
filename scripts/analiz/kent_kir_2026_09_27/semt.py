@@ -119,7 +119,7 @@ def semt(r):
     return r["name"]
 
 
-nb = nb.with_columns(pl.struct("district", "name", "son_sinif", "area_id").map_elements(semt, return_dtype=pl.Utf8).alias("semt"))
+nb = nb.with_columns(pl.struct("district", "name", "son_sinif", "area_id", "pop").map_elements(semt, return_dtype=pl.Utf8).alias("semt"))
 assert nb["semt"].null_count() == 0
 
 # population, children
