@@ -105,12 +105,26 @@ DEFER = {("bitkisel-ortu-sebze", 4), ("bitkisel-ortu-sebze", 9)}
 SPARSE = {("bitkisel-sebze", 9), ("bitkisel-sebze", 45)}
 
 
+#: Measures grown in few places and not every year: greenhouse crops and ornamentals. A
+#: missing year or a single district is the crop's absence there, checked 2026-09-27 on
+#: the refused files (Batman, Bayburt, Bingöl, Bitlis, Gaziantep, Hakkari greenhouse
+#: vegetables carried real rows and were refused by the dense-measure rule).
+SPARSE_MEASURES = ("bitkisel-ortu-", "bitkisel-sus", "bitkisel-ortu-sus")
+
+
+def is_sparse(key: str, province: int) -> bool:
+    return (key, province) in SPARSE or key.startswith(SPARSE_MEASURES)
+
+
 def valid(path: Path, years: list[int], sparse: bool = False) -> bool:
-    if not path.exists() or path.stat().st_size < 500:
+    # a one-district, one-year greenhouse report is a couple of hundred bytes
+    if not path.exists() or path.stat().st_size < (150 if sparse else 500):
         return False
     text = path.read_text(encoding="utf-8-sig", errors="replace")
     head = "\n".join(text.splitlines()[:3])
-    if len(DISTRICT_COLUMN.findall(head)) < 2:
+    # a sparse measure may be grown in a single district (Batman greenhouse vegetables:
+    # Merkez only); a dense one printing one column means the level did not take
+    if len(DISTRICT_COLUMN.findall(head)) < (1 if sparse else 2):
         return False
     found = {int(y) for y in re.findall(r"\|((?:19|20)\d\d)\|", text)}
     if sparse:
@@ -146,7 +160,7 @@ def run(topic: str, key: str, row: dict, province: int, years: list[int]) -> str
     stem = f"{key}-il{province:02d}"
     middle = "-ilce-kirilim-" if breakdown else "-ilce-"
     target = OUT / f"{stem}{middle}{min(years)}-{max(years)}.csv"
-    if valid(target, years, (key, province) in SPARSE):
+    if valid(target, years, is_sparse(key, province)):
         return "ok"
     target.unlink(missing_ok=True)
     env = dict(
@@ -189,7 +203,7 @@ def run(topic: str, key: str, row: dict, province: int, years: list[int]) -> str
     # That is the cap speaking, not a broken level, so it halves the years like one.
     if "LIMIT_ASILDI" in output or "DUZEY_TUTMADI" in output:
         return "limit"
-    if valid(target, years, (key, province) in SPARSE):
+    if valid(target, years, is_sparse(key, province)):
         log("   indi", target.name, note, target.stat().st_size, "bayt")
         return "ok"
     if target.exists():
