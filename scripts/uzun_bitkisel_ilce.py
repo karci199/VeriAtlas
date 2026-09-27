@@ -94,7 +94,14 @@ def other_fetch_running() -> bool:
     return out not in ("", "0")
 
 
-def valid(path: Path, years: list[int]) -> bool:
+#: (file key, province number) where the report lacks years because nothing was grown,
+#: checked against the province series: Ardahan (il09) vegetables 927 t over 2007-2025
+#: in total, Kars (il45) vegetables only 2016-2024. Elsewhere a missing year means the
+#: year tick failed (it once dropped 2004 from every fruit file) and the file is refused.
+SPARSE = {("bitkisel-sebze", 9), ("bitkisel-sebze", 45)}
+
+
+def valid(path: Path, years: list[int], sparse: bool = False) -> bool:
     if not path.exists() or path.stat().st_size < 500:
         return False
     text = path.read_text(encoding="utf-8-sig", errors="replace")
@@ -102,6 +109,8 @@ def valid(path: Path, years: list[int]) -> bool:
     if len(DISTRICT_COLUMN.findall(head)) < 2:
         return False
     found = {int(y) for y in re.findall(r"\|((?:19|20)\d\d)\|", text)}
+    if sparse:
+        return bool(found) and found <= set(years)
     return set(years) <= found
 
 
@@ -133,7 +142,7 @@ def run(topic: str, key: str, row: dict, province: int, years: list[int]) -> str
     stem = f"{key}-il{province:02d}"
     middle = "-ilce-kirilim-" if breakdown else "-ilce-"
     target = OUT / f"{stem}{middle}{min(years)}-{max(years)}.csv"
-    if valid(target, years):
+    if valid(target, years, (key, province) in SPARSE):
         return "ok"
     target.unlink(missing_ok=True)
     env = dict(
@@ -176,7 +185,7 @@ def run(topic: str, key: str, row: dict, province: int, years: list[int]) -> str
     # That is the cap speaking, not a broken level, so it halves the years like one.
     if "LIMIT_ASILDI" in output or "DUZEY_TUTMADI" in output:
         return "limit"
-    if valid(target, years):
+    if valid(target, years, (key, province) in SPARSE):
         log("   indi", target.name, note, target.stat().st_size, "bayt")
         return "ok"
     target.unlink(missing_ok=True)
