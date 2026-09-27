@@ -27,10 +27,11 @@ Endeksa köy kimlikleri eşleşmiyor (mahalleler MEDAS koduyla birebir, nüfus =
 %91,8 birebir); depoda 2.644 küçük mahallede 2024 0-17 yaş satırı yok (MEDAS ≤10 değerleri
 vermiyor, Endeksa veriyor); `median_age` toplam türetmesi ±0,5 zikzak (ayrı iş).
 
-**TOBB kapasite depoda (2026-09-27 akşam, 1.374 gösterge):** `tobb_product_producers`,
+**TOBB kapasite depoda (2026-09-27 akşam, 1.376 gösterge):** `tobb_product_producers`,
 `tobb_product_capacity`, `tobb_producers_by_activity`, `tobb_producers_by_staff`,
 `tobb_producers_district` (adaptör `tobb_capacity.py`, katalog `scripts/build_tobb_catalog.py`).
-Alınmayanlar: yabancı sermaye tabloları (yabanciSermaye*), ilçe × ürün (ilceGenelDurumuKodlananUrun),
++ yabancı sermaye: `tobb_foreign_product_producers`, `tobb_foreign_producers_district`.
+Alınmayanlar: yabanciSermayeGenelDurumu (küçük sayılar, çift ürün satırı), ilçe × ürün (ilceGenelDurumuKodlananUrun),
 personel sütunları (şişkin). Yedek public/fact.before-tobb-capacity-2026-09-27.parquet. Web export yok.
 
 ### Kalan iş ve tahmini süre (2026-09-26)
