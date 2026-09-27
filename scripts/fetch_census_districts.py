@@ -87,9 +87,13 @@ class Census:
         tabbox = re.search(r'id="(z_\w+)"[^>]*z\.type="zul\.tab\.Tabbox"', self.k.html)
         tabs = re.findall(r'id="(z_\w+)" z\.type="Tab"', self.k.html)
         self.k.event(tabbox.group(1), "onSelect", tabs[1])
-        # the social tab's level box is the first four-option box after the first tab's
-        self.level, levels = box_with(
-            self.k.html, lambda ts: len(ts) == 4 and ts[0] == "Türkiye"
+        # The social tab's level box is the first four-option "Türkiye" box in document
+        # order: each later tab (economic, household) has an identical one, and taking
+        # the newest lands on the household tab's variables.
+        self.level, levels = next(
+            (sid, {t: i for i, t in options})
+            for sid, options in selects(self.k.html).items()
+            if len(options) == 4 and options[0][1] == "Türkiye"
         )
         self.district_level = next(v for t, v in levels.items() if t.startswith("İlç"))
 
