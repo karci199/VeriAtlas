@@ -60,7 +60,16 @@ print("sayım il toplamı denetimi:", check)
 reg = pl.read_csv(ROOT / "src/veriatlas/data/areas_tr_neighbourhoods.csv", infer_schema_length=0)
 vil = pl.read_csv(ROOT / "src/veriatlas/data/areas_tr_villages.csv", infer_schema_length=0)
 dis = {r["area_id"]: r["name_tr"] for r in pl.read_csv(ROOT / "src/veriatlas/data/areas_tr_districts.csv", infer_schema_length=0).iter_rows(named=True)}
-MUN = {r["area_id"]: r["municipality"].removesuffix(" Bel.") for r in reg.iter_rows(named=True)}
+# the registry keeps only the newest municipality name; the status of that year comes from
+# the raw export (Emek, Alanyurt ... were still beldes in 2007)
+sys.path.insert(0, str(ROOT / "src"))
+from veriatlas.adapters.tuik_neighbourhoods import DOWNLOADS, read_export  # noqa: E402
+
+MUNY = {}
+for f in DOWNLOADS.glob(f"nufus-mahalle-{SLUG.upper()}*.csv"):
+    for cell in read_export(f):
+        if 2007 <= cell.year <= 2012:
+            MUNY[(cell.year, cell.code)] = cell.municipality.removesuffix(" Bel.")
 VIL = set(vil["area_id"])
 pop = duckdb.sql(f"""select area_id, year(period_start) y, sum(value) v from read_parquet('{ROOT}/public/fact.parquet')
  where indicator_id='population' and area_id like 'TR-{PLATE}-%-%' and year(period_start) between 2007 and 2012 group by 1,2""").pl()
@@ -69,10 +78,11 @@ for aid, y, v in pop.iter_rows():
     if aid in VIL:
         kind, name = "koy", aid
     else:
-        m = MUN.get(aid, "")
+        m = MUNY.get((y, aid.rsplit("-", 1)[1]), "")
+        assert m, f"{y} {aid}: belediye yok"
         own = fold(m) in (fold(dis.get(did, "")), fold(SLUG))
         kind, name = ("sehir", dis.get(did)) if own else ("belde", m)
-    rows.append(dict(year=y, district=dis.get(did), name=name, kind=kind, pop=int(v)))
+    rows.append(dict(year=y, district=dis.get(did), name=name, kind=kind, pop=int(v), area_id=aid))
 
 d = pl.DataFrame(rows)
 # a belde is one unit: sum its rows (ADNKS lists it by neighbourhood)
@@ -95,3 +105,43 @@ w.write_csv(OUT / f"tarihsel_{PLATE}.csv")
 b.sort("year", "pop", descending=[False, True]).write_csv(OUT / f"tarihsel_{PLATE}_belde.csv")
 pl.Config.set_tbl_cols(20); pl.Config.set_tbl_width_chars(220)
 print(w.select("year", "kaynak", "toplam", "sehir", "kentsel_belde", "kasaba", "kirsal_belde", "koy", "sehir%", "kent%", "resmi_belediye%"))
+
+
+# TÜİK's own split (il/ilçe merkezi vs belde+köy) for the same years
+legal = duckdb.sql(f"""select year(period_start) y, dims, value from read_parquet('{ROOT}/public/fact.parquet')
+ where indicator_id='urban_rural_legal' and area_id='TR-{PLATE}' and year(period_start) <= 2012""").pl()
+tuik = legal.pivot(on="dims", index="y", values="value").rename({"y": "year", "settlement=town": "tuik_merkez", "settlement=village": "tuik_belde_koy"})
+
+# fixed list: today's building-based class of every place, carried back to 2007-2012
+son = pl.read_csv(OUT / f"kent_{PLATE}_son.csv", infer_schema_length=0)
+by_code = {r["code"]: r["son_sinif"] for r in son.iter_rows(named=True)}
+by_name = {(r["area_id"].rsplit("-", 1)[0], fold(r["name"])): r["son_sinif"] for r in son.iter_rows(named=True)}
+VNAME = {r["area_id"]: r["name_tr"] for r in vil.iter_rows(named=True)}
+RNAME = {r["area_id"]: r["name_tr"] for r in reg.iter_rows(named=True)}
+
+
+def fixed(r):
+    did, code = r["area_id"].rsplit("-", 1)
+    if code in by_code:
+        return by_code[code]
+    nm = VNAME.get(r["area_id"]) or RNAME.get(r["area_id"]) or ""
+    nm = fold(re.sub(r" (Köy|Mah)\.$", "", nm))
+    # "Nilüfer Köy." is today's Nilüferköy; a belde's quarters became one neighbourhood
+    # named after the belde (Yeniceköy); a village may have moved district (Gürsu)
+    for key in ((did, nm), (did, nm + "koy"), (did, fold(r["name"] or "")), *(k for k in by_name if k[1] in (nm, nm + "koy"))):
+        if key in by_name:
+            return by_name[key]
+    return "merkez" if r["kind"] == "sehir" else "eslesmedi"
+
+
+a = pl.DataFrame([r for r in rows if r["year"] >= 2007])
+a = a.with_columns(pl.struct("area_id", "kind", "name").map_elements(fixed, return_dtype=pl.Utf8).alias("sabit"))
+fx = a.group_by("year").agg(
+    (pl.col("pop").filter(pl.col("sabit").is_in(["merkez", "kentsel_belde"])).sum() / pl.col("pop").sum() * 100).round(1).alias("sabit_liste_kent%"),
+    pl.col("pop").filter(pl.col("sabit") == "eslesmedi").sum().alias("eslesmeyen"))
+a.filter((pl.col("sabit") == "eslesmedi") & (pl.col("year") == 2012)).sort("pop", descending=True).write_csv(OUT / "eslesmeyen.csv")
+cmp = w.filter(pl.col("year") >= 2007).join(tuik, on="year").join(fx, on="year").with_columns(
+    (pl.col("tuik_merkez") / pl.col("toplam") * 100).round(1).alias("tuik_merkez%"))
+cmp = cmp.select("year", "toplam", "tuik_merkez", "sehir", "tuik_merkez%", "resmi_belediye%", "kent%", "sabit_liste_kent%", "eslesmeyen")
+cmp.write_csv(OUT / f"tarihsel_{PLATE}_2007_2012.csv")
+print(cmp)
