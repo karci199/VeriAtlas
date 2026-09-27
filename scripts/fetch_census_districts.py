@@ -61,7 +61,7 @@ RE_OPTION = re.compile(r'<option id="(z_\w+)"[^>]*>([^<]*)<')
 
 
 def log(*parts) -> None:
-    print(dt.datetime.now().strftime("%H:%M:%S"), *parts, flush=True)
+    print(dt.datetime.now().astimezone().strftime("%H:%M:%S"), *parts, flush=True)
 
 
 def selects(text: str) -> dict[str, list[tuple[str, str]]]:
