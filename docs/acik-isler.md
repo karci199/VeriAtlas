@@ -34,6 +34,19 @@ vermiyor, Endeksa veriyor); `median_age` toplam türetmesi ±0,5 zikzak (ayrı i
 Alınmayanlar: yabanciSermayeGenelDurumu (küçük sayılar, çift ürün satırı), ilçe × ürün (ilceGenelDurumuKodlananUrun),
 personel sütunları (şişkin). Yedek public/fact.before-tobb-capacity-2026-09-27.parquet. Web export yok.
 
+**Endeksa (2026-09-27 gece, SONRA YAPILACAK):** ham `C:eri-ham\endeksa\demography` (mahalle, 2024 anlık).
+Eğitim yüklenecek: `education_level_neighbourhood`, ilçe toplamı TÜİK'in %93-96'sı (lise 0,96, üniversite 0,93,
+okuryazar olmayan 0,72 — küçük köyler hane=0 şablonu). Tapu satışları YÜKLENMEZ: bağımsız bölüm TÜİK konut satışının
+%55-60'ı, 2022'de 1,10; arazi/müstakil 2020-22'de 20-26 mn (hata); büyük ilçelerde korelasyon daha kötü (0,46).
+Kullanılmayan dolu alanlar: medeni durum, otomobil/taşıt, ev sahibi/kiracı (model), SES/gelir/harcama (model, `estimated`),
+ilan/emlakçı sayısı. Konut/hane/yazlık/ticari zaten kent-kır analizinde kullanıldı. Fiyat (Endeks) sayfaları çekilmedi.
+
+**Kent/kır bina yöntemi (2026-09-27):** Bursa pilotu bitti, betik scratchpad'de (kent_il.py), projeye taşınmadı. Kurallar:
+Microsoft bina (Şubat 2026) + 50 m tampon, merkez = 2013 öncesi mahalle nüfusunu en çok taşıyan leke, zincir 300 m yalnız eski
+merkez mahallesi kümeleri, ayrı leke ≥5.000 kişi ya da mahalle nüfusu ≥5.000 = kentsel belde, OSB kent sınırından düşülür,
+yazlık etiketi (konutların <%30'unda hane). Bursa: kent %91,6 (merkez %80,5 + kentsel belde %11,1), DEGURBA %93,0.
+GHSL bina hacmi ve GlobalBuildingAtlas (ham `C:eri-ham\ghsl`, `C:eri-ham\gba`) denetim/ileride yapı dokusu için.
+
 ### Kalan iş ve tahmini süre (2026-09-26)
 
 Kullanıcı kararı: liste sonraya bırakıldı. Sıra önerisi yukarıdan aşağı.
