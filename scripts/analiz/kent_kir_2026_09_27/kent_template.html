@@ -1,0 +1,26 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kent sınırı</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>html,body{margin:0;height:100%;font-family:Segoe UI,Arial;background:#111}#map{position:absolute;inset:0}
+#p{position:absolute;z-index:1000;top:10px;left:50px;background:#fff;padding:8px 12px;border-radius:6px;font-size:14px;box-shadow:0 1px 6px #0006}
+#p select{font-size:14px}.lg span{display:inline-block;width:14px;height:10px;margin:0 4px 0 10px;vertical-align:middle}</style></head>
+<body><div id="map"></div><div id="p"><select id="s"></select> <b id="a"></b>
+<div class="lg"><span style="border:3px solid #ff2020"></span>binalardan kent sınırı<span style="background:#ff9a7a88"></span>kent mahallesi<span style="background:#9fd08a55"></span>kır mahallesi<span style="border:2px dashed #4db3ff"></span>diğer yerleşim</div></div>
+<script>
+const D=__DATA__;
+const map=L.map('map');
+const sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Esri'}).addTo(map);
+const osm=L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'OSM'});
+L.control.layers({'Uydu':sat,'Harita':osm}).addTo(map);
+let grp=L.layerGroup().addTo(map);
+const s=document.getElementById('s');
+for(const k in D){const o=document.createElement('option');o.value=k;o.textContent=D[k].ad;s.appendChild(o)}
+function show(k){grp.clearLayers();const d=D[k];
+ const m=L.geoJSON(d.mahalle,{style:f=>({color:'#fff',weight:1,fillColor:f.properties.kent?'#ff9a7a':'#9fd08a',fillOpacity:f.properties.kent?.35:.15}),
+  onEachFeature:(f,l)=>{const p=f.properties;l.bindPopup(`<b>${p.ad}</b><br>${p.kent?'KENT':'kır'}<br>nüfus 2025: ${p.nufus??'-'}<br>bina: ${p.bina} (kent kümesinde ${p.kumede})<br>ilk görülme: ${p.ilk??'-'}`);l.bindTooltip(p.ad)}}).addTo(grp);
+ if(d.diger)L.geoJSON(d.diger,{style:{color:'#4db3ff',weight:2,dashArray:'5 4',fill:false}}).addTo(grp);
+ const t=L.geoJSON(d.kent,{style:{color:'#ff2020',weight:3,fill:false}}).addTo(grp);
+ document.getElementById('a').textContent=`kent alanı ${d.alan} km²`;map.fitBounds(t.getBounds().pad(0.4));}
+s.onchange=()=>show(s.value);show(s.value);
+</script></body></html>

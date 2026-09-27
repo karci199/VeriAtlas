@@ -41,7 +41,7 @@ okuryazar olmayan 0,72 — küçük köyler hane=0 şablonu). Tapu satışları 
 Kullanılmayan dolu alanlar: medeni durum, otomobil/taşıt, ev sahibi/kiracı (model), SES/gelir/harcama (model, `estimated`),
 ilan/emlakçı sayısı. Konut/hane/yazlık/ticari zaten kent-kır analizinde kullanıldı. Fiyat (Endeks) sayfaları çekilmedi.
 
-**Kent/kır bina yöntemi (2026-09-27):** Bursa pilotu bitti, betik scratchpad'de (kent_il.py), projeye taşınmadı. Kurallar:
+**Kent/kır bina yöntemi (2026-09-27):** Bursa pilotu, betikler `scripts/analiz/kent_kir_2026_09_27/`, çıktılar `C:\veri-ham\analiz\kent_kir_2026_09_27`. KASABA sınıfı (ayrı leke 2.000-5.000, kır) eklendi ama çalıştırılmadı — ilk iş. TOBB ilçe×ürün çekimi bitti, adaptör yok. Kurallar:
 Microsoft bina (Şubat 2026) + 50 m tampon, merkez = 2013 öncesi mahalle nüfusunu en çok taşıyan leke, zincir 300 m yalnız eski
 merkez mahallesi kümeleri, ayrı leke ≥5.000 kişi ya da mahalle nüfusu ≥5.000 = kentsel belde, OSB kent sınırından düşülür,
 yazlık etiketi (konutların <%30'unda hane). Bursa: kent %91,6 (merkez %80,5 + kentsel belde %11,1), DEGURBA %93,0.
