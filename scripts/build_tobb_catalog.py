@@ -105,6 +105,33 @@ INDICATORS = {
             "sektörde üreten firma her birinde sayılıyor."
         ),
     ),
+    "tobb_foreign_product_producers": (
+        "Ürüne göre yabancı sermayeli kapasite raporlu üretici sayısı",
+        "Foreign-capital producers with a capacity report, by product",
+        "company",
+        ["tobb_product"],
+        ["table", "map", "bar"],
+        (
+            "Yabancı sermayeli üretici sayısı, ürün başına; Türkiye ve il. Türkiye satırı "
+            "kaynağın kendi toplamı, illerin toplamını 1.362 ürünün 1.357'sinde tutuyor. "
+            "Aynı kaynağın ürün × il listesi (yabanciSermayeGenelDurumu) daha küçük sayılar "
+            "veriyor ve bazı ürünleri iki kez yazıyor; alınmadı. TOBB'un güncel kod "
+            "listesinde olmayan 10 eski kod (Türkiye satırında 23 üretici) dışarıda. "
+            "Ürünler toplanmaz."
+        ),
+    ),
+    "tobb_foreign_producers_district": (
+        "İlçeye göre yabancı sermayeli kapasite raporlu üretici sayısı",
+        "Foreign-capital producers with a capacity report, by district",
+        "company",
+        ["nace_division"],
+        ["table", "map", "bar"],
+        (
+            "İlçe başına yabancı sermayeli üretici sayısı, tüm faaliyetler ('total') ve "
+            "sektör sektör. Yalnız ilçesi kayıtlı üreticiler; büyükşehirlerde 'MERKEZ' ve "
+            "'BELİRTİLMEMİŞ' dışarıda. Sektörler toplanmaz."
+        ),
+    ),
 }
 
 

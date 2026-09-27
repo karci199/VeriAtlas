@@ -239,13 +239,11 @@ def staff_rows() -> list[dict]:
     return out
 
 
-def district_rows() -> list[dict]:
+def district_rows(table: str = "ilGenelDurumuIlceDuzeyindeDagilim") -> list[dict]:
     """Producers per district, sector `total` for all activities."""
     names = province_names()
     out = []
-    for path in sorted(
-        (FILES / "tablo" / "ilGenelDurumuIlceDuzeyindeDagilim").glob("*.json")
-    ):
+    for path in sorted((FILES / "tablo" / table).glob("*.json")):
         plate_text, _, sector = path.stem.partition("-")
         plate, sector = int(plate_text), sector or "total"
         # district -> (TOBB name, producers). TOBB keeps two ids for Çarşamba (Samsun
@@ -260,7 +258,7 @@ def district_rows() -> list[dict]:
             if found is None:
                 if name not in NO_DISTRICT:
                     raise KeyError(f"TOBB ilçe: tanınmayan ad {names[plate]} / {name}")
-                UNPLACED["ilce"] = UNPLACED.get("ilce", 0) + row["SAYI"]
+                UNPLACED[table] = UNPLACED.get(table, 0) + row["SAYI"]
                 continue
             if found in placed:
                 if placed[found][0] != name:
@@ -371,6 +369,7 @@ class TobbProducersByStaff(TobbCapacity):
 
 class TobbProducersDistrict(TobbCapacity):
     indicator_id = "tobb_producers_district"
+    table = "ilGenelDurumuIlceDuzeyindeDagilim"
 
     def parse(self, raw: Path) -> pl.DataFrame:
         records = [
@@ -380,7 +379,60 @@ class TobbProducersDistrict(TobbCapacity):
                 "dims": f"nace_division={r['sector']}",
                 "value": r["value"],
             }
-            for r in district_rows()
+            for r in district_rows(self.table)
+        ]
+        return frame(records, self.indicator_id, "company")
+
+
+class TobbForeignProducersDistrict(TobbProducersDistrict):
+    indicator_id = "tobb_foreign_producers_district"
+    table = "yabanciSermayeIlGenelDurumuIlceDuzeyindeDagilim"
+
+
+def foreign_product_rows() -> list[dict]:
+    """Foreign-capital producers per product: Türkiye (-1) and each province.
+
+    Read from `yabanciSermayeIlceGenelDurumuKodlananUrun`, the foreign-capital twin of
+    the table whose counts match the product files. Its sibling
+    `yabanciSermayeGenelDurumuKodlananUrun` (product x province in one list) gives
+    smaller counts for the same cells (Adana 11.07.11.50.01: 1 against 8) and lists some
+    products twice under two spellings of the name; it is not read. Codes missing from
+    the code list are left out, their Türkiye producers counted in `UNPLACED`.
+    """
+    codes = products()
+    out = []
+    table = FILES / "tablo" / "yabanciSermayeIlceGenelDurumuKodlananUrun"
+    for path in sorted(table.glob("*.json")):
+        plate = int(path.stem)
+        if plate == UNKNOWN_PROVINCE:
+            if load(path):
+                raise ValueError("TOBB yabancı sermaye: BİLİNMEYEN il dolu")
+            continue
+        seen = set()
+        for row in load(path):
+            code = row["URUN_KODU"]
+            if code not in codes:
+                # Ten codes (23 producers of 6,854 in the Türkiye row) are not on TOBB's
+                # current code list, so they have no name: left out, counted.
+                if plate == COUNTRY:
+                    UNPLACED["old_code"] = UNPLACED.get("old_code", 0) + row["KR_COUNT"]
+                continue
+            if code in seen:
+                raise ValueError(f"TOBB yabancı sermaye il {plate}: {code} iki kez")
+            seen.add(code)
+            out.append({"plate": plate, "code": code, "value": row["KR_COUNT"]})
+    return out
+
+
+class TobbForeignProductProducers(TobbCapacity):
+    indicator_id = "tobb_foreign_product_producers"
+
+    def parse(self, raw: Path) -> pl.DataFrame:
+        records = [
+            with_area(
+                r["plate"], {"dims": f"tobb_product={r['code']}", "value": r["value"]}
+            )
+            for r in foreign_product_rows()
         ]
         return frame(records, self.indicator_id, "company")
 
@@ -393,5 +445,7 @@ TOBB_CAPACITY_ADAPTERS = {
         TobbProducersByActivity,
         TobbProducersByStaff,
         TobbProducersDistrict,
+        TobbForeignProductProducers,
+        TobbForeignProducersDistrict,
     )
 }

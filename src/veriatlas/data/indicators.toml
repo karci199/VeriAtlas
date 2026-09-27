@@ -76930,4 +76930,26 @@ dims = ["nace_division"]
 views = ["table", "map", "bar"]
 definition_tr = "İlçe başına üretici sayısı, tüm faaliyetler ('total') ve sektör sektör. Yalnız ilçesi kayıtlı üreticiler: ilçe toplamı il toplamının %70-77'si; büyükşehirlerde 'MERKEZ' ve 'BELİRTİLMEMİŞ' yazılanlar dışarıda. Sektörler toplanmaz: birden çok sektörde üreten firma her birinde sayılıyor. TOBB Sanayi Bilgi Sistemi (sanayi.org.tr), odaların verdiği kapasite raporlarının kaydı, 2026-09-27 anlık görüntüsü; yıllık seri değil, 2026 yılına yazıldı. Kimliği belli olmayan il (BİLİNMEYEN) dışarıda. Personel sütunları alınmadı: aynı üreticinin personeli her ürün ve sektör satırında tekrar ediyor (Türkiye toplamı 41,5 milyon). Adaptör src/veriatlas/adapters/tobb_capacity.py."
 
+[indicator.tobb_foreign_product_producers]
+label_tr = "Ürüne göre yabancı sermayeli kapasite raporlu üretici sayısı"
+label_en = "Foreign-capital producers with a capacity report, by product"
+topic = "reel_kesim"
+unit = "company"
+frequency = "annual"
+additive = false
+dims = ["tobb_product"]
+views = ["table", "map", "bar"]
+definition_tr = "Yabancı sermayeli üretici sayısı, ürün başına; Türkiye ve il. Türkiye satırı kaynağın kendi toplamı, illerin toplamını 1.362 ürünün 1.357'sinde tutuyor. Aynı kaynağın ürün × il listesi (yabanciSermayeGenelDurumu) daha küçük sayılar veriyor ve bazı ürünleri iki kez yazıyor; alınmadı. TOBB'un güncel kod listesinde olmayan 10 eski kod (Türkiye satırında 23 üretici) dışarıda. Ürünler toplanmaz. TOBB Sanayi Bilgi Sistemi (sanayi.org.tr), odaların verdiği kapasite raporlarının kaydı, 2026-09-27 anlık görüntüsü; yıllık seri değil, 2026 yılına yazıldı. Kimliği belli olmayan il (BİLİNMEYEN) dışarıda. Personel sütunları alınmadı: aynı üreticinin personeli her ürün ve sektör satırında tekrar ediyor (Türkiye toplamı 41,5 milyon). Adaptör src/veriatlas/adapters/tobb_capacity.py."
+
+[indicator.tobb_foreign_producers_district]
+label_tr = "İlçeye göre yabancı sermayeli kapasite raporlu üretici sayısı"
+label_en = "Foreign-capital producers with a capacity report, by district"
+topic = "reel_kesim"
+unit = "company"
+frequency = "annual"
+additive = false
+dims = ["nace_division"]
+views = ["table", "map", "bar"]
+definition_tr = "İlçe başına yabancı sermayeli üretici sayısı, tüm faaliyetler ('total') ve sektör sektör. Yalnız ilçesi kayıtlı üreticiler; büyükşehirlerde 'MERKEZ' ve 'BELİRTİLMEMİŞ' dışarıda. Sektörler toplanmaz. TOBB Sanayi Bilgi Sistemi (sanayi.org.tr), odaların verdiği kapasite raporlarının kaydı, 2026-09-27 anlık görüntüsü; yıllık seri değil, 2026 yılına yazıldı. Kimliği belli olmayan il (BİLİNMEYEN) dışarıda. Personel sütunları alınmadı: aynı üreticinin personeli her ürün ve sektör satırında tekrar ediyor (Türkiye toplamı 41,5 milyon). Adaptör src/veriatlas/adapters/tobb_capacity.py."
+
 # END tobb_capacity
