@@ -141,7 +141,14 @@ def decide(r):
             return bina, ("" if (s_old and d_kent) else "arada: " + votes)
         # built into the town but a village by record and rural by DEGURBA: when in doubt rural
         return "kir", "arada→kır (şüphede kır): " + votes
-    # building rule says rural
+    # building rule says rural. District-centre exception (Black Sea towns: the centre is a
+    # strip and its old quarters sit on the slopes): a 2007-2012 district-municipality
+    # quarter that is not a converted village is urban when at least a fifth of its
+    # buildings touch the town or DEGURBA calls it urban (matches the user's own lists, 2026-09-28)
+    share = float(r["share"] or 0)
+    if (bina == "kir" and r["eski_statu"] == "ilce_mahalle" and r["kayit_blok"] == "eski_mahalle"
+            and r["haritatr"] != "koyler" and (share >= 0.2 or d_kent)):
+        return "merkez", "ilçe merkezi istisnası: eski ilçe mahallesi, " + ("lekeye kısmen giriyor" if share >= 0.2 else "DEGURBA kent") + " · " + votes
     # no flip to urban: in Bursa many villages became neighbourhoods in 2004 (5216) or
     # before 2007, so an old registry number is no proof of a town (Adaköy, Kumlukalan)
     if s_old and r["haritatr"] == "koyler":
