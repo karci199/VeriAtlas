@@ -265,8 +265,12 @@ def check_report(data: bytes) -> tuple[bool, str]:
     if not numeric:
         return False, "sayisal satir yok"
     checked = bad = 0
-    if any(all(x in r for x in SEX) for r in rows):
-        for r in numeric:
+    # Tables whose header ends with exactly Toplam | Erkek | Kadın (settlements, single
+    # age). Empty cells are dropped when rows are read, so only rows as wide as the
+    # header are compared: age 73 printed as "1 | 1 | (empty)" would read as 73 = 1 + 1.
+    widths = {len(r) for r in rows if tuple(r[-3:]) == SEX}
+    if widths:
+        for r in (r for r in numeric if len(r) in widths):
             tail = [number(c) for c in r[-3:]]
             if len(tail) == 3 and None not in tail:
                 checked += 1
