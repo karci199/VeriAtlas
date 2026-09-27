@@ -43,6 +43,18 @@ for (d,), g in ptt.group_by(["ilçe"]):
         m = r["Mahalle"].split("(")[0].removesuffix(" MAH").removesuffix(" MAH.").strip()
         PTT[(fold(d), fold(m).removesuffix("mah"))] = title(r["semt_bucak_belde"])
 
+# former beldes absorbed into a town (İnegöl Alanyurt, closed 2008): the municipality a
+# neighbourhood code was listed under in its first ADNKS year. The registry keeps only the
+# newest municipality, and haritatr mixes same-named quarters (Cumhuriyet -> Kurşunlu).
+sys.path.insert(0, str(ROOT / "src"))
+from veriatlas.adapters.tuik_neighbourhoods import DOWNLOADS, read_export  # noqa: E402
+
+FIRST = {}
+for f in DOWNLOADS.glob(f"nufus-mahalle-{IL}*.csv"):
+    for cell in read_export(f):
+        if cell.year <= 2012 and (cell.code not in FIRST or cell.year < FIRST[cell.code][0]):
+            FIRST[cell.code] = (cell.year, cell.municipality.removesuffix(" Bel."))
+
 # haritatr: belde groups with more than one neighbourhood
 ht = pl.read_csv(f"C:/veri-ham/haritatr/{PLATE}/semt_mahalle.csv", infer_schema_length=0)
 HT = {(fold(r["district"]), fold(r["neighbourhood"].removesuffix(" Köyü"))): r["semt"] for r in ht.iter_rows(named=True)}
@@ -87,6 +99,9 @@ def semt(r):
         if fd in split:
             # a neighbourhood split after 2022 (Yıldırım Sakarya) takes its nearest neighbour's semt
             return PTT.get((fd, fold(r["name"]))) or nearest_semt(r["area_id"], fd)
+        m = FIRST.get(r["area_id"].rsplit("-", 1)[1], (0, d))[1]
+        if fold(m) not in (fd, fold(IL)):
+            return m  # a former belde, now part of the town
         return f"{d} Merkez"
     # kentsel belde / kasaba: former belde group from haritatr, else PTT semt in a split
     # district (Görükle), else the neighbourhood itself
