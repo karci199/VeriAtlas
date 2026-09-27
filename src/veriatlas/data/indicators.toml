@@ -26466,6 +26466,7 @@ duty_invalidity = "Vazife malullüğü aylığı"
 survivor_pension = "Ölüm aylığı"
 permanent_incapacity_income = "Sürekli iş göremezlik geliri"
 survivor_income = "Ölüm geliri"
+death = "Ölüm toptan ödemesi (hak sahibi)"
 patriotic = "Vatani hizmet (kendisi/hak sahibi ayrımsız)"
 patriotic_self = "Vatani hizmet: kendisi"
 patriotic_survivor = "Vatani hizmet: hak sahibi"
@@ -27405,6 +27406,28 @@ additive = true
 dims = ["age", "benefit", "recipient", "scheme"]
 views = ["table", "line", "bar"]
 definition_tr = "SGK istatistik yıllıkları 2014-2025, 'Yıl İçinde Aylık Bağlananların Yaş(lar)a ve Aylık Türüne Göre Dağılımı': 4/a, 4/b ve (2019'dan) 4/c; tek yaş, aylık türü (malullük, yaşlılık, ölüm) ve alan (malullük/yaşlılıkta cinsiyet, ölüm aylığında eş, çocuk, ana, baba). 4/b iki parça basılır (2014-2018 1479/2926, 2020'den tarım dışı/tarım), toplandı; 4/c adi ve vazife malullüğü malullükte toplandı. 'N ve üzeri' / 'N+' satırı yalnız tek yaşlar orada bitiyorsa açık uç bant sayıldı, değilse ara toplamdır. Her sütunun yaşları basılı Toplam'ı, erkek+kadın Toplam sütununu tutmalı. Türkiye geneli. Adaptör src/veriatlas/adapters/sgk_pensions_granted.py."
+
+[indicator.sgk_lump_sum_payments]
+label_tr = "Yıl içinde toptan ödeme yapılanlar (tek yaş)"
+label_en = "Lump-sum payments in the year, by age"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["age", "benefit", "scheme", "sex"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllıkları 2014-2025, 'Yıl İçinde Yaşlılık Toptan Ödemesi Yapılanların ve Ölüm Toptan Ödemesi Yapılan Hak Sahiplerinin Cinsiyet ve Yaşlara Göre Dağılımı': 4/a, 4/b, 4/c; tek yaş ve cinsiyet. Yaşlılık toptan ödemesi aylık için gün sayısı yetmeyen sigortalıya primlerinin bir kez geri ödenmesidir; ölüm toptan ödemesinde sayılan kişi hak sahibidir (yaş ve cinsiyet onun). 4/b parçaları (2014-2018 1479/2926, 2019'dan tarım/tarım dışı) toplandı. En yaşlı satır basıldığı gibi açık uç: 2014-2017 '75+', 2018 '65+', 2019'dan '80+'. Açık uç satır bazen ara toplamdır; her sütunda basılı Toplam'ı tutan okuma seçildi. 2016 alınmadı: tabloları hiçbir okumada toplamı tutmuyor (4/a ölüm 919+1346, Toplam 2252). 2007-2013 tabloları yaş gruplu ve yalnız 4/a, alınmadı. Türkiye geneli. Adaptör src/veriatlas/adapters/sgk_lump_sum.py."
+
+[indicator.sgk_marriage_allowance]
+label_tr = "Yıl içinde evlenme ödeneği alanlar (tek yaş)"
+label_en = "Marriage allowance paid in the year, by age"
+topic = "sosyal_guvenlik"
+unit = "person"
+frequency = "annual"
+additive = true
+dims = ["age", "benefit", "scheme"]
+views = ["table", "line", "bar"]
+definition_tr = "SGK istatistik yıllıkları 2014-2025: 2014-2018 'Aylık veya gelir almakta iken evlenmeleri sebebiyle evlenme ödeneği alan kız çocuklarının yaşlarına göre dağılımı' (tablo 2.15), 2019'dan 'Yıl içinde evlenme ödeneği alanların yaş ve kapsam türüne göre dağılımı' (tablo 2.44). Ölüm aylığı ya da ölüm geliri alan kız çocuğu evlenince aylığı kesilir ve bir kez evlenme ödeneği alır. Tek yaş, kapsam (4/a, 4/b, 4/c) ve kesilen aylık türü (ölüm aylığı / ölüm geliri). 4/b bağımsız çalışan ve tarım parçaları toplandı. En yaşlı satır açık uç: 2014-2018 '65+', 2019'dan '80+'. Her sütunun yaşları basılı Toplam'ı, kapsam Toplamları genel Toplam'ı tutmalı; genel toplam sütununun tek yaşları kapsamlarınkinden birkaç kişi kayabildiği için yaş yaş denetlenmez. 2012-2013 yaş gruplu tablolar alınmadı. Türkiye geneli. Adaptör src/veriatlas/adapters/sgk_marriage_allowance.py."
 
 [indicator.sgk_active_passive_ratio]
 label_tr = "Aktif/pasif oranı (sigortalı başına aylık alan)"
