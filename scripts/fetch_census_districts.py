@@ -229,7 +229,10 @@ class Census:
         return self.k.opener.open(url, timeout=300).read()
 
 
-def table_rows(data: bytes) -> list[list[str]]:
+def table_rows(data: bytes, keep_empty: bool = False) -> list[list[str]]:
+    """Cells of every row. Empty cells are dropped unless `keep_empty`: dropping them
+    lines up rows whose leading province/district cells are printed only once, but it
+    shifts a row with an empty value cell (an empty cell is a zero)."""
     text = data.decode("cp1254", "replace")
     rows = []
     for row in re.findall(r"<tr[^>]*>(.*?)</tr>", text, re.DOTALL | re.IGNORECASE):
@@ -239,8 +242,9 @@ def table_rows(data: bytes) -> list[list[str]]:
                 r"<t[dh][^>]*>(.*?)</t[dh]>", row, re.DOTALL | re.IGNORECASE
             )
         ]
-        cells = [c for c in cells if c]
-        if cells:
+        if not keep_empty:
+            cells = [c for c in cells if c]
+        if any(cells):
             rows.append(cells)
     return rows
 
@@ -279,17 +283,23 @@ def check_report(data: bytes) -> tuple[bool, str]:
             if len(tail) == 3 and None not in tail:
                 checked += 1
                 bad += tail[0] != tail[1] + tail[2]
+    # Toplam / Erkek / Kadın rows. The row sums must agree whatever the layout; cell by
+    # cell only where the three rows are equally long, since an empty cell (a zero) is
+    # dropped and would shift the rest.
     for i in range(len(rows) - 2):
         three = rows[i : i + 3]
         marks = [next((j for j, c in enumerate(r) if c in SEX), None) for r in three]
         if None in marks or [three[k][marks[k]] for k in range(3)] != list(SEX):
             continue
-        values = [[number(c) for c in r[m + 1 :]] for r, m in zip(three, marks)]
-        width = min(len(v) for v in values)
-        for a, b, c in zip(*(v[-width:] for v in values)):
-            if None not in (a, b, c):
+        tails = [[number(c) for c in r[m + 1 :]] for r, m in zip(three, marks)]
+        if any(None in t for t in tails):
+            continue
+        checked += 1
+        bad += sum(tails[0]) != sum(tails[1]) + sum(tails[2])
+        if len({len(t) for t in tails}) == 1:
+            for x, y, z in zip(*tails):
                 checked += 1
-                bad += a != b + c
+                bad += x != y + z
     return True, f"{len(numeric)} satir, {checked} denetim, {bad} tutmayan"
 
 
