@@ -71,6 +71,38 @@ nb = nb.with_columns(pl.struct("district", "name").map_elements(
     lambda s: hmap.get((fold(s["district"]), fold(s["name"])), "yok"), return_dtype=pl.Utf8).alias("haritatr"))
 
 
+# (6) TKGM parcels and (7) PTT streets: people per parcel and per street, share of named
+# streets. Informative columns and a check on the building rule; they do not decide.
+# TKGM names differ from ADNKS ("Yenimahalle", "Yeşilcami", "Boyalıca/kılıç"): match on the
+# folded name, then on the name with "mahalle" stripped, then on the part before "/",
+# summed over the pieces.
+tk = pl.read_csv("C:/veri-ham/tkgm/megsis_mahalle_2026-09-18.csv").filter(pl.col("il").map_elements(fold, return_dtype=pl.Utf8) == SLUG)
+TK = {}
+for r in tk.iter_rows(named=True):
+    d = fold(r["ilce"]); base = r["mahalle"].split("/")[0]
+    for key in {fold(r["mahalle"]), fold(base), fold(base).removesuffix("mahalle").removesuffix("mah")}:
+        TK.setdefault((d, key), [0.0, 0.0]); TK[(d, key)][0] += float(r["tapu_parsel"] or 0); TK[(d, key)][1] += float(r["kesin_koordinatli"] or 0)
+pt = pl.read_csv("C:/veri-ham/ptt/postakodu_2026-09-18.csv", infer_schema_length=0).filter(pl.col("il") == PTT_IL)
+pt = pt.with_columns(pl.col("sokak").str.contains(r"/\d+$").alias("num")).group_by("ilce", "mahalle").agg(
+    pl.col("sokak").n_unique().alias("sokak"), (~pl.col("num")).sum().alias("adli"))
+PT = {(fold(r["ilce"]), fold(r["mahalle"].split("(")[0]).removesuffix("mah")): (r["sokak"], r["adli"]) for r in pt.iter_rows(named=True)}
+
+
+def ext(s):
+    d, n = fold(s["district"]), fold(s["name"])
+    keys = (n, n.removesuffix("mahalle").removesuffix("mah"), n + "koyu", n.removesuffix("koyu"))
+    tkv = next((TK[(d, k)] for k in keys if (d, k) in TK), [None, None])
+    ptv = next((PT[(d, k)] for k in keys if (d, k) in PT), (None, None))
+    return {"parsel": tkv[0], "kesin_koord": tkv[1], "sokak": None if ptv[0] is None else int(ptv[0]), "adli_sokak": None if ptv[1] is None else int(ptv[1])}
+
+
+nb = nb.with_columns(pl.struct("district", "name").map_elements(ext, return_dtype=pl.Struct({"parsel": pl.Float64, "kesin_koord": pl.Float64, "sokak": pl.Int64, "adli_sokak": pl.Int64})).alias("_x")).unnest("_x")
+nb = nb.with_columns((pl.col("pop").cast(pl.Float64) / pl.col("parsel")).round(2).alias("kisi_parsel"),
+                     (pl.col("pop").cast(pl.Float64) / pl.col("sokak")).round(1).alias("kisi_sokak"),
+                     (pl.col("adli_sokak") / pl.col("sokak") * 100).round(0).alias("adli_sokak_pct"))
+print("tapu eşleşen", nb.filter(pl.col("parsel").is_not_null()).height, "| sokak eşleşen", nb.filter(pl.col("sokak").is_not_null()).height, "/", nb.height)
+
+
 def decide(r):
     bina = r["sinif"]
     if bina == "osb":
