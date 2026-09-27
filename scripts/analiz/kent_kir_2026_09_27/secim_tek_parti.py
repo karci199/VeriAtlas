@@ -31,7 +31,10 @@ for e in EL:
         n = sum(v["v"].get(p, 0) for p in PARTY)
         for key in ((e, "kent_kir", C[k]), (e, "sinif", S[k]), (e, "ilce", f"{DI[k]}|{C[k]}")):
             t = tot.setdefault(key, [0, 0]); t[0] += n; t[1] += v["g"]
-pct = lambda *k: (round(tot[k][0] / tot[k][1] * 100, 1) if k in tot and tot[k][1] else None)
+# an election the party did not enter (Manisa metropolitan 2019/2024: the alliance ran an
+# MHP candidate) shows as empty, not as 0
+absent = {e for e in EL if not any(k[0] == e and v[0] > 0 for k, v in tot.items())}
+pct = lambda *k: (round(tot[k][0] / tot[k][1] * 100, 1) if k in tot and tot[k][1] and k[0] not in absent else None)
 els = sorted({k[0] for k in tot}, key=EL.index)
 a = pl.DataFrame([dict(secim=e, kent=pct(e, "kent_kir", "kent"), kir=pct(e, "kent_kir", "kır"),
                        **{("koy" if s == "kir" else s): pct(e, "sinif", s) for s in ("merkez", "kentsel_belde", "kasaba", "kirsal_belde", "kir")}) for e in els])
