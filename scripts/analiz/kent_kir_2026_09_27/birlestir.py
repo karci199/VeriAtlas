@@ -84,9 +84,8 @@ for r in tk.iter_rows(named=True):
     for key in {fold(r["mahalle"]), fold(base), fold(base).removesuffix("mahalle").removesuffix("mah")}:
         TK.setdefault((d, key), [0.0, 0.0]); TK[(d, key)][0] += float(r["tapu_parsel"] or 0); TK[(d, key)][1] += float(r["kesin_koordinatli"] or 0)
 pt = pl.read_csv("C:/veri-ham/ptt/postakodu_2026-09-18.csv", infer_schema_length=0).filter(pl.col("il") == PTT_IL)
-pt = pt.with_columns(pl.col("sokak").str.contains(r"/\d+$").alias("num")).group_by("ilce", "mahalle").agg(
-    pl.col("sokak").n_unique().alias("sokak"), (~pl.col("num")).sum().alias("adli"))
-PT = {(fold(r["ilce"]), fold(r["mahalle"].split("(")[0]).removesuffix("mah")): (r["sokak"], r["adli"]) for r in pt.iter_rows(named=True)}
+pt = pt.group_by("ilce", "mahalle").agg(pl.col("sokak").n_unique().alias("sokak"))
+PT = {(fold(r["ilce"]), fold(r["mahalle"].split("(")[0]).removesuffix("mah")): int(r["sokak"]) for r in pt.iter_rows(named=True)}
 
 
 def ext(s):
