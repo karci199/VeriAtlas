@@ -171,7 +171,10 @@ def run(topic: str, key: str, row: dict, province: int, years: list[int]) -> str
         output = "ZAMAN_ASIMI"
     chosen = re.search(r"il: (.+)", output)
     note = chosen.group(1).strip() if chosen else "?"
-    if "LIMIT_ASILDI" in output:
+    # A big province (İstanbul, İzmir, Konya, Ankara) is over the cap before the report is
+    # asked: MEDAS then refuses the tick on "all districts" and the level count stays 0.
+    # That is the cap speaking, not a broken level, so it halves the years like one.
+    if "LIMIT_ASILDI" in output or "DUZEY_TUTMADI" in output:
         return "limit"
     if valid(target, years):
         log("   indi", target.name, note, target.stat().st_size, "bayt")
