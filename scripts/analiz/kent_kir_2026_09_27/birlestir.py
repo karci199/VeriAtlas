@@ -56,6 +56,14 @@ for r in vil.iter_rows(named=True):
     old.setdefault((r["parent_id"], fold(r["name_tr"].removesuffix(" Köy."))), "koy")
 nb = nb.with_columns(pl.struct("area_id", "name").map_elements(
     lambda s: old.get((s["area_id"].rsplit("-", 1)[0], fold(s["name"])), "yok"), return_dtype=pl.Utf8).alias("eski_statu"))
+# a former belde whose quarters were merged into one neighbourhood named after it in 2014
+# (Urganlı, Sart, Yeniceköy) matches on the belde name, not on a quarter name
+BEL = {}
+for r in reg.iter_rows(named=True):
+    BEL.setdefault(r["parent_id"], {})[fold(r["municipality"].removesuffix(" Bel."))] = r["municipality"].removesuffix(" Bel.")
+nb = nb.with_columns(pl.struct("area_id", "name", "eski_statu").map_elements(
+    lambda s: s["eski_statu"] if s["eski_statu"] != "yok" else BEL.get(s["area_id"].rsplit("-", 1)[0], {}).get(fold(s["name"]), "yok"),
+    return_dtype=pl.Utf8).alias("eski_statu"))
 # a municipality other than the district's own (or metropolitan Bursa) was a belde
 nb = nb.with_columns(pl.struct("district", "eski_statu").map_elements(
     lambda s: s["eski_statu"] if s["eski_statu"] in ("koy", "yok") else "ilce_mahalle"
