@@ -27429,6 +27429,34 @@ dims = ["age", "benefit", "scheme"]
 views = ["table", "line", "bar"]
 definition_tr = "SGK istatistik yıllıkları 2014-2025: 2014-2018 'Aylık veya gelir almakta iken evlenmeleri sebebiyle evlenme ödeneği alan kız çocuklarının yaşlarına göre dağılımı' (tablo 2.15), 2019'dan 'Yıl içinde evlenme ödeneği alanların yaş ve kapsam türüne göre dağılımı' (tablo 2.44). Ölüm aylığı ya da ölüm geliri alan kız çocuğu evlenince aylığı kesilir ve bir kez evlenme ödeneği alır. Tek yaş, kapsam (4/a, 4/b, 4/c) ve kesilen aylık türü (ölüm aylığı / ölüm geliri). 4/b bağımsız çalışan ve tarım parçaları toplandı. En yaşlı satır açık uç: 2014-2018 '65+', 2019'dan '80+'. Her sütunun yaşları basılı Toplam'ı, kapsam Toplamları genel Toplam'ı tutmalı; genel toplam sütununun tek yaşları kapsamlarınkinden birkaç kişi kayabildiği için yaş yaş denetlenmez. 2012-2013 yaş gruplu tablolar alınmadı. Türkiye geneli. Adaptör src/veriatlas/adapters/sgk_marriage_allowance.py."
 
+[unit.accident_rate]
+label_tr = "hız (kırılımdaki tanıma göre)"
+label_en = "rate (as defined by the breakdown)"
+decimals = 2
+additive = false
+per_capita = false
+
+[dim.accident_rate]
+label_tr = "Hız"
+label_en = "Rate"
+
+[dim.accident_rate.values]
+frequency_per_100_workers = "Sıklık: 100 çalışanda kaza"
+frequency_per_million_hours = "Sıklık: 1.000.000 iş saatinde kaza"
+severity_days = "Ağırlık: 1.000 iş saatinde kayıp gün"
+severity_hours = "Ağırlık: 1.000 iş saatinde kayıp saat"
+
+[indicator.sgk_work_accident_rates]
+label_tr = "İş kazası sıklık ve ağırlık hızları"
+label_en = "Work accident frequency and severity rates"
+topic = "sosyal_guvenlik"
+unit = "accident_rate"
+frequency = "annual"
+additive = false
+dims = ["accident_rate", "scheme"]
+views = ["table", "line"]
+definition_tr = "SGK istatistik yıllıkları 2007-2022, 'İş Kazası Sıklık ve Ağırlık Hızları' tablosunun Toplam satırı: sıklık (100 çalışanda ve 1.000.000 iş saatinde kaza; çalışan sayısı prim gününün 300'e bölümü) ve ağırlık (1.000 iş saatinde kayıp gün ve saat; geçici iş göremezlik günleri, ölüm ve sürekli iş göremezlik gün karşılıklarıyla). Basıldığı gibi alındı, yeniden hesaplanmadı. Ağırlık hızı yıllık tek değerdir, birleştirilmiş hücrede basılır. 4/a 2007'den, 4/b 2017'den. 2013'ten kaza tanımı değişti (yıl içinde bildirilen), seri kırılır. 2023-2025 yıllıklarında tablo yok. Türkiye geneli. Adaptör src/veriatlas/adapters/sgk_accident_rates.py."
+
 [indicator.sgk_active_passive_ratio]
 label_tr = "Aktif/pasif oranı (sigortalı başına aylık alan)"
 label_en = "Active-to-passive ratio"

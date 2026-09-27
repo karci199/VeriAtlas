@@ -1,11 +1,11 @@
-# Envanter — depodaki 1368 gösterge
+# Envanter — depodaki 1369 gösterge
 
 **Bu dosya elle yazılmaz.** `scripts/build_inventory.py` warehouse'tan üretir;
 burada olmayan gösterge depoda yok demektir. Yeni kaynak önermeden önce buraya
 bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni iş' diye
 önerildi, üçü de zaten yüklüydü.
 
-Üretim: 2026-09-27 · 27.898.745 satır
+Üretim: 2026-09-27 · 27.898.833 satır
 
 ## evds_arsiv (177)
 
@@ -535,7 +535,7 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `evds_urkisi21` | Üretim Endeksi - Çalışan Kişi Başına | TR | 2009-2026 | 2.590 | cbrt_evds |
 | `evds_ursaat21` | Üretim Endeksi - Çalışılan Saat Başına | TR | 2009-2026 | 2.590 | cbrt_evds |
 
-## sosyal_guvenlik (70)
+## sosyal_guvenlik (71)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
@@ -584,6 +584,7 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `sgk_temporary_incapacity_days` | Geçici iş göremezlik süresi | il | 2007-2025 | 46.655 | sgk |
 | `sgk_work_accident_cases` | İş kazası ve meslek hastalığı vakası | il | 2007-2025 | 9.072 | sgk |
 | `sgk_work_accident_deaths` | İş kazası ve meslek hastalığından ölüm | il | 2007-2025 | 9.072 | sgk |
+| `sgk_work_accident_rates` | İş kazası sıklık ve ağırlık hızları | TR | 2007-2022 | 88 | sgk |
 | `sgk_work_accidents_by_activity` | İş kazası ve meslek hastalığı. ekonomik faaliyete (NACE sınıfı) göre | TR | 2013-2025 | 256.914 | sgk |
 | `sgk_work_accidents_by_age` | İş kazası ve meslek hastalığı. yaşa göre | TR | 2014-2025 | 22.930 | sgk |
 | `sgk_work_accidents_by_body_part` | İş kazası ve meslek hastalığı. yaranın vücuttaki yerine göre | TR | 2013-2025 | 9.987 | sgk |
@@ -1236,6 +1237,28 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `permit_other_area` | Yapı ruhsatı — diğer alan (kullanım amacına göre. yıllık) | TR. il. ilçe | 2010-2025 | 86.812 | tuik_medas |
 | `permit_residential_area` | Yapı ruhsatı — konut alanı (kullanım amacına göre. yıllık) | TR. il. ilçe | 2010-2025 | 40.865 | tuik_medas |
 
+## din (17)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `churches` | Tescilli kilise sayısı | TR. il | 2017-2017 | 82 | drdatastats |
+| `diyanet_budget` | Diyanet bütçe harcaması | TR | 2022-2023 | 10 | diyanet |
+| `diyanet_converts` | İhtida edenler (önceki inanç) | TR | 2023-2023 | 15 | diyanet |
+| `diyanet_converts_age` | İhtida edenler (yaş) | TR | 2023-2023 | 18 | diyanet |
+| `diyanet_converts_reason` | İhtida edenler (sebep) | TR | 2023-2023 | 12 | diyanet |
+| `diyanet_mosques` | Cami sayısı | TR. il | 2013-2023 | 92 | diyanet |
+| `diyanet_personnel` | Diyanet personeli | TR. il | 2013-2023 | 762 | diyanet |
+| `diyanet_pilgrims` | Hacca ve umreye gidenler | TR | 2023-2023 | 60 | diyanet |
+| `diyanet_quran_attendance` | Kur'an kursu kursiyeri | il | 2023-2023 | 81 | diyanet |
+| `diyanet_quran_courses` | Kur'an kursu sayısı | il | 2023-2023 | 81 | diyanet |
+| `diyanet_quran_graduates` | Kur'an kursunu bitiren | il | 2023-2023 | 243 | diyanet |
+| `diyanet_quran_graduates_age` | Kur'an kursunu bitiren (yaş) | il | 2023-2023 | 405 | diyanet |
+| `diyanet_quran_graduates_education` | Kur'an kursunu bitiren (eğitim durumu) | il | 2023-2023 | 567 | diyanet |
+| `diyanet_quran_hafiz` | Hafızlık kursiyeri | il | 2023-2023 | 243 | diyanet |
+| `quran_course_students` | Kuran kursu kursiyer sayısı | il | 2019-2021 | 463 | drdatastats |
+| `quran_courses` | Kuran kursu sayısı | il | 2019-2021 | 243 | drdatastats |
+| `synagogues` | Sinagog sayısı | TR. il | 2022-2022 | 12 | drdatastats |
+
 ## fiyatlar (17)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1280,27 +1303,25 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `evds_tldov` | Bankaların Türk Lirası Karşılığı Döviz İşlem Hacimleri | TR | 2002-2026 | 4.495 | cbrt_evds |
 | `evds_tluzvdov` | Türk Lirası Uzlaşmalı Vadeli Döviz İşlemleri | TR | 2021-2026 | 180 | cbrt_evds |
 
-## din (17)
+## gayrimenkul_fiyat (15)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `churches` | Tescilli kilise sayısı | TR. il | 2017-2017 | 82 | drdatastats |
-| `diyanet_budget` | Diyanet bütçe harcaması | TR | 2022-2023 | 10 | diyanet |
-| `diyanet_converts` | İhtida edenler (önceki inanç) | TR | 2023-2023 | 15 | diyanet |
-| `diyanet_converts_age` | İhtida edenler (yaş) | TR | 2023-2023 | 18 | diyanet |
-| `diyanet_converts_reason` | İhtida edenler (sebep) | TR | 2023-2023 | 12 | diyanet |
-| `diyanet_mosques` | Cami sayısı | TR. il | 2013-2023 | 92 | diyanet |
-| `diyanet_personnel` | Diyanet personeli | TR. il | 2013-2023 | 762 | diyanet |
-| `diyanet_pilgrims` | Hacca ve umreye gidenler | TR | 2023-2023 | 60 | diyanet |
-| `diyanet_quran_attendance` | Kur'an kursu kursiyeri | il | 2023-2023 | 81 | diyanet |
-| `diyanet_quran_courses` | Kur'an kursu sayısı | il | 2023-2023 | 81 | diyanet |
-| `diyanet_quran_graduates` | Kur'an kursunu bitiren | il | 2023-2023 | 243 | diyanet |
-| `diyanet_quran_graduates_age` | Kur'an kursunu bitiren (yaş) | il | 2023-2023 | 405 | diyanet |
-| `diyanet_quran_graduates_education` | Kur'an kursunu bitiren (eğitim durumu) | il | 2023-2023 | 567 | diyanet |
-| `diyanet_quran_hafiz` | Hafızlık kursiyeri | il | 2023-2023 | 243 | diyanet |
-| `quran_course_students` | Kuran kursu kursiyer sayısı | il | 2019-2021 | 463 | drdatastats |
-| `quran_courses` | Kuran kursu sayısı | il | 2019-2021 | 243 | drdatastats |
-| `synagogues` | Sinagog sayısı | TR. il | 2022-2022 | 12 | drdatastats |
+| `cadastral_parcels` | Parsel sayısı (kayda göre) | il. ilçe. mahalle. köy | 2026-2026 | 129.552 | tkgm_megsis |
+| `cadastral_parcels_by_approval` | Parsel sayısı (onay durumuna göre) | il. ilçe. mahalle. köy | 2026-2026 | 86.368 | tkgm_megsis |
+| `cadastral_parcels_by_coordinate` | Parsel sayısı (koordinat niteliğine göre) | il. ilçe. mahalle. köy | 2026-2026 | 129.552 | tkgm_megsis |
+| `commercial_property_price_index` | Ticari gayrimenkul fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
+| `existing_house_price_index` | Yeni olmayan konutlar fiyat endeksi | TR | 2010-2026 | 199 | cbrt_evds |
+| `house_price_index` | Konut fiyat endeksi | TR. İBBS-1. İBBS-2 | 2010-2026 | 3.980 | cbrt_evds |
+| `house_price_index_2017` | Konut fiyat endeksi. 26 bölge (2017=100. arşiv) | TR. İBBS-2 | 2010-2024 | 4.671 | cbrt_evds |
+| `housing_unit_price` | Konut birim fiyatı | TR. il | 2010-2026 | 4.562 | cbrt_evds |
+| `housing_unit_rent` | Konut birim kirası | TR. il | 2018-2026 | 2.418 | cbrt_evds |
+| `new_house_price_index` | Yeni konutlar fiyat endeksi | TR | 2010-2026 | 199 | cbrt_evds |
+| `new_tenant_rent_index` | Yeni kiracı kira endeksi | TR. İBBS-1. İBBS-2 | 2018-2026 | 2.060 | cbrt_evds |
+| `office_price_index` | Ofis fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
+| `office_unit_price` | Ofis birim fiyatı | TR. il | 2015-2025 | 341 | cbrt_evds |
+| `shop_price_index` | Dükkân fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
+| `shop_unit_price` | Dükkân birim fiyatı | TR. il | 2015-2025 | 869 | cbrt_evds |
 
 ## karayolu (15)
 
@@ -1322,26 +1343,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `traffic_accidents_total` | Trafik kazası sayısı (maddi hasarlı dahil) | TR | 2006-2016 | 22 | kgm |
 | `traffic_casualties` | Trafik kazasında ölen ve yaralanan | TR | 2006-2016 | 24 | kgm |
 
-## gayrimenkul_fiyat (15)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `cadastral_parcels` | Parsel sayısı (kayda göre) | il. ilçe. mahalle. köy | 2026-2026 | 129.552 | tkgm_megsis |
-| `cadastral_parcels_by_approval` | Parsel sayısı (onay durumuna göre) | il. ilçe. mahalle. köy | 2026-2026 | 86.368 | tkgm_megsis |
-| `cadastral_parcels_by_coordinate` | Parsel sayısı (koordinat niteliğine göre) | il. ilçe. mahalle. köy | 2026-2026 | 129.552 | tkgm_megsis |
-| `commercial_property_price_index` | Ticari gayrimenkul fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
-| `existing_house_price_index` | Yeni olmayan konutlar fiyat endeksi | TR | 2010-2026 | 199 | cbrt_evds |
-| `house_price_index` | Konut fiyat endeksi | TR. İBBS-1. İBBS-2 | 2010-2026 | 3.980 | cbrt_evds |
-| `house_price_index_2017` | Konut fiyat endeksi. 26 bölge (2017=100. arşiv) | TR. İBBS-2 | 2010-2024 | 4.671 | cbrt_evds |
-| `housing_unit_price` | Konut birim fiyatı | TR. il | 2010-2026 | 4.562 | cbrt_evds |
-| `housing_unit_rent` | Konut birim kirası | TR. il | 2018-2026 | 2.418 | cbrt_evds |
-| `new_house_price_index` | Yeni konutlar fiyat endeksi | TR | 2010-2026 | 199 | cbrt_evds |
-| `new_tenant_rent_index` | Yeni kiracı kira endeksi | TR. İBBS-1. İBBS-2 | 2018-2026 | 2.060 | cbrt_evds |
-| `office_price_index` | Ofis fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
-| `office_unit_price` | Ofis birim fiyatı | TR. il | 2015-2025 | 341 | cbrt_evds |
-| `shop_price_index` | Dükkân fiyat endeksi | TR. İBBS-2 | 2015-2026 | 180 | cbrt_evds |
-| `shop_unit_price` | Dükkân birim fiyatı | TR. il | 2015-2025 | 869 | cbrt_evds |
-
 ## turizm (14)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
@@ -1361,23 +1362,23 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `tourism_expenditure` | Turizm gideri (yurt dışına giden vatandaş) | TR | 2012-2025 | 112 | tuik_medas |
 | `tourism_revenue` | Turizm geliri | TR | 2012-2025 | 19 | tuik_medas |
 
-## konut_nitelik (13)
+## evds_fx_metals (13)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `households_by_bathroom` | Hane. banyonun bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
-| `households_by_build_period` | Hane. binanın inşa yılına göre (2021) | il | 2021-2021 | 324 | tuik_medas |
-| `households_by_elevator` | Hane. kat sayısı ve asansöre göre (2021. yalnız Türkiye) | TR | 2021-2021 | 14 | tuik_medas |
-| `households_by_floors` | Hane. oturduğu binanın kat sayısına göre (2021) | il | 2021-2021 | 486 | tuik_medas |
-| `households_by_heating` | Hane. ısıtma sistemine göre (2021) | il | 2021-2021 | 405 | tuik_medas |
-| `households_by_main_fuel` | Hane. ana yakıt türüne göre (2021) | il | 2021-2021 | 324 | tuik_medas |
-| `households_by_parking` | Hane. binada otopark durumuna göre (2021) | il | 2021-2021 | 162 | tuik_medas |
-| `households_by_piped_water` | Hane. borulu suyun bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
-| `households_by_rooms` | Hane. oda sayısına göre (2021) | il | 2021-2021 | 324 | tuik_medas |
-| `households_by_toilet` | Hane. tuvaletin bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
-| `mean_building_floors` | Oturulan binanın ortalama kat sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
-| `mean_rooms` | Konutların ortalama oda sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
-| `rooms_per_person` | Konutta kişi başına oda (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
+| `evds_altinadt` | Altın Para Basımı. Cumhuriyet ve Reşad Altını. Adet (HMB Darphane) | TR | 2010-2026 | 2.757 | cbrt_evds |
+| `evds_altinbistbul` | Altın Piyasası (BİST) | TR | 2018-2026 | 22.872 | cbrt_evds |
+| `evds_altingr` | Altın Para Basımı. Cumhuriyet ve Reşad Altını. Gram (HMB Darphane) | TR | 2010-2026 | 2.756 | cbrt_evds |
+| `evds_brentpetrol` | Avrupa Brent Petrol Fiyatı | TR | 1987-2026 | 473 | cbrt_evds |
+| `evds_dkefkytl` | Efektif Kurlar | TR | 1990-2026 | 18.244 | cbrt_evds |
+| `evds_dkkurbil` | Konvertibl Olmayan Döviz Kurları | TR | 2009-2026 | 8.361 | cbrt_evds |
+| `evds_goldimprt` | Altın İthalatı (BİST) | TR | 1995-2026 | 371 | cbrt_evds |
+| `evds_gumusbistbul` | Gümüş Piyasası (BİST) | TR | 2018-2026 | 1.253 | cbrt_evds |
+| `evds_mkaltytl` | Altın Fiyatları (Ankara Kuyumcular ve Saatçiler Odası) | TR | 1970-2026 | 2.251 | cbrt_evds |
+| `evds_paladiumbistbul` | Paladyum Piyasası (BİST) | TR | 2018-2026 | 85 | cbrt_evds |
+| `evds_platinbistbul` | Platin Piyasası (BİST) | TR | 2018-2026 | 255 | cbrt_evds |
+| `evds_redkurigm` | Reel Efektif Döviz Kuru-Birim İş Gücü Maliyeti Bazlı | TR | 2003-2025 | 69 | cbrt_evds |
+| `evds_uraltin` | Altın Cevheri Üretimi. Maden Firmaları (BİST) | TR | 2008-2026 | 222 | cbrt_evds |
 
 ## iklim (13)
 
@@ -1397,23 +1398,23 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `oecd_precipitation` | Yıllık toplam yağış (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
 | `oecd_temperature` | Yıllık ortalama sıcaklık (alansal) | il | 1981-2024 | 3.564 | oecd_regional |
 
-## evds_fx_metals (13)
+## konut_nitelik (13)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `evds_altinadt` | Altın Para Basımı. Cumhuriyet ve Reşad Altını. Adet (HMB Darphane) | TR | 2010-2026 | 2.757 | cbrt_evds |
-| `evds_altinbistbul` | Altın Piyasası (BİST) | TR | 2018-2026 | 22.872 | cbrt_evds |
-| `evds_altingr` | Altın Para Basımı. Cumhuriyet ve Reşad Altını. Gram (HMB Darphane) | TR | 2010-2026 | 2.756 | cbrt_evds |
-| `evds_brentpetrol` | Avrupa Brent Petrol Fiyatı | TR | 1987-2026 | 473 | cbrt_evds |
-| `evds_dkefkytl` | Efektif Kurlar | TR | 1990-2026 | 18.244 | cbrt_evds |
-| `evds_dkkurbil` | Konvertibl Olmayan Döviz Kurları | TR | 2009-2026 | 8.361 | cbrt_evds |
-| `evds_goldimprt` | Altın İthalatı (BİST) | TR | 1995-2026 | 371 | cbrt_evds |
-| `evds_gumusbistbul` | Gümüş Piyasası (BİST) | TR | 2018-2026 | 1.253 | cbrt_evds |
-| `evds_mkaltytl` | Altın Fiyatları (Ankara Kuyumcular ve Saatçiler Odası) | TR | 1970-2026 | 2.251 | cbrt_evds |
-| `evds_paladiumbistbul` | Paladyum Piyasası (BİST) | TR | 2018-2026 | 85 | cbrt_evds |
-| `evds_platinbistbul` | Platin Piyasası (BİST) | TR | 2018-2026 | 255 | cbrt_evds |
-| `evds_redkurigm` | Reel Efektif Döviz Kuru-Birim İş Gücü Maliyeti Bazlı | TR | 2003-2025 | 69 | cbrt_evds |
-| `evds_uraltin` | Altın Cevheri Üretimi. Maden Firmaları (BİST) | TR | 2008-2026 | 222 | cbrt_evds |
+| `households_by_bathroom` | Hane. banyonun bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
+| `households_by_build_period` | Hane. binanın inşa yılına göre (2021) | il | 2021-2021 | 324 | tuik_medas |
+| `households_by_elevator` | Hane. kat sayısı ve asansöre göre (2021. yalnız Türkiye) | TR | 2021-2021 | 14 | tuik_medas |
+| `households_by_floors` | Hane. oturduğu binanın kat sayısına göre (2021) | il | 2021-2021 | 486 | tuik_medas |
+| `households_by_heating` | Hane. ısıtma sistemine göre (2021) | il | 2021-2021 | 405 | tuik_medas |
+| `households_by_main_fuel` | Hane. ana yakıt türüne göre (2021) | il | 2021-2021 | 324 | tuik_medas |
+| `households_by_parking` | Hane. binada otopark durumuna göre (2021) | il | 2021-2021 | 162 | tuik_medas |
+| `households_by_piped_water` | Hane. borulu suyun bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
+| `households_by_rooms` | Hane. oda sayısına göre (2021) | il | 2021-2021 | 324 | tuik_medas |
+| `households_by_toilet` | Hane. tuvaletin bulunduğu yere göre (2021) | il | 2021-2021 | 243 | tuik_medas |
+| `mean_building_floors` | Oturulan binanın ortalama kat sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
+| `mean_rooms` | Konutların ortalama oda sayısı (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
+| `rooms_per_person` | Konutta kişi başına oda (2021) | TR. il | 2021-2021 | 82 | tuik_medas |
 
 ## trafik_kaza (12)
 
@@ -1431,6 +1432,19 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `road_injured_per_million_cars` | Milyon otomobile yaralanan | TR. il | 1995-2025 | 2.542 | tuik_medas |
 | `road_injured_per_million_vehicles` | Milyon taşıta yaralanan | TR. il | 1995-2025 | 2.542 | tuik_medas |
 | `vehicles_in_injury_accidents` | Ölümlü yaralanmalı kazaya karışan taşıt (yalnız Türkiye) | TR | 2012-2025 | 126 | tuik_medas |
+
+## evlenme_bosanma (8)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `consanguineous_marriage` | Akraba evliliği oranı | TR. il | 2010-2025 | 1.312 | tuik_medas |
+| `divorces` | Boşanma sayısı | TR. il | 2001-2025 | 2.050 | tuik_medas |
+| `divorces_district` | Boşanma sayısı (ilçe) | ilçe | 2014-2025 | 11.642 | tuik_medas |
+| `marriages` | Evlenme sayısı | TR. il | 2001-2025 | 2.050 | tuik_medas |
+| `marriages_by_age` | Evlenme sayısı (kadın ve erkeğin yaş grubuyla) | TR. il | 2001-2025 | 144.468 | tuik_medas |
+| `marriages_district` | Evlenme sayısı (ilçe) | ilçe | 2014-2025 | 11.659 | tuik_medas |
+| `mean_first_marriage_age` | Ortalama ilk evlenme yaşı | TR. il | 2001-2025 | 4.100 | tuik_medas |
+| `mean_marriage_age` | Ortalama evlenme yaşı | TR. il | 2001-2025 | 6.150 | tuik_medas |
 
 ## ucretler (8)
 
@@ -1457,19 +1471,6 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `evds_kbozgel` | Özelleştirmeden Elde Edilen Gelirler | TR | 1986-2025 | 410 | cbrt_evds |
 | `evds_tisguc` | Temel İşgücü Göstergeleri (Mevsimsellikten Arındırılmış) | TR | 2005-2026 | 2.072 | cbrt_evds |
 | `evds_yisgucu2` | Temel İşgücü Göstergeleri | TR | 2005-2026 | 2.072 | cbrt_evds |
-
-## evlenme_bosanma (8)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `consanguineous_marriage` | Akraba evliliği oranı | TR. il | 2010-2025 | 1.312 | tuik_medas |
-| `divorces` | Boşanma sayısı | TR. il | 2001-2025 | 2.050 | tuik_medas |
-| `divorces_district` | Boşanma sayısı (ilçe) | ilçe | 2014-2025 | 11.642 | tuik_medas |
-| `marriages` | Evlenme sayısı | TR. il | 2001-2025 | 2.050 | tuik_medas |
-| `marriages_by_age` | Evlenme sayısı (kadın ve erkeğin yaş grubuyla) | TR. il | 2001-2025 | 144.468 | tuik_medas |
-| `marriages_district` | Evlenme sayısı (ilçe) | ilçe | 2014-2025 | 11.659 | tuik_medas |
-| `mean_first_marriage_age` | Ortalama ilk evlenme yaşı | TR. il | 2001-2025 | 4.100 | tuik_medas |
-| `mean_marriage_age` | Ortalama evlenme yaşı | TR. il | 2001-2025 | 6.150 | tuik_medas |
 
 ## perakende (8)
 
@@ -1540,15 +1541,15 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `housing_sales_foreigners` | Yabancılara konut satışı | TR. il | 2013-2025 | 909 | tuik_medas |
 | `property_sales_monthly` | Konut ve iş yeri satışları (aylık) | il | 2013-2026 | 101.785 | cbrt_evds |
 
-## dogurganlik (5)
+## evds_payments (5)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
-| `births_by_age` | Doğum sayısı (annenin yaş grubu) | TR. il | 2009-2025 | 14.290 | tuik_medas |
-| `births_by_marital` | Doğum sayısı (annenin medeni durumu) | TR. il | 2012-2025 | 5.669 | tuik_medas |
-| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
-| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
+| `evds_eftemkt2` | Elektronik Fon Transfer (EFT) Sistemi ve Elektronik Menkul Kıymet Transfer (EMKT) Sistemi İşlemleri | TR | 2013-2026 | 2.291 | cbrt_evds |
+| `evds_osgmfast` | Fonların Anlık ve Sürekli Transferi (FAST) Sistemi İşlemleri | TR | 2020-2026 | 3.029 | cbrt_evds |
+| `evds_osgmpos` | Perakende Ödeme Sistemi İşlemleri | TR | 2013-2026 | 4.942 | cbrt_evds |
+| `evds_tedavuladt` | Tedavüldeki Banknotların Kupür Dağılımı (Adet) | TR | 2009-2026 | 1.696 | cbrt_evds |
+| `evds_tedavultut` | Tedavüldeki Banknotların Kupür Dağılımı (Tutar TL) | TR | 2009-2026 | 1.696 | cbrt_evds |
 
 ## evds_prices (5)
 
@@ -1560,15 +1561,15 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `evds_itoteuc` | İstanbul Toptan Eşya Fiyat ve Ücretliler Geçinme Endeksleri (Tüm Seriler) | TR | 1970-2026 | 3.564 | cbrt_evds |
 | `evds_itouge85` | İstanbul Geçinme Endeksi (Ücretliler) | TR | 1987-2026 | 4.284 | cbrt_evds |
 
-## evds_payments (5)
+## dogurganlik (5)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `evds_eftemkt2` | Elektronik Fon Transfer (EFT) Sistemi ve Elektronik Menkul Kıymet Transfer (EMKT) Sistemi İşlemleri | TR | 2013-2026 | 2.291 | cbrt_evds |
-| `evds_osgmfast` | Fonların Anlık ve Sürekli Transferi (FAST) Sistemi İşlemleri | TR | 2020-2026 | 3.029 | cbrt_evds |
-| `evds_osgmpos` | Perakende Ödeme Sistemi İşlemleri | TR | 2013-2026 | 4.942 | cbrt_evds |
-| `evds_tedavuladt` | Tedavüldeki Banknotların Kupür Dağılımı (Adet) | TR | 2009-2026 | 1.696 | cbrt_evds |
-| `evds_tedavultut` | Tedavüldeki Banknotların Kupür Dağılımı (Tutar TL) | TR | 2009-2026 | 1.696 | cbrt_evds |
+| `births` | Doğum sayısı | TR. il. ilçe | 2009-2025 | 24.573 | tuik_medas |
+| `births_by_age` | Doğum sayısı (annenin yaş grubu) | TR. il | 2009-2025 | 14.290 | tuik_medas |
+| `births_by_marital` | Doğum sayısı (annenin medeni durumu) | TR. il | 2012-2025 | 5.669 | tuik_medas |
+| `births_by_order` | Doğum sayısı (doğum sırasıyla) | TR | 2012-2025 | 725 | tuik |
+| `tfr` | Toplam doğurganlık hızı | il | 2009-2025 | 1.377 | tuik_medas |
 
 ## orman (4)
 
@@ -1587,13 +1588,13 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `ip_registrations_by_province` | Yerli sınai mülkiyet tescili (il) | TR. il | 1995-2025 | 12.546 | turkpatent |
 | `patent_applications` | PCT patent başvurusu | il | 1995-2024 | 2.881 | oecd_regional |
 
-## havacilik (3)
+## tarim_alet (3)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `dhmi_air_freight` | Havayolu yük ve kargo | il | 2008-2026 | 27.345 | dhmi |
-| `dhmi_air_passengers` | Havayolu yolcu sayısı | il | 2008-2026 | 21.314 | dhmi |
-| `dhmi_air_traffic` | Uçak trafiği | il | 2008-2026 | 41.750 | dhmi |
+| `combine_harvesters` | Biçerdöver (yaşa göre) | TR. il | 2004-2025 | 5.429 | tuik_medas |
+| `farm_equipment` | Diğer tarım alet ve makineleri | TR. il | 2004-2025 | 119.407 | tuik_medas |
+| `tractors` | Traktör (türe göre) | TR. il | 2004-2025 | 13.779 | tuik_medas |
 
 ## sivil_toplum (3)
 
@@ -1603,20 +1604,13 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 | `associations` | Faal dernek sayısı | il | 2000-2025 | 810 | drdatastats |
 | `associations_by_activity` | Dernek sayısı (seçilmiş faaliyet alanları) | il | 2020-2021 | 1.211 | drdatastats |
 
-## tarim_alet (3)
+## havacilik (3)
 
 | Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
 |---|---|---|---|---|---|
-| `combine_harvesters` | Biçerdöver (yaşa göre) | TR. il | 2004-2025 | 5.429 | tuik_medas |
-| `farm_equipment` | Diğer tarım alet ve makineleri | TR. il | 2004-2025 | 119.407 | tuik_medas |
-| `tractors` | Traktör (türe göre) | TR. il | 2004-2025 | 13.779 | tuik_medas |
-
-## guvenlik (2)
-
-| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
-|---|---|---|---|---|---|
-| `homicide_rate` | Yüz bin kişide kasten öldürme | il | 2001-2024 | 1.944 | oecd_regional |
-| `vehicle_thefts` | Araç hırsızlığı | il | 2008-2024 | 1.377 | oecd_regional |
+| `dhmi_air_freight` | Havayolu yük ve kargo | il | 2008-2026 | 27.345 | dhmi |
+| `dhmi_air_passengers` | Havayolu yolcu sayısı | il | 2008-2026 | 21.314 | dhmi |
+| `dhmi_air_traffic` | Uçak trafiği | il | 2008-2026 | 41.750 | dhmi |
 
 ## adalet (2)
 
@@ -1624,3 +1618,10 @@ bakılır — 2026-09-19'da AFAD depremi, GSB sporu ve Eurostat üçü de 'yeni 
 |---|---|---|---|---|---|
 | `lawyers` | Baroya kayıtlı avukat | TR. il | 1999-2024 | 3.164 | tbb_baro |
 | `notaries` | Noterlik | il. ilçe | 2026-2026 | 1.153 | tnb |
+
+## guvenlik (2)
+
+| Gösterge | Ad | Düzey | Dönem | Satır | Kaynak |
+|---|---|---|---|---|---|
+| `homicide_rate` | Yüz bin kişide kasten öldürme | il | 2001-2024 | 1.944 | oecd_regional |
+| `vehicle_thefts` | Araç hırsızlığı | il | 2008-2024 | 1.377 | oecd_regional |
