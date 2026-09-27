@@ -1,7 +1,7 @@
 """Election results of one province split by the building-based urban/rural class.
 
 Neighbourhood results come from the web tiles (public/tiles/secim-<e>-mahalle-TR-<plate>.json,
-keyed by today's area_id). Institutional ballot boxes (votes >= registered + 20 and > 120%)
+keyed by today's area_id). Institutional ballot boxes (votes >= registered + 20)
 are left out -- a prison box skews its neighbourhood; the 1-4 extra votes of small
 villages are poll workers and stay.
 
@@ -20,7 +20,7 @@ cls = pl.read_csv(D / f"kent_{PLATE}_ikili.csv", infer_schema_length=0).select("
 rows, dropped = [], []
 for e in ELECTIONS:
     for aid, v in json.loads((TILES / f"secim-{e}-mahalle-TR-{PLATE}.json").read_text(encoding="utf-8")).items():
-        if v["o"] >= v["k"] + 20 and v["o"] > 1.2 * v["k"]:
+        if v["o"] >= v["k"] + 20:
             dropped.append((e, aid, v["ad"], v["k"], v["o"]))
             continue
         for party, n in v["v"].items():

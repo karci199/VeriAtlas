@@ -158,7 +158,7 @@ for did, (dname, dg) in sorted(dist.items()):
             note = f"kasaba: ayrı leke {int(cpop[dom[aid]])} kişi (2.000-5.000)" + (f", eski belde {belde}" if belde and not old else "")
         elif belde and not old:
             sinif = "kirsal_belde"
-            note = f"eski belde merkezi ({belde}, 2012'ye kadar)"
+            note = f"eski belde merkezi ({belde}, 2014'e kadar)"
         elif old and urban:
             note = "2013 öncesi mahalle, kasabada"
         elif old:
