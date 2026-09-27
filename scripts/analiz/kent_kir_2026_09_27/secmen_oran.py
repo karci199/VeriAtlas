@@ -13,8 +13,9 @@ import json, sys
 from pathlib import Path
 import duckdb, polars as pl
 
-PLATE, D = sys.argv[1], Path(sys.argv[2])
-ROOT = Path("C:/veri")
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG  # noqa: E402
+
 p = duckdb.sql(f"""select area_id, year(period_start) y, sum(value) filter (where dims='age=18+') a18, sum(value) tot
  from read_parquet('{ROOT}/public/fact.parquet') where indicator_id='population' and area_id like 'TR-{PLATE}-%-%'
  and year(period_start) in (2023, 2024) group by 1,2""").pl()

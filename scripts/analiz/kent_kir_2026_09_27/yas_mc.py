@@ -23,9 +23,10 @@ import json, sys, time
 from pathlib import Path
 import duckdb, numpy as np, polars as pl
 
-PLATE, D = sys.argv[1], Path(sys.argv[2])
-N = int(sys.argv[3]) if len(sys.argv) > 3 else 200
-ROOT = Path("C:/veri")
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG  # noqa: E402
+N = int(sys.argv[2]) if len(sys.argv) > 2 else 200
+
 rng = np.random.default_rng(20260928)
 EDGES = np.array([0, 5, 10, 15, 18, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 100], float)
 TLAB = ["0-4", "5-9", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64",
@@ -37,12 +38,12 @@ EK = ["0_4", "5_9", "10_14", "15_19", "20_24", "25_29", "30_34", "35_39", "40_44
 q = lambda s: duckdb.sql(s.replace("FACT", f"read_parquet('{ROOT}/public/fact.parquet')")).fetchall()
 DIST = {}
 for aid, g, v in q(f"""select area_id, regexp_extract(dims,'age=([^;]+)',1), sum(value) from FACT where indicator_id='population'
- and area_id like 'TR-{PLATE}-___' and year(period_start)=2025 and dims like 'age=%sex=%' group by 1,2"""):
+ and area_id like 'TR-{PLATE}-___' and year(period_start)={YEAR} and dims like 'age=%sex=%' group by 1,2"""):
     DIST.setdefault(aid, np.zeros(19))[TLAB.index(g)] += v
 POP = dict(q(f"""select area_id, sum(value) from FACT where indicator_id='population' and area_id like 'TR-{PLATE}-%-%'
- and year(period_start)=2025 group by 1"""))
+ and year(period_start)={YEAR} group by 1"""))
 KID = dict(q(f"""select area_id, sum(value) from FACT where indicator_id='population' and area_id like 'TR-{PLATE}-%-%'
- and year(period_start)=2025 and dims='age=0-17' group by 1"""))
+ and year(period_start)={YEAR} and dims='age=0-17' group by 1"""))
 E, MAR = {}, {}
 for f in Path("C:/veri-ham/endeksa/demography").glob(f"TR-{PLATE}-*.json"):
     for code, v in json.loads(f.read_text(encoding="utf-8")).items():
@@ -185,7 +186,7 @@ for did in DIST:
         if m.any():
             GROUPS[("ilce", NAME[IDS[np.where(m)[0][0]]], cls)] = m
 for cls in ("kent", "kır"):
-    GROUPS[("ilce", "BURSA", cls)] = KK == cls
+    GROUPS[("ilce", IL_UP, cls)] = KK == cls
 for s in set(SEMT.values()):
     m = np.array([SEMT.get(a) == s for a in IDS])
     if m.any():
@@ -238,9 +239,9 @@ print(h.group_by("kent_kir", "boy").agg(pl.len(), pl.col("hata").mean().round(2)
 # sensitivity
 KK2 = np.array([("kır" if k == "kent" else "kent") if a in ARADA else k for a, k in zip(IDS, KK)])
 sens = []
-for did in list(DIST) + ["BURSA"]:
-    dm = np.ones(len(IDS), bool) if did == "BURSA" else DID == did
-    r = dict(ilce="BURSA" if did == "BURSA" else NAME[IDS[np.where(dm)[0][0]]])
+for did in list(DIST) + [IL_UP]:
+    dm = np.ones(len(IDS), bool) if did == IL_UP else DID == did
+    r = dict(ilce=IL_UP if did == IL_UP else NAME[IDS[np.where(dm)[0][0]]])
     for cls in ("kent", "kır"):
         for lab, arr in (("", KK), ("_ters", KK2)):
             m = dm & (arr == cls)

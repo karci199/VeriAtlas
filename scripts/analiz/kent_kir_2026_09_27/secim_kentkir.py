@@ -12,7 +12,9 @@ import json, sys
 from pathlib import Path
 import polars as pl
 
-PLATE, D = sys.argv[1], Path(sys.argv[2])
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG  # noqa: E402
+
 TILES = Path("C:/veri/public/tiles")
 ELECTIONS = ["mv2015k", "mv2018", "mv2023", "cb2023t2", "yerel_bsb_2024"]
 cls = pl.read_csv(D / f"kent_{PLATE}_ikili.csv", infer_schema_length=0).select("area_id", "district", "kent_kir", "son_sinif")

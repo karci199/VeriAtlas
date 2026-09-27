@@ -16,8 +16,10 @@ import json, sys
 from pathlib import Path
 import duckdb, polars as pl
 
-PLATE, IL, D = sys.argv[1], sys.argv[2], Path(sys.argv[3])
-ROOT = Path("C:/veri")
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG  # noqa: E402
+IL = PTT_IL
+
 
 
 def fold(t):
@@ -50,7 +52,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from veriatlas.adapters.tuik_neighbourhoods import DOWNLOADS, read_export  # noqa: E402
 
 FIRST = {}
-for f in DOWNLOADS.glob(f"nufus-mahalle-{IL}*.csv"):
+for f in DOWNLOADS.glob(f"nufus-mahalle-{IL_UP}*.csv"):
     for cell in read_export(f):
         if cell.year <= 2012 and (cell.code not in FIRST or cell.year < FIRST[cell.code][0]):
             FIRST[cell.code] = (cell.year, cell.municipality.removesuffix(" Bel."))
@@ -84,7 +86,7 @@ _kb = nb.filter((pl.col("son_sinif") == "kentsel_belde") & pl.col("note").str.co
 _kb = _kb.with_columns(pl.col("note").str.extract(r"lekesi (\d+)").alias("leke"))
 for (dist, leke), g in _kb.group_by(["district", "leke"]):
     if g.height > 1 and fold(dist) not in split:
-        names = g.sort(pl.col("pop2025").cast(pl.Float64), descending=True)["name"].to_list()
+        names = g.sort(pl.col("pop").cast(pl.Float64), descending=True)["name"].to_list()
         for aid in g["area_id"]:
             GROUP[aid] = "-".join(names) if len(names) <= 3 else names[0] + " ve çevresi"
 
@@ -123,7 +125,7 @@ assert nb["semt"].null_count() == 0
 # population, children
 pop = duckdb.sql(f"""select area_id, sum(value) filter (where dims='age=0-17') c, sum(value) v
  from read_parquet('{ROOT}/public/fact.parquet') where indicator_id='population' and area_id like 'TR-{PLATE}-%-%'
- and year(period_start)=2025 group by 1""").pl()
+ and year(period_start)={YEAR} group by 1""").pl()
 nb = nb.join(pop, on="area_id", how="left")
 
 # elections

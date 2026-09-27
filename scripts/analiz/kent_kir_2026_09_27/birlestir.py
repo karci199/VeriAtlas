@@ -15,8 +15,10 @@ import sys
 from pathlib import Path
 import polars as pl
 
-PLATE, SRC, OUT = sys.argv[1], Path(sys.argv[2]), Path(sys.argv[3])
-ROOT = Path("C:/veri")
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG  # noqa: E402
+SRC = OUT = D
+
 
 
 def fold(t):
@@ -57,7 +59,7 @@ nb = nb.with_columns(pl.struct("area_id", "name").map_elements(
 # a municipality other than the district's own (or metropolitan Bursa) was a belde
 nb = nb.with_columns(pl.struct("district", "eski_statu").map_elements(
     lambda s: s["eski_statu"] if s["eski_statu"] in ("koy", "yok") else "ilce_mahalle"
-    if fold(s["eski_statu"]) in (fold(s["district"]), "bursa") else "belde:" + s["eski_statu"], return_dtype=pl.Utf8).alias("eski_statu"))
+    if fold(s["eski_statu"]) in (fold(s["district"]), SLUG) else "belde:" + s["eski_statu"], return_dtype=pl.Utf8).alias("eski_statu"))
 
 # (5) haritatr semt
 ht = pl.read_csv(f"C:/veri-ham/haritatr/{PLATE}/semt_mahalle.csv", infer_schema_length=0)
@@ -101,7 +103,7 @@ ELLE = {
 res = [ELLE.get(r["area_id"]) or decide(r) for r in nb.iter_rows(named=True)]
 nb = nb.with_columns(pl.Series("son_sinif", [a for a, _ in res]), pl.Series("arada", [b for _, b in res]))
 nb.write_csv(OUT / f"kent_{PLATE}_son.csv")
-p = pl.col("pop2025").cast(pl.Float64).fill_null(0)
+p = pl.col("pop").cast(pl.Float64).fill_null(0)
 tot = nb.select(p.sum()).item()
 print(nb.group_by("son_sinif").agg(pl.len().alias("mahalle"), p.sum().alias("nufus")).with_columns(
     (pl.col("nufus") / tot * 100).round(1).alias("pay")).sort("nufus", descending=True))

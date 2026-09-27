@@ -14,8 +14,9 @@ import json, sys
 from pathlib import Path
 import duckdb, polars as pl
 
-PLATE, D = sys.argv[1], Path(sys.argv[2])
-ROOT = Path("C:/veri")
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG  # noqa: E402
+
 
 
 def fold(t):
@@ -28,7 +29,7 @@ def fold(t):
 m = pl.read_csv(D / f"semt_{PLATE}_mahalle.csv")
 p = duckdb.sql(f"""select area_id, sum(value) filter (where dims='age=0-17') c, sum(value) filter (where dims='age=18+') a
  from read_parquet('{ROOT}/public/fact.parquet') where indicator_id='population' and area_id like 'TR-{PLATE}-%-%'
- and year(period_start)=2025 group by 1""").pl()
+ and year(period_start)={YEAR} group by 1""").pl()
 m = m.join(p, on="area_id", how="left").with_columns((pl.col("c").fill_null(0) + pl.col("a").fill_null(0)).alias("nufus"))
 
 # mean age, joined on (district, name)

@@ -12,8 +12,10 @@ import html, re, sys
 from pathlib import Path
 import duckdb, polars as pl
 
-PLATE, SLUG, OUT = sys.argv[1], sys.argv[2], Path(sys.argv[3])
-ROOT = Path("C:/veri")
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG  # noqa: E402
+OUT = D
+
 num = lambda s: int(s.replace(".", ""))
 isnum = lambda s: re.fullmatch(r"[\d.]+", s) is not None
 
@@ -66,7 +68,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from veriatlas.adapters.tuik_neighbourhoods import DOWNLOADS, read_export  # noqa: E402
 
 MUNY = {}
-for f in DOWNLOADS.glob(f"nufus-mahalle-{SLUG.upper()}*.csv"):
+for f in DOWNLOADS.glob(f"nufus-mahalle-{IL_UP}*.csv"):
     for cell in read_export(f):
         if 2007 <= cell.year <= 2012:
             MUNY[(cell.year, cell.code)] = cell.municipality.removesuffix(" Bel.")
