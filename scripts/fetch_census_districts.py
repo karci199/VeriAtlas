@@ -24,7 +24,8 @@ so everything is found by its label). Two things the page does not say:
 Output: C:/veri-ham/tuik_sayim/<year>/<plate-less province name>-<variable>-<detail>.html.
 The same command resumes: an existing non-empty file is skipped.
 
-Run:  python scripts/fetch_census_districts.py [--yil 1990 ...] [--degisken "Beşerli Yaş Grubu"]
+Run:  python scripts/fetch_census_districts.py [--yil 1990 ...] [--sekme 1 2 3] [--degisken "*"]
+      [--ayrinti ilce sehir koy]   (--sekme 0: every settlement's population, 1965-2000)
 """
 
 from __future__ import annotations
@@ -79,23 +80,43 @@ def box_with(text: str, test) -> tuple[str, dict[str, str]]:
     raise KeyError("liste bulunamadi")
 
 
+#: tab index -> file prefix; 0 is the administrative tab (settlement populations)
+TABS = {0: "idari", 1: "", 2: "eko", 3: "hane"}
+
+
 class Census:
-    def __init__(self, year: int):
+    def __init__(self, year: int, tab: int = 1):
         app, page = APPS[year]
         z.BASE = f"https://biruni.tuik.gov.tr/{app}/"
         self.k = z.ZK(page=page)
+        self.tab = tab
         tabbox = re.search(r'id="(z_\w+)"[^>]*z\.type="zul\.tab\.Tabbox"', self.k.html)
         tabs = re.findall(r'id="(z_\w+)" z\.type="Tab"', self.k.html)
-        self.k.event(tabbox.group(1), "onSelect", tabs[1])
-        # The social tab's level box is the first four-option "Türkiye" box in document
-        # order: each later tab (economic, household) has an identical one, and taking
-        # the newest lands on the household tab's variables.
-        self.level, levels = next(
-            (sid, {t: i for i, t in options})
-            for sid, options in selects(self.k.html).items()
-            if len(options) == 4 and options[0][1] == "Türkiye"
-        )
-        self.district_level = next(v for t, v in levels.items() if t.startswith("İlç"))
+        if tab >= len(tabs):
+            raise LookupError(f"{year}: {tab}. sekme yok ({len(tabs)} sekme)")
+        if tabbox and len(tabs) > 1:
+            self.k.event(tabbox.group(1), "onSelect", tabs[tab])
+        boxes = list(selects(self.k.html).items())
+        if tab == 0:
+            # the administrative tab's level box comes first; "Tüm idari birimler" lists
+            # every town and village of the chosen districts
+            self.level, levels = boxes[0][0], {t: i for i, t in boxes[0][1]}
+            self.district_level = next(
+                v for t, v in levels.items() if t.startswith("Tüm idari")
+            )
+        else:
+            # Each characteristics tab has an identical "Türkiye / İl / İlçe / Belde ve
+            # Köyler" box; the tab-th one in document order belongs to this tab (taking the
+            # newest landed on the household tab's variables).
+            level_boxes = [
+                (sid, {t: i for i, t in options})
+                for sid, options in boxes
+                if len(options) == 4 and options[0][1] == "Türkiye"
+            ]
+            self.level, levels = level_boxes[tab - 1]
+            self.district_level = next(
+                v for t, v in levels.items() if t.startswith("İlç")
+            )
 
     def select(self, box: str, option: str) -> str:
         body = self.k.event(box, "onSelect", option)
@@ -107,19 +128,36 @@ class Census:
         self.province_box, found = box_with(body, lambda ts: len(ts) > 50)
         return found
 
-    def report(self, province: str, variable: str, detail: str) -> bytes:
+    def _to_details(self, province: str) -> str:
         body = self.select(self.province_box, self.provinces_map[province])
-        box, found = box_with(body, lambda ts: ts[0].startswith("<<"))
-        body = self.select(box, found[next(iter(found))])
+        try:
+            box, found = box_with(body, lambda ts: ts[0].startswith("<<"))
+        except KeyError:
+            # the 1965-1980 application has no district box: a province is enough
+            return body
+        return self.select(box, found[next(iter(found))])
+
+    def variables(self, province: str, detail: str) -> dict[str, str]:
+        """Walk to the variable box and return {label: option uuid}; {} on the admin tab."""
+        body = self._to_details(province)
+        if self.tab == 0:
+            return {}
         box, found = box_with(
             body, lambda ts: any(t.startswith("İlçe top") for t in ts)
         )
         key = next(t for t in found if t.startswith(detail))
         body = self.select(box, found[key])
-        box, found = box_with(body, lambda ts: "Cinsiyet" in ts)
-        if variable not in found:
-            raise KeyError(f"degisken yok: {variable!r} ({list(found)})")
-        self.select(box, found[variable])
+        self.variable_box, found = box_with(
+            body, lambda ts: not any(t.startswith("İlçe top") for t in ts)
+        )
+        return found
+
+    def report(self, province: str, variable: str, detail: str) -> bytes:
+        found = self.variables(province, detail)
+        if self.tab:
+            if variable not in found:
+                raise KeyError(f"degisken yok: {variable!r} ({list(found)})")
+            self.select(self.variable_box, found[variable])
         radios = list(
             dict.fromkeys(
                 re.findall(
@@ -135,10 +173,10 @@ class Census:
                 )
             )
         )
-        # the second tab's first format radio is HTML; its report button is the second
-        self.k.event(radios[3], "onCheck", "true")
+        # three format radios per tab, HTML first; one report button per tab
+        self.k.event(radios[3 * self.tab], "onCheck", "true")
         self.k.redirect = None
-        answer = self.k.event(buttons[1], "onClick")
+        answer = self.k.event(buttons[self.tab], "onClick")
         self.k.settle(answer)
         if not self.k.redirect:
             said = [
@@ -148,7 +186,7 @@ class Census:
             ]
             raise RuntimeError(f"rapor yok: {said[:6]}")
         url = self.k.redirect.replace("http://", "https://")
-        return self.k.opener.open(url, timeout=180).read()
+        return self.k.opener.open(url, timeout=300).read()
 
 
 def safe(name: str) -> str:
@@ -156,47 +194,91 @@ def safe(name: str) -> str:
     return re.sub(r"[^A-Za-z0-9-]", "", name.translate(table)).lower()
 
 
+def open_census(year: int, tab: int) -> Census:
+    census = Census(year, tab)
+    census.provinces_map = census.provinces()
+    return census
+
+
+def fetch(year: int, tab: int, wanted: list[str], details: list[str]) -> None:
+    try:
+        census = open_census(year, tab)
+    except LookupError as error:
+        log("  ", error)
+        return
+    names = list(census.provinces_map)
+    if tab == 0:
+        variables = ["tum"]
+        details = ["yerlesim"]
+    elif wanted == ["*"]:
+        variables = list(census.variables(names[0], DETAILS["ilce"]))
+    else:
+        variables = wanted
+    log(
+        "==",
+        year,
+        TABS[tab] or "sosyal",
+        len(names),
+        "il,",
+        len(variables),
+        "degisken:",
+        variables,
+    )
+    done = 0
+    prefix = TABS[tab] + "-" if TABS[tab] else ""
+    for n, province in enumerate(names, 1):
+        for variable in variables:
+            for detail in details:
+                target = (
+                    OUT
+                    / str(year)
+                    / f"{prefix}{safe(province)}-{safe(variable)}-{detail}.html"
+                )
+                if target.exists() and target.stat().st_size > 1000:
+                    continue
+                for attempt in (1, 2, 3):
+                    try:
+                        data = census.report(
+                            province, variable, DETAILS.get(detail, "")
+                        )
+                        target.parent.mkdir(parents=True, exist_ok=True)
+                        target.write_bytes(data)
+                        done += 1
+                        log(
+                            f"   {year} {n}/{len(names)} {province} {variable} {detail} {len(data)} bayt"
+                        )
+                        break
+                    except Exception as error:  # noqa: BLE001
+                        log(
+                            f"   HATA {year} {province} {variable} {detail} deneme {attempt}: {error}"
+                        )
+                        time.sleep(10 * attempt)
+                        census = open_census(year, tab)
+                time.sleep(1.5)
+    log("==", year, TABS[tab] or "sosyal", "bitti,", done, "yeni rapor")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--yil", type=int, nargs="*", default=SOCIAL_TAB_YEARS)
-    ap.add_argument("--degisken", nargs="*", default=["Beşerli Yaş Grubu", "Tek Yaş"])
+    ap.add_argument(
+        "--sekme",
+        type=int,
+        nargs="*",
+        default=[1],
+        help="0 idari, 1 sosyal, 2 ekonomik, 3 hanehalkı",
+    )
+    ap.add_argument(
+        "--degisken",
+        nargs="*",
+        default=["Beşerli Yaş Grubu", "Tek Yaş"],
+        help='"*" = sekmedeki hepsi',
+    )
     ap.add_argument("--ayrinti", nargs="*", default=["ilce"], choices=list(DETAILS))
     args = ap.parse_args()
-    for year in args.yil:
-        census = Census(year)
-        census.provinces_map = census.provinces()
-        names = list(census.provinces_map)
-        log("==", year, len(names), "il")
-        done = 0
-        for n, province in enumerate(names, 1):
-            for variable in args.degisken:
-                for detail in args.ayrinti:
-                    target = (
-                        OUT
-                        / str(year)
-                        / f"{safe(province)}-{safe(variable)}-{detail}.html"
-                    )
-                    if target.exists() and target.stat().st_size > 1000:
-                        continue
-                    for attempt in (1, 2, 3):
-                        try:
-                            data = census.report(province, variable, DETAILS[detail])
-                            target.parent.mkdir(parents=True, exist_ok=True)
-                            target.write_bytes(data)
-                            done += 1
-                            log(
-                                f"   {year} {n}/{len(names)} {province} {variable} {detail} {len(data)} bayt"
-                            )
-                            break
-                        except Exception as error:  # noqa: BLE001
-                            log(
-                                f"   HATA {year} {province} {variable} deneme {attempt}: {error}"
-                            )
-                            time.sleep(5 * attempt)
-                            census = Census(year)
-                            census.provinces_map = census.provinces()
-                    time.sleep(1.5)
-        log("==", year, "bitti,", done, "yeni rapor")
+    for tab in args.sekme:
+        for year in args.yil:
+            fetch(year, tab, args.degisken, args.ayrinti)
 
 
 if __name__ == "__main__":
