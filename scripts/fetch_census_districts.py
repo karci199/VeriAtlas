@@ -404,6 +404,76 @@ def fetch_villages(year: int, variables: list[str]) -> None:
     log("== koy", year, "bitti,", done, "yeni rapor")
 
 
+ALL_YEARS = [2000, 1990, 1985, 1980, 1975, 1970, 1965]
+KEY_SOCIAL = [
+    "0-14,15-64,65+",
+    "Eğitim Durumu",
+    "Okuryazarlık",
+    "Medeni Durum",
+    "Doğum Yeri",
+    "Cinsiyet",
+]
+#: The whole job, small and important first, the village level last:
+#: (label, kind, years, tab, variables, details)
+QUEUE = [
+    (
+        "ilce yas",
+        "tab",
+        SOCIAL_TAB_YEARS,
+        1,
+        ["Beşerli Yaş Grubu", "Tek Yaş"],
+        ["ilce"],
+    ),
+    ("yerlesim nufuslari", "tab", ALL_YEARS, 0, ["tum"], ["yerlesim"]),
+    ("ilce sosyal onemli", "tab", SOCIAL_TAB_YEARS, 1, KEY_SOCIAL, ["ilce"]),
+    ("ilce ekonomik", "tab", SOCIAL_TAB_YEARS, 2, ["*"], ["ilce"]),
+    ("ilce hanehalki", "tab", SOCIAL_TAB_YEARS, 3, ["*"], ["ilce"]),
+    ("ilce sosyal kalan", "tab", SOCIAL_TAB_YEARS, 1, ["*"], ["ilce"]),
+    ("sehir/koy sosyal", "tab", SOCIAL_TAB_YEARS, 1, ["*"], ["sehir", "koy"]),
+    ("sehir/koy ekonomik", "tab", SOCIAL_TAB_YEARS, 2, ["*"], ["sehir", "koy"]),
+    ("sehir/koy hanehalki", "tab", SOCIAL_TAB_YEARS, 3, ["*"], ["sehir", "koy"]),
+    (
+        "koy koy yas",
+        "koy",
+        SOCIAL_TAB_YEARS,
+        1,
+        ["Beşerli Yaş Grubu", "0-14,15-64,65+"],
+        [],
+    ),
+    (
+        "koy koy egitim/medeni",
+        "koy",
+        SOCIAL_TAB_YEARS,
+        1,
+        ["Eğitim Durumu", "Okuryazarlık", "Medeni Durum", "Cinsiyet"],
+        [],
+    ),
+    (
+        "koy koy kalan",
+        "koy",
+        SOCIAL_TAB_YEARS,
+        1,
+        [
+            "Onarlı Yaş Grubu",
+            "Canlı Doğan ve Yaşayan Çocuk",
+            "Canlı Doğan Çocuk Sayısına Göre Kadın Nüfus",
+        ],
+        [],
+    ),
+]
+
+
+def run_queue() -> None:
+    for n, (label, kind, years, tab, variables, details) in enumerate(QUEUE, 1):
+        log(f"#### [{n}/{len(QUEUE)}] {label}")
+        for year in years:
+            if kind == "koy":
+                fetch_villages(year, variables)
+            else:
+                fetch(year, tab, variables, details)
+    log("#### KUYRUK BITTI")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--yil", type=int, nargs="*", default=SOCIAL_TAB_YEARS)
@@ -422,7 +492,11 @@ def main() -> None:
     )
     ap.add_argument("--ayrinti", nargs="*", default=["ilce"], choices=list(DETAILS))
     ap.add_argument("--koy", action="store_true", help="belde ve köy düzeyi")
+    ap.add_argument("--kuyruk", action="store_true", help="bütün işi sırayla (QUEUE)")
     args = ap.parse_args()
+    if args.kuyruk:
+        run_queue()
+        return
     if args.koy:
         for year in args.yil:
             fetch_villages(year, args.degisken)
