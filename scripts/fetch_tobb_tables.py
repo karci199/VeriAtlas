@@ -16,6 +16,11 @@ these methods answer (province ids from `GET api/ils`, the plate number; -1 = TÃ
 
 Capacity per product and province comes from `fetch_tobb_capacity.py`.
 
+Products per district: the two product methods also take `ilceId` (TOBB's district id,
+e.g. 1605 Ä°znik), which the page never sends. Asked once per district that has producers
+(ids from the district tables above, so those run first), written to
+`tablo/<method>/ilce/<il>-<ilceId>.json`.
+
 Writes `C:\veri-ham\tobb\kapasite\tablo\<method>\<il>[-<kod>].json`; existing files are
 skipped, so the same command resumes. Progress goes to stdout.
 """
@@ -43,6 +48,27 @@ DISTRICTS = [
     "ilGenelDurumuIlceDuzeyindeDagilim",
     "yabanciSermayeIlGenelDurumuIlceDuzeyindeDagilim",
 ]
+#: product method asked per district -> the district table that lists its districts.
+PER_DISTRICT = {
+    "ilceGenelDurumuKodlananUrun": "ilGenelDurumuIlceDuzeyindeDagilim",
+    "yabanciSermayeIlceGenelDurumuKodlananUrun": (
+        "yabanciSermayeIlGenelDurumuIlceDuzeyindeDagilim"
+    ),
+}
+
+
+def district_jobs(provinces: list[int]) -> list[tuple]:
+    """(method, province, None, district id) for every district with producers."""
+    jobs = []
+    for method, table in PER_DISTRICT.items():
+        for p in provinces:
+            listing = FOLDER / "tablo" / table / f"{p}.json"
+            if p > 0 and listing.exists():
+                rows = json.loads(listing.read_text(encoding="utf-8"))
+                jobs += [
+                    (method, p, None, r["ID"]) for r in rows if r["ID"] is not None
+                ]
+    return jobs
 
 
 def cached_get(client: httpx.Client, url: str, name: str) -> list[dict]:
@@ -82,25 +108,31 @@ def main() -> None:
                 client, "apiv2/sektor-kodus?size=2000", "sektor-kodlari.json"
             )
         )
-        jobs = [(m, p, None) for m in PER_PROVINCE for p in provinces]
+        jobs = [(m, p, None, -1) for m in PER_PROVINCE for p in provinces]
         jobs += [
-            (m, p, k)
+            (m, p, k, -1)
             for m in DISTRICTS
             for k in [None, *sectors]
             for p in provinces
             if p > 0
         ]
+        # After the district tables, whose files name the districts to ask.
+        jobs += district_jobs(provinces)
         print(f"{len(jobs)} queries", flush=True)
         new = failed = 0
-        for i, (method, province, code) in enumerate(jobs, 1):
-            target = (
-                FOLDER
-                / "tablo"
-                / method
-                / f"{province}{'' if code is None else '-' + code}.json"
-            )
+        for i, (method, province, code, district) in enumerate(jobs, 1):
+            folder = FOLDER / "tablo" / method
+            if district == -1:
+                target = folder / f"{province}{'' if code is None else '-' + code}.json"
+            else:
+                target = folder / "ilce" / f"{province}-{district}.json"
             if not target.exists():
-                params = {"ilId": province, "ilceId": -1, "kod": code, "urunKodu": code}
+                params = {
+                    "ilId": province,
+                    "ilceId": district,
+                    "kod": code,
+                    "urunKodu": code,
+                }
                 answer = invoke(client, method, params)
                 if answer is None:
                     failed += 1
