@@ -158,6 +158,44 @@ class Census:
             if variable not in found:
                 raise KeyError(f"degisken yok: {variable!r} ({list(found)})")
             self.select(self.variable_box, found[variable])
+        return self.submit()
+
+    # -- town and village level: province > district > bucak > all towns and villages
+    def village_start(self) -> None:
+        levels = {
+            t: i
+            for sid, options in selects(self.k.html).items()
+            if sid == self.level
+            for i, t in options
+        }
+        body = self.select(self.level, levels["Belde ve Köyler"])
+        self.v_province_box, self.v_provinces = box_with(body, lambda ts: len(ts) > 50)
+
+    def village_districts(self, province: str) -> list[str]:
+        body = self.select(self.v_province_box, self.v_provinces[province])
+        self.v_district_box, self.v_districts = box_with(body, lambda ts: True)
+        return list(self.v_districts)
+
+    def village_bucaks(self, province: str, district: str) -> list[str]:
+        self.village_districts(province)
+        body = self.select(self.v_district_box, self.v_districts[district])
+        self.v_bucak_box, self.v_bucaks = box_with(body, lambda ts: True)
+        return list(self.v_bucaks)
+
+    def village_report(
+        self, province: str, district: str, bucak: str, variable: str
+    ) -> bytes:
+        self.village_bucaks(province, district)
+        body = self.select(self.v_bucak_box, self.v_bucaks[bucak])
+        box, units = box_with(body, lambda ts: ts[0].startswith("<<"))
+        body = self.select(box, units[next(iter(units))])
+        self.variable_box, found = box_with(body, lambda ts: not ts[0].startswith("<<"))
+        if variable not in found:
+            raise KeyError(f"degisken yok: {variable!r} ({list(found)})")
+        self.select(self.variable_box, found[variable])
+        return self.submit()
+
+    def submit(self) -> bytes:
         radios = list(
             dict.fromkeys(
                 re.findall(
@@ -189,6 +227,64 @@ class Census:
         return self.k.opener.open(url, timeout=300).read()
 
 
+def table_rows(data: bytes) -> list[list[str]]:
+    text = data.decode("cp1254", "replace")
+    rows = []
+    for row in re.findall(r"<tr[^>]*>(.*?)</tr>", text, re.DOTALL | re.IGNORECASE):
+        cells = [
+            html.unescape(re.sub(r"<[^>]+>", "", c)).replace("\xa0", " ").strip()
+            for c in re.findall(
+                r"<t[dh][^>]*>(.*?)</t[dh]>", row, re.DOTALL | re.IGNORECASE
+            )
+        ]
+        cells = [c for c in cells if c]
+        if cells:
+            rows.append(cells)
+    return rows
+
+
+def number(cell: str) -> int | None:
+    cell = cell.replace(".", "")
+    return int(cell) if cell.isdigit() else None
+
+
+SEX = ("Toplam", "Erkek", "Kadın")
+
+
+def check_report(data: bytes) -> tuple[bool, str]:
+    """Logic checks on a report before it is kept.
+
+    A report without a single numeric row is an error page, not an empty table: refused,
+    so it is asked again. Where Toplam, Erkek and Kadın appear, the parts must add up:
+    as the last three columns (settlement tables) or as three consecutive rows
+    (characteristics tables print a Toplam row, then Erkek, then Kadın). A mismatch is
+    counted and logged, not refused: it is the source's, and the adapter decides.
+    """
+    rows = table_rows(data)
+    numeric = [r for r in rows if any(number(c) is not None for c in r)]
+    if not numeric:
+        return False, "sayisal satir yok"
+    checked = bad = 0
+    if any(all(x in r for x in SEX) for r in rows):
+        for r in numeric:
+            tail = [number(c) for c in r[-3:]]
+            if len(tail) == 3 and None not in tail:
+                checked += 1
+                bad += tail[0] != tail[1] + tail[2]
+    for i in range(len(rows) - 2):
+        three = rows[i : i + 3]
+        marks = [next((j for j, c in enumerate(r) if c in SEX), None) for r in three]
+        if None in marks or [three[k][marks[k]] for k in range(3)] != list(SEX):
+            continue
+        values = [[number(c) for c in r[m + 1 :]] for r, m in zip(three, marks)]
+        width = min(len(v) for v in values)
+        for a, b, c in zip(*(v[-width:] for v in values)):
+            if None not in (a, b, c):
+                checked += 1
+                bad += a != b + c
+    return True, f"{len(numeric)} satir, {checked} denetim, {bad} tutmayan"
+
+
 def safe(name: str) -> str:
     table = str.maketrans("çğıöşüÇĞİÖŞÜ ", "cgiosuCGIOSU-")
     return re.sub(r"[^A-Za-z0-9-]", "", name.translate(table)).lower()
@@ -210,10 +306,12 @@ def fetch(year: int, tab: int, wanted: list[str], details: list[str]) -> None:
     if tab == 0:
         variables = ["tum"]
         details = ["yerlesim"]
-    elif wanted == ["*"]:
-        variables = list(census.variables(names[0], DETAILS["ilce"]))
     else:
-        variables = wanted
+        offered = list(census.variables(names[0], DETAILS["ilce"]))
+        variables = offered if wanted == ["*"] else [v for v in wanted if v in offered]
+        missing = [v for v in wanted if v != "*" and v not in offered]
+        if missing:
+            log("   bu yilda yok, atlandi:", missing)
     log(
         "==",
         year,
@@ -241,11 +339,14 @@ def fetch(year: int, tab: int, wanted: list[str], details: list[str]) -> None:
                         data = census.report(
                             province, variable, DETAILS.get(detail, "")
                         )
+                        ok, note = check_report(data)
+                        if not ok:
+                            raise RuntimeError("kontrol: " + note)
                         target.parent.mkdir(parents=True, exist_ok=True)
                         target.write_bytes(data)
                         done += 1
                         log(
-                            f"   {year} {n}/{len(names)} {province} {variable} {detail} {len(data)} bayt"
+                            f"   {year} {n}/{len(names)} {province} {variable} {detail} {len(data)} bayt | {note}"
                         )
                         break
                     except Exception as error:  # noqa: BLE001
@@ -256,6 +357,51 @@ def fetch(year: int, tab: int, wanted: list[str], details: list[str]) -> None:
                         census = open_census(year, tab)
                 time.sleep(1.5)
     log("==", year, TABS[tab] or "sosyal", "bitti,", done, "yeni rapor")
+
+
+def fetch_villages(year: int, variables: list[str]) -> None:
+    """Town and village level: one report per (province, district, bucak, variable)."""
+    census = Census(year, 1)
+    census.village_start()
+    provinces = list(census.v_provinces)
+    log("== koy", year, len(provinces), "il,", variables)
+    done = 0
+    for n, province in enumerate(provinces, 1):
+        for district in census.village_districts(province):
+            for bucak in census.village_bucaks(province, district):
+                for variable in variables:
+                    target = (
+                        OUT
+                        / str(year)
+                        / "koy"
+                        / f"{safe(province)}-{safe(district)}-{safe(bucak)}-{safe(variable)}.html"
+                    )
+                    if target.exists() and target.stat().st_size > 1000:
+                        continue
+                    for attempt in (1, 2, 3):
+                        try:
+                            data = census.village_report(
+                                province, district, bucak, variable
+                            )
+                            ok, note = check_report(data)
+                            if not ok:
+                                raise RuntimeError("kontrol: " + note)
+                            target.parent.mkdir(parents=True, exist_ok=True)
+                            target.write_bytes(data)
+                            done += 1
+                            log(
+                                f"   koy {year} {n}/{len(provinces)} {province}/{district}/{bucak} {variable} {len(data)} bayt | {note}"
+                            )
+                            break
+                        except Exception as error:  # noqa: BLE001
+                            log(
+                                f"   HATA koy {year} {province}/{district}/{bucak} {variable} deneme {attempt}: {error}"
+                            )
+                            time.sleep(10 * attempt)
+                            census = Census(year, 1)
+                            census.village_start()
+                    time.sleep(1.5)
+    log("== koy", year, "bitti,", done, "yeni rapor")
 
 
 def main() -> None:
@@ -275,7 +421,12 @@ def main() -> None:
         help='"*" = sekmedeki hepsi',
     )
     ap.add_argument("--ayrinti", nargs="*", default=["ilce"], choices=list(DETAILS))
+    ap.add_argument("--koy", action="store_true", help="belde ve köy düzeyi")
     args = ap.parse_args()
+    if args.koy:
+        for year in args.yil:
+            fetch_villages(year, args.degisken)
+        return
     for tab in args.sekme:
         for year in args.yil:
             fetch(year, tab, args.degisken, args.ayrinti)
