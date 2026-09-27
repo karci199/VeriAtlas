@@ -98,6 +98,10 @@ def other_fetch_running() -> bool:
 #: checked against the province series: Ardahan (il09) vegetables 927 t over 2007-2025
 #: in total, Kars (il45) vegetables only 2016-2024. Elsewhere a missing year means the
 #: year tick failed (it once dropped 2004 from every fruit file) and the file is refused.
+#: Provinces whose queries keep failing and eat the run's time: tried once more at the
+#: very end instead of in turn (Ağrı greenhouse vegetables time out on "Rapor Oluştur",
+#: Ardahan has none).
+DEFER = {("bitkisel-ortu-sebze", 4), ("bitkisel-ortu-sebze", 9)}
 SPARSE = {("bitkisel-sebze", 9), ("bitkisel-sebze", 45)}
 
 
@@ -195,10 +199,37 @@ def run(topic: str, key: str, row: dict, province: int, years: list[int]) -> str
     return "fail"
 
 
+def one_province(topic, key, row, province, years, first, state, failed) -> None:
+    """Every year group of one measure in one province, halving the group on the cap."""
+    size = state.get(f"{key}:{province}", first)
+    left = list(years)
+    while left:
+        group = left[:size]
+        PULSE.write_text(
+            f"{dt.datetime.now().astimezone().isoformat(timespec='seconds')} {key} il{province:02d} "
+            f"{min(group)}-{max(group)}\n",
+            encoding="utf-8",
+        )
+        outcome = run(topic, key, row, province, group)
+        if outcome == "limit" and size > 1:
+            size = max(1, size // 2)
+            state[f"{key}:{province}"] = size
+            STATE.write_text(json.dumps(state, indent=1), encoding="utf-8")
+            log("   sinir asildi, grup", size, "yila indi:", key, province)
+            continue
+        if outcome == "fail":
+            outcome = run(topic, key, row, province, group)
+        if outcome != "ok":
+            failed.append(f"{key} il{province:02d} {min(group)}-{max(group)}")
+        left = left[len(group) :]
+        time.sleep(3)
+
+
 def main() -> None:
     WORK.mkdir(parents=True, exist_ok=True)
     state = json.loads(STATE.read_text(encoding="utf-8")) if STATE.exists() else {}
     failed: list[str] = []
+    deferred: list[tuple] = []
     while other_fetch_running():
         log("baska bir MEDAS ilce cekimi suruyor, bekleniyor")
         time.sleep(120)
@@ -223,29 +254,16 @@ def main() -> None:
             "| butun ulke tek sorguda" if whole else "| il il",
         )
         for province in provinces:
-            size = state.get(f"{key}:{province}", first)
-            left = list(years)
-            while left:
-                group = left[:size]
-                PULSE.write_text(
-                    f"{dt.datetime.now().astimezone().isoformat(timespec='seconds')} {key} il{province:02d} "
-                    f"{min(group)}-{max(group)}\n",
-                    encoding="utf-8",
-                )
-                outcome = run(topic, key, row, province, group)
-                if outcome == "limit" and size > 1:
-                    size = max(1, size // 2)
-                    state[f"{key}:{province}"] = size
-                    STATE.write_text(json.dumps(state, indent=1), encoding="utf-8")
-                    log("   sinir asildi, grup", size, "yila indi:", key, province)
-                    continue
-                if outcome == "fail":
-                    outcome = run(topic, key, row, province, group)
-                if outcome != "ok":
-                    failed.append(f"{key} il{province:02d} {min(group)}-{max(group)}")
-                left = left[len(group) :]
-                time.sleep(3)
+            if (key, province) in DEFER:
+                deferred.append((topic, key, row, province, years, first))
+                log("   sona birakildi:", key, f"il{province:02d}")
+                continue
+            one_province(topic, key, row, province, years, first, state, failed)
         log("==", key, "bitti; basarisiz:", len(failed))
+    if deferred:
+        log("== sona birakilanlar:", len(deferred))
+    for topic, key, row, province, years, first in deferred:
+        one_province(topic, key, row, province, years, first, state, failed)
     log("BITTI. basarisiz sorgular:", len(failed))
     for item in failed:
         log("   ", item)
