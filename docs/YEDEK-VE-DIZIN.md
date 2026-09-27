@@ -82,6 +82,7 @@ worldbank yok_istatistik yokatlas ysk`. `medas\basit\` MEDAS'tan çekilen tüm C
 | [yol-haritasi.md](yol-haritasi.md) | Uzun vadeli sıra, ekran eksikleri |
 | [cekiciler.md](cekiciler.md) | Çekici yazma kalıbı |
 | [medas.md](medas.md) | MEDAS'ı tarayıcıyla sürme yöntemi ve tuzakları |
+| [sayim.md](sayim.md) | 1965-2000 genel nüfus sayımları: biruni uygulamaları, çekici, okuma tuzakları |
 | Kaynak notları | `btk.md dhmi.md diyanet.md epdk.md epdk-aylik.md etkb.md kgm.md mgm.md saglik.md sege.md sgk.md yok.md endeksa.md semt.md` |
 | Oturum notları | `oturum-2026-*.md` — o günün devam noktası |
 | Vaka analizleri | `vaka-iznik.md vaka-enerji.md vaka-secim-disari.md`, `analiz/`, `analizler/` |

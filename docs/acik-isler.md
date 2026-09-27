@@ -5,6 +5,29 @@ Tek liste, 2026-09-26 gecesi derlendi: bu dosyanın eski bölümleri, oturum not
 (kargo, Turkcell bayileri, şarj istasyonu, ilçe sağlık kurumu, noter, eczane kapandı).
 Tarihli ayrıntı aşağıdaki "Geçmiş notlar"da; çelişen yerde bu liste geçerlidir.
 
+### 0. 2026-09-27: yapılanlar ve süren işler (EN GÜNCEL)
+
+**Depoya girenler:** meyve-sebze-örtüaltı ilçe satırları (1,89 mn; `tuik_crops`
+`DISTRICT_MISMATCH` fındık 2020 + Sakarya 2015), `sgk_lump_sum_payments` (2014-2025, 2016
+kaynak bozuk), `sgk_marriage_allowance`, `sgk_work_accident_rates` (2007-2022). 1.369
+gösterge. Web export yapılmadı.
+
+**Süren iki ayrık süreç** (oturum kapanınca ölmez; `tasklist | grep python`):
+1. MEDAS tarım ilçe (`scripts/uzun_bitkisel_ilce.py`, ~%54): örtüaltı sebzede; sonra tahıl,
+   kuru/sulu, süs, hayvancılık, alet. Düzeltmeler: büyük ilde reddedilen düzey = hücre sınırı
+   (yıl grubu yarılanır); seyrek ölçülerde (örtüaltı, süs) tek ilçe/eksik yıl/küçük dosya
+   geçerli (reddedilen 11 dosya gerçek veriydi); reddedilen dosya `.reddedildi` olarak
+   saklanır; Ağrı/Ardahan örtüaltı sebze `DEFER` ile en sonda. Boş rapor (üretim yok) "Rapor
+   Oluştur" zaman aşımı verir: Kars, Bitlis, Gaziantep örtüaltı sebze.
+2. Sayım 1965-2000 ([sayim.md](sayim.md)), `--kuyruk`: ilçe yaş ve köy nüfusları tamam,
+   ilçe sosyal değişkenler sürüyor; köy düzeyi en sonda (~3 gün).
+
+**Açık:** sayım adaptörü; Diyanet 2020-2022 il verisi (Wayback, [diyanet.md](diyanet.md));
+Endeksa köy kimlikleri eşleşmiyor (mahalleler MEDAS koduyla birebir, nüfus = ADNKS 2024
+%91,8 birebir); depoda 2.644 küçük mahallede 2024 0-17 yaş satırı yok (MEDAS ≤10 değerleri
+vermiyor, Endeksa veriyor); `median_age` toplam türetmesi ±0,5 zikzak (ayrı iş); TOBB
+adaptörü hâlâ yazılmadı.
+
 ### Kalan iş ve tahmini süre (2026-09-26)
 
 Kullanıcı kararı: liste sonraya bırakıldı. Sıra önerisi yukarıdan aşağı.

@@ -44,3 +44,21 @@ Her yüklemede çalışan üç sınama var ve hepsi tutuyor:
   bozuk), 3.1-3.2 (yerleşim yeri ve mülkiyete göre kurs sayısı — yalnız Türkiye; `settlement`
   kırılımı açılması gerekirdi), 2.2'nin yanındaki açıklama notları.
 - Seri 2013'te başlıyor, daha eski yıl yayımlanmıyor; 2024 yayımı henüz yok.
+
+## Eski yıllar: Wayback arşivi (2026-09-27)
+
+Sitede yalnız 2023 yayımı var, ama Wayback eski sürümleri tutmuş (2021 öncesi kayıt yok).
+İndirildi: `C:\veri-ham\diyanet\arsiv\<zaman>_<dosya>` — cami (2.2), Kur'an kursu (3.3) ve
+müftülük personeli (1.3) için üçer sürüm. Veri yılları Türkiye toplamıyla eşlendi:
+
+| Dosya sürümü | Cami verisi | Kur'an kursu |
+|---|---|---|
+| 20211130 .xls / 20211228 .xls | 2020 (89.445) | 2019/20 öğretim yılı |
+| 20220618 .ods | 2021 (89.817) | 2020/21 |
+| 20231004 `_2022.ods` | 2022 (89.302) | 2021/22 |
+
+Her yılda il toplamları basılı Türkiye satırına birebir. **Tuzak:** Kırklareli'nin kodu
+kaynakta `TR213 ` (sonunda boşluk); kırpılmazsa il düşer. 2019/20 kurs tablosunda hafız
+sütunu yok (sütunlar kayar: bitirenler 4. sütundan). 2023 dosyasındaki "Kursiyer (Hafız)"
+sayısı (124.997) önceki yıllarla (≈10-13 bin) aynı kavram görünmüyor; kullanılmadı.
+Adaptöre eklenmedi (il × yıl serisi 4 yıl).
