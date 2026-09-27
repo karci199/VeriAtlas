@@ -60,6 +60,20 @@ IDS = nb["area_id"].to_list(); KK = np.array(nb["kent_kir"].to_list()); DID = np
 NAME = dict(zip(nb["area_id"], nb["district"]))
 P = np.array([POP[a] for a in IDS], float)
 HASK = np.array([a in KID for a in IDS]); K = np.array([KID.get(a, 0) for a in IDS], float)
+# registered voters (2024 local: no prison boxes) ~ 18+ residents x 1.02 in villages (p10-p90
+# 0.97-1.09); where TÜİK gives no 0-17, children = population - voters / 1.02, clipped at 0
+VOT = {a: v["k"] for a, v in json.loads((ROOT / f"public/tiles/secim-yerel_bsb_2024-mahalle-TR-{PLATE}.json").read_text(encoding="utf-8")).items()}
+HASV = np.array([(not HASK[i]) and a in VOT for i, a in enumerate(IDS)])
+KV = np.array([VOT.get(a, 0) for a in IDS], float)
+
+
+def child_margin(noise):
+    """(K, hasK) for this draw: TÜİK 0-17 where given, voter-based estimate elsewhere."""
+    r = rng.lognormal(np.log(1.02), 0.04, len(IDS)) if noise else np.full(len(IDS), 1.02)
+    Kx = np.where(HASK, K, np.clip(P - KV / r, 0, P))
+    return Kx, HASK | HASV
+
+
 USABLE = np.array([a in E and abs(E[a].sum() - P[i]) <= 0.1 * P[i] for i, a in enumerate(IDS)])
 HASM = np.array([a in MAR for a in IDS])
 
@@ -134,11 +148,13 @@ def build(noise=False, mask=None):
     return seed, src, (beta, rmse)
 
 
-def fit(seed, iters=400):
+def fit(seed, Kx=None, hkx=None, iters=400):
+    if Kx is None:
+        Kx, hkx = child_margin(False)
     X = seed.copy()
     for did, dist in DIST.items():
         m = DID == did
-        Xd = X[m] + 1e-6; Pd, Kd, hk = P[m], K[m], HASK[m]
+        Xd = X[m] + 1e-6; Pd, Kd, hk = P[m], Kx[m], hkx[m]
         for _ in range(iters):
             cs = np.zeros(19); np.add.at(cs, COL2T, Xd.sum(0))
             Xd *= (dist / np.maximum(cs, 1e-9))[COL2T]
@@ -159,6 +175,7 @@ seed0, src0, (beta0, rmse0) = build()
 X0 = fit(seed0)
 print(f"regresyon: sabit {beta0[0]:.1f}, dul {beta0[1]:.1f}, bekâr {beta0[2]:.1f}, çocuk {beta0[3]:.1f}; RMSE {rmse0:.2f}")
 print("kaynak:", {s: (int((src0 == s).sum()), int(P[src0 == s].sum())) for s in "ABC"})
+print("çocuk kısıtı: TÜİK", int(HASK.sum()), "| seçmenden", int(HASV.sum()), f"({int(P[HASV].sum())} kişi) | yok", int((~HASK & ~HASV).sum()))
 
 t0 = time.time()
 GROUPS = {}  # key -> boolean mask over IDS
@@ -175,7 +192,7 @@ for s in set(SEMT.values()):
         GROUPS[("semt", NAME[IDS[np.where(m)[0][0]]], s)] = m
 draws = {k: [] for k in GROUPS}; nbd = []
 for r in range(N):
-    X = fit(build(True)[0])
+    X = fit(build(True)[0], *child_margin(True))
     for k, m in GROUPS.items():
         draws[k].append(X[m].sum(0))
     nbd.append(medians(X))
