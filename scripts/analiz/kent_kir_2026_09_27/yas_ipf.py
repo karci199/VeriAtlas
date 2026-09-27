@@ -107,8 +107,12 @@ for did, dist in sorted(DIST.items()):
                             tohum_ortanca=round(med(s0), 1), cocuk=round(u[CHILD].sum() / u.sum() * 100, 1),
                             yasli65=round(u[15:].sum() / u.sum() * 100, 1), olcum_payi=round(P[m & usable].sum() / P[m].sum() * 100),
                             uyum_hatasi=round(err, 2), tur=it + 1, _c=u))
-    for a, row in zip(ids, X):
-        cells.append(dict(area_id=a, ortanca=round(med(row), 1), ortalama=round(mean(row), 1)))
+    for a, row, k, u, hk in zip(ids, X, kk, usable, hasK):
+        g = np.zeros(19); np.add.at(g, COL2T, row)
+        cells.append(dict(ilce=name, area_id=a, kent_kir=k, nufus=round(row.sum()), cocuk_0_17=round(row[CHILD].sum()),
+                          ortanca=round(med(row), 1), ortalama=round(mean(row), 1),
+                          tohum="endeksa" if u else "ilce_sekli", cocuk_tuik="var" if hk else "yok",
+                          **{f"y{l}": round(float(v)) for l, v in zip(TLAB, g)}))
 
 # province
 for cls in ("kent", "kır"):
