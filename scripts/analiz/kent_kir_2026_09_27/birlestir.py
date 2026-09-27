@@ -92,7 +92,13 @@ def decide(r):
     return bina, ""
 
 
-res = [decide(r) for r in nb.iter_rows(named=True)]
+# manual decisions, each checked outside the data (user / web)
+ELLE = {
+    # split off the town in 2016, TOKİ blocks newer than the building footprints
+    # (gursu.bel.tr "ipekyolu mahallemizdeki yeni toki konutlari"); part of the town
+    "TR-16-003-197753": ("merkez", "elle: TOKİ, 2016'da merkezden ayrıldı, bina verisinde yok"),
+}
+res = [ELLE.get(r["area_id"]) or decide(r) for r in nb.iter_rows(named=True)]
 nb = nb.with_columns(pl.Series("son_sinif", [a for a, _ in res]), pl.Series("arada", [b for _, b in res]))
 nb.write_csv(OUT / f"kent_{PLATE}_son.csv")
 p = pl.col("pop2025").cast(pl.Float64).fill_null(0)
