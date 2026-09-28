@@ -641,6 +641,8 @@ ELLE = {
     "TR-06-022-2063": ("kir", "elle: köy (Pursaklar Abadan)"),
     "TR-06-022-2067": ("kir", "elle: köy (Pursaklar Yuva)"),
     "TR-06-022-2065": ("kir", "elle: köy (Pursaklar Karaköy)"),
+    # Pursaklar: user (2026-09-29)
+    "TR-06-022-1740": ("kir", "elle: kullanıcı, köy karakteri, nüfus 18 yıldır sabit, istisna geçersiz (Pursaklar Saray Gümüşoluk)"),
 }
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
