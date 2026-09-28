@@ -141,9 +141,13 @@ def build(noise=False, mask=None):
                 w += 1
             S[i] = S[near].mean(0); src[i] = "B"
         else:
+            # district, then province, then any usable place -- a district with no usable
+            # Endeksa bands (Adıyaman's hill districts) must not leave an empty pool
             pool = np.where(train & (DID == DID[i]) & (KK == cls))[0]
-            if not len(pool):
-                pool = np.where(train & (DID == DID[i]))[0]
+            for alt in (train & (DID == DID[i]), train & (KK == cls), train):
+                if len(pool):
+                    break
+                pool = np.where(alt)[0]
             S[i] = S[pool].mean(0)
     seed = S / S.sum(1, keepdims=True) * P[:, None]
     return seed, src, (beta, rmse)
@@ -175,7 +179,8 @@ S0 = shapes_A(False, np.zeros(len(IDS), bool)); MED_A = medians(np.nan_to_num(S0
 seed0, src0, (beta0, rmse0) = build()
 X0 = fit(seed0)
 print(f"regresyon: sabit {beta0[0]:.1f}, dul {beta0[1]:.1f}, bekâr {beta0[2]:.1f}, çocuk {beta0[3]:.1f}; RMSE {rmse0:.2f}")
-print("kaynak:", {s: (int((src0 == s).sum()), int(P[src0 == s].sum())) for s in "ABC"})
+print("kaynak:", {s: (int((src0 == s).sum()), int(P[src0 == s].sum())) for s in "ABC"}, "| birim", len(IDS), "ilçe", len(DIST),
+      "| merkezi kent/kır ortanca:", [round(float(medians(X0[KK == c].sum(0, keepdims=True))[0]), 1) if (KK == c).any() else None for c in ("kent", "kır")])
 print("çocuk kısıtı: TÜİK", int(HASK.sum()), "| seçmenden", int(HASV.sum()), f"({int(P[HASV].sum())} kişi) | yok", int((~HASK & ~HASV).sum()))
 
 t0 = time.time()
