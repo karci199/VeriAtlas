@@ -477,32 +477,84 @@ ELLE = {
     "TR-06-023-1829": ("kir", "elle: köy, AATOPLU köy (Sincan Osmaniye)"),
     "TR-06-023-1840": ("merkez", "elle: eski Yenikent beldesi, merkeze bitişik, semt gibi (Sincan Menderes)"),
     # Ayaş: user approved (2026-09-29)
-    "TR-06-003-1950": ("kir", "elle: köy (Ayaş Tekke)"),
-    "TR-06-003-1949": ("kir", "elle: köy (Ayaş Gökler)"),
-    "TR-06-003-1963": ("kir", "elle: köy (Ayaş Sinanlı Cuma)"),
-    "TR-06-003-1965": ("kir", "elle: köy (Ayaş Sinanlı Mahkeme)"),
-    "TR-06-003-1938": ("merkez", "elle: kasabanın içinde (Ayaş Dervişimam)"),
-    "TR-06-003-1937": ("merkez", "elle: kasabanın içinde (Ayaş Camiatik)"),
-    "TR-06-003-1943": ("merkez", "elle: kasabanın içinde (Ayaş Ömeroğlu)"),
-    "TR-06-003-177869": ("kirsal_belde", "elle: eski belde merkezi (Ayaş Oltan)"),
-    "TR-06-003-1944": ("merkez", "elle: kullanıcı, AATOPLU 2015 mahalle (Ayaş Şeyhmuhittin)"),
-    "TR-06-003-1939": ("merkez", "elle: kasabanın içinde (Ayaş Ferahfaki)"),
-    "TR-06-003-1964": ("kir", "elle: köy (Ayaş Sinanlı Hocasinan)"),
-    "TR-06-003-1952": ("merkez", "elle: kullanıcı, AATOPLU 2015 mahalle (Ayaş Emine Tevfika Ayaşlı)"),
-    "TR-06-003-1941": ("merkez", "elle: kasabanın içinde (Ayaş Hacırecep)"),
-    "TR-06-003-1940": ("merkez", "elle: kasabanın içinde (Ayaş Hacımemi)"),
-    "TR-06-003-1942": ("merkez", "elle: kasabanın içinde (Ayaş Hacıveli)"),
-    "TR-06-003-1945": ("kir", "elle: köy (Ayaş Başayaş)"),
-    "TR-06-003-177887": ("kir", "elle: köy (Ayaş Bayram)"),
-    "TR-06-003-1946": ("kir", "elle: köy (Ayaş Başbereket)"),
-    "TR-06-003-177885": ("kir", "elle: köy (Ayaş Gökçebağ)"),
-    "TR-06-003-1951": ("kir", "elle: köy (Ayaş Ulupınar)"),
-    "TR-06-003-177889": ("kir", "elle: köy (Ayaş Ortabereket)"),
-    "TR-06-003-1954": ("kir", "elle: köy (Ayaş Çanıllı Uluyol)"),
-    "TR-06-003-1953": ("kir", "elle: köy (Ayaş Çanıllı Çiğdemci)"),
-    "TR-06-003-177891": ("kir", "elle: köy (Ayaş Pınaryaka)"),
-    "TR-06-003-177895": ("kir", "elle: köy (Ayaş Bayat)"),
+    "TR-06-003-1950": ("kir", "elle: köy
+ (Ayaş Tekke)"),
+    "TR-06-003-1949": ("kir", "elle: köy
+ (Ayaş Gökler)"),
+    "TR-06-003-1963": ("kir", "elle: köy
+ (Ayaş Sinanlı Cuma)"),
+    "TR-06-003-1965": ("kir", "elle: köy
+ (Ayaş Sinanlı Mahkeme)"),
+    "TR-06-003-1938": ("merkez", "elle: kasabanın içinde
+ (Ayaş Dervişimam)"),
+    "TR-06-003-1937": ("merkez", "elle: kasabanın içinde
+ (Ayaş Camiatik)"),
+    "TR-06-003-1943": ("merkez", "elle: kasabanın içinde
+ (Ayaş Ömeroğlu)"),
+    "TR-06-003-177869": ("kirsal_belde", "elle: eski belde merkezi
+ (Ayaş Oltan)"),
+    "TR-06-003-1944": ("merkez", "elle: kullanıcı, AATOPLU 2015 mahalle
+ (Ayaş Şeyhmuhittin)"),
+    "TR-06-003-1939": ("merkez", "elle: kasabanın içinde
+ (Ayaş Ferahfaki)"),
+    "TR-06-003-1964": ("kir", "elle: köy
+ (Ayaş Sinanlı Hocasinan)"),
+    "TR-06-003-1952": ("merkez", "elle: kullanıcı, AATOPLU 2015 mahalle
+ (Ayaş Emine Tevfika Ayaşlı)"),
+    "TR-06-003-1941": ("merkez", "elle: kasabanın içinde
+ (Ayaş Hacırecep)"),
+    "TR-06-003-1940": ("merkez", "elle: kasabanın içinde
+ (Ayaş Hacımemi)"),
+    "TR-06-003-1942": ("merkez", "elle: kasabanın içinde
+ (Ayaş Hacıveli)"),
+    "TR-06-003-1945": ("kir", "elle: köy
+ (Ayaş Başayaş)"),
+    "TR-06-003-177887": ("kir", "elle: köy
+ (Ayaş Bayram)"),
+    "TR-06-003-1946": ("kir", "elle: köy
+ (Ayaş Başbereket)"),
+    "TR-06-003-177885": ("kir", "elle: köy
+ (Ayaş Gökçebağ)"),
+    "TR-06-003-1951": ("kir", "elle: köy
+ (Ayaş Ulupınar)"),
+    "TR-06-003-177889": ("kir", "elle: köy
+ (Ayaş Ortabereket)"),
+    "TR-06-003-1954": ("kir", "elle: köy
+ (Ayaş Çanıllı Uluyol)"),
+    "TR-06-003-1953": ("kir", "elle: köy
+ (Ayaş Çanıllı Çiğdemci)"),
+    "TR-06-003-177891": ("kir", "elle: köy
+ (Ayaş Pınaryaka)"),
+    "TR-06-003-177895": ("kir", "elle: köy
+ (Ayaş Bayat)"),
     "TR-06-003-177893": ("kir", "elle: köy (Ayaş Evci)"),
+    # Yenimahalle: user (2026-09-29)
+    "TR-06-025-180658": ("kentsel_belde", "elle: ayrı yeni yerleşim (Yenimahalle Kuzey Yıldızı)"),
+    "TR-06-025-1906": ("kir", "elle: köy, AATOPLU köy (Yenimahalle Memlik)"),
+    "TR-06-025-1873": ("merkez", "elle: kullanıcı, kentin içinde (Yenimahalle İvedikköy)"),
+    "TR-06-025-1911": ("kentsel_belde", "elle: kullanıcı, 2015 köy, bugün ayrı leke 6.617 (Yenimahalle Yuvaköy)"),
+    # Bala: matches AATOPLU 2015 fully, user approved (2026-09-29)
+    "TR-06-004-1981": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Kesikköprü)"),
+    "TR-06-004-1982": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Kesikköprü Kızılırmak)"),
+    "TR-06-004-1983": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Kesikköprü Erdemli)"),
+    "TR-06-004-1994": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Ahmetçayırı)"),
+    "TR-06-004-177897": ("kirsal_belde", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Afşar)"),
+    "TR-06-004-1973": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Yeniköy)"),
+    "TR-06-004-1975": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Çiğdemli)"),
+    "TR-06-004-1967": ("merkez", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala İsmetpaşa)"),
+    "TR-06-004-1992": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Yöreli)"),
+    "TR-06-004-1968": ("merkez", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Kartaltepe)"),
+    "TR-06-004-1966": ("merkez", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Göztepe)"),
+    "TR-06-004-99986": ("merkez", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Hamidiye)"),
+    "TR-06-004-1976": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Büyükboyalık)"),
+    "TR-06-004-1969": ("merkez", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Şentepe)"),
+    "TR-06-004-1974": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Küçükboyalık)"),
+    "TR-06-004-1970": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Abazlı)"),
+    "TR-06-004-1972": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Çatalçeşme)"),
+    "TR-06-004-1971": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Tolköy)"),
+    "TR-06-004-1978": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Köseli)"),
+    "TR-06-004-1977": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Kerişli)"),
+    "TR-06-004-914390": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Afşar Dedebey)"),
 }
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
