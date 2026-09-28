@@ -55,6 +55,10 @@ for r in pl.read_csv(D / f"tarihsel_{PLATE}_sabit_satir.csv", infer_schema_lengt
 BYNAME = {}
 for r in ik.iter_rows(named=True):
     BYNAME.setdefault(r["area_id"].rsplit("-", 1)[0], []).append((fold(r["name"]), r))
+URBAN_DISTRICT = {}
+for did, rs in BYNAME.items():
+    t = sum(r["nufus"] for _, r in rs)
+    URBAN_DISTRICT[did] = sum(r["nufus"] for _, r in rs if r["kent_kir"] == "kent") / t if t else 0
 
 
 def resolve(key, ad):
@@ -75,7 +79,16 @@ def resolve(key, ad):
         # a belde's quarters kept its name as prefix (Emek Adnan Menderes, Emek Zafer ...)
         hit = [r for n, r in BYNAME.get(did, []) if len(nm) >= 4 and n.startswith(nm)]
     if not hit:
-        return None, None
+        # the 2008 redistricting moved quarters between districts (Ankara: Koru, Ümit,
+        # Yaşamkent from Yenimahalle to Çankaya; Pursaklar split off Keçiören): a unique
+        # exact name anywhere in the province
+        hit = [r for rs in BYNAME.values() for n, r in rs if n == nm]
+        if len({r["area_id"].rsplit("-", 1)[0] for r in hit}) != 1:
+            hit = []
+    if not hit:
+        # a quarter renamed or merged in a district urban all through today (Altındağ's
+        # renewal) is urban whatever it became
+        return ("kent", None) if URBAN_DISTRICT.get(did, 0) >= 0.99 else (None, None)
     pop = {"kent": 0.0, "kır": 0.0}
     for r in hit:
         pop[r["kent_kir"]] += r["nufus"] or 1
