@@ -26,7 +26,11 @@ def fold(t):
     for a, b in zip("ıöüçşğâîû", "ioucsgaiu"):
         t = t.replace(a, b)
     t = "".join(ch for ch in t if ch.isalnum())
-    return t.removesuffix("mah").removesuffix("mahallesi")
+    t = t.removesuffix("mah").removesuffix("mahallesi")
+    # a settlement's name can carry "Köyü"/"Köy" in the current geometry (kent_il.py's nb)
+    # but not in the pre-2013 registry ("Dündar Köy." -> "Dündar" there already), or the other
+    # way round -- strip it on both sides so the two never miss each other by a suffix alone
+    return t.removesuffix("koyu").removesuffix("koy")
 
 
 nb = pl.read_csv(SRC / f"kent_{PLATE}_mahalle.csv", infer_schema_length=0)
@@ -54,8 +58,13 @@ for r in reg.iter_rows(named=True):
     old.setdefault((r["parent_id"], fold(r["name_tr"])), r["municipality"].removesuffix(" Bel."))
 for r in vil.iter_rows(named=True):
     old.setdefault((r["parent_id"], fold(r["name_tr"].removesuffix(" Köy."))), "koy")
+# a settlement's own id is the warehouse village id (kent_il.py already applies wh()): that is
+# a direct, exact match and settles it outright, ahead of the fold-name lookup, which can miss
+# on a suffix it did not expect ("Köyü" vs "Köy.") or on two villages sharing one folded name
+VIL_IDS = set(vil["area_id"])
 nb = nb.with_columns(pl.struct("area_id", "name").map_elements(
-    lambda s: old.get((s["area_id"].rsplit("-", 1)[0], fold(s["name"])), "yok"), return_dtype=pl.Utf8).alias("eski_statu"))
+    lambda s: "koy" if s["area_id"] in VIL_IDS else old.get((s["area_id"].rsplit("-", 1)[0], fold(s["name"])), "yok"),
+    return_dtype=pl.Utf8).alias("eski_statu"))
 # a former belde whose quarters were merged into one neighbourhood named after it in 2014
 # (Urganlı, Sart, Yeniceköy) matches on the belde name, not on a quarter name
 BEL = {}
@@ -133,7 +142,11 @@ def decide(r):
     if bina == "osb":
         return "osb", ""
     d_kent = (r["degurba"] or "").startswith(("YOĞUN", "ORTA"))
-    s_old = r["kayit_blok"] in ("eski_mahalle", "kasabadan_bolunen", "yeni_bolunen") or r["eski_statu"] in ("ilce_mahalle",) or r["eski_statu"].startswith("belde:")
+    # kayit_blok is a numeric-code guess calibrated on Bursa's own numbering (old mahalle
+    # codes there sit under 100,500); other provinces gave their villages low codes too, so
+    # the guess is worthless wherever a direct registry hit already says "köy" for certain
+    s_old = (r["eski_statu"] not in ("koy",) and r["kayit_blok"] in ("eski_mahalle", "kasabadan_bolunen", "yeni_bolunen")) \
+        or r["eski_statu"] in ("ilce_mahalle",) or r["eski_statu"].startswith("belde:")
     h_kent = r["haritatr"] == "merkez" or r["haritatr"].startswith("belde:")
     votes = f"bina={bina} degurba={'kent' if d_kent else 'kır'} statü={'kent' if s_old else 'köy'} haritatr={r['haritatr']}"
     if bina in ("merkez", "kentsel_belde"):
