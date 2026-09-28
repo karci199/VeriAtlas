@@ -576,24 +576,56 @@ ELLE = {
  (Bala Kerişli)"),
     "TR-06-004-914390": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Afşar Dedebey)"),
     # Akyurt: user (2026-09-29)
-    "TR-06-001-1916": ("merkez", "elle: kullanıcı, kasaba ona kadar büyüdü (Akyurt Galaba)"),
-    "TR-06-001-1925": ("kir", "elle: köy, AATOPLU köy (Akyurt Çardakbağı)"),
-    "TR-06-001-1929": ("kir", "elle: köy, AATOPLU köy (Akyurt Güzelhisar)"),
-    "TR-06-001-1927": ("kir", "elle: köy, AATOPLU köy (Akyurt Teberik)"),
-    "TR-06-001-1926": ("kir", "elle: köy, AATOPLU köy (Akyurt Çınar)"),
-    "TR-06-001-1935": ("kir", "elle: ayrı yerleşim, AATOPLU köy, istisna geçersiz (Akyurt Saracalar)"),
-    "TR-06-001-1932": ("kir", "elle: köy, AATOPLU köy (Akyurt Karacalar)"),
-    "TR-06-001-1921": ("kir", "elle: köy, AATOPLU köy (Akyurt Samut)"),
-    "TR-06-001-1936": ("kir", "elle: köy, AATOPLU köy (Akyurt Şeyhler)"),
-    "TR-06-001-1920": ("kir", "elle: köy, AATOPLU köy (Akyurt Balıkhisar)"),
-    "TR-06-001-1933": ("kir", "elle: köy, AATOPLU köy (Akyurt Karayatak)"),
-    "TR-06-001-1934": ("kir", "elle: köy, AATOPLU köy (Akyurt Kızık)"),
-    "TR-06-001-1922": ("kir", "elle: köy, AATOPLU köy (Akyurt Büğdüz)"),
-    "TR-06-001-1924": ("kir", "elle: köy, AATOPLU köy (Akyurt Çam)"),
-    "TR-06-001-1931": ("kir", "elle: köy, AATOPLU köy (Akyurt Karacakaya)"),
-    "TR-06-001-1930": ("kir", "elle: köy, AATOPLU köy (Akyurt Haydar)"),
-    "TR-06-001-1923": ("kir", "elle: köy, AATOPLU köy (Akyurt Cücük)"),
+    "TR-06-001-1916": ("merkez", "elle: kullanıcı, kasaba ona kadar büyüdü
+ (Akyurt Galaba)"),
+    "TR-06-001-1925": ("kir", "elle: köy, AATOPLU köy
+ (Akyurt Çardakbağı)"),
+    "TR-06-001-1929": ("kir", "elle: köy, AATOPLU köy
+ (Akyurt Güzelhisar)"),
+    "TR-06-001-1927": ("kir", "elle: köy, AATOPLU köy
+ (Akyurt Teberik)"),
+    "TR-06-001-1926": ("kir", "elle: köy, AATOPLU köy
+ (Akyurt Çınar)"),
+    "TR-06-001-1935": ("kir", "elle: ayrı yerleşim, AATOPLU köy, istisna geçersiz
+ (Akyurt Saracalar)"),
+    "TR-06-001-1932": ("kir", "elle: köy, AATOPLU köy
+ (Akyurt Karacalar)"),
+    "TR-06-001-1921": ("kir", "elle: köy, AATOPLU köy
+ (Akyurt Samut)"),
+    "TR-06-001-1936": ("kir", "elle: köy, AATOPLU köy
+ (Akyurt Şeyhler)"),
+    "TR-06-001-1920": ("kir", "elle: köy, AATOPLU köy
+ (Akyurt Balıkhisar)"),
+    "TR-06-001-1933": ("kir", "elle: köy, AATOPLU köy
+ (Akyurt Karayatak)"),
+    "TR-06-001-1934": ("kir", "elle: köy, AATOPLU köy
+ (Akyurt Kızık)"),
+    "TR-06-001-1922": ("kir", "elle: köy, AATOPLU köy
+ (Akyurt Büğdüz)"),
+    "TR-06-001-1924": ("kir", "elle: köy, AATOPLU köy
+ (Akyurt Çam)"),
+    "TR-06-001-1931": ("kir", "elle: köy, AATOPLU köy
+ (Akyurt Karacakaya)"),
+    "TR-06-001-1930": ("kir", "elle: köy, AATOPLU köy
+ (Akyurt Haydar)"),
+    "TR-06-001-1923": ("kir", "elle: köy, AATOPLU köy
+ (Akyurt Cücük)"),
     "TR-06-001-1928": ("kir", "elle: köy, AATOPLU köy (Akyurt Elecik)"),
+    # Elmadağ: Hasanoğlan is one town of six quarters, 15.193 (user, 2026-09-29)
+    "TR-06-009-2085": ("kentsel_belde", "elle: Hasanoğlan kasabası (Elmadağ Hasanoğlan Bahçelievler)"),
+    "TR-06-009-2089": ("kentsel_belde", "elle: Hasanoğlan kasabası (Elmadağ Muzaffer Ekşi)"),
+    "TR-06-009-2087": ("kentsel_belde", "elle: Hasanoğlan kasabası (Elmadağ Hasanoğlan Havuzbaşı)"),
+    "TR-06-009-2086": ("kentsel_belde", "elle: Hasanoğlan kasabası (Elmadağ Hasanoğlan Fatih)"),
+    "TR-06-009-2090": ("kentsel_belde", "elle: Hasanoğlan kasabası, istisna geçersiz (Elmadağ Şehitlik)"),
+    "TR-06-009-2088": ("kentsel_belde", "elle: Hasanoğlan kasabası (Elmadağ İstasyon)"),
+    "TR-06-009-2084": ("merkez", "elle: kullanıcı, merkez (Elmadağ Yenimahalle)"),
+    "TR-06-009-2094": ("kirsal_belde", "elle: kullanıcı, eski Yeşildere beldesi (Elmadağ Seyitcemali)"),
+    "TR-06-009-2093": ("kirsal_belde", "elle: eski Yeşildere beldesi (Elmadağ Yeşildere Fatih)"),
+    "TR-06-009-2074": ("kir", "elle: köy (Elmadağ Lalabel)"),
+    "TR-06-009-2081": ("kir", "elle: köy, AATOPLU köy (Elmadağ Kayadibi)"),
+    "TR-06-009-2080": ("kir", "elle: köy, AATOPLU köy (Elmadağ Akçaali)"),
+    "TR-06-009-2082": ("kir", "elle: köy, AATOPLU köy (Elmadağ Süleymanlı)"),
+    "TR-06-009-2083": ("kir", "elle: köy, AATOPLU köy (Elmadağ Tekke)"),
 }
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
