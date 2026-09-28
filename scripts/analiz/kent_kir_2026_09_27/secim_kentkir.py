@@ -58,7 +58,13 @@ for key in {r["area_id"] for r in rows if "~" in r["area_id"]}:
 cls = pl.concat([cls, pl.DataFrame(extra, schema=cls.schema)])
 d = pl.DataFrame(rows).join(cls, on="area_id", how="left")
 missing = d.filter(pl.col("kent_kir").is_null())["area_id"].unique().to_list()
-assert not missing, missing
+if missing:
+    # a whole district can be absent from kent_<p>_son.csv when kent_il.py found no
+    # building under 5,000 m2 inside it (tiny/edge districts, e.g. Abana): its votes
+    # cannot be classified, so they are dropped and the gap is logged, not fatal
+    (D / f"secim_{PLATE}_eksik_mahalle.txt").write_text("
+".join(missing), encoding="utf-8")
+    print(f"sınıfsız {len(missing)} mahalle atlandı (bkz. secim_{PLATE}_eksik_mahalle.txt)")
 print("dışlanan kurum sandığı:", dropped)
 d = d.filter(pl.col("kent_kir").is_not_null())
 

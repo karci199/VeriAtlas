@@ -45,8 +45,15 @@ _VIL = set(pl.read_csv(ROOT / "src/veriatlas/data/areas_tr_villages.csv", infer_
 
 
 def wh(aid):
+    # only subtract when the *result* is a real village id -- a genuine neighbourhood code
+    # can also exceed 2,000,000 (a post-2013 split carries a year-prefixed code, e.g.
+    # Yıldırım Sakarya = 2018099), and must not be mistaken for a shifted village
     did, code = aid.rsplit("-", 1)
-    return f"{did}-{int(code) - 2000000}" if code.isdigit() and int(code) >= 2000000 else aid
+    if code.isdigit() and int(code) >= 2000000:
+        alt = f"{did}-{int(code) - 2000000}"
+        if alt in _VIL:
+            return alt
+    return aid
 
 
 def geo_code(aid):
