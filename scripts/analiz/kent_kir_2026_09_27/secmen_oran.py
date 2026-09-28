@@ -28,7 +28,7 @@ cls = pl.read_csv(D / f"kent_{PLATE}_ikili.csv", infer_schema_length=0).select("
 semt = pl.read_csv(D / f"semt_{PLATE}_mahalle.csv").select("area_id", "semt")
 s = s.join(cls, on="area_id").join(semt, on="area_id", how="left").with_columns((pl.col("secmen") / pl.col("a18")).round(3).alias("oran"))
 w = s.pivot(on="e", index=["district", "semt", "area_id", "name", "kent_kir", "son_sinif"], values=["tot", "a18", "secmen", "oran"])
-w = w.rename({c: c.replace("_mv2023", "_2023").replace("_yerel_bsb_2024", "_2024") for c in w.columns}).sort("oran_2024")
+w = w.rename({c: c.replace("_mv2023", "_2023").replace(f"_{LOCAL24}", "_2024") for c in w.columns}).sort("oran_2024")
 w.write_csv(D / f"secmen_oran_{PLATE}_mahalle.csv")
 g = s.filter(pl.col("e") == LOCAL24).group_by("district", "semt").agg(
     pl.col("tot").sum().cast(pl.Int64).alias("nufus"), pl.col("a18").sum().cast(pl.Int64), pl.col("secmen").sum(),

@@ -48,20 +48,20 @@ w = s.pivot(on="e", index=["area_id", "district", "semt", "name", "kent_kir", "s
 gen = ["mv2015k", "mv2018", "mv2023"]
 w = w.with_columns(
     pl.max_horizontal([pl.col(f"fazla_oy_{e}") for e in gen]).alias("fazla_oy_genel_max"),
-    pl.col("fazla_oy_yerel_bsb_2024").alias("fazla_oy_yerel"),
+    pl.col(f"fazla_oy_{LOCAL24}").alias("fazla_oy_yerel"),
     pl.min_horizontal([pl.col(f"kayit_{e}") for e in gen + [LOCAL24]]).alias("kayit_min"),
     pl.max_horizontal([pl.col(f"kayit_{e}") for e in gen + [LOCAL24]]).alias("kayit_max"),
-    ((pl.col("a18_yerel_bsb_2024") / pl.col("a18_mv2018")) - 1).alias("a18_buyume"),
-    ((pl.col("k_yerel_bsb_2024") / pl.col("k_mv2018")) - 1).alias("k_buyume"))
+    ((pl.col(f"a18_{LOCAL24}") / pl.col("a18_mv2018")) - 1).alias("a18_buyume"),
+    ((pl.col(f"k_{LOCAL24}") / pl.col("k_mv2018")) - 1).alias("k_buyume"))
 w = w.with_columns(
     pl.when((pl.col("fazla_oy_genel_max") >= 20) & (pl.col("fazla_oy_yerel").fill_null(0) < 20)).then(pl.lit("kurum_sandigi"))
     .when(pl.col("kayit_max") < 0.85).then(pl.lit("secmen_disi_surekli"))
-    .when(pl.col("kayit_yerel_bsb_2024") < 0.85).then(pl.lit("secmen_disi_yeni"))
+    .when(pl.col(f"kayit_{LOCAL24}") < 0.85).then(pl.lit("secmen_disi_yeni"))
     .when(pl.col("kayit_min") > 1.05).then(pl.lit("kayitli_gurbetci"))
     .when((pl.col("a18_buyume") >= 0.15) & (pl.col("k_buyume") < pl.col("a18_buyume") / 2) & (pl.col("a18_mv2018") >= 300)).then(pl.lit("yabanci_akisi"))
     .otherwise(pl.lit("normal")).alias("tip"))
-out = w.select("district", "semt", "name", "kent_kir", "son_sinif", "tip", pl.col("tot_yerel_bsb_2024").alias("nufus_2024"), pl.col("a18_yerel_bsb_2024").alias("a18_2024"),
-               pl.col("k_yerel_bsb_2024").alias("secmen_2024"), *[pl.col(f"kayit_{e}").round(2).alias(f"kayit_{y}") for e, y, _ in EL if e != "cb2023t2"],
+out = w.select("district", "semt", "name", "kent_kir", "son_sinif", "tip", pl.col(f"tot_{LOCAL24}").alias("nufus_2024"), pl.col(f"a18_{LOCAL24}").alias("a18_2024"),
+               pl.col(f"k_{LOCAL24}").alias("secmen_2024"), *[pl.col(f"kayit_{e}").round(2).alias(f"kayit_{y}") for e, y, _ in EL if e != "cb2023t2"],
                "fazla_oy_genel_max", "fazla_oy_yerel", pl.col("a18_buyume").round(2), pl.col("k_buyume").round(2)).sort("tip", "nufus_2024", descending=[False, True])
 out.write_csv(D / f"secmen_iliski_{PLATE}_tip.csv")
 pl.Config.set_tbl_rows(60); pl.Config.set_tbl_width_chars(260); pl.Config.set_tbl_cols(20)
