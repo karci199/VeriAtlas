@@ -155,7 +155,8 @@ OLD_TO_NEW = {"TR-16-002-11355": "140855", "TR-16-002-11356": "140853",
               "TR-16-012-11139": "11138", "TR-16-008-7655": "184111",
               "TR-16-001-7391": "183605", "TR-16-005-7484": "183781"}
 # villages merged into another village, target unnamed; a village either way (user)
-OLD_VILLAGE = {"TR-16-001-7362", "TR-16-008-7662"}  # Büyükorhan Çökene, Keles Domalı
+OLD_VILLAGE = {"TR-16-001-7362", "TR-16-008-7662",  # Büyükorhan Çökene, Keles Domalı
+               "TR-16-002-11357", "TR-16-005-7532"}  # Gemlik Memireis, İnegöl Mesruriye
 
 
 def fixed(r):
