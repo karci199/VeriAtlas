@@ -626,6 +626,21 @@ ELLE = {
     "TR-06-009-2080": ("kir", "elle: köy, AATOPLU köy (Elmadağ Akçaali)"),
     "TR-06-009-2082": ("kir", "elle: köy, AATOPLU köy (Elmadağ Süleymanlı)"),
     "TR-06-009-2083": ("kir", "elle: köy, AATOPLU köy (Elmadağ Tekke)"),
+    # Pursaklar: Saray and Altınova are separate towns (user, 2026-09-29)
+    "TR-06-022-1739": ("kentsel_belde", "elle: Saray kasabası (Pursaklar Saray Fatih)"),
+    "TR-06-022-1742": ("kentsel_belde", "elle: Saray kasabası (Pursaklar Saray Cumhuriyet)"),
+    "TR-06-022-1741": ("kentsel_belde", "elle: Saray kasabası, AATOPLU mahalle (Pursaklar Saray Osmangazi)"),
+    "TR-06-022-139854": ("kentsel_belde", "elle: Altınova kasabası (Pursaklar Altınova)"),
+    "TR-06-022-1511": ("kentsel_belde", "elle: Altınova kasabası (Pursaklar Yıldırım Beyazıt)"),
+    "TR-06-022-1510": ("kentsel_belde", "elle: Altınova kasabası (Pursaklar Peçenek)"),
+    "TR-06-022-2061": ("kir", "elle: köy (Pursaklar Sirkeli Yeşilova)"),
+    "TR-06-022-2062": ("kir", "elle: köy (Pursaklar Sirkeli Yeşilyurt)"),
+    "TR-06-022-2068": ("kir", "elle: köy (Pursaklar Kösrelikkızığı)"),
+    "TR-06-022-2066": ("kir", "elle: köy (Pursaklar Karşıyaka)"),
+    "TR-06-022-1512": ("kir", "elle: köy (Pursaklar Yeni Karaköy)"),
+    "TR-06-022-2063": ("kir", "elle: köy (Pursaklar Abadan)"),
+    "TR-06-022-2067": ("kir", "elle: köy (Pursaklar Yuva)"),
+    "TR-06-022-2065": ("kir", "elle: köy (Pursaklar Karaköy)"),
 }
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
