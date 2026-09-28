@@ -248,6 +248,8 @@ KK3 = np.array(["kurum" if a in KURUM else k for a, k in zip(IDS, KK)])  # insti
 sens = []
 for did in list(DIST) + [IL_UP]:
     dm = np.ones(len(IDS), bool) if did == IL_UP else DID == did
+    if not dm.any():  # a district with no classified neighbourhood (no building footprint
+        continue      # found there at all, e.g. Abana) has nothing to report here
     r = dict(ilce=IL_UP if did == IL_UP else NAME[IDS[np.where(dm)[0][0]]])
     for cls in ("kent", "kır"):
         for lab, arr in (("", KK), ("_ters", KK2), ("_kurumsuz", KK3)):
