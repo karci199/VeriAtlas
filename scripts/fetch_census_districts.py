@@ -58,7 +58,10 @@ APPS = {
 #: 1965-1980 (`nufus80app`, ZK 2.3) have only the administrative tab: population totals by
 #: settlement, no age or other characteristics. The social tab exists from 1985.
 SOCIAL_TAB_YEARS = [2000, 1990, 1985]
-DETAILS = {"ilce": "İlçe toplamı", "sehir": "Şehir", "koy": "Belde ve Köyler"}
+DETAILS = {"ilce": "İlçe toplamı", "sehir": "Şehir", "koy": "Belde ve köyler"}
+# 2000: the option text is "Belde ve köyler toplamı", lower-case k -- the capital-K guess
+# (right for other years) missed every single one with a bare, message-less StopIteration
+# (found 2026-09-28: 161 of 169 attempts, retried three times each for nothing)
 RE_SELECT = re.compile(r'<select id="(z_\w+)"[^>]*>(.*?)</select>', re.DOTALL)
 RE_OPTION = re.compile(r'<option id="(z_\w+)"[^>]*>([^<]*)<')
 
