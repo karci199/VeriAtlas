@@ -13,10 +13,10 @@ import json
 import polars as pl
 
 import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
-from il import PLATE, D, ROOT  # noqa: E402
+from il import PLATE, D, ROOT, LOCAL24  # noqa: E402
 
 EL = ["mv2002", "mv2007", "mv2011", "mv2015h", "mv2015k", "mv2018", "mv2023", "cb2014", "cb2018", "cb2023t1", "cb2023t2",
-      "yerel_bsb_2014", "yerel_bsb_2019", "yerel_bsb_2024", "yerel_bel_2019", "yerel_bel_2024"]
+      "yerel_bsb_2014", "yerel_bsb_2019", LOCAL24, "yerel_bel_2019", "yerel_bel_2024"]
 PARTY = ("AK PARTİ", "RECEP TAYYİP ERDOĞAN")
 cls = pl.read_csv(D / f"kent_{PLATE}_ikili.csv", infer_schema_length=0)
 C, S, DI = (dict(zip(cls["area_id"], cls[c])) for c in ("kent_kir", "son_sinif", "district"))

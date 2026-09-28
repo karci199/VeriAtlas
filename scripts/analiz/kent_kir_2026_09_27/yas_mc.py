@@ -24,7 +24,7 @@ from pathlib import Path
 import duckdb, numpy as np, polars as pl
 
 import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
-from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG  # noqa: E402
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG, LOCAL24  # noqa: E402
 N = int(sys.argv[2]) if len(sys.argv) > 2 else 200
 
 rng = np.random.default_rng(20260928)
@@ -63,7 +63,7 @@ P = np.array([POP[a] for a in IDS], float)
 HASK = np.array([a in KID for a in IDS]); K = np.array([KID.get(a, 0) for a in IDS], float)
 # registered voters (2024 local: no prison boxes) ~ 18+ residents x 1.02 in villages (p10-p90
 # 0.97-1.09); where TÜİK gives no 0-17, children = population - voters / 1.02, clipped at 0
-VOT = {a: v["k"] for a, v in json.loads((ROOT / f"public/tiles/secim-yerel_bsb_2024-mahalle-TR-{PLATE}.json").read_text(encoding="utf-8")).items()}
+VOT = {a: v["k"] for a, v in json.loads((ROOT / f"public/tiles/secim-{LOCAL24}-mahalle-TR-{PLATE}.json").read_text(encoding="utf-8")).items()}
 HASV = np.array([(not HASK[i]) and a in VOT for i, a in enumerate(IDS)])
 KV = np.array([VOT.get(a, 0) for a in IDS], float)
 

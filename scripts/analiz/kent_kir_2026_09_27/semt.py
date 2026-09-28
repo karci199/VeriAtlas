@@ -17,7 +17,7 @@ from pathlib import Path
 import duckdb, polars as pl
 
 import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
-from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG  # noqa: E402
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG, LOCAL24  # noqa: E402
 IL = PTT_IL
 
 
@@ -130,7 +130,7 @@ nb = nb.join(pop, on="area_id", how="left")
 
 # elections
 EL = {"mv2023": ["AK PARTİ", "CHP", "İYİ PARTİ", "MHP", "YEŞİL SOL PARTİ", "YENİDEN REFAH", "ZAFER PARTİSİ"],
-      "cb2023t2": ["RECEP TAYYİP ERDOĞAN"], "yerel_bsb_2024": ["CHP", "AK PARTİ"]}
+      "cb2023t2": ["RECEP TAYYİP ERDOĞAN"], LOCAL24: ["CHP", "AK PARTİ"]}
 vrows = []
 for e, parties in EL.items():
     for aid, v in json.loads((ROOT / f"public/tiles/secim-{e}-mahalle-TR-{PLATE}.json").read_text(encoding="utf-8")).items():
@@ -156,7 +156,7 @@ s = s.with_columns(
     pct("mv2023", "AK PARTİ", "AKP23"), pct("mv2023", "CHP", "CHP23"), pct("mv2023", "İYİ PARTİ", "IYI23"),
     pct("mv2023", "MHP", "MHP23"), pct("mv2023", "YEŞİL SOL PARTİ", "YSP23"), pct("mv2023", "YENİDEN REFAH", "YRP23"),
     pct("mv2023", "ZAFER PARTİSİ", "ZAF23"), pct("cb2023t2", "RECEP TAYYİP ERDOĞAN", "ERD23"),
-    pct("yerel_bsb_2024", "CHP", "CHP24"), pct("yerel_bsb_2024", "AK PARTİ", "AKP24"),
+    pct(LOCAL24, "CHP", "CHP24"), pct(LOCAL24, "AK PARTİ", "AKP24"),
 ).select("district", "semt", "mahalle", "sinif", "nufus", "cocuk%", pl.col("mv2023:k").alias("secmen23"), "katilim23",
          "AKP23", "CHP23", "IYI23", "MHP23", "YSP23", "YRP23", "ZAF23", "ERD23", "CHP24", "AKP24").sort("district", "nufus", descending=[False, True])
 nb.select("district", "area_id", "name", "son_sinif", "semt").write_csv(D / f"semt_{PLATE}_mahalle.csv")

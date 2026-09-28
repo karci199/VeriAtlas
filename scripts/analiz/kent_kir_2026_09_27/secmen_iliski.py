@@ -19,9 +19,9 @@ from pathlib import Path
 import duckdb, polars as pl
 
 import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
-from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG  # noqa: E402
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG, LOCAL24  # noqa: E402
 
-EL = [("mv2015k", 2015, "genel"), ("mv2018", 2018, "genel"), ("mv2023", 2023, "genel"), ("cb2023t2", 2023, "cb2"), ("yerel_bsb_2024", 2024, "yerel")]
+EL = [("mv2015k", 2015, "genel"), ("mv2018", 2018, "genel"), ("mv2023", 2023, "genel"), ("cb2023t2", 2023, "cb2"), (LOCAL24, 2024, "yerel")]
 p = duckdb.sql(f"""select area_id, year(period_start) y, sum(value) filter (where dims='age=18+') a18,
  sum(value) filter (where dims='age=0-17') c, sum(value) tot from read_parquet('{ROOT}/public/fact.parquet')
  where indicator_id='population' and area_id like 'TR-{PLATE}-%-%' and year(period_start) in (2015,2018,2023,2024) group by 1,2""").pl()
@@ -49,8 +49,8 @@ gen = ["mv2015k", "mv2018", "mv2023"]
 w = w.with_columns(
     pl.max_horizontal([pl.col(f"fazla_oy_{e}") for e in gen]).alias("fazla_oy_genel_max"),
     pl.col("fazla_oy_yerel_bsb_2024").alias("fazla_oy_yerel"),
-    pl.min_horizontal([pl.col(f"kayit_{e}") for e in gen + ["yerel_bsb_2024"]]).alias("kayit_min"),
-    pl.max_horizontal([pl.col(f"kayit_{e}") for e in gen + ["yerel_bsb_2024"]]).alias("kayit_max"),
+    pl.min_horizontal([pl.col(f"kayit_{e}") for e in gen + [LOCAL24]]).alias("kayit_min"),
+    pl.max_horizontal([pl.col(f"kayit_{e}") for e in gen + [LOCAL24]]).alias("kayit_max"),
     ((pl.col("a18_yerel_bsb_2024") / pl.col("a18_mv2018")) - 1).alias("a18_buyume"),
     ((pl.col("k_yerel_bsb_2024") / pl.col("k_mv2018")) - 1).alias("k_buyume"))
 w = w.with_columns(

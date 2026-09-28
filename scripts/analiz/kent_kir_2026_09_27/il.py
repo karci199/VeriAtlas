@@ -31,3 +31,7 @@ def fold(t):
 SLUG = fold(NAME)
 IL_UP = SLUG.upper()
 PTT_IL = NAME.replace("i", "İ").upper()
+
+# 2024 local election at neighbourhood level: metropolitan mayor in the 30 büyükşehir, provincial
+# council (il genel meclisi) elsewhere -- the only local ballot cast in villages there
+LOCAL24 = "yerel_bsb_2024" if (ROOT / f"public/tiles/secim-yerel_bsb_2024-mahalle-TR-{PLATE}.json").exists() else "yerel_ilgen_2024"

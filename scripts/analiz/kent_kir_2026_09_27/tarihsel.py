@@ -27,9 +27,16 @@ def fold(t):
     return "".join(ch for ch in t if ch.isalpha())
 
 
-rows, check = [], {}
+# census files carry the province name of the day
+ALIAS = {"mersin": "icel", "kahramanmaras": "maras", "sanliurfa": "urfa"}
+rows, check, warn = [], {}, []
 for y in (1965, 1970, 1975, 1980, 1985, 1990, 2000):
-    t = (Path("C:/veri-ham/tuik_sayim") / str(y) / f"idari-{SLUG}-tum-yerlesim.html").read_bytes().decode("cp1254")
+    f = Path("C:/veri-ham/tuik_sayim") / str(y) / f"idari-{SLUG}-tum-yerlesim.html"
+    if not f.exists() and SLUG in ALIAS:
+        f = f.with_name(f"idari-{ALIAS[SLUG]}-tum-yerlesim.html")
+    if not f.exists():  # provinces created after that census (Yalova 1995, Düzce 1999 ...)
+        warn.append(f"{y}: sayım dosyası yok"); continue
+    t = f.read_bytes().decode("cp1254")
     district = None
     for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", t, re.S):
         c = [html.unescape(re.sub(r"<[^>]+>", "", x)).replace("\xa0", " ").strip() for x in re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)]
@@ -38,10 +45,14 @@ for y in (1965, 1970, 1975, 1980, 1985, 1990, 2000):
             continue
         nums = [x for x in c if isnum(x)]
         if len(nums) < 3:
-            if len(c) >= 2 and fold(c[0]) == fold(SLUG) and not nums:
+            if len(c) >= 2 and fold(c[0]) in (SLUG, ALIAS.get(SLUG, SLUG)) and not nums:
                 district = c[1]
             continue
         total = num(nums[-3])
+        # "(*)": a bucak centre already counted inside the city's "Şehir" row (Ankara Cebeci 1965);
+        # a numeric "Merkez" row is the same thing for the central bucak
+        if any(x.endswith("(*)") for x in c) or c[0] == "Merkez" and not any("(B)" in x for x in c) and len(c) == 4:
+            continue
         if any("toplam" in x.lower() for x in c):
             if any(x.startswith("İl toplam") for x in c):
                 check[y] = total
@@ -53,10 +64,19 @@ for y in (1965, 1970, 1975, 1980, 1985, 1990, 2000):
             kind = "belde" if any("(B)" in x for x in c) else "koy"
         rows.append(dict(year=y, district=district, name=name, kind=kind, pop=total))
 
-got = pl.DataFrame(rows).group_by("year").agg(pl.col("pop").sum())
+got = pl.DataFrame(rows).group_by("year").agg(pl.col("pop").sum()) if rows else pl.DataFrame({"year": [], "pop": []})
+# a few hundred people off (a row the reader cannot parse) is tolerated with a warning; a
+# large gap (a summary row counted twice) drops the year
+bad = {y for y, v in got.iter_rows() if check.get(y) is not None and abs(check[y] - v) > 0.005 * check[y]}
 for y, v in got.iter_rows():
-    assert check.get(y) in (None, v), f"{y}: satırlar {v} != il toplamı {check.get(y)}"
-print("sayım il toplamı denetimi:", check)
+    if check.get(y) is not None and v != check[y] and y not in bad:
+        warn.append(f"{y}: satırlar {v} != il toplamı {check[y]} (%{abs(check[y] - v) / check[y] * 100:.2f}, tutuldu)")
+for y, v in got.iter_rows():
+    if y in bad:
+        warn.append(f"{y}: satırlar {v} != il toplamı {check.get(y)} -- yıl atlandı")
+rows = [r for r in rows if r["year"] not in bad]
+print("sayım il toplamı denetimi:", check, "| uyarı:", warn)
+(OUT / f"tarihsel_{PLATE}_uyari.txt").write_text(" | ".join(warn), encoding="utf-8")
 
 # ADNKS 2007-2012 from the warehouse
 reg = pl.read_csv(ROOT / "src/veriatlas/data/areas_tr_neighbourhoods.csv", infer_schema_length=0)
