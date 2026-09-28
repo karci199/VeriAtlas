@@ -398,9 +398,31 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
 
     # Zaman
     click_exact(page, "İleri")
+    # Some measures (hayvancılık) land on this tab with "Periyot" still on its
+    # placeholder ("Seçiniz"), rather than "Yıllık" pre-picked as it is for most
+    # measures -- the year list-items never render until it is, so an empty offer
+    # was silently read as "this measure has no years" (found on Canlı hayvan
+    # sayısı, 2026-09-28, from a screenshot: the Zaman panel was blank, not slow).
+    if os.environ.get("VERIATLAS_DEBUG_SEL"):
+        for i in range(page.locator("select").count()):
+            sel = page.locator("select").nth(i)
+            print("   SELECT", i, "val=", repr(sel.input_value()), "opts=", sel.locator("option").all_inner_texts())
+    periyot = None
+    for i in range(page.locator("select").count()):
+        cand = page.locator("select").nth(i)
+        if "Yıllık" in cand.locator("option").all_inner_texts():
+            periyot = cand
+            break
+    if periyot is not None and periyot.input_value() == "Seçiniz":
+        periyot.select_option(label="Yıllık")
+        settle(page)
+        if os.environ.get("VERIATLAS_DEBUG_SEL"):
+            print("   periyot sonrasi val=", repr(periyot.input_value()))
     if YEAR_SET:
         offered = offered_years(page)
         missing = [y for y in YEAR_SET if y not in offered]
+        if missing and os.environ.get("VERIATLAS_DEBUG_SS"):
+            page.screenshot(path=os.environ["VERIATLAS_DEBUG_SS"], full_page=True)
         if missing:
             print("  ", year, "listede olmayan yil:", missing, "sunulan:", offered[:25])
             return False
