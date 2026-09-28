@@ -89,6 +89,7 @@ dis = {r["area_id"]: r["name_tr"] for r in pl.read_csv(ROOT / "src/veriatlas/dat
 sys.path.insert(0, str(ROOT / "src"))
 from veriatlas.adapters.tuik_neighbourhoods import DOWNLOADS, read_export  # noqa: E402
 
+MUN_NEW = {r["area_id"]: r["municipality"].removesuffix(" Bel.") for r in reg.iter_rows(named=True)}
 MUNY = {}
 for f in DOWNLOADS.glob(f"nufus-mahalle-{IL_UP}*.csv"):
     for cell in read_export(f):
@@ -102,8 +103,9 @@ for aid, y, v in pop.iter_rows():
     if aid in VIL:
         kind, name = "koy", aid
     else:
-        m = MUNY.get((y, aid.rsplit("-", 1)[1]), "")
-        assert m, f"{y} {aid}: belediye yok"
+        # a code-year missing from the export (Adana Sarıçam 2012) falls back to the newest
+        # municipality in the registry
+        m = MUNY.get((y, aid.rsplit("-", 1)[1]), "") or MUN_NEW.get(aid, "") or dis.get(did, "")
         own = fold(m) in (fold(dis.get(did, "")), fold(SLUG))
         kind, name = ("sehir", dis.get(did)) if own else ("belde", m)
     rows.append(dict(year=y, district=dis.get(did), name=name, kind=kind, pop=int(v), area_id=aid))

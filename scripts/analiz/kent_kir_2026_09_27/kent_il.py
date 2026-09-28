@@ -145,6 +145,8 @@ for did, (dname, dg) in sorted(dist.items()):
     n_sat = sat_pop = 0
     for f in ng["features"]:
         aid = wh(f["properties"]["area_id"])
+        if aid.endswith("-0"):  # islands, lakes, unnamed pieces: no population, no settlement
+            continue
         g = proj(shapely.from_geojson(json.dumps(f["geometry"])))
         sel = idx[shapely.contains(g, cent[idx])]
         nb, nin = len(sel), int(shapely.contains(town, cent[sel]).sum()) if len(sel) else 0
