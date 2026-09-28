@@ -67,7 +67,7 @@ import shapely
 CENT = {}
 for f in (ROOT / "public/geo/neighbourhoods").glob(f"TR-{PLATE}-*.geojson"):
     for ft in json.loads(f.read_text(encoding="utf-8"))["features"]:
-        CENT[ft["properties"]["area_id"]] = shapely.centroid(shapely.from_geojson(json.dumps(ft["geometry"])))
+        CENT[wh(ft["properties"]["area_id"])] = shapely.centroid(shapely.from_geojson(json.dumps(ft["geometry"])))
 NAME = {r["area_id"]: r["name"] for r in nb.iter_rows(named=True)}
 
 
