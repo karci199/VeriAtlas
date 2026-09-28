@@ -171,3 +171,23 @@ cmp = w.filter(pl.col("year") >= 2007).join(tuik, on="year").join(fx, on="year")
 cmp = cmp.select("year", "toplam", "tuik_merkez", "sehir", "tuik_merkez%", "resmi_belediye%", "kent%", "sabit_liste_kent%", "eslesmeyen")
 cmp.write_csv(OUT / f"tarihsel_{PLATE}_2007_2012.csv")
 print(cmp)
+
+# the same fixed list by district, 2007-2012 beside the newest ADNKS year (today's
+# neighbourhoods, so the class needs no carrying)
+DNAME = {aid.rsplit("-", 1)[0]: r for aid, r in ((r["area_id"], r["district"]) for r in son.iter_rows(named=True))}
+URB = ["merkez", "kentsel_belde"]
+old = a.group_by("year", "district").agg(
+    pl.col("pop").sum().alias("toplam"), pl.col("pop").filter(pl.col("sabit").is_in(URB)).sum().alias("kent"))
+new = duckdb.sql(f"""select area_id, year(period_start) y, sum(value) v from read_parquet('{ROOT}/public/fact.parquet')
+ where indicator_id='population' and area_id like 'TR-{PLATE}-%-%'
+   and period_start = (select max(period_start) from read_parquet('{ROOT}/public/fact.parquet')
+                       where indicator_id='population' and area_id like 'TR-{PLATE}-%-%') group by 1,2""").pl()
+cls = {r["area_id"]: r["son_sinif"] for r in son.iter_rows(named=True)}
+new = new.with_columns(pl.col("area_id").str.slice(0, 9).replace_strict(DNAME, default=None).alias("district"),
+                       pl.col("area_id").replace_strict(cls, default="eslesmedi").alias("sabit"))
+new = new.group_by(pl.col("y").alias("year"), "district").agg(
+    pl.col("v").sum().cast(pl.Int64).alias("toplam"), pl.col("v").filter(pl.col("sabit").is_in(URB)).sum().cast(pl.Int64).alias("kent"))
+ilce = pl.concat([old.with_columns(pl.col("year").cast(pl.Int32), pl.col("toplam", "kent").cast(pl.Int64)),
+                  new.with_columns(pl.col("year").cast(pl.Int32))])
+ilce = ilce.with_columns((pl.col("kent") / pl.col("toplam") * 100).round(1).alias("kent%")).sort("district", "year")
+ilce.write_csv(OUT / f"tarihsel_{PLATE}_ilce_sabit.csv")
