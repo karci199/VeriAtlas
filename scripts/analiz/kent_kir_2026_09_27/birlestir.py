@@ -346,6 +346,26 @@ ELLE = {
     "TR-16-005-183845": ("kir", "elle: kullanıcı öneriyi onayladı, köy kaldı (İnegöl Turgutalpköy)"),
     "TR-16-005-183875": ("kir", "elle: kullanıcı öneriyi onayladı, köy kaldı (İnegöl Osmaniyeköy)"),
     "TR-16-005-183887": ("kir", "elle: kullanıcı öneriyi onayladı, köy kaldı (İnegöl Yeniköy)"),
+    # Ankara, user decisions (2026-09-28)
+    # Mamak Kutludüğün, Çubuk Dumlupınar: the university campus inflates the register
+    "TR-06-019-140424": ("kirsal_belde", "elle: kullanıcı, kırsal belde (Kutludüğün)"),
+    "TR-06-008-2057": ("kirsal_belde", "elle: kullanıcı, kırsal belde; üniversite nüfusu şişiriyor (Dumlupınar)"),
+    "TR-06-012-1653": ("kentsel_belde", "elle: kullanıcı, İncek'e bitişik kentsel belde (Gölbaşı Hacılar)"),
+    "TR-06-012-1664": ("kirsal_belde", "elle: kullanıcı, kırsal belde (Gölbaşı Tulumtaş)"),
+    "TR-06-008-2051": ("kirsal_belde", "elle: kullanıcı, kırsal (Çubuk Esenboğa Merkez)"),
+    "TR-06-019-2092": ("kirsal_belde", "elle: kullanıcı, kırsal belde (Mamak Karşıyaka)"),
+    "TR-06-019-2091": ("kirsal_belde", "elle: kullanıcı, kırsal belde (Mamak Lalahan)"),
+    "TR-06-008-2027": ("kirsal_belde", "elle: kullanıcı, kırsal belde (Çubuk Akkuzulu)"),
+    "TR-06-025-1905": ("kir", "elle: kullanıcı, köy (Yenimahalle Karacakaya)"),
+    "TR-06-009-2075": ("merkez", "elle: kullanıcı, Elmadağ merkezi (Tatlıca)"),
+    "TR-06-023-2237": ("kentsel_belde", "elle: kullanıcı, Temelli OSB yanı kentsel belde (Sincan Alcı)"),
+    "TR-06-015-196407": ("kentsel_belde", "elle: kullanıcı, TUSAŞ yanı kentsel belde (Kazan Akıncı)"),
+    # Kalecik town quarters, user's home district
+    "TR-06-016-2140": ("merkez", "elle: kullanıcı, Kalecik merkezi (Halitcevriaslangil)"),
+    "TR-06-016-2136": ("merkez", "elle: kullanıcı, Kalecik merkezi (Ahiler Yenice)"),
+    "TR-06-016-2135": ("merkez", "elle: kullanıcı, Kalecik merkezi (Ahikemalşenyurt)"),
+    "TR-06-016-2138": ("merkez", "elle: kullanıcı, Kalecik merkezi (Çanşa Kale)"),
+    "TR-06-016-2139": ("merkez", "elle: kullanıcı, Kalecik merkezi (Halilağa Tabakhane)"),
 }
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
