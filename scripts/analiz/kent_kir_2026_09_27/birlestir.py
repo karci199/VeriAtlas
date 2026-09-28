@@ -171,6 +171,8 @@ ELLE = {
     # split off the town in 2016, TOKİ blocks newer than the building footprints
     # (gursu.bel.tr "ipekyolu mahallemizdeki yeni toki konutlari"); part of the town
     "TR-16-003-197753": ("merkez", "elle: TOKİ, 2016'da merkezden ayrıldı, bina verisinde yok"),
+    # Didim's old quarter, spread along the coast road; user checked the map (2026-09-29)
+    "TR-09-004-10109": ("kentsel_belde", "elle: kullanıcı haritadan baktı, kentsel belde"),
 }
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
