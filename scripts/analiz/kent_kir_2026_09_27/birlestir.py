@@ -366,6 +366,11 @@ ELLE = {
     "TR-06-016-2135": ("merkez", "elle: kullanıcı, Kalecik merkezi (Ahikemalşenyurt)"),
     "TR-06-016-2138": ("merkez", "elle: kullanıcı, Kalecik merkezi (Çanşa Kale)"),
     "TR-06-016-2139": ("merkez", "elle: kullanıcı, Kalecik merkezi (Halilağa Tabakhane)"),
+    # Etimesgut: detached from the town's building patch (share 0); Fatih Sultan had been
+    # forced to merkez by the district-centre exception
+    "TR-06-010-183238": ("kentsel_belde", "elle: kullanıcı, ayrı yeni yerleşim (Etimesgut Atayurt)"),
+    "TR-06-010-183242": ("kentsel_belde", "elle: kullanıcı, ayrı yeni yerleşim (Etimesgut Turkuaz)"),
+    "TR-06-010-99784": ("kentsel_belde", "elle: kullanıcı, ayrı yerleşim, ilçe merkezi istisnası geçersiz (Etimesgut Fatih Sultan)"),
 }
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
