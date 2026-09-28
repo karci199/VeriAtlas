@@ -152,12 +152,27 @@ def fixed(r):
         return by_code[code]
     nm = VNAME.get(r["area_id"]) or RNAME.get(r["area_id"]) or ""
     nm = fold(re.sub(r" (Köy|Mah)\.$", "", nm))
+    # a belde quarter is matched by the belde's name first: its own quarter names
+    # (Cumhuriyet, Yeni) collide with the district centre's and pulled Kınık, Kurşunlu,
+    # Elbeyli ... into merkez
+    if r["kind"] == "belde":
+        bn = fold(r["name"] or "")
+        for key in ((did, bn), (did, bn + "koy"), *(k for k in by_name if k[1] in (bn, bn + "koy"))):
+            if key in by_name:
+                return by_name[key]
     # "Nilüfer Köy." is today's Nilüferköy; a belde's quarters became one neighbourhood
     # named after the belde (Yeniceköy); a village may have moved district (Gürsu)
     for key in ((did, nm), (did, nm + "koy"), (did, fold(r["name"] or "")), *(k for k in by_name if k[1] in (nm, nm + "koy"))):
         if key in by_name:
             return by_name[key]
-    return "merkez" if r["kind"] == "sehir" else "eslesmedi"
+    # a belde annexed before 2007 is listed under the district municipality with its name as
+    # prefix ("Umurbey Orhaniye" -> today's Umurbey): take the longest current name it starts with
+    pre = [k for k in by_name if k[0] == did and len(k[1]) >= 4 and nm.startswith(k[1])]
+    if pre:
+        return by_name[max(pre, key=lambda k: len(k[1]))]
+    # an unmatched district-centre row used to fall back to merkez silently, which carried
+    # annexed villages and beldes into the town; it is kept apart and counted instead
+    return "eslesmedi"
 
 
 a = pl.DataFrame([r for r in rows if r["year"] >= 2007])
@@ -191,3 +206,4 @@ ilce = pl.concat([old.with_columns(pl.col("year").cast(pl.Int32), pl.col("toplam
                   new.with_columns(pl.col("year").cast(pl.Int32))])
 ilce = ilce.with_columns((pl.col("kent") / pl.col("toplam") * 100).round(1).alias("kent%")).sort("district", "year")
 ilce.write_csv(OUT / f"tarihsel_{PLATE}_ilce_sabit.csv")
+a.write_csv(OUT / f"tarihsel_{PLATE}_sabit_satir.csv")
