@@ -72,9 +72,17 @@ NAME = {r["area_id"]: r["name"] for r in nb.iter_rows(named=True)}
 
 
 def nearest_semt(aid, fd):
+    # aid can be absent from CENT (no building-derived geometry, e.g. a split-off
+    # neighbourhood with no footprint yet); with no centroid there is nothing to measure
+    # distance from, so fall back to no match rather than crash the whole province
+    if aid not in CENT:
+        return None
     did = aid.rsplit("-", 1)[0]
-    best = min(((shapely.distance(CENT[aid], CENT[o]), PTT[(fd, fold(NAME[o]))]) for o in CENT
-                if o != aid and o.startswith(did + "-") and (fd, fold(NAME.get(o, ""))) in PTT), key=lambda x: x[0])
+    cands = [(shapely.distance(CENT[aid], CENT[o]), PTT[(fd, fold(NAME[o]))]) for o in CENT
+             if o != aid and o.startswith(did + "-") and (fd, fold(NAME.get(o, ""))) in PTT]
+    if not cands:
+        return None
+    best = min(cands, key=lambda x: x[0])
     print("yakın komşu semti:", NAME[aid], "->", best[1])
     return best[1]
 
@@ -99,8 +107,10 @@ def semt(r):
         return f"{d} Köyleri"
     if c == "merkez":
         if fd in split:
-            # a neighbourhood split after 2022 (Yıldırım Sakarya) takes its nearest neighbour's semt
-            return PTT.get((fd, fold(r["name"]))) or nearest_semt(r["area_id"], fd)
+            # a neighbourhood split after 2022 (Yıldırım Sakarya) takes its nearest neighbour's semt;
+            # with no PTT match and no geometry to find one (nearest_semt returns None), fall back
+            # to the plain district-centre semt rather than leaving it unassigned
+            return PTT.get((fd, fold(r["name"]))) or nearest_semt(r["area_id"], fd) or f"{d} Merkez"
         m = FIRST.get(r["area_id"].rsplit("-", 1)[1], (0, d))[1]
         if fold(m) not in (fd, fold(IL)):
             return m  # a former belde, now part of the town
