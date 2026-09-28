@@ -681,6 +681,32 @@ ELLE = {
     "TR-06-015-2194": ("kir", "elle: AATOPLU 2015 ile aynı, toplu onay (Kahramankazan Çalta)"),
     "TR-06-015-2190": ("kir", "elle: AATOPLU 2015 ile aynı, toplu onay (Kahramankazan Sarılar)"),
     "TR-06-015-2192": ("kir", "elle: AATOPLU 2015 ile aynı, toplu onay (Kahramankazan Yayalar)"),
+    # Çubuk: village texture (more buildings than dwellings, falling population), AATOPLU köy (user, 2026-09-29)
+    "TR-06-008-2028": ("kir", "elle: köy dokusu, AATOPLU köy (Çubuk Aşağıçavundur)"),
+    "TR-06-008-2054": ("kir", "elle: köy dokusu, AATOPLU köy (Çubuk Güldarpı)"),
+    "TR-06-008-2040": ("kir", "elle: kasabaya bitişik ama köy (kullanıcı) (Çubuk Sünlü)"),
+    "TR-06-008-2025": ("kir", "elle: köy dokusu, AATOPLU köy (Çubuk Ağılcık)"),
+    "TR-06-008-2030": ("kir", "elle: köy dokusu, AATOPLU köy (Çubuk Gökçedere)"),
+    "TR-06-008-2052": ("kir", "elle: AATOPLU köy (Çubuk Yenice)"),
+    # Çankaya: AATOPLU 2015 (user, 2026-09-29)
+    "TR-06-007-1607": ("kir", "elle: köy dokusu, AATOPLU köy (Çankaya Yeşilkent)"),
+    "TR-06-007-1618": ("kasaba", "elle: AATOPLU belde, 3.801 kişi (Çankaya Yakupabdal)"),
+    # Çamlıdere: AATOPLU 2015
+    "TR-06-006-2016": ("merkez", "elle: AATOPLU mahalle (Çamlıdere Kayabaşı)"),
+    # Kahramankazan: AATOPLU 2015
+    "TR-06-015-2166": ("merkez", "elle: AATOPLU mahalle (Kahramankazan Kanuni Sultan Süleyman)"),
+    "TR-06-015-2170": ("merkez", "elle: AATOPLU mahalle (Kahramankazan Yıldırımbeyazıt)"),
+    # Beypazarı: AATOPLU 2015
+    "TR-06-005-2004": ("merkez", "elle: AATOPLU mahalle (Beypazarı Yeşilağaç)"),
+    # Haymana: AATOPLU 2015
+    "TR-06-014-178465": ("merkez", "elle: AATOPLU mahalle (Haymana Yeniköy)"),
+    "TR-06-014-197931": ("kir", "elle: köy (Haymana Baltalin)"),
+    # Nallıhan: AATOPLU 2015
+    "TR-06-020-178825": ("merkez", "elle: AATOPLU mahalle (Nallıhan Akdere)"),
+    # Polatlı: AATOPLU 2015
+    "TR-06-021-178977": ("kasaba", "elle: AATOPLU köy, ayrı leke 2.346 (Polatlı Basrı)"),
+    # Şereflikoçhisar: AATOPLU 2015
+    "TR-06-024-98870": ("merkez", "elle: AATOPLU mahalle (Şereflikoçhisar Mehmet Akif Ersoy)"),
 }
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
