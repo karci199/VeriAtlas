@@ -371,6 +371,11 @@ ELLE = {
     "TR-06-010-183238": ("kentsel_belde", "elle: kullanıcı, ayrı yeni yerleşim (Etimesgut Atayurt)"),
     "TR-06-010-183242": ("kentsel_belde", "elle: kullanıcı, ayrı yeni yerleşim (Etimesgut Turkuaz)"),
     "TR-06-010-99784": ("kentsel_belde", "elle: kullanıcı, ayrı yerleşim, ilçe merkezi istisnası geçersiz (Etimesgut Fatih Sultan)"),
+    "TR-06-010-1910": ("kir", "elle: kullanıcı öneriyi onayladı, ayrı yazlık yerleşim, istisna geçersiz (Etimesgut Yukarıyurtçu)"),
+    "TR-06-010-1900": ("kir", "elle: kullanıcı öneriyi onayladı, köy kaldı (Etimesgut Aşağıyurtçu)"),
+    "TR-06-010-1908": ("kir", "elle: kullanıcı öneriyi onayladı, köy kaldı (Etimesgut Şehitali)"),
+    "TR-06-010-1901": ("kir", "elle: kullanıcı öneriyi onayladı, köy kaldı (Etimesgut Balıkuyumcu)"),
+    "TR-06-010-1904": ("kir", "elle: kullanıcı öneriyi onayladı, köy kaldı (Etimesgut Fevziye)"),
 }
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
