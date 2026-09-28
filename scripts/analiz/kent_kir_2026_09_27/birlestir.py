@@ -137,6 +137,14 @@ def decide(r):
     h_kent = r["haritatr"] == "merkez" or r["haritatr"].startswith("belde:")
     votes = f"bina={bina} degurba={'kent' if d_kent else 'kır'} statü={'kent' if s_old else 'köy'} haritatr={r['haritatr']}"
     if bina in ("merkez", "kentsel_belde"):
+        # a former village the town has grown onto (Kuşadası Soğucak, Bigadiç Işıklar): urban
+        # but not the town itself. Provisional rule (user, 2026-09-29): >= 3,000 people ->
+        # kentsel belde, fewer -> village; every case stays in the "arada" list for review
+        eski_koy = r["eski_statu"] == "koy" or (r["kayit_blok"] == "koyden" and r["eski_statu"] not in ("ilce_mahalle",) and not r["eski_statu"].startswith("belde:"))
+        if bina == "merkez" and eski_koy:
+            p = float(r["pop"] or 0)
+            return (("kentsel_belde", "arada: kente bitişmiş eski köy, >=3.000 → kentsel belde (geçici kural) · " + votes) if p >= 3000
+                    else ("kir", "arada: kente bitişmiş eski köy, <3.000 → köy (geçici kural) · " + votes))
         if s_old or d_kent:
             return bina, ("" if (s_old and d_kent) else "arada: " + votes)
         # built into the town but a village by record and rural by DEGURBA: when in doubt rural
