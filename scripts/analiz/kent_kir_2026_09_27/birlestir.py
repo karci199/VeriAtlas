@@ -422,6 +422,35 @@ ELLE = {
     "TR-06-019-1802": ("kir", "elle: köy, AATOPLU köy (Mamak Kusunlar)"),
     "TR-06-019-1806": ("kir", "elle: köy, AATOPLU köy (Mamak Bayındır)"),
     "TR-06-019-1798": ("kir", "elle: 196 kişilik ayrı yerleşim (Mamak Yukarı İmrohor)"),
+    # Sincan: Temelli town quarters are one detached town; villages per AATOPLU (2026-09-29)
+    "TR-06-023-2245": ("kentsel_belde", "elle: Temelli kasabası (Sincan Hürriyet)"),
+    "TR-06-023-2234": ("kentsel_belde", "elle: Temelli kasabası (kullanıcı) (Sincan Cumhuriyet)"),
+    "TR-06-023-2233": ("kentsel_belde", "elle: Temelli kasabası (Sincan Gazi)"),
+    "TR-06-023-2235": ("kentsel_belde", "elle: Temelli kasabası (Sincan İstiklal)"),
+    "TR-06-023-1833": ("merkez", "elle: kullanıcı, kent (Sincan Yeniçimşit)"),
+    "TR-06-023-2244": ("kir", "elle: köy, AATOPLU köy (Sincan Beyobası)"),
+    "TR-06-023-2242": ("kir", "elle: köy, AATOPLU köy (Sincan Ücret)"),
+    "TR-06-023-2238": ("kir", "elle: köy, AATOPLU köy (Sincan Çokören)"),
+    "TR-06-023-2243": ("kir", "elle: köy, AATOPLU köy (Sincan Yenihisar)"),
+    "TR-06-023-2239": ("kir", "elle: köy, AATOPLU köy (Sincan Hisarlıkaya)"),
+    "TR-06-023-2236": ("kir", "elle: köy, AATOPLU köy (Sincan Alagöz)"),
+    "TR-06-023-2247": ("kir", "elle: köy, AATOPLU köy (Sincan Bacı)"),
+    "TR-06-023-2240": ("kir", "elle: köy, AATOPLU köy (Sincan Malıköy)"),
+    "TR-06-023-2246": ("kir", "elle: köy, AATOPLU köy (Sincan Girmeç)"),
+    "TR-06-023-2241": ("kir", "elle: köy, AATOPLU köy (Sincan Türkobası)"),
+    "TR-06-023-1827": ("kir", "elle: köy, AATOPLU köy (Sincan Çiçektepe)"),
+    "TR-06-023-1828": ("kir", "elle: köy, AATOPLU köy (Sincan Esenler)"),
+    "TR-06-023-1826": ("kir", "elle: köy, AATOPLU köy (Sincan Anayurt)"),
+    "TR-06-023-1830": ("kir", "elle: köy, AATOPLU köy (Sincan Polatlar)"),
+    "TR-06-023-1832": ("kir", "elle: köy, AATOPLU köy (Sincan Tatlar)"),
+    "TR-06-023-1834": ("kir", "elle: köy, AATOPLU köy (Sincan Yenipeçenek)"),
+    "TR-06-023-98558": ("kir", "elle: köy, AATOPLU köy (Sincan Kesiktaş)"),
+    "TR-06-023-98560": ("kir", "elle: köy, AATOPLU köy (Sincan Erkeksu)"),
+    "TR-06-023-1846": ("kir", "elle: köy, AATOPLU köy (Sincan Yenikayı)"),
+    "TR-06-023-1841": ("kir", "elle: köy, AATOPLU köy (Sincan Akçaören)"),
+    "TR-06-023-1843": ("kir", "elle: köy, AATOPLU köy (Sincan İlyakut)"),
+    "TR-06-023-1845": ("kir", "elle: köy, AATOPLU köy (Sincan Mülk)"),
+    "TR-06-023-1844": ("kir", "elle: köy, AATOPLU köy (Sincan İncirlik)"),
 }
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
