@@ -534,27 +534,66 @@ ELLE = {
     "TR-06-025-1873": ("merkez", "elle: kullanıcı, kentin içinde (Yenimahalle İvedikköy)"),
     "TR-06-025-1911": ("kentsel_belde", "elle: kullanıcı, 2015 köy, bugün ayrı leke 6.617 (Yenimahalle Yuvaköy)"),
     # Bala: matches AATOPLU 2015 fully, user approved (2026-09-29)
-    "TR-06-004-1981": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Kesikköprü)"),
-    "TR-06-004-1982": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Kesikköprü Kızılırmak)"),
-    "TR-06-004-1983": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Kesikköprü Erdemli)"),
-    "TR-06-004-1994": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Ahmetçayırı)"),
-    "TR-06-004-177897": ("kirsal_belde", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Afşar)"),
-    "TR-06-004-1973": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Yeniköy)"),
-    "TR-06-004-1975": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Çiğdemli)"),
-    "TR-06-004-1967": ("merkez", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala İsmetpaşa)"),
-    "TR-06-004-1992": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Yöreli)"),
-    "TR-06-004-1968": ("merkez", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Kartaltepe)"),
-    "TR-06-004-1966": ("merkez", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Göztepe)"),
-    "TR-06-004-99986": ("merkez", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Hamidiye)"),
-    "TR-06-004-1976": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Büyükboyalık)"),
-    "TR-06-004-1969": ("merkez", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Şentepe)"),
-    "TR-06-004-1974": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Küçükboyalık)"),
-    "TR-06-004-1970": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Abazlı)"),
-    "TR-06-004-1972": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Çatalçeşme)"),
-    "TR-06-004-1971": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Tolköy)"),
-    "TR-06-004-1978": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Köseli)"),
-    "TR-06-004-1977": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Kerişli)"),
+    "TR-06-004-1981": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Kesikköprü)"),
+    "TR-06-004-1982": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Kesikköprü Kızılırmak)"),
+    "TR-06-004-1983": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Kesikköprü Erdemli)"),
+    "TR-06-004-1994": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Ahmetçayırı)"),
+    "TR-06-004-177897": ("kirsal_belde", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Afşar)"),
+    "TR-06-004-1973": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Yeniköy)"),
+    "TR-06-004-1975": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Çiğdemli)"),
+    "TR-06-004-1967": ("merkez", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala İsmetpaşa)"),
+    "TR-06-004-1992": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Yöreli)"),
+    "TR-06-004-1968": ("merkez", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Kartaltepe)"),
+    "TR-06-004-1966": ("merkez", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Göztepe)"),
+    "TR-06-004-99986": ("merkez", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Hamidiye)"),
+    "TR-06-004-1976": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Büyükboyalık)"),
+    "TR-06-004-1969": ("merkez", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Şentepe)"),
+    "TR-06-004-1974": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Küçükboyalık)"),
+    "TR-06-004-1970": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Abazlı)"),
+    "TR-06-004-1972": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Çatalçeşme)"),
+    "TR-06-004-1971": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Tolköy)"),
+    "TR-06-004-1978": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Köseli)"),
+    "TR-06-004-1977": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı
+ (Bala Kerişli)"),
     "TR-06-004-914390": ("kir", "elle: AATOPLU 2015 ile aynı, kullanıcı onayladı (Bala Afşar Dedebey)"),
+    # Akyurt: user (2026-09-29)
+    "TR-06-001-1916": ("merkez", "elle: kullanıcı, kasaba ona kadar büyüdü (Akyurt Galaba)"),
+    "TR-06-001-1925": ("kir", "elle: köy, AATOPLU köy (Akyurt Çardakbağı)"),
+    "TR-06-001-1929": ("kir", "elle: köy, AATOPLU köy (Akyurt Güzelhisar)"),
+    "TR-06-001-1927": ("kir", "elle: köy, AATOPLU köy (Akyurt Teberik)"),
+    "TR-06-001-1926": ("kir", "elle: köy, AATOPLU köy (Akyurt Çınar)"),
+    "TR-06-001-1935": ("kir", "elle: ayrı yerleşim, AATOPLU köy, istisna geçersiz (Akyurt Saracalar)"),
+    "TR-06-001-1932": ("kir", "elle: köy, AATOPLU köy (Akyurt Karacalar)"),
+    "TR-06-001-1921": ("kir", "elle: köy, AATOPLU köy (Akyurt Samut)"),
+    "TR-06-001-1936": ("kir", "elle: köy, AATOPLU köy (Akyurt Şeyhler)"),
+    "TR-06-001-1920": ("kir", "elle: köy, AATOPLU köy (Akyurt Balıkhisar)"),
+    "TR-06-001-1933": ("kir", "elle: köy, AATOPLU köy (Akyurt Karayatak)"),
+    "TR-06-001-1934": ("kir", "elle: köy, AATOPLU köy (Akyurt Kızık)"),
+    "TR-06-001-1922": ("kir", "elle: köy, AATOPLU köy (Akyurt Büğdüz)"),
+    "TR-06-001-1924": ("kir", "elle: köy, AATOPLU köy (Akyurt Çam)"),
+    "TR-06-001-1931": ("kir", "elle: köy, AATOPLU köy (Akyurt Karacakaya)"),
+    "TR-06-001-1930": ("kir", "elle: köy, AATOPLU köy (Akyurt Haydar)"),
+    "TR-06-001-1923": ("kir", "elle: köy, AATOPLU köy (Akyurt Cücük)"),
+    "TR-06-001-1928": ("kir", "elle: köy, AATOPLU köy (Akyurt Elecik)"),
 }
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
