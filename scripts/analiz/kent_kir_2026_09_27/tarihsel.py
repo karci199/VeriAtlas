@@ -148,12 +148,20 @@ RNAME = {r["area_id"]: r["name_tr"] for r in reg.iter_rows(named=True)}
 
 # 2007-2012 quarters of annexed beldes whose names survive nowhere today; user placed them
 # (2026-09-28): Gemlik Şükrükaya -> Kurşunlu, Güzel Yalı / Şükrü Alemdar / Parsbey -> Umurbey
+# Nilüfer Karaalı -> Çalı, Keles Çayören -> Hereke, Büyükorhan Veletler -> Bademlik,
+# İnegöl İnayet -> Tuzla
 OLD_TO_NEW = {"TR-16-002-11355": "140855", "TR-16-002-11356": "140853",
-              "TR-16-002-11359": "140853", "TR-16-002-11361": "140853"}
+              "TR-16-002-11359": "140853", "TR-16-002-11361": "140853",
+              "TR-16-012-11139": "11138", "TR-16-008-7655": "184111",
+              "TR-16-001-7391": "183605", "TR-16-005-7484": "183781"}
+# villages merged into another village, target unnamed; a village either way (user)
+OLD_VILLAGE = {"TR-16-001-7362", "TR-16-008-7662"}  # Büyükorhan Çökene, Keles Domalı
 
 
 def fixed(r):
     did, code = r["area_id"].rsplit("-", 1)
+    if r["area_id"] in OLD_VILLAGE:
+        return "kir"
     code = OLD_TO_NEW.get(r["area_id"], code)
     if code in by_code:
         return by_code[code]
