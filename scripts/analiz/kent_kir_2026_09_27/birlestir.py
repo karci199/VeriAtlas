@@ -476,6 +476,33 @@ ELLE = {
     # Sincan: user (2026-09-29)
     "TR-06-023-1829": ("kir", "elle: köy, AATOPLU köy (Sincan Osmaniye)"),
     "TR-06-023-1840": ("merkez", "elle: eski Yenikent beldesi, merkeze bitişik, semt gibi (Sincan Menderes)"),
+    # Ayaş: user approved (2026-09-29)
+    "TR-06-003-1950": ("kir", "elle: köy (Ayaş Tekke)"),
+    "TR-06-003-1949": ("kir", "elle: köy (Ayaş Gökler)"),
+    "TR-06-003-1963": ("kir", "elle: köy (Ayaş Sinanlı Cuma)"),
+    "TR-06-003-1965": ("kir", "elle: köy (Ayaş Sinanlı Mahkeme)"),
+    "TR-06-003-1938": ("merkez", "elle: kasabanın içinde (Ayaş Dervişimam)"),
+    "TR-06-003-1937": ("merkez", "elle: kasabanın içinde (Ayaş Camiatik)"),
+    "TR-06-003-1943": ("merkez", "elle: kasabanın içinde (Ayaş Ömeroğlu)"),
+    "TR-06-003-177869": ("kirsal_belde", "elle: eski belde merkezi (Ayaş Oltan)"),
+    "TR-06-003-1944": ("merkez", "elle: kullanıcı, AATOPLU 2015 mahalle (Ayaş Şeyhmuhittin)"),
+    "TR-06-003-1939": ("merkez", "elle: kasabanın içinde (Ayaş Ferahfaki)"),
+    "TR-06-003-1964": ("kir", "elle: köy (Ayaş Sinanlı Hocasinan)"),
+    "TR-06-003-1952": ("merkez", "elle: kullanıcı, AATOPLU 2015 mahalle (Ayaş Emine Tevfika Ayaşlı)"),
+    "TR-06-003-1941": ("merkez", "elle: kasabanın içinde (Ayaş Hacırecep)"),
+    "TR-06-003-1940": ("merkez", "elle: kasabanın içinde (Ayaş Hacımemi)"),
+    "TR-06-003-1942": ("merkez", "elle: kasabanın içinde (Ayaş Hacıveli)"),
+    "TR-06-003-1945": ("kir", "elle: köy (Ayaş Başayaş)"),
+    "TR-06-003-177887": ("kir", "elle: köy (Ayaş Bayram)"),
+    "TR-06-003-1946": ("kir", "elle: köy (Ayaş Başbereket)"),
+    "TR-06-003-177885": ("kir", "elle: köy (Ayaş Gökçebağ)"),
+    "TR-06-003-1951": ("kir", "elle: köy (Ayaş Ulupınar)"),
+    "TR-06-003-177889": ("kir", "elle: köy (Ayaş Ortabereket)"),
+    "TR-06-003-1954": ("kir", "elle: köy (Ayaş Çanıllı Uluyol)"),
+    "TR-06-003-1953": ("kir", "elle: köy (Ayaş Çanıllı Çiğdemci)"),
+    "TR-06-003-177891": ("kir", "elle: köy (Ayaş Pınaryaka)"),
+    "TR-06-003-177895": ("kir", "elle: köy (Ayaş Bayat)"),
+    "TR-06-003-177893": ("kir", "elle: köy (Ayaş Evci)"),
 }
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
