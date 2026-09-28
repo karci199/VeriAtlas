@@ -298,6 +298,9 @@ ELLE = {
     # Orhangazi Narlıca: eski_statu=belde:Narlıca (was a belde) but user downgraded to köy after
     # satellite review -- dense but self-contained olive-growing village (2026-09-28) -- flagged
     "TR-16-014-184623": ("kir", "elle: eski belde idi (belde:Narlıca) ama kullanıcı köy dedi"),
+    # Nilüfer Yolçatı: statü köy, but a detached cluster of 5.593 (>=5.000) and DEGURBA kent;
+    # user confirmed (2026-09-28)
+    "TR-16-012-183471": ("kentsel_belde", "elle: kullanıcı onayladı, ayrı leke 5.593 kişi, kentsel belde"),
 }
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
