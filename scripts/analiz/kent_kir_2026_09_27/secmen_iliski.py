@@ -74,8 +74,10 @@ for tip in ("kurum_sandigi", "secmen_disi_surekli", "secmen_disi_yeni", "yabanci
 # how tightly registered voters and votes follow the 18+ population (neighbourhood level)
 import numpy as np
 stat = []
-for (e, kk), g in s.group_by(["e", "kent_kir"]):
-    a, k, o = g["a18"].to_numpy(), g["k"].to_numpy(), g["o"].to_numpy()
+for (e, kk), g in s.filter(pl.col("a18").is_not_null() & (pl.col("a18") > 0)).group_by(["e", "kent_kir"]):
+    a, k, o = g["a18"].to_numpy().astype(float), g["k"].to_numpy().astype(float), g["o"].to_numpy().astype(float)
+    if len(a) < 5:
+        continue
     for lab, y_ in (("kayitli", k), ("oy", o)):
         b = np.linalg.lstsq(np.column_stack([np.ones(len(a)), a]), y_, rcond=None)[0]
         r2 = 1 - ((y_ - (b[0] + b[1] * a)) ** 2).sum() / ((y_ - y_.mean()) ** 2).sum()
