@@ -194,11 +194,23 @@ def fixed(r):
     cand = [c for c in cand if c[0] >= 0.83 and not (r["kind"] == "koy" and by_name[c[1]] == "merkez")]
     if cand:
         return by_name[max(cand)[1]]
+    # a quarter merged under a longer name keeps the old one as suffix (Kalecik Şenyurt ->
+    # Ahikemalşenyurt)
+    suf = [k for k in by_name if k[0] == did and len(nm) >= 5 and k[1].endswith(nm)]
+    if len(suf) == 1:
+        return by_name[suf[0]]
     # an unmatched district-centre row used to fall back to merkez silently, which carried
-    # annexed villages and beldes into the town; it is kept apart and counted instead
+    # annexed villages and beldes into the town; it is kept apart and counted instead --
+    # except in a district that is urban all through today (Altındağ's quarters merged by
+    # the 2008-2012 renewal), where no village is left to carry
+    if r["kind"] == "sehir" and URBAN_DISTRICT.get(did, 0) >= 0.99:
+        return "merkez"
     return "eslesmedi"
 
 
+_u = son.with_columns(pl.col("area_id").str.slice(0, 9).alias("did"), pl.col("pop").cast(pl.Float64).fill_null(0))
+URBAN_DISTRICT = {r["did"]: r["k"] / r["t"] for r in _u.group_by("did").agg(
+    pl.col("pop").sum().alias("t"), pl.col("pop").filter(pl.col("son_sinif").is_in(["merkez", "kentsel_belde"])).sum().alias("k")).iter_rows(named=True) if r["t"]}
 a = pl.DataFrame([r for r in rows if r["year"] >= 2007])
 a = a.with_columns(pl.struct("area_id", "kind", "name").map_elements(fixed, return_dtype=pl.Utf8).alias("sabit"))
 fx = a.group_by("year").agg(
