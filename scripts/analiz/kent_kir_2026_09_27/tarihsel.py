@@ -8,7 +8,7 @@ smaller belde rural.
 usage: tarihsel.py 16 bursa <out dir>
 """
 
-import html, re, sys
+import difflib, html, re, sys
 from pathlib import Path
 import duckdb, polars as pl
 
@@ -177,6 +177,14 @@ def fixed(r):
     pre = [k for k in by_name if k[0] == did and len(k[1]) >= 4 and nm.startswith(k[1])]
     if pre:
         return by_name[max(pre, key=lambda k: len(k[1]))]
+    # small spelling drift inside the district (Kazıklı -> Kazıklıköyü, Çağlıyan -> Çağlayan,
+    # Eyerce -> Eğerce); a village never lands on a town neighbourhood this way (Mesruriye
+    # köyü would otherwise take İnegöl's Mesudiye)
+    base = lambda s: s.removesuffix("koyu").removesuffix("koy")
+    cand = [(difflib.SequenceMatcher(None, base(nm), base(k[1])).ratio(), k) for k in by_name if k[0] == did]
+    cand = [c for c in cand if c[0] >= 0.83 and not (r["kind"] == "koy" and by_name[c[1]] == "merkez")]
+    if cand:
+        return by_name[max(cand)[1]]
     # an unmatched district-centre row used to fall back to merkez silently, which carried
     # annexed villages and beldes into the town; it is kept apart and counted instead
     return "eslesmedi"
