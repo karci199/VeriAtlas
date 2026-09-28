@@ -182,10 +182,122 @@ def decide(r):
 # manual decisions, each checked outside the data (user / web)
 ELLE = {
     # split off the town in 2016, TOKİ blocks newer than the building footprints
-    # (gursu.bel.tr "ipekyolu mahallemizdeki yeni toki konutlari"); part of the town
-    "TR-16-003-197753": ("merkez", "elle: TOKİ, 2016'da merkezden ayrıldı, bina verisinde yok"),
+    # (gursu.bel.tr "ipekyolu mahallemizdeki yeni toki konutlari"); satellite shows a dense
+    # cluster detached from Gürsu's main fabric -- user checked the map (2026-09-28)
+    "TR-16-003-197753": ("kentsel_belde", "elle: kullanıcı haritadan baktı, TOKİ, ayrı yoğun küme"),
     # Didim's old quarter, spread along the coast road; user checked the map (2026-09-29)
     "TR-09-004-10109": ("kentsel_belde", "elle: kullanıcı haritadan baktı, kentsel belde"),
+    # Nilüfer Kayapa: "ilçe merkezi istisnası" wrongly forced this to merkez -- satellite shows
+    # a dense, self-contained cluster by a lake, physically detached from Nilüfer's built-up
+    # fabric; user checked the map (2026-09-28)
+    "TR-16-012-11153": ("kentsel_belde", "elle: kullanıcı haritadan baktı, ayrı yoğun küme, kentsel belde"),
+    # Mudanya Çağrışan: satellite shows dense grid attached to Mudanya Üniversitesi area, not a
+    # scattered village; user checked the map (2026-09-28)
+    "TR-16-010-184233": ("kentsel_belde", "elle: kullanıcı haritadan baktı, kentsel belde"),
+    # Osmangazi Nilüferköy: satellite shows a substantial detached town cluster; user checked
+    # the map (2026-09-28)
+    "TR-16-015-183495": ("kentsel_belde", "elle: kullanıcı haritadan baktı, kentsel belde"),
+    # Karacabey Yeni: user checked the map (2026-09-28), treats it as the district centre
+    "TR-16-007-19982": ("merkez", "elle: kullanıcı haritadan baktı, merkez"),
+    # İznik Elbeyli: former belde (eski_statu belde:Elbeyli), stayed rural in character; user
+    # checked the map (2026-09-28)
+    "TR-16-006-183893": ("kirsal_belde", "elle: kullanıcı haritadan baktı, eski belde, kırsal karakter"),
+    # İnegöl Kurşunlu: AATOPLU 2015 lists it as Belde (like Gemlik Kurşunlu); user reconsidered
+    # and matched both Kurşunlu's to kırsal_belde (2026-09-28)
+    "TR-16-005-183703": ("kirsal_belde", "elle: AATOPLU 2015 belde diyor, Gemlik Kurşunlu ile eşleştirildi"),
+    # Gemlik Ata: eski_statu=ilce_mahalle, haritatr=merkez, AATOPLU 2015 already lists it under
+    # MAHALLE (not köy) -- three signals agree it was never a village; user confirmed merkez
+    # (2026-09-28). Institutional population flagged (kurum=1), separate from this class call.
+    "TR-16-002-11339": ("merkez", "elle: eski_statu ve AATOPLU 2015 (mahalle, köy değil) merkezi destekliyor"),
+    # Osmangazi Gündoğdu: AATOPLU 2015 lists it under MAHALLE, not köy -- contradicts the "eski
+    # köy" note, but user kept it as kır after reviewing (2026-09-28)
+    "TR-16-015-11248": ("kir", "elle: AATOPLU 2015 mahalle diyor (köy değil) ama kullanıcı kır kararını sürdürdü"),
+    # İnegöl Karalar: köy, AATOPLU 2015 confirms köy; kurum=1 (institutional population present,
+    # user's "yurt mu" guess), reviewed (2026-09-28)
+    "TR-16-005-183793": ("kir", "elle: köy, AATOPLU doğruluyor; kurum nüfusu var (kurum=1)"),
+    # Gemlik Cihatlı: köy despite newer TOKİ blocks, AATOPLU 2015 confirms köy, reviewed (2026-09-28)
+    "TR-16-002-183615": ("kir", "elle: TOKİ olsa da köy, AATOPLU doğruluyor"),
+    # Gemlik Engürücük: köy, AATOPLU 2015 confirms köy; kurum=1 (institutional population),
+    # reviewed (2026-09-28)
+    "TR-16-002-183617": ("kir", "elle: köy, AATOPLU doğruluyor; kurum nüfusu var (kurum=1)"),
+    # Osmangazi Alaşarköy: AATOPLU 2015 lists it under MAHALLE, not köy -- contradicts the "eski
+    # köy" note, but user kept it as kır after reviewing (2026-09-28)
+    "TR-16-015-11162": ("kir", "elle: AATOPLU 2015 mahalle diyor (köy değil) ama kullanıcı kır kararını sürdürdü"),
+    # Osmangazi Yeniceabat: "ilçe merkezi istisnası" wrongly forced this to merkez -- AATOPLU
+    # 2015 confirms it was a Köy, not part of the district centre; user corrected to kır (2026-09-28)
+    "TR-16-015-11242": ("kir", "elle: AATOPLU 2015 köy diyor, ilçe merkezi istisnası yanlış tetiklenmiş"),
+    # Mudanya Göynüklü: köy, isolated cluster on satellite, reviewed (2026-09-28)
+    "TR-16-010-184243": ("kir", "elle: köy, uydu görüntüsünde izole küme"),
+    # Gemlik Kurşunlu (Gemlik'teki, İnegöl'dekinden ayrı): AATOPLU 2015 lists it as Belde, fits
+    # the demoted-belde/kırsal_belde rule; user confirmed (2026-09-28)
+    "TR-16-002-140855": ("kirsal_belde", "elle: AATOPLU 2015 belde diyor, kırsal karakter"),
+    # Nilüfer's remaining reviewed villages: all köy in eski_statu, kept as kır after review
+    # (2026-09-28)
+    "TR-16-012-183443": ("kir", "elle: incelendi, köy kaldı (Doğanköy)"),
+    "TR-16-012-183469": ("kir", "elle: incelendi, köy kaldı (Yaylacık)"),
+    "TR-16-012-11150": ("kir", "elle: incelendi, köy kaldı (Hasanağa)"),
+    "TR-16-012-183463": ("kir", "elle: incelendi, köy kaldı (Tahtalı), DEGURBA da kır"),
+    "TR-16-012-11141": ("kir", "elle: incelendi, köy kaldı (Gölyazı)"),
+    "TR-16-012-11145": ("kir", "elle: incelendi, köy kaldı (İrfaniye)"),
+    "TR-16-012-11148": ("kir", "elle: incelendi, köy kaldı (Büyükbalıklı)"),
+    "TR-16-012-11146": ("kir", "elle: incelendi, köy kaldı (Gökçe)"),
+    # reviewed, kept as-is (2026-09-28)
+    "TR-16-014-184627": ("kirsal_belde", "elle: incelendi, kırsal_belde doğru (Orhangazi Yeniköy)"),
+    "TR-16-004-11374": ("merkez", "elle: incelendi, ilçe merkezi kuralı doğru (Harmancık Merkez)"),
+    "TR-16-002-140853": ("kasaba", "elle: incelendi, kasaba kaldı (Gemlik Umurbey)"),
+    "TR-16-010-184257": ("kir", "elle: incelendi, köy kaldı (Mudanya Mürsel)"),
+    # Gürsu Kumlukalan: "ilçe merkezi istisnası" forced merkez -- user judged it a village (2026-09-28)
+    "TR-16-003-11369": ("kir", "elle: kullanıcı köy dedi, ilçe merkezi istisnası geçersiz kılındı"),
+    # İnegöl Çeltikçi: not a plain village, close to Kurşunlu, but user rejected full urban --
+    # settled on kırsal_belde (2026-09-28)
+    "TR-16-005-183731": ("kirsal_belde", "elle: kullanıcı 'köy değil ama kent de değil' dedi, kırsal_belde"),
+    # Mudanya Tirilye: eski_statu=belde:Tirilye -- was genuinely a belde, kept as kırsal_belde
+    # per that rule; user confirmed after reconsidering (2026-09-28)
+    "TR-16-010-184223": ("kirsal_belde", "elle: eski belde (eski_statu=belde:Tirilye), kırsal_belde doğru"),
+    # Orhangazi Çakırlı: confirmed kırsal_belde, reviewed (2026-09-28)
+    "TR-16-014-184621": ("kirsal_belde", "elle: incelendi, kırsal_belde doğru (Çakırlı)"),
+    # Gürsu Adaköy: "ilçe merkezi istisnası" forced merkez -- user judged it a village (2026-09-28)
+    "TR-16-003-11366": ("kir", "elle: kullanıcı köy dedi, ilçe merkezi istisnası geçersiz kılındı"),
+    # Mudanya Hasköy: confirmed köy, reviewed (2026-09-28)
+    "TR-16-010-20008": ("kir", "elle: incelendi, köy kaldı (Hasköy)"),
+    # Orhaneli Karıncalı: confirmed kırsal_belde, reviewed (2026-09-28)
+    "TR-16-013-184513": ("kirsal_belde", "elle: incelendi, kırsal_belde doğru (Karıncalı)"),
+    # Mustafakemalpaşa Yeşilova: confirmed kırsal_belde, reviewed (2026-09-28)
+    "TR-16-011-184299": ("kirsal_belde", "elle: incelendi, kırsal_belde doğru (Yeşilova)"),
+    # Kestel Barakfakih: "ilçe merkezi istisnası" forced merkez -- user judged it a village that
+    # used to have belde-like status, though eski_statu here reads ilce_mahalle not belde:
+    # (2026-09-28)
+    "TR-16-009-99957": ("kir", "elle: kullanıcı köy dedi (eskiden kırsal belde imiş), ilçe merkezi istisnası geçersiz kılındı"),
+    # confirmed unchanged after review (2026-09-28)
+    "TR-16-001-11334": ("merkez", "elle: incelendi, zaten merkez mahalle (Büyükorhan Orhan)"),
+    "TR-16-008-19986": ("merkez", "elle: incelendi, zaten merkez mahalle (Keles Cuma)"),
+    "TR-16-010-20009": ("kir", "elle: incelendi, köy kaldı (Mudanya Ülkü)"),
+    "TR-16-010-184229": ("kir", "elle: incelendi, köy kaldı (Mudanya Aydınpınar)"),
+    "TR-16-015-11258": ("kir", "elle: incelendi, köy kaldı (Osmangazi Kirazlı)"),
+    # Mustafakemalpaşa Tepecik, Orhaneli Göynükbelen: user downgraded kirsal_belde to kır after
+    # satellite review -- small isolated clusters, not treated as former-belde character (2026-09-28)
+    "TR-16-011-184295": ("kir", "elle: kullanıcı köy dedi, kırsal_belde'den indirildi"),
+    "TR-16-013-184511": ("kir", "elle: kullanıcı köy dedi, kırsal_belde'den indirildi"),
+    # Gemlik Küçükkumla/Büyükkumla: contiguous with the main Kumla (already kentsel_belde,
+    # 6.579 kişi) per user (2026-09-28)
+    "TR-16-002-140857": ("kentsel_belde", "elle: Kumla'ya bitişik, kentsel_belde"),
+    "TR-16-002-183613": ("kentsel_belde", "elle: Kumla'ya bitişik, kentsel_belde"),
+    # İznik Boyalıca: eski belde, kırsal karakter -- user confirmed (2026-09-28)
+    "TR-16-006-183891": ("kirsal_belde", "elle: eski belde (belde:Boyalıca), kırsal_belde"),
+    # Keles Ertuğrulgazi: confirmed merkez, reviewed (2026-09-28)
+    "TR-16-008-19988": ("merkez", "elle: incelendi, zaten merkez mahalle (Keles Ertuğrulgazi)"),
+    # Orhangazi Sölöz: eski_statu=belde:Sölöz (was a belde) but user downgraded to köy after
+    # satellite review (2026-09-28) -- flagged, goes against the belde-history signal
+    "TR-16-014-184625": ("kir", "elle: eski belde idi (belde:Sölöz) ama kullanıcı köy dedi"),
+    # İnegöl Edebey/Kulaca/Şipali/Ortaköy: confirmed köy, reviewed (2026-09-28). Ortaköy's
+    # eski_statu is belde:Yeniceköy (was a belde) but user kept it as köy -- flagged
+    "TR-16-005-183745": ("kir", "elle: incelendi, köy kaldı (Edebey)"),
+    "TR-16-005-183807": ("kir", "elle: incelendi, köy kaldı (Kulaca)"),
+    "TR-16-005-183839": ("kir", "elle: incelendi, köy kaldı (Şipali)"),
+    "TR-16-005-183819": ("kir", "elle: eski belde idi (belde:Yeniceköy) ama kullanıcı köy dedi"),
+    # Orhangazi Narlıca: eski_statu=belde:Narlıca (was a belde) but user downgraded to köy after
+    # satellite review -- dense but self-contained olive-growing village (2026-09-28) -- flagged
+    "TR-16-014-184623": ("kir", "elle: eski belde idi (belde:Narlıca) ama kullanıcı köy dedi"),
 }
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
