@@ -25,8 +25,11 @@ for e in ELECTIONS:
         if v["o"] >= v["k"] + 20:
             dropped.append((e, aid, v["ad"], v["k"], v["o"]))
             continue
+        wa = wh(aid) if "~" not in aid else aid
+        if wa.endswith("-0"):  # a registry code of exactly 2,000,000 collides with the
+            continue  # island/lake placeholder id; the settlement has no geometry to attach to
         for party, n in v["v"].items():
-            rows.append(dict(election=e, area_id=wh(aid) if "~" not in aid else aid, party=party, votes=n))
+            rows.append(dict(election=e, area_id=wa, party=party, votes=n))
 # a few tile keys are unresolved names ("TR-16-003~kumlukalani"): match by name within
 # the district, else the known central quarter (Kayhan, merged after 2015) is urban and
 # the rest -- all small villages -- rural
