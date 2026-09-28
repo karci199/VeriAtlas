@@ -34,4 +34,24 @@ PTT_IL = NAME.replace("i", "İ").upper()
 
 # 2024 local election at neighbourhood level: metropolitan mayor in the 30 büyükşehir, provincial
 # council (il genel meclisi) elsewhere -- the only local ballot cast in villages there
+from il_surum import SURUM  # noqa: E402  pipeline version; run_tr reruns a province whose surum.txt differs
+
+# Village ids: geometry, Endeksa demography and the election tiles key villages of the 51
+# non-metropolitan provinces by Endeksa's id = MEDAS code + 2,000,000 (checked: Afyon 421/421,
+# Kastamonu 1054/1054); the warehouse (population, registry) uses the MEDAS code. wh() maps any
+# id to the warehouse id, geo_code() gives the Endeksa code of a warehouse id.
+_VIL = set(pl.read_csv(ROOT / "src/veriatlas/data/areas_tr_villages.csv", infer_schema_length=0)
+           .filter(pl.col("parent_id").str.starts_with(f"TR-{PLATE}-"))["area_id"])
+
+
+def wh(aid):
+    did, code = aid.rsplit("-", 1)
+    return f"{did}-{int(code) - 2000000}" if code.isdigit() and int(code) >= 2000000 else aid
+
+
+def geo_code(aid):
+    code = aid.rsplit("-", 1)[1]
+    return str(int(code) + 2000000) if aid in _VIL else code
+
+
 LOCAL24 = "yerel_bsb_2024" if (ROOT / f"public/tiles/secim-yerel_bsb_2024-mahalle-TR-{PLATE}.json").exists() else "yerel_ilgen_2024"

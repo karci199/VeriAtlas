@@ -44,9 +44,11 @@ for y in (1965, 1970, 1975, 1980, 1985, 1990, 2000):
         if not c:
             continue
         nums = [x for x in c if isnum(x)]
-        if len(nums) < 3:
-            if len(c) >= 2 and fold(c[0]) in (SLUG, ALIAS.get(SLUG, SLUG)) and not nums:
-                district = c[1]
+        if len(c) >= 2 and fold(c[0]) in (SLUG, ALIAS.get(SLUG, SLUG)):
+            district = c[1]; c = c[2:]
+            if len(nums) < 3:
+                continue
+        elif len(nums) < 3:
             continue
         total = num(nums[-3])
         # "(*)": a bucak centre already counted inside the city's "Şehir" row (Ankara Cebeci 1965);

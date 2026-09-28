@@ -17,7 +17,7 @@ from pathlib import Path
 import duckdb, polars as pl
 
 import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
-from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG, LOCAL24  # noqa: E402
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG, LOCAL24, wh, geo_code  # noqa: E402
 IL = PTT_IL
 
 
@@ -136,6 +136,7 @@ for e, parties in EL.items():
     for aid, v in json.loads((ROOT / f"public/tiles/secim-{e}-mahalle-TR-{PLATE}.json").read_text(encoding="utf-8")).items():
         if v["o"] >= v["k"] + 20:
             continue
+        aid = wh(aid) if "~" not in aid else aid
         vrows.append(dict(area_id=aid, key=f"{e}:k", n=v["k"]))
         vrows.append(dict(area_id=aid, key=f"{e}:o", n=v["o"]))
         vrows.append(dict(area_id=aid, key=f"{e}:g", n=v["g"]))

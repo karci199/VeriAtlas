@@ -15,7 +15,7 @@ from pathlib import Path
 import duckdb, polars as pl
 
 import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
-from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG  # noqa: E402
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG, LOCAL24, wh, geo_code  # noqa: E402
 
 
 
@@ -47,7 +47,7 @@ for f in Path("C:/veri-ham/endeksa/demography").glob(f"TR-{PLATE}-*.json"):
                                               "EduPrimaryEducation", "EduHighSchool", "EduLicenseDegree", "EduGraduate", "EduDoctorate"))
         uni = sum(e.get(k) or 0 for k in ("EduLicenseDegree", "EduGraduate", "EduDoctorate"))
         EDU[str(code)] = (known, uni, uni + (e.get("EduHighSchool") or 0), e.get("HousingCount") or 0)
-m = m.with_columns(pl.col("area_id").str.split("-").list.last().map_elements(lambda c: list(EDU.get(c, (0, 0, 0, 0))), return_dtype=pl.List(pl.Int64)).alias("_e"))
+m = m.with_columns(pl.col("area_id").map_elements(lambda a: list(EDU.get(geo_code(a), (0, 0, 0, 0))), return_dtype=pl.List(pl.Int64)).alias("_e"))
 m = m.with_columns(pl.col("_e").list.get(0).alias("edu_n"), pl.col("_e").list.get(1).alias("uni"),
                    pl.col("_e").list.get(2).alias("lise_ust"), pl.col("_e").list.get(3).alias("konut")).drop("_e")
 

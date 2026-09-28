@@ -29,6 +29,10 @@ def sapmalar(p):
         rows.append(dict(tur="merkezsiz_ilce", district=r["district"], name="", pop=r["toplam"], not_="ilçede hiç merkez mahalle yok"))
     for r in son.filter(pl.col("arada").is_not_null() & (pl.col("arada") != "")).iter_rows(named=True):
         rows.append(dict(tur="arada", district=r["district"], name=r["name"], pop=r["pop"], not_=f"{r['son_sinif']} | {r['arada']}"))
+    ik = pl.read_csv(d / f"kent_{p}_ikili.csv", infer_schema_length=0)
+    if "kent_kir_kalip" in ik.columns:
+        for r in ik.filter(pl.col("kent_kir") != pl.col("kent_kir_kalip")).iter_rows(named=True):
+            rows.append(dict(tur="resmi_kalip_farki", district=r["district"], name=r["name"], pop=r["nufus"], not_=f"resmi {r['resmi']} ({r['kent_kir']}) / kalıp {r['son_sinif']} ({r['kent_kir_kalip']})"))
     if "kurum" in son.columns:
         for r in son.filter(pl.col("kurum") == "1").iter_rows(named=True):
             rows.append(dict(tur="kurum", district=r["district"], name=r["name"], pop=r["pop"], not_="seçmen dışı / kurum nüfusu"))
@@ -43,12 +47,14 @@ def sapmalar(p):
 def one(p):
     d = OUT / p
     t0 = time.time()
-    done = (d / f"yas_mc_{p}_ilce.csv").exists()
+    from il_surum import SURUM  # noqa
+    done = (d / f"yas_mc_{p}_ilce.csv").exists() and (d / "surum.txt").exists() and (d / "surum.txt").read_text() == SURUM
     if not done:
         r = subprocess.run([PY, str(HERE / "run_il.py"), p], capture_output=True, text=True, encoding="utf-8", errors="replace")
         (d if d.exists() else OUT).joinpath(f"run_{p}.log").write_text((r.stdout or "") + "\n" + (r.stderr or ""), encoding="utf-8")
         if r.returncode:
             return dict(plate=p, status="HATA", seconds=round(time.time() - t0), note=(r.stdout or "").strip().splitlines()[-1:] or r.stderr[-200:])
+    (d / "surum.txt").write_text(SURUM)
     subprocess.run([PY, str(HERE / "karsilastir_kullanici.py"), p], capture_output=True)
     z, a, k = sapmalar(p)
     il = pl.read_csv(d / f"kent_{p}_ikili_ilce.csv", infer_schema_length=0)

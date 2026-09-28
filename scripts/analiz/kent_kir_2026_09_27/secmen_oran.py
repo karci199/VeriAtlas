@@ -14,7 +14,7 @@ from pathlib import Path
 import duckdb, polars as pl
 
 import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
-from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG, LOCAL24  # noqa: E402
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG, LOCAL24, wh, geo_code  # noqa: E402
 
 p = duckdb.sql(f"""select area_id, year(period_start) y, sum(value) filter (where dims='age=18+') a18, sum(value) tot
  from read_parquet('{ROOT}/public/fact.parquet') where indicator_id='population' and area_id like 'TR-{PLATE}-%-%'
@@ -22,7 +22,7 @@ p = duckdb.sql(f"""select area_id, year(period_start) y, sum(value) filter (wher
 rows = []
 for e, y in (("mv2023", 2023), (LOCAL24, 2024)):
     for a, v in json.loads((ROOT / f"public/tiles/secim-{e}-mahalle-TR-{PLATE}.json").read_text(encoding="utf-8")).items():
-        rows.append(dict(area_id=a, y=y, e=e, secmen=v["k"], oy=v["o"]))
+        rows.append(dict(area_id=wh(a) if "~" not in a else a, y=y, e=e, secmen=v["k"], oy=v["o"]))
 s = pl.DataFrame(rows).join(p, on=["area_id", "y"], how="inner")
 cls = pl.read_csv(D / f"kent_{PLATE}_ikili.csv", infer_schema_length=0).select("area_id", "district", "name", "kent_kir", "son_sinif")
 semt = pl.read_csv(D / f"semt_{PLATE}_mahalle.csv").select("area_id", "semt")

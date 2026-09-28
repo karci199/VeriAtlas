@@ -11,7 +11,7 @@ from pathlib import Path
 import numpy as np, polars as pl, shapely, duckdb
 
 import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
-from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG  # noqa: E402
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG, LOCAL24, wh, geo_code  # noqa: E402
 OUT = D
 
 t0 = time.time()
@@ -94,7 +94,7 @@ for did, (dname, dg) in sorted(dist.items()):
     score = np.zeros(len(parts))
     oldcnt = np.zeros(len(parts))
     for f in ng["features"]:
-        aid = f["properties"]["area_id"]; r = REG.get(aid)
+        aid = wh(f["properties"]["area_id"]); r = REG.get(aid)
         if not r or int(r["first_seen"]) > 2012:
             continue
         g = proj(shapely.from_geojson(json.dumps(f["geometry"])))
@@ -127,7 +127,7 @@ for did, (dname, dg) in sorted(dist.items()):
     dom = {}
     cpop = np.zeros(len(parts))
     for f in ng["features"]:
-        aid = f["properties"]["area_id"]
+        aid = wh(f["properties"]["area_id"])
         g = proj(shapely.from_geojson(json.dumps(f["geometry"])))
         ss = small[shapely.contains(g, cent[small])]
         h = ptree.query(cent[ss], predicate="within")[1] if len(ss) else []
@@ -144,14 +144,14 @@ for did, (dname, dg) in sorted(dist.items()):
         in_town = shapely.contains(town, cent[idx])
     n_sat = sat_pop = 0
     for f in ng["features"]:
-        aid = f["properties"]["area_id"]
+        aid = wh(f["properties"]["area_id"])
         g = proj(shapely.from_geojson(json.dumps(f["geometry"])))
         sel = idx[shapely.contains(g, cent[idx])]
         nb, nin = len(sel), int(shapely.contains(town, cent[sel]).sum()) if len(sel) else 0
         p = POP.get(aid)
         code = aid.rsplit("-", 1)[-1]
         r = REG.get(aid)
-        e = (ek.get(str(code)) or {}).get("demography") or {}
+        e = (ek.get(geo_code(aid)) or {}).get("demography") or {}
         share = nin / nb if nb else 0
         old = bool(r) and int(r["first_seen"]) <= 2012
         belde = BELDE.get(did, {}).get(fold(f["properties"]["name_tr"]))

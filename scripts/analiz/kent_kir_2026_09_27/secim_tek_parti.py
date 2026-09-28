@@ -13,7 +13,7 @@ import json
 import polars as pl
 
 import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
-from il import PLATE, D, ROOT, LOCAL24  # noqa: E402
+from il import PLATE, D, ROOT, LOCAL24, wh  # noqa: E402
 
 EL = ["mv2002", "mv2007", "mv2011", "mv2015h", "mv2015k", "mv2018", "mv2023", "cb2014", "cb2018", "cb2023t1", "cb2023t2",
       "yerel_bsb_2014", "yerel_bsb_2019", LOCAL24, "yerel_bel_2019", "yerel_bel_2024"]
@@ -26,6 +26,7 @@ for e in EL:
     if not f.exists():
         continue
     for k, v in json.loads(f.read_text(encoding="utf-8")).items():
+        k = wh(k) if "~" not in k else k
         if v["o"] >= v["k"] + 20 or k not in C:
             continue
         n = sum(v["v"].get(p, 0) for p in PARTY)

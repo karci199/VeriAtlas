@@ -13,7 +13,7 @@ from pathlib import Path
 import polars as pl
 
 import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
-from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG, LOCAL24  # noqa: E402
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG, LOCAL24, wh, geo_code  # noqa: E402
 
 TILES = Path("C:/veri/public/tiles")
 ELECTIONS = ["mv2015k", "mv2018", "mv2023", "cb2023t2", LOCAL24]
@@ -26,7 +26,7 @@ for e in ELECTIONS:
             dropped.append((e, aid, v["ad"], v["k"], v["o"]))
             continue
         for party, n in v["v"].items():
-            rows.append(dict(election=e, area_id=aid, party=party, votes=n))
+            rows.append(dict(election=e, area_id=wh(aid) if "~" not in aid else aid, party=party, votes=n))
 # a few tile keys are unresolved names ("TR-16-003~kumlukalani"): match by name within
 # the district, else the known central quarter (Kayhan, merged after 2015) is urban and
 # the rest -- all small villages -- rural

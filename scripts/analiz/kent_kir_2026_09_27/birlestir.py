@@ -16,7 +16,7 @@ from pathlib import Path
 import polars as pl
 
 import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
-from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG  # noqa: E402
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG, LOCAL24, wh, geo_code  # noqa: E402
 SRC = OUT = D
 
 
@@ -164,6 +164,29 @@ ELLE = {
     # (gursu.bel.tr "ipekyolu mahallemizdeki yeni toki konutlari"); part of the town
     "TR-16-003-197753": ("merkez", "elle: TOKİ, 2016'da merkezden ayrıldı, bina verisinde yok"),
 }
+# official split, kept beside the building rule. Outside the 30 metropolitan provinces the
+# legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
+# şehir, other municipalities = belde, villages = köy. TÜİK counts only şehir as urban.
+METRO = LOCAL24 == "yerel_bsb_2024"
+cur = pl.read_csv(ROOT / "src/veriatlas/data/areas_tr_neighbourhoods.csv", infer_schema_length=0).filter(
+    pl.col("parent_id").str.starts_with(f"TR-{PLATE}-") & (pl.col("last_seen").cast(pl.Int64) >= YEAR))
+MUN24 = {r["area_id"]: r["municipality"].removesuffix(" Bel.") for r in cur.iter_rows(named=True)}
+VIL24 = set(pl.read_csv(ROOT / "src/veriatlas/data/areas_tr_villages.csv", infer_schema_length=0).filter(
+    pl.col("parent_id").str.starts_with(f"TR-{PLATE}-") & (pl.col("last_seen").cast(pl.Int64) >= YEAR))["area_id"])
+
+
+def resmi(s):
+    if METRO:
+        return "bsb"
+    if s["area_id"] in VIL24:
+        return "koy"
+    m = MUN24.get(s["area_id"])
+    if m is None:
+        return "yok"
+    return "sehir" if fold(m) in (fold(s["district"]), SLUG) else "belde"
+
+
+nb = nb.with_columns(pl.struct("area_id", "district").map_elements(resmi, return_dtype=pl.Utf8).alias("resmi"))
 res = [ELLE.get(r["area_id"]) or decide(r) for r in nb.iter_rows(named=True)]
 nb = nb.with_columns(pl.Series("son_sinif", [a for a, _ in res]), pl.Series("arada", [b for _, b in res]))
 nb.write_csv(OUT / f"kent_{PLATE}_son.csv")
