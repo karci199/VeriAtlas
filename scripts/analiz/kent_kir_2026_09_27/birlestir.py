@@ -413,6 +413,15 @@ ELLE = {
     "TR-06-012-1669": ("kir", "elle: köy, AATOPLU 2015 köy (Gölbaşı Yurtbeyi)"),
     "TR-06-012-1668": ("kir", "elle: köy, AATOPLU 2015 köy (Gölbaşı Yaylabağ)"),
     "TR-06-012-1662": ("kentsel_belde", "elle: kullanıcı, villa kuşağı (Gölbaşı Taşpınar)"),
+    # Mamak: user approved proposals (2026-09-29)
+    "TR-06-019-181428": ("kentsel_belde", "elle: ayrı yeni yerleşim (Mamak Zirvekent)"),
+    "TR-06-019-1760": ("merkez", "elle: kullanıcı, merkez (Mamak Derbent)"),
+    "TR-06-019-1799": ("kir", "elle: köy, AATOPLU köy (Mamak Gökçeyurt)"),
+    "TR-06-019-1801": ("kir", "elle: AATOPLU köy, istisna geçersiz (Mamak Kızılca)"),
+    "TR-06-019-1803": ("kir", "elle: AATOPLU köy, istisna geçersiz (Mamak Ortaköy)"),
+    "TR-06-019-1802": ("kir", "elle: köy, AATOPLU köy (Mamak Kusunlar)"),
+    "TR-06-019-1806": ("kir", "elle: köy, AATOPLU köy (Mamak Bayındır)"),
+    "TR-06-019-1798": ("kir", "elle: 196 kişilik ayrı yerleşim (Mamak Yukarı İmrohor)"),
 }
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
