@@ -146,8 +146,15 @@ VNAME = {r["area_id"]: r["name_tr"] for r in vil.iter_rows(named=True)}
 RNAME = {r["area_id"]: r["name_tr"] for r in reg.iter_rows(named=True)}
 
 
+# 2007-2012 quarters of annexed beldes whose names survive nowhere today; user placed them
+# (2026-09-28): Gemlik Şükrükaya -> Kurşunlu, Güzel Yalı / Şükrü Alemdar / Parsbey -> Umurbey
+OLD_TO_NEW = {"TR-16-002-11355": "140855", "TR-16-002-11356": "140853",
+              "TR-16-002-11359": "140853", "TR-16-002-11361": "140853"}
+
+
 def fixed(r):
     did, code = r["area_id"].rsplit("-", 1)
+    code = OLD_TO_NEW.get(r["area_id"], code)
     if code in by_code:
         return by_code[code]
     nm = VNAME.get(r["area_id"]) or RNAME.get(r["area_id"]) or ""
