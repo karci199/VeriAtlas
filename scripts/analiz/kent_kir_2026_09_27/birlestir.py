@@ -708,6 +708,12 @@ ELLE = {
     "TR-06-021-178977": ("kasaba", "elle: AATOPLU köy, ayrı leke 2.346 (Polatlı Basrı)"),
     # Şereflikoçhisar: AATOPLU 2015
     "TR-06-024-98870": ("merkez", "elle: AATOPLU mahalle (Şereflikoçhisar Mehmet Akif Ersoy)"),
+    # Adalar: the islands are all town (user, 2026-09-29)
+    "TR-34-001-40140": ("merkez", "elle: kullanıcı, Adalar kent (Büyükada) (Adalar Maden)"),
+    "TR-34-001-40141": ("merkez", "elle: kullanıcı, Adalar kent (Büyükada) (Adalar Nizam)"),
+    "TR-34-001-40142": ("kentsel_belde", "elle: kullanıcı, Adalar kent, ayrı ada (Adalar Heybeliada)"),
+    "TR-34-001-40139": ("kentsel_belde", "elle: kullanıcı, Adalar kent, ayrı ada (Adalar Burgazada)"),
+    "TR-34-001-40143": ("kentsel_belde", "elle: kullanıcı, Adalar kent, ayrı ada (Adalar Kınalıada)"),
 }
 # bulk decisions for the other provinces, written by aatoplu_onay.py; a hand entry above wins
 _bulk = Path(__file__).parent / "elle_aatoplu.csv"
