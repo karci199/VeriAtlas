@@ -33,9 +33,31 @@ const get = (r, k) => r[K[k]];
 const kentKir = (s) => (s ? (URBAN.has(s) ? "KENT" : "KIR") : "");
 const ilceKey = (r) => `${get(r, "il")} · ${get(r, "ilce")}`;
 
+// --- interface settings (panels, columns, density, accent, font), kept in localStorage
+const UI_KEY = "kentkir.ui";
+const PANELS = { cards: true, prog: true, filters: true, info: true, detail: true };
+const ui = { panels: { ...PANELS }, den: "normal", acc: "amber", font: "mono", hidden: [] };
+try {
+  const saved = JSON.parse(localStorage.getItem(UI_KEY) || "{}");
+  Object.assign(ui, saved);
+  ui.panels = { ...PANELS, ...(saved.panels || {}) };
+} catch (e) { /* defaults */ }
+const saveUi = () => { try { localStorage.setItem(UI_KEY, JSON.stringify(ui)); } catch (e) { /* ignore */ } };
+function applyUi() {
+  const d = document.documentElement.dataset;
+  d.acc = ui.acc; d.den = ui.den; d.font = ui.font;
+  for (const [k, v] of Object.entries(ui.panels)) document.body.classList.toggle(`hide-${k}`, !v);
+}
+// extra numeric filters set from the command line (mahalle tab)
+const xf = { bsMin: 0, bsMax: 10, nMax: Infinity };
+// the user's own semt: a name and one of two kinds
+const SEMT_KINDS = ["Merkez semti", "Kırsal belde"];
+const NO_SEMT = "— girilmemiş";
+const semtOf = (r) => decOf(get(r, "id")).sm || NO_SEMT;
+
 // --- neighbourhood table columns: [key, header, group, render kind, digits]
 const COLS = () => [
-  ["il", "İl", "id", "t"], ["ilce", "İlçe", "id", "t"], ["yer", "Yerleşim", "id", "t"], ["semt", "Semt", "semt", "t"], ["ad", "Mahalle / köy", "id", "name"],
+  ["il", "İl", "id", "t"], ["ilce", "İlçe", "id", "t"], ["yer", "Yerleşim", "id", "t"], ["ad", "Mahalle / köy", "id", "name"],
   ["n", "Nüfus", "temel", "n", 0], ["g", "2013→25 %", "temel", "g", 1], ["dens", "Kişi/km²", "temel", "n", 0],
   ["leke", "Merkez lekesi %", "temel", "n", 0], ["kpb", "Konut/bina", "temel", "n", 2],
   ["oy", "TÜİK · AAT · DEG · Bina", "kaynak", "srcs"], ["bs", "Belirsizlik", "kaynak", "bs", 1], ["os", "Öneri", "kaynak", "oneri"],
@@ -47,14 +69,14 @@ const COLS = () => [
   ["k23", "Kayıtlı", "secim", "n", 0], ["g23", "Geçerli", "secim", "n", 0], ["kn", "Kayıtlı/nüfus %", "secim", "n", 1],
   ...parties.map(([p, short]) => [p, short, "secim", "party", 1]),
   ["stat", "TÜİK statü", "kaynakx", "t"], ["aat", "AATOPLU", "kaynakx", "t"], ["deg", "DEGURBA", "kaynakx", "t"], ["bina", "Bina analizi", "kaynakx", "t"],
-  ["u_y", "Yerleşim (senin)", "you2", "y"], ["u_n", "Not (senin)", "you2", "nt"],
+  ["u_st", "Semt türü", "you2", "st"], ["u_sm", "Semt (senin)", "you2", "sm"], ["u_y", "Yerleşim (senin)", "you2", "y"], ["u_n", "Not (senin)", "you2", "nt"],
   ["u_s", "Karar", "you", "sel"],
 ];
-const GROUPS = { id: "", semt: "", temel: "Temel", kaynak: "Kaynaklar ve öneri", not: "", nufus: "Nüfus", yas: "Yaş · eğitim (2024)",
+const GROUPS = { id: "", temel: "Temel", kaynak: "Kaynaklar ve öneri", not: "", nufus: "Nüfus", yas: "Yaş · eğitim (2024)",
                  konut: "Hane · konut · bina", secim: "Seçim 2023", kaynakx: "Kaynak ayrıntı", you2: "Senin", you: "" };
-const TOGGLE = [["semt", "Semt"], ["temel", "Temel"], ["kaynak", "Kaynaklar"], ["not", "Not"], ["nufus", "Nüfus"], ["yas", "Yaş · eğitim"],
+const TOGGLE = [["temel", "Temel"], ["kaynak", "Kaynaklar"], ["not", "Not"], ["nufus", "Nüfus"], ["yas", "Yaş · eğitim"],
                 ["konut", "Hane · konut · bina"], ["secim", "Seçim 2023"], ["kaynakx", "Kaynak ayrıntı"], ["you2", "Yerleşim/not (senin)"]];
-const visibleCols = () => COLS().filter((c) => c[2] === "id" || c[2] === "you" || f.groups.has(c[2]));
+const visibleCols = () => COLS().filter((c) => (c[2] === "id" || c[2] === "you" || f.groups.has(c[2])) && !ui.hidden.includes(c[0]));
 
 // --- decisions
 const decOf = (id) => pending[id] || dec[id] || {};
@@ -141,7 +163,7 @@ function chips(el, items, set, onChange) {
 function inScope(r) {
   if (!selIl.has(get(r, "il"))) return false;
   if (!selIlce.has(ilceKey(r))) return false;
-  if (focus && get(r, focus.k) !== focus.v) return false;
+  if (focus && (focus.k === "semt" ? semtOf(r) : get(r, focus.k)) !== focus.v) return false;
   return true;
 }
 
@@ -149,7 +171,7 @@ function inScope(r) {
 function groupKey(r) {
   if (tab === "il") return [get(r, "il")];
   if (tab === "ilce") return [get(r, "il"), get(r, "ilce")];
-  return [get(r, "il"), get(r, "ilce"), get(r, tab)];
+  return [get(r, "il"), get(r, "ilce"), tab === "semt" ? semtOf(r) : get(r, tab)];
 }
 function summaryTable() {
   const q = fold($("q").value), m = new Map();
@@ -177,7 +199,7 @@ function summaryTable() {
     return sumAsc ? c : -c;
   });
   shown = list;
-  const names = { il: ["İl"], ilce: ["İl", "İlçe"], yer: ["İl", "İlçe", "Yerleşim"], semt: ["İl", "İlçe", "Semt"] }[tab];
+  const names = { il: ["İl"], ilce: ["İl", "İlçe"], yer: ["İl", "İlçe", "Yerleşim"], semt: ["İl", "İlçe", "Semt (senin)"] }[tab];
   const H = (k, t, cls = "num") => `<th data-s="${k}" class="${cls} ${sumSort === k ? `sorted ${sumAsc ? "asc" : ""}` : ""}">${t}</th>`;
   $("th").innerHTML = `<tr class="cols">${names.map((n, i) => i === names.length - 1 ? H("name", n, "") : `<th></th>`).join("")}
     ${H("n", "Nüfus")}${H("c", "Yer")}${H("pm", "Kent % (senin + öneri)")}${H("po", "Kent % (öneri)")}
@@ -217,7 +239,9 @@ function mahTable() {
     if (f.kurum && !get(r, "kurum")) return false;
     if (!f.kr.has(decOf(get(r, "id")).s ? "dolu" : "bos")) return false;
     if (get(r, "n") < nMin) return false;
-    if (q && !fold(`${get(r, "ad")} ${get(r, "yer")} ${get(r, "ilce")} ${get(r, "semt")}`).includes(q)) return false;
+    if (q && !fold(`${get(r, "ad")} ${get(r, "yer")} ${get(r, "ilce")} ${decOf(get(r, "id")).sm || ""}`).includes(q)) return false;
+    const b = get(r, "bs");
+    if (b < xf.bsMin || b > xf.bsMax || get(r, "n") > xf.nMax) return false;
     return true;
   });
   if (sortKey) {
@@ -285,6 +309,9 @@ function cell(r, c, i, cols) {
         CLASSES.map((x) => `<option ${my.s === x ? "selected" : ""}>${x}</option>`).join("")}</select><button class="acc" data-acc="${id}" title="Öneriyi yaz: ${esc(get(r, "os"))}">✓</button><span class="kk ${t}">${t}</span></td>`;
     }
     case "y": return `<td class="${sep}"><input class="y" data-id="${id}" data-f="y" value="${esc(my.y)}" placeholder="${esc(get(r, "yer"))}"></td>`;
+    case "st": return `<td class="${sep}"><select class="st ${my.st ? "set" : ""}" data-id="${id}" data-f="st"><option value="">—</option>${
+      SEMT_KINDS.map((x) => `<option ${my.st === x ? "selected" : ""}>${x}</option>`).join("")}</select></td>`;
+    case "sm": return `<td><input class="y" data-id="${id}" data-f="sm" value="${esc(my.sm)}"></td>`;
     case "nt": return `<td><input class="n" data-id="${id}" data-f="n" value="${esc(my.n)}"></td>`;
     case "note": { const t = get(r, "not") || ""; return `<td class="note${sep}" title="${esc(t)}">${t.startsWith("KURUM") ? `<span class="kurum">${esc(t)}</span>` : esc(t)}</td>`; }
   }
@@ -328,7 +355,7 @@ function closePanel() {
 }
 function panel(r) {
   const P = $("panel");
-  if (!r) { P.hidden = true; document.body.classList.remove("with-panel"); return; }
+  if (!r || !ui.panels.detail) { P.hidden = true; document.body.classList.remove("with-panel"); return; }
   P.hidden = false;
   document.body.classList.add("with-panel");
   const my = decOf(get(r, "id")), xy = get(r, "xy");
@@ -343,7 +370,7 @@ function panel(r) {
   const bsv = get(r, "bs"), bc = BANDS.find((b) => b[0] === band(bsv))[2];
   P.innerHTML = `
     <div class="ph"><div><h2 style="--pc:${w ? "#" + w[2] : "#6b7280"}">${esc(get(r, "ad"))}</h2>
-      <div class="muted">${esc(get(r, "il"))} · ${esc(get(r, "ilce"))} · ${esc(get(r, "yer"))}${get(r, "semt") ? " · semt " + esc(get(r, "semt")) : ""} · ${esc(get(r, "tur"))}</div></div>
+      <div class="muted">${esc(get(r, "il"))} · ${esc(get(r, "ilce"))} · ${esc(get(r, "yer"))}${my.sm ? " · semt " + esc(my.sm) : ""} · ${esc(get(r, "tur"))}</div></div>
       <button id="pclose" title="Kapat (Esc)">✕</button></div>
     <div class="pbig">
       <div><span>Öneri</span><b class="${URBAN.has(get(r, "os")) ? "k" : "r"}">${esc(get(r, "os"))}</b></div>
@@ -353,7 +380,8 @@ function panel(r) {
     </div>
     <div class="pdec">${CLASSES.map((c, i) => `<button data-cls="${c}" class="${my.s === c ? "on" : ""} ${URBAN.has(c) ? "k" : "r"} ${get(r, "os") === c ? "sug" : ""}"><kbd>${i + 1}</kbd>${c}</button>`).join("")}
       <button data-cls="" class="clr"><kbd>0</kbd>temizle</button></div>
-    <div class="pin"><input id="py" placeholder="yerleşim (senin): ${esc(get(r, "yer"))}" value="${esc(my.y)}"><input id="pn" placeholder="not (senin)" value="${esc(my.n)}"></div>
+    <div class="pin"><select id="pst"><option value="">semt türü (senin) —</option>${SEMT_KINDS.map((x) => `<option ${my.st === x ? "selected" : ""}>${x}</option>`).join("")}</select>
+      <input id="psm" placeholder="semt adı (senin)" value="${esc(my.sm)}"><input id="py" placeholder="yerleşim (senin): ${esc(get(r, "yer"))}" value="${esc(my.y)}"><input id="pn" placeholder="not (senin)" value="${esc(my.n)}"></div>
     ${get(r, "not") ? `<div class="pnote">${esc(get(r, "not"))}</div>` : ""}
     <h3>Kaynaklar</h3>${srcs}
     <h3>Göstergeler</h3><div class="pstats">
@@ -373,6 +401,8 @@ function panel(r) {
     decide(r, b.dataset.cls);
     if (b.dataset.cls) select(cur + 1); else panel(r);
   };
+  $("pst").onchange = (ev) => setDecision(get(r, "id"), { st: ev.target.value });
+  $("psm").onchange = (ev) => setDecision(get(r, "id"), { sm: ev.target.value.trim() });
   $("py").onchange = (ev) => setDecision(get(r, "id"), { y: ev.target.value.trim() });
   $("pn").onchange = (ev) => setDecision(get(r, "id"), { n: ev.target.value.trim() });
 }
@@ -452,7 +482,7 @@ function krChips() {
 }
 
 function wire() {
-  $("tabs").onclick = (ev) => { const t = ev.target.dataset.t; if (t) setTab(t); };
+  $("tabs").onclick = (ev) => { const t = ev.target.closest("button")?.dataset.t; if (t) setTab(t); };
   $("focus").onclick = (ev) => { if (ev.target.dataset.x) { focus = null; refresh(); } };
   $("th").onclick = (ev) => {
     const th = ev.target.closest("th");
@@ -518,7 +548,7 @@ async function main() {
   try { const r = await fetch(DEC_URL, { cache: "no-store" }); if (r.ok) dec = await r.json(); } catch (e) { /* none yet */ }
   try { pending = JSON.parse(localStorage.getItem(PENDING_KEY) || "{}"); } catch (e) { pending = {}; }
 
-  $("tabs").innerHTML = Object.entries(TABS).map(([k, t]) => `<button data-t="${k}">${t}</button>`).join("");
+  $("tabs").innerHTML = Object.entries(TABS).map(([k, t], i) => `<button data-t="${k}"><span class="fk">F${i + 1}</span>${t}</button>`).join("");
   const count = (fn) => { const m = new Map(); for (const r of rows) { const k = fn(r); if (k) m.set(k, (m.get(k) || 0) + 1); } return [...m.entries()].sort((a, b) => a[0].localeCompare(b[0], "tr")); };
   for (const r of rows) { selIl.add(get(r, "il")); selIlce.add(ilceKey(r)); }
   drawIl = buildDrop($("dIl"), "İl", () => count((r) => get(r, "il")), selIl, () => {
@@ -526,13 +556,145 @@ async function main() {
     drawIlce(); limit = PAGE; refresh();
   });
   drawIlce = buildDrop($("dIlce"), "İlçe", () => count((r) => (selIl.has(get(r, "il")) ? ilceKey(r) : null)), selIlce, () => { limit = PAGE; refresh(); });
+  buildChips();
+  wire();
+  wireUi();
+  wireCmd();
+  applyUi();
+  uiPanel();
+  setTab("il");
+  if (Object.keys(pending).length) flush();
+}
+
+function buildChips() {
   chips($("cBs"), BANDS, f.bs, () => { limit = PAGE; mahTable(); });
   chips($("cIh"), [["uyumlu", "uyumlu", "#6cc38a"], ["hafif", "hafif", "#e8b64c"], ["cok", "çok", "#ef7d73"]], f.ih, () => { limit = PAGE; mahTable(); });
   chips($("cOn"), CLASSES.map((c) => [c, c]), f.on, () => { limit = PAGE; mahTable(); });
   krChips();
-  chips($("cGr"), TOGGLE, f.groups, renderMah);
-  wire();
-  setTab("il");
-  if (Object.keys(pending).length) flush();
+  chips($("cGr"), TOGGLE, f.groups, () => { renderMah(); uiPanel(); });
+  $("legend").innerHTML = `<span class="lg">mahalle adının solu: 2023 birinci parti →</span>` + parties.map(([, sh, fill]) => `<span class="lg"><i style="background:#${fill}"></i>${sh}</span>`).join("")
+    + `<span class="lg"><i style="background:#6b7280"></i>diğer</span><span class="lg">· satırın solu: <i style="background:#8a6f2e"></i>hafif <i style="background:#a83f36"></i>çok ihtilaf</span>`;
+}
+
+// --- interface menu: every panel, column group and column, density, accent, font
+const COL_LABEL = { id: "Yer", temel: "Temel", kaynak: "Kaynaklar", not: "Not", nufus: "Nüfus", yas: "Yaş · eğitim", konut: "Hane · konut · bina",
+                    secim: "Seçim 2023", kaynakx: "Kaynak ayrıntı", you2: "Senin (semt, yerleşim, not)", you: "Karar" };
+function uiPanel() {
+  const P = $("ui");
+  const chk = (id, label) => `<label class="opt"><input type="checkbox" data-p="${id}" ${ui.panels[id] ? "checked" : ""}>${label}</label>`;
+  const seg = (name, opts, cur) => `<div class="seg">${opts.map(([v, t]) => `<button data-${name}="${v}" class="${cur === v ? "on" : ""}">${t}</button>`).join("")}</div>`;
+  const byGroup = new Map();
+  for (const c of COLS()) if (c[0] !== "ad") { if (!byGroup.has(c[2])) byGroup.set(c[2], []); byGroup.get(c[2]).push(c); }
+  const colsHtml = [...byGroup.entries()].map(([g, cs]) =>
+    (g === "id" || g === "you" ? `<div class="opt grp">${COL_LABEL[g]}</div>` : `<label class="opt grp"><input type="checkbox" data-g="${g}" ${f.groups.has(g) ? "checked" : ""}>${COL_LABEL[g]}</label>`) +
+    cs.map((c) => `<label class="opt sub"><input type="checkbox" data-c="${c[0]}" ${ui.hidden.includes(c[0]) ? "" : "checked"}>${esc(c[1])}</label>`).join("")).join("");
+  P.innerHTML = `
+    <h4>Bölümler</h4>${chk("cards", "Özet kartları")}${chk("prog", "İlerleme çubuğu")}${chk("filters", "Filtre çubukları")}${chk("info", "Açıklama")}${chk("detail", "Ayrıntı paneli")}
+    <h4>Yoğunluk</h4>${seg("den", [["compact", "Sıkı"], ["normal", "Normal"], ["wide", "Geniş"]], ui.den)}
+    <h4>Vurgu rengi</h4>${seg("acc", [["amber", "Kehribar"], ["green", "Yeşil"], ["cyan", "Cam"], ["white", "Beyaz"]], ui.acc)}
+    <h4>Yazı</h4>${seg("font", [["mono", "Tek aralıklı"], ["sans", "Sans"]], ui.font)}
+    <h4>Sütunlar <span class="rowbtn"><button data-cols="all">Hepsi</button> <button data-cols="none">Hiçbiri</button></span></h4>${colsHtml}
+    <button class="rst" data-reset="1">Görünümü sıfırla</button>`;
+}
+function wireUi() {
+  const P = $("ui");
+  $("uibtn").onclick = () => { P.hidden = !P.hidden; };
+  document.addEventListener("mousedown", (ev) => { if (!P.hidden && !P.contains(ev.target) && ev.target !== $("uibtn")) P.hidden = true; });
+  const redraw = () => { saveUi(); applyUi(); if (tab === "mah") renderMah(); };
+  P.addEventListener("change", (ev) => {
+    const d = ev.target.dataset;
+    if (d.p) { ui.panels[d.p] = ev.target.checked; redraw(); if (d.p === "detail" && cur >= 0) panel(shown[cur]); }
+    else if (d.g) { ev.target.checked ? f.groups.add(d.g) : f.groups.delete(d.g); buildChips(); redraw(); }
+    else if (d.c) { ui.hidden = ev.target.checked ? ui.hidden.filter((k) => k !== d.c) : [...ui.hidden, d.c]; redraw(); }
+  });
+  P.addEventListener("click", (ev) => {
+    const b = ev.target.closest("button");
+    if (!b) return;
+    const d = b.dataset;
+    if (d.den) ui.den = d.den; else if (d.acc) ui.acc = d.acc; else if (d.font) ui.font = d.font;
+    else if (d.cols) ui.hidden = d.cols === "all" ? [] : COLS().map((c) => c[0]).filter((k) => k !== "ad");
+    else if (d.reset) { Object.assign(ui, { panels: { ...PANELS }, den: "normal", acc: "amber", font: "mono", hidden: [] }); f.groups = new Set(["temel", "kaynak", "not", "you2"]); buildChips(); }
+    else return;
+    redraw(); uiPanel();
+  });
+}
+
+// --- command line
+const TAB_ALIAS = { iller: "il", il: "il", ilceler: "ilce", ilce: "ilce", yerlesim: "yer", yerlesimler: "yer", semt: "semt", semtler: "semt", mahalle: "mah", mah: "mah", koy: "mah" };
+const HELP = "16 nilüfer · bursa · hatay antakya   → il / ilçe (plaka da olur)\nbs>6  bs<3   belirsizlik · n>5000  n<300   nüfus\nbekleyen · verilmis · kurum   → karar / kurum filtresi\niller ilceler yerlesim semt mahalle   → sekme (F1-F5)\nsifirla   → filtreleri temizle";
+function cmdMsg(t) {
+  const m = $("cmdmsg");
+  m.textContent = t; m.style.display = t ? "block" : "none";
+  clearTimeout(cmdMsg.t);
+  if (t) cmdMsg.t = setTimeout(() => { m.style.display = "none"; }, 6000);
+}
+function runCmd(text) {
+  text = text.trim();
+  if (!text) return;
+  if (text === "?") { cmdMsg(HELP); return; }
+  const done = [], free = [];
+  let goTab = null;
+  for (const tok of text.split(/\s+/)) {
+    const low = fold(tok);
+    let m;
+    if ((m = /^bs(>=|<=|>|<|=)(\d+(?:[.,]\d+)?)$/.exec(low))) {
+      const v = parseFloat(m[2].replace(",", "."));
+      if (m[1][0] === ">") xf.bsMin = v; else if (m[1][0] === "<") xf.bsMax = v; else { xf.bsMin = v; xf.bsMax = v; }
+      done.push(`belirsizlik ${m[1]} ${fmt(v, v % 1 ? 1 : 0)}`); goTab = "mah";
+    } else if ((m = /^n(>=|<=|>|<)(\d+)$/.exec(low))) {
+      if (m[1][0] === ">") $("nMin").value = m[2]; else xf.nMax = +m[2];
+      done.push(`nüfus ${m[1]} ${fmt(+m[2])}`); goTab = "mah";
+    } else if (low === "bekleyen") { f.kr = new Set(["bos"]); f.kurum = false; done.push("karar bekleyen"); goTab = "mah"; }
+    else if (low === "verilmis") { f.kr = new Set(["dolu"]); f.kurum = false; done.push("karar verilmiş"); goTab = "mah"; }
+    else if (low === "kurum") { f.kurum = true; done.push("yalnız kurum"); goTab = "mah"; }
+    else if (low === "sifirla") {
+      f.ih = new Set(["uyumlu", "hafif", "cok"]); f.bs = new Set(BANDS.map((b) => b[0])); f.on = new Set(CLASSES); f.kr = new Set(["bos", "dolu"]); f.kurum = false;
+      Object.assign(xf, { bsMin: 0, bsMax: 10, nMax: Infinity }); $("nMin").value = ""; $("q").value = "";
+      for (const r of rows) { selIl.add(get(r, "il")); selIlce.add(ilceKey(r)); }
+      focus = null; drawIl(); drawIlce(); done.push("filtreler sıfırlandı");
+    } else if (TAB_ALIAS[low]) goTab = TAB_ALIAS[low];
+    else free.push(tok);
+  }
+  // place names: plate number or province name, then a district name inside it
+  const ilNames = [...new Set(rows.map((r) => get(r, "il")))];
+  const plate = new Map(rows.map((r) => [+get(r, "id").slice(3, 5), get(r, "il")]));
+  const rest = [];
+  let ilHit = null;
+  for (const tok of free) {
+    const t = fold(tok);
+    const il = /^\d{1,2}$/.test(t) ? plate.get(+t) : ilNames.find((n) => fold(n) === t) || (t.length >= 3 && ilNames.find((n) => fold(n).startsWith(t)));
+    if (il && !ilHit) ilHit = il; else rest.push(tok);
+  }
+  let ilceHit = null;
+  const pool = new Set(rows.filter((r) => !ilHit || get(r, "il") === ilHit).map((r) => get(r, "ilce")));
+  for (const tok of [...rest]) {
+    const t = fold(tok);
+    const hit = [...pool].find((n) => fold(n) === t) || (t.length >= 3 && [...pool].find((n) => fold(n).startsWith(t)));
+    if (hit && !ilceHit) { ilceHit = hit; rest.splice(rest.indexOf(tok), 1); }
+  }
+  if (ilceHit) {
+    const keys = rows.filter((r) => get(r, "ilce") === ilceHit && (!ilHit || get(r, "il") === ilHit));
+    selIl.clear(); selIlce.clear();
+    for (const r of keys) { selIl.add(get(r, "il")); selIlce.add(ilceKey(r)); }
+    focus = null; drawIl(); drawIlce(); done.unshift(`${[...selIl].join("/")} · ${ilceHit}`); goTab = goTab || "mah";
+  } else if (ilHit) {
+    selIl.clear(); selIl.add(ilHit); resetIlce(); focus = null; drawIl(); drawIlce(); done.unshift(ilHit); goTab = goTab || "ilce";
+  }
+  if (free.length) { $("q").value = rest.join(" "); if (rest.length) done.push(`ara: ${rest.join(" ")}`); }
+  buildChips(); limit = PAGE;
+  if (goTab && goTab !== tab) setTab(goTab); else refresh();
+  cmdMsg(done.length ? `› ${done.join(" · ")}  →  ${fmt(shown.length)} satır` : `komut anlaşılmadı: ${text}   (? yardım)`);
+}
+function wireCmd() {
+  $("cmd").addEventListener("keydown", (ev) => {
+    if (ev.key === "Enter") { runCmd(ev.target.value); ev.target.value = ""; }
+    else if (ev.key === "Escape") { ev.target.blur(); cmdMsg(""); }
+  });
+  document.addEventListener("keydown", (ev) => {
+    if (/^F[1-5]$/.test(ev.key) && !ev.ctrlKey && !ev.shiftKey && !ev.altKey) { ev.preventDefault(); setTab(Object.keys(TABS)[+ev.key[1] - 1]); return; }
+    if ((ev.key === "/" || ev.key === ":") && !/^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName)) { ev.preventDefault(); $("cmd").focus(); $("cmd").select(); }
+  });
+  const tick = () => { const d = new Date(); $("clock").textContent = `${d.toLocaleDateString("tr-TR")} ${d.toLocaleTimeString("tr-TR")}`; };
+  tick(); setInterval(tick, 1000);
 }
 main();

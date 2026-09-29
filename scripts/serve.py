@@ -16,7 +16,7 @@ Only that directory, only `.json` names, only bodies that parse as JSON; CORS is
 for it because the push comes from another origin.
 
 A third: `POST /karar` upserts the user's urban/rural decisions from web/kentkir.html into
-scripts/analiz/kent_kir_2026_09_27/kullanici_karar.json ({area_id: {s, y, n}}; an empty
+scripts/analiz/kent_kir_2026_09_27/kullanici_karar.json ({area_id: {s, y, n, st, sm}}; an empty
 decision deletes the entry). Written through a temporary file under a lock, so two tabs
 saving at once cannot leave half a file.
 
@@ -109,7 +109,7 @@ class NoCache(http.server.SimpleHTTPRequestHandler):
         with LOCK:
             cur = json.loads(DECISIONS.read_text(encoding="utf-8")) if DECISIONS.exists() else {}
             for aid, d in upd.items():
-                d = {k: str(v).strip() for k, v in (d or {}).items() if k in ("s", "y", "n") and str(v or "").strip()}
+                d = {k: str(v).strip() for k, v in (d or {}).items() if k in ("s", "y", "n", "st", "sm") and str(v or "").strip()}
                 if d:
                     cur[aid] = d
                 else:

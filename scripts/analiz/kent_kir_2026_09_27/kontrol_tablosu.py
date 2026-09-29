@@ -218,6 +218,20 @@ for f in BASE.glob("[0-9][0-9]/semt_*_mahalle.csv"):
     for r in pl.read_csv(f, infer_schema_length=0).iter_rows(named=True):
         SEMT[r["area_id"]] = r["semt"]
 
+def analysis_settlement(son, name, il, ilce, legal):
+    """the settlement a place belongs to by our own class, not by its legal status: a village
+    of a metropolitan district was a quarter of the district municipality in 2012, but is no
+    "İlçe Merkezi". Centre -> "<ilçe> İlçe Merkezi"; belde-like -> the belde's name, else the
+    place's own; village -> "<ilçe> Köyleri"."""
+    if son == "merkez":
+        return centre_name(il, ilce)
+    if son == "kir":
+        return f"{ilce} Köyleri"
+    if legal in (centre_name(il, ilce), f"{ilce} Köyleri"):
+        return NAME_SUFFIX.sub("", name)
+    return legal
+
+
 rows = []
 plates = sorted(p.name for p in BASE.iterdir() if (p / f"kent_{p.name}_son.csv").exists())
 for p in plates:
@@ -237,7 +251,8 @@ for p in plates:
         et = e.get("EducationTotal") or 0
         uni = sum(e.get(x) or 0 for x in ("EduLicenseDegree", "EduGraduate", "EduDoctorate"))
         k = kid.get(wid)
-        stat, settle = status_and_settlement(p, il, r["district"], aid, wid, r["eski_statu"] or "")
+        stat, legal = status_and_settlement(p, il, r["district"], aid, wid, r["eski_statu"] or "")
+        settle = analysis_settlement(r["son_sinif"], r["name"], il, r["district"], legal)
         area = AREA.get(wid)
         v = dict(
             il=il, ilce=r["district"], yer=settle, ad=r["name"], tur="Köy" if (wid in VIL or aid in VIL) else "Mahalle",
