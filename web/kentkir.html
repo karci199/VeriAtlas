@@ -167,7 +167,10 @@ kbd { display:inline-block; min-width:15px; margin-right:6px; padding:0 3px; bor
 #ui h4 { margin:12px 0 5px; font-size:9.5px; text-transform:uppercase; letter-spacing:.09em; color:var(--acc); display:flex; justify-content:space-between; align-items:center; }
 #ui h4:first-child { margin-top:0; }
 #ui .opt { display:flex; gap:7px; align-items:center; padding:1px 2px; cursor:pointer; }
-#ui .opt.sub { padding-left:22px; color:var(--mut); } #ui .opt.grp { margin-top:5px; color:var(--fg); font-weight:700; }
+#ui .opt.sub { padding-left:26px; color:var(--mut); } #ui .opt.grp { margin-top:4px; color:var(--fg); font-weight:700; }
+#ui .gl { flex:1; display:flex; gap:7px; align-items:center; cursor:pointer; }
+#ui .cnt { color:var(--mut); font-size:10px; font-weight:400; }
+#ui .chev { border:0; padding:0 6px; font-size:12px; text-transform:none; } #ui .chev:disabled { opacity:.25; cursor:default; }
 #ui .seg { display:flex; } #ui .seg button { margin-left:-1px; flex:1; } #ui .seg button.on { background:var(--acc); color:#000; border-color:var(--acc); font-weight:700; }
 #ui .rowbtn button { padding:1px 6px; font-size:9.5px; }
 #ui .rst { margin-top:12px; width:100%; }
@@ -233,6 +236,6 @@ kbd { display:inline-block; min-width:15px; margin-right:6px; padding:0 3px; bor
 <aside id="panel" hidden></aside>
 <div class="wrap"><table><thead id="th"></thead><tbody id="tb"></tbody></table><div class="more" id="more"></div></div>
 
-<script src="kentkir.js?v=9"></script>
+<script src="kentkir.js?v=10"></script>
 </body>
 </html>

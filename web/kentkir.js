@@ -36,7 +36,7 @@ const ilceKey = (r) => `${get(r, "il")} · ${get(r, "ilce")}`;
 // --- interface settings (panels, columns, density, accent, font), kept in localStorage
 const UI_KEY = "kentkir.ui";
 const PANELS = { cards: true, prog: true, filters: true, info: true, detail: true };
-const ui = { panels: { ...PANELS }, den: "normal", acc: "amber", font: "mono", hidden: [] };
+const ui = { panels: { ...PANELS }, den: "normal", acc: "amber", font: "mono", hidden: [], open: [] };
 try {
   const saved = JSON.parse(localStorage.getItem(UI_KEY) || "{}");
   Object.assign(ui, saved);
@@ -585,9 +585,16 @@ function uiPanel() {
   const seg = (name, opts, cur) => `<div class="seg">${opts.map(([v, t]) => `<button data-${name}="${v}" class="${cur === v ? "on" : ""}">${t}</button>`).join("")}</div>`;
   const byGroup = new Map();
   for (const c of COLS()) if (c[0] !== "ad") { if (!byGroup.has(c[2])) byGroup.set(c[2], []); byGroup.get(c[2]).push(c); }
-  const colsHtml = [...byGroup.entries()].map(([g, cs]) =>
-    (g === "id" || g === "you" ? `<div class="opt grp">${COL_LABEL[g]}</div>` : `<label class="opt grp"><input type="checkbox" data-g="${g}" ${f.groups.has(g) ? "checked" : ""}>${COL_LABEL[g]}</label>`) +
-    cs.map((c) => `<label class="opt sub"><input type="checkbox" data-c="${c[0]}" ${ui.hidden.includes(c[0]) ? "" : "checked"}>${esc(c[1])}</label>`).join("")).join("");
+  // a group is one row; its columns list only while the group is on and expanded
+  const colsHtml = [...byGroup.entries()].map(([g, cs]) => {
+    const always = g === "id" || g === "you";
+    const on = always || f.groups.has(g);
+    const open = on && ui.open.includes(g);
+    const nOn = cs.filter((c) => !ui.hidden.includes(c[0])).length;
+    const head = always ? `<span class="gl">${COL_LABEL[g]}</span>` : `<label class="gl"><input type="checkbox" data-g="${g}" ${on ? "checked" : ""}>${COL_LABEL[g]}</label>`;
+    return `<div class="opt grp">${head}<span class="cnt">${on ? `${nOn}/${cs.length}` : "kapalı"}</span><button class="chev" data-open="${g}" ${on ? "" : "disabled"}>${open ? "▾" : "▸"}</button></div>`
+      + (open ? cs.map((c) => `<label class="opt sub"><input type="checkbox" data-c="${c[0]}" ${ui.hidden.includes(c[0]) ? "" : "checked"}>${esc(c[1])}</label>`).join("") : "");
+  }).join("");
   P.innerHTML = `
     <h4>Bölümler</h4>${chk("cards", "Özet kartları")}${chk("prog", "İlerleme çubuğu")}${chk("filters", "Filtre çubukları")}${chk("info", "Açıklama")}${chk("detail", "Ayrıntı paneli")}
     <h4>Yoğunluk</h4>${seg("den", [["compact", "Sıkı"], ["normal", "Normal"], ["wide", "Geniş"]], ui.den)}
@@ -604,7 +611,10 @@ function wireUi() {
   P.addEventListener("change", (ev) => {
     const d = ev.target.dataset;
     if (d.p) { ui.panels[d.p] = ev.target.checked; redraw(); if (d.p === "detail" && cur >= 0) panel(shown[cur]); }
-    else if (d.g) { ev.target.checked ? f.groups.add(d.g) : f.groups.delete(d.g); buildChips(); redraw(); }
+    else if (d.g) {
+      if (ev.target.checked) { f.groups.add(d.g); if (!ui.open.includes(d.g)) ui.open.push(d.g); } else f.groups.delete(d.g);
+      buildChips(); redraw(); uiPanel();
+    }
     else if (d.c) { ui.hidden = ev.target.checked ? ui.hidden.filter((k) => k !== d.c) : [...ui.hidden, d.c]; redraw(); }
   });
   P.addEventListener("click", (ev) => {
@@ -612,8 +622,9 @@ function wireUi() {
     if (!b) return;
     const d = b.dataset;
     if (d.den) ui.den = d.den; else if (d.acc) ui.acc = d.acc; else if (d.font) ui.font = d.font;
+    else if (d.open) ui.open = ui.open.includes(d.open) ? ui.open.filter((x) => x !== d.open) : [...ui.open, d.open];
     else if (d.cols) ui.hidden = d.cols === "all" ? [] : COLS().map((c) => c[0]).filter((k) => k !== "ad");
-    else if (d.reset) { Object.assign(ui, { panels: { ...PANELS }, den: "normal", acc: "amber", font: "mono", hidden: [] }); f.groups = new Set(["temel", "kaynak", "not", "you2"]); buildChips(); }
+    else if (d.reset) { Object.assign(ui, { panels: { ...PANELS }, den: "normal", acc: "amber", font: "mono", hidden: [], open: [] }); f.groups = new Set(["temel", "kaynak", "not", "you2"]); buildChips(); }
     else return;
     redraw(); uiPanel();
   });
