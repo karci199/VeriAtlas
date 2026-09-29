@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<!-- Urban/rural review: every neighbourhood and village of 2025 with what each source says,
-     the merged suggestion and the user's own decision, saved through scripts/serve.py
-     (POST /karar). Data: public/kentkir_kontrol.json, built by
-     scripts/analiz/kent_kir_2026_09_27/kontrol_tablosu.py. -->
+<!-- Urban/rural review: province/district/settlement/semt summaries and every neighbourhood
+     and village of 2025 with what each source says, the merged suggestion and the user's own
+     decision, saved through scripts/serve.py (POST /karar). Data: public/kentkir_kontrol.json,
+     built by scripts/analiz/kent_kir_2026_09_27/kontrol_tablosu.py. -->
 <html lang="tr">
 <head>
 <meta charset="utf-8">
@@ -10,127 +10,139 @@
 <title>Kent / kır kontrolü</title>
 <meta name="color-scheme" content="dark">
 <style>
-:root { --bg:#111317; --panel:#181b21; --panel2:#1e222a; --fg:#e7e9ee; --mut:#8b92a0; --line:#262b34;
-        --acc:#5b9bd5; --acc2:#2c4a6b; --kent:#5b9bd5; --kir:#6cc38a; --warn:#e8b64c; --bad:#ef7d73; --hover:#222834; }
-* { box-sizing: border-box; }
-body { margin:0; background:var(--bg); color:var(--fg); font:13px/1.45 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; }
-header { padding:16px 20px 6px; }
-h1 { margin:0 0 3px; font-size:19px; font-weight:650; }
-header p { margin:0; color:var(--mut); font-size:12.5px; }
-details.info { margin:6px 0 0; color:var(--mut); font-size:12px; }
-details.info summary { cursor:pointer; color:var(--acc); width:max-content; }
-details.info dl { display:grid; grid-template-columns:190px 1fr; gap:3px 14px; margin:8px 0 4px; max-width:1100px; }
-details.info dt { color:var(--fg); }
-details.info dd { margin:0; }
-.controls { display:flex; flex-wrap:wrap; gap:10px 14px; margin:10px 20px; padding:12px 14px; background:var(--panel);
-            border:1px solid var(--line); border-radius:10px; align-items:end; }
-label.f { display:flex; flex-direction:column; gap:4px; font-size:11px; color:var(--mut); text-transform:uppercase; letter-spacing:.04em; }
-select, input { font:inherit; font-size:13px; color:var(--fg); background:var(--panel2); border:1px solid var(--line);
-                border-radius:7px; padding:6px 9px; outline:none; }
+:root { --bg:#111317; --panel:#171a20; --panel2:#1d2129; --fg:#e4e7ec; --mut:#838a98; --line:#232832; --line2:#2e3441;
+        --acc:#5b9bd5; --acc2:#223a55; --kent:#7fb3e6; --kir:#7dcf98; --warn:#e2b458; --bad:#ec7f75; --hover:#1e232c; --you:#1b1d16; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:12.5px/1.4 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; }
+.top { display:flex; align-items:center; gap:18px; padding:12px 18px 4px; flex-wrap:wrap; }
+h1 { margin:0; font-size:16px; font-weight:650; }
+#tabs { display:flex; gap:2px; background:var(--panel2); border:1px solid var(--line); border-radius:8px; padding:2px; }
+#tabs button { border:0; background:transparent; color:var(--mut); padding:5px 12px; border-radius:6px; font-size:12.5px; }
+#tabs button:hover { color:var(--fg); border:0; }
+#tabs button.on { background:var(--acc); color:#0b1220; font-weight:600; }
+#save { margin-left:auto; color:var(--mut); font-size:12px; }
+#save.ok { color:var(--kir); } #save.err { color:var(--bad); }
+details.info { padding:0 18px; color:var(--mut); font-size:12px; }
+details.info summary { cursor:pointer; color:var(--mut); width:max-content; }
+details.info summary:hover { color:var(--acc); }
+details.info dl { display:grid; grid-template-columns:170px 1fr; gap:3px 14px; margin:6px 0; max-width:1050px; }
+details.info dt { color:var(--fg); } details.info dd { margin:0; }
+.bar-f { display:flex; flex-wrap:wrap; gap:8px 12px; margin:8px 18px; padding:8px 10px; background:var(--panel); border:1px solid var(--line);
+         border-radius:9px; align-items:center; }
+.bar-f .sep { width:1px; height:22px; background:var(--line2); }
+.lbl { color:var(--mut); font-size:11px; margin-right:-4px; }
+select, input { font:inherit; color:var(--fg); background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:4px 8px; outline:none; }
 select:focus, input:focus { border-color:var(--acc); }
-input.numin { width:95px; }
-button { font:inherit; font-size:12.5px; padding:6px 11px; border:1px solid var(--line); border-radius:7px; background:var(--panel2);
-         color:var(--fg); cursor:pointer; }
+#q { width:190px; } #nMin { width:80px; }
+button { font:inherit; font-size:12px; padding:4px 10px; border:1px solid var(--line); border-radius:6px; background:var(--panel2); color:var(--fg); cursor:pointer; }
 button:hover { border-color:var(--acc); }
 .drop { position:relative; }
-.drop > button { min-width:150px; text-align:left; }
+.drop > button { min-width:130px; text-align:left; }
 .drop > button::after { content:" ▾"; color:var(--mut); }
-.panel { position:absolute; z-index:20; top:36px; left:0; width:270px; max-height:420px; display:flex; flex-direction:column;
-         background:var(--panel2); border:1px solid var(--line); border-radius:9px; padding:8px; box-shadow:0 10px 30px rgba(0,0,0,.5); }
-.panel .row { display:flex; gap:6px; margin-bottom:6px; }
-.panel .row button { flex:1; padding:4px 6px; font-size:12px; }
+.panel { position:absolute; z-index:30; top:30px; left:0; width:280px; max-height:430px; display:flex; flex-direction:column;
+         background:var(--panel2); border:1px solid var(--line2); border-radius:9px; padding:8px; box-shadow:0 12px 32px rgba(0,0,0,.55); }
+.panel .row { display:flex; gap:6px; margin-bottom:6px; } .panel .row button { flex:1; }
 .panel input.q { margin-bottom:6px; }
 .panel .list { overflow:auto; }
-.panel label { display:flex; gap:7px; align-items:center; padding:2px 4px; border-radius:5px; cursor:pointer; font-size:12.5px; }
+.panel label { display:flex; gap:7px; align-items:center; padding:2px 4px; border-radius:5px; cursor:pointer; }
 .panel label:hover { background:var(--hover); }
 .panel small { color:var(--mut); margin-left:auto; }
-.chips { display:flex; flex-wrap:wrap; gap:6px; }
-.chip { display:flex; align-items:center; gap:5px; padding:5px 9px; border:1px solid var(--line); border-radius:999px; background:var(--panel2);
-        font-size:12.5px; cursor:pointer; user-select:none; color:var(--mut); }
+.chips { display:flex; flex-wrap:wrap; gap:4px; }
+.chip { display:inline-flex; align-items:center; gap:5px; padding:3px 9px; border:1px solid var(--line); border-radius:999px; background:transparent;
+        font-size:12px; cursor:pointer; user-select:none; color:var(--mut); }
 .chip input { display:none; }
-.chip.on { color:var(--fg); border-color:var(--acc); background:var(--acc2); }
-.chip i { width:8px; height:8px; border-radius:50%; display:inline-block; }
-.summary { display:flex; flex-wrap:wrap; gap:10px; margin:0 20px 10px; align-items:stretch; }
-.summary span { background:var(--panel); border:1px solid var(--line); border-radius:9px; padding:7px 12px; color:var(--mut); font-size:12px; }
-.summary b { display:block; color:var(--fg); font-size:17px; font-weight:650; font-variant-numeric:tabular-nums; }
-#save { margin-left:auto; align-self:center; font-size:12.5px; color:var(--mut); }
-#save.ok { color:var(--kir); } #save.err { color:var(--bad); }
-.wrap { margin:0 20px 20px; overflow:auto; max-height:calc(100vh - 120px); background:var(--panel); border:1px solid var(--line); border-radius:10px; }
-table { border-collapse:separate; border-spacing:0; width:max-content; font-variant-numeric:tabular-nums; }
-th, td { padding:5px 8px; border-bottom:1px solid var(--line); white-space:nowrap; }
-thead th { position:sticky; top:0; z-index:2; background:var(--panel2); font-weight:600; font-size:11.5px; color:var(--mut);
-           cursor:pointer; user-select:none; text-align:center; }
-thead tr.grp th { top:0; z-index:3; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; cursor:default; border-bottom:0; }
-thead tr.cols th { top:24px; }
+.chip.on { color:var(--fg); border-color:#3d5f86; background:var(--acc2); }
+.chip i { width:7px; height:7px; border-radius:50%; }
+.chip b { cursor:pointer; margin-left:3px; color:var(--mut); }
+body:not([data-tab="mah"]) .mah-only { display:none; }
+.summary { display:flex; flex-wrap:wrap; gap:8px; margin:0 18px 8px; }
+.summary span { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:5px 11px; color:var(--mut); font-size:11.5px; }
+.summary b { display:block; color:var(--fg); font-size:15px; font-weight:650; font-variant-numeric:tabular-nums; }
+.summary small { color:var(--mut); font-weight:400; font-size:11px; }
+.summary em { font-style:normal; }
+.ok { color:var(--kir); } .warn { color:var(--warn); } .bad { color:var(--bad); } .muted { color:var(--mut); }
+.wrap { margin:0 18px 18px; overflow:auto; max-height:calc(100vh - 165px); background:var(--panel); border:1px solid var(--line); border-radius:9px; }
+table { border-collapse:separate; border-spacing:0; width:max-content; min-width:100%; font-variant-numeric:tabular-nums; }
+th, td { padding:3px 8px; border-bottom:1px solid var(--line); white-space:nowrap; height:25px; }
+thead th { position:sticky; z-index:2; background:var(--panel2); font-weight:600; font-size:11px; color:var(--mut); cursor:pointer; user-select:none; text-align:left; }
+thead tr.grp th { top:0; height:20px; z-index:3; font-size:10px; text-transform:uppercase; letter-spacing:.06em; cursor:default; border-bottom:0; color:#6c7383; }
+thead tr.cols th { top:20px; }
+thead tr.cols:first-child th { top:0; }
+th.num, td.num { text-align:right; }
+th:hover { color:var(--fg); }
 th.sorted { color:var(--acc); } th.sorted::after { content:" ▾"; } th.sorted.asc::after { content:" ▴"; }
-td.num { text-align:right; }
 td.c { text-align:center; }
+.sep { border-left:1px solid var(--line2); }
 tbody tr:hover td { background:var(--hover); }
-td.name { font-weight:600; text-align:center; min-width:120px; }
-td.sep, th.sep { border-left:1px solid #3a4150; }
-.pill { display:inline-block; min-width:40px; padding:1px 7px; border-radius:5px; font-size:11.5px; font-weight:600; }
-.pill.K { background:#1f3550; color:#9cc6ee; } .pill.R { background:#1f3d2b; color:#9bdcb0; } .pill.N { background:#2a2e36; color:var(--mut); }
-.ih { font-size:11.5px; padding:1px 7px; border-radius:5px; font-weight:600; }
-.ih.uyumlu { color:var(--kir); } .ih.hafif { background:#3b3220; color:var(--warn); } .ih.cok { background:#40221f; color:var(--bad); }
-td.oneri { font-weight:650; }
-td.you { background:#1c1e14; }
-td.you select { padding:3px 5px; font-size:12.5px; width:150px; }
-td.you input { padding:3px 6px; font-size:12.5px; }
-td.you input.y { width:170px; } td.you input.n { width:200px; }
-td.you select.set { border-color:#8a7a2e; color:#ffe9a0; }
-.kk { font-weight:700; font-size:11.5px; } .kk.KENT { color:var(--kent); } .kk.KIR { color:var(--kir); }
-button.acc { padding:2px 7px; font-size:11.5px; margin-left:4px; }
-td.note { max-width:420px; overflow:hidden; text-overflow:ellipsis; color:#c9cdd6; font-size:12px; cursor:pointer; }
-td.note.open { white-space:normal; max-width:520px; }
+tr.drill { cursor:pointer; }
+td.name2 { font-weight:600; }
+td.name { font-weight:600; border-left:4px solid var(--pc); background:color-mix(in srgb, var(--pc) 13%, transparent); }
+tbody tr:hover td.name { background:color-mix(in srgb, var(--pc) 22%, var(--hover)); }
+.pill { display:inline-block; min-width:38px; text-align:center; padding:0 6px; border-radius:4px; font-size:11px; line-height:17px; }
+.pill.K { background:#1c3047; color:var(--kent); } .pill.R { background:#1b3526; color:var(--kir); } .pill.N { color:var(--mut); border:1px solid var(--line2); }
+.ih { font-size:11px; } .ih.uyumlu { color:var(--mut); } .ih.hafif { color:var(--warn); font-weight:600; } .ih.cok { color:var(--bad); font-weight:700; }
+td.oneri { font-weight:600; } td.oneri.k { color:var(--kent); } td.oneri.r { color:var(--kir); }
+td.up, span.up { color:var(--kent); } td.down, span.down { color:var(--bad); }
+span.up, span.down { font-size:11px; }
+td.note { max-width:360px; overflow:hidden; text-overflow:ellipsis; color:#b5bac5; font-size:11.5px; cursor:pointer; }
+td.note.open { white-space:normal; max-width:480px; }
 .kurum { color:var(--bad); font-weight:600; }
-.more { padding:10px; text-align:center; color:var(--mut); }
-.muted { color:var(--mut); }
-details.tot { margin:0 20px 10px; padding:8px 12px; background:var(--panel); border:1px solid var(--line); border-radius:10px; }
-details.tot summary { cursor:pointer; font-weight:600; }
-details.tot label.f { flex-direction:row; align-items:center; gap:8px; }
-#totBody { max-height:360px; overflow:auto; }
-#totBody th { position:sticky; top:0; background:var(--panel2); font-size:11.5px; color:var(--mut); cursor:pointer; }
+th.you, td.you { position:sticky; right:0; z-index:1; background:var(--you); border-left:1px solid #3b3a28; box-shadow:-8px 0 12px -8px rgba(0,0,0,.6); }
+thead th.you { z-index:4; background:#23241a; color:#d8c978; }
+tbody tr:hover td.you { background:#22241b; }
+td.you select { padding:1px 4px; font-size:12px; width:122px; }
+td.you select.set { border-color:#7d6f2a; color:#ffe59a; }
+td.you .acc { padding:0 6px; margin-left:4px; font-size:11px; line-height:18px; }
+.kk { display:inline-block; width:34px; margin-left:6px; font-weight:700; font-size:10.5px; } .kk.KENT { color:var(--kent); } .kk.KIR { color:var(--kir); }
+td input.y { width:150px; padding:1px 6px; } td input.n { width:180px; padding:1px 6px; }
+.cell-bar { display:inline-flex; align-items:center; gap:6px; justify-content:flex-end; }
+.bar { height:5px; border-radius:3px; display:inline-block; } .bar.k { background:#3c6c9e; } .bar.d { background:#7d6f2a; }
+.more { padding:8px; text-align:center; color:var(--mut); }
 </style>
 </head>
-<body>
-<header>
+<body data-tab="il">
+<div class="top">
   <h1>Kent / kır kontrolü</h1>
-  <p>Her mahalle ve köy için kaynakların ne dediği ve bir öneri. Sınıfı sen seçiyorsun, seçtiğin anda kaydediliyor.</p>
-  <details class="info"><summary>Açıklama</summary>
-    <dl>
-      <dt>Ne yapacaksın</dt><dd>SINIF sütunundan birini seç: İl Merkezi, İlçe Merkezi, Kentsel Belde (kent) ya da Kasaba, Kırsal Belde, Köy (kır). KENT/KIR kendiliğinden gelir. ✓ düğmesi öneriyi yazar. Yerleşim ve not isteğe bağlı.</dd>
-      <dt>Kayıt</dt><dd>Her değişiklik yerel sunucuya (scripts/serve.py) gider, <code>kullanici_karar.json</code> dosyasına yazılır. Sunucuya ulaşılamazsa tarayıcıda tutulur, sonraki açılışta gönderilir.</dd>
-      <dt>Yıl</dt><dd>Nüfus ve 0-17 TÜİK 2025, 2013 karşılaştırması aynı kimlikle. Erkek %, 65+, üniversiteli, hane, konut, yazlık Endeksa 2024. Bina Microsoft ayak izleri (Şubat 2026). Seçim 14 Mayıs 2023 milletvekili.</dd>
-      <dt>Kaynaklar</dt><dd>TÜİK statü (büyükşehirde 2012, diğerlerinde bugün), AATOPLU 2015 (senin tablon), DEGURBA 2025 (AB), bina analizi (merkezin kesintisiz yapı lekesi; ayrı leke ≥5.000 kentsel belde, 2.000-5.000 kasaba). Mavi K kent, yeşil R kır, gri belirsiz (belde).</dd>
-      <dt>Öneri</dt><dd>Hepsinin birleşimi: bina analizi, AATOPLU, DEGURBA, TÜİK, büyüme, konut/bina, kurum işareti ve Bursa/Ankara'da senin önceki kararların.</dd>
-      <dt>İhtilaf</dt><dd>Uyumlu: bütün kaynaklar aynı. Hafif: üç ya da dört kaynaktan biri ayrılıyor. Çok: kaynaklar ikiye bölünmüş.</dd>
-      <dt>Merkez lekesi %</dt><dd>Binalarının yüzde kaçı ilçe merkezinin kesintisiz yapılaşmasının içinde. 100 merkezin parçası, 0 ayrı yerleşim.</dd>
-      <dt>Konut / bina, kişi / bina</dt><dd>3'ün üstü apartman, 1 civarı müstakil ya da köy dokusu. Köyde ahır ve depo da bina sayılır, bu yüzden 1'in altına iner.</dd>
-      <dt>Kayıtlı / nüfus</dt><dd>Türkiye ortalaması yaklaşık %72. Çok düşükse seçmen olmayan nüfus var (cezaevi, kışla, yurt, yabancı). 100'ü aşıyorsa kurum sandığı ya da başka yerde oturan seçmen.</dd>
-      <dt>Ad rengi</dt><dd>2023'te birinci çıkan parti.</dd>
-    </dl>
-  </details>
-</header>
+  <div id="tabs"></div>
+  <div id="save"></div>
+</div>
+<details class="info"><summary>Açıklama</summary>
+  <dl>
+    <dt>Ne yapacaksın</dt><dd>Mahalle / köy sekmesinde sağdaki Karar'dan sınıf seç: İl Merkezi, İlçe Merkezi, Kentsel Belde (kent) ya da Kasaba, Kırsal Belde, Köy (kır). ✓ öneriyi yazar. Seçtiğin anda kaydedilir.</dd>
+    <dt>Sekmeler</dt><dd>İller, ilçeler, yerleşimler, semtler: kent payı senin kararınla, kararı olmayan yerde öneriyle; her kayıtta güncellenir. Satıra tıkla, bir alt düzeye iner.</dd>
+    <dt>Kayıt</dt><dd>scripts/serve.py → kullanici_karar.json. Sunucuya ulaşılamazsa tarayıcıda tutulur, sonra gönderilir.</dd>
+    <dt>Yıl</dt><dd>Nüfus TÜİK 2025 (2013 aynı kimlikle). Erkek, 65+, üniversiteli, hane, konut, yazlık Endeksa 2024. Bina Microsoft (Şubat 2026). Seçim 14 Mayıs 2023 milletvekili.</dd>
+    <dt>Kaynaklar</dt><dd>TÜİK statü (büyükşehirde 2012), AATOPLU 2015, DEGURBA 2025, bina analizi (merkezin kesintisiz yapı lekesi; ayrı leke ≥5.000 kentsel belde, 2.000-5.000 kasaba). Üzerine gel: tam metin.</dd>
+    <dt>Öneri</dt><dd>Hepsinin birleşimi: bina, AATOPLU, DEGURBA, TÜİK, büyüme, konut/bina, kurum işareti; Bursa ve Ankara'da senin önceki kararların.</dd>
+    <dt>İhtilaf</dt><dd>uyumlu: bütün kaynaklar aynı · hafif: biri ayrılıyor · çok: ikiye bölünmüş. "belde" oylamaya girmez.</dd>
+    <dt>Merkez lekesi %</dt><dd>Binalarının yüzde kaçı ilçe merkezinin kesintisiz yapılaşmasında. 100 merkezin parçası, 0 ayrı yerleşim.</dd>
+    <dt>Konut/bina</dt><dd>3+ apartman, ~1 müstakil; köyde ahır/depo da bina olduğundan 1'in altına iner.</dd>
+    <dt>Kayıtlı/nüfus</dt><dd>TR ~%72. Çok düşük: seçmen olmayan nüfus (cezaevi, kışla, yurt, yabancı). 100+: kurum sandığı.</dd>
+    <dt>Ad şeridi</dt><dd>2023'te birinci parti. Kırmızı nokta: kurum (cezaevi, kışla, yurt) işareti.</dd>
+  </dl>
+</details>
 
-<div class="controls">
-  <div class="drop" id="dIl"><label class="f">İl<button type="button"></button></label></div>
-  <div class="drop" id="dIlce"><label class="f">İlçe<button type="button"></button></label></div>
-  <label class="f">İhtilaf<div class="chips" id="cIh"></div></label>
-  <label class="f">Öneri<div class="chips" id="cOn"></div></label>
-  <label class="f">Karar<div class="chips" id="cKr"></div></label>
-  <label class="f">Nüfus en az<input class="numin" id="nMin" type="number" min="0" placeholder="0"></label>
-  <label class="f">Ara<input id="q" placeholder="mahalle, köy, yerleşim"></label>
-  <label class="f">Göster<div class="chips" id="cGr"></div></label>
-  <button type="button" id="bulk" title="Görünen ve kararı boş satırlara öneriyi yazar">Boşlara öneriyi yaz</button>
+<div class="bar-f">
+  <div class="drop" id="dIl"><button type="button"></button></div>
+  <div class="drop" id="dIlce"><button type="button"></button></div>
+  <div id="focus"></div>
+  <input id="q" placeholder="ara">
+  <span class="mah-only lbl">nüfus ≥</span><input class="mah-only" id="nMin" type="number" min="0" placeholder="0">
+  <span class="sep mah-only"></span>
+  <span class="mah-only lbl">ihtilaf</span><div class="chips mah-only" id="cIh"></div>
+  <span class="sep mah-only"></span>
+  <span class="mah-only lbl">karar</span><div class="chips mah-only" id="cKr"></div>
+  <button type="button" class="mah-only" id="bulk" title="Görünen ve kararı boş satırlara öneriyi yazar">Boşlara öneriyi yaz</button>
+</div>
+<div class="bar-f mah-only">
+  <span class="lbl">öneri</span><div class="chips" id="cOn"></div>
+  <span class="sep"></span>
+  <span class="lbl">sütunlar</span><div class="chips" id="cGr"></div>
 </div>
 
 <div class="summary" id="sum"></div>
-<details class="tot" id="tot"><summary>Kent payı özeti <span class="muted">— senin kararların, boş olanlarda öneri; her kayıtta güncellenir</span></summary>
-  <label class="f" style="margin:8px 0">Düzey <select id="lvl"></select></label>
-  <div id="totBody"></div>
-</details>
 <div class="wrap"><table><thead id="th"></thead><tbody id="tb"></tbody></table><div class="more" id="more"></div></div>
 
-<script src="kentkir.js?v=3"></script>
+<script src="kentkir.js?v=4"></script>
 </body>
 </html>
