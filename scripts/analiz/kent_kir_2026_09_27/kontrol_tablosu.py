@@ -43,7 +43,7 @@ METRO = {"01", "06", "07", "09", "10", "16", "20", "21", "25", "26", "27", "31",
 # population 2013 and 2025 (neighbourhoods: 0-17 + 18+), 0-17 of 2025; ids are stable since 2013
 POP = {}
 for y, aid, v in duckdb.sql(f"""select year(period_start), area_id, sum(value) from read_parquet('{FACT}') where indicator_id='population'
-  and area_level in ('neighbourhood','village') and year(period_start) in (2013, 2025) group by 1,2""").fetchall():
+  and area_level in ('neighbourhood','village') and year(period_start) in (2013, 2022, 2025) group by 1,2""").fetchall():
     POP[(y, aid)] = v
 kid = {r[0]: r[1] for r in duckdb.sql(f"""select area_id, sum(value) from read_parquet('{FACT}') where indicator_id='population'
   and area_level='neighbourhood' and dims='age=0-17' and year(period_start)=2025 group by 1""").fetchall()}
@@ -85,13 +85,11 @@ PARTIES = [("AK PARTİ", "AK PARTİ", "FFFF00", "000000"), ("CHP", "CHP", "FF000
            ("MHP", "MHP", "2F75B5", "FFFFFF"), ("İYİ PARTİ", "İYİ", "00B0F0", "000000"),
            ("YEŞİL SOL PARTİ", "YSP", "7030A0", "FFFFFF"), ("YENİDEN REFAH", "YRP", "00B050", "FFFFFF")]
 PCOL = {p: (fill, font) for p, _, fill, font in PARTIES}
-VOTE, VOTE_BY_NAME = {}, {}
+TILE = []  # (key, result) of every place in the 2023 tiles
 for f in TILES.glob("secim-mv2023-mahalle-TR-*.json"):
-    for key, v in json.loads(f.read_text(encoding="utf-8")).items():
-        if "~" not in key:
-            VOTE[wh(key)] = v
-            # outside metropolitan provinces the warehouse ids differ from the tiles': by name within the district
-            VOTE_BY_NAME.setdefault((key.rsplit("-", 1)[0], fold(v.get("ad") or "")), []).append(v)
+    TILE += [(key, v) for key, v in json.loads(f.read_text(encoding="utf-8")).items() if "~" not in key]
+# earthquake provinces of February 2023: population against 2022 flags emptied places and container towns
+QUAKE = {"01", "02", "21", "23", "27", "31", "44", "46", "63", "79", "80"}
 # institutions (prisons, barracks, dormitories) flagged nationwide
 KURUM = {}
 kp = BASE / "_kurum_tespit.csv"
@@ -162,10 +160,23 @@ def tr(x, nd=0):
     return s.replace(",", "X").replace(".", ",").replace("X", ".")
 
 
+def new_housing(v):
+    """a voter gap in a fast-grown built-up place is people who have not moved their registration
+    yet (TOKİ Kuzeyşehir, Oğlaklı), not an institution"""
+    return (v["sinif"] in URBAN_CLASS and (v["g"] or 0) >= 100
+            and not any(w in v["kurum"] for w in ("cezaevi", "kışla", "askeri", "şantiye")))
+
+
 def auto_note(v):
     """the signals worth a look, most telling first"""
     out = []
-    if v["kurum"]:
+    if v["g22"] is not None and v["g22"] <= -50:
+        out.append(f"DEPREM: 2022'den %{tr(v['g22'])}")
+    elif v["g22"] is not None and v["g22"] >= 50 and v["n"] >= 1000 and v["sinif"] not in URBAN_CLASS:
+        out.append(f"konteyner kent olası: 2022'den +%{tr(v['g22'])}")
+    if v["kurum"] and new_housing(v):
+        out.append(f"seçmen kaydı az ama yeni yapılaşma (TOKİ/site olası): {v['kurum']}")
+    elif v["kurum"]:
         out.append(f"KURUM: {v['kurum']}")
     known = {k: s for k, s in v["oy"].items() if s is not None}
     kent = [k for k, s in known.items() if s == "K"]
@@ -217,6 +228,7 @@ for p in plates:
         if not n:
             continue
         n0 = POP.get((2013, wid)) or POP.get((2013, aid))
+        n22 = POP.get((2022, wid)) or POP.get((2022, aid))
         e = endx(aid) or endx(wid)
         en, em = e.get("PopulationTotal") or 0, e.get("PopulationMale") or 0
         bands = sum(e.get(b) or 0 for b in BANDS)
@@ -226,10 +238,6 @@ for p in plates:
         k = kid.get(wid)
         stat, settle = status_and_settlement(p, il, r["district"], aid, wid, r["eski_statu"] or "")
         area = AREA.get(wid)
-        vt = VOTE.get(wid) or VOTE.get(aid)
-        if vt is None:
-            cand = VOTE_BY_NAME.get((aid.rsplit("-", 1)[0], fold(NAME_SUFFIX.sub("", r["name"]))), [])
-            vt = cand[0] if len(cand) == 1 else None  # two places of one name in a district: leave empty
         v = dict(
             il=il, ilce=r["district"], yer=settle, ad=r["name"], tur="Köy" if (wid in VIL or aid in VIL) else "Mahalle",
             n=int(n), n0=int(n0) if n0 else None, g=round((n / n0 - 1) * 100, 1) if n0 else None,
@@ -247,22 +255,51 @@ for p in plates:
             deg=DEG.get(r["degurba"] or "", r["degurba"] or "—"), sinif=r["son_sinif"],
             bina=CLASS_TR.get(r["sinif"], r["sinif"] or "—"), oneri=CLASS_TR.get(r["son_sinif"], r["son_sinif"]),
             kurum=KURUM.get(wid, ""), bnote=r["note"] or "",
+            g22=round((n / n22 - 1) * 100) if n22 and p in QUAKE else None, _ids={wid, aid},
+            _base=(aid.rsplit("-", 1)[0], fold(NAME_SUFFIX.sub("", r["name"]))),
         )
         v["oy"] = readings(stat, v["aat"], v["deg"], r["sinif"])
         v["ih"] = dispute(v["oy"])
         v["os"] = suggested_class(r["son_sinif"], settle)
         v["id"] = aid
         v["semt"] = SEMT.get(aid) or SEMT.get(wid)
-        if vt:
-            g_ = vt.get("g") or 0
-            v.update(k23=vt.get("k"), g23=g_, kn=round(vt["k"] / n * 100, 1) if vt.get("k") else None)
-            for pn, _, _, _ in PARTIES:
-                v[pn] = round(vt["v"].get(pn, 0) / g_ * 100, 2) if g_ else None
-            v["win"] = max(vt["v"], key=vt["v"].get) if vt.get("v") else None
-        v["not"] = auto_note(v)
         rows.append(v)
+
+# 2023 results to places, one to one. Candidates of a result: the place carrying its id and the
+# places of its district with the same name (suffix Köyü/Mahallesi dropped). The id alone
+# misleads: the report files Silopi's Başak quarter (4,470 voters) under the id of Başak village
+# (15 people). Each result goes to the candidate whose voters/population is closest to the
+# national ~0.72, best fits first; a place takes one result.
+by_id, by_base = {}, {}
+for i, v in enumerate(rows):
+    for x in v["_ids"]:
+        by_id[x] = i
+    by_base.setdefault(v["_base"], []).append(i)
+pairs = []
+for key, t in TILE:
+    if not t.get("k"):
+        continue
+    cand = set(by_base.get((key.rsplit("-", 1)[0], fold(NAME_SUFFIX.sub("", t.get("ad") or ""))), []))
+    idm = by_id.get(wh(key))
+    if idm is not None:
+        cand.add(idm)
+    for i in cand:
+        pairs.append((abs(math.log(t["k"] / rows[i]["n"] / 0.72)), i, key, t, i == idm))
+pairs.sort(key=lambda x: x[0])
+taken_row, taken_tile, moved = set(), set(), 0
+for fit, i, key, t, by_idm in pairs:
+    if i in taken_row or key in taken_tile:
+        continue
+    taken_row.add(i); taken_tile.add(key)
+    v, g_ = rows[i], t.get("g") or 0
+    moved += (not by_idm) and (by_id.get(wh(key)) is not None)
+    v.update(k23=t["k"], g23=g_, kn=round(t["k"] / v["n"] * 100, 1))
+    for pn, _, _, _ in PARTIES:
+        v[pn] = round(t["v"].get(pn, 0) / g_ * 100, 2) if g_ else None
+    v["win"] = max(t["v"], key=t["v"].get) if t.get("v") else None
+for v in rows:
+    v["not"] = auto_note(v)
 rows.sort(key=lambda x: (x["il"], x["ilce"], x["yer"], x["ad"]))
-print("satır", len(rows), "| seçim eşleşen", sum(1 for v in rows if v.get("k23")))
 
 
 # uncertainty 0-10: a weighted urban probability over every signal, 0 when they all point one
@@ -293,7 +330,7 @@ def uncertainty(v):
     u = 10 * (1 - abs(2 * pk - 1))
     if (pk >= .5) != (v["os"] in URBAN_TR):
         u = max(u, 5)
-    if v["kurum"]:
+    if v["kurum"] and not new_housing(v):
         u = min(10, u + 2)
     return round(pk, 2), round(u, 1)
 
@@ -311,3 +348,11 @@ out = {"keys": KEYS, "parties": [[p, short, fill] for p, short, fill, _ in PARTI
        "rows": [[v.get(k) for k in KEYS] for v in rows]}
 OUT.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 print("yazıldı", OUT, round(OUT.stat().st_size / 1e6, 1), "MB |", {k: sum(1 for v in rows if v["ih"] == k) for k in ("uyumlu", "hafif", "cok", "az")})
+
+# checks
+kn = [v["kn"] for v in rows if v.get("kn")]
+print("kontrol | seçim eşleşen", len(taken_row), "/", len(rows), "| kimliğinden başka yere giden", moved,
+      "| kayıtlı/nüfus >300 %", sum(1 for x in kn if x > 300), "| <20 %", sum(1 for x in kn if x < 20),
+      "| deprem boşalan", sum(1 for v in rows if (v["g22"] or 0) <= -50 and v["g22"] is not None),
+      "| konteyner olası", sum(1 for v in rows if "konteyner" in v["not"]),
+      "| TOKİ/site (kurum sayılmadı)", sum(1 for v in rows if v["kurum"] and new_housing(v)))
