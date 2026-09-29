@@ -412,11 +412,19 @@ function fillYears() {
 
 // B lists only what the current level has; a B the level lacks is dropped
 function fillB() {
-  const ok = INDICATORS.filter((x) => !x.lv || x.lv.includes(state.level));
+  const ok = INDICATORS.filter((x) => (!x.lv || x.lv.includes(state.level)) && x.key !== state.indicator);
   if (state.indicator2 && !ok.some((x) => x.key === state.indicator2)) state.indicator2 = "";
   const groups = [...new Set(ok.map((x) => x.group))];
   $("indicator2").innerHTML = '<option value="">—</option>' + groups.map((g) => `<optgroup label="${g}">` +
     ok.filter((x) => x.group === g).map((a) => `<option value="${a.key}" ${a.key === state.indicator2 ? "selected" : ""}>${a.label}</option>`).join("") + "</optgroup>").join("");
+}
+
+// a view needs its columns: shares mean nothing for an age or a ratio, so "Pay değişimi"
+// is hidden there and a page standing on it falls back to Temel
+function fillViews() {
+  const ok = VIEWS.filter((v) => v.key !== "pay" || ind().kind === "count");
+  $("view").querySelectorAll("button").forEach((b) => { b.hidden = !ok.some((v) => v.key === b.dataset.k); });
+  if (!ok.some((v) => v.key === state.view)) setAnalysis("temel");
 }
 
 function setAnalysis(key) {
@@ -450,6 +458,7 @@ async function main() {
   $("indicator2").onchange = (e) => { state.indicator2 = e.target.value; colPanel(); render(); };
   $("indicator").onchange = (e) => {
     state.indicator = e.target.value; state.limit = PAGE;
+    fillB(); fillViews();
     // an indicator published only for some levels takes the page to the finest of them
     const lvs = ind().lv;
     if (lvs && !lvs.includes(state.level)) {
