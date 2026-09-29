@@ -50,10 +50,26 @@ td.pos { color:var(--pos); } td.neg { color:var(--neg); }
 .more button, .tools button { font:inherit; font-size:12.5px; padding:6px 12px; border:1px solid var(--line); border-radius:7px;
                               background:var(--panel2); color:var(--fg); cursor:pointer; }
 .more button:hover, .tools button:hover { border-color:var(--acc); }
+input.numin { min-width:0; width:110px; }
 label.check { flex-direction:row; align-items:center; gap:6px; padding-bottom:7px; text-transform:none; letter-spacing:0; font-size:12.5px; }
 label.check input { min-width:0; accent-color:var(--acc); }
 select:disabled { opacity:.45; }
 td.new { color:var(--acc); font-style:italic; }
+.colmenu { position:relative; }
+.panel { position:absolute; z-index:5; top:34px; left:0; min-width:230px; background:var(--panel2); border:1px solid var(--line);
+         border-radius:9px; padding:8px; box-shadow:0 10px 30px rgba(0,0,0,.45); }
+.panel label { flex-direction:row; align-items:center; gap:8px; padding:4px 6px; text-transform:none; letter-spacing:0; font-size:13px; color:var(--fg); border-radius:5px; cursor:pointer; }
+.panel label:hover { background:var(--hover); }
+.panel input { min-width:0; accent-color:var(--acc); }
+.panel .dis { opacity:.4; cursor:default; }
+th.key { color:var(--acc); }
+a.link, a.info { color:var(--acc); text-decoration:none; cursor:pointer; }
+a.info { margin-left:6px; font-size:12px; opacity:.8; }
+a.info:hover, a.link:hover { opacity:1; text-decoration:underline; }
+.pop { position:absolute; z-index:10; max-width:420px; background:var(--panel2); border:1px solid var(--line); border-radius:9px;
+       padding:10px 12px; box-shadow:0 10px 30px rgba(0,0,0,.5); font-size:12.5px; color:var(--fg); white-space:normal; }
+.pop h4 { margin:0 0 6px; font-size:13px; }
+.pop ul { margin:0; padding-left:18px; } .pop li { margin:3px 0; color:var(--mut); }
 .tools { margin:0 20px 8px; display:flex; gap:8px; color:var(--mut); font-size:12px; align-items:center; }
 .note { margin:0 20px 24px; color:var(--mut); font-size:12px; max-width:900px; }
 @media (max-width:600px) { .controls, .summary, .wrap, .tools, .note { margin-left:16px; margin-right:16px; }
@@ -63,23 +79,26 @@ td.new { color:var(--acc); font-style:italic; }
 <body>
 <header>
   <h1>Nüfus sıralaması</h1>
-  <p>İl, ilçe, belde, mahalle ve köy nüfusu; Türkiye, il ve ilçe içindeki payı; yıllara göre değişim. Kaynak: TÜİK ADNKS.</p>
+  <p>İl, ilçe, belde, mahalle ve köy nüfusu. Kaynak: TÜİK ADNKS. <a href="#" id="notesLink" class="link">Notlar</a></p>
 </header>
 <div class="controls">
   <label>Düzey <div class="seg" id="level"></div></label>
+  <label>Analiz <select id="analysis"></select></label>
   <label>İl <select id="prov"></select></label>
   <label>İlçe <select id="dist"></select></label>
   <label>Yerleşim <select id="settle"></select></label>
   <label>Yıl <select id="year"></select></label>
   <label>Karşılaştırma yılı <select id="base"></select></label>
+  <label>Nüfus en az <input id="minPop" type="number" min="0" step="100" placeholder="0" class="numin"></label>
+  <label>en çok <input id="maxPop" type="number" min="0" step="1000" placeholder="sınırsız" class="numin"></label>
   <label>Ara <input id="q" type="search" placeholder="ad yazın"></label>
-  <label class="check"><input id="both" type="checkbox"> İki yılda da olanlar</label>
 </div>
 <div class="summary" id="summary"></div>
-<div class="tools">Sütun genişliği: başlığın sağ kenarından sürükleyin <button id="resetCols">Genişlikleri sıfırla</button></div>
+<div class="tools"><div class="colmenu"><button id="colBtn">Sütunlar ▾</button><div id="colPanel" class="panel" hidden></div></div>
+  <span>Genişlik: başlığın sağ kenarından sürükleyin</span> <button id="resetCols">Sıfırla</button></div>
 <div class="wrap"><table><colgroup id="cols"></colgroup><thead><tr id="head"></tr></thead><tbody id="body"></tbody></table>
 <div class="more" id="more"></div></div>
-<div class="note" id="note"></div>
+<div id="pop" class="pop" hidden></div>
 <script src="nufus.js"></script>
 </body>
 </html>

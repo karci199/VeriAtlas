@@ -1,6 +1,9 @@
 // Population ranking page. Every unit is [level, name, district index (negative = province),
-// first year index, values]; shares are computed against the province, district and country
-// totals of the same year, so a filter never changes a share, only which rows are shown.
+// first year index, values, settlement index]; shares are computed against the province,
+// district and country totals of the same year, so a filter never changes a share, only which
+// rows are shown. An analysis picks the ranking column and a default set of columns; the user
+// can switch any column on or off. A row with no value for the ranking column is left out of
+// the ranking (a neighbourhood that did not exist in the comparison year, say) and counted.
 "use strict";
 
 const LEVELS = [
@@ -9,24 +12,61 @@ const LEVELS = [
   { key: "belde", label: "Belde", levels: ["belde"] },
   { key: "mahalle", label: "Mahalle / köy", levels: ["mahalle", "koy"] },
 ];
-const TYPE_LABEL = { il: "İl", ilce: "İlçe", belde: "Belde (2013)", mahalle: "Mahalle", koy: "Köy" };
+const TYPE_LABEL = { il: "İl", ilce: "İlçe", belde: "Belde", mahalle: "Mahalle", koy: "Köy" };
+
+// every computable column; `lv` limits where it makes sense, `base` needs a comparison year
+const COLS = {
+  rank: { t: "Sıra", num: true, fixed: true },
+  name: { t: "Ad", fixed: true },
+  prov: { t: "İl", lv: ["ilce", "belde", "mahalle"], always: true },
+  dist: { t: "İlçe", lv: ["belde", "mahalle"], always: true },
+  settle: { t: "Yerleşim", lv: ["mahalle"], always: true },
+  type: { t: "Tür", lv: ["mahalle"], always: true },
+  value: { t: "Nüfus", num: true },
+  prevChange: { t: "Önceki yıla göre", num: true, sign: true },
+  prevChangePct: { t: "Önceki yıla göre %", num: true, sign: true, d: 2 },
+  change: { t: "Değişim", num: true, sign: true, base: true },
+  changePct: { t: "Değişim %", num: true, sign: true, d: 1, base: true },
+  cagr: { t: "Yıllık ort. büyüme %", num: true, sign: true, d: 2, base: true },
+  trShare: { t: "Türkiye payı %", num: true, d: 2, bar: true },
+  provShare: { t: "İl içi pay %", num: true, d: 2, lv: ["ilce", "belde", "mahalle"] },
+  distShare: { t: "İlçe içi pay %", num: true, d: 2, lv: ["belde", "mahalle"] },
+  trShareDelta: { t: "Türkiye payı değişimi (puan)", num: true, sign: true, d: 3, base: true },
+  provShareDelta: { t: "İl içi pay değişimi (puan)", num: true, sign: true, d: 2, base: true, lv: ["ilce", "belde", "mahalle"] },
+  distShareDelta: { t: "İlçe içi pay değişimi (puan)", num: true, sign: true, d: 2, base: true, lv: ["belde", "mahalle"] },
+  first: { t: "İlk yıl", num: true },
+};
+// analysis = ranking column + columns switched on by default
+const ANALYSES = [
+  { key: "nufus", label: "Nüfus", sort: "value", cols: ["value", "trShare", "provShare", "distShare"] },
+  { key: "degisim", label: "Değişim (karşılaştırma yılına göre)", sort: "changePct", base: true, cols: ["value", "change", "changePct", "cagr"] },
+  { key: "onceki", label: "Önceki yıla göre değişim", sort: "prevChangePct", cols: ["value", "prevChange", "prevChangePct"] },
+  { key: "buyume", label: "Yıllık ortalama büyüme", sort: "cagr", base: true, cols: ["value", "change", "cagr"] },
+  { key: "trpay", label: "Türkiye payı", sort: "trShare", cols: ["value", "trShare"] },
+  { key: "ilpay", label: "İl içi pay", sort: "provShare", cols: ["value", "provShare", "trShare"] },
+  { key: "ilcepay", label: "İlçe içi pay", sort: "distShare", cols: ["value", "distShare", "provShare"] },
+  { key: "paydegisim", label: "Pay değişimi (puan)", sort: "provShareDelta", base: true, cols: ["value", "provShare", "provShareDelta", "distShareDelta", "trShareDelta"] },
+];
+const WIDTH = { rank: 52, name: 180, prov: 115, dist: 115, settle: 140, type: 70, value: 105, first: 64, trShare: 150 };
 const PAGE = 300;
 const fmt = new Intl.NumberFormat("tr-TR");
-const pct = (x, d = 2) => (x == null || !isFinite(x) ? "" : x.toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d }));
+const num = (x, d) => x.toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d });
 const fold = (s) => s.toLocaleLowerCase("tr-TR");
-
-const state = { level: "ilce", prov: -1, dist: -1, settle: -1, both: false, year: null, base: null, q: "", sort: "value", asc: false, limit: PAGE };
-let DATA, TR = [], PROV = [], DIST = [];
-
 const $ = (id) => document.getElementById(id);
 
-// column widths: narrow defaults, user drags a header edge; kept per column key in this
-// browser only (a convenience -- the page works the same when storage is unavailable)
-const WIDTH = { rank: 52, name: 190, settle: 150, first: 70, prov: 120, dist: 120, type: 80, value: 110, trShare: 150, provShare: 100, distShare: 105, change: 110, changePct: 90 };
-let userWidth = {};
-try { userWidth = JSON.parse(localStorage.getItem("nufus.widths") || "{}"); } catch (e) { userWidth = {}; }
-const saveWidths = () => { try { localStorage.setItem("nufus.widths", JSON.stringify(userWidth)); } catch (e) { /* storage off */ } };
-const widthOf = (k) => userWidth[k] || WIDTH[k] || 100;
+// per-viewer conveniences only (column set, widths); the page works when storage is off
+const store = {
+  get(k, dflt) { try { const v = localStorage.getItem("nufus." + k); return v == null ? dflt : JSON.parse(v); } catch (e) { return dflt; } },
+  set(k, v) { try { localStorage.setItem("nufus." + k, JSON.stringify(v)); } catch (e) { /* storage off */ } },
+};
+const state = { level: "ilce", analysis: "nufus", prov: -1, dist: -1, settle: -1, year: null, base: null, q: "",
+                sort: "value", asc: false, limit: PAGE, min: null, max: null };
+let visible = store.get("cols", null);
+let userWidth = store.get("widths", {});
+let DATA, TR = [], PROV = [], DIST = [];
+
+const widthOf = (k) => userWidth[k] || WIDTH[k] || 110;
+const analysis = () => ANALYSES.find((a) => a.key === state.analysis);
 
 function valueAt(u, yi) {
   const i = yi - u[3];
@@ -38,23 +78,55 @@ function totals() {
   TR = new Array(n).fill(0);
   PROV = DATA.provinces.map(() => new Array(n).fill(null));
   DIST = DATA.districts.map(() => new Array(n).fill(null));
-  for (const u of DATA.units) {
-    for (let yi = 0; yi < n; yi++) {
-      const v = valueAt(u, yi);
-      if (v == null) continue;
-      if (u[0] === "il") { TR[yi] += v; PROV[-1 - u[2]][yi] = v; }
-      if (u[0] === "ilce") DIST[u[2]][yi] = v;
-    }
+  for (const u of DATA.units) for (let yi = 0; yi < n; yi++) {
+    const v = valueAt(u, yi);
+    if (v == null) continue;
+    if (u[0] === "il") { TR[yi] += v; PROV[-1 - u[2]][yi] = v; }
+    if (u[0] === "ilce") DIST[u[2]][yi] = v;
   }
+  // a district not yet founded that year: its own quarters summed, i.e. today's boundaries
+  for (const [d, [first, vals]] of Object.entries(DATA.district_cb || {}))
+    vals.forEach((v, i) => { if (DIST[+d][first + i] == null && v != null) DIST[+d][first + i] = v; });
 }
 
-function provOf(u) { return u[2] < 0 ? -1 - u[2] : DATA.districts[u[2]][2]; }
+const provOf = (u) => (u[2] < 0 ? -1 - u[2] : DATA.districts[u[2]][2]);
+const share = (v, tot) => (v == null || !tot ? null : (v / tot) * 100);
+
+function measures(u, yi, bi) {
+  const p = provOf(u), v = valueAt(u, yi);
+  const inProv = u[0] !== "il", inDist = u[0] === "belde" || u[0] === "mahalle" || u[0] === "koy";
+  const m = { value: v, trShare: share(v, TR[yi]),
+    provShare: inProv ? share(v, PROV[p][yi]) : null, distShare: inDist ? share(v, DIST[u[2]][yi]) : null };
+  const pv = yi > 0 ? valueAt(u, yi - 1) : null;
+  m.prevChange = pv == null ? null : v - pv;
+  m.prevChangePct = pv ? ((v - pv) / pv) * 100 : null;
+  if (bi != null) {
+    const b = valueAt(u, bi);
+    m.isNew = b == null && u[3] > bi;
+    m.change = b == null ? null : v - b;
+    m.changePct = b ? ((v - b) / b) * 100 : null;
+    const yrs = yi - bi;
+    m.cagr = b && yrs ? (Math.pow(v / b, 1 / yrs) - 1) * 100 : null;
+    const d = (a, c) => (a == null || c == null ? null : a - c);
+    m.trShareDelta = d(m.trShare, share(b, TR[bi]));
+    m.provShareDelta = inProv ? d(m.provShare, share(b, PROV[p][bi])) : null;
+    m.distShareDelta = inDist ? d(m.distShare, share(b, DIST[u[2]][bi])) : null;
+  }
+  return m;
+}
+
+const usable = (k) => { const c = COLS[k]; return !(c.lv && !c.lv.includes(state.level)) && !(c.base && state.base == null); };
+
+function shownCols() {
+  const on = visible || analysis().cols;
+  return Object.keys(COLS).filter((k) => usable(k) && (COLS[k].fixed || COLS[k].always || on.includes(k) || k === state.sort));
+}
 
 function rows() {
   const lv = LEVELS.find((l) => l.key === state.level).levels;
-  const yi = state.year, bi = state.base;
   const q = fold(state.q.trim());
   const out = [];
+  let dropped = 0;
   for (const u of DATA.units) {
     if (!lv.includes(u[0])) continue;
     const p = provOf(u);
@@ -62,99 +134,132 @@ function rows() {
     if (state.dist >= 0 && u[2] !== state.dist) continue;
     if (state.settle >= 0 && u[5] !== state.settle) continue;
     if (q && !fold(u[1]).includes(q)) continue;
-    const v = valueAt(u, yi);
-    if (v == null) continue;
-    const r = { u, name: u[1], type: TYPE_LABEL[u[0]], prov: DATA.provinces[p][1],
-      settle: u[5] >= 0 ? DATA.settlements[u[5]] : "", first: DATA.years[u[3]],
-      dist: u[2] >= 0 ? DATA.districts[u[2]][1] : "", value: v,
-      trShare: (v / TR[yi]) * 100,
-      provShare: u[0] === "il" ? null : (v / PROV[p][yi]) * 100,
-      distShare: u[0] === "il" || u[0] === "ilce" ? null : (v / DIST[u[2]][yi]) * 100 };
-    if (bi != null) {
-      const b = valueAt(u, bi);
-      if (b == null && state.both) continue;
-      r.isNew = b == null && u[3] > bi;
-      r.change = b == null ? null : v - b;
-      r.changePct = b ? ((v - b) / b) * 100 : null;
+    const v0 = valueAt(u, state.year);
+    if (v0 == null) continue;
+    if (state.max != null && v0 > state.max) continue;
+    if (state.min != null) {
+      // the floor holds in the comparison year too: a 30-person village tripling is noise
+      const b0 = state.base != null ? valueAt(u, state.base) : null;
+      if (v0 < state.min || (b0 != null && b0 < state.min)) continue;
     }
+    const r = { ...measures(u, state.year, state.base), lvl: u[0], did: u[2], name: u[1], type: TYPE_LABEL[u[0]], prov: DATA.provinces[p][1],
+      dist: u[2] >= 0 ? DATA.districts[u[2]][1] : "", settle: u[5] >= 0 ? DATA.settlements[u[5]] : "",
+      first: DATA.years[u[3]] };
+    // no value for the ranking column: out of the ranking, not at its bottom
+    if (COLS[state.sort].num && state.sort !== "rank" && r[state.sort] == null) { dropped++; continue; }
     out.push(r);
   }
   const k = state.sort, s = state.asc ? 1 : -1;
-  out.sort((a, b) => {
-    const x = a[k], y = b[k];
-    if (x == null) return 1; if (y == null) return -1;
-    return typeof x === "string" ? s * x.localeCompare(y, "tr") : s * (x - y);
-  });
-  return out;
+  out.sort((a, b) => (typeof a[k] === "string" ? s * a[k].localeCompare(b[k], "tr") : s * (a[k] - b[k])));
+  return { list: out, dropped };
 }
 
-function columns() {
-  const c = [{ k: "rank", t: "Sıra", num: true }, { k: "name", t: "Ad" }];
-  if (state.level !== "il") c.push({ k: "prov", t: "İl" });
-  if (state.level === "belde" || state.level === "mahalle") c.push({ k: "dist", t: "İlçe" });
-  if (state.level === "mahalle") c.push({ k: "settle", t: "Yerleşim" }, { k: "type", t: "Tür" });
-  c.push({ k: "value", t: `Nüfus ${DATA.years[state.year]}`, num: true });
-  c.push({ k: "trShare", t: "Türkiye payı %", num: true });
-  if (state.level !== "il") c.push({ k: "provShare", t: "İl içi pay %", num: true });
-  if (state.level === "belde" || state.level === "mahalle") c.push({ k: "distShare", t: "İlçe içi pay %", num: true });
-  c.push({ k: "first", t: "İlk yıl", num: true });
-  if (state.base != null) {
-    c.push({ k: "change", t: `Değişim ${DATA.years[state.base]}→`, num: true });
-    c.push({ k: "changePct", t: "Değişim %", num: true });
+function cell(k, r, i, maxShare) {
+  const c = COLS[k];
+  if (k === "rank") return `<td class="num rank">${i + 1}</td>`;
+  if (k === "name") {
+    const h = r.lvl === "ilce" && DATA.history[r.did];
+    return `<td class="name" title="${r.name}">${r.name}${h ? `<a class="info" data-d="${r.did}" title="Tarihçe">ⓘ</a>` : ""}</td>`;
   }
-  return c;
+  if (k === "first") return `<td class="num rank">${r.first}</td>`;
+  if (k === "change" && r.isNew) return `<td class="num new" title="${DATA.years[state.base]} yılında kaydı yok">yeni</td>`;
+  if (!c.num) return `<td title="${r[k] ?? ""}">${r[k] ?? ""}</td>`;
+  const x = r[k];
+  if (x == null) return `<td class="num"></td>`;
+  const txt = c.d == null ? fmt.format(x) : num(x, k === "trShare" && x < 0.01 ? 4 : c.d);
+  const cls = c.sign ? (x > 0 ? "pos" : x < 0 ? "neg" : "") : "";
+  const signed = c.sign && x > 0 ? "+" + txt : txt;
+  if (c.bar) return `<td class="num"><div class="cell-bar">${signed}<span class="bar" style="width:${Math.max(2, Math.round((x / maxShare) * 50))}px"></span></div></td>`;
+  return `<td class="num ${cls}">${signed}</td>`;
+}
+
+function title(k) {
+  const y = DATA.years[state.year], b = state.base != null ? DATA.years[state.base] : "";
+  if (k === "value") return `Nüfus ${y}`;
+  if (k === "change") return `Değişim ${b}→${y}`;
+  if (k === "changePct") return `Değişim ${b}→${y} %`;
+  if (k === "prevChange") return `${y - 1}→${y}`;
+  if (k === "prevChangePct") return `${y - 1}→${y} %`;
+  if (k === "cagr") return `Yıllık ort. büyüme ${b}→${y} %`;
+  return COLS[k].t;
 }
 
 function render() {
-  const list = rows();
-  const cols = columns();
-  $("cols").innerHTML = cols.map((c) => `<col data-k="${c.k}" style="width:${widthOf(c.k)}px">`).join("");
-  $("head").innerHTML = cols.map((c) => `<th data-k="${c.k}" title="${c.t}" class="${c.num ? "num" : ""} ${state.sort === c.k ? "sorted" + (state.asc ? " asc" : "") : ""}">${c.t}<span class="grip"></span></th>`).join("");
-  const maxShare = Math.max(...list.slice(0, state.limit).map((r) => r.trShare), 0) || 1;
-  const html = [];
-  list.slice(0, state.limit).forEach((r, i) => {
-    html.push("<tr>" + cols.map((c) => {
-      if (c.k === "rank") return `<td class="num rank">${i + 1}</td>`;
-      if (c.k === "name") return `<td class="name" title="${r.name}">${r.name}</td>`;
-      if (c.k === "value") return `<td class="num">${fmt.format(r.value)}</td>`;
-      if (c.k === "trShare") return `<td class="num"><div class="cell-bar">${pct(r.trShare, r.trShare < 0.01 ? 4 : 2)}<span class="bar" style="width:${Math.max(2, Math.round((r.trShare / maxShare) * 50))}px"></span></div></td>`;
-      if (c.k === "first") return `<td class="num rank">${r.first}</td>`;
-      if (c.k === "change" && r.isNew) return `<td class="num new" title="${DATA.years[state.base]} yılında kaydı yok; ${r.first}'de başlıyor">yeni</td>`;
-      if (c.k === "change") return `<td class="num ${r.change > 0 ? "pos" : r.change < 0 ? "neg" : ""}">${r.change == null ? "" : (r.change > 0 ? "+" : "") + fmt.format(r.change)}</td>`;
-      if (c.k === "changePct") return `<td class="num ${r.changePct > 0 ? "pos" : r.changePct < 0 ? "neg" : ""}">${r.changePct == null ? "" : (r.changePct > 0 ? "+" : "") + pct(r.changePct, 1)}</td>`;
-      if (c.num) return `<td class="num">${pct(r[c.k])}</td>`;
-      return `<td>${r[c.k] ?? ""}</td>`;
-    }).join("") + "</tr>");
-  });
-  $("body").innerHTML = html.join("");
-  const sum = list.reduce((a, r) => a + r.value, 0);
-  const y = DATA.years[state.year];
+  const { list, dropped } = rows();
+  const cols = shownCols();
+  $("cols").innerHTML = cols.map((k) => `<col data-k="${k}" style="width:${widthOf(k)}px">`).join("");
+  $("head").innerHTML = cols.map((k) => `<th data-k="${k}" title="${title(k)}" class="${COLS[k].num ? "num" : ""} ${state.sort === k ? "sorted" + (state.asc ? " asc" : "") : ""}">${title(k)}<span class="grip"></span></th>`).join("");
+  const page = list.slice(0, state.limit);
+  const maxShare = Math.max(...page.map((r) => r.trShare || 0), 0) || 1;
+  $("body").innerHTML = page.map((r, i) => "<tr>" + cols.map((k) => cell(k, r, i, maxShare)).join("") + "</tr>").join("");
+  const sum = list.reduce((a, r) => a + r.value, 0), y = DATA.years[state.year];
   $("summary").innerHTML = `<span><b>${fmt.format(list.length)}</b>birim</span>
     <span><b>${fmt.format(sum)}</b>seçili toplam nüfus</span>
-    <span><b>%${pct((sum / TR[state.year]) * 100, 1)}</b>Türkiye payı</span>
-    <span><b>${fmt.format(TR[state.year])}</b>Türkiye ${y}</span>`;
-  $("more").innerHTML = list.length > state.limit ? `<button id="moreBtn">${fmt.format(Math.min(PAGE, list.length - state.limit))} satır daha göster (${fmt.format(list.length - state.limit)} kaldı)</button>` : "";
+    <span><b>%${num((sum / TR[state.year]) * 100, 1)}</b>Türkiye payı</span>
+    <span><b>${fmt.format(TR[state.year])}</b>Türkiye ${y}</span>` +
+    (dropped ? `<span><b>${fmt.format(dropped)}</b>sıralamaya girmedi</span>` : "");
+  $("more").innerHTML = list.length > state.limit ? `<button id="moreBtn">${fmt.format(Math.min(PAGE, list.length - state.limit))} satır daha (${fmt.format(list.length - state.limit)} kaldı)</button>` : "";
   if ($("moreBtn")) $("moreBtn").onclick = () => { state.limit += PAGE; render(); };
+  wireHead();
+  $("body").querySelectorAll("a.info").forEach((el) => el.onclick = (ev) => {
+    ev.preventDefault(); ev.stopPropagation();
+    const d = +el.dataset.d;
+    showPop(el, DATA.districts[d][1], DATA.history[d]);
+  });
+}
+
+// general notes behind one link instead of text under the table
+const NOTES = [
+  "Seçilen yılda kaydı olmayan birim listede yoktur; seçili analizde değeri olmayan birim (karşılaştırma yılında ya da önceki yılda kaydı yok) sıralamaya alınmaz, sayısı özet kartında yazar.",
+  "Adı değişen ilçeler (Eyüp → Eyüpsultan, Aydın Merkez → Efeler …) tek satırda, kesintisiz seridir. Kurulan, bölünen, kapanan ilçelerin tarihçesi adının yanındaki ⓘ'dedir; kaynak ilçeler mahallelerin TÜİK kayıt geçmişinden, nüfus ağırlığıyla hesaplanır.",
+  "Mahalle ve köy kimlikleri 2013'te değişti: 2007–2012 ile 2013–2025 aynı yer için iki ayrı satır olabilir; eski kimliklerin yerleşimi boştur. Büyük yüzdeler gerçek büyüme de mahalle sınırı değişikliği de olabilir.",
+  "Yerleşim: il/ilçe merkezinde semt, köyler için \"<ilçe> Köyleri\", beldeler resmî belediye adıyla.",
+  "Belde: resmî TÜİK statüsü, bugün belediyesi olan beldeler (yalnız büyükşehir dışındaki iller), 2007–2025, bugünkü mahalleleriyle. Beldenin mahalleleri Mahalle / köy düzeyinde de listelenir.",
+  "Küçük mahallelerde 0–17 yaş satırı gizlendiği için toplam birkaç kişi eksik olabilir.",
+  "Nüfus eşiği seçili yıla uygulanır; \"en az\" karşılaştırma yılında da aranır, küçük tabandan doğan büyük yüzdeleri eler.",
+  "İlçe içi pay, ilçenin henüz kurulmadığı yıllarda (Kayapınar, Ataşehir 2007) bugünkü sınırlarıyla, yani bugünkü mahallelerinin o yılki toplamına göre hesaplanır.",
+];
+
+function showPop(anchor, head, items) {
+  const p = $("pop"), r = anchor.getBoundingClientRect();
+  p.innerHTML = `<h4>${head}</h4><ul>${items.map((x) => `<li>${x}</li>`).join("")}</ul>`;
+  p.hidden = false;
+  p.style.left = Math.min(window.scrollX + r.left, window.scrollX + document.documentElement.clientWidth - 440) + "px";
+  p.style.top = window.scrollY + r.bottom + 6 + "px";
+}
+
+
+function wireHead() {
   $("head").querySelectorAll(".grip").forEach((g) => g.onmousedown = (ev) => {
     ev.preventDefault(); ev.stopPropagation();
     const k = g.parentElement.dataset.k, col = $("cols").querySelector(`col[data-k="${k}"]`);
     const x0 = ev.clientX, w0 = widthOf(k);
     g.classList.add("drag");
     const move = (e) => { userWidth[k] = Math.max(40, w0 + e.clientX - x0); col.style.width = userWidth[k] + "px"; };
-    const up = () => { g.classList.remove("drag"); document.removeEventListener("mousemove", move); document.removeEventListener("mouseup", up); saveWidths(); };
+    const up = () => { g.classList.remove("drag"); document.removeEventListener("mousemove", move); document.removeEventListener("mouseup", up); store.set("widths", userWidth); };
     document.addEventListener("mousemove", move); document.addEventListener("mouseup", up);
   });
   $("head").querySelectorAll("th").forEach((th) => th.onclick = (ev) => {
     if (ev.target.classList.contains("grip")) return;
     const k = th.dataset.k; if (k === "rank") return;
-    if (state.sort === k) state.asc = !state.asc; else { state.sort = k; state.asc = ["name", "prov", "dist", "type", "settle"].includes(k); }
+    if (state.sort === k) state.asc = !state.asc; else { state.sort = k; state.asc = !COLS[k].num; }
     render();
   });
-  const n = [];
-  if (state.level === "mahalle") n.push("Seçilen yılda kaydı olmayan birim listede yoktur. Karşılaştırma yılında kaydı yoksa değişim yerine \"yeni\" yazar. Mahalle ve köy kimlikleri 2013'te değişti: 2007–2012 ile 2013–2025 aynı yer için iki ayrı satır olabilir; eski kimliklerin yerleşimi boştur. Büyük yüzdeler gerçek büyüme olabileceği gibi mahalle sınırı değişikliği de olabilir. Yerleşim: il/ilçe merkezinde semt, köyler için \"<ilçe> Köyleri\", beldeler kendi adıyla.");
-  if (state.level === "belde") n.push("Belde: mahallenin 2013'te bağlı olduğu belde (büyükşehirlerde 2014'te kapatılanlar dahil); 2013–2025. Beldenin mahalleleri Mahalle / köy düzeyinde ayrıca listelenir.");
-  if (state.level === "ilce") n.push("2008'de kurulan ilçeler 2007'de yoktur; bölünen ilçelerde 2007 değeri eski sınırdadır.");
-  $("note").textContent = n.join(" ");
+}
+
+function colPanel() {
+  const on = visible || analysis().cols;
+  $("colPanel").innerHTML = Object.keys(COLS).filter((k) => !COLS[k].fixed && !COLS[k].always).map((k) => {
+    const c = COLS[k], off = !usable(k);
+    const why = c.base && state.base == null ? " — karşılaştırma yılı seçin" : off ? " — bu düzeyde yok" : "";
+    return `<label class="${off ? "dis" : ""}"><input type="checkbox" data-k="${k}" ${on.includes(k) ? "checked" : ""} ${off ? "disabled" : ""}>${c.t}${why}</label>`;
+  }).join("") + `<label><input type="checkbox" id="colDefault" ${visible ? "" : "checked"}>Analize göre (varsayılan)</label>`;
+  $("colPanel").querySelectorAll("input[data-k]").forEach((cb) => cb.onchange = () => {
+    const cur = new Set(visible || analysis().cols);
+    cb.checked ? cur.add(cb.dataset.k) : cur.delete(cb.dataset.k);
+    visible = [...cur]; store.set("cols", visible); colPanel(); render();
+  });
+  $("colDefault").onchange = (e) => { visible = e.target.checked ? null : [...analysis().cols]; store.set("cols", visible); colPanel(); render(); };
 }
 
 function fillDistricts() {
@@ -166,7 +271,6 @@ function fillDistricts() {
   fillSettlements();
 }
 
-// settlements of the chosen district (neighbourhood level only)
 function fillSettlements() {
   const seen = new Map();
   if (state.level === "mahalle" && state.dist >= 0)
@@ -179,35 +283,58 @@ function fillSettlements() {
 
 function fillYears() {
   const lv = LEVELS.find((l) => l.key === state.level).levels;
-  const first = lv.some((l) => l === "belde") ? DATA.years.indexOf(2013) : 0;
-  const last = DATA.years.length - 1;
+  const first = 0, last = DATA.years.length - 1;
   const ys = DATA.years.map((y, i) => i).filter((i) => i >= first);
   if (state.year == null || state.year < first) state.year = last;
   if (state.base != null && state.base < first) state.base = null;
+  if (analysis().base && state.base == null) state.base = Math.max(first, state.year - 5);
   $("year").innerHTML = ys.map((i) => `<option value="${i}" ${i === state.year ? "selected" : ""}>${DATA.years[i]}</option>`).join("");
   $("base").innerHTML = '<option value="">—</option>' + ys.map((i) => `<option value="${i}" ${i === state.base ? "selected" : ""}>${DATA.years[i]}</option>`).join("");
 }
 
+function setAnalysis(key) {
+  state.analysis = key;
+  state.asc = false; state.limit = PAGE;
+  fillYears();  // sets a comparison year first when the analysis needs one
+  state.sort = usable(analysis().sort) ? analysis().sort : "value";
+  colPanel(); render();
+}
+
 async function main() {
   $("summary").textContent = "Veri yükleniyor…";
-  const res = await fetch("../public/nufus_birimler.json");
-  DATA = await res.json();
+  DATA = await (await fetch("../public/nufus_birimler.json")).json();
   totals();
   $("level").innerHTML = LEVELS.map((l) => `<button data-k="${l.key}" class="${l.key === state.level ? "on" : ""}">${l.label}</button>`).join("");
   $("level").querySelectorAll("button").forEach((b) => b.onclick = () => {
-    state.level = b.dataset.k; state.limit = PAGE; state.sort = "value"; state.asc = false;
+    state.level = b.dataset.k; state.limit = PAGE;
     $("level").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b));
-    fillYears(); fillSettlements(); render();
+    fillYears(); fillSettlements();
+    state.sort = usable(analysis().sort) ? analysis().sort : "value";
+    colPanel(); render();
   });
+  $("analysis").innerHTML = ANALYSES.map((a) => `<option value="${a.key}">${a.label}</option>`).join("");
+  $("analysis").onchange = (e) => setAnalysis(e.target.value);
   $("prov").innerHTML = '<option value="-1">Tümü</option>' + DATA.provinces.map((p, i) => [p[1], i]).sort((a, b) => a[0].localeCompare(b[0], "tr")).map(([n, i]) => `<option value="${i}">${n}</option>`).join("");
   $("prov").onchange = (e) => { state.prov = +e.target.value; state.limit = PAGE; fillDistricts(); render(); };
   $("dist").onchange = (e) => { state.dist = +e.target.value; state.limit = PAGE; fillSettlements(); render(); };
   $("settle").onchange = (e) => { state.settle = +e.target.value; state.limit = PAGE; render(); };
-  $("both").onchange = (e) => { state.both = e.target.checked; state.limit = PAGE; render(); };
   $("year").onchange = (e) => { state.year = +e.target.value; render(); };
-  $("base").onchange = (e) => { state.base = e.target.value === "" ? null : +e.target.value; render(); };
+  $("base").onchange = (e) => {
+    state.base = e.target.value === "" ? null : +e.target.value;
+    if (!usable(state.sort)) state.sort = "value";
+    colPanel(); render();
+  };
   $("q").oninput = (e) => { state.q = e.target.value; state.limit = PAGE; render(); };
-  $("resetCols").onclick = () => { userWidth = {}; saveWidths(); render(); };
-  fillDistricts(); fillYears(); render();
+  const numv = (x) => (x === "" ? null : Math.max(0, +x));
+  $("minPop").oninput = (e) => { state.min = numv(e.target.value); state.limit = PAGE; render(); };
+  $("maxPop").oninput = (e) => { state.max = numv(e.target.value); state.limit = PAGE; render(); };
+  $("colBtn").onclick = (e) => { e.stopPropagation(); $("colPanel").hidden = !$("colPanel").hidden; };
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".colmenu")) $("colPanel").hidden = true;
+    if (!e.target.closest(".pop")) $("pop").hidden = true;
+  });
+  $("notesLink").onclick = (e) => { e.preventDefault(); e.stopPropagation(); showPop(e.target, "Notlar", NOTES); };
+  $("resetCols").onclick = () => { userWidth = {}; store.set("widths", userWidth); render(); };
+  fillDistricts(); fillYears(); colPanel(); render();
 }
 main();
