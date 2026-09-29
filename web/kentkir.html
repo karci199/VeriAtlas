@@ -122,6 +122,11 @@ td input.y { width:150px; padding:0 6px; height:19px; } td input.n { width:180px
 #legend { display:flex; flex-wrap:wrap; align-items:center; }
 .lg { display:inline-flex; align-items:center; gap:4px; margin-right:9px; font-size:10.5px; color:var(--mut); }
 .lg i { width:8px; height:8px; display:inline-block; }
+table.fixed { table-layout:fixed; min-width:0; }
+table.fixed th, table.fixed td { overflow:hidden; text-overflow:ellipsis; }
+table.fixed td input, table.fixed td select { max-width:100%; }
+th .grip { position:absolute; top:0; right:0; bottom:0; width:7px; cursor:col-resize; }
+th .grip:hover, th .grip.drag { background:var(--acc); opacity:.55; }
 .more { padding:8px; text-align:center; color:var(--mut); }
 i.sq { display:inline-block; width:10px; height:10px; margin:0 1.5px; vertical-align:middle; }
 i.sq.K { background:var(--kent); } i.sq.R { background:var(--kir); } i.sq.N { border:1px solid #4a463d; }
@@ -191,6 +196,7 @@ kbd { display:inline-block; min-width:15px; margin-right:6px; padding:0 3px; bor
     <dt>Ne yapacaksın</dt><dd>Mahalle / köy sekmesinde sağdaki Karar'dan sınıf seç: İl Merkezi, İlçe Merkezi, Kentsel Belde (kent) ya da Kasaba, Kırsal Belde, Köy (kır). ✓ öneriyi yazar. Seçtiğin anda kaydedilir.</dd>
     <dt>Komut satırı</dt><dd>/ ile odaklan, Enter ile çalıştır. "16 nilüfer" plaka ve ilçeye gider; "bursa" ile ile; "bs&gt;6", "n&gt;5000", "n&lt;300", "bekleyen", "verilmis", "kurum" filtreler; "iller ilceler yerlesim semt mahalle" sekme değiştirir; "sifirla" filtreleri temizler; "?" yardım. Tokenlar birleşir: "hatay bs&gt;5 bekleyen".</dd>
     <dt>Sekmeler</dt><dd>F1-F5. İller, ilçeler, yerleşimler, semtler: kent payı senin kararınla, kararı olmayan yerde öneriyle; her kayıtta güncellenir. Satıra tıkla, bir alt düzeye iner.</dd>
+    <dt>Sütun genişliği</dt><dd>Başlığın sağ kenarından sürükle; çift tık o sütunu eski genişliğine döndürür. Genişlikler tarayıcıda kalır.</dd>
     <dt>Görünüm</dt><dd>Görünüm menüsünden her bölüm (kartlar, ilerleme, filtreler, açıklama, ayrıntı paneli), her sütun, yoğunluk, vurgu rengi ve yazı tipi açılıp kapanır; seçimin tarayıcıda kalır.</dd>
     <dt>Kayıt</dt><dd>scripts/serve.py → kullanici_karar.json. Sunucuya ulaşılamazsa tarayıcıda tutulur, sonra gönderilir.</dd>
     <dt>Yıl</dt><dd>Nüfus TÜİK 2025 (2013 aynı kimlikle). Erkek, 65+, üniversiteli, hane, konut, yazlık Endeksa 2024. Bina Microsoft (Şubat 2026). Seçim 14 Mayıs 2023 milletvekili.</dd>
@@ -234,8 +240,8 @@ kbd { display:inline-block; min-width:15px; margin-right:6px; padding:0 3px; bor
 
 <div class="summary" id="sum"></div>
 <aside id="panel" hidden></aside>
-<div class="wrap"><table><thead id="th"></thead><tbody id="tb"></tbody></table><div class="more" id="more"></div></div>
+<div class="wrap"><table id="tbl"><thead id="th"></thead><tbody id="tb"></tbody></table><div class="more" id="more"></div></div>
 
-<script src="kentkir.js?v=10"></script>
+<script src="kentkir.js?v=11"></script>
 </body>
 </html>

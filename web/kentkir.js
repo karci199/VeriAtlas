@@ -36,11 +36,12 @@ const ilceKey = (r) => `${get(r, "il")} · ${get(r, "ilce")}`;
 // --- interface settings (panels, columns, density, accent, font), kept in localStorage
 const UI_KEY = "kentkir.ui";
 const PANELS = { cards: true, prog: true, filters: true, info: true, detail: true };
-const ui = { panels: { ...PANELS }, den: "normal", acc: "amber", font: "mono", hidden: [], open: [] };
+const ui = { panels: { ...PANELS }, den: "normal", acc: "amber", font: "mono", hidden: [], open: [], widths: {} };
 try {
   const saved = JSON.parse(localStorage.getItem(UI_KEY) || "{}");
   Object.assign(ui, saved);
   ui.panels = { ...PANELS, ...(saved.panels || {}) };
+  ui.widths = saved.widths || {};
 } catch (e) { /* defaults */ }
 const saveUi = () => { try { localStorage.setItem(UI_KEY, JSON.stringify(ui)); } catch (e) { /* ignore */ } };
 function applyUi() {
@@ -217,6 +218,7 @@ function summaryTable() {
       <td class="num ${t.hafif ? "warn" : "muted"}">${fmt(t.hafif)}</td><td class="num ${t.cok ? "bad" : "muted"}">${fmt(t.cok)}</td>
       <td class="num ${t.open ? "" : "muted"}">${fmt(t.open)}</td></tr>`;
   }).join("");
+  fitTable([...names.map((_, i) => `s_${tab}${i}`), ...["n", "c", "pm", "po", "pp", "lo", "pu", "pd", "hafif", "cok", "open"].map((k) => `s_${k}`)]);
   more();
 }
 function drill(key) {
@@ -322,8 +324,48 @@ function renderMah() {
   headMah(cols);
   $("tb").innerHTML = shown.slice(0, limit).map((r, i) =>
     `<tr data-i="${i}" class="ih-${get(r, "ih")} ${i === cur ? "cur" : ""}">${cols.map((c, j) => cell(r, c, j, cols)).join("")}</tr>`).join("");
+  fitTable(cols.map((c) => c[0]));
   more();
   if (cur >= 0 && shown[cur]) panel(shown[cur]);
+}
+
+// --- resizable columns: fixed layout over a colgroup; the natural width is measured once per
+// column, a drag on the header's right edge sets it (kept in ui.widths), double click resets it
+const colAuto = {};
+function fitTable(keys) {
+  const t = $("tbl");
+  t.classList.remove("fixed"); t.style.width = "";
+  const old = $("cg"); if (old) old.remove();
+  const ths = [...$("th").querySelectorAll("tr.cols th")];
+  if (ths.length !== keys.length) return;
+  const W = keys.map((k, i) => ui.widths[k] || colAuto[k] || (colAuto[k] = Math.max(36, Math.ceil(ths[i].getBoundingClientRect().width))));
+  const cg = document.createElement("colgroup");
+  cg.id = "cg";
+  cg.innerHTML = W.map((w) => `<col style="width:${w}px">`).join("");
+  t.insertBefore(cg, t.firstChild);
+  const cols = [...cg.children];
+  const apply = () => { cols.forEach((c, i) => { c.style.width = `${W[i]}px`; }); t.style.width = `${W.reduce((a, b) => a + b, 0)}px`; };
+  t.classList.add("fixed");
+  apply();
+  ths.forEach((th, i) => {
+    const g = document.createElement("span");
+    g.className = "grip";
+    g.title = "sürükle: genişlik · çift tık: sıfırla";
+    g.onclick = (ev) => ev.stopPropagation();
+    g.ondblclick = (ev) => { ev.stopPropagation(); delete ui.widths[keys[i]]; delete colAuto[keys[i]]; saveUi(); tab === "mah" ? renderMah() : summaryTable(); };
+    g.onmousedown = (ev) => {
+      ev.preventDefault(); ev.stopPropagation();
+      const x0 = ev.clientX, w0 = W[i];
+      g.classList.add("drag");
+      const move = (e) => { W[i] = Math.max(36, w0 + e.clientX - x0); apply(); };
+      const up = () => {
+        document.removeEventListener("mousemove", move); document.removeEventListener("mouseup", up);
+        g.classList.remove("drag"); ui.widths[keys[i]] = Math.round(W[i]); saveUi();
+      };
+      document.addEventListener("mousemove", move); document.addEventListener("mouseup", up);
+    };
+    th.appendChild(g);
+  });
 }
 
 // --- current row, detail panel, keyboard
@@ -624,7 +666,7 @@ function wireUi() {
     if (d.den) ui.den = d.den; else if (d.acc) ui.acc = d.acc; else if (d.font) ui.font = d.font;
     else if (d.open) ui.open = ui.open.includes(d.open) ? ui.open.filter((x) => x !== d.open) : [...ui.open, d.open];
     else if (d.cols) ui.hidden = d.cols === "all" ? [] : COLS().map((c) => c[0]).filter((k) => k !== "ad");
-    else if (d.reset) { Object.assign(ui, { panels: { ...PANELS }, den: "normal", acc: "amber", font: "mono", hidden: [], open: [] }); f.groups = new Set(["temel", "kaynak", "not", "you2"]); buildChips(); }
+    else if (d.reset) { Object.assign(ui, { panels: { ...PANELS }, den: "normal", acc: "amber", font: "mono", hidden: [], open: [], widths: {} }); f.groups = new Set(["temel", "kaynak", "not", "you2"]); buildChips(); }
     else return;
     redraw(); uiPanel();
   });
