@@ -46,6 +46,15 @@ const INDICATORS = [
   { group: "Nüfus", key: "u17p", label: "0–17 yaş payı %", kind: "ratio" },
   { group: "Yaş", key: "med", label: "Ortanca yaş", kind: "ratio", ex: "med" },
   { group: "Yaş", key: "mean", label: "Ortalama yaş", kind: "ratio", ex: "mean" },
+  { group: "Seçmen", key: "vote_med", label: "Seçmen ortanca yaşı", kind: "ratio", ex: "vote_med", lv: ["il", "ilce"] },
+  { group: "Seçmen", key: "vote_mean", label: "Seçmen ortalama yaşı", kind: "ratio", ex: "vote_mean", lv: ["il", "ilce"] },
+  { group: "Yaşam olayları (il)", key: "fm_f", label: "İlk evlenme yaşı, kadın", kind: "ratio", ex: "fm_f", lv: ["il"] },
+  { group: "Yaşam olayları (il)", key: "fm_m", label: "İlk evlenme yaşı, erkek", kind: "ratio", ex: "fm_m", lv: ["il"] },
+  { group: "Yaşam olayları (il)", key: "mar", label: "Ortalama evlenme yaşı", kind: "ratio", ex: "mar", lv: ["il"] },
+  { group: "Yaşam olayları (il)", key: "mom_med", label: "Doğumda anne yaşı, ortanca", kind: "ratio", ex: "mom_med", lv: ["il"] },
+  { group: "Yaşam olayları (il)", key: "mom_mean", label: "Doğumda anne yaşı, ortalama", kind: "ratio", ex: "mom_mean", lv: ["il"] },
+  { group: "Yaşam olayları (il)", key: "death_med", label: "Ölüm yaşı, ortanca", kind: "ratio", ex: "death_med", lv: ["il"] },
+  { group: "Yaşam olayları (il)", key: "death_mean", label: "Ölüm yaşı, ortalama", kind: "ratio", ex: "death_mean", lv: ["il"] },
 ];
 // an extra series kept in the unit's extras slot, [first year index, values]
 function exAt(u, key, yi) {
@@ -100,7 +109,8 @@ const ind = () => INDICATORS.find((x) => x.key === state.indicator);
 function indAt(u, yi, key = state.indicator) {
   const t = valueAt(u, yi);
   if (key === "total") return t;
-  if (key === "med" || key === "mean") return t == null ? null : exAt(u, key, yi);
+  const def = INDICATORS.find((x) => x.key === key);
+  if (def && def.ex) return t == null ? null : exAt(u, def.ex, yi);
   const c = u17At(u, yi);
   if (c == null || t == null) return null;
   if (key === "u17") return c;
@@ -285,6 +295,7 @@ const NOTES = [
   "Yerleşim: il/ilçe merkezinde semt, köyler için \"<ilçe> Köyleri\", beldeler resmî belediye adıyla.",
   "Belde: resmî TÜİK statüsü, bugün belediyesi olan beldeler (yalnız büyükşehir dışındaki iller), 2007–2025, bugünkü mahalleleriyle. Beldenin mahalleleri Mahalle / köy düzeyinde de listelenir.",
   "Küçük mahallelerde 0–17 yaş satırı gizlidir: toplam birkaç kişi eksik olabilir, 0–17 göstergelerinde o mahalle boş kalır.",
+  "Seçmen yaşı: YSK seçmen profilleri (2011, 2015 Kasım, 2018, 2023), il ve ilçe; yaş grupları 18–24 … 75+. Yaşam olayları yalnız il düzeyinde: anne yaşı ve ölüm yaşı 2009–2025 yaş gruplarından (ortanca ölüm yaşı bebek ölümlerinden etkilenmez, ortalama etkilenir), ilk evlenme ve evlenme yaşı TÜİK'in yayımladığı değer. Boşanma yaşı depoda yok.",
   "Yaş: il ortanca yaşı TÜİK'in kendi değeri; ilçede 5'li yaş gruplarından hesap (2007–2025). Mahalle, köy ve belde: 2024 Monte Carlo (ortanca) ve Endeksa (ortalama); mahallelerde diğer yıllar model tahminidir, ⓘ'de yazar.",
   "0–17 yaş: mahallede TÜİK'in 0–17 satırı; il ve ilçede 5'li yaş gruplarından (15–19'un 3/5'i). Büyükşehir dışı köylerde yaş kırılımı yoktur. Oran göstergelerinde pay sütunları kapanır, değişim puan olarak verilir.",
   "Nüfus eşiği seçili yıla uygulanır; \"en az\" karşılaştırma yılında da aranır, küçük tabandan doğan büyük yüzdeleri eler.",
@@ -375,13 +386,14 @@ function setAnalysis(key) {
 
 async function main() {
   $("summary").textContent = "Veri yükleniyor…";
-  DATA = await (await fetch("../public/nufus_birimler.json?v=8")).json();
+  DATA = await (await fetch("../public/nufus_birimler.json?v=9")).json();
   DATA.units.forEach((u, i) => UIDX.set(u, i));
   totals();
   $("level").innerHTML = LEVELS.map((l) => `<button data-k="${l.key}" class="${l.key === state.level ? "on" : ""}">${l.label}</button>`).join("");
   $("level").querySelectorAll("button").forEach((b) => b.onclick = () => {
     state.level = b.dataset.k; state.limit = PAGE;
     $("level").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b));
+    if (ind().lv && !ind().lv.includes(state.level)) { state.indicator = "total"; $("indicator").value = "total"; totals(); }
     fillYears(); fillSettlements();
     state.sort = usable(analysis().sort) ? analysis().sort : "value";
     colPanel(); render();
@@ -390,6 +402,21 @@ async function main() {
   $("indicator").innerHTML = groups.map((g) => `<optgroup label="${g}">` + INDICATORS.filter((x) => x.group === g).map((a) => `<option value="${a.key}">${a.label}</option>`).join("") + "</optgroup>").join("");
   $("indicator").onchange = (e) => {
     state.indicator = e.target.value; state.limit = PAGE;
+    // an indicator published only for some levels takes the page to the finest of them
+    const lvs = ind().lv;
+    if (lvs && !lvs.includes(state.level)) {
+      state.level = lvs[lvs.length - 1];
+      $("level").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x.dataset.k === state.level));
+      fillYears(); fillSettlements();
+    }
+    // a new indicator opens on its latest year (voter profiles end in 2023, the rest in 2025)
+    const lv = LEVELS.find((l) => l.key === state.level).levels;
+    const has = (yi) => DATA.units.some((u) => lv.includes(u[0]) && indAt(u, yi) != null);
+    {
+      for (let yi = DATA.years.length - 1; yi >= 0; yi--) if (has(yi)) { state.year = yi; break; }
+      if (state.base != null && !has(state.base)) state.base = null;
+      fillYears();
+    }
     totals();
     state.sort = [analysis().sort, analysis().base ? "change" : "value", "value"].find(usable);
     colPanel(); render();

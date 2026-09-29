@@ -605,6 +605,100 @@ for u in units:
     ex.pop("q", None)
     u[7] = ex or None
 
+# life-event ages. Province only (TÜİK publishes these no lower): mother's age at birth and
+# age at death from their age bands (2009-2025), mean age at first marriage by sex and mean
+# age at marriage as published (2001-2025). Voters' age from the YSK voter profiles
+# (2011, 2015 Nov, 2018, 2023), provinces and districts. Divorce has no age breakdown.
+def band_of(a):
+    a = a.strip()
+    if a in ("unknown", "total", "") or not any(ch.isdigit() for ch in a):
+        return None
+    if a.startswith("-") or a.startswith("<"):
+        return 12, int(a.lstrip("-<"))
+    if a.endswith("+"):
+        return int(a[:-1]), int(a[:-1]) + 10
+    if "-" in a:
+        lo, hi = a.split("-")[:2]
+        return int(lo), int(hi) + 1
+    return int(a), int(a) + 1
+
+
+def prov_band_series(ind, key):
+    acc = {}
+    for r in duckdb.sql(f"""select area_id, year(period_start) y, dims, sum(value) v from read_parquet('{FACT}')
+      where indicator_id='{ind}' and area_level='province' group by 1,2,3""").pl().iter_rows(named=True):
+        a = next((x.split("=")[1] for x in r["dims"].split(";") if x.startswith(key + "=")), None)
+        b = band_of(a) if a else None
+        if b and r["v"]:
+            acc.setdefault(r["area_id"], {}).setdefault(r["y"], []).append((b[0], b[1], r["v"]))
+    out = {}
+    for pid, ys in acc.items():
+        med, mean = {}, {}
+        for y, b in ys.items():
+            mm = median_mean(sorted(b))
+            if mm:
+                med[y], mean[y] = mm
+        out[pid] = (list(pack(med)) if med else None, list(pack(mean)) if mean else None)
+    return out
+
+
+def prov_published(ind, dims):
+    out = {}
+    for r in duckdb.sql(f"""select area_id, year(period_start) y, value from read_parquet('{FACT}')
+      where indicator_id='{ind}' and area_level='province' and dims='{dims}'""").fetchall():
+        out.setdefault(r[0], {})[r[1]] = round(r[2], 1)
+    return {k: list(pack(v)) for k, v in out.items()}
+
+
+MOM = prov_band_series("births", "mother_age")
+DEATH = prov_band_series("deaths", "age")
+FMF, FMM = prov_published("mean_first_marriage_age", "sex=female"), prov_published("mean_first_marriage_age", "sex=male")
+MAR = prov_published("mean_marriage_age", "sex=total")
+VOTE_Y = {"2011": 2011, "2015_1_kasim": 2015, "2018": 2018, "2023": 2023}
+vp = pl.read_parquet("C:/veri-ham/secim/profil/secmen_yas_egitim.parquet").filter(pl.col("election").is_in(list(VOTE_Y)))
+vp = vp.group_by("election", "province", "district", "age").agg(pl.col("n").sum())
+PK = {_fold(r["name_tr"]).replace("afyonkarahisar", "afyon"): r["area_id"] for r in prov.iter_rows(named=True)}
+DK = {(r["area_id"][:5], _fold(r["name_tr"])): r["area_id"] for r in dist.filter(pl.col("valid_to").is_null()).iter_rows(named=True)}
+vb_d, vb_p = {}, {}
+for r in vp.iter_rows(named=True):
+    pid = PK.get(_fold(r["province"]).replace("afyonkarahisar", "afyon"))
+    if not pid:
+        continue
+    lo, hi = (75, 90) if r["age"] == "75+" else tuple(int(x) + i for i, x in enumerate(r["age"].split("-")))
+    y = VOTE_Y[r["election"]]
+    vb_p.setdefault(pid, {}).setdefault(y, []).append((lo, hi, r["n"]))
+    did = DK.get((pid, _fold(r["district"])))
+    if did:
+        vb_d.setdefault(did, {}).setdefault(y, []).append((lo, hi, r["n"]))
+
+
+def vser(bys):
+    med, mean = {}, {}
+    for y, b in bys.items():
+        mm = median_mean(sorted(b))
+        if mm:
+            med[y], mean[y] = mm
+    return (list(pack(med)) if med else None), (list(pack(mean)) if mean else None)
+
+
+for u in units:
+    if u[0] == "il":
+        pid = prov["area_id"][-1 - u[2]]
+        ex = u[7] or {}
+        for key, val in (("mom_med", MOM.get(pid, (None, None))[0]), ("mom_mean", MOM.get(pid, (None, None))[1]),
+                         ("death_med", DEATH.get(pid, (None, None))[0]), ("death_mean", DEATH.get(pid, (None, None))[1]),
+                         ("fm_f", FMF.get(pid)), ("fm_m", FMM.get(pid)), ("mar", MAR.get(pid))):
+            if val:
+                ex[key] = val
+        vm, va = vser(vb_p.get(pid, {}))
+        if vm:
+            ex["vote_med"], ex["vote_mean"] = vm, va
+        u[7] = ex or None
+    elif u[0] == "ilce":
+        vm, va = vser(vb_d.get(dist["area_id"][u[2]], {}))
+        if vm:
+            u[7] = (u[7] or {}) | {"vote_med": vm, "vote_mean": va}
+
 # a district's own quarters summed per year: today's boundaries, used as the share base in
 # years the district did not exist yet (Kayapınar, Ataşehir in 2007)
 cb = {}
