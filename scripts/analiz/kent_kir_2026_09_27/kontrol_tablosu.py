@@ -253,7 +253,7 @@ for p in plates:
         k = kid.get(wid)
         stat, legal = status_and_settlement(p, il, r["district"], aid, wid, r["eski_statu"] or "")
         settle = analysis_settlement(r["son_sinif"], r["name"], il, r["district"], legal)
-        area = AREA.get(wid)
+        area = AREA.get(wid) or e.get("Area") or None  # villages have no polygon: Endeksa carries their area
         v = dict(
             il=il, ilce=r["district"], yer=settle, ad=r["name"], tur="Köy" if (wid in VIL or aid in VIL) else "Mahalle",
             n=int(n), n0=int(n0) if n0 else None, g=round((n / n0 - 1) * 100, 1) if n0 else None,

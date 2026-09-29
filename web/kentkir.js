@@ -22,8 +22,7 @@ const BANDS = [["0", "0-2", "#6cc38a"], ["2", "2-4", "#a9c46a"], ["4", "4-6", "#
 const band = (u) => String(Math.min(8, Math.floor(u / 2) * 2));
 // the user's decision, else a provisional placement for near-certain rows (uncertainty < 2), else open
 const placed = (r) => decOf(get(r, "id")).s || (get(r, "bs") < 2 ? get(r, "os") : "");
-const f = { bs: new Set(BANDS.map((b) => b[0])), ih: new Set(["uyumlu", "hafif", "cok"]), on: new Set(CLASSES), kr: new Set(["bos", "dolu"]), kurum: false,
-            groups: new Set(["temel", "kaynak", "not", "you2"]) };
+const f = { bs: new Set(BANDS.map((b) => b[0])), ih: new Set(["uyumlu", "hafif", "cok"]), on: new Set(CLASSES), kr: new Set(["bos", "dolu"]), kurum: false };
 
 const $ = (id) => document.getElementById(id);
 const fmt = (v, d = 0) => v == null || v === "" ? "" : Number(v).toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -36,7 +35,7 @@ const ilceKey = (r) => `${get(r, "il")} · ${get(r, "ilce")}`;
 // --- interface settings (panels, columns, density, accent, font), kept in localStorage
 const UI_KEY = "kentkir.ui";
 const PANELS = { cards: true, prog: true, filters: true, info: true, detail: true };
-const ui = { panels: { ...PANELS }, den: "normal", acc: "amber", font: "mono", hidden: [], open: [], widths: {} };
+const ui = { panels: { ...PANELS }, den: "normal", acc: "amber", font: "mono", vis: null, open: [], widths: {} };
 try {
   const saved = JSON.parse(localStorage.getItem(UI_KEY) || "{}");
   Object.assign(ui, saved);
@@ -77,7 +76,13 @@ const GROUPS = { id: "", temel: "Temel", kaynak: "Kaynaklar ve öneri", not: "",
                  konut: "Hane · konut · bina", secim: "Seçim 2023", kaynakx: "Kaynak ayrıntı", you2: "Senin", you: "" };
 const TOGGLE = [["temel", "Temel"], ["kaynak", "Kaynaklar"], ["not", "Not"], ["nufus", "Nüfus"], ["yas", "Yaş · eğitim"],
                 ["konut", "Hane · konut · bina"], ["secim", "Seçim 2023"], ["kaynakx", "Kaynak ayrıntı"], ["you2", "Yerleşim/not (senin)"]];
-const visibleCols = () => COLS().filter((c) => (c[2] === "id" || c[2] === "you" || f.groups.has(c[2])) && !ui.hidden.includes(c[0]));
+// column visibility: one flag per column (ui.vis = visible keys; the name column is always shown)
+const DEFAULT_GROUPS = ["temel", "kaynak", "not", "you2"];
+const defaultVis = () => COLS().filter((c) => c[2] === "id" || c[2] === "you" || DEFAULT_GROUPS.includes(c[2])).map((c) => c[0]);
+const isVis = (k) => ui.vis.includes(k);
+const groupCols = (g) => COLS().filter((c) => c[2] === g && c[0] !== "ad").map((c) => c[0]);
+function setVis(keys, on) { const set = new Set(ui.vis); keys.forEach((k) => (on ? set.add(k) : set.delete(k))); ui.vis = [...set]; }
+const visibleCols = () => COLS().filter((c) => c[0] === "ad" || isVis(c[0]));
 
 // --- decisions
 const decOf = (id) => pending[id] || dec[id] || {};
@@ -598,6 +603,7 @@ async function main() {
     drawIlce(); limit = PAGE; refresh();
   });
   drawIlce = buildDrop($("dIlce"), "İlçe", () => count((r) => (selIl.has(get(r, "il")) ? ilceKey(r) : null)), selIlce, () => { limit = PAGE; refresh(); });
+  if (!Array.isArray(ui.vis)) ui.vis = defaultVis();
   buildChips();
   wire();
   wireUi();
@@ -608,12 +614,23 @@ async function main() {
   if (Object.keys(pending).length) flush();
 }
 
+// one chip per column group: on while any of its columns is shown ("2/5" when partly); a click
+// turns the whole group on or off, single columns are picked in the Görünüm menu
+function groupChips() {
+  const el = $("cGr");
+  el.innerHTML = TOGGLE.map(([g, t]) => {
+    const cs = groupCols(g), n = cs.filter(isVis).length;
+    return `<label class="chip ${n ? "on" : ""}" title="grubun tüm sütunlarını aç / kapat"><input type="checkbox" data-g="${g}" ${n ? "checked" : ""}>${t}${n && n < cs.length ? ` ${n}/${cs.length}` : ""}</label>`;
+  }).join("");
+  el.onchange = (ev) => { setVis(groupCols(ev.target.dataset.g), ev.target.checked); saveUi(); groupChips(); renderMah(); uiPanel(); };
+}
+
 function buildChips() {
   chips($("cBs"), BANDS, f.bs, () => { limit = PAGE; mahTable(); });
   chips($("cIh"), [["uyumlu", "uyumlu", "#6cc38a"], ["hafif", "hafif", "#e8b64c"], ["cok", "çok", "#ef7d73"]], f.ih, () => { limit = PAGE; mahTable(); });
   chips($("cOn"), CLASSES.map((c) => [c, c]), f.on, () => { limit = PAGE; mahTable(); });
   krChips();
-  chips($("cGr"), TOGGLE, f.groups, () => { renderMah(); uiPanel(); });
+  groupChips();
   $("legend").innerHTML = `<span class="lg">mahalle adının solu: 2023 birinci parti →</span>` + parties.map(([, sh, fill]) => `<span class="lg"><i style="background:#${fill}"></i>${sh}</span>`).join("")
     + `<span class="lg"><i style="background:#6b7280"></i>diğer</span><span class="lg">· satırın solu: <i style="background:#8a6f2e"></i>hafif <i style="background:#a83f36"></i>çok ihtilaf</span>`;
 }
@@ -627,23 +644,23 @@ function uiPanel() {
   const seg = (name, opts, cur) => `<div class="seg">${opts.map(([v, t]) => `<button data-${name}="${v}" class="${cur === v ? "on" : ""}">${t}</button>`).join("")}</div>`;
   const byGroup = new Map();
   for (const c of COLS()) if (c[0] !== "ad") { if (!byGroup.has(c[2])) byGroup.set(c[2], []); byGroup.get(c[2]).push(c); }
-  // a group is one row; its columns list only while the group is on and expanded
+  // a group is one row: the box turns all of its columns on/off (dash when some), the arrow
+  // lists them so each can be picked alone (Yaş · eğitim: only "Ortanca yaş")
   const colsHtml = [...byGroup.entries()].map(([g, cs]) => {
-    const always = g === "id" || g === "you";
-    const on = always || f.groups.has(g);
-    const open = on && ui.open.includes(g);
-    const nOn = cs.filter((c) => !ui.hidden.includes(c[0])).length;
-    const head = always ? `<span class="gl">${COL_LABEL[g]}</span>` : `<label class="gl"><input type="checkbox" data-g="${g}" ${on ? "checked" : ""}>${COL_LABEL[g]}</label>`;
-    return `<div class="opt grp">${head}<span class="cnt">${on ? `${nOn}/${cs.length}` : "kapalı"}</span><button class="chev" data-open="${g}" ${on ? "" : "disabled"}>${open ? "▾" : "▸"}</button></div>`
-      + (open ? cs.map((c) => `<label class="opt sub"><input type="checkbox" data-c="${c[0]}" ${ui.hidden.includes(c[0]) ? "" : "checked"}>${esc(c[1])}</label>`).join("") : "");
+    const nOn = cs.filter((c) => isVis(c[0])).length;
+    const open = ui.open.includes(g);
+    return `<div class="opt grp"><label class="gl"><input type="checkbox" data-g="${g}" data-part="${nOn > 0 && nOn < cs.length ? 1 : 0}" ${nOn === cs.length ? "checked" : ""}>${COL_LABEL[g]}</label>`
+      + `<span class="cnt">${nOn}/${cs.length}</span><button class="chev" data-open="${g}">${open ? "▾" : "▸"}</button></div>`
+      + (open ? cs.map((c) => `<label class="opt sub"><input type="checkbox" data-c="${c[0]}" ${isVis(c[0]) ? "checked" : ""}>${esc(c[1])}</label>`).join("") : "");
   }).join("");
   P.innerHTML = `
     <h4>Bölümler</h4>${chk("cards", "Özet kartları")}${chk("prog", "İlerleme çubuğu")}${chk("filters", "Filtre çubukları")}${chk("info", "Açıklama")}${chk("detail", "Ayrıntı paneli")}
     <h4>Yoğunluk</h4>${seg("den", [["compact", "Sıkı"], ["normal", "Normal"], ["wide", "Geniş"]], ui.den)}
     <h4>Vurgu rengi</h4>${seg("acc", [["amber", "Kehribar"], ["green", "Yeşil"], ["cyan", "Cam"], ["white", "Beyaz"]], ui.acc)}
     <h4>Yazı</h4>${seg("font", [["mono", "Tek aralıklı"], ["sans", "Sans"]], ui.font)}
-    <h4>Sütunlar <span class="rowbtn"><button data-cols="all">Hepsi</button> <button data-cols="none">Hiçbiri</button></span></h4>${colsHtml}
+    <h4>Sütunlar <span class="rowbtn"><button data-cols="all">Hepsi</button> <button data-cols="def">Varsayılan</button> <button data-cols="none">Hiçbiri</button></span></h4>${colsHtml}
     <button class="rst" data-reset="1">Görünümü sıfırla</button>`;
+  P.querySelectorAll('input[data-part="1"]').forEach((i) => { i.indeterminate = true; });
 }
 function wireUi() {
   const P = $("ui");
@@ -653,11 +670,8 @@ function wireUi() {
   P.addEventListener("change", (ev) => {
     const d = ev.target.dataset;
     if (d.p) { ui.panels[d.p] = ev.target.checked; redraw(); if (d.p === "detail" && cur >= 0) panel(shown[cur]); }
-    else if (d.g) {
-      if (ev.target.checked) { f.groups.add(d.g); if (!ui.open.includes(d.g)) ui.open.push(d.g); } else f.groups.delete(d.g);
-      buildChips(); redraw(); uiPanel();
-    }
-    else if (d.c) { ui.hidden = ev.target.checked ? ui.hidden.filter((k) => k !== d.c) : [...ui.hidden, d.c]; redraw(); }
+    else if (d.g) { setVis(groupCols(d.g), ev.target.checked); groupChips(); redraw(); uiPanel(); }
+    else if (d.c) { setVis([d.c], ev.target.checked); groupChips(); redraw(); uiPanel(); }
   });
   P.addEventListener("click", (ev) => {
     const b = ev.target.closest("button");
@@ -665,8 +679,8 @@ function wireUi() {
     const d = b.dataset;
     if (d.den) ui.den = d.den; else if (d.acc) ui.acc = d.acc; else if (d.font) ui.font = d.font;
     else if (d.open) ui.open = ui.open.includes(d.open) ? ui.open.filter((x) => x !== d.open) : [...ui.open, d.open];
-    else if (d.cols) ui.hidden = d.cols === "all" ? [] : COLS().map((c) => c[0]).filter((k) => k !== "ad");
-    else if (d.reset) { Object.assign(ui, { panels: { ...PANELS }, den: "normal", acc: "amber", font: "mono", hidden: [], open: [], widths: {} }); f.groups = new Set(["temel", "kaynak", "not", "you2"]); buildChips(); }
+    else if (d.cols) { ui.vis = d.cols === "all" ? COLS().map((c) => c[0]) : d.cols === "def" ? defaultVis() : []; groupChips(); }
+    else if (d.reset) { Object.assign(ui, { panels: { ...PANELS }, den: "normal", acc: "amber", font: "mono", vis: defaultVis(), open: [], widths: {} }); groupChips(); }
     else return;
     redraw(); uiPanel();
   });
