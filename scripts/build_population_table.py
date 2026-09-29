@@ -113,7 +113,7 @@ def official_settlement(aid, lvl, did):
     if lvl == "village":
         return settle(f"{dn} Köyleri")
     if aid[3:5] in METRO and FIRST.get(aid) == 2013:
-        return settle(f"{dn} Köyleri (2013'e kadar köy)")
+        return settle(f"{dn} Köyleri")  # a village until 2013; the Tür column says mahalle
     return settle(f"{dn} Merkez")
 
 

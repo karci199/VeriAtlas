@@ -22,7 +22,10 @@ const COLS = {
   dist: { t: "İlçe", lv: ["belde", "mahalle"], always: true },
   settle: { t: "Yerleşim", lv: ["mahalle"], always: true },
   type: { t: "Tür", lv: ["mahalle"], always: true },
-  value: { t: "Nüfus", num: true },
+  value: { t: "Değer", num: true },
+  pop: { t: "Toplam nüfus", num: true, notTotal: true },
+  b: { t: "Gösterge B", num: true, needB: true },
+  bChange: { t: "B değişimi", num: true, sign: true, base: true, needB: true },
   prevChange: { t: "Önceki yıla göre", num: true, sign: true },
   prevChangePct: { t: "Önceki yıla göre %", num: true, sign: true, d: 2 },
   change: { t: "Değişim", num: true, sign: true, base: true },
@@ -83,7 +86,7 @@ const store = {
   get(k, dflt) { try { const v = localStorage.getItem("nufus." + k); return v == null ? dflt : JSON.parse(v); } catch (e) { return dflt; } },
   set(k, v) { try { localStorage.setItem("nufus." + k, JSON.stringify(v)); } catch (e) { /* storage off */ } },
 };
-const state = { level: "ilce", view: "temel", indicator: "total", prov: -1, dist: -1, settle: -1, year: null, base: null, q: "",
+const state = { level: "ilce", view: "temel", indicator: "total", indicator2: "", prov: -1, dist: -1, settle: -1, year: null, base: null, q: "",
                 sort: "value", asc: false, limit: PAGE, min: null, max: null };
 let visible = store.get("cols", null);
 let userWidth = store.get("widths", {});
@@ -164,15 +167,27 @@ function measures(u, yi, bi) {
   return m;
 }
 
-const usable = (k) => { const c = COLS[k]; return !(c.lv && !c.lv.includes(state.level)) && !(c.base && state.base == null) && !(ind().kind === "ratio" && COUNT_ONLY.includes(k)); };
+const usable = (k) => { const c = COLS[k]; return !(c.lv && !c.lv.includes(state.level)) && !(c.base && state.base == null) && !(ind().kind === "ratio" && COUNT_ONLY.includes(k))
+  && !(c.notTotal && state.indicator === "total") && !(c.needB && !state.indicator2); };
 
 function shownCols() {
   const on = visible || analysis().cols;
-  return Object.keys(COLS).filter((k) => usable(k) && (COLS[k].fixed || COLS[k].always || on.includes(k) || k === state.sort));
+  return Object.keys(COLS).filter((k) => usable(k) && (COLS[k].fixed || COLS[k].always || on.includes(k) || k === state.sort
+    || k === "pop" || k === "b" || (k === "bChange" && on.includes("change"))));
+}
+
+// B is read at its own latest year not after the chosen one (voter profiles stop in 2023)
+function yearB() {
+  if (!state.indicator2) return null;
+  const lv = LEVELS.find((l) => l.key === state.level).levels;
+  for (let yi = state.year; yi >= 0; yi--)
+    if (DATA.units.some((u) => lv.includes(u[0]) && indAt(u, yi, state.indicator2) != null)) return yi;
+  return null;
 }
 
 function rows() {
   const lv = LEVELS.find((l) => l.key === state.level).levels;
+  state.yearB = yearB();
   const q = fold(state.q.trim());
   const out = [];
   let dropped = 0;
@@ -191,7 +206,9 @@ function rows() {
       const b0 = state.base != null ? valueAt(u, state.base) : null;
       if (v0 < state.min || (b0 != null && b0 < state.min)) continue;
     }
-    const r = { ...measures(u, state.year, state.base), u, lvl: u[0], did: u[2], name: u[1], type: TYPE_LABEL[u[0]], prov: DATA.provinces[p][1],
+    const bv = state.yearB != null ? indAt(u, state.yearB, state.indicator2) : null;
+    const bb = state.indicator2 && state.base != null ? indAt(u, state.base, state.indicator2) : null;
+    const r = { ...measures(u, state.year, state.base), pop: v0, b: bv, bChange: bv != null && bb != null ? bv - bb : null, u, lvl: u[0], did: u[2], name: u[1], type: TYPE_LABEL[u[0]], prov: DATA.provinces[p][1],
       dist: u[2] >= 0 ? DATA.districts[u[2]][1] : "", settle: u[5] >= 0 ? DATA.settlements[u[5]] : "",
       first: DATA.years[u[3]] };
     // no value for the ranking column: out of the ranking, not at its bottom
@@ -215,7 +232,8 @@ function cell(k, r, i, maxShare) {
   if (!c.num) return `<td title="${r[k] ?? ""}">${r[k] ?? ""}</td>`;
   const x = r[k];
   if (x == null) return `<td class="num"></td>`;
-  const ratio = ind().kind === "ratio" && ["value", "change", "prevChange"].includes(k);
+  const i2 = INDICATORS.find((q) => q.key === state.indicator2);
+  const ratio = (ind().kind === "ratio" && ["value", "change", "prevChange"].includes(k)) || (i2 && i2.kind === "ratio" && (k === "b" || k === "bChange"));
   const txt = ratio ? num(x, 1) : c.d == null ? fmt.format(Math.round(x)) : num(x, k === "trShare" && x < 0.01 ? 4 : c.d);
   const cls = c.sign ? (x > 0 ? "pos" : x < 0 ? "neg" : "") : "";
   const signed = c.sign && x > 0 ? "+" + txt : txt;
@@ -227,6 +245,9 @@ function title(k) {
   const y = DATA.years[state.year], b = state.base != null ? DATA.years[state.base] : "";
   const ratio = ind().kind === "ratio", unit = ind().ex ? " (yıl)" : " (puan)";
   if (k === "value") return `${ind().label} ${y}`;
+  if (k === "pop") return `Toplam nüfus ${y}`;
+  if (k === "b") { const i2 = INDICATORS.find((q) => q.key === state.indicator2); return i2 ? `B: ${i2.label} ${state.yearB != null ? DATA.years[state.yearB] : y}` : "B"; }
+  if (k === "bChange") return `B değişimi ${b}→${y}`;
   if (k === "change") return `Değişim ${b}→${y}${ratio ? unit : ""}`;
   if (k === "prevChange" && ratio) return `${y - 1}→${y}${unit}`;
   if (k === "changePct") return `Değişim ${b}→${y} %`;
@@ -258,6 +279,18 @@ function render() {
     const pc = state.indicator === "u17p" ? "%" : "";
     cards = `<span><b>${pc}${shown == null ? "–" : num(shown, 1)}</b>seçilenlerin nüfus ağırlıklı ortalaması</span>
       <span><b>${pc}${tr == null ? "–" : num(tr, 1)}</b>Türkiye ${y} (illerin ağırlıklı ortalaması)</span>`;
+  }
+  if (state.indicator2) {
+    const pr = list.filter((r) => r.value != null && r.b != null);
+    const n = pr.length;
+    let rho = null;
+    if (n > 2) {
+      const mx = pr.reduce((a, r) => a + r.value, 0) / n, my = pr.reduce((a, r) => a + r.b, 0) / n;
+      let sxy = 0, sxx = 0, syy = 0;
+      for (const r of pr) { sxy += (r.value - mx) * (r.b - my); sxx += (r.value - mx) ** 2; syy += (r.b - my) ** 2; }
+      rho = sxx && syy ? sxy / Math.sqrt(sxx * syy) : null;
+    }
+    cards += `<span><b>${rho == null ? "–" : num(rho, 2)}</b>A–B korelasyonu (${fmt.format(n)} birim)</span>`;
   }
   $("summary").innerHTML = `<span><b>${fmt.format(list.length)}</b>birim</span>` + cards +
     (dropped ? `<span><b>${fmt.format(dropped)}</b>sıralamaya girmedi</span>` : "");
@@ -297,6 +330,8 @@ const NOTES = [
   "Küçük mahallelerde 0–17 yaş satırı gizlidir: toplam birkaç kişi eksik olabilir, 0–17 göstergelerinde o mahalle boş kalır.",
   "Seçmen yaşı: YSK seçmen profilleri (2011, 2015 Kasım, 2018, 2023), il ve ilçe; yaş grupları 18–24 … 75+. Yaşam olayları yalnız il düzeyinde: anne yaşı ve ölüm yaşı 2009–2025 yaş gruplarından (ortanca ölüm yaşı bebek ölümlerinden etkilenmez, ortalama etkilenir), ilk evlenme ve evlenme yaşı TÜİK'in yayımladığı değer. Boşanma yaşı depoda yok.",
   "Yaş: il ortanca yaşı TÜİK'in kendi değeri; ilçede 5'li yaş gruplarından hesap (2007–2025). Mahalle, köy ve belde: 2024 Monte Carlo (ortanca) ve Endeksa (ortalama); mahallelerde diğer yıllar model tahminidir, ⓘ'de yazar.",
+  "Gösterge B seçilince tabloya ikinci bir sütun gelir ve özet kartında A ile B'nin korelasyonu (Pearson, gösterilen birimler üzerinden) yazar.",
+  "Büyükşehir dışındaki köylerde yaş kırılımı olmadığı için 0–17 ve yaş göstergelerinde bu köyler (yaklaşık 18 bin) sıralamaya girmez; 2024 yaşları yalnız Endeksa'da kaydı olan köylerde vardır.",
   "0–17 yaş: mahallede TÜİK'in 0–17 satırı; il ve ilçede 5'li yaş gruplarından (15–19'un 3/5'i). Büyükşehir dışı köylerde yaş kırılımı yoktur. Oran göstergelerinde pay sütunları kapanır, değişim puan olarak verilir.",
   "Nüfus eşiği seçili yıla uygulanır; \"en az\" karşılaştırma yılında da aranır, küçük tabandan doğan büyük yüzdeleri eler.",
   "İlçe içi pay, ilçenin henüz kurulmadığı yıllarda (Kayapınar, Ataşehir 2007) bugünkü sınırlarıyla, yani bugünkü mahallelerinin o yılki toplamına göre hesaplanır.",
@@ -331,11 +366,10 @@ function wireHead() {
 
 function colPanel() {
   const on = visible || analysis().cols;
-  $("colPanel").innerHTML = Object.keys(COLS).filter((k) => !COLS[k].fixed && !COLS[k].always).map((k) => {
-    const c = COLS[k], off = !usable(k);
-    const why = c.base && state.base == null ? " — karşılaştırma yılı seçin" : off ? " — bu düzeyde yok" : "";
-    return `<label class="${off ? "dis" : ""}"><input type="checkbox" data-k="${k}" ${on.includes(k) ? "checked" : ""} ${off ? "disabled" : ""}>${c.t}${why}</label>`;
-  }).join("") + `<label><input type="checkbox" id="colDefault" ${visible ? "" : "checked"}>Görünüme göre (varsayılan)</label>`;
+  $("colPanel").innerHTML = Object.keys(COLS).filter((k) => !COLS[k].fixed && !COLS[k].always && !["value", "pop", "b"].includes(k) && usable(k)).map((k) => {
+    const c = COLS[k];
+    return `<label><input type="checkbox" data-k="${k}" ${on.includes(k) ? "checked" : ""}>${c.t}</label>`;
+  }).join("") + (state.base == null ? `<label class="dis">Değişim sütunları için karşılaştırma yılı seçin</label>` : "") + `<label><input type="checkbox" id="colDefault" ${visible ? "" : "checked"}>Görünüme göre (varsayılan)</label>`;
   $("colPanel").querySelectorAll("input[data-k]").forEach((cb) => cb.onchange = () => {
     const cur = new Set(visible || analysis().cols);
     cb.checked ? cur.add(cb.dataset.k) : cur.delete(cb.dataset.k);
@@ -386,7 +420,7 @@ function setAnalysis(key) {
 
 async function main() {
   $("summary").textContent = "Veri yükleniyor…";
-  DATA = await (await fetch("../public/nufus_birimler.json?v=9")).json();
+  DATA = await (await fetch("../public/nufus_birimler.json?v=11")).json();
   DATA.units.forEach((u, i) => UIDX.set(u, i));
   totals();
   $("level").innerHTML = LEVELS.map((l) => `<button data-k="${l.key}" class="${l.key === state.level ? "on" : ""}">${l.label}</button>`).join("");
@@ -400,6 +434,8 @@ async function main() {
   });
   const groups = [...new Set(INDICATORS.map((x) => x.group))];
   $("indicator").innerHTML = groups.map((g) => `<optgroup label="${g}">` + INDICATORS.filter((x) => x.group === g).map((a) => `<option value="${a.key}">${a.label}</option>`).join("") + "</optgroup>").join("");
+  $("indicator2").innerHTML = '<option value="">—</option>' + groups.map((g) => `<optgroup label="${g}">` + INDICATORS.filter((x) => x.group === g).map((a) => `<option value="${a.key}">${a.label}</option>`).join("") + "</optgroup>").join("");
+  $("indicator2").onchange = (e) => { state.indicator2 = e.target.value; colPanel(); render(); };
   $("indicator").onchange = (e) => {
     state.indicator = e.target.value; state.limit = PAGE;
     // an indicator published only for some levels takes the page to the finest of them
