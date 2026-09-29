@@ -20,6 +20,14 @@ let DATA, TR = [], PROV = [], DIST = [];
 
 const $ = (id) => document.getElementById(id);
 
+// column widths: narrow defaults, user drags a header edge; kept per column key in this
+// browser only (a convenience -- the page works the same when storage is unavailable)
+const WIDTH = { rank: 52, name: 190, prov: 120, dist: 120, type: 80, value: 110, trShare: 150, provShare: 100, distShare: 105, change: 110, changePct: 90 };
+let userWidth = {};
+try { userWidth = JSON.parse(localStorage.getItem("nufus.widths") || "{}"); } catch (e) { userWidth = {}; }
+const saveWidths = () => { try { localStorage.setItem("nufus.widths", JSON.stringify(userWidth)); } catch (e) { /* storage off */ } };
+const widthOf = (k) => userWidth[k] || WIDTH[k] || 100;
+
 function valueAt(u, yi) {
   const i = yi - u[3];
   return i >= 0 && i < u[4].length ? u[4][i] : null;
@@ -95,14 +103,16 @@ function columns() {
 function render() {
   const list = rows();
   const cols = columns();
-  $("head").innerHTML = cols.map((c) => `<th data-k="${c.k}" class="${c.num ? "num" : ""} ${state.sort === c.k ? "sorted" + (state.asc ? " asc" : "") : ""}">${c.t}</th>`).join("");
+  $("cols").innerHTML = cols.map((c) => `<col data-k="${c.k}" style="width:${widthOf(c.k)}px">`).join("");
+  $("head").innerHTML = cols.map((c) => `<th data-k="${c.k}" title="${c.t}" class="${c.num ? "num" : ""} ${state.sort === c.k ? "sorted" + (state.asc ? " asc" : "") : ""}">${c.t}<span class="grip"></span></th>`).join("");
   const maxShare = Math.max(...list.slice(0, state.limit).map((r) => r.trShare), 0) || 1;
   const html = [];
   list.slice(0, state.limit).forEach((r, i) => {
     html.push("<tr>" + cols.map((c) => {
-      if (c.k === "rank") return `<td class="num">${i + 1}</td>`;
+      if (c.k === "rank") return `<td class="num rank">${i + 1}</td>`;
+      if (c.k === "name") return `<td class="name" title="${r.name}">${r.name}</td>`;
       if (c.k === "value") return `<td class="num">${fmt.format(r.value)}</td>`;
-      if (c.k === "trShare") return `<td class="num">${pct(r.trShare, r.trShare < 0.01 ? 4 : 2)}<span class="bar" style="width:${Math.round((r.trShare / maxShare) * 60)}px"></span></td>`;
+      if (c.k === "trShare") return `<td class="num"><div class="cell-bar">${pct(r.trShare, r.trShare < 0.01 ? 4 : 2)}<span class="bar" style="width:${Math.max(2, Math.round((r.trShare / maxShare) * 50))}px"></span></div></td>`;
       if (c.k === "change") return `<td class="num ${r.change > 0 ? "pos" : r.change < 0 ? "neg" : ""}">${r.change == null ? "" : (r.change > 0 ? "+" : "") + fmt.format(r.change)}</td>`;
       if (c.k === "changePct") return `<td class="num ${r.changePct > 0 ? "pos" : r.changePct < 0 ? "neg" : ""}">${r.changePct == null ? "" : (r.changePct > 0 ? "+" : "") + pct(r.changePct, 1)}</td>`;
       if (c.num) return `<td class="num">${pct(r[c.k])}</td>`;
@@ -112,13 +122,23 @@ function render() {
   $("body").innerHTML = html.join("");
   const sum = list.reduce((a, r) => a + r.value, 0);
   const y = DATA.years[state.year];
-  $("summary").innerHTML = `<span><b>${fmt.format(list.length)}</b> birim</span>
-    <span>Toplam <b>${fmt.format(sum)}</b></span>
-    <span>Türkiye payı <b>%${pct((sum / TR[state.year]) * 100, 1)}</b></span>
-    <span>Türkiye ${y}: <b>${fmt.format(TR[state.year])}</b></span>`;
+  $("summary").innerHTML = `<span><b>${fmt.format(list.length)}</b>birim</span>
+    <span><b>${fmt.format(sum)}</b>seçili toplam nüfus</span>
+    <span><b>%${pct((sum / TR[state.year]) * 100, 1)}</b>Türkiye payı</span>
+    <span><b>${fmt.format(TR[state.year])}</b>Türkiye ${y}</span>`;
   $("more").innerHTML = list.length > state.limit ? `<button id="moreBtn">${fmt.format(Math.min(PAGE, list.length - state.limit))} satır daha göster (${fmt.format(list.length - state.limit)} kaldı)</button>` : "";
   if ($("moreBtn")) $("moreBtn").onclick = () => { state.limit += PAGE; render(); };
-  $("head").querySelectorAll("th").forEach((th) => th.onclick = () => {
+  $("head").querySelectorAll(".grip").forEach((g) => g.onmousedown = (ev) => {
+    ev.preventDefault(); ev.stopPropagation();
+    const k = g.parentElement.dataset.k, col = $("cols").querySelector(`col[data-k="${k}"]`);
+    const x0 = ev.clientX, w0 = widthOf(k);
+    g.classList.add("drag");
+    const move = (e) => { userWidth[k] = Math.max(40, w0 + e.clientX - x0); col.style.width = userWidth[k] + "px"; };
+    const up = () => { g.classList.remove("drag"); document.removeEventListener("mousemove", move); document.removeEventListener("mouseup", up); saveWidths(); };
+    document.addEventListener("mousemove", move); document.addEventListener("mouseup", up);
+  });
+  $("head").querySelectorAll("th").forEach((th) => th.onclick = (ev) => {
+    if (ev.target.classList.contains("grip")) return;
     const k = th.dataset.k; if (k === "rank") return;
     if (state.sort === k) state.asc = !state.asc; else { state.sort = k; state.asc = ["name", "prov", "dist", "type"].includes(k); }
     render();
@@ -166,6 +186,7 @@ async function main() {
   $("year").onchange = (e) => { state.year = +e.target.value; render(); };
   $("base").onchange = (e) => { state.base = e.target.value === "" ? null : +e.target.value; render(); };
   $("q").oninput = (e) => { state.q = e.target.value; state.limit = PAGE; render(); };
+  $("resetCols").onclick = () => { userWidth = {}; saveWidths(); render(); };
   fillDistricts(); fillYears(); render();
 }
 main();
