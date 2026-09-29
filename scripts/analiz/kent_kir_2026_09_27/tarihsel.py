@@ -156,13 +156,21 @@ OLD_TO_NEW = {"TR-16-002-11355": "140855", "TR-16-002-11356": "140853",
               "TR-16-001-7391": "183605", "TR-16-005-7484": "183781"}
 # villages merged into another village, target unnamed; a village either way (user)
 OLD_VILLAGE = {"TR-16-001-7362", "TR-16-008-7662",  # Büyükorhan Çökene, Keles Domalı
-               "TR-16-002-11357", "TR-16-005-7532"}  # Gemlik Memireis, İnegöl Mesruriye
+               "TR-16-002-11357", "TR-16-005-7532",  # Gemlik Memireis, İnegöl Mesruriye
+               "TR-06-004-2476", "TR-06-004-2469",  # Bala Büyükbıyık, Altınçanak
+               "TR-06-014-2740", "TR-06-018-2878",  # Haymana Karaömerli, Kızılcahamam Yanık
+               "TR-06-009-2069"}  # Elmadağ Bağbahçe Yaylaevleri (summer site; rural when in doubt)
+# quarters merged away whose class is known without a target (user, 2026-09-29)
+OLD_CLASS = {"TR-06-019-1784": "merkez",  # Mamak PTT Evleri
+             "TR-06-023-1836": "osb"}  # Sincan OSB
 
 
 def fixed(r):
     did, code = r["area_id"].rsplit("-", 1)
     if r["area_id"] in OLD_VILLAGE:
         return "kir"
+    if r["area_id"] in OLD_CLASS:
+        return OLD_CLASS[r["area_id"]]
     code = OLD_TO_NEW.get(r["area_id"], code)
     if code in by_code:
         return by_code[code]
