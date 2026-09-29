@@ -410,6 +410,15 @@ function fillYears() {
   $("base").innerHTML = '<option value="">—</option>' + ys.map((i) => `<option value="${i}" ${i === state.base ? "selected" : ""}>${DATA.years[i]}</option>`).join("");
 }
 
+// B lists only what the current level has; a B the level lacks is dropped
+function fillB() {
+  const ok = INDICATORS.filter((x) => !x.lv || x.lv.includes(state.level));
+  if (state.indicator2 && !ok.some((x) => x.key === state.indicator2)) state.indicator2 = "";
+  const groups = [...new Set(ok.map((x) => x.group))];
+  $("indicator2").innerHTML = '<option value="">—</option>' + groups.map((g) => `<optgroup label="${g}">` +
+    ok.filter((x) => x.group === g).map((a) => `<option value="${a.key}" ${a.key === state.indicator2 ? "selected" : ""}>${a.label}</option>`).join("") + "</optgroup>").join("");
+}
+
 function setAnalysis(key) {
   state.view = key;
   $("view").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x.dataset.k === key));
@@ -430,13 +439,14 @@ async function main() {
     state.level = b.dataset.k; state.limit = PAGE;
     $("level").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b));
     if (ind().lv && !ind().lv.includes(state.level)) { state.indicator = "total"; $("indicator").value = "total"; totals(); }
+    fillB();
     fillYears(); fillSettlements();
     state.sort = usable(analysis().sort) ? analysis().sort : "value";
     colPanel(); render();
   });
   const groups = [...new Set(INDICATORS.map((x) => x.group))];
   $("indicator").innerHTML = groups.map((g) => `<optgroup label="${g}">` + INDICATORS.filter((x) => x.group === g).map((a) => `<option value="${a.key}">${a.label}</option>`).join("") + "</optgroup>").join("");
-  $("indicator2").innerHTML = '<option value="">—</option>' + groups.map((g) => `<optgroup label="${g}">` + INDICATORS.filter((x) => x.group === g).map((a) => `<option value="${a.key}">${a.label}</option>`).join("") + "</optgroup>").join("");
+  fillB();
   $("indicator2").onchange = (e) => { state.indicator2 = e.target.value; colPanel(); render(); };
   $("indicator").onchange = (e) => {
     state.indicator = e.target.value; state.limit = PAGE;
@@ -445,7 +455,7 @@ async function main() {
     if (lvs && !lvs.includes(state.level)) {
       state.level = lvs[lvs.length - 1];
       $("level").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x.dataset.k === state.level));
-      fillYears(); fillSettlements();
+      fillYears(); fillSettlements(); fillB();
     }
     // a new indicator opens on its latest year (voter profiles end in 2023, the rest in 2025)
     const lv = LEVELS.find((l) => l.key === state.level).levels;
