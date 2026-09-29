@@ -11,6 +11,7 @@ settlement >= 5,000 = urban belde; 2,000-5,000 = kasaba (rural); OSB left out.
 usage: birlestir.py 16 <kent_il output dir> <out dir>
 """
 
+import csv
 import sys
 from pathlib import Path
 import polars as pl
@@ -708,6 +709,11 @@ ELLE = {
     # Şereflikoçhisar: AATOPLU 2015
     "TR-06-024-98870": ("merkez", "elle: AATOPLU mahalle (Şereflikoçhisar Mehmet Akif Ersoy)"),
 }
+# bulk decisions for the other provinces, written by aatoplu_onay.py; a hand entry above wins
+_bulk = Path(__file__).parent / "elle_aatoplu.csv"
+if _bulk.exists():
+    for _r in csv.DictReader(_bulk.open(encoding="utf-8")):
+        ELLE.setdefault(_r["area_id"], (_r["sinif"], _r["not"]))
 # official split, kept beside the building rule. Outside the 30 metropolitan provinces the
 # legal categories still exist in 2024: il/ilçe merkezi (the district's own municipality) =
 # şehir, other municipalities = belde, villages = köy. TÜİK counts only şehir as urban.
