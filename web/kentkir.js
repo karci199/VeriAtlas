@@ -93,7 +93,10 @@ function status(t, cls) { const s = $("save"); s.textContent = t; s.className = 
 function buildDrop(el, title, items, sel, onChange) {
   const btn = el.querySelector("button");
   let panel = null;
-  const label = () => { btn.textContent = sel.size === 0 ? `${title}: tümü` : sel.size === 1 ? [...sel][0] : `${title}: ${sel.size} seçili`; };
+  const label = () => {
+    const all = items().length;
+    btn.textContent = sel.size >= all ? `${title}: tümü` : sel.size === 0 ? `${title}: hiçbiri` : sel.size === 1 ? [...sel][0] : `${title}: ${sel.size} / ${all}`;
+  };
   const close = (ev) => { if (panel && !el.contains(ev.target)) { panel.remove(); panel = null; document.removeEventListener("mousedown", close); } };
   btn.onclick = () => {
     if (panel) { panel.remove(); panel = null; return; }
@@ -137,8 +140,8 @@ function chips(el, items, set, onChange) {
 
 // rows inside the province/district selection (and the drill-down focus)
 function inScope(r) {
-  if (selIl.size && !selIl.has(get(r, "il"))) return false;
-  if (selIlce.size && !selIlce.has(ilceKey(r))) return false;
+  if (!selIl.has(get(r, "il"))) return false;
+  if (!selIlce.has(ilceKey(r))) return false;
   if (focus && get(r, focus.k) !== focus.v) return false;
   return true;
 }
@@ -197,8 +200,9 @@ function summaryTable() {
 }
 function drill(key) {
   const [il, ilce, v] = key.split("\u0001");
-  if (tab === "il") { selIl.clear(); selIl.add(il); selIlce.clear(); drawIl(); drawIlce(); setTab("ilce"); return; }
-  selIl.clear(); selIl.add(il); selIlce.clear(); selIlce.add(`${il} · ${ilce}`); drawIl(); drawIlce();
+  selIl.clear(); selIl.add(il); resetIlce();
+  if (tab === "il") { drawIl(); drawIlce(); setTab("ilce"); return; }
+  selIlce.clear(); selIlce.add(`${il} · ${ilce}`); drawIl(); drawIlce();
   focus = tab === "yer" || tab === "semt" ? { k: tab, v, label: `${tab === "yer" ? "Yerleşim" : "Semt"}: ${v}` } : null;
   setTab("mah");
 }
@@ -337,6 +341,8 @@ function refresh() {
   tab === "mah" ? mahTable() : summaryTable();
 }
 let drawIl = () => {}, drawIlce = () => {};
+// a change of provinces selects every district of the selected provinces
+function resetIlce() { selIlce.clear(); for (const r of rows) if (selIl.has(get(r, "il"))) selIlce.add(ilceKey(r)); }
 
 function wire() {
   $("tabs").onclick = (ev) => { const t = ev.target.dataset.t; if (t) setTab(t); };
@@ -401,11 +407,12 @@ async function main() {
 
   $("tabs").innerHTML = Object.entries(TABS).map(([k, t]) => `<button data-t="${k}">${t}</button>`).join("");
   const count = (fn) => { const m = new Map(); for (const r of rows) { const k = fn(r); if (k) m.set(k, (m.get(k) || 0) + 1); } return [...m.entries()].sort((a, b) => a[0].localeCompare(b[0], "tr")); };
+  for (const r of rows) { selIl.add(get(r, "il")); selIlce.add(ilceKey(r)); }
   drawIl = buildDrop($("dIl"), "İl", () => count((r) => get(r, "il")), selIl, () => {
-    for (const k of [...selIlce]) if (selIl.size && !selIl.has(k.split(" · ")[0])) selIlce.delete(k);
+    resetIlce();
     drawIlce(); limit = PAGE; refresh();
   });
-  drawIlce = buildDrop($("dIlce"), "İlçe", () => count((r) => (!selIl.size || selIl.has(get(r, "il")) ? ilceKey(r) : null)), selIlce, () => { limit = PAGE; refresh(); });
+  drawIlce = buildDrop($("dIlce"), "İlçe", () => count((r) => (selIl.has(get(r, "il")) ? ilceKey(r) : null)), selIlce, () => { limit = PAGE; refresh(); });
   chips($("cBs"), BANDS, f.bs, () => { limit = PAGE; mahTable(); });
   chips($("cIh"), [["uyumlu", "uyumlu", "#6cc38a"], ["hafif", "hafif", "#e8b64c"], ["cok", "çok", "#ef7d73"]], f.ih, () => { limit = PAGE; mahTable(); });
   chips($("cOn"), CLASSES.map((c) => [c, c]), f.on, () => { limit = PAGE; mahTable(); });
