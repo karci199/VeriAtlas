@@ -109,7 +109,7 @@ def label(il, district, name, eski=None):
     return None
 
 
-plates = sys.argv[1:] or sorted(p.name for p in BASE.iterdir() if (p / f"kent_{p.name}_son.csv").exists())
+plates = [a for a in sys.argv[1:] if not a.startswith("--")] or sorted(p.name for p in BASE.iterdir() if (p / f"kent_{p.name}_son.csv").exists())
 
 # village texture for a 2015 village the buildings now call urban (Ankara precedents: Çubuk's
 # Sünlü/Güldarpı stayed rural -- more buildings than dwellings, shrinking; Galaba, Yuvaköy
@@ -211,7 +211,13 @@ for p in plates:
         elif lab and not ok and r["pop"] >= 5000:
             left.append({**row, "atanan": r["son_sinif"], "neden": "ihtilafsız ama AATOPLU çelişiyor (5.000+)"})
 
-pl.DataFrame(approved).rename({"not_": "not"}).write_csv(OUT)
+# idempotent: once the provinces are rerun, son_sinif already carries these decisions and the
+# rules would see different inputs; an earlier decision stands unless --yeniden is given
+new = pl.DataFrame(approved).rename({"not_": "not"})
+if OUT.exists() and "--yeniden" not in sys.argv:
+    old = pl.read_csv(OUT, infer_schema_length=0)
+    new = pl.concat([old, new.filter(~pl.col("area_id").is_in(old["area_id"].to_list()))])
+new.write_csv(OUT)
 k = pl.DataFrame(left)
 k.write_csv(BASE / "_aatoplu_kalan.csv")
 print("onaylanan:", len(approved), "| kalan:", k.height)
