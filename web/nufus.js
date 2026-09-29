@@ -38,7 +38,14 @@ const COLS = {
 };
 // what is counted; each unit carries one series per indicator. Only total population so far --
 // under-18s, voters, election results join this list and every column works for them
-const INDICATORS = [{ key: "nufus", label: "Toplam nüfus" }];
+// kind "count" adds up (shares, % change work); kind "ratio" does not (change in points only)
+const INDICATORS = [
+  { group: "Nüfus", key: "total", label: "Toplam nüfus", kind: "count" },
+  { group: "Nüfus", key: "u17", label: "0–17 yaş nüfusu", kind: "count" },
+  { group: "Nüfus", key: "a18", label: "18 yaş ve üstü", kind: "count" },
+  { group: "Nüfus", key: "u17p", label: "0–17 yaş payı %", kind: "ratio" },
+];
+const COUNT_ONLY = ["trShare", "provShare", "distShare", "changePct", "cagr", "prevChangePct", "trShareDelta", "provShareDelta", "distShareDelta"];
 // a view is a ready column set with its natural ranking; any header still sorts, and the
 // Sütunlar menu adds or drops columns on top of it
 const VIEWS = [
@@ -58,7 +65,7 @@ const store = {
   get(k, dflt) { try { const v = localStorage.getItem("nufus." + k); return v == null ? dflt : JSON.parse(v); } catch (e) { return dflt; } },
   set(k, v) { try { localStorage.setItem("nufus." + k, JSON.stringify(v)); } catch (e) { /* storage off */ } },
 };
-const state = { level: "ilce", view: "temel", indicator: "nufus", prov: -1, dist: -1, settle: -1, year: null, base: null, q: "",
+const state = { level: "ilce", view: "temel", indicator: "total", prov: -1, dist: -1, settle: -1, year: null, base: null, q: "",
                 sort: "value", asc: false, limit: PAGE, min: null, max: null };
 let visible = store.get("cols", null);
 let userWidth = store.get("widths", {});
@@ -67,40 +74,62 @@ let DATA, TR = [], PROV = [], DIST = [];
 const widthOf = (k) => userWidth[k] || WIDTH[k] || 110;
 const analysis = () => VIEWS.find((a) => a.key === state.view);
 
+// total population: filters, the population floor and "does the unit exist that year"
 function valueAt(u, yi) {
   const i = yi - u[3];
   return i >= 0 && i < u[4].length ? u[4][i] : null;
 }
+function u17At(u, yi) {
+  const s = u[6];
+  if (!s) return null;
+  const i = yi - s[0];
+  return i >= 0 && i < s[1].length ? s[1][i] : null;
+}
+const ind = () => INDICATORS.find((x) => x.key === state.indicator);
+// the chosen indicator's value
+function indAt(u, yi, key = state.indicator) {
+  const t = valueAt(u, yi);
+  if (key === "total") return t;
+  const c = u17At(u, yi);
+  if (c == null || t == null) return null;
+  if (key === "u17") return c;
+  if (key === "a18") return t - c;
+  if (key === "u17p") return t ? (c / t) * 100 : null;
+  return null;
+}
 
+// share bases for the chosen count indicator
 function totals() {
   const n = DATA.years.length;
   TR = new Array(n).fill(0);
   PROV = DATA.provinces.map(() => new Array(n).fill(null));
   DIST = DATA.districts.map(() => new Array(n).fill(null));
+  if (ind().kind !== "count") return;
   for (const u of DATA.units) for (let yi = 0; yi < n; yi++) {
-    const v = valueAt(u, yi);
+    const v = indAt(u, yi);
     if (v == null) continue;
     if (u[0] === "il") { TR[yi] += v; PROV[-1 - u[2]][yi] = v; }
     if (u[0] === "ilce") DIST[u[2]][yi] = v;
   }
   // a district not yet founded that year: its own quarters summed, i.e. today's boundaries
-  for (const [d, [first, vals]] of Object.entries(DATA.district_cb || {}))
-    vals.forEach((v, i) => { if (DIST[+d][first + i] == null && v != null) DIST[+d][first + i] = v; });
+  if (state.indicator === "total")
+    for (const [d, [first, vals]] of Object.entries(DATA.district_cb || {}))
+      vals.forEach((v, i) => { if (DIST[+d][first + i] == null && v != null) DIST[+d][first + i] = v; });
 }
 
 const provOf = (u) => (u[2] < 0 ? -1 - u[2] : DATA.districts[u[2]][2]);
 const share = (v, tot) => (v == null || !tot ? null : (v / tot) * 100);
 
 function measures(u, yi, bi) {
-  const p = provOf(u), v = valueAt(u, yi);
+  const p = provOf(u), v = indAt(u, yi);
   const inProv = u[0] !== "il", inDist = u[0] === "belde" || u[0] === "mahalle" || u[0] === "koy";
   const m = { value: v, trShare: share(v, TR[yi]),
     provShare: inProv ? share(v, PROV[p][yi]) : null, distShare: inDist ? share(v, DIST[u[2]][yi]) : null };
-  const pv = yi > 0 ? valueAt(u, yi - 1) : null;
+  const pv = yi > 0 ? indAt(u, yi - 1) : null;
   m.prevChange = pv == null ? null : v - pv;
   m.prevChangePct = pv ? ((v - pv) / pv) * 100 : null;
   if (bi != null) {
-    const b = valueAt(u, bi);
+    const b = indAt(u, bi);
     m.isNew = b == null && u[3] > bi;
     m.change = b == null ? null : v - b;
     m.changePct = b ? ((v - b) / b) * 100 : null;
@@ -114,7 +143,7 @@ function measures(u, yi, bi) {
   return m;
 }
 
-const usable = (k) => { const c = COLS[k]; return !(c.lv && !c.lv.includes(state.level)) && !(c.base && state.base == null); };
+const usable = (k) => { const c = COLS[k]; return !(c.lv && !c.lv.includes(state.level)) && !(c.base && state.base == null) && !(ind().kind === "ratio" && COUNT_ONLY.includes(k)); };
 
 function shownCols() {
   const on = visible || analysis().cols;
@@ -141,7 +170,7 @@ function rows() {
       const b0 = state.base != null ? valueAt(u, state.base) : null;
       if (v0 < state.min || (b0 != null && b0 < state.min)) continue;
     }
-    const r = { ...measures(u, state.year, state.base), lvl: u[0], did: u[2], name: u[1], type: TYPE_LABEL[u[0]], prov: DATA.provinces[p][1],
+    const r = { ...measures(u, state.year, state.base), u, lvl: u[0], did: u[2], name: u[1], type: TYPE_LABEL[u[0]], prov: DATA.provinces[p][1],
       dist: u[2] >= 0 ? DATA.districts[u[2]][1] : "", settle: u[5] >= 0 ? DATA.settlements[u[5]] : "",
       first: DATA.years[u[3]] };
     // no value for the ranking column: out of the ranking, not at its bottom
@@ -165,7 +194,8 @@ function cell(k, r, i, maxShare) {
   if (!c.num) return `<td title="${r[k] ?? ""}">${r[k] ?? ""}</td>`;
   const x = r[k];
   if (x == null) return `<td class="num"></td>`;
-  const txt = c.d == null ? fmt.format(x) : num(x, k === "trShare" && x < 0.01 ? 4 : c.d);
+  const ratio = ind().kind === "ratio" && ["value", "change", "prevChange"].includes(k);
+  const txt = ratio ? num(x, 1) : c.d == null ? fmt.format(Math.round(x)) : num(x, k === "trShare" && x < 0.01 ? 4 : c.d);
   const cls = c.sign ? (x > 0 ? "pos" : x < 0 ? "neg" : "") : "";
   const signed = c.sign && x > 0 ? "+" + txt : txt;
   if (c.bar) return `<td class="num"><div class="cell-bar">${signed}<span class="bar" style="width:${Math.max(2, Math.round((x / maxShare) * 50))}px"></span></div></td>`;
@@ -174,8 +204,10 @@ function cell(k, r, i, maxShare) {
 
 function title(k) {
   const y = DATA.years[state.year], b = state.base != null ? DATA.years[state.base] : "";
-  if (k === "value") return `Nüfus ${y}`;
-  if (k === "change") return `Değişim ${b}→${y}`;
+  const ratio = ind().kind === "ratio";
+  if (k === "value") return `${ind().label} ${y}`;
+  if (k === "change") return `Değişim ${b}→${y}${ratio ? " (puan)" : ""}`;
+  if (k === "prevChange" && ratio) return `${y - 1}→${y} (puan)`;
   if (k === "changePct") return `Değişim ${b}→${y} %`;
   if (k === "prevChange") return `${y - 1}→${y}`;
   if (k === "prevChangePct") return `${y - 1}→${y} %`;
@@ -191,11 +223,21 @@ function render() {
   const page = list.slice(0, state.limit);
   const maxShare = Math.max(...page.map((r) => r.trShare || 0), 0) || 1;
   $("body").innerHTML = page.map((r, i) => "<tr>" + cols.map((k) => cell(k, r, i, maxShare)).join("") + "</tr>").join("");
-  const sum = list.reduce((a, r) => a + r.value, 0), y = DATA.years[state.year];
-  $("summary").innerHTML = `<span><b>${fmt.format(list.length)}</b>birim</span>
-    <span><b>${fmt.format(sum)}</b>seçili toplam nüfus</span>
-    <span><b>%${num((sum / TR[state.year]) * 100, 1)}</b>Türkiye payı</span>
-    <span><b>${fmt.format(TR[state.year])}</b>Türkiye ${y}</span>` +
+  const y = DATA.years[state.year];
+  let cards;
+  if (ind().kind === "count") {
+    const sum = list.reduce((a, r) => a + r.value, 0);
+    cards = `<span><b>${fmt.format(sum)}</b>seçili toplam (${ind().label.toLocaleLowerCase("tr-TR")})</span>
+      <span><b>%${num((sum / TR[state.year]) * 100, 1)}</b>Türkiye payı</span>
+      <span><b>${fmt.format(TR[state.year])}</b>Türkiye ${y}</span>`;
+  } else {
+    // a ratio is summarised population-weighted, over the rows shown and over Türkiye
+    const w = (units) => { let a = 0, t = 0; for (const u of units) { const c = u17At(u, state.year), v = valueAt(u, state.year); if (c != null && v) { a += c; t += v; } } return t ? (a / t) * 100 : null; };
+    const shown = w(list.map((r) => r.u)), tr = w(DATA.units.filter((u) => u[0] === "il"));
+    cards = `<span><b>%${shown == null ? "–" : num(shown, 1)}</b>seçilenlerde (nüfus ağırlıklı)</span>
+      <span><b>%${tr == null ? "–" : num(tr, 1)}</b>Türkiye ${y}</span>`;
+  }
+  $("summary").innerHTML = `<span><b>${fmt.format(list.length)}</b>birim</span>` + cards +
     (dropped ? `<span><b>${fmt.format(dropped)}</b>sıralamaya girmedi</span>` : "");
   $("more").innerHTML = list.length > state.limit ? `<button id="moreBtn">${fmt.format(Math.min(PAGE, list.length - state.limit))} satır daha (${fmt.format(list.length - state.limit)} kaldı)</button>` : "";
   if ($("moreBtn")) $("moreBtn").onclick = () => { state.limit += PAGE; render(); };
@@ -214,7 +256,8 @@ const NOTES = [
   "Mahalle ve köy kimlikleri 2013'te değişti: 2007–2012 ile 2013–2025 aynı yer için iki ayrı satır olabilir; eski kimliklerin yerleşimi boştur. Büyük yüzdeler gerçek büyüme de mahalle sınırı değişikliği de olabilir.",
   "Yerleşim: il/ilçe merkezinde semt, köyler için \"<ilçe> Köyleri\", beldeler resmî belediye adıyla.",
   "Belde: resmî TÜİK statüsü, bugün belediyesi olan beldeler (yalnız büyükşehir dışındaki iller), 2007–2025, bugünkü mahalleleriyle. Beldenin mahalleleri Mahalle / köy düzeyinde de listelenir.",
-  "Küçük mahallelerde 0–17 yaş satırı gizlendiği için toplam birkaç kişi eksik olabilir.",
+  "Küçük mahallelerde 0–17 yaş satırı gizlidir: toplam birkaç kişi eksik olabilir, 0–17 göstergelerinde o mahalle boş kalır.",
+  "0–17 yaş: mahallede TÜİK'in 0–17 satırı; il ve ilçede 5'li yaş gruplarından (15–19'un 3/5'i). Büyükşehir dışı köylerde yaş kırılımı yoktur. Oran göstergelerinde pay sütunları kapanır, değişim puan olarak verilir.",
   "Nüfus eşiği seçili yıla uygulanır; \"en az\" karşılaştırma yılında da aranır, küçük tabandan doğan büyük yüzdeleri eler.",
   "İlçe içi pay, ilçenin henüz kurulmadığı yıllarda (Kayapınar, Ataşehir 2007) bugünkü sınırlarıyla, yani bugünkü mahallelerinin o yılki toplamına göre hesaplanır.",
 ];
@@ -296,13 +339,14 @@ function setAnalysis(key) {
   $("view").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x.dataset.k === key));
   state.asc = false; state.limit = PAGE;
   fillYears();  // sets a comparison year first when the analysis needs one
-  state.sort = usable(analysis().sort) ? analysis().sort : "value";
+  // a ratio has no % change: the change view ranks by the change in points instead
+  state.sort = [analysis().sort, analysis().base ? "change" : "value", "value"].find(usable);
   colPanel(); render();
 }
 
 async function main() {
   $("summary").textContent = "Veri yükleniyor…";
-  DATA = await (await fetch("../public/nufus_birimler.json")).json();
+  DATA = await (await fetch("../public/nufus_birimler.json?v=7")).json();
   totals();
   $("level").innerHTML = LEVELS.map((l) => `<button data-k="${l.key}" class="${l.key === state.level ? "on" : ""}">${l.label}</button>`).join("");
   $("level").querySelectorAll("button").forEach((b) => b.onclick = () => {
@@ -312,8 +356,14 @@ async function main() {
     state.sort = usable(analysis().sort) ? analysis().sort : "value";
     colPanel(); render();
   });
-  $("indicator").innerHTML = INDICATORS.map((a) => `<option value="${a.key}">${a.label}</option>`).join("");
-  $("indicator").disabled = INDICATORS.length < 2;
+  const groups = [...new Set(INDICATORS.map((x) => x.group))];
+  $("indicator").innerHTML = groups.map((g) => `<optgroup label="${g}">` + INDICATORS.filter((x) => x.group === g).map((a) => `<option value="${a.key}">${a.label}</option>`).join("") + "</optgroup>").join("");
+  $("indicator").onchange = (e) => {
+    state.indicator = e.target.value; state.limit = PAGE;
+    totals();
+    state.sort = [analysis().sort, analysis().base ? "change" : "value", "value"].find(usable);
+    colPanel(); render();
+  };
   $("view").innerHTML = VIEWS.map((v) => `<button data-k="${v.key}" class="${v.key === state.view ? "on" : ""}">${v.label}</button>`).join("");
   $("view").querySelectorAll("button").forEach((b) => b.onclick = () => setAnalysis(b.dataset.k));
   $("prov").innerHTML = '<option value="-1">Tümü</option>' + DATA.provinces.map((p, i) => [p[1], i]).sort((a, b) => a[0].localeCompare(b[0], "tr")).map(([n, i]) => `<option value="${i}">${n}</option>`).join("");
