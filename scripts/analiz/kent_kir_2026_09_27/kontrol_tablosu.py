@@ -74,12 +74,13 @@ for f in BASE.glob("[0-9][0-9]/yas_mc_*_mahalle.csv"):
         if r["ortanca"]:
             MC[wh(r["area_id"])] = float(r["ortanca"])
 # area in km2 from the neighbourhood polygons (equal-area enough at this scale)
-AREA = {}
+AREA, XY = {}, {}  # km2 and a point inside the polygon (for a satellite link)
 for fn in Path("C:/veri/public/geo/neighbourhoods").glob("*.geojson"):
     for ft in json.loads(fn.read_text(encoding="utf-8"))["features"]:
         g = shapely.from_geojson(json.dumps(ft["geometry"]))
-        lat = shapely.centroid(g).y
-        AREA[wh(ft["properties"]["area_id"])] = g.area * 111.32 * 111.32 * math.cos(math.radians(lat))
+        c = shapely.point_on_surface(g)
+        AREA[wh(ft["properties"]["area_id"])] = g.area * 111.32 * 111.32 * math.cos(math.radians(c.y))
+        XY[wh(ft["properties"]["area_id"])] = (round(c.y, 5), round(c.x, 5))
 # 2023 general election per place
 PARTIES = [("AK PARTİ", "AK PARTİ", "FFFF00", "000000"), ("CHP", "CHP", "FF0000", "FFFFFF"),
            ("MHP", "MHP", "2F75B5", "FFFFFF"), ("İYİ PARTİ", "İYİ", "00B0F0", "000000"),
@@ -263,6 +264,7 @@ for p in plates:
         v["os"] = suggested_class(r["son_sinif"], settle)
         v["id"] = aid
         v["semt"] = SEMT.get(aid) or SEMT.get(wid)
+        v["xy"] = XY.get(wid)
         rows.append(v)
 
 # 2023 results to places, one to one. Candidates of a result: the place carrying its id and the
@@ -341,7 +343,7 @@ for v in rows:
 # compact: a column list and one array per row
 KEYS = ["id", "il", "ilce", "yer", "semt", "ad", "tur", "n", "n0", "g", "area", "dens", "er", "u17", "o65", "med", "uni",
         "hh", "hs", "dw", "bl", "kpb", "kpbl", "hpb", "prs", "yaz", "leke", "kur", "k23", "g23", "kn", *[p for p, _, _, _ in PARTIES], "win",
-        "stat", "aat", "deg", "bina", "oneri", "os", "ih", "bs", "pk", "oy", "kurum", "not"]
+        "stat", "aat", "deg", "bina", "oneri", "os", "ih", "bs", "pk", "oy", "kurum", "not", "xy"]
 for v in rows:
     v["oy"] = "".join(v["oy"][k] or "-" for k in ("TÜİK", "AATOPLU", "DEGURBA", "bina"))
 out = {"keys": KEYS, "parties": [[p, short, fill] for p, short, fill, _ in PARTIES],

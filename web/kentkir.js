@@ -38,8 +38,7 @@ const COLS = () => [
   ["il", "İl", "id", "t"], ["ilce", "İlçe", "id", "t"], ["yer", "Yerleşim", "id", "t"], ["semt", "Semt", "semt", "t"], ["ad", "Mahalle / köy", "id", "name"],
   ["n", "Nüfus", "temel", "n", 0], ["g", "2013→25 %", "temel", "g", 1], ["dens", "Kişi/km²", "temel", "n", 0],
   ["leke", "Merkez lekesi %", "temel", "n", 0], ["kpb", "Konut/bina", "temel", "n", 2],
-  ["src0", "TÜİK", "kaynak", "src"], ["src1", "AATOPLU", "kaynak", "src"], ["src2", "DEGURBA", "kaynak", "src"], ["src3", "Bina", "kaynak", "src"],
-  ["ih", "İhtilaf", "kaynak", "ih"], ["bs", "Belirsizlik", "kaynak", "bs", 1], ["os", "Öneri", "kaynak", "oneri"],
+  ["oy", "TÜİK · AAT · DEG · Bina", "kaynak", "srcs"], ["bs", "Belirsizlik", "kaynak", "bs", 1], ["os", "Öneri", "kaynak", "oneri"],
   ["not", "Otomatik not", "not", "note"],
   ["n0", "Nüfus 2013", "nufus", "n", 0], ["area", "Alan km²", "nufus", "n", 2], ["kur", "Kuruluş", "nufus", "c"], ["tur", "Tür", "nufus", "c"],
   ["er", "Erkek %", "yas", "n", 1], ["u17", "0-17 %", "yas", "n", 1], ["o65", "65+ %", "yas", "n", 1], ["med", "Ortanca yaş", "yas", "n", 1], ["uni", "Üniversiteli %", "yas", "n", 1],
@@ -182,7 +181,7 @@ function summaryTable() {
   const H = (k, t, cls = "num") => `<th data-s="${k}" class="${cls} ${sumSort === k ? `sorted ${sumAsc ? "asc" : ""}` : ""}">${t}</th>`;
   $("th").innerHTML = `<tr class="cols">${names.map((n, i) => i === names.length - 1 ? H("name", n, "") : `<th></th>`).join("")}
     ${H("n", "Nüfus")}${H("c", "Yer")}${H("pm", "Kent % (senin + öneri)")}${H("po", "Kent % (öneri)")}
-    ${H("pp", "Yerleşen nüfus %")}${H("lo", "Kent % aralığı")}${H("pu", "Belirsiz nüfus %")}
+    ${H("pp", "Yerleşen nüfus %")}${H("lo", "Kent % aralığı (0 ─ 100, çizgi: senin + öneri)", "")}${H("pu", "Belirsiz nüfus %")}
     ${H("pd", "Karar verilen nüfus %")}${H("hafif", "Hafif ihtilaf")}${H("cok", "Çok ihtilaf")}${H("open", "Bekleyen ihtilaf")}</tr>`;
   const bar = (v, cls) => `<span class="bar ${cls}" style="width:${Math.max(0, Math.min(100, v)) * 0.6}px"></span>`;
   $("tb").innerHTML = list.slice(0, limit).map((t) => {
@@ -191,7 +190,7 @@ function summaryTable() {
       <td class="num">${fmt(t.n)}</td><td class="num muted">${fmt(t.c)}</td>
       <td class="num"><span class="cell-bar">${bar(t.pm, "k")}<b>${fmt(t.pm, 1)}</b></span></td>
       <td class="num">${fmt(t.po, 1)}${t.done && Math.abs(d) >= 0.05 ? ` <span class="${d > 0 ? "up" : "down"}">${d > 0 ? "+" : ""}${fmt(d, 1)}</span>` : ""}</td>
-      <td class="num">${fmt(t.pp, 0)}</td><td class="num">${fmt(t.lo, 1)} – ${fmt(t.hi, 1)}</td><td class="num ${t.pu >= 30 ? "warn" : ""}">${fmt(t.pu, 1)}</td>
+      <td class="num">${fmt(t.pp, 0)}</td><td class="rng" title="alt ${fmt(t.lo, 1)} · üst ${fmt(t.hi, 1)} · senin + öneri ${fmt(t.pm, 1)}"><span class="track"><i class="band" style="left:${t.lo}%;width:${Math.max(0.8, t.hi - t.lo)}%"></i><i class="dot" style="left:${t.pm}%"></i></span>${fmt(t.lo, 0)}–${fmt(t.hi, 0)}</td><td class="num ${t.pu >= 30 ? "warn" : ""}">${fmt(t.pu, 1)}</td>
       <td class="num"><span class="cell-bar">${bar(t.pd, "d")}${fmt(t.pd, 0)}</span></td>
       <td class="num ${t.hafif ? "warn" : "muted"}">${fmt(t.hafif)}</td><td class="num ${t.cok ? "bad" : "muted"}">${fmt(t.cok)}</td>
       <td class="num ${t.open ? "" : "muted"}">${fmt(t.open)}</td></tr>`;
@@ -231,6 +230,8 @@ function mahTable() {
       return sortAsc ? c : -c;
     });
   }
+  cur = -1;
+  panel(null);
   renderMah();
 }
 function headMah(cols) {
@@ -265,6 +266,10 @@ function cell(r, c, i, cols) {
       const kur = get(r, "kurum") ? ` <span class="kurum" title="${esc(get(r, "kurum"))}">●</span>` : "";
       return `<td class="name${sep}" style="--pc:${col}" title="${esc(get(r, "win") || "seçim eşleşmedi")}">${esc(get(r, k))}${kur}</td>`;
     }
+    case "srcs": {
+      const full = [["TÜİK", get(r, "stat")], ["AATOPLU", get(r, "aat")], ["DEGURBA", get(r, "deg")], ["Bina", get(r, "bina")]];
+      return `<td class="c${sep}">${[...get(r, "oy")].map((o, j) => `<i class="sq ${o === "-" ? "N" : o}" title="${full[j][0]}: ${esc(full[j][1])}"></i>`).join("")}</td>`;
+    }
     case "src": {
       const o = get(r, "oy")[+k[3]];
       const full = [get(r, "stat"), get(r, "aat"), get(r, "deg"), get(r, "bina")][+k[3]];
@@ -288,9 +293,101 @@ function cell(r, c, i, cols) {
 function renderMah() {
   const cols = visibleCols();
   headMah(cols);
-  $("tb").innerHTML = shown.slice(0, limit).map((r) => `<tr>${cols.map((c, i) => cell(r, c, i, cols)).join("")}</tr>`).join("");
+  $("tb").innerHTML = shown.slice(0, limit).map((r, i) =>
+    `<tr data-i="${i}" class="ih-${get(r, "ih")} ${i === cur ? "cur" : ""}">${cols.map((c, j) => cell(r, c, j, cols)).join("")}</tr>`).join("");
   more();
+  if (cur >= 0 && shown[cur]) panel(shown[cur]);
 }
+
+// --- current row, detail panel, keyboard
+let cur = -1;
+function select(i, scroll = true) {
+  if (tab !== "mah" || i < 0 || i >= shown.length) return;
+  if (i >= limit) { limit = Math.ceil((i + 1) / PAGE) * PAGE; cur = i; renderMah(); }
+  const old = $("tb").querySelector("tr.cur");
+  if (old) old.classList.remove("cur");
+  cur = i;
+  const tr = $("tb").querySelector(`tr[data-i="${i}"]`);
+  if (tr) { tr.classList.add("cur"); if (scroll) tr.scrollIntoView({ block: "nearest" }); }
+  panel(shown[i]);
+}
+function decide(r, cls) {
+  setDecision(get(r, "id"), { s: cls });
+  const tr = $("tb").querySelector(`tr[data-i="${shown.indexOf(r)}"]`);
+  if (!tr) return;
+  const sel = tr.querySelector("select[data-f=s]");
+  if (sel) { sel.value = cls; sel.classList.toggle("set", !!cls); }
+  const kk = tr.querySelector(".kk");
+  if (kk) { kk.textContent = kentKir(cls); kk.className = `kk ${kentKir(cls)}`; }
+}
+function closePanel() {
+  cur = -1;
+  const o = $("tb").querySelector("tr.cur");
+  if (o) o.classList.remove("cur");
+  panel(null);
+}
+function panel(r) {
+  const P = $("panel");
+  if (!r) { P.hidden = true; document.body.classList.remove("with-panel"); return; }
+  P.hidden = false;
+  document.body.classList.add("with-panel");
+  const my = decOf(get(r, "id")), xy = get(r, "xy");
+  const stat = (t, k, d = 0, suf = "") => get(r, k) == null ? "" : `<div><span>${t}</span><b>${fmt(get(r, k), d)}${suf}</b></div>`;
+  const w = parties.find(([p]) => p === get(r, "win"));
+  const votes = parties.filter(([p]) => get(r, p)).map(([p, sh, fill]) =>
+    `<div class="vb"><span>${sh}</span><i style="width:${get(r, p) * 1.6}px;background:#${fill}"></i><b>${fmt(get(r, p), 1)}</b></div>`).join("");
+  const srcs = [["TÜİK statü", "stat"], ["AATOPLU 2015", "aat"], ["DEGURBA", "deg"], ["Bina analizi", "bina"]].map(([t, k], j) => {
+    const o = get(r, "oy")[j];
+    return `<div class="src"><span class="pill ${o === "-" ? "N" : o}">${o === "K" ? "kent" : o === "R" ? "kır" : "belde"}</span><b>${t}</b>${esc(get(r, k))}</div>`;
+  }).join("");
+  const bsv = get(r, "bs"), bc = BANDS.find((b) => b[0] === band(bsv))[2];
+  P.innerHTML = `
+    <div class="ph"><div><h2 style="--pc:${w ? "#" + w[2] : "#6b7280"}">${esc(get(r, "ad"))}</h2>
+      <div class="muted">${esc(get(r, "il"))} · ${esc(get(r, "ilce"))} · ${esc(get(r, "yer"))}${get(r, "semt") ? " · semt " + esc(get(r, "semt")) : ""} · ${esc(get(r, "tur"))}</div></div>
+      <button id="pclose" title="Kapat (Esc)">✕</button></div>
+    <div class="pbig">
+      <div><span>Öneri</span><b class="${URBAN.has(get(r, "os")) ? "k" : "r"}">${esc(get(r, "os"))}</b></div>
+      <div><span>Belirsizlik</span><b style="color:${bc}">${fmt(bsv, 1)}</b></div>
+      <div><span>Kent olasılığı</span><b>${fmt(get(r, "pk") * 100)} %</b></div>
+      <div><span>İhtilaf</span><b class="ih ${get(r, "ih")}">${IH[get(r, "ih")]}</b></div>
+    </div>
+    <div class="pdec">${CLASSES.map((c, i) => `<button data-cls="${c}" class="${my.s === c ? "on" : ""} ${URBAN.has(c) ? "k" : "r"} ${get(r, "os") === c ? "sug" : ""}"><kbd>${i + 1}</kbd>${c}</button>`).join("")}
+      <button data-cls="" class="clr"><kbd>0</kbd>temizle</button></div>
+    <div class="pin"><input id="py" placeholder="yerleşim (senin): ${esc(get(r, "yer"))}" value="${esc(my.y)}"><input id="pn" placeholder="not (senin)" value="${esc(my.n)}"></div>
+    ${get(r, "not") ? `<div class="pnote">${esc(get(r, "not"))}</div>` : ""}
+    <h3>Kaynaklar</h3>${srcs}
+    <h3>Göstergeler</h3><div class="pstats">
+      ${stat("Nüfus 2025", "n")}${stat("Nüfus 2013", "n0")}${stat("Değişim 13-25", "g", 1, " %")}${stat("Kişi / km²", "dens")}
+      ${stat("Merkez lekesi", "leke", 0, " %")}${stat("Konut / bina", "kpb", 2)}${stat("Kişi / bina", "kpbl", 1)}${stat("Hane büy.", "hs", 2)}
+      ${stat("Hane", "hh")}${stat("Konut", "dw")}${stat("Bina (MS)", "bl")}${stat("Yazlık", "yaz", 1, " %")}
+      ${stat("Erkek", "er", 1, " %")}${stat("0-17", "u17", 1, " %")}${stat("65+", "o65", 1, " %")}${stat("Ortanca yaş", "med", 1)}
+      ${stat("Üniversiteli", "uni", 1, " %")}${stat("Alan km²", "area", 2)}${stat("Kayıtlı 2023", "k23")}${stat("Kayıtlı/nüfus", "kn", 0, " %")}
+      ${get(r, "kur") ? `<div><span>Kuruluş</span><b>${esc(get(r, "kur"))}</b></div>` : ""}</div>
+    ${votes ? `<h3>Seçim 2023</h3><div class="votes">${votes}</div>` : ""}
+    ${xy ? `<div class="links"><a target="_blank" rel="noopener" href="https://www.google.com/maps/@${xy[0]},${xy[1]},15z/data=!3m1!1e3">Uydu görüntüsü (Google Haritalar) ↗</a></div>` : ""}
+    <div class="keys muted">↑↓ satır · 1-6 sınıf · Enter öneri · 0 temizle · Esc kapat. Karar verince bir alta geçer.</div>`;
+  $("pclose").onclick = closePanel;
+  P.querySelector(".pdec").onclick = (ev) => {
+    const b = ev.target.closest("button");
+    if (!b) return;
+    decide(r, b.dataset.cls);
+    if (b.dataset.cls) select(cur + 1); else panel(r);
+  };
+  $("py").onchange = (ev) => setDecision(get(r, "id"), { y: ev.target.value.trim() });
+  $("pn").onchange = (ev) => setDecision(get(r, "id"), { n: ev.target.value.trim() });
+}
+document.addEventListener("keydown", (ev) => {
+  if (tab !== "mah" || ev.ctrlKey || ev.metaKey || ev.altKey) return;
+  if (/^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName)) { if (ev.key === "Escape") document.activeElement.blur(); return; }
+  const r = shown[cur];
+  if (ev.key === "ArrowDown" || ev.key === "j") { select(Math.min(shown.length - 1, cur + 1)); ev.preventDefault(); return; }
+  if (ev.key === "ArrowUp" || ev.key === "k") { select(Math.max(0, cur - 1)); ev.preventDefault(); return; }
+  if (!r) return;
+  if (ev.key >= "1" && ev.key <= "6") { decide(r, CLASSES[+ev.key - 1]); select(cur + 1); }
+  else if (ev.key === "Enter") { decide(r, get(r, "os")); select(cur + 1); ev.preventDefault(); }
+  else if (ev.key === "0" || ev.key === "Backspace") { decide(r, ""); panel(r); }
+  else if (ev.key === "Escape") closePanel();
+});
 function more() {
   $("more").innerHTML = shown.length > limit
     ? `${fmt(limit)} / ${fmt(shown.length)} · <button id="moreBtn">${fmt(PAGE)} daha</button>`
@@ -301,7 +398,7 @@ function more() {
 
 // --- cards: always over the province/district scope
 function cards() {
-  let pop = 0, done = 0, c = 0, mk = 0, ok = 0, open = 0, pn = 0, pkent = 0, un = 0, uc = 0;
+  let pop = 0, done = 0, c = 0, mk = 0, ok = 0, open = 0, pn = 0, pkent = 0, un = 0, uc = 0, donePop = 0;
   const ih = { uyumlu: 0, hafif: 0, cok: 0 };
   for (const r of rows) {
     if (!inScope(r)) continue;
@@ -309,7 +406,7 @@ function cards() {
     pop += n; c++; ih[get(r, "ih")]++;
     if (URBAN.has(get(r, "os"))) ok += n;
     if (URBAN.has(s || get(r, "os"))) mk += n;
-    if (s) done++; else if (get(r, "ih") !== "uyumlu") open++;
+    if (s) { done++; donePop += n; } else if (get(r, "ih") !== "uyumlu") open++;
     const pl = placed(r);
     if (pl) { pn += n; if (URBAN.has(pl)) pkent += n; } else { un += n; uc++; }
   }
@@ -324,11 +421,14 @@ function cards() {
     <span><b>${fmt(done)} <small>/ ${fmt(c)}</small></b>karar verilen yer</span>
     <span><b>${fmt(open)}</b>bekleyen ihtilaflı yer</span>
     <span><b><em class="ok">${fmt(ih.uyumlu)}</em> · <em class="warn">${fmt(ih.hafif)}</em> · <em class="bad">${fmt(ih.cok)}</em></b>uyumlu · hafif · çok</span>
-    <span><b>${fmt(pop)}</b>kişi</span>`;
+    <span><b>${fmt(pop)}</b>kişi</span>
+    <div class="prog" title="nüfusa göre"><i class="p1" style="width:${pop ? donePop / pop * 100 : 0}%"></i><i class="p2" style="width:${pop ? (pn - donePop) / pop * 100 : 0}%"></i>
+      <em>senin kararın ${pct(donePop, pop)} % · geçici yerleşen ${pct(pn - donePop, pop)} % · belirsiz ${pct(un, pop)} %</em></div>`;
 }
 
 // --- tabs and redraw
 function setTab(t) {
+  if (t !== "mah") closePanel();
   tab = t; limit = PAGE;
   document.querySelectorAll("#tabs button").forEach((b) => b.classList.toggle("on", b.dataset.t === t));
   document.body.dataset.tab = t;
@@ -343,6 +443,13 @@ function refresh() {
 let drawIl = () => {}, drawIlce = () => {};
 // a change of provinces selects every district of the selected provinces
 function resetIlce() { selIlce.clear(); for (const r of rows) if (selIl.has(get(r, "il"))) selIlce.add(ilceKey(r)); }
+
+function krChips() {
+  const kr = new Set([...f.kr, ...(f.kurum ? ["kurum"] : [])]);
+  chips($("cKr"), [["bos", "bekleyen"], ["dolu", "verilmiş"], ["kurum", "yalnız kurum"]], kr, () => {
+    f.kr = new Set([...kr].filter((x) => x !== "kurum")); f.kurum = kr.has("kurum"); limit = PAGE; mahTable();
+  });
+}
 
 function wire() {
   $("tabs").onclick = (ev) => { const t = ev.target.dataset.t; if (t) setTab(t); };
@@ -382,9 +489,15 @@ function wire() {
     }
     const tr = ev.target.closest("tr.drill");
     if (tr) { drill(tr.dataset.k); return; }
-    const td = ev.target.closest("td.note");
-    if (td) td.classList.toggle("open");
+    const row = ev.target.closest("tr[data-i]");
+    if (row && !ev.target.closest("select,input,button")) select(+row.dataset.i, false);
   });
+  $("preset").onclick = () => {
+    f.bs = new Set(["2", "4", "6", "8"]); f.kr = new Set(["bos"]); f.kurum = false; sortKey = "bs"; sortAsc = false;
+    chips($("cBs"), BANDS, f.bs, () => { limit = PAGE; mahTable(); });
+    krChips();
+    setTab("mah");
+  };
   $("bulk").onclick = () => {
     const todo = shown.filter((r) => !decOf(get(r, "id")).s);
     if (!todo.length) return;
@@ -416,10 +529,7 @@ async function main() {
   chips($("cBs"), BANDS, f.bs, () => { limit = PAGE; mahTable(); });
   chips($("cIh"), [["uyumlu", "uyumlu", "#6cc38a"], ["hafif", "hafif", "#e8b64c"], ["cok", "çok", "#ef7d73"]], f.ih, () => { limit = PAGE; mahTable(); });
   chips($("cOn"), CLASSES.map((c) => [c, c]), f.on, () => { limit = PAGE; mahTable(); });
-  const kr = new Set(f.kr);
-  chips($("cKr"), [["bos", "bekleyen"], ["dolu", "verilmiş"], ["kurum", "yalnız kurum"]], kr, () => {
-    f.kr = new Set([...kr].filter((x) => x !== "kurum")); f.kurum = kr.has("kurum"); limit = PAGE; mahTable();
-  });
+  krChips();
   chips($("cGr"), TOGGLE, f.groups, renderMah);
   wire();
   setTab("il");
