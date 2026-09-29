@@ -44,7 +44,16 @@ const INDICATORS = [
   { group: "Nüfus", key: "u17", label: "0–17 yaş nüfusu", kind: "count" },
   { group: "Nüfus", key: "a18", label: "18 yaş ve üstü", kind: "count" },
   { group: "Nüfus", key: "u17p", label: "0–17 yaş payı %", kind: "ratio" },
+  { group: "Yaş", key: "med", label: "Ortanca yaş", kind: "ratio", ex: "med" },
+  { group: "Yaş", key: "mean", label: "Ortalama yaş", kind: "ratio", ex: "mean" },
 ];
+// an extra series kept in the unit's extras slot, [first year index, values]
+function exAt(u, key, yi) {
+  const s = u[7] && u[7][key];
+  if (!s) return null;
+  const i = yi - s[0];
+  return i >= 0 && i < s[1].length ? s[1][i] : null;
+}
 const COUNT_ONLY = ["trShare", "provShare", "distShare", "changePct", "cagr", "prevChangePct", "trShareDelta", "provShareDelta", "distShareDelta"];
 // a view is a ready column set with its natural ranking; any header still sorts, and the
 // Sütunlar menu adds or drops columns on top of it
@@ -70,6 +79,7 @@ const state = { level: "ilce", view: "temel", indicator: "total", prov: -1, dist
 let visible = store.get("cols", null);
 let userWidth = store.get("widths", {});
 let DATA, TR = [], PROV = [], DIST = [];
+const UIDX = new Map();  // unit -> its index, for the ⓘ links
 
 const widthOf = (k) => userWidth[k] || WIDTH[k] || 110;
 const analysis = () => VIEWS.find((a) => a.key === state.view);
@@ -90,6 +100,7 @@ const ind = () => INDICATORS.find((x) => x.key === state.indicator);
 function indAt(u, yi, key = state.indicator) {
   const t = valueAt(u, yi);
   if (key === "total") return t;
+  if (key === "med" || key === "mean") return t == null ? null : exAt(u, key, yi);
   const c = u17At(u, yi);
   if (c == null || t == null) return null;
   if (key === "u17") return c;
@@ -186,8 +197,8 @@ function cell(k, r, i, maxShare) {
   const c = COLS[k];
   if (k === "rank") return `<td class="num rank">${i + 1}</td>`;
   if (k === "name") {
-    const h = r.lvl === "ilce" && DATA.history[r.did];
-    return `<td class="name" title="${r.name}">${r.name}${h ? `<a class="info" data-d="${r.did}" title="Tarihçe">ⓘ</a>` : ""}</td>`;
+    const has = infoLines(r.u).length > 0;
+    return `<td class="name" title="${r.name}">${r.name}${has ? `<a class="info" data-i="${UIDX.get(r.u)}" title="Bilgi">ⓘ</a>` : ""}</td>`;
   }
   if (k === "first") return `<td class="num rank">${r.first}</td>`;
   if (k === "change" && r.isNew) return `<td class="num new" title="${DATA.years[state.base]} yılında kaydı yok">yeni</td>`;
@@ -204,10 +215,10 @@ function cell(k, r, i, maxShare) {
 
 function title(k) {
   const y = DATA.years[state.year], b = state.base != null ? DATA.years[state.base] : "";
-  const ratio = ind().kind === "ratio";
+  const ratio = ind().kind === "ratio", unit = ind().ex ? " (yıl)" : " (puan)";
   if (k === "value") return `${ind().label} ${y}`;
-  if (k === "change") return `Değişim ${b}→${y}${ratio ? " (puan)" : ""}`;
-  if (k === "prevChange" && ratio) return `${y - 1}→${y} (puan)`;
+  if (k === "change") return `Değişim ${b}→${y}${ratio ? unit : ""}`;
+  if (k === "prevChange" && ratio) return `${y - 1}→${y}${unit}`;
   if (k === "changePct") return `Değişim ${b}→${y} %`;
   if (k === "prevChange") return `${y - 1}→${y}`;
   if (k === "prevChangePct") return `${y - 1}→${y} %`;
@@ -232,10 +243,11 @@ function render() {
       <span><b>${fmt.format(TR[state.year])}</b>Türkiye ${y}</span>`;
   } else {
     // a ratio is summarised population-weighted, over the rows shown and over Türkiye
-    const w = (units) => { let a = 0, t = 0; for (const u of units) { const c = u17At(u, state.year), v = valueAt(u, state.year); if (c != null && v) { a += c; t += v; } } return t ? (a / t) * 100 : null; };
+    const w = (units) => { let a = 0, t = 0; for (const u of units) { const x = indAt(u, state.year), v = valueAt(u, state.year); if (x != null && v) { a += x * v; t += v; } } return t ? a / t : null; };
     const shown = w(list.map((r) => r.u)), tr = w(DATA.units.filter((u) => u[0] === "il"));
-    cards = `<span><b>%${shown == null ? "–" : num(shown, 1)}</b>seçilenlerde (nüfus ağırlıklı)</span>
-      <span><b>%${tr == null ? "–" : num(tr, 1)}</b>Türkiye ${y}</span>`;
+    const pc = state.indicator === "u17p" ? "%" : "";
+    cards = `<span><b>${pc}${shown == null ? "–" : num(shown, 1)}</b>seçilenlerin nüfus ağırlıklı ortalaması</span>
+      <span><b>${pc}${tr == null ? "–" : num(tr, 1)}</b>Türkiye ${y} (illerin ağırlıklı ortalaması)</span>`;
   }
   $("summary").innerHTML = `<span><b>${fmt.format(list.length)}</b>birim</span>` + cards +
     (dropped ? `<span><b>${fmt.format(dropped)}</b>sıralamaya girmedi</span>` : "");
@@ -244,9 +256,25 @@ function render() {
   wireHead();
   $("body").querySelectorAll("a.info").forEach((el) => el.onclick = (ev) => {
     ev.preventDefault(); ev.stopPropagation();
-    const d = +el.dataset.d;
-    showPop(el, DATA.districts[d][1], DATA.history[d]);
+    const u = DATA.units[+el.dataset.i];
+    showPop(el, u[1], infoLines(u));
   });
+}
+
+// what the ⓘ of a row says: district history, belde notes, a reused id, and for the age
+// indicators how the value was made
+function infoLines(u) {
+  const out = [];
+  if (u[0] === "ilce" && DATA.history[u[2]]) out.push(...DATA.history[u[2]]);
+  if (u[7] && u[7].h) out.push(...u[7].h);
+  if ((state.indicator === "med" || state.indicator === "mean") && (u[0] === "mahalle" || u[0] === "koy" || u[0] === "belde")) {
+    const r = u[7] && u[7].medr;
+    if (state.indicator === "med" && r) out.push(`2024 ortanca yaşı Monte Carlo ile (200 çekiliş): %5–95 aralığı ${num(r[0], 1)}–${num(r[1], 1)}; kaynak ${ {A: "Endeksa yaş grupları TÜİK toplamını tutuyor", B: "regresyon", C: "seçmen verisi"}[r[2]] || r[2] }.`);
+    if (state.indicator === "mean") out.push("2024 ortalama yaşı: Endeksa yaş grupları, TÜİK'in bu mahalle için verdiği 0–17 ve 18+ sayısına ölçeklenerek.");
+    if (u[7] && u[7].model) out.push("2024 dışındaki yıllar model tahminidir: mahallenin 2024 yaş yapısı, ilçenin her yaş grubundaki değişimiyle o yıla taşınıp mahallenin o yılki 0–17 / 18+ sayısına ölçeklenir.");
+    else if (u[0] !== "belde") out.push("Yalnız 2024 (bu birimde yıllık 0–17 kırılımı yok).");
+  }
+  return out;
 }
 
 // general notes behind one link instead of text under the table
@@ -257,6 +285,7 @@ const NOTES = [
   "Yerleşim: il/ilçe merkezinde semt, köyler için \"<ilçe> Köyleri\", beldeler resmî belediye adıyla.",
   "Belde: resmî TÜİK statüsü, bugün belediyesi olan beldeler (yalnız büyükşehir dışındaki iller), 2007–2025, bugünkü mahalleleriyle. Beldenin mahalleleri Mahalle / köy düzeyinde de listelenir.",
   "Küçük mahallelerde 0–17 yaş satırı gizlidir: toplam birkaç kişi eksik olabilir, 0–17 göstergelerinde o mahalle boş kalır.",
+  "Yaş: il ortanca yaşı TÜİK'in kendi değeri; ilçede 5'li yaş gruplarından hesap (2007–2025). Mahalle, köy ve belde: 2024 Monte Carlo (ortanca) ve Endeksa (ortalama); mahallelerde diğer yıllar model tahminidir, ⓘ'de yazar.",
   "0–17 yaş: mahallede TÜİK'in 0–17 satırı; il ve ilçede 5'li yaş gruplarından (15–19'un 3/5'i). Büyükşehir dışı köylerde yaş kırılımı yoktur. Oran göstergelerinde pay sütunları kapanır, değişim puan olarak verilir.",
   "Nüfus eşiği seçili yıla uygulanır; \"en az\" karşılaştırma yılında da aranır, küçük tabandan doğan büyük yüzdeleri eler.",
   "İlçe içi pay, ilçenin henüz kurulmadığı yıllarda (Kayapınar, Ataşehir 2007) bugünkü sınırlarıyla, yani bugünkü mahallelerinin o yılki toplamına göre hesaplanır.",
@@ -346,7 +375,8 @@ function setAnalysis(key) {
 
 async function main() {
   $("summary").textContent = "Veri yükleniyor…";
-  DATA = await (await fetch("../public/nufus_birimler.json?v=7")).json();
+  DATA = await (await fetch("../public/nufus_birimler.json?v=8")).json();
+  DATA.units.forEach((u, i) => UIDX.set(u, i));
   totals();
   $("level").innerHTML = LEVELS.map((l) => `<button data-k="${l.key}" class="${l.key === state.level ? "on" : ""}">${l.label}</button>`).join("");
   $("level").querySelectorAll("button").forEach((b) => b.onclick = () => {
