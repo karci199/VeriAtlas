@@ -15,7 +15,7 @@ import html, re, sys
 from pathlib import Path
 import polars as pl
 
-sys.path.insert(0, "C:/veri/scripts")
+sys.path.insert(0, str(Path(__file__).parent))
 from aday_profili import read, AGE, fold  # noqa: E402
 
 PROFIL = Path("C:/veri-ham/secim/profil")
@@ -46,6 +46,12 @@ def read_marital(path):
     for c in rows_of(path):
         f = [fold(x) for x in c]
         if len(c) >= 6 and all(m in f for m in MARF) and "toplam" in f:
+            if f[0] not in MARF:  # a header printed without its name keeps the one above
+                district = c[0]
+            continue
+        # a block can print its name and "Toplam" alone, the statuses on the next line
+        # ("Boyabat | Toplam"); missing it filed the district under its neighbour
+        if len(c) == 2 and f[1] == "toplam" and f[0] not in MARF and f[0] != fold(path.stem.rsplit("__", 1)[-1])                 and not COUNT.match(c[0]) and not AGE.match(c[0]):
             district = c[0]
             continue
         if district is None:

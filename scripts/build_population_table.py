@@ -667,9 +667,24 @@ for r in vp.iter_rows(named=True):
     lo, hi = (75, 90) if r["age"] == "75+" else tuple(int(x) + i for i, x in enumerate(r["age"].split("-")))
     y = VOTE_Y[r["election"]]
     vb_p.setdefault(pid, {}).setdefault(y, []).append((lo, hi, r["n"]))
-    did = DK.get((pid, _fold(r["district"])))
+    # the profile calls a provincial centre "Sinop Merkez", the registry "Sinop"
+    did = DK.get((pid, _fold(r["district"]))) or DK.get((pid, _fold(r["district"]).removesuffix("merkez")))
     if did:
         vb_d.setdefault(did, {}).setdefault(y, []).append((lo, hi, r["n"]))
+# the profile reader sometimes writes one district's blocks under a neighbour (2023: Ayancık
+# holds Boyabat, Dikmen and Saraydüzü, 57.756 voters against ~15.000 adults): a district-year
+# whose voters fall outside 50-150% of its ADNKS adults is not used (small mountain districts
+# genuinely sit at 60-70%: people on the register who vote where they live)
+DROPPED_V = []
+for did in list(vb_d):
+    for y in list(vb_d[did]):
+        b_ = bands_of(did, y)
+        adults = sum(n * (0.4 if lo == 15 else 1) for lo, hi, n in b_ if hi > 15) if b_ else None
+        vt = sum(n for *_, n in vb_d[did][y])
+        if not adults or not 0.5 <= vt / adults <= 1.5:
+            DROPPED_V.append((dist["name_tr"][D[did]] if did in D else did, y, vt, round(adults or 0)))
+            del vb_d[did][y]
+print("seçmen profili: tutarsız ilçe-yıl atıldı:", len(DROPPED_V), DROPPED_V[:5])
 
 
 def vser(bys):

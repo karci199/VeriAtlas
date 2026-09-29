@@ -146,6 +146,7 @@ const share = (v, tot) => (v == null || !tot ? null : (v / tot) * 100);
 
 function measures(u, yi, bi) {
   const p = provOf(u), v = indAt(u, yi);
+  if (v == null) return { value: null };  // nothing to rank or compare (null - b would read as -b)
   const inProv = u[0] !== "il", inDist = u[0] === "belde" || u[0] === "mahalle" || u[0] === "koy";
   const m = { value: v, trShare: share(v, TR[yi]),
     provShare: inProv ? share(v, PROV[p][yi]) : null, distShare: inDist ? share(v, DIST[u[2]][yi]) : null };
@@ -200,6 +201,7 @@ function rows() {
     if (q && !fold(u[1]).includes(q)) continue;
     const v0 = valueAt(u, state.year);
     if (v0 == null) continue;
+    if (indAt(u, state.year) == null) { dropped++; continue; }
     if (state.max != null && v0 > state.max) continue;
     if (state.min != null) {
       // the floor holds in the comparison year too: a 30-person village tripling is noise
@@ -400,14 +402,16 @@ function fillSettlements() {
 }
 
 function fillYears() {
+  // only the years the chosen indicator has at this level (death age starts 2009, voter
+  // age is election years only), so a year can never open an empty table
   const lv = LEVELS.find((l) => l.key === state.level).levels;
-  const first = 0, last = DATA.years.length - 1;
-  const ys = DATA.years.map((y, i) => i).filter((i) => i >= first);
-  if (state.year == null || state.year < first) state.year = last;
-  if (state.base != null && state.base < first) state.base = null;
-  if (analysis().base && state.base == null) state.base = Math.max(first, state.year - 5);
+  const ys = DATA.years.map((y, i) => i).filter((yi) => DATA.units.some((u) => lv.includes(u[0]) && indAt(u, yi) != null));
+  const last = ys[ys.length - 1];
+  if (state.year == null || !ys.includes(state.year)) state.year = last;
+  if (state.base != null && !ys.includes(state.base)) state.base = null;
+  if (analysis().base && state.base == null) state.base = [...ys].reverse().find((i) => i <= state.year - 5) ?? ys[0];
   $("year").innerHTML = ys.map((i) => `<option value="${i}" ${i === state.year ? "selected" : ""}>${DATA.years[i]}</option>`).join("");
-  $("base").innerHTML = '<option value="">—</option>' + ys.map((i) => `<option value="${i}" ${i === state.base ? "selected" : ""}>${DATA.years[i]}</option>`).join("");
+  $("base").innerHTML = '<option value="">—</option>' + ys.filter((i) => i < state.year).map((i) => `<option value="${i}" ${i === state.base ? "selected" : ""}>${DATA.years[i]}</option>`).join("");
 }
 
 // B lists only what the current level has; a B the level lacks is dropped
@@ -439,7 +443,7 @@ function setAnalysis(key) {
 
 async function main() {
   $("summary").textContent = "Veri yükleniyor…";
-  DATA = await (await fetch("../public/nufus_birimler.json?v=11")).json();
+  DATA = await (await fetch("../public/nufus_birimler.json?v=15")).json();
   DATA.units.forEach((u, i) => UIDX.set(u, i));
   totals();
   $("level").innerHTML = LEVELS.map((l) => `<button data-k="${l.key}" class="${l.key === state.level ? "on" : ""}">${l.label}</button>`).join("");
@@ -458,7 +462,7 @@ async function main() {
   $("indicator2").onchange = (e) => { state.indicator2 = e.target.value; colPanel(); render(); };
   $("indicator").onchange = (e) => {
     state.indicator = e.target.value; state.limit = PAGE;
-    fillB(); fillViews();
+    fillB(); fillViews(); fillYears();
     // an indicator published only for some levels takes the page to the finest of them
     const lvs = ind().lv;
     if (lvs && !lvs.includes(state.level)) {

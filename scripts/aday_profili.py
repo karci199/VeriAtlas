@@ -143,6 +143,8 @@ def read(path: pathlib.Path) -> tuple[list[tuple[str, str, str, dict[str, int]]]
     out: list[tuple[str, str, str, dict[str, int]]] = []
     bad = 0
     age = None
+    # the province caption repeats on some header lines; it is never a district's name
+    province = fold(path.stem.rsplit("__", 1)[-1].replace("_", " "))
     # Headers are collected rather than followed. A block's header can be printed over two
     # lines and come out a column adrift, while the rows below it stay in the columns the
     # first block used -- so the newest header is not always the right one. Each row is
@@ -151,6 +153,23 @@ def read(path: pathlib.Path) -> tuple[list[tuple[str, str, str, dict[str, int]]]
     headers: list[tuple[dict[int, str], int]] = []
     area = None
     for index, row in enumerate(rows):
+        # A block can print its district and "Toplam" alone on a line with the grades on the
+        # next ("Boyabat | Toplam"): not a header by header_at's reading, but the start of
+        # a new district all the same.
+        filled = [c for c in row if c]
+        if len(filled) == 2 and fold(filled[1]) == "toplam" and fold(filled[0]) not in BUCKET                 and fold(filled[0]) != "toplam" and fold(filled[0]) != province and not COUNT.match(filled[0]):
+            area = filled[0]
+            # its grades are on the next line, and can be fewer than other blocks' (no
+            # Doktora in a small district): that line is this block's header
+            nxt = rows[index + 1] if index + 1 < len(rows) else []
+            cols = {i: c for i, c in enumerate(nxt) if c and fold(c) in BUCKET}
+            # the "Toplam" on the name line does not sit over the rows' total column, so this
+            # header is read by order only (numbers left to right, the last one the total);
+            # an out-of-range total column keeps the column-aligned reading from matching it
+            tot = -1
+            if cols and (cols, tot) not in headers:
+                headers.append((cols, tot))
+            continue
         found = header_at(rows, index)
         if found:
             if found not in headers:
@@ -160,11 +179,16 @@ def read(path: pathlib.Path) -> tuple[list[tuple[str, str, str, dict[str, int]]]
             # lines above instead picks up the province caption and every district of a
             # province comes out under one name.
             edge = min(found[0])
-            here = [
-                c
-                for i, c in enumerate(row)
-                if c and i < edge and fold(c) not in BUCKET and fold(c) != "toplam"
-            ]
+
+            def is_name(c: str) -> bool:
+                return bool(c) and fold(c) not in BUCKET and fold(c) != "toplam" and not COUNT.match(c)                     and not AGE.match(c) and c not in GENDER and fold(c) != province
+            here = [c for i, c in enumerate(row) if i < edge and is_name(c)]
+            # A block printed without its province caption comes out a column adrift, and its
+            # district name lands right of the first grade (Sinop 2023: Boyabat, Dikmen,
+            # Saraydüzü). Missing it kept the previous district's name, and three districts
+            # were added to Ayancık. Any name on the header line counts, the province's own
+            # caption excepted.
+            here = here or [c for c in row if is_name(c)]
             if here:
                 area = here[0]
             continue
