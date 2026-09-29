@@ -95,9 +95,15 @@ def label(il, district, name, eski=None):
             c = [(dd, lab) for dd, lab in LAB.get((il, fold(w)), []) if lab == "Belde"]
             if c:
                 return "Belde"
-    # small spelling drift inside the province
+    # small spelling drift or an abbreviation ("M.Şevket Paşa"): inside the same district first
+    # -- province-wide it landed Şişli's Mahmut Şevket Paşa on a village elsewhere
     import difflib
-    best = difflib.get_close_matches(fold(name), [q for q, _ in BYIL.get(il, [])], n=1, cutoff=0.88)
+    d = fold(district)
+    local = [q for q, v in BYIL.get(il, []) if any(dd == d or dd == d + "merkez" or dd.startswith(d) for dd, _ in v)]
+    best = difflib.get_close_matches(fold(name), local, n=1, cutoff=0.8)
+    if best:
+        return _pick(LAB[(il, best[0])], district)
+    best = difflib.get_close_matches(fold(name), [q for q, _ in BYIL.get(il, [])], n=1, cutoff=0.93)
     if best:
         return _pick(LAB[(il, best[0])], district)
     return None
@@ -129,6 +135,32 @@ def village_test(r):
     if kb is not None and kb < 1.0 and (g is None or g <= 1.05):
         return "kir"
     return None
+
+
+def vote(r, lab):
+    """Six independent signals, one vote each; a tie is rural (the user's rule).
+    -> (class, reason, margin)"""
+    s = r["son_sinif"]
+    b = float(r["buildings"] or 0)
+    kb = HOUSING.get(r["area_id"], 0) / b if b else None
+    g = GROWTH.get(r["area_id"])
+    v = {"bina": s in KENT, "DEGURBA": "KENT" in (r["degurba"] or "")}
+    if lab in ("Mahalle", "Köy"):
+        v["AATOPLU"] = lab == "Mahalle"
+    if g is not None and (g >= 1.3 or g <= 1.0):
+        v["büyüme"] = g >= 1.3
+    if kb is not None and (kb >= 2 or kb < 1):
+        v["konut/bina"] = kb >= 2
+    if r["pop"] >= 5000:
+        v["5.000+"] = True
+    k = sum(v.values())
+    n = len(v) - k
+    tag = "+".join(x for x, y in v.items() if y) or "-"
+    if k > n:
+        c = s if s in KENT else "merkez"
+    else:
+        c = s if s in KIR else ("kasaba" if 2000 <= r["pop"] < 5000 else "kir")
+    return c, f"oylama kent {k} / kır {n} (kent diyen: {tag})", abs(k - n)
 
 
 approved, left = [], []
@@ -170,17 +202,9 @@ for p in plates:
             elif lab == "Mahalle" and s in KIR and vt:
                 c, why, sure = (s if vt == "kir" else "merkez"), ("AATOPLU mahalle ama köy dokusu (Harmancık emsali)" if vt == "kir"
                                                                  else "AATOPLU mahalle, nüfus x1,5+ büyüdü"), True
-            elif r["pop"] >= 2000 and lab == "Mahalle":
-                c, why, sure = "merkez", "2.000+ kişi, AATOPLU mahalle", False
-            elif r["pop"] >= 5000 and lab == "Köy":
-                # a 5.000+ patch today outweighs a 2015 village label (Şanlıurfa Seyrantepe)
-                c, why, sure = s, "5.000+ kişi, AATOPLU köy ama bina kent, bina sınıfı", False
-            elif r["pop"] >= 2000 and lab == "Köy":
-                c, why, sure = "kir", "2.000+ kişi, AATOPLU köy", False
-            elif r["pop"] >= 2000:
-                c, why, sure = s, "2.000+ kişi, AATOPLU yok, bina sınıfı", False
             else:
-                c, why, sure = (s if s in KIR else "kir"), "2.000 altı, şüphede kır", False
+                c, why, margin = vote(r, lab)
+                sure = margin >= 2
             approved.append(dict(area_id=r["area_id"], sinif=c, not_=f"elle: kural -- {why}"))
             if not sure or r["pop"] >= 5000:
                 left.append({**row, "atanan": c, "neden": why + ("" if sure else " (emin değil)")})
