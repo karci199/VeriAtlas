@@ -277,8 +277,10 @@ function render() {
     const w = (units) => { let a = 0, t = 0; for (const u of units) { const x = indAt(u, state.year), v = valueAt(u, state.year); if (x != null && v) { a += x * v; t += v; } } return t ? a / t : null; };
     const shown = w(list.map((r) => r.u)), tr = w(DATA.units.filter((u) => u[0] === "il"));
     const pc = state.indicator === "u17p" ? "%" : "";
-    cards = `<span><b>${pc}${shown == null ? "–" : num(shown, 1)}</b>seçilenlerin nüfus ağırlıklı ortalaması</span>
-      <span><b>${pc}${tr == null ? "–" : num(tr, 1)}</b>Türkiye ${y} (illerin ağırlıklı ortalaması)</span>`;
+    const f = (x) => (x == null ? "–" : pc + num(x, 1));
+    // one card when the rows are all of Türkiye; two, named plainly, when they differ
+    cards = f(shown) === f(tr) ? `<span><b>${f(tr)}</b>Türkiye ${y}</span>`
+      : `<span><b>${f(shown)}</b>seçilen ${fmt.format(list.length)} birim (nüfus ağırlıklı)</span><span><b>${f(tr)}</b>Türkiye ${y}</span>`;
   }
   if (state.indicator2) {
     const pr = list.filter((r) => r.value != null && r.b != null);
@@ -293,7 +295,7 @@ function render() {
     cards += `<span><b>${rho == null ? "–" : num(rho, 2)}</b>A–B korelasyonu (${fmt.format(n)} birim)</span>`;
   }
   $("summary").innerHTML = `<span><b>${fmt.format(list.length)}</b>birim</span>` + cards +
-    (dropped ? `<span><b>${fmt.format(dropped)}</b>sıralamaya girmedi</span>` : "");
+    (dropped ? `<span title="Bu yılda bu gösterge için değeri olmayan birimler; ortalamaya da girmez"><b>${fmt.format(dropped)}</b>değeri yok, sıralamada değil</span>` : "");
   $("more").innerHTML = list.length > state.limit ? `<button id="moreBtn">${fmt.format(Math.min(PAGE, list.length - state.limit))} satır daha (${fmt.format(list.length - state.limit)} kaldı)</button>` : "";
   if ($("moreBtn")) $("moreBtn").onclick = () => { state.limit += PAGE; render(); };
   wireHead();
