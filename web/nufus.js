@@ -36,16 +36,15 @@ const COLS = {
   distShareDelta: { t: "İlçe içi pay değişimi (puan)", num: true, sign: true, d: 2, base: true, lv: ["belde", "mahalle"] },
   first: { t: "İlk yıl", num: true },
 };
-// analysis = ranking column + columns switched on by default
-const ANALYSES = [
-  { key: "nufus", label: "Nüfus", sort: "value", cols: ["value", "trShare", "provShare", "distShare"] },
-  { key: "degisim", label: "Değişim (karşılaştırma yılına göre)", sort: "changePct", base: true, cols: ["value", "change", "changePct", "cagr"] },
-  { key: "onceki", label: "Önceki yıla göre değişim", sort: "prevChangePct", cols: ["value", "prevChange", "prevChangePct"] },
-  { key: "buyume", label: "Yıllık ortalama büyüme", sort: "cagr", base: true, cols: ["value", "change", "cagr"] },
-  { key: "trpay", label: "Türkiye payı", sort: "trShare", cols: ["value", "trShare"] },
-  { key: "ilpay", label: "İl içi pay", sort: "provShare", cols: ["value", "provShare", "trShare"] },
-  { key: "ilcepay", label: "İlçe içi pay", sort: "distShare", cols: ["value", "distShare", "provShare"] },
-  { key: "paydegisim", label: "Pay değişimi (puan)", sort: "provShareDelta", base: true, cols: ["value", "provShare", "provShareDelta", "distShareDelta", "trShareDelta"] },
+// what is counted; each unit carries one series per indicator. Only total population so far --
+// under-18s, voters, election results join this list and every column works for them
+const INDICATORS = [{ key: "nufus", label: "Toplam nüfus" }];
+// a view is a ready column set with its natural ranking; any header still sorts, and the
+// Sütunlar menu adds or drops columns on top of it
+const VIEWS = [
+  { key: "temel", label: "Temel", sort: "value", cols: ["value", "trShare", "provShare", "distShare"] },
+  { key: "degisim", label: "Değişim", sort: "changePct", base: true, cols: ["value", "change", "changePct", "cagr", "prevChangePct"] },
+  { key: "pay", label: "Pay değişimi", sort: "provShareDelta", base: true, cols: ["value", "provShare", "provShareDelta", "distShareDelta", "trShareDelta"] },
 ];
 const WIDTH = { rank: 52, name: 180, prov: 115, dist: 115, settle: 140, type: 70, value: 105, first: 64, trShare: 150 };
 const PAGE = 300;
@@ -59,14 +58,14 @@ const store = {
   get(k, dflt) { try { const v = localStorage.getItem("nufus." + k); return v == null ? dflt : JSON.parse(v); } catch (e) { return dflt; } },
   set(k, v) { try { localStorage.setItem("nufus." + k, JSON.stringify(v)); } catch (e) { /* storage off */ } },
 };
-const state = { level: "ilce", analysis: "nufus", prov: -1, dist: -1, settle: -1, year: null, base: null, q: "",
+const state = { level: "ilce", view: "temel", indicator: "nufus", prov: -1, dist: -1, settle: -1, year: null, base: null, q: "",
                 sort: "value", asc: false, limit: PAGE, min: null, max: null };
 let visible = store.get("cols", null);
 let userWidth = store.get("widths", {});
 let DATA, TR = [], PROV = [], DIST = [];
 
 const widthOf = (k) => userWidth[k] || WIDTH[k] || 110;
-const analysis = () => ANALYSES.find((a) => a.key === state.analysis);
+const analysis = () => VIEWS.find((a) => a.key === state.view);
 
 function valueAt(u, yi) {
   const i = yi - u[3];
@@ -210,7 +209,7 @@ function render() {
 
 // general notes behind one link instead of text under the table
 const NOTES = [
-  "Seçilen yılda kaydı olmayan birim listede yoktur; seçili analizde değeri olmayan birim (karşılaştırma yılında ya da önceki yılda kaydı yok) sıralamaya alınmaz, sayısı özet kartında yazar.",
+  "Seçilen yılda kaydı olmayan birim listede yoktur; sıralanan sütunda değeri olmayan birim (karşılaştırma yılında ya da önceki yılda kaydı yok) sıralamaya alınmaz, sayısı özet kartında yazar.",
   "Adı değişen ilçeler (Eyüp → Eyüpsultan, Aydın Merkez → Efeler …) tek satırda, kesintisiz seridir. Kurulan, bölünen, kapanan ilçelerin tarihçesi adının yanındaki ⓘ'dedir; kaynak ilçeler mahallelerin TÜİK kayıt geçmişinden, nüfus ağırlığıyla hesaplanır.",
   "Mahalle ve köy kimlikleri 2013'te değişti: 2007–2012 ile 2013–2025 aynı yer için iki ayrı satır olabilir; eski kimliklerin yerleşimi boştur. Büyük yüzdeler gerçek büyüme de mahalle sınırı değişikliği de olabilir.",
   "Yerleşim: il/ilçe merkezinde semt, köyler için \"<ilçe> Köyleri\", beldeler resmî belediye adıyla.",
@@ -253,7 +252,7 @@ function colPanel() {
     const c = COLS[k], off = !usable(k);
     const why = c.base && state.base == null ? " — karşılaştırma yılı seçin" : off ? " — bu düzeyde yok" : "";
     return `<label class="${off ? "dis" : ""}"><input type="checkbox" data-k="${k}" ${on.includes(k) ? "checked" : ""} ${off ? "disabled" : ""}>${c.t}${why}</label>`;
-  }).join("") + `<label><input type="checkbox" id="colDefault" ${visible ? "" : "checked"}>Analize göre (varsayılan)</label>`;
+  }).join("") + `<label><input type="checkbox" id="colDefault" ${visible ? "" : "checked"}>Görünüme göre (varsayılan)</label>`;
   $("colPanel").querySelectorAll("input[data-k]").forEach((cb) => cb.onchange = () => {
     const cur = new Set(visible || analysis().cols);
     cb.checked ? cur.add(cb.dataset.k) : cur.delete(cb.dataset.k);
@@ -293,7 +292,8 @@ function fillYears() {
 }
 
 function setAnalysis(key) {
-  state.analysis = key;
+  state.view = key;
+  $("view").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x.dataset.k === key));
   state.asc = false; state.limit = PAGE;
   fillYears();  // sets a comparison year first when the analysis needs one
   state.sort = usable(analysis().sort) ? analysis().sort : "value";
@@ -312,8 +312,10 @@ async function main() {
     state.sort = usable(analysis().sort) ? analysis().sort : "value";
     colPanel(); render();
   });
-  $("analysis").innerHTML = ANALYSES.map((a) => `<option value="${a.key}">${a.label}</option>`).join("");
-  $("analysis").onchange = (e) => setAnalysis(e.target.value);
+  $("indicator").innerHTML = INDICATORS.map((a) => `<option value="${a.key}">${a.label}</option>`).join("");
+  $("indicator").disabled = INDICATORS.length < 2;
+  $("view").innerHTML = VIEWS.map((v) => `<button data-k="${v.key}" class="${v.key === state.view ? "on" : ""}">${v.label}</button>`).join("");
+  $("view").querySelectorAll("button").forEach((b) => b.onclick = () => setAnalysis(b.dataset.k));
   $("prov").innerHTML = '<option value="-1">Tümü</option>' + DATA.provinces.map((p, i) => [p[1], i]).sort((a, b) => a[0].localeCompare(b[0], "tr")).map(([n, i]) => `<option value="${i}">${n}</option>`).join("");
   $("prov").onchange = (e) => { state.prov = +e.target.value; state.limit = PAGE; fillDistricts(); render(); };
   $("dist").onchange = (e) => { state.dist = +e.target.value; state.limit = PAGE; fillSettlements(); render(); };
