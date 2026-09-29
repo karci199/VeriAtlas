@@ -97,6 +97,7 @@ td.you .acc { padding:0 6px; margin-left:4px; font-size:11px; line-height:18px; 
 td input.y { width:150px; padding:1px 6px; } td input.n { width:180px; padding:1px 6px; }
 .cell-bar { display:inline-flex; align-items:center; gap:6px; justify-content:flex-end; }
 .bar { height:5px; border-radius:3px; display:inline-block; } .bar.k { background:#3c6c9e; } .bar.d { background:#7d6f2a; }
+.bsbar { display:inline-block; height:5px; border-radius:3px; margin-right:6px; opacity:.6; vertical-align:middle; }
 .more { padding:8px; text-align:center; color:var(--mut); }
 </style>
 </head>
@@ -114,6 +115,7 @@ td input.y { width:150px; padding:1px 6px; } td input.n { width:180px; padding:1
     <dt>Yıl</dt><dd>Nüfus TÜİK 2025 (2013 aynı kimlikle). Erkek, 65+, üniversiteli, hane, konut, yazlık Endeksa 2024. Bina Microsoft (Şubat 2026). Seçim 14 Mayıs 2023 milletvekili.</dd>
     <dt>Kaynaklar</dt><dd>TÜİK statü (büyükşehirde 2012), AATOPLU 2015, DEGURBA 2025, bina analizi (merkezin kesintisiz yapı lekesi; ayrı leke ≥5.000 kentsel belde, 2.000-5.000 kasaba). Üzerine gel: tam metin.</dd>
     <dt>Öneri</dt><dd>Hepsinin birleşimi: bina, AATOPLU, DEGURBA, TÜİK, büyüme, konut/bina, kurum işareti; Bursa ve Ankara'da senin önceki kararların.</dd>
+    <dt>Belirsizlik 0-10</dt><dd>Bütün işaretlerden ağırlıklı kent olasılığı: bina analizi ×2, AATOPLU ×1,5, TÜİK, DEGURBA, 10.000+ nüfus ×1, konut/bina, yoğunluk ×0,75, üniversiteli, 65+ ×0,5. 0 hepsi aynı yönde, 10 tam yarı yarıya. Öneri olasılığın öbür yanındaysa en az 5, kurum varsa +2. 2'nin altı geçici olarak öneriyle yerleşir (senin kararın boş kalır); özetlerde "yerleşen" ve "kent % aralığı" buna göre.</dd>
     <dt>İhtilaf</dt><dd>uyumlu: bütün kaynaklar aynı · hafif: biri ayrılıyor · çok: ikiye bölünmüş. "belde" oylamaya girmez.</dd>
     <dt>Merkez lekesi %</dt><dd>Binalarının yüzde kaçı ilçe merkezinin kesintisiz yapılaşmasında. 100 merkezin parçası, 0 ayrı yerleşim.</dd>
     <dt>Konut/bina</dt><dd>3+ apartman, ~1 müstakil; köyde ahır/depo da bina olduğundan 1'in altına iner.</dd>
@@ -129,6 +131,8 @@ td input.y { width:150px; padding:1px 6px; } td input.n { width:180px; padding:1
   <input id="q" placeholder="ara">
   <span class="mah-only lbl">nüfus ≥</span><input class="mah-only" id="nMin" type="number" min="0" placeholder="0">
   <span class="sep mah-only"></span>
+  <span class="mah-only lbl">belirsizlik</span><div class="chips mah-only" id="cBs"></div>
+  <span class="sep mah-only"></span>
   <span class="mah-only lbl">ihtilaf</span><div class="chips mah-only" id="cIh"></div>
   <span class="sep mah-only"></span>
   <span class="mah-only lbl">karar</span><div class="chips mah-only" id="cKr"></div>
@@ -143,6 +147,6 @@ td input.y { width:150px; padding:1px 6px; } td input.n { width:180px; padding:1
 <div class="summary" id="sum"></div>
 <div class="wrap"><table><thead id="th"></thead><tbody id="tb"></tbody></table><div class="more" id="more"></div></div>
 
-<script src="kentkir.js?v=4"></script>
+<script src="kentkir.js?v=5"></script>
 </body>
 </html>

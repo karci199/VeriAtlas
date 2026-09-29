@@ -265,10 +265,46 @@ rows.sort(key=lambda x: (x["il"], x["ilce"], x["yer"], x["ad"]))
 print("satır", len(rows), "| seçim eşleşen", sum(1 for v in rows if v.get("k23")))
 
 
+# uncertainty 0-10: a weighted urban probability over every signal, 0 when they all point one
+# way, 10 at an even split; at least 5 when the merged suggestion sits on the other side of
+# the probability, +2 for an institution. Under 2 the page places the row provisionally.
+BINA_P = {"Merkez (kent)": 1, "Kentsel belde (kent)": 1, "Kasaba (kır)": .25, "Kırsal belde (kır)": .2, "Köy (kır)": 0}
+DEG_P = {"Yoğun kent": 1, "Orta yoğun kent": .8, "Kır": 0}
+URBAN_TR = {"İl Merkezi", "İlçe Merkezi", "Kentsel Belde"}
+
+
+def uncertainty(v):
+    sig = [(1 if v["oy"][k] == "K" else 0, w) for k, w in (("TÜİK", 1), ("AATOPLU", 1.5)) if v["oy"][k]]
+    if v["deg"] in DEG_P:
+        sig.append((DEG_P[v["deg"]], 1))
+    if v["bina"] in BINA_P:
+        sig.append((BINA_P[v["bina"]], 2))
+    if v["kpb"] is not None:
+        sig.append((min(1, max(0, (v["kpb"] - 1) / 2)), .75))  # 1 dwelling per building rural, 3+ urban
+    if v["dens"]:
+        sig.append((min(1, max(0, (math.log10(max(v["dens"], 1)) - 2) / 1.7)), .75))  # 100/km2 rural, 5,000 urban
+    if v["n"] >= 10000:
+        sig.append((1, 1))
+    if v["uni"] is not None:
+        sig.append((min(1, max(0, (v["uni"] - 5) / 15)), .5))  # university graduates 5 % rural, 20 %+ urban
+    if v["o65"] is not None:
+        sig.append((min(1, max(0, (25 - v["o65"]) / 15)), .5))  # 65+ at 25 %+ rural, 10 % urban
+    pk = sum(x * w for x, w in sig) / sum(w for _, w in sig)
+    u = 10 * (1 - abs(2 * pk - 1))
+    if (pk >= .5) != (v["os"] in URBAN_TR):
+        u = max(u, 5)
+    if v["kurum"]:
+        u = min(10, u + 2)
+    return round(pk, 2), round(u, 1)
+
+
+for v in rows:
+    v["pk"], v["bs"] = uncertainty(v)
+
 # compact: a column list and one array per row
 KEYS = ["id", "il", "ilce", "yer", "semt", "ad", "tur", "n", "n0", "g", "area", "dens", "er", "u17", "o65", "med", "uni",
         "hh", "hs", "dw", "bl", "kpb", "kpbl", "hpb", "prs", "yaz", "leke", "kur", "k23", "g23", "kn", *[p for p, _, _, _ in PARTIES], "win",
-        "stat", "aat", "deg", "bina", "oneri", "os", "ih", "oy", "kurum", "not"]
+        "stat", "aat", "deg", "bina", "oneri", "os", "ih", "bs", "pk", "oy", "kurum", "not"]
 for v in rows:
     v["oy"] = "".join(v["oy"][k] or "-" for k in ("TÜİK", "AATOPLU", "DEGURBA", "bina"))
 out = {"keys": KEYS, "parties": [[p, short, fill] for p, short, fill, _ in PARTIES],

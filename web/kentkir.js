@@ -18,7 +18,11 @@ let K = {}, rows = [], parties = [], dec = {}, pending = {};
 let tab = "il", shown = [], limit = PAGE, sortKey = null, sortAsc = true, sumSort = "n", sumAsc = false;
 let focus = null; // {k: "yer" | "semt", v, label} from a summary drill-down
 const selIl = new Set(), selIlce = new Set();
-const f = { ih: new Set(["uyumlu", "hafif", "cok"]), on: new Set(CLASSES), kr: new Set(["bos", "dolu"]), kurum: false,
+const BANDS = [["0", "0-2", "#6cc38a"], ["2", "2-4", "#a9c46a"], ["4", "4-6", "#e2b458"], ["6", "6-8", "#e8955e"], ["8", "8-10", "#ec7f75"]];
+const band = (u) => String(Math.min(8, Math.floor(u / 2) * 2));
+// the user's decision, else a provisional placement for near-certain rows (uncertainty < 2), else open
+const placed = (r) => decOf(get(r, "id")).s || (get(r, "bs") < 2 ? get(r, "os") : "");
+const f = { bs: new Set(BANDS.map((b) => b[0])), ih: new Set(["uyumlu", "hafif", "cok"]), on: new Set(CLASSES), kr: new Set(["bos", "dolu"]), kurum: false,
             groups: new Set(["temel", "kaynak", "not", "you2"]) };
 
 const $ = (id) => document.getElementById(id);
@@ -35,7 +39,7 @@ const COLS = () => [
   ["n", "Nüfus", "temel", "n", 0], ["g", "2013→25 %", "temel", "g", 1], ["dens", "Kişi/km²", "temel", "n", 0],
   ["leke", "Merkez lekesi %", "temel", "n", 0], ["kpb", "Konut/bina", "temel", "n", 2],
   ["src0", "TÜİK", "kaynak", "src"], ["src1", "AATOPLU", "kaynak", "src"], ["src2", "DEGURBA", "kaynak", "src"], ["src3", "Bina", "kaynak", "src"],
-  ["ih", "İhtilaf", "kaynak", "ih"], ["os", "Öneri", "kaynak", "oneri"],
+  ["ih", "İhtilaf", "kaynak", "ih"], ["bs", "Belirsizlik", "kaynak", "bs", 1], ["os", "Öneri", "kaynak", "oneri"],
   ["not", "Otomatik not", "not", "note"],
   ["n0", "Nüfus 2013", "nufus", "n", 0], ["area", "Alan km²", "nufus", "n", 2], ["kur", "Kuruluş", "nufus", "c"], ["tur", "Tür", "nufus", "c"],
   ["er", "Erkek %", "yas", "n", 1], ["u17", "0-17 %", "yas", "n", 1], ["o65", "65+ %", "yas", "n", 1], ["med", "Ortanca yaş", "yas", "n", 1], ["uni", "Üniversiteli %", "yas", "n", 1],
@@ -152,15 +156,18 @@ function summaryTable() {
     const key = groupKey(r), k = key.join(" · ");
     if (q && !fold(k).includes(q)) continue;
     const n = get(r, "n"), s = decOf(get(r, "id")).s, ih = get(r, "ih");
-    const t = m.get(k) || { key, n: 0, c: 0, ok: 0, mk: 0, done: 0, hafif: 0, cok: 0, open: 0 };
+    const t = m.get(k) || { key, n: 0, c: 0, ok: 0, mk: 0, done: 0, hafif: 0, cok: 0, open: 0, pk: 0, pn: 0, un: 0 };
     t.n += n; t.c++;
+    const pl = placed(r);
+    if (pl) { t.pn += n; if (URBAN.has(pl)) t.pk += n; } else t.un += n;
     if (URBAN.has(get(r, "os"))) t.ok += n;
     if (URBAN.has(s || get(r, "os"))) t.mk += n;
     if (s) t.done += n;
     if (ih !== "uyumlu") { t[ih]++; if (!s) t.open++; }
     m.set(k, t);
   }
-  const list = [...m.values()].map((t) => ({ ...t, po: t.ok / t.n * 100, pm: t.mk / t.n * 100, pd: t.done / t.n * 100 }));
+  const list = [...m.values()].map((t) => ({ ...t, po: t.ok / t.n * 100, pm: t.mk / t.n * 100, pd: t.done / t.n * 100,
+    pp: t.pn / t.n * 100, lo: t.pk / t.n * 100, hi: (t.pk + t.un) / t.n * 100, pu: t.un / t.n * 100 }));
   const sk = sumSort;
   list.sort((a, b) => {
     const x = sk === "name" ? a.key.join() : a[sk], y = sk === "name" ? b.key.join() : b[sk];
@@ -172,6 +179,7 @@ function summaryTable() {
   const H = (k, t, cls = "num") => `<th data-s="${k}" class="${cls} ${sumSort === k ? `sorted ${sumAsc ? "asc" : ""}` : ""}">${t}</th>`;
   $("th").innerHTML = `<tr class="cols">${names.map((n, i) => i === names.length - 1 ? H("name", n, "") : `<th></th>`).join("")}
     ${H("n", "Nüfus")}${H("c", "Yer")}${H("pm", "Kent % (senin + öneri)")}${H("po", "Kent % (öneri)")}
+    ${H("pp", "Yerleşen nüfus %")}${H("lo", "Kent % aralığı")}${H("pu", "Belirsiz nüfus %")}
     ${H("pd", "Karar verilen nüfus %")}${H("hafif", "Hafif ihtilaf")}${H("cok", "Çok ihtilaf")}${H("open", "Bekleyen ihtilaf")}</tr>`;
   const bar = (v, cls) => `<span class="bar ${cls}" style="width:${Math.max(0, Math.min(100, v)) * 0.6}px"></span>`;
   $("tb").innerHTML = list.slice(0, limit).map((t) => {
@@ -180,6 +188,7 @@ function summaryTable() {
       <td class="num">${fmt(t.n)}</td><td class="num muted">${fmt(t.c)}</td>
       <td class="num"><span class="cell-bar">${bar(t.pm, "k")}<b>${fmt(t.pm, 1)}</b></span></td>
       <td class="num">${fmt(t.po, 1)}${t.done && Math.abs(d) >= 0.05 ? ` <span class="${d > 0 ? "up" : "down"}">${d > 0 ? "+" : ""}${fmt(d, 1)}</span>` : ""}</td>
+      <td class="num">${fmt(t.pp, 0)}</td><td class="num">${fmt(t.lo, 1)} – ${fmt(t.hi, 1)}</td><td class="num ${t.pu >= 30 ? "warn" : ""}">${fmt(t.pu, 1)}</td>
       <td class="num"><span class="cell-bar">${bar(t.pd, "d")}${fmt(t.pd, 0)}</span></td>
       <td class="num ${t.hafif ? "warn" : "muted"}">${fmt(t.hafif)}</td><td class="num ${t.cok ? "bad" : "muted"}">${fmt(t.cok)}</td>
       <td class="num ${t.open ? "" : "muted"}">${fmt(t.open)}</td></tr>`;
@@ -200,6 +209,7 @@ function mahTable() {
   shown = rows.filter((r) => {
     if (!inScope(r)) return false;
     if (!f.ih.has(get(r, "ih"))) return false;
+    if (!f.bs.has(band(get(r, "bs")))) return false;
     if (!f.on.has(get(r, "os"))) return false;
     if (f.kurum && !get(r, "kurum")) return false;
     if (!f.kr.has(decOf(get(r, "id")).s ? "dolu" : "bos")) return false;
@@ -256,6 +266,8 @@ function cell(r, c, i, cols) {
       const full = [get(r, "stat"), get(r, "aat"), get(r, "deg"), get(r, "bina")][+k[3]];
       return `<td class="c${sep}" title="${esc(full)}"><span class="pill ${o === "-" ? "N" : o}">${o === "K" ? "kent" : o === "R" ? "kır" : "belde"}</span></td>`;
     }
+    case "bs": { const v = get(r, "bs"), c = BANDS.find((b) => b[0] === band(v))[2];
+      return `<td class="num${sep}" title="kent olasılığı ${fmt(get(r, "pk") * 100)} %"><span class="bsbar" style="width:${v * 4}px;background:${c}"></span><b style="color:${c}">${fmt(v, 1)}</b></td>`; }
     case "ih": return `<td class="c${sep}"><span class="ih ${get(r, "ih")}">${IH[get(r, "ih")]}</span></td>`;
     case "oneri": return `<td class="oneri${sep} ${URBAN.has(get(r, "os")) ? "k" : "r"}">${esc(get(r, "os"))}</td>`;
     case "sel": {
@@ -285,7 +297,7 @@ function more() {
 
 // --- cards: always over the province/district scope
 function cards() {
-  let pop = 0, done = 0, c = 0, mk = 0, ok = 0, open = 0;
+  let pop = 0, done = 0, c = 0, mk = 0, ok = 0, open = 0, pn = 0, pkent = 0, un = 0, uc = 0;
   const ih = { uyumlu: 0, hafif: 0, cok: 0 };
   for (const r of rows) {
     if (!inScope(r)) continue;
@@ -294,9 +306,15 @@ function cards() {
     if (URBAN.has(get(r, "os"))) ok += n;
     if (URBAN.has(s || get(r, "os"))) mk += n;
     if (s) done++; else if (get(r, "ih") !== "uyumlu") open++;
+    const pl = placed(r);
+    if (pl) { pn += n; if (URBAN.has(pl)) pkent += n; } else { un += n; uc++; }
   }
   const pct = (a, b) => (b ? fmt((a / b) * 100, 1) : "–");
   $("sum").innerHTML = `
+    <span><b>${fmt(pn)} <small>${pct(pn, pop)} %</small></b>yerleşen kişi (senin + belirsizliği 2'nin altı)</span>
+    <span><b>${fmt(pkent)} · ${fmt(pn - pkent)}</b>kent · kır</span>
+    <span><b>${pct(pkent, pop)} – ${pct(pkent + un, pop)} %</b>kent payı aralığı (belirsizlerin hepsi kır … hepsi kent)</span>
+    <span><b>${fmt(uc)} <small>${fmt(un)} kişi</small></b>belirsiz yer</span>
     <span><b>${pct(mk, pop)} %</b>kent payı (senin + öneri)</span>
     <span><b>${pct(ok, pop)} %</b>kent payı (öneri)</span>
     <span><b>${fmt(done)} <small>/ ${fmt(c)}</small></b>karar verilen yer</span>
@@ -388,6 +406,7 @@ async function main() {
     drawIlce(); limit = PAGE; refresh();
   });
   drawIlce = buildDrop($("dIlce"), "İlçe", () => count((r) => (!selIl.size || selIl.has(get(r, "il")) ? ilceKey(r) : null)), selIlce, () => { limit = PAGE; refresh(); });
+  chips($("cBs"), BANDS, f.bs, () => { limit = PAGE; mahTable(); });
   chips($("cIh"), [["uyumlu", "uyumlu", "#6cc38a"], ["hafif", "hafif", "#e8b64c"], ["cok", "çok", "#ef7d73"]], f.ih, () => { limit = PAGE; mahTable(); });
   chips($("cOn"), CLASSES.map((c) => [c, c]), f.on, () => { limit = PAGE; mahTable(); });
   const kr = new Set(f.kr);
