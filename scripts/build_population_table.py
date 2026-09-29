@@ -14,7 +14,8 @@ Levels
 
 Writes public/nufus_birimler.json (git-ignored, ~8 MB):
   years, provinces [[id, name]], districts [[id, name, province index]],
-  units [[level, name, district index, first year index, [population ...]]]
+  settlements [name], units [[level, name, district index, first year index, [population ...],
+  settlement index (neighbourhoods/villages only, -1 when unknown -- ids of 2007-2012)]]
 """
 import json
 import sys
@@ -54,6 +55,21 @@ for f, suffix in (("areas_tr_neighbourhoods.csv", " Mah."), ("areas_tr_villages.
     for r in pl.read_csv(ROOT / "src/veriatlas/data" / f, infer_schema_length=0).iter_rows(named=True):
         names[r["area_id"]] = r["name_tr"].removesuffix(suffix).strip()
 
+sys.path.insert(0, str(ROOT / "scripts/analiz/kent_kir_2026_09_27"))
+_argv, sys.argv = sys.argv, [sys.argv[0], "06"]
+from il import wh  # noqa: E402
+
+sys.argv = _argv
+# settlement ("yerleşim") of each current neighbourhood: town quarter group, "<district> Köyleri"
+# or the belde, from semt.py's output of the urban/rural run
+SETTLE, SETTLE_NAMES = {}, []
+for f in sorted(KK.glob("*/semt_*_mahalle.csv")):
+    for r in pl.read_csv(f, infer_schema_length=0).iter_rows(named=True):
+        if r["semt"]:
+            if r["semt"] not in SETTLE_NAMES:
+                SETTLE_NAMES.append(r["semt"])
+            SETTLE[wh(r["area_id"])] = SETTLE_NAMES.index(r["semt"])
+
 units = []
 for (aid, lvl), s in series.items():
     if lvl != "district" or aid not in D:
@@ -76,13 +92,9 @@ for (aid, lvl), s in series.items():
     if did not in D:
         continue
     first, vals = pack(s)
-    units.append(["koy" if lvl == "village" else "mahalle", names.get(aid, aid), D[did], first, vals])
+    units.append(["koy" if lvl == "village" else "mahalle", names.get(aid, aid), D[did], first, vals, SETTLE.get(aid, -1)])
 
 # beldes as of 2013, from the urban/rural list
-sys.path.insert(0, str(ROOT / "scripts/analiz/kent_kir_2026_09_27"))
-sys.argv = [sys.argv[0], "06"]
-from il import wh  # noqa: E402
-
 belde = {}
 for p in sorted(x.name for x in KK.iterdir() if (x / f"kent_{x.name}_son.csv").exists()):
     for r in pl.read_csv(KK / p / f"kent_{p}_son.csv", infer_schema_length=0).iter_rows(named=True):
@@ -102,7 +114,7 @@ for (did, name), s in belde.items():
 
 out = dict(years=YEARS, provinces=[[r["area_id"], r["name_tr"]] for r in prov.iter_rows(named=True)],
            districts=[[r["area_id"], r["name_tr"], P.get(r["area_id"][:5], -1)] for r in dist.iter_rows(named=True)],
-           units=units)
+           settlements=SETTLE_NAMES, units=units)
 dst = ROOT / "public/nufus_birimler.json"
 dst.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 from collections import Counter  # noqa: E402

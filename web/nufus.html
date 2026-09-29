@@ -50,6 +50,10 @@ td.pos { color:var(--pos); } td.neg { color:var(--neg); }
 .more button, .tools button { font:inherit; font-size:12.5px; padding:6px 12px; border:1px solid var(--line); border-radius:7px;
                               background:var(--panel2); color:var(--fg); cursor:pointer; }
 .more button:hover, .tools button:hover { border-color:var(--acc); }
+label.check { flex-direction:row; align-items:center; gap:6px; padding-bottom:7px; text-transform:none; letter-spacing:0; font-size:12.5px; }
+label.check input { min-width:0; accent-color:var(--acc); }
+select:disabled { opacity:.45; }
+td.new { color:var(--acc); font-style:italic; }
 .tools { margin:0 20px 8px; display:flex; gap:8px; color:var(--mut); font-size:12px; align-items:center; }
 .note { margin:0 20px 24px; color:var(--mut); font-size:12px; max-width:900px; }
 @media (max-width:600px) { .controls, .summary, .wrap, .tools, .note { margin-left:16px; margin-right:16px; }
@@ -65,9 +69,11 @@ td.pos { color:var(--pos); } td.neg { color:var(--neg); }
   <label>Düzey <div class="seg" id="level"></div></label>
   <label>İl <select id="prov"></select></label>
   <label>İlçe <select id="dist"></select></label>
+  <label>Yerleşim <select id="settle"></select></label>
   <label>Yıl <select id="year"></select></label>
   <label>Karşılaştırma yılı <select id="base"></select></label>
   <label>Ara <input id="q" type="search" placeholder="ad yazın"></label>
+  <label class="check"><input id="both" type="checkbox"> İki yılda da olanlar</label>
 </div>
 <div class="summary" id="summary"></div>
 <div class="tools">Sütun genişliği: başlığın sağ kenarından sürükleyin <button id="resetCols">Genişlikleri sıfırla</button></div>

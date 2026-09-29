@@ -15,14 +15,14 @@ const fmt = new Intl.NumberFormat("tr-TR");
 const pct = (x, d = 2) => (x == null || !isFinite(x) ? "" : x.toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d }));
 const fold = (s) => s.toLocaleLowerCase("tr-TR");
 
-const state = { level: "ilce", prov: -1, dist: -1, year: null, base: null, q: "", sort: "value", asc: false, limit: PAGE };
+const state = { level: "ilce", prov: -1, dist: -1, settle: -1, both: false, year: null, base: null, q: "", sort: "value", asc: false, limit: PAGE };
 let DATA, TR = [], PROV = [], DIST = [];
 
 const $ = (id) => document.getElementById(id);
 
 // column widths: narrow defaults, user drags a header edge; kept per column key in this
 // browser only (a convenience -- the page works the same when storage is unavailable)
-const WIDTH = { rank: 52, name: 190, prov: 120, dist: 120, type: 80, value: 110, trShare: 150, provShare: 100, distShare: 105, change: 110, changePct: 90 };
+const WIDTH = { rank: 52, name: 190, settle: 150, first: 70, prov: 120, dist: 120, type: 80, value: 110, trShare: 150, provShare: 100, distShare: 105, change: 110, changePct: 90 };
 let userWidth = {};
 try { userWidth = JSON.parse(localStorage.getItem("nufus.widths") || "{}"); } catch (e) { userWidth = {}; }
 const saveWidths = () => { try { localStorage.setItem("nufus.widths", JSON.stringify(userWidth)); } catch (e) { /* storage off */ } };
@@ -60,16 +60,20 @@ function rows() {
     const p = provOf(u);
     if (state.prov >= 0 && p !== state.prov) continue;
     if (state.dist >= 0 && u[2] !== state.dist) continue;
+    if (state.settle >= 0 && u[5] !== state.settle) continue;
     if (q && !fold(u[1]).includes(q)) continue;
     const v = valueAt(u, yi);
     if (v == null) continue;
     const r = { u, name: u[1], type: TYPE_LABEL[u[0]], prov: DATA.provinces[p][1],
+      settle: u[5] >= 0 ? DATA.settlements[u[5]] : "", first: DATA.years[u[3]],
       dist: u[2] >= 0 ? DATA.districts[u[2]][1] : "", value: v,
       trShare: (v / TR[yi]) * 100,
       provShare: u[0] === "il" ? null : (v / PROV[p][yi]) * 100,
       distShare: u[0] === "il" || u[0] === "ilce" ? null : (v / DIST[u[2]][yi]) * 100 };
     if (bi != null) {
       const b = valueAt(u, bi);
+      if (b == null && state.both) continue;
+      r.isNew = b == null && u[3] > bi;
       r.change = b == null ? null : v - b;
       r.changePct = b ? ((v - b) / b) * 100 : null;
     }
@@ -88,11 +92,12 @@ function columns() {
   const c = [{ k: "rank", t: "Sıra", num: true }, { k: "name", t: "Ad" }];
   if (state.level !== "il") c.push({ k: "prov", t: "İl" });
   if (state.level === "belde" || state.level === "mahalle") c.push({ k: "dist", t: "İlçe" });
-  if (state.level === "mahalle") c.push({ k: "type", t: "Tür" });
+  if (state.level === "mahalle") c.push({ k: "settle", t: "Yerleşim" }, { k: "type", t: "Tür" });
   c.push({ k: "value", t: `Nüfus ${DATA.years[state.year]}`, num: true });
   c.push({ k: "trShare", t: "Türkiye payı %", num: true });
   if (state.level !== "il") c.push({ k: "provShare", t: "İl içi pay %", num: true });
   if (state.level === "belde" || state.level === "mahalle") c.push({ k: "distShare", t: "İlçe içi pay %", num: true });
+  c.push({ k: "first", t: "İlk yıl", num: true });
   if (state.base != null) {
     c.push({ k: "change", t: `Değişim ${DATA.years[state.base]}→`, num: true });
     c.push({ k: "changePct", t: "Değişim %", num: true });
@@ -113,6 +118,8 @@ function render() {
       if (c.k === "name") return `<td class="name" title="${r.name}">${r.name}</td>`;
       if (c.k === "value") return `<td class="num">${fmt.format(r.value)}</td>`;
       if (c.k === "trShare") return `<td class="num"><div class="cell-bar">${pct(r.trShare, r.trShare < 0.01 ? 4 : 2)}<span class="bar" style="width:${Math.max(2, Math.round((r.trShare / maxShare) * 50))}px"></span></div></td>`;
+      if (c.k === "first") return `<td class="num rank">${r.first}</td>`;
+      if (c.k === "change" && r.isNew) return `<td class="num new" title="${DATA.years[state.base]} yılında kaydı yok; ${r.first}'de başlıyor">yeni</td>`;
       if (c.k === "change") return `<td class="num ${r.change > 0 ? "pos" : r.change < 0 ? "neg" : ""}">${r.change == null ? "" : (r.change > 0 ? "+" : "") + fmt.format(r.change)}</td>`;
       if (c.k === "changePct") return `<td class="num ${r.changePct > 0 ? "pos" : r.changePct < 0 ? "neg" : ""}">${r.changePct == null ? "" : (r.changePct > 0 ? "+" : "") + pct(r.changePct, 1)}</td>`;
       if (c.num) return `<td class="num">${pct(r[c.k])}</td>`;
@@ -140,11 +147,11 @@ function render() {
   $("head").querySelectorAll("th").forEach((th) => th.onclick = (ev) => {
     if (ev.target.classList.contains("grip")) return;
     const k = th.dataset.k; if (k === "rank") return;
-    if (state.sort === k) state.asc = !state.asc; else { state.sort = k; state.asc = ["name", "prov", "dist", "type"].includes(k); }
+    if (state.sort === k) state.asc = !state.asc; else { state.sort = k; state.asc = ["name", "prov", "dist", "type", "settle"].includes(k); }
     render();
   });
   const n = [];
-  if (state.level === "mahalle") n.push("Mahalle ve köy kimlikleri 2013'te değişti: 2007–2012 ile 2013–2025 aynı yer için iki ayrı satır olabilir; değişim yalnız iki yılda da var olan satırda hesaplanır. Küçük mahallelerde 0–17 yaş satırı gizli olduğundan toplam biraz eksik olabilir.");
+  if (state.level === "mahalle") n.push("Seçilen yılda kaydı olmayan birim listede yoktur. Karşılaştırma yılında kaydı yoksa değişim yerine \"yeni\" yazar. Mahalle ve köy kimlikleri 2013'te değişti: 2007–2012 ile 2013–2025 aynı yer için iki ayrı satır olabilir; eski kimliklerin yerleşimi boştur. Büyük yüzdeler gerçek büyüme olabileceği gibi mahalle sınırı değişikliği de olabilir. Yerleşim: il/ilçe merkezinde semt, köyler için \"<ilçe> Köyleri\", beldeler kendi adıyla.");
   if (state.level === "belde") n.push("Belde: mahallenin 2013'te bağlı olduğu belde (büyükşehirlerde 2014'te kapatılanlar dahil); 2013–2025. Beldenin mahalleleri Mahalle / köy düzeyinde ayrıca listelenir.");
   if (state.level === "ilce") n.push("2008'de kurulan ilçeler 2007'de yoktur; bölünen ilçelerde 2007 değeri eski sınırdadır.");
   $("note").textContent = n.join(" ");
@@ -156,6 +163,18 @@ function fillDistricts() {
   $("dist").innerHTML = opts.join("");
   $("dist").disabled = state.prov < 0;
   state.dist = -1;
+  fillSettlements();
+}
+
+// settlements of the chosen district (neighbourhood level only)
+function fillSettlements() {
+  const seen = new Map();
+  if (state.level === "mahalle" && state.dist >= 0)
+    for (const u of DATA.units) if (u[2] === state.dist && u[5] >= 0 && (u[0] === "mahalle" || u[0] === "koy")) seen.set(u[5], DATA.settlements[u[5]]);
+  const opts = [...seen].sort((a, b) => a[1].localeCompare(b[1], "tr"));
+  $("settle").innerHTML = '<option value="-1">Tümü</option>' + opts.map(([i, n]) => `<option value="${i}">${n}</option>`).join("");
+  $("settle").disabled = !opts.length;
+  state.settle = -1;
 }
 
 function fillYears() {
@@ -178,11 +197,13 @@ async function main() {
   $("level").querySelectorAll("button").forEach((b) => b.onclick = () => {
     state.level = b.dataset.k; state.limit = PAGE; state.sort = "value"; state.asc = false;
     $("level").querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b));
-    fillYears(); render();
+    fillYears(); fillSettlements(); render();
   });
   $("prov").innerHTML = '<option value="-1">Tümü</option>' + DATA.provinces.map((p, i) => [p[1], i]).sort((a, b) => a[0].localeCompare(b[0], "tr")).map(([n, i]) => `<option value="${i}">${n}</option>`).join("");
   $("prov").onchange = (e) => { state.prov = +e.target.value; state.limit = PAGE; fillDistricts(); render(); };
-  $("dist").onchange = (e) => { state.dist = +e.target.value; state.limit = PAGE; render(); };
+  $("dist").onchange = (e) => { state.dist = +e.target.value; state.limit = PAGE; fillSettlements(); render(); };
+  $("settle").onchange = (e) => { state.settle = +e.target.value; state.limit = PAGE; render(); };
+  $("both").onchange = (e) => { state.both = e.target.checked; state.limit = PAGE; render(); };
   $("year").onchange = (e) => { state.year = +e.target.value; render(); };
   $("base").onchange = (e) => { state.base = e.target.value === "" ? null : +e.target.value; render(); };
   $("q").oninput = (e) => { state.q = e.target.value; state.limit = PAGE; render(); };
