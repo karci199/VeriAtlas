@@ -201,7 +201,15 @@ def run(topic: str, key: str, row: dict, province: int, years: list[int]) -> str
     # A big province (İstanbul, İzmir, Konya, Ankara) is over the cap before the report is
     # asked: MEDAS then refuses the tick on "all districts" and the level count stays 0.
     # That is the cap speaking, not a broken level, so it halves the years like one.
-    if "LIMIT_ASILDI" in output or "DUZEY_TUTMADI" in output:
+    # MEDAS' own refusal after the tick ("... 216 X 7 X 10 çarpımının sonucu 50000'i geçemez!"):
+    # its product carries a hidden factor (the measures), so the footer count under-reads it
+    if (
+        "LIMIT_ASILDI" in output
+        or "DUZEY_TUTMADI" in output
+        or "50000'i geçemez" in output
+    ):
+        if target.exists() and target.stat().st_size < 200:
+            target.unlink()  # MEDAS wrote its empty refusal page as the csv
         return "limit"
     if valid(target, years, is_sparse(key, province)):
         log("   indi", target.name, note, target.stat().st_size, "bayt")

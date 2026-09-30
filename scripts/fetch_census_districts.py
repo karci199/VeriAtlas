@@ -150,7 +150,10 @@ class Census:
         box, found = box_with(
             body, lambda ts: any(t.startswith("İlçe top") for t in ts)
         )
-        key = next(t for t in found if t.startswith(detail))
+        key = next((t for t in found if t.lower().startswith(detail.lower())), None)
+        if key is None:
+            # 1990 spells it "Belde ve Köyler", 2000 "Belde ve köyler toplamı"
+            raise LookupError(f"no '{detail}' option, box offers {list(found)}")
         body = self.select(box, found[key])
         self.variable_box, found = box_with(
             body, lambda ts: not any(t.startswith("İlçe top") for t in ts)

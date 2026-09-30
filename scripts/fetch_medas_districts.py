@@ -532,10 +532,17 @@ def fetch_year(page, year: int, breakdown: bool = False) -> bool:
     page.wait_for_timeout(6000)
 
     # The CSV button is an image link, not a labelled button.
-    with page.expect_download(timeout=180000) as download:
-        page.locator(
-            "img[src*='csv'], a[title*='CSV'], .z-toolbarbutton[title*='CSV']"
-        ).first.click()
+    csv_button = page.locator(
+        "img[src*='csv'], a[title*='CSV'], .z-toolbarbutton[title*='CSV']"
+    ).first
+    # big reports (hundreds of measures x provinces) take minutes to render; the default
+    # 60 s wait for the button failed the same 53 queries on every retry
+    csv_button.wait_for(state="visible", timeout=420000)
+    # the button is found within a minute but a normal click times out on the big reports
+    # (ZK keeps a busy mask over the page); a DOM click skips Playwright's hit-test
+    page.wait_for_timeout(3000)
+    with page.expect_download(timeout=300000) as download:
+        csv_button.evaluate("element => element.click()")
     download.value.save_as(str(target))
 
     print("  ", year, "->", target.name, target.stat().st_size, "bayt")

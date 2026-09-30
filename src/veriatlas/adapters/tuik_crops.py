@@ -71,6 +71,12 @@ DISTRICT_MISMATCH = {
     ("TR-55", 2020, "crop=01.25.33.00.00"),
     ("TR-54", 2015, "crop=01.13.32.00.01"),
     ("TR-54", 2015, "crop=01.13.34.00.01"),
+    # Field-crop production 2012: the districts differ from the province by 2-3 tonnes
+    # (745 vs 743, 317 vs 319, 673 vs 676, 57 vs 59), a rounding of the published split.
+    ("TR-03", 2012, "crop=01.11.99.00.02"),
+    ("TR-15", 2012, "crop=01.11.99.00.02"),
+    ("TR-03", 2012, "crop=01.28.30.00.08"),
+    ("TR-43", 2012, "crop=01.28.30.00.08"),
 }
 
 LABEL = re.compile(
@@ -308,6 +314,11 @@ class CropMeasure:
                 .is_in([f"{a}|{y}|{d}" for a, y, d in DISTRICT_MISMATCH])
             )
         )
+        # The long district job leaves files whose years overlap (a group of years halved on
+        # the cap, then run again: tahil il07 2004-2005 beside 2005-2006). Identical rows are
+        # the same cell read twice and are dropped; a key with two different values stays and
+        # fails below, so a real conflict is never averaged away.
+        frame = frame.unique(maintain_order=True)
         check_districts(frame, self.indicator_id)
         if frame.select("area_id", "year", "dims").is_duplicated().any():
             raise ValueError(self.indicator_id + ": ayni alan-yil-kirilim iki kez")
