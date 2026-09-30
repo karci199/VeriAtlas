@@ -76977,3 +76977,207 @@ additive = true
 dims = ["village_road_class", "surface"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "İl özel idarelerinin sorumluluğundaki köy yolları, km: 1. ve 2. derece köy yolu ile köy içi yol, kaplama türüne göre (ham yol, tesviye, stabilize, sathi asfalt, asfalt betonu/BSK, parke, klasik beton, SSB). Yalnız büyükşehir olmayan 51 il; büyükşehirlerde köy yolları büyükşehir belediyesine geçtiği için seride yok. 'total' kaynaktaki satır toplamı. Kaynak ÇŞB Yerel Yönetimler Genel Müdürlüğü, Köy Yolları Resmi İstatistikleri 2020-2025. Adaptör src/veriatlas/adapters/csb_village_roads.py."
+
+# --- Ceza infaz kurumuna giren ve çıkan hükümlü (TÜİK MEDAS, il düzeyi, 1990-2020) ---
+
+[dim.prison_offence]
+label_tr = "Suç türü (ceza infaz)"
+label_en = "Offence group (prison statistics)"
+
+[dim.prison_offence.values]
+g01 = "Öldürme"
+g02 = "Yaralama"
+g03 = "Cinsel Suçlar"
+g04 = "Tehdit"
+g05 = "Kişiyi Hürriyetinden Yoksun Kılma"
+g07 = "Hakaret"
+g08 = "Hırsızlık"
+g09 = "Yağma (Gasp)"
+g10 = "Mala Zarar Verme"
+g12 = "Trafik Suçları"
+g14 = "Kötü Muamele"
+g18 = "Sahtecilik"
+g26 = "Dolandırıcılık"
+g30 = "Çek Kanunlarına Muhalefet"
+g31 = "Uyuşturucu Veya Uyarıcı Madde İmal Ve Ticareti"
+g32 = "Uyuşturucu Veya Uyarıcı Madde Kullanma, Satın Alma"
+g33 = "Zimmet"
+g34 = "Rüşvet"
+g35 = "Kaçakçılık"
+g36 = "Orman Suçları"
+g37 = "Ateşli Silahlar Ve Bıçaklar İle İlgili Suçlar"
+g38 = "İcra İflas Kanununa Muhalefet"
+g39 = "Askeri Ceza Kanununa Muhalefet"
+g40 = "Görevi Yaptırmamak İçin Direnme"
+g41 = "Ailenin Korunması Tedbirine Aykırılık"
+g42 = "Zina"
+g43 = "Dövmek, Yaralamak"
+g44 = "Rüşvet, İrtikap Ve Sahtecilik"
+g45 = "Ateşli Silahlar"
+g46 = "Zimmete Para Geçirmek"
+g47 = "Adam Öldürmek"
+g48 = "Kız, Kadın Ve Erkek Kaçırmak"
+g49 = "Kabahatler"
+g50 = "Trafik Kanunu'Na Muhalefet"
+g51 = "Irza Geçmek Ve Sarkıntılık"
+g52 = "Cebri Hırsızlık"
+g53 = "Sövme, Hakaret"
+g54 = "Para Ve Mal Kaçakçılığı Yapmak"
+g55 = "Uyuşturucu Madde Kullanmak, Satmak, Satın Almak"
+g98 = "Diğer"
+g99 = "Bilinmeyen"
+
+[dim.offender_occupation]
+label_tr = "İş durumu (ceza infaz)"
+label_en = "Occupation before entry (prison statistics)"
+
+[dim.offender_occupation.values]
+g01 = "İlmi Ve Teknik Elemanlar, Serbest Meslek Sahipleri Ve Bunlarla İlgili Meslekler"
+g02 = "Müteşebbisler Direktörler Ve Üst Kademe Yöneticileri"
+g03 = "İdari Personel Ve Benzeri Çalışanlar"
+g04 = "Ticaret Ve Satış Personeli"
+g05 = "Hizmet İşlerinde Çalışanlar"
+g06 = "Tarımcı, Hayvancı, Ormancı, Balıkçı Ve Avcılar"
+g07 = "Tarım Dışı Üretim Faaliyetlerinde Çalışanlar Ve Ulaştırma Makineleri Kullananlar"
+g08 = "Kanun Yapıcılar, Üst Düzey Yöneticiler Ve Müdürler"
+g09 = "Profesyonel Meslek Mensupları"
+g10 = "Yardımcı Profesyonel Meslek Mensupları"
+g11 = "Büro Ve Müşteri Hizmetlerinde Çalışan Elemanlar"
+g12 = "Hizmet Ve Satış Elemanları"
+g13 = "Nitelikli Tarım, Hayvancılık, Avcılık, Ormancılık Ve Su Ürünleri Çalışanları"
+g14 = "Sanatkarlar Ve İlgili İşlerde Çalışanlar"
+g15 = "Tesis Ve Makine Operatörleri Ve Montajcıları"
+g16 = "Nitelik Gerektirmeyen İşlerde Çalışanlar"
+g17 = "Silahlı Kuvvetler"
+g18 = "Ev Kadını"
+g19 = "Öğrenci"
+g20 = "Emekli"
+g21 = "İrat Sahibi"
+g22 = "İşi Olmayan"
+g23 = "Ev Kadını, Emekli, İrat Sahibi, Öğrenci, Çalışamaz Halde Olan Ve Bir İşi Olmayan İle İşi Belli Olmayan"
+
+[dim.offender_age]
+label_tr = "Yaş (hükümlü)"
+label_en = "Age of the convict"
+
+[dim.offender_age.values]
+"11" = "11"
+"12" = "12"
+"13" = "13"
+"14" = "14"
+"15" = "15"
+"16" = "16"
+"17" = "17"
+"18" = "18"
+"19" = "19"
+"20" = "20"
+"21" = "21"
+"22" = "22"
+"23" = "23"
+"24" = "24"
+"25" = "25"
+"26" = "26"
+"27" = "27"
+"28" = "28"
+"29" = "29"
+"30" = "30"
+"31" = "31"
+"32" = "32"
+"33" = "33"
+"34" = "34"
+"35" = "35"
+"36" = "36"
+"37" = "37"
+"38" = "38"
+"39" = "39"
+"40" = "40"
+"41" = "41"
+"42" = "42"
+"43" = "43"
+"44" = "44"
+"45" = "45"
+"46" = "46"
+"47" = "47"
+"48" = "48"
+"49" = "49"
+"50" = "50"
+"51" = "51"
+"52" = "52"
+"53" = "53"
+"54" = "54"
+"55" = "55"
+"56" = "56"
+"57" = "57"
+"58" = "58"
+"59" = "59"
+"60" = "60"
+"61" = "61"
+"62" = "62"
+"63" = "63"
+"64" = "64"
+"65+" = "65+"
+"unknown" = "Bilinmeyen"
+
+[dim.offender_age_band]
+label_tr = "Yaş grubu (hükümlü)"
+label_en = "Age group of the convict"
+
+[dim.offender_age_band.values]
+"12-14" = "12-14"
+"15-17" = "15-17"
+"18-24" = "18-24"
+"25-34" = "25-34"
+"35-44" = "35-44"
+"45-54" = "45-54"
+"55-64" = "55-64"
+"65+" = "65+"
+unknown = "Bilinmeyen"
+
+[dim.nationality_status]
+label_tr = "Uyruk"
+label_en = "Nationality"
+
+[dim.nationality_status.values]
+citizen = "T.C."
+foreign = "Yabancı"
+unknown = "Bilinmeyen"
+
+[indicator.prison_admissions_by_residence]
+label_tr = "İkamet edilen ile göre ceza infaz kurumuna giren hükümlü"
+label_en = "Convicts admitted to prison, by province of residence"
+topic = "adalet"
+unit = "person"
+frequency = "annual"
+dims = ["sex", "prison_offence", "offender_age", "offender_age_band", "offender_occupation", "nationality_status"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Ceza infaz kurumuna giren hükümlü, ikamet ettiği ile göre; her satır tek bir kırılımı (cinsiyet, suç türü, yaş, yaş grubu, iş durumu ya da uyruk) gösterir, kırılımlar birbirinin içinde değildir. 1990-2020. İş durumu yalnız 2008'e kadar. \"Yabancı ülke\" ikametli hükümlü il toplamında yoktur, yalnız Türkiye toplamındadır."
+
+[indicator.prison_admissions_by_offence_place]
+label_tr = "Suçun işlendiği ile göre ceza infaz kurumuna giren hükümlü"
+label_en = "Convicts admitted to prison, by province of the offence"
+topic = "adalet"
+unit = "person"
+frequency = "annual"
+dims = ["sex", "prison_offence", "offender_age", "offender_age_band", "offender_occupation", "nationality_status"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Ceza infaz kurumuna giren hükümlü, suçun işlendiği ile göre; kırılımlar ikamet edilen il göstergesindeki gibi birbirinden ayrıdır. 1990-2020."
+
+[indicator.prison_releases_by_residence]
+label_tr = "İkamet edilen ile göre ceza infaz kurumundan çıkan hükümlü"
+label_en = "Convicts released from prison, by province of residence"
+topic = "adalet"
+unit = "person"
+frequency = "annual"
+dims = ["sex", "prison_offence"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Ceza infaz kurumundan çıkan (tahliye edilen) hükümlü, ikamet ettiği ile göre. Cinsiyet ve suç türü ayrı kırılımlardır. 1990-2020."
+
+[indicator.prison_releases_by_offence_place]
+label_tr = "Suçun işlendiği ile göre ceza infaz kurumundan çıkan hükümlü"
+label_en = "Convicts released from prison, by province of the offence"
+topic = "adalet"
+unit = "person"
+frequency = "annual"
+dims = ["sex", "prison_offence"]
+views = ["table", "map", "line", "bar"]
+definition_tr = "Ceza infaz kurumundan çıkan (tahliye edilen) hükümlü, suçun işlendiği ile göre. Cinsiyet ve suç türü ayrı kırılımlardır. 1995-2020."

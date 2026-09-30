@@ -83,6 +83,7 @@ from .tuik_birth_order import TuikBirthOrder
 from .tuik_births_by_age import TuikBirthsByAge
 from .tuik_births_marital import TuikBirthsMarital
 from .tuik_child_police import CHILD_POLICE_ADAPTERS
+from .tuik_prison import PRISON_ADAPTERS
 from .tuik_consanguineous_marriage import TuikConsanguineousMarriage
 from .tuik_crops import CROP_ADAPTERS
 from .tuik_death_cause import TuikDeathCause
@@ -206,6 +207,7 @@ ADAPTERS = {
     **EDUCATION_DISTRICT_ADAPTERS,
     # Children referred to police units (Türkiye).
     **CHILD_POLICE_ADAPTERS,
+    **PRISON_ADAPTERS,
     # CBRT housing and commercial property prices and rents, at published frequency.
     **EVDS_HOUSING_ADAPTERS,
     # Banks Association: deposits, loans, employees, ATM/POS by province.
