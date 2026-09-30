@@ -9,7 +9,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kent / kır kontrolü</title>
+<title>VeriAtlas</title>
 <meta name="color-scheme" content="dark">
 <style>
 :root { --bg:#050505; --panel:#0b0b0b; --panel2:#131313; --fg:#e9e6df; --mut:#8b867a; --line:#1d1b17; --line2:#34312b;
@@ -179,11 +179,15 @@ kbd { display:inline-block; min-width:15px; margin-right:6px; padding:0 3px; bor
 #ui .seg { display:flex; } #ui .seg button { margin-left:-1px; flex:1; } #ui .seg button.on { background:var(--acc); color:#000; border-color:var(--acc); font-weight:700; }
 #ui .rowbtn button { padding:1px 6px; font-size:9.5px; }
 #ui .rst { margin-top:12px; width:100%; }
+/* sade görünüm: yalnız yerleşim, nüfus ve kaynaklar/not/karar sütunları */
+body:not(.lean) .lean-only { display:none; }
+body.lean #tabs, body.lean .cmdwrap, body.lean #preset, body.lean #uibtn, body.lean details.info, body.lean .summary,
+body.lean .prog, body.lean #panel, body.lean #focus, body.lean .lean-off, body.lean .bar-f + .bar-f { display:none !important; }
 </style>
 </head>
-<body data-tab="il">
+<body data-tab="il" class="lean">
 <header class="top">
-  <div class="brand">VERİATLAS<i>▪</i>KENT/KIR</div>
+  <div class="brand">VERİATLAS</div>
   <nav id="tabs"></nav>
   <div class="cmdwrap"><span class="prompt">›</span><input id="cmd" autocomplete="off" spellcheck="false" placeholder="komut  ( / ile odaklan · ? yardım )  örn: 16 nilüfer · bs&gt;6 bekleyen · n&gt;5000"><div id="cmdmsg"></div></div>
   <button type="button" id="preset" title="Belirsizliği 2 ve üstü, kararı boş yerler; en belirsizden başlayarak">Sıradaki işler ▸</button>
@@ -193,7 +197,7 @@ kbd { display:inline-block; min-width:15px; margin-right:6px; padding:0 3px; bor
 <div id="ui" class="panel" hidden></div>
 <details class="info"><summary>Açıklama</summary>
   <dl>
-    <dt>Ne yapacaksın</dt><dd>Mahalle / köy sekmesinde sağdaki Karar'dan sınıf seç: İl Merkezi, İlçe Merkezi, Kentsel Belde (kent) ya da Kasaba, Kırsal Belde, Köy (kır). ✓ öneriyi yazar. Seçtiğin anda kaydedilir.</dd>
+    <dt>Ne yapacaksın</dt><dd>Mahalle / köy sekmesinde sağdaki Karar'dan sınıf seç: İl Merkezi, İlçe Merkezi, Kentsel Belde (kent) ya da Kırsal Belde, Köy (kır). ✓ öneriyi yazar. Seçtiğin anda kaydedilir.</dd>
     <dt>Komut satırı</dt><dd>/ ile odaklan, Enter ile çalıştır. "16 nilüfer" plaka ve ilçeye gider; "bursa" ile ile; "bs&gt;6", "n&gt;5000", "n&lt;300", "bekleyen", "verilmis", "kurum" filtreler; "iller ilceler yerlesim semt mahalle" sekme değiştirir; "sifirla" filtreleri temizler; "?" yardım. Tokenlar birleşir: "hatay bs&gt;5 bekleyen".</dd>
     <dt>Sekmeler</dt><dd>F1-F5. İller, ilçeler, yerleşimler, semtler: kent payı senin kararınla, kararı olmayan yerde öneriyle; her kayıtta güncellenir. Satıra tıkla, bir alt düzeye iner.</dd>
     <dt>Sütun genişliği</dt><dd>Başlığın sağ kenarından sürükle; çift tık o sütunu eski genişliğine döndürür. Genişlikler tarayıcıda kalır.</dd>
@@ -221,14 +225,17 @@ kbd { display:inline-block; min-width:15px; margin-right:6px; padding:0 3px; bor
   <div class="drop" id="dIlce"><button type="button"></button></div>
   <div id="focus"></div>
   <input id="q" placeholder="ara">
-  <span class="mah-only lbl">nüfus ≥</span><input class="mah-only" id="nMin" type="number" min="0" placeholder="0">
-  <span class="sep mah-only"></span>
-  <span class="mah-only lbl">belirsizlik</span><div class="chips mah-only" id="cBs"></div>
-  <span class="sep mah-only"></span>
-  <span class="mah-only lbl">ihtilaf</span><div class="chips mah-only" id="cIh"></div>
-  <span class="sep mah-only"></span>
+  <span class="lbl lean-only">yıl</span><select id="pY" class="lean-only"></select>
+  <span class="lbl lean-only">karşılaştırma yılı</span><select id="pB" class="lean-only"></select>
+  <div class="chips lean-only" id="cPop"></div>
+  <span class="lean-off mah-only lbl">nüfus ≥</span><input class="lean-off mah-only" id="nMin" type="number" min="0" placeholder="0">
+  <span class="sep lean-off mah-only"></span>
+  <span class="lean-off mah-only lbl">belirsizlik</span><div class="lean-off chips mah-only" id="cBs"></div>
+  <span class="sep lean-off mah-only"></span>
+  <span class="lean-off mah-only lbl">ihtilaf</span><div class="lean-off chips mah-only" id="cIh"></div>
+  <span class="sep lean-off mah-only"></span>
   <span class="mah-only lbl">karar</span><div class="chips mah-only" id="cKr"></div>
-  <button type="button" class="mah-only" id="bulk" title="Görünen ve kararı boş satırlara öneriyi yazar">Boşlara öneriyi yaz</button>
+  <button type="button" class="lean-off mah-only" id="bulk" title="Görünen ve kararı boş satırlara öneriyi yazar">Boşlara öneriyi yaz</button>
 </div>
 <div class="bar-f mah-only">
   <span class="lbl">öneri</span><div class="chips" id="cOn"></div>
@@ -242,6 +249,6 @@ kbd { display:inline-block; min-width:15px; margin-right:6px; padding:0 3px; bor
 <aside id="panel" hidden></aside>
 <div class="wrap"><table id="tbl"><thead id="th"></thead><tbody id="tb"></tbody></table><div class="more" id="more"></div></div>
 
-<script src="kentkir.js?v=12"></script>
+<script src="kentkir.js?v=17"></script>
 </body>
 </html>

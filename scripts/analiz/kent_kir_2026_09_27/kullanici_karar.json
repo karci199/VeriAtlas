@@ -1,1 +1,4310 @@
-{}
+{
+"TR-16-001-11331": {
+"n": "elle liste · DEGURBA kır; ilçe merkezi kural gereği kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-001-11333": {
+"n": "elle liste · DEGURBA kır; ilçe merkezi kural gereği kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-001-11334": {
+"n": "elle liste · DEGURBA kır; ilçe merkezi kural gereği kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-001-11335": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-11336": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183535": {
+"n": "eski belde, köy sayılır (elle liste)",
+"s": "Köy",
+"y": "Büyükorhan Köyleri"
+},
+"TR-16-001-183537": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183539": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183541": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183543": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183545": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183547": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183549": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183551": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183553": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183555": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183557": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183559": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183561": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183563": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183565": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183567": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183569": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183571": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183573": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183575": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183577": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183579": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183581": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183583": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183585": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183587": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183589": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183591": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183593": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183595": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183597": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183599": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183601": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183603": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183605": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183607": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-001-183609": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-11339": {
+"n": "elle liste · DEGURBA kır; ilçe merkezi kural gereği kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-002-11340": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-002-11342": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-002-11343": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-002-11344": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-002-11345": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-002-11346": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-002-11347": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-002-11348": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-002-11350": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-002-11351": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-002-11352": {
+"n": "Kurşunlu + Gençali tek belde; kırsal-kentsel geçişi, beldemsi; merkeze aşırı uzak değil (elle liste)",
+"s": "Kırsal Belde",
+"y": "Kurşunlu-Gençali"
+},
+"TR-16-002-140853": {
+"n": "Gemlik merkezine çok yakın (elle liste)",
+"s": "Kırsal Belde",
+"y": "Umurbey"
+},
+"TR-16-002-140855": {
+"n": "Kurşunlu + Gençali tek belde; kırsal-kentsel geçişi, beldemsi; merkeze aşırı uzak değil (elle liste)",
+"s": "Kırsal Belde",
+"y": "Kurşunlu-Gençali"
+},
+"TR-16-002-140857": {
+"n": "üç mahalle tek belde; Gemlik dibinde kentsel belde, sayfiye yeri (elle liste)",
+"s": "Kentsel Belde",
+"y": "Kumla"
+},
+"TR-16-002-140861": {
+"n": "üç mahalle tek belde; Gemlik dibinde kentsel belde, sayfiye yeri (elle liste)",
+"s": "Kentsel Belde",
+"y": "Kumla"
+},
+"TR-16-002-183611": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-183613": {
+"n": "üç mahalle tek belde; Gemlik dibinde kentsel belde, sayfiye yeri (elle liste)",
+"s": "Kentsel Belde",
+"y": "Kumla"
+},
+"TR-16-002-183615": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-183617": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-183619": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-183621": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-183623": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-183625": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-183627": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-183629": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-183631": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-183633": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-183635": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-183637": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-183639": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-183641": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-183643": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-002-196385": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-002-196387": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-003-11362": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-003-11363": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-003-11364": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-003-11365": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-003-11366": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-003-11367": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-003-11368": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-003-11369": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-003-183645": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-003-183647": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-003-183649": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-003-183651": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-003-183653": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-003-183655": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-003-197753": {
+"n": "TOKİ (elle liste)",
+"s": "Kentsel Belde"
+},
+"TR-16-004-11372": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-11373": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-11374": {
+"n": "sadece Merkez mahalle kent (elle liste) · DEGURBA kır; ilçe merkezi kural gereği kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-004-11375": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-11376": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-11377": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-11378": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-11379": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-11380": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183657": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183659": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183661": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183663": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183665": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183667": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183669": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183671": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183673": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183675": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183677": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183679": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183681": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183683": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183685": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183687": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183689": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183691": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183693": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183695": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183697": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-004-183699": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-005-11381": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11382": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11383": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11384": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11385": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11386": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11387": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11388": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11389": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11390": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11391": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11392": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11393": {
+"n": "Huzur + Akhisar tek belde; adı Huzur mu Akhisar mı: Akhisar yazıldı (nüfusu büyük), kontrol et",
+"s": "Kentsel Belde",
+"y": "Akhisar"
+},
+"TR-16-005-11394": {
+"n": "Huzur + Akhisar tek belde; adı Huzur mu Akhisar mı: Akhisar yazıldı (nüfusu büyük), kontrol et",
+"s": "Kentsel Belde",
+"y": "Akhisar"
+},
+"TR-16-005-11396": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11397": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11398": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11399": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11400": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-11401": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-005-183701": {
+"n": "Edebey + Cerrah tek belde, adı Cerrah (elle liste)",
+"s": "Kentsel Belde",
+"y": "Cerrah"
+},
+"TR-16-005-183703": {
+"n": "elle liste",
+"s": "Kırsal Belde"
+},
+"TR-16-005-183705": {
+"n": "elle liste",
+"s": "Kentsel Belde"
+},
+"TR-16-005-183707": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183709": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183711": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183713": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183715": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183717": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183719": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183721": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183723": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183725": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183727": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183729": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183731": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183733": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183735": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183737": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183739": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183741": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183743": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183745": {
+"n": "Edebey + Cerrah tek belde, adı Cerrah (elle liste)",
+"s": "Kentsel Belde",
+"y": "Cerrah"
+},
+"TR-16-005-183747": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183749": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183751": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183753": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183755": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183757": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183759": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183761": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183763": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183765": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183767": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183769": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183771": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183773": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183775": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183777": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183779": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183781": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183783": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183785": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183787": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183789": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183791": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183793": {
+"n": "Baykoca + Karalar tek belde, adı Baykoca (elle liste)",
+"s": "Kentsel Belde",
+"y": "Baykoca"
+},
+"TR-16-005-183795": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183797": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183799": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183801": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183803": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183805": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183807": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183809": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183811": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183813": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183815": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183817": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183819": {
+"n": "elle: Ortaköy köy (İnegöl); nüfus 797, dokusu köy",
+"s": "Köy"
+},
+"TR-16-005-183821": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183823": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183825": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183827": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183829": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183831": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183833": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183835": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183837": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183839": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183841": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183843": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183845": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183847": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183849": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183851": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183853": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183855": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183857": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183859": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183861": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183863": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183865": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183867": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183869": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183871": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183873": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183875": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183877": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183879": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183881": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183883": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183885": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183887": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-183889": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-005-196591": {
+"n": "Baykoca + Karalar tek belde, adı Baykoca (elle liste)",
+"s": "Kentsel Belde",
+"y": "Baykoca"
+},
+"TR-16-006-11415": {
+"n": "konut çok fazla, merkez (elle liste)",
+"s": "İlçe Merkezi"
+},
+"TR-16-006-11416": {
+"n": "konut çok fazla, merkez (elle liste)",
+"s": "İlçe Merkezi"
+},
+"TR-16-006-11417": {
+"n": "konut çok fazla, merkez (elle liste)",
+"s": "İlçe Merkezi"
+},
+"TR-16-006-11418": {
+"n": "konut çok fazla, merkez (elle liste)",
+"s": "İlçe Merkezi"
+},
+"TR-16-006-11419": {
+"n": "konut çok fazla, merkez (elle liste)",
+"s": "İlçe Merkezi"
+},
+"TR-16-006-11420": {
+"n": "konut çok fazla, merkez (elle liste)",
+"s": "İlçe Merkezi"
+},
+"TR-16-006-11421": {
+"n": "konut çok fazla, merkez (elle liste)",
+"s": "İlçe Merkezi"
+},
+"TR-16-006-183891": {
+"n": "elle liste",
+"s": "Kırsal Belde"
+},
+"TR-16-006-183893": {
+"n": "elle liste",
+"s": "Kırsal Belde"
+},
+"TR-16-006-183895": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183897": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183899": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183901": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183903": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183905": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183907": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183909": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183911": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183913": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183915": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183917": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183919": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183921": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183923": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183925": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183927": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183929": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183931": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183933": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183935": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183937": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183939": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183941": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183943": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183945": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183947": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183949": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183951": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183953": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183955": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183957": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183959": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183961": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183963": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183965": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-006-183967": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-007-183969": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-183971": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-183973": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-183975": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-183977": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-183979": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-183981": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-183983": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-183985": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-183987": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-183989": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-183991": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-183993": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-183995": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-183997": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-183999": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184001": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184003": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184005": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184007": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184009": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184011": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184013": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184015": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184017": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184019": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184021": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184023": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184025": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184027": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184029": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184031": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184033": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184035": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184037": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184039": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184041": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184043": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184045": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184047": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184049": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184051": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184053": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184055": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184057": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184059": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184061": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184063": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184065": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184067": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184069": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184071": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184073": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184075": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184077": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184079": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184081": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184083": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184085": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184087": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184089": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184091": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184093": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-184095": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-007-19962": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19963": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19964": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19965": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19966": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19967": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19968": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19969": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19970": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19971": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19973": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19974": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19975": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19976": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19977": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19978": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19979": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19980": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19981": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19982": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-007-19983": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-008-184097": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184099": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184101": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184103": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184105": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184107": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184109": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184111": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184113": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184115": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184117": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184119": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184121": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184123": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184125": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184127": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184129": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184131": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184133": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184135": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184137": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184139": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184141": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184143": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184145": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184147": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184149": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184151": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184153": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184155": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184157": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184159": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184161": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184163": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-184165": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-19986": {
+"n": "elle liste · DEGURBA kır; ilçe merkezi kural gereği kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-008-19987": {
+"n": "elle liste · DEGURBA kır; ilçe merkezi kural gereği kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-008-19988": {
+"n": "elle liste · DEGURBA kır; ilçe merkezi kural gereği kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-008-19989": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-008-19990": {
+"n": "elle liste · DEGURBA kır; ilçe merkezi kural gereği kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-008-19991": {
+"n": "elle liste · DEGURBA kır; ilçe merkezi kural gereği kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-008-99408": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-100131": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-009-184167": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184169": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184171": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184173": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184175": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184177": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184179": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184181": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184183": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184185": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184187": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184189": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184191": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184193": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184195": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184197": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184199": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184201": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184203": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184205": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184207": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184209": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184211": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184213": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184215": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184217": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184219": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-184221": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-009-19992": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-009-19993": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-009-19994": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-009-19995": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-009-20000": {
+"n": "nüfus 2 bin altı, merkez değil (elle)",
+"s": "Köy"
+},
+"TR-16-009-99957": {
+"n": "nüfus 2 bin altı, merkez değil (elle)",
+"s": "Köy"
+},
+"TR-16-010-184223": {
+"n": "eski belde, nüfus 2 bin altı, azalıyor; köy (elle)",
+"s": "Köy",
+"y": "Mudanya Köyleri"
+},
+"TR-16-010-184225": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184227": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184229": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184231": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184233": {
+"n": "Bademli+Çağrışan+Mürsel tek kentsel belde (bitişik, sık yapılaşma; Nilüfer ilçesi tarafı ayrı ilçe olduğu için dışarıda). Mürsel’de eski köy çekirdeği de var (elle/uydu)",
+"s": "Kentsel Belde",
+"y": "Bademli"
+},
+"TR-16-010-184235": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184237": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184239": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184241": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184243": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184245": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184247": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184249": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184251": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184253": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184255": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184257": {
+"n": "Bademli+Çağrışan+Mürsel tek kentsel belde (bitişik, sık yapılaşma; Nilüfer ilçesi tarafı ayrı ilçe olduğu için dışarıda). Mürsel’de eski köy çekirdeği de var (elle/uydu)",
+"s": "Kentsel Belde",
+"y": "Bademli"
+},
+"TR-16-010-184259": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184261": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184263": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184265": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184267": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184269": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184271": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184273": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184275": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184277": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184279": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184281": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184283": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184285": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184287": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-184289": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-20001": {
+"n": "elle: esas Mudanya",
+"s": "İlçe Merkezi"
+},
+"TR-16-010-20002": {
+"n": "elle: esas Mudanya",
+"s": "İlçe Merkezi"
+},
+"TR-16-010-20003": {
+"n": "elle: esas Mudanya",
+"s": "İlçe Merkezi"
+},
+"TR-16-010-20004": {
+"n": "elle: esas Mudanya",
+"s": "İlçe Merkezi"
+},
+"TR-16-010-20005": {
+"n": "elle: esas Mudanya",
+"s": "İlçe Merkezi"
+},
+"TR-16-010-20006": {
+"n": "elle: esas Mudanya",
+"s": "İlçe Merkezi"
+},
+"TR-16-010-20007": {
+"n": "Bademli+Çağrışan+Mürsel tek kentsel belde (bitişik, sık yapılaşma; Nilüfer ilçesi tarafı ayrı ilçe olduğu için dışarıda). Mürsel’de eski köy çekirdeği de var (elle/uydu)",
+"s": "Kentsel Belde",
+"y": "Bademli"
+},
+"TR-16-010-20008": {
+"n": "köy, küçük kent dokusu var (elle/uydu)",
+"s": "Köy",
+"y": "Mudanya Köyleri"
+},
+"TR-16-010-20009": {
+"n": "elle: geri kalan köy",
+"s": "Köy"
+},
+"TR-16-010-20010": {
+"n": "Güzelyalı: merkezle kesintisiz şerit yapılaşma, merkez lekesi %78-100 (elle/uydu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-010-20011": {
+"n": "Güzelyalı: merkezle kesintisiz şerit yapılaşma, merkez lekesi %78-100 (elle/uydu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-010-20012": {
+"n": "Güzelyalı: merkezle kesintisiz şerit yapılaşma, merkez lekesi %78-100 (elle/uydu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-010-20013": {
+"n": "Güzelyalı: merkezle kesintisiz şerit yapılaşma, merkez lekesi %78-100 (elle/uydu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-184291": {
+"n": "eski belde, nüfus 2 bin altı, azalıyor; köy (elle)",
+"s": "Köy",
+"y": "Mustafakemalpaşa Köyleri"
+},
+"TR-16-011-184293": {
+"n": "uydu: merkezden sanayi/tarım şeridiyle ayrı, yoğun kendi dokusu, 5.753 kişi; merkeze yaklaşıyor (elle/uydu)",
+"s": "Kentsel Belde",
+"y": "Tatkavaklı"
+},
+"TR-16-011-184295": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184297": {
+"n": "elle: Yalıntaş kentsel belde (2004 belde, 6.494 kişi, merkezle bitişik ama ayrı belde olarak kalsın)",
+"s": "Kentsel Belde",
+"y": "Yalıntaş"
+},
+"TR-16-011-184299": {
+"n": "eski belde, nüfus 2 bin altı, azalıyor; köy (elle)",
+"s": "Köy",
+"y": "Mustafakemalpaşa Köyleri"
+},
+"TR-16-011-184301": {
+"n": "eski belde, nüfus 2 bin altı, azalıyor; köy (elle)",
+"s": "Köy",
+"y": "Mustafakemalpaşa Köyleri"
+},
+"TR-16-011-184303": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184305": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184307": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184309": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184311": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184313": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184315": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184317": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184319": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184321": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184323": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184325": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184327": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184329": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184331": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184333": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184335": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184337": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184339": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184341": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184343": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184345": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184347": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184349": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184351": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184353": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184355": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184357": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184359": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184361": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184363": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184365": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184367": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184369": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184371": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184373": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184375": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184377": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184379": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184381": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184383": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184385": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184387": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184389": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184391": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184393": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184395": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184397": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184399": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184401": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184403": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184405": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184407": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184409": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184411": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184413": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184415": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184417": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184419": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184421": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184423": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184425": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184427": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184429": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184431": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184433": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184435": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184437": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184439": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184441": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184443": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184445": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184447": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184449": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184451": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184453": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184455": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184457": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184459": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184461": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184463": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184465": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184467": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184469": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184471": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184473": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184475": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184477": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184479": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184481": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184483": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184485": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184487": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184489": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184491": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184493": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184495": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184497": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184499": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184501": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184503": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184505": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184507": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-184509": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-011-20019": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20020": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20021": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20022": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20023": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20024": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20025": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20026": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20027": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20028": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20029": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20030": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20031": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20032": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20033": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20034": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20035": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20036": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20037": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20038": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-011-20039": {
+"n": "elle: merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11112": {
+"n": "elle: kır; uydu: tarla içinde küçük çekirdek, karavan parkları (öneri merkezdi)",
+"s": "Köy",
+"y": "Nilüfer Köyleri"
+},
+"TR-16-012-11113": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11114": {
+"n": "elle: köy; uydu: tarla/sera içinde küçük köy çekirdeği (öneri merkezdi)",
+"s": "Köy",
+"y": "Nilüfer Köyleri"
+},
+"TR-16-012-11115": {
+"n": "Ertuğrulkent: 6 mahalle (19 Mayıs, Yüzüncüyıl, 29 Ekim, Altınşehir, Ertuğrul, Özlüce) tek kentsel belde (elle); 23 Nisan merkeze alındı",
+"s": "Kentsel Belde",
+"y": "Ertuğrulkent"
+},
+"TR-16-012-11116": {
+"n": "Ertuğrulkent: 6 mahalle (19 Mayıs, Yüzüncüyıl, 29 Ekim, Altınşehir, Ertuğrul, Özlüce) tek kentsel belde (elle); 23 Nisan merkeze alındı",
+"s": "Kentsel Belde",
+"y": "Ertuğrulkent"
+},
+"TR-16-012-11117": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11118": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11119": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11120": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11121": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11122": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11123": {
+"n": "Balat+Ahmet Yesevi tek kentsel belde (~30.700 kişi), Okmeydanı/Batıkent gibi semt olabilir, semt katmanında ele alınacak (elle)",
+"s": "Kentsel Belde",
+"y": "Balat"
+},
+"TR-16-012-11124": {
+"n": "Balat+Ahmet Yesevi tek kentsel belde (~30.700 kişi), Okmeydanı/Batıkent gibi semt olabilir, semt katmanında ele alınacak (elle); Balat: cezaevi kurum işareti, nüfus şişkin olabilir",
+"s": "Kentsel Belde",
+"y": "Balat"
+},
+"TR-16-012-11125": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11126": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11127": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11128": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11129": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11130": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11131": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11132": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11133": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11134": {
+"n": "Ertuğrulkent: 6 mahalle (19 Mayıs, Yüzüncüyıl, 29 Ekim, Altınşehir, Ertuğrul, Özlüce) tek kentsel belde (elle); 23 Nisan merkeze alındı",
+"s": "Kentsel Belde",
+"y": "Ertuğrulkent"
+},
+"TR-16-012-11135": {
+"n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-11136": {
+"n": "elle: kentsel belde",
+"s": "Kentsel Belde",
+"y": "Akçalar"
+},
+"TR-16-012-11138": {
+"n": "Çalı + Yaylacık tek kentsel belde (~20.600 kişi): konut dokusu birleşik (Yaylacık eski çekirdeği Çalı ızgarasına bitişik); Demirci ile arasında sanayi/tarım kuşağı var, ayrı yerleşim (elle/uydu)",
+"s": "Kentsel Belde",
+"y": "Çalı"
+},
+"TR-16-012-11141": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-11142": {
+"n": "Dumlupınar+Görükle+Kurtuluş+Balkan tek kentsel belde (elle; geometri: bağlı küme)",
+"s": "Kentsel Belde",
+"y": "Görükle"
+},
+"TR-16-012-11143": {
+"n": "Dumlupınar+Görükle+Kurtuluş+Balkan tek kentsel belde (elle; geometri: bağlı küme)",
+"s": "Kentsel Belde",
+"y": "Görükle"
+},
+"TR-16-012-11144": {
+"n": "Dumlupınar+Görükle+Kurtuluş+Balkan tek kentsel belde (elle; geometri: bağlı küme)",
+"s": "Kentsel Belde",
+"y": "Görükle"
+},
+"TR-16-012-11145": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-11146": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-11147": {
+"n": "Dumlupınar+Görükle+Kurtuluş+Balkan tek kentsel belde (elle; geometri: bağlı küme)",
+"s": "Kentsel Belde",
+"y": "Görükle"
+},
+"TR-16-012-11148": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-11150": {
+"n": "elle: köy",
+"s": "Köy"
+},
+"TR-16-012-11151": {
+"n": "elle: Kızılcıklı diye ayrı belde yok; Görükle belde grubuna dahil (Kızılcıklı Balkan ile 1.922 m, Kurtuluş ile 592 m ortak sınır)",
+"s": "Kentsel Belde",
+"y": "Görükle"
+},
+"TR-16-012-11152": {
+"n": "elle: Kızılcıklı diye ayrı belde yok; Görükle belde grubuna dahil (Kızılcıklı Balkan ile 1.922 m, Kurtuluş ile 592 m ortak sınır)",
+"s": "Kentsel Belde",
+"y": "Görükle"
+},
+"TR-16-012-11153": {
+"n": "ayrı yerleşim (merkezden 1,5 km), 3.496 kişi, 2013’ten ×2,8; Umurbey/Kurşunlu-Gençali gibi (elle)",
+"s": "Kırsal Belde",
+"y": "Kayapa"
+},
+"TR-16-012-140334": {
+"n": "elle: merkez; eski merkezle ortak sınır 2.423 m (Üçevler, Ataevler, Işıktepe), Ertuğrulkent’le 1.369 m; iki dokunun arasında planlı yeni yerleşim",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-140336": {
+"n": "Ertuğrulkent: 6 mahalle (19 Mayıs, Yüzüncüyıl, 29 Ekim, Altınşehir, Ertuğrul, Özlüce) tek kentsel belde (elle); 23 Nisan merkeze alındı",
+"s": "Kentsel Belde",
+"y": "Ertuğrulkent"
+},
+"TR-16-012-140338": {
+"n": "Ertuğrulkent: 6 mahalle (19 Mayıs, Yüzüncüyıl, 29 Ekim, Altınşehir, Ertuğrul, Özlüce) tek kentsel belde (elle); 23 Nisan merkeze alındı",
+"s": "Kentsel Belde",
+"y": "Ertuğrulkent"
+},
+"TR-16-012-183429": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183431": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183433": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183435": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183437": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183439": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183441": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183443": {
+"n": "elle: artık birleşmiş merkez; uydu: otoyol/Balat tarafındaki yapılaşma ile birleşiyor (öneri köydü)",
+"s": "İlçe Merkezi"
+},
+"TR-16-012-183445": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183447": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183449": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183451": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183453": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183455": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183457": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183459": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183461": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183463": {
+"n": "köy dokusu, yol boyu seyrek, 83 kişi/km² (elle)",
+"s": "Köy",
+"y": "Nilüfer Köyleri"
+},
+"TR-16-012-183465": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183467": {
+"n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
+"s": "Köy"
+},
+"TR-16-012-183469": {
+"n": "Çalı + Yaylacık tek kentsel belde (~20.600 kişi): konut dokusu birleşik (Yaylacık eski çekirdeği Çalı ızgarasına bitişik); Demirci ile arasında sanayi/tarım kuşağı var, ayrı yerleşim (elle/uydu)",
+"s": "Kentsel Belde",
+"y": "Çalı"
+},
+"TR-16-012-183471": {
+"n": "elle: kentsel belde gibi; DEGURBA+bina kent, TÜİK+AATOPLU kır, uydu: sık ayrı yerleşim",
+"s": "Kentsel Belde",
+"y": "Yolçatı"
+},
+"TR-16-012-99075": {
+"n": "Ertuğrulkent: 6 mahalle (19 Mayıs, Yüzüncüyıl, 29 Ekim, Altınşehir, Ertuğrul, Özlüce) tek kentsel belde (elle); 23 Nisan merkeze alındı",
+"s": "Kentsel Belde",
+"y": "Ertuğrulkent"
+},
+"TR-16-013-184511": {
+"n": "eski belde, nüfus 2 bin altı, azalıyor; köy (kuralla, elle onaylanacak)",
+"s": "Köy",
+"y": "Orhaneli Köyleri"
+},
+"TR-16-013-184513": {
+"n": "eski belde, nüfus 2 bin altı, azalıyor; köy (kuralla, elle onaylanacak)",
+"s": "Köy",
+"y": "Orhaneli Köyleri"
+},
+"TR-16-013-184515": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184517": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184519": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184521": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184523": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184525": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184527": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184529": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184531": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184533": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184535": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184537": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184539": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184541": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184543": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184545": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184547": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184549": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184551": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184553": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184555": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184557": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184559": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184561": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184563": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184565": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184567": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184569": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184571": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184573": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184575": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184577": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184579": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184581": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184583": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184585": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184587": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184589": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184591": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184593": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184595": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184597": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184599": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184601": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184603": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184605": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184607": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184609": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184611": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184613": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184615": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184617": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-184619": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-013-20061": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-013-20062": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-013-20063": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-013-20064": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-013-20065": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-013-20066": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-014-184621": {
+"n": "eski belde, nüfus 2 bin altı, azalıyor; köy (kuralla, elle onaylanacak)",
+"s": "Köy",
+"y": "Orhangazi Köyleri"
+},
+"TR-16-014-184623": {
+"n": "eski belde, nüfus 2 bin altı, azalıyor; köy (kuralla, elle onaylanacak)",
+"s": "Köy",
+"y": "Orhangazi Köyleri"
+},
+"TR-16-014-184625": {
+"n": "eski belde, nüfus 2 bin altı, azalıyor; köy (kuralla, elle onaylanacak)",
+"s": "Köy",
+"y": "Orhangazi Köyleri"
+},
+"TR-16-014-184627": {
+"n": "eski belde, nüfus 2.721 (2 binin üstü, −%18); kırsal belde (elle)",
+"s": "Kırsal Belde",
+"y": "Yeniköy"
+},
+"TR-16-014-184629": {
+"n": "eski belde, nüfus 2 bin altı, azalıyor; köy (kuralla, elle onaylanacak)",
+"s": "Köy",
+"y": "Orhangazi Köyleri"
+},
+"TR-16-014-184631": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184633": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184635": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184637": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184639": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184641": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184643": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184645": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184647": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184649": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184651": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184653": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184655": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184657": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184659": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184661": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184663": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184665": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184667": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-184669": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-014-20072": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-014-20073": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-014-20074": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-014-20075": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-014-20076": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-014-20077": {
+"n": "kural gereği merkez: TÜİK ilçe merkezi mahallesi, DEGURBA orta yoğun kent, binalarının %69'u merkez lekesinde; fotoğrafta tarla/sanayi ağırlıklı, köy dokusu (elle/uydu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11155": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11156": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11157": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11158": {
+"n": "elle liste (Osmangazi merkez, nüfusa göre sıralarken)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11159": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11160": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11161": {
+"n": "elle liste (Osmangazi merkez, nüfusa göre sıralarken)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11162": {
+"n": "elle: kır sayılır; uydu: zeytinlik/tarla içinde seyrek köy, çevresi sanayi (DOSAB)",
+"s": "Köy",
+"y": "Osmangazi Köyleri"
+},
+"TR-16-015-11163": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11164": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11165": {
+"n": "elle: mahalle (merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11166": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11167": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-11168": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11169": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11170": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11171": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11172": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11173": {
+"n": "elle: köy",
+"s": "Köy",
+"y": "Osmangazi Köyleri"
+},
+"TR-16-015-11174": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11175": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11176": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11177": {
+"n": "elle: Yeniceabat gibi köy, kent dokusu karışmış; öneri merkezdi (elle)",
+"s": "Köy",
+"y": "Osmangazi Köyleri"
+},
+"TR-16-015-11178": {
+"n": "elle: merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11179": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11180": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-11181": {
+"n": "elle liste (Osmangazi merkez, nüfusa göre sıralarken)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11182": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11183": {
+"n": "elle: mahalle (merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11184": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11185": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11186": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11187": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11188": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11189": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11190": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11191": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11192": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11193": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11194": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11195": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11196": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-11197": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11198": {
+"n": "uydu: Demirtaş’ın yoğun dokusundan tarla/zeytinlikle ayrı, kendi köy dokusu (cami, okul, mezarlık); Demirtaş’a sayılmadı (elle/uydu)",
+"s": "Köy",
+"y": "Osmangazi Köyleri"
+},
+"TR-16-015-11199": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11200": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11201": {
+"n": "elle liste (Osmangazi merkez, nüfusa göre sıralarken)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11202": {
+"n": "elle liste (Osmangazi merkez, nüfusa göre sıralarken)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11203": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11204": {
+"n": "elle liste (Osmangazi merkez, nüfusa göre sıralarken)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11205": {
+"n": "elle liste (Osmangazi merkez, nüfusa göre sıralarken)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11206": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11207": {
+"n": "elle: merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11208": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11209": {
+"n": "elle: mahalle (merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11210": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11211": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11212": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11213": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11214": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11215": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11216": {
+"n": "elle: mahalle (merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11217": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11218": {
+"n": "elle liste (Osmangazi merkez, nüfusa göre sıralarken)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11219": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11220": {
+"n": "elle liste (Osmangazi merkez, nüfusa göre sıralarken)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11221": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11222": {
+"n": "elle: mahalle (merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11223": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11224": {
+"n": "elle liste (Osmangazi merkez, nüfusa göre sıralarken)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11225": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11226": {
+"n": "elle liste (Osmangazi merkez, nüfusa göre sıralarken)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11227": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11228": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11229": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11230": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11231": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11232": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11233": {
+"n": "elle liste (Osmangazi merkez, nüfusa göre sıralarken)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11234": {
+"n": "elle liste (Osmangazi merkez, nüfusa göre sıralarken)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11235": {
+"n": "elle liste (Osmangazi merkez, nüfusa göre sıralarken)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11236": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11237": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11238": {
+"n": "elle: mahalle (merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11239": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11240": {
+"n": "elle: mahalle (merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11241": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11242": {
+"n": "elle: köy, ama çevresinde kent dokusu karışmış (okul kampüsleri, sanayi); uydu: dağınık köy çekirdeği",
+"s": "Köy",
+"y": "Osmangazi Köyleri"
+},
+"TR-16-015-11243": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11244": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11245": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11246": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11247": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11248": {
+"n": "kır; belde geçmişi yok (muhtarlık: Gündoğdu Köyü), nüfus 2 bin altı; düzenli ızgara dokulu köy (elle/uydu)",
+"s": "Köy",
+"y": "Osmangazi Köyleri"
+},
+"TR-16-015-11250": {
+"n": "4 Demirtaş mahallesi tek kentsel belde (elle)",
+"s": "Kentsel Belde",
+"y": "Demirtaş"
+},
+"TR-16-015-11251": {
+"n": "4 Demirtaş mahallesi tek kentsel belde (elle)",
+"s": "Kentsel Belde",
+"y": "Demirtaş"
+},
+"TR-16-015-11252": {
+"n": "4 Demirtaş mahallesi tek kentsel belde (elle)",
+"s": "Kentsel Belde",
+"y": "Demirtaş"
+},
+"TR-16-015-11253": {
+"n": "4 Demirtaş mahallesi tek kentsel belde (elle)",
+"s": "Kentsel Belde",
+"y": "Demirtaş"
+},
+"TR-16-015-11255": {
+"n": "Emek: çevre mahallelerle tamamen birleşik sık yapılaşma, kentsel belde ayrımı yok (uydu); dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11256": {
+"n": "Emek: çevre mahallelerle tamamen birleşik sık yapılaşma, kentsel belde ayrımı yok (uydu); dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11257": {
+"n": "Emek: çevre mahallelerle tamamen birleşik sık yapılaşma, kentsel belde ayrımı yok (uydu); dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-11258": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-11260": {
+"n": "4 Ovaakça mahallesi tek kentsel belde (elle)",
+"s": "Kentsel Belde",
+"y": "Ovaakça"
+},
+"TR-16-015-11261": {
+"n": "4 Ovaakça mahallesi tek kentsel belde (elle)",
+"s": "Kentsel Belde",
+"y": "Ovaakça"
+},
+"TR-16-015-11262": {
+"n": "4 Ovaakça mahallesi tek kentsel belde (elle)",
+"s": "Kentsel Belde",
+"y": "Ovaakça"
+},
+"TR-16-015-11263": {
+"n": "4 Ovaakça mahallesi tek kentsel belde (elle)",
+"s": "Kentsel Belde",
+"y": "Ovaakça"
+},
+"TR-16-015-183473": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183475": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183477": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183479": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183481": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183483": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183485": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183487": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183489": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183491": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183493": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183495": {
+"n": "elle: kent (uydu: planlı/sık yerleşim, kendi okul-muhtarlık-sokak dokusu)",
+"s": "Kentsel Belde",
+"y": "Nilüferköy"
+},
+"TR-16-015-183497": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183499": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183501": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183503": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183505": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183507": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183509": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183511": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183513": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183515": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183517": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183519": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183521": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183523": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-183525": {
+"n": "elle: sayılanlar dışında köy (nüfus ≤1.369 aralığı)",
+"s": "Köy"
+},
+"TR-16-015-99902": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-99903": {
+"n": "dört kaynak kent; Osmangazi merkez listesinde itirazsız (toplu)",
+"s": "İlçe Merkezi"
+},
+"TR-16-015-99904": {
+"n": "elle: kent (uydu: planlı/sık yerleşim, kendi okul-muhtarlık-sokak dokusu)",
+"s": "Kentsel Belde",
+"y": "Yenikent"
+},
+"TR-16-016-184671": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184673": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184675": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184677": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184679": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184681": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184683": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184685": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184687": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184689": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184691": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184693": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184695": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184697": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184699": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184701": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184703": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184705": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184707": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184709": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184711": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184713": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184715": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184717": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184719": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184721": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184723": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184725": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184727": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184729": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184731": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184733": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184735": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184737": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184739": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184741": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184743": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184745": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184747": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184749": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184751": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184753": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184755": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184757": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184759": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184761": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184763": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184765": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184767": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184769": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184771": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184773": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184775": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184777": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184779": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184781": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184783": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184785": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184787": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184789": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-184791": {
+"n": "elle liste (geri kalan köy)",
+"s": "Köy"
+},
+"TR-16-016-20088": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-016-20089": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-016-20090": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-016-20091": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-016-20092": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-016-20093": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-016-20094": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-016-20095": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-016-20096": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-016-20097": {
+"n": "elle liste",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11264": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11265": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11266": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11267": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11268": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11269": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11270": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11271": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11272": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11273": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11274": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11275": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11276": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11277": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11278": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11279": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11280": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11281": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11282": {
+"n": "4 merkez mahalleyle sınır komşusu (0 m), TÜİK/AATOPLU/DEGURBA kent, belde geçmişi yok; geniş ama bitişik (elle/geometri)",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11283": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11284": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11285": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11286": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11287": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11288": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11289": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11290": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11291": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11292": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11293": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11294": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11295": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11296": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11297": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11298": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11299": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11300": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11301": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11302": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11303": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11304": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11305": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11306": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11307": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11308": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11309": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11310": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11311": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11312": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11313": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11314": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11315": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11316": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11317": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11318": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11319": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11320": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11321": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11322": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11324": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11325": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11326": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11327": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11328": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-11329": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-183527": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-017-183529": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-017-183531": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-017-183533": {
+"n": "elle liste",
+"s": "Köy"
+},
+"TR-16-017-749242": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+},
+"TR-16-017-749697": {
+"n": "elle: köyler dışında hepsi merkez",
+"s": "İlçe Merkezi"
+}
+}

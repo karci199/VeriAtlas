@@ -9,7 +9,7 @@ const DATA_URL = "../public/kentkir_kontrol.json";
 const DEC_URL = "../scripts/analiz/kent_kir_2026_09_27/kullanici_karar.json";
 const PENDING_KEY = "kentkir.pending";
 const PAGE = 250;
-const CLASSES = ["İl Merkezi", "İlçe Merkezi", "Kentsel Belde", "Kasaba", "Kırsal Belde", "Köy"];
+const CLASSES = ["İl Merkezi", "İlçe Merkezi", "Kentsel Belde", "Kırsal Belde", "Köy"];
 const URBAN = new Set(["İl Merkezi", "İlçe Merkezi", "Kentsel Belde"]);
 const IH = { uyumlu: "uyumlu", hafif: "hafif", cok: "çok" };
 const TABS = { il: "İller", ilce: "İlçeler", yer: "Yerleşimler", semt: "Semtler", mah: "Mahalle / köy" };
@@ -28,7 +28,7 @@ const $ = (id) => document.getElementById(id);
 const fmt = (v, d = 0) => v == null || v === "" ? "" : Number(v).toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d });
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const fold = (s) => String(s || "").toLocaleLowerCase("tr").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ı/g, "i");
-const get = (r, k) => r[K[k]];
+const get = (r, k) => (k.startsWith("p_") ? popVal(r, k) : r[K[k]]);
 const kentKir = (s) => (s ? (URBAN.has(s) ? "KENT" : "KIR") : "");
 const ilceKey = (r) => `${get(r, "il")} · ${get(r, "ilce")}`;
 
@@ -55,6 +55,52 @@ const SEMT_KINDS = ["Merkez semti", "Kırsal belde"];
 const NO_SEMT = "— girilmemiş";
 const semtOf = (r) => decOf(get(r, "id")).sm || NO_SEMT;
 
+// --- population 2007-2025 (public/kentkir_nufus.json): total, change against a base year, shares of the
+// country / province / district and the change of those shares
+const POP_URL = "../public/kentkir_nufus.json";
+let PS = null;
+const POPS = [["tot", "Toplam"], ["pct", "Değişim (%)"], ["diff", "Değişim (fark)"], ["tr", "TR'ye oran"], ["il", "İle oran"], ["ilce", "İlçeye oran"],
+              ["rpct", "Oran değişimi (%)"], ["rabs", "Oran değişimi (mutlak, puan)"], ["rbp", "Oran değişimi (baz puan)"]];
+ui.pop = Object.assign({ y: 2025, b: 2013, on: ["tot"] }, ui.pop || {});
+// optional columns of the plain view, off until asked for: the four source squares and the automatic note
+const EXTRAS = [["oy", "Kaynak kareleri"], ["not", "Otomatik not"]];
+ui.extra = Array.isArray(ui.extra) ? ui.extra : [];
+const yi = (y) => PS.years.indexOf(y);
+const unitAt = (r, y) => { const s = PS.s[get(r, "id")]; return s ? s[yi(y)] : null; };
+function shareAt(r, y, t) {
+  const v = unitAt(r, y); if (v == null) return null;
+  const id = get(r, "id");
+  const tot = t === "tr" ? PS.tr[yi(y)] : t === "il" ? PS.il[id.slice(0, 5)]?.[yi(y)] : PS.ilce[id.slice(0, 9)]?.[yi(y)];
+  return tot ? (100 * v) / tot : null;
+}
+function popVal(r, k) {
+  if (!PS) return null;
+  const [, what, t] = k.split("_"), Y = ui.pop.y, B = ui.pop.b;
+  if (what === "tot") return unitAt(r, Y);
+  if (what === "pct" || what === "diff") {
+    const a = unitAt(r, Y), b = unitAt(r, B);
+    if (a == null || b == null) return null;
+    return what === "diff" ? a - b : b ? (a / b - 1) * 100 : null;
+  }
+  if (what === "tr" || what === "il" || what === "ilce") return shareAt(r, Y, what);
+  const a = shareAt(r, Y, t), b = shareAt(r, B, t);
+  if (a == null || b == null) return null;
+  return what === "rpct" ? (b ? (a / b - 1) * 100 : null) : what === "rabs" ? a - b : (a - b) * 100;
+}
+const RATIO_T = [["tr", "TR"], ["il", "İl"], ["ilce", "İlçe"]];
+function popCols() {
+  const Y = ui.pop.y, B = ui.pop.b, on = new Set(ui.pop.on), out = [];
+  if (on.has("tot")) out.push([`p_tot`, `Toplam ${Y}`, "pop", "pn", 0, false]);
+  if (on.has("pct")) out.push(["p_pct", `Değişim ${B}→${Y} %`, "pop", "pn", 1, true]);
+  if (on.has("diff")) out.push(["p_diff", `Değişim ${B}→${Y} fark`, "pop", "pn", 0, true]);
+  // a village is a millionth of the country: the digits follow the size of the denominator
+  const DG = { tr: [5, 2, 6, 3], il: [4, 2, 5, 2], ilce: [3, 2, 4, 1] };   // share, % change, puan, baz puan
+  for (const w of ["tr", "il", "ilce"]) if (on.has(w)) out.push([`p_${w}`, `${POPS.find((x) => x[0] === w)[1]} ${Y} %`, "pop", "pn", DG[w][0], false]);
+  for (const [w, lab, j] of [["rpct", "%", 1], ["rabs", "puan", 2], ["rbp", "baz puan", 3]])
+    if (on.has(w)) for (const [t, tl] of RATIO_T) out.push([`p_${w}_${t}`, `${tl} oranı değişimi (${lab})`, "pop", "pn", DG[t][j], true]);
+  return out;
+}
+
 // --- neighbourhood table columns: [key, header, group, render kind, digits]
 const COLS = () => [
   ["il", "İl", "id", "t"], ["ilce", "İlçe", "id", "t"], ["yer", "Yerleşim", "id", "t"], ["ad", "Mahalle / köy", "id", "name"],
@@ -72,7 +118,7 @@ const COLS = () => [
   ["u_st", "Semt türü", "you2", "st"], ["u_sm", "Semt (senin)", "you2", "sm"], ["u_y", "Yerleşim (senin)", "you2", "y"], ["u_n", "Not (senin)", "you2", "nt"],
   ["u_s", "Karar", "you", "sel"],
 ];
-const GROUPS = { id: "", temel: "Temel", kaynak: "Kaynaklar ve öneri", not: "", nufus: "Nüfus", yas: "Yaş · eğitim (2024)",
+const GROUPS = { id: "", pop: "Nüfus", temel: "Temel", kaynak: "Kaynaklar ve öneri", not: "", nufus: "Nüfus", yas: "Yaş · eğitim (2024)",
                  konut: "Hane · konut · bina", secim: "Seçim 2023", kaynakx: "Kaynak ayrıntı", you2: "Senin", you: "" };
 const TOGGLE = [["temel", "Temel"], ["kaynak", "Kaynaklar"], ["not", "Not"], ["nufus", "Nüfus"], ["yas", "Yaş · eğitim"],
                 ["konut", "Hane · konut · bina"], ["secim", "Seçim 2023"], ["kaynakx", "Kaynak ayrıntı"], ["you2", "Yerleşim/not (senin)"]];
@@ -82,7 +128,13 @@ const defaultVis = () => COLS().filter((c) => c[2] === "id" || c[2] === "you" ||
 const isVis = (k) => ui.vis.includes(k);
 const groupCols = (g) => COLS().filter((c) => c[2] === g && c[0] !== "ad").map((c) => c[0]);
 function setVis(keys, on) { const set = new Set(ui.vis); keys.forEach((k) => (on ? set.add(k) : set.delete(k))); ui.vis = [...set]; }
-const visibleCols = () => COLS().filter((c) => c[0] === "ad" || isVis(c[0]));
+const LEAN = () => document.body.classList.contains("lean");
+const visibleCols = () => {
+  if (!LEAN()) return COLS().filter((c) => c[0] === "ad" || isVis(c[0]));
+  const by = Object.fromEntries(COLS().map((c) => [c[0], c]));
+  return [...["il", "ilce", "yer", "ad"], ...popCols().map((c) => c[0]), ...["oy", "bs", "os", "not", "u_st", "u_s"].filter((k) => !EXTRAS.some(([e]) => e === k) || ui.extra.includes(k))]
+    .map((k) => by[k] || popCols().find((c) => c[0] === k)).filter(Boolean);
+};
 
 // --- decisions
 const decOf = (id) => pending[id] || dec[id] || {};
@@ -290,6 +342,10 @@ function cell(r, c, i, cols) {
     case "t": return `<td class="${k === "il" || k === "ilce" ? "muted" : ""}${sep}">${esc(get(r, k))}</td>`;
     case "c": return `<td class="c${sep}">${esc(get(r, k))}</td>`;
     case "n": case "party": return `<td class="num${sep}">${fmt(get(r, k), d)}</td>`;
+    case "pn": {
+      const v = get(r, k), sg = c[5];
+      return `<td class="num${sep} ${sg && v != null && v !== 0 ? (v > 0 ? "up" : "down") : ""}">${v == null ? "—" : (sg && v > 0 ? "+" : "") + fmt(v, d)}</td>`;
+    }
     case "g": { const v = get(r, k); return `<td class="num${sep} ${v == null ? "" : v >= 40 ? "up" : v <= -30 ? "down" : ""}">${fmt(v, d)}</td>`; }
     case "name": {
       const w = parties.find(([p]) => p === get(r, "win"));
@@ -589,7 +645,8 @@ function wire() {
 
 async function main() {
   $("tb").innerHTML = `<tr><td class="muted" style="padding:20px">Yükleniyor… (20 MB)</td></tr>`;
-  const data = await (await fetch(DATA_URL)).json();
+  const [data, ps] = await Promise.all([fetch(DATA_URL).then((r) => r.json()), fetch(POP_URL).then((r) => r.json())]);
+  PS = ps;
   K = Object.fromEntries(data.keys.map((k, i) => [k, i]));
   rows = data.rows; parties = data.parties;
   try { const r = await fetch(DEC_URL, { cache: "no-store" }); if (r.ok) dec = await r.json(); } catch (e) { /* none yet */ }
@@ -604,14 +661,42 @@ async function main() {
   });
   drawIlce = buildDrop($("dIlce"), "İlçe", () => count((r) => (selIl.has(get(r, "il")) ? ilceKey(r) : null)), selIlce, () => { limit = PAGE; refresh(); });
   if (!Array.isArray(ui.vis)) ui.vis = defaultVis();
+  // sade görünüm: yerleşim + nüfus, kaynak kareleri, belirsizlik, öneri, otomatik not, semt türü, karar
+  const isLean = LEAN();
+  popUi();
   buildChips();
   wire();
   wireUi();
   wireCmd();
   applyUi();
   uiPanel();
-  setTab("il");
+  setTab(isLean ? "mah" : "il");
   if (Object.keys(pending).length) flush();
+}
+
+function popUi() {
+  const yrs = PS.years, opt = (sel, v) => yrs.map((y) => `<option ${y === v ? "selected" : ""}>${y}</option>`).join("");
+  $("pY").innerHTML = opt("pY", ui.pop.y); $("pB").innerHTML = opt("pB", ui.pop.b);
+  const draw = () => {
+    $("cPop").innerHTML = POPS.map(([k, t]) => `<label class="chip ${ui.pop.on.includes(k) ? "on" : ""}"><input type="checkbox" data-k="${k}" ${ui.pop.on.includes(k) ? "checked" : ""}>${t}</label>`).join("")
+      + `<span class="sep"></span>` + EXTRAS.map(([k, t]) => `<label class="chip ${ui.extra.includes(k) ? "on" : ""}"><input type="checkbox" data-x="${k}" ${ui.extra.includes(k) ? "checked" : ""}>${t}</label>`).join("");
+  };
+  draw();
+  $("pY").onchange = () => { ui.pop.y = +$("pY").value; saveUi(); renderMah(); };
+  $("pB").onchange = () => { ui.pop.b = +$("pB").value; saveUi(); renderMah(); };
+  $("cPop").onchange = (ev) => {
+    if (ev.target.dataset.x) {
+      const x = ev.target.dataset.x, e = new Set(ui.extra);
+      ev.target.checked ? e.add(x) : e.delete(x);
+      ui.extra = EXTRAS.map(([q]) => q).filter((q) => e.has(q));
+      saveUi(); draw(); renderMah();
+      return;
+    }
+    const k = ev.target.dataset.k, s = new Set(ui.pop.on);
+    ev.target.checked ? s.add(k) : s.delete(k);
+    ui.pop.on = POPS.map(([x]) => x).filter((x) => s.has(x));
+    saveUi(); draw(); renderMah();
+  };
 }
 
 // one chip per column group: on while any of its columns is shown ("2/5" when partly); a click
@@ -758,7 +843,7 @@ function wireCmd() {
     else if (ev.key === "Escape") { ev.target.blur(); cmdMsg(""); }
   });
   document.addEventListener("keydown", (ev) => {
-    if (/^F[1-5]$/.test(ev.key) && !ev.ctrlKey && !ev.shiftKey && !ev.altKey) { ev.preventDefault(); setTab(Object.keys(TABS)[+ev.key[1] - 1]); return; }
+    if (!document.body.classList.contains("lean") && /^F[1-5]$/.test(ev.key) && !ev.ctrlKey && !ev.shiftKey && !ev.altKey) { ev.preventDefault(); setTab(Object.keys(TABS)[+ev.key[1] - 1]); return; }
     if ((ev.key === "/" || ev.key === ":") && !/^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName)) { ev.preventDefault(); $("cmd").focus(); $("cmd").select(); }
   });
   const tick = () => { const d = new Date(); $("clock").textContent = `${d.toLocaleDateString("tr-TR")} ${d.toLocaleTimeString("tr-TR")}`; };

@@ -355,10 +355,51 @@ def uncertainty(v):
 for v in rows:
     v["pk"], v["bs"] = uncertainty(v)
 
+
+# pattern from the demographic ratios, one per place (a decision tree over every combination):
+#   registered/population: low < 50, high > 105 (national ~72); 0-17: low < 12, high > 35;
+#   men: high > 58, low < 40; 65+: high > 25. The web page carries the labels' meaning and
+#   whether the population can be taken at face value (normal, aged, young, small) or not.
+def pattern(v):
+    n, kn, u, e, o = v["n"], v.get("kn"), v["u17"], v["er"], v["o65"]
+    if n < 100:
+        return "küçük yer"
+    if kn is None:
+        return "seçmen verisi yok"
+    if kn > 105:
+        return "boşalan yaşlı köy" if o is not None and o > 25 else "hayalet seçmen"
+    if kn < 50:
+        if e is not None and e > 58:
+            return "kurum (erkek)"
+        if u is not None and u > 35:
+            return "seçmen dışı aile"
+        if u is not None and u < 12:
+            return "yurt / öğrenci"
+        return "seçmen açığı"
+    if e is not None and e > 58:
+        lab = "erkek ağırlıklı"
+    elif e is not None and e < 40:
+        lab = "kadın ağırlıklı"
+    elif o is not None and o > 25:
+        lab = "yaşlı yerleşim"
+    elif u is not None and u > 35:
+        lab = "çok genç"
+    elif u is not None and u < 12:
+        lab = "az çocuklu"
+    else:
+        lab = "normal"
+    if v["kurum"] and not new_housing(v) and lab in ("normal", "az çocuklu", "erkek ağırlıklı"):
+        lab = "kurum (işaretli)"
+    return lab
+
+
+for v in rows:
+    v["ort"] = pattern(v)
+
 # compact: a column list and one array per row
 KEYS = ["id", "il", "ilce", "yer", "semt", "ad", "tur", "n", "n0", "g", "area", "dens", "er", "u17", "o65", "med", "uni",
         "hh", "hs", "dw", "bl", "kpb", "kpbl", "hpb", "prs", "yaz", "leke", "kur", "k23", "g23", "kn", *[p for p, _, _, _ in PARTIES], "win",
-        "stat", "aat", "deg", "bina", "oneri", "os", "ih", "bs", "pk", "oy", "kurum", "not", "xy"]
+        "stat", "aat", "deg", "bina", "oneri", "os", "ih", "bs", "pk", "ort", "oy", "kurum", "not", "xy"]
 for v in rows:
     v["oy"] = "".join(v["oy"][k] or "-" for k in ("TÜİK", "AATOPLU", "DEGURBA", "bina"))
 out = {"keys": KEYS, "parties": [[p, short, fill] for p, short, fill, _ in PARTIES],
