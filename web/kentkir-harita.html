@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VeriAtlas</title>
+<style>
+  :root { --bg:#050505; --panel:#0b0b0b; --panel2:#131313; --fg:#e9e6df; --mut:#8b867a; --line:#1d1b17; --line2:#34312b; --acc:#ffb000;
+          --font:"JetBrains Mono","Cascadia Mono",Consolas,ui-monospace,monospace; }
+  html, body { height:100%; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:12px/1.4 var(--font); display:flex; flex-direction:column; overflow:hidden; }
+  header { display:flex; align-items:center; gap:14px; padding:6px 12px; background:var(--panel); border-bottom:1px solid var(--acc); }
+  .brand { color:var(--acc); font-weight:700; letter-spacing:.1em; }
+  select, input, button { color:var(--fg); background:#000; border:1px solid var(--line2); padding:4px 8px; font:inherit; outline:none; }
+  select:focus, input:focus, button:focus { border-color:var(--acc); }
+  #ilce { min-width:260px; }
+  #count { color:var(--mut); margin-left:auto; }
+  #info { padding:6px 12px; border-bottom:1px solid var(--line); background:var(--panel2); min-height:58px; }
+  #info .nm { color:var(--acc); font-size:13px; }
+  .mi { display:flex; flex-wrap:wrap; gap:4px 16px; margin:3px 0; }
+  .muted { color:var(--mut); }
+  #grid { flex:1; min-height:0; overflow:auto; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; padding:10px; align-content:start; }
+  .mp { margin:0; background:var(--panel); border:1px solid var(--line); }
+  .mp figcaption { padding:4px 8px; color:var(--acc); text-transform:uppercase; letter-spacing:.06em; font-size:10.5px; border-bottom:1px solid var(--line); }
+  .mp svg { display:block; width:100%; height:38vh; background:#000; }
+  .mp path { stroke:#0b0b0b; stroke-width:.6px; vector-effect:non-scaling-stroke; cursor:pointer; }
+  .mp path.hl { stroke:#fff; stroke-width:2px; }
+  .mleg { display:flex; flex-wrap:wrap; gap:2px 12px; padding:5px 8px; font-size:11px; color:var(--mut); }
+  .lg { display:inline-flex; align-items:center; gap:5px; }
+  .lg i { width:10px; height:10px; display:inline-block; border-radius:2px; }
+  @media (max-width: 900px) { #grid { grid-template-columns:1fr; } .mp svg { height:46vh; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">VERİATLAS</div>
+  <label>İlçe <select id="ilce"></select></label>
+  <span id="count"></span>
+</header>
+<div id="info">Yükleniyor…</div>
+<div id="grid"></div>
+<script>
+"use strict";
+// Four sources side by side on the neighbourhood map of one district: TÜİK status, AATOPLU,
+// DEGURBA and the Microsoft building analysis, plus the automatic suggestion and the user's own
+// decision. Reads a snapshot of the kent/kır table and of the decisions (public/kentkir_*.json).
+const DATA = "../public/kentkir_kontrol.json", DEC = "../public/kentkir_karar_anlik.json", GEO = "../public/geo/neighbourhoods/";
+const C = { kent: "#5ab8ff", deep: "#2d7fd6", light: "#9bd3ff", teal: "#36d1c4", belde: "#ffb000", lime: "#c4d96e", kir: "#66d98c", none: "#3a3a3a" };
+const u = (l, c) => [l, c];
+const catStat = (v) => { v = String(v || ""); return /merkez/i.test(v) ? u("Merkez mahallesi", C.kent) : /^Belde/.test(v) ? u("Belde", C.belde) : /^Köy/.test(v) ? u("Köy", C.kir) : u("2013 sonrası / yok", C.none); };
+const catAat = (v) => ({ Mahalle: u("Mahalle (kent)", C.kent), Belde: u("Belde", C.belde), "Köy": u("Köy", C.kir) }[v] || u("Kayıt yok", C.none));
+const catDeg = (v) => ({ "Yoğun kent": u("Yoğun kent", C.deep), "Orta yoğun kent": u("Orta yoğun kent", C.light), "Kır": u("Kır", C.kir) }[v] || u("Kayıt yok", C.none));
+const catBina = (v) => ({ "Merkez (kent)": u("Merkez (kent)", C.kent), "Kentsel belde (kent)": u("Kentsel belde (kent)", C.teal), "Kasaba (kır)": u("Kasaba (kır)", C.lime), "Kırsal belde (kır)": u("Kırsal belde (kır)", C.belde), "Köy (kır)": u("Köy (kır)", C.kir) }[v] || u("Kayıt yok", C.none));
+const catClass = (v) => ({ "İl Merkezi": u("İl merkezi", C.kent), "İlçe Merkezi": u("İlçe merkezi", C.kent), "Kentsel Belde": u("Kentsel belde", C.teal), Kasaba: u("Kasaba", C.lime), "Kırsal Belde": u("Kırsal belde", C.belde), "Köy": u("Köy", C.kir) }[v] || u("Karar yok", C.none));
+let K = {}, rows = [], dec = {}, byId = {}, geo = null, current = null;
+const get = (r, k) => r[K[k]];
+const decOf = (id) => dec[id] || {};
+const SOURCES = [
+  { title: "TÜİK statü (2012 / 2013)", value: (r) => get(r, "stat"), cat: catStat },
+  { title: "AATOPLU (2015)", value: (r) => get(r, "aat"), cat: catAat },
+  { title: "DEGURBA (2025)", value: (r) => get(r, "deg"), cat: catDeg },
+  { title: "Microsoft bina analizi", value: (r) => get(r, "bina"), cat: catBina },
+  { title: "Otomatik öneri", value: (r) => get(r, "os"), cat: catClass },
+  { title: "Senin kararın", value: (r) => decOf(get(r, "id")).s || "", cat: catClass },
+];
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const rowsOf = (did) => rows.filter((r) => get(r, "id").startsWith(did + "-"));
+
+function project(features) {
+  let minLon = 1e9, maxLon = -1e9, minLat = 1e9, maxLat = -1e9;
+  const polys = (g) => (g.type === "Polygon" ? [g.coordinates] : g.coordinates);
+  for (const ft of features) polys(ft.geometry).forEach((p) => p.forEach((ring) => ring.forEach(([x, y]) => { minLon = Math.min(minLon, x); maxLon = Math.max(maxLon, x); minLat = Math.min(minLat, y); maxLat = Math.max(maxLat, y); })));
+  const kx = Math.cos(((minLat + maxLat) / 2) * Math.PI / 180), S = 10000, paths = {};
+  for (const ft of features) {
+    let d = "";
+    polys(ft.geometry).forEach((p) => p.forEach((ring) => { d += "M" + ring.map(([x, y]) => `${((x - minLon) * kx * S).toFixed(1)} ${((maxLat - y) * S).toFixed(1)}`).join("L") + "Z"; }));
+    paths[ft.properties.area_id] = d;
+  }
+  return { W: (maxLon - minLon) * kx * S, H: (maxLat - minLat) * S, paths };
+}
+function legendOf(src, ids) {
+  const seen = new Map();
+  for (const id of ids) { const [l, c] = src.cat(src.value(byId[id])); seen.set(l, c); }
+  return [...seen].map(([l, c]) => `<span class="lg"><i style="background:${c}"></i>${esc(l)}</span>`).join("");
+}
+function render() {
+  const ids = Object.keys(geo.paths).filter((id) => byId[id]);
+  const missing = rowsOf(current).length - ids.length;
+  $("grid").innerHTML = SOURCES.map((src) => `
+    <figure class="mp"><figcaption>${esc(src.title)}</figcaption>
+      <svg viewBox="0 0 ${geo.W.toFixed(0)} ${geo.H.toFixed(0)}" preserveAspectRatio="xMidYMid meet">${
+        ids.map((id) => { const [l, c] = src.cat(src.value(byId[id])); return `<path data-id="${id}" d="${geo.paths[id]}" fill="${c}"${l === "Karar yok" ? ' fill-opacity=".25"' : ""}></path>`; }).join("")}</svg>
+      <div class="mleg">${legendOf(src, ids)}</div></figure>`).join("");
+  $("count").textContent = `${ids.length} birim${missing > 0 ? ` · sınırı olmayan ${missing}` : ""}`;
+  $("info").innerHTML = "Bir birimin üzerine gel: altı haritada birden vurgulanır ve kaynakların değerleri burada yazılır.";
+}
+function info(id) {
+  const r = byId[id];
+  if (!r) return;
+  const cells = SOURCES.map((s) => { const [, c] = s.cat(s.value(r)); return `<span class="lg"><i style="background:${c}"></i><b>${esc(s.title.split(" (")[0])}:</b> ${esc(s.value(r) || "—")}</span>`; }).join("");
+  $("info").innerHTML = `<b class="nm">${esc(get(r, "ad"))}</b> · ${Number(get(r, "n")).toLocaleString("tr-TR")} kişi · 2013: ${Number(get(r, "n0") || 0).toLocaleString("tr-TR")} · belirsizlik ${get(r, "bs")} · ihtilaf ${esc(get(r, "ih"))}<div class="mi">${cells}</div><div class="muted">${esc(get(r, "not") || "")}</div>`;
+}
+const highlight = (id, on) => $("grid").querySelectorAll(`path[data-id="${id}"]`).forEach((p) => p.classList.toggle("hl", on));
+async function load(did) {
+  current = did;
+  $("info").textContent = "Sınırlar yükleniyor…";
+  try { geo = project((await (await fetch(`${GEO}${did}.geojson`)).json()).features); }
+  catch (e) { $("grid").innerHTML = ""; $("info").textContent = "Bu ilçe için sınır dosyası yok."; return; }
+  byId = Object.fromEntries(rowsOf(did).map((r) => [get(r, "id"), r]));
+  render();
+  try { history.replaceState(null, "", "#" + did); } catch (e) { /* ignore */ }
+}
+async function main() {
+  const data = await (await fetch(DATA)).json();
+  K = Object.fromEntries(data.keys.map((k, i) => [k, i])); rows = data.rows;
+  try { const r = await fetch(DEC, { cache: "no-store" }); if (r.ok) dec = await r.json(); } catch (e) { /* no decisions yet */ }
+  const m = new Map();
+  for (const r of rows) { const d = get(r, "id").slice(0, 9); if (!m.has(d)) m.set(d, `${get(r, "il")} · ${get(r, "ilce")}`); }
+  $("ilce").innerHTML = [...m].sort((a, b) => a[1].localeCompare(b[1], "tr")).map(([d, n]) => `<option value="${d}">${esc(n)}</option>`).join("");
+  const want = location.hash.slice(1);
+  $("ilce").value = m.has(want) ? want : "TR-16-002";
+  $("ilce").onchange = () => load($("ilce").value);
+  $("grid").onmouseover = (ev) => { const p = ev.target.closest("path[data-id]"); if (p) { highlight(p.dataset.id, true); info(p.dataset.id); } };
+  $("grid").onmouseout = (ev) => { const p = ev.target.closest("path[data-id]"); if (p) highlight(p.dataset.id, false); };
+  load($("ilce").value);
+}
+main();
+</script>
+</body>
+</html>
