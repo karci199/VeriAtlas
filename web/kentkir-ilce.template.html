@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VeriAtlas</title>
+<style>
+  :root { --bg:#050505; --panel:#0b0b0b; --panel2:#131313; --fg:#e9e6df; --mut:#8b867a; --line:#1d1b17; --line2:#34312b; --acc:#ffb000;
+          --kent:#5ab8ff; --kir:#66d98c; --up:#66d98c; --down:#ff6b6b;
+          --font:"JetBrains Mono","Cascadia Mono",Consolas,ui-monospace,monospace; }
+  html, body { height:100%; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:12px/1.45 var(--font); display:flex; flex-direction:column; }
+  header { display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; padding:6px 12px; background:var(--panel); border-bottom:1px solid var(--acc); position:sticky; top:0; z-index:5; }
+  .brand { color:var(--acc); font-weight:700; letter-spacing:.1em; }
+  select, button { color:var(--fg); background:#000; border:1px solid var(--line2); padding:4px 8px; font:inherit; outline:none; }
+  select:focus, button:focus { border-color:var(--acc); }
+  button.tab { border-color:transparent; border-bottom:2px solid transparent; background:none; color:var(--mut); cursor:pointer; }
+  button.tab.on { color:var(--acc); border-bottom-color:var(--acc); }
+  main { padding:10px 12px 40px; overflow:auto; }
+  h2 { margin:14px 0 6px; font-size:12px; color:var(--acc); text-transform:uppercase; letter-spacing:.08em; font-weight:600; }
+  .note { color:var(--mut); margin:4px 0 8px; max-width:110ch; }
+  table { border-collapse:collapse; width:100%; background:var(--panel); }
+  th, td { padding:3px 8px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; }
+  th { color:var(--mut); font-weight:500; text-align:right; background:var(--panel2); cursor:default; }
+  th.sort { cursor:pointer; } th.sort:hover { color:var(--acc); }
+  td:first-child, th:first-child { text-align:left; }
+  tr:hover td { background:var(--panel2); }
+  tr.sep td { border-top:1px solid var(--line2); }
+  .kent { color:var(--kent); } .kir { color:var(--kir); } .up { color:var(--up); } .down { color:var(--down); } .mut { color:var(--mut); }
+  .wrap { overflow-x:auto; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">VERİATLAS</div>
+  <label>Kapsam <select id="scope"></select></label>
+  <nav id="tabs"></nav>
+</header>
+<main id="out"></main>
+<script>
+"use strict";
+/*DATA*/
+const CLASSES = ["İlçe Merkezi", "Kentsel Belde", "Kırsal Belde", "Köy"];
+const $ = (id) => document.getElementById(id);
+const nf = (v, d = 0) => v == null || !isFinite(v) ? "–" : Number(v).toLocaleString("tr-TR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const pc = (v, d = 1) => v == null || !isFinite(v) ? "–" : nf(100 * v, d);
+const chg = (v, d = 1) => v == null || !isFinite(v) ? "–" : `<span class="${v >= 0 ? "up" : "down"}">${v >= 0 ? "+" : ""}${nf(100 * v, d)}</span>`;
+const pop = (key, year) => (DATA.population[key] || {})[year] || {};
+const urban = (p) => (p.kent || 0), rural = (p) => (p.kir || 0);
+const keys = Object.keys(DATA.population);
+const label = (k) => k === "*|*" ? "Bursa + Ankara" : k.endsWith("|*") ? k.split("|")[0] + " (il toplamı)" : k.replace("|", " / ");
+const TABS = [["genel", "İlçeler"], ["nufus", "Nüfus (yıllık)"], ["koy", "Köy büyüklüğü"], ["yapi", "Bina · konut · hane"], ["secim", "Seçim profili"]];
+let tab = "genel", sortCol = "kentpay", sortDir = -1;
+
+function median(a) { if (!a.length) return null; const s = [...a].sort((x, y) => x - y), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; }
+
+function genel() {
+  const scope = $("scope").value, il = scope === "*|*" ? null : scope.split("|")[0];
+  const list = keys.filter((k) => !k.endsWith("|*") && (!il || k.startsWith(il + "|")));
+  const first = DATA.years[0], last = DATA.years[DATA.years.length - 1];
+  const rows = list.map((k) => {
+    const a = pop(k, first), b = pop(k, last), v = DATA.villages[k] || {};
+    const vl = v[last] || [];
+    return { k, kent13: urban(a), kent25: urban(b), kir13: rural(a), kir25: rural(b),
+      tot13: urban(a) + rural(a), tot25: urban(b) + rural(b), pay13: urban(a) / (urban(a) + rural(a)), pay25: urban(b) / (urban(b) + rural(b)),
+      koyN: vl.length, koyOrt: vl.length ? vl.reduce((s, x) => s + x, 0) / vl.length : null };
+  }).map((r) => ({ ...r, kentpay: r.pay25, kentd: r.kent25 / r.kent13 - 1, kird: r.kir13 ? r.kir25 / r.kir13 - 1 : null, payd: (r.pay25 - r.pay13) * 100, totd: r.tot25 / r.tot13 - 1 }));
+  rows.sort((x, y) => ((x[sortCol] ?? -1e12) - (y[sortCol] ?? -1e12)) * sortDir || x.k.localeCompare(y.k, "tr"));
+  const th = (c, t) => `<th class="sort" data-c="${c}">${t}${sortCol === c ? (sortDir > 0 ? " ▲" : " ▼") : ""}</th>`;
+  return `<h2>İlçe tablosu · ${first} → ${last}</h2>
+  <p class="note">Kent = ilçe merkezi + kentsel belde, kır = kırsal belde + köy. ${first} ilk karşılaştırılabilir yıl: 6360 sayılı yasayla köyler mahalle olunca (2012-2013) birim kimlikleri değişti, ${first} öncesi aynı sınıflamaya bağlanamıyor. Başlığa tıklayınca sıralanır.</p>
+  <div class="wrap"><table><thead><tr><th>İlçe</th>${th("tot25", "Nüfus " + last)}${th("totd", "Toplam %Δ")}${th("kent25", "Kent " + last)}${th("kentd", "Kent %Δ")}${th("kir25", "Kır " + last)}${th("kird", "Kır %Δ")}${th("pay13", "Kent % " + first)}${th("kentpay", "Kent % " + last)}${th("payd", "Pay Δ (puan)")}${th("koyN", "Köy sayısı")}${th("koyOrt", "Ort. köy")}</tr></thead><tbody>
+  ${rows.map((r) => `<tr><td>${r.k.replace("|", " / ")}</td><td>${nf(r.tot25)}</td><td>${chg(r.totd)}</td><td class="kent">${nf(r.kent25)}</td><td>${chg(r.kentd)}</td><td class="kir">${nf(r.kir25)}</td><td>${chg(r.kird)}</td><td>${pc(r.pay13)}</td><td>${pc(r.pay25)}</td><td>${r.payd >= 0 ? "+" : ""}${nf(r.payd, 1)}</td><td>${nf(r.koyN)}</td><td>${nf(r.koyOrt)}</td></tr>`).join("")}</tbody></table></div>`;
+}
+
+function nufus(k) {
+  const rows = DATA.years.map((y, i) => {
+    const p = pop(k, y), q = i ? pop(k, DATA.years[i - 1]) : null, u = urban(p), r = rural(p), t = u + r;
+    return { y, p, u, r, t, ud: q ? u / urban(q) - 1 : null, rd: q && rural(q) ? r / rural(q) - 1 : null, td: q ? t / (urban(q) + rural(q)) - 1 : null };
+  });
+  return `<h2>${label(k)} · kent / kır nüfusu</h2>
+  <p class="note">Yıllık değişim bir önceki yıla göre. Seçim yıllarında (2015, 2018, 2023) özellikle küçük köylerde adres kaydı nedeniyle kır nüfusu geçici olarak şişer; bu yılların değişim sütunlarına temkinli bakın.</p>
+  <div class="wrap"><table><thead><tr><th>Yıl</th><th>Kent</th><th>Kır</th><th>Toplam</th><th>Kent %</th><th>Kent yıllık %Δ</th><th>Kır yıllık %Δ</th><th>Toplam yıllık %Δ</th>${CLASSES.map((c) => `<th>${c}</th>`).join("")}</tr></thead><tbody>
+  ${rows.map((x) => `<tr><td>${x.y}</td><td class="kent">${nf(x.u)}</td><td class="kir">${nf(x.r)}</td><td>${nf(x.t)}</td><td>${pc(x.u / x.t)}</td><td>${chg(x.ud)}</td><td>${chg(x.rd)}</td><td>${chg(x.td)}</td>${CLASSES.map((c) => `<td class="mut">${nf(x.p[c])}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+}
+
+function koy(k) {
+  const v = DATA.villages[k] || {};
+  return `<h2>${label(k)} · köy büyüklüğü</h2>
+  <p class="note">Köy = sınıflamada "Köy" yazılan mahalle/köy birimleri. Kırsal belde mahalleleri dahil değil.</p>
+  <div class="wrap"><table><thead><tr><th>Yıl</th><th>Köy sayısı</th><th>Toplam nüfus</th><th>Ortalama</th><th>Ortanca</th><th>En büyük</th><th>En küçük</th><th>Ortalama %Δ</th></tr></thead><tbody>
+  ${DATA.years.map((y, i) => { const a = v[y] || [], p = i ? v[DATA.years[i - 1]] || [] : [], s = a.reduce((x, z) => x + z, 0), ps = p.reduce((x, z) => x + z, 0);
+    return `<tr><td>${y}</td><td>${nf(a.length)}</td><td>${nf(s)}</td><td>${nf(a.length ? s / a.length : null)}</td><td>${nf(median(a))}</td><td>${nf(a.length ? Math.max(...a) : null)}</td><td>${nf(a.length ? Math.min(...a) : null)}</td><td>${p.length ? chg((s / a.length) / (ps / p.length) - 1) : "–"}</td></tr>`; }).join("")}</tbody></table></div>`;
+}
+
+function yapi(k) {
+  const s = DATA.structure[k] || {};
+  const row = (name, o, cls) => o && o.units ? `<tr class="${cls || ""}"><td>${name}</td><td>${nf(o.units)}</td><td>${nf(o.n)}</td><td>${nf(o.bl)}</td><td>${nf(o.dw)}</td><td>${nf(o.hh)}</td><td>${nf(o.dw / o.bl, 2)}</td><td>${nf(o.hh / o.dw, 2)}</td><td>${nf(o.n / o.hh, 2)}</td><td>${nf(o.n / o.bl, 1)}</td></tr>` : "";
+  return `<h2>${label(k)} · yapı ve hane (2025)</h2>
+  <p class="note">Bina, konut ve hane sayıları mahalle/köy düzeyinde TÜİK ADNKS-Endeksa 2024 kesitinden. Konut/bina bina başına konutu (apartman = yüksek), hane/konut doluluğu (1'in altı: boş ve yazlık konut), kişi/hane ortalama hane büyüklüğünü verir.</p>
+  <div class="wrap"><table><thead><tr><th>Sınıf</th><th>Birim</th><th>Nüfus</th><th>Bina</th><th>Konut</th><th>Hane</th><th>Konut/bina</th><th>Hane/konut</th><th>Kişi/hane</th><th>Kişi/bina</th></tr></thead><tbody>
+  ${row("Kent", s.kent, "kent")}${CLASSES.slice(0, 2).map((c) => row("· " + c, s[c])).join("")}
+  ${row("Kır", s.kir, "kir sep")}${CLASSES.slice(2).map((c) => row("· " + c, s[c])).join("")}</tbody></table></div>`;
+}
+
+function secim(k) {
+  const e = DATA.election;
+  const out = DATA.elections.map(([t, name]) => {
+    const g = (e[t].groups[k] || {}), mk = (side, lab) => { const c = g[side]; if (!c || !c.g) return ""; const ok = Object.values(c.p).reduce((s, x) => s + x, 0);
+      return `<tr><td class="${side}">${lab}</td><td>${nf(c.n)}</td><td>${nf(c.a)}</td><td>${nf(c.k)}</td><td>${pc(c.k / c.a)}</td><td>${nf(c.o)}</td><td>${pc(c.o / c.k)}</td>${DATA.parties.map((p) => `<td>${pc((c.p[p] || 0) / c.g)}</td>`).join("")}<td>${pc((c.g - ok) / c.g)}</td></tr>`; };
+    return `<h2>${name} milletvekili genel seçimi · ${label(k)}</h2><div class="wrap"><table><thead><tr><th></th><th>Birim</th><th>18+ nüfus</th><th>Kayıtlı seçmen</th><th>Seçmen/18+ %</th><th>Oy kullanan</th><th>Katılım %</th>${DATA.parties.map((p) => `<th>${p} %</th>`).join("")}<th>Diğer %</th></tr></thead><tbody>${mk("kent", "Kent")}${mk("kir", "Kır")}</tbody></table></div>`;
+  }).join("");
+  return `<p class="note">Parti payları geçerli oya göre. 18+ nüfus seçim yılı sonu ADNKS; seçmen listesi seçimden önce kapandığı için oran %100 civarında sapar. Seçmen/18+ oranı düşükse (öğrenci, kurum, yeni gelen) kayıt açığı, yüksekse köyde kayıtlı ama başka yerde yaşayan seçmen (hemşehri kaydı) demektir. Cezaevi ve yurt gibi kurum nüfuslu birimler oranı bozar.</p>${out}`;
+}
+
+function render() {
+  const k = $("scope").value;
+  $("tabs").innerHTML = TABS.map(([id, t]) => `<button class="tab ${id === tab ? "on" : ""}" data-t="${id}">${t}</button>`).join("");
+  $("out").innerHTML = tab === "genel" ? genel() : tab === "nufus" ? nufus(k) : tab === "koy" ? koy(k) : tab === "yapi" ? yapi(k) : secim(k);
+  try { history.replaceState(null, "", `#${tab}/${encodeURIComponent(k)}`); } catch (e) { /* ignore */ }
+}
+
+function main() {
+  const order = (k) => (k === "*|*" ? 0 : k.endsWith("|*") ? 1 : 2);
+  $("scope").innerHTML = [...keys].sort((a, b) => order(a) - order(b) || a.localeCompare(b, "tr")).map((k) => `<option value="${k}">${label(k)}</option>`).join("");
+  const [t, k] = decodeURIComponent(location.hash.slice(1)).split("/");
+  if (TABS.some((x) => x[0] === t)) tab = t;
+  if (k && keys.includes(k)) $("scope").value = k;
+  $("scope").onchange = render;
+  $("tabs").onclick = (ev) => { const b = ev.target.closest("[data-t]"); if (b) { tab = b.dataset.t; render(); } };
+  $("out").onclick = (ev) => { const h = ev.target.closest("th[data-c]"); if (h) { sortDir = sortCol === h.dataset.c ? -sortDir : -1; sortCol = h.dataset.c; render(); } };
+  render();
+}
+main();
+</script>
+</body>
+</html>
