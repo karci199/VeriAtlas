@@ -1085,8 +1085,8 @@
 "s": "İlçe Merkezi"
 },
 "TR-06-007-1517": {
-"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
-"s": "İlçe Merkezi"
+"n": "elle: Aşağı İmrahor köy (İmrohor vadisi, seyrek; kullanıcı)",
+"s": "Köy"
 },
 "TR-06-007-1518": {
 "n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
@@ -1381,8 +1381,8 @@
 "s": "İlçe Merkezi"
 },
 "TR-06-007-1591": {
-"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
-"s": "İlçe Merkezi"
+"n": "elle: Orta İmrahor köy (İmrohor vadisi, seyrek; kullanıcı)",
+"s": "Köy"
 },
 "TR-06-007-1592": {
 "n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
@@ -1690,6 +1690,164 @@
 "TR-06-009-2094": {
 "n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
 "s": "Köy"
+},
+"TR-06-010-100411": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1622": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1623": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1624": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1625": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1626": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1627": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1628": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1629": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1630": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1631": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1632": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1633": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1634": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1635": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1636": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1637": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1638": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1639": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1640": {
+"n": "elle: Bağlıca kentsel belde grubu (Bağlıca, Yeni Bağlıca, Fatih Sultan; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Bağlıca"
+},
+"TR-06-010-1641": {
+"n": "elle: Yapracık ayrı kentsel belde (eski belde, 7.440 kişi; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Yapracık"
+},
+"TR-06-010-1642": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1643": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-1644": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-183238": {
+"n": "elle: Atayurt ayrı kentsel belde (kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Atayurt"
+},
+"TR-06-010-183240": {
+"n": "elle: Etimesgut köyü (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-010-183242": {
+"n": "elle: Turkuaz ayrı kentsel belde (kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Turkuaz"
+},
+"TR-06-010-1900": {
+"n": "elle: Etimesgut köyü (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-010-1901": {
+"n": "elle: Etimesgut köyü (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-010-1904": {
+"n": "elle: Etimesgut köyü (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-010-1908": {
+"n": "elle: Etimesgut köyü (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-010-1910": {
+"n": "elle: Etimesgut köyü (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-010-728733": {
+"n": "elle: Bağlıca kentsel belde grubu (Bağlıca, Yeni Bağlıca, Fatih Sultan; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Bağlıca"
+},
+"TR-06-010-789792": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-99781": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-99782": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-99783": {
+"n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
+"s": "İlçe Merkezi"
+},
+"TR-06-010-99784": {
+"n": "elle: Bağlıca kentsel belde grubu (Bağlıca, Yeni Bağlıca, Fatih Sultan; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Bağlıca"
 },
 "TR-06-011-178293": {
 "n": "elle: Evren, sayılanlar dışında köy",
@@ -3239,6 +3397,267 @@
 "TR-06-018-2201": {
 "n": "elle: Kızılcahamam merkez mahallesi (kullanıcı listesi)",
 "s": "İlçe Merkezi"
+},
+"TR-06-019-140424": {
+"n": "elle: Kutludüğün kırsal belde (kullanıcı)",
+"s": "Kırsal Belde",
+"y": "Kutludüğün"
+},
+"TR-06-019-1743": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1744": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1745": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1746": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1747": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1748": {
+"n": "elle: Mamak merkez (eski gecekondu mahallesi; kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1749": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1750": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1751": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1752": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1753": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1754": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1755": {
+"n": "elle: Mamak merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1756": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1757": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1758": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1759": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1760": {
+"n": "elle: Mamak merkez (eski gecekondu mahallesi; kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1761": {
+"n": "elle: Mamak merkez (eski gecekondu mahallesi; kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1762": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1763": {
+"n": "elle: Mamak merkez (eski gecekondu mahallesi; kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1764": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1765": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1766": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1767": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1769": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1770": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1771": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1772": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1773": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1774": {
+"n": "elle: Mamak merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1775": {
+"n": "elle: Mamak merkez (eski gecekondu mahallesi; kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1776": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1777": {
+"n": "elle: Mamak merkez (eski gecekondu mahallesi; kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1778": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1779": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1780": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1781": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1782": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1783": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1785": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1786": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1787": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1788": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1789": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1790": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1791": {
+"n": "elle: Mamak merkez (eski gecekondu mahallesi; kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1792": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1793": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1794": {
+"n": "elle: Mamak merkez (eski gecekondu mahallesi; kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1795": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1796": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1797": {
+"n": "elle: Mamak merkez (kullanıcı: sayılmayanlar merkez)",
+"s": "İlçe Merkezi"
+},
+"TR-06-019-1798": {
+"n": "elle: Mamak köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-019-1799": {
+"n": "elle: Mamak köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-019-1800": {
+"n": "elle: Kıbrısköy kentsel belde (planlı yeni yerleşim; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Kıbrısköy"
+},
+"TR-06-019-1801": {
+"n": "elle: Mamak köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-019-1802": {
+"n": "elle: Mamak köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-019-1803": {
+"n": "elle: Mamak köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-019-1806": {
+"n": "elle: Mamak köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-019-181428": {
+"n": "elle: Zirvekent tamamen ayrı kentsel belde (TOKİ konutları; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Zirvekent"
+},
+"TR-06-019-2091": {
+"n": "elle: Lalahan ve Karşıyaka birleşik yerleşim, kırsal belde grubu (5.765 kişi; Kutludüğün ile aynı sınıf; kullanıcı onayı)",
+"s": "Kırsal Belde",
+"y": "Lalahan-Karşıyaka"
+},
+"TR-06-019-2092": {
+"n": "elle: Lalahan ve Karşıyaka birleşik yerleşim, kırsal belde grubu (5.765 kişi; Kutludüğün ile aynı sınıf; kullanıcı onayı)",
+"s": "Kırsal Belde",
+"y": "Lalahan-Karşıyaka"
 },
 "TR-06-020-178821": {
 "n": "elle: Nallıhan, sayılanlar dışında köy; eski belde Sarıyar 460, 2.000 altı",
