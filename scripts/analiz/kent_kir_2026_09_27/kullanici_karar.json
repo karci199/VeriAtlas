@@ -1,4 +1,4552 @@
 {
+"TR-06-001-177863": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-177865": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-177867": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1914": {
+"n": "elle: Akyurt merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-001-1915": {
+"n": "elle: Akyurt merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-001-1916": {
+"n": "elle: Akyurt merkez mahallesi (Galaba aslında köy ama merkezle birleşmiş, kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-001-1917": {
+"n": "elle: Akyurt merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-001-1918": {
+"n": "elle: Akyurt merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-001-1919": {
+"n": "elle: Akyurt merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-001-1920": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1921": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1922": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1923": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1924": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1925": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1926": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1927": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1928": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1929": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1930": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1931": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1932": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1933": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1934": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-001-1935": {
+"n": "elle: Saracalar köy (merkeze bitişik değil, yoğunluk düşük, şüphede kır)",
+"s": "Köy"
+},
+"TR-06-001-1936": {
+"n": "elle: Akyurt, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-002-1445": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1450": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1452": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1453": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1455": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1462": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1468": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1469": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1471": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1472": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1473": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1476": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1478": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1483": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1484": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1492": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1495": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1498": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1499": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1501": {
+"n": "elle: Altındağ köy (TÜİK eski merkez mahallesi, diğer üç kaynak köy/kır)",
+"s": "Köy"
+},
+"TR-06-002-1502": {
+"n": "elle: Karacaören kentsel belde (dört kaynak kent)",
+"s": "Kentsel Belde",
+"y": "Karacaören"
+},
+"TR-06-002-1503": {
+"n": "elle: Altındağ köy (TÜİK eski merkez mahallesi, diğer üç kaynak köy/kır)",
+"s": "Köy"
+},
+"TR-06-002-1504": {
+"n": "elle: Altındağ köy (TÜİK eski merkez mahallesi, diğer üç kaynak köy/kır)",
+"s": "Köy"
+},
+"TR-06-002-1505": {
+"n": "elle: Altındağ köy (TÜİK eski merkez mahallesi, diğer üç kaynak köy/kır)",
+"s": "Köy"
+},
+"TR-06-002-1506": {
+"n": "elle: Altındağ merkez mahallesi (uyumlu)",
+"s": "İlçe Merkezi"
+},
+"TR-06-002-1509": {
+"n": "elle: Altındağ köy (TÜİK eski merkez mahallesi, diğer üç kaynak köy/kır)",
+"s": "Köy"
+},
+"TR-06-003-177869": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-177871": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-177873": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-177875": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-177877": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-177879": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-177881": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-177883": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-177885": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-177887": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-177889": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-177891": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-177893": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-177895": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-1937": {
+"n": "elle: Ayaş merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-003-1938": {
+"n": "elle: Ayaş merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-003-1939": {
+"n": "elle: Ayaş merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-003-1940": {
+"n": "elle: Ayaş merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-003-1941": {
+"n": "elle: Ayaş merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-003-1942": {
+"n": "elle: Ayaş merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-003-1943": {
+"n": "elle: Ayaş merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-003-1944": {
+"n": "elle: Ayaş merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-003-1945": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-1946": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-1949": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-1950": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-1951": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-1952": {
+"n": "elle: Emine Tevfika Ayaşlı merkez (planlı konut kümesi, merkezin uzantısı; kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-003-1953": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-1954": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-1963": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-1964": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-003-1965": {
+"n": "elle: Ayaş, sayılanlar dışında köy; Oltan (eski belde 1.304) ve Çanıllı 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177897": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177899": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177901": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177903": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177905": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177907": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177909": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177911": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177913": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177915": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177917": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177919": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177921": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177923": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177925": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177927": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177929": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177931": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177933": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177935": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177937": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177939": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177941": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177943": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177945": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177947": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177949": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177951": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177953": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177955": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177957": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177959": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177961": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177963": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177965": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-177967": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-1966": {
+"n": "elle: Bala merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-004-1967": {
+"n": "elle: Bala merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-004-1968": {
+"n": "elle: Bala merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-004-1969": {
+"n": "elle: Bala merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-004-1970": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-1971": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-1972": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-1973": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-1974": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-1975": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-1976": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-1977": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-1978": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-1981": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-1982": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-1983": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-1992": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-1994": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-914390": {
+"n": "elle: Bala, sayılanlar dışında köy; eski belde Afşar/Kesikköprü grupları 2.000 altı",
+"s": "Köy"
+},
+"TR-06-004-99986": {
+"n": "elle: Bala merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-005-177969": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-177971": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-177973": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-177975": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-177977": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-177979": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-177981": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-177983": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-177985": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-177987": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-177989": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-177991": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-177993": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-177995": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-177997": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-177999": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178001": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178003": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178005": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178007": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178009": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178011": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178013": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178015": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178017": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178019": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178021": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178023": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178025": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178027": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178029": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178031": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178033": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178035": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178037": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178039": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178041": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178043": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178045": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178047": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178049": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178051": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178053": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178055": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178057": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178059": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178061": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178063": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178065": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178067": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178069": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178071": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178073": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178075": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178077": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178079": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178081": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178083": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178085": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178087": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178089": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178091": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178093": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178095": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178097": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178099": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-178101": {
+"n": "elle: Beypazarı, sayılanlar dışında köy; eski beldeler (Kırbaşı, Karaşar, Uruş) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-005-1995": {
+"n": "elle: Beypazarı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-005-1996": {
+"n": "elle: Beypazarı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-005-1997": {
+"n": "elle: Beypazarı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-005-1998": {
+"n": "elle: Beypazarı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-005-1999": {
+"n": "elle: Beypazarı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-005-2000": {
+"n": "elle: Beypazarı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-005-2001": {
+"n": "elle: Beypazarı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-005-2002": {
+"n": "elle: Beypazarı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-005-2003": {
+"n": "elle: Rüstempaşa merkez (tarihi merkez dokusu, harita bakışı; kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-005-2004": {
+"n": "elle: Yeşilağaç köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-005-2005": {
+"n": "elle: Beypazarı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-006-178103": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178105": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178107": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178109": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178111": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178113": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178115": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178117": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178119": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178121": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178123": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178125": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178127": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178129": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178131": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178133": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178135": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178137": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178139": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178141": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178143": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178145": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178147": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178149": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178151": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178153": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178155": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178157": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178159": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178161": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178163": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178165": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178167": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178169": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178171": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178173": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178175": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178177": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178179": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178181": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-178183": {
+"n": "elle: Çamlıdere, sayılanlar dışında köy; eski belde Peçenek 248, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-006-2015": {
+"n": "elle: Çamlıdere merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-006-2016": {
+"n": "elle: Çamlıdere merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-006-2017": {
+"n": "elle: Çamlıdere merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-006-2018": {
+"n": "elle: Çamlıdere merkez mahallesi (kullanıcı listesi; Orta: merkez içinde küçük birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-006-2019": {
+"n": "elle: Çamlıdere merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-006-2020": {
+"n": "elle: Çamlıdere merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-006-2021": {
+"n": "elle: Çamlıdere merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1513": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1514": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1515": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1516": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1517": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1518": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1519": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1520": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1521": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1522": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1523": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1524": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1525": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1526": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1527": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1528": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1529": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1530": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1531": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1532": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1533": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1534": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1535": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1536": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1537": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1538": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1539": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1540": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1541": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1542": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1543": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1544": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1545": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1546": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1547": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1548": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1549": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1550": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1551": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1552": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1553": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1554": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1555": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1556": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1557": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1558": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1559": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1560": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1561": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1562": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1563": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1564": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1565": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1566": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1567": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1568": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1569": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1570": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1571": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1572": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1573": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1574": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1575": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1576": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1577": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1578": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1579": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1580": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1581": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1582": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1583": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1584": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1585": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1586": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1587": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1588": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1589": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1590": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1591": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1592": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1593": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1594": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1595": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1596": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1597": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1598": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1599": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1600": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1601": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1602": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1603": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1604": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1605": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1606": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1607": {
+"n": "elle: Çankaya doğu köyü (kullanıcı); Yeşilkent sınırda: bina analizi merkez, nüfus azalıyor",
+"s": "Köy"
+},
+"TR-06-007-1608": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1609": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1610": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1611": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1612": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1613": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1614": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1615": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1616": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1617": {
+"n": "elle: Çankaya doğu köyü (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-007-1618": {
+"n": "elle: Yakupabdal kırsal belde (eski belde AATOPLU, 3.718 kişi, ayrı küme; kullanıcı)",
+"s": "Kırsal Belde",
+"y": "Yakupabdal"
+},
+"TR-06-007-1619": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1620": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1621": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1879": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1880": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1886": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1890": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1894": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1899": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1902": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1903": {
+"n": "GEÇİCİ: Çankaya şimdilik merkez (kullanıcı; sonra gözden geçirilecek, özellikle Çayyolu-Ümitköy-Yaşamkent kuşağındaki 12 birim)",
+"s": "İlçe Merkezi"
+},
+"TR-06-007-1986": {
+"n": "elle: Çankaya doğu köyü (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-007-1987": {
+"n": "elle: Çankaya doğu köyü (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-007-1988": {
+"n": "elle: Çankaya doğu köyü (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-007-1989": {
+"n": "elle: Çankaya doğu köyü (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-007-1990": {
+"n": "elle: Çankaya doğu köyü (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-007-1991": {
+"n": "elle: Çankaya doğu köyü (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-007-1993": {
+"n": "elle: Çankaya doğu köyü (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-009-178279": {
+"n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
+"s": "Köy"
+},
+"TR-06-009-178281": {
+"n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
+"s": "Köy"
+},
+"TR-06-009-178283": {
+"n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
+"s": "Köy"
+},
+"TR-06-009-178285": {
+"n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
+"s": "Köy"
+},
+"TR-06-009-178287": {
+"n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
+"s": "Köy"
+},
+"TR-06-009-178289": {
+"n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
+"s": "Köy"
+},
+"TR-06-009-178291": {
+"n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
+"s": "Köy"
+},
+"TR-06-009-2070": {
+"n": "elle: Elmadağ merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-009-2071": {
+"n": "elle: Elmadağ merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-009-2072": {
+"n": "elle: Elmadağ merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-009-2073": {
+"n": "elle: Elmadağ merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-009-2074": {
+"n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
+"s": "Köy"
+},
+"TR-06-009-2075": {
+"n": "elle: Elmadağ merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-009-2076": {
+"n": "elle: Elmadağ merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-009-2077": {
+"n": "elle: Elmadağ merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-009-2078": {
+"n": "elle: Elmadağ merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-009-2079": {
+"n": "elle: Elmadağ merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-009-2080": {
+"n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
+"s": "Köy"
+},
+"TR-06-009-2081": {
+"n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
+"s": "Köy"
+},
+"TR-06-009-2082": {
+"n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
+"s": "Köy"
+},
+"TR-06-009-2083": {
+"n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
+"s": "Köy"
+},
+"TR-06-009-2084": {
+"n": "elle: Elmadağ Yenimahalle köy (vadiyle ayrı küçük küme, merkez yapı lekesi yok; sınırda karar, kullanıcı)",
+"s": "Köy"
+},
+"TR-06-009-2085": {
+"n": "elle: Hasanoğlan tek kentsel belde grubu (6 mahalle; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Hasanoğlan"
+},
+"TR-06-009-2086": {
+"n": "elle: Hasanoğlan tek kentsel belde grubu (6 mahalle; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Hasanoğlan"
+},
+"TR-06-009-2087": {
+"n": "elle: Hasanoğlan tek kentsel belde grubu (6 mahalle; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Hasanoğlan"
+},
+"TR-06-009-2088": {
+"n": "elle: Hasanoğlan tek kentsel belde grubu (6 mahalle; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Hasanoğlan"
+},
+"TR-06-009-2089": {
+"n": "elle: Hasanoğlan tek kentsel belde grubu (6 mahalle; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Hasanoğlan"
+},
+"TR-06-009-2090": {
+"n": "elle: Hasanoğlan tek kentsel belde grubu (6 mahalle; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Hasanoğlan"
+},
+"TR-06-009-2093": {
+"n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
+"s": "Köy"
+},
+"TR-06-009-2094": {
+"n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
+"s": "Köy"
+},
+"TR-06-011-178293": {
+"n": "elle: Evren, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-011-178295": {
+"n": "elle: Evren, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-011-178297": {
+"n": "elle: Evren, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-011-178299": {
+"n": "elle: Evren, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-011-178301": {
+"n": "elle: Evren, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-011-178303": {
+"n": "elle: Evren, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-011-178305": {
+"n": "elle: Evren, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-011-178307": {
+"n": "elle: Evren, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-011-178309": {
+"n": "elle: Evren, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-011-2095": {
+"n": "elle: Evren merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-011-2096": {
+"n": "elle: Evren merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-011-2097": {
+"n": "elle: Evren merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-011-2098": {
+"n": "elle: Evren merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-013-178311": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178313": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178315": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178317": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178319": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178321": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178323": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178325": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178327": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178329": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178331": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178333": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178335": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178337": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178339": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178341": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178343": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178345": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178347": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178349": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178351": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178353": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178355": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178357": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178359": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-178361": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-197249": {
+"n": "elle: Güdül, sayılanlar dışında köy; eski beldeler (Sorgun, Çağa, Yeşilöz, Güneyce) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-013-2099": {
+"n": "elle: Güdül merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-013-2100": {
+"n": "elle: Güdül merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-013-2101": {
+"n": "elle: Güdül merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-013-2102": {
+"n": "elle: Güdül merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-014-178363": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178365": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178367": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178369": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178371": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178373": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178375": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178377": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178379": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178381": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178383": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178385": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178387": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178389": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178391": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178393": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178395": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178397": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178399": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178401": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178403": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178405": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178407": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178409": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178411": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178413": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178415": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178417": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178419": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178421": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178423": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178425": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178427": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178429": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178431": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178433": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178435": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178437": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178439": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178441": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178443": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178445": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178447": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178449": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178451": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178453": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178455": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178457": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178459": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178461": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178463": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178465": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178467": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178469": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178471": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178473": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178475": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178477": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178479": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178481": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178483": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178485": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178487": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178489": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178491": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178493": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178495": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178497": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178499": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178501": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178503": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-178505": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-197931": {
+"n": "elle: Haymana, sayılanlar dışında köy; eski beldeler (Yurtbeyli, Balçıkhisar, Bumsuz, Çalış) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-014-2111": {
+"n": "elle: Haymana merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-014-2112": {
+"n": "elle: Haymana merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-014-2113": {
+"n": "elle: Haymana merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-014-2114": {
+"n": "elle: Haymana merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-014-2115": {
+"n": "elle: Haymana merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-015-178581": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-178583": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-178585": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-178587": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-178589": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-178591": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-178593": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-178595": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-178597": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-178599": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-178601": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-178603": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-178605": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-178607": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-178609": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-178611": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-196407": {
+"n": "elle: Akıncı kentsel belde (yoğun apartman/lojman yerleşimi, 3.214 kişi/km²; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Akıncı"
+},
+"TR-06-015-2164": {
+"n": "elle: Kahramankazan merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-015-2165": {
+"n": "elle: Kahramankazan merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-015-2166": {
+"n": "elle: Kanuni Sultan Süleyman köy (seyrek küçük yerleşim, merkezden tarlayla ayrı; kullanıcı)",
+"s": "Köy"
+},
+"TR-06-015-2167": {
+"n": "elle: Kahramankazan merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-015-2168": {
+"n": "elle: Kahramankazan merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-015-2169": {
+"n": "elle: Yavuz Sultan Selim köy (seyrek küçük yerleşim, merkezden tarlayla ayrı; kullanıcı)",
+"s": "Köy"
+},
+"TR-06-015-2170": {
+"n": "elle: Kahramankazan merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-015-2171": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2172": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2173": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2174": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2175": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2176": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2177": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2178": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2179": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2180": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2181": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2182": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2183": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2184": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2185": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2186": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2187": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2188": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2189": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2190": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2191": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2192": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2193": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-015-2194": {
+"n": "elle: Kahramankazan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178507": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178509": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178511": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178513": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178515": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178517": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178519": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178521": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178523": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178525": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178527": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178529": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178531": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178533": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178535": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178537": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178539": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178541": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178543": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178545": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178547": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178549": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178551": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178553": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178555": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178557": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178559": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178561": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178563": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178565": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178567": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178569": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178571": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178573": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178575": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178577": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-178579": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-2135": {
+"n": "elle: Kalecik merkez mahallesi (kullanıcı onayı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-016-2136": {
+"n": "elle: Kalecik merkez mahallesi (kullanıcı onayı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-016-2137": {
+"n": "elle: Kalecik merkez mahallesi (kullanıcı onayı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-016-2138": {
+"n": "elle: Kalecik merkez mahallesi (kullanıcı onayı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-016-2139": {
+"n": "elle: Kalecik merkez mahallesi (kullanıcı onayı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-016-2140": {
+"n": "elle: Kalecik merkez mahallesi (kullanıcı onayı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-016-2146": {
+"n": "elle: Kalecik merkez mahallesi (kullanıcı onayı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-016-2148": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-2149": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-2151": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-2152": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-2153": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-2155": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-2156": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-2157": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-2158": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-2159": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-2160": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-016-2161": {
+"n": "elle: Kalecik, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-017-1684": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1685": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1686": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1687": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1688": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1689": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1690": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1691": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1692": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1693": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1694": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1695": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1696": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1697": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1698": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1699": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1700": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1701": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1702": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1703": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1704": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1705": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1706": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1707": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1708": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1709": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1710": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1711": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1712": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1713": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1714": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1715": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1716": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1717": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1718": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1719": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1720": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1721": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1722": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1723": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1724": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1725": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1726": {
+"n": "elle: Keçiören merkez mahallesi (kullanıcı: geri kalanlar kent)",
+"s": "İlçe Merkezi"
+},
+"TR-06-017-1731": {
+"n": "elle: Bağlum kentsel belde grubu (Hisar, Karakaya, Karşıyaka, Kafkas; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Bağlum"
+},
+"TR-06-017-1732": {
+"n": "elle: Bağlum kentsel belde grubu (Hisar, Karakaya, Karşıyaka, Kafkas; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Bağlum"
+},
+"TR-06-017-1733": {
+"n": "elle: Bağlum kentsel belde grubu (Hisar, Karakaya, Karşıyaka, Kafkas; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Bağlum"
+},
+"TR-06-017-1734": {
+"n": "elle: Bağlum kentsel belde grubu (Hisar, Karakaya, Karşıyaka, Kafkas; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Bağlum"
+},
+"TR-06-017-1735": {
+"n": "elle: Keçiören köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-017-1736": {
+"n": "elle: Bağlum Güzelyurt köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-017-1737": {
+"n": "elle: Keçiören köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-017-1738": {
+"n": "elle: Keçiören köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-06-018-178613": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178615": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178617": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178619": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178621": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178623": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178625": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178627": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178629": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178631": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178633": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178635": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178637": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178639": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178641": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178643": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178645": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178647": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178649": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178651": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178653": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178655": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178657": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178659": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178661": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178663": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178665": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178667": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178669": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178671": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178673": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178675": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178677": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178679": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178681": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178683": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178685": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178687": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178689": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178691": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178693": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178695": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178697": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178699": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178701": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178703": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178705": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178707": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178709": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178711": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178713": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178715": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178717": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178719": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178721": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178723": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178725": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178727": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178729": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178731": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178733": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178735": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178737": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178739": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178741": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178743": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178745": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178747": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178749": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178751": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178753": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178755": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178757": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178759": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178761": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178763": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178765": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178767": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178769": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178771": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178773": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178775": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178777": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178779": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178781": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178783": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178785": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178787": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178789": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178791": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178793": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178795": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178797": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178799": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178801": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178803": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178805": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178807": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178809": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178811": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178813": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178815": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178817": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-178819": {
+"n": "elle: Kızılcahamam, sayılanlar dışında köy; eski belde Çeltikçi 285, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-018-2197": {
+"n": "elle: Kızılcahamam merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-018-2198": {
+"n": "elle: Kızılcahamam merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-018-2199": {
+"n": "elle: Kızılcahamam merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-018-2200": {
+"n": "elle: Kızılcahamam merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-018-2201": {
+"n": "elle: Kızılcahamam merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-020-178821": {
+"n": "elle: Nallıhan, sayılanlar dışında köy; eski belde Sarıyar 460, 2.000 altı",
+"s": "Köy"
+},
+"TR-06-020-178823": {
+"n": "elle: Çayırhan kentsel belde (kullanıcı; eski belde 8.115 kişi, dört kaynak kent)",
+"s": "Kentsel Belde",
+"y": "Çayırhan"
+},
+"TR-06-020-178825": {
+"n": "elle: Akdere köy (uydu: Akdere Köyü Camii, ayrı küme evler; kullanıcı)",
+"s": "Köy"
+},
+"TR-06-020-178827": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178829": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178831": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178833": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178835": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178837": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178839": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178841": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178843": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178845": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178847": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178849": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178851": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178853": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178855": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178857": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178859": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178861": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178863": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178865": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178867": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178869": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178871": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178873": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178875": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178877": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178879": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178881": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178883": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178885": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178887": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178889": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178891": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178893": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178895": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178897": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178899": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178901": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178903": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178905": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178907": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178909": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178911": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178913": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178915": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178917": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178919": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178921": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178923": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178925": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178927": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178929": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178931": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178933": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178935": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178937": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178939": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178941": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178943": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178945": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178947": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178949": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178953": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178955": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178957": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178959": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178961": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178963": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178965": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178967": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178969": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178971": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-178973": {
+"n": "elle: Nallıhan, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-020-2205": {
+"n": "elle: Nallıhan merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-020-2206": {
+"n": "elle: Nallıhan merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-020-2207": {
+"n": "elle: Nallıhan merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-020-2208": {
+"n": "elle: Nallıhan merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-020-2209": {
+"n": "elle: Nallıhan merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-020-2210": {
+"n": "elle: Nallıhan merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-020-2211": {
+"n": "elle: Nallıhan merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-021-178975": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-178977": {
+"n": "elle: Basrı köy (uydu: asıl yerleşim ayrı köy kümesi, kullanıcı)",
+"s": "Köy"
+},
+"TR-06-021-178979": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-178981": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-178983": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-178985": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-178987": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-178989": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-178991": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-178993": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-178995": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-178997": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-178999": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179001": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179003": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179005": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179007": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179009": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179011": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179013": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179015": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179017": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179019": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179021": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179023": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179025": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179027": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179029": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179031": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179033": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179035": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179037": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179039": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179041": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179043": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179045": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179047": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179049": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179051": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179053": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179055": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179057": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179059": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179061": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179063": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179065": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179067": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179069": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179071": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179073": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179075": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179077": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179079": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179081": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179083": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179085": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179087": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179089": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179091": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179093": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179095": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179097": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179099": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179101": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179103": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179105": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179107": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179109": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179111": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179113": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179115": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179117": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179119": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179121": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179123": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179125": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179127": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179129": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179131": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179133": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179135": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-179137": {
+"n": "elle: Polatlı, sayılanlar dışında köy",
+"s": "Köy"
+},
+"TR-06-021-2219": {
+"n": "elle: Polatlı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-021-2220": {
+"n": "elle: Polatlı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-021-2221": {
+"n": "elle: Polatlı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-021-2222": {
+"n": "elle: Polatlı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-021-2223": {
+"n": "elle: Polatlı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-021-2224": {
+"n": "elle: Polatlı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-021-2225": {
+"n": "elle: Polatlı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-021-2226": {
+"n": "elle: Polatlı merkez mahallesi (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-021-2227": {
+"n": "elle: Polatlı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-021-2228": {
+"n": "elle: Polatlı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-021-2229": {
+"n": "elle: Polatlı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-021-2230": {
+"n": "elle: Polatlı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-021-2231": {
+"n": "elle: Polatlı merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-022-139850": {
+"n": "elle: Pursaklar merkez grubu (onay)",
+"s": "İlçe Merkezi",
+"y": "Pursaklar Merkez"
+},
+"TR-06-022-139852": {
+"n": "elle: Pursaklar merkez grubu (onay)",
+"s": "İlçe Merkezi",
+"y": "Pursaklar Merkez"
+},
+"TR-06-022-139854": {
+"n": "elle: Altınova kentsel belde grubu",
+"s": "Kentsel Belde",
+"y": "Altınova"
+},
+"TR-06-022-1510": {
+"n": "elle: Altınova kentsel belde grubu (Peçenek: ilçe içinde komşusu yok, Altınova’ya bağlandı)",
+"s": "Kentsel Belde",
+"y": "Altınova"
+},
+"TR-06-022-1511": {
+"n": "elle: Altınova kentsel belde grubu (Yıldırım Beyazıt, kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Altınova"
+},
+"TR-06-022-1512": {
+"n": "elle: Pursaklar köyleri",
+"s": "Köy",
+"y": "Köyler"
+},
+"TR-06-022-1727": {
+"n": "elle: Pursaklar merkez grubu (onay)",
+"s": "İlçe Merkezi",
+"y": "Pursaklar Merkez"
+},
+"TR-06-022-1728": {
+"n": "elle: Pursaklar merkez grubu (onay)",
+"s": "İlçe Merkezi",
+"y": "Pursaklar Merkez"
+},
+"TR-06-022-1729": {
+"n": "elle: Pursaklar merkez grubu (onay)",
+"s": "İlçe Merkezi",
+"y": "Pursaklar Merkez"
+},
+"TR-06-022-1730": {
+"n": "elle: Pursaklar merkez grubu (onay)",
+"s": "İlçe Merkezi",
+"y": "Pursaklar Merkez"
+},
+"TR-06-022-1739": {
+"n": "elle: Saray kentsel belde grubu",
+"s": "Kentsel Belde",
+"y": "Saray"
+},
+"TR-06-022-1740": {
+"n": "elle: Pursaklar köyleri (Saray Fatih/Cumhuriyet komşusu, DEGURBA orta yoğun kent ama köy)",
+"s": "Köy",
+"y": "Köyler"
+},
+"TR-06-022-1741": {
+"n": "elle: Saray kentsel belde grubu",
+"s": "Kentsel Belde",
+"y": "Saray"
+},
+"TR-06-022-1742": {
+"n": "elle: Saray kentsel belde grubu",
+"s": "Kentsel Belde",
+"y": "Saray"
+},
+"TR-06-022-2061": {
+"n": "elle: Sirkeli köy grubu (eski belde, 2.000 altı)",
+"s": "Köy",
+"y": "Sirkeli"
+},
+"TR-06-022-2062": {
+"n": "elle: Sirkeli köy grubu (eski belde, 2.000 altı)",
+"s": "Köy",
+"y": "Sirkeli"
+},
+"TR-06-022-2063": {
+"n": "elle: Pursaklar köyleri",
+"s": "Köy",
+"y": "Köyler"
+},
+"TR-06-022-2065": {
+"n": "elle: Pursaklar köyleri",
+"s": "Köy",
+"y": "Köyler"
+},
+"TR-06-022-2066": {
+"n": "elle: Pursaklar köyleri",
+"s": "Köy",
+"y": "Köyler"
+},
+"TR-06-022-2067": {
+"n": "elle: Pursaklar köyleri",
+"s": "Köy",
+"y": "Köyler"
+},
+"TR-06-022-2068": {
+"n": "elle: Pursaklar köyleri",
+"s": "Köy",
+"y": "Köyler"
+},
+"TR-06-024-179139": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179141": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179143": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179145": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179147": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179149": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179151": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179153": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179155": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179157": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179159": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179161": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179163": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179165": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179167": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179169": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179171": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179173": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179175": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179177": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179179": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179181": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179183": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179185": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179187": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179189": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179191": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179193": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179195": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179197": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179199": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179201": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179203": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179205": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179207": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179209": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179211": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179213": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179215": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179217": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179219": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179221": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179223": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179225": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179227": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179229": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-179231": {
+"n": "elle: Şereflikoçhisar, sayılanlar dışında köy; eski beldeler (Çalören, Kacarlı, Devekovan, Gülhüyük) 2.000 altı",
+"s": "Köy"
+},
+"TR-06-024-2250": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-2251": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-2252": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-2253": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-2254": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-2255": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-2256": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-2257": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-2258": {
+"n": "elle: Kale merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-2259": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-2260": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-2261": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-2262": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-2264": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-2265": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-2266": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-024-98870": {
+"n": "elle: Şereflikoçhisar merkez mahallesi (kullanıcı listesi)",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-140404": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-180658": {
+"n": "elle: Yakacık semti kentsel belde (Yakacık + Kuzey Yıldızı; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Yakacık"
+},
+"TR-06-025-1848": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1849": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1850": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1851": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1852": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1853": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1854": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1855": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1856": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1857": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1858": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1859": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1860": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1861": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1862": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1863": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1864": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1865": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1866": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1867": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1868": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1869": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1870": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1871": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1872": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1873": {
+"n": "elle: Yenimahalle merkez mahallesi (İvedikköy merkez, kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1874": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1875": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1876": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1877": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1878": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1881": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1882": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1883": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1884": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1885": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1887": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1888": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1889": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1891": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1892": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1893": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1895": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1896": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1897": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1898": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-1905": {
+"n": "elle: Karacakaya köy (kullanıcı; eski belde değil, uydu: ayrı köy çekirdeği)",
+"s": "Köy"
+},
+"TR-06-025-1906": {
+"n": "elle: Memlik köy (kullanıcı; eski belde değil, uydu: ayrı köy çekirdeği)",
+"s": "Köy"
+},
+"TR-06-025-1907": {
+"n": "elle: Ata semti kentsel belde (Ata + Susuz; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Ata"
+},
+"TR-06-025-1909": {
+"n": "elle: Yakacık semti kentsel belde (Yakacık + Kuzey Yıldızı; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Yakacık"
+},
+"TR-06-025-1911": {
+"n": "elle: Yuvaköy tek başına kentsel belde (nüfusun %90’ı 2019 sonrası konut; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Yuvaköy"
+},
+"TR-06-025-198209": {
+"n": "elle: Ata semti kentsel belde (Ata + Susuz; kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Ata"
+},
+"TR-06-025-209064": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-527085": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
+"TR-06-025-99981": {
+"n": "elle: Yenimahalle merkez mahallesi",
+"s": "İlçe Merkezi"
+},
 "TR-16-001-11331": {
 "n": "elle liste · DEGURBA kır; ilçe merkezi kural gereği kent",
 "s": "İlçe Merkezi"
