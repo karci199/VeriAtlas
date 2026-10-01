@@ -1987,8 +1987,8 @@
 "s": "Köy"
 },
 "TR-06-009-2084": {
-"n": "elle: Elmadağ Yenimahalle köy (vadiyle ayrı küçük küme, merkez yapı lekesi yok; sınırda karar, kullanıcı)",
-"s": "Köy"
+"n": "elle: Elmadağ Yenimahalle merkez (önce köy denmişti, sınırda karar; kullanıcı sonra merkez dedi)",
+"s": "İlçe Merkezi"
 },
 "TR-06-009-2085": {
 "n": "elle: Hasanoğlan tek kentsel belde grubu (6 mahalle; kullanıcı)",
@@ -6145,7 +6145,8 @@
 },
 "TR-16-003-197753": {
 "n": "TOKİ (elle liste)",
-"s": "Kentsel Belde"
+"s": "Kentsel Belde",
+"y": "İpekyolu"
 },
 "TR-16-004-11372": {
 "n": "elle liste",
@@ -6360,11 +6361,13 @@
 },
 "TR-16-005-183703": {
 "n": "elle liste",
-"s": "Kırsal Belde"
+"s": "Kırsal Belde",
+"y": "Kurşunlu"
 },
 "TR-16-005-183705": {
 "n": "elle liste",
-"s": "Kentsel Belde"
+"s": "Kentsel Belde",
+"y": "Yeniceköy"
 },
 "TR-16-005-183707": {
 "n": "elle liste (geri kalan köy)",
@@ -6771,11 +6774,13 @@
 },
 "TR-16-006-183891": {
 "n": "elle liste",
-"s": "Kırsal Belde"
+"s": "Kırsal Belde",
+"y": "Boyalıca"
 },
 "TR-16-006-183893": {
 "n": "elle liste",
-"s": "Kırsal Belde"
+"s": "Kırsal Belde",
+"y": "Elbeyli"
 },
 "TR-16-006-183895": {
 "n": "elle liste",
