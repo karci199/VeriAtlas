@@ -142,6 +142,40 @@ def build() -> dict:
             structure[g][side]["units"] += 1
             structure[g][klass]["units"] += 1
 
+    towns: dict = {}
+    for row in rows:
+        unit = row[keys["id"]]
+        klass = decisions[unit]["s"]
+        if klass not in ("Kentsel Belde", "Kırsal Belde"):
+            continue
+        name = decisions[unit].get("y") or row[keys["ad"]]
+        key = f"{row[keys['il']]}|{row[keys['ilce']]}|{name}"
+        town = towns.setdefault(
+            key,
+            {
+                "il": row[keys["il"]],
+                "ilce": row[keys["ilce"]],
+                "ad": name,
+                "sinif": klass,
+                "mahalleler": [],
+                "pop": defaultdict(float),
+                "bl": 0,
+                "dw": 0,
+                "hh": 0,
+                "area": 0.0,
+                "election": {},
+            },
+        )
+        town["mahalleler"].append(row[keys["ad"]])
+        for field in ("bl", "dw", "hh"):
+            town[field] += row[keys[field]] or 0
+        town["area"] += row[keys["area"]] or 0
+        values = series["s"].get(unit) or []
+        for year in YEARS:
+            v = values[year_index[year]] if values else None
+            if v is not None:
+                town["pop"][year] += v
+
     election: dict = {}
     for tile, label, year in ELECTIONS:
         adults = adult_population(year, prefixes)
@@ -157,6 +191,18 @@ def build() -> dict:
                     continue
                 side = side_of(decisions[unit]["s"])
                 shares = party_votes(data["v"])
+                klass = decisions[unit]["s"]
+                if klass in ("Kentsel Belde", "Kırsal Belde"):
+                    name = decisions[unit].get("y") or row[keys["ad"]]
+                    town = towns[f"{row[keys['il']]}|{row[keys['ilce']]}|{name}"]
+                    cell = town["election"].setdefault(tile, empty_election())
+                    cell["k"] += data["k"]
+                    cell["o"] += data["o"]
+                    cell["g"] += data["g"]
+                    cell["a"] += adults.get(unit, 0)
+                    cell["n"] += 1
+                    for party, count in shares.items():
+                        cell["p"][party] += count
                 for g in groups(row):
                     cell = by_group[g][side]
                     cell["k"] += data["k"]
@@ -173,6 +219,7 @@ def build() -> dict:
         "population": population,
         "villages": units,
         "structure": structure,
+        "towns": list(towns.values()),
         "election": election,
         "elections": [(t, label, y) for t, label, y in ELECTIONS],
         "parties": PARTIES,

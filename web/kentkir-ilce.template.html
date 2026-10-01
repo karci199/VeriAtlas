@@ -49,8 +49,8 @@ const pop = (key, year) => (DATA.population[key] || {})[year] || {};
 const urban = (p) => (p.kent || 0), rural = (p) => (p.kir || 0);
 const keys = Object.keys(DATA.population);
 const label = (k) => k === "*|*" ? "Bursa + Ankara" : k.endsWith("|*") ? k.split("|")[0] + " (il toplamı)" : k.replace("|", " / ");
-const TABS = [["genel", "İlçeler"], ["nufus", "Nüfus (yıllık)"], ["koy", "Köy büyüklüğü"], ["yapi", "Bina · konut · hane"], ["secim", "Seçim profili"]];
-let tab = "genel", sortCol = "kentpay", sortDir = -1;
+const TABS = [["genel", "İlçeler"], ["nufus", "Nüfus (yıllık)"], ["koy", "Köy büyüklüğü"], ["yapi", "Bina · konut · hane"], ["secim", "Seçim profili"], ["belde", "Belde analizi"]];
+let tab = "genel", sortCol = "kentpay", sortDir = -1, bSort = "pop25", bDir = -1, bClass = "hepsi", bElec = "mv2023";
 
 function median(a) { if (!a.length) return null; const s = [...a].sort((x, y) => x - y), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; }
 
@@ -113,10 +113,33 @@ function secim(k) {
   return `<p class="note">Parti payları geçerli oya göre. 18+ nüfus seçim yılı sonu ADNKS; seçmen listesi seçimden önce kapandığı için oran %100 civarında sapar. Seçmen/18+ oranı düşükse (öğrenci, kurum, yeni gelen) kayıt açığı, yüksekse köyde kayıtlı ama başka yerde yaşayan seçmen (hemşehri kaydı) demektir. Cezaevi ve yurt gibi kurum nüfuslu birimler oranı bozar.</p>${out}`;
 }
 
+
+function belde() {
+  const scope = $("scope").value, il = scope === "*|*" || scope.endsWith("|*") ? scope.split("|")[0] : null;
+  const first = DATA.years[0], last = DATA.years[DATA.years.length - 1];
+  const rows = DATA.towns.filter((t) => (!il || il === "*" || t.il === il) && (bClass === "hepsi" || t.sinif === bClass)).map((t) => {
+    const c = (t.election || {})[bElec] || {}, p13 = t.pop[first] || 0, p25 = t.pop[last] || 0, part = (n) => c.g ? (c.p[n] || 0) / c.g : null;
+    return { t, pop13: p13, pop25: p25, d: p13 ? p25 / p13 - 1 : null, dens: t.area ? p25 / t.area : null, dwb: t.bl ? t.dw / t.bl : null, pph: t.hh ? p25 / t.hh : null,
+      reg: c.a ? c.k / c.a : null, turn: c.k ? c.o / c.k : null, akp: part("AKP"), chp: part("CHP"), mhp: part("MHP"), n: t.mahalleler.length };
+  });
+  rows.sort((x, y) => ((x[bSort] ?? -1e12) - (y[bSort] ?? -1e12)) * bDir || x.t.ad.localeCompare(y.t.ad, "tr"));
+  const th = (c, t) => `<th class="sort" data-b="${c}">${t}${bSort === c ? (bDir > 0 ? " ▲" : " ▼") : ""}</th>`;
+  const sum = (f) => rows.reduce((s, r) => s + f(r), 0);
+  const sub = (cls) => { const L = rows.filter((r) => r.t.sinif === cls); return L.length ? `<tr><td>${cls}</td><td></td><td></td><td>${nf(L.reduce((s, r) => s + r.n, 0))} mah. / ${nf(L.length)} belde</td><td>${nf(L.reduce((s, r) => s + r.pop13, 0))}</td><td>${nf(L.reduce((s, r) => s + r.pop25, 0))}</td><td>${chg(L.reduce((s, r) => s + r.pop25, 0) / L.reduce((s, r) => s + r.pop13, 0) - 1)}</td><td>${nf(L.reduce((s, r) => s + r.pop25, 0) / L.length)}</td><td colspan="7"></td></tr>` : ""; };
+  const opts = (arr, cur) => arr.map(([v, t]) => `<option value="${v}" ${v === cur ? "selected" : ""}>${t}</option>`).join("");
+  return `<h2>Belde analizi · ${il && il !== "*" ? il : "Bursa + Ankara"}</h2>
+  <p class="note">Belde = kentsel belde ve kırsal belde grupları (aynı yerleşimin mahalleleri tek satırda). Nüfus ${first} → ${last}; yoğunluk ${last} nüfusu / grubun alanı; konut/bina ve kişi/hane 2025 kesitinden. Seçim sütunları seçili seçime göre. Başlığa tıklayınca sıralanır.</p>
+  <p><label>Sınıf <select id="bclass">${opts([["hepsi", "Hepsi"], ["Kentsel Belde", "Kentsel belde"], ["Kırsal Belde", "Kırsal belde"]], bClass)}</select></label>
+  &nbsp;<label>Seçim <select id="belec">${opts(DATA.elections.map(([t, n]) => [t, n + " MV"]), bElec)}</select></label></p>
+  <div class="wrap"><table><thead><tr><th>Belde</th><th>İlçe</th><th>Sınıf</th>${th("n", "Mahalle")}${th("pop13", "Nüfus " + first)}${th("pop25", "Nüfus " + last)}${th("d", "%Δ")}${th("pop25", "Ort. mahalle")}${th("dens", "Kişi/km²")}${th("dwb", "Konut/bina")}${th("pph", "Kişi/hane")}${th("reg", "Seçmen/18+ %")}${th("turn", "Katılım %")}${th("akp", "AKP %")}${th("chp", "CHP %")}${th("mhp", "MHP %")}</tr></thead><tbody>
+  ${sub("Kentsel Belde")}${sub("Kırsal Belde")}
+  ${rows.map((r) => `<tr class="${r.t.sinif === "Kentsel Belde" ? "kent" : "kir"}"><td>${r.t.ad}</td><td class="mut">${r.t.il === "Bursa" ? "B" : "A"} / ${r.t.ilce}</td><td class="mut">${r.t.sinif === "Kentsel Belde" ? "kentsel" : "kırsal"}</td><td>${nf(r.n)}</td><td>${nf(r.pop13)}</td><td>${nf(r.pop25)}</td><td>${chg(r.d)}</td><td>${nf(r.pop25 / r.n)}</td><td>${nf(r.dens)}</td><td>${nf(r.dwb, 1)}</td><td>${nf(r.pph, 2)}</td><td>${pc(r.reg)}</td><td>${pc(r.turn)}</td><td>${pc(r.akp)}</td><td>${pc(r.chp)}</td><td>${pc(r.mhp)}</td></tr>`).join("")}</tbody></table></div>`;
+}
+
 function render() {
   const k = $("scope").value;
   $("tabs").innerHTML = TABS.map(([id, t]) => `<button class="tab ${id === tab ? "on" : ""}" data-t="${id}">${t}</button>`).join("");
-  $("out").innerHTML = tab === "genel" ? genel() : tab === "nufus" ? nufus(k) : tab === "koy" ? koy(k) : tab === "yapi" ? yapi(k) : secim(k);
+  $("out").innerHTML = tab === "genel" ? genel() : tab === "nufus" ? nufus(k) : tab === "koy" ? koy(k) : tab === "yapi" ? yapi(k) : tab === "belde" ? belde() : secim(k);
   try { history.replaceState(null, "", `#${tab}/${encodeURIComponent(k)}`); } catch (e) { /* ignore */ }
 }
 
@@ -128,7 +151,8 @@ function main() {
   if (k && keys.includes(k)) $("scope").value = k;
   $("scope").onchange = render;
   $("tabs").onclick = (ev) => { const b = ev.target.closest("[data-t]"); if (b) { tab = b.dataset.t; render(); } };
-  $("out").onclick = (ev) => { const h = ev.target.closest("th[data-c]"); if (h) { sortDir = sortCol === h.dataset.c ? -sortDir : -1; sortCol = h.dataset.c; render(); } };
+  $("out").onchange = (ev) => { if (ev.target.id === "bclass") { bClass = ev.target.value; render(); } if (ev.target.id === "belec") { bElec = ev.target.value; render(); } };
+  $("out").onclick = (ev) => { const b = ev.target.closest("th[data-b]"); if (b) { bDir = bSort === b.dataset.b ? -bDir : -1; bSort = b.dataset.b; render(); return; } const h = ev.target.closest("th[data-c]"); if (h) { sortDir = sortCol === h.dataset.c ? -sortDir : -1; sortCol = h.dataset.c; render(); } };
   render();
 }
 main();
