@@ -101,7 +101,15 @@ def other_fetch_running() -> bool:
 #: Provinces whose queries keep failing and eat the run's time: tried once more at the
 #: very end instead of in turn (Ağrı greenhouse vegetables time out on "Rapor Oluştur",
 #: Ardahan has none).
-DEFER = {("bitkisel-ortu-sebze", 4), ("bitkisel-ortu-sebze", 9)}
+#: Bitlis (il18) greenhouse vegetables: the 2006-2015 query answers with rows for 2006-2008
+#: only, and every single-year query from 2009 on times out waiting for the CSV button (an
+#: empty report has none). Two full attempts per year cost ~7 minutes each, 17 years, so it
+#: goes to the end like the other two; 2016-2025 is not proven empty, only unanswered.
+DEFER = {
+    ("bitkisel-ortu-sebze", 4),
+    ("bitkisel-ortu-sebze", 9),
+    ("bitkisel-ortu-sebze", 18),
+}
 SPARSE = {("bitkisel-sebze", 9), ("bitkisel-sebze", 45)}
 
 
