@@ -22735,5 +22735,168 @@
 "TR-54-008-185235": {
 "n": "elle: Karapürçek Meşepınarı köy (kalan hepsi köy, kullanıcıya bildirildi)",
 "s": "Köy"
+},
+"TR-54-009-61708": {
+"n": "elle: Karasu Yeni merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-54-009-61712": {
+"n": "elle: Karasu Yalı merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-54-009-61709": {
+"n": "elle: Karasu Aziziye merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-54-009-61710": {
+"n": "elle: Karasu İncilli merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-54-009-61711": {
+"n": "elle: Karasu Kabakoz merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-54-009-61713": {
+"n": "elle: Karasu Kuzuluk kırsal belde, merkezden ayrı (kullanıcı)",
+"s": "Kırsal Belde",
+"y": "Kuzuluk"
+},
+"TR-54-009-185243": {
+"n": "elle: Karasu Limandere+Kurumeşe birleşik kırsal belde, 2.537 (kullanıcı)",
+"s": "Kırsal Belde",
+"y": "Limandere"
+},
+"TR-54-009-185279": {
+"n": "elle: Karasu Limandere+Kurumeşe birleşik kırsal belde, 2.537 (kullanıcı)",
+"s": "Kırsal Belde",
+"y": "Limandere"
+},
+"TR-54-009-185251": {
+"n": "elle: Karasu Ardıçbeli köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185283": {
+"n": "elle: Karasu Ortaköy köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185303": {
+"n": "elle: Karasu Yeşilköy köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185289": {
+"n": "elle: Karasu Subatağı köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185299": {
+"n": "elle: Karasu Yassıgeçit köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185301": {
+"n": "elle: Karasu Yenidoğan köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185255": {
+"n": "elle: Karasu Çatalövez köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185285": {
+"n": "elle: Karasu Paralı köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185245": {
+"n": "elle: Karasu Yuvalıdere köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185241": {
+"n": "elle: Karasu Kurudere köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185293": {
+"n": "elle: Karasu Tepetarla köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185275": {
+"n": "elle: Karasu Kızılcık köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185239": {
+"n": "elle: Karasu Darıçayırı köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185247": {
+"n": "elle: Karasu Adatepe köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185269": {
+"n": "elle: Karasu Karanlıkdere köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185271": {
+"n": "elle: Karasu Karapınar köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185281": {
+"n": "elle: Karasu Kuyumcullu köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185273": {
+"n": "elle: Karasu Karasu köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185277": {
+"n": "elle: Karasu Konacık köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185295": {
+"n": "elle: Karasu Tuzla köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185249": {
+"n": "elle: Karasu Akkum köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185265": {
+"n": "elle: Karasu Kancalar köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185259": {
+"n": "elle: Karasu Gölköprü köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185287": {
+"n": "elle: Karasu Resuller köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185261": {
+"n": "elle: Karasu Hürriyet köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-140597": {
+"n": "elle: Karasu Manavpınarı köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185297": {
+"n": "elle: Karasu Üçoluk köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185291": {
+"n": "elle: Karasu Taşlıgeçit köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185267": {
+"n": "elle: Karasu Karamüezzinler köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185263": {
+"n": "elle: Karasu İhsaniye köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185253": {
+"n": "elle: Karasu Camitepe köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-009-185257": {
+"n": "elle: Karasu Denizköy köy (kullanıcı, gerisi köy)",
+"s": "Köy"
 }
 }
