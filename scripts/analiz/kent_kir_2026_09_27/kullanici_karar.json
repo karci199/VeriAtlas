@@ -15774,5 +15774,25 @@
 "TR-34-030-191775": {
 "n": "elle: Rumelifeneri kırsal belde (4.074; kullanıcı)",
 "s": "Kırsal Belde"
+},
+"TR-34-030-40677": {
+"n": "elle: Rumelikavağı kentsel belde (3.560 <5.000 ama kentsel doku; kullanıcı)",
+"s": "Kentsel Belde"
+},
+"TR-34-030-191769": {
+"n": "elle: Gümüşdere kırsal belde (2.519; kullanıcı)",
+"s": "Kırsal Belde"
+},
+"TR-34-030-191765": {
+"n": "elle: Demirciköy köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-34-030-191773": {
+"n": "elle: Kumköy (Kilyos) kentsel belde (3.940; kullanıcı)",
+"s": "Kentsel Belde"
+},
+"TR-34-030-191771": {
+"n": "elle: Kısırkaya kırsal belde (378; Gümüşdere ile birleşik olabilir; kullanıcı)",
+"s": "Kırsal Belde"
 }
 }
