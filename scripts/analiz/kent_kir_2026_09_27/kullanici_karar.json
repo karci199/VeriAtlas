@@ -16308,15 +16308,15 @@
 "s": "Köy"
 },
 "TR-34-014-140374": {
-"n": "elle: Büyükçekmece merkez (ana kent lekesi içinde; kullanıcı onayı bekleniyor değil, öneri)",
+"n": "elle: Büyükçekmece Sinanoba merkez (kullanıcı)",
 "s": "İlçe Merkezi"
 },
 "TR-34-014-140376": {
-"n": "elle: Büyükçekmece merkez (ana kent lekesi içinde; kullanıcı onayı bekleniyor değil, öneri)",
+"n": "elle: Büyükçekmece Mimaroba merkez (kullanıcı)",
 "s": "İlçe Merkezi"
 },
 "TR-34-014-40886": {
-"n": "elle: Büyükçekmece merkez (ana kent lekesi içinde; kullanıcı onayı bekleniyor değil, öneri)",
+"n": "elle: Büyükçekmece Ekinoba merkez (kullanıcı)",
 "s": "İlçe Merkezi"
 },
 "TR-34-014-40888": {
@@ -16324,51 +16324,75 @@
 "s": "İlçe Merkezi"
 },
 "TR-34-014-40887": {
-"n": "elle: Büyükçekmece merkez (ana kent lekesi içinde; kullanıcı onayı bekleniyor değil, öneri)",
+"n": "elle: Büyükçekmece Mimarsinan merkez (kullanıcı)",
 "s": "İlçe Merkezi"
 },
 "TR-34-014-40883": {
-"n": "elle: Büyükçekmece merkez (ana kent lekesi içinde; kullanıcı onayı bekleniyor değil, öneri)",
-"s": "İlçe Merkezi"
+"n": "elle: Kumburgaz kıyı kümesi (Kumburgaz+Güzelce+Bahçelievler+Yenimahalle+Kamiloba+Celaliye) ortak kentsel belde, birleşik 44.042 (kullanıcı; Güzelce önerim)",
+"s": "Kentsel Belde"
 },
 "TR-34-014-40885": {
-"n": "elle: Büyükçekmece merkez (ana kent lekesi içinde; kullanıcı onayı bekleniyor değil, öneri)",
-"s": "İlçe Merkezi"
+"n": "elle: Kumburgaz kıyı kümesi (Kumburgaz+Güzelce+Bahçelievler+Yenimahalle+Kamiloba+Celaliye) ortak kentsel belde, birleşik 44.042 (kullanıcı; Güzelce önerim)",
+"s": "Kentsel Belde"
 },
 "TR-34-014-40884": {
-"n": "elle: Büyükçekmece merkez (ana kent lekesi içinde; kullanıcı onayı bekleniyor değil, öneri)",
-"s": "İlçe Merkezi"
+"n": "elle: Kumburgaz kıyı kümesi (Kumburgaz+Güzelce+Bahçelievler+Yenimahalle+Kamiloba+Celaliye) ortak kentsel belde, birleşik 44.042 (kullanıcı; Güzelce önerim)",
+"s": "Kentsel Belde"
 },
 "TR-34-014-40882": {
-"n": "elle: Büyükçekmece merkez (ana kent lekesi içinde; kullanıcı onayı bekleniyor değil, öneri)",
-"s": "İlçe Merkezi"
+"n": "elle: Kumburgaz kıyı kümesi (Kumburgaz+Güzelce+Bahçelievler+Yenimahalle+Kamiloba+Celaliye) ortak kentsel belde, birleşik 44.042 (kullanıcı; Güzelce önerim)",
+"s": "Kentsel Belde"
 },
 "TR-34-014-40892": {
-"n": "elle: Büyükçekmece merkez (ana kent lekesi içinde; kullanıcı onayı bekleniyor değil, öneri)",
+"n": "elle: Büyükçekmece Türkoba merkez (kullanıcı)",
 "s": "İlçe Merkezi"
 },
 "TR-34-014-99334": {
-"n": "elle: Çakmaklı merkeze dahil (5.517; kullanıcı)",
+"n": "elle: Büyükçekmece Çakmaklı merkez (kullanıcı)",
 "s": "İlçe Merkezi"
 },
 "TR-34-014-40889": {
-"n": "elle: Büyükçekmece merkez (ana kent lekesi içinde; kullanıcı onayı bekleniyor değil, öneri)",
+"n": "elle: Büyükçekmece Hürriyet merkez (kullanıcı)",
 "s": "İlçe Merkezi"
 },
 "TR-34-014-40890": {
-"n": "elle: Büyükçekmece merkez (ana kent lekesi içinde; kullanıcı onayı bekleniyor değil, öneri)",
+"n": "elle: Büyükçekmece Ulus merkez (kullanıcı)",
 "s": "İlçe Merkezi"
 },
 "TR-34-014-40929": {
-"n": "elle: Büyükçekmece merkez (ana kent lekesi içinde; kullanıcı onayı bekleniyor değil, öneri)",
-"s": "İlçe Merkezi"
+"n": "elle: Kumburgaz kıyı kümesi (Kumburgaz+Güzelce+Bahçelievler+Yenimahalle+Kamiloba+Celaliye) ortak kentsel belde, birleşik 44.042 (kullanıcı; Güzelce önerim)",
+"s": "Kentsel Belde"
 },
 "TR-34-014-40928": {
-"n": "elle: Büyükçekmece merkez (ana kent lekesi içinde; kullanıcı onayı bekleniyor değil, öneri)",
-"s": "İlçe Merkezi"
+"n": "elle: Kumburgaz kıyı kümesi (Kumburgaz+Güzelce+Bahçelievler+Yenimahalle+Kamiloba+Celaliye) ortak kentsel belde, birleşik 44.042 (kullanıcı; Güzelce önerim)",
+"s": "Kentsel Belde"
 },
 "TR-34-014-40891": {
 "n": "elle: Ahmediye köy (kullanıcı)",
 "s": "Köy"
+},
+"TR-34-014-40868": {
+"n": "elle: Büyükçekmece Pınartepe merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-014-40845": {
+"n": "elle: Büyükçekmece Atatürk merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-014-40848": {
+"n": "elle: Büyükçekmece Fatih merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-014-40847": {
+"n": "elle: Büyükçekmece Dizdariye merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-014-40846": {
+"n": "elle: Büyükçekmece Cumhuriyet merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-014-40850": {
+"n": "elle: Büyükçekmece 19 Mayıs merkez (kullanıcı)",
+"s": "İlçe Merkezi"
 }
 }
