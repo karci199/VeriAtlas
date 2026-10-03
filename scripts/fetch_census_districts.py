@@ -176,7 +176,15 @@ class Census:
         body = self.select(self.level, levels["Belde ve Köyler"])
         self.v_province_box, self.v_provinces = box_with(body, lambda ts: len(ts) > 50)
 
+    # The walk province > district > bucak > unit > variable is stateful on the server, so
+    # a report for the same bucak and another variable needs only the last step, and one
+    # for another bucak of the same district needs only the last three. Walking from the
+    # province every time cost eight round trips per report; with the pause that was 14 s a
+    # file, 6 of them waiting. `_at` remembers how far the page is walked.
+    _at: tuple | None = None
+
     def village_districts(self, province: str) -> list[str]:
+        self._at = None
         body = self.select(self.v_province_box, self.v_provinces[province])
         self.v_district_box, self.v_districts = box_with(body, lambda ts: True)
         return list(self.v_districts)
@@ -185,17 +193,27 @@ class Census:
         self.village_districts(province)
         body = self.select(self.v_district_box, self.v_districts[district])
         self.v_bucak_box, self.v_bucaks = box_with(body, lambda ts: True)
+        self._at = (province, district)
         return list(self.v_bucaks)
 
     def village_report(
         self, province: str, district: str, bucak: str, variable: str
     ) -> bytes:
-        self.village_bucaks(province, district)
-        body = self.select(self.v_bucak_box, self.v_bucaks[bucak])
-        box, units = box_with(body, lambda ts: ts[0].startswith("<<"))
-        body = self.select(box, units[next(iter(units))])
-        self.variable_box, found = box_with(body, lambda ts: not ts[0].startswith("<<"))
+        at = self._at
+        if at != (province, district, bucak):
+            if at is None or at[:2] != (province, district):
+                self.village_bucaks(province, district)
+            self._at = None
+            body = self.select(self.v_bucak_box, self.v_bucaks[bucak])
+            box, units = box_with(body, lambda ts: ts[0].startswith("<<"))
+            body = self.select(box, units[next(iter(units))])
+            self.variable_box, self._found = box_with(
+                body, lambda ts: not ts[0].startswith("<<")
+            )
+            self._at = (province, district, bucak)
+        found = self._found
         if variable not in found:
+            self._at = None
             raise KeyError(f"degisken yok: {variable!r} ({list(found)})")
         self.select(self.variable_box, found[variable])
         return self.submit()
@@ -393,14 +411,24 @@ def fetch(year: int, tab: int, wanted: list[str], details: list[str]) -> None:
     log("==", year, TABS[tab] or "sosyal", "bitti,", done, "yeni rapor")
 
 
-def fetch_villages(year: int, variables: list[str]) -> None:
-    """Town and village level: one report per (province, district, bucak, variable)."""
+def fetch_villages(
+    year: int, variables: list[str], only: list[tuple[str, str]] | None = None
+) -> None:
+    """Town and village level: one report per (province, district, bucak, variable).
+
+    `only` limits the walk to named (province, district) pairs, compared the way file names
+    are made, so one district's villages can be fetched without the other 900."""
     census = open_census(year, 1, village=True)
     provinces = list(census.v_provinces)
-    log("== koy", year, len(provinces), "il,", variables)
+    wanted = {(safe(p), safe(d)) for p, d in only} if only else None
+    if wanted:
+        provinces = [p for p in provinces if safe(p) in {w[0] for w in wanted}]
+    log("== koy", year, len(provinces), "il,", variables, "(secili)" if wanted else "")
     done = 0
     for n, province in enumerate(provinces, 1):
         for district in census.village_districts(province):
+            if wanted and (safe(province), safe(district)) not in wanted:
+                continue
             for bucak in census.village_bucaks(province, district):
                 for variable in variables:
                     target = (
@@ -411,6 +439,13 @@ def fetch_villages(year: int, variables: list[str]) -> None:
                     )
                     if target.exists() and target.stat().st_size > 1000:
                         continue
+                    # a report that came back empty on every attempt is empty at the source
+                    # (a village with no table); the marker keeps the queue from paying the
+                    # three retries and the pauses again each time the step restarts
+                    empty_marker = target.with_suffix(".bos")
+                    if empty_marker.exists():
+                        continue
+                    failure = ""
                     for attempt in (1, 2, 3):
                         try:
                             data = census.village_report(
@@ -427,11 +462,16 @@ def fetch_villages(year: int, variables: list[str]) -> None:
                             )
                             break
                         except Exception as error:  # noqa: BLE001
+                            failure = str(error)
                             log(
                                 f"   HATA koy {year} {province}/{district}/{bucak} {variable} deneme {attempt}: {error}"
                             )
                             time.sleep(30 * attempt)
                             census = open_census(year, 1, village=True)
+                    else:
+                        if "sayisal satir yok" in failure:
+                            empty_marker.parent.mkdir(parents=True, exist_ok=True)
+                            empty_marker.write_text(failure, encoding="utf-8")
                     time.sleep(PAUSE)
     log("== koy", year, "bitti,", done, "yeni rapor")
 
