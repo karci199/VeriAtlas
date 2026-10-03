@@ -21320,5 +21320,13 @@
 "TR-64-005-80536": {
 "n": "elle: Ulubey Emirler merkez (kullanıcı)",
 "s": "İlçe Merkezi"
+},
+"TR-64-006-32859": {
+"n": "elle: Mende köy (kullanıcı); ayrı yerleşim, >5.000 ama köy kalsın",
+"s": "Köy"
+},
+"TR-64-006-32827": {
+"n": "elle: Bozkuş köy (kullanıcı)",
+"s": "Köy"
 }
 }
