@@ -19256,7 +19256,7 @@
 "s": "Köy"
 },
 "TR-45-012-155411": {
-"n": "elle: Saruhanlı Gümülceli köy (öneri; eski belde ama eşik altı)",
+"n": "elle: Saruhanlı Gümülceli köy (kullanıcı onayladı)",
 "s": "Köy"
 },
 "TR-45-012-155523": {
@@ -19296,7 +19296,7 @@
 "s": "Köy"
 },
 "TR-45-012-155445": {
-"n": "elle: Saruhanlı Alibeyli köy (öneri; eski belde ama eşik altı)",
+"n": "elle: Saruhanlı Alibeyli köy (kullanıcı onayladı)",
 "s": "Köy"
 },
 "TR-45-012-52380": {
@@ -19336,7 +19336,7 @@
 "s": "İlçe Merkezi"
 },
 "TR-45-012-155419": {
-"n": "elle: Saruhanlı Kumkuyucak köy (öneri; eski belde ama eşik altı)",
+"n": "elle: Saruhanlı Kumkuyucak köy (kullanıcı onayladı)",
 "s": "Köy"
 },
 "TR-45-012-155413": {
@@ -19352,15 +19352,15 @@
 "s": "Köy"
 },
 "TR-45-012-155415": {
-"n": "elle: Saruhanlı İshakçelebi köy (öneri; eski belde ama eşik altı)",
+"n": "elle: Saruhanlı İshakçelebi köy (kullanıcı onayladı)",
 "s": "Köy"
 },
 "TR-45-012-155437": {
-"n": "elle: Saruhanlı Nuriye köy (öneri; eski belde ama eşik altı)",
+"n": "elle: Saruhanlı Nuriye köy (kullanıcı onayladı)",
 "s": "Köy"
 },
 "TR-45-012-155439": {
-"n": "elle: Saruhanlı Paşaköy köy (öneri; eski belde ama eşik altı)",
+"n": "elle: Saruhanlı Paşaköy köy (kullanıcı onayladı)",
 "s": "Köy"
 },
 "TR-45-012-155497": {
@@ -19436,7 +19436,7 @@
 "s": "Köy"
 },
 "TR-45-012-155407": {
-"n": "elle: Saruhanlı Gökçeköy köy (öneri)",
+"n": "elle: Saruhanlı Gökçeköy köy (kullanıcı onayladı)",
 "s": "Köy"
 },
 "TR-45-012-155489": {
@@ -19453,6 +19453,230 @@
 },
 "TR-45-012-155509": {
 "n": "elle: Saruhanlı Şatırlar köy (öneri)",
+"s": "Köy"
+},
+"TR-45-013-155543": {
+"n": "elle: Selendi Çampınar köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155583": {
+"n": "elle: Selendi Kınık köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155565": {
+"n": "elle: Selendi Halılar köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155571": {
+"n": "elle: Selendi Karabeyler köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155537": {
+"n": "elle: Selendi Çalıklı köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-52419": {
+"n": "elle: Selendi Kurtuluş merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-45-013-155535": {
+"n": "elle: Selendi Beypınar köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155617": {
+"n": "elle: Selendi Zıramanlar köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-52414": {
+"n": "elle: Selendi Eskicami merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-45-013-52421": {
+"n": "elle: Selendi Yenicami merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-45-013-52418": {
+"n": "elle: Selendi Karşıova merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-45-013-155589": {
+"n": "elle: Selendi Mıdıklı köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155531": {
+"n": "elle: Selendi Aşağıtefen köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155545": {
+"n": "elle: Selendi Çamyayla köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-52415": {
+"n": "elle: Selendi Fatih merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-45-013-52423": {
+"n": "elle: Selendi Zafer merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-45-013-155615": {
+"n": "elle: Selendi Yukarıtefen köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155529": {
+"n": "elle: Selendi Altınköy köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155585": {
+"n": "elle: Selendi Kurşunlu köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155587": {
+"n": "elle: Selendi Kürkçü köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-52416": {
+"n": "elle: Selendi Hacıhaliller köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155609": {
+"n": "elle: Selendi Turpçu köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155541": {
+"n": "elle: Selendi Çamlıca köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-52417": {
+"n": "elle: Selendi İnnice köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-52422": {
+"n": "elle: Selendi Yıldız merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-45-013-155575": {
+"n": "elle: Selendi Karaselendi köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155559": {
+"n": "elle: Selendi Dumanlar köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-52413": {
+"n": "elle: Selendi Bekirağalar köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155533": {
+"n": "elle: Selendi Avlaşa köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155591": {
+"n": "elle: Selendi Mollaahmetler köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155601": {
+"n": "elle: Selendi Selmanhacılar köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155551": {
+"n": "elle: Selendi Çinan köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155539": {
+"n": "elle: Selendi Çamköy köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155619": {
+"n": "elle: Selendi Akçakertil köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155579": {
+"n": "elle: Selendi Kayranlar köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155621": {
+"n": "elle: Selendi Gölbaşı köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155603": {
+"n": "elle: Selendi Şehirlioğlu köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155569": {
+"n": "elle: Selendi Kabaklar köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155581": {
+"n": "elle: Selendi Kazıklı köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155599": {
+"n": "elle: Selendi Yeşil köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155553": {
+"n": "elle: Selendi Çortak köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155597": {
+"n": "elle: Selendi Rahmanlar köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155613": {
+"n": "elle: Selendi Yenice köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155561": {
+"n": "elle: Selendi Eskin köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155547": {
+"n": "elle: Selendi Çanşa köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155563": {
+"n": "elle: Selendi Hacılar köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155555": {
+"n": "elle: Selendi Dedeler köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155573": {
+"n": "elle: Selendi Karakozan köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155611": {
+"n": "elle: Selendi Yağcı köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155567": {
+"n": "elle: Selendi Havaoğlu köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155549": {
+"n": "elle: Selendi Çıkrıkçı köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155577": {
+"n": "elle: Selendi Karataşterziler köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155593": {
+"n": "elle: Selendi Omurlar köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155595": {
+"n": "elle: Selendi Pınarlar köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155605": {
+"n": "elle: Selendi Tavak köy (öneri; belde geçmişi yok)",
+"s": "Köy"
+},
+"TR-45-013-155607": {
+"n": "elle: Selendi Tepeynihan köy (öneri; belde geçmişi yok)",
 "s": "Köy"
 }
 }
