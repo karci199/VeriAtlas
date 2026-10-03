@@ -16328,8 +16328,8 @@
 "s": "İlçe Merkezi"
 },
 "TR-34-014-40883": {
-"n": "elle: Kumburgaz kıyı kümesi (Kumburgaz+Güzelce+Bahçelievler+Yenimahalle+Kamiloba+Celaliye) ortak kentsel belde, birleşik 44.042 (kullanıcı; Güzelce önerim)",
-"s": "Kentsel Belde"
+"n": "elle: Büyükçekmece Güzelce merkeze dahil (kullanıcı, haritaya baktı)",
+"s": "İlçe Merkezi"
 },
 "TR-34-014-40885": {
 "n": "elle: Kumburgaz kıyı kümesi (Kumburgaz+Güzelce+Bahçelievler+Yenimahalle+Kamiloba+Celaliye) ortak kentsel belde, birleşik 44.042 (kullanıcı; Güzelce önerim)",
@@ -16394,5 +16394,13 @@
 "TR-34-014-40850": {
 "n": "elle: Büyükçekmece 19 Mayıs merkez (kullanıcı)",
 "s": "İlçe Merkezi"
+},
+"TR-34-014-40844": {
+"n": "elle: Alkent 2000+Karaağaç kentsel belde, birleşik 14.103 (kullanıcı)",
+"s": "Kentsel Belde"
+},
+"TR-34-014-40849": {
+"n": "elle: Alkent 2000+Karaağaç kentsel belde, birleşik 14.103 (kullanıcı)",
+"s": "Kentsel Belde"
 }
 }
