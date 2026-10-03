@@ -21204,5 +21204,96 @@
 "TR-64-002-80497": {
 "n": "elle: Eşme Elvanlar merkez (kullanıcı)",
 "s": "İlçe Merkezi"
+},
+"TR-64-003-80512": {
+"n": "elle: Karahallı Yeni merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-003-80510": {
+"n": "elle: Karahallı Dere merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-003-80509": {
+"n": "elle: Karahallı Boğaz merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-003-80511": {
+"n": "elle: Karahallı Konak merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-004-80517": {
+"n": "elle: Sivaslı Atatürk merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-004-80519": {
+"n": "elle: Sivaslı Gölbahçe merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-004-80518": {
+"n": "elle: Sivaslı Evrenli merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-004-80516": {
+"n": "elle: Sivaslı Akıncılar merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-004-80520": {
+"n": "elle: Sivaslı Konak merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-004-80526": {
+"n": "elle: eski Selçikler beldesi, birleşik 2 mahalle tek belde (kullanıcı); eşik altı/düşüşte, şimdilik kırsal belde",
+"s": "Kırsal Belde",
+"y": "Selçikler"
+},
+"TR-64-004-80527": {
+"n": "elle: eski Selçikler beldesi, birleşik 2 mahalle tek belde (kullanıcı); eşik altı/düşüşte, şimdilik kırsal belde",
+"s": "Kırsal Belde",
+"y": "Selçikler"
+},
+"TR-64-004-80528": {
+"n": "elle: eski Tatar beldesi, birleşik 3 mahalle tek belde (kullanıcı); eşik altı/düşüşte, şimdilik kırsal belde",
+"s": "Kırsal Belde",
+"y": "Tatar"
+},
+"TR-64-004-80530": {
+"n": "elle: eski Tatar beldesi, birleşik 3 mahalle tek belde (kullanıcı); eşik altı/düşüşte, şimdilik kırsal belde",
+"s": "Kırsal Belde",
+"y": "Tatar"
+},
+"TR-64-004-80529": {
+"n": "elle: eski Tatar beldesi, birleşik 3 mahalle tek belde (kullanıcı); eşik altı/düşüşte, şimdilik kırsal belde",
+"s": "Kırsal Belde",
+"y": "Tatar"
+},
+"TR-64-002-80506": {
+"n": "elle: eski Yeleğen beldesi, birleşik 3 mahalle tek belde (kullanıcı); eşik altı/düşüşte, şimdilik kırsal belde",
+"s": "Kırsal Belde",
+"y": "Yeleğen"
+},
+"TR-64-002-80507": {
+"n": "elle: eski Yeleğen beldesi, birleşik 3 mahalle tek belde (kullanıcı); eşik altı/düşüşte, şimdilik kırsal belde",
+"s": "Kırsal Belde",
+"y": "Yeleğen"
+},
+"TR-64-002-80508": {
+"n": "elle: eski Yeleğen beldesi, birleşik 3 mahalle tek belde (kullanıcı); eşik altı/düşüşte, şimdilik kırsal belde",
+"s": "Kırsal Belde",
+"y": "Yeleğen"
+},
+"TR-64-001-80494": {
+"n": "elle: eski Kızılcasöğüt beldesi, birleşik 3 mahalle tek belde (kullanıcı); eşik altı/düşüşte, şimdilik kırsal belde",
+"s": "Kırsal Belde",
+"y": "Kızılcasöğüt"
+},
+"TR-64-001-80495": {
+"n": "elle: eski Kızılcasöğüt beldesi, birleşik 3 mahalle tek belde (kullanıcı); eşik altı/düşüşte, şimdilik kırsal belde",
+"s": "Kırsal Belde",
+"y": "Kızılcasöğüt"
+},
+"TR-64-001-80496": {
+"n": "elle: eski Kızılcasöğüt beldesi, birleşik 3 mahalle tek belde (kullanıcı); eşik altı/düşüşte, şimdilik kırsal belde",
+"s": "Kırsal Belde",
+"y": "Kızılcasöğüt"
 }
 }
