@@ -349,6 +349,11 @@ def read_report(path: pathlib.Path) -> list[dict]:
         # always the fourth number (katılım) in the referendum layout.
         if len(numbers) == width + 1:
             numbers = numbers[:3] + numbers[4:]
+        elif len(numbers) == width + 2:
+            # A round turnout ("87") is an integer as well, one more number on top of the
+            # invalid-vote count. Such rows were dropped without a word: 2017 referendum
+            # lost 9.5% of Bursa+Ankara voters (Iznik Esrefzade, five villages).
+            numbers = numbers[:3] + numbers[5:]
         if len(numbers) != width:
             continue
         labels = [(i, c) for i, c in enumerate(row) if c and not NUM.fullmatch(c)]
@@ -715,6 +720,19 @@ def main(argv: list[str]) -> None:
                     if not parent:
                         continue
                     area = hoods.get((parent, fold(record["name"])))
+                    if not area and parent in later:
+                        # A district the report names the old way (Kazan, now
+                        # Kahramankazan): the map knows the settlements under the
+                        # successor, so a hit there is the same settlement. Taken only
+                        # when exactly one successor holds the name, since a split
+                        # district's settlement could be in any of them.
+                        hits = [
+                            hoods[(s, fold(record["name"]))]
+                            for s in later[parent]
+                            if (s, fold(record["name"])) in hoods
+                        ]
+                        if len(hits) == 1:
+                            area = hits[0]
                     key = area or f"{parent}~{fold(record['name'])}"
                     base["ad"] = record["name"]
                     hood_out.setdefault(province_id, {})[key] = base
