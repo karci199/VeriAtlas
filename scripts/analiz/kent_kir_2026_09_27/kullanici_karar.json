@@ -22362,8 +22362,9 @@
 "s": "İlçe Merkezi"
 },
 "TR-54-007-61676": {
-"n": "elle: Hendek Akpınar merkez (kullanıcı)",
-"s": "İlçe Merkezi"
+"n": "elle: Hendek Akpınar+Çağlayan (Necatipaşa) birleşik kırsal belde, 2.874 (kullanıcı)",
+"s": "Kırsal Belde",
+"y": "Akpınar"
 },
 "TR-54-007-185163": {
 "n": "elle: Hendek Pınarlı köy (kullanıcı)",
@@ -22400,5 +22401,278 @@
 "n": "elle: Hendek Kargalı Hanbaba+Uzuncaorman kırsal belde, D100 koridoru, kent çekirdeğinden kopuk (kullanıcı)",
 "s": "Kırsal Belde",
 "y": "Kargalı Hanbaba"
+},
+"TR-54-007-61684": {
+"n": "elle: Hendek Akpınar+Çağlayan (Necatipaşa) birleşik kırsal belde, 2.874 (kullanıcı)",
+"s": "Kırsal Belde",
+"y": "Akpınar"
+},
+"TR-54-007-185221": {
+"n": "elle: Hendek Yeniyayla köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185217": {
+"n": "elle: Hendek Kurtuluş köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185205": {
+"n": "elle: Hendek Bakacak köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185209": {
+"n": "elle: Hendek Göksu köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185183": {
+"n": "elle: Hendek Türbe köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185203": {
+"n": "elle: Hendek Aksu köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185207": {
+"n": "elle: Hendek Dikmen köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185211": {
+"n": "elle: Hendek Güney köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185215": {
+"n": "elle: Hendek Kızanlık köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185165": {
+"n": "elle: Hendek Sarıyer köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185133": {
+"n": "elle: Hendek İkramiye köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185101": {
+"n": "elle: Hendek Çayırbaşı köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185159": {
+"n": "elle: Hendek Puna Ortaköy köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185153": {
+"n": "elle: Hendek Martinler köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185177": {
+"n": "elle: Hendek Süleymaniye köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185219": {
+"n": "elle: Hendek Sümbüllü köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185115": {
+"n": "elle: Hendek Gündoğan köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185201": {
+"n": "elle: Hendek Karadere köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185213": {
+"n": "elle: Hendek Kadifekale köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185093": {
+"n": "elle: Hendek Beyköy köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185143": {
+"n": "elle: Hendek Kargalıyeniköy köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185147": {
+"n": "elle: Hendek Kırktepe köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185099": {
+"n": "elle: Hendek Çakallık köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185191": {
+"n": "elle: Hendek Yayalar köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185091": {
+"n": "elle: Hendek Balıklıihsaniye köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185189": {
+"n": "elle: Hendek Yarıca köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185123": {
+"n": "elle: Hendek Hamitli köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185125": {
+"n": "elle: Hendek Harmantepe köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185187": {
+"n": "elle: Hendek Yağbasan köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185171": {
+"n": "elle: Hendek Sofular köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185139": {
+"n": "elle: Hendek Yeşilvadi köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185137": {
+"n": "elle: Hendek Kalayık köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185083": {
+"n": "elle: Hendek Akarca köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185197": {
+"n": "elle: Hendek Yukarıçalıca köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185119": {
+"n": "elle: Hendek Hacimbey köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185129": {
+"n": "elle: Hendek Hüseyinşeyh köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185109": {
+"n": "elle: Hendek Esentepe köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185141": {
+"n": "elle: Hendek Karatoprak köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185179": {
+"n": "elle: Hendek Şeyhler köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185135": {
+"n": "elle: Hendek Kahraman köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185085": {
+"n": "elle: Hendek Akçayır köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185151": {
+"n": "elle: Hendek Lütfiyeköşk köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185089": {
+"n": "elle: Hendek Aşağıçalıca köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185181": {
+"n": "elle: Hendek Tuzak köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185121": {
+"n": "elle: Hendek Halaç köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185105": {
+"n": "elle: Hendek Çukurhan köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185175": {
+"n": "elle: Hendek Sukenarı köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185095": {
+"n": "elle: Hendek Beylice köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185169": {
+"n": "elle: Hendek Sivritepe köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185161": {
+"n": "elle: Hendek Paşaköy köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185127": {
+"n": "elle: Hendek Hicriye köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185155": {
+"n": "elle: Hendek Muradiye köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185113": {
+"n": "elle: Hendek Güldibi köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185103": {
+"n": "elle: Hendek Çobanyatak köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-61698": {
+"n": "elle: Hendek Yeşilyurt köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185097": {
+"n": "elle: Hendek Bıçkıatik köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185199": {
+"n": "elle: Hendek Yukarıhüseyinşeyh köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-61700": {
+"n": "elle: Hendek Uzunçarşı köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-61699": {
+"n": "elle: Hendek Kocaahmetler köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185145": {
+"n": "elle: Hendek Kazımiye köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-61697": {
+"n": "elle: Hendek Kurtköy köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185111": {
+"n": "elle: Hendek Eskibıçkı köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185117": {
+"n": "elle: Hendek Hacıkışla köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185173": {
+"n": "elle: Hendek Soğuksu köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185149": {
+"n": "elle: Hendek Kocatöngel köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185087": {
+"n": "elle: Hendek Aktefek köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
+},
+"TR-54-007-185107": {
+"n": "elle: Hendek Dereköy köy (kullanıcı, kalan hepsi köy; Yeşilyurt şeridi şimdilik köy)",
+"s": "Köy"
 }
 }
