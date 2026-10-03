@@ -76977,3 +76977,24 @@ additive = true
 dims = ["village_road_class", "surface"]
 views = ["table", "map", "line", "bar"]
 definition_tr = "İl özel idarelerinin sorumluluğundaki köy yolları, km: 1. ve 2. derece köy yolu ile köy içi yol, kaplama türüne göre (ham yol, tesviye, stabilize, sathi asfalt, asfalt betonu/BSK, parke, klasik beton, SSB). Yalnız büyükşehir olmayan 51 il; büyükşehirlerde köy yolları büyükşehir belediyesine geçtiği için seride yok. 'total' kaynaktaki satır toplamı. Kaynak ÇŞB Yerel Yönetimler Genel Müdürlüğü, Köy Yolları Resmi İstatistikleri 2020-2025. Adaptör src/veriatlas/adapters/csb_village_roads.py."
+
+[dim.settlement_class]
+label_tr = "Yerleşim sınıfı"
+label_en = "Settlement class"
+
+[dim.settlement_class.values]
+district_center = "İlçe merkezi"
+urban_town = "Kentsel belde"
+rural_town = "Kırsal belde"
+village = "Köy"
+
+[indicator.settlement_class]
+label_tr = "Yerleşim sınıfı (elle karar)"
+label_en = "Settlement class (manual review)"
+topic = "nufus"
+unit = "item"
+frequency = "annual"
+additive = true
+dims = ["settlement_class"]
+views = ["table", "map", "bar"]
+definition_tr = "Mahalle başına bir satır (değer 1). Ankara, Bursa, Denizli, İstanbul ve Manisa'daki bütün mahallelerin ilçe merkezi, kentsel belde, kırsal belde ya da köy olarak elle (kullanıcı kararıyla, uydu görüntüsü ve AATOPLU, 2004 yerel seçimi, TÜİK eski statüsüyle denetlenerek) sınıflanması; birleşik yerleşimler tek belde sayılır (küme bilgisi kaynak JSON'da). Kent = ilçe merkezi + kentsel belde. Kent/kır nüfusu için population ile birleştirin. Diğer 76 il sınıflanmadı. Adaptör src/veriatlas/adapters/settlement_class.py."

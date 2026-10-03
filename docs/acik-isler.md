@@ -652,3 +652,16 @@ MediaMarkt (robots'ta ClaudeBot kurali); Seyhanlar alindi ama sertifikasi dogrul
 - Semizkumlar (Silivri): nüfusun büyük kısmı cezaevi, kentsel belde sınıfı ve ortanca yaş şüpheli.
 - Tuzla Orta (Sabancı Üniversitesi) gibi kampüs mahallelerini işaretleyen ölçüt yok (15-24 payı > %30 ve hane > 4,5).
 - İstanbul semt katmanı: Esenkent kümesi adı notta, semt tablosunda PTT "Sanayi".
+
+### 2026-10-03: depoya alınanlar ve kalanlar
+
+- **Depoya girdi** (30.143.236 satır, 1.382 gösterge; yedekler `public/fact.before-*-2026-10-03.parquet`):
+  `education_level` (Endeksa mahalle eğitimi, 22.885 mahalle, 228.850 satır; TÜİK ilçe 6+ toplamının %93'ü, ilçe
+  medyanı %83, köy ağırlıklı ilçelerde %7'ye kadar düşer, kapsam `definition_tr`'de) ve `settlement_class` (elle
+  kent/kır kararı, 5 il, 5.153 mahalle; kent/kır nüfusu için `population` ile birleştirilir).
+- **Denendi ve geri alındı:** `prison_releases_by_residence`. İl serisinde 2009-2014 ve 2019 yok; 30 Eylül'deki
+  yeniden çekim (`uzun_ceza_cikan_tamamla.ps1`) çıkış 0 verdi ama MEDAS "Ekle" düğmesi tıklanamadığı için dosya
+  inmedi (günlükte "Ekle tiklanamadi: sorgu kurulmadi"). Çekici düzelmeden yüklenmez.
+- **Süren çekimler:** MEDAS tarım ilçe (2026-10-03 16:08 yeniden başladı), sayım köy düzeyi (Kars, ~9 saat).
+- **Bekleyen:** MEDAS yeni konular (`C:\veri-ham\medas\basit`, 1.226 dosya) için adaptör yok; Endeksa SES/gelir
+  yüklenmedi (model çıktısı, %38 tekrarlı); kent/kır kümesi depoda yok (JSON'da `k`).
