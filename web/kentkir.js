@@ -138,6 +138,9 @@ const visibleCols = () => {
 
 // --- decisions
 const decOf = (id) => pending[id] || dec[id] || {};
+// "kasaba" is no class any more, but the building method still finds them (a separate patch of
+// 2,000-5,000 people); a small tag keeps them visible next to the suggestion
+const ksb = (r) => get(r, "bina") === "Kasaba (kır)" ? ` <span class="ksb" title="bina yöntemi: ayrı yerleşim lekesi 2.000-5.000 kişi (kasaba)">kasaba</span>` : "";
 const classOf = (r) => decOf(get(r, "id")).s || get(r, "os");
 function setDecision(id, patch) {
   const d = { ...decOf(id), ...patch };
@@ -171,7 +174,7 @@ function status(t, cls) { const s = $("save"); s.textContent = t; s.className = 
 // --- filter widgets
 function buildDrop(el, title, items, sel, onChange) {
   const btn = el.querySelector("button");
-  let panel = null;
+  let panel = null, lastScroll = 0, lastPicked = null; // the list reopens where it was left
   const label = () => {
     const all = items().length;
     btn.textContent = sel.size >= all ? `${title}: tümü` : sel.size === 0 ? `${title}: hiçbiri` : sel.size === 1 ? [...sel][0] : `${title}: ${sel.size} / ${all}`;
@@ -184,14 +187,16 @@ function buildDrop(el, title, items, sel, onChange) {
     panel.innerHTML = `<div class="row"><button data-a="all">Tümünü seç</button><button data-a="none">Tümünü kaldır</button></div>
       <input class="q" placeholder="ara"><div class="list"></div>`;
     const list = panel.querySelector(".list"), q = panel.querySelector(".q");
-    const draw = () => {
-      const qq = fold(q.value);
+    const draw = (keepScroll = true) => {
+      const qq = fold(q.value), at = list.scrollTop;
       list.innerHTML = items().filter(([v]) => !qq || fold(v).includes(qq)).map(([v, n]) =>
         `<label><input type="checkbox" value="${esc(v)}" ${sel.has(v) ? "checked" : ""}>${esc(v)}<small>${fmt(n)}</small></label>`).join("");
+      list.scrollTop = keepScroll ? at : 0;
     };
     draw();
-    q.oninput = draw;
-    list.onchange = (ev) => { ev.target.checked ? sel.add(ev.target.value) : sel.delete(ev.target.value); label(); onChange(); };
+    list.onscroll = () => { lastScroll = list.scrollTop; };
+    q.oninput = () => draw(false);
+    list.onchange = (ev) => { lastPicked = ev.target.value; ev.target.checked ? sel.add(ev.target.value) : sel.delete(ev.target.value); label(); onChange(); };
     panel.querySelector(".row").onclick = (ev) => {
       const a = ev.target.dataset.a;
       if (!a) return;
@@ -200,6 +205,10 @@ function buildDrop(el, title, items, sel, onChange) {
       draw(); label(); onChange();
     };
     el.appendChild(panel);
+    // back to the place of the last tick (or the last scroll position) instead of the top;
+    // only a panel that is in the page has a scroll height to move
+    const picked = lastPicked && [...list.querySelectorAll("input")].find((i) => i.value === lastPicked);
+    if (picked) picked.parentElement.scrollIntoView({ block: "center" }); else list.scrollTop = lastScroll;
     setTimeout(() => document.addEventListener("mousedown", close), 0);
     q.focus();
   };
@@ -365,7 +374,7 @@ function cell(r, c, i, cols) {
     case "bs": { const v = get(r, "bs"), c = BANDS.find((b) => b[0] === band(v))[2];
       return `<td class="num${sep}" title="kent olasılığı ${fmt(get(r, "pk") * 100)} %"><span class="bsbar" style="width:${v * 4}px;background:${c}"></span><b style="color:${c}">${fmt(v, 1)}</b></td>`; }
     case "ih": return `<td class="c${sep}"><span class="ih ${get(r, "ih")}">${IH[get(r, "ih")]}</span></td>`;
-    case "oneri": return `<td class="oneri${sep} ${URBAN.has(get(r, "os")) ? "k" : "r"}">${esc(get(r, "os"))}</td>`;
+    case "oneri": return `<td class="oneri${sep} ${URBAN.has(get(r, "os")) ? "k" : "r"}">${esc(get(r, "os"))}${ksb(r)}</td>`;
     case "sel": {
       const t = kentKir(my.s);
       return `<td class="you"><select data-id="${id}" data-f="s" class="${my.s ? "set" : ""}"><option value="">—</option>${
@@ -476,7 +485,7 @@ function panel(r) {
       <div class="muted">${esc(get(r, "il"))} · ${esc(get(r, "ilce"))} · ${esc(get(r, "yer"))}${my.sm ? " · semt " + esc(my.sm) : ""} · ${esc(get(r, "tur"))}</div></div>
       <button id="pclose" title="Kapat (Esc)">✕</button></div>
     <div class="pbig">
-      <div><span>Öneri</span><b class="${URBAN.has(get(r, "os")) ? "k" : "r"}">${esc(get(r, "os"))}</b></div>
+      <div><span>Öneri</span><b class="${URBAN.has(get(r, "os")) ? "k" : "r"}">${esc(get(r, "os"))}${ksb(r)}</b></div>
       <div><span>Belirsizlik</span><b style="color:${bc}">${fmt(bsv, 1)}</b></div>
       <div><span>Kent olasılığı</span><b>${fmt(get(r, "pk") * 100)} %</b></div>
       <div><span>İhtilaf</span><b class="ih ${get(r, "ih")}">${IH[get(r, "ih")]}</b></div>

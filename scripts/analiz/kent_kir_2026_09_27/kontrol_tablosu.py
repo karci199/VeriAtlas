@@ -393,6 +393,11 @@ def pattern(v):
     return lab
 
 
+# kasaba is no class and a rural belde needs about 2,000 people: oneri_esik.py
+from oneri_esik import settle  # noqa: E402
+
+print("öneri eşiği:", settle(rows))
+
 for v in rows:
     v["ort"] = pattern(v)
 
