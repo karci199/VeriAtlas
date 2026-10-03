@@ -12796,12 +12796,12 @@
 "s": "İlçe Merkezi"
 },
 "TR-34-007-40200": {
-"n": "elle: Bakırköy hepsi merkez (hiç kır yok; AATOPLU/TÜİK/DEGURBA kent; kullanıcı)",
-"s": "İlçe Merkezi"
+"n": "elle: Florya (Basınköy+Şenlikköy) kentsel belde, birleşik 33.931; havalimanı ve ormanla ayrık, kendi semti (kullanıcı)",
+"s": "Kentsel Belde"
 },
 "TR-34-007-40199": {
-"n": "elle: Bakırköy hepsi merkez (hiç kır yok; AATOPLU/TÜİK/DEGURBA kent; kullanıcı)",
-"s": "İlçe Merkezi"
+"n": "elle: Florya (Basınköy+Şenlikköy) kentsel belde, birleşik 33.931; havalimanı ve ormanla ayrık, kendi semti (kullanıcı)",
+"s": "Kentsel Belde"
 },
 "TR-34-009-40207": {
 "n": "elle: Bayrampaşa hepsi merkez (hiç kır yok; AATOPLU/TÜİK/DEGURBA kent; kullanıcı)",
@@ -16402,5 +16402,65 @@
 "TR-34-014-40849": {
 "n": "elle: Alkent 2000+Karaağaç kentsel belde, birleşik 14.103 (kullanıcı)",
 "s": "Kentsel Belde"
+},
+"TR-34-007-140052": {
+"n": "elle: Bakırköy Yeşilköy Sb OSB/sayım bölgesi, bulunduğu yerleşime bağlı: merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-008-139666": {
+"n": "elle: Başakşehir İkitelli Osb OSB/sayım bölgesi, bulunduğu yerleşime bağlı: merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-008-40598": {
+"n": "elle: Başakşehir Altınşehir merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-008-40585": {
+"n": "elle: Başakşehir Ziya Gökalp merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-008-40872": {
+"n": "elle: Bahçeşehir 1. ve 2. Kısım kentsel belde (kullanıcı)",
+"s": "Kentsel Belde"
+},
+"TR-34-008-40597": {
+"n": "elle: Başakşehir Güvercintepe merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-008-40584": {
+"n": "elle: Başakşehir Şahintepe merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-008-40871": {
+"n": "elle: Bahçeşehir 1. ve 2. Kısım kentsel belde (kullanıcı)",
+"s": "Kentsel Belde"
+},
+"TR-34-008-191991": {
+"n": "elle: Şamlar köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-34-008-40581": {
+"n": "elle: Başakşehir Başakşehir merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-008-40357": {
+"n": "elle: Başakşehir Başak merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-008-40583": {
+"n": "elle: Başakşehir Kayabaşı merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-012-40896": {
+"n": "elle: Beylikdüzü Beylikdüzüosb merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-026-139762": {
+"n": "elle: Küçükçekmece Küçükçekmece İkitelliosb merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-34-037-40734": {
+"n": "elle: Ümraniye Dudullu Osb OSB/sayım bölgesi, bulunduğu yerleşime bağlı: merkez (kullanıcı)",
+"s": "İlçe Merkezi"
 }
 }
