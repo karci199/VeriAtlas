@@ -23661,12 +23661,12 @@
 "s": "Köy"
 },
 "TR-54-001-61566": {
-"n": "elle: Adapazarı Karaköy merkez (kullanıcı: hepsini yaz)",
-"s": "İlçe Merkezi"
+"n": "elle: Adapazarı Karaköy köy (kullanıcı, uydu)",
+"s": "Köy"
 },
 "TR-54-001-61571": {
-"n": "elle: Adapazarı Rüstemler merkez (kullanıcı: hepsini yaz)",
-"s": "İlçe Merkezi"
+"n": "elle: Adapazarı Rüstemler köy (kullanıcı, uydu)",
+"s": "Köy"
 },
 "TR-54-001-61500": {
 "n": "elle: Adapazarı Dağdibi merkez (kullanıcı: hepsini yaz)",
@@ -23685,7 +23685,7 @@
 "s": "Köy"
 },
 "TR-54-001-185577": {
-"n": "elle: Adapazarı Budaklar köy (kullanıcı: hepsini yaz)",
+"n": "elle: Adapazarı Budaklar köy (kullanıcı, uydu)",
 "s": "Köy"
 },
 "TR-54-001-61537": {
@@ -23702,6 +23702,278 @@
 },
 "TR-54-001-61501": {
 "n": "elle: Adapazarı Göktepe köy (kullanıcı: hepsini yaz)",
+"s": "Köy"
+},
+"TR-54-001-61514": {
+"n": "elle: Adapazarı Maltepe merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61504": {
+"n": "elle: Adapazarı Hızırtepe merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61523": {
+"n": "elle: Adapazarı Şirinevler merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61502": {
+"n": "elle: Adapazarı Güllük merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61499": {
+"n": "elle: Adapazarı Çukurahmediye merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61493": {
+"n": "elle: Adapazarı Akıncılar merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61531": {
+"n": "elle: Adapazarı Yenicami merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61526": {
+"n": "elle: Adapazarı Tepekum merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61518": {
+"n": "elle: Adapazarı Papuççular merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61532": {
+"n": "elle: Adapazarı Yenidoğan merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61515": {
+"n": "elle: Adapazarı Mithatpaşa merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61533": {
+"n": "elle: Adapazarı Yenigün merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61527": {
+"n": "elle: Adapazarı Tığcılar merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61520": {
+"n": "elle: Adapazarı Semerciler merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61497": {
+"n": "elle: Adapazarı Cumhuriyet merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61530": {
+"n": "elle: Adapazarı Yahyalar merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61512": {
+"n": "elle: Adapazarı Kurtuluş merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61516": {
+"n": "elle: Adapazarı Orta merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61565": {
+"n": "elle: Adapazarı Taşlık köy (kullanıcı, uydu)",
+"s": "Köy"
+},
+"TR-54-001-61506": {
+"n": "elle: Adapazarı İstiklal merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61529": {
+"n": "elle: Adapazarı Yağcılar merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61509": {
+"n": "elle: Adapazarı Karaosman merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61522": {
+"n": "elle: Adapazarı Şeker merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61567": {
+"n": "elle: Adapazarı Çökekler köy (kullanıcı, uydu)",
+"s": "Köy"
+},
+"TR-54-001-61563": {
+"n": "elle: Adapazarı Güneşler Merkez merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61519": {
+"n": "elle: Adapazarı Sakarya merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-182088": {
+"n": "elle: Adapazarı Bayraktar köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-61564": {
+"n": "elle: Adapazarı Güneşler Yeni merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61517": {
+"n": "elle: Adapazarı Ozanlar merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-185571": {
+"n": "elle: Adapazarı Abalı köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-61568": {
+"n": "elle: Adapazarı Çerçiler köy (kullanıcı, uydu)",
+"s": "Köy"
+},
+"TR-54-001-61528": {
+"n": "elle: Adapazarı Tuzla merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-61569": {
+"n": "elle: Adapazarı Hacıramazanlar köy (kullanıcı, uydu)",
+"s": "Köy"
+},
+"TR-54-001-185589": {
+"n": "elle: Adapazarı Hacılar köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-61572": {
+"n": "elle: Adapazarı Çelebiler köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-61513": {
+"n": "elle: Adapazarı Mahmudiye köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-61570": {
+"n": "elle: Adapazarı Kasımlar köy (kullanıcı, uydu)",
+"s": "Köy"
+},
+"TR-54-001-61574": {
+"n": "elle: Adapazarı Kurtbeyler köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-61575": {
+"n": "elle: Adapazarı Bağlar köy (kullanıcı, uydu)",
+"s": "Köy"
+},
+"TR-54-001-185619": {
+"n": "elle: Adapazarı Yeşilyurt köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185615": {
+"n": "elle: Adapazarı Solaklar köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185591": {
+"n": "elle: Adapazarı İlyaslar köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185603": {
+"n": "elle: Adapazarı Kömürlük köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-61525": {
+"n": "elle: Adapazarı Tekeler merkez (kullanıcı: evet yaz)",
+"s": "İlçe Merkezi"
+},
+"TR-54-001-185575": {
+"n": "elle: Adapazarı Bileciler köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-61573": {
+"n": "elle: Adapazarı Doğancılar köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185613": {
+"n": "elle: Adapazarı Poyrazlar köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185617": {
+"n": "elle: Adapazarı Turnadere köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185583": {
+"n": "elle: Adapazarı Demirbey köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185597": {
+"n": "elle: Adapazarı Kavaklıorman köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185581": {
+"n": "elle: Adapazarı Çağlayan köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-61538": {
+"n": "elle: Adapazarı İkizce Osmaniye köy (kullanıcı, uydu)",
+"s": "Köy"
+},
+"TR-54-001-185609": {
+"n": "elle: Adapazarı Nasuhlar köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185573": {
+"n": "elle: Adapazarı Aşırlar köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-61503": {
+"n": "elle: Adapazarı Harmantepe köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185599": {
+"n": "elle: Adapazarı Kayrancık köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-61535": {
+"n": "elle: Adapazarı Çaltıcak köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-61536": {
+"n": "elle: Adapazarı İkizce Müslim köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185593": {
+"n": "elle: Adapazarı Karadavutlu köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-61492": {
+"n": "elle: Adapazarı Acıelmalık köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185585": {
+"n": "elle: Adapazarı Salmanlı köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185611": {
+"n": "elle: Adapazarı Örentepe köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185621": {
+"n": "elle: Adapazarı Işıklar köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185601": {
+"n": "elle: Adapazarı Kışla köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185595": {
+"n": "elle: Adapazarı Karadere köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185579": {
+"n": "elle: Adapazarı Büyükhataplı köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185587": {
+"n": "elle: Adapazarı Elmalı köy (kullanıcı: evet yaz)",
+"s": "Köy"
+},
+"TR-54-001-185607": {
+"n": "elle: Adapazarı Küçükhataplı köy (kullanıcı: evet yaz)",
 "s": "Köy"
 }
 }
