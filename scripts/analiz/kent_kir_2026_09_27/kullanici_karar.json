@@ -21130,8 +21130,9 @@
 "s": "Köy"
 },
 "TR-64-006-606624": {
-"n": "elle: Muharremşah köy, cezaevi şişkinliği (kullanıcı)",
-"s": "Köy"
+"n": "elle: Muharremşah kırsal belde (kullanıcı); cezaevi nüfusu şişiriyor",
+"s": "Kırsal Belde",
+"y": "Muharremşah"
 },
 "TR-64-003-200287": {
 "n": "elle: Karbasan köy (kullanıcı)",
@@ -21295,5 +21296,29 @@
 "n": "elle: eski Kızılcasöğüt beldesi, birleşik 3 mahalle tek belde (kullanıcı); eşik altı/düşüşte, şimdilik kırsal belde",
 "s": "Kırsal Belde",
 "y": "Kızılcasöğüt"
+},
+"TR-64-005-80538": {
+"n": "elle: Ulubey Üyükbaşı merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-005-80537": {
+"n": "elle: Ulubey Gölbaşı merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-005-80533": {
+"n": "elle: Ulubey Aşağı merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-005-80535": {
+"n": "elle: Ulubey Dilaver merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-005-80534": {
+"n": "elle: Ulubey Camikebir merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-005-80536": {
+"n": "elle: Ulubey Emirler merkez (kullanıcı)",
+"s": "İlçe Merkezi"
 }
 }
