@@ -21168,5 +21168,41 @@
 "TR-64-001-80486": {
 "n": "elle: Banaz İslam merkez (kullanıcı)",
 "s": "İlçe Merkezi"
+},
+"TR-64-006-527382": {
+"n": "elle: Çevre köy, çevre yolu ve boşlukla şehirden ayrı (kullanıcı, uydu)",
+"s": "Köy"
+},
+"TR-64-006-812578": {
+"n": "elle: Kalfa köy, şehirden tarla ile ayrı (kullanıcı, uydu)",
+"s": "Köy"
+},
+"TR-64-002-822346": {
+"n": "elle: Yenikent merkez, TOKİ/apartman, ilçe merkezine bitişik (kullanıcı, uydu)",
+"s": "İlçe Merkezi"
+},
+"TR-64-002-182840": {
+"n": "elle: Eşme Cumhuriyet merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-002-80500": {
+"n": "elle: Eşme Şehitalibey merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-002-80498": {
+"n": "elle: Eşme İstasyon merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-002-80499": {
+"n": "elle: Eşme Kemer merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-002-80501": {
+"n": "elle: Eşme Üçeylül merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-64-002-80497": {
+"n": "elle: Eşme Elvanlar merkez (kullanıcı)",
+"s": "İlçe Merkezi"
 }
 }
