@@ -17046,5 +17046,301 @@
 "TR-45-003-52188": {
 "n": "elle: Alaşehir İstasyon merkez (kullanıcı)",
 "s": "İlçe Merkezi"
+},
+"TR-45-003-153603": {
+"n": "elle: Alaşehir Çamlıbel köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153741": {
+"n": "elle: Alaşehir Sarıpınar köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153731": {
+"n": "elle: Alaşehir Örencik köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153611": {
+"n": "elle: Alaşehir Dağarlar köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153607": {
+"n": "elle: Alaşehir Çarıkkaralar köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153577": {
+"n": "elle: Alaşehir Uluderbent kırsal belde (kullanıcı)",
+"s": "Kırsal Belde"
+},
+"TR-45-003-153627": {
+"n": "elle: Alaşehir Gülenyaka köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153613": {
+"n": "elle: Alaşehir Dağhacıyusuf köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153605": {
+"n": "elle: Alaşehir Çarıkbozdağ köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153593": {
+"n": "elle: Alaşehir Bahçeliköy köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153621": {
+"n": "elle: Alaşehir Girelli köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153615": {
+"n": "elle: Alaşehir Delemenler kırsal belde (kullanıcı)",
+"s": "Kırsal Belde"
+},
+"TR-45-003-153697": {
+"n": "elle: Alaşehir Kestanederesi köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153635": {
+"n": "elle: Alaşehir Hacıaliler köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153589": {
+"n": "elle: Alaşehir Bahadır köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153595": {
+"n": "elle: Alaşehir Belenyaka köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153775": {
+"n": "elle: Alaşehir Subaşı köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153719": {
+"n": "elle: Alaşehir Narlıdere köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153797": {
+"n": "elle: Alaşehir Üzümlü köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153591": {
+"n": "elle: Alaşehir Bahçedere köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153619": {
+"n": "elle: Alaşehir Evrenli köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153587": {
+"n": "elle: Alaşehir Badınca köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153761": {
+"n": "elle: Alaşehir Sobran köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153585": {
+"n": "elle: Alaşehir Azıtepe köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-52184": {
+"n": "elle: Alaşehir Esen Tepe merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-45-003-153701": {
+"n": "elle: Alaşehir Kozluca köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153579": {
+"n": "elle: Alaşehir Yeşilyurt kırsal belde (kullanıcı)",
+"s": "Kırsal Belde"
+},
+"TR-45-003-52187": {
+"n": "elle: Alaşehir Ilıca merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-45-003-153601": {
+"n": "elle: Alaşehir Çakırcaali köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153725": {
+"n": "elle: Alaşehir Osmaniye köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153685": {
+"n": "elle: Alaşehir Karadağ köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153811": {
+"n": "elle: Alaşehir İsmailbey köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153807": {
+"n": "elle: Alaşehir Caberburhan köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153769": {
+"n": "elle: Alaşehir Soğukyurt köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153659": {
+"n": "elle: Alaşehir Horzumsazdere köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153617": {
+"n": "elle: Alaşehir Erenköy köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153663": {
+"n": "elle: Alaşehir Ilgın köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153645": {
+"n": "elle: Alaşehir Horzumembelli köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153809": {
+"n": "elle: Alaşehir Caberkamara köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153813": {
+"n": "elle: Alaşehir Serinköy köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153609": {
+"n": "elle: Alaşehir Çeşneli köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153715": {
+"n": "elle: Alaşehir Baklacı köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153573": {
+"n": "elle: Alaşehir Killik kırsal belde (kullanıcı)",
+"s": "Kırsal Belde"
+},
+"TR-45-003-153631": {
+"n": "elle: Alaşehir Gümüşçay köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153805": {
+"n": "elle: Alaşehir Aydoğdu köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153781": {
+"n": "elle: Alaşehir Şahyar köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153597": {
+"n": "elle: Alaşehir Caberfakılı köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153707": {
+"n": "elle: Alaşehir Kurudere köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153583": {
+"n": "elle: Alaşehir Alhan köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153581": {
+"n": "elle: Alaşehir Akkeçili köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153651": {
+"n": "elle: Alaşehir Horzumkeserler köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153667": {
+"n": "elle: Alaşehir Işıklar köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153637": {
+"n": "elle: Alaşehir Horzumalayaka köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153599": {
+"n": "elle: Alaşehir Çağlayan köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153633": {
+"n": "elle: Alaşehir Gürsu köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153575": {
+"n": "elle: Alaşehir Piyadeler köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153755": {
+"n": "elle: Alaşehir Serinyayla köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153787": {
+"n": "elle: Alaşehir Tepeköy kırsal belde (kullanıcı)",
+"s": "Kırsal Belde"
+},
+"TR-45-003-153751": {
+"n": "elle: Alaşehir Selce köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153801": {
+"n": "elle: Alaşehir Yeniköy köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153737": {
+"n": "elle: Alaşehir Örnekköy köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153815": {
+"n": "elle: Alaşehir Çarıktekke köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153799": {
+"n": "elle: Alaşehir Türkmen köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153711": {
+"n": "elle: Alaşehir Matarlı köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153679": {
+"n": "elle: Alaşehir Karacalar köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153803": {
+"n": "elle: Alaşehir Yuvacalı köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153791": {
+"n": "elle: Alaşehir Toygar köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153623": {
+"n": "elle: Alaşehir Göbekli köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153569": {
+"n": "elle: Alaşehir Kavaklıdere kırsal belde (kullanıcı)",
+"s": "Kırsal Belde"
+},
+"TR-45-003-153691": {
+"n": "elle: Alaşehir Kasaplı köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153571": {
+"n": "elle: Alaşehir Kemaliye köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153677": {
+"n": "elle: Alaşehir İsmetiye köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153629": {
+"n": "elle: Alaşehir Gülpınar köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
+},
+"TR-45-003-153765": {
+"n": "elle: Alaşehir Soğanlı köy (kullanıcı/öneri: kalanı köy)",
+"s": "Köy"
 }
 }
