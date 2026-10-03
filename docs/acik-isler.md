@@ -638,3 +638,17 @@ bastan calistirilmali (901 adaptor). Girecekler: 32 marka / 56.269 magaza,
 **Cekilemeyenler:** Watsons, Teknosa, Koton, LC Waikiki, Mado, Popeyes, Bauhaus (403);
 MediaMarkt (robots'ta ClaudeBot kurali); Seyhanlar alindi ama sertifikasi dogrulanmiyor
 (kullanici talimatiyla o tek host icin kapatildi).
+
+## Kent/kır sınıflaması: sonra bakılacaklar (2026-10-03)
+
+- Karar dosyası `scripts/analiz/kent_kir_2026_09_27/kullanici_karar.json`: İstanbul 973 birim bitti, Manisa 14/16 ilçe
+  yazıldı (Turgutlu, Yunusemre kaldı). Warehouse'a (`settlement_class_manual`) yazılmadı.
+- Kural düzeltmesi (kullanıcı): kırsal belde olmak için eski belde olmak şart değil, eşik üstü ayrı yerleşim yeter.
+  Bu kurala göre köy kalmış, nüfusu 1.950 üstü 6 birim yeniden bakılacak: Çubuk Dumlupınar 6.734, Arnavutköy
+  Tayakadın 3.716, Yenimahalle Karacakaya 2.629, Çubuk Esenboğa Merkez 2.544, Etimesgut Yukarıyurtçu 1.998,
+  Beykoz Cumhuriyet 1.966.
+- Eşik altı eski beldeler köy yazıldı (Manisa'da yaklaşık 30 birim: Kayalıoğlu, Karakurt, Selimşahlar, Karaoğlanlı…);
+  kullanıcı "kural" kararını henüz kesinleştirmedi.
+- Semizkumlar (Silivri): nüfusun büyük kısmı cezaevi, kentsel belde sınıfı ve ortanca yaş şüpheli.
+- Tuzla Orta (Sabancı Üniversitesi) gibi kampüs mahallelerini işaretleyen ölçüt yok (15-24 payı > %30 ve hane > 4,5).
+- İstanbul semt katmanı: Esenkent kümesi adı notta, semt tablosunda PTT "Sanayi".
