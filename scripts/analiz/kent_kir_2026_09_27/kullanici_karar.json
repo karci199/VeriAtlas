@@ -22348,12 +22348,14 @@
 "s": "İlçe Merkezi"
 },
 "TR-54-007-61690": {
-"n": "elle: Hendek Akova merkez (kullanıcı)",
-"s": "İlçe Merkezi"
+"n": "elle: Hendek Akova+Büyükdere birleşik kırsal belde (6.048), KYK/ticari şerit, merkezden ayrı sayıldı (kullanıcı)",
+"s": "Kırsal Belde",
+"y": "Akova"
 },
 "TR-54-007-61678": {
-"n": "elle: Hendek Büyükdere merkez (kullanıcı)",
-"s": "İlçe Merkezi"
+"n": "elle: Hendek Akova+Büyükdere birleşik kırsal belde (6.048), KYK/ticari şerit, merkezden ayrı sayıldı (kullanıcı)",
+"s": "Kırsal Belde",
+"y": "Akova"
 },
 "TR-54-007-61679": {
 "n": "elle: Hendek Çiftlik merkez (kullanıcı)",
@@ -22378,5 +22380,25 @@
 "TR-54-007-185167": {
 "n": "elle: Hendek Servetiye köy (kullanıcı)",
 "s": "Köy"
+},
+"TR-54-007-185081": {
+"n": "elle: Hendek Çamlıca eski belde (2012: 2.763), 2 mahalle birleşik kırsal belde (kullanıcı)",
+"s": "Kırsal Belde",
+"y": "Çamlıca"
+},
+"TR-54-007-566299": {
+"n": "elle: Hendek Çamlıca eski belde (2012: 2.763), 2 mahalle birleşik kırsal belde (kullanıcı)",
+"s": "Kırsal Belde",
+"y": "Çamlıca"
+},
+"TR-54-007-61691": {
+"n": "elle: Hendek Kargalı Hanbaba+Uzuncaorman kırsal belde, D100 koridoru, kent çekirdeğinden kopuk (kullanıcı)",
+"s": "Kırsal Belde",
+"y": "Kargalı Hanbaba"
+},
+"TR-54-007-185185": {
+"n": "elle: Hendek Kargalı Hanbaba+Uzuncaorman kırsal belde, D100 koridoru, kent çekirdeğinden kopuk (kullanıcı)",
+"s": "Kırsal Belde",
+"y": "Kargalı Hanbaba"
 }
 }
