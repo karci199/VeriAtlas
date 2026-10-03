@@ -24029,17 +24029,17 @@
 "s": "Köy"
 },
 "TR-54-013-185533": {
-"n": "elle: Sapanca batı villa/yazlık kümesi Yanık+Kırkpınar Soğuksu+Kırkpınar Tepebaşı kentsel belde, 4.666 (kullanıcı; hangi iki Kırkpınar belirsiz, Soğuksu+Tepebaşı seçildi)",
+"n": "elle: Sapanca Kırkpınar 3 mahalle + Yanık birleşik kentsel belde, villa/yazlık, 6.625 (kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Kırkpınar"
 },
 "TR-54-013-61753": {
-"n": "elle: Sapanca batı villa/yazlık kümesi Yanık+Kırkpınar Soğuksu+Kırkpınar Tepebaşı kentsel belde, 4.666 (kullanıcı; hangi iki Kırkpınar belirsiz, Soğuksu+Tepebaşı seçildi)",
+"n": "elle: Sapanca Kırkpınar 3 mahalle + Yanık birleşik kentsel belde, villa/yazlık, 6.625 (kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Kırkpınar"
 },
 "TR-54-013-61754": {
-"n": "elle: Sapanca batı villa/yazlık kümesi Yanık+Kırkpınar Soğuksu+Kırkpınar Tepebaşı kentsel belde, 4.666 (kullanıcı; hangi iki Kırkpınar belirsiz, Soğuksu+Tepebaşı seçildi)",
+"n": "elle: Sapanca Kırkpınar 3 mahalle + Yanık birleşik kentsel belde, villa/yazlık, 6.625 (kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Kırkpınar"
 },
@@ -24066,5 +24066,37 @@
 "TR-54-013-61748": {
 "n": "elle: Sapanca Göl merkez (kullanıcı)",
 "s": "İlçe Merkezi"
+},
+"TR-54-013-61757": {
+"n": "elle: Sapanca Kurtköy 3 mahalle birleşik kentsel belde, villa/yazlık, 2.823 (kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Kurtköy"
+},
+"TR-54-013-61756": {
+"n": "elle: Sapanca Kurtköy 3 mahalle birleşik kentsel belde, villa/yazlık, 2.823 (kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Kurtköy"
+},
+"TR-54-013-61755": {
+"n": "elle: Sapanca Kurtköy 3 mahalle birleşik kentsel belde, villa/yazlık, 2.823 (kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Kurtköy"
+},
+"TR-54-013-61752": {
+"n": "elle: Sapanca Kırkpınar 3 mahalle + Yanık birleşik kentsel belde, villa/yazlık, 6.625 (kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Kırkpınar"
+},
+"TR-54-013-61745": {
+"n": "elle: Sapanca Camicedit merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-54-013-185521": {
+"n": "elle: Sapanca Memnuniye köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-54-013-185509": {
+"n": "elle: Sapanca Fevziye köy (kullanıcı)",
+"s": "Köy"
 }
 }
