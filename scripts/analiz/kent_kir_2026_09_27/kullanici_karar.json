@@ -18092,7 +18092,7 @@
 "s": "İlçe Merkezi"
 },
 "TR-45-007-154425": {
-"n": "elle: Kırkağaç Bakır kırsal belde (2.593; eski belde, eşik üstü; öneri)",
+"n": "elle: Kırkağaç Bakır kırsal belde (2.593; kullanıcı)",
 "s": "Kırsal Belde"
 },
 "TR-45-007-52281": {
@@ -18270,5 +18270,9 @@
 "TR-45-007-154613": {
 "n": "elle: Kırkağaç Kocaiskan köy (öneri)",
 "s": "Köy"
+},
+"TR-45-007-52284": {
+"n": "elle: Kırkağaç Kayadibi merkez (kullanıcı; AATOPLU köy diyor)",
+"s": "İlçe Merkezi"
 }
 }
