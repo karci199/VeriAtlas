@@ -22910,5 +22910,173 @@
 "TR-54-010-61728": {
 "n": "elle: Kaynarca Konak merkez (kullanıcı)",
 "s": "İlçe Merkezi"
+},
+"TR-54-010-61729": {
+"n": "elle: Kaynarca Merkez mahallesi merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-54-010-185305": {
+"n": "elle: Kaynarca Akbaşlı köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185369": {
+"n": "elle: Kaynarca Taşoluk köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185363": {
+"n": "elle: Kaynarca Sabırlı köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185353": {
+"n": "elle: Kaynarca Müezzinler köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185319": {
+"n": "elle: Kaynarca Eğrioğlu köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185355": {
+"n": "elle: Kaynarca Okçular köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185345": {
+"n": "elle: Kaynarca Kızılcaali köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185361": {
+"n": "elle: Kaynarca Ömerağa köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185333": {
+"n": "elle: Kaynarca Kalburcu köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185379": {
+"n": "elle: Kaynarca Yeniçam köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185323": {
+"n": "elle: Kaynarca Gölce köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185351": {
+"n": "elle: Kaynarca Küçükkışla köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185327": {
+"n": "elle: Kaynarca Güven köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185367": {
+"n": "elle: Kaynarca Şeyhtımarı köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185365": {
+"n": "elle: Kaynarca Sarıbeyli köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185315": {
+"n": "elle: Kaynarca Cebek köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185359": {
+"n": "elle: Kaynarca Osmanlı köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185321": {
+"n": "elle: Kaynarca Gaziler köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185343": {
+"n": "elle: Kaynarca Kırktepe köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185349": {
+"n": "elle: Kaynarca Küçükkaynarca köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185317": {
+"n": "elle: Kaynarca Duduköy köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185383": {
+"n": "elle: Kaynarca Ziahmet köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185337": {
+"n": "elle: Kaynarca Karamanlar köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185377": {
+"n": "elle: Kaynarca Uzunalan köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185325": {
+"n": "elle: Kaynarca Gürpınar köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185341": {
+"n": "elle: Kaynarca Kertil köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185329": {
+"n": "elle: Kaynarca İmamlar köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185381": {
+"n": "elle: Kaynarca Yeşilova köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185339": {
+"n": "elle: Kaynarca Kayacık köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185371": {
+"n": "elle: Kaynarca Topçu köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185375": {
+"n": "elle: Kaynarca Uğurlu köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185385": {
+"n": "elle: Kaynarca Uzakkışla köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185347": {
+"n": "elle: Kaynarca Kulaklı köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185373": {
+"n": "elle: Kaynarca Turnalı köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185335": {
+"n": "elle: Kaynarca Karaçalı köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185313": {
+"n": "elle: Kaynarca Büyükyanık köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185331": {
+"n": "elle: Kaynarca İşaret köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185311": {
+"n": "elle: Kaynarca Birlik köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185307": {
+"n": "elle: Kaynarca Arifağa köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185357": {
+"n": "elle: Kaynarca Ortaköy köy (kullanıcı, gerisi köy)",
+"s": "Köy"
+},
+"TR-54-010-185309": {
+"n": "elle: Kaynarca Başoğlu köy (kullanıcı, gerisi köy)",
+"s": "Köy"
 }
 }
