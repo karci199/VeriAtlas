@@ -35094,7 +35094,7 @@ frequency = "annual"
 additive = true
 dims = ["education"]
 views = ["table", "map", "bar"]
-definition_tr = "6 yaş ve üzeri nüfusun bitirdiği en yüksek eğitim düzeyi. Toplamı 6+ nüfustur, ilçe nüfusu değil."
+definition_tr = "6 yaş ve üzeri nüfusun bitirdiği en yüksek eğitim düzeyi (Endeksa, ADNKS 2024 kesiti). Toplamı 6+ nüfustur, ilçe nüfusu değil. Kapsam: kaydı olan 22.885 mahalle (2013 sonrası mahalle kimliği); köy olarak kalan 51 ilin köyleri, Endeksa kimlikleri eşleşmediği için yok. Mahalle toplamı TÜİK ilçe toplamının ülke genelinde %93 ü, ilçe medyanı %83 ü (köy ağırlıklı ilçelerde %7 ye kadar düşer); küçük yerlerde hane sayısı sıfır olan boş şablon satırları atıldı."
 
 [dim.education]
 label_tr = "Eğitim düzeyi"

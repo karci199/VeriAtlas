@@ -27,6 +27,7 @@ from .epdk_monthly import EPDK_MONTHLY_ADAPTERS
 from .epdk_sarj import EPDK_SARJ_ADAPTERS
 from .etkb import ETKB_ADAPTERS
 from .etkb_balance import ETKB_BALANCE_ADAPTERS
+from .endeksa import ENDEKSA_ADAPTERS
 from .eurostat_regional import EUROSTAT_REGIONAL_ADAPTERS
 from .evds_archive import EVDS_ARCHIVE_ADAPTERS
 from .evds_groups import EVDS_GROUP_ADAPTERS
@@ -235,6 +236,8 @@ ADAPTERS = {
     **TOBB_ADAPTERS,
     **TOBB_CAPACITY_ADAPTERS,
     **CSB_VILLAGE_ROADS_ADAPTERS,
+    # Endeksa: only the education table is checked against TUIK so far (see docs/endeksa.md).
+    "endeksa_education_level": ENDEKSA_ADAPTERS["endeksa_education_level"],
     **YOKATLAS_ADAPTERS,
     **YOK_ISTATISTIK_ADAPTERS,
     **YOK_NATIONAL_ADAPTERS,
