@@ -23661,11 +23661,11 @@
 "s": "Köy"
 },
 "TR-54-001-61566": {
-"n": "elle: Adapazarı Karaköy köy (kullanıcı, uydu)",
+"n": "elle: Adapazarı Karaköy köy (kullanıcı); NOT: olabildiğince kır kuralı, uydu bakışıyla köy dokusu (müstakil, tarla arası, şehirden nehir/yolla ayrı) ama sinyaller kent diyor: binaların %96'sı kent lekesinde, DEGURBA yoğun kent",
 "s": "Köy"
 },
 "TR-54-001-61571": {
-"n": "elle: Adapazarı Rüstemler köy (kullanıcı, uydu)",
+"n": "elle: Adapazarı Rüstemler köy (kullanıcı); NOT: olabildiğince kır kuralı, uydu bakışıyla köy dokusu (müstakil, tarla arası, şehirden nehir/yolla ayrı) ama sinyaller kent diyor: binaların %97'si kent lekesinde, DEGURBA orta yoğun kent",
 "s": "Köy"
 },
 "TR-54-001-61500": {
@@ -23677,11 +23677,11 @@
 "s": "İlçe Merkezi"
 },
 "TR-54-001-61521": {
-"n": "elle: Adapazarı Süleymanbey merkez (kullanıcı: hepsini yaz)",
-"s": "İlçe Merkezi"
+"n": "elle: Adapazarı Süleymanbey köy (kullanıcı); NOT: olabildiğince kır kuralı, uydu bakışıyla köy dokusu (müstakil, tarla arası, şehirden nehir/yolla ayrı) ama sinyaller kent diyor: önceden merkez yazılmıştı (lekede %55), uydu görüntüsünde nehir/D020 ötesinde köy dokulu küçük küme",
+"s": "Köy"
 },
 "TR-54-001-185605": {
-"n": "elle: Adapazarı Köprübaşı köy (kullanıcı: hepsini yaz)",
+"n": "elle: Adapazarı Köprübaşı köy (kullanıcı); NOT: olabildiğince kır kuralı, uydu bakışıyla köy dokusu (müstakil, tarla arası, şehirden nehir/yolla ayrı) ama sinyaller kent diyor: DEGURBA orta yoğun kent ama binalar lekede değil (%2)",
 "s": "Köy"
 },
 "TR-54-001-185577": {
@@ -23777,7 +23777,7 @@
 "s": "İlçe Merkezi"
 },
 "TR-54-001-61565": {
-"n": "elle: Adapazarı Taşlık köy (kullanıcı, uydu)",
+"n": "elle: Adapazarı Taşlık köy (kullanıcı); NOT: olabildiğince kır kuralı, uydu bakışıyla köy dokusu (müstakil, tarla arası, şehirden nehir/yolla ayrı) ama sinyaller kent diyor: binaların %84'ü kent lekesinde",
 "s": "Köy"
 },
 "TR-54-001-61506": {
@@ -23797,7 +23797,7 @@
 "s": "İlçe Merkezi"
 },
 "TR-54-001-61567": {
-"n": "elle: Adapazarı Çökekler köy (kullanıcı, uydu)",
+"n": "elle: Adapazarı Çökekler köy (kullanıcı); NOT: olabildiğince kır kuralı, uydu bakışıyla köy dokusu (müstakil, tarla arası, şehirden nehir/yolla ayrı) ama sinyaller kent diyor: binaların %91'i kent lekesinde",
 "s": "Köy"
 },
 "TR-54-001-61563": {
