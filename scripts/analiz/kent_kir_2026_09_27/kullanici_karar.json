@@ -18760,8 +18760,8 @@
 "s": "İlçe Merkezi"
 },
 "TR-45-010-52322": {
-"n": "elle: Salihli Barış merkez (kullanıcı: önerilerim merkez olsun)",
-"s": "İlçe Merkezi"
+"n": "elle: Salihli Barış köy (kullanıcı)",
+"s": "Köy"
 },
 "TR-45-010-52342": {
 "n": "elle: Salihli Yörük merkez (kullanıcı: önerilerim merkez olsun)",
@@ -18798,5 +18798,321 @@
 "TR-45-010-52331": {
 "n": "elle: Salihli Kırveli merkez (kullanıcı: önerilerim merkez olsun)",
 "s": "İlçe Merkezi"
+},
+"TR-45-010-155103": {
+"n": "elle: Salihli Burhan köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155151": {
+"n": "elle: Salihli Yeniköy köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155149": {
+"n": "elle: Salihli Yağmurlar köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155123": {
+"n": "elle: Salihli Damatlı köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155119": {
+"n": "elle: Salihli Çelikli köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155107": {
+"n": "elle: Salihli Çakaldoğanlar köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155141": {
+"n": "elle: Salihli Kordon köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155125": {
+"n": "elle: Salihli Gökköy köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155093": {
+"n": "elle: Salihli Allahdiyen köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155097": {
+"n": "elle: Salihli Bahçecik köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155147": {
+"n": "elle: Salihli Şirinyer köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155155": {
+"n": "elle: Salihli Yeşilkavak köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155111": {
+"n": "elle: Salihli Çamurhamamı köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155099": {
+"n": "elle: Salihli Başlıoğlu köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155135": {
+"n": "elle: Salihli Karaağaç köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155143": {
+"n": "elle: Salihli Köseali köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155187": {
+"n": "elle: Salihli Hacılı köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155095": {
+"n": "elle: Salihli Bağcılar köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155105": {
+"n": "elle: Salihli Caferbey köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-45-010-155121": {
+"n": "elle: Salihli Çukuroba köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155127": {
+"n": "elle: Salihli Hacıbektaşlı köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155153": {
+"n": "elle: Salihli Yenipazar köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155117": {
+"n": "elle: Salihli Çaypınar köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155109": {
+"n": "elle: Salihli Çaltılı köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155131": {
+"n": "elle: Salihli Kabazlı köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155101": {
+"n": "elle: Salihli Beylikli köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-154923": {
+"n": "elle: Salihli Sart kırsal belde (4.673; Kapancı/Hasalan ayrı, birleştirilmedi; kullanıcı sordu, öneri)",
+"s": "Kırsal Belde"
+},
+"TR-45-010-155137": {
+"n": "elle: Salihli Karaoğlanlı köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155229": {
+"n": "elle: Salihli Torunlu köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155211": {
+"n": "elle: Salihli Mevlutlu köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-52345": {
+"n": "elle: Salihli OSB merkez (öneri)",
+"s": "İlçe Merkezi"
+},
+"TR-45-010-155235": {
+"n": "elle: Salihli Yeşilova köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155057": {
+"n": "elle: Salihli Yılmaz kentsel belde (6.365; eski belde, kentle bitişik ama ayrı; kullanıcı)",
+"s": "Kentsel Belde"
+},
+"TR-45-010-155129": {
+"n": "elle: Salihli Hasalan köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155139": {
+"n": "elle: Salihli Karapınar köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155085": {
+"n": "elle: Salihli Mersinli köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155133": {
+"n": "elle: Salihli Kapancı köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155081": {
+"n": "elle: Salihli Durasıllı kentsel belde (6.301; ayrı yerleşim; kullanıcı)",
+"s": "Kentsel Belde"
+},
+"TR-45-010-155145": {
+"n": "elle: Salihli Mersindere köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155113": {
+"n": "elle: Salihli Çavlu köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155173": {
+"n": "elle: Salihli Derbent köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155177": {
+"n": "elle: Salihli Eldelek köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155035": {
+"n": "elle: Salihli Taytan kırsal belde (2.381; kullanıcı)",
+"s": "Kırsal Belde"
+},
+"TR-45-010-155169": {
+"n": "elle: Salihli Çökelek köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155181": {
+"n": "elle: Salihli Emirhacılı köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155167": {
+"n": "elle: Salihli Çayköy köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155197": {
+"n": "elle: Salihli Karayahşi köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155159": {
+"n": "elle: Salihli Akören köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155189": {
+"n": "elle: Salihli İğdecik köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155231": {
+"n": "elle: Salihli Üçtepe köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155217": {
+"n": "elle: Salihli Pazarköy köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155225": {
+"n": "elle: Salihli Süleymaniye köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155205": {
+"n": "elle: Salihli Kızılhavlu köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155175": {
+"n": "elle: Salihli Dombaylı köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155165": {
+"n": "elle: Salihli Çapaklı köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155227": {
+"n": "elle: Salihli Tekelioğlu köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155079": {
+"n": "elle: Salihli Adala köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155193": {
+"n": "elle: Salihli Kaplan köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155171": {
+"n": "elle: Salihli Delibaşlı köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155203": {
+"n": "elle: Salihli Kırdamları köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155179": {
+"n": "elle: Salihli Eminbey köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155195": {
+"n": "elle: Salihli Karasavcı köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155233": {
+"n": "elle: Salihli Yağbasan köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155221": {
+"n": "elle: Salihli Sindel köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155161": {
+"n": "elle: Salihli Akyar köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155163": {
+"n": "elle: Salihli Gökçeköy köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155199": {
+"n": "elle: Salihli Kemerdamları köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155215": {
+"n": "elle: Salihli Ortaköy köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155087": {
+"n": "elle: Salihli Poyrazdamları köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155185": {
+"n": "elle: Salihli Hacıköseli köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155157": {
+"n": "elle: Salihli Akçaköy köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155209": {
+"n": "elle: Salihli Mamatlı köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155213": {
+"n": "elle: Salihli Oraklar köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155201": {
+"n": "elle: Salihli Kemer köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155207": {
+"n": "elle: Salihli Kurttutan köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155219": {
+"n": "elle: Salihli Poyraz köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155083": {
+"n": "elle: Salihli Gökeyüp köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155191": {
+"n": "elle: Salihli Kale köy (kullanıcı/öneri)",
+"s": "Köy"
+},
+"TR-45-010-155183": {
+"n": "elle: Salihli Hacıhıdır köy (kullanıcı/öneri)",
+"s": "Köy"
 }
 }
