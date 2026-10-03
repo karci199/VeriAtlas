@@ -21795,27 +21795,48 @@
 "s": "İlçe Merkezi"
 },
 "TR-54-004-61602": {
-"n": "elle: Erenler batı kümesi, Çaybaşıyeniköy+Kayalarreşitbey birleşik (kullanıcı, uydu: yol boyunca kesintisiz)",
+"n": "elle: Erenler batı kümesi (7 birim birleşik, 7.008), müstakil doku, kırsal belde (kullanıcı, uydu)",
 "s": "Kırsal Belde",
 "y": "Çaybaşıyeniköy"
 },
 "TR-54-004-185641": {
-"n": "elle: Erenler batı kümesi, Çaybaşıyeniköy+Kayalarreşitbey birleşik (kullanıcı, uydu: yol boyunca kesintisiz)",
+"n": "elle: Erenler batı kümesi (7 birim birleşik, 7.008), müstakil doku, kırsal belde (kullanıcı, uydu)",
 "s": "Kırsal Belde",
 "y": "Çaybaşıyeniköy"
 },
 "TR-54-004-185637": {
-"n": "elle: Erenler doğu kümesi, Ekinli+Yazılı birleşik (kullanıcı, uydu: yol boyunca 2 ayrı küme, aralarında Kayalarmemduhiye)",
+"n": "elle: Erenler doğu kümesi, Ekinli+Yazılı birleşik (kullanıcı, uydu)",
 "s": "Kırsal Belde",
 "y": "Ekinli"
 },
 "TR-54-004-185645": {
-"n": "elle: Erenler doğu kümesi, Ekinli+Yazılı birleşik (kullanıcı, uydu: yol boyunca 2 ayrı küme, aralarında Kayalarmemduhiye)",
+"n": "elle: Erenler doğu kümesi, Ekinli+Yazılı birleşik (kullanıcı, uydu)",
 "s": "Kırsal Belde",
 "y": "Ekinli"
 },
 "TR-54-004-185639": {
-"n": "elle: Erenler Kayalarmemduhiye köy, iki küme arasında (kullanıcı)",
-"s": "Köy"
+"n": "elle: Erenler batı kümesi (7 birim birleşik, 7.008), müstakil doku, kırsal belde (kullanıcı, uydu)",
+"s": "Kırsal Belde",
+"y": "Çaybaşıyeniköy"
+},
+"TR-54-004-61601": {
+"n": "elle: Erenler batı kümesi (7 birim birleşik, 7.008), müstakil doku, kırsal belde (kullanıcı, uydu)",
+"s": "Kırsal Belde",
+"y": "Çaybaşıyeniköy"
+},
+"TR-54-004-61604": {
+"n": "elle: Erenler batı kümesi (7 birim birleşik, 7.008), müstakil doku, kırsal belde (kullanıcı, uydu)",
+"s": "Kırsal Belde",
+"y": "Çaybaşıyeniköy"
+},
+"TR-54-004-61605": {
+"n": "elle: Erenler batı kümesi (7 birim birleşik, 7.008), müstakil doku, kırsal belde (kullanıcı, uydu)",
+"s": "Kırsal Belde",
+"y": "Çaybaşıyeniköy"
+},
+"TR-54-004-61603": {
+"n": "elle: Erenler batı kümesi (7 birim birleşik, 7.008), müstakil doku, kırsal belde (kullanıcı, uydu)",
+"s": "Kırsal Belde",
+"y": "Çaybaşıyeniköy"
 }
 }
