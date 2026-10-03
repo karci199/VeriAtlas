@@ -17422,5 +17422,329 @@
 "TR-45-004-52219": {
 "n": "elle: Demirci Akıncılar merkez (kullanıcı)",
 "s": "İlçe Merkezi"
+},
+"TR-45-004-154053": {
+"n": "elle: Demirci Gümele köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154049": {
+"n": "elle: Demirci Bozçatlı köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154057": {
+"n": "elle: Demirci Hüdük köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153833": {
+"n": "elle: Demirci İcikler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154011": {
+"n": "elle: Demirci Talas köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153859": {
+"n": "elle: Demirci Armutlu köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154027": {
+"n": "elle: Demirci Üşümüş köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154015": {
+"n": "elle: Demirci Taşokçular köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153853": {
+"n": "elle: Demirci Ahmetler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153869": {
+"n": "elle: Demirci Bozköy köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153903": {
+"n": "elle: Demirci Güveli köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153817": {
+"n": "elle: Demirci Durhasan köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153861": {
+"n": "elle: Demirci Ayvaalan köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153857": {
+"n": "elle: Demirci Alaağaç köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153947": {
+"n": "elle: Demirci Köylüce köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153891": {
+"n": "elle: Demirci Demirci köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153907": {
+"n": "elle: Demirci Hırkalı köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153889": {
+"n": "elle: Demirci Çataloluk köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153927": {
+"n": "elle: Demirci Karaisalar köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154063": {
+"n": "elle: Demirci Azizbey köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154099": {
+"n": "elle: Demirci Yiğenler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153995": {
+"n": "elle: Demirci Sayık köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154095": {
+"n": "elle: Demirci Teperik köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153865": {
+"n": "elle: Demirci Bayramşah köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154077": {
+"n": "elle: Demirci Gömeçler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153969": {
+"n": "elle: Demirci Mezitler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153963": {
+"n": "elle: Demirci Marmaracık köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153955": {
+"n": "elle: Demirci Kuzuköy köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154091": {
+"n": "elle: Demirci Küçükkıran köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153973": {
+"n": "elle: Demirci Öksüzlü köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153923": {
+"n": "elle: Demirci İsmailler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154067": {
+"n": "elle: Demirci Büyükkıran köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153849": {
+"n": "elle: Demirci Ahatlar köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153875": {
+"n": "elle: Demirci Çağıllar köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154101": {
+"n": "elle: Demirci İmceler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154079": {
+"n": "elle: Demirci Gürçeşme köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154089": {
+"n": "elle: Demirci Kuzeyir köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153943": {
+"n": "elle: Demirci Kovancı köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153931": {
+"n": "elle: Demirci Kayranokçular köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153915": {
+"n": "elle: Demirci Iklıkçı köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154065": {
+"n": "elle: Demirci Boyacık köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154073": {
+"n": "elle: Demirci Elek köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153991": {
+"n": "elle: Demirci Sağnıç köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154085": {
+"n": "elle: Demirci Kışlak köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154001": {
+"n": "elle: Demirci Serçeler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154019": {
+"n": "elle: Demirci Tekeler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153885": {
+"n": "elle: Demirci Çardaklı köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153933": {
+"n": "elle: Demirci Kazancı köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154097": {
+"n": "elle: Demirci Yavaşlar köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153881": {
+"n": "elle: Demirci Çandır köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153939": {
+"n": "elle: Demirci Kılavuzlar köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153937": {
+"n": "elle: Demirci Kerpiçlik köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154071": {
+"n": "elle: Demirci Danişmentler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154031": {
+"n": "elle: Demirci Yeşildere köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154045": {
+"n": "elle: Demirci Yiğitler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153919": {
+"n": "elle: Demirci İmrenler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154059": {
+"n": "elle: Demirci Yarbasan köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154083": {
+"n": "elle: Demirci Kayaköy köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154087": {
+"n": "elle: Demirci Küpeler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153899": {
+"n": "elle: Demirci Eskihisar köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153959": {
+"n": "elle: Demirci Küçükoba köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153895": {
+"n": "elle: Demirci Esenyurt köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154037": {
+"n": "elle: Demirci Yeşiloba köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-52229": {
+"n": "elle: Demirci Hacıtürbek merkez (kullanıcı; Endeksa verisi yok)",
+"s": "İlçe Merkezi"
+},
+"TR-45-004-153977": {
+"n": "elle: Demirci Ören köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153951": {
+"n": "elle: Demirci Kulalar köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154093": {
+"n": "elle: Demirci Minnetler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154069": {
+"n": "elle: Demirci Çamköy köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154023": {
+"n": "elle: Demirci Ulacık köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153911": {
+"n": "elle: Demirci Hoşçalar köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154075": {
+"n": "elle: Demirci İrişler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154003": {
+"n": "elle: Demirci Sevişler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153981": {
+"n": "elle: Demirci Örücüler köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-52227": {
+"n": "elle: Demirci Hacıhamza merkez (kullanıcı; Endeksa verisi yok)",
+"s": "İlçe Merkezi"
+},
+"TR-45-004-153987": {
+"n": "elle: Demirci Rahmanlar köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154081": {
+"n": "elle: Demirci Kargınışıklar köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153877": {
+"n": "elle: Demirci Çanakçı köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153825": {
+"n": "elle: Demirci Mahmutlar köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153855": {
+"n": "elle: Demirci Akdere köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-153863": {
+"n": "elle: Demirci Bardakçı köy (kullanıcı: belde yok)",
+"s": "Köy"
+},
+"TR-45-004-154007": {
+"n": "elle: Demirci Söğütçük köy (kullanıcı: belde yok)",
+"s": "Köy"
 }
 }
