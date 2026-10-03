@@ -21114,8 +21114,9 @@
 "s": "İl Merkezi"
 },
 "TR-64-006-80478": {
-"n": "elle: Karakuyu kır (kullanıcı, uydu)",
-"s": "Köy"
+"n": "elle: eski Bölme beldesi, birleşik 2 mahalle tek belde (kullanıcı); Karakuyu",
+"s": "Kırsal Belde",
+"y": "Bölme"
 },
 "TR-64-006-750406": {
 "n": "elle: Hacıkadem köy (kullanıcı, uydu)",
@@ -21328,5 +21329,10 @@
 "TR-64-006-32827": {
 "n": "elle: Bozkuş köy (kullanıcı)",
 "s": "Köy"
+},
+"TR-64-006-80479": {
+"n": "elle: eski Bölme beldesi, birleşik 2 mahalle tek belde (kullanıcı); Kurşunluk",
+"s": "Kırsal Belde",
+"y": "Bölme"
 }
 }
