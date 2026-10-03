@@ -1994,40 +1994,40 @@
 "s": "İlçe Merkezi"
 },
 "TR-06-009-2085": {
-"n": "elle: Hasanoğlan Bahçelievler+Fatih+Havuzbaşı tek kentsel belde (birleşik 12.431; kullanıcı)",
+"n": "elle: Hasanoğlan tek kentsel belde grubu (6 mahalle; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Hasanoğlan",
-"k": "Elmadağ Hasanoğlan (3 mahalle)"
+"k": "06 Hasanoğlan"
 },
 "TR-06-009-2086": {
-"n": "elle: Hasanoğlan Bahçelievler+Fatih+Havuzbaşı tek kentsel belde (birleşik 12.431; kullanıcı)",
+"n": "elle: Hasanoğlan tek kentsel belde grubu (6 mahalle; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Hasanoğlan",
-"k": "Elmadağ Hasanoğlan (3 mahalle)"
+"k": "06 Hasanoğlan"
 },
 "TR-06-009-2087": {
-"n": "elle: Hasanoğlan Bahçelievler+Fatih+Havuzbaşı tek kentsel belde (birleşik 12.431; kullanıcı)",
+"n": "elle: Hasanoğlan tek kentsel belde grubu (6 mahalle; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Hasanoğlan",
-"k": "Elmadağ Hasanoğlan (3 mahalle)"
+"k": "06 Hasanoğlan"
 },
 "TR-06-009-2088": {
 "n": "elle: Hasanoğlan tek kentsel belde grubu (6 mahalle; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Hasanoğlan",
-"k": "TR-06-009-2088"
+"k": "06 Hasanoğlan"
 },
 "TR-06-009-2089": {
 "n": "elle: Hasanoğlan tek kentsel belde grubu (6 mahalle; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Hasanoğlan",
-"k": "TR-06-009-2089"
+"k": "06 Hasanoğlan"
 },
 "TR-06-009-2090": {
 "n": "elle: Hasanoğlan tek kentsel belde grubu (6 mahalle; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Hasanoğlan",
-"k": "TR-06-009-2090"
+"k": "06 Hasanoğlan"
 },
 "TR-06-009-2093": {
 "n": "elle: Elmadağ, sayılanlar dışında köy; eski beldeler Seyitcemali, Yeşildere 2.000 altı",
@@ -2117,7 +2117,7 @@
 "n": "elle: Bağlıca kentsel belde grubu (Bağlıca, Yeni Bağlıca, Fatih Sultan; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Bağlıca",
-"k": "TR-06-010-1640"
+"k": "06 Bağlıca"
 },
 "TR-06-010-1641": {
 "n": "elle: Yapracık ayrı kentsel belde (eski belde, 7.440 kişi; kullanıcı)",
@@ -2177,7 +2177,7 @@
 "n": "elle: Bağlıca kentsel belde grubu (Bağlıca, Yeni Bağlıca, Fatih Sultan; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Bağlıca",
-"k": "TR-06-010-728733"
+"k": "06 Bağlıca"
 },
 "TR-06-010-789792": {
 "n": "elle: Etimesgut merkez mahallesi (kullanıcı: kır yok)",
@@ -2199,7 +2199,7 @@
 "n": "elle: Bağlıca kentsel belde grubu (Bağlıca, Yeni Bağlıca, Fatih Sultan; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Bağlıca",
-"k": "TR-06-010-99784"
+"k": "06 Bağlıca"
 },
 "TR-06-011-178293": {
 "n": "elle: Evren, sayılanlar dışında köy",
@@ -2277,7 +2277,7 @@
 "n": "elle: Hacılar villa kuşağı kentsel belde grubu (Hacılar, Tulumtaş, Ballıkpınar; hızla büyüyen genç villa mahalleleri; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Hacılar",
-"k": "TR-06-012-1650"
+"k": "06 Hacılar villa kuşağı"
 },
 "TR-06-012-1651": {
 "n": "elle: Gölbaşı, sayılanlar dışında köy",
@@ -2291,7 +2291,7 @@
 "n": "elle: Hacılar villa kuşağı kentsel belde grubu (Hacılar, Tulumtaş, Ballıkpınar; hızla büyüyen genç villa mahalleleri; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Hacılar",
-"k": "TR-06-012-1653"
+"k": "06 Hacılar villa kuşağı"
 },
 "TR-06-012-1654": {
 "n": "elle: Gölbaşı, sayılanlar dışında köy",
@@ -2305,7 +2305,7 @@
 "n": "elle: İncek kentsel belde grubu (İncek, Kızılcaşar, Taşpınar; üniversite/site kuşağı, birbirine bitişik; kullanıcı önerisi)",
 "s": "Kentsel Belde",
 "y": "İncek",
-"k": "TR-06-012-1656"
+"k": "06 İncek"
 },
 "TR-06-012-1657": {
 "n": "elle: Gölbaşı, sayılanlar dışında köy",
@@ -2315,7 +2315,7 @@
 "n": "elle: İncek kentsel belde grubu (İncek, Kızılcaşar, Taşpınar; üniversite/site kuşağı, birbirine bitişik; kullanıcı önerisi)",
 "s": "Kentsel Belde",
 "y": "İncek",
-"k": "TR-06-012-1658"
+"k": "06 İncek"
 },
 "TR-06-012-1659": {
 "n": "elle: Gölbaşı, sayılanlar dışında köy",
@@ -2333,7 +2333,7 @@
 "n": "elle: İncek kentsel belde grubu (İncek, Kızılcaşar, Taşpınar; üniversite/site kuşağı, birbirine bitişik; kullanıcı önerisi)",
 "s": "Kentsel Belde",
 "y": "İncek",
-"k": "TR-06-012-1662"
+"k": "06 İncek"
 },
 "TR-06-012-1663": {
 "n": "elle: Gölbaşı, sayılanlar dışında köy",
@@ -2343,7 +2343,7 @@
 "n": "elle: Hacılar villa kuşağı kentsel belde grubu (Hacılar, Tulumtaş, Ballıkpınar; hızla büyüyen genç villa mahalleleri; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Hacılar",
-"k": "TR-06-012-1664"
+"k": "06 Hacılar villa kuşağı"
 },
 "TR-06-012-1665": {
 "n": "elle: Gölbaşı, sayılanlar dışında köy",
@@ -3519,25 +3519,25 @@
 "n": "elle: Bağlum kentsel belde grubu (Hisar, Karakaya, Karşıyaka, Kafkas; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Bağlum",
-"k": "TR-06-017-1731"
+"k": "06 Bağlum"
 },
 "TR-06-017-1732": {
 "n": "elle: Bağlum kentsel belde grubu (Hisar, Karakaya, Karşıyaka, Kafkas; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Bağlum",
-"k": "TR-06-017-1732"
+"k": "06 Bağlum"
 },
 "TR-06-017-1733": {
 "n": "elle: Bağlum kentsel belde grubu (Hisar, Karakaya, Karşıyaka, Kafkas; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Bağlum",
-"k": "TR-06-017-1733"
+"k": "06 Bağlum"
 },
 "TR-06-017-1734": {
 "n": "elle: Bağlum kentsel belde grubu (Hisar, Karakaya, Karşıyaka, Kafkas; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Bağlum",
-"k": "TR-06-017-1734"
+"k": "06 Bağlum"
 },
 "TR-06-017-1735": {
 "n": "elle: Keçiören köy (kullanıcı)",
@@ -4249,13 +4249,13 @@
 "n": "elle: Lalahan ve Karşıyaka birleşik yerleşim, kırsal belde grubu (5.765 kişi; Kutludüğün ile aynı sınıf; kullanıcı onayı)",
 "s": "Kırsal Belde",
 "y": "Lalahan-Karşıyaka",
-"k": "elle: Lalahan ve Karşıyaka birleşik yerleşim, kırsal belde grubu (5.765 kişi; Kutludüğün ile aynı sınıf; kullanıcı onayı)"
+"k": "06 Lalahan+Karşıyaka"
 },
 "TR-06-019-2092": {
 "n": "elle: Lalahan ve Karşıyaka birleşik yerleşim, kırsal belde grubu (5.765 kişi; Kutludüğün ile aynı sınıf; kullanıcı onayı)",
 "s": "Kırsal Belde",
 "y": "Lalahan-Karşıyaka",
-"k": "elle: Lalahan ve Karşıyaka birleşik yerleşim, kırsal belde grubu (5.765 kişi; Kutludüğün ile aynı sınıf; kullanıcı onayı)"
+"k": "06 Lalahan+Karşıyaka"
 },
 "TR-06-020-178821": {
 "n": "elle: Nallıhan, sayılanlar dışında köy; eski belde Sarıyar 460, 2.000 altı",
@@ -4985,19 +4985,19 @@
 "n": "elle: Altınova kentsel belde grubu",
 "s": "Kentsel Belde",
 "y": "Altınova",
-"k": "TR-06-022-139854"
+"k": "06 Altınova"
 },
 "TR-06-022-1510": {
 "n": "elle: Altınova kentsel belde grubu (Peçenek: ilçe içinde komşusu yok, Altınova’ya bağlandı)",
 "s": "Kentsel Belde",
 "y": "Altınova",
-"k": "TR-06-022-1510"
+"k": "06 Altınova"
 },
 "TR-06-022-1511": {
 "n": "elle: Altınova kentsel belde grubu (Yıldırım Beyazıt, kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Altınova",
-"k": "TR-06-022-1511"
+"k": "06 Altınova"
 },
 "TR-06-022-1512": {
 "n": "elle: Pursaklar köyleri",
@@ -5028,7 +5028,7 @@
 "n": "elle: Saray kentsel belde grubu",
 "s": "Kentsel Belde",
 "y": "Saray",
-"k": "TR-06-022-1739"
+"k": "06 Saray"
 },
 "TR-06-022-1740": {
 "n": "elle: Pursaklar köyleri (Saray Fatih/Cumhuriyet komşusu, DEGURBA orta yoğun kent ama köy)",
@@ -5039,13 +5039,13 @@
 "n": "elle: Saray kentsel belde grubu",
 "s": "Kentsel Belde",
 "y": "Saray",
-"k": "TR-06-022-1741"
+"k": "06 Saray"
 },
 "TR-06-022-1742": {
 "n": "elle: Saray kentsel belde grubu",
 "s": "Kentsel Belde",
 "y": "Saray",
-"k": "TR-06-022-1742"
+"k": "06 Saray"
 },
 "TR-06-022-2061": {
 "n": "elle: Sirkeli köy grubu (eski belde, 2.000 altı)",
@@ -5202,19 +5202,19 @@
 "n": "elle: Yenikent kentsel belde grubu (Mustafa Kemal, Fevzi Çakmak, Menderes, 29 Ekim, Çoğlu; kullanıcı, Çoğlu önerimle)",
 "s": "Kentsel Belde",
 "y": "Yenikent",
-"k": "TR-06-023-1838"
+"k": "06 Yenikent"
 },
 "TR-06-023-1839": {
 "n": "elle: Yenikent kentsel belde grubu (Mustafa Kemal, Fevzi Çakmak, Menderes, 29 Ekim, Çoğlu; kullanıcı, Çoğlu önerimle)",
 "s": "Kentsel Belde",
 "y": "Yenikent",
-"k": "TR-06-023-1839"
+"k": "06 Yenikent"
 },
 "TR-06-023-1840": {
 "n": "elle: Yenikent kentsel belde grubu (Mustafa Kemal, Fevzi Çakmak, Menderes, 29 Ekim, Çoğlu; kullanıcı, Çoğlu önerimle)",
 "s": "Kentsel Belde",
 "y": "Yenikent",
-"k": "TR-06-023-1840"
+"k": "06 Yenikent"
 },
 "TR-06-023-1841": {
 "n": "elle: Sincan köyü (kullanıcı)",
@@ -5224,7 +5224,7 @@
 "n": "elle: Yenikent kentsel belde grubu (Mustafa Kemal, Fevzi Çakmak, Menderes, 29 Ekim, Çoğlu; kullanıcı, Çoğlu önerimle)",
 "s": "Kentsel Belde",
 "y": "Yenikent",
-"k": "TR-06-023-1842"
+"k": "06 Yenikent"
 },
 "TR-06-023-1843": {
 "n": "elle: Sincan köyü (kullanıcı)",
@@ -5246,25 +5246,25 @@
 "n": "elle: Yenikent kentsel belde grubu (Mustafa Kemal, Fevzi Çakmak, Menderes, 29 Ekim, Çoğlu; kullanıcı, Çoğlu önerimle)",
 "s": "Kentsel Belde",
 "y": "Yenikent",
-"k": "TR-06-023-1847"
+"k": "06 Yenikent"
 },
 "TR-06-023-2233": {
 "n": "elle: Temelli kentsel belde grubu (Gazi, Cumhuriyet, İstiklal, Hürriyet; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Temelli",
-"k": "TR-06-023-2233"
+"k": "06 Temelli"
 },
 "TR-06-023-2234": {
 "n": "elle: Temelli kentsel belde grubu (Gazi, Cumhuriyet, İstiklal, Hürriyet; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Temelli",
-"k": "TR-06-023-2234"
+"k": "06 Temelli"
 },
 "TR-06-023-2235": {
 "n": "elle: Temelli kentsel belde grubu (Gazi, Cumhuriyet, İstiklal, Hürriyet; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Temelli",
-"k": "TR-06-023-2235"
+"k": "06 Temelli"
 },
 "TR-06-023-2236": {
 "n": "elle: Sincan köyü (kullanıcı)",
@@ -5308,7 +5308,7 @@
 "n": "elle: Temelli kentsel belde grubu (Gazi, Cumhuriyet, İstiklal, Hürriyet; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Temelli",
-"k": "TR-06-023-2245"
+"k": "06 Temelli"
 },
 "TR-06-023-2246": {
 "n": "elle: Sincan köyü (kullanıcı)",
@@ -5326,7 +5326,7 @@
 "n": "elle: Adalet Yenikent grubuna katıldı; DİKKAT: mahalle Sincan ceza infaz kurumları kampüsü, nüfus (18.857) hükümlü/kurum nüfusu, yerleşim değil (kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Yenikent",
-"k": "TR-06-023-98559"
+"k": "06 Yenikent"
 },
 "TR-06-023-98560": {
 "n": "elle: Sincan köyü (kullanıcı)",
@@ -5596,7 +5596,7 @@
 "n": "elle: Yakacık semti kentsel belde (Yakacık + Kuzey Yıldızı; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Yakacık",
-"k": "TR-06-025-180658"
+"k": "06 Yakacık semti"
 },
 "TR-06-025-1848": {
 "n": "elle: Yenimahalle merkez mahallesi",
@@ -5794,13 +5794,13 @@
 "n": "elle: Ata semti kentsel belde (Ata + Susuz; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Ata",
-"k": "TR-06-025-1907"
+"k": "06 Ata semti"
 },
 "TR-06-025-1909": {
 "n": "elle: Yakacık semti kentsel belde (Yakacık + Kuzey Yıldızı; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Yakacık",
-"k": "TR-06-025-1909"
+"k": "06 Yakacık semti"
 },
 "TR-06-025-1911": {
 "n": "elle: Yuvaköy tek başına kentsel belde (nüfusun %90’ı 2019 sonrası konut; kullanıcı)",
@@ -5812,7 +5812,7 @@
 "n": "elle: Ata semti kentsel belde (Ata + Susuz; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Ata",
-"k": "TR-06-025-198209"
+"k": "06 Ata semti"
 },
 "TR-06-025-209064": {
 "n": "elle: Yenimahalle merkez mahallesi",
@@ -6047,7 +6047,7 @@
 "n": "Kurşunlu + Gençali tek belde; kırsal-kentsel geçişi, beldemsi; merkeze aşırı uzak değil (elle liste)",
 "s": "Kırsal Belde",
 "y": "Kurşunlu-Gençali",
-"k": "TR-16-002-11352"
+"k": "16 Kurşunlu + Gençali"
 },
 "TR-16-002-140853": {
 "n": "Gemlik merkezine çok yakın (elle liste)",
@@ -6059,7 +6059,7 @@
 "n": "Kurşunlu + Gençali tek belde; kırsal-kentsel geçişi, beldemsi; merkeze aşırı uzak değil (elle liste)",
 "s": "Kırsal Belde",
 "y": "Kurşunlu-Gençali",
-"k": "TR-16-002-140855"
+"k": "16 Kurşunlu + Gençali"
 },
 "TR-16-002-140857": {
 "n": "üç mahalle tek belde; Gemlik dibinde kentsel belde, sayfiye yeri (elle liste)",
@@ -6389,13 +6389,13 @@
 "n": "Huzur + Akhisar tek belde; adı Huzur mu Akhisar mı: Akhisar yazıldı (nüfusu büyük), kontrol et",
 "s": "Kentsel Belde",
 "y": "Akhisar",
-"k": "TR-16-005-11393"
+"k": "16 Huzur + Akhisar"
 },
 "TR-16-005-11394": {
 "n": "Huzur + Akhisar tek belde; adı Huzur mu Akhisar mı: Akhisar yazıldı (nüfusu büyük), kontrol et",
 "s": "Kentsel Belde",
 "y": "Akhisar",
-"k": "TR-16-005-11394"
+"k": "16 Huzur + Akhisar"
 },
 "TR-16-005-11396": {
 "n": "elle liste",
@@ -6425,7 +6425,7 @@
 "n": "Edebey + Cerrah tek belde, adı Cerrah (elle liste)",
 "s": "Kentsel Belde",
 "y": "Cerrah",
-"k": "TR-16-005-183701"
+"k": "16 Edebey + Cerrah"
 },
 "TR-16-005-183703": {
 "n": "elle liste",
@@ -6519,7 +6519,7 @@
 "n": "Edebey + Cerrah tek belde, adı Cerrah (elle liste)",
 "s": "Kentsel Belde",
 "y": "Cerrah",
-"k": "TR-16-005-183745"
+"k": "16 Edebey + Cerrah"
 },
 "TR-16-005-183747": {
 "n": "elle liste (geri kalan köy)",
@@ -6617,7 +6617,7 @@
 "n": "Baykoca + Karalar tek belde, adı Baykoca (elle liste)",
 "s": "Kentsel Belde",
 "y": "Baykoca",
-"k": "TR-16-005-183793"
+"k": "16 Baykoca + Karalar"
 },
 "TR-16-005-183795": {
 "n": "elle liste (geri kalan köy)",
@@ -6815,7 +6815,7 @@
 "n": "Baykoca + Karalar tek belde, adı Baykoca (elle liste)",
 "s": "Kentsel Belde",
 "y": "Baykoca",
-"k": "TR-16-005-196591"
+"k": "16 Baykoca + Karalar"
 },
 "TR-16-006-11415": {
 "n": "konut çok fazla, merkez (elle liste)",
@@ -7678,7 +7678,7 @@
 "n": "Bademli+Çağrışan+Mürsel tek kentsel belde (bitişik, sık yapılaşma; Nilüfer ilçesi tarafı ayrı ilçe olduğu için dışarıda). Mürsel’de eski köy çekirdeği de var (elle/uydu)",
 "s": "Kentsel Belde",
 "y": "Bademli",
-"k": "TR-16-010-184233"
+"k": "16 Bademli+Çağrışan+Mürsel"
 },
 "TR-16-010-184235": {
 "n": "elle: geri kalan köy",
@@ -7728,7 +7728,7 @@
 "n": "Bademli+Çağrışan+Mürsel tek kentsel belde (bitişik, sık yapılaşma; Nilüfer ilçesi tarafı ayrı ilçe olduğu için dışarıda). Mürsel’de eski köy çekirdeği de var (elle/uydu)",
 "s": "Kentsel Belde",
 "y": "Bademli",
-"k": "TR-16-010-184257"
+"k": "16 Bademli+Çağrışan+Mürsel"
 },
 "TR-16-010-184259": {
 "n": "elle: geri kalan köy",
@@ -7822,7 +7822,7 @@
 "n": "Bademli+Çağrışan+Mürsel tek kentsel belde (bitişik, sık yapılaşma; Nilüfer ilçesi tarafı ayrı ilçe olduğu için dışarıda). Mürsel’de eski köy çekirdeği de var (elle/uydu)",
 "s": "Kentsel Belde",
 "y": "Bademli",
-"k": "TR-16-010-20007"
+"k": "16 Bademli+Çağrışan+Mürsel"
 },
 "TR-16-010-20008": {
 "n": "köy, küçük kent dokusu var (elle/uydu)",
@@ -8434,13 +8434,13 @@
 "n": "Balat+Ahmet Yesevi tek kentsel belde (~30.700 kişi), Okmeydanı/Batıkent gibi semt olabilir, semt katmanında ele alınacak (elle)",
 "s": "Kentsel Belde",
 "y": "Balat",
-"k": "TR-16-012-11123"
+"k": "16 Balat+Ahmet Yesevi"
 },
 "TR-16-012-11124": {
 "n": "Balat+Ahmet Yesevi tek kentsel belde (~30.700 kişi), Okmeydanı/Batıkent gibi semt olabilir, semt katmanında ele alınacak (elle); Balat: cezaevi kurum işareti, nüfus şişkin olabilir",
 "s": "Kentsel Belde",
 "y": "Balat",
-"k": "TR-16-012-11124"
+"k": "16 Balat+Ahmet Yesevi"
 },
 "TR-16-012-11125": {
 "n": "elle: geri kalan çoğunlukla ilçe merkezi; dört kaynak kent",
@@ -8498,7 +8498,7 @@
 "n": "Çalı + Yaylacık tek kentsel belde (~20.600 kişi): konut dokusu birleşik (Yaylacık eski çekirdeği Çalı ızgarasına bitişik); Demirci ile arasında sanayi/tarım kuşağı var, ayrı yerleşim (elle/uydu)",
 "s": "Kentsel Belde",
 "y": "Çalı",
-"k": "Çalı + Yaylacık tek kentsel belde (~20.600 kişi): konut dokusu birleşik (Yaylacık eski çekirdeği Çalı ızgarasına bitişik); Demirci ile arasında sanayi/tarım kuşağı var, ayrı yerleşim (elle/uydu)"
+"k": "16 Çalı + Yaylacık"
 },
 "TR-16-012-11141": {
 "n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
@@ -8508,19 +8508,19 @@
 "n": "Dumlupınar+Görükle+Kurtuluş+Balkan tek kentsel belde (elle; geometri: bağlı küme)",
 "s": "Kentsel Belde",
 "y": "Görükle",
-"k": "TR-16-012-11142"
+"k": "16 Dumlupınar+Görükle+Kurtuluş+Balkan"
 },
 "TR-16-012-11143": {
 "n": "Dumlupınar+Görükle+Kurtuluş+Balkan tek kentsel belde (elle; geometri: bağlı küme)",
 "s": "Kentsel Belde",
 "y": "Görükle",
-"k": "TR-16-012-11143"
+"k": "16 Dumlupınar+Görükle+Kurtuluş+Balkan"
 },
 "TR-16-012-11144": {
 "n": "Dumlupınar+Görükle+Kurtuluş+Balkan tek kentsel belde (elle; geometri: bağlı küme)",
 "s": "Kentsel Belde",
 "y": "Görükle",
-"k": "TR-16-012-11144"
+"k": "16 Dumlupınar+Görükle+Kurtuluş+Balkan"
 },
 "TR-16-012-11145": {
 "n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
@@ -8534,7 +8534,7 @@
 "n": "Dumlupınar+Görükle+Kurtuluş+Balkan tek kentsel belde (elle; geometri: bağlı küme)",
 "s": "Kentsel Belde",
 "y": "Görükle",
-"k": "TR-16-012-11147"
+"k": "16 Dumlupınar+Görükle+Kurtuluş+Balkan"
 },
 "TR-16-012-11148": {
 "n": "elle: nüfusa göre sıralarken Gölyazı’ya kadar hepsi köy",
@@ -8548,13 +8548,13 @@
 "n": "elle: Kızılcıklı diye ayrı belde yok; Görükle belde grubuna dahil (Kızılcıklı Balkan ile 1.922 m, Kurtuluş ile 592 m ortak sınır)",
 "s": "Kentsel Belde",
 "y": "Görükle",
-"k": "TR-16-012-11151"
+"k": "16 belde"
 },
 "TR-16-012-11152": {
 "n": "elle: Kızılcıklı diye ayrı belde yok; Görükle belde grubuna dahil (Kızılcıklı Balkan ile 1.922 m, Kurtuluş ile 592 m ortak sınır)",
 "s": "Kentsel Belde",
 "y": "Görükle",
-"k": "TR-16-012-11152"
+"k": "16 belde"
 },
 "TR-16-012-11153": {
 "n": "ayrı yerleşim (merkezden 1,5 km), 3.496 kişi, 2013’ten ×2,8; Umurbey/Kurşunlu-Gençali gibi (elle)",
@@ -8663,13 +8663,13 @@
 "n": "Çalı + Yaylacık tek kentsel belde (~20.600 kişi): konut dokusu birleşik (Yaylacık eski çekirdeği Çalı ızgarasına bitişik); Demirci ile arasında sanayi/tarım kuşağı var, ayrı yerleşim (elle/uydu)",
 "s": "Kentsel Belde",
 "y": "Çalı",
-"k": "Çalı + Yaylacık tek kentsel belde (~20.600 kişi): konut dokusu birleşik (Yaylacık eski çekirdeği Çalı ızgarasına bitişik); Demirci ile arasında sanayi/tarım kuşağı var, ayrı yerleşim (elle/uydu)"
+"k": "16 Çalı + Yaylacık"
 },
 "TR-16-012-183471": {
 "n": "elle: kentsel belde gibi; DEGURBA+bina kent, TÜİK+AATOPLU kır, uydu: sık ayrı yerleşim",
 "s": "Kentsel Belde",
 "y": "Yolçatı",
-"k": "TR-16-012-183471"
+"k": "16 kentsel"
 },
 "TR-16-012-99075": {
 "n": "Ertuğrulkent: 6 mahalle (19 Mayıs, Yüzüncüyıl, 29 Ekim, Altınşehir, Ertuğrul, Özlüce) tek kentsel belde (elle); 23 Nisan merkeze alındı",
@@ -11183,13 +11183,13 @@
 "n": "elle: Gemişli kırsal belde (Gemişli + Gemişpınarı birleşik, toplam 1.876; kullanıcı)",
 "s": "Kırsal Belde",
 "y": "Gemişli",
-"k": "elle: Gemişli kırsal belde (Gemişli + Gemişpınarı birleşik, toplam 1.876; kullanıcı)"
+"k": "20 Gemişli"
 },
 "TR-20-010-197259": {
 "n": "elle: Gemişli kırsal belde (Gemişli + Gemişpınarı birleşik, toplam 1.876; kullanıcı)",
 "s": "Kırsal Belde",
 "y": "Gemişli",
-"k": "elle: Gemişli kırsal belde (Gemişli + Gemişpınarı birleşik, toplam 1.876; kullanıcı)"
+"k": "20 Gemişli"
 },
 "TR-20-010-150375": {
 "n": "elle: Çardak sayılanlar dışında köy (kullanıcı)",
@@ -11267,7 +11267,7 @@
 "n": "elle: Emirhisar kırsal belde (Emircik + Balçıkhisar, toplam 1.905; kullanıcı)",
 "s": "Kırsal Belde",
 "y": "Emirhisar",
-"k": "TR-20-011-199711"
+"k": "20 Emirhisar"
 },
 "TR-20-011-150401": {
 "n": "elle: Çivril sayılanlar dışında köy (kullanıcı)",
@@ -11317,7 +11317,7 @@
 "n": "elle: Emirhisar kırsal belde (Emircik + Balçıkhisar, toplam 1.905; kullanıcı)",
 "s": "Kırsal Belde",
 "y": "Emirhisar",
-"k": "TR-20-011-150383"
+"k": "20 Emirhisar"
 },
 "TR-20-011-150471": {
 "n": "elle: Çivril sayılanlar dışında köy (kullanıcı)",
@@ -11543,13 +11543,13 @@
 "n": "elle: Kıralan ve Çıtak birleşik kentsel belde (bina yöntemi lekesi 7.906; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Kıralan-Çıtak",
-"k": "elle: Kıralan ve Çıtak birleşik kentsel belde (bina yöntemi lekesi 7.906; kullanıcı)"
+"k": "20 Kıralan ve Çıtak birleşik"
 },
 "TR-20-011-150381": {
 "n": "elle: Kıralan ve Çıtak birleşik kentsel belde (bina yöntemi lekesi 7.906; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Kıralan-Çıtak",
-"k": "elle: Kıralan ve Çıtak birleşik kentsel belde (bina yöntemi lekesi 7.906; kullanıcı)"
+"k": "20 Kıralan ve Çıtak birleşik"
 },
 "TR-20-012-150509": {
 "n": "elle: Güney sayılanlar dışında köy (kullanıcı)",
@@ -12035,13 +12035,13 @@
 "n": "elle: Yatağan kırsal belde (Yatağan + Yüreğil birleşik, 3.076; bina lekesi 3.062; kullanıcı)",
 "s": "Kırsal Belde",
 "y": "Yatağan",
-"k": "elle: Yatağan kırsal belde (Yatağan + Yüreğil birleşik, 3.076; bina lekesi 3.062; kullanıcı)"
+"k": "20 Yatağan"
 },
 "TR-20-018-150685": {
 "n": "elle: Yatağan kırsal belde (Yatağan + Yüreğil birleşik, 3.076; bina lekesi 3.062; kullanıcı)",
 "s": "Kırsal Belde",
 "y": "Yatağan",
-"k": "elle: Yatağan kırsal belde (Yatağan + Yüreğil birleşik, 3.076; bina lekesi 3.062; kullanıcı)"
+"k": "20 Yatağan"
 },
 "TR-20-019-150687": {
 "n": "elle: Tavas sayılanlar dışında köy (kullanıcı)",
@@ -12425,7 +12425,7 @@
 "n": "elle: Göveçlik-Barbaros kentsel belde (birleşik yerleşim 2.509, ayrı leke 2.440; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Göveçlik",
-"k": "elle: Göveçlik-Barbaros kentsel belde (birleşik yerleşim 2.509, ayrı leke 2.440; kullanıcı)"
+"k": "20 Göveçlik-Barbaros"
 },
 "TR-20-015-99398": {
 "n": "elle: Saruhan merkez (yeni gelişen yer, köy denmez; kullanıcı)",
@@ -12435,7 +12435,7 @@
 "n": "elle: Göveçlik-Barbaros kentsel belde (birleşik yerleşim 2.509, ayrı leke 2.440; kullanıcı)",
 "s": "Kentsel Belde",
 "y": "Göveçlik",
-"k": "elle: Göveçlik-Barbaros kentsel belde (birleşik yerleşim 2.509, ayrı leke 2.440; kullanıcı)"
+"k": "20 Göveçlik-Barbaros"
 },
 "TR-20-015-99845": {
 "n": "elle: Şirinköy merkez (merkezle bitişik/leke ≥%80; öneri)",
@@ -12463,7 +12463,7 @@
 "n": "elle: Irlıganlı + Eldenizli kırsal belde (birleşik, 3.053; ortak yerleşim lekesi 3.112; kullanıcı)",
 "s": "Kırsal Belde",
 "y": "Irlıganlı",
-"k": "elle: Irlıganlı + Eldenizli kırsal belde (birleşik, 3.053; ortak yerleşim lekesi 3.112; kullanıcı)"
+"k": "20 Irlıganlı + Eldenizli"
 },
 "TR-20-016-149983": {
 "n": "elle: Pamukkale köy (kullanıcı)",
@@ -12473,7 +12473,7 @@
 "n": "elle: Irlıganlı + Eldenizli kırsal belde (birleşik, 3.053; ortak yerleşim lekesi 3.112; kullanıcı)",
 "s": "Kırsal Belde",
 "y": "Irlıganlı",
-"k": "elle: Irlıganlı + Eldenizli kırsal belde (birleşik, 3.053; ortak yerleşim lekesi 3.112; kullanıcı)"
+"k": "20 Irlıganlı + Eldenizli"
 },
 "TR-20-016-149953": {
 "n": "elle: Pamukkale köy (kullanıcı)",
