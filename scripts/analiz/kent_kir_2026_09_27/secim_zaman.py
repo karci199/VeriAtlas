@@ -61,6 +61,9 @@ for did, rs in BYNAME.items():
     URBAN_DISTRICT[did] = sum(r["nufus"] for _, r in rs if r["kent_kir"] == "kent") / t if t else 0
 
 
+OLD_DISTRICT = {"TR-52-x1552": "TR-52-002"}
+
+
 def resolve(key, ad):
     """-> (kent/kır, current area_id or None)"""
     k = wh(key) if "~" not in key else key
@@ -71,6 +74,10 @@ def resolve(key, ad):
     if "~" not in k:
         return None, None
     did, nm = k.split("~")
+    # before 2013 Ordu's central district carried the code x1552 in the result tiles; it is
+    # today's Altınordu (names such as Karşıyaka also exist elsewhere, so the province-wide
+    # unique-name fallback below dropped those quarters)
+    did = OLD_DISTRICT.get(did, did)
     if ad.endswith("(B)"):
         nm = nm.removesuffix("b")
     nm = nm.removesuffix("koyu").removesuffix("koy")
