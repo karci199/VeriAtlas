@@ -28919,5 +28919,146 @@
 "TR-10-020-148671": {
 "n": "elle: Susurluk Kepekler köy (kullanıcı: gerisi köy)",
 "s": "Köy"
+},
+"TR-10-002-10362": {
+"n": "elle: Ayvalık Gazi Kemal Paşa merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-10-002-10361": {
+"n": "elle: Ayvalık Kazım Karabekir merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-10-002-10359": {
+"n": "elle: Ayvalık Hayrettinpaşa merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-10-002-10369": {
+"n": "elle: Ayvalık Zekibey merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-10-002-10358": {
+"n": "elle: Ayvalık Hamdibey merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-10-002-10357": {
+"n": "elle: Ayvalık Fevzipaşa Vehbibey merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-10-002-10360": {
+"n": "elle: Ayvalık İsmetpaşa merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-10-002-10356": {
+"n": "elle: Ayvalık Fethiye merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-10-002-10365": {
+"n": "elle: Ayvalık Sakarya merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-10-002-10370": {
+"n": "elle: Ayvalık 150 Evler merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-10-002-10368": {
+"n": "elle: Ayvalık Yeni merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-10-002-10355": {
+"n": "elle: Ayvalık Ali Çetinkaya merkez (kullanıcı)",
+"s": "İlçe Merkezi"
+},
+"TR-10-002-10371": {
+"n": "elle: Ayvalık Sahil Kent merkez (kullanıcı); yazlık %55,6, lekede 88%, merkeze dahil",
+"s": "İlçe Merkezi"
+},
+"TR-10-002-10363": {
+"n": "elle: Ayvalık Cunda Adası kentsel belde (Mithatpaşa+Namık Kemal), 3.457; boru hattı ayrı leke 3.461 (kullanıcı: Cunda)",
+"s": "Kentsel Belde",
+"y": "Cunda"
+},
+"TR-10-002-10364": {
+"n": "elle: Ayvalık Cunda Adası kentsel belde (Mithatpaşa+Namık Kemal), 3.457; boru hattı ayrı leke 3.461 (kullanıcı: Cunda)",
+"s": "Kentsel Belde",
+"y": "Cunda"
+},
+"TR-10-002-10366": {
+"n": "elle: Ayvalık Sefa Çamlık (Sarımsaklı çevresi) kırsal belde, 2.858 (kullanıcı)",
+"s": "Kırsal Belde",
+"y": "Sefa Çamlık"
+},
+"TR-10-002-147099": {
+"n": "elle: Ayvalık Altınova eski belde, kentsel belde (kullanıcı); cezaevi nüfusu içeriyor, yazlık %36,6",
+"s": "Kentsel Belde",
+"y": "Altınova"
+},
+"TR-10-002-147097": {
+"n": "elle: Ayvalık Küçükköy eski belde, kentsel belde (kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Küçükköy"
+},
+"TR-10-002-147107": {
+"n": "elle: Ayvalık Murateli köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-002-147109": {
+"n": "elle: Ayvalık Mutlu köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-002-147111": {
+"n": "elle: Ayvalık Tıfıllar köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-002-147113": {
+"n": "elle: Ayvalık Türközü köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-002-147127": {
+"n": "elle: Ayvalık Kırcalar köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-002-147123": {
+"n": "elle: Ayvalık Çakmak köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-002-147129": {
+"n": "elle: Ayvalık Odaburnu köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-002-147131": {
+"n": "elle: Ayvalık Üçkabaağaç köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-002-147119": {
+"n": "elle: Ayvalık Beşiktepe köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-002-147125": {
+"n": "elle: Ayvalık Karaayıt köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-002-147121": {
+"n": "elle: Ayvalık Bulutçeşme köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-002-147103": {
+"n": "elle: Ayvalık Çamoba köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-002-147115": {
+"n": "elle: Ayvalık Yeniköy köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-002-147105": {
+"n": "elle: Ayvalık Hacıveliler köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-002-147101": {
+"n": "elle: Ayvalık Bağyüzü köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-002-147117": {
+"n": "elle: Ayvalık Akçapınar köy (kullanıcı)",
+"s": "Köy"
 }
 }
