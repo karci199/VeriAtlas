@@ -25891,7 +25891,7 @@
 "s": "İlçe Merkezi"
 },
 "TR-10-006-10429": {
-"n": "elle: Burhaniye Bahçelievler merkez (kullanıcı)",
+"n": "elle: Burhaniye Bahçelievler merkez (kullanıcı: merkeze doğru genişler; kuzeyi tatil siteleri, mahalle bölünemez)",
 "s": "İlçe Merkezi"
 },
 "TR-10-006-10432": {
@@ -25925,13 +25925,14 @@
 "y": "Börezli"
 },
 "TR-10-006-147429": {
-"n": "elle: Burhaniye Pelitköy eski belde (2012: 2.034), kırsal belde (kullanıcı)",
-"s": "Kırsal Belde",
-"y": "Pelitköy"
+"n": "elle: Burhaniye Ören kentsel belde (Ören+İskele+Öğretmenler+Taylıeli+Pelitköy), kıyı şeridi, 14.293; Bahçelievler merkez (kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Ören"
 },
 "TR-10-006-147473": {
-"n": "elle: Burhaniye Taylıeli köy (kullanıcı)",
-"s": "Köy"
+"n": "elle: Burhaniye Ören kentsel belde (Ören+İskele+Öğretmenler+Taylıeli+Pelitköy), kıyı şeridi, 14.293; Bahçelievler merkez (kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Ören"
 },
 "TR-10-006-147469": {
 "n": "elle: Burhaniye Şarköy köy (kullanıcı)",
@@ -25995,6 +25996,45 @@
 },
 "TR-10-006-147479": {
 "n": "elle: Burhaniye Yunuslar köy (kullanıcı)",
+"s": "Köy"
+},
+"TR-10-006-10438": {
+"n": "elle: Burhaniye Ören kentsel belde (Ören+İskele+Öğretmenler+Taylıeli+Pelitköy), kıyı şeridi, 14.293; Bahçelievler merkez (kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Ören"
+},
+"TR-10-006-10433": {
+"n": "elle: Burhaniye Ören kentsel belde (Ören+İskele+Öğretmenler+Taylıeli+Pelitköy), kıyı şeridi, 14.293; Bahçelievler merkez (kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Ören"
+},
+"TR-10-006-10437": {
+"n": "elle: Burhaniye Ören kentsel belde (Ören+İskele+Öğretmenler+Taylıeli+Pelitköy), kıyı şeridi, 14.293; Bahçelievler merkez (kullanıcı)",
+"s": "Kentsel Belde",
+"y": "Ören"
+},
+"TR-10-006-147449": {
+"n": "elle: Burhaniye Hacıbozlar köy (kullanıcı: gerisi köy)",
+"s": "Köy"
+},
+"TR-10-006-147445": {
+"n": "elle: Burhaniye Damlalı köy (kullanıcı: gerisi köy)",
+"s": "Köy"
+},
+"TR-10-006-147477": {
+"n": "elle: Burhaniye Yaylacık köy (kullanıcı: gerisi köy)",
+"s": "Köy"
+},
+"TR-10-006-147441": {
+"n": "elle: Burhaniye Çamtepe köy (kullanıcı: gerisi köy)",
+"s": "Köy"
+},
+"TR-10-006-147461": {
+"n": "elle: Burhaniye Kuyucak köy (kullanıcı: gerisi köy)",
+"s": "Köy"
+},
+"TR-10-006-147439": {
+"n": "elle: Burhaniye Çallı köy (kullanıcı: gerisi köy)",
 "s": "Köy"
 }
 }
