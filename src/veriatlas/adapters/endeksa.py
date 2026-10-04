@@ -252,6 +252,32 @@ def read_all() -> tuple[District, ...]:
     return tuple(read_district(folder, known) for folder in folders)
 
 
+def read_dump() -> list[tuple[str, dict]]:
+    """Neighbourhoods of the all-Turkey dump `raw/endeksa/demography/TR-<il>-<ilce>.json`.
+
+    Endeksa's DistrictId is the MEDAS code of the neighbourhoods law 6360 created, so the
+    area id is `<district>-<DistrictId>`. A row is kept only when the registry knows it and
+    Endeksa filled it in: a place with no households carries an empty template (every field
+    zero), which would be read as "nobody lives here".
+    """
+    known = set(load_neighbourhoods()["area_id"].to_list())
+    out: list[tuple[str, dict]] = []
+    unknown = empty = 0
+    for path in sorted((DOWNLOADS / "demography").glob("TR-*.json")):
+        for code, record in json.loads(path.read_text("utf-8")).items():
+            demo = record.get("demography") or {}
+            if not demo.get("HouseholdCount"):
+                empty += 1
+                continue
+            area_id = f"{path.stem}-{code}"
+            if area_id in known:
+                out.append((area_id, demo))
+            else:
+                unknown += 1
+    print(f"  endeksa dokumu: {len(out)} mahalle, {empty} bos sablon, {unknown} kayitta yok")
+    return out
+
+
 @lru_cache(maxsize=1)
 def province_ids() -> dict[str, str]:
     """`bilecik` → `TR-11`, for the origin-province dimension."""
@@ -416,6 +442,17 @@ class SnapshotMeasure(EndeksaBase):
     def parse(self, raw: Path) -> pl.DataFrame:
         start = dt.date(SNAPSHOT_YEAR, 1, 1)
         records: list[tuple] = []
+        if (raw / "demography").is_dir():
+            # The all-Turkey dump has neighbourhoods only; a district figure is not stored.
+            self.vintage = "2026-09"
+            self.retrieved_at = dt.date(2026, 9, 13)
+            for area_id, demo in read_dump():
+                for dims, value in self.measure.extract(demo):
+                    if value is not None:
+                        records.append(
+                            (area_id, "neighbourhood", start, format_dims(dims), float(value))
+                        )
+            return self.frame(records, self.measure.quality_flag)
         for district in read_all():
             targets = [
                 (q.area_id, "neighbourhood", q.demography)

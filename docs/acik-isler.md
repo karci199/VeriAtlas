@@ -41,7 +41,17 @@ okuryazar olmayan 0,72 — küçük köyler hane=0 şablonu). Tapu satışları 
 Kullanılmayan dolu alanlar: medeni durum, otomobil/taşıt, ev sahibi/kiracı (model), SES/gelir/harcama (model, `estimated`),
 ilan/emlakçı sayısı. Konut/hane/yazlık/ticari zaten kent-kır analizinde kullanıldı. Fiyat (Endeks) sayfaları çekilmedi.
 
-**Kent/kır bina yöntemi (2026-09-27):** Bursa pilotu, betikler `scripts/analiz/kent_kir_2026_09_27/`, çıktılar `C:\veri-ham\analiz\kent_kir_2026_09_27`. KASABA sınıfı (ayrı leke 2.000-5.000, kır) eklendi ama çalıştırılmadı — ilk iş. TOBB ilçe×ürün çekimi bitti, adaptör yok. Kurallar:
+**Kent/kır il kalıbı (2026-09-28):** `scripts/analiz/kent_kir_2026_09_27/run_il.py <plaka>` tek komutla 11 adımı çalıştırır
+(bina kümeleri → 7 sinyal birleştirme → ikili → semt → semt profili → seçim kent/kır/semt → seçmen/18+ → tarihsel 1965-2012 →
+tek parti serisi 2002-2024 → ortanca yaş MC). Taban yılı `KK_YIL` (varsayılan 2024: Endeksa = ADNKS 2024 birebir), çıktı
+`C:eri-hamnaliz\kent_kir\<plaka>\`. Bursa (16) ve Manisa (45) çalıştırıldı, il başına ~10 dk. Ülke geneli için gereken her
+şey diskte: MS bina 266 karo (`C:eri-ham\msbuildings`, `scripts/fetch_msbuildings.py`), haritatr il il iniyor
+(`haritatr_tr.py`, `C:eri-ham\haritatr\<plaka>`; eksik il için betik kendisi çeker), TKGM parsel + PTT sokak (kişi/parsel köy 0,2 /
+merkez 6,8 — bilgi sütunu), seçmen profilleri (`scripts/secmen_profili_tablo.py` → `C:eri-ham\secim\profil\secmen_yas_{egitim,medeni}.parquet`).
+Ordu (52) da çalıştırıldı; Karadeniz için **ilçe merkezi istisnası** eklendi: 2007-12 ilçe belediyesi mahallesi (köyden dönme değil, haritatr Köyleri değil) binalarının ≥%20'si lekedeyse ya da DEGURBA kent diyorsa merkez (Ordu %54,7 → %58,2; 2012 şehir payı %57,1 ile tutarlı). Doğrulama: kullanıcının elle sınıflaması (Masaüstü demografi/İLLER 18+ Merkez Çevre/<İL>.xlsx, 8 il) ile kent-kır uyumu Bursa %96,4, Manisa %99,4, Ordu %97,1 (`karsilastir_kullanici.py`, farklar `kullanici_fark_<il>.csv`). Gürgentepe hâlâ %0: eski merkez mahalleleri lekeye girmiyor ve DEGURBA da kır. Kural: kasaba = 2.000-5.000 ayrı yerleşim, belde geçmişine bakılmaz (kullanıcı, 09-28); eski belde adı `eski_statu`'ya belde adıyla eşlenir.
+Bilinen boşluk: 2014'te ilçesi bölünen beldeler (Manisa Muradiye) eski statüde 'yok'; 2002-2011 seçimlerinde kapanan belde mahalleleri bugünkü kimliğe bağlanmıyor.
+
+**Kent/kır bina yöntemi (2026-09-27):** Bursa pilotu, betikler `scripts/analiz/kent_kir_2026_09_27/`, çıktılar `C:\veri-ham\analiz\kent_kir_2026_09_27`. KASABA sınıfı çalıştırıldı (2026-09-27 gece, çıktı `v2/`). `birlestir.py` beş sinyali mahalle mahalle birleştirir (bina, DEGURBA, kayıt no bloğu, 2007-12 TÜİK statüsü, haritatr semti — `haritatr_il.py`, yalnız destek). Bursa son: merkez %80,5, kentsel belde %11,1, kasaba %0,5 (Umurbey, Kurşunlu, Nilüferköy, Elbeyli, Boyalıca), kırsal belde %0,5, kır %7,4; bina×DEGURBA mahalle uyumu %95,8; 90 arada kalan `kent_16_son.csv` `arada` sütununda. Ders: eski kayıt no Bursa'da kent kanıtı değil — köylerin bir kısmı 2004'te (5216) mahalle yapıldı (Adaköy, Kumlukalan, Gökçe); kır→kent çevirme yok. Tarihsel seri `tarihsel.py` (sayım 1965-2000 yerleşim listesi Şehir/(B)/köy, il toplamı denetimi; ADNKS 2007-2012 yıl yıl belediye adı ham dosyadan — kayıt defteri en yeni belediyeyi tutar; şehir TÜİK il/ilçe merkezini ±700 tutar; 2025 sınıfları sabit liste olarak geriye: 2007 %87,4 → 2012 %89,8): Bursa kent (şehir + ≥5.000 belde) %44,3 (1965) → %57,0 (1980) → %73,6 (1990) → %81,9 (2000) → %87,5 (2007) → %90,0 (2012); 1965-90 Armutlu dahil (1995'te Yalova'ya). haritatr il sayfasında 27 POI kategorisi var (GeoNames kökenli, seyrek: Bursa'da 3 cami, 1 kale); mahalle sayfasında koordinat + ilçe/il merkezine uzaklık, köy listesinde eski köy adları. Semt katmanı `semt.py` (Bursa 91 semt, semtsiz mahalle yok): merkez ilçelerde PTT 2022 semti, taşrada 'İlçe Merkez', kentsel belde/kasaba kendi semti (aynı lekedekiler birlikte: İnegöl Akhisar-Huzur), köy + kırsal belde 'İlçe Köyleri'; 2023'te bölünen mahalle en yakın komşunun semtini alır. Kurum sandığı kuralı: oy ≥ kayıtlı + 20 (Nilüfer Balat her genel seçimde +400-900, 2024 yerelde yok → cezaevi). Elle karar listesi birlestir.py `ELLE` (Gürsu İpekyolu TOKİ → merkez). Ortanca yaş `yas_mc.py` (kent/kır, semt, mahalle; 200 tur MC): tohum Endeksa bant (A, %95 nüfus) / medeni durum regresyonu (B: dul+bekâr+çocuk payı, R² 0,94, RMSE 1,9) / ilçe şekli (C, 15 köy); kısıt ilçe 5'li yaş + mahalle nüfus + 0-17 (TÜİK, yoksa nüfus−seçmen/1,02). Bursa kent 35,9 / kır 49,1 / fark 13,2 (%90 aralık 13,1-13,4). Gizli test: kent ±0,9, köy ±1,4-2,0 yaş. Ortalama kır-kent farkını dörtte bir küçültür, ortanca kullan. Seçmen/18+ oranı `secmen_oran.py`: Bursa kentinde 62.815 seçmen dışı yetişkin (Görükle 21.784); Karalar/İnegöl 0,17, Kumlukalan 0,55 yabancı işçi işareti. haritatr: eski mahallelerin %95'i Merkez/semt, köylerin %87'si Köyleri altında; MKP/İnegöl'de 'semt' bucak demek, Gemlik Hamidiye gibi hatalar var. TOBB ilçe×ürün çekimi bitti, adaptör yok. Kurallar:
 Microsoft bina (Şubat 2026) + 50 m tampon, merkez = 2013 öncesi mahalle nüfusunu en çok taşıyan leke, zincir 300 m yalnız eski
 merkez mahallesi kümeleri, ayrı leke ≥5.000 kişi ya da mahalle nüfusu ≥5.000 = kentsel belde, OSB kent sınırından düşülür,
 yazlık etiketi (konutların <%30'unda hane). Bursa: kent %91,6 (merkez %80,5 + kentsel belde %11,1), DEGURBA %93,0.
@@ -628,3 +638,30 @@ bastan calistirilmali (901 adaptor). Girecekler: 32 marka / 56.269 magaza,
 **Cekilemeyenler:** Watsons, Teknosa, Koton, LC Waikiki, Mado, Popeyes, Bauhaus (403);
 MediaMarkt (robots'ta ClaudeBot kurali); Seyhanlar alindi ama sertifikasi dogrulanmiyor
 (kullanici talimatiyla o tek host icin kapatildi).
+
+## Kent/kır sınıflaması: sonra bakılacaklar (2026-10-03)
+
+- Karar dosyası `scripts/analiz/kent_kir_2026_09_27/kullanici_karar.json`: İstanbul 973 birim bitti, Manisa 14/16 ilçe
+  yazıldı (Turgutlu, Yunusemre kaldı). Warehouse'a (`settlement_class_manual`) yazılmadı.
+- Kural düzeltmesi (kullanıcı): kırsal belde olmak için eski belde olmak şart değil, eşik üstü ayrı yerleşim yeter.
+  Bu kurala göre köy kalmış, nüfusu 1.950 üstü 6 birim yeniden bakılacak: Çubuk Dumlupınar 6.734, Arnavutköy
+  Tayakadın 3.716, Yenimahalle Karacakaya 2.629, Çubuk Esenboğa Merkez 2.544, Etimesgut Yukarıyurtçu 1.998,
+  Beykoz Cumhuriyet 1.966.
+- Eşik altı eski beldeler köy yazıldı (Manisa'da yaklaşık 30 birim: Kayalıoğlu, Karakurt, Selimşahlar, Karaoğlanlı…);
+  kullanıcı "kural" kararını henüz kesinleştirmedi.
+- Semizkumlar (Silivri): nüfusun büyük kısmı cezaevi, kentsel belde sınıfı ve ortanca yaş şüpheli.
+- Tuzla Orta (Sabancı Üniversitesi) gibi kampüs mahallelerini işaretleyen ölçüt yok (15-24 payı > %30 ve hane > 4,5).
+- İstanbul semt katmanı: Esenkent kümesi adı notta, semt tablosunda PTT "Sanayi".
+
+### 2026-10-03: depoya alınanlar ve kalanlar
+
+- **Depoya girdi** (30.143.236 satır, 1.382 gösterge; yedekler `public/fact.before-*-2026-10-03.parquet`):
+  `education_level` (Endeksa mahalle eğitimi, 22.885 mahalle, 228.850 satır; TÜİK ilçe 6+ toplamının %93'ü, ilçe
+  medyanı %83, köy ağırlıklı ilçelerde %7'ye kadar düşer, kapsam `definition_tr`'de) ve `settlement_class` (elle
+  kent/kır kararı, 5 il, 5.153 mahalle; kent/kır nüfusu için `population` ile birleştirilir).
+- **Denendi ve geri alındı:** `prison_releases_by_residence`. İl serisinde 2009-2014 ve 2019 yok; 30 Eylül'deki
+  yeniden çekim (`uzun_ceza_cikan_tamamla.ps1`) çıkış 0 verdi ama MEDAS "Ekle" düğmesi tıklanamadığı için dosya
+  inmedi (günlükte "Ekle tiklanamadi: sorgu kurulmadi"). Çekici düzelmeden yüklenmez.
+- **Süren çekimler:** MEDAS tarım ilçe (2026-10-03 16:08 yeniden başladı), sayım köy düzeyi (Kars, ~9 saat).
+- **Bekleyen:** MEDAS yeni konular (`C:\veri-ham\medas\basit`, 1.226 dosya) için adaptör yok; Endeksa SES/gelir
+  yüklenmedi (model çıktısı, %38 tekrarlı); kent/kır kümesi depoda yok (JSON'da `k`).

@@ -10,9 +10,10 @@ import gzip, json, math, sys, time
 from pathlib import Path
 import numpy as np, polars as pl, shapely, duckdb
 
-PLATE = sys.argv[1]  # "16"
-ROOT = Path("C:/veri")
-OUT = Path(sys.argv[2])
+import sys as _s; from pathlib import Path as _P; _s.path.insert(0, str(_P(__file__).parent))
+from il import PLATE, YEAR, D, ROOT, NAME, IL_UP, PTT_IL, SLUG, LOCAL24, wh, geo_code  # noqa: E402
+OUT = D
+
 t0 = time.time()
 geo = json.loads((ROOT / f"public/geo/districts/TR-{PLATE}.geojson").read_text(encoding="utf-8"))
 dist = {f["properties"]["area_id"]: (f["properties"]["name_tr"], shapely.from_geojson(json.dumps(f["geometry"]))) for f in geo["features"]}
@@ -22,9 +23,24 @@ KX = 111320 * math.cos(math.radians(lat0)); KY = 110574
 proj = lambda g: shapely.transform(g, lambda a: a * np.array([KX, KY]))
 minx, miny, maxx, maxy = prov.bounds
 
-# buildings of the province
+# buildings of the province: only the level-9 quadkey tiles that touch its bounding box
+def quadkey_bbox(q):
+    x = y = 0
+    for i, ch in enumerate(q):
+        m = 1 << (len(q) - 1 - i)
+        if int(ch) & 1: x |= m
+        if int(ch) & 2: y |= m
+    n = 1 << len(q)
+    lon = lambda t: t / n * 360 - 180
+    lat = lambda t: math.degrees(math.atan(math.sinh(math.pi * (1 - 2 * t / n))))
+    return lon(x), lat(y + 1), lon(x + 1), lat(y)
+
+
+tiles = [f for f in sorted(Path("C:/veri-ham/msbuildings").glob("*.csv.gz"))
+         if (lambda b: b[0] <= maxx and b[2] >= minx and b[1] <= maxy and b[3] >= miny)(quadkey_bbox(f.stem.split(".")[0]))]
+print("karo", len(tiles), flush=True)
 polys = []
-for f in sorted(Path("C:/veri-ham/msbuildings").glob("*.csv.gz")):
+for f in tiles:
     with gzip.open(f, "rt") as fh:
         for line in fh:
             g = json.loads(line)["geometry"]["coordinates"][0]
@@ -39,10 +55,10 @@ print(f"bina {len(B)} ({time.time()-t0:.0f} sn)", flush=True)
 
 c = duckdb.connect()
 pop = c.sql(f"""select area_id, sum(value) v from read_parquet('{ROOT}/public/fact.parquet')
- where indicator_id='population' and area_id like 'TR-{PLATE}-%' and year(period_start)=2025 group by 1""").pl()
+ where indicator_id='population' and area_id like 'TR-{PLATE}-%' and year(period_start)={YEAR} group by 1""").pl()
 POP = dict(pop.iter_rows())
 reg = pl.read_csv(ROOT / "src/veriatlas/data/areas_tr_neighbourhoods.csv", infer_schema_length=0).filter(
-    pl.col("parent_id").str.starts_with(f"TR-{PLATE}-") & (pl.col("last_seen") == "2025"))
+    pl.col("parent_id").str.starts_with(f"TR-{PLATE}-") & (pl.col("last_seen").cast(pl.Int64) >= YEAR))
 REG = {r["area_id"]: r for r in reg.iter_rows(named=True)}
 allreg = pl.read_csv(ROOT / "src/veriatlas/data/areas_tr_neighbourhoods.csv", infer_schema_length=0).filter(
     pl.col("parent_id").str.starts_with(f"TR-{PLATE}-"))
@@ -78,7 +94,7 @@ for did, (dname, dg) in sorted(dist.items()):
     score = np.zeros(len(parts))
     oldcnt = np.zeros(len(parts))
     for f in ng["features"]:
-        aid = f["properties"]["area_id"]; r = REG.get(aid)
+        aid = wh(f["properties"]["area_id"]); r = REG.get(aid)
         if not r or int(r["first_seen"]) > 2012:
             continue
         g = proj(shapely.from_geojson(json.dumps(f["geometry"])))
@@ -111,7 +127,7 @@ for did, (dname, dg) in sorted(dist.items()):
     dom = {}
     cpop = np.zeros(len(parts))
     for f in ng["features"]:
-        aid = f["properties"]["area_id"]
+        aid = wh(f["properties"]["area_id"])
         g = proj(shapely.from_geojson(json.dumps(f["geometry"])))
         ss = small[shapely.contains(g, cent[small])]
         h = ptree.query(cent[ss], predicate="within")[1] if len(ss) else []
@@ -128,14 +144,16 @@ for did, (dname, dg) in sorted(dist.items()):
         in_town = shapely.contains(town, cent[idx])
     n_sat = sat_pop = 0
     for f in ng["features"]:
-        aid = f["properties"]["area_id"]
+        aid = wh(f["properties"]["area_id"])
+        if aid.endswith("-0"):  # islands, lakes, unnamed pieces: no population, no settlement
+            continue
         g = proj(shapely.from_geojson(json.dumps(f["geometry"])))
         sel = idx[shapely.contains(g, cent[idx])]
         nb, nin = len(sel), int(shapely.contains(town, cent[sel]).sum()) if len(sel) else 0
         p = POP.get(aid)
         code = aid.rsplit("-", 1)[-1]
         r = REG.get(aid)
-        e = (ek.get(str(code)) or {}).get("demography") or {}
+        e = (ek.get(geo_code(aid)) or {}).get("demography") or {}
         share = nin / nb if nb else 0
         old = bool(r) and int(r["first_seen"]) <= 2012
         belde = BELDE.get(did, {}).get(fold(f["properties"]["name_tr"]))
@@ -158,7 +176,7 @@ for did, (dname, dg) in sorted(dist.items()):
             note = f"kasaba: ayrı leke {int(cpop[dom[aid]])} kişi (2.000-5.000)" + (f", eski belde {belde}" if belde and not old else "")
         elif belde and not old:
             sinif = "kirsal_belde"
-            note = f"eski belde merkezi ({belde}, 2012'ye kadar)"
+            note = f"eski belde merkezi ({belde}, 2014'e kadar)"
         elif old and urban:
             note = "2013 öncesi mahalle, kasabada"
         elif old:
@@ -178,7 +196,7 @@ for did, (dname, dg) in sorted(dist.items()):
             n_sat += 1; sat_pop += p or 0
         nb_rows.append(dict(district=dname, area_id=aid, name=f["properties"]["name_tr"], code=code,
                             first_seen=r["first_seen"] if r else None, buildings=nb, in_town=nin,
-                            urban=urban, sinif=sinif, note=note, share=round(share, 2), pop2025=p, hh=e.get("HouseholdCount"), dwellings=e.get("HousingCount")))
+                            urban=urban, sinif=sinif, note=note, share=round(share, 2), pop=p, hh=e.get("HouseholdCount"), dwellings=e.get("HousingCount")))
         if p:
             total_pop += p
             if urban:

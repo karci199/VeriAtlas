@@ -15,6 +15,11 @@ hundreds of megabytes that would otherwise have to be ferried out of the tab in 
 Only that directory, only `.json` names, only bodies that parse as JSON; CORS is opened
 for it because the push comes from another origin.
 
+A third: `POST /karar` upserts the user's urban/rural decisions from web/kentkir.html into
+scripts/analiz/kent_kir_2026_09_27/kullanici_karar.json ({area_id: {s, y, n, st, sm}}; an empty
+decision deletes the entry). Written through a temporary file under a lock, so two tabs
+saving at once cannot leave half a file.
+
 Run:  uv run python scripts/serve.py [port]
 """
 
@@ -24,11 +29,14 @@ import os
 import re
 import socketserver
 import sys
+import threading
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8123
 INGEST = ROOT / "raw" / "endeksa" / "geo"
+DECISIONS = ROOT / "scripts" / "analiz" / "kent_kir_2026_09_27" / "kullanici_karar.json"
+LOCK = threading.Lock()
 NAME = re.compile(r"^[A-Za-z0-9_-]{1,40}\.json$")
 
 
@@ -91,7 +99,33 @@ class NoCache(http.server.SimpleHTTPRequestHandler):
         self.send_response(204)
         self.end_headers()
 
+    def save_decisions(self):
+        try:
+            upd = json.loads(self.rfile.read(int(self.headers.get("Content-Length", "0"))))
+            assert isinstance(upd, dict)
+        except (ValueError, AssertionError):
+            self.send_error(400, "not a JSON object")
+            return
+        with LOCK:
+            cur = json.loads(DECISIONS.read_text(encoding="utf-8")) if DECISIONS.exists() else {}
+            for aid, d in upd.items():
+                d = {k: str(v).strip() for k, v in (d or {}).items() if k in ("s", "y", "n", "st", "sm") and str(v or "").strip()}
+                if d:
+                    cur[aid] = d
+                else:
+                    cur.pop(aid, None)
+            tmp = DECISIONS.with_suffix(".tmp")
+            tmp.write_text(json.dumps(cur, ensure_ascii=False, indent=0, sort_keys=True), encoding="utf-8")
+            tmp.replace(DECISIONS)
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.end_headers()
+        self.wfile.write(json.dumps({"kayit": len(cur)}).encode())
+
     def do_POST(self):
+        if self.path == "/karar":
+            self.save_decisions()
+            return
         name = self.path.rsplit("/", 1)[-1]
         if not self.path.startswith("/ingest/") or not NAME.match(name):
             self.send_error(404)
