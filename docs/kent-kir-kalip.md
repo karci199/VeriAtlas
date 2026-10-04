@@ -67,3 +67,16 @@ Kocaali ilçe nüfusu 2018 ve 2023'te, Ferizli Damlık cezaevi 2022-24'te seriyi
 
 **Bilinen tutarsızlıklar:** 130 belde birimi (Ankara-Manisa) küme adsız; eşik altı eski belde bazen köy bazen belde
 (yukarıdaki azalma kuralı); merkez saydığımız yeni apartman kuşaklarının uydu lekesi 0 (yeni yapı eksik).
+
+## Ordu (52) — elle karar notları ve şerhler (2026-10-04)
+
+19 ilçe, 774 birim, kent %60,6 (kırsal belde dahil %63,0), 2013'te %51,3. Kararlar `kullanici_karar.json`.
+
+Şerhler (sonra dönüp bakılacak):
+- **Akçatepe** (Altınordu, 1.984) kırsal belde yazıldı ama 2013'te 530'du (+%274): nüfusun büyük kısmı kurum (üniversite/yurt). Aynı mantıkla Efirli (3.522) ve Yüceler (2.137, cezaevi) köy yazıldı, tutarsız; Akçatepe köy olabilir.
+- **Turnasuyu** (Gülyalı) Ordu kıyı şeridine bitişik görünse de kentsel belde yazıldı (kullanıcı kararı); Gülyalı kent oranının %52'si bu tek birimden.
+- **Gürgentepe** 6 mahalle merkez (konut/bina 0,7–2,4, boru hattı köy diyordu); **Kale** (Gölköy) merkez, **Karakoca** (Ulubey) köy: ilkinde kasaba dokusu mahalleye giriyor, ikincisinde mahalle boş.
+- **Tepealan** (−%28) kırsal belde, **Akpınar** (−%28) köy: ayrım yoğunlaşmış çekirdek var/yok (foto). Eşik altı eski belde: düşüyorsa köy, sabitse belde (Yalıköy −%4 kırsal belde).
+- **Bolaman + Güvercinlik** kırsal belde birleşik (2.383); Güvercinlik'in 2013 verisi yok (sonradan mahalle), 2013 karşılaştırması ilçe toplamıyla yapıldı.
+- 2013'ten beri 12 kent mahallesi 1,6 ila 4,5 katına çıkmış (Fatsa Ayazlı ×4,5, Altınordu Cumhuriyet ×2,8): yeni yapılaşma ya da adres kaydı; Altınordu 2013→2014 +%5,2 sıçrama (2014 tabanı daha güvenilir olabilir).
+- Boru hattı `secim_zaman.py` eski Ordu merkez kodu `x1552` düzeltildi; başka illerde eski `x####` kodları 2007-2011 sınıfsız oy kaybına yol açıyor olabilir.
