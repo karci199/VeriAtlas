@@ -196,6 +196,26 @@ for s in set(SEMT.values()):
     m = np.array([SEMT.get(a) == s for a in IDS])
     if m.any():
         GROUPS[("semt", NAME[IDS[np.where(m)[0][0]]], s)] = m
+# groups of the manual decisions: centre, every kentsel/kırsal belde cluster, villages (per district)
+KARAR = json.loads((Path(__file__).parent / "kullanici_karar.json").read_text(encoding="utf-8"))
+
+
+def grup_of(a):
+    k = KARAR.get(a)
+    if not k:
+        return ""
+    if k["s"] == "İlçe Merkezi":
+        return "Merkez"
+    if k["s"] == "Köy":
+        return "Köy"
+    return ("Kentsel belde " if k["s"] == "Kentsel Belde" else "Kırsal belde ") + (k.get("y") or "?")
+
+
+GLAB = np.array([grup_of(a) for a in IDS])
+for did in DIST:
+    for lab in set(GLAB[DID == did]) - {""}:
+        m = (DID == did) & (GLAB == lab)
+        GROUPS[("grup", NAME[IDS[np.where(m)[0][0]]], lab)] = m
 draws = {k: [] for k in GROUPS}; nbd = []
 for r in range(N):
     X = fit(build(True)[0], *child_margin(True))
@@ -226,6 +246,16 @@ rnd(pl.DataFrame([dict(ilce=i, semt=s, nufus=int(P[GROUPS[k]].sum()), **dict(zip
                   for k, v in draws.items() if k[0] == "semt" for _, i, s in [k]])).sort("ilce", "nufus", descending=[False, True]).write_csv(D / f"yas_mc_{PLATE}_semt.csv")
 rnd(pl.DataFrame(dict(area_id=IDS, ilce=[NAME[a] for a in IDS], kent_kir=KK, nufus=P, kaynak=src0, ortanca=np.median(nbd, 0),
                       p5=np.percentile(nbd, 5, 0), p95=np.percentile(nbd, 95, 0)))).write_csv(D / f"yas_mc_{PLATE}_mahalle.csv")
+
+MID = (EDGES[:-1] + EDGES[1:]) / 2
+rows_g = []
+for (kind, ilce, lab), v in draws.items():
+    if kind != "grup":
+        continue
+    m = GROUPS[(kind, ilce, lab)]; o, lo, hi = summ(v); mm = (np.array(v, float) * MID).sum(1) / np.array(v, float).sum(1)
+    rows_g.append(dict(ilce=ilce, grup=lab, birim=int(m.sum()), nufus=int(P[m].sum()), ortanca=o, p5=lo, p95=hi, ortalama=float(np.median(mm)),
+                       ort_p5=float(np.percentile(mm, 5)), ort_p95=float(np.percentile(mm, 95)), endeksa_pay=float(P[m & (src0 == "A")].sum() / max(P[m].sum(), 1) * 100)))
+rnd(pl.DataFrame(rows_g)).sort("ilce", "nufus", descending=[False, True]).write_csv(D / f"yas_mc_{PLATE}_grup.csv")
 
 # hold-out
 hold = []
