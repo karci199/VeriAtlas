@@ -110,6 +110,11 @@ DEFER = {
     ("bitkisel-ortu-sebze", 9),
     ("bitkisel-ortu-sebze", 18),
 }
+#: Greenhouse ornamentals ("bitkisel-ortu-sus"): from il30 on every single-year query timed out
+#: on the CSV button (~3 minutes each, no file for 31 hours, 2026-10-05), i.e. empty reports. A
+#: whole measure of that kind would take ~65 hours before hayvan and alet are reached, so the
+#: whole measure goes to the end.
+DEFER_MEASURES = {"bitkisel-ortu-sus"}
 SPARSE = {("bitkisel-sebze", 9), ("bitkisel-sebze", 45)}
 
 
@@ -239,7 +244,10 @@ def one_province(topic, key, row, province, years, first, state, failed) -> None
             STATE.write_text(json.dumps(state, indent=1), encoding="utf-8")
             log("   sinir asildi, grup", size, "yila indi:", key, province)
             continue
-        if outcome == "fail":
+        # A single year of a sparse measure that times out on "Rapor Oluştur" is the crop's
+        # absence that year (empty report, checked 2026-09-27 on Bitlis, Kars, Gaziantep): a
+        # second 60 s attempt only repeats the wait.
+        if outcome == "fail" and not (is_sparse(key, province) and len(group) == 1):
             outcome = run(topic, key, row, province, group)
         if outcome != "ok":
             failed.append(f"{key} il{province:02d} {min(group)}-{max(group)}")
@@ -276,7 +284,7 @@ def main() -> None:
             "| butun ulke tek sorguda" if whole else "| il il",
         )
         for province in provinces:
-            if (key, province) in DEFER:
+            if (key, province) in DEFER or key in DEFER_MEASURES:
                 deferred.append((topic, key, row, province, years, first))
                 log("   sona birakildi:", key, f"il{province:02d}")
                 continue
