@@ -35521,9 +35521,8 @@
 "y": "Abdioğlu"
 },
 "TR-01-015-191": {
-"n": "elle: Camili kırsal belde (birleşik küme, kullanıcı foto)",
-"s": "Kırsal Belde",
-"y": "Camili"
+"n": "elle: köy (Camili/Köklüce kümesinden tarla boşluğuyla ayrı, kullanıcı)",
+"s": "Köy"
 },
 "TR-01-015-226": {
 "n": "elle: Abdioğlu kırsal belde (birleşik küme, kullanıcı foto)",
@@ -35536,7 +35535,7 @@
 "y": "Akarcalı"
 },
 "TR-01-015-244": {
-"n": "elle: Camili kırsal belde (birleşik küme, kullanıcı foto)",
+"n": "elle: Camili kırsal belde (Camili + Köklüce, bitişik; kullanıcı)",
 "s": "Kırsal Belde",
 "y": "Camili"
 },
@@ -35556,12 +35555,11 @@
 "y": "Misis"
 },
 "TR-01-015-192": {
-"n": "elle: Camili kırsal belde (birleşik küme, kullanıcı foto)",
-"s": "Kırsal Belde",
-"y": "Camili"
+"n": "elle: köy (Camili/Köklüce kümesinden tarla boşluğuyla ayrı, kullanıcı)",
+"s": "Köy"
 },
 "TR-01-015-193": {
-"n": "elle: Camili kırsal belde (birleşik küme, kullanıcı foto)",
+"n": "elle: Camili kırsal belde (Camili + Köklüce, bitişik; kullanıcı)",
 "s": "Kırsal Belde",
 "y": "Camili"
 },
