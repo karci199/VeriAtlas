@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kent/Kır Uydu Haritası</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<style>
+  :root { --bg:#0f1720; --panel:#17212b; --ink:#e8eef4; --mute:#93a4b5; --line:#2a3947; }
+  * { box-sizing:border-box; }
+  html, body { height:100%; margin:0; background:var(--bg); color:var(--ink); font:14px/1.4 system-ui, "Segoe UI", sans-serif; }
+  #bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:8px 12px; background:var(--panel); border-bottom:1px solid var(--line); }
+  #bar label { color:var(--mute); font-size:12px; display:flex; align-items:center; gap:4px; }
+  select, input[type=search] { background:#0f1720; color:var(--ink); border:1px solid var(--line); border-radius:6px; padding:5px 8px; font:inherit; }
+  #map { position:absolute; top:46px; bottom:0; left:0; right:0; background:#0b1118; }
+  .panel { position:absolute; z-index:1000; background:rgba(23,33,43,.94); border:1px solid var(--line); border-radius:8px; padding:10px 12px; max-width:320px; }
+  #legend { left:12px; bottom:28px; }
+  #legend div.row { display:flex; align-items:center; gap:8px; margin:3px 0; }
+  #legend i { width:14px; height:14px; border-radius:3px; display:inline-block; border:2px solid; }
+  #legend b { font-variant-numeric:tabular-nums; }
+  #legend small { color:var(--mute); }
+  #info { right:12px; top:58px; min-width:250px; display:none; }
+  #info h3 { margin:0 0 4px; font-size:15px; }
+  #info dl { margin:6px 0 0; display:grid; grid-template-columns:auto 1fr; gap:2px 10px; }
+  #info dt { color:var(--mute); } #info dd { margin:0; }
+  #info .note { color:var(--mute); font-size:12px; margin-top:6px; max-height:90px; overflow:auto; }
+  #msg { left:50%; top:58px; transform:translateX(-50%); display:none; }
+  .lbl { background:rgba(15,23,32,.72); color:#fff; border:0; box-shadow:none; font-size:11px; padding:1px 4px; white-space:nowrap; }
+  .leaflet-tooltip.tip { background:rgba(15,23,32,.92); color:#fff; border:1px solid #3a4b5c; }
+  @media (max-width:640px) { #info { left:12px; right:12px; top:auto; bottom:150px; max-width:none; } }
+</style>
+</head>
+<body>
+<div id="bar">
+  <label>İl <select id="il"></select></label>
+  <label>İlçe <select id="ilce"></select></label>
+  <label><input type="checkbox" id="fill"> dolgu</label>
+  <label><input type="checkbox" id="names" checked> mahalle adları</label>
+  <label><input type="checkbox" id="sat" checked> uydu</label>
+  <input type="search" id="q" placeholder="mahalle ara…" list="dl">
+  <datalist id="dl"></datalist>
+</div>
+<div id="map"></div>
+<div id="legend" class="panel"></div>
+<div id="info" class="panel"></div>
+<div id="msg" class="panel"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+const KARAR_URL = "/scripts/analiz/kent_kir_2026_09_27/kullanici_karar.json";
+const KONTROL_URL = "/public/kentkir_kontrol.json";
+const GEO = id => `/public/geo/neighbourhoods/${id}.geojson`;
+const CLS = {
+  "İlçe Merkezi":  {c:"#ff4d4d", t:"Merkez"},
+  "İl Merkezi":    {c:"#ff4d4d", t:"Merkez"},
+  "Kentsel Belde": {c:"#ffa726", t:"Kentsel belde"},
+  "Kırsal Belde":  {c:"#7bd88f", t:"Kırsal belde"},
+  "Köy":           {c:"#4fc3f7", t:"Köy"},
+};
+const NONE = {c:"#b0b8c0", t:"Karar yok"};
+const $ = id => document.getElementById(id);
+const fmt = n => n == null ? "–" : Math.round(n).toLocaleString("tr-TR");
+
+let karar = {}, rows = new Map(), tree = {}, layer = null, labels = null, feats = [];
+
+const map = L.map("map", {zoomControl:true, preferCanvas:true}).setView([40.43, 29.72], 13);
+const esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {maxZoom:19, attribution:"Esri World Imagery"}).addTo(map);
+const roads = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}", {maxZoom:19, opacity:.9}).addTo(map);
+const osm = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {maxZoom:19, attribution:"© OpenStreetMap"});
+
+function msg(t) { const m = $("msg"); m.textContent = t; m.style.display = t ? "block" : "none"; }
+
+async function init() {
+  msg("Veri yükleniyor…");
+  const [k, c] = await Promise.all([fetch(KARAR_URL).then(r => r.json()), fetch(KONTROL_URL).then(r => r.json())]);
+  karar = k;
+  const ix = Object.fromEntries(c.keys.map((n, i) => [n, i]));
+  for (const r of c.rows) {
+    const id = r[0], did = id.slice(0, id.lastIndexOf("-"));
+    rows.set(id, {ad:r[ix.ad], il:r[ix.il], ilce:r[ix.ilce], n:r[ix.n], n0:r[ix.n0], oneri:r[ix.oneri], ih:r[ix.ih], kpb:r[ix.kpb], stat:r[ix.stat], aat:r[ix.aat], deg:r[ix.deg]});
+    ((tree[r[ix.il]] ??= {})[r[ix.ilce]] ??= {id:did});
+  }
+  const ils = Object.keys(tree).sort((a, b) => a.localeCompare(b, "tr"));
+  const withDecision = new Set(Object.keys(karar).map(a => rows.get(a)?.il).filter(Boolean));
+  $("il").innerHTML = ils.map(i => `<option value="${i}">${i}${withDecision.has(i) ? " ✓" : ""}</option>`).join("");
+  const q = new URLSearchParams(location.hash.slice(1));
+  $("il").value = q.get("il") || "Bursa";
+  fillIlce(q.get("ilce") || "İznik");
+  msg("");
+  load();
+}
+function fillIlce(pref) {
+  const il = $("il").value, names = Object.keys(tree[il]).sort((a, b) => a.localeCompare(b, "tr"));
+  $("ilce").innerHTML = names.map(i => `<option>${i}</option>`).join("");
+  if (pref && names.includes(pref)) $("ilce").value = pref;
+}
+async function load() {
+  const il = $("il").value, ilce = $("ilce").value, id = tree[il][ilce].id;
+  location.hash = `il=${encodeURIComponent(il)}&ilce=${encodeURIComponent(ilce)}`;
+  msg("Sınırlar yükleniyor…");
+  const g = await fetch(GEO(id)).then(r => r.json());
+  feats = g.features;
+  draw(true);
+  msg("");
+}
+function style(f, hover) {
+  const k = karar[f.properties.area_id], cl = k ? (CLS[k.s] || NONE) : NONE;
+  return {color:cl.c, weight:hover ? 4 : 2.4, opacity:1, dashArray:k ? null : "5 5",
+          fillColor:cl.c, fillOpacity:$("fill").checked ? (hover ? .45 : .28) : (hover ? .18 : .02)};
+}
+function draw(fit) {
+  if (layer) map.removeLayer(layer);
+  if (labels) map.removeLayer(labels);
+  layer = L.geoJSON({type:"FeatureCollection", features:feats}, {
+    style: f => style(f, false),
+    onEachFeature: (f, l) => {
+      const a = f.properties.area_id, r = rows.get(a), k = karar[a], cl = k ? (CLS[k.s] || NONE) : NONE;
+      l.bindTooltip(`<b>${f.properties.name_tr}</b><br>${cl.t}${k?.y ? " · " + k.y : ""}<br>${fmt(r?.n)} kişi`, {sticky:true, className:"tip"});
+      l.on("mouseover", () => l.setStyle(style(f, true)));
+      l.on("mouseout", () => l.setStyle(style(f, false)));
+      l.on("click", () => show(f));
+    }
+  }).addTo(map);
+  labels = L.layerGroup();
+  for (const f of feats) {
+    const c = L.geoJSON(f).getBounds().getCenter();
+    L.marker(c, {interactive:false, icon:L.divIcon({className:"", html:`<span class="lbl">${f.properties.name_tr}</span>`, iconSize:[0, 0]})}).addTo(labels);
+  }
+  if ($("names").checked) labels.addTo(map);
+  if (fit) map.fitBounds(layer.getBounds(), {padding:[20, 20]});
+  $("dl").innerHTML = feats.map(f => `<option value="${f.properties.name_tr}">`).join("");
+  legend();
+}
+function legend() {
+  const agg = {}; let tot = 0;
+  for (const f of feats) {
+    const a = f.properties.area_id, k = karar[a], cl = k ? (CLS[k.s] || NONE) : NONE, r = rows.get(a);
+    const e = (agg[cl.t] ??= {c:cl.c, n:0, p:0}); e.n++; e.p += r?.n || 0; tot += r?.n || 0;
+  }
+  const order = ["Merkez", "Kentsel belde", "Kırsal belde", "Köy", "Karar yok"];
+  $("legend").innerHTML = `<b>${$("ilce").value}</b> <small>${fmt(tot)} kişi</small>` + order.filter(o => agg[o]).map(o =>
+    `<div class="row"><i style="border-color:${agg[o].c};background:${agg[o].c}44"></i>${o} <b>${agg[o].n}</b> <small>${fmt(agg[o].p)} (%${tot ? Math.round(100 * agg[o].p / tot) : 0})</small></div>`).join("");
+}
+function show(f) {
+  const a = f.properties.area_id, r = rows.get(a) || {}, k = karar[a], cl = k ? (CLS[k.s] || NONE) : NONE;
+  const ch = r.n0 ? ((r.n / r.n0 - 1) * 100) : null;
+  $("info").innerHTML = `<h3>${f.properties.name_tr}</h3><span style="color:${cl.c}">● ${cl.t}${k?.y ? " · " + k.y : ""}</span>
+    <dl><dt>Nüfus 2025</dt><dd>${fmt(r.n)}</dd><dt>2013</dt><dd>${fmt(r.n0)}${ch == null ? "" : " (" + (ch >= 0 ? "+" : "") + ch.toFixed(0) + "%)"}</dd>
+    <dt>Hat önerisi</dt><dd>${r.oneri || "–"}</dd><dt>Kaynaklar</dt><dd>${r.ih || "–"}</dd><dt>TÜİK 2012</dt><dd>${r.stat || "–"}</dd>
+    <dt>AATOPLU</dt><dd>${r.aat || "–"}</dd><dt>DEGURBA</dt><dd>${r.deg || "–"}</dd><dt>Konut/bina</dt><dd>${r.kpb ?? "–"}</dd></dl>
+    <div class="note">${k?.n || ""}</div>`;
+  $("info").style.display = "block";
+}
+$("il").onchange = () => { fillIlce(); load(); };
+$("ilce").onchange = load;
+$("fill").onchange = () => layer && layer.setStyle(f => style(f, false));
+$("names").onchange = () => $("names").checked ? labels.addTo(map) : map.removeLayer(labels);
+$("sat").onchange = () => { if ($("sat").checked) { map.removeLayer(osm); esri.addTo(map); roads.addTo(map); } else { map.removeLayer(esri); map.removeLayer(roads); osm.addTo(map); } };
+$("q").onchange = () => {
+  const t = $("q").value.trim().toLocaleLowerCase("tr"), f = feats.find(x => x.properties.name_tr.toLocaleLowerCase("tr") === t);
+  if (f) { map.fitBounds(L.geoJSON(f).getBounds(), {maxZoom:17}); show(f); }
+};
+init().catch(e => msg("Hata: " + e.message));
+</script>
+</body>
+</html>
