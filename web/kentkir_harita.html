@@ -74,7 +74,7 @@ const KONTROL_URL = "/public/kentkir_kontrol.json";
 const GEO = id => `/public/geo/neighbourhoods/${id}.geojson`;
 const CLS = {
   "İlçe Merkezi":  {c:"#ff4d4d", t:"Merkez"},
-  "İl Merkezi":    {c:"#ff4d4d", t:"Merkez"},
+  "İl Merkezi":    {c:"#ff4d4d", t:"İl merkezi"},
   "Kentsel Belde": {c:"#ffa726", t:"Kentsel belde"},
   "Kırsal Belde":  {c:"#7bd88f", t:"Kırsal belde"},
   "Köy":           {c:"#4fc3f7", t:"Köy"},
@@ -176,7 +176,7 @@ function showMulti() {
   if (!sel.size) { $("info").style.display = "none"; return; }
   const ids = [...sel], tot = ids.reduce((t, a) => t + (rows.get(a)?.n || 0), 0);
   const names = [...new Set(Object.values(karar).map(k => k.y).filter(Boolean))].sort((x, y) => x.localeCompare(y, "tr"));
-  const classes = ["İlçe Merkezi", "Kentsel Belde", "Kırsal Belde", "Köy"];
+  const classes = ["İlçe Merkezi", "İl Merkezi", "Kentsel Belde", "Kırsal Belde", "Köy"];
   $("info").innerHTML = `<h3>${ids.length} mahalle seçili</h3><small>${fmt(tot)} kişi</small>
     <div class="note" style="max-height:80px">${ids.map(a => rows.get(a)?.ad).join(", ")}</div>
     <input id="ky" list="kdl" placeholder="belde / küme adı (hepsine)"><datalist id="kdl">${names.map(n => `<option value="${n}">`).join("")}</datalist>
@@ -204,7 +204,7 @@ function show(f) {
   cur = f;
   const a = f.properties.area_id, r = rows.get(a) || {}, k = karar[a] || {}, cl = k.s ? (CLS[k.s] || NONE) : NONE;
   const ch = r.n0 ? ((r.n / r.n0 - 1) * 100) : null;
-  const classes = ["İlçe Merkezi", "Kentsel Belde", "Kırsal Belde", "Köy"];
+  const classes = ["İlçe Merkezi", "İl Merkezi", "Kentsel Belde", "Kırsal Belde", "Köy"];
   const btn = classes.map(c => `<button data-s="${c}" class="${k.s === c ? "on" : ""}" style="border-color:${CLS[c].c};${k.s === c ? "background:" + CLS[c].c : ""}">${CLS[c].t}</button>`).join("")
     + `<button data-s="" style="border-color:#888">Sil</button>`;
   const nb = (r.n || 0) / Math.max(r.n0 || 1, r.n || 1), nb0 = (r.n0 || 0) / Math.max(r.n0 || 1, r.n || 1);
