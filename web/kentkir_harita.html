@@ -27,6 +27,21 @@
   #msg { left:50%; top:58px; transform:translateX(-50%); display:none; }
   .lbl { background:rgba(15,23,32,.72); color:#fff; border:0; box-shadow:none; font-size:11px; padding:1px 4px; white-space:nowrap; }
   .leaflet-tooltip.tip { background:rgba(15,23,32,.92); color:#fff; border:1px solid #3a4b5c; }
+  #info { max-height:calc(100% - 80px); overflow:auto; max-width:340px; }
+  .btns { display:flex; flex-wrap:wrap; gap:5px; margin:8px 0; }
+  .btns button { border:2px solid; background:transparent; color:var(--ink); border-radius:6px; padding:4px 8px; cursor:pointer; font:inherit; }
+  .btns button.on { color:#0f1720; font-weight:600; }
+  #info input { width:100%; margin:2px 0; background:#0f1720; color:var(--ink); border:1px solid var(--line); border-radius:6px; padding:4px 6px; font:inherit; }
+  .blk { border-top:1px solid var(--line); margin-top:8px; padding-top:6px; }
+  .blk h4 { margin:0 0 3px; font-size:12px; color:var(--mute); text-transform:uppercase; letter-spacing:.04em; }
+  .bar { height:8px; background:#0f1720; border-radius:4px; overflow:hidden; display:flex; margin:3px 0; }
+  .bar i { display:block; height:100%; }
+  #sv { color:var(--mute); font-size:12px; min-height:16px; }
+  #tbl { position:absolute; top:46px; bottom:0; left:0; right:0; overflow:auto; background:var(--bg); display:none; z-index:1500; }
+  #tbl table { border-collapse:collapse; width:100%; font-size:12px; }
+  #tbl th, #tbl td { padding:3px 8px; border-bottom:1px solid var(--line); white-space:nowrap; text-align:left; }
+  #tbl th { position:sticky; top:0; background:var(--panel); cursor:pointer; }
+  #tbl td.num { text-align:right; font-variant-numeric:tabular-nums; }
   @media (max-width:640px) { #info { left:12px; right:12px; top:auto; bottom:150px; max-width:none; } }
 </style>
 </head>
@@ -37,10 +52,12 @@
   <label><input type="checkbox" id="fill"> dolgu</label>
   <label><input type="checkbox" id="names" checked> mahalle adları</label>
   <label><input type="checkbox" id="sat" checked> uydu</label>
+  <button id="tb">Tablo</button>
   <input type="search" id="q" placeholder="mahalle ara…" list="dl">
   <datalist id="dl"></datalist>
 </div>
 <div id="map"></div>
+<div id="tbl"></div>
 <div id="legend" class="panel"></div>
 <div id="info" class="panel"></div>
 <div id="msg" class="panel"></div>
@@ -76,7 +93,7 @@ async function init() {
   const ix = Object.fromEntries(c.keys.map((n, i) => [n, i]));
   for (const r of c.rows) {
     const id = r[0], did = id.slice(0, id.lastIndexOf("-"));
-    rows.set(id, {ad:r[ix.ad], il:r[ix.il], ilce:r[ix.ilce], n:r[ix.n], n0:r[ix.n0], oneri:r[ix.oneri], ih:r[ix.ih], kpb:r[ix.kpb], stat:r[ix.stat], aat:r[ix.aat], deg:r[ix.deg]});
+    rows.set(id, Object.fromEntries(c.keys.map((n, i) => [n, r[i]])));
     ((tree[r[ix.il]] ??= {})[r[ix.ilce]] ??= {id:did});
   }
   const ils = Object.keys(tree).sort((a, b) => a.localeCompare(b, "tr"));
@@ -140,16 +157,62 @@ function legend() {
   $("legend").innerHTML = `<b>${$("ilce").value}</b> <small>${fmt(tot)} kişi</small>` + order.filter(o => agg[o]).map(o =>
     `<div class="row"><i style="border-color:${agg[o].c};background:${agg[o].c}44"></i>${o} <b>${agg[o].n}</b> <small>${fmt(agg[o].p)} (%${tot ? Math.round(100 * agg[o].p / tot) : 0})</small></div>`).join("");
 }
+let cur = null;
+const pc = (a, b) => b ? (100 * a / b).toFixed(0) + "%" : "–";
+function blk(t, body) { return `<div class="blk"><h4>${t}</h4>${body}</div>`; }
 function show(f) {
-  const a = f.properties.area_id, r = rows.get(a) || {}, k = karar[a], cl = k ? (CLS[k.s] || NONE) : NONE;
+  cur = f;
+  const a = f.properties.area_id, r = rows.get(a) || {}, k = karar[a] || {}, cl = k.s ? (CLS[k.s] || NONE) : NONE;
   const ch = r.n0 ? ((r.n / r.n0 - 1) * 100) : null;
-  $("info").innerHTML = `<h3>${f.properties.name_tr}</h3><span style="color:${cl.c}">● ${cl.t}${k?.y ? " · " + k.y : ""}</span>
-    <dl><dt>Nüfus 2025</dt><dd>${fmt(r.n)}</dd><dt>2013</dt><dd>${fmt(r.n0)}${ch == null ? "" : " (" + (ch >= 0 ? "+" : "") + ch.toFixed(0) + "%)"}</dd>
-    <dt>Hat önerisi</dt><dd>${r.oneri || "–"}</dd><dt>Kaynaklar</dt><dd>${r.ih || "–"}</dd><dt>TÜİK 2012</dt><dd>${r.stat || "–"}</dd>
-    <dt>AATOPLU</dt><dd>${r.aat || "–"}</dd><dt>DEGURBA</dt><dd>${r.deg || "–"}</dd><dt>Konut/bina</dt><dd>${r.kpb ?? "–"}</dd></dl>
-    <div class="note">${k?.n || ""}</div>`;
+  const classes = ["İlçe Merkezi", "Kentsel Belde", "Kırsal Belde", "Köy"];
+  const btn = classes.map(c => `<button data-s="${c}" class="${k.s === c ? "on" : ""}" style="border-color:${CLS[c].c};${k.s === c ? "background:" + CLS[c].c : ""}">${CLS[c].t}</button>`).join("")
+    + `<button data-s="" style="border-color:#888">Sil</button>`;
+  const nb = (r.n || 0) / Math.max(r.n0 || 1, r.n || 1), nb0 = (r.n0 || 0) / Math.max(r.n0 || 1, r.n || 1);
+  const sh = (n, d) => n == null ? "–" : n + d;
+  $("info").innerHTML = `<h3>${f.properties.name_tr} <small style="color:var(--mute)">${r.ilce || ""}</small></h3>
+    <span style="color:${cl.c}">● ${cl.t}${k.y ? " · " + k.y : ""}</span>
+    <div class="btns">${btn}</div>
+    <input id="ky" placeholder="küme / birleşik belde adı" value="${(k.y || "").replace(/"/g, "&quot;")}">
+    <input id="kn" placeholder="not" value="${(k.n || "").replace(/"/g, "&quot;")}">
+    <div id="sv"></div>
+    ${blk("1 · Nüfus", `<b>${fmt(r.n)}</b> kişi (2025) · 2013: ${fmt(r.n0)}${ch == null ? "" : " (" + (ch >= 0 ? "+" : "") + ch.toFixed(0) + "%)"}
+      <div class="bar"><i style="width:${nb0 * 100}%;background:#6b7c8c"></i></div><div class="bar"><i style="width:${nb * 100}%;background:#4fc3f7"></i></div>
+      <small>alan ${r.area == null ? "–" : (+r.area).toFixed(1)} km² · yoğunluk ${fmt(r.dens)}/km²</small>`)}
+    ${blk("2 · Yaş", `0-17: ${sh(r.u17 == null ? null : (r.u17 * (r.u17 <= 1 ? 100 : 1)).toFixed(0), "%")} · 65+: ${sh(r.o65 == null ? null : (r.o65 * (r.o65 <= 1 ? 100 : 1)).toFixed(0), "%")} · ortanca ${sh(r.med, "")}`)}
+    ${blk("3 · Yapı", `bina ${fmt(r.bl)} · konut/bina ${r.kpb ?? "–"} · yazlık payı ${r.yaz ?? "–"} · leke ${r.leke ?? "–"}`)}
+    ${blk("4 · Yerler / kurum", `yerleşim: ${r.yer ?? "–"} · tür: ${r.tur ?? "–"} · semt: ${r.semt ?? "–"} · kurum: ${r.kurum ?? "–"}`)}
+    ${blk("5 · Kaynaklar", `TÜİK 2012: ${r.stat || "–"}<br>AATOPLU: ${r.aat || "–"}<br>DEGURBA: ${r.deg || "–"}<br>bina yöntemi: ${r.bina || "–"}`)}
+    ${blk("6 · Öneri", `${r.oneri || "–"} · uyum: ${r.ih || "–"} · belirsizlik ${r.bs ?? "–"}${r.not ? "<div class=note>" + r.not + "</div>" : ""}`)}`;
   $("info").style.display = "block";
+  for (const b of $("info").querySelectorAll(".btns button")) b.onclick = () => save(a, b.dataset.s);
+  $("ky").onchange = $("kn").onchange = () => karar[a]?.s && save(a, karar[a].s);
 }
+async function save(a, s) {
+  const d = s ? {s, y:$("ky").value.trim(), n:$("kn").value.trim()} : {};
+  const old = karar[a];
+  if (old) for (const k of ["st", "sm"]) if (old[k] && s) d[k] = old[k];
+  $("sv").textContent = "kaydediliyor…";
+  try {
+    const r = await fetch("/karar", {method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({[a]:d})});
+    if (!r.ok) throw new Error(r.status);
+    const j = await r.json();
+    if (s) karar[a] = Object.fromEntries(Object.entries(d).filter(([, v]) => v)); else delete karar[a];
+    $("sv").textContent = "kaydedildi ✓ · " + fmt(j.kayit) + " karar";
+    draw(false); show(cur);
+    $("sv").textContent = "kaydedildi ✓ · " + fmt(j.kayit) + " karar";
+  } catch (e) { $("sv").textContent = "KAYDEDİLEMEDİ: " + e.message; }
+}
+let sortK = "n", sortD = -1;
+function table() {
+  const il = $("il").value, ilce = $("ilce").value;
+  const cols = [["ad", "Mahalle"], ["s", "Sınıf"], ["y", "Küme"], ["n", "Nüfus 2025"], ["n0", "2013"], ["dens", "Yoğ."], ["u17", "0-17"], ["o65", "65+"], ["med", "Ort. yaş"], ["kpb", "Konut/bina"], ["yaz", "Yazlık"], ["yer", "Yer"], ["stat", "TÜİK 2012"], ["aat", "AATOPLU"], ["oneri", "Öneri"]];
+  const list = feats.map(f => ({...rows.get(f.properties.area_id), ...(karar[f.properties.area_id] || {}), ad:f.properties.name_tr}));
+  list.sort((x, y) => (typeof x[sortK] === "number" || typeof y[sortK] === "number" ? ((x[sortK] ?? -1) - (y[sortK] ?? -1)) : String(x[sortK] ?? "").localeCompare(String(y[sortK] ?? ""), "tr")) * sortD);
+  $("tbl").innerHTML = `<table><tr>${cols.map(c => `<th data-k="${c[0]}">${c[1]}</th>`).join("")}</tr>` +
+    list.map(r => `<tr>${cols.map(c => `<td class="${typeof r[c[0]] === "number" ? "num" : ""}">${typeof r[c[0]] === "number" ? fmt(r[c[0]]) : (r[c[0]] ?? "")}</td>`).join("")}</tr>`).join("") + "</table>";
+  for (const th of $("tbl").querySelectorAll("th")) th.onclick = () => { sortD = sortK === th.dataset.k ? -sortD : -1; sortK = th.dataset.k; table(); };
+}
+$("tb").onclick = () => { const on = $("tbl").style.display !== "block"; $("tbl").style.display = on ? "block" : "none"; $("tb").textContent = on ? "Harita" : "Tablo"; if (on) table(); };
 $("il").onchange = () => { fillIlce(); load(); };
 $("ilce").onchange = load;
 $("fill").onchange = () => layer && layer.setStyle(f => style(f, false));
