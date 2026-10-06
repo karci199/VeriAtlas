@@ -39,9 +39,13 @@
   .bar i { display:block; height:100%; }
   #sv { color:var(--mute); font-size:12px; min-height:16px; }
   #tbl { position:absolute; top:46px; bottom:0; left:0; right:0; overflow:auto; background:var(--bg); display:none; z-index:1500; }
-  #tbl table { border-collapse:collapse; width:100%; font-size:12px; }
-  #tbl th, #tbl td { padding:3px 8px; border-bottom:1px solid var(--line); white-space:nowrap; text-align:left; }
-  #tbl th { position:sticky; top:0; background:var(--panel); cursor:pointer; }
+  #tbl table { border-collapse:separate; border-spacing:0; width:100%; font-size:13px; }
+  #tbl tbody tr:nth-child(even) { background:rgba(255,255,255,.03); } #tbl tbody tr:hover { background:rgba(79,195,247,.15); cursor:pointer; }
+  #tbl td.first { position:sticky; left:0; background:var(--bg); font-weight:600; } #tbl th.num { text-align:right; }
+  #tbl tfoot td { position:sticky; bottom:0; background:var(--panel); font-weight:600; border-top:2px solid var(--line); }
+  .dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; }
+  #tbl th, #tbl td { padding:6px 12px; border-bottom:1px solid var(--line); white-space:nowrap; text-align:left; }
+  #tbl th { position:sticky; top:0; z-index:2; background:var(--panel); cursor:pointer; user-select:none; }
   #tbl td.num { text-align:right; font-variant-numeric:tabular-nums; }
   @media (max-width:640px) { #info { left:12px; right:12px; top:auto; bottom:150px; max-width:none; } }
 </style>
@@ -239,14 +243,23 @@ async function save(a, s) {
   } catch (e) { $("sv").textContent = "KAYDEDİLEMEDİ: " + e.message; }
 }
 let sortK = "n", sortD = -1;
+const f2 = v => v == null ? "" : (+v).toLocaleString("tr-TR", {minimumFractionDigits:2, maximumFractionDigits:2});
+const TCOLS = [["ad", "Mahalle", "t"], ["s", "Sınıf", "c"], ["y", "Küme", "t"], ["n", "Nüfus 2025", 0], ["n0", "Nüfus 2013", 0], ["chg", "Değişim %", 2], ["dens", "Yoğunluk /km²", 2], ["u17", "0-17 %", 2], ["o65", "65+ %", 2], ["med", "Ort. yaş", 2], ["kpb", "Konut/bina", 2], ["yaz", "Yazlık %", 2], ["yer", "Yerleşim", "t"], ["stat", "TÜİK 2012", "t"], ["aat", "AATOPLU", "t"], ["oneri", "Öneri", "t"]];
 function table() {
-  const il = $("il").value, ilce = $("ilce").value;
-  const cols = [["ad", "Mahalle"], ["s", "Sınıf"], ["y", "Küme"], ["n", "Nüfus 2025"], ["n0", "2013"], ["dens", "Yoğ."], ["u17", "0-17"], ["o65", "65+"], ["med", "Ort. yaş"], ["kpb", "Konut/bina"], ["yaz", "Yazlık"], ["yer", "Yer"], ["stat", "TÜİK 2012"], ["aat", "AATOPLU"], ["oneri", "Öneri"]];
-  const list = feats.map(f => ({...rows.get(f.properties.area_id), ...(karar[f.properties.area_id] || {}), ad:f.properties.name_tr}));
-  list.sort((x, y) => (typeof x[sortK] === "number" || typeof y[sortK] === "number" ? ((x[sortK] ?? -1) - (y[sortK] ?? -1)) : String(x[sortK] ?? "").localeCompare(String(y[sortK] ?? ""), "tr")) * sortD);
-  $("tbl").innerHTML = `<table><tr>${cols.map(c => `<th data-k="${c[0]}">${c[1]}</th>`).join("")}</tr>` +
-    list.map(r => `<tr>${cols.map(c => `<td class="${typeof r[c[0]] === "number" ? "num" : ""}">${typeof r[c[0]] === "number" ? fmt(r[c[0]]) : (r[c[0]] ?? "")}</td>`).join("")}</tr>`).join("") + "</table>";
+  const list = feats.map(f => { const r = rows.get(f.properties.area_id) || {}; return {...r, ...(karar[f.properties.area_id] || {}), ad:f.properties.name_tr, id:f.properties.area_id, chg:r.n0 ? 100 * (r.n / r.n0 - 1) : null}; });
+  list.sort((x, y) => (typeof x[sortK] === "number" || typeof y[sortK] === "number" ? ((x[sortK] ?? -1e9) - (y[sortK] ?? -1e9)) : String(x[sortK] ?? "").localeCompare(String(y[sortK] ?? ""), "tr")) * sortD);
+  const cell = (r, [k, , t]) => {
+    const v = r[k];
+    if (t === "c") { const cl = v ? CLS[v] : null; return `<td><span class="dot" style="background:${cl ? cl.c : "#667"}"></span>${cl ? cl.t : "–"}</td>`; }
+    if (t === "t") return `<td${k === "ad" ? ' class="first"' : ""}>${v ?? ""}</td>`;
+    return `<td class="num">${v == null ? "" : t === 0 ? fmt(v) : f2(v)}</td>`;
+  };
+  const tot = list.reduce((a, r) => a + (r.n || 0), 0), tot0 = list.reduce((a, r) => a + (r.n0 || 0), 0);
+  $("tbl").innerHTML = `<table><thead><tr>${TCOLS.map(c => `<th data-k="${c[0]}" class="${c[2] === "t" || c[2] === "c" ? "" : "num"}">${c[1]}${sortK === c[0] ? (sortD < 0 ? " ▼" : " ▲") : ""}</th>`).join("")}</tr></thead><tbody>` +
+    list.map(r => `<tr data-id="${r.id}">${TCOLS.map(c => cell(r, c)).join("")}</tr>`).join("") +
+    `</tbody><tfoot><tr><td class="first">Toplam · ${list.length} mahalle</td><td></td><td></td><td class="num">${fmt(tot)}</td><td class="num">${fmt(tot0)}</td><td colspan="${TCOLS.length - 5}"></td></tr></tfoot></table>`;
   for (const th of $("tbl").querySelectorAll("th")) th.onclick = () => { sortD = sortK === th.dataset.k ? -sortD : -1; sortK = th.dataset.k; table(); };
+  for (const tr of $("tbl").querySelectorAll("tbody tr")) tr.onclick = () => { const f = feats.find(x => x.properties.area_id === tr.dataset.id); $("tb").click(); map.fitBounds(L.geoJSON(f).getBounds(), {maxZoom:16}); show(f); };
 }
 $("tb").onclick = () => { const on = $("tbl").style.display !== "block"; $("tbl").style.display = on ? "block" : "none"; $("tb").textContent = on ? "Harita" : "Tablo"; if (on) table(); };
 $("il").onchange = () => { fillIlce(); load(); };
