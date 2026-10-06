@@ -25,7 +25,8 @@
   #info dt { color:var(--mute); } #info dd { margin:0; }
   #info .note { color:var(--mute); font-size:12px; margin-top:6px; max-height:90px; overflow:auto; }
   #msg { left:50%; top:58px; transform:translateX(-50%); display:none; }
-  .lbl { background:rgba(15,23,32,.72); color:#fff; border:0; box-shadow:none; font-size:11px; padding:1px 4px; white-space:nowrap; }
+  .lbl { background:rgba(10,16,22,.82); color:#fff; border:2px solid var(--c,#b0b8c0); border-radius:4px; font-weight:600; font-size:12px; padding:1px 5px; white-space:nowrap; text-shadow:0 0 3px #000; transform:translate(-50%,-50%); display:inline-block; }
+  .lbl small { font-weight:400; opacity:.8; margin-left:4px; }
   .leaflet-tooltip.tip { background:rgba(15,23,32,.92); color:#fff; border:1px solid #3a4b5c; }
   #info { max-height:calc(100% - 80px); overflow:auto; max-width:340px; }
   .btns { display:flex; flex-wrap:wrap; gap:5px; margin:8px 0; }
@@ -77,7 +78,7 @@ const NONE = {c:"#b0b8c0", t:"Karar yok"};
 const $ = id => document.getElementById(id);
 const fmt = n => n == null ? "–" : Math.round(n).toLocaleString("tr-TR");
 
-let karar = {}, rows = new Map(), tree = {}, layer = null, labels = null, feats = [];
+let karar = {}, rows = new Map(), tree = {}, layer = null, casing = null, labels = null, feats = [];
 
 const map = L.map("map", {zoomControl:true, preferCanvas:true}).setView([40.43, 29.72], 13);
 const esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {maxZoom:19, attribution:"Esri World Imagery"}).addTo(map);
@@ -121,12 +122,14 @@ async function load() {
 }
 function style(f, hover) {
   const k = karar[f.properties.area_id], cl = k ? (CLS[k.s] || NONE) : NONE;
-  return {color:cl.c, weight:hover ? 4 : 2.4, opacity:1, dashArray:k ? null : "5 5",
+  return {color:cl.c, weight:hover ? 5 : 3.5, opacity:1, dashArray:k ? null : "5 5",
           fillColor:cl.c, fillOpacity:$("fill").checked ? (hover ? .45 : .28) : (hover ? .18 : .02)};
 }
 function draw(fit) {
+  if (casing) map.removeLayer(casing);
   if (layer) map.removeLayer(layer);
   if (labels) map.removeLayer(labels);
+  casing = L.geoJSON({type:"FeatureCollection", features:feats}, {interactive:false, style:{color:"#000", weight:7, opacity:.85, fill:false}}).addTo(map);
   layer = L.geoJSON({type:"FeatureCollection", features:feats}, {
     style: f => style(f, false),
     onEachFeature: (f, l) => {
@@ -140,7 +143,7 @@ function draw(fit) {
   labels = L.layerGroup();
   for (const f of feats) {
     const c = L.geoJSON(f).getBounds().getCenter();
-    L.marker(c, {interactive:false, icon:L.divIcon({className:"", html:`<span class="lbl">${f.properties.name_tr}</span>`, iconSize:[0, 0]})}).addTo(labels);
+    L.marker(c, {interactive:false, icon:L.divIcon({className:"", html:`<span class="lbl" style="--c:${(karar[f.properties.area_id] ? (CLS[karar[f.properties.area_id].s] || NONE) : NONE).c}">${f.properties.name_tr}<small>${fmt(rows.get(f.properties.area_id)?.n)}</small></span>`, iconSize:[0, 0]})}).addTo(labels);
   }
   if ($("names").checked) labels.addTo(map);
   if (fit) map.fitBounds(layer.getBounds(), {padding:[20, 20]});
