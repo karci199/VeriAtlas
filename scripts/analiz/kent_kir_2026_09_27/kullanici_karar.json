@@ -27527,6 +27527,9 @@
 "TR-41-011-129684": {
 "s": "Köy"
 },
+"TR-41-011-139517": {
+"s": "İlçe Merkezi"
+},
 "TR-41-011-162644": {
 "s": "Köy"
 },
@@ -27534,19 +27537,19 @@
 "s": "Köy"
 },
 "TR-41-011-407866": {
-"s": "Köy"
+"s": "Kırsal Belde"
 },
 "TR-41-011-416099": {
-"s": "Köy"
+"s": "Kırsal Belde"
 },
 "TR-41-011-436709": {
-"s": "Köy"
+"s": "Kırsal Belde"
 },
 "TR-41-011-50184": {
-"s": "İlçe Merkezi"
+"s": "Kırsal Belde"
 },
 "TR-41-011-50185": {
-"s": "İlçe Merkezi"
+"s": "Kırsal Belde"
 },
 "TR-41-011-50186": {
 "s": "İlçe Merkezi"
@@ -27567,10 +27570,10 @@
 "s": "İlçe Merkezi"
 },
 "TR-41-011-50213": {
-"s": "İlçe Merkezi"
+"s": "Kırsal Belde"
 },
 "TR-41-011-50216": {
-"s": "İlçe Merkezi"
+"s": "Kırsal Belde"
 },
 "TR-41-011-50219": {
 "s": "İlçe Merkezi"
@@ -27585,25 +27588,29 @@
 "s": "İlçe Merkezi"
 },
 "TR-41-011-50230": {
-"s": "İlçe Merkezi"
-},
-"TR-41-011-50255": {
-"s": "İlçe Merkezi"
-},
-"TR-41-011-50257": {
-"s": "İlçe Merkezi"
-},
-"TR-41-011-50259": {
 "s": "Köy"
 },
+"TR-41-011-50255": {
+"s": "Kentsel Belde",
+"y": "Derbent"
+},
+"TR-41-011-50257": {
+"s": "Kentsel Belde",
+"y": "Acısu"
+},
+"TR-41-011-50259": {
+"s": "Kırsal Belde",
+"y": "Eşme"
+},
 "TR-41-011-50260": {
-"s": "İlçe Merkezi"
+"s": "Kırsal Belde"
 },
 "TR-41-011-50262": {
 "s": "İlçe Merkezi"
 },
 "TR-41-011-50264": {
-"s": "İlçe Merkezi"
+"s": "Kırsal Belde",
+"y": "Uzuntarla"
 },
 "TR-41-011-639849": {
 "s": "Köy"
