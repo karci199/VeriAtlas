@@ -257,7 +257,7 @@ function table() {
   const tot = list.reduce((a, r) => a + (r.n || 0), 0), tot0 = list.reduce((a, r) => a + (r.n0 || 0), 0);
   $("tbl").innerHTML = `<table><thead><tr>${TCOLS.map(c => `<th data-k="${c[0]}" class="${c[2] === "t" || c[2] === "c" ? "" : "num"}">${c[1]}${sortK === c[0] ? (sortD < 0 ? " ▼" : " ▲") : ""}</th>`).join("")}</tr></thead><tbody>` +
     list.map(r => `<tr data-id="${r.id}">${TCOLS.map(c => cell(r, c)).join("")}</tr>`).join("") +
-    `</tbody><tfoot><tr><td class="first">Toplam · ${list.length} mahalle</td><td></td><td></td><td class="num">${fmt(tot)}</td><td class="num">${fmt(tot0)}</td><td colspan="${TCOLS.length - 5}"></td></tr></tfoot></table>`;
+    `</tbody><tfoot><tr><td class="first">Toplam · ${list.length} mahalle</td><td></td><td></td><td class="num">${fmt(tot)}</td><td></td><td colspan="${TCOLS.length - 5}"></td></tr></tfoot></table>`;
   for (const th of $("tbl").querySelectorAll("th")) th.onclick = () => { sortD = sortK === th.dataset.k ? -sortD : -1; sortK = th.dataset.k; table(); };
   for (const tr of $("tbl").querySelectorAll("tbody tr")) tr.onclick = () => { const f = feats.find(x => x.properties.area_id === tr.dataset.id); $("tb").click(); map.fitBounds(L.geoJSON(f).getBounds(), {maxZoom:16}); show(f); };
 }
