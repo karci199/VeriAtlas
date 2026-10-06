@@ -122,14 +122,14 @@ async function load() {
 }
 function style(f, hover) {
   const k = karar[f.properties.area_id], cl = k ? (CLS[k.s] || NONE) : NONE;
-  return {color:cl.c, weight:hover ? 5 : 3.5, opacity:1, dashArray:k ? null : "5 5",
-          fillColor:cl.c, fillOpacity:$("fill").checked ? (hover ? .45 : .28) : (hover ? .18 : .02)};
+  return {color:"#ff1f1f", weight:hover ? 4.5 : 2.6, opacity:1, dashArray:null,
+          fillColor:cl.c, fillOpacity:k ? (hover ? .5 : .32) : (hover ? .2 : .03)};
 }
 function draw(fit) {
   if (casing) map.removeLayer(casing);
   if (layer) map.removeLayer(layer);
   if (labels) map.removeLayer(labels);
-  casing = L.geoJSON({type:"FeatureCollection", features:feats}, {interactive:false, style:{color:"#000", weight:7, opacity:.85, fill:false}}).addTo(map);
+  casing = L.geoJSON({type:"FeatureCollection", features:feats}, {interactive:false, style:{color:"#fff", weight:5.5, opacity:.9, fill:false}}).addTo(map);
   layer = L.geoJSON({type:"FeatureCollection", features:feats}, {
     style: f => style(f, false),
     onEachFeature: (f, l) => {
