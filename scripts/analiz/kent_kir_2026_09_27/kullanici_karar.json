@@ -26737,7 +26737,8 @@
 "s": "İlçe Merkezi"
 },
 "TR-41-007-50352": {
-"s": "İlçe Merkezi"
+"s": "Kırsal Belde",
+"y": "Hisareyn"
 },
 "TR-41-007-50353": {
 "s": "İlçe Merkezi"
@@ -26746,7 +26747,8 @@
 "s": "İlçe Merkezi"
 },
 "TR-41-007-50355": {
-"s": "İlçe Merkezi"
+"s": "Kırsal Belde",
+"y": "İhsaniye"
 },
 "TR-41-007-50356": {
 "s": "İlçe Merkezi"
@@ -26755,40 +26757,51 @@
 "s": "İlçe Merkezi"
 },
 "TR-41-007-50358": {
+"n": "Değirmendere",
 "s": "İlçe Merkezi"
 },
 "TR-41-007-50359": {
+"n": "Değirmendere",
 "s": "İlçe Merkezi"
 },
 "TR-41-007-50360": {
+"n": "Değirmendere",
 "s": "İlçe Merkezi"
 },
 "TR-41-007-50361": {
 "s": "İlçe Merkezi"
 },
 "TR-41-007-50362": {
+"n": "Değirmendere",
 "s": "İlçe Merkezi"
 },
 "TR-41-007-50363": {
+"n": "Değirmendere",
 "s": "İlçe Merkezi"
 },
 "TR-41-007-50364": {
+"n": "Değirmendere",
 "s": "İlçe Merkezi"
 },
 "TR-41-007-50365": {
-"s": "İlçe Merkezi"
+"s": "Kentsel Belde",
+"y": "Halıdere"
 },
 "TR-41-007-50366": {
-"s": "İlçe Merkezi"
+"s": "Kentsel Belde",
+"y": "Halıdere"
 },
 "TR-41-007-50367": {
-"s": "İlçe Merkezi"
+"s": "Kentsel Belde",
+"y": "Halıdere"
 },
 "TR-41-007-50368": {
-"s": "Köy"
+"s": "Kırsal Belde",
+"y": "Ulaşlı"
 },
 "TR-41-007-50369": {
-"s": "Köy"
+"s": "Kırsal Belde",
+"y": "Ulaşlı"
 },
 "TR-41-007-563940": {
 "s": "Köy"
