@@ -50,6 +50,7 @@
 <div id="bar">
   <label>İl <select id="il"></select></label>
   <label>İlçe <select id="ilce"></select></label>
+  <label><input type="checkbox" id="multi"> çoklu seç (Shift+tık)</label>
   <label><input type="checkbox" id="fill"> dolgu</label>
   <label><input type="checkbox" id="names" checked> mahalle adları</label>
   <label><input type="checkbox" id="sat" checked> uydu</label>
@@ -78,6 +79,7 @@ const NONE = {c:"#b0b8c0", t:"Karar yok"};
 const $ = id => document.getElementById(id);
 const fmt = n => n == null ? "–" : Math.round(n).toLocaleString("tr-TR");
 
+const sel = new Set();
 let karar = {}, rows = new Map(), tree = {}, layer = null, casing = null, labels = null, feats = [];
 
 const map = L.map("map", {zoomControl:true, preferCanvas:true}).setView([40.43, 29.72], 13);
@@ -122,7 +124,8 @@ async function load() {
 }
 function style(f, hover) {
   const k = karar[f.properties.area_id], cl = k ? (CLS[k.s] || NONE) : NONE;
-  return {color:"#ff1f1f", weight:hover ? 4.5 : 2.6, opacity:1, dashArray:null,
+  const on = sel.has(f.properties.area_id);
+  return {color:on ? "#ffe600" : "#ff1f1f", weight:on ? 6 : hover ? 4.5 : 2.6, opacity:1, dashArray:null,
           fillColor:cl.c, fillOpacity:k ? (hover ? .5 : .32) : (hover ? .2 : .03)};
 }
 function draw(fit) {
@@ -137,7 +140,11 @@ function draw(fit) {
       l.bindTooltip(`<b>${f.properties.name_tr}</b><br>${cl.t}${k?.y ? " · " + k.y : ""}<br>${fmt(r?.n)} kişi`, {sticky:true, className:"tip"});
       l.on("mouseover", () => l.setStyle(style(f, true)));
       l.on("mouseout", () => l.setStyle(style(f, false)));
-      l.on("click", () => show(f));
+      l.on("click", e => {
+        const a2 = f.properties.area_id;
+        if (e.originalEvent.shiftKey || e.originalEvent.ctrlKey || $("multi").checked) { sel.has(a2) ? sel.delete(a2) : sel.add(a2); layer.setStyle(g => style(g, false)); showMulti(); }
+        else { sel.clear(); layer.setStyle(g => style(g, false)); show(f); }
+      });
     }
   }).addTo(map);
   labels = L.layerGroup();
@@ -161,6 +168,32 @@ function legend() {
     `<div class="row"><i style="border-color:${agg[o].c};background:${agg[o].c}44"></i>${o} <b>${agg[o].n}</b> <small>${fmt(agg[o].p)} (%${tot ? Math.round(100 * agg[o].p / tot) : 0})</small></div>`).join("");
 }
 let cur = null;
+function showMulti() {
+  if (!sel.size) { $("info").style.display = "none"; return; }
+  const ids = [...sel], tot = ids.reduce((t, a) => t + (rows.get(a)?.n || 0), 0);
+  const names = [...new Set(Object.values(karar).map(k => k.y).filter(Boolean))].sort((x, y) => x.localeCompare(y, "tr"));
+  const classes = ["İlçe Merkezi", "Kentsel Belde", "Kırsal Belde", "Köy"];
+  $("info").innerHTML = `<h3>${ids.length} mahalle seçili</h3><small>${fmt(tot)} kişi</small>
+    <div class="note" style="max-height:80px">${ids.map(a => rows.get(a)?.ad).join(", ")}</div>
+    <input id="ky" list="kdl" placeholder="belde / küme adı (hepsine)"><datalist id="kdl">${names.map(n => `<option value="${n}">`).join("")}</datalist>
+    <input id="kn" placeholder="not (hepsine)">
+    <div class="btns">${classes.map(c => `<button data-s="${c}" style="border-color:${CLS[c].c}">${CLS[c].t}</button>`).join("")}<button data-s="" style="border-color:#888">Sil</button><button data-x="1" style="border-color:#888">Seçimi bırak</button></div><div id="sv"></div>`;
+  $("info").style.display = "block";
+  for (const b of $("info").querySelectorAll(".btns button")) b.onclick = () => b.dataset.x ? (sel.clear(), layer.setStyle(g => style(g, false)), showMulti()) : saveMany(ids, b.dataset.s);
+}
+async function saveMany(ids, s) {
+  const y = $("ky").value.trim(), n = $("kn").value.trim(), batch = {};
+  for (const a of ids) batch[a] = s ? {s, y, n} : {};
+  $("sv").textContent = "kaydediliyor…";
+  try {
+    const r = await fetch("/karar", {method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify(batch)});
+    if (!r.ok) throw new Error(r.status);
+    const j = await r.json();
+    for (const a of ids) { if (s) karar[a] = Object.fromEntries(Object.entries(batch[a]).filter(([, v]) => v)); else delete karar[a]; }
+    sel.clear(); draw(false); showMulti();
+    $("info").style.display = "block"; $("info").innerHTML = `<h3>${ids.length} mahalle ${s ? CLS[s].t + (y ? " · " + y : "") : "silindi"}</h3><div id="sv">kaydedildi ✓ · ${fmt(j.kayit)} karar</div>`;
+  } catch (e) { $("sv").textContent = "KAYDEDİLEMEDİ: " + e.message; }
+}
 const pc = (a, b) => b ? (100 * a / b).toFixed(0) + "%" : "–";
 function blk(t, body) { return `<div class="blk"><h4>${t}</h4>${body}</div>`; }
 function show(f) {
@@ -175,7 +208,7 @@ function show(f) {
   $("info").innerHTML = `<h3>${f.properties.name_tr} <small style="color:var(--mute)">${r.ilce || ""}</small></h3>
     <span style="color:${cl.c}">● ${cl.t}${k.y ? " · " + k.y : ""}</span>
     <div class="btns">${btn}</div>
-    <input id="ky" placeholder="küme / birleşik belde adı" value="${(k.y || "").replace(/"/g, "&quot;")}">
+    <input id="ky" list="kdl1" placeholder="küme / birleşik belde adı" value="${(k.y || "").replace(/"/g, "&quot;")}">
     <input id="kn" placeholder="not" value="${(k.n || "").replace(/"/g, "&quot;")}">
     <div id="sv"></div>
     ${blk("1 · Nüfus", `<b>${fmt(r.n)}</b> kişi (2025) · 2013: ${fmt(r.n0)}${ch == null ? "" : " (" + (ch >= 0 ? "+" : "") + ch.toFixed(0) + "%)"}
