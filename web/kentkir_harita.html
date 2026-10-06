@@ -58,7 +58,7 @@
   <label><input type="checkbox" id="fill"> dolgu</label>
   <label><input type="checkbox" id="names" checked> mahalle adları</label>
   <label><input type="checkbox" id="sat" checked> uydu</label>
-  <button id="tb">Tablo</button>
+  <button id="tb">Tablo</button> <small style="color:var(--mute)">M = merkez · K = köy (fare üstündeki ya da seçililer)</small>
   <input type="search" id="q" placeholder="mahalle ara…" list="dl">
   <datalist id="dl"></datalist>
 </div>
@@ -84,6 +84,7 @@ const $ = id => document.getElementById(id);
 const fmt = n => n == null ? "–" : Math.round(n).toLocaleString("tr-TR");
 
 const sel = new Set();
+let hov = null;
 let karar = {}, rows = new Map(), tree = {}, layer = null, casing = null, labels = null, feats = [];
 
 const map = L.map("map", {zoomControl:true, preferCanvas:true}).setView([40.43, 29.72], 13);
@@ -142,8 +143,8 @@ function draw(fit) {
     onEachFeature: (f, l) => {
       const a = f.properties.area_id, r = rows.get(a), k = karar[a], cl = k ? (CLS[k.s] || NONE) : NONE;
       l.bindTooltip(`<b>${f.properties.name_tr}</b><br>${cl.t}${k?.y ? " · " + k.y : ""}<br>${fmt(r?.n)} kişi`, {sticky:true, className:"tip"});
-      l.on("mouseover", () => l.setStyle(style(f, true)));
-      l.on("mouseout", () => l.setStyle(style(f, false)));
+      l.on("mouseover", () => { hov = f; l.setStyle(style(f, true)); });
+      l.on("mouseout", () => { if (hov === f) hov = null; l.setStyle(style(f, false)); });
       l.on("click", e => {
         const a2 = f.properties.area_id;
         if (e.originalEvent.shiftKey || e.originalEvent.ctrlKey || $("multi").checked) { sel.has(a2) ? sel.delete(a2) : sel.add(a2); layer.setStyle(g => style(g, false)); showMulti(); }
@@ -172,6 +173,24 @@ function legend() {
     `<div class="row"><i style="border-color:${agg[o].c};background:${agg[o].c}44"></i>${o} <b>${agg[o].n}</b> <small>${fmt(agg[o].p)} (%${tot ? Math.round(100 * agg[o].p / tot) : 0})</small></div>`).join("");
 }
 let cur = null;
+async function quick(ids, cls) {
+  const batch = Object.fromEntries(ids.map(a => [a, {s:cls}]));
+  try {
+    const r = await fetch("/karar", {method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify(batch)});
+    if (!r.ok) throw new Error(r.status);
+    const j = await r.json();
+    for (const a of ids) karar[a] = {s:cls};
+    sel.clear(); draw(false);
+    msg(`${ids.length} mahalle ${CLS[cls].t} · ${fmt(j.kayit)} karar`); setTimeout(() => msg(""), 1500);
+  } catch (e) { msg("KAYDEDİLEMEDİ: " + e.message); }
+}
+document.addEventListener("keydown", e => {
+  if (e.ctrlKey || e.metaKey || e.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
+  const cls = {m:"İlçe Merkezi", k:"Köy"}[e.key.toLowerCase()];
+  if (!cls) return;
+  const ids = sel.size ? [...sel] : hov ? [hov.properties.area_id] : cur ? [cur.properties.area_id] : [];
+  if (ids.length) { e.preventDefault(); quick(ids, cls); }
+});
 function showMulti() {
   if (!sel.size) { $("info").style.display = "none"; return; }
   const ids = [...sel], tot = ids.reduce((t, a) => t + (rows.get(a)?.n || 0), 0);
