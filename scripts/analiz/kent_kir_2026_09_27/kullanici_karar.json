@@ -13858,9 +13858,11 @@
 "s": "İlçe Merkezi"
 },
 "TR-14-001-10899": {
-"s": "Köy"
+"s": "Kırsal Belde",
+"y": "Karacasu"
 },
 "TR-14-001-140471": {
+"n": "üniversite kampüsü öğrenci nüfusu (yazılı adres)",
 "s": "Köy"
 },
 "TR-14-001-140473": {
@@ -14311,6 +14313,7 @@
 "s": "Köy"
 },
 "TR-14-001-6598": {
+"n": "üniversite kampüsü öğrenci nüfusu (yazılı adres)",
 "s": "Köy"
 },
 "TR-14-001-6599": {
