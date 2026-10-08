@@ -85,7 +85,7 @@ const fmt = n => n == null ? "–" : Math.round(n).toLocaleString("tr-TR");
 
 const sel = new Set();
 let hov = null;
-let karar = {}, rows = new Map(), tree = {}, layer = null, casing = null, labels = null, feats = [];
+let karar = {}, rows = new Map(), nameIdx = new Map(), tree = {}, layer = null, casing = null, labels = null, feats = [];
 
 const map = L.map("map", {zoomControl:true, preferCanvas:true}).setView([40.43, 29.72], 13);
 const esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {maxZoom:19, attribution:"Esri World Imagery"}).addTo(map);
@@ -102,6 +102,7 @@ async function init() {
   for (const r of c.rows) {
     const id = r[0], did = id.slice(0, id.lastIndexOf("-"));
     rows.set(id, Object.fromEntries(c.keys.map((n, i) => [n, r[i]])));
+    const nk = did + "|" + r[ix.ad]; nameIdx.set(nk, nameIdx.has(nk) ? null : id);
     ((tree[r[ix.il]] ??= {})[r[ix.ilce]] ??= {id:did});
   }
   const ils = Object.keys(tree).sort((a, b) => a.localeCompare(b, "tr"));
@@ -124,6 +125,8 @@ async function load() {
   msg("Sınırlar yükleniyor…");
   const g = await fetch(GEO(id)).then(r => r.json());
   feats = g.features;
+  // village polygons carry a different id than the table row: match by district + name
+  for (const f of feats) { const a = f.properties.area_id; if (!rows.has(a)) { const m = nameIdx.get(id + "|" + f.properties.name_tr); if (m) { f.properties.geo_id = a; f.properties.area_id = m; } } }
   draw(true);
   msg("");
 }
