@@ -46695,7 +46695,7 @@
 "s": "Köy"
 },
 "TR-63-005-173093": {
-"s": "Köy"
+"s": "Kırsal Belde"
 },
 "TR-63-005-173095": {
 "s": "Köy"
@@ -46767,7 +46767,7 @@
 "s": "Köy"
 },
 "TR-63-005-173143": {
-"s": "Köy"
+"s": "Kırsal Belde"
 },
 "TR-63-005-173145": {
 "s": "Köy"
@@ -46881,7 +46881,8 @@
 "s": "Köy"
 },
 "TR-63-005-173219": {
-"s": "Köy"
+"s": "Kırsal Belde",
+"y": "Küçükhan"
 },
 "TR-63-005-173221": {
 "s": "Köy"
@@ -47016,7 +47017,7 @@
 "s": "Köy"
 },
 "TR-63-005-173309": {
-"s": "Kentsel Belde"
+"s": "İlçe Merkezi"
 },
 "TR-63-005-173311": {
 "s": "Köy"
@@ -47028,7 +47029,8 @@
 "s": "Köy"
 },
 "TR-63-005-183254": {
-"s": "Köy"
+"s": "Kırsal Belde",
+"y": "Küçükhan"
 },
 "TR-63-005-183256": {
 "s": "Köy"
@@ -47037,16 +47039,16 @@
 "s": "Köy"
 },
 "TR-63-005-183260": {
-"s": "Kentsel Belde"
+"s": "İlçe Merkezi"
 },
 "TR-63-005-184288": {
-"s": "Kentsel Belde"
+"s": "İlçe Merkezi"
 },
 "TR-63-005-184290": {
-"s": "Kentsel Belde"
+"s": "İlçe Merkezi"
 },
 "TR-63-005-184510": {
-"s": "Kentsel Belde"
+"s": "İlçe Merkezi"
 },
 "TR-63-005-196445": {
 "s": "Kentsel Belde"
@@ -47400,6 +47402,7 @@
 "s": "Köy"
 },
 "TR-63-007-173373": {
+"n": "şehir girişi ama yerleşim yok, köy",
 "s": "Köy"
 },
 "TR-63-007-173375": {
@@ -47445,6 +47448,7 @@
 "s": "Köy"
 },
 "TR-63-007-173403": {
+"n": "Harran Üniversitesi kampüsü, öğrenci/personel nüfusu",
 "s": "Köy"
 },
 "TR-63-007-173405": {
@@ -47601,7 +47605,7 @@
 "s": "Köy"
 },
 "TR-63-007-173507": {
-"s": "Köy"
+"s": "Kırsal Belde"
 },
 "TR-63-007-173509": {
 "s": "Köy"
@@ -48555,6 +48559,7 @@
 "s": "Köy"
 },
 "TR-63-010-173661": {
+"n": "havalimanı (GAP) ve cezaevi çevresi, kurum nüfusu",
 "s": "Köy"
 },
 "TR-63-010-173663": {
@@ -48621,7 +48626,7 @@
 "s": "Köy"
 },
 "TR-63-010-173705": {
-"s": "Kentsel Belde"
+"s": "İlçe Merkezi"
 },
 "TR-63-010-173707": {
 "s": "Köy"
@@ -48702,25 +48707,25 @@
 "s": "Köy"
 },
 "TR-63-010-180776": {
-"s": "Kentsel Belde"
+"s": "İlçe Merkezi"
 },
 "TR-63-010-180778": {
 "s": "İlçe Merkezi"
 },
 "TR-63-010-180780": {
-"s": "Kentsel Belde"
+"s": "İlçe Merkezi"
 },
 "TR-63-010-180782": {
-"s": "Kentsel Belde"
+"s": "İlçe Merkezi"
 },
 "TR-63-010-180784": {
-"s": "Kentsel Belde"
+"s": "İlçe Merkezi"
 },
 "TR-63-010-180786": {
-"s": "Kentsel Belde"
+"s": "İlçe Merkezi"
 },
 "TR-63-010-182870": {
-"s": "Kentsel Belde"
+"s": "İlçe Merkezi"
 },
 "TR-63-010-80245": {
 "s": "İlçe Merkezi"
