@@ -55,9 +55,9 @@
   <label>İl <select id="il"></select></label>
   <label>İlçe <select id="ilce"></select></label>
   <label><input type="checkbox" id="multi"> çoklu seç (Shift+tık)</label>
-  <label>renk <select id="mode"><option value="sinif">4 sınıf (merkez · kentsel belde · kırsal belde · köy)</option><option value="kentkir">kent / kır</option><option value="kazanan">2023 kazanan parti</option><option value="AK PARTİ">AK Parti oyu</option><option value="CHP">CHP oyu</option><option value="MHP">MHP oyu</option><option value="İYİ PARTİ">İYİ Parti oyu</option><option value="YEŞİL SOL PARTİ">Yeşil Sol oyu</option><option value="YENİDEN REFAH">Yeniden Refah oyu</option><option value="yas">ortanca yaş</option></select></label>
+  <label>renk <select id="mode"><option value="sinif">4 sınıf (merkez · kentsel belde · kırsal belde · köy)</option><option value="kentkir">kent / kır</option><option value="kentlesme">kentleşme oranı (ilçe)</option><option value="kazanan">2023 kazanan parti</option><option value="AK PARTİ">AK Parti oyu</option><option value="CHP">CHP oyu</option><option value="MHP">MHP oyu</option><option value="İYİ PARTİ">İYİ Parti oyu</option><option value="YEŞİL SOL PARTİ">Yeşil Sol oyu</option><option value="YENİDEN REFAH">Yeniden Refah oyu</option><option value="yas">ortanca yaş</option></select></label>
   <label><input type="checkbox" id="fill" checked> dolgu</label>
-  <label><input type="checkbox" id="names" checked> mahalle adları</label>
+  <label>adlar <select id="names"><option value="all">her zaman (yakında)</option><option value="hover">yalnız üstüne gelince</option></select></label>
   <label><input type="checkbox" id="sat" checked> uydu (kapalı = düz zemin)</label>
   <button id="tb">Tablo</button> <select id="tscope" title="tablo kapsamı"><option value="ilce">tablo: seçili ilçe</option><option value="il">tablo: tüm il</option></select> <small style="color:var(--mute)">M = merkez · K = köy (fare üstündeki ya da seçililer)</small>
   <input type="search" id="q" placeholder="mahalle ara…" list="dl">
@@ -141,10 +141,19 @@ const PCOL = {"AK PARTİ":"#ffb300", "CHP":"#ef5350", "MHP":"#7e57c2", "İYİ PA
 const mix = (a, b, t) => { const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)), x = p(a), y = p(b); return "#" + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, "0")).join(""); };
 const YAS = [[20, "#2962ff"], [30, "#26c6da"], [38, "#ffee58"], [46, "#ff9800"], [58, "#d50000"]];
 function yasCol(v) { if (v == null || v <= 0) return null; if (v <= YAS[0][0]) return YAS[0][1]; for (let i = 1; i < YAS.length; i++) if (v <= YAS[i][0]) return mix(YAS[i - 1][1], YAS[i][1], (v - YAS[i - 1][0]) / (YAS[i][0] - YAS[i - 1][0])); return YAS[YAS.length - 1][1]; }
+const kcache = new Map();
+function kentOran(il, ilce) {
+  const key = il + "|" + ilce; if (kcache.has(key)) return kcache.get(key);
+  let k = 0, t = 0; for (const r of rows.values()) if (r.il === il && r.ilce === ilce && karar[r.id]) { t += r.n || 0; if (/Merkez|Kentsel/.test(karar[r.id].s)) k += r.n || 0; }
+  const v = t ? 100 * k / t : null; kcache.set(key, v); return v;
+}
+const KENT = [[0, "#ffffcc"], [25, "#a1dab4"], [50, "#41b6c4"], [75, "#2c7fb8"], [100, "#253494"]];
+function kentCol(v) { if (v == null) return null; for (let i = 1; i < KENT.length; i++) if (v <= KENT[i][0]) return mix(KENT[i - 1][1], KENT[i][1], (v - KENT[i - 1][0]) / (KENT[i][0] - KENT[i - 1][0])); return KENT[4][1]; }
 function paint(f) {
   const a = f.properties.area_id, k = karar[a], r = rows.get(a) || {}, m = $("mode").value;
   if (m === "sinif") { const cl = k ? (CLS[k.s] || NONE) : NONE; return {c:cl.c, set:!!k, t:cl.t}; }
   if (m === "kentkir") { if (!k) return {c:NONE.c, set:false, t:"Karar yok"}; const kent = k.s === "İlçe Merkezi" || k.s === "İl Merkezi" || k.s === "Kentsel Belde"; return {c:kent ? "#ff5252" : "#4fc3f7", set:true, t:kent ? "Kent" : "Kır"}; }
+  if (m === "kentlesme") { const v = kentOran(r.il, r.ilce); const c = kentCol(v); return {c:c || NONE.c, set:!!c, t:v == null ? "karar yok" : r.ilce + " kentleşme %" + v.toFixed(1)}; }
   if (m === "kazanan") { const w = r.win; return {c:PCOL[w] || (w ? "#9e9e9e" : NONE.c), set:!!w, t:w ? "kazanan " + w : "seçim verisi yok"}; }
   if (m === "yas") { const c = yasCol(r.med); return {c:c || NONE.c, set:!!c, t:r.med > 0 ? "ortanca yaş " + (+r.med).toFixed(1) : "yaş verisi yok"}; }
   const v = r[m]; if (v == null) return {c:NONE.c, set:false, t:"seçim verisi yok"};
@@ -159,6 +168,7 @@ function style(f, hover) {
     fillColor:p.c, fillOpacity:!$("fill").checked ? (hover ? .2 : .02) : p.set ? (hover ? .85 : $("mode").value === "sinif" ? (/Köy/.test(p.t) ? .3 : .45) : .55) : (hover ? .2 : .03)};
 }
 function draw(fit) {
+  kcache.clear();
   if (casing) map.removeLayer(casing);
   if (layer) map.removeLayer(layer);
   if (labels) map.removeLayer(labels);
@@ -182,7 +192,7 @@ function draw(fit) {
     const c = L.geoJSON(f).getBounds().getCenter();
     L.marker(c, {interactive:false, icon:L.divIcon({className:"", html:`<span class="lbl" style="--c:${(karar[f.properties.area_id] ? (CLS[karar[f.properties.area_id].s] || NONE) : NONE).c}">${f.properties.name_tr}<small>${fmt(rows.get(f.properties.area_id)?.n)}</small></span>`, iconSize:[0, 0]})}).addTo(labels);
   }
-  if ($("names").checked && feats.length < 400) labels.addTo(map);
+  syncLabels();
   if (fit) map.fitBounds(layer.getBounds(), {padding:[20, 20]});
   $("dl").innerHTML = feats.map(f => `<option value="${f.properties.name_tr}">`).join("");
   legend();
@@ -192,6 +202,14 @@ function legend() {
   let tot = 0; for (const f of feats) tot += rows.get(f.properties.area_id)?.n || 0;
   const head = `${title} <small>${fmt(tot)} kişi</small>`;
   const grad = (stops, lo, hi, unit) => `<div style="height:10px;border-radius:5px;margin:6px 0 2px;background:linear-gradient(90deg,${stops.join(",")})"></div><small>${lo} ${unit}<span style="float:right">${hi} ${unit}</span></small>`;
+  if (m === "kentlesme") {
+    const seen = new Map(); for (const f of feats) { const r = rows.get(f.properties.area_id); if (r) seen.set(r.ilce, kentOran(r.il, r.ilce)); }
+    const lst = [...seen].filter(x => x[1] != null).sort((a, b) => b[1] - a[1]);
+    let k = 0, t = 0; for (const f of feats) { const r = rows.get(f.properties.area_id); if (r && karar[r.id]) { t += r.n; if (/Merkez|Kentsel/.test(karar[r.id].s)) k += r.n; } }
+    $("legend").innerHTML = head + `<div style="margin-top:4px">kentleşme oranı <b>%${t ? (100 * k / t).toFixed(1) : "–"}</b> (merkez + kentsel belde)</div>` + grad(KENT.map(x => x[1]), "0", "100", "%") +
+      (lst.length > 1 ? `<div style="margin-top:6px;max-height:140px;overflow:auto;font-size:12px">` + lst.map(x => `<div>${x[0]} <b>%${x[1].toFixed(0)}</b></div>`).join("") + `</div>` : "");
+    return;
+  }
   if (m === "yas") {
     let sw = 0, sp = 0; for (const f of feats) { const r = rows.get(f.properties.area_id); if (r && r.med > 0) { sw += r.med * r.n; sp += r.n; } }
     $("legend").innerHTML = head + `<div style="margin-top:4px">nüfus ağırlıklı ortanca yaş <b>${sp ? (sw / sp).toFixed(1) : "–"}</b></div>` + grad(YAS.map(x => x[1]), "≤20", "≥58", "yaş");
@@ -333,7 +351,9 @@ $("ilce").onchange = load;
 $("mode").onchange = () => { layer && layer.setStyle(f => style(f, false)); legend(); };
 map.on("zoomend", () => { if (layer) layer.setStyle(f => style(f, false)); if (casing) casing.setStyle({weight:bw() + 2.5, opacity:map.getZoom() < 12 || !$("sat").checked ? 0 : .9}); });
 $("fill").onchange = () => layer && layer.setStyle(f => style(f, false));
-$("names").onchange = () => $("names").checked ? labels.addTo(map) : map.removeLayer(labels);
+$("names").onchange = syncLabels;
+function syncLabels() { if (!labels) return; const show = $("names").value === "all" && (feats.length < 400 || map.getZoom() >= 12); if (show) labels.addTo(map); else map.removeLayer(labels); }
+map.on("zoomend", syncLabels);
 $("sat").onchange = () => { const on = $("sat").checked; for (const l of [esri, roads, osm, osmLbl]) map.removeLayer(l); if (on) { esri.addTo(map); roads.addTo(map); } $("map").style.background = on ? "#0b1118" : "#eef2f8"; if (layer) layer.setStyle(f => style(f, false)); if (casing) casing.setStyle({opacity:map.getZoom() < 12 || !on ? 0 : .9}); };
 $("q").onchange = () => {
   const t = $("q").value.trim().toLocaleLowerCase("tr"), f = feats.find(x => x.properties.name_tr.toLocaleLowerCase("tr") === t);
