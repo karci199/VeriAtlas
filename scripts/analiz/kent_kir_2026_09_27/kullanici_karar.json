@@ -45657,7 +45657,9 @@
 "s": "Köy"
 },
 "TR-63-001-173769": {
-"s": "Köy"
+"n": "çekirdek bina 350 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Akdiken"
 },
 "TR-63-001-173771": {
 "s": "Köy"
@@ -45714,7 +45716,9 @@
 "s": "Köy"
 },
 "TR-63-001-173807": {
-"s": "Köy"
+"n": "çekirdek bina 408 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Kepezli"
 },
 "TR-63-001-173809": {
 "s": "Köy"
@@ -46005,7 +46009,9 @@
 "s": "İlçe Merkezi"
 },
 "TR-63-002-173945": {
-"s": "Köy"
+"n": "çekirdek bina 459 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Ayran"
 },
 "TR-63-002-173947": {
 "s": "İlçe Merkezi"
@@ -46555,7 +46561,9 @@
 "s": "Köy"
 },
 "TR-63-004-174269": {
-"s": "Köy"
+"n": "çekirdek bina 302 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Büyükyenice"
 },
 "TR-63-004-174271": {
 "s": "Köy"
@@ -46567,7 +46575,9 @@
 "s": "Köy"
 },
 "TR-63-004-174277": {
-"s": "Köy"
+"n": "çekirdek bina 408 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Düzova"
 },
 "TR-63-004-174279": {
 "s": "İlçe Merkezi"
@@ -46688,7 +46698,9 @@
 "s": "Köy"
 },
 "TR-63-005-173087": {
-"s": "Köy"
+"n": "çekirdek bina 434 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Akdilek"
 },
 "TR-63-005-173089": {
 "s": "Köy"
@@ -46926,13 +46938,19 @@
 "s": "Köy"
 },
 "TR-63-005-173247": {
-"s": "Köy"
+"n": "çekirdek bina 454 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Sağlık"
 },
 "TR-63-005-173249": {
-"s": "Köy"
+"n": "çekirdek bina 439 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Seksenören"
 },
 "TR-63-005-173251": {
-"s": "Köy"
+"n": "çekirdek bina 354 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Selman"
 },
 "TR-63-005-173253": {
 "s": "Köy"
@@ -46959,7 +46977,9 @@
 "s": "Köy"
 },
 "TR-63-005-173269": {
-"s": "Köy"
+"n": "çekirdek bina 321 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Ulucanlar"
 },
 "TR-63-005-173271": {
 "s": "Köy"
@@ -46983,7 +47003,9 @@
 "s": "Köy"
 },
 "TR-63-005-173285": {
-"s": "Köy"
+"n": "çekirdek bina 499 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Yardımcı"
 },
 "TR-63-005-173287": {
 "s": "Köy"
@@ -47306,7 +47328,9 @@
 "s": "Köy"
 },
 "TR-63-006-80376": {
-"s": "Köy"
+"n": "çekirdek bina 458 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Seldek"
 },
 "TR-63-006-80377": {
 "s": "Köy"
@@ -47650,7 +47674,9 @@
 "s": "Köy"
 },
 "TR-63-007-173533": {
-"s": "Köy"
+"n": "çekirdek bina 399 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Tepedibi"
 },
 "TR-63-007-173535": {
 "s": "Köy"
@@ -47665,7 +47691,9 @@
 "s": "Köy"
 },
 "TR-63-007-173543": {
-"s": "Köy"
+"n": "çekirdek bina 458 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Uluhan"
 },
 "TR-63-007-173545": {
 "s": "Köy"
@@ -47974,7 +48002,9 @@
 "s": "Köy"
 },
 "TR-63-008-174489": {
-"s": "Köy"
+"n": "çekirdek bina 412 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Küplüce"
 },
 "TR-63-008-174491": {
 "s": "Köy"
@@ -48758,7 +48788,9 @@
 "s": "Kırsal Belde"
 },
 "TR-63-011-174721": {
-"s": "Kentsel Belde"
+"n": "çekirdek 121 bina, parçalı; kentsel belde olamaz",
+"s": "Kırsal Belde",
+"y": "Gürakar"
 },
 "TR-63-011-174723": {
 "s": "Köy"
@@ -48794,7 +48826,9 @@
 "s": "Köy"
 },
 "TR-63-011-174745": {
-"s": "Köy"
+"n": "çekirdek bina 321 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Üstüntaş"
 },
 "TR-63-011-174747": {
 "s": "Köy"
@@ -48986,7 +49020,9 @@
 "s": "Köy"
 },
 "TR-63-011-174873": {
-"s": "Köy"
+"n": "çekirdek bina 438 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Karabahçe"
 },
 "TR-63-011-174875": {
 "s": "Köy"
@@ -49091,7 +49127,9 @@
 "s": "Köy"
 },
 "TR-63-011-174943": {
-"s": "Köy"
+"n": "çekirdek bina 320 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Şekerli"
 },
 "TR-63-011-174945": {
 "s": "Köy"
@@ -49964,7 +50002,9 @@
 "s": "Köy"
 },
 "TR-63-013-198271": {
-"s": "Köy"
+"n": "çekirdek bina 345 (400 m); kural: köy, çekirdek>=300 bina",
+"s": "Kırsal Belde",
+"y": "Anıt"
 },
 "TR-63-013-201169": {
 "s": "Köy"
