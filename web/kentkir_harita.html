@@ -91,8 +91,8 @@ let karar = {}, rows = new Map(), nameIdx = new Map(), tree = {}, layer = null, 
 const map = L.map("map", {zoomControl:true, preferCanvas:true}).setView([40.43, 29.72], 13);
 const esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {maxZoom:19, attribution:"Esri World Imagery"}).addTo(map);
 const roads = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}", {maxZoom:19, opacity:.9}).addTo(map);
-const osm = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {maxZoom:19, subdomains:"abcd", attribution:"© OpenStreetMap © CARTO"});
-const osmLbl = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png", {maxZoom:19, subdomains:"abcd", opacity:.8});
+const osm = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {maxNativeZoom:16, maxZoom:19, attribution:"Esri World Light Gray"});
+const osmLbl = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}", {maxNativeZoom:16, maxZoom:19, opacity:.9});
 
 function msg(t) { const m = $("msg"); m.textContent = t; m.style.display = t ? "block" : "none"; }
 
@@ -151,9 +151,9 @@ function paint(f) {
 }
 function bw() { const z = map.getZoom(); return z < 10 ? 0.5 : z < 12 ? 0.9 : z < 14 ? 1.6 : 2.6; }
 function style(f, hover) {
-  const on = sel.has(f.properties.area_id), p = paint(f), w = bw();
+  const on = sel.has(f.properties.area_id), p = paint(f), w = bw(), sat = $("sat").checked;
   return {color:on ? "#ffe600" : $("sat").checked ? "#ff1f1f" : "#37474f", weight:on ? w + 3 : hover ? w + 2 : w, opacity:map.getZoom() < 10 ? .6 : .9, dashArray:null,
-          fillColor:p.c, fillOpacity:!$("fill").checked ? (hover ? .2 : .02) : p.set ? (hover ? .7 : $("mode").value === "sinif" ? .35 : .62) : (hover ? .2 : .03)};
+          fillColor:p.c, fillOpacity:!$("fill").checked ? (hover ? .2 : .02) : p.set ? (hover ? .85 : $("mode").value === "sinif" ? (/Köy/.test(p.t) ? (sat ? .3 : .45) : (sat ? .45 : .8)) : (sat ? .55 : .75)) : (hover ? .2 : .03)};
 }
 function draw(fit) {
   if (casing) map.removeLayer(casing);
