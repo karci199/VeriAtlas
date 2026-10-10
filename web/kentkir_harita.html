@@ -55,7 +55,8 @@
   <label>İl <select id="il"></select></label>
   <label>İlçe <select id="ilce"></select></label>
   <label><input type="checkbox" id="multi"> çoklu seç (Shift+tık)</label>
-  <label><input type="checkbox" id="fill"> dolgu</label>
+  <label>renk <select id="mode"><option value="sinif">4 sınıf (merkez · kentsel belde · kırsal belde · köy)</option><option value="kentkir">kent / kır</option><option value="kazanan">2023 kazanan parti</option><option value="AK PARTİ">AK Parti oyu</option><option value="CHP">CHP oyu</option><option value="MHP">MHP oyu</option><option value="İYİ PARTİ">İYİ Parti oyu</option><option value="YEŞİL SOL PARTİ">Yeşil Sol oyu</option><option value="YENİDEN REFAH">Yeniden Refah oyu</option><option value="yas">ortanca yaş</option></select></label>
+  <label><input type="checkbox" id="fill" checked> dolgu</label>
   <label><input type="checkbox" id="names" checked> mahalle adları</label>
   <label><input type="checkbox" id="sat" checked> uydu</label>
   <button id="tb">Tablo</button> <select id="tscope" title="tablo kapsamı"><option value="ilce">tablo: seçili ilçe</option><option value="il">tablo: tüm il</option></select> <small style="color:var(--mute)">M = merkez · K = köy (fare üstündeki ya da seçililer)</small>
@@ -134,22 +135,35 @@ async function load() {
   draw(true);
   msg("");
 }
+const PCOL = {"AK PARTİ":"#ffb300", "CHP":"#ef5350", "MHP":"#7e57c2", "İYİ PARTİ":"#26c6da", "YEŞİL SOL PARTİ":"#66bb6a", "YENİDEN REFAH":"#8d6e63"};
+const mix = (a, b, t) => { const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)), x = p(a), y = p(b); return "#" + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, "0")).join(""); };
+const YAS = [[20, "#2962ff"], [30, "#26c6da"], [38, "#ffee58"], [46, "#ff9800"], [58, "#d50000"]];
+function yasCol(v) { if (v == null || v <= 0) return null; if (v <= YAS[0][0]) return YAS[0][1]; for (let i = 1; i < YAS.length; i++) if (v <= YAS[i][0]) return mix(YAS[i - 1][1], YAS[i][1], (v - YAS[i - 1][0]) / (YAS[i][0] - YAS[i - 1][0])); return YAS[YAS.length - 1][1]; }
+function paint(f) {
+  const a = f.properties.area_id, k = karar[a], r = rows.get(a) || {}, m = $("mode").value;
+  if (m === "sinif") { const cl = k ? (CLS[k.s] || NONE) : NONE; return {c:cl.c, set:!!k, t:cl.t}; }
+  if (m === "kentkir") { if (!k) return {c:NONE.c, set:false, t:"Karar yok"}; const kent = k.s === "İlçe Merkezi" || k.s === "İl Merkezi" || k.s === "Kentsel Belde"; return {c:kent ? "#ff5252" : "#4fc3f7", set:true, t:kent ? "Kent" : "Kır"}; }
+  if (m === "kazanan") { const w = r.win; return {c:PCOL[w] || (w ? "#9e9e9e" : NONE.c), set:!!w, t:w ? "kazanan " + w : "seçim verisi yok"}; }
+  if (m === "yas") { const c = yasCol(r.med); return {c:c || NONE.c, set:!!c, t:r.med > 0 ? "ortanca yaş " + (+r.med).toFixed(1) : "yaş verisi yok"}; }
+  const v = r[m]; if (v == null) return {c:NONE.c, set:false, t:"seçim verisi yok"};
+  return {c:mix("#ffffff", PCOL[m] || "#9e9e9e", Math.min(1, v / 65)), set:true, t:m + " %" + (+v).toFixed(1)};
+}
+function bw() { const z = map.getZoom(); return z < 10 ? 0.5 : z < 12 ? 0.9 : z < 14 ? 1.6 : 2.6; }
 function style(f, hover) {
-  const k = karar[f.properties.area_id], cl = k ? (CLS[k.s] || NONE) : NONE;
-  const on = sel.has(f.properties.area_id);
-  return {color:on ? "#ffe600" : "#ff1f1f", weight:on ? 6 : hover ? 4.5 : 2.6, opacity:1, dashArray:null,
-          fillColor:cl.c, fillOpacity:k ? (hover ? .5 : .32) : (hover ? .2 : .03)};
+  const on = sel.has(f.properties.area_id), p = paint(f), w = bw();
+  return {color:on ? "#ffe600" : "#ff1f1f", weight:on ? w + 3 : hover ? w + 2 : w, opacity:map.getZoom() < 10 ? .75 : 1, dashArray:null,
+          fillColor:p.c, fillOpacity:!$("fill").checked ? (hover ? .2 : .02) : p.set ? (hover ? .7 : $("mode").value === "sinif" ? .35 : .62) : (hover ? .2 : .03)};
 }
 function draw(fit) {
   if (casing) map.removeLayer(casing);
   if (layer) map.removeLayer(layer);
   if (labels) map.removeLayer(labels);
-  casing = L.geoJSON({type:"FeatureCollection", features:feats}, {interactive:false, style:{color:"#fff", weight:5.5, opacity:.9, fill:false}}).addTo(map);
+  casing = L.geoJSON({type:"FeatureCollection", features:feats}, {interactive:false, style:{color:"#fff", weight:bw() + 2.5, opacity:map.getZoom() < 12 ? 0 : .9, fill:false}}).addTo(map);
   layer = L.geoJSON({type:"FeatureCollection", features:feats}, {
     style: f => style(f, false),
     onEachFeature: (f, l) => {
       const a = f.properties.area_id, r = rows.get(a), k = karar[a], cl = k ? (CLS[k.s] || NONE) : NONE;
-      l.bindTooltip(`<b>${f.properties.name_tr}</b><br>${cl.t}${k?.y ? " · " + k.y : ""}<br>${fmt(r?.n)} kişi`, {sticky:true, className:"tip"});
+      l.bindTooltip(() => `<b>${f.properties.name_tr}</b> <small>${r?.ilce || ""}</small><br>${cl.t}${k?.y ? " · " + k.y : ""}<br>${$("mode").value === "sinif" ? "" : paint(f).t + "<br>"}${fmt(r?.n)} kişi`, {sticky:true, className:"tip"});
       l.on("mouseover", () => { hov = f; l.setStyle(style(f, true)); });
       l.on("mouseout", () => { if (hov === f) hov = null; l.setStyle(style(f, false)); });
       l.on("click", e => {
@@ -170,14 +184,28 @@ function draw(fit) {
   legend();
 }
 function legend() {
-  const agg = {}; let tot = 0;
-  for (const f of feats) {
-    const a = f.properties.area_id, k = karar[a], cl = k ? (CLS[k.s] || NONE) : NONE, r = rows.get(a);
-    const e = (agg[cl.t] ??= {c:cl.c, n:0, p:0}); e.n++; e.p += r?.n || 0; tot += r?.n || 0;
+  const m = $("mode").value, title = `<b>${$("ilce").value === "*" ? $("il").value + " (tüm il)" : $("ilce").value}</b>`;
+  let tot = 0; for (const f of feats) tot += rows.get(f.properties.area_id)?.n || 0;
+  const head = `${title} <small>${fmt(tot)} kişi</small>`;
+  const grad = (stops, lo, hi, unit) => `<div style="height:10px;border-radius:5px;margin:6px 0 2px;background:linear-gradient(90deg,${stops.join(",")})"></div><small>${lo} ${unit}<span style="float:right">${hi} ${unit}</span></small>`;
+  if (m === "yas") {
+    let sw = 0, sp = 0; for (const f of feats) { const r = rows.get(f.properties.area_id); if (r && r.med > 0) { sw += r.med * r.n; sp += r.n; } }
+    $("legend").innerHTML = head + `<div style="margin-top:4px">nüfus ağırlıklı ortanca yaş <b>${sp ? (sw / sp).toFixed(1) : "–"}</b></div>` + grad(YAS.map(x => x[1]), "≤20", "≥58", "yaş");
+    return;
   }
-  const order = ["Merkez", "Kentsel belde", "Kırsal belde", "Köy", "Karar yok"];
-  $("legend").innerHTML = `<b>${$("ilce").value === "*" ? $("il").value + " (tüm il)" : $("ilce").value}</b> <small>${fmt(tot)} kişi</small>` + order.filter(o => agg[o]).map(o =>
-    `<div class="row"><i style="border-color:${agg[o].c};background:${agg[o].c}44"></i>${o} <b>${agg[o].n}</b> <small>${fmt(agg[o].p)} (%${tot ? Math.round(100 * agg[o].p / tot) : 0})</small></div>`).join("");
+  if (PCOL[m]) {
+    let g = 0, v = 0; for (const f of feats) { const r = rows.get(f.properties.area_id); if (r && r[m] != null && r.g23) { g += r.g23; v += r.g23 * r[m] / 100; } }
+    $("legend").innerHTML = head + `<div style="margin-top:4px">${m} <b>%${g ? (100 * v / g).toFixed(1) : "–"}</b> (geçerli oy)</div>` + grad(["#ffffff", PCOL[m]], "0", "65", "%");
+    return;
+  }
+  const agg = {};
+  for (const f of feats) {
+    const r = rows.get(f.properties.area_id), p = paint(f);
+    const key = m === "kazanan" ? (r?.win || "seçim verisi yok") : p.t, e = (agg[key] ??= {c:p.c, n:0, p:0}); e.n++; e.p += r?.n || 0;
+  }
+  const order = m === "sinif" ? ["Merkez", "Kentsel belde", "Kırsal belde", "Köy", "Karar yok"] : m === "kentkir" ? ["Kent", "Kır", "Karar yok"] : Object.keys(agg).sort((x, y) => agg[y].p - agg[x].p);
+  $("legend").innerHTML = head + order.filter(o => agg[o]).map(o =>
+    `<div class="row"><i style="border-color:${agg[o].c};background:${agg[o].c}66"></i>${o} <b>${agg[o].n}</b> <small>${fmt(agg[o].p)} (%${tot ? Math.round(100 * agg[o].p / tot) : 0})</small></div>`).join("");
 }
 let cur = null;
 async function quick(ids, cls) {
@@ -298,6 +326,8 @@ $("tscope").onchange = () => { if ($("tbl").style.display === "block") table(); 
 $("tb").onclick = () => { const on = $("tbl").style.display !== "block"; $("tbl").style.display = on ? "block" : "none"; $("tb").textContent = on ? "Harita" : "Tablo"; if (on) table(); };
 $("il").onchange = () => { fillIlce(); load(); };
 $("ilce").onchange = load;
+$("mode").onchange = () => { layer && layer.setStyle(f => style(f, false)); legend(); };
+map.on("zoomend", () => { if (layer) layer.setStyle(f => style(f, false)); if (casing) casing.setStyle({weight:bw() + 2.5, opacity:map.getZoom() < 12 ? 0 : .9}); });
 $("fill").onchange = () => layer && layer.setStyle(f => style(f, false));
 $("names").onchange = () => $("names").checked ? labels.addTo(map) : map.removeLayer(labels);
 $("sat").onchange = () => { if ($("sat").checked) { map.removeLayer(osm); esri.addTo(map); roads.addTo(map); } else { map.removeLayer(esri); map.removeLayer(roads); osm.addTo(map); } };
