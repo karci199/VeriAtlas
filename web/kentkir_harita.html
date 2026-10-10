@@ -58,7 +58,7 @@
   <label>renk <select id="mode"><option value="sinif">4 sınıf (merkez · kentsel belde · kırsal belde · köy)</option><option value="kentkir">kent / kır</option><option value="kazanan">2023 kazanan parti</option><option value="AK PARTİ">AK Parti oyu</option><option value="CHP">CHP oyu</option><option value="MHP">MHP oyu</option><option value="İYİ PARTİ">İYİ Parti oyu</option><option value="YEŞİL SOL PARTİ">Yeşil Sol oyu</option><option value="YENİDEN REFAH">Yeniden Refah oyu</option><option value="yas">ortanca yaş</option></select></label>
   <label><input type="checkbox" id="fill" checked> dolgu</label>
   <label><input type="checkbox" id="names" checked> mahalle adları</label>
-  <label><input type="checkbox" id="sat" checked> uydu</label>
+  <label><input type="checkbox" id="sat" checked> uydu (kapalı = düz zemin)</label>
   <button id="tb">Tablo</button> <select id="tscope" title="tablo kapsamı"><option value="ilce">tablo: seçili ilçe</option><option value="il">tablo: tüm il</option></select> <small style="color:var(--mute)">M = merkez · K = köy (fare üstündeki ya da seçililer)</small>
   <input type="search" id="q" placeholder="mahalle ara…" list="dl">
   <datalist id="dl"></datalist>
@@ -124,6 +124,7 @@ function fillIlce(pref) {
 async function load() {
   const il = $("il").value, ilce = $("ilce").value;
   location.hash = `il=${encodeURIComponent(il)}&ilce=${encodeURIComponent(ilce)}`;
+  if (ilce === "*" && $("sat").checked) { $("sat").checked = false; $("sat").onchange(); }
   msg(ilce === "*" ? "Tüm il sınırları yükleniyor…" : "Sınırlar yükleniyor…");
   const list = ilce === "*" ? Object.values(tree[il]).map(x => x.id) : [tree[il][ilce].id];
   const gs = await Promise.all(list.map(id => fetch(GEO(id)).then(r => r.json()).then(g => [id, g.features])));
@@ -152,14 +153,16 @@ function paint(f) {
 function bw() { const z = map.getZoom(); return z < 10 ? 0.5 : z < 12 ? 0.9 : z < 14 ? 1.6 : 2.6; }
 function style(f, hover) {
   const on = sel.has(f.properties.area_id), p = paint(f), w = bw(), sat = $("sat").checked;
-  return {color:on ? "#ffe600" : $("sat").checked ? "#ff1f1f" : "#37474f", weight:on ? w + 3 : hover ? w + 2 : w, opacity:map.getZoom() < 10 ? .6 : .9, dashArray:null,
-          fillColor:p.c, fillOpacity:!$("fill").checked ? (hover ? .2 : .02) : p.set ? (hover ? .85 : $("mode").value === "sinif" ? (/Köy/.test(p.t) ? (sat ? .3 : .45) : (sat ? .45 : .8)) : (sat ? .55 : .75)) : (hover ? .2 : .03)};
+  if (!sat) return {color:on ? "#ffe600" : "#ffffff", weight:on ? w + 2 : hover ? w + 1.5 : Math.max(.5, w * .55), opacity:1, dashArray:null,
+    fillColor:p.c, fillOpacity:!$("fill").checked ? .05 : p.set ? (hover ? 1 : .93) : (hover ? .6 : .35)};
+  return {color:on ? "#ffe600" : "#ff1f1f", weight:on ? w + 3 : hover ? w + 2 : w, opacity:map.getZoom() < 10 ? .6 : .9, dashArray:null,
+    fillColor:p.c, fillOpacity:!$("fill").checked ? (hover ? .2 : .02) : p.set ? (hover ? .85 : $("mode").value === "sinif" ? (/Köy/.test(p.t) ? .3 : .45) : .55) : (hover ? .2 : .03)};
 }
 function draw(fit) {
   if (casing) map.removeLayer(casing);
   if (layer) map.removeLayer(layer);
   if (labels) map.removeLayer(labels);
-  casing = L.geoJSON({type:"FeatureCollection", features:feats}, {interactive:false, style:{color:"#fff", weight:bw() + 2.5, opacity:map.getZoom() < 12 ? 0 : .9, fill:false}}).addTo(map);
+  casing = L.geoJSON({type:"FeatureCollection", features:feats}, {interactive:false, style:{color:"#fff", weight:bw() + 2.5, opacity:map.getZoom() < 12 || !$("sat").checked ? 0 : .9, fill:false}}).addTo(map);
   layer = L.geoJSON({type:"FeatureCollection", features:feats}, {
     style: f => style(f, false),
     onEachFeature: (f, l) => {
@@ -328,10 +331,10 @@ $("tb").onclick = () => { const on = $("tbl").style.display !== "block"; $("tbl"
 $("il").onchange = () => { fillIlce(); load(); };
 $("ilce").onchange = load;
 $("mode").onchange = () => { layer && layer.setStyle(f => style(f, false)); legend(); };
-map.on("zoomend", () => { if (layer) layer.setStyle(f => style(f, false)); if (casing) casing.setStyle({weight:bw() + 2.5, opacity:map.getZoom() < 12 ? 0 : .9}); });
+map.on("zoomend", () => { if (layer) layer.setStyle(f => style(f, false)); if (casing) casing.setStyle({weight:bw() + 2.5, opacity:map.getZoom() < 12 || !$("sat").checked ? 0 : .9}); });
 $("fill").onchange = () => layer && layer.setStyle(f => style(f, false));
 $("names").onchange = () => $("names").checked ? labels.addTo(map) : map.removeLayer(labels);
-$("sat").onchange = () => { if ($("sat").checked) { map.removeLayer(osm); map.removeLayer(osmLbl); esri.addTo(map); roads.addTo(map); } else { map.removeLayer(esri); map.removeLayer(roads); osm.addTo(map); osmLbl.addTo(map); } if (layer) layer.setStyle(f => style(f, false)); };
+$("sat").onchange = () => { const on = $("sat").checked; for (const l of [esri, roads, osm, osmLbl]) map.removeLayer(l); if (on) { esri.addTo(map); roads.addTo(map); } $("map").style.background = on ? "#0b1118" : "#eef2f8"; if (layer) layer.setStyle(f => style(f, false)); if (casing) casing.setStyle({opacity:map.getZoom() < 12 || !on ? 0 : .9}); };
 $("q").onchange = () => {
   const t = $("q").value.trim().toLocaleLowerCase("tr"), f = feats.find(x => x.properties.name_tr.toLocaleLowerCase("tr") === t);
   if (f) { map.fitBounds(L.geoJSON(f).getBounds(), {maxZoom:17}); show(f); }
