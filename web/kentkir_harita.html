@@ -58,7 +58,7 @@
   <label><input type="checkbox" id="fill"> dolgu</label>
   <label><input type="checkbox" id="names" checked> mahalle adları</label>
   <label><input type="checkbox" id="sat" checked> uydu</label>
-  <button id="tb">Tablo</button> <small style="color:var(--mute)">M = merkez · K = köy (fare üstündeki ya da seçililer)</small>
+  <button id="tb">Tablo</button> <select id="tscope" title="tablo kapsamı"><option value="ilce">tablo: seçili ilçe</option><option value="il">tablo: tüm il</option></select> <small style="color:var(--mute)">M = merkez · K = köy (fare üstündeki ya da seçililer)</small>
   <input type="search" id="q" placeholder="mahalle ara…" list="dl">
   <datalist id="dl"></datalist>
 </div>
@@ -116,17 +116,21 @@ async function init() {
 }
 function fillIlce(pref) {
   const il = $("il").value, names = Object.keys(tree[il]).sort((a, b) => a.localeCompare(b, "tr"));
-  $("ilce").innerHTML = names.map(i => `<option>${i}</option>`).join("");
-  if (pref && names.includes(pref)) $("ilce").value = pref;
+  $("ilce").innerHTML = `<option value="*">— tüm il —</option>` + names.map(i => `<option>${i}</option>`).join("");
+  $("ilce").value = pref === "*" || (pref && names.includes(pref)) ? pref : names[0];
 }
 async function load() {
-  const il = $("il").value, ilce = $("ilce").value, id = tree[il][ilce].id;
+  const il = $("il").value, ilce = $("ilce").value;
   location.hash = `il=${encodeURIComponent(il)}&ilce=${encodeURIComponent(ilce)}`;
-  msg("Sınırlar yükleniyor…");
-  const g = await fetch(GEO(id)).then(r => r.json());
-  feats = g.features;
-  // village polygons carry a different id than the table row: match by district + name
-  for (const f of feats) { const a = f.properties.area_id; if (!rows.has(a)) { const m = nameIdx.get(id + "|" + f.properties.name_tr); if (m) { f.properties.geo_id = a; f.properties.area_id = m; } } }
+  msg(ilce === "*" ? "Tüm il sınırları yükleniyor…" : "Sınırlar yükleniyor…");
+  const list = ilce === "*" ? Object.values(tree[il]).map(x => x.id) : [tree[il][ilce].id];
+  const gs = await Promise.all(list.map(id => fetch(GEO(id)).then(r => r.json()).then(g => [id, g.features])));
+  feats = [];
+  for (const [id, fs] of gs) {
+    // village polygons carry a different id than the table row: match by district + name
+    for (const f of fs) { const a = f.properties.area_id; if (!rows.has(a)) { const m = nameIdx.get(id + "|" + f.properties.name_tr); if (m) { f.properties.geo_id = a; f.properties.area_id = m; } } }
+    feats.push(...fs);
+  }
   draw(true);
   msg("");
 }
@@ -160,7 +164,7 @@ function draw(fit) {
     const c = L.geoJSON(f).getBounds().getCenter();
     L.marker(c, {interactive:false, icon:L.divIcon({className:"", html:`<span class="lbl" style="--c:${(karar[f.properties.area_id] ? (CLS[karar[f.properties.area_id].s] || NONE) : NONE).c}">${f.properties.name_tr}<small>${fmt(rows.get(f.properties.area_id)?.n)}</small></span>`, iconSize:[0, 0]})}).addTo(labels);
   }
-  if ($("names").checked) labels.addTo(map);
+  if ($("names").checked && feats.length < 400) labels.addTo(map);
   if (fit) map.fitBounds(layer.getBounds(), {padding:[20, 20]});
   $("dl").innerHTML = feats.map(f => `<option value="${f.properties.name_tr}">`).join("");
   legend();
@@ -172,7 +176,7 @@ function legend() {
     const e = (agg[cl.t] ??= {c:cl.c, n:0, p:0}); e.n++; e.p += r?.n || 0; tot += r?.n || 0;
   }
   const order = ["Merkez", "Kentsel belde", "Kırsal belde", "Köy", "Karar yok"];
-  $("legend").innerHTML = `<b>${$("ilce").value}</b> <small>${fmt(tot)} kişi</small>` + order.filter(o => agg[o]).map(o =>
+  $("legend").innerHTML = `<b>${$("ilce").value === "*" ? $("il").value + " (tüm il)" : $("ilce").value}</b> <small>${fmt(tot)} kişi</small>` + order.filter(o => agg[o]).map(o =>
     `<div class="row"><i style="border-color:${agg[o].c};background:${agg[o].c}44"></i>${o} <b>${agg[o].n}</b> <small>${fmt(agg[o].p)} (%${tot ? Math.round(100 * agg[o].p / tot) : 0})</small></div>`).join("");
 }
 let cur = null;
@@ -266,9 +270,10 @@ async function save(a, s) {
 }
 let sortK = "n", sortD = -1;
 const f2 = v => v == null ? "" : (+v).toLocaleString("tr-TR", {minimumFractionDigits:2, maximumFractionDigits:2});
-const TCOLS = [["ad", "Mahalle", "t"], ["s", "Sınıf", "c"], ["y", "Küme", "t"], ["n", "Nüfus 2025", 0], ["n0", "Nüfus 2013", 0], ["chg", "Değişim %", 2], ["dens", "Yoğunluk /km²", 2], ["u17", "0-17 %", 2], ["o65", "65+ %", 2], ["med", "Ort. yaş", 2], ["kpb", "Konut/bina", 2], ["yaz", "Yazlık %", 2], ["yer", "Yerleşim", "t"], ["stat", "TÜİK 2012", "t"], ["aat", "AATOPLU", "t"], ["oneri", "Öneri", "t"]];
+const TCOLS = [["ilce", "İlçe", "t"], ["ad", "Mahalle", "t"], ["s", "Sınıf", "c"], ["y", "Küme", "t"], ["n", "Nüfus 2025", 0], ["n0", "Nüfus 2013", 0], ["chg", "Değişim %", 2], ["dens", "Yoğunluk /km²", 2], ["u17", "0-17 %", 2], ["o65", "65+ %", 2], ["med", "Ort. yaş", 2], ["kpb", "Konut/bina", 2], ["yaz", "Yazlık %", 2], ["yer", "Yerleşim", "t"], ["stat", "TÜİK 2012", "t"], ["aat", "AATOPLU", "t"], ["oneri", "Öneri", "t"]];
 function table() {
-  const list = feats.map(f => { const r = rows.get(f.properties.area_id) || {}; return {...r, ...(karar[f.properties.area_id] || {}), ad:f.properties.name_tr, id:f.properties.area_id, chg:r.n0 ? 100 * (r.n / r.n0 - 1) : null}; });
+  const il = $("il").value, ilce = $("ilce").value, wide = $("tscope").value === "il" || ilce === "*";
+  const list = [...rows.values()].filter(r => r.il === il && (wide || r.ilce === ilce)).map(r => ({...r, ...(karar[r.id] || {}), chg:r.n0 ? 100 * (r.n / r.n0 - 1) : null}));
   list.sort((x, y) => (typeof x[sortK] === "number" || typeof y[sortK] === "number" ? ((x[sortK] ?? -1e9) - (y[sortK] ?? -1e9)) : String(x[sortK] ?? "").localeCompare(String(y[sortK] ?? ""), "tr")) * sortD);
   const cell = (r, [k, , t]) => {
     const v = r[k];
@@ -279,10 +284,17 @@ function table() {
   const tot = list.reduce((a, r) => a + (r.n || 0), 0), tot0 = list.reduce((a, r) => a + (r.n0 || 0), 0);
   $("tbl").innerHTML = `<table><thead><tr>${TCOLS.map(c => `<th data-k="${c[0]}" class="${c[2] === "t" || c[2] === "c" ? "" : "num"}">${c[1]}${sortK === c[0] ? (sortD < 0 ? " ▼" : " ▲") : ""}</th>`).join("")}</tr></thead><tbody>` +
     list.map(r => `<tr data-id="${r.id}">${TCOLS.map(c => cell(r, c)).join("")}</tr>`).join("") +
-    `</tbody><tfoot><tr><td class="first">Toplam · ${list.length} mahalle</td><td></td><td></td><td class="num">${fmt(tot)}</td><td></td><td colspan="${TCOLS.length - 5}"></td></tr></tfoot></table>`;
+    `</tbody><tfoot><tr><td></td><td class="first">Toplam · ${list.length} mahalle</td><td></td><td></td><td class="num">${fmt(tot)}</td><td></td><td colspan="${TCOLS.length - 6}"></td></tr></tfoot></table>`;
   for (const th of $("tbl").querySelectorAll("th")) th.onclick = () => { sortD = sortK === th.dataset.k ? -sortD : -1; sortK = th.dataset.k; table(); };
-  for (const tr of $("tbl").querySelectorAll("tbody tr")) tr.onclick = () => { const f = feats.find(x => x.properties.area_id === tr.dataset.id); $("tb").click(); map.fitBounds(L.geoJSON(f).getBounds(), {maxZoom:16}); show(f); };
+  for (const tr of $("tbl").querySelectorAll("tbody tr")) tr.onclick = async () => {
+    const r = rows.get(tr.dataset.id);
+    $("tb").click();
+    if ($("ilce").value !== "*" && $("ilce").value !== r.ilce) { $("ilce").value = r.ilce; await load(); }
+    const f = feats.find(x => x.properties.area_id === r.id);
+    if (f) { map.fitBounds(L.geoJSON(f).getBounds(), {maxZoom:16}); show(f); }
+  };
 }
+$("tscope").onchange = () => { if ($("tbl").style.display === "block") table(); };
 $("tb").onclick = () => { const on = $("tbl").style.display !== "block"; $("tbl").style.display = on ? "block" : "none"; $("tb").textContent = on ? "Harita" : "Tablo"; if (on) table(); };
 $("il").onchange = () => { fillIlce(); load(); };
 $("ilce").onchange = load;
