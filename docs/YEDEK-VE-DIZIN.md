@@ -12,7 +12,8 @@ silme sırası gelmeden durduğu için kaldı; denetim: `C:\veri` 124.091 dosya 
 `C:\veri-ham` 97.714 dosya (26,2 GB), olaydan sonra değişen yok.
 
 **Kalan risk:** `C:\veri-ham`, `public/fact.parquet`, `warehouse.duckdb` ve `.env` yalnız bu diskte. Git bunları kurtarmaz.
-Bu bilgisayarda ikinci disk görünmüyor; aşağıdaki 1, 3 ve 4 numaralılar **C: dışına** kopyalanmalı (harici disk ya da bulut).
+Bu bilgisayarda C: dışında kullanılan sürücü yok (ikinci diskte sürücü harfi olmayan bölümler var, içeriği bilinmiyor); aşağıdaki 1, 3 ve 4 numaralılar **C: dışına** kopyalanmalı (harici disk ya da bulut).
+Testler: `C:\veri\raw` varsa ham veri yolu orayı seçer ve eksik dosya hatası verir; `VERIATLAS_RAW=C:\veri-ham` ile koş (2026-11-02: 731 geçti, 368 atlandı).
 Worktree dallarının push edilmemiş işleri de yalnız burada. Silme kuralı: [CLAUDE.md](../CLAUDE.md).
 
 ## 1. Neyi yedeklemelisin (önem sırasıyla)

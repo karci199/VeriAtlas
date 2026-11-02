@@ -22,8 +22,8 @@ import urllib.request
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 
-from fetch_secim_profil import slug  # noqa: E402
-from zk_client import ZK  # noqa: E402
+from fetch_secim_profil import slug
+from zk_client import ZK
 
 HAM = pathlib.Path(os.environ.get("VERIATLAS_HAM", "C:/veri-ham"))
 OUT = HAM / "secim" / "profil_yerel"
@@ -62,7 +62,9 @@ def fetch_one(page: str, year: str, office: str, pair: tuple[str, str]) -> None:
     z.click("Raporu Oluştur")
     if not z.redirect:
         raise RuntimeError("no report url")
-    data = urllib.request.urlopen(z.redirect.replace("http://", "https://"), timeout=300).read()
+    data = urllib.request.urlopen(
+        z.redirect.replace("http://", "https://"), timeout=300
+    ).read()
     if len(data) < 2000:
         raise RuntimeError(f"small report {len(data)}")
     path = dest(page, year, office, pair)
@@ -87,4 +89,7 @@ def main(page: str, only: str | None = None) -> None:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else "aday", sys.argv[2] if len(sys.argv) > 2 else None)
+    main(
+        sys.argv[1] if len(sys.argv) > 1 else "aday",
+        sys.argv[2] if len(sys.argv) > 2 else None,
+    )
