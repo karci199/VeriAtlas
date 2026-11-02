@@ -5,6 +5,16 @@ işe dönerken okunacak tek giriş noktası. Ayrıntılar bağlantı verilen bel
 
 ---
 
+## 0. 2026-11-02 olayı: bu yedek hâlâ alınmalı
+
+Başka bir projedeki hatalı betik C: kökünden silmeye başladı, `C:\Projeler` gitti. `C:\veri` ve `C:\veri-ham`
+silme sırası gelmeden durduğu için kaldı; denetim: `C:\veri` 124.091 dosya (18,5 GB), git'te silinmiş dosya yok;
+`C:\veri-ham` 97.714 dosya (26,2 GB), olaydan sonra değişen yok.
+
+**Kalan risk:** `C:\veri-ham`, `public/fact.parquet`, `warehouse.duckdb` ve `.env` yalnız bu diskte. Git bunları kurtarmaz.
+Bu bilgisayarda ikinci disk görünmüyor; aşağıdaki 1, 3 ve 4 numaralılar **C: dışına** kopyalanmalı (harici disk ya da bulut).
+Worktree dallarının push edilmemiş işleri de yalnız burada. Silme kuralı: [CLAUDE.md](../CLAUDE.md).
+
 ## 1. Neyi yedeklemelisin (önem sırasıyla)
 
 Git **her şeyi tutmuyor**. Aşağıdaki üç yerin üçü de ayrı ayrı kopyalanmalı.

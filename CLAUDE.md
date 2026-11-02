@@ -12,6 +12,16 @@ oturumda, doğrudan yapılacak. Alt ajana iş devredilmeyecek, arka planda ajan
 Gerekçe: alt ajanın ne okuduğu ve neye dayanarak karar verdiği görünmüyor; dönen özet
 doğrulanamıyor. Bu projede kaynağın izlenebilirliği işin kendisi.
 
+## Silme kuralı
+
+`cmd /c`, `rmdir`, `rd`, `del` ile silme yazılmaz; Python'da kök ya da boş yol olabilecek `shutil.rmtree` yazılmaz.
+Silinecek yol önce denetlenir: `C:\veri-ham` ve `C:\veri` kökleri asla silinmez. Yeni betiğin silme satırı çalıştırmadan önce
+okunur; beklenmedik uzun süren betik önce durdurulur, sonra incelenir.
+
+Gerekçe: 2026-11-02'de başka bir projede (KIWI) test betiğindeki tırnak hatası `rmdir /s /q \` üretti ve C: kökünden
+silmeye başladı. `C:\Projeler` gitti; `C:\veri` ve `C:\veri-ham` silme sırası gelmeden durduğu için kurtuldu.
+Bu bir koruma değil, şanstı: bkz. [docs/YEDEK-VE-DIZIN.md](docs/YEDEK-VE-DIZIN.md).
+
 ## Önce envantere bak
 
 Yeni bir kaynak önermeden ya da çekmeden önce [docs/envanter.md](docs/envanter.md)

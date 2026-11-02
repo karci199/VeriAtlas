@@ -39,3 +39,7 @@ public/harita/
 
 # Ortak cikti klasoru (veriatlas.config.OUTPUT), depoya girmez
 demografi/
+# Local database snapshots, DuckDB spill files and per-machine Claude settings
+warehouse.*.duckdb
+.tmp/
+.claude/settings.local.json
