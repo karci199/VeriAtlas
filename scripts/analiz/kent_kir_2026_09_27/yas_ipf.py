@@ -22,6 +22,7 @@ PLATE, D = sys.argv[1], Path(sys.argv[2])
 ROOT = Path("C:/veri")
 # 20 working columns; 3 = 15-17, 4 = 18-19 (both inside TÜİK's 15-19)
 EDGES = [0, 5, 10, 15, 18, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 100]
+# column 14 starts at 65 (EDGES[14]), so 65+ is u[14:]; u[15:] is 70+
 TLAB = ["0-4", "5-9", "10-14", "15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "60-64",
         "65-69", "70-74", "75-79", "80-84", "85-89", "90+"]
 COL2T = [0, 1, 2, 3, 3] + list(range(4, 19))  # working column -> TÜİK group
@@ -105,7 +106,7 @@ for did, dist in sorted(DIST.items()):
             s0 = seed[m].sum(0)
             res.append(dict(ilce=name, sinif=cls, nufus=round(u.sum()), ortanca=round(med(u), 1), ortalama=round(mean(u), 1),
                             tohum_ortanca=round(med(s0), 1), cocuk=round(u[CHILD].sum() / u.sum() * 100, 1),
-                            yasli65=round(u[15:].sum() / u.sum() * 100, 1), olcum_payi=round(P[m & usable].sum() / P[m].sum() * 100),
+                            yasli65=round(u[14:].sum() / u.sum() * 100, 1), olcum_payi=round(P[m & usable].sum() / P[m].sum() * 100),
                             uyum_hatasi=round(err, 2), tur=it + 1, _c=u))
     for a, row, k, u, hk in zip(ids, X, kk, usable, hasK):
         g = np.zeros(19); np.add.at(g, COL2T, row)
@@ -118,7 +119,7 @@ for did, dist in sorted(DIST.items()):
 for cls in ("kent", "kır"):
     u = sum(r["_c"] for r in res if r["sinif"] == cls)
     res.append(dict(ilce="BURSA", sinif=cls, nufus=round(u.sum()), ortanca=round(med(u), 1), ortalama=round(mean(u), 1),
-                    tohum_ortanca=None, cocuk=round(u[CHILD].sum() / u.sum() * 100, 1), yasli65=round(u[15:].sum() / u.sum() * 100, 1),
+                    tohum_ortanca=None, cocuk=round(u[CHILD].sum() / u.sum() * 100, 1), yasli65=round(u[14:].sum() / u.sum() * 100, 1),
                     olcum_payi=None, uyum_hatasi=None, tur=None, _c=u))
 r = pl.DataFrame([{k: v for k, v in x.items() if k != "_c"} for x in res])
 r.write_csv(D / f"yas_ipf_{PLATE}.csv")
