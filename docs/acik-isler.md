@@ -5,7 +5,34 @@ Tek liste, 2026-09-26 gecesi derlendi: bu dosyanın eski bölümleri, oturum not
 (kargo, Turkcell bayileri, şarj istasyonu, ilçe sağlık kurumu, noter, eczane kapandı).
 Tarihli ayrıntı aşağıdaki "Geçmiş notlar"da; çelişen yerde bu liste geçerlidir.
 
-### 0. 2026-09-27: yapılanlar ve süren işler (EN GÜNCEL)
+### 00. 2026-11-03: kent/kır son durum (EN GÜNCEL)
+
+**main'e girdi (`a824b9b5`):** `claude/istanbul-devam-e9426f` ve `claude/nerede-kaldik-60b0da` birleştirildi.
+`claude/cekme-devami-41678b` (web haritaları, 18 commit) birleştirilmedi.
+
+**Elle kararlar:** `scripts/analiz/kent_kir_2026_09_27/kullanici_karar.json`, 26.220 kayıt: Köy 19.132, İlçe Merkezi 5.881,
+Kırsal Belde 730, Kentsel Belde 477. Kayıt 38 ilde var, 43 ilde hiç yok. Kaydı olmayan plakalar: 02-05, 08, 12, 13, 15, 17, 18,
+22-24, 28-32, 36, 38-40, 43, 44, 47, 51, 53, 56, 58, 62, 66, 68, 69, 71-75, 77-81.
+Kayıt sayısı düşük iller, yarım olmaları muhtemel, denetlenecek: Aydın 16, Samsun 33, Tokat 68, Muş 85, Zonguldak 105.
+Kayıt sayısı kapsam demek değil: `areas_tr_neighbourhoods` + `areas_tr_villages` tarihsel kimlikleri de taşıdığı için bu
+listeye oranlamak yanıltır (bazı illerde %100'ü geçiyor). Hangi illerin bittiği ayrıca sayılmadı.
+
+**Birleştirmede karar dosyası:** iki tarafın aynı kaydı değiştirdiği durum yok. Akçatepe (TR-52-002-150781) main'den Köy kaldı;
+dalda üretilen tablolar onu Kırsal Belde saymış olabilir. Uşak merkezin 21 mahallesi İl Merkezi → İlçe Merkezi; dosyada artık
+İl Merkezi sınıfı hiç yok.
+
+**Düzeltmeler:** `~` ile bağlanamayan oylar `scripts/analiz/kent_kir_secim_duzeltme/tilde_class.json` ile sınıflandı, İYİ/BBP/YRP/ZP/diğer/
+evet-Cumhur/kayıp tabloları yeniden üretildi. `parse_secim.py`: Sur'da Bağıvar, Çarıklı, Fetih → Dicle, Yeşilvadi, Kıtılbıl.
+`yas_ipf.py`: 65+ payı 70+'dan hesaplanıyordu, düzeltildi; önceki `yas_ipf` çıktıları yeniden üretilmedi, 65+ payları eksik olabilir.
+
+**Tablolar:** 116 analiz tablosu depoya girdi (`kent_kir_2026_09_27/` 105, `kent_kir_secim_duzeltme/` 11, toplam 23 MB); kopyası
+`C:\veri-ham\analiz\kent_kir_tablolar`. 116 dosya adının hiçbiri `scripts/` altındaki `.py` dosyalarında geçmiyor (ad aramasıyla; adı değişkenle kuran betik yakalanmaz): üretim yolu depodan izlenemiyor, yeniden üretilebilir sayılmamalı.
+
+**Süreçler:** 2026-11-03'te çalışan Python süreci yok; MEDAS ve sayım çekimlerinin nerede kaldığı denetlenmedi, aşağıdaki §0 son bilinen durumdur.
+
+**Açık:** C: dışı yedek alınmadı ([YEDEK-VE-DIZIN.md](YEDEK-VE-DIZIN.md) §0); kararı olmayan iller; tabloların Akçatepe ve 65+ için yeniden üretimi.
+
+### 0. 2026-09-27: yapılanlar ve süren işler
 
 **Depoya girenler:** meyve-sebze-örtüaltı ilçe satırları (1,89 mn; `tuik_crops`
 `DISTRICT_MISMATCH` fındık 2020 + Sakarya 2015), `sgk_lump_sum_payments` (2014-2025, 2016
@@ -118,7 +145,7 @@ Claude'da olanların toplamı kabaca 25-30 saat.
 ### 3. Kullanıcı eylemi ya da kararı bekleyen
 
 - **sahibinden.com vasıta raporları:** robots Claude'u engelliyor; rapor sayfası HTML olarak kaydedilince okunur.
-- **Endeksa lisansı:** yayımlanıp yayımlanmayacağı; karar verilene kadar yalnız araştırma kopyası.
+- **Endeksa lisansı:** yayımlanıp yayımlanmayacağı; karar verilene kadar yalnız araştırma kopyası. 2026-11-03: Endeksa'dan türetilen mahalle ve ilçe tabloları kullanıcı isteğiyle herkese açık depoya girdi (`scripts/analiz/kent_kir_2026_09_27/*endeksa*`, belki başkaları); ham döküm depo dışında, lisans sorusu hâlâ açık.
 - **Web export:** `notaries`, `minimum_wage`, `civil_servant_salary` ve 2026-09-26'da girenler sitede yok (kullanıcı kararı: şimdilik eklenmeyecek).
 - **TEDAŞ istatistik kitabı:** üyelik istiyor; hesap açmak kullanıcının kararı.
 - **UAVT (bina/daire adresi):** kapandı, alınmaz. NVİ ve DASK captcha arkasında; Quick Sigorta DASK sorgusu ilçe seçilince reCAPTCHA açıyor (2026-09-26 denendi). Sokak düzeyi PTT dökümünde var.
