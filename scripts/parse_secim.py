@@ -450,6 +450,18 @@ DISTRICT_ALIAS = {
 }
 
 
+#: Neighbourhood names the election reports use for a settlement the map index calls by another name.
+#: Sur (Diyarbakır) 2023+: the YSK prints Bağıvar, Çarıklı, Fetih for the three large new-town
+#: neighbourhoods the registry still lists as Dicle, Kıtılbıl, Yeşilvadi. Paired by size against 2018
+#: (Dicle 5,156 -> Bağıvar 5,274; Yeşilvadi 3,364 -> Çarıklı 3,860; Kıtılbıl 2,999 -> Fetih 2,897); the
+#: three total exactly the 12,031 voters the district table held beyond its neighbourhood rows.
+NEIGHBOURHOOD_ALIAS = {
+    ("TR-21-016", "bagivar"): "dicle",
+    ("TR-21-016", "carikli"): "yesilvadi",
+    ("TR-21-016", "fetih"): "kitilbil",
+}
+
+
 def match_district(districts: dict, province_id: str, name: str) -> str | None:
     """The district id for a name as the election report writes it.
 
@@ -714,7 +726,14 @@ def main(argv: list[str]) -> None:
                     )
                     if not parent:
                         continue
-                    area = hoods.get((parent, fold(record["name"])))
+                    area = hoods.get(
+                        (
+                            parent,
+                            NEIGHBOURHOOD_ALIAS.get(
+                                (parent, fold(record["name"])), fold(record["name"])
+                            ),
+                        )
+                    )
                     key = area or f"{parent}~{fold(record['name'])}"
                     base["ad"] = record["name"]
                     hood_out.setdefault(province_id, {})[key] = base
