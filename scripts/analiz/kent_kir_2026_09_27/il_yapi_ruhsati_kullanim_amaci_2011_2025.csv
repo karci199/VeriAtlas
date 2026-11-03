@@ -1,0 +1,811 @@
+﻿il,kullanim_amaci,ruhsat_bina,ruhsat_daire,ruhsat_m2,izin_bina,izin_daire,izin_m2
+Adana,Tek konutlu,11126,11126,2286951,8571,8571,1561032
+Adana,Çok konutlu (apartman),20470,232403,33863500,16423,159582,24411191
+Adana,"Toplu konut (yurt, vb.)",61,2,276995,40,0,215171
+Adana,Ticaret,1092,341,2179226,995,272,2042972
+Adana,Büro,940,129,1565256,497,18,1193846
+Adana,Otel/konaklama,100,0,253253,61,0,234466
+Adana,Sanayi ve depo,2371,26,8666461,1648,18,5842702
+Adana,"Kamu, eğitim, sağlık",698,17,3147512,441,17,2236966
+Adana,Ulaştırma ve haberleşme,81,0,410562,26,4,62609
+Adana,Diğer konut dışı,1149,74,2317643,641,52,1412635
+Adıyaman,Tek konutlu,5087,5087,811818,2055,2055,342175
+Adıyaman,Çok konutlu (apartman),9321,103967,17554836,5263,52215,8889466
+Adıyaman,"Toplu konut (yurt, vb.)",57,0,238254,43,0,192328
+Adıyaman,Ticaret,465,240,554864,219,139,331929
+Adıyaman,Büro,197,149,421802,108,86,209920
+Adıyaman,Otel/konaklama,32,0,112346,29,0,81715
+Adıyaman,Sanayi ve depo,435,12,1166207,506,6,882278
+Adıyaman,"Kamu, eğitim, sağlık",483,3,1341611,171,14,629136
+Adıyaman,Ulaştırma ve haberleşme,18,0,65272,6,0,34139
+Adıyaman,Diğer konut dışı,269,20,740506,152,17,426469
+Afyonkarahisar,Tek konutlu,7602,7602,1371374,6264,6264,1065830
+Afyonkarahisar,Çok konutlu (apartman),14429,94209,14831529,13175,78472,11820617
+Afyonkarahisar,"Toplu konut (yurt, vb.)",63,1,222207,77,1,243483
+Afyonkarahisar,Ticaret,1241,281,848100,785,269,818120
+Afyonkarahisar,Büro,765,153,655240,487,68,516778
+Afyonkarahisar,Otel/konaklama,457,2,836889,265,0,620983
+Afyonkarahisar,Sanayi ve depo,2187,50,2734584,1349,40,1946060
+Afyonkarahisar,"Kamu, eğitim, sağlık",797,0,1659431,570,0,1242044
+Afyonkarahisar,Ulaştırma ve haberleşme,113,10,60585,81,7,105198
+Afyonkarahisar,Diğer konut dışı,2405,245,2209262,1382,101,1510743
+Ağrı,Tek konutlu,931,931,163680,394,394,83884
+Ağrı,Çok konutlu (apartman),1684,27175,5043442,1531,22770,4140378
+Ağrı,"Toplu konut (yurt, vb.)",31,0,132471,20,0,102808
+Ağrı,Ticaret,162,128,315282,181,92,260233
+Ağrı,Büro,153,89,347774,67,21,94267
+Ağrı,Otel/konaklama,120,0,261711,95,0,209844
+Ağrı,Sanayi ve depo,68,3,230442,52,0,245528
+Ağrı,"Kamu, eğitim, sağlık",298,13,777220,128,4,326291
+Ağrı,Ulaştırma ve haberleşme,14,0,26753,5,0,9740
+Ağrı,Diğer konut dışı,468,25,575489,90,2,248356
+Amasya,Tek konutlu,1225,1225,204971,1017,1017,168283
+Amasya,Çok konutlu (apartman),5058,50384,7135587,4735,44431,6453241
+Amasya,"Toplu konut (yurt, vb.)",29,0,70768,21,0,44221
+Amasya,Ticaret,230,86,231227,242,130,262797
+Amasya,Büro,208,27,266150,139,30,167785
+Amasya,Otel/konaklama,33,0,49615,55,1,84589
+Amasya,Sanayi ve depo,460,26,546823,321,14,406511
+Amasya,"Kamu, eğitim, sağlık",169,0,422085,101,0,262316
+Amasya,Ulaştırma ve haberleşme,23,1,31823,13,0,24162
+Amasya,Diğer konut dışı,554,59,723251,279,16,424281
+Ankara,Tek konutlu,26562,26562,7870246,25212,25212,7856902
+Ankara,Çok konutlu (apartman),45080,863008,160361513,47682,811798,145305516
+Ankara,"Toplu konut (yurt, vb.)",207,0,1345332,163,0,1048556
+Ankara,Ticaret,1641,436,6632577,2062,389,8581354
+Ankara,Büro,4472,662,23998180,3191,451,15172761
+Ankara,Otel/konaklama,267,0,1221465,197,2,871103
+Ankara,Sanayi ve depo,7716,32,26087748,6494,6,18032615
+Ankara,"Kamu, eğitim, sağlık",1885,1,13382190,1337,6,8838008
+Ankara,Ulaştırma ve haberleşme,81,1,471425,43,0,424553
+Ankara,Diğer konut dışı,3622,128,9379854,1764,71,4211632
+Antalya,Tek konutlu,19246,19246,4849782,15855,15855,3829517
+Antalya,Çok konutlu (apartman),51174,537307,64654937,44591,420916,49516660
+Antalya,"Toplu konut (yurt, vb.)",193,4,540284,166,4,464571
+Antalya,Ticaret,3365,3843,6789314,5956,5412,7440409
+Antalya,Büro,2495,4756,5150595,1822,866,2397123
+Antalya,Otel/konaklama,1276,1,8002757,1416,3,9409280
+Antalya,Sanayi ve depo,1268,69,2447094,1220,43,2668302
+Antalya,"Kamu, eğitim, sağlık",1124,6,3969538,611,17,2165735
+Antalya,Ulaştırma ve haberleşme,95,0,263231,33,0,111151
+Antalya,Diğer konut dışı,1315,173,2386846,676,11,1155769
+Artvin,Tek konutlu,785,785,168610,273,273,49098
+Artvin,Çok konutlu (apartman),1188,19871,3454735,1180,14823,2408726
+Artvin,"Toplu konut (yurt, vb.)",27,0,89670,19,6,71838
+Artvin,Ticaret,68,14,75545,89,49,91120
+Artvin,Büro,110,5,170726,61,12,118643
+Artvin,Otel/konaklama,224,0,84831,143,1,55109
+Artvin,Sanayi ve depo,77,2,73726,76,0,98308
+Artvin,"Kamu, eğitim, sağlık",107,6,420736,61,3,224506
+Artvin,Ulaştırma ve haberleşme,10,0,11214,5,0,2630
+Artvin,Diğer konut dışı,84,4,110576,42,10,58575
+Aydın,Tek konutlu,14048,14048,2729660,13762,13762,2257711
+Aydın,Çok konutlu (apartman),21879,178065,24238993,23553,170577,24783433
+Aydın,"Toplu konut (yurt, vb.)",76,9,288887,57,0,231915
+Aydın,Ticaret,1202,470,1434688,1795,495,1843607
+Aydın,Büro,584,143,856415,537,104,727402
+Aydın,Otel/konaklama,407,0,1094081,240,0,662320
+Aydın,Sanayi ve depo,1309,35,3312180,915,35,2131010
+Aydın,"Kamu, eğitim, sağlık",442,2,1499957,293,0,784617
+Aydın,Ulaştırma ve haberleşme,50,0,143024,44,1,112280
+Aydın,Diğer konut dışı,1281,80,1591910,735,111,962438
+Balıkesir,Tek konutlu,15270,15270,2804726,14395,14395,2349847
+Balıkesir,Çok konutlu (apartman),27472,206174,27535858,27076,188640,25060112
+Balıkesir,"Toplu konut (yurt, vb.)",85,0,282948,61,0,188094
+Balıkesir,Ticaret,1260,383,1229942,2145,411,1733494
+Balıkesir,Büro,906,203,887982,606,91,592706
+Balıkesir,Otel/konaklama,579,0,710713,460,0,446516
+Balıkesir,Sanayi ve depo,2627,29,4324913,1609,26,2295360
+Balıkesir,"Kamu, eğitim, sağlık",797,0,1947190,489,0,1205261
+Balıkesir,Ulaştırma ve haberleşme,46,0,33768,29,0,17494
+Balıkesir,Diğer konut dışı,4225,29,3606157,2224,50,2306393
+Bilecik,Tek konutlu,1042,1042,191234,859,859,163853
+Bilecik,Çok konutlu (apartman),3261,34637,4745558,3530,30867,4183078
+Bilecik,"Toplu konut (yurt, vb.)",20,0,89347,20,0,42981
+Bilecik,Ticaret,137,90,159748,197,58,265146
+Bilecik,Büro,193,12,221630,135,35,158092
+Bilecik,Otel/konaklama,33,0,33847,27,0,35375
+Bilecik,Sanayi ve depo,863,3,2962277,577,3,1665624
+Bilecik,"Kamu, eğitim, sağlık",167,0,552176,109,0,422268
+Bilecik,Ulaştırma ve haberleşme,20,0,37390,5,0,16851
+Bilecik,Diğer konut dışı,722,11,996325,392,6,528721
+Bingöl,Tek konutlu,837,837,129387,285,285,46701
+Bingöl,Çok konutlu (apartman),3142,41452,7425511,2513,31816,5590402
+Bingöl,"Toplu konut (yurt, vb.)",30,0,169677,30,0,136982
+Bingöl,Ticaret,109,23,127016,74,36,126610
+Bingöl,Büro,187,13,319665,105,33,231048
+Bingöl,Otel/konaklama,13,0,28678,11,0,25097
+Bingöl,Sanayi ve depo,129,12,315847,92,5,136583
+Bingöl,"Kamu, eğitim, sağlık",155,0,602486,109,0,357779
+Bingöl,Ulaştırma ve haberleşme,7,0,42340,5,0,16137
+Bingöl,Diğer konut dışı,112,1,314218,100,0,298328
+Bitlis,Tek konutlu,866,866,175724,404,404,69027
+Bitlis,Çok konutlu (apartman),2348,42456,7028120,1219,17775,3028960
+Bitlis,"Toplu konut (yurt, vb.)",29,4,137894,18,0,62369
+Bitlis,Ticaret,171,66,148058,223,34,162947
+Bitlis,Büro,215,63,450852,67,7,96378
+Bitlis,Otel/konaklama,33,2,112781,28,0,62752
+Bitlis,Sanayi ve depo,154,3,297121,100,8,183807
+Bitlis,"Kamu, eğitim, sağlık",206,0,637841,55,0,271447
+Bitlis,Ulaştırma ve haberleşme,10,0,32202,6,0,14220
+Bitlis,Diğer konut dışı,267,50,414787,183,9,272200
+Bolu,Tek konutlu,2695,2695,744746,1337,1337,315683
+Bolu,Çok konutlu (apartman),5184,55807,8088661,4843,49041,6963978
+Bolu,"Toplu konut (yurt, vb.)",36,0,109936,45,0,139289
+Bolu,Ticaret,250,97,389857,327,143,549415
+Bolu,Büro,220,53,242856,185,22,215536
+Bolu,Otel/konaklama,464,1,583910,190,0,338492
+Bolu,Sanayi ve depo,729,7,1363628,497,13,940160
+Bolu,"Kamu, eğitim, sağlık",250,9,826914,166,12,505650
+Bolu,Ulaştırma ve haberleşme,38,0,66973,19,0,63632
+Bolu,Diğer konut dışı,1693,20,1603681,1032,10,1302275
+Burdur,Tek konutlu,3290,3290,558938,2319,2319,394917
+Burdur,Çok konutlu (apartman),4265,34233,4826903,4137,29198,4230414
+Burdur,"Toplu konut (yurt, vb.)",43,0,134885,38,0,135336
+Burdur,Ticaret,387,349,493582,271,244,327917
+Burdur,Büro,175,166,212846,130,28,154651
+Burdur,Otel/konaklama,123,0,97509,59,0,70612
+Burdur,Sanayi ve depo,511,17,767797,344,11,601614
+Burdur,"Kamu, eğitim, sağlık",236,3,777941,149,1,477525
+Burdur,Ulaştırma ve haberleşme,14,0,21136,15,0,24222
+Burdur,Diğer konut dışı,690,155,805909,305,82,528218
+Bursa,Tek konutlu,11788,11788,3179906,8842,8842,2507143
+Bursa,Çok konutlu (apartman),48638,418697,68110026,45770,370157,59902465
+Bursa,"Toplu konut (yurt, vb.)",119,3,391818,81,0,238399
+Bursa,Ticaret,1501,507,4471439,1631,440,4482695
+Bursa,Büro,1345,266,3811957,1176,264,3359941
+Bursa,Otel/konaklama,350,9,833467,208,20,591556
+Bursa,Sanayi ve depo,5482,13,19088580,4576,33,13794000
+Bursa,"Kamu, eğitim, sağlık",819,18,3790318,565,4,2653004
+Bursa,Ulaştırma ve haberleşme,150,12,469960,110,0,434869
+Bursa,Diğer konut dışı,3191,25,3362836,1739,21,1937289
+Çanakkale,Tek konutlu,6989,6989,1140465,5314,5314,765032
+Çanakkale,Çok konutlu (apartman),12854,113380,13887276,11143,95907,11367012
+Çanakkale,"Toplu konut (yurt, vb.)",86,0,254692,61,0,173180
+Çanakkale,Ticaret,502,226,556955,1316,273,822743
+Çanakkale,Büro,484,99,702617,247,32,297745
+Çanakkale,Otel/konaklama,1733,2,634931,477,5,347268
+Çanakkale,Sanayi ve depo,900,13,1438967,638,10,941424
+Çanakkale,"Kamu, eğitim, sağlık",429,3,1222441,208,2,713709
+Çanakkale,Ulaştırma ve haberleşme,38,0,48650,8,0,8281
+Çanakkale,Diğer konut dışı,784,36,789486,445,13,490296
+Çankırı,Tek konutlu,1709,1709,271844,1294,1294,202816
+Çankırı,Çok konutlu (apartman),2280,31234,5066884,2233,25522,3820891
+Çankırı,"Toplu konut (yurt, vb.)",36,0,100666,29,0,70340
+Çankırı,Ticaret,96,45,109222,119,33,225009
+Çankırı,Büro,167,25,166770,85,23,120150
+Çankırı,Otel/konaklama,64,0,143027,37,0,110223
+Çankırı,Sanayi ve depo,486,8,1170827,316,2,741292
+Çankırı,"Kamu, eğitim, sağlık",144,7,472789,104,8,329756
+Çankırı,Ulaştırma ve haberleşme,27,0,114814,19,0,88320
+Çankırı,Diğer konut dışı,849,26,728737,527,26,536518
+Çorum,Tek konutlu,4122,4122,700454,3025,3025,484092
+Çorum,Çok konutlu (apartman),6205,64465,9589637,6587,64563,9654070
+Çorum,"Toplu konut (yurt, vb.)",41,28,215616,36,10,177667
+Çorum,Ticaret,456,74,405372,572,33,560740
+Çorum,Büro,295,5,299080,202,1,332963
+Çorum,Otel/konaklama,22,0,10825,21,0,19857
+Çorum,Sanayi ve depo,1000,14,1754615,517,8,767424
+Çorum,"Kamu, eğitim, sağlık",228,1,884396,192,0,729585
+Çorum,Ulaştırma ve haberleşme,38,2,165548,21,1,21932
+Çorum,Diğer konut dışı,509,32,554505,356,32,331053
+Denizli,Tek konutlu,10416,10416,2172146,8489,8489,1756466
+Denizli,Çok konutlu (apartman),19676,146180,21204375,19945,135199,19383382
+Denizli,"Toplu konut (yurt, vb.)",63,0,229170,72,0,225462
+Denizli,Ticaret,1352,785,1342753,2202,812,2107939
+Denizli,Büro,627,143,763158,410,57,480761
+Denizli,Otel/konaklama,212,0,338006,170,0,333672
+Denizli,Sanayi ve depo,2824,21,4976351,2334,15,3987427
+Denizli,"Kamu, eğitim, sağlık",482,0,1675663,348,4,1172818
+Denizli,Ulaştırma ve haberleşme,116,1,224536,32,0,108945
+Denizli,Diğer konut dışı,1930,88,2183671,862,58,1165802
+Diyarbakır,Tek konutlu,4880,4880,1478208,2068,2068,630558
+Diyarbakır,Çok konutlu (apartman),8184,177236,31737362,4808,105521,19602270
+Diyarbakır,"Toplu konut (yurt, vb.)",84,0,147506,22,0,89496
+Diyarbakır,Ticaret,1036,121,2817093,608,65,1764558
+Diyarbakır,Büro,824,79,2650265,295,19,890410
+Diyarbakır,Otel/konaklama,80,0,417208,56,0,501419
+Diyarbakır,Sanayi ve depo,1124,3,4929314,621,2,2443047
+Diyarbakır,"Kamu, eğitim, sağlık",622,3,2808375,233,0,1071913
+Diyarbakır,Ulaştırma ve haberleşme,19,0,76940,2,0,1558
+Diyarbakır,Diğer konut dışı,1029,5,1559243,482,5,999282
+Edirne,Tek konutlu,2748,2748,489080,2956,2956,401637
+Edirne,Çok konutlu (apartman),5050,57149,7213648,5306,51325,6405028
+Edirne,"Toplu konut (yurt, vb.)",60,0,221360,27,0,131286
+Edirne,Ticaret,322,137,440699,350,99,400224
+Edirne,Büro,261,47,494649,212,27,693705
+Edirne,Otel/konaklama,285,30,269959,169,33,196214
+Edirne,Sanayi ve depo,412,9,633385,347,4,573778
+Edirne,"Kamu, eğitim, sağlık",200,0,646700,146,0,396639
+Edirne,Ulaştırma ve haberleşme,32,5,24164,8,0,7105
+Edirne,Diğer konut dışı,535,55,495328,281,12,235633
+Elazığ,Tek konutlu,9412,9412,1533025,5697,5697,814478
+Elazığ,Çok konutlu (apartman),9139,118010,20868217,9017,103409,18533008
+Elazığ,"Toplu konut (yurt, vb.)",36,1,153525,130,1,175836
+Elazığ,Ticaret,513,249,869049,400,128,711285
+Elazığ,Büro,670,60,621972,330,10,319817
+Elazığ,Otel/konaklama,160,0,165697,43,0,149132
+Elazığ,Sanayi ve depo,546,8,1334328,422,7,977173
+Elazığ,"Kamu, eğitim, sağlık",265,2,1062941,160,14,852539
+Elazığ,Ulaştırma ve haberleşme,124,0,164949,64,0,106660
+Elazığ,Diğer konut dışı,1530,36,2470915,679,29,1165824
+Erzincan,Tek konutlu,2705,2705,443632,2747,2747,421675
+Erzincan,Çok konutlu (apartman),5375,37340,5837589,5145,34253,5429276
+Erzincan,"Toplu konut (yurt, vb.)",57,0,131614,52,0,170115
+Erzincan,Ticaret,172,7,374817,192,9,408054
+Erzincan,Büro,142,9,239227,148,5,211554
+Erzincan,Otel/konaklama,84,0,103912,60,0,90796
+Erzincan,Sanayi ve depo,485,33,655320,282,1,342713
+Erzincan,"Kamu, eğitim, sağlık",200,5,632003,121,4,535534
+Erzincan,Ulaştırma ve haberleşme,27,1,16617,9,0,12485
+Erzincan,Diğer konut dışı,568,110,815026,339,54,467484
+Erzurum,Tek konutlu,2718,2718,394506,961,961,232593
+Erzurum,Çok konutlu (apartman),4617,81472,15380685,3542,52327,9606518
+Erzurum,"Toplu konut (yurt, vb.)",124,14,424791,104,0,419129
+Erzurum,Ticaret,492,85,716626,533,72,632312
+Erzurum,Büro,403,33,635703,270,30,418071
+Erzurum,Otel/konaklama,130,0,209460,52,0,139135
+Erzurum,Sanayi ve depo,406,6,815927,210,9,413487
+Erzurum,"Kamu, eğitim, sağlık",372,14,1615995,149,6,802438
+Erzurum,Ulaştırma ve haberleşme,72,0,105779,27,0,28982
+Erzurum,Diğer konut dışı,543,34,780524,252,11,300556
+Eskişehir,Tek konutlu,4956,4956,1107564,3786,3786,850779
+Eskişehir,Çok konutlu (apartman),26441,192483,26179680,24911,179680,24311988
+Eskişehir,"Toplu konut (yurt, vb.)",56,4,165340,37,0,94507
+Eskişehir,Ticaret,934,189,1394521,1995,274,1256285
+Eskişehir,Büro,991,47,1111424,449,0,540887
+Eskişehir,Otel/konaklama,107,0,351015,89,0,276336
+Eskişehir,Sanayi ve depo,1763,7,5175210,1127,5,2985974
+Eskişehir,"Kamu, eğitim, sağlık",435,9,1607874,278,8,1201794
+Eskişehir,Ulaştırma ve haberleşme,42,0,99011,29,0,108762
+Eskişehir,Diğer konut dışı,956,50,1225000,460,20,686156
+Gaziantep,Tek konutlu,10978,10978,3458621,4206,4206,1456038
+Gaziantep,Çok konutlu (apartman),18814,307056,52232652,10823,211573,35494771
+Gaziantep,"Toplu konut (yurt, vb.)",74,0,365736,53,0,276802
+Gaziantep,Ticaret,1020,344,2842281,884,414,2014700
+Gaziantep,Büro,661,54,1596380,394,66,1207031
+Gaziantep,Otel/konaklama,85,80,612649,68,42,306846
+Gaziantep,Sanayi ve depo,3329,16,15848395,3189,10,11951342
+Gaziantep,"Kamu, eğitim, sağlık",839,22,4441249,494,17,2833167
+Gaziantep,Ulaştırma ve haberleşme,74,0,110281,19,0,134141
+Gaziantep,Diğer konut dışı,830,234,1918854,512,42,1156803
+Giresun,Tek konutlu,1915,1915,414661,1089,1089,191897
+Giresun,Çok konutlu (apartman),4786,65636,11000163,5396,54088,8511487
+Giresun,"Toplu konut (yurt, vb.)",50,0,143094,48,0,140376
+Giresun,Ticaret,274,44,381770,435,84,448792
+Giresun,Büro,214,24,325827,156,28,196354
+Giresun,Otel/konaklama,187,2,213230,86,2,113796
+Giresun,Sanayi ve depo,237,7,517031,167,6,406510
+Giresun,"Kamu, eğitim, sağlık",196,6,871638,158,6,637202
+Giresun,Ulaştırma ve haberleşme,35,0,37882,16,0,33926
+Giresun,Diğer konut dışı,242,16,275622,97,13,131617
+Gümüşhane,Tek konutlu,452,452,77172,399,399,61749
+Gümüşhane,Çok konutlu (apartman),1668,17686,2567812,1684,15181,2113358
+Gümüşhane,"Toplu konut (yurt, vb.)",16,0,83689,18,0,104289
+Gümüşhane,Ticaret,65,28,79052,64,37,81623
+Gümüşhane,Büro,81,17,88179,81,23,92867
+Gümüşhane,Otel/konaklama,45,18,64405,15,0,33963
+Gümüşhane,Sanayi ve depo,118,0,132733,49,0,79051
+Gümüşhane,"Kamu, eğitim, sağlık",80,25,331156,52,1,233749
+Gümüşhane,Ulaştırma ve haberleşme,6,0,9099,4,0,7327
+Gümüşhane,Diğer konut dışı,150,18,105727,77,16,56049
+Hakkari,Tek konutlu,180,180,51405,47,47,15227
+Hakkari,Çok konutlu (apartman),788,11643,2047597,925,10484,1749944
+Hakkari,"Toplu konut (yurt, vb.)",12,0,30609,7,0,28599
+Hakkari,Ticaret,60,12,88226,51,63,69246
+Hakkari,Büro,109,81,340888,66,56,121934
+Hakkari,Otel/konaklama,26,1,76522,9,0,45578
+Hakkari,Sanayi ve depo,74,0,63862,39,1,19264
+Hakkari,"Kamu, eğitim, sağlık",136,0,546813,45,0,270125
+Hakkari,Ulaştırma ve haberleşme,6,0,3678,1,0,2250
+Hakkari,Diğer konut dışı,1464,6,697557,1266,1,502653
+Hatay,Tek konutlu,8137,8137,1776210,5276,5276,1128910
+Hatay,Çok konutlu (apartman),23630,266464,43158360,18141,171720,27663526
+Hatay,"Toplu konut (yurt, vb.)",61,0,213823,38,2,134607
+Hatay,Ticaret,1392,466,1780987,1439,426,1977087
+Hatay,Büro,577,114,766711,290,29,403582
+Hatay,Otel/konaklama,184,4,568434,184,3,375947
+Hatay,Sanayi ve depo,1431,16,3550838,798,12,2855628
+Hatay,"Kamu, eğitim, sağlık",565,0,2487321,296,0,1260034
+Hatay,Ulaştırma ve haberleşme,36,0,176070,28,0,82934
+Hatay,Diğer konut dışı,343,15,623361,160,17,285481
+Isparta,Tek konutlu,2893,2893,598745,2437,2437,475547
+Isparta,Çok konutlu (apartman),6167,60116,8872795,6527,54503,7831284
+Isparta,"Toplu konut (yurt, vb.)",58,0,259423,57,0,136671
+Isparta,Ticaret,256,79,278939,340,125,365353
+Isparta,Büro,339,56,317005,287,31,189881
+Isparta,Otel/konaklama,134,0,174039,92,0,181059
+Isparta,Sanayi ve depo,703,33,1124636,457,18,862789
+Isparta,"Kamu, eğitim, sağlık",257,7,931959,180,8,698873
+Isparta,Ulaştırma ve haberleşme,303,1,350485,221,1,283584
+Isparta,Diğer konut dışı,912,75,530764,458,44,294379
+Mersin,Tek konutlu,13282,13282,2490810,10202,10202,1791615
+Mersin,Çok konutlu (apartman),23869,291367,42819603,23279,245162,39975489
+Mersin,"Toplu konut (yurt, vb.)",61,0,275373,47,0,125846
+Mersin,Ticaret,1244,845,1586317,2608,810,2769885
+Mersin,Büro,664,133,1011897,474,76,772976
+Mersin,Otel/konaklama,354,2,636282,242,5,464803
+Mersin,Sanayi ve depo,1829,48,5034054,1347,50,3660998
+Mersin,"Kamu, eğitim, sağlık",683,14,2531327,451,1,2137014
+Mersin,Ulaştırma ve haberleşme,95,0,1182441,69,0,301101
+Mersin,Diğer konut dışı,1086,119,1633960,537,55,749929
+İstanbul,Tek konutlu,30857,30857,9958085,20559,20559,6813637
+İstanbul,Çok konutlu (apartman),178311,2276250,329354622,151312,1831774,255548039
+İstanbul,"Toplu konut (yurt, vb.)",671,3,2692719,411,6,1638050
+İstanbul,Ticaret,3653,3890,19375889,3186,4520,21721495
+İstanbul,Büro,4164,3306,22814771,3504,1868,21777350
+İstanbul,Otel/konaklama,1630,115,9091121,1196,101,6499706
+İstanbul,Sanayi ve depo,2842,154,21968124,2527,13,16597820
+İstanbul,"Kamu, eğitim, sağlık",3412,20,27079204,1431,10,12147538
+İstanbul,Ulaştırma ve haberleşme,676,81,4630247,371,33,2919191
+İstanbul,Diğer konut dışı,2040,96,4559765,784,28,1573187
+İzmir,Tek konutlu,41281,41281,6846378,37930,37930,5929957
+İzmir,Çok konutlu (apartman),69363,561410,72390155,68829,548926,70651748
+İzmir,"Toplu konut (yurt, vb.)",151,1,746413,85,0,325963
+İzmir,Ticaret,2434,1969,4530771,5260,1760,5643222
+İzmir,Büro,1965,1934,4690637,1580,492,2917801
+İzmir,Otel/konaklama,997,5,1789059,822,50,1229513
+İzmir,Sanayi ve depo,5227,67,14113309,4323,54,10550314
+İzmir,"Kamu, eğitim, sağlık",1559,94,6082948,1014,0,4383434
+İzmir,Ulaştırma ve haberleşme,123,1,551363,96,4,400382
+İzmir,Diğer konut dışı,4003,96,4399456,2575,625,3042094
+Kars,Tek konutlu,541,541,106452,270,270,52491
+Kars,Çok konutlu (apartman),2207,34184,5511696,1471,17735,2890063
+Kars,"Toplu konut (yurt, vb.)",28,0,183685,25,0,165956
+Kars,Ticaret,123,29,127752,90,73,107402
+Kars,Büro,132,18,166417,101,13,72984
+Kars,Otel/konaklama,118,0,233497,84,0,167549
+Kars,Sanayi ve depo,201,3,199043,102,3,143329
+Kars,"Kamu, eğitim, sağlık",179,0,637368,95,0,226661
+Kars,Ulaştırma ve haberleşme,27,0,13079,8,0,12081
+Kars,Diğer konut dışı,444,14,503093,190,7,219751
+Kastamonu,Tek konutlu,1514,1514,274584,1295,1295,232749
+Kastamonu,Çok konutlu (apartman),3854,58350,7848382,4211,53053,7088081
+Kastamonu,"Toplu konut (yurt, vb.)",49,0,242527,43,1,194166
+Kastamonu,Ticaret,326,166,318998,249,124,319026
+Kastamonu,Büro,190,15,310216,176,6,391295
+Kastamonu,Otel/konaklama,75,0,134945,75,7,131329
+Kastamonu,Sanayi ve depo,409,5,803194,426,13,645483
+Kastamonu,"Kamu, eğitim, sağlık",243,0,750790,161,3,540320
+Kastamonu,Ulaştırma ve haberleşme,26,0,109681,19,0,73551
+Kastamonu,Diğer konut dışı,327,13,345229,219,6,235016
+Kayseri,Tek konutlu,20320,20320,4902789,12465,12465,3018036
+Kayseri,Çok konutlu (apartman),9123,212006,36572107,9874,188422,32743656
+Kayseri,"Toplu konut (yurt, vb.)",75,0,294690,63,3,181272
+Kayseri,Ticaret,834,69,1682133,1372,171,1992382
+Kayseri,Büro,730,31,1655446,642,54,1345539
+Kayseri,Otel/konaklama,84,1,403714,56,4,201173
+Kayseri,Sanayi ve depo,1727,18,6835347,2333,6,8131454
+Kayseri,"Kamu, eğitim, sağlık",478,2,2108431,381,2,1750012
+Kayseri,Ulaştırma ve haberleşme,28,0,94509,12,0,14593
+Kayseri,Diğer konut dışı,1187,103,1333311,735,87,765842
+Kırklareli,Tek konutlu,2894,2894,477268,1827,1827,305713
+Kırklareli,Çok konutlu (apartman),6035,63096,8029488,5815,56433,7238255
+Kırklareli,"Toplu konut (yurt, vb.)",21,0,133686,19,0,112236
+Kırklareli,Ticaret,264,149,361555,535,199,563543
+Kırklareli,Büro,327,35,350139,131,27,183084
+Kırklareli,Otel/konaklama,512,0,120759,87,12,100317
+Kırklareli,Sanayi ve depo,999,8,2933870,510,4,1622233
+Kırklareli,"Kamu, eğitim, sağlık",187,1,704785,130,1,538620
+Kırklareli,Ulaştırma ve haberleşme,37,1,76560,26,1,17607
+Kırklareli,Diğer konut dışı,1036,133,907545,387,61,566513
+Kırşehir,Tek konutlu,4172,4172,553842,2791,2791,395174
+Kırşehir,Çok konutlu (apartman),3783,43269,7419476,3493,37617,6526426
+Kırşehir,"Toplu konut (yurt, vb.)",29,1,140584,25,1,123204
+Kırşehir,Ticaret,127,79,114253,302,49,182690
+Kırşehir,Büro,203,113,170102,128,17,132574
+Kırşehir,Otel/konaklama,33,0,43187,26,0,72376
+Kırşehir,Sanayi ve depo,874,9,752445,395,10,513837
+Kırşehir,"Kamu, eğitim, sağlık",222,2,856629,188,2,679864
+Kırşehir,Ulaştırma ve haberleşme,17,1,26616,7,0,45715
+Kırşehir,Diğer konut dışı,1203,36,1851336,530,27,782925
+Kocaeli,Tek konutlu,20253,20253,4065394,12544,12544,2470834
+Kocaeli,Çok konutlu (apartman),42809,324945,47143930,39208,282212,39981025
+Kocaeli,"Toplu konut (yurt, vb.)",87,0,171975,57,0,125439
+Kocaeli,Ticaret,2516,999,3452040,2261,850,3843853
+Kocaeli,Büro,2507,355,4768122,1847,224,3002549
+Kocaeli,Otel/konaklama,572,1,626829,387,2,476471
+Kocaeli,Sanayi ve depo,5307,7,17083936,4246,1,13873579
+Kocaeli,"Kamu, eğitim, sağlık",585,14,2317829,379,16,2106129
+Kocaeli,Ulaştırma ve haberleşme,158,2,566074,94,0,620656
+Kocaeli,Diğer konut dışı,2545,24,2009774,1685,17,1062402
+Konya,Tek konutlu,21322,21322,4125721,14450,14450,2914540
+Konya,Çok konutlu (apartman),30767,351899,65616504,28241,301422,56570602
+Konya,"Toplu konut (yurt, vb.)",234,0,780865,208,0,651615
+Konya,Ticaret,1528,644,2910068,1828,784,3004444
+Konya,Büro,2285,346,3284920,1348,261,1978031
+Konya,Otel/konaklama,323,6,770046,246,7,667491
+Konya,Sanayi ve depo,6309,36,19006973,4733,37,11683482
+Konya,"Kamu, eğitim, sağlık",1360,4,4590515,1116,6,4122661
+Konya,Ulaştırma ve haberleşme,883,0,1938670,542,0,1104073
+Konya,Diğer konut dışı,7228,143,6257365,2926,78,2954838
+Kütahya,Tek konutlu,2900,2900,584067,2503,2503,506047
+Kütahya,Çok konutlu (apartman),10298,81672,10741438,10924,78168,10252309
+Kütahya,"Toplu konut (yurt, vb.)",102,0,242265,87,0,213559
+Kütahya,Ticaret,514,216,589503,624,237,806080
+Kütahya,Büro,398,66,608210,349,43,511859
+Kütahya,Otel/konaklama,186,0,246917,109,0,122738
+Kütahya,Sanayi ve depo,815,11,3148547,620,9,1600052
+Kütahya,"Kamu, eğitim, sağlık",462,0,1321209,375,1,1099668
+Kütahya,Ulaştırma ve haberleşme,23,0,47438,32,0,48053
+Kütahya,Diğer konut dışı,895,42,634446,513,24,382430
+Malatya,Tek konutlu,11147,11147,1848084,3334,3334,622474
+Malatya,Çok konutlu (apartman),9572,142232,25240554,7617,110770,20166502
+Malatya,"Toplu konut (yurt, vb.)",106,0,331474,57,0,298493
+Malatya,Ticaret,429,123,751052,790,132,884023
+Malatya,Büro,549,33,827481,177,9,375296
+Malatya,Otel/konaklama,67,1,134311,60,1,239143
+Malatya,Sanayi ve depo,843,32,2274240,527,15,1461846
+Malatya,"Kamu, eğitim, sağlık",536,26,1824575,213,12,931544
+Malatya,Ulaştırma ve haberleşme,41,1,33798,9,1,9234
+Malatya,Diğer konut dışı,1090,20,1468045,479,15,658385
+Manisa,Tek konutlu,6410,6410,1212253,6037,6037,983612
+Manisa,Çok konutlu (apartman),24732,189367,26418705,27530,180425,25481699
+Manisa,"Toplu konut (yurt, vb.)",113,0,272356,114,0,264894
+Manisa,Ticaret,1544,236,1463718,2173,310,1638719
+Manisa,Büro,611,47,807393,464,30,602426
+Manisa,Otel/konaklama,273,0,244048,131,1,173745
+Manisa,Sanayi ve depo,2906,53,7268638,2462,63,5465519
+Manisa,"Kamu, eğitim, sağlık",780,3,2313436,586,1,1638191
+Manisa,Ulaştırma ve haberleşme,48,0,199856,30,0,79578
+Manisa,Diğer konut dışı,2185,78,2714086,1352,82,1862124
+Kahramanmaraş,Tek konutlu,10390,10390,1715751,2328,2328,429914
+Kahramanmaraş,Çok konutlu (apartman),15948,190922,30649738,9512,117225,17965491
+Kahramanmaraş,"Toplu konut (yurt, vb.)",72,0,270696,39,0,109714
+Kahramanmaraş,Ticaret,1018,333,1264712,816,215,1018910
+Kahramanmaraş,Büro,476,96,629063,208,53,427274
+Kahramanmaraş,Otel/konaklama,172,2,391104,147,1,225479
+Kahramanmaraş,Sanayi ve depo,1716,10,4115672,992,9,3091906
+Kahramanmaraş,"Kamu, eğitim, sağlık",632,16,2340391,210,0,810270
+Kahramanmaraş,Ulaştırma ve haberleşme,41,1,61682,11,0,7243
+Kahramanmaraş,Diğer konut dışı,909,212,2161495,354,85,810103
+Mardin,Tek konutlu,1111,1111,287698,841,841,208654
+Mardin,Çok konutlu (apartman),6124,112214,22844399,4743,63285,13071326
+Mardin,"Toplu konut (yurt, vb.)",24,10,150538,9,0,64931
+Mardin,Ticaret,383,408,555774,397,147,647095
+Mardin,Büro,483,74,559704,168,64,303510
+Mardin,Otel/konaklama,66,0,175542,92,0,162290
+Mardin,Sanayi ve depo,889,110,1036389,550,69,936263
+Mardin,"Kamu, eğitim, sağlık",304,15,1416897,118,0,657394
+Mardin,Ulaştırma ve haberleşme,9,0,15711,2,0,2904
+Mardin,Diğer konut dışı,438,20,1106741,213,19,605557
+Muğla,Tek konutlu,30710,30710,5429545,23251,23251,3960680
+Muğla,Çok konutlu (apartman),27875,133609,14789344,25387,119949,13299210
+Muğla,"Toplu konut (yurt, vb.)",47,0,194278,39,0,179641
+Muğla,Ticaret,1772,716,1481395,1999,814,1666335
+Muğla,Büro,1283,431,1107540,964,329,846537
+Muğla,Otel/konaklama,4714,4,4000601,3267,2,2732407
+Muğla,Sanayi ve depo,745,85,853279,486,88,560731
+Muğla,"Kamu, eğitim, sağlık",544,6,1387900,312,2,1006463
+Muğla,Ulaştırma ve haberleşme,97,0,164401,34,0,77222
+Muğla,Diğer konut dışı,1395,47,903620,670,20,322879
+Muş,Tek konutlu,680,680,121900,466,466,86244
+Muş,Çok konutlu (apartman),1408,23280,3759460,1350,18473,3021993
+Muş,"Toplu konut (yurt, vb.)",9,0,62633,17,0,70133
+Muş,Ticaret,107,54,92255,113,24,114344
+Muş,Büro,79,28,150194,67,7,174807
+Muş,Otel/konaklama,65,0,127085,41,0,126709
+Muş,Sanayi ve depo,154,0,193806,79,1,143611
+Muş,"Kamu, eğitim, sağlık",158,0,427850,87,0,222357
+Muş,Ulaştırma ve haberleşme,13,0,11337,0,0,0
+Muş,Diğer konut dışı,224,18,455370,122,29,239985
+Nevşehir,Tek konutlu,3259,3259,748368,2614,2614,536739
+Nevşehir,Çok konutlu (apartman),4956,45205,7100486,4939,41718,6748280
+Nevşehir,"Toplu konut (yurt, vb.)",27,0,142760,25,0,85483
+Nevşehir,Ticaret,453,44,420816,498,60,425931
+Nevşehir,Büro,342,46,264536,259,27,256774
+Nevşehir,Otel/konaklama,367,0,535752,412,2,440844
+Nevşehir,Sanayi ve depo,847,27,1160432,692,25,817130
+Nevşehir,"Kamu, eğitim, sağlık",180,0,568245,170,0,472874
+Nevşehir,Ulaştırma ve haberleşme,38,4,28589,28,6,31642
+Nevşehir,Diğer konut dışı,1159,63,737881,678,31,489135
+Niğde,Tek konutlu,12253,12253,1729138,10280,10280,1377820
+Niğde,Çok konutlu (apartman),3854,50946,8775348,3638,44755,7761195
+Niğde,"Toplu konut (yurt, vb.)",29,0,174461,22,1,158501
+Niğde,Ticaret,425,50,306676,316,63,220102
+Niğde,Büro,378,27,376297,338,31,227728
+Niğde,Otel/konaklama,63,0,109189,66,0,98224
+Niğde,Sanayi ve depo,1907,80,3164646,1333,48,2009519
+Niğde,"Kamu, eğitim, sağlık",214,3,752670,163,2,458772
+Niğde,Ulaştırma ve haberleşme,21,3,22750,19,3,13232
+Niğde,Diğer konut dışı,1362,126,1504372,919,86,1074962
+Ordu,Tek konutlu,3840,3840,679020,1814,1814,310457
+Ordu,Çok konutlu (apartman),8276,97849,15047442,8434,86356,12523124
+Ordu,"Toplu konut (yurt, vb.)",62,0,168577,56,0,129355
+Ordu,Ticaret,528,274,614463,834,168,646200
+Ordu,Büro,234,80,433492,145,32,249052
+Ordu,Otel/konaklama,217,0,213916,109,0,142495
+Ordu,Sanayi ve depo,391,2,679195,270,3,418303
+Ordu,"Kamu, eğitim, sağlık",315,4,1281382,190,5,694568
+Ordu,Ulaştırma ve haberleşme,57,0,72262,26,0,22683
+Ordu,Diğer konut dışı,322,16,242386,125,3,113472
+Rize,Tek konutlu,193,193,40781,79,79,14178
+Rize,Çok konutlu (apartman),1549,38582,6723780,1197,27121,4644299
+Rize,"Toplu konut (yurt, vb.)",32,0,169900,22,0,74511
+Rize,Ticaret,70,37,151446,73,29,277326
+Rize,Büro,82,26,192180,69,50,262292
+Rize,Otel/konaklama,158,0,141062,86,0,155064
+Rize,Sanayi ve depo,107,0,488281,92,0,375212
+Rize,"Kamu, eğitim, sağlık",139,5,899461,101,15,597685
+Rize,Ulaştırma ve haberleşme,15,0,53024,5,0,42243
+Rize,Diğer konut dışı,71,0,104851,39,0,53185
+Sakarya,Tek konutlu,18818,18818,3379793,11430,11430,2205628
+Sakarya,Çok konutlu (apartman),28749,195721,23102221,26010,167990,19976645
+Sakarya,"Toplu konut (yurt, vb.)",170,4,295091,112,4,286548
+Sakarya,Ticaret,1114,374,1406575,1418,535,1910504
+Sakarya,Büro,1442,225,1894217,1077,112,1447699
+Sakarya,Otel/konaklama,583,1,422672,345,2,372083
+Sakarya,Sanayi ve depo,1953,17,5453892,1317,13,3850232
+Sakarya,"Kamu, eğitim, sağlık",514,1,1688130,394,0,1273985
+Sakarya,Ulaştırma ve haberleşme,57,8,110390,16,0,57178
+Sakarya,Diğer konut dışı,1459,35,1432120,647,36,1009835
+Samsun,Tek konutlu,6916,6916,1464030,5370,5370,1142219
+Samsun,Çok konutlu (apartman),17455,214849,31292016,17272,185719,29442644
+Samsun,"Toplu konut (yurt, vb.)",90,0,359210,83,0,286265
+Samsun,Ticaret,752,281,1111518,1318,221,1486494
+Samsun,Büro,530,68,1047903,404,37,794956
+Samsun,Otel/konaklama,182,1,270458,125,0,397458
+Samsun,Sanayi ve depo,1116,10,3514892,974,11,2714553
+Samsun,"Kamu, eğitim, sağlık",565,1,2419886,389,0,1816195
+Samsun,Ulaştırma ve haberleşme,66,0,170360,43,0,88211
+Samsun,Diğer konut dışı,897,41,1499174,577,21,785398
+Siirt,Tek konutlu,450,450,105249,143,143,31334
+Siirt,Çok konutlu (apartman),1408,30514,5500952,1156,23051,4116269
+Siirt,"Toplu konut (yurt, vb.)",20,0,148005,12,0,104193
+Siirt,Ticaret,59,176,154123,57,52,131508
+Siirt,Büro,70,283,275130,26,10,60189
+Siirt,Otel/konaklama,6,0,32393,7,0,24230
+Siirt,Sanayi ve depo,68,15,140857,52,3,114842
+Siirt,"Kamu, eğitim, sağlık",159,0,504009,77,0,315401
+Siirt,Ulaştırma ve haberleşme,10,0,19694,4,0,7108
+Siirt,Diğer konut dışı,59,0,148262,33,0,76109
+Sinop,Tek konutlu,1283,1283,241400,901,901,165947
+Sinop,Çok konutlu (apartman),3326,30316,4177690,3877,32213,4365400
+Sinop,"Toplu konut (yurt, vb.)",26,0,84519,25,0,116022
+Sinop,Ticaret,148,44,110315,405,75,246072
+Sinop,Büro,63,4,85549,61,2,66102
+Sinop,Otel/konaklama,78,0,115834,52,0,66739
+Sinop,Sanayi ve depo,145,2,332669,95,5,176823
+Sinop,"Kamu, eğitim, sağlık",117,6,431358,65,0,232186
+Sinop,Ulaştırma ve haberleşme,12,0,22139,5,0,14110
+Sinop,Diğer konut dışı,124,18,166843,57,7,69272
+Sivas,Tek konutlu,3768,3768,853705,2788,2788,592316
+Sivas,Çok konutlu (apartman),6954,85582,14955318,7117,72732,12656413
+Sivas,"Toplu konut (yurt, vb.)",54,0,211333,51,0,220269
+Sivas,Ticaret,403,82,781356,332,70,514119
+Sivas,Büro,251,38,362468,198,14,373037
+Sivas,Otel/konaklama,58,0,105988,64,0,134853
+Sivas,Sanayi ve depo,541,3,2536134,353,2,1111258
+Sivas,"Kamu, eğitim, sağlık",313,1,1323943,165,12,638393
+Sivas,Ulaştırma ve haberleşme,34,1,64073,23,0,25257
+Sivas,Diğer konut dışı,802,117,1131095,473,62,647988
+Tekirdağ,Tek konutlu,14474,14474,2646915,6697,6697,1266701
+Tekirdağ,Çok konutlu (apartman),23881,257075,33738272,20592,219171,29437130
+Tekirdağ,"Toplu konut (yurt, vb.)",88,4,159784,49,0,100108
+Tekirdağ,Ticaret,1427,897,1783451,1504,805,2109496
+Tekirdağ,Büro,699,299,1492216,547,246,1042784
+Tekirdağ,Otel/konaklama,132,0,267326,144,0,206243
+Tekirdağ,Sanayi ve depo,4318,24,11636104,3224,17,9210367
+Tekirdağ,"Kamu, eğitim, sağlık",685,0,1951647,287,3,1236091
+Tekirdağ,Ulaştırma ve haberleşme,111,0,146020,125,18,125147
+Tekirdağ,Diğer konut dışı,1366,22,1148495,748,14,740448
+Tokat,Tek konutlu,3300,3300,580703,2737,2737,482402
+Tokat,Çok konutlu (apartman),6601,60358,9656702,6017,54267,8742562
+Tokat,"Toplu konut (yurt, vb.)",38,10,238160,54,0,219461
+Tokat,Ticaret,393,90,406485,363,103,408514
+Tokat,Büro,288,45,287672,218,21,253065
+Tokat,Otel/konaklama,119,1,292661,65,0,114631
+Tokat,Sanayi ve depo,486,3,896534,247,34,387358
+Tokat,"Kamu, eğitim, sağlık",370,4,921378,228,7,681721
+Tokat,Ulaştırma ve haberleşme,16,1,8063,10,0,18880
+Tokat,Diğer konut dışı,539,42,615201,311,37,329255
+Trabzon,Tek konutlu,5273,5273,1201230,3048,3048,683618
+Trabzon,Çok konutlu (apartman),8249,103465,19121732,9016,103157,17774436
+Trabzon,"Toplu konut (yurt, vb.)",71,0,312824,68,12,289953
+Trabzon,Ticaret,618,325,952048,989,440,1184575
+Trabzon,Büro,329,67,483859,317,75,660784
+Trabzon,Otel/konaklama,784,1,826445,365,0,664346
+Trabzon,Sanayi ve depo,529,11,1079951,381,10,611720
+Trabzon,"Kamu, eğitim, sağlık",337,0,1291800,205,1,795562
+Trabzon,Ulaştırma ve haberleşme,170,0,299019,124,0,225845
+Trabzon,Diğer konut dışı,257,11,310567,147,19,220235
+Tunceli,Tek konutlu,848,848,127503,764,764,115187
+Tunceli,Çok konutlu (apartman),1459,14689,2225892,1396,13449,2048978
+Tunceli,"Toplu konut (yurt, vb.)",15,0,35406,12,0,27391
+Tunceli,Ticaret,36,12,25142,45,2,35546
+Tunceli,Büro,42,1,71997,26,12,38501
+Tunceli,Otel/konaklama,59,0,59566,45,0,47586
+Tunceli,Sanayi ve depo,51,1,42565,44,2,60406
+Tunceli,"Kamu, eğitim, sağlık",72,10,211396,52,10,196552
+Tunceli,Ulaştırma ve haberleşme,3,0,9570,2,0,2284
+Tunceli,Diğer konut dışı,117,7,138908,91,6,113580
+Şanlıurfa,Tek konutlu,1844,1844,456813,709,709,166493
+Şanlıurfa,Çok konutlu (apartman),16369,218403,34721007,9308,119786,20330329
+Şanlıurfa,"Toplu konut (yurt, vb.)",47,8,197508,25,0,87274
+Şanlıurfa,Ticaret,1175,1494,1500525,848,924,1020611
+Şanlıurfa,Büro,661,404,1169111,336,327,607896
+Şanlıurfa,Otel/konaklama,54,8,176086,31,0,130839
+Şanlıurfa,Sanayi ve depo,1908,61,5406712,1120,69,3329324
+Şanlıurfa,"Kamu, eğitim, sağlık",448,0,2544842,163,0,988763
+Şanlıurfa,Ulaştırma ve haberleşme,18,0,120500,6,0,92690
+Şanlıurfa,Diğer konut dışı,1182,197,2319015,376,8,755278
+Uşak,Tek konutlu,4490,4490,846003,3534,3534,652765
+Uşak,Çok konutlu (apartman),7181,57989,8876173,7657,54590,8039511
+Uşak,"Toplu konut (yurt, vb.)",40,0,225671,45,0,215685
+Uşak,Ticaret,284,256,290710,581,324,338044
+Uşak,Büro,365,78,239731,410,59,459301
+Uşak,Otel/konaklama,85,0,111963,52,0,57025
+Uşak,Sanayi ve depo,1011,11,2508837,1076,36,2062093
+Uşak,"Kamu, eğitim, sağlık",437,0,667814,205,0,629295
+Uşak,Ulaştırma ve haberleşme,108,0,70544,117,3,76763
+Uşak,Diğer konut dışı,1478,29,1307499,855,28,844765
+Van,Tek konutlu,2492,2492,653387,962,962,245368
+Van,Çok konutlu (apartman),3926,71669,12140515,2966,59610,9707151
+Van,"Toplu konut (yurt, vb.)",33,0,154689,8,0,40159
+Van,Ticaret,320,120,693400,290,139,669049
+Van,Büro,420,193,1035963,248,109,568947
+Van,Otel/konaklama,127,28,389587,81,0,235444
+Van,Sanayi ve depo,353,27,838641,165,0,459777
+Van,"Kamu, eğitim, sağlık",247,5,1266215,91,4,656101
+Van,Ulaştırma ve haberleşme,12,0,18243,8,0,102113
+Van,Diğer konut dışı,448,58,896132,172,1,236117
+Yozgat,Tek konutlu,2983,2983,544727,2456,2456,427447
+Yozgat,Çok konutlu (apartman),4720,54103,8409556,4684,44766,6885331
+Yozgat,"Toplu konut (yurt, vb.)",43,0,150519,38,0,137632
+Yozgat,Ticaret,382,50,344691,497,115,422158
+Yozgat,Büro,356,17,377504,190,6,213472
+Yozgat,Otel/konaklama,101,0,259980,51,1,140932
+Yozgat,Sanayi ve depo,542,10,692245,433,19,455860
+Yozgat,"Kamu, eğitim, sağlık",272,5,995350,204,3,815033
+Yozgat,Ulaştırma ve haberleşme,30,3,41456,17,4,18086
+Yozgat,Diğer konut dışı,1364,66,1341234,850,52,798993
+Zonguldak,Tek konutlu,779,779,180144,517,517,111438
+Zonguldak,Çok konutlu (apartman),3515,54218,7680861,3370,40528,5852417
+Zonguldak,"Toplu konut (yurt, vb.)",44,0,235955,31,0,137407
+Zonguldak,Ticaret,169,246,424501,298,118,455493
+Zonguldak,Büro,166,147,271853,121,76,187059
+Zonguldak,Otel/konaklama,52,1,74827,29,6,116957
+Zonguldak,Sanayi ve depo,616,4,1345005,422,2,1091810
+Zonguldak,"Kamu, eğitim, sağlık",270,1,815916,172,0,635626
+Zonguldak,Ulaştırma ve haberleşme,43,0,40214,16,2,21840
+Zonguldak,Diğer konut dışı,282,28,729942,173,17,361162
+Aksaray,Tek konutlu,7596,7596,1232120,4177,4177,773046
+Aksaray,Çok konutlu (apartman),6138,81117,12930043,5782,69126,11770822
+Aksaray,"Toplu konut (yurt, vb.)",43,0,264033,52,0,286001
+Aksaray,Ticaret,473,118,712398,401,126,509485
+Aksaray,Büro,394,101,403810,214,24,238668
+Aksaray,Otel/konaklama,75,0,91911,40,1,93634
+Aksaray,Sanayi ve depo,1299,7,2923633,894,7,2549594
+Aksaray,"Kamu, eğitim, sağlık",242,0,655249,208,0,566835
+Aksaray,Ulaştırma ve haberleşme,21,0,71464,14,1,40388
+Aksaray,Diğer konut dışı,1224,48,1691536,574,34,989283
+Bayburt,Tek konutlu,268,268,44151,150,150,22100
+Bayburt,Çok konutlu (apartman),1273,13209,1954936,739,6249,919458
+Bayburt,"Toplu konut (yurt, vb.)",22,0,125268,10,0,60874
+Bayburt,Ticaret,47,38,50910,38,2,24588
+Bayburt,Büro,79,13,105004,10,0,8601
+Bayburt,Otel/konaklama,14,0,30226,19,0,19033
+Bayburt,Sanayi ve depo,80,4,167536,49,0,75228
+Bayburt,"Kamu, eğitim, sağlık",76,3,322008,25,3,46606
+Bayburt,Ulaştırma ve haberleşme,20,0,23194,4,0,5459
+Bayburt,Diğer konut dışı,207,2,165359,85,2,84978
+Karaman,Tek konutlu,2671,2671,432455,2024,2024,337854
+Karaman,Çok konutlu (apartman),4003,34124,5892852,4383,31792,5364565
+Karaman,"Toplu konut (yurt, vb.)",24,0,163270,24,0,175886
+Karaman,Ticaret,215,149,328254,325,224,406461
+Karaman,Büro,236,99,317274,148,18,161561
+Karaman,Otel/konaklama,67,0,60300,36,0,48089
+Karaman,Sanayi ve depo,926,9,1551508,546,12,1188439
+Karaman,"Kamu, eğitim, sağlık",178,4,663832,156,1,567579
+Karaman,Ulaştırma ve haberleşme,21,1,19604,13,1,25895
+Karaman,Diğer konut dışı,583,20,369720,259,17,213710
+Kırıkkale,Tek konutlu,3778,3778,447759,3169,3169,372426
+Kırıkkale,Çok konutlu (apartman),2795,46245,7028262,2803,41547,6338508
+Kırıkkale,"Toplu konut (yurt, vb.)",13,1,98698,19,14,148782
+Kırıkkale,Ticaret,194,20,168891,216,39,291091
+Kırıkkale,Büro,193,13,182848,114,23,115393
+Kırıkkale,Otel/konaklama,34,0,46275,35,0,57632
+Kırıkkale,Sanayi ve depo,466,12,796257,261,16,606811
+Kırıkkale,"Kamu, eğitim, sağlık",151,0,584970,94,0,546396
+Kırıkkale,Ulaştırma ve haberleşme,20,1,55459,17,1,49973
+Kırıkkale,Diğer konut dışı,449,111,447908,256,68,322510
+Batman,Tek konutlu,1209,1209,230314,813,813,127291
+Batman,Çok konutlu (apartman),3906,68539,11537586,1948,35862,6072263
+Batman,"Toplu konut (yurt, vb.)",13,0,52731,3,0,8269
+Batman,Ticaret,210,10,587447,328,4,347356
+Batman,Büro,96,2,212801,50,1,168010
+Batman,Otel/konaklama,42,10,141868,23,0,104963
+Batman,Sanayi ve depo,346,0,1136407,132,8,311936
+Batman,"Kamu, eğitim, sağlık",216,8,1272441,108,1,501918
+Batman,Ulaştırma ve haberleşme,20,3,25687,5,3,2832
+Batman,Diğer konut dışı,133,1,257840,57,11,123892
+Şırnak,Tek konutlu,701,701,144629,230,230,41235
+Şırnak,Çok konutlu (apartman),2135,26629,4905264,882,15692,2738725
+Şırnak,"Toplu konut (yurt, vb.)",8,0,43606,5,0,21486
+Şırnak,Ticaret,153,114,148198,55,96,113613
+Şırnak,Büro,145,66,170837,47,24,65880
+Şırnak,Otel/konaklama,29,0,69913,9,44,63267
+Şırnak,Sanayi ve depo,104,2,294012,59,32,227589
+Şırnak,"Kamu, eğitim, sağlık",129,0,637793,67,0,308710
+Şırnak,Ulaştırma ve haberleşme,5,2,6002,2,0,4139
+Şırnak,Diğer konut dışı,184,33,369241,110,18,169166
+Bartın,Tek konutlu,560,560,120100,405,405,92773
+Bartın,Çok konutlu (apartman),2389,24868,3050412,2244,21458,2670933
+Bartın,"Toplu konut (yurt, vb.)",18,0,107865,18,0,125683
+Bartın,Ticaret,67,20,62656,114,2,69692
+Bartın,Büro,106,3,80959,98,5,112613
+Bartın,Otel/konaklama,52,0,34584,36,0,20515
+Bartın,Sanayi ve depo,140,2,302699,217,1,283259
+Bartın,"Kamu, eğitim, sağlık",108,1,460890,67,0,228529
+Bartın,Ulaştırma ve haberleşme,8,0,8563,6,0,3344
+Bartın,Diğer konut dışı,107,2,155023,81,8,49149
+Ardahan,Tek konutlu,311,311,45255,132,132,18752
+Ardahan,Çok konutlu (apartman),725,8932,1365873,450,4573,675790
+Ardahan,"Toplu konut (yurt, vb.)",8,0,53383,12,0,70783
+Ardahan,Ticaret,84,80,56249,35,12,23838
+Ardahan,Büro,91,28,62276,26,0,38063
+Ardahan,Otel/konaklama,53,0,99541,26,0,44808
+Ardahan,Sanayi ve depo,62,0,39742,24,2,15398
+Ardahan,"Kamu, eğitim, sağlık",56,0,171720,18,0,72877
+Ardahan,Ulaştırma ve haberleşme,16,2,12895,2,1,480
+Ardahan,Diğer konut dışı,216,15,190645,68,13,74398
+Iğdır,Tek konutlu,663,663,113696,466,466,80180
+Iğdır,Çok konutlu (apartman),1570,18091,3242195,1287,13577,2573598
+Iğdır,"Toplu konut (yurt, vb.)",16,0,89784,8,0,49961
+Iğdır,Ticaret,69,78,117481,89,74,192474
+Iğdır,Büro,106,22,208836,41,22,76304
+Iğdır,Otel/konaklama,12,0,27519,5,0,13239
+Iğdır,Sanayi ve depo,92,0,131582,63,1,122906
+Iğdır,"Kamu, eğitim, sağlık",125,0,479680,46,0,158754
+Iğdır,Ulaştırma ve haberleşme,4,0,4913,2,0,5971
+Iğdır,Diğer konut dışı,124,2,133390,46,2,107218
+Yalova,Tek konutlu,4253,4253,1178491,2841,2841,764654
+Yalova,Çok konutlu (apartman),8451,80182,11724094,6575,55548,8559579
+Yalova,"Toplu konut (yurt, vb.)",43,0,150500,34,0,138439
+Yalova,Ticaret,363,107,515357,512,82,541764
+Yalova,Büro,456,55,964479,206,7,411440
+Yalova,Otel/konaklama,130,0,359978,80,38,133527
+Yalova,Sanayi ve depo,737,22,1817546,402,1,914837
+Yalova,"Kamu, eğitim, sağlık",141,1,520784,85,0,364215
+Yalova,Ulaştırma ve haberleşme,42,1,52607,9,0,27526
+Yalova,Diğer konut dışı,187,18,184131,144,3,155674
+Karabük,Tek konutlu,883,883,160523,650,650,122330
+Karabük,Çok konutlu (apartman),2766,36271,4861026,2959,35786,4886567
+Karabük,"Toplu konut (yurt, vb.)",45,0,297571,49,0,282507
+Karabük,Ticaret,178,49,555779,160,42,381298
+Karabük,Büro,134,41,171303,104,3,82223
+Karabük,Otel/konaklama,97,0,74568,74,0,87219
+Karabük,Sanayi ve depo,222,0,743150,156,2,391027
+Karabük,"Kamu, eğitim, sağlık",159,0,666626,151,0,646516
+Karabük,Ulaştırma ve haberleşme,14,0,12386,12,0,11573
+Karabük,Diğer konut dışı,321,6,191996,244,5,162925
+Kilis,Tek konutlu,582,582,83912,506,506,76662
+Kilis,Çok konutlu (apartman),1383,24995,3718346,1080,18512,2841426
+Kilis,"Toplu konut (yurt, vb.)",9,0,47967,9,0,54747
+Kilis,Ticaret,38,45,49999,40,27,87979
+Kilis,Büro,82,22,93940,27,32,60815
+Kilis,Otel/konaklama,2,0,4751,5,0,25547
+Kilis,Sanayi ve depo,236,4,870891,222,0,674759
+Kilis,"Kamu, eğitim, sağlık",122,2,633521,54,0,145862
+Kilis,Ulaştırma ve haberleşme,3,1,108165,1,0,2234
+Kilis,Diğer konut dışı,114,18,235790,49,8,121883
+Osmaniye,Tek konutlu,2843,2843,546720,1481,1481,279313
+Osmaniye,Çok konutlu (apartman),6105,72289,11949308,5049,52865,8915041
+Osmaniye,"Toplu konut (yurt, vb.)",21,1,56975,16,12,95695
+Osmaniye,Ticaret,368,241,324963,688,177,512991
+Osmaniye,Büro,312,106,317001,155,23,234732
+Osmaniye,Otel/konaklama,22,0,75783,14,0,58327
+Osmaniye,Sanayi ve depo,473,1,1610203,372,3,1315892
+Osmaniye,"Kamu, eğitim, sağlık",280,0,1121589,169,0,621715
+Osmaniye,Ulaştırma ve haberleşme,3,0,2680,2,0,1787
+Osmaniye,Diğer konut dışı,214,15,307985,102,16,143749
+Düzce,Tek konutlu,4412,4412,936549,2575,2575,544587
+Düzce,Çok konutlu (apartman),8117,75455,10151722,6415,55246,7504722
+Düzce,"Toplu konut (yurt, vb.)",51,0,218499,43,0,182165
+Düzce,Ticaret,396,152,469422,348,142,417629
+Düzce,Büro,396,126,410965,345,98,423149
+Düzce,Otel/konaklama,111,0,82267,49,0,95313
+Düzce,Sanayi ve depo,927,2,2523417,582,3,1516389
+Düzce,"Kamu, eğitim, sağlık",286,1,626198,167,0,420523
+Düzce,Ulaştırma ve haberleşme,51,0,48436,18,0,48696
+Düzce,Diğer konut dışı,426,21,361314,216,13,236646

@@ -1,0 +1,968 @@
+﻿ilce,il,ikamet2015,ikamet2025,kutuk2015,kutuk2025,ikamet_artisi_pct,kutuk_artisi_puan,goc_etkisi_puan,kutuk_sinif,goc_sinif
+Aladağ,Adana,16823,15839,44868,48992,-5.8,24.5,-30.4,çok,dışarı akış
+Ceyhan,Adana,159504,156081,243663,258994,-2.1,9.6,-11.8,orta,orta
+Çukurova,Adana,359315,380653,39578,42744,5.9,0.9,5.1,az,içeri/uyumlu
+Feke,Adana,17214,15586,62386,67503,-9.5,29.7,-39.2,çok,dışarı akış
+İmamoğlu,Adana,28686,27196,64838,70558,-5.2,19.9,-25.1,orta,dışarı akış
+Karaisalı,Adana,21451,22872,97423,104063,6.6,31.0,-24.3,çok,dışarı akış
+Karataş,Adana,21939,24005,58304,61494,9.4,14.5,-5.1,orta,orta
+Kozan,Adana,129242,132572,217914,233578,2.6,12.1,-9.5,orta,orta
+Pozantı,Adana,19440,19983,36154,38748,2.8,13.3,-10.6,orta,orta
+Saimbeyli,Adana,15530,13133,41128,44744,-15.4,23.3,-38.7,çok,dışarı akış
+Sarıçam,Adana,150425,263080,91811,99804,74.9,5.3,69.6,orta,içeri/uyumlu
+Seyhan,Adana,788722,782204,391184,406292,-0.8,1.9,-2.7,az,orta
+Tufanbeyli,Adana,17759,16027,58924,64007,-9.8,28.6,-38.4,çok,dışarı akış
+Yumurtalık,Adana,18106,17806,46569,50189,-1.7,20.0,-21.7,orta,orta
+Yüreğir,Adana,419011,396572,220658,239264,-5.4,4.4,-9.8,az,orta
+Adıyaman,Adıyaman,290382,296876,315372,352463,2.2,12.8,-10.5,orta,orta
+Besni,Adıyaman,75041,75398,171284,189082,0.5,23.7,-23.2,çok,orta
+Çelikhan,Adıyaman,15213,14530,42744,48275,-4.5,36.4,-40.8,çok,dışarı akış
+Gerger,Adıyaman,19561,14497,123721,145472,-25.9,111.2,-137.1,çok,dışarı akış
+Gölbaşı,Adıyaman,48027,47917,78674,84957,-0.2,13.1,-13.3,orta,orta
+Kâhta,Adıyaman,118646,136769,234083,276627,15.3,35.9,-20.6,çok,orta
+Samsat,Adıyaman,8190,6834,31173,36725,-16.6,67.8,-84.3,çok,dışarı akış
+Sincik,Adıyaman,17592,15801,52284,60882,-10.2,48.9,-59.1,çok,dışarı akış
+Tut,Adıyaman,10122,9199,23396,26120,-9.1,26.9,-36.0,çok,dışarı akış
+Afyonkarahisar,Afyonkarahisar,283120,331982,215794,231063,17.3,5.4,11.9,orta,içeri/uyumlu
+Başmakçı,Afyonkarahisar,10286,9089,22217,23154,-11.6,9.1,-20.7,orta,orta
+Bayat,Afyonkarahisar,8055,7580,18292,19778,-5.9,18.4,-24.3,orta,dışarı akış
+Bolvadin,Afyonkarahisar,44550,45906,72801,77977,3.0,11.6,-8.6,orta,orta
+Çay,Afyonkarahisar,32093,29140,56486,60163,-9.2,11.5,-20.7,orta,orta
+Çobanlar,Afyonkarahisar,14069,14457,21209,23918,2.8,19.3,-16.5,orta,orta
+Dazkırı,Afyonkarahisar,11010,11723,21924,23013,6.5,9.9,-3.4,orta,orta
+Dinar,Afyonkarahisar,47312,46878,101652,108054,-0.9,13.5,-14.4,orta,orta
+Emirdağ,Afyonkarahisar,37246,43350,93335,104421,16.4,29.8,-13.4,çok,orta
+Evciler,Afyonkarahisar,7527,7038,17689,18343,-6.5,8.7,-15.2,orta,orta
+Hocalar,Afyonkarahisar,10094,8220,21542,22794,-18.6,12.4,-31.0,orta,dışarı akış
+İhsaniye,Afyonkarahisar,27853,27636,62522,67880,-0.8,19.2,-20.0,orta,orta
+İscehisar,Afyonkarahisar,24310,25220,37048,41320,3.7,17.6,-13.8,orta,orta
+Kızılören,Afyonkarahisar,2463,1977,7488,7662,-19.7,7.1,-26.8,orta,dışarı akış
+Sandıklı,Afyonkarahisar,55714,54376,96747,99092,-2.4,4.2,-6.6,az,orta
+Sinanpaşa,Afyonkarahisar,40700,38292,99037,105621,-5.9,16.2,-22.1,orta,orta
+Sultandağı,Afyonkarahisar,15541,13641,45151,46315,-12.2,7.5,-19.7,orta,orta
+Şuhut,Afyonkarahisar,37072,35303,82179,87691,-4.8,14.9,-19.6,orta,orta
+Ağrı,Ağrı,148667,150035,220705,253622,0.9,22.1,-21.2,orta,orta
+Diyadin,Ağrı,43947,35439,105753,127099,-19.4,48.6,-67.9,çok,dışarı akış
+Doğubayazıt,Ağrı,121526,113699,202526,239984,-6.4,30.8,-37.3,çok,dışarı akış
+Eleşkirt,Ağrı,35548,28661,104258,118285,-19.4,39.5,-58.8,çok,dışarı akış
+Hamur,Ağrı,19721,14336,78104,90447,-27.3,62.6,-89.9,çok,dışarı akış
+Patnos,Ağrı,124762,105968,211574,261195,-15.1,39.8,-54.8,çok,dışarı akış
+Taşlıçay,Ağrı,21249,17431,66152,77428,-18.0,53.1,-71.0,çok,dışarı akış
+Tutak,Ağrı,31790,25920,96722,115390,-18.5,58.7,-77.2,çok,dışarı akış
+Amasya,Amasya,137549,151433,198793,207812,10.1,6.6,3.5,orta,içeri/uyumlu
+Göynücek,Amasya,10443,10823,44521,47547,3.6,29.0,-25.3,çok,dışarı akış
+Gümüşhacıköy,Amasya,22943,22319,78402,80486,-2.7,9.1,-11.8,orta,orta
+Hamamözü,Amasya,3873,3628,16002,16999,-6.3,25.7,-32.1,çok,dışarı akış
+Merzifon,Amasya,70132,77077,109090,111464,9.9,3.4,6.5,az,içeri/uyumlu
+Suluova,Amasya,46485,46928,54750,58918,1.0,9.0,-8.0,orta,orta
+Taşova,Amasya,30742,30034,125503,132372,-2.3,22.3,-24.6,çok,dışarı akış
+Akyurt,Ankara,30245,46956,38523,41457,55.3,9.7,45.6,orta,içeri/uyumlu
+Altındağ,Ankara,363687,418072,159338,182574,15.0,6.4,8.6,orta,içeri/uyumlu
+Ayaş,Ankara,12678,13136,49896,50900,3.6,7.9,-4.3,orta,orta
+Bala,Ankara,21618,20109,101838,108959,-7.0,32.9,-39.9,çok,dışarı akış
+Beypazarı,Ankara,47582,48359,87844,89532,1.6,3.5,-1.9,az,içeri/uyumlu
+Çamlıdere,Ankara,6479,10203,68947,72172,57.5,49.8,7.7,çok,içeri/uyumlu
+Çankaya,Ankara,922536,952198,157993,156683,3.2,-0.1,3.4,az,içeri/uyumlu
+Çubuk,Ankara,86055,101437,134806,142607,17.9,9.1,8.8,orta,içeri/uyumlu
+Elmadağ,Ankara,43776,45644,49902,52215,4.3,5.3,-1.0,orta,içeri/uyumlu
+Etimesgut,Ankara,527959,632458,19544,35769,19.8,3.1,16.7,az,içeri/uyumlu
+Evren,Ankara,2847,2927,16826,17600,2.8,27.2,-24.4,çok,dışarı akış
+Gölbaşı,Ankara,122288,172810,85683,91085,41.3,4.4,36.9,az,içeri/uyumlu
+Güdül,Ankara,8392,8028,48800,50156,-4.3,16.2,-20.5,orta,orta
+Haymana,Ankara,28355,25798,129769,142257,-9.0,44.0,-53.1,çok,dışarı akış
+Kalecik,Ankara,13388,12564,82604,86976,-6.2,32.7,-38.8,çok,dışarı akış
+Keçiören,Ankara,889876,931722,61724,64189,4.7,0.3,4.4,az,içeri/uyumlu
+Kızılcahamam,Ankara,25179,27841,134268,138387,10.6,16.4,-5.8,orta,orta
+Mamak,Ankara,607878,690329,78186,81373,13.6,0.5,13.0,az,içeri/uyumlu
+Nallıhan,Ankara,29209,26083,54608,54705,-10.7,0.3,-11.0,az,orta
+Polatlı,Ankara,121858,131894,127405,132937,8.2,4.5,3.7,az,içeri/uyumlu
+Pursaklar,Ankara,133961,168881,15023,16118,26.1,0.8,25.2,az,içeri/uyumlu
+Sincan,Ankara,506950,605366,62258,65044,19.4,0.5,18.9,az,içeri/uyumlu
+Şereflikoçhisar,Ankara,33729,32831,86009,91015,-2.7,14.8,-17.5,orta,orta
+Yenimahalle,Ankara,632286,721531,58240,59458,14.1,0.2,13.9,az,içeri/uyumlu
+Akseki,Antalya,11088,10609,58033,58539,-4.3,4.6,-8.9,az,orta
+Aksu,Antalya,68496,87070,47859,51045,27.1,4.7,22.5,az,içeri/uyumlu
+Alanya,Antalya,291643,371547,139820,151736,27.4,4.1,23.3,az,içeri/uyumlu
+Demre,Antalya,26180,28075,18161,19093,7.2,3.6,3.7,az,içeri/uyumlu
+Döşemealtı,Antalya,55462,97121,40786,42828,75.1,3.7,71.4,az,içeri/uyumlu
+Elmalı,Antalya,38515,41550,65984,68577,7.9,6.7,1.1,orta,içeri/uyumlu
+Finike,Antalya,46817,52436,36902,38631,12.0,3.7,8.3,az,içeri/uyumlu
+Gazipaşa,Antalya,48866,55850,59550,63041,14.3,7.1,7.1,orta,içeri/uyumlu
+Gündoğmuş,Antalya,7583,6953,32126,34074,-8.3,25.7,-34.0,çok,dışarı akış
+İbradı,Antalya,2761,3256,12305,12284,17.9,-0.8,18.7,az,içeri/uyumlu
+Kaş,Antalya,56386,63957,68935,71963,13.4,5.4,8.1,orta,içeri/uyumlu
+Kemer,Antalya,42796,52339,14968,16282,22.3,3.1,19.2,az,içeri/uyumlu
+Kepez,Antalya,497242,649102,56802,62943,30.5,1.2,29.3,az,içeri/uyumlu
+Konyaaltı,Antalya,154920,199414,22380,26362,28.7,2.6,26.2,az,içeri/uyumlu
+Korkuteli,Antalya,52746,58381,104486,109752,10.7,10.0,0.7,orta,içeri/uyumlu
+Kumluca,Antalya,67135,75588,45144,46641,12.6,2.2,10.4,az,içeri/uyumlu
+Manavgat,Antalya,222419,266480,127311,134663,19.8,3.3,16.5,az,içeri/uyumlu
+Muratpaşa,Antalya,477290,510887,117406,129735,7.0,2.6,4.5,az,içeri/uyumlu
+Serik,Antalya,120111,147062,111271,117645,22.4,5.3,17.1,orta,içeri/uyumlu
+Ardanuç,Artvin,10890,10889,42202,43110,-0.0,8.3,-8.3,orta,orta
+Arhavi,Artvin,20565,22025,38782,38503,7.1,-1.4,8.5,az,içeri/uyumlu
+Artvin,Artvin,34208,35710,45678,46490,4.4,2.4,2.0,az,içeri/uyumlu
+Borçka,Artvin,22293,21628,61366,65265,-3.0,17.5,-20.5,orta,orta
+Hopa,Artvin,34852,27844,51030,37026,-20.1,-40.2,20.1,az,içeri/uyumlu
+Murgul,Artvin,7121,6457,12375,12893,-9.3,7.3,-16.6,orta,orta
+Şavşat,Artvin,17524,16151,94139,95678,-7.8,8.8,-16.6,orta,orta
+Yusufeli,Artvin,20917,17564,92180,96295,-16.0,19.7,-35.7,orta,dışarı akış
+Bozdoğan,Aydın,34237,31624,60812,63255,-7.6,7.1,-14.8,orta,orta
+Buharkent,Aydın,12505,13137,15662,16305,5.1,5.1,-0.1,az,içeri/uyumlu
+Çine,Aydın,50241,47906,74922,75583,-4.6,1.3,-6.0,az,orta
+Didim,Aydın,73827,103141,17381,17707,39.7,0.4,39.3,az,içeri/uyumlu
+Efeler,Aydın,277466,310241,162446,166147,11.8,1.3,10.5,az,içeri/uyumlu
+Germencik,Aydın,43367,44697,48820,49033,3.1,0.5,2.6,az,içeri/uyumlu
+İncirliova,Aydın,47475,58230,50264,53556,22.7,6.9,15.7,orta,içeri/uyumlu
+Karacasu,Aydın,19162,17225,38174,39083,-10.1,4.7,-14.9,az,orta
+Karpuzlu,Aydın,11442,10352,21699,22144,-9.5,3.9,-13.4,az,orta
+Koçarlı,Aydın,23422,22234,48490,49491,-5.1,4.3,-9.3,az,orta
+Köşk,Aydın,27039,28307,35190,37304,4.7,7.8,-3.1,orta,orta
+Kuşadası,Aydın,103849,141431,25807,25761,36.2,-0.0,36.2,az,içeri/uyumlu
+Kuyucak,Aydın,27182,26196,37980,37832,-3.6,-0.5,-3.1,az,orta
+Nazilli,Aydın,151789,162156,130050,130998,6.8,0.6,6.2,az,içeri/uyumlu
+Söke,Aydın,116583,123843,107631,109520,6.2,1.6,4.6,az,içeri/uyumlu
+Sultanhisar,Aydın,20983,19791,28504,28960,-5.7,2.2,-7.9,az,orta
+Yenipazar,Aydın,12937,11596,20859,20732,-10.4,-1.0,-9.4,az,orta
+Altıeylül,Balıkesir,173686,188858,128631,132018,8.7,2.0,6.8,az,içeri/uyumlu
+Ayvalık,Balıkesir,67902,75815,48305,47003,11.7,-1.9,13.6,az,içeri/uyumlu
+Balya,Balıkesir,13648,12296,44787,44808,-9.9,0.2,-10.1,az,orta
+Bandırma,Balıkesir,146688,169476,96333,94055,15.5,-1.6,17.1,az,içeri/uyumlu
+Bigadiç,Balıkesir,49539,49275,67985,69537,-0.5,3.1,-3.7,az,orta
+Burhaniye,Balıkesir,57090,68370,34291,34306,19.8,0.0,19.7,az,içeri/uyumlu
+Dursunbey,Balıkesir,38522,32168,87218,87414,-16.5,0.5,-17.0,az,orta
+Edremit,Balıkesir,140857,176251,58036,57350,25.1,-0.5,25.6,az,içeri/uyumlu
+Erdek,Balıkesir,32899,32080,31234,30791,-2.5,-1.3,-1.1,az,içeri/uyumlu
+Gömeç,Balıkesir,12768,19020,13832,13717,49.0,-0.9,49.9,az,içeri/uyumlu
+Gönen,Balıkesir,72701,75730,106471,105726,4.2,-1.0,5.2,az,içeri/uyumlu
+Havran,Balıkesir,27564,28152,40028,41433,2.1,5.1,-3.0,az,orta
+İvrindi,Balıkesir,33710,31295,66765,68867,-7.2,6.2,-13.4,orta,orta
+Karesi,Balıkesir,173386,189444,130687,130865,9.3,0.1,9.2,az,içeri/uyumlu
+Kepsut,Balıkesir,23508,21386,60154,61346,-9.0,5.1,-14.1,az,orta
+Manyas,Balıkesir,20154,17650,53574,53131,-12.4,-2.2,-10.2,az,orta
+Marmara,Balıkesir,8848,11827,8598,8422,33.7,-2.0,35.7,az,içeri/uyumlu
+Savaştepe,Balıkesir,18677,16266,40851,41853,-12.9,5.4,-18.3,orta,orta
+Sındırgı,Balıkesir,34868,31482,80308,81350,-9.7,3.0,-12.7,az,orta
+Susurluk,Balıkesir,39673,37676,71925,72101,-5.0,0.4,-5.5,az,orta
+Bilecik,Bilecik,74019,82863,54122,53602,11.9,-0.7,12.7,az,içeri/uyumlu
+Bozüyük,Bilecik,70725,81332,71708,72978,15.0,1.8,13.2,az,içeri/uyumlu
+Gölpazarı,Bilecik,10820,10049,32557,32808,-7.1,2.3,-9.4,az,orta
+İnhisar,Bilecik,2409,2079,12697,12633,-13.7,-2.7,-11.0,az,orta
+Osmaneli,Bilecik,21106,22025,23620,23992,4.4,1.8,2.6,az,içeri/uyumlu
+Pazaryeri,Bilecik,10713,9671,35507,36020,-9.7,4.8,-14.5,az,orta
+Söğüt,Bilecik,19548,18284,29238,29205,-6.5,-0.2,-6.3,az,orta
+Yenipazar,Bilecik,3021,2692,10566,10538,-10.9,-0.9,-10.0,az,orta
+Adaklı,Bingöl,8625,7491,55487,61270,-13.1,67.0,-80.2,çok,dışarı akış
+Bingöl,Bingöl,150626,175438,160165,176989,16.5,11.2,5.3,orta,içeri/uyumlu
+Genç,Bingöl,34591,31654,123243,139837,-8.5,48.0,-56.5,çok,dışarı akış
+Karlıova,Bingöl,30603,25265,76411,85869,-17.4,30.9,-48.3,çok,dışarı akış
+Kiğı,Bingöl,4958,4487,29025,29981,-9.5,19.3,-28.8,orta,dışarı akış
+Solhan,Bingöl,33088,33233,66860,76137,0.4,28.0,-27.6,çok,dışarı akış
+Yayladere,Bingöl,1836,1889,17146,17259,2.9,6.2,-3.3,orta,orta
+Yedisu,Bingöl,2857,2842,10965,11437,-0.5,16.5,-17.0,orta,orta
+Adilcevaz,Bitlis,30917,28769,70717,85888,-6.9,49.1,-56.0,çok,dışarı akış
+Ahlat,Bitlis,38622,45637,80013,95449,18.2,40.0,-21.8,çok,orta
+Bitlis,Bitlis,67373,74904,170802,194943,11.2,35.8,-24.7,çok,dışarı akış
+Güroymak,Bitlis,46428,49372,73670,89984,6.3,35.1,-28.8,çok,dışarı akış
+Hizan,Bitlis,35765,29948,124465,147660,-16.3,64.9,-81.1,çok,dışarı akış
+Mutki,Bitlis,32159,26748,94567,112271,-16.8,55.1,-71.9,çok,dışarı akış
+Tatvan,Bitlis,89185,105045,141160,164322,17.8,26.0,-8.2,çok,orta
+Bolu,Bolu,186275,222589,119754,121583,19.5,1.0,18.5,az,içeri/uyumlu
+Dörtdivan,Bolu,6396,6214,30847,32090,-2.8,19.4,-22.3,orta,orta
+Gerede,Bolu,33662,37196,94520,99878,10.5,15.9,-5.4,orta,orta
+Göynük,Bolu,15372,14257,34594,35120,-7.3,3.4,-10.7,az,orta
+Kıbrıscık,Bolu,3286,3783,17524,18087,15.1,17.1,-2.0,orta,içeri/uyumlu
+Mengen,Bolu,13790,14152,60029,60184,2.6,1.1,1.5,az,içeri/uyumlu
+Mudurnu,Bolu,19721,18101,45736,47118,-8.2,7.0,-15.2,orta,orta
+Seben,Bolu,5380,4438,17669,17687,-17.5,0.3,-17.8,az,orta
+Yeniçağa,Bolu,7213,6443,16401,16735,-10.7,4.6,-15.3,az,orta
+Ağlasun,Burdur,8382,7347,17253,17884,-12.3,7.5,-19.9,orta,orta
+Altınyayla,Burdur,5374,5060,11870,12749,-5.8,16.4,-22.2,orta,orta
+Bucak,Burdur,64783,68312,81012,85039,5.4,6.2,-0.8,orta,içeri/uyumlu
+Burdur,Burdur,101912,120832,93631,94124,18.6,0.5,18.1,az,içeri/uyumlu
+Çavdır,Burdur,12689,12539,28011,29572,-1.2,12.3,-13.5,orta,orta
+Çeltikçi,Burdur,5278,4914,13273,13656,-6.9,7.3,-14.2,orta,orta
+Gölhisar,Burdur,22093,23969,30392,31956,8.5,7.1,1.4,orta,içeri/uyumlu
+Karamanlı,Burdur,7952,8097,15797,15821,1.8,0.3,1.5,az,içeri/uyumlu
+Kemer,Burdur,3512,2727,8856,8965,-22.4,3.1,-25.5,az,dışarı akış
+Tefenni,Burdur,10167,9514,25331,25948,-6.4,6.1,-12.5,orta,orta
+Yeşilova,Burdur,16197,13915,42549,42988,-14.1,2.7,-16.8,az,orta
+Büyükorhan,Bursa,10774,9148,34041,36098,-15.1,19.1,-34.2,orta,dışarı akış
+Gemlik,Bursa,105484,124400,57185,57041,17.9,-0.1,18.1,az,içeri/uyumlu
+Gürsu,Bursa,79540,105799,26187,39196,33.0,16.4,16.7,orta,içeri/uyumlu
+Harmancık,Bursa,6574,6089,19531,20150,-7.4,9.4,-16.8,orta,orta
+İnegöl,Bursa,249091,306004,184143,207778,22.8,9.5,13.4,orta,içeri/uyumlu
+İznik,Bursa,42467,45510,62013,63758,7.2,4.1,3.1,az,içeri/uyumlu
+Karacabey,Bursa,80573,86543,104753,106517,7.4,2.2,5.2,az,içeri/uyumlu
+Keles,Bursa,12773,10939,43213,44907,-14.4,13.3,-27.6,orta,dışarı akış
+Kestel,Bursa,54959,77374,47344,50064,40.8,4.9,35.8,az,içeri/uyumlu
+Mudanya,Bursa,83174,112225,50762,50979,34.9,0.3,34.7,az,içeri/uyumlu
+Mustafakemalpaşa,Bursa,99781,103652,153441,158956,3.9,5.5,-1.6,orta,içeri/uyumlu
+Nilüfer,Bursa,397303,578059,87206,89288,45.5,0.5,45.0,az,içeri/uyumlu
+Orhaneli,Bursa,20371,18963,54422,56796,-6.9,11.7,-18.6,orta,orta
+Orhangazi,Bursa,76669,81997,75556,76313,6.9,1.0,6.0,az,içeri/uyumlu
+Osmangazi,Bursa,826742,886111,442955,444472,7.2,0.2,7.0,az,içeri/uyumlu
+Yenişehir,Bursa,52591,55609,89299,90955,5.7,3.1,2.6,az,içeri/uyumlu
+Yıldırım,Bursa,643681,654589,238644,260944,1.7,3.5,-1.8,az,içeri/uyumlu
+Ayvacık,Çanakkale,31423,35411,37363,36878,12.7,-1.5,14.2,az,içeri/uyumlu
+Bayramiç,Çanakkale,29645,28480,44115,43435,-3.9,-2.3,-1.6,az,içeri/uyumlu
+Biga,Çanakkale,87747,94526,136695,136597,7.7,-0.1,7.8,az,içeri/uyumlu
+Bozcaada,Çanakkale,2643,3384,1862,1789,28.0,-2.8,30.8,az,içeri/uyumlu
+Çan,Çanakkale,48947,46612,60965,60893,-4.8,-0.1,-4.6,az,orta
+Çanakkale,Çanakkale,159758,208613,69007,67826,30.6,-0.7,31.3,az,içeri/uyumlu
+Eceabat,Çanakkale,9088,8746,14067,13635,-3.8,-4.8,1.0,az,içeri/uyumlu
+Ezine,Çanakkale,31801,31894,40421,40203,0.3,-0.7,1.0,az,içeri/uyumlu
+Gelibolu,Çanakkale,44131,44689,50048,49424,1.3,-1.4,2.7,az,içeri/uyumlu
+Gökçeada,Çanakkale,8906,11331,5292,5489,27.2,2.2,25.0,az,içeri/uyumlu
+Lâpseki,Çanakkale,25865,30654,39334,39441,18.5,0.4,18.1,az,içeri/uyumlu
+Yenice,Çanakkale,33387,29636,59624,59972,-11.2,1.0,-12.3,az,orta
+Atkaracalar,Çankırı,4804,5063,22554,23338,5.4,16.3,-10.9,orta,orta
+Bayramören,Çankırı,2361,2209,23844,24193,-6.4,14.8,-21.2,orta,orta
+Çankırı,Çankırı,88538,99287,101836,109021,12.1,8.1,4.0,orta,içeri/uyumlu
+Çerkeş,Çankırı,16539,16927,69206,71871,2.3,16.1,-13.8,orta,orta
+Eldivan,Çankırı,5346,6198,32347,34296,15.9,36.5,-20.5,çok,orta
+Ilgaz,Çankırı,13716,13948,88472,91382,1.7,21.2,-19.5,orta,orta
+Kızılırmak,Çankırı,7320,6830,36443,39764,-6.7,45.4,-52.1,çok,dışarı akış
+Korgun,Çankırı,4116,4239,33243,34577,3.0,32.4,-29.4,çok,dışarı akış
+Kurşunlu,Çankırı,8178,9130,53748,56547,11.6,34.2,-22.6,çok,orta
+Orta,Çankırı,11485,17223,83727,89566,50.0,50.8,-0.9,çok,içeri/uyumlu
+Şabanözü,Çankırı,10746,12493,55131,57689,16.3,23.8,-7.5,çok,orta
+Yapraklı,Çankırı,7796,7002,52065,54723,-10.2,34.1,-44.3,çok,dışarı akış
+Alaca,Çorum,32669,28989,141507,149088,-11.3,23.2,-34.5,çok,dışarı akış
+Bayat,Çorum,17728,13312,74768,82052,-24.9,41.1,-66.0,çok,dışarı akış
+Boğazkale,Çorum,3867,3587,29103,31736,-7.2,68.1,-75.3,çok,dışarı akış
+Çorum,Çorum,280631,299565,291248,306221,6.7,5.3,1.4,orta,içeri/uyumlu
+Dodurga,Çorum,6066,5036,21827,22738,-17.0,15.0,-32.0,orta,dışarı akış
+İskilip,Çorum,33812,28132,106939,112471,-16.8,16.4,-33.2,orta,dışarı akış
+Kargı,Çorum,15441,15119,72858,74989,-2.1,13.8,-15.9,orta,orta
+Lâçin,Çorum,4829,4094,22410,23858,-15.2,30.0,-45.2,çok,dışarı akış
+Mecitözü,Çorum,15714,12911,78109,82371,-17.8,27.1,-45.0,çok,dışarı akış
+Oğuzlar,Çorum,5631,4610,17878,19126,-18.1,22.2,-40.3,orta,dışarı akış
+Ortaköy,Çorum,8371,6491,28047,30009,-22.5,23.4,-45.9,çok,dışarı akış
+Osmancık,Çorum,43469,42673,96644,101914,-1.8,12.1,-14.0,orta,orta
+Sungurlu,Çorum,50214,49079,237718,256267,-2.3,36.9,-39.2,çok,dışarı akış
+Uğurludağ,Çorum,6738,5992,35603,39077,-11.1,51.6,-62.6,çok,dışarı akış
+Acıpayam,Denizli,55406,54769,114015,118915,-1.1,8.8,-10.0,orta,orta
+Babadağ,Denizli,6611,6199,18239,18567,-6.2,5.0,-11.2,az,orta
+Baklan,Denizli,5816,5266,19594,20048,-9.5,7.8,-17.3,orta,orta
+Bekilli,Denizli,7164,6243,22525,22608,-12.9,1.2,-14.0,az,orta
+Beyağaç,Denizli,6713,6011,11271,11802,-10.5,7.9,-18.4,orta,orta
+Bozkurt,Denizli,12597,11176,21616,22202,-11.3,4.7,-15.9,az,orta
+Buldan,Denizli,27359,26231,38518,38878,-4.1,1.3,-5.4,az,orta
+Çal,Denizli,19699,17277,61049,61905,-12.3,4.3,-16.6,az,orta
+Çameli,Denizli,18442,17447,43903,46340,-5.4,13.2,-18.6,orta,orta
+Çardak,Denizli,8906,8497,16615,17224,-4.6,6.8,-11.4,orta,orta
+Çivril,Denizli,60716,59689,100175,104520,-1.7,7.2,-8.8,orta,orta
+Güney,Denizli,10399,9043,22955,23436,-13.0,4.6,-17.7,az,orta
+Honaz,Denizli,31779,34468,33679,36372,8.5,8.5,-0.0,orta,içeri/uyumlu
+Kale,Denizli,20667,18855,35623,37692,-8.8,10.0,-18.8,orta,orta
+Merkezefendi,Denizli,280341,351085,99427,102188,25.2,1.0,24.3,az,içeri/uyumlu
+Pamukkale,Denizli,331000,343071,124110,127454,3.6,1.0,2.6,az,içeri/uyumlu
+Sarayköy,Denizli,29964,30883,38476,39091,3.1,2.1,1.0,az,içeri/uyumlu
+Serinhisar,Denizli,14649,14661,31050,32397,0.1,9.2,-9.1,orta,orta
+Tavas,Denizli,45214,40104,95750,98055,-11.3,5.1,-16.4,az,orta
+Bağlar,Diyarbakır,375312,402275,98777,117223,7.2,4.9,2.3,az,içeri/uyumlu
+Bismil,Diyarbakır,113725,119815,189261,222765,5.4,29.5,-24.1,çok,dışarı akış
+Çermik,Diyarbakır,50356,49299,134175,157742,-2.1,46.8,-48.9,çok,dışarı akış
+Çınar,Diyarbakır,70519,79114,160956,198161,12.2,52.8,-40.6,çok,dışarı akış
+Çüngüş,Diyarbakır,12393,10057,57148,64196,-18.8,56.9,-75.7,çok,dışarı akış
+Dicle,Diyarbakır,39025,35948,137795,161831,-7.9,61.6,-69.5,çok,dışarı akış
+Eğil,Diyarbakır,22769,21674,76064,90372,-4.8,62.8,-67.6,çok,dışarı akış
+Ergani,Diyarbakır,125290,141098,205843,238750,12.6,26.3,-13.6,çok,orta
+Hani,Diyarbakır,32600,32285,94908,112968,-1.0,55.4,-56.4,çok,dışarı akış
+Hazro,Diyarbakır,16917,16024,83125,98544,-5.3,91.1,-96.4,çok,dışarı akış
+Kayapınar,Diyarbakır,308994,454311,26097,31676,47.0,1.8,45.2,az,içeri/uyumlu
+Kocaköy,Diyarbakır,16498,15088,32552,38873,-8.5,38.3,-46.9,çok,dışarı akış
+Kulp,Diyarbakır,35061,33973,140171,163115,-3.1,65.4,-68.5,çok,dışarı akış
+Lice,Diyarbakır,25354,24060,148000,169530,-5.1,84.9,-90.0,çok,dışarı akış
+Silvan,Diyarbakır,84841,86752,207969,245064,2.3,43.7,-41.5,çok,dışarı akış
+Sur,Diyarbakır,117698,97961,241430,276650,-16.8,29.9,-46.7,çok,dışarı akış
+Yenişehir,Diyarbakır,206844,232622,85471,98989,12.5,6.5,5.9,orta,içeri/uyumlu
+Edirne,Edirne,171386,200753,101743,99498,17.1,-1.3,18.4,az,içeri/uyumlu
+Enez,Edirne,10580,10399,20865,20689,-1.7,-1.7,-0.0,az,içeri/uyumlu
+Havsa,Edirne,19380,17302,43485,43085,-10.7,-2.1,-8.7,az,orta
+İpsala,Edirne,28249,25278,49272,49186,-10.5,-0.3,-10.2,az,orta
+Keşan,Edirne,81054,85259,89238,89521,5.2,0.3,4.8,az,içeri/uyumlu
+Lalapaşa,Edirne,6979,5932,22649,22490,-15.0,-2.3,-12.7,az,orta
+Meriç,Edirne,14259,12329,39081,38622,-13.5,-3.2,-10.3,az,orta
+Süloğlu,Edirne,7457,6101,16544,16384,-18.2,-2.1,-16.0,az,orta
+Uzunköprü,Edirne,63193,59085,121692,121258,-6.5,-0.7,-5.8,az,orta
+Ağın,Elazığ,2650,2532,19986,19864,-4.5,-4.6,0.2,az,içeri/uyumlu
+Alacakaya,Elazığ,6524,5336,24078,26420,-18.2,35.9,-54.1,çok,dışarı akış
+Arıcak,Elazığ,14851,12340,40473,45420,-16.9,33.3,-50.2,çok,dışarı akış
+Baskil,Elazığ,12981,13397,73920,78749,3.2,37.2,-34.0,çok,dışarı akış
+Elazığ,Elazığ,424870,463686,343849,360436,9.1,3.9,5.2,az,içeri/uyumlu
+Karakoçan,Elazığ,28075,28320,71374,74732,0.9,12.0,-11.1,orta,orta
+Keban,Elazığ,6472,7112,28485,29697,9.9,18.7,-8.8,orta,orta
+Kovancılar,Elazığ,39341,37874,76034,83317,-3.7,18.5,-22.2,orta,orta
+Maden,Elazığ,11543,9139,60137,64047,-20.8,33.9,-54.7,çok,dışarı akış
+Palu,Elazığ,18922,17872,84652,93808,-5.5,48.4,-53.9,çok,dışarı akış
+Sivrice,Elazığ,8075,8070,62205,66482,-0.1,53.0,-53.0,çok,dışarı akış
+Çayırlı,Erzincan,8980,7491,46074,48096,-16.6,22.5,-39.1,çok,dışarı akış
+Erzincan,Erzincan,152477,169506,165488,170237,11.2,3.1,8.1,az,içeri/uyumlu
+İliç,Erzincan,7495,8543,52132,53145,14.0,13.5,0.5,orta,içeri/uyumlu
+Kemah,Erzincan,7176,6419,59938,60569,-10.5,8.8,-19.3,orta,orta
+Kemaliye,Erzincan,4979,4484,52169,51532,-9.9,-12.8,2.9,az,içeri/uyumlu
+Otlukbeli,Erzincan,2405,2123,16007,17734,-11.7,71.8,-83.5,çok,dışarı akış
+Refahiye,Erzincan,10815,10954,107780,111709,1.3,36.3,-35.0,çok,dışarı akış
+Tercan,Erzincan,17318,16145,82604,86609,-6.8,23.1,-29.9,çok,dışarı akış
+Üzümlü,Erzincan,11273,13960,38417,44288,23.8,52.1,-28.2,çok,dışarı akış
+Aşkale,Erzurum,23471,19983,107842,116814,-14.9,38.2,-53.1,çok,dışarı akış
+Aziziye,Erzurum,53506,71827,111410,122972,34.2,21.6,12.6,orta,içeri/uyumlu
+Çat,Erzurum,17842,14015,79952,90932,-21.4,61.5,-83.0,çok,dışarı akış
+Hınıs,Erzurum,27096,23011,113240,125449,-15.1,45.1,-60.1,çok,dışarı akış
+Horasan,Erzurum,40299,34896,148875,171665,-13.4,56.6,-70.0,çok,dışarı akış
+İspir,Erzurum,15603,13984,104223,110882,-10.4,42.7,-53.1,çok,dışarı akış
+Karaçoban,Erzurum,23985,19922,62159,74196,-16.9,50.2,-67.1,çok,dışarı akış
+Karayazı,Erzurum,29137,22570,97803,115602,-22.5,61.1,-83.6,çok,dışarı akış
+Köprüköy,Erzurum,16520,12903,67951,79265,-21.9,68.5,-90.4,çok,dışarı akış
+Narman,Erzurum,14234,11119,65778,73564,-21.9,54.7,-76.6,çok,dışarı akış
+Oltu,Erzurum,31087,29765,89625,97374,-4.3,24.9,-29.2,çok,dışarı akış
+Olur,Erzurum,6708,5985,43391,45468,-10.8,31.0,-41.7,çok,dışarı akış
+Palandöken,Erzurum,167892,181922,41772,46561,8.4,2.9,5.5,az,içeri/uyumlu
+Pasinler,Erzurum,30113,25401,98968,110155,-15.6,37.2,-52.8,çok,dışarı akış
+Pazaryolu,Erzurum,4148,3537,31610,33367,-14.7,42.4,-57.1,çok,dışarı akış
+Şenkaya,Erzurum,18895,14918,89637,95727,-21.0,32.2,-53.3,çok,dışarı akış
+Tekman,Erzurum,26792,20826,96160,112919,-22.3,62.6,-84.8,çok,dışarı akış
+Tortum,Erzurum,16007,12881,88151,95582,-19.5,46.4,-66.0,çok,dışarı akış
+Uzundere,Erzurum,8058,8263,28720,30956,2.5,27.7,-25.2,çok,dışarı akış
+Yakutiye,Erzurum,190928,189149,223529,238426,-0.9,7.8,-8.7,orta,orta
+Alpu,Eskişehir,11526,9725,44148,45356,-15.6,10.5,-26.1,orta,dışarı akış
+Beylikova,Eskişehir,6091,5611,25155,25417,-7.9,4.3,-12.2,az,orta
+Çifteler,Eskişehir,15232,14487,44153,45215,-4.9,7.0,-11.9,orta,orta
+Günyüzü,Eskişehir,5970,5008,27285,29016,-16.1,29.0,-45.1,çok,dışarı akış
+Han,Eskişehir,1959,2126,13776,14259,8.5,24.7,-16.1,çok,orta
+İnönü,Eskişehir,6822,6114,23817,23869,-10.4,0.8,-11.1,az,orta
+Mahmudiye,Eskişehir,7987,7407,28438,28634,-7.3,2.5,-9.7,az,orta
+Mihalgazi,Eskişehir,4507,2861,9949,10041,-36.5,2.0,-38.6,az,dışarı akış
+Mihalıççık,Eskişehir,8850,7605,60314,61297,-14.1,11.1,-25.2,orta,dışarı akış
+Odunpazarı,Eskişehir,383523,431652,124785,123988,12.5,-0.2,12.8,az,içeri/uyumlu
+Sarıcakaya,Eskişehir,5678,4477,11918,12031,-21.2,2.0,-23.1,az,orta
+Seyitgazi,Eskişehir,13753,12565,56554,57263,-8.6,5.2,-13.8,az,orta
+Sivrihisar,Eskişehir,21265,20189,80948,81894,-5.1,4.4,-9.5,az,orta
+Tepebaşı,Eskişehir,333553,398129,199090,196689,19.4,-0.7,20.1,az,içeri/uyumlu
+Araban,Gaziantep,31837,32540,83364,93514,2.2,31.9,-29.7,çok,dışarı akış
+İslahiye,Gaziantep,65799,66107,137400,152297,0.5,22.6,-22.2,çok,orta
+Karkamış,Gaziantep,9925,9087,52217,62826,-8.4,106.9,-115.3,çok,dışarı akış
+Nizip,Gaziantep,137878,152660,256290,294169,10.7,27.5,-16.8,çok,orta
+Nurdağı,Gaziantep,37977,38269,73348,81834,0.8,22.3,-21.6,çok,orta
+Oğuzeli,Gaziantep,29661,36644,133905,155434,23.5,72.6,-49.0,çok,dışarı akış
+Şahinbey,Gaziantep,870493,957792,465060,525070,10.0,6.9,3.1,orta,içeri/uyumlu
+Şehitkamil,Gaziantep,726831,905880,323444,377791,24.6,7.5,17.2,orta,içeri/uyumlu
+Yavuzeli,Gaziantep,21435,23436,74618,87445,9.3,59.8,-50.5,çok,dışarı akış
+Alucra,Giresun,9104,8473,69267,72567,-6.9,36.2,-43.2,çok,dışarı akış
+Bulancak,Giresun,63368,70397,114584,120438,11.1,9.2,1.9,orta,içeri/uyumlu
+Çamoluk,Giresun,5717,5709,57198,60425,-0.1,56.4,-56.6,çok,dışarı akış
+Çanakçı,Giresun,6270,5783,29951,32038,-7.8,33.3,-41.1,çok,dışarı akış
+Dereli,Giresun,20215,20100,86399,92353,-0.6,29.5,-30.0,çok,dışarı akış
+Doğankent,Giresun,6385,7327,18659,20152,14.8,23.4,-8.6,çok,orta
+Espiye,Giresun,33870,39182,64647,68513,15.7,11.4,4.3,orta,içeri/uyumlu
+Eynesil,Giresun,12928,12548,44332,46277,-2.9,15.0,-18.0,orta,orta
+Giresun,Giresun,128779,143915,144143,148121,11.8,3.1,8.7,az,içeri/uyumlu
+Görele,Giresun,30457,31536,118002,122377,3.5,14.4,-10.8,orta,orta
+Güce,Giresun,7740,8194,23869,26306,5.9,31.5,-25.6,çok,dışarı akış
+Keşap,Giresun,21066,20859,74229,75629,-1.0,6.6,-7.6,orta,orta
+Piraziz,Giresun,12775,15109,44160,45753,18.3,12.5,5.8,orta,içeri/uyumlu
+Şebinkarahisar,Giresun,21204,19130,89730,94326,-9.8,21.7,-31.5,orta,dışarı akış
+Tirebolu,Giresun,30742,32124,80917,85080,4.5,13.5,-9.0,orta,orta
+Yağlıdere,Giresun,16066,14688,47145,49460,-8.6,14.4,-23.0,orta,orta
+Gümüşhane,Gümüşhane,53074,54697,115870,123925,3.1,15.2,-12.1,orta,orta
+Kelkit,Gümüşhane,43362,38520,113036,122463,-11.2,21.7,-32.9,orta,dışarı akış
+Köse,Gümüşhane,7097,6107,34325,37054,-13.9,38.5,-52.4,çok,dışarı akış
+Kürtün,Gümüşhane,13016,11327,40207,43855,-13.0,28.0,-41.0,çok,dışarı akış
+Şiran,Gümüşhane,23902,18377,83847,85058,-23.1,5.1,-28.2,az,dışarı akış
+Torul,Gümüşhane,10998,9779,46242,48762,-11.1,22.9,-34.0,çok,dışarı akış
+Çukurca,Hakkari,17250,14299,36186,42030,-17.1,33.9,-51.0,çok,dışarı akış
+Hakkari,Hakkari,79562,76165,100883,115407,-4.3,18.3,-22.5,orta,orta
+Şemdinli,Hakkari,63816,43034,61554,45126,-32.6,-25.7,-6.8,az,orta
+Yüksekova,Hakkari,118147,121314,118962,138143,2.7,16.2,-13.6,orta,orta
+Altınözü,Hatay,60743,69834,146288,171122,15.0,40.9,-25.9,çok,dışarı akış
+Antakya,Hatay,360652,301855,264233,306662,-16.3,11.8,-28.1,orta,dışarı akış
+Arsuz,Hatay,82498,115077,103736,114412,39.5,12.9,26.5,orta,içeri/uyumlu
+Belen,Hatay,30842,37876,31298,35158,22.8,12.5,10.3,orta,içeri/uyumlu
+Defne,Hatay,140097,139605,131311,140803,-0.4,6.8,-7.1,orta,orta
+Dörtyol,Hatay,118761,132987,93219,102850,12.0,8.1,3.9,orta,içeri/uyumlu
+Erzin,Hatay,41290,43103,43602,46787,4.4,7.7,-3.3,orta,orta
+Hassa,Hatay,54130,57457,94246,106624,6.1,22.9,-16.7,çok,orta
+İskenderun,Hatay,246207,228149,175936,189851,-7.3,5.7,-13.0,orta,orta
+Kırıkhan,Hatay,108918,108200,169031,192583,-0.7,21.6,-22.3,orta,orta
+Kumlu,Hatay,13060,16242,27997,32512,24.4,34.6,-10.2,çok,orta
+Payas,Hatay,40434,44530,21558,23967,10.1,6.0,4.2,orta,içeri/uyumlu
+Reyhanlı,Hatay,90758,117645,124113,161583,29.6,41.3,-11.7,çok,orta
+Samandağ,Hatay,117770,122952,145399,161691,4.4,13.8,-9.4,orta,orta
+Yayladağı,Hatay,27347,42019,89176,109051,53.7,72.7,-19.0,çok,orta
+Aksu,Isparta,4825,4073,18466,19159,-15.6,14.4,-29.9,orta,dışarı akış
+Atabey,Isparta,5616,6204,12341,12398,10.5,1.0,9.5,az,içeri/uyumlu
+Eğirdir,Isparta,32756,29200,57534,59653,-10.9,6.5,-17.3,orta,orta
+Gelendost,Isparta,15818,13985,33725,34975,-11.6,7.9,-19.5,orta,orta
+Gönen,Isparta,7412,7065,14478,14938,-4.7,6.2,-10.9,orta,orta
+Isparta,Isparta,235456,273638,107915,111649,16.2,1.6,14.6,az,içeri/uyumlu
+Keçiborlu,Isparta,14051,14033,29649,30074,-0.1,3.0,-3.2,az,orta
+Senirkent,Isparta,12318,10331,34047,34693,-16.1,5.2,-21.4,orta,orta
+Sütçüler,Isparta,11070,9228,48390,50504,-16.6,19.1,-35.7,orta,dışarı akış
+Şarkikaraağaç,Isparta,25384,24310,57529,59876,-4.2,9.2,-13.5,orta,orta
+Uluborlu,Isparta,7099,6287,14007,13788,-11.4,-3.1,-8.4,az,orta
+Yalvaç,Isparta,47769,44596,111553,116149,-6.6,9.6,-16.3,orta,orta
+Yenişarbademli,Isparta,2192,2353,6560,6705,7.3,6.6,0.7,orta,içeri/uyumlu
+Akdeniz,Mersin,272366,254292,226183,238452,-6.6,4.5,-11.1,az,orta
+Anamur,Mersin,64263,66952,71811,74792,4.2,4.6,-0.5,az,içeri/uyumlu
+Aydıncık,Mersin,11139,11271,14906,15643,1.2,6.6,-5.4,orta,orta
+Bozyazı,Mersin,26501,26832,33268,35045,1.2,6.7,-5.5,orta,orta
+Çamlıyayla,Mersin,8424,8383,22684,23984,-0.5,15.4,-15.9,orta,orta
+Erdemli,Mersin,134114,157566,114463,122610,17.5,6.1,11.4,orta,içeri/uyumlu
+Gülnar,Mersin,25452,32785,67780,71384,28.8,14.2,14.7,orta,içeri/uyumlu
+Mezitli,Mersin,171837,233140,33202,41708,35.7,5.0,30.7,az,içeri/uyumlu
+Mut,Mersin,62198,62758,91232,96694,0.9,8.8,-7.9,orta,orta
+Silifke,Mersin,116441,139610,146468,151996,19.9,4.7,15.2,az,içeri/uyumlu
+Tarsus,Mersin,326063,358510,328148,344694,10.0,5.1,4.9,az,içeri/uyumlu
+Toroslar,Mersin,285971,322971,128463,136121,12.9,2.7,10.3,az,içeri/uyumlu
+Yenişehir,Mersin,240452,281358,51817,56821,17.0,2.1,14.9,az,içeri/uyumlu
+Adalar,İstanbul,15623,17489,8308,7811,11.9,-3.2,15.1,az,içeri/uyumlu
+Arnavutköy,İstanbul,236222,358469,30086,31156,51.8,0.5,51.3,az,içeri/uyumlu
+Ataşehir,İstanbul,419368,412125,18942,20815,-1.7,0.4,-2.2,az,içeri/uyumlu
+Avcılar,İstanbul,425228,440663,27898,31830,3.6,0.9,2.7,az,içeri/uyumlu
+Bağcılar,İstanbul,757162,707635,49518,55573,-6.5,0.8,-7.3,az,orta
+Bahçelievler,İstanbul,602040,539035,59785,64952,-10.5,0.9,-11.3,az,orta
+Bakırköy,İstanbul,223248,218204,65668,65834,-2.3,0.1,-2.3,az,orta
+Başakşehir,İstanbul,353311,536797,8632,28067,51.9,5.5,46.4,orta,içeri/uyumlu
+Bayrampaşa,İstanbul,272374,272978,69676,71655,0.2,0.7,-0.5,az,içeri/uyumlu
+Beşiktaş,İstanbul,190033,165895,93846,87253,-12.7,-3.5,-9.2,az,orta
+Beykoz,İstanbul,249727,246833,114157,116556,-1.2,1.0,-2.1,az,içeri/uyumlu
+Beylikdüzü,İstanbul,279999,422988,6931,20461,51.1,4.8,46.2,az,içeri/uyumlu
+Beyoğlu,İstanbul,242250,215991,145348,139976,-10.8,-2.2,-8.6,az,orta
+Büyükçekmece,İstanbul,231064,283239,23918,26993,22.6,1.3,21.2,az,içeri/uyumlu
+Çatalca,İstanbul,67329,81143,69500,69786,20.5,0.4,20.1,az,içeri/uyumlu
+Çekmeköy,İstanbul,231818,315959,24140,26015,36.3,0.8,35.5,az,içeri/uyumlu
+Esenler,İstanbul,459983,419878,26072,31885,-8.7,1.3,-10.0,az,orta
+Esenyurt,İstanbul,742810,1003905,13552,30435,35.1,2.3,32.9,az,içeri/uyumlu
+Fatih,İstanbul,419345,351786,465216,449094,-16.1,-3.8,-12.3,az,orta
+Gazi Osmanpaşa,İstanbul,501546,478395,78784,80009,-4.6,0.2,-4.9,az,orta
+Güngören,İstanbul,302066,251242,28815,33497,-16.8,1.5,-18.4,az,orta
+Kadıköy,İstanbul,465954,458573,147031,138369,-1.6,-1.9,0.3,az,içeri/uyumlu
+Kağıthane,İstanbul,437942,446420,52452,54999,1.9,0.6,1.4,az,içeri/uyumlu
+Kartal,İstanbul,457552,475630,61249,62304,4.0,0.2,3.7,az,içeri/uyumlu
+Küçükçekmece,İstanbul,761064,785270,66449,79059,3.2,1.7,1.5,az,içeri/uyumlu
+Maltepe,İstanbul,487337,525044,44428,44113,7.7,-0.1,7.8,az,içeri/uyumlu
+Pendik,İstanbul,681736,752033,43899,45005,10.3,0.2,10.1,az,içeri/uyumlu
+Sancaktepe,İstanbul,354882,507500,6173,7242,43.0,0.3,42.7,az,içeri/uyumlu
+Sarıyer,İstanbul,344159,344883,57630,59034,0.2,0.4,-0.2,az,içeri/uyumlu
+Silivri,İstanbul,165084,240029,79531,79538,45.4,0.0,45.4,az,içeri/uyumlu
+Sultanbeyli,İstanbul,321730,378908,5998,7337,17.8,0.4,17.4,az,içeri/uyumlu
+Sultangazi,İstanbul,521524,529306,13732,16628,1.5,0.6,0.9,az,içeri/uyumlu
+Şile,İstanbul,33477,50090,46341,46578,49.6,0.7,48.9,az,içeri/uyumlu
+Şişli,İstanbul,274017,261959,79783,78893,-4.4,-0.3,-4.1,az,orta
+Tuzla,İstanbul,234372,313865,15566,16180,33.9,0.3,33.7,az,içeri/uyumlu
+Ümraniye,İstanbul,688347,728913,38459,41647,5.9,0.5,5.4,az,içeri/uyumlu
+Üsküdar,İstanbul,540617,514294,127929,122773,-4.9,-1.0,-3.9,az,orta
+Zeytinburnu,İstanbul,289685,275471,89601,100272,-4.9,3.7,-8.6,az,orta
+Aliağa,İzmir,87376,110892,30316,30380,26.9,0.1,26.8,az,içeri/uyumlu
+Balçova,İzmir,78121,75743,14768,14073,-3.0,-0.9,-2.2,az,içeri/uyumlu
+Bayındır,İzmir,39925,39971,62724,62695,0.1,-0.1,0.2,az,içeri/uyumlu
+Bayraklı,İzmir,312263,296481,70202,70258,-5.1,0.0,-5.1,az,orta
+Bergama,İzmir,101917,107549,117846,118010,5.5,0.2,5.4,az,içeri/uyumlu
+Beydağ,İzmir,12276,11904,22023,22348,-3.0,2.6,-5.7,az,orta
+Bornova,İzmir,435162,452479,140171,137670,4.0,-0.6,4.6,az,içeri/uyumlu
+Buca,İzmir,470768,520941,89718,89014,10.7,-0.1,10.8,az,içeri/uyumlu
+Çeşme,İzmir,39243,51902,24078,23366,32.3,-1.8,34.1,az,içeri/uyumlu
+Çiğli,İzmir,182349,216430,29346,29578,18.7,0.1,18.6,az,içeri/uyumlu
+Dikili,İzmir,40537,49138,29967,29461,21.2,-1.2,22.5,az,içeri/uyumlu
+Foça,İzmir,28647,37711,19596,19204,31.6,-1.4,33.0,az,içeri/uyumlu
+Gaziemir,İzmir,132365,137220,20187,20028,3.7,-0.1,3.8,az,içeri/uyumlu
+Güzelbahçe,İzmir,29774,39474,8236,8149,32.6,-0.3,32.9,az,içeri/uyumlu
+Karabağlar,İzmir,477238,467572,54099,54462,-2.0,0.1,-2.1,az,içeri/uyumlu
+Karaburun,İzmir,9403,13725,11859,11442,46.0,-4.4,50.4,az,içeri/uyumlu
+Karşıyaka,İzmir,333250,339624,98927,94198,1.9,-1.4,3.3,az,içeri/uyumlu
+Kemalpaşa,İzmir,101693,122840,78724,79556,20.8,0.8,20.0,az,içeri/uyumlu
+Kınık,İzmir,28052,28604,41556,43408,2.0,6.6,-4.6,orta,orta
+Kiraz,İzmir,43615,43340,61894,64773,-0.6,6.6,-7.2,orta,orta
+Konak,İzmir,375490,317399,370202,355044,-15.5,-4.0,-11.4,az,orta
+Menderes,İzmir,83331,112853,54841,55891,35.4,1.3,34.2,az,içeri/uyumlu
+Menemen,İzmir,156974,220510,72701,74248,40.5,1.0,39.5,az,içeri/uyumlu
+Narlıdere,İzmir,64712,61320,11687,11761,-5.2,0.1,-5.4,az,orta
+Ödemiş,İzmir,132028,132548,156155,155443,0.4,-0.5,0.9,az,içeri/uyumlu
+Seferihisar,İzmir,36335,63712,22436,22278,75.3,-0.4,75.8,az,içeri/uyumlu
+Selçuk,İzmir,35736,38578,31972,31958,8.0,-0.0,8.0,az,içeri/uyumlu
+Tire,İzmir,82102,87571,95134,94775,6.7,-0.4,7.1,az,içeri/uyumlu
+Torbalı,İzmir,156983,224133,80854,81637,42.8,0.5,42.3,az,içeri/uyumlu
+Urla,İzmir,60750,82021,38916,38115,35.0,-1.3,36.3,az,içeri/uyumlu
+Akyaka,Kars,11079,9382,58684,63493,-15.3,43.4,-58.7,çok,dışarı akış
+Arpaçay,Kars,18156,13770,111081,119748,-24.2,47.7,-71.9,çok,dışarı akış
+Digor,Kars,24041,17557,75707,88376,-27.0,52.7,-79.7,çok,dışarı akış
+Kağızman,Kars,46031,42717,130229,146809,-7.2,36.0,-43.2,çok,dışarı akış
+Kars,Kars,112260,121154,216253,232076,7.9,14.1,-6.2,orta,orta
+Sarıkamış,Kars,45843,35518,152458,171089,-22.5,40.6,-63.2,çok,dışarı akış
+Selim,Kars,24204,20476,107799,116421,-15.4,35.6,-51.0,çok,dışarı akış
+Susuz,Kars,11046,8417,72338,78805,-23.8,58.5,-82.3,çok,dışarı akış
+Abana,Kastamonu,4215,4474,12992,13151,6.1,3.8,2.4,az,içeri/uyumlu
+Ağlı,Kastamonu,2903,3176,15848,16118,9.4,9.3,0.1,orta,içeri/uyumlu
+Araç,Kastamonu,18861,18121,101037,104234,-3.9,17.0,-20.9,orta,orta
+Azdavay,Kastamonu,6885,7266,40783,41529,5.5,10.8,-5.3,orta,orta
+Bozkurt,Kastamonu,9141,9250,48209,49759,1.2,17.0,-15.8,orta,orta
+Cide,Kastamonu,23838,22496,111248,116219,-5.6,20.9,-26.5,orta,dışarı akış
+Çatalzeytin,Kastamonu,6504,7185,61091,64151,10.5,47.0,-36.6,çok,dışarı akış
+Daday,Kastamonu,8883,7736,33070,33496,-12.9,4.8,-17.7,az,orta
+Devrekâni,Kastamonu,12386,12033,45760,47033,-2.8,10.3,-13.1,orta,orta
+Doğanyurt,Kastamonu,6209,5057,33233,35880,-18.6,42.6,-61.2,çok,dışarı akış
+Hanönü,Kastamonu,3898,4286,20598,21102,10.0,12.9,-3.0,orta,orta
+İhsangazi,Kastamonu,5939,4976,16704,17234,-16.2,8.9,-25.1,orta,dışarı akış
+İnebolu,Kastamonu,22144,19678,86812,90881,-11.1,18.4,-29.5,orta,dışarı akış
+Kastamonu,Kastamonu,140944,158953,93873,94230,12.8,0.3,12.5,az,içeri/uyumlu
+Küre,Kastamonu,6405,5108,33725,35657,-20.2,30.2,-50.4,çok,dışarı akış
+Pınarbaşı,Kastamonu,5606,5782,44781,45756,3.1,17.4,-14.3,orta,orta
+Seydiler,Kastamonu,3913,4639,15562,15768,18.6,5.3,13.3,orta,içeri/uyumlu
+Şenpazar,Kastamonu,5176,4083,29287,30662,-21.1,26.6,-47.7,çok,dışarı akış
+Taşköprü,Kastamonu,38253,36544,108569,110071,-4.5,3.9,-8.4,az,orta
+Tosya,Kastamonu,40530,39091,92729,94739,-3.6,5.0,-8.5,az,orta
+Akkışla,Kayseri,6079,5440,24093,25755,-10.5,27.3,-37.9,çok,dışarı akış
+Bünyan,Kayseri,26812,30362,97287,104024,13.2,25.1,-11.9,çok,orta
+Develi,Kayseri,64072,67818,164111,178027,5.8,21.7,-15.9,orta,orta
+Felahiye,Kayseri,5834,5529,24551,26660,-5.2,36.2,-41.4,çok,dışarı akış
+Hacılar,Kayseri,12484,13701,39243,42043,9.7,22.4,-12.7,çok,orta
+İncesu,Kayseri,24309,29780,57043,61169,22.5,17.0,5.5,orta,içeri/uyumlu
+Kocasinan,Kayseri,388364,421472,228930,245300,8.5,4.2,4.3,az,içeri/uyumlu
+Melikgazi,Kayseri,548028,593262,201668,210990,8.3,1.7,6.6,az,içeri/uyumlu
+Özvatan,Kayseri,3620,3877,13629,14815,7.1,32.8,-25.7,çok,dışarı akış
+Pınarbaşı,Kayseri,24198,20598,145334,153571,-14.9,34.0,-48.9,çok,dışarı akış
+Sarıoğlan,Kayseri,14106,13510,46327,49290,-4.2,21.0,-25.2,orta,dışarı akış
+Sarız,Kayseri,9713,9213,62187,66980,-5.1,49.3,-54.5,çok,dışarı akış
+Talas,Kayseri,137933,173657,72916,78120,25.9,3.8,22.1,az,içeri/uyumlu
+Tomarza,Kayseri,23347,20156,109988,120038,-13.7,43.0,-56.7,çok,dışarı akış
+Yahyalı,Kayseri,36378,35207,87027,96851,-3.2,27.0,-30.2,çok,dışarı akış
+Yeşilhisar,Kayseri,15779,15409,51547,55192,-2.3,23.1,-25.4,çok,dışarı akış
+Babaeski,Kırklareli,47851,46355,73855,72494,-3.1,-2.8,-0.3,az,içeri/uyumlu
+Demirköy,Kırklareli,8448,9364,20021,20526,10.8,6.0,4.9,orta,içeri/uyumlu
+Kırklareli,Kırklareli,95274,114710,114859,114672,20.4,-0.2,20.6,az,içeri/uyumlu
+Kofçaz,Kırklareli,2644,2291,11692,11393,-13.4,-11.3,-2.0,az,içeri/uyumlu
+Lüleburgaz,Kırklareli,142840,157136,110686,108874,10.0,-1.3,11.3,az,içeri/uyumlu
+Pehlivanköy,Kırklareli,3790,3276,13540,13291,-13.6,-6.6,-7.0,az,orta
+Pınarhisar,Kırklareli,18704,17694,39135,38281,-5.4,-4.6,-0.8,az,içeri/uyumlu
+Vize,Kırklareli,27422,28769,61995,62051,4.9,0.2,4.7,az,içeri/uyumlu
+Akçakent,Kırşehir,3855,3301,32852,35783,-14.4,76.0,-90.4,çok,dışarı akış
+Akpınar,Kırşehir,7489,6435,49095,52767,-14.1,49.0,-63.1,çok,dışarı akış
+Boztepe,Kırşehir,5276,5049,31519,33157,-4.3,31.0,-35.3,çok,dışarı akış
+Çiçekdağı,Kırşehir,14339,13350,67708,72366,-6.9,32.5,-39.4,çok,dışarı akış
+Kaman,Kırşehir,37014,33354,141162,149064,-9.9,21.3,-31.2,orta,dışarı akış
+Kırşehir,Kırşehir,139235,163368,161635,169910,17.3,5.9,11.4,orta,içeri/uyumlu
+Mucur,Kırşehir,18354,17920,69093,72729,-2.4,19.8,-22.2,orta,orta
+Başiskele,Kocaeli,84235,131387,57274,61821,56.0,5.4,50.6,orta,içeri/uyumlu
+Çayırova,Kocaeli,117230,162262,6939,8194,38.4,1.1,37.3,az,içeri/uyumlu
+Darıca,Kocaeli,182710,235632,11998,13608,29.0,0.9,28.1,az,içeri/uyumlu
+Derince,Kocaeli,136742,147892,33504,35318,8.2,1.3,6.8,az,içeri/uyumlu
+Dilovası,Kocaeli,46099,55355,9562,10508,20.1,2.1,18.0,az,içeri/uyumlu
+Gebze,Kocaeli,350115,414960,59362,62737,18.5,1.0,17.6,az,içeri/uyumlu
+Gölcük,Kocaeli,152607,181227,66582,68806,18.8,1.5,17.3,az,içeri/uyumlu
+İzmit,Kocaeli,347074,381254,165445,170280,9.8,1.4,8.5,az,içeri/uyumlu
+Kandıra,Kocaeli,48937,54260,103223,109146,10.9,12.1,-1.2,orta,içeri/uyumlu
+Karamürsel,Kocaeli,55169,59488,48228,49007,7.8,1.4,6.4,az,içeri/uyumlu
+Kartepe,Kocaeli,107988,154377,59871,62752,43.0,2.7,40.3,az,içeri/uyumlu
+Körfez,Kocaeli,151149,183077,38572,40753,21.1,1.4,19.7,az,içeri/uyumlu
+Ahırlı,Konya,4545,4536,26912,29286,-0.2,52.2,-52.4,çok,dışarı akış
+Akören,Konya,6409,5744,27123,29641,-10.4,39.3,-49.7,çok,dışarı akış
+Akşehir,Konya,94159,93613,118893,124020,-0.6,5.4,-6.0,orta,orta
+Altınekin,Konya,14171,14374,37565,41418,1.4,27.2,-25.8,çok,dışarı akış
+Beyşehir,Konya,71370,80353,147070,155930,12.6,12.4,0.2,orta,içeri/uyumlu
+Bozkır,Konya,27006,24704,105531,113642,-8.5,30.0,-38.6,çok,dışarı akış
+Cihanbeyli,Konya,53551,49126,101143,105651,-8.3,8.4,-16.7,orta,orta
+Çeltik,Konya,9864,9482,23540,25976,-3.9,24.7,-28.6,çok,dışarı akış
+Çumra,Konya,65152,68803,135092,149388,5.6,21.9,-16.3,orta,orta
+Derbent,Konya,4441,3954,22349,24533,-11.0,49.2,-60.1,çok,dışarı akış
+Derebucak,Konya,6807,5353,17528,18207,-21.4,10.0,-31.3,orta,dışarı akış
+Doğanhisar,Konya,17069,14097,59895,63694,-17.4,22.3,-39.7,orta,dışarı akış
+Emirgazi,Konya,8939,7647,33512,37202,-14.5,41.3,-55.7,çok,dışarı akış
+Ereğli,Konya,139173,158010,179855,193132,13.5,9.5,4.0,orta,içeri/uyumlu
+Güneysınır,Konya,9636,9237,30304,34448,-4.1,43.0,-47.1,çok,dışarı akış
+Hadim,Konya,12820,10621,51484,56318,-17.2,37.7,-54.9,çok,dışarı akış
+Halkapınar,Konya,4412,3947,26020,28286,-10.5,51.4,-61.9,çok,dışarı akış
+Hüyük,Konya,15899,14878,52319,55421,-6.4,19.5,-25.9,orta,dışarı akış
+Ilgın,Konya,55484,53167,129918,139466,-4.2,17.2,-21.4,orta,orta
+Kadınhanı,Konya,32670,31478,102911,113168,-3.6,31.4,-35.0,çok,dışarı akış
+Karapınar,Konya,49098,51756,87349,96727,5.4,19.1,-13.7,orta,orta
+Karatay,Konya,302392,395499,207123,230976,30.8,7.9,22.9,orta,içeri/uyumlu
+Kulu,Konya,49283,51732,75390,79769,5.0,8.9,-3.9,orta,orta
+Meram,Konya,343384,349685,219777,244046,1.8,7.1,-5.2,orta,orta
+Sarayönü,Konya,26450,28401,68485,74488,7.4,22.7,-15.3,çok,orta
+Selçuklu,Konya,604706,703449,131720,149119,16.3,2.9,13.5,az,içeri/uyumlu
+Seydişehir,Konya,64028,66079,103193,109337,3.2,9.6,-6.4,orta,orta
+Taşkent,Konya,6420,5669,30623,33290,-11.7,41.5,-53.2,çok,dışarı akış
+Tuzlukçu,Konya,6754,6052,36926,39000,-10.4,30.7,-41.1,çok,dışarı akış
+Yalıhüyük,Konya,1512,1704,4588,4921,12.7,22.0,-9.3,orta,orta
+Yunak,Konya,22940,20259,92958,101982,-11.7,39.3,-51.0,çok,dışarı akış
+Altıntaş,Kütahya,16477,14739,46565,48714,-10.5,13.0,-23.6,orta,orta
+Aslanapa,Kütahya,9986,7813,27262,28440,-21.8,11.8,-33.6,orta,dışarı akış
+Çavdarhisar,Kütahya,7072,5503,19316,19524,-22.2,2.9,-25.1,az,dışarı akış
+Domaniç,Kütahya,15248,13900,32890,34138,-8.8,8.2,-17.0,orta,orta
+Dumlupınar,Kütahya,2928,2812,11838,12339,-4.0,17.1,-21.1,orta,orta
+Emet,Kütahya,21145,17352,42767,43262,-17.9,2.3,-20.3,az,orta
+Gediz,Kütahya,50499,48539,86505,89529,-3.9,6.0,-9.9,orta,orta
+Hisarcık,Kütahya,13009,10799,22824,23846,-17.0,7.9,-24.8,orta,dışarı akış
+Kütahya,Kütahya,256587,277000,175021,179696,8.0,1.8,6.1,az,içeri/uyumlu
+Pazarlar,Kütahya,5258,4713,14483,15330,-10.4,16.1,-26.5,orta,dışarı akış
+Simav,Kütahya,64351,60886,113800,116391,-5.4,4.0,-9.4,az,orta
+Şaphane,Kütahya,6762,5540,17421,17793,-18.1,5.5,-23.6,orta,orta
+Tavşanlı,Kütahya,102141,100882,104284,106692,-1.2,2.4,-3.6,az,orta
+Akçadağ,Malatya,27437,31479,126803,134614,14.7,28.5,-13.7,çok,orta
+Arapgir,Malatya,10623,9917,64172,64605,-6.6,4.1,-10.7,az,orta
+Arguvan,Malatya,7757,6859,53955,55003,-11.6,13.5,-25.1,orta,dışarı akış
+Battalgazi,Malatya,301483,274563,267010,288513,-8.9,7.1,-16.1,orta,orta
+Darende,Malatya,26656,24806,116880,127284,-6.9,39.0,-46.0,çok,dışarı akış
+Doğanşehir,Malatya,39391,36037,94181,100895,-8.5,17.0,-25.6,orta,dışarı akış
+Doğanyol,Malatya,4196,4002,26264,27773,-4.6,36.0,-40.6,çok,dışarı akış
+Hekimhan,Malatya,18616,17116,98156,103124,-8.1,26.7,-34.7,çok,dışarı akış
+Kale,Malatya,5384,7462,42737,45371,38.6,48.9,-10.3,çok,orta
+Kuluncak,Malatya,7748,7414,29449,31966,-4.3,32.5,-36.8,çok,dışarı akış
+Pütürge,Malatya,15709,12372,139179,151461,-21.2,78.2,-99.4,çok,dışarı akış
+Yazıhan,Malatya,13452,13937,48615,52423,3.6,28.3,-24.7,çok,dışarı akış
+Yeşilyurt,Malatya,294452,309890,223745,240261,5.2,5.6,-0.4,orta,içeri/uyumlu
+Ahmetli,Manisa,16460,17612,24888,25437,7.0,3.3,3.7,az,içeri/uyumlu
+Akhisar,Manisa,164557,181472,200530,203253,10.3,1.7,8.6,az,içeri/uyumlu
+Alaşehir,Manisa,100254,104565,120483,124725,4.3,4.2,0.1,az,içeri/uyumlu
+Demirci,Manisa,42278,35629,70370,72665,-15.7,5.4,-21.2,orta,orta
+Gölmarmara,Manisa,15224,15140,24708,26001,-0.6,8.5,-9.0,orta,orta
+Gördes,Manisa,29044,25456,52669,53848,-12.4,4.1,-16.4,az,orta
+Kırkağaç,Manisa,43274,37363,53619,55138,-13.7,3.5,-17.2,az,orta
+Köprübaşı,Manisa,13586,12217,23915,24808,-10.1,6.6,-16.6,orta,orta
+Kula,Manisa,45357,43015,78782,81240,-5.2,5.4,-10.6,orta,orta
+Salihli,Manisa,158568,165007,160948,162750,4.1,1.1,2.9,az,içeri/uyumlu
+Sarıgöl,Manisa,35966,34786,43612,44292,-3.3,1.9,-5.2,az,orta
+Saruhanlı,Manisa,53692,58475,92900,95970,8.9,5.7,3.2,orta,içeri/uyumlu
+Selendi,Manisa,20976,18568,46378,49158,-11.5,13.3,-24.7,orta,dışarı akış
+Soma,Manisa,107075,110188,58155,58895,2.9,0.7,2.2,az,içeri/uyumlu
+Şehzadeler,Manisa,168695,168582,129596,132484,-0.1,1.7,-1.8,az,içeri/uyumlu
+Turgutlu,Manisa,153687,179326,110790,112591,16.7,1.2,15.5,az,içeri/uyumlu
+Yunusemre,Manisa,211673,270355,98183,99996,27.7,0.9,26.9,az,içeri/uyumlu
+Afşin,Kahramanmaraş,81390,80124,171121,189097,-1.6,22.1,-23.6,orta,orta
+Andırın,Kahramanmaraş,34038,31609,111725,122712,-7.1,32.3,-39.4,çok,dışarı akış
+Çağlayancerit,Kahramanmaraş,23607,22440,41869,46139,-4.9,18.1,-23.0,orta,orta
+Dulkadiroğlu,Kahramanmaraş,218067,213930,241267,267964,-1.9,12.2,-14.1,orta,orta
+Ekinözü,Kahramanmaraş,11886,9896,38177,42667,-16.7,37.8,-54.5,çok,dışarı akış
+Elbistan,Kahramanmaraş,141468,132036,184219,198471,-6.7,10.1,-16.7,orta,orta
+Göksun,Kahramanmaraş,51415,49145,131148,144095,-4.4,25.2,-29.6,çok,dışarı akış
+Nurhak,Kahramanmaraş,12504,11675,24282,24862,-6.6,4.6,-11.3,az,orta
+Oniki Şubat,Kahramanmaraş,384953,447591,333305,380398,16.3,12.2,4.0,orta,içeri/uyumlu
+Pazarcık,Kahramanmaraş,67802,66777,120590,128335,-1.5,11.4,-12.9,orta,orta
+Türkoğlu,Kahramanmaraş,69480,81055,114805,129703,16.7,21.4,-4.8,orta,orta
+Artuklu,Mardin,156660,198718,267416,313479,26.8,29.4,-2.6,çok,orta
+Dargeçit,Mardin,27722,26675,80752,94935,-3.8,51.2,-54.9,çok,dışarı akış
+Derik,Mardin,62175,61553,155175,186904,-1.0,51.0,-52.0,çok,dışarı akış
+Kızıltepe,Mardin,237694,275217,226214,272462,15.8,19.5,-3.7,orta,orta
+Mazıdağı,Mardin,33930,37381,113114,137172,10.2,70.9,-60.7,çok,dışarı akış
+Midyat,Mardin,105952,125791,236297,277996,18.7,39.4,-20.6,çok,orta
+Nusaybin,Mardin,113594,119559,168888,195353,5.3,23.3,-18.0,çok,orta
+Ömerli,Mardin,14485,14112,111197,131290,-2.6,138.7,-141.3,çok,dışarı akış
+Savur,Mardin,28127,23404,116233,136319,-16.8,71.4,-88.2,çok,dışarı akış
+Yeşilli,Mardin,16252,21166,45688,54274,30.2,52.8,-22.6,çok,orta
+Bodrum,Muğla,155815,207196,48097,47261,33.0,-0.5,33.5,az,içeri/uyumlu
+Dalaman,Muğla,37406,53327,29733,31076,42.6,3.6,39.0,az,içeri/uyumlu
+Datça,Muğla,20029,26067,10423,10111,30.1,-1.6,31.7,az,içeri/uyumlu
+Fethiye,Muğla,147703,187332,81353,83324,26.8,1.3,25.5,az,içeri/uyumlu
+Kavaklıdere,Muğla,10759,10854,18003,18857,0.9,7.9,-7.1,orta,orta
+Köyceğiz,Muğla,34363,41810,35772,37235,21.7,4.3,17.4,az,içeri/uyumlu
+Marmaris,Muğla,89630,97373,27003,26699,8.6,-0.3,9.0,az,içeri/uyumlu
+Menteşe,Muğla,105860,126288,77570,76818,19.3,-0.7,20.0,az,içeri/uyumlu
+Milas,Muğla,132437,152275,120178,120857,15.0,0.5,14.5,az,içeri/uyumlu
+Ortaca,Muğla,45875,58704,29249,29830,28.0,1.3,26.7,az,içeri/uyumlu
+Seydikemer,Muğla,61019,65648,103682,109206,7.6,9.1,-1.5,orta,içeri/uyumlu
+Ula,Muğla,23618,27649,24663,24294,17.1,-1.6,18.6,az,içeri/uyumlu
+Yatağan,Muğla,44363,45024,50946,51696,1.5,1.7,-0.2,az,içeri/uyumlu
+Bulanık,Muş,82205,68983,202435,238903,-16.1,44.4,-60.4,çok,dışarı akış
+Hasköy,Muş,26639,27684,57570,70345,3.9,48.0,-44.0,çok,dışarı akış
+Korkut,Muş,26035,19251,70853,86427,-26.1,59.8,-85.9,çok,dışarı akış
+Malazgirt,Muş,54112,40595,149986,179670,-25.0,54.9,-79.8,çok,dışarı akış
+Muş,Muş,188550,203810,292420,347864,8.1,29.4,-21.3,çok,orta
+Varto,Muş,31187,28804,87915,92149,-7.6,13.6,-21.2,orta,orta
+Acıgöl,Nevşehir,19203,19430,60195,67347,1.2,37.2,-36.1,çok,dışarı akış
+Avanos,Nevşehir,33328,32093,62674,64893,-3.7,6.7,-10.4,orta,orta
+Derinkuyu,Nevşehir,21108,21107,44958,49464,-0.0,21.3,-21.4,orta,orta
+Gülşehir,Nevşehir,22118,21173,63348,67845,-4.3,20.3,-24.6,orta,dışarı akış
+Hacıbektaş,Nevşehir,11084,10564,43458,44811,-4.7,12.2,-16.9,orta,orta
+Kozaklı,Nevşehir,14037,12678,52599,56247,-9.7,26.0,-35.7,çok,dışarı akış
+Nevşehir,Nevşehir,130998,163126,127275,135164,24.5,6.0,18.5,orta,içeri/uyumlu
+Ürgüp,Nevşehir,34891,39979,59328,60723,14.6,4.0,10.6,az,içeri/uyumlu
+Altunhisar,Niğde,13438,12004,56296,63740,-10.7,55.4,-66.1,çok,dışarı akış
+Bor,Niğde,61145,62594,119591,128475,2.4,14.5,-12.2,orta,orta
+Çamardı,Niğde,13219,11631,44745,48282,-12.0,26.8,-38.8,çok,dışarı akış
+Çiftlik,Niğde,27742,25157,61283,69903,-9.3,31.1,-40.4,çok,dışarı akış
+Niğde,Niğde,211092,244326,271939,295649,15.7,11.2,4.5,orta,içeri/uyumlu
+Ulukışla,Niğde,19478,18780,68792,72295,-3.6,18.0,-21.6,orta,orta
+Akkuş,Ordu,23064,20465,115776,125610,-11.3,42.6,-53.9,çok,dışarı akış
+Altınordu,Ordu,202310,239714,171487,175439,18.5,2.0,16.5,az,içeri/uyumlu
+Aybastı,Ordu,25900,19784,64898,69611,-23.6,18.2,-41.8,orta,dışarı akış
+Çamaş,Ordu,8594,8407,30271,32554,-2.2,26.6,-28.7,çok,dışarı akış
+Çatalpınar,Ordu,13786,12888,31284,34969,-6.5,26.7,-33.2,çok,dışarı akış
+Çaybaşı,Ordu,13127,11656,35799,39840,-11.2,30.8,-42.0,çok,dışarı akış
+Fatsa,Ordu,111072,129844,150102,157027,16.9,6.2,10.7,orta,içeri/uyumlu
+Gölköy,Ordu,28952,24780,92361,100368,-14.4,27.7,-42.1,çok,dışarı akış
+Gülyalı,Ordu,7994,8881,28837,29392,11.1,6.9,4.2,orta,içeri/uyumlu
+Gürgentepe,Ordu,13821,12499,43054,46910,-9.6,27.9,-37.5,çok,dışarı akış
+İkizce,Ordu,14969,12537,46495,51257,-16.2,31.8,-48.1,çok,dışarı akış
+Kabadüz,Ordu,8531,6794,24242,25710,-20.4,17.2,-37.6,orta,dışarı akış
+Kabataş,Ordu,10604,9949,35118,38941,-6.2,36.1,-42.2,çok,dışarı akış
+Korgan,Ordu,29349,26428,74456,83012,-10.0,29.2,-39.1,çok,dışarı akış
+Kumru,Ordu,31064,27638,84732,93156,-11.0,27.1,-38.1,çok,dışarı akış
+Mesudiye,Ordu,15759,11829,118216,122712,-24.9,28.5,-53.5,çok,dışarı akış
+Perşembe,Ordu,31094,30053,100422,102862,-3.3,7.8,-11.2,orta,orta
+Ulubey,Ordu,18239,18027,80034,84308,-1.2,23.4,-24.6,çok,dışarı akış
+Ünye,Ordu,120720,135914,178225,188748,12.6,8.7,3.9,orta,içeri/uyumlu
+Ardeşen,Rize,40278,43519,62258,65714,8.0,8.6,-0.5,orta,içeri/uyumlu
+Çamlıhemşin,Rize,6203,7051,29314,30155,13.7,13.6,0.1,orta,içeri/uyumlu
+Çayeli,Rize,41916,42032,125936,131466,0.3,13.2,-12.9,orta,orta
+Derepazarı,Rize,8104,6772,25500,26479,-16.4,12.1,-28.5,orta,dışarı akış
+Fındıklı,Rize,16163,16388,29569,29645,1.4,0.5,0.9,az,içeri/uyumlu
+Güneysu,Rize,13794,15013,46646,49665,8.8,21.9,-13.0,orta,orta
+Hemşin,Rize,2365,2299,15766,15640,-2.8,-5.3,2.5,az,içeri/uyumlu
+İkizdere,Rize,5711,6287,58882,61494,10.1,45.7,-35.7,çok,dışarı akış
+İyidere,Rize,8373,8495,27793,29033,1.5,14.8,-13.4,orta,orta
+Kalkandere,Rize,12077,13350,58426,62498,10.5,33.7,-23.2,çok,orta
+Pazar,Rize,30534,32144,76060,77751,5.3,5.5,-0.3,orta,içeri/uyumlu
+Rize,Rize,143461,153597,193923,203118,7.1,6.4,0.7,orta,içeri/uyumlu
+Adapazarı,Sakarya,269079,284006,202493,207952,5.5,2.0,3.5,az,içeri/uyumlu
+Akyazı,Sakarya,85499,99561,125457,134350,16.4,10.4,6.0,orta,içeri/uyumlu
+Arifiye,Sakarya,39632,55589,26105,28187,40.3,5.3,35.0,orta,içeri/uyumlu
+Erenler,Sakarya,81660,92549,47792,50503,13.3,3.3,10.0,az,içeri/uyumlu
+Ferizli,Sakarya,24834,36015,39209,41931,45.0,11.0,34.1,orta,içeri/uyumlu
+Geyve,Sakarya,48374,51708,72398,75103,6.9,5.6,1.3,orta,içeri/uyumlu
+Hendek,Sakarya,78179,93990,111181,118200,20.2,9.0,11.2,orta,içeri/uyumlu
+Karapürçek,Sakarya,12381,13734,20140,22070,10.9,15.6,-4.7,orta,orta
+Karasu,Sakarya,59130,75887,76455,82516,28.3,10.3,18.1,orta,içeri/uyumlu
+Kaynarca,Sakarya,23489,25440,44126,47650,8.3,15.0,-6.7,orta,orta
+Kocaali,Sakarya,21050,24966,54134,58084,18.6,18.8,-0.2,orta,içeri/uyumlu
+Pamukova,Sakarya,28506,31536,32976,34291,10.6,4.6,6.0,az,içeri/uyumlu
+Sapanca,Sakarya,39686,47505,39379,41993,19.7,6.6,13.1,orta,içeri/uyumlu
+Serdivan,Sakarya,120731,168855,39851,42113,39.9,1.9,38.0,az,içeri/uyumlu
+Söğütlü,Sakarya,13960,15288,29889,31121,9.5,8.8,0.7,orta,içeri/uyumlu
+Taraklı,Sakarya,6991,7064,13759,14575,1.0,11.7,-10.6,orta,orta
+19 Mayıs,Samsun,24627,28658,54547,59094,16.4,18.5,-2.1,orta,içeri/uyumlu
+Alaçam,Samsun,26301,24560,92404,98298,-6.6,22.4,-29.0,çok,dışarı akış
+Asarcık,Samsun,17238,15673,35661,39995,-9.1,25.1,-34.2,çok,dışarı akış
+Atakum,Samsun,169809,261809,68627,75736,54.2,4.2,50.0,az,içeri/uyumlu
+Ayvacık,Samsun,20619,18557,52605,58664,-10.0,29.4,-39.4,çok,dışarı akış
+Bafra,Samsun,141401,143387,252165,263540,1.4,8.0,-6.6,orta,orta
+Canik,Samsun,96541,100247,70023,74873,3.8,5.0,-1.2,az,içeri/uyumlu
+Çarşamba,Samsun,136775,143206,243437,260761,4.7,12.7,-8.0,orta,orta
+Havza,Samsun,41146,38103,129443,138977,-7.4,23.2,-30.6,çok,dışarı akış
+İlkadım,Samsun,321714,330290,183979,185771,2.7,0.6,2.1,az,içeri/uyumlu
+Kavak,Samsun,20130,25370,95146,100916,26.0,28.7,-2.6,çok,orta
+Ladik,Samsun,16474,15942,73033,77225,-3.2,25.4,-28.7,çok,dışarı akış
+Salıpazarı,Samsun,18869,19406,69144,75379,2.8,33.0,-30.2,çok,dışarı akış
+Tekkeköy,Samsun,49843,59356,79061,84851,19.1,11.6,7.5,orta,içeri/uyumlu
+Terme,Samsun,71910,71348,169564,180820,-0.8,15.7,-16.4,orta,orta
+Vezirköprü,Samsun,97815,87575,205732,227263,-10.5,22.0,-32.5,orta,dışarı akış
+Yakakent,Samsun,8672,8916,28004,29991,2.8,22.9,-20.1,çok,orta
+Baykan,Siirt,26615,23219,80166,95001,-12.8,55.7,-68.5,çok,dışarı akış
+Eruh,Siirt,19796,18339,111192,139778,-7.4,144.4,-151.8,çok,dışarı akış
+Kurtalan,Siirt,58343,60674,129202,153307,4.0,41.3,-37.3,çok,dışarı akış
+Pervari,Siirt,31696,26437,93228,105258,-16.6,38.0,-54.5,çok,dışarı akış
+Siirt,Siirt,156363,180837,210092,232246,15.7,14.2,1.5,orta,içeri/uyumlu
+Şirvan,Siirt,23402,18773,93074,112068,-19.8,81.2,-100.9,çok,dışarı akış
+Tillo,Siirt,4136,4090,28366,32727,-1.1,105.4,-106.6,çok,dışarı akış
+Ayancık,Sinop,22565,23818,106048,111123,5.6,22.5,-16.9,çok,orta
+Boyabat,Sinop,43826,44901,138745,146511,2.5,17.7,-15.3,orta,orta
+Dikmen,Sinop,5488,4810,39697,41886,-12.4,39.9,-52.2,çok,dışarı akış
+Durağan,Sinop,18456,16788,81532,89739,-9.0,44.5,-53.5,çok,dışarı akış
+Erfelek,Sinop,11130,12565,67859,70749,12.9,26.0,-13.1,çok,orta
+Gerze,Sinop,22623,30701,76525,76125,35.7,-1.8,37.5,az,içeri/uyumlu
+Saraydüzü,Sinop,5000,5656,43151,45141,13.1,39.8,-26.7,çok,dışarı akış
+Sinop,Sinop,60880,70311,78060,82429,15.5,7.2,8.3,orta,içeri/uyumlu
+Türkeli,Sinop,14165,16298,49999,53737,15.1,26.4,-11.3,çok,orta
+Akıncılar,Sivas,4964,4641,38822,40462,-6.5,33.0,-39.5,çok,dışarı akış
+Altınyayla,Sivas,9302,8245,33785,37439,-11.4,39.3,-50.6,çok,dışarı akış
+Divriği,Sivas,16040,15657,112422,111951,-2.4,-2.9,0.5,az,içeri/uyumlu
+Doğanşar,Sivas,2918,2770,26953,28213,-5.1,43.2,-48.3,çok,dışarı akış
+Gemerek,Sivas,23390,21342,77960,82767,-8.8,20.6,-29.3,orta,dışarı akış
+Gölova,Sivas,3220,2998,32934,34558,-6.9,50.4,-57.3,çok,dışarı akış
+Gürün,Sivas,19135,17062,102893,108855,-10.8,31.2,-42.0,çok,dışarı akış
+Hafik,Sivas,9053,8950,105134,108114,-1.1,32.9,-34.1,çok,dışarı akış
+İmranlı,Sivas,7265,6788,91055,92409,-6.6,18.6,-25.2,orta,dışarı akış
+Kangal,Sivas,21975,19406,141512,148797,-11.7,33.2,-44.8,çok,dışarı akış
+Koyulhisar,Sivas,12310,11782,93994,99601,-4.3,45.5,-49.8,çok,dışarı akış
+Sivas,Sivas,359219,393912,413215,443595,9.7,8.5,1.2,orta,içeri/uyumlu
+Suşehri,Sivas,25340,25056,105998,112691,-1.1,26.4,-27.5,çok,dışarı akış
+Şarkışla,Sivas,37520,37282,123743,130832,-0.6,18.9,-19.5,orta,orta
+Ulaş,Sivas,8799,7603,58478,62723,-13.6,48.2,-61.8,çok,dışarı akış
+Yıldızeli,Sivas,35980,26567,159763,172822,-26.2,36.3,-62.5,çok,dışarı akış
+Zara,Sivas,22187,21340,165576,172460,-3.8,31.0,-34.8,çok,dışarı akış
+Çerkezköy,Tekirdağ,133626,223975,20833,21565,67.6,0.5,67.1,az,içeri/uyumlu
+Çorlu,Tekirdağ,245588,306939,58388,56469,25.0,-0.8,25.8,az,içeri/uyumlu
+Ergene,Tekirdağ,58311,68648,44870,44455,17.7,-0.7,18.4,az,içeri/uyumlu
+Hayrabolu,Tekirdağ,32602,29706,76781,77514,-8.9,2.2,-11.1,az,orta
+Kapaklı,Tekirdağ,97700,152509,16670,16434,56.1,-0.2,56.3,az,içeri/uyumlu
+Malkara,Tekirdağ,52663,50123,98898,99276,-4.8,0.7,-5.5,az,orta
+Marmara Ereğlisi,Tekirdağ,23452,33623,12884,12715,43.4,-0.7,44.1,az,içeri/uyumlu
+Muratlı,Tekirdağ,26987,30410,34292,33822,12.7,-1.7,14.4,az,içeri/uyumlu
+Saray,Tekirdağ,48272,51468,49804,49102,6.6,-1.5,8.1,az,içeri/uyumlu
+Süleymanpaşa,Tekirdağ,187727,226582,117235,115846,20.7,-0.7,21.4,az,içeri/uyumlu
+Şarköy,Tekirdağ,30982,34458,39218,39045,11.2,-0.6,11.8,az,içeri/uyumlu
+Almus,Tokat,26004,28135,98435,105823,8.2,28.4,-20.2,çok,orta
+Artova,Tokat,8752,7589,42261,45067,-13.3,32.1,-45.3,çok,dışarı akış
+Başçiftlik,Tokat,10610,8445,15413,16321,-20.4,8.6,-29.0,orta,dışarı akış
+Erbaa,Tokat,92654,103409,192867,207583,11.6,15.9,-4.3,orta,orta
+Niksar,Tokat,62735,63594,147517,154630,1.4,11.3,-10.0,orta,orta
+Pazar,Tokat,13804,12875,37897,40788,-6.7,20.9,-27.7,orta,dışarı akış
+Reşadiye,Tokat,35790,43108,131936,138579,20.4,18.6,1.9,orta,içeri/uyumlu
+Sulusaray,Tokat,8442,6536,24812,27774,-22.6,35.1,-57.7,çok,dışarı akış
+Tokat,Tokat,188736,201969,247671,264782,7.0,9.1,-2.1,orta,içeri/uyumlu
+Turhal,Tokat,80171,77707,139507,148010,-3.1,10.6,-13.7,orta,orta
+Yeşilyurt,Tokat,9565,8045,27888,30820,-15.9,30.7,-46.5,çok,dışarı akış
+Zile,Tokat,56727,52729,200292,211216,-7.0,19.3,-26.3,orta,dışarı akış
+Akçaabat,Trabzon,116744,131162,186717,199611,12.4,11.0,1.3,orta,içeri/uyumlu
+Araklı,Trabzon,47427,49230,139847,154235,3.8,30.3,-26.5,çok,dışarı akış
+Arsin,Trabzon,27814,31493,83613,90806,13.2,25.9,-12.6,çok,orta
+Beşikdüzü,Trabzon,21692,23246,52155,53184,7.2,4.7,2.4,az,içeri/uyumlu
+Çarşıbaşı,Trabzon,15399,15004,38326,40945,-2.6,17.0,-19.6,orta,orta
+Çaykara,Trabzon,12874,12921,73415,78534,0.4,39.8,-39.4,çok,dışarı akış
+Dernekpazarı,Trabzon,3564,3717,24222,25590,4.3,38.4,-34.1,çok,dışarı akış
+Düzköy,Trabzon,14234,13105,43168,46455,-7.9,23.1,-31.0,çok,dışarı akış
+Hayrat,Trabzon,6945,7410,53927,57812,6.7,55.9,-49.2,çok,dışarı akış
+Köprübaşı,Trabzon,4577,4271,34760,37573,-6.7,61.5,-68.1,çok,dışarı akış
+Maçka,Trabzon,23603,24931,110124,116712,5.6,27.9,-22.3,çok,orta
+Of,Trabzon,41277,43591,134257,143694,5.6,22.9,-17.3,çok,orta
+Ortahisar,Trabzon,320225,335116,190840,199720,4.7,2.8,1.9,az,içeri/uyumlu
+Sürmene,Trabzon,25764,25281,100825,106155,-1.9,20.7,-22.6,orta,orta
+Şalpazarı,Trabzon,10318,10575,49184,53047,2.5,37.4,-34.9,çok,dışarı akış
+Tonya,Trabzon,14771,13332,48955,52341,-9.7,22.9,-32.7,çok,dışarı akış
+Vakfıkebir,Trabzon,26560,27278,63827,66627,2.7,10.5,-7.8,orta,orta
+Yomra,Trabzon,34629,51660,64014,68781,49.2,13.8,35.4,orta,içeri/uyumlu
+Çemişgezek,Tunceli,7709,7505,30255,31332,-2.6,14.0,-16.6,orta,orta
+Hozat,Tunceli,6988,5332,22043,22137,-23.7,1.3,-25.0,az,dışarı akış
+Mazgirt,Tunceli,8090,7257,48036,48526,-10.3,6.1,-16.4,orta,orta
+Nazımiye,Tunceli,3249,3095,22694,22614,-4.7,-2.5,-2.3,az,orta
+Ovacık,Tunceli,6438,6700,32015,32485,4.1,7.3,-3.2,orta,orta
+Pertek,Tunceli,11466,10569,36317,37485,-7.8,10.2,-18.0,orta,orta
+Pülümür,Tunceli,3258,3580,21583,21544,9.9,-1.2,11.1,az,içeri/uyumlu
+Tunceli,Tunceli,38878,41045,41029,40645,5.6,-1.0,6.6,az,içeri/uyumlu
+Akçakale,Şanlıurfa,102350,131351,126209,177779,28.3,50.4,-22.1,çok,orta
+Birecik,Şanlıurfa,92852,91837,170502,202768,-1.1,34.7,-35.8,çok,dışarı akış
+Bozova,Şanlıurfa,54775,50534,170995,200983,-7.7,54.7,-62.5,çok,dışarı akış
+Ceylanpınar,Şanlıurfa,83177,93105,68876,89047,11.9,24.3,-12.3,çok,orta
+Eyyübiye,Şanlıurfa,368293,414516,403778,507737,12.6,28.2,-15.7,çok,orta
+Halfeti,Şanlıurfa,37930,41624,87840,95954,9.7,21.4,-11.7,orta,orta
+Haliliye,Şanlıurfa,364946,395975,241678,316717,8.5,20.6,-12.1,orta,orta
+Harran,Şanlıurfa,81870,101710,109366,152624,24.2,52.8,-28.6,çok,dışarı akış
+Hilvan,Şanlıurfa,41644,41969,98651,119001,0.8,48.9,-48.1,çok,dışarı akış
+Karaköprü,Şanlıurfa,132530,312031,146387,177239,135.4,23.3,112.2,çok,içeri/uyumlu
+Siverek,Şanlıurfa,245385,277399,429328,531492,13.0,41.6,-28.6,çok,dışarı akış
+Suruç,Şanlıurfa,101964,98022,281372,350364,-3.9,67.7,-71.5,çok,dışarı akış
+Viranşehir,Şanlıurfa,184604,215727,221738,283398,16.9,33.4,-16.5,çok,orta
+Banaz,Uşak,36325,34624,73517,76518,-4.7,8.3,-12.9,orta,orta
+Eşme,Uşak,35544,34444,62445,63906,-3.1,4.1,-7.2,az,orta
+Karahallı,Uşak,10624,9408,36562,37413,-11.4,8.0,-19.5,orta,orta
+Sivaslı,Uşak,20883,19193,40794,42390,-8.1,7.6,-15.7,orta,orta
+Ulubey,Uşak,13371,11365,32606,33255,-15.0,4.9,-19.9,az,orta
+Uşak,Uşak,236301,265371,158670,163339,12.3,2.0,10.3,az,içeri/uyumlu
+Bahçesaray,Van,15619,11438,51287,61275,-26.8,63.9,-90.7,çok,dışarı akış
+Başkale,Van,56368,37568,117867,139822,-33.4,38.9,-72.3,çok,dışarı akış
+Çaldıran,Van,65986,50170,117751,146868,-24.0,44.1,-68.1,çok,dışarı akış
+Çatak,Van,21780,16361,82287,97288,-24.9,68.9,-93.8,çok,dışarı akış
+Edremit,Van,118786,132309,55535,64236,11.4,7.3,4.1,orta,içeri/uyumlu
+Erciş,Van,173795,169040,235618,284983,-2.7,28.4,-31.1,çok,dışarı akış
+Gevaş,Van,28801,26253,81760,96061,-8.8,49.7,-58.5,çok,dışarı akış
+Gürpınar,Van,36858,28505,142098,167840,-22.7,69.8,-92.5,çok,dışarı akış
+İpekyolu,Van,285272,362816,174318,200227,27.2,9.1,18.1,orta,içeri/uyumlu
+Muradiye,Van,50981,41402,93490,113579,-18.8,39.4,-58.2,çok,dışarı akış
+Özalp,Van,70057,51357,123474,149713,-26.7,37.5,-64.1,çok,dışarı akış
+Saray,Van,22150,17036,47389,57300,-23.1,44.7,-67.8,çok,dışarı akış
+Tuşba,Van,149944,167758,108849,128561,11.9,13.1,-1.3,orta,içeri/uyumlu
+Akdağmadeni,Yozgat,44326,39642,108875,116101,-10.6,16.3,-26.9,orta,dışarı akış
+Aydıncık,Yozgat,10089,9317,40285,43955,-7.7,36.4,-44.0,çok,dışarı akış
+Boğazlıyan,Yozgat,33794,35316,92254,98381,4.5,18.1,-13.6,orta,orta
+Çandır,Yozgat,4399,4360,16621,17445,-0.9,18.7,-19.6,orta,orta
+Çayıralan,Yozgat,13073,11777,44388,46454,-9.9,15.8,-25.7,orta,dışarı akış
+Çekerek,Yozgat,20857,18426,84010,92964,-11.7,42.9,-54.6,çok,dışarı akış
+Kadışehri,Yozgat,12768,9854,45046,50899,-22.8,45.8,-68.7,çok,dışarı akış
+Saraykent,Yozgat,12909,12605,30130,32925,-2.4,21.7,-24.0,orta,dışarı akış
+Sarıkaya,Yozgat,33419,30785,99282,105936,-7.9,19.9,-27.8,orta,dışarı akış
+Sorgun,Yozgat,78178,80068,190813,206797,2.4,20.4,-18.0,orta,orta
+Şefaatli,Yozgat,15371,14008,69854,74933,-8.9,33.0,-41.9,çok,dışarı akış
+Yenifakılı,Yozgat,5502,5008,23444,24874,-9.0,26.0,-35.0,çok,dışarı akış
+Yerköy,Yozgat,36507,33000,91123,98306,-9.6,19.7,-29.3,orta,dışarı akış
+Yozgat,Yozgat,98248,109042,221745,236932,11.0,15.5,-4.5,orta,orta
+Alaplı,Zonguldak,44300,43217,59666,63279,-2.4,8.2,-10.6,orta,orta
+Çaycuma,Zonguldak,91190,91796,143041,147455,0.7,4.8,-4.2,az,orta
+Devrek,Zonguldak,56282,56900,124927,130142,1.1,9.3,-8.2,orta,orta
+Ereğli,Zonguldak,173886,173884,159835,166433,-0.0,3.8,-3.8,az,orta
+Gökçebey,Zonguldak,21402,21070,40096,41645,-1.6,7.2,-8.8,orta,orta
+Kilimli,Zonguldak,38190,32441,27611,28053,-15.1,1.2,-16.2,az,orta
+Zonguldak,Zonguldak,126281,115279,154234,111939,-8.7,-33.5,24.8,az,içeri/uyumlu
+Ağaçören,Aksaray,8467,7480,33313,36761,-11.7,40.7,-52.4,çok,dışarı akış
+Aksaray,Aksaray,283063,327575,297595,305805,15.7,2.9,12.8,az,içeri/uyumlu
+Eskil,Aksaray,25929,27946,50624,57786,7.8,27.6,-19.8,çok,orta
+Gülağaç,Aksaray,19334,19099,44629,49790,-1.2,26.7,-27.9,çok,dışarı akış
+Güzelyurt,Aksaray,11710,10419,37929,41160,-11.0,27.6,-38.6,çok,dışarı akış
+Ortaköy,Aksaray,33113,31089,68299,73970,-6.1,17.1,-23.2,orta,orta
+Sarıyahşi,Aksaray,4898,4717,14952,15914,-3.7,19.6,-23.3,orta,orta
+Aydıntepe,Bayburt,8334,5982,28144,30299,-28.2,25.9,-54.1,çok,dışarı akış
+Bayburt,Bayburt,61551,68715,198185,213718,11.6,25.2,-13.6,çok,orta
+Demirözü,Bayburt,8665,8139,41910,46085,-6.1,48.2,-54.3,çok,dışarı akış
+Ayrancı,Karaman,8497,7127,37563,39937,-16.1,27.9,-44.1,çok,dışarı akış
+Başyayla,Karaman,3706,3353,9970,10682,-9.5,19.2,-28.7,orta,dışarı akış
+Ermenek,Karaman,29558,27629,64173,67594,-6.5,11.6,-18.1,orta,orta
+Karaman,Karaman,184493,207973,190000,205820,12.7,8.6,4.2,orta,içeri/uyumlu
+Kazımkarabekir,Karaman,4320,4679,13081,14188,8.3,25.6,-17.3,çok,orta
+Sarıveliler,Karaman,11622,11594,28715,31002,-0.2,19.7,-19.9,orta,orta
+Bahşili,Kırıkkale,6772,7353,18187,19504,8.6,19.4,-10.9,orta,orta
+Balışeyh,Kırıkkale,5782,5888,66963,71339,1.8,75.7,-73.8,çok,dışarı akış
+Çelebi,Kırıkkale,2183,2587,24414,25928,18.5,69.4,-50.8,çok,dışarı akış
+Delice,Kırıkkale,8376,10577,80719,85817,26.3,60.9,-34.6,çok,dışarı akış
+Karakeçili,Kırıkkale,3365,3062,12122,13079,-9.0,28.4,-37.4,çok,dışarı akış
+Keskin,Kırıkkale,16729,15841,121855,130039,-5.3,48.9,-54.2,çok,dışarı akış
+Kırıkkale,Kırıkkale,198132,192821,113476,119960,-2.7,3.3,-6.0,az,orta
+Sulakyurt,Kırıkkale,6685,5564,50393,53066,-16.8,40.0,-56.8,çok,dışarı akış
+Yahşihan,Kırıkkale,22247,39137,22644,24219,75.9,7.1,68.8,orta,içeri/uyumlu
+Batman,Batman,419253,517785,263132,312637,23.5,11.8,11.7,orta,içeri/uyumlu
+Beşiri,Batman,30129,31864,91841,104621,5.8,42.4,-36.7,çok,dışarı akış
+Gercüş,Batman,20278,18894,137377,161899,-6.8,120.9,-127.8,çok,dışarı akış
+Hasankeyf,Batman,6374,7152,29928,45640,12.2,246.5,-234.3,çok,dışarı akış
+Kozluk,Batman,60691,58781,139113,166841,-3.1,45.7,-48.8,çok,dışarı akış
+Sason,Batman,29908,28150,80885,96484,-5.9,52.2,-58.0,çok,dışarı akış
+Beytüşşebap,Şırnak,17100,13971,53073,61868,-18.3,51.4,-69.7,çok,dışarı akış
+Cizre,Şırnak,131816,166290,128210,159188,26.2,23.5,2.7,çok,içeri/uyumlu
+Güçlükonak,Şırnak,12267,12562,36090,43460,2.4,60.1,-57.7,çok,dışarı akış
+İdil,Şırnak,72946,76548,121560,147595,4.9,35.7,-30.8,çok,dışarı akış
+Silopi,Şırnak,121463,152610,101667,128358,25.6,22.0,3.7,orta,içeri/uyumlu
+Şırnak,Şırnak,92206,105697,120079,148288,14.6,30.6,-16.0,çok,orta
+Uludere,Şırnak,42386,45988,57612,68664,8.5,26.1,-17.6,çok,orta
+Amasra,Bartın,15067,13705,27378,28099,-9.0,4.8,-13.8,az,orta
+Bartın,Bartın,147472,163766,179302,185654,11.0,4.3,6.7,az,içeri/uyumlu
+Kurucaşile,Bartın,6759,6316,25347,26211,-6.6,12.8,-19.3,orta,orta
+Ulus,Bartın,21410,22876,100153,105001,6.8,22.6,-15.8,çok,orta
+Ardahan,Ardahan,41422,42136,162918,175723,1.7,30.9,-29.2,çok,dışarı akış
+Çıldır,Ardahan,9759,8048,75729,80343,-17.5,47.3,-64.8,çok,dışarı akış
+Damal,Ardahan,5554,4526,24232,25083,-18.5,15.3,-33.8,orta,dışarı akış
+Göle,Ardahan,26254,22038,146187,158997,-16.1,48.8,-64.9,çok,dışarı akış
+Hanak,Ardahan,9305,7668,62238,65151,-17.6,31.3,-48.9,çok,dışarı akış
+Posof,Ardahan,6971,5976,44794,48400,-14.3,51.7,-66.0,çok,dışarı akış
+Aralık,Iğdır,21495,18477,41326,46661,-14.0,24.8,-38.9,çok,dışarı akış
+Iğdır,Iğdır,133704,152455,156939,178226,14.0,15.9,-1.9,orta,içeri/uyumlu
+Karakoyunlu,Iğdır,13686,12614,29248,32456,-7.8,23.4,-31.3,çok,dışarı akış
+Tuzluca,Iğdır,23550,21525,97891,109484,-8.6,49.2,-57.8,çok,dışarı akış
+Altınova,Yalova,24140,35490,17150,17290,47.0,0.6,46.4,az,içeri/uyumlu
+Armutlu,Yalova,8492,11984,8727,8836,41.1,1.3,39.8,az,içeri/uyumlu
+Çiftlikköy,Yalova,34094,58589,18808,19455,71.8,1.9,69.9,az,içeri/uyumlu
+Çınarcık,Yalova,28092,40174,14264,14758,43.0,1.8,41.3,az,içeri/uyumlu
+Termal,Yalova,5869,7497,5891,6145,27.7,4.3,23.4,az,içeri/uyumlu
+Yalova,Yalova,132322,157901,62550,64596,19.3,1.5,17.8,az,içeri/uyumlu
+Eflani,Karabük,8499,8663,63976,66602,1.9,30.9,-29.0,çok,dışarı akış
+Eskipazar,Karabük,12493,12570,61822,64591,0.6,22.2,-21.5,orta,orta
+Karabük,Karabük,132658,135819,58193,60757,2.4,1.9,0.5,az,içeri/uyumlu
+Ovacık,Karabük,3107,3986,32116,33129,28.3,32.6,-4.3,çok,orta
+Safranbolu,Karabük,59800,69592,66358,67303,16.4,1.6,14.8,az,içeri/uyumlu
+Yenice,Karabük,20421,18984,57751,60961,-7.0,15.7,-22.8,orta,orta
+Elbeyli,Kilis,5852,5273,31150,37448,-9.9,107.6,-117.5,çok,dışarı akış
+Kilis,Kilis,106293,135430,183842,212693,27.4,27.1,0.3,çok,içeri/uyumlu
+Musabeyli,Kilis,13359,11692,59033,69191,-12.5,76.0,-88.5,çok,dışarı akış
+Polateli,Kilis,5151,4968,28004,32474,-3.6,86.8,-90.3,çok,dışarı akış
+Bahçe,Osmaniye,21115,22989,50060,55312,8.9,24.9,-16.0,çok,orta
+Düziçi,Osmaniye,80691,88274,120896,135528,9.4,18.1,-8.7,orta,orta
+Hasanbeyli,Osmaniye,4127,4914,18700,20565,19.1,45.2,-26.1,çok,dışarı akış
+Kadirli,Osmaniye,119857,127644,172155,184582,6.5,10.4,-3.9,orta,orta
+Osmaniye,Osmaniye,254116,284895,212991,251109,12.1,15.0,-2.9,orta,orta
+Sumbas,Osmaniye,14518,13049,41237,44276,-10.1,20.9,-31.1,orta,dışarı akış
+Toprakkale,Osmaniye,18449,22358,21278,23928,21.2,14.4,6.8,orta,içeri/uyumlu
+Akçakoca,Düzce,37570,41134,52812,54715,9.5,5.1,4.4,az,içeri/uyumlu
+Cumayeri,Düzce,13453,16162,23594,25546,20.1,14.5,5.6,orta,içeri/uyumlu
+Çilimli,Düzce,18834,19022,28537,29900,1.0,7.2,-6.2,orta,orta
+Düzce,Düzce,219533,267249,174234,182900,21.7,3.9,17.8,az,içeri/uyumlu
+Gölyaka,Düzce,20157,20840,38626,41197,3.4,12.8,-9.4,orta,orta
+Gümüşova,Düzce,14718,17344,23195,24471,17.8,8.7,9.2,orta,içeri/uyumlu
+Kaynaşlı,Düzce,20550,20379,33917,36110,-0.8,10.7,-11.5,orta,orta
+Yığılca,Düzce,15573,13492,40655,44357,-13.4,23.8,-37.1,çok,dışarı akış

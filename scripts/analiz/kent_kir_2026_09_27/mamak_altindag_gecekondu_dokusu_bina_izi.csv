@@ -1,0 +1,91 @@
+﻿mahalle,ilce,nufus,bina,bina_ha,kaplama_pct,medyan_taban_m2,kucuk_100m2_pay,buyuk_200m2_pay,buyuk_400m2_pay,sinif
+Aydıncık,Altındağ,223,1643,0.8,0.6,55,85,4,1,hala gecekondu dokusu
+Gicik,Altındağ,373,724,0.6,0.5,59,80,6,1,hala gecekondu dokusu
+Kavaklı,Altındağ,990,3774,1.6,1.6,60,77,8,3,hala gecekondu dokusu
+Peçenek,Altındağ,570,1171,0.7,0.7,59,75,12,4,hala gecekondu dokusu
+Tatlar,Altındağ,328,1080,1.0,1.3,63,72,13,7,hala gecekondu dokusu
+Karşıyaka,Mamak,2796,2669,0.8,0.9,75,63,12,3,hala gecekondu dokusu
+Bayındır,Mamak,369,593,0.2,0.2,69,63,12,3,hala gecekondu dokusu
+Kutludüğün,Mamak,4743,2884,0.4,0.5,74,57,15,2,hala gecekondu dokusu
+Atıfbey,Altındağ,1538,793,7.6,9.0,90,57,14,2,hala gecekondu dokusu
+Ortaköy,Mamak,671,1122,0.4,0.7,79,55,17,9,hala gecekondu dokusu
+Gökçeyurt,Mamak,968,1452,0.6,1.2,79,55,19,8,hala gecekondu dokusu
+Yukarı İmrohor,Mamak,190,349,0.7,1.9,90,55,22,9,hala gecekondu dokusu
+Kusunlar,Mamak,590,387,0.5,0.6,86,54,12,3,hala gecekondu dokusu
+Kızılca,Mamak,709,714,0.7,0.9,92,53,13,3,hala gecekondu dokusu
+Kıbrısköy,Mamak,9353,2768,0.8,1.1,101,50,14,5,hala gecekondu dokusu
+Dostlar,Mamak,651,920,7.6,8.2,103,48,7,1,hala gecekondu dokusu
+Şahap Gürler,Mamak,10267,1034,4.0,7.0,103,47,20,13,hala gecekondu dokusu
+Araplar,Mamak,4409,133,0.3,1.0,108,47,39,32,hala gecekondu dokusu
+Üreğil,Mamak,7118,221,0.5,2.6,110,47,35,26,hala gecekondu dokusu
+Solfasol,Altındağ,1311,1371,4.6,5.7,108,44,12,2,hala gecekondu dokusu
+Ege,Mamak,15407,639,2.4,8.8,110,44,28,22,hala gecekondu dokusu
+Karacaören,Altındağ,8910,1160,1.0,2.8,115,44,19,12,hala gecekondu dokusu
+Tepecik,Mamak,629,684,3.4,4.1,107,44,11,1,hala gecekondu dokusu
+Kale,Altındağ,3320,1077,14.4,31.7,115,43,29,14,hala gecekondu dokusu
+Şehit Cengiz Topel,Mamak,2085,293,9.6,19.2,115,43,30,14,hala gecekondu dokusu
+Lalahan,Mamak,2969,1292,0.8,1.8,130,43,24,9,hala gecekondu dokusu
+Baraj,Altındağ,21078,1061,0.9,3.1,122,42,37,24,hala gecekondu dokusu
+Derbent,Mamak,4554,205,1.3,4.8,120,42,32,21,hala gecekondu dokusu
+Köstence,Mamak,283,408,7.1,9.2,111,41,15,3,hala gecekondu dokusu
+Dutluk,Mamak,1384,116,2.8,7.6,123,41,25,9,hala gecekondu dokusu
+Mutlu,Mamak,27160,1918,14.1,29.5,118,40,36,17,hala gecekondu dokusu
+Çiğiltepe,Mamak,3917,495,0.7,2.9,151,40,45,35,hala gecekondu dokusu
+Yeni Bayındır,Mamak,15755,846,1.2,3.1,131,40,38,23,karma (kismen donusmus)
+Akşemsettin,Mamak,18574,842,5.1,17.9,118,40,37,26,karma (kismen donusmus)
+Feridun Çelik,Altındağ,15625,706,1.5,4.6,128,37,32,24,karma (kismen donusmus)
+Kayaş,Mamak,6396,937,2.4,5.7,143,37,40,15,karma (kismen donusmus)
+Zirvekent,Mamak,6853,291,0.4,1.4,342,37,57,46,karma (kismen donusmus)
+Hacı Bayram,Altındağ,6039,1056,4.0,27.1,169,35,46,31,karma (kismen donusmus)
+Boğaziçi,Mamak,6377,342,6.8,20.1,135,35,36,28,karma (kismen donusmus)
+Hacettepe,Altındağ,8097,800,6.2,30.1,207,33,51,26,karma (kismen donusmus)
+Gültepe,Altındağ,21675,936,4.2,14.1,182,32,47,28,karma (kismen donusmus)
+Diriliş,Mamak,11242,236,2.6,14.1,281,31,56,42,karma (kismen donusmus)
+Altınevler,Mamak,7233,176,3.6,22.2,280,31,53,45,karma (kismen donusmus)
+Yeşilbayır,Mamak,28885,1426,6.0,17.3,151,31,44,27,karma (kismen donusmus)
+Doğantepe,Altındağ,13253,1115,4.9,12.6,142,30,36,21,karma (kismen donusmus)
+Fahri Korutürk,Mamak,17315,524,6.8,28.8,219,29,51,40,karma (kismen donusmus)
+Hüseyingazi,Mamak,8625,349,2.4,12.1,316,29,59,41,karma (kismen donusmus)
+Küçük Kayaş,Mamak,19580,906,7.7,22.0,173,28,46,24,karma (kismen donusmus)
+Başpınar,Altındağ,23866,1127,6.1,20.5,141,28,35,25,karma (kismen donusmus)
+Karapürçek,Altındağ,85305,2742,2.5,10.0,415,27,65,52,karma (kismen donusmus)
+Zübeyde Hanım,Altındağ,15007,1291,3.9,19.0,250,26,61,31,karma (kismen donusmus)
+Bostancık,Mamak,3891,322,2.9,7.6,159,26,43,28,karma (kismen donusmus)
+Ulubey,Altındağ,5177,938,8.8,22.4,157,25,38,15,karma (kismen donusmus)
+Misket,Mamak,12278,436,7.9,27.2,378,25,64,43,karma (kismen donusmus)
+Başak,Mamak,35618,1530,4.6,14.8,190,25,49,38,karma (kismen donusmus)
+Yıldıztepe,Altındağ,29845,1693,7.6,24.1,167,24,45,32,karma (kismen donusmus)
+Şirintepe,Mamak,9050,313,7.1,25.7,373,24,62,43,karma (kismen donusmus)
+Beşikkaya,Altındağ,38916,1400,4.8,17.3,358,22,60,45,donusmus (apartman)
+Harman,Mamak,8399,450,6.1,20.6,268,21,59,30,donusmus (apartman)
+Çağlayan,Mamak,7903,255,5.8,24.0,415,21,71,51,donusmus (apartman)
+Ekin,Mamak,15257,805,6.8,20.8,288,20,59,32,donusmus (apartman)
+Hürel,Mamak,10156,293,7.4,26.6,369,20,69,45,donusmus (apartman)
+Önder,Altındağ,2047,924,4.0,42.1,247,20,57,39,donusmus (apartman)
+Türközü,Mamak,13883,526,6.8,26.4,361,20,67,44,donusmus (apartman)
+Kartaltepe,Mamak,6629,233,7.6,29.6,404,19,73,50,donusmus (apartman)
+Bahçeleriçi,Mamak,7841,183,5.1,27.8,472,18,77,63,donusmus (apartman)
+Durali Alıç,Mamak,39906,648,4.6,31.2,599,17,75,70,donusmus (apartman)
+Şahintepe,Mamak,27844,844,10.8,40.1,394,17,80,47,donusmus (apartman)
+Mehtap,Mamak,7209,256,7.1,25.4,334,16,75,35,donusmus (apartman)
+General Zeki Doğan,Mamak,31929,933,7.3,28.6,369,16,80,41,donusmus (apartman)
+Altıağaç,Mamak,9696,226,5.3,28.3,456,15,76,58,donusmus (apartman)
+Örnek,Altındağ,20058,893,5.2,24.0,303,15,72,35,donusmus (apartman)
+Karaağaç,Mamak,7121,187,5.7,27.5,404,15,77,53,donusmus (apartman)
+Battalgazi,Altındağ,35293,1495,8.1,30.4,362,15,67,46,donusmus (apartman)
+Güneşevler,Altındağ,35757,1060,5.6,31.0,480,15,78,60,donusmus (apartman)
+Cengizhan,Mamak,27584,487,4.6,32.3,568,15,79,72,donusmus (apartman)
+Kutlu,Mamak,21448,586,9.5,39.2,432,13,82,58,donusmus (apartman)
+Tuzluçayır,Mamak,12176,391,8.6,37.2,429,12,83,61,donusmus (apartman)
+Bahçelerüstü,Mamak,12240,326,9.3,37.1,407,12,85,52,donusmus (apartman)
+Akdere,Mamak,10096,338,9.1,33.3,361,12,81,33,donusmus (apartman)
+Gülveren,Mamak,9439,263,8.5,36.4,427,11,83,58,donusmus (apartman)
+Kazım Orbay,Mamak,11012,277,7.6,33.9,442,11,85,64,donusmus (apartman)
+Peyami Safa,Mamak,17433,455,9.4,39.5,415,11,88,53,donusmus (apartman)
+Şafaktepe,Mamak,10445,329,5.9,26.0,389,10,84,48,donusmus (apartman)
+Demirlibahçe,Mamak,13149,470,8.9,33.8,338,10,87,29,donusmus (apartman)
+Aydınlıkevler,Altındağ,23471,1282,6.9,24.7,318,9,85,23,donusmus (apartman)
+Saimekadın,Mamak,8301,308,10.7,37.0,322,7,91,19,donusmus (apartman)
+Aşık Veysel,Mamak,13542,365,8.1,38.8,420,6,93,55,donusmus (apartman)
+Abidinpaşa,Mamak,11289,451,11.4,38.2,328,6,93,18,donusmus (apartman)
+Balkiraz,Mamak,9508,429,8.2,33.9,328,5,90,27,donusmus (apartman)
