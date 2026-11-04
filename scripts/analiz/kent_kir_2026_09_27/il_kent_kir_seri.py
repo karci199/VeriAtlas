@@ -67,6 +67,11 @@ with open(DATA / "areas_tr_districts.csv", encoding="utf-8") as f:
         if r["area_id"].startswith(PREFIX)
     }
 
+# The registry also lists districts abolished in 2013 (Mardin Merkez); only those with units today count.
+districts = {
+    k: v for k, v in districts.items() if any(a.startswith(k + "-") for a in decisions)
+}
+
 con = duckdb.connect(WAREHOUSE, read_only=True)
 cells = collections.defaultdict(dict)
 for area, year, dims, value in con.execute(
@@ -124,46 +129,85 @@ def find_place(district, name):
     return hits.pop() if len(hits) == 1 else None
 
 
+def find_elsewhere(name):
+    """The same place name in another district today: a town moved when districts were redrawn."""
+    k = key(name)
+    hits = [(d, towns[d][k]) for d in towns if k in towns[d]] or [
+        (d, units[d][k]) for d in units if k in units[d]
+    ]
+    classes = {decisions[a]["s"] for _, a in hits}
+    return (classes.pop(), hits[0][0]) if len(classes) == 1 else None
+
+
 def resolve(area):
+    """Rule, class today and the district that holds the place today."""
     r = registry.get(area, {})
-    district = area[:9]
+    district = area.rsplit("-", 1)[0]
     code = area.rsplit("-", 1)[1]
     for offset in (2000000, -2000000):
         other = f"{district}-{int(code) + offset}" if code.isdigit() else None
         if other in decisions:
-            return "code", decisions[other]["s"]
+            return "code", decisions[other]["s"], district
     words = tokens(r.get("name_tr"))
     municipality = (r.get("municipality") or "").replace(" Bel.", "")
     is_village = r.get("kind") == "villages"
-    if not is_village and municipality and municipality != districts[district]:
-        return "former_town", find_place(district, municipality) or "Köy"
+    if not is_village and municipality and municipality != districts.get(district):
+        place = find_place(district, municipality)
+        if place:
+            return "former_town", place, district
+        moved = find_elsewhere(municipality)
+        if moved:
+            return "former_town_moved", moved[0], moved[1]
+        return "former_town_default", "Köy", district
     if is_village:
         for i in range(len(words)):
             joined = "".join(words[i:])
             if joined in units[district]:
-                return "village_name", decisions[units[district][joined]]["s"]
+                return "village_name", decisions[units[district][joined]]["s"], district
+        moved = find_elsewhere(r.get("name_tr"))
+        if moved and district not in districts:
+            return "village_moved", moved[0], moved[1]
     for i in range(len(words) - 1, 0, -1):
         if " ".join(words[:i]) in GENERIC:
             continue
         joined = "".join(words[:i])
         hit = towns[district].get(joined) or units[district].get(joined)
         if hit:
-            return "leading_name", decisions[hit]["s"]
+            return "leading_name", decisions[hit]["s"], district
     if is_village:
-        return "village_default", "Köy"
-    if municipality == districts[district] and r.get("first_seen", "9999") <= "2012":
+        return "village_default", "Köy", district
+    if (
+        municipality == districts.get(district)
+        and r.get("first_seen", "9999") <= "2012"
+    ):
         place = find_place(district, r.get("name_tr"))
-        return "district_municipality", "İlçe Merkezi" if place in (
-            None,
-            "İlçe Merkezi",
-        ) else place
+        return (
+            "district_municipality",
+            "İlçe Merkezi"
+            if place
+            in (
+                None,
+                "İlçe Merkezi",
+            )
+            else place,
+            district,
+        )
     place = find_place(district, r.get("name_tr"))
-    return ("late_name", place) if place else ("unresolved", None)
+    return ("late_name", place, district) if place else ("unresolved", None, district)
 
 
 retired = {a: resolve(a) for a in cells if a not in decisions}
+# A retired district's leftovers go to the district that took most of its places.
+old_district = collections.defaultdict(collections.Counter)
+for area, (_, _, d) in retired.items():
+    home = area.rsplit("-", 1)[0]
+    if home not in districts and d in districts:
+        old_district[home][d] += 1
+for area, (rule, cls, d) in retired.items():
+    if d not in districts:
+        retired[area] = (rule, cls, old_district[d].most_common(1)[0][0])
 rules = collections.defaultdict(collections.Counter)
-for area, (rule, _) in retired.items():
+for area, (rule, _, _) in retired.items():
     rules[rule]["ids"] += 1
     for year in (2012, 2017, 2022):
         rules[rule][year] += population(area, year)
@@ -171,16 +215,23 @@ for rule, counts in rules.items():
     print(rule, dict(counts))
 print(
     "unresolved",
-    [registry.get(a, {}).get("name_tr") for a, (_, c) in retired.items() if c is None],
+    [
+        registry.get(a, {}).get("name_tr")
+        for a, (_, c, _) in retired.items()
+        if c is None
+    ],
 )
+print("old districts", {k: dict(v) for k, v in old_district.items()})
 
 raw = collections.defaultdict(
     lambda: collections.Counter()
 )  # (district, class) -> year -> people
 for area in cells:
-    cls = decisions[area]["s"] if area in decisions else retired[area][1]
+    cls, target = (
+        (decisions[area]["s"], area[:9]) if area in decisions else retired[area][1:]
+    )
     for year in YEARS:
-        raw[(area[:9], cls)][year] += population(area, year)
+        raw[(target, cls)][year] += population(area, year)
 
 fixed = {k: collections.Counter(v) for k, v in raw.items()}
 for year in PRE_LOCAL_ELECTION:
