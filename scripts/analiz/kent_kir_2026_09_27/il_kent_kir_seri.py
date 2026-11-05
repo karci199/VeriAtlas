@@ -14,6 +14,9 @@ Two corrections to the raw series:
    years are replaced per district and class by the mean of the neighbouring years, then scaled
    to the year's real total. The raw series is kept beside the corrected one.
 
+3. One-year blips in other years, per district and class: off the mean of the neighbouring years
+   by 10% and 100 people while those two years agree. Replaced by the mean, scaled to the total.
+
 Writes il_kent_kir_seri_<plate>.csv and il_kent_kir_seri_<plate>_ilce.csv next to this file.
 
 Run:  python il_kent_kir_seri.py 38
@@ -234,9 +237,38 @@ for area in cells:
         raw[(target, cls)][year] += population(area, year)
 
 fixed = {k: collections.Counter(v) for k, v in raw.items()}
+
+# One-year blips first (Yıldızeli 2014: three centre neighbourhoods jump by half and fall back),
+# judged against the nearest years outside the election years, worst first, so an election-year
+# mean is not built on a blip and a real change of level is left alone.
+BLIP_SHARE, BLIP_PEOPLE = 0.10, 100
+CLEAN = [y for y in YEARS if y not in PRE_LOCAL_ELECTION]
+blips = []
+for k, v in fixed.items():
+    for _ in range(len(CLEAN)):
+        worst = None
+        for before, year, after in zip(CLEAN, CLEAN[1:], CLEAN[2:]):
+            mean = (v[before] + v[after]) / 2
+            off = abs(v[year] - mean)
+            if (
+                mean
+                and off >= max(BLIP_SHARE * mean, BLIP_PEOPLE)
+                and abs(v[before] - v[after]) <= BLIP_SHARE * mean
+                and (worst is None or off > worst[0])
+            ):
+                worst = (off, year, mean)
+        if worst is None:
+            break
+        blips.append(
+            (districts.get(k[0]), k[1], worst[1], round(v[worst[1]]), round(worst[2]))
+        )
+        v[worst[1]] = worst[2]
+print("one-year blips", blips)
+
 for year in PRE_LOCAL_ELECTION:
-    for k, v in raw.items():
-        fixed[k][year] = (v[year - 1] + v[year + 1]) / 2
+    for v in fixed.values():
+        v[year] = (v[year - 1] + v[year + 1]) / 2
+for year in YEARS:
     scale = sum(v[year] for v in raw.values()) / sum(v[year] for v in fixed.values())
     for v in fixed.values():
         v[year] *= scale

@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kent/Kır Uydu Haritası</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<style>
+  :root { --bg:#0f1720; --panel:#17212b; --ink:#e8eef4; --mute:#93a4b5; --line:#2a3947; }
+  * { box-sizing:border-box; }
+  html, body { height:100%; margin:0; background:var(--bg); color:var(--ink); font:14px/1.4 system-ui, "Segoe UI", sans-serif; }
+  #bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:8px 12px; background:var(--panel); border-bottom:1px solid var(--line); }
+  #bar label { color:var(--mute); font-size:12px; display:flex; align-items:center; gap:4px; }
+  select, input[type=search] { background:#0f1720; color:var(--ink); border:1px solid var(--line); border-radius:6px; padding:5px 8px; font:inherit; }
+  #map { position:absolute; top:46px; bottom:0; left:0; right:0; background:#0b1118; }
+  .panel { position:absolute; z-index:1000; background:rgba(23,33,43,.94); border:1px solid var(--line); border-radius:8px; padding:10px 12px; max-width:320px; }
+  #legend { left:12px; bottom:28px; }
+  #legend div.row { display:flex; align-items:center; gap:8px; margin:3px 0; }
+  #legend i { width:14px; height:14px; border-radius:3px; display:inline-block; border:2px solid; }
+  #legend b { font-variant-numeric:tabular-nums; }
+  #legend small { color:var(--mute); }
+  #info { right:12px; top:58px; min-width:250px; display:none; }
+  #info h3 { margin:0 0 4px; font-size:15px; }
+  #info dl { margin:6px 0 0; display:grid; grid-template-columns:auto 1fr; gap:2px 10px; }
+  #info dt { color:var(--mute); } #info dd { margin:0; }
+  #info .note { color:var(--mute); font-size:12px; margin-top:6px; max-height:90px; overflow:auto; }
+  #msg { left:50%; top:58px; transform:translateX(-50%); display:none; }
+  .lbl { background:rgba(10,16,22,.82); color:#fff; border:2px solid var(--c,#b0b8c0); border-radius:4px; font-weight:600; font-size:12px; padding:1px 5px; white-space:nowrap; text-shadow:0 0 3px #000; transform:translate(-50%,-50%); display:inline-block; }
+  .lbl small { font-weight:400; opacity:.8; margin-left:4px; }
+  .leaflet-tooltip.tip { background:rgba(15,23,32,.92); color:#fff; border:1px solid #3a4b5c; }
+  #info { max-height:calc(100% - 80px); overflow:auto; max-width:340px; }
+  .btns { display:flex; flex-wrap:wrap; gap:5px; margin:8px 0; }
+  .btns button { border:2px solid; background:transparent; color:var(--ink); border-radius:6px; padding:4px 8px; cursor:pointer; font:inherit; }
+  .btns button.on { color:#0f1720; font-weight:600; }
+  #info input { width:100%; margin:2px 0; background:#0f1720; color:var(--ink); border:1px solid var(--line); border-radius:6px; padding:4px 6px; font:inherit; }
+  .blk { border-top:1px solid var(--line); margin-top:8px; padding-top:6px; }
+  .blk h4 { margin:0 0 3px; font-size:12px; color:var(--mute); text-transform:uppercase; letter-spacing:.04em; }
+  .bar { height:8px; background:#0f1720; border-radius:4px; overflow:hidden; display:flex; margin:3px 0; }
+  .bar i { display:block; height:100%; }
+  #sv { color:var(--mute); font-size:12px; min-height:16px; }
+  #tbl { position:absolute; top:46px; bottom:0; left:0; right:0; overflow:auto; background:var(--bg); display:none; z-index:1500; }
+  #tbl table { border-collapse:separate; border-spacing:0; width:100%; font-size:13px; }
+  #tbl tbody tr:nth-child(even) { background:rgba(255,255,255,.03); } #tbl tbody tr:hover { background:rgba(79,195,247,.15); cursor:pointer; }
+  #tbl td.first { position:sticky; left:0; background:var(--bg); font-weight:600; } #tbl th.num { text-align:right; }
+  #tbl tfoot td { position:sticky; bottom:0; background:var(--panel); font-weight:600; border-top:2px solid var(--line); }
+  .dot { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; }
+  #tbl th, #tbl td { padding:6px 12px; border-bottom:1px solid var(--line); white-space:nowrap; text-align:left; }
+  #tbl th { position:sticky; top:0; z-index:2; background:var(--panel); cursor:pointer; user-select:none; }
+  #tbl td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  @media (max-width:640px) { #info { left:12px; right:12px; top:auto; bottom:150px; max-width:none; } }
+</style>
+</head>
+<body>
+<div id="bar">
+  <label>İl <select id="il"></select></label>
+  <label>İlçe <select id="ilce"></select></label>
+  <label><input type="checkbox" id="multi"> çoklu seç (Shift+tık)</label>
+  <label>renk <select id="mode"><option value="sinif">4 sınıf (merkez · kentsel belde · kırsal belde · köy)</option><option value="kentkir">kent / kır</option><option value="kentlesme">kentleşme oranı (ilçe)</option><option value="kazanan">2023 kazanan parti</option><option value="AK PARTİ">AK Parti oyu</option><option value="CHP">CHP oyu</option><option value="MHP">MHP oyu</option><option value="İYİ PARTİ">İYİ Parti oyu</option><option value="YEŞİL SOL PARTİ">Yeşil Sol oyu</option><option value="YENİDEN REFAH">Yeniden Refah oyu</option><option value="yas">ortanca yaş</option></select></label>
+  <label><input type="checkbox" id="fill" checked> dolgu</label>
+  <label>adlar <select id="names"><option value="all">her zaman (yakında)</option><option value="hover">yalnız üstüne gelince</option></select></label>
+  <label><input type="checkbox" id="sat" checked> uydu (kapalı = düz zemin)</label>
+  <button id="tb">Tablo</button> <select id="tscope" title="tablo kapsamı"><option value="ilce">tablo: seçili ilçe</option><option value="il">tablo: tüm il</option></select> <small style="color:var(--mute)">M = merkez · K = köy (fare üstündeki ya da seçililer)</small>
+  <input type="search" id="q" placeholder="mahalle ara…" list="dl">
+  <datalist id="dl"></datalist>
+</div>
+<div id="map"></div>
+<div id="tbl"></div>
+<div id="legend" class="panel"></div>
+<div id="info" class="panel"></div>
+<div id="msg" class="panel"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+const KARAR_URL = "/scripts/analiz/kent_kir_2026_09_27/kullanici_karar.json";
+const KONTROL_URL = "/public/kentkir_kontrol.json";
+const GEO = id => `/public/geo/neighbourhoods/${id}.geojson`;
+const CLS = {
+  "İlçe Merkezi":  {c:"#ff4d4d", t:"Merkez"},
+  "İl Merkezi":    {c:"#ff4d4d", t:"İl merkezi"},
+  "Kentsel Belde": {c:"#ffa726", t:"Kentsel belde"},
+  "Kırsal Belde":  {c:"#7bd88f", t:"Kırsal belde"},
+  "Köy":           {c:"#4fc3f7", t:"Köy"},
+};
+const NONE = {c:"#b0b8c0", t:"Karar yok"};
+const $ = id => document.getElementById(id);
+const fmt = n => n == null ? "–" : Math.round(n).toLocaleString("tr-TR");
+
+const sel = new Set();
+let hov = null;
+let karar = {}, rows = new Map(), nameIdx = new Map(), tree = {}, layer = null, casing = null, labels = null, feats = [];
+
+const map = L.map("map", {zoomControl:true, preferCanvas:true}).setView([40.43, 29.72], 13);
+const esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {maxZoom:19, attribution:"Esri World Imagery"}).addTo(map);
+const roads = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}", {maxZoom:19, opacity:.9}).addTo(map);
+const osm = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {maxNativeZoom:16, maxZoom:19, attribution:"Esri World Light Gray"});
+const osmLbl = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}", {maxNativeZoom:16, maxZoom:19, opacity:.9});
+
+function msg(t) { const m = $("msg"); m.textContent = t; m.style.display = t ? "block" : "none"; }
+
+async function init() {
+  msg("Veri yükleniyor…");
+  const [k, c] = await Promise.all([fetch(KARAR_URL).then(r => r.json()), fetch(KONTROL_URL).then(r => r.json())]);
+  karar = k;
+  const ix = Object.fromEntries(c.keys.map((n, i) => [n, i]));
+  for (const r of c.rows) {
+    const id = r[0], did = id.slice(0, id.lastIndexOf("-"));
+    rows.set(id, Object.fromEntries(c.keys.map((n, i) => [n, r[i]])));
+    const nk = did + "|" + r[ix.ad]; nameIdx.set(nk, nameIdx.has(nk) ? null : id);
+    ((tree[r[ix.il]] ??= {})[r[ix.ilce]] ??= {id:did});
+  }
+  const ils = Object.keys(tree).sort((a, b) => a.localeCompare(b, "tr"));
+  const withDecision = new Set(Object.keys(karar).map(a => rows.get(a)?.il).filter(Boolean));
+  $("il").innerHTML = ils.map(i => `<option value="${i}">${i}${withDecision.has(i) ? " ✓" : ""}</option>`).join("");
+  const q = new URLSearchParams(location.hash.slice(1));
+  $("il").value = q.get("il") || "Bursa";
+  fillIlce(q.get("ilce") || "İznik");
+  msg("");
+  load();
+}
+function fillIlce(pref) {
+  const il = $("il").value, names = Object.keys(tree[il]).sort((a, b) => a.localeCompare(b, "tr"));
+  $("ilce").innerHTML = `<option value="*">— tüm il —</option>` + names.map(i => `<option>${i}</option>`).join("");
+  $("ilce").value = pref === "*" || (pref && names.includes(pref)) ? pref : names[0];
+}
+async function load() {
+  const il = $("il").value, ilce = $("ilce").value;
+  location.hash = `il=${encodeURIComponent(il)}&ilce=${encodeURIComponent(ilce)}`;
+  if (ilce === "*" && $("sat").checked) { $("sat").checked = false; $("sat").onchange(); }
+  msg(ilce === "*" ? "Tüm il sınırları yükleniyor…" : "Sınırlar yükleniyor…");
+  const list = ilce === "*" ? Object.values(tree[il]).map(x => x.id) : [tree[il][ilce].id];
+  const gs = await Promise.all(list.map(id => fetch(GEO(id)).then(r => r.json()).then(g => [id, g.features])));
+  feats = [];
+  for (const [id, fs] of gs) {
+    // village polygons carry a different id than the table row: match by district + name
+    for (const f of fs) { const a = f.properties.area_id; if (!rows.has(a)) { const m = nameIdx.get(id + "|" + f.properties.name_tr); if (m) { f.properties.geo_id = a; f.properties.area_id = m; } } }
+    feats.push(...fs);
+  }
+  draw(true);
+  msg("");
+}
+const PCOL = {"AK PARTİ":"#ffb300", "CHP":"#ef5350", "MHP":"#7e57c2", "İYİ PARTİ":"#26c6da", "YEŞİL SOL PARTİ":"#66bb6a", "YENİDEN REFAH":"#8d6e63"};
+const mix = (a, b, t) => { const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)), x = p(a), y = p(b); return "#" + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, "0")).join(""); };
+const YAS = [[20, "#2962ff"], [30, "#26c6da"], [38, "#ffee58"], [46, "#ff9800"], [58, "#d50000"]];
+function yasCol(v) { if (v == null || v <= 0) return null; if (v <= YAS[0][0]) return YAS[0][1]; for (let i = 1; i < YAS.length; i++) if (v <= YAS[i][0]) return mix(YAS[i - 1][1], YAS[i][1], (v - YAS[i - 1][0]) / (YAS[i][0] - YAS[i - 1][0])); return YAS[YAS.length - 1][1]; }
+const kcache = new Map();
+function kentOran(il, ilce) {
+  const key = il + "|" + ilce; if (kcache.has(key)) return kcache.get(key);
+  let k = 0, t = 0; for (const r of rows.values()) if (r.il === il && r.ilce === ilce && karar[r.id]) { t += r.n || 0; if (/Merkez|Kentsel/.test(karar[r.id].s)) k += r.n || 0; }
+  const v = t ? 100 * k / t : null; kcache.set(key, v); return v;
+}
+const KENT = [[0, "#ffffcc"], [25, "#a1dab4"], [50, "#41b6c4"], [75, "#2c7fb8"], [100, "#253494"]];
+function kentCol(v) { if (v == null) return null; for (let i = 1; i < KENT.length; i++) if (v <= KENT[i][0]) return mix(KENT[i - 1][1], KENT[i][1], (v - KENT[i - 1][0]) / (KENT[i][0] - KENT[i - 1][0])); return KENT[4][1]; }
+function paint(f) {
+  const a = f.properties.area_id, k = karar[a], r = rows.get(a) || {}, m = $("mode").value;
+  if (m === "sinif") { const cl = k ? (CLS[k.s] || NONE) : NONE; return {c:cl.c, set:!!k, t:cl.t}; }
+  if (m === "kentkir") { if (!k) return {c:NONE.c, set:false, t:"Karar yok"}; const kent = k.s === "İlçe Merkezi" || k.s === "İl Merkezi" || k.s === "Kentsel Belde"; return {c:kent ? "#ff5252" : "#4fc3f7", set:true, t:kent ? "Kent" : "Kır"}; }
+  if (m === "kentlesme") { const v = kentOran(r.il, r.ilce); const c = kentCol(v); return {c:c || NONE.c, set:!!c, t:v == null ? "karar yok" : r.ilce + " kentleşme %" + v.toFixed(1)}; }
+  if (m === "kazanan") { const w = r.win; return {c:PCOL[w] || (w ? "#9e9e9e" : NONE.c), set:!!w, t:w ? "kazanan " + w : "seçim verisi yok"}; }
+  if (m === "yas") { const c = yasCol(r.med); return {c:c || NONE.c, set:!!c, t:r.med > 0 ? "ortanca yaş " + (+r.med).toFixed(1) : "yaş verisi yok"}; }
+  const v = r[m]; if (v == null) return {c:NONE.c, set:false, t:"seçim verisi yok"};
+  return {c:mix("#ffffff", PCOL[m] || "#9e9e9e", Math.min(1, v / 65)), set:true, t:m + " %" + (+v).toFixed(1)};
+}
+function bw() { const z = map.getZoom(); return z < 10 ? 0.5 : z < 12 ? 0.9 : z < 14 ? 1.6 : 2.6; }
+function style(f, hover) {
+  const on = sel.has(f.properties.area_id), p = paint(f), w = bw(), sat = $("sat").checked;
+  if (!sat) return {color:on ? "#ffe600" : "#ffffff", weight:on ? w + 2 : hover ? w + 1.5 : Math.max(.5, w * .55), opacity:1, dashArray:null,
+    fillColor:p.c, fillOpacity:!$("fill").checked ? .05 : p.set ? (hover ? 1 : .93) : (hover ? .6 : .35)};
+  return {color:on ? "#ffe600" : "#ff1f1f", weight:on ? w + 3 : hover ? w + 2 : w, opacity:map.getZoom() < 10 ? .6 : .9, dashArray:null,
+    fillColor:p.c, fillOpacity:!$("fill").checked ? (hover ? .2 : .02) : p.set ? (hover ? .85 : $("mode").value === "sinif" ? (/Köy/.test(p.t) ? .3 : .45) : .55) : (hover ? .2 : .03)};
+}
+function draw(fit) {
+  kcache.clear();
+  if (casing) map.removeLayer(casing);
+  if (layer) map.removeLayer(layer);
+  if (labels) map.removeLayer(labels);
+  casing = L.geoJSON({type:"FeatureCollection", features:feats}, {interactive:false, style:{color:"#fff", weight:bw() + 2.5, opacity:map.getZoom() < 12 || !$("sat").checked ? 0 : .9, fill:false}}).addTo(map);
+  layer = L.geoJSON({type:"FeatureCollection", features:feats}, {
+    style: f => style(f, false),
+    onEachFeature: (f, l) => {
+      const a = f.properties.area_id, r = rows.get(a), k = karar[a], cl = k ? (CLS[k.s] || NONE) : NONE;
+      l.bindTooltip(() => `<b>${f.properties.name_tr}</b> <small>${r?.ilce || ""}</small><br>${cl.t}${k?.y ? " · " + k.y : ""}<br>${$("mode").value === "sinif" ? "" : paint(f).t + "<br>"}${fmt(r?.n)} kişi`, {sticky:true, className:"tip"});
+      l.on("mouseover", () => { hov = f; l.setStyle(style(f, true)); });
+      l.on("mouseout", () => { if (hov === f) hov = null; l.setStyle(style(f, false)); });
+      l.on("click", e => {
+        const a2 = f.properties.area_id;
+        if (e.originalEvent.shiftKey || e.originalEvent.ctrlKey || $("multi").checked) { sel.has(a2) ? sel.delete(a2) : sel.add(a2); layer.setStyle(g => style(g, false)); showMulti(); }
+        else { sel.clear(); layer.setStyle(g => style(g, false)); show(f); }
+      });
+    }
+  }).addTo(map);
+  labels = L.layerGroup();
+  for (const f of feats) {
+    const c = L.geoJSON(f).getBounds().getCenter();
+    L.marker(c, {interactive:false, icon:L.divIcon({className:"", html:`<span class="lbl" style="--c:${(karar[f.properties.area_id] ? (CLS[karar[f.properties.area_id].s] || NONE) : NONE).c}">${f.properties.name_tr}<small>${fmt(rows.get(f.properties.area_id)?.n)}</small></span>`, iconSize:[0, 0]})}).addTo(labels);
+  }
+  syncLabels();
+  if (fit) map.fitBounds(layer.getBounds(), {padding:[20, 20]});
+  $("dl").innerHTML = feats.map(f => `<option value="${f.properties.name_tr}">`).join("");
+  legend();
+}
+function legend() {
+  const m = $("mode").value, title = `<b>${$("ilce").value === "*" ? $("il").value + " (tüm il)" : $("ilce").value}</b>`;
+  let tot = 0; for (const f of feats) tot += rows.get(f.properties.area_id)?.n || 0;
+  const head = `${title} <small>${fmt(tot)} kişi</small>`;
+  const grad = (stops, lo, hi, unit) => `<div style="height:10px;border-radius:5px;margin:6px 0 2px;background:linear-gradient(90deg,${stops.join(",")})"></div><small>${lo} ${unit}<span style="float:right">${hi} ${unit}</span></small>`;
+  if (m === "kentlesme") {
+    const seen = new Map(); for (const f of feats) { const r = rows.get(f.properties.area_id); if (r) seen.set(r.ilce, kentOran(r.il, r.ilce)); }
+    const lst = [...seen].filter(x => x[1] != null).sort((a, b) => b[1] - a[1]);
+    let k = 0, t = 0; for (const f of feats) { const r = rows.get(f.properties.area_id); if (r && karar[r.id]) { t += r.n; if (/Merkez|Kentsel/.test(karar[r.id].s)) k += r.n; } }
+    $("legend").innerHTML = head + `<div style="margin-top:4px">kentleşme oranı <b>%${t ? (100 * k / t).toFixed(1) : "–"}</b> (merkez + kentsel belde)</div>` + grad(KENT.map(x => x[1]), "0", "100", "%") +
+      (lst.length > 1 ? `<div style="margin-top:6px;max-height:140px;overflow:auto;font-size:12px">` + lst.map(x => `<div>${x[0]} <b>%${x[1].toFixed(0)}</b></div>`).join("") + `</div>` : "");
+    return;
+  }
+  if (m === "yas") {
+    let sw = 0, sp = 0; for (const f of feats) { const r = rows.get(f.properties.area_id); if (r && r.med > 0) { sw += r.med * r.n; sp += r.n; } }
+    $("legend").innerHTML = head + `<div style="margin-top:4px">nüfus ağırlıklı ortanca yaş <b>${sp ? (sw / sp).toFixed(1) : "–"}</b></div>` + grad(YAS.map(x => x[1]), "≤20", "≥58", "yaş");
+    return;
+  }
+  if (PCOL[m]) {
+    let g = 0, v = 0; for (const f of feats) { const r = rows.get(f.properties.area_id); if (r && r[m] != null && r.g23) { g += r.g23; v += r.g23 * r[m] / 100; } }
+    $("legend").innerHTML = head + `<div style="margin-top:4px">${m} <b>%${g ? (100 * v / g).toFixed(1) : "–"}</b> (geçerli oy)</div>` + grad(["#ffffff", PCOL[m]], "0", "65", "%");
+    return;
+  }
+  const agg = {};
+  for (const f of feats) {
+    const r = rows.get(f.properties.area_id), p = paint(f);
+    const key = m === "kazanan" ? (r?.win || "seçim verisi yok") : p.t, e = (agg[key] ??= {c:p.c, n:0, p:0}); e.n++; e.p += r?.n || 0;
+  }
+  const order = m === "sinif" ? ["Merkez", "Kentsel belde", "Kırsal belde", "Köy", "Karar yok"] : m === "kentkir" ? ["Kent", "Kır", "Karar yok"] : Object.keys(agg).sort((x, y) => agg[y].p - agg[x].p);
+  $("legend").innerHTML = head + order.filter(o => agg[o]).map(o =>
+    `<div class="row"><i style="border-color:${agg[o].c};background:${agg[o].c}66"></i>${o} <b>${agg[o].n}</b> <small>${fmt(agg[o].p)} (%${tot ? Math.round(100 * agg[o].p / tot) : 0})</small></div>`).join("");
+}
+let cur = null;
+async function quick(ids, cls) {
+  const batch = Object.fromEntries(ids.map(a => [a, {s:cls}]));
+  try {
+    const r = await fetch("/karar", {method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify(batch)});
+    if (!r.ok) throw new Error(r.status);
+    const j = await r.json();
+    for (const a of ids) karar[a] = {s:cls};
+    sel.clear(); draw(false);
+    msg(`${ids.length} mahalle ${CLS[cls].t} · ${fmt(j.kayit)} karar`); setTimeout(() => msg(""), 1500);
+  } catch (e) { msg("KAYDEDİLEMEDİ: " + e.message); }
+}
+document.addEventListener("keydown", e => {
+  if (e.ctrlKey || e.metaKey || e.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
+  const cls = {m:"İlçe Merkezi", k:"Köy"}[e.key.toLowerCase()];
+  if (!cls) return;
+  const ids = sel.size ? [...sel] : hov ? [hov.properties.area_id] : cur ? [cur.properties.area_id] : [];
+  if (ids.length) { e.preventDefault(); quick(ids, cls); }
+});
+function showMulti() {
+  if (!sel.size) { $("info").style.display = "none"; return; }
+  const ids = [...sel], tot = ids.reduce((t, a) => t + (rows.get(a)?.n || 0), 0);
+  const names = [...new Set(Object.values(karar).map(k => k.y).filter(Boolean))].sort((x, y) => x.localeCompare(y, "tr"));
+  const classes = ["İlçe Merkezi", "İl Merkezi", "Kentsel Belde", "Kırsal Belde", "Köy"];
+  $("info").innerHTML = `<h3>${ids.length} mahalle seçili</h3><small>${fmt(tot)} kişi</small>
+    <div class="note" style="max-height:80px">${ids.map(a => rows.get(a)?.ad).join(", ")}</div>
+    <input id="ky" list="kdl" placeholder="belde / küme adı (hepsine)"><datalist id="kdl">${names.map(n => `<option value="${n}">`).join("")}</datalist>
+    <input id="kn" placeholder="not (hepsine)">
+    <div class="btns">${classes.map(c => `<button data-s="${c}" style="border-color:${CLS[c].c}">${CLS[c].t}</button>`).join("")}<button data-s="" style="border-color:#888">Sil</button><button data-x="1" style="border-color:#888">Seçimi bırak</button></div><div id="sv"></div>`;
+  $("info").style.display = "block";
+  for (const b of $("info").querySelectorAll(".btns button")) b.onclick = () => b.dataset.x ? (sel.clear(), layer.setStyle(g => style(g, false)), showMulti()) : saveMany(ids, b.dataset.s);
+}
+async function saveMany(ids, s) {
+  const y = $("ky").value.trim(), n = $("kn").value.trim(), batch = {};
+  for (const a of ids) batch[a] = s ? {s, y, n} : {};
+  $("sv").textContent = "kaydediliyor…";
+  try {
+    const r = await fetch("/karar", {method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify(batch)});
+    if (!r.ok) throw new Error(r.status);
+    const j = await r.json();
+    for (const a of ids) { if (s) karar[a] = Object.fromEntries(Object.entries(batch[a]).filter(([, v]) => v)); else delete karar[a]; }
+    sel.clear(); draw(false); showMulti();
+    $("info").style.display = "block"; $("info").innerHTML = `<h3>${ids.length} mahalle ${s ? CLS[s].t + (y ? " · " + y : "") : "silindi"}</h3><div id="sv">kaydedildi ✓ · ${fmt(j.kayit)} karar</div>`;
+  } catch (e) { $("sv").textContent = "KAYDEDİLEMEDİ: " + e.message; }
+}
+const pc = (a, b) => b ? (100 * a / b).toFixed(0) + "%" : "–";
+function blk(t, body) { return `<div class="blk"><h4>${t}</h4>${body}</div>`; }
+function show(f) {
+  cur = f;
+  const a = f.properties.area_id, r = rows.get(a) || {}, k = karar[a] || {}, cl = k.s ? (CLS[k.s] || NONE) : NONE;
+  const ch = r.n0 ? ((r.n / r.n0 - 1) * 100) : null;
+  const classes = ["İlçe Merkezi", "İl Merkezi", "Kentsel Belde", "Kırsal Belde", "Köy"];
+  const btn = classes.map(c => `<button data-s="${c}" class="${k.s === c ? "on" : ""}" style="border-color:${CLS[c].c};${k.s === c ? "background:" + CLS[c].c : ""}">${CLS[c].t}</button>`).join("")
+    + `<button data-s="" style="border-color:#888">Sil</button>`;
+  const nb = (r.n || 0) / Math.max(r.n0 || 1, r.n || 1), nb0 = (r.n0 || 0) / Math.max(r.n0 || 1, r.n || 1);
+  const sh = (n, d) => n == null ? "–" : n + d;
+  $("info").innerHTML = `<h3>${f.properties.name_tr} <small style="color:var(--mute)">${r.ilce || ""}</small></h3>
+    <span style="color:${cl.c}">● ${cl.t}${k.y ? " · " + k.y : ""}</span>
+    <div class="btns">${btn}</div>
+    <input id="ky" list="kdl1" placeholder="küme / birleşik belde adı" value="${(k.y || "").replace(/"/g, "&quot;")}">
+    <input id="kn" placeholder="not" value="${(k.n || "").replace(/"/g, "&quot;")}">
+    <div id="sv"></div>
+    ${blk("1 · Nüfus", `<b>${fmt(r.n)}</b> kişi (2025) · 2013: ${fmt(r.n0)}${ch == null ? "" : " (" + (ch >= 0 ? "+" : "") + ch.toFixed(0) + "%)"}
+      <div class="bar"><i style="width:${nb0 * 100}%;background:#6b7c8c"></i></div><div class="bar"><i style="width:${nb * 100}%;background:#4fc3f7"></i></div>
+      <small>alan ${r.area == null ? "–" : (+r.area).toFixed(1)} km² · yoğunluk ${fmt(r.dens)}/km²</small>`)}
+    ${blk("2 · Yaş", `0-17: ${sh(r.u17 == null ? null : (r.u17 * (r.u17 <= 1 ? 100 : 1)).toFixed(0), "%")} · 65+: ${sh(r.o65 == null ? null : (r.o65 * (r.o65 <= 1 ? 100 : 1)).toFixed(0), "%")} · ortanca ${sh(r.med, "")}`)}
+    ${blk("3 · Yapı", `bina ${fmt(r.bl)} · konut/bina ${r.kpb ?? "–"} · yazlık payı ${r.yaz ?? "–"} · leke ${r.leke ?? "–"}`)}
+    ${blk("4 · Yerler / kurum", `yerleşim: ${r.yer ?? "–"} · tür: ${r.tur ?? "–"} · semt: ${r.semt ?? "–"} · kurum: ${r.kurum ?? "–"}`)}
+    ${blk("5 · Kaynaklar", `TÜİK 2012: ${r.stat || "–"}<br>AATOPLU: ${r.aat || "–"}<br>DEGURBA: ${r.deg || "–"}<br>bina yöntemi: ${r.bina || "–"}`)}
+    ${blk("6 · Öneri", `${r.oneri || "–"} · uyum: ${r.ih || "–"} · belirsizlik ${r.bs ?? "–"}${r.not ? "<div class=note>" + r.not + "</div>" : ""}`)}`;
+  $("info").style.display = "block";
+  for (const b of $("info").querySelectorAll(".btns button")) b.onclick = () => save(a, b.dataset.s);
+  $("ky").onchange = $("kn").onchange = () => karar[a]?.s && save(a, karar[a].s);
+}
+async function save(a, s) {
+  const d = s ? {s, y:$("ky").value.trim(), n:$("kn").value.trim()} : {};
+  const old = karar[a];
+  if (old) for (const k of ["st", "sm"]) if (old[k] && s) d[k] = old[k];
+  $("sv").textContent = "kaydediliyor…";
+  try {
+    const r = await fetch("/karar", {method:"POST", headers:{"content-type":"application/json"}, body:JSON.stringify({[a]:d})});
+    if (!r.ok) throw new Error(r.status);
+    const j = await r.json();
+    if (s) karar[a] = Object.fromEntries(Object.entries(d).filter(([, v]) => v)); else delete karar[a];
+    $("sv").textContent = "kaydedildi ✓ · " + fmt(j.kayit) + " karar";
+    draw(false); show(cur);
+    $("sv").textContent = "kaydedildi ✓ · " + fmt(j.kayit) + " karar";
+  } catch (e) { $("sv").textContent = "KAYDEDİLEMEDİ: " + e.message; }
+}
+let sortK = "n", sortD = -1;
+const f2 = v => v == null ? "" : (+v).toLocaleString("tr-TR", {minimumFractionDigits:2, maximumFractionDigits:2});
+const TCOLS = [["ilce", "İlçe", "t"], ["ad", "Mahalle", "t"], ["s", "Sınıf", "c"], ["y", "Küme", "t"], ["n", "Nüfus 2025", 0], ["n0", "Nüfus 2013", 0], ["chg", "Değişim %", 2], ["dens", "Yoğunluk /km²", 2], ["u17", "0-17 %", 2], ["o65", "65+ %", 2], ["med", "Ort. yaş", 2], ["kpb", "Konut/bina", 2], ["yaz", "Yazlık %", 2], ["yer", "Yerleşim", "t"], ["stat", "TÜİK 2012", "t"], ["aat", "AATOPLU", "t"], ["oneri", "Öneri", "t"]];
+function table() {
+  const il = $("il").value, ilce = $("ilce").value, wide = $("tscope").value === "il" || ilce === "*";
+  const list = [...rows.values()].filter(r => r.il === il && (wide || r.ilce === ilce)).map(r => ({...r, ...(karar[r.id] || {}), chg:r.n0 ? 100 * (r.n / r.n0 - 1) : null}));
+  list.sort((x, y) => (typeof x[sortK] === "number" || typeof y[sortK] === "number" ? ((x[sortK] ?? -1e9) - (y[sortK] ?? -1e9)) : String(x[sortK] ?? "").localeCompare(String(y[sortK] ?? ""), "tr")) * sortD);
+  const cell = (r, [k, , t]) => {
+    const v = r[k];
+    if (t === "c") { const cl = v ? CLS[v] : null; return `<td><span class="dot" style="background:${cl ? cl.c : "#667"}"></span>${cl ? cl.t : "–"}</td>`; }
+    if (t === "t") return `<td${k === "ad" ? ' class="first"' : ""}>${v ?? ""}</td>`;
+    return `<td class="num">${v == null ? "" : t === 0 ? fmt(v) : f2(v)}</td>`;
+  };
+  const tot = list.reduce((a, r) => a + (r.n || 0), 0), tot0 = list.reduce((a, r) => a + (r.n0 || 0), 0);
+  $("tbl").innerHTML = `<table><thead><tr>${TCOLS.map(c => `<th data-k="${c[0]}" class="${c[2] === "t" || c[2] === "c" ? "" : "num"}">${c[1]}${sortK === c[0] ? (sortD < 0 ? " ▼" : " ▲") : ""}</th>`).join("")}</tr></thead><tbody>` +
+    list.map(r => `<tr data-id="${r.id}">${TCOLS.map(c => cell(r, c)).join("")}</tr>`).join("") +
+    `</tbody><tfoot><tr><td></td><td class="first">Toplam · ${list.length} mahalle</td><td></td><td></td><td class="num">${fmt(tot)}</td><td></td><td colspan="${TCOLS.length - 6}"></td></tr></tfoot></table>`;
+  for (const th of $("tbl").querySelectorAll("th")) th.onclick = () => { sortD = sortK === th.dataset.k ? -sortD : -1; sortK = th.dataset.k; table(); };
+  for (const tr of $("tbl").querySelectorAll("tbody tr")) tr.onclick = async () => {
+    const r = rows.get(tr.dataset.id);
+    $("tb").click();
+    if ($("ilce").value !== "*" && $("ilce").value !== r.ilce) { $("ilce").value = r.ilce; await load(); }
+    const f = feats.find(x => x.properties.area_id === r.id);
+    if (f) { map.fitBounds(L.geoJSON(f).getBounds(), {maxZoom:16}); show(f); }
+  };
+}
+$("tscope").onchange = () => { if ($("tbl").style.display === "block") table(); };
+$("tb").onclick = () => { const on = $("tbl").style.display !== "block"; $("tbl").style.display = on ? "block" : "none"; $("tb").textContent = on ? "Harita" : "Tablo"; if (on) table(); };
+$("il").onchange = () => { fillIlce(); load(); };
+$("ilce").onchange = load;
+$("mode").onchange = () => { layer && layer.setStyle(f => style(f, false)); legend(); };
+map.on("zoomend", () => { if (layer) layer.setStyle(f => style(f, false)); if (casing) casing.setStyle({weight:bw() + 2.5, opacity:map.getZoom() < 12 || !$("sat").checked ? 0 : .9}); });
+$("fill").onchange = () => layer && layer.setStyle(f => style(f, false));
+$("names").onchange = syncLabels;
+function syncLabels() { if (!labels) return; const show = $("names").value === "all" && (feats.length < 400 || map.getZoom() >= 12); if (show) labels.addTo(map); else map.removeLayer(labels); }
+map.on("zoomend", syncLabels);
+$("sat").onchange = () => { const on = $("sat").checked; for (const l of [esri, roads, osm, osmLbl]) map.removeLayer(l); if (on) { esri.addTo(map); roads.addTo(map); } $("map").style.background = on ? "#0b1118" : "#eef2f8"; if (layer) layer.setStyle(f => style(f, false)); if (casing) casing.setStyle({opacity:map.getZoom() < 12 || !on ? 0 : .9}); };
+$("q").onchange = () => {
+  const t = $("q").value.trim().toLocaleLowerCase("tr"), f = feats.find(x => x.properties.name_tr.toLocaleLowerCase("tr") === t);
+  if (f) { map.fitBounds(L.geoJSON(f).getBounds(), {maxZoom:17}); show(f); }
+};
+init().catch(e => msg("Hata: " + e.message));
+</script>
+</body>
+</html>
