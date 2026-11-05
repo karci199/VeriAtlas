@@ -17,6 +17,9 @@ Two corrections to the raw series:
 3. One-year blips in other years, per district and class: off the mean of the neighbouring years
    by 10% and 100 people while those two years agree. Replaced by the mean, scaled to the total.
 
+4. Suburb held by a rural unit until a redraw (SUBURB_SPLITS): people above the rural line count
+   as urban before the redraw. An estimate; the raw series keeps them where the registry had them.
+
 Writes il_kent_kir_seri_<plate>.csv and il_kent_kir_seri_<plate>_ilce.csv next to this file.
 
 Run:  python il_kent_kir_seri.py 38
@@ -54,6 +57,28 @@ GENERIC = {
 }
 FOLD = str.maketrans("ıİşŞçÇğĞöÖüÜâîû", "iissccggoouuaiu")
 PREFIX = f"TR-{PLATE}-"
+
+# Retired units no name rule can place: absorbed by the centre in 2023 (Saltuk, Yunus Emre), a village (Hamamlı).
+RETIRED_CLASS = {
+    "TR-51-002-196399": "İlçe Merkezi",
+    "TR-51-003-199107": "İlçe Merkezi",
+    "TR-51-005-140587": "Köy",
+}
+# A rural unit that held a growing suburb until a redraw split the suburb off. Its people above a
+# line from (from_year, rural) to (redraw_year, rural) belong to the urban class before the redraw.
+# Fertek: 9,287 in 2022, 925 in 2023 as Sarıköprü and Kayaardı (urban) took the suburb.
+SUBURB_SPLITS = [
+    {
+        "district": "TR-51-005",
+        "units": ("TR-51-005-49191", "TR-51-005-184632"),
+        "rural_class": "Köy",
+        "urban_class": "İlçe Merkezi",
+        "from_year": 2014,
+        "from_rural": 2280,
+        "redraw_year": 2023,
+        "redraw_rural": 925,
+    }
+]
 
 decisions = json.loads((HERE / "kullanici_karar.json").read_text(encoding="utf-8"))
 decisions = {k: v for k, v in decisions.items() if k.startswith(PREFIX)}
@@ -183,23 +208,26 @@ def resolve(area):
         municipality == districts.get(district)
         and r.get("first_seen", "9999") <= "2012"
     ):
-        place = find_place(district, r.get("name_tr"))
-        return (
-            "district_municipality",
-            "İlçe Merkezi"
-            if place
-            in (
-                None,
-                "İlçe Merkezi",
-            )
-            else place,
-            district,
-        )
+        # Only the same unit today can overrule the centre. A namesake in another town does not:
+        # Niğde's Yenice (5,720 people) is not Dündarlı's Yenice.
+        for a, d in decisions.items():
+            other = registry.get(a)
+            if (
+                other
+                and a.startswith(district + "-")
+                and other.get("municipality") == r.get("municipality")
+                and key(other["name_tr"]) == key(r.get("name_tr"))
+            ):
+                return "district_municipality", d["s"], district
+        return "district_municipality", "İlçe Merkezi", district
     place = find_place(district, r.get("name_tr"))
     return ("late_name", place, district) if place else ("unresolved", None, district)
 
 
 retired = {a: resolve(a) for a in cells if a not in decisions}
+for area, cls in RETIRED_CLASS.items():
+    if area in retired:
+        retired[area] = ("manual", cls, area[:9])
 # A retired district's leftovers go to the district that took most of its places.
 old_district = collections.defaultdict(collections.Counter)
 for area, (_, _, d) in retired.items():
@@ -237,6 +265,22 @@ for area in cells:
         raw[(target, cls)][year] += population(area, year)
 
 fixed = {k: collections.Counter(v) for k, v in raw.items()}
+
+for split in SUBURB_SPLITS:
+    if not split["district"].startswith(PREFIX):
+        continue
+    rural = fixed[(split["district"], split["rural_class"])]
+    urban = fixed[(split["district"], split["urban_class"])]
+    start, end = split["from_year"], split["redraw_year"]
+    for year in range(start, end):
+        people = sum(population(a, year) for a in split["units"])
+        line = split["from_rural"] + (split["redraw_rural"] - split["from_rural"]) * (
+            year - start
+        ) / (end - start)
+        moved = max(people - line, 0)
+        rural[year] -= moved
+        urban[year] += moved
+        print("suburb split", year, round(people), "moved", round(moved))
 
 # One-year blips first (Yıldızeli 2014: three centre neighbourhoods jump by half and fall back),
 # judged against the nearest years outside the election years, worst first, so an election-year
