@@ -20,8 +20,9 @@ Two corrections to the raw series:
 4. Suburb held by a rural unit until a redraw (SUBURB_SPLITS): people above the rural line count
    as urban before the redraw. An estimate; the raw series keeps them where the registry had them.
 
-5. Real shocks (SHOCK_FROM): Malatya after the February 2023 earthquakes. The people left or
-   moved for good, so rules 2 and 3 are not applied from 2023; the series shows what was registered.
+5. No smoothing (SHOCK_FROM): Malatya, after the February 2023 earthquakes. The people left or
+   moved for good, so rules 2 and 3 are not applied in any year; the series shows what was
+   registered.
 
 Writes il_kent_kir_seri_<plate>.csv and il_kent_kir_seri_<plate>_ilce.csv next to this file.
 
@@ -44,9 +45,10 @@ DATA = HERE.parents[2] / "src" / "veriatlas" / "data"
 WAREHOUSE = "C:/veri/warehouse.duckdb"
 YEARS = list(range(2007, 2026))
 PRE_LOCAL_ELECTION = (2008, 2013, 2018, 2023)
-# The February 2023 earthquakes moved people for good: from that year neither the election-year
-# mean nor the blip rule may touch the series of an affected province (Malatya).
-SHOCK_FROM = {"44": 2023}
+# From this year neither the election-year mean nor the blip rule may touch a province's series.
+# Malatya: the February 2023 earthquakes moved people for good, and the registry is kept as it is
+# in every year.
+SHOCK_FROM = {"44": 2007}
 SHOCK = SHOCK_FROM.get(PLATE, 9999)
 CLASSES = ["İlçe Merkezi", "Kentsel Belde", "Kırsal Belde", "Köy"]
 URBAN = {"İlçe Merkezi", "Kentsel Belde"}
