@@ -349,6 +349,10 @@ def read_report(path: pathlib.Path) -> list[dict]:
         # always the fourth number (katılım) in the referendum layout.
         if len(numbers) == width + 1:
             numbers = numbers[:3] + numbers[4:]
+        elif len(numbers) == width + 2:
+            # A round turnout ("76") is a number too, so the invalid count follows it:
+            # the row was skipped whole, and 2017 Giresun lost 24,000 settlement votes.
+            numbers = numbers[:3] + numbers[5:]
         if len(numbers) != width:
             continue
         labels = [(i, c) for i, c in enumerate(row) if c and not NUM.fullmatch(c)]
@@ -736,7 +740,15 @@ def main(argv: list[str]) -> None:
                     )
                     key = area or f"{parent}~{fold(record['name'])}"
                     base["ad"] = record["name"]
-                    hood_out.setdefault(province_id, {})[key] = base
+                    rows_of_province = hood_out.setdefault(province_id, {})
+                    # Two settlements of one district can share a name (Giresun Merkez has a
+                    # neighbourhood and a village called Osmaniye); the later one used to
+                    # overwrite the first, dropping the larger one's 2,239 votes.
+                    if key in rows_of_province:
+                        key = f"{parent}~{fold(record['name'])}"
+                        while key in rows_of_province:
+                            key += "+"
+                    rows_of_province[key] = base
 
             # One file per district, yet some (2017: 88 of them) print only the province
             # line, which then holds that district's totals. The file name says which.
