@@ -108,8 +108,16 @@ async function init() {
     ((tree[r[ix.il]] ??= {})[r[ix.ilce]] ??= {id:did});
   }
   const ils = Object.keys(tree).sort((a, b) => a.localeCompare(b, "tr"));
-  const withDecision = new Set(Object.keys(karar).map(a => rows.get(a)?.il).filter(Boolean));
-  $("il").innerHTML = ils.map(i => `<option value="${i}">${i}${withDecision.has(i) ? " ✓" : ""}</option>`).join("");
+  // A tick means every unit of the province has a decision; a half-filled one gets a half mark.
+  const hasDecision = id => {
+    if (karar[id]) return true;
+    const cut = id.lastIndexOf("-"), num = +id.slice(cut + 1);
+    return Number.isFinite(num) && [2000000, -2000000].some(o => karar[id.slice(0, cut + 1) + (num + o)]);
+  };
+  const total = {}, done = {};
+  for (const [id, r] of rows) { total[r.il] = (total[r.il] || 0) + 1; if (hasDecision(id)) done[r.il] = (done[r.il] || 0) + 1; }
+  const mark = i => !done[i] ? "" : done[i] === total[i] ? " ✓" : " ◐";
+  $("il").innerHTML = ils.map(i => `<option value="${i}">${i}${mark(i)}</option>`).join("");
   const q = new URLSearchParams(location.hash.slice(1));
   $("il").value = q.get("il") || "Bursa";
   fillIlce(q.get("ilce") || "İznik");
