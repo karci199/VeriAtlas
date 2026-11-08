@@ -144,6 +144,8 @@ for did, dist in sorted(DIST.items()):
         )
     )
     ids, kk = sub["area_id"].to_list(), sub["kent_kir"].to_list()
+    if not ids:  # a district with no populated neighbourhood in 2025
+        continue
     P = np.array([POP[a] for a in ids], float)
     seed = np.zeros((len(ids), 20))
     usable = np.zeros(len(ids), bool)
@@ -153,7 +155,7 @@ for did, dist in sorted(DIST.items()):
             seed[i] = to20(b, dist) / b.sum() * P[i]
             usable[i] = True
     for cls in ("kent", "kır"):
-        m = np.array([k == cls for k in kk])
+        m = np.array([k == cls for k in kk], dtype=bool)
         src = usable & m if (usable & m).any() else usable
         if src.any():
             shape = seed[src].sum(0)
@@ -164,7 +166,7 @@ for did, dist in sorted(DIST.items()):
         shape = shape / shape.sum()
         seed[m & ~usable] = np.outer(P[m & ~usable], shape)
     seed += 1e-6
-    hasK = np.array([a in KID for a in ids])
+    hasK = np.array([a in KID for a in ids], dtype=bool)
     K = np.array([KID.get(a, 0) for a in ids], float)
     X = seed.copy()
     for it in range(500):
@@ -187,7 +189,7 @@ for did, dist in sorted(DIST.items()):
     err = float(np.abs(colsum - dist).sum() / dist.sum() * 100)
     name = sub["district"][0]
     for cls in ("kent", "kır"):
-        m = np.array([k == cls for k in kk])
+        m = np.array([k == cls for k in kk], dtype=bool)
         if m.any():
             u = X[m].sum(0)
             s0 = seed[m].sum(0)

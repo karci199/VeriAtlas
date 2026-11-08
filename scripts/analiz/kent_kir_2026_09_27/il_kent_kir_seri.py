@@ -243,8 +243,15 @@ for area, (_, _, d) in retired.items():
     home = area.rsplit("-", 1)[0]
     if home not in districts and d in districts:
         old_district[home][d] += 1
-for area, (rule, cls, d) in retired.items():
+for area, (rule, cls, d) in list(retired.items()):
     if d not in districts:
+        if (
+            not old_district[d]
+            and sum(population(area, y) for y in range(2007, 2026)) < 100
+        ):
+            # under 100 people in all years and no district took its places: park it in the first district
+            retired[area] = (rule, cls, min(districts))
+            continue
         retired[area] = (rule, cls, old_district[d].most_common(1)[0][0])
 rules = collections.defaultdict(collections.Counter)
 for area, (rule, _, _) in retired.items():
