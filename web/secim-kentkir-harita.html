@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!-- Reusable election map: any election, any party, whole place / urban / rural / rural minus
+     urban, per district or province. No regenerating: pick in the header.
+     Data: public/elections/kentkir/*.json (scripts/build_kentkir_secim.py).
+     Geometry: public/areas.geojson and public/geo/districts/TR-XX.geojson. -->
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VeriAtlas — seçim haritası (kent / kır)</title>
+<link rel="stylesheet" href="secim-kentkir-harita.css?v=1">
+</head>
+<body>
+<header>
+  <div class="logo">VeriAtlas</div>
+  <div class="pick">
+    <label>Seçim <select id="election"></select></label>
+    <label>Gösterge <select id="metric"></select></label>
+    <div class="seg" id="scope">
+      <span data-v="t" class="on">Tümü</span><span data-v="kent">Kent</span><span data-v="kir">Kır</span><span data-v="diff">Kır − kent</span>
+    </div>
+    <div class="seg" id="level">
+      <span data-v="ilce" class="on">İlçe</span><span data-v="il">İl</span>
+    </div>
+  </div>
+  <div class="status" id="status"></div>
+</header>
+
+<main>
+  <section class="mapwrap">
+    <div id="map"></div>
+    <div class="legend" id="legend"></div>
+    <p class="note" id="note"></p>
+  </section>
+  <aside>
+    <div class="card" id="detail"></div>
+    <div class="card">
+      <h3>En yüksek</h3>
+      <ol id="top" class="rank"></ol>
+      <h3>En düşük</h3>
+      <ol id="bottom" class="rank"></ol>
+    </div>
+  </aside>
+</main>
+
+<script src="secim-kentkir-harita.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+/* Election map: same compact dark palette as the lean map and the election page. */
+
+:root {
+  --bg:#121315; --card:#1b1d21; --line:#2a2d33; --fg:#e9eaee; --mute:#8b919c;
+}
+* { box-sizing:border-box; }
+body { margin:0; font:14px/1.45 "Segoe UI",system-ui,sans-serif; background:var(--bg); color:var(--fg); }
+
+header { display:flex; align-items:center; gap:18px; padding:8px 16px; border-bottom:1px solid var(--line);
+         background:#0f1012; position:sticky; top:0; z-index:2; flex-wrap:wrap; }
+.logo { font-weight:700; }
+.pick { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+.pick label { font-size:12px; color:var(--mute); }
+.pick select { background:#1b1d21; color:var(--fg); border:1px solid var(--line); border-radius:6px; padding:4px 6px; font-size:13px; max-width:230px; }
+.seg { display:inline-flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; font-size:12.5px; }
+.seg span { padding:5px 11px; color:var(--mute); cursor:pointer; user-select:none; }
+.seg span.on { background:#26292f; color:var(--fg); }
+.status { font-size:12px; color:var(--mute); margin-left:auto; }
+
+main { display:grid; grid-template-columns:minmax(560px,1fr) 320px; gap:12px; padding:12px 16px 30px; align-items:start; }
+@media (max-width:900px) { main { grid-template-columns:1fr; } }
+
+.mapwrap { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 12px 12px; }
+#map svg { display:block; width:100%; height:auto; max-height:78vh; }
+#map path.cell { stroke:#0f1012; stroke-width:0.3; vector-effect:non-scaling-stroke; }
+#map path.cell.hi { stroke:var(--fg); stroke-width:1.4; }
+#map path.cell.na { fill:#24272d; }
+#map path.prov { fill:none; stroke:#0a0a0b; stroke-width:0.9; vector-effect:non-scaling-stroke; pointer-events:none; }
+
+.legend { display:flex; align-items:flex-start; gap:0; margin-top:10px; font-size:11px; color:var(--mute); flex-wrap:wrap; }
+.legend .sw { display:flex; flex-direction:column; align-items:center; gap:3px; min-width:56px; }
+.legend i { display:block; width:56px; height:11px; }
+.legend .cap { width:100%; margin-top:6px; }
+.note { font-size:11.5px; color:var(--mute); margin:8px 0 0; }
+
+aside { display:flex; flex-direction:column; gap:10px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; }
+.card h3 { margin:0 0 6px; font-size:12px; color:var(--mute); text-transform:uppercase; letter-spacing:.5px; }
+.card h3 + ol { margin-bottom:14px; }
+.rank { margin:0; padding-left:22px; font-size:12.5px; }
+.rank li { padding:1px 0; cursor:pointer; }
+.rank li:hover { color:#fff; }
+.rank b { float:right; font-variant-numeric:tabular-nums; }
+.rank small { color:var(--mute); }
+
+#detail .name { font-size:17px; font-weight:600; margin-bottom:2px; }
+#detail .big { font-size:26px; font-weight:700; margin:6px 0 2px; font-variant-numeric:tabular-nums; }
+#detail table { width:100%; border-collapse:collapse; font-size:12.5px; margin-top:8px; }
+#detail th { text-align:right; font-weight:500; color:var(--mute); font-size:11.5px; padding:2px 0; }
+#detail th:first-child { text-align:left; }
+#detail td { padding:3px 0; border-bottom:1px solid var(--line); }
+#detail td:not(:first-child) { text-align:right; font-variant-numeric:tabular-nums; }
+#detail .hint { color:var(--mute); font-size:12px; }

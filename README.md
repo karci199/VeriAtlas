@@ -96,6 +96,20 @@ uv run python scripts/serve.py 8123   # sonra: localhost:8123/web/explorer.html
 `python -m http.server` kullanma: yalnız `Last-Modified` gönderiyor, tarayıcı da bunu
 dünkü `explorer.js`'i çalıştırmak için yeterli sayıyor. `serve.py` `no-store` gönderir.
 
+## Seçim haritası (kent / kır)
+
+`web/secim-kentkir-harita.html` kalıcı haritadır: seçim, parti/aday, kapsam (tümü, kent, kır,
+kır − kent) ve düzey (ilçe, il) üstten seçilir; her soru için yeniden harita üretilmez.
+Veri `public/elections/kentkir/` altındadır ve `kullanici_karar.json` değişince şu komutla
+yenilenir:
+
+```bash
+uv run python scripts/build_kentkir_secim.py            # tüm seçimler
+uv run python scripts/build_kentkir_secim.py mv2023     # tek seçim
+```
+
+Kent/kır yalnız işaretlemesi tamamlanan illerde vardır; diğer yerler gri kalır.
+
 Tek dosyalık `VeriAtlas.html` sürümü kalktı: eski ekranı paketliyordu, gezgin ise
 veri dilimlerini gerektikçe indiriyor — hepsini tek dosyaya gömmek ayrı bir tasarım.
 
