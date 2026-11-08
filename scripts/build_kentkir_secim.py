@@ -138,6 +138,46 @@ class Classifier:
             if d.get("y"):
                 self.towns[area_id[:9]][d["y"]] = d["s"]
 
+    def classify_all(self, rows: dict[str, dict]) -> dict[str, str | None]:
+        """Classes of every row of one province tile, with the orphan rule applied.
+
+        A ballot-box line that matches nothing today (a village or neighbourhood renamed or
+        merged since) is given the class of the district's *orphan* units: units that exist
+        now but that no line of this tile matches. It only fires when every orphan of the
+        district shares one class and there are at least as many orphans as lost lines, so
+        a district with mixed orphans stays unclassified rather than guessed.
+        """
+        classes = {a: self.classify(a, r) for a, r in rows.items()}
+        seen_ids = set(rows)
+        seen_names = {
+            self.key(re.sub(r"\s*\(B\).*", "", r.get("ad") or ""))
+            for r in rows.values()
+        }
+        orphans: dict[str, list[str]] = collections.defaultdict(list)
+        for area_id, decision in self.decisions.items():
+            head, num = area_id.rsplit("-", 1)
+            offset_ids = (
+                {f"{head}-{int(num) + off}" for off in (2000000, -2000000)}
+                if num.isdigit()
+                else set()
+            )
+            if area_id in seen_ids or offset_ids & seen_ids:
+                continue
+            name = self.registry.get(area_id, {}).get("name_tr")
+            if name and self.key(name) in seen_names:
+                continue
+            orphans[area_id[:9]].append(decision["s"])
+        lost: dict[str, list[str]] = collections.defaultdict(list)
+        for area_id, cls in classes.items():
+            if cls is None:
+                lost[area_id[:9]].append(area_id)
+        for district, lines in lost.items():
+            found = orphans.get(district, [])
+            if found and len(set(found)) == 1 and len(found) >= len(lines):
+                for area_id in lines:
+                    classes[area_id] = found[0]
+        return classes
+
     def decision(self, area_id: str) -> str | None:
         if area_id in self.decisions:
             return self.decisions[area_id]["s"]
@@ -270,8 +310,10 @@ def build(code: str, classifiers: dict[str, Classifier]) -> dict:
         groups: dict[str, dict[str, dict]] = collections.defaultdict(
             lambda: {"kent": empty(), "kir": empty()}
         )
-        for area_id, row in json.loads(tile.read_text(encoding="utf-8")).items():
-            cls = classifier.classify(area_id, row)
+        rows = json.loads(tile.read_text(encoding="utf-8"))
+        classes = classifier.classify_all(rows)
+        for area_id, row in rows.items():
+            cls = classes[area_id]
             if cls is None:
                 unmatched += row["g"]
                 continue
