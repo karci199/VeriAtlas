@@ -73,6 +73,29 @@ RETIRED_CLASS = {
     "TR-51-003-199107": "İlçe Merkezi",
     "TR-51-005-140587": "Köy",
 }
+# New or closed units that match no name: each takes the class of the unit it split from (or was
+# absorbed into), read off the year the people moved. 2025 mahalle splits (Izmir, Erzurum, Sanliurfa,
+# Ankara) and the units that appear or vanish in a redraw (Istanbul, Mugla, Van, Bayburt-sized ones).
+RETIRED_CLASS |= {
+    "TR-06-006-240655": "Köy",  # Tokar: 224 in 2025, taken from Ozmus and other villages
+    "TR-10-007-147549": "Köy",  # Karyagmaz, closed 2022: its people went to villages
+    "TR-25-019-190795": "Köy",  # Pehlivanli: villages around it took the people
+    "TR-25-002-540062": "İlçe Merkezi",  # Gezkoy, 2025: 5,799 from Saltuklu (centre)
+    "TR-34-037-199723": "İlçe Merkezi",  # Yenisehir 2018-22: from Site, Esenevler, Istiklal (centre)
+    "TR-35-026-964817": "İlçe Merkezi",  # Necat Hepkon, 2025: from Camikebir, Colak Ibrahim Bey (centre)
+    "TR-35-004-338624": "İlçe Merkezi",  # 100. Yil, 2025: 6,717 from R.Sevket Ince (centre)
+    "TR-48-001-176221": "Kentsel Belde",  # Ortakentyahsi, 2013-17: Merkez, Bitez, Akcaalan (urban town)
+    "TR-63-013-184842": "Köy",  # Saglamlar
+    "TR-63-008-198255": "Köy",  # Gozele
+    "TR-63-008-821991": "Köy",  # Karakecili
+    "TR-63-008-263996": "Köy",  # Birlik
+    "TR-63-008-760041": "Köy",  # Gul
+    "TR-63-013-539429": "Köy",  # Alioglu
+    "TR-63-001-128694": "İlçe Merkezi",  # Tepecik: Adnan Menderes (centre) gave most
+    "TR-63-001-748517": "İlçe Merkezi",  # Ertugrul Gazi: same
+    "TR-65-007-159231": "Köy",  # Akdamar, closed 2018
+    "TR-65-004-159057": "Köy",  # Andicen, closed 2016
+}
 # A rural unit that held a growing suburb until a redraw split the suburb off. Its people above a
 # line from (from_year, rural) to (redraw_year, rural) belong to the urban class before the redraw.
 # Fertek: 9,287 in 2022, 925 in 2023 as Sarıköprü and Kayaardı (urban) took the suburb.
