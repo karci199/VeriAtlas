@@ -95,6 +95,7 @@ RETIRED_CLASS |= {
     "TR-63-001-748517": "İlçe Merkezi",  # Ertugrul Gazi: same
     "TR-65-007-159231": "Köy",  # Akdamar, closed 2018
     "TR-65-004-159057": "Köy",  # Andicen, closed 2016
+    "TR-80-005-548933": "Kırsal Belde",  # Murat Kurum Bey, 2025: 3,623 from Yesiltepe, Akyar (rural towns), Dereobasi (village)
     "TR-55-x1593-26751": "Köy",  # Alibeyli, 2007 only: renumbered as TR-55-008-37813
 }
 # A retired unit whose old district id is not a district any more: the district that holds it today.
