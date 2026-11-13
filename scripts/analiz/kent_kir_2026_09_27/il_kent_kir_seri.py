@@ -95,7 +95,10 @@ RETIRED_CLASS |= {
     "TR-63-001-748517": "İlçe Merkezi",  # Ertugrul Gazi: same
     "TR-65-007-159231": "Köy",  # Akdamar, closed 2018
     "TR-65-004-159057": "Köy",  # Andicen, closed 2016
+    "TR-55-x1593-26751": "Köy",  # Alibeyli, 2007 only: renumbered as TR-55-008-37813
 }
+# A retired unit whose old district id is not a district any more: the district that holds it today.
+RETIRED_HOME = {"TR-55-x1593-26751": "TR-55-008"}
 # A rural unit that held a growing suburb until a redraw split the suburb off. Its people above a
 # line from (from_year, rural) to (redraw_year, rural) belong to the urban class before the redraw.
 # Fertek: 9,287 in 2022, 925 in 2023 as Sarıköprü and Kayaardı (urban) took the suburb.
@@ -259,7 +262,7 @@ def resolve(area):
 retired = {a: resolve(a) for a in cells if a not in decisions}
 for area, cls in RETIRED_CLASS.items():
     if area in retired:
-        retired[area] = ("manual", cls, area[:9])
+        retired[area] = ("manual", cls, RETIRED_HOME.get(area, area[:9]))
 # A retired district's leftovers go to the district that took most of its places.
 old_district = collections.defaultdict(collections.Counter)
 for area, (_, _, d) in retired.items():
